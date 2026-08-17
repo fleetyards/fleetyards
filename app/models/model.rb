@@ -32,6 +32,9 @@
 #  height                            :decimal(15, 2)   default(0.0), not null
 #  hidden                            :boolean          default(TRUE)
 #  holo_colored                      :boolean          default(FALSE)
+#  hull_doors                        :jsonb
+#  hull_health                       :decimal(15, 2)
+#  hull_parts                        :jsonb
 #  hydrogen_fuel_tank_size           :decimal(15, 2)
 #  hydrogen_fuel_tanks               :string
 #  images_count                      :integer          default(0)
@@ -51,6 +54,7 @@
 #  name                              :string(255)
 #  notified                          :boolean          default(FALSE)
 #  on_sale                           :boolean          default(FALSE)
+#  personal_inventory                :decimal(15, 2)
 #  pitch                             :decimal(15, 2)
 #  pitch_boosted                     :decimal(15, 2)
 #  player_ownable                    :boolean          default(TRUE), not null
@@ -96,12 +100,14 @@
 #  scm_speed_acceleration            :decimal(15, 2)
 #  scm_speed_boosted                 :decimal(15, 2)
 #  scm_speed_decceleration           :decimal(15, 2)
+#  signature_cross_section           :jsonb
 #  size                              :string
 #  slug                              :string(255)
 #  store_images_updated_at           :datetime
 #  store_url                         :string(255)
 #  upgrade_kits_count                :integer          default(0)
 #  videos_count                      :integer          default(0)
+#  weapon_pool_size                  :integer
 #  yaw                               :decimal(15, 2)
 #  yaw_boosted                       :decimal(15, 2)
 #  created_at                        :datetime
@@ -130,7 +136,7 @@ class Model < ApplicationRecord
 
   has_paper_trail on: %i[update], only: %i[
     classification production_status production_note focus pledge_price length beam height mass
-    cargo size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
+    cargo personal_inventory size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
     max_speed_acceleration max_speed_decceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
@@ -290,7 +296,7 @@ class Model < ApplicationRecord
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
       "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
-      "name", "notified", "on_sale", "pitch", "player_ownable", "pledge_price", "price", "production_note",
+      "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "price", "production_note",
       "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
@@ -569,6 +575,21 @@ class Model < ApplicationRecord
     [number, "SCU"].join(" ")
   end
 
+  # The ship's own storage container, which the game keeps apart from the cargo
+  # grid: it holds personal gear rather than freight, and most ships measure it
+  # in fractions of an SCU.
+  def personal_inventory_label
+    return if personal_inventory.blank? || personal_inventory.zero?
+
+    number = number_with_precision(
+      personal_inventory,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "SCU"].join(" ")
+  end
+
   def length_label
     return if length.blank? || length.zero?
 
@@ -673,6 +694,13 @@ class Model < ApplicationRecord
 
   def frontend_url
     frontend_model_url(slug:)
+  end
+
+  def hangar_link_slug
+    return legacy_slug if legacy_slug.present?
+
+    prefix = "#{manufacturer&.code&.downcase}-"
+    slug&.start_with?(prefix) ? slug.delete_prefix(prefix) : slug
   end
 
   private def broadcast_update

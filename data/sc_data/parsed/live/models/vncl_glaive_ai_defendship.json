@@ -14,6 +14,211 @@
     "base_expediting_fee": "3800"
   },
   "mass": 68391.0,
+  "inventory_container_ref": "62fc4e01-9499-4d81-bd27-2e67905aa856",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 9140.0,
+    "y": 2384.0,
+    "z": 11922.0
+  },
+  "hull_health": 11701.0,
+  "hull_parts": [
+    {
+      "name": "VNCL_Scythe",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 4000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_arm",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "landing_gear_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_right_arm",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_gun",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_tailA",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tailB",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tailC",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rightA",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_blade",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rightA_featherA_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rightA_featherA_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rightA_featherB_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rightA_featherB_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rightA_featherC_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rightA_featherC_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rightA_featherD_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rightA_featherD_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_blade_lock",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_right_tailD",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_tailD_featherA_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_tailD_featherA_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tailD_featherB_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_tailD_featherB_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tailD_featherC_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_tailD_featherC_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tailD_featherD_hinge",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_tailD_featherD_end",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_rear_housing",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "landing_gear_rear",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "landing_gear_rear_cover",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "cockpit_lock",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit_opening",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit_floor",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit_base_plate",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 24.0,
     "y": 33.0,

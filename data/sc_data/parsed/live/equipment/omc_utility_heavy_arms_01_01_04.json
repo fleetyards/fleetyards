@@ -1,0 +1,35 @@
+{
+  "key": "omc_utility_heavy_arms_01_01_04",
+  "ref": "3c69369e-d63b-45de-bfc7-5b6bf5d8c72d",
+  "name": "Corbel Arms Halcyon",
+  "description": "Originally designed as a strength enhancement suit to give factory workers better lifting power, CDS found wider application in utilizing its defensive capabilities. It's triple-enforced armor plating provides extreme physical protection, with deliberate placing of materials to protect the most vulnerable parts of the body. A series of pneumatic levers offer increased flexibility in the joints, alleviating pressure and weight in key areas to create an accessible and highly protective armor despite its heavy weight.\n\nThe Halcyon edition displays a sharp contrast of bold yellow and muted black.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-70 / 100 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.126,
+    "y": 0.371,
+    "z": 0.415
+  }
+}

@@ -25,7 +25,7 @@ module Api
       def index
         authorize! with: FleetMembershipPolicy, context: {fleet: @fleet}
 
-        scope = @fleet.fleet_memberships
+        scope = @fleet.fleet_memberships.kept
 
         member_query_params["sorts"] = sorting_params(FleetMembership, member_query_params["sorts"])
 
@@ -94,7 +94,7 @@ module Api
       end
 
       private def set_member
-        @member = @fleet.fleet_memberships
+        @member = @fleet.fleet_memberships.kept
           .includes(:user)
           .joins(:user)
           .find_by!(users: {normalized_username: params[:username].downcase})

@@ -1,0 +1,38 @@
+{
+  "key": "alb_jacket_04_02_01",
+  "ref": "97591280-4c49-4b2a-8e1f-bde0da440a95",
+  "name": "Loscha Work Vest Horizon",
+  "description": "The heavy-duty Loscha Work Vest by Alejo Brothers is designed for people who want to be prepared for anything at any time.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_jacket",
+    "Set_04",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

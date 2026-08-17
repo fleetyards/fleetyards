@@ -14,6 +14,361 @@
     "base_expediting_fee": "1740"
   },
   "mass": 54230.0,
+  "inventory_container_ref": "2225882b-9760-48bb-9aaa-6c09f1c66dcf",
+  "hull_health": 115600.0,
+  "hull_parts": [
+    {
+      "name": "TMBL_Storm",
+      "health": 35000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 27000.0,
+      "category": "vital"
+    },
+    {
+      "name": "tread_cover_FL",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Component_Door_FL_Back",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Component_Door_FL_Front",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "blast_plate_front_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_detail_front_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tread_cover_RL",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "component_door_RL_front",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "component_door_RL_back",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "blast_plate_a_rear_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "blast_plate_b_rear_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tread_cover_RR",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "component_door_RR_front",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "component_door_RR_back",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "blast_shield_a_back_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "blast_shield_b_rear_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tread_cover_FR",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "blast_plate_front_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Component_Door_FR_Back",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Component_Door_FR_Front",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_detail_front_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "component_door_rear_left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "component_door_rear_right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_tread_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_tread_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_00",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_hidden",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_014",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_014",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_013",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_013",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_hidden",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_hidden",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_06",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_06",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_12",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_11",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_01",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_08",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_06",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_hidden",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_04",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_02",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_12",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_00",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_11",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_08",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_06",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_01",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_04",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_02",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_gap1",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_gap1",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_gap2",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_gap2",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_center2",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_center1",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_right_center2",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_left_center1",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_bumper_left",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_front_bumper_right",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_left_hidden2",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_rear_right_hidden2",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "blast_plate_body_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_detail_body_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_detail_body_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "blast_plate_body_left",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
+  "speeds": {
+    "max": 30.0,
+    "reverse": null,
+    "acceleration": null,
+    "decceleration": null
+  },
   "metrics": {
     "x": 10.25,
     "y": 7.65,

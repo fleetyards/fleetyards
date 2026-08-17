@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "3",
   "name": "Crusader Mercury Star Runner",
   "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight\\n\\nIf you need it there fast and unscathed, the Mercury checks all the boxes expected of a dependable courier vessel and then some. Built with the same engineering and design principles that have made Crusader Industries the go-to manufacturer for galactic transport on any scale, the Mercury Star Runner will let you stay ahead of schedule, trouble, and the competition.",
   "career": "Transporter",
@@ -14,6 +14,56 @@
     "base_expediting_fee": "9393"
   },
   "mass": 680575.0,
+  "inventory_container_ref": "17e58e76-2599-456e-b211-b3a6088f32f5",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 16023.0,
+    "y": 5106.0,
+    "z": 17608.0
+  },
+  "hull_health": 41400.0,
+  "hull_parts": [
+    {
+      "name": "CRUS_Star_Runner",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 14000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 14000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_right",
+      "health": 6600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_left",
+      "health": 6600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_engine",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 55.0,
     "y": 51.0,

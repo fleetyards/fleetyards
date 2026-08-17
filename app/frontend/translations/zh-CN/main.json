@@ -10,6 +10,7 @@
       "size": "尺寸",
       "beam": "舰宽",
       "cargo": "货舱",
+      "personalInventory": "飞船库存",
       "netCargo": "货舱（含探测器/战斗机）",
       "crew": "船员",
       "speed": "速度",
@@ -60,6 +61,7 @@
       "modular": "模块化",
       "soldAt": "出售于？",
       "rentalAt": "租赁于？",
+      "poweredByUex": "数据由 UEX 提供",
       "lastUpdatedAt": "最后更新于？"
     },
     "component": {

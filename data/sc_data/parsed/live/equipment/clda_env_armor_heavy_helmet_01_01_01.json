@@ -1,0 +1,40 @@
+{
+  "key": "clda_env_armor_heavy_helmet_01_01_01",
+  "ref": "924ac206-9122-4584-8682-af7d61f56929",
+  "name": "Novikov Helmet",
+  "description": "Confidently explore cold environments while wearing the Novikov. Caldera built the exploration suit with an advanced sensor suite that intelligently adjusts to environmental conditions so the wearer's body temperature remains stable. Also featuring a bespoke helmet that integrates with the cutting edge life support system, those venturing across unknown terrain can count on the Novikov to help them survive the journey.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_utility",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "25.0",
+  "temperature_rating": "-225 / 75 °C",
+  "radiation_protection": "33600.0",
+  "radiation_scrub_rate": "147.42",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable",
+    "Environment",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

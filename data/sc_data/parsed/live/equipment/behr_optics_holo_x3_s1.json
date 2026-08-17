@@ -1,0 +1,33 @@
+{
+  "key": "behr_optics_holo_x3_s1",
+  "ref": "cafb725f-9ccf-4ec3-959d-1a94ac0512b6",
+  "name": "PT3 (3x Holographic)",
+  "description": "Get up close and personal with this 3x magnifying optic from Behring. The PT3 projects a highly visible target marker allowing you to confidently cover your field of view across various lighting and environmental conditions.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "weapon_scope",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "IronSight",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [],
+  "hidden": false,
+  "volume": 0.0001,
+  "volume_dimensions": {
+    "x": 0.0398,
+    "y": 0.06,
+    "z": 0.0566
+  }
+}

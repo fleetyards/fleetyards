@@ -1,0 +1,37 @@
+{
+  "key": "eld_shirt_04_g-loc_dec",
+  "ref": "e60ea44a-642d-4957-b6ea-38028b4879d1",
+  "name": "G-Loc T-Shirt",
+  "description": "Raise a glass to the expert drink-slingers at the G-Loc Bar with this t-shirt. Area18's finest watering hole is known for their heavy pours on classic cocktails, like the Wingman's Hangover and Nick's Mistake. Snag this shirt to celebrate their generosity and help you remember where the night started.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Color_g-loc"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

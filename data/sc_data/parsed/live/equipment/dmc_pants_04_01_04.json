@@ -1,0 +1,37 @@
+{
+  "key": "dmc_pants_04_01_04",
+  "ref": "4266a145-86ea-4162-8731-b3ef03809b5f",
+  "name": "K7 Pants Yellow",
+  "description": "DMC's K7 are an all-purpose cargo pants. Four easy access pockets provide extra storage while the triple-stitched polymer weave fabric is designed to withstand all kinds of weather conditions.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "3000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_pants",
+    "Set_04",
+    "Color_04"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

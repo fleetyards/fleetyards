@@ -14,10 +14,9 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   type Fleet,
   useLeaveFleet as useLeaveFleetMutation,
-  type ValidationError,
   type FleetMember,
 } from "@/services/fyApi";
-import { type ErrorType } from "@/services/axiosClient";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -89,17 +88,11 @@ const leave = () => {
           await router.push({ name: "home" }).catch(() => {});
         })
         .catch((error) => {
-          const response = error as unknown as ErrorType<ValidationError>;
+          const { message } = validationErrorFrom(error);
 
-          if (response.message) {
-            displayAlert({
-              text: response.message,
-            });
-          } else {
-            displayAlert({
-              text: t("messages.fleet.leave.failure"),
-            });
-          }
+          displayAlert({
+            text: message || t("messages.fleet.leave.failure"),
+          });
         })
         .finally(() => {
           leaving.value = false;

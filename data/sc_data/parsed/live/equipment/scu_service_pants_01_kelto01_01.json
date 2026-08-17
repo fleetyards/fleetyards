@@ -1,0 +1,38 @@
+{
+  "key": "scu_service_pants_01_kelto01_01",
+  "ref": "796fb0f7-6987-4d0f-8b19-3fb801c57929",
+  "name": "TopLine Apron Pants Kel-To",
+  "description": "With an attached apron and deep side pockets, the TopLine pants from Stegman's make even the toughest service jobs a little bit easier.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "service",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_service_pants",
+    "Set_01",
+    "Texture_kelto01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

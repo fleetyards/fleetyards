@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Anvil F7C-M Super Hornet Mk I",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Medium Fighter\\n\\nThe closest to the Military load-out as is legally possible for a Civilian model, the F7C-M Super Hornet Mk I reattaches the ball turret and offers near milspec parts under the hood. Proving that two heads are better than one, a second seat has been added to split the logistic and combat duty, making the Super Hornet a truly terrifying mark to engage.",
   "career": "Combat",
@@ -14,6 +14,126 @@
     "base_expediting_fee": "4789"
   },
   "mass": 72032.0,
+  "inventory_container_ref": "e70d213d-5abd-41fc-be4c-e4acd4d13dad",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 7249.0,
+    "y": 2025.0,
+    "z": 7837.0
+  },
+  "hull_health": 15550.0,
+  "hull_parts": [
+    {
+      "name": "ANVL_Hornet",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 2650.0,
+      "category": "vital"
+    },
+    {
+      "name": "IntakeLeft",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "MissileBay_Left",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "EngineHousing",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thrust_vector_flap_c",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_a",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_b",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "IntakeRight",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "MissileBay_Right",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 2650.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Canopy",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRightRear",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRight",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "WingRight_Debris",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "LG_Door_Rear_R",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingLeftRear",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingLeft",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "WingLeft_Debris",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "LG_Door_Rear_L",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 1800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Debris",
+      "health": 1500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 25.5,
     "y": 28.25,

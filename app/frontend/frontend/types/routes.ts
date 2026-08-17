@@ -34,6 +34,8 @@ type FrontendSimpleRoutes =
   | "hangar-preview"
   | "hangar-fleetchart"
   | "hangar-stats"
+  | "hangar-inventories"
+  | "hangar-inventory"
   // Fleets
   | "fleet-add"
   | "fleet-preview"
@@ -58,6 +60,7 @@ type FrontendSimpleRoutes =
   | "visual-tests"
   | "visual-tests-panels"
   | "visual-tests-buttons"
+  | "visual-tests-chips"
   | "visual-tests-tables";
 
 export type FrontendRouteLocation =

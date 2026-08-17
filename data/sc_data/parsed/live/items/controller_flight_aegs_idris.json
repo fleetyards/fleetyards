@@ -24,14 +24,32 @@
     "reverse_speed_boosted": 125.0,
     "max_speed": 850.0,
     "angular_velocity": {
-      "pitch": 7.0,
-      "yaw": 7.0,
-      "roll": 12.0
+      "pitch": 6.0,
+      "yaw": 6.0,
+      "roll": 11.0
     },
     "boosted_angular_velocity": {
-      "pitch": 8.4,
-      "yaw": 8.4,
-      "roll": 14.399999999999999
-    }
+      "pitch": 7.199999999999999,
+      "yaw": 7.199999999999999,
+      "roll": 13.2
+    },
+    "power_consumption": 10.0,
+    "power_minimum_fraction": 0.1,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

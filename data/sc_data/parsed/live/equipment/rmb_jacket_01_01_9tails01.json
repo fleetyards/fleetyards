@@ -1,0 +1,37 @@
+{
+  "key": "rmb_jacket_01_01_9tails01",
+  "ref": "f1657da2-3983-4bb5-86c9-0d24f51f1ebb",
+  "name": "Kutty Jacket (Modified)",
+  "description": "This version of Rambler's Kutty jacket has been modified from its original form. Rambler's Kutty two-tone jacket features a racer-strap collar and an asymmetrical button design to bring a vintage look into the modern era.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e7489831-23c1-4629-ab36-221bb9bad06f",
+  "tags": [
+    "rmb_jacket",
+    "set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

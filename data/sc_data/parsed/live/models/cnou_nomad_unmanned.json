@@ -14,6 +14,76 @@
     "base_expediting_fee": "2687"
   },
   "mass": 216323.0,
+  "inventory_container_ref": "65a2586f-12af-44b5-a32b-9942f6b57fb9",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 6604.0,
+    "y": 3302.0,
+    "z": 9712.0
+  },
+  "hull_health": 9800.0,
+  "hull_parts": [
+    {
+      "name": "CNOU_Nomad",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 4000.0,
+      "category": "vital"
+    },
+    {
+      "name": "vertical_stabilizer_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "vertical_stabilizer_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left",
+      "health": 500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "canopy",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "vertical_stabilizer_right_bottom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "vertical_stabilizer_left_bottom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "vertical_stabilizer_left_top",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "vertical_stabilizer_right_top",
+      "health": 50.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 27.0,
     "y": 19.0,

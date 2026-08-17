@@ -1,0 +1,37 @@
+{
+  "key": "arma_barrel_supp_s3",
+  "ref": "d292ae90-a9bb-4a37-8651-27dd81b67ead",
+  "name": "Tacit Suppressor3",
+  "description": "Strike silently with the Tacit Supressor3. ArmaMod uses a proprietary ceramic coating inside the suppressor to ensure the sound of gunfire remains minimal.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "barrel",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Barrel",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a",
+  "tags": [
+    "FPS_Barrel",
+    "ballistic_attach",
+    "energy_attach"
+  ],
+  "hidden": false,
+  "volume": 0.00045,
+  "volume_dimensions": {
+    "x": 0.0467,
+    "y": 0.1903,
+    "z": 0.0501
+  }
+}

@@ -26,20 +26,37 @@ const { t } = useI18n();
 
 const emit = defineEmits(["cancel"]);
 
-const { displayConfirm } = useAppNotifications();
+const { displayConfirm, dismissConfirm } = useAppNotifications();
+
+// The dialog is app-level and holds on to the callback it was given, so one left
+// open outlives this component: confirming it later emits `cancel` at a parent
+// that is no longer on screen, on whatever route the user moved to.
+const awaitingConfirm = ref(false);
 
 const handleCancel = () => {
   if (props.dirty) {
+    awaitingConfirm.value = true;
+
     displayConfirm({
       text: t("appModal.messages.confirm.dirty"),
       onConfirm: () => {
+        awaitingConfirm.value = false;
         emit("cancel");
+      },
+      onClose: () => {
+        awaitingConfirm.value = false;
       },
     });
   } else {
     emit("cancel");
   }
 };
+
+onBeforeUnmount(() => {
+  if (awaitingConfirm.value) {
+    dismissConfirm();
+  }
+});
 </script>
 
 <template>
@@ -58,8 +75,8 @@ const handleCancel = () => {
         :loading="submitting"
         :type="BtnTypesEnum.SUBMIT"
         data-test="submit-form"
-        :size="BtnSizesEnum.LARGE"
         :formId="formId"
+        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>

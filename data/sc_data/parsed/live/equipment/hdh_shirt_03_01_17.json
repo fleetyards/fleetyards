@@ -1,0 +1,38 @@
+{
+  "key": "hdh_shirt_03_01_17",
+  "ref": "7df3a63a-a8cf-4a21-a725-c84f968ae64e",
+  "name": "Enkel Shirt Sirocco",
+  "description": "Habidash's Enkel is a simple, no-frills shirt designed to be comfortable, first and foremost.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_shirt",
+    "Set_03",
+    "Texture_01",
+    "Color_17"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

@@ -31,6 +31,10 @@ class ItemPrice < ApplicationRecord
   validates :time_range, presence: true, if: -> { rental? }
   validates :price, presence: true
   validates :location, presence: true
+  # Rendered as an `href`, and admin-writable, so a `javascript:` value here
+  # would run on click. The views check the scheme too, for rows that predate
+  # this.
+  validates :location_url, format: {with: %r{\Ahttps?://}i}, allow_blank: true
 
   def self.ransackable_attributes(auth_object = nil)
     [

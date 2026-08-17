@@ -1,0 +1,37 @@
+{
+  "key": "ops_jacket_01_01_05",
+  "ref": "b7c7a5e4-702a-4368-8564-9ca677d3e199",
+  "name": "Nyman Jacket Green",
+  "description": "OpalSky's Nyman light pullover is perfect to have on hand when lounging poolside or on those chilly nights.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6f5af1a4-a50d-41e5-8bb0-c1acd89d4b9e",
+  "tags": [
+    "ops_jacket",
+    "set_01",
+    "Color_05"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

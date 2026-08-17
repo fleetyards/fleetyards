@@ -5,10 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useMobile } from "@/shared/composables/useMobile";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -28,6 +28,7 @@ import {
   useFleetMembers as useFleetMembersQuery,
   useFleetMembersStats as useFleetMembersStatsQuery,
   getFleetMembersQueryKey,
+  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetMemberQuery,
@@ -49,8 +50,6 @@ const route = useRoute();
 
 const comlink = useComlink();
 
-const mobile = useMobile();
-
 const canManageInvites = computed(() =>
   checkAccess(props.resourceAccess, [
     "fleet:memberships:read",
@@ -60,8 +59,12 @@ const canManageInvites = computed(() =>
 );
 
 const { isFeatureEnabled } = useFeatures();
-const starmapEnabled = computed(() => isFeatureEnabled("fleet_starmap"));
-const worldmapEnabled = computed(() => isFeatureEnabled("fleet_worldmap"));
+const starmapEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.FLEET_STARMAP),
+);
+const worldmapEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.FLEET_WORLDMAP),
+);
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   updateCallback: async () => {
@@ -155,10 +158,11 @@ const crumbs = computed(() => {
     </template>
   </Heading>
 
-  <Teleport v-if="!mobile" to="#header-right">
+  <Teleport to="#header-right">
     <Btn
       v-if="worldmapEnabled"
-      :inline="true"
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
       :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
     >
       <i class="fa-duotone fa-globe" />
@@ -166,7 +170,8 @@ const crumbs = computed(() => {
     </Btn>
     <Btn
       v-if="starmapEnabled"
-      :inline="true"
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
       :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
     >
       <i class="fa-duotone fa-planet-ringed" />
@@ -174,7 +179,8 @@ const crumbs = computed(() => {
     </Btn>
     <Btn
       v-if="canManageInvites"
-      :inline="true"
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
       :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
     >
       <i class="fa-duotone fa-user-plus" />
@@ -190,30 +196,6 @@ const crumbs = computed(() => {
     :is-filter-selected="isFilterSelected"
     hide-empty
   >
-    <template v-if="mobile" #actions-right>
-      <Btn
-        v-if="worldmapEnabled"
-        :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
-      >
-        <i class="fa-duotone fa-globe" />
-        <span>{{ t("actions.fleet.worldmap") }}</span>
-      </Btn>
-      <Btn
-        v-if="starmapEnabled"
-        :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
-      >
-        <i class="fa-duotone fa-planet-ringed" />
-        <span>{{ t("actions.fleet.starmap") }}</span>
-      </Btn>
-      <Btn
-        v-if="canManageInvites"
-        :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
-      >
-        <i class="fa-duotone fa-user-plus" />
-        <span>{{ t("actions.fleet.manageInvites") }}</span>
-      </Btn>
-    </template>
-
     <template #filter>
       <FleetMembersFilterForm variant="members" />
     </template>

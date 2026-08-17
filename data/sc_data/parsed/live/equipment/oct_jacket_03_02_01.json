@@ -1,0 +1,38 @@
+{
+  "key": "oct_jacket_03_02_01",
+  "ref": "c76c8fbc-c532-4e02-80a3-870b365bf070",
+  "name": "Zerua Jacket",
+  "description": "Masterfully blending various colors and materials, the Zerua is a stylish jacket that features light yet breathable synthetics. Thanks to a unique dual layer design the jacket is meant to be worn open but is closable against the cold thanks to a snap button collar and zipper on the outer layer.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a05001d-0511-415f-8e32-618fbd75242b",
+  "tags": [
+    "oct_jacket",
+    "set_03",
+    "Material_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

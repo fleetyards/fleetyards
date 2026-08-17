@@ -14,9 +14,49 @@
     "base_expediting_fee": "19595"
   },
   "mass": 3275858.0,
+  "inventory_container_ref": "78512e89-9cc2-4c19-b1d9-befd1b311ffc",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 26620.0,
+    "y": 10428.0,
+    "z": 44000.0
+  },
+  "hull_health": 88000.0,
+  "hull_parts": [
+    {
+      "name": "ANVL_Carrack",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "middle",
+      "health": 70000.0,
+      "category": "vital"
+    },
+    {
+      "name": "rear",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wings_L",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wings_R",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front",
+      "health": 5000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
-    "x": 126.0,
-    "y": 74.0,
+    "x": 74.0,
+    "y": 126.0,
     "z": 30.0
   },
   "loadout": [

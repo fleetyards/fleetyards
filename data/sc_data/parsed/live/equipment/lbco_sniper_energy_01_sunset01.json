@@ -1,0 +1,37 @@
+{
+  "key": "lbco_sniper_energy_01_sunset01",
+  "ref": "0563ba71-7903-46f7-ae55-87f108c56c46",
+  "name": "Atzkav \"Igniter\" Sniper Rifle",
+  "description": "The Atzkav is a unique precision sniper rifle from Lightning Bolt Co. Once the charging handle is engaged, it accurately fires a charged electron to deal significant energy damage that spreads to nearby conductive targets. This special pulse effect also leaves a residual charge in the strike area that increases damage delivered by subsequent electron shots. Alongside the rifle's special firing capabilities, the Atzkav is best known for its distinct barrel that crackles with energy when powering its next shot. A lustrous orange coating makes the Igniter edition a colorful addition to any loadout.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "sniper_rifle",
+  "weapon_class": "energy",
+  "rate_of_fire": "30.0",
+  "range": "150.0",
+  "storage": "5.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/lbco_atzkav_sniper_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "98bb2e9e-fcc7-46e5-9ba6-d34c42c414e0",
+  "tags": [
+    "stocked",
+    "lbco_sniper_energy_01",
+    "sniper"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.0559,
+    "y": 0.9987,
+    "z": 0.3436
+  }
+}

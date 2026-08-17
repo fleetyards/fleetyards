@@ -1,0 +1,40 @@
+{
+  "key": "uba_prison_undersuit_helmet_01_01_01",
+  "ref": "73bb82df-2fd1-489d-9037-c99c43065b94",
+  "name": "Inmate Work Helmet",
+  "description": "The Inmate Work Helmet features a highly visible design for easy visual tracking, alongside an anti-fogging, crack resistant faceplate sealed into reinforced plating that's rated to withstand falling debris, which helps minimize costly accidents to your labor pool.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "worksuit_helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "10.0",
+  "temperature_rating": "-75 / 75 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "04ded06f-7862-4771-b40f-aa310b74ee17",
+  "tags": [
+    "Prison",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

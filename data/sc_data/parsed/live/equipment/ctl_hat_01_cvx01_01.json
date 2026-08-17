@@ -1,0 +1,39 @@
+{
+  "key": "ctl_hat_01_cvx01_01",
+  "ref": "cbe5fb56-a16e-4353-8fad-d607ebc740af",
+  "name": "Rabat Hat Covalex",
+  "description": "A classic structured baseball cap with an accent stripe to add a pop of color. City Lights' proprietary COOL-WEV technology keeps your head cool and dry in any environment.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "hat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5ca8a669-44c2-40e4-89b2-7a5da790b832",
+  "tags": [
+    "ctl_hat",
+    "Set_01",
+    "Color_01",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

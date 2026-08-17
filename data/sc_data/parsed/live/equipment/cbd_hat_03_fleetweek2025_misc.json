@@ -1,0 +1,39 @@
+{
+  "key": "cbd_hat_03_fleetweek2025_misc",
+  "ref": "79741092-6bee-4e89-9b10-6f3decf616d0",
+  "name": "MISC Hat Blue and White",
+  "description": "This blue and white cadet hat features a minimalistic version of MISC's logo on the front.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "hat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_hat",
+    "Set_03",
+    "Color_misc02",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

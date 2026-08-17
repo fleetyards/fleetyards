@@ -14,6 +14,76 @@
     "base_expediting_fee": "3900"
   },
   "mass": 69324.0,
+  "inventory_container_ref": "5c4a56ae-3ba1-4f51-bbb9-c75577d6aa7e",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5928.0,
+    "y": 2829.0,
+    "z": 8757.0
+  },
+  "hull_health": 8700.0,
+  "hull_parts": [
+    {
+      "name": "ORIG_300I",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 1900.0,
+      "category": "vital"
+    },
+    {
+      "name": "glass_canopy_front",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 1900.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_left_bottom",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_b_left",
+      "health": 500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_left_top",
+      "health": 200.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_flap_left",
+      "health": 200.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right_bottom",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_b_right",
+      "health": 500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right_top",
+      "health": 200.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_flap_right",
+      "health": 200.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 17.0,
     "y": 27.5,

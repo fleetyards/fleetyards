@@ -18,17 +18,13 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useForm } from "vee-validate";
 import { type AccountUpdateInput } from "@/services/fyApi";
-import {
-  BtnVariantsEnum,
-  BtnSizesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import {
   useUpdateAccount as useUpdateAccountMutation,
   useDestroyAccount as useDestroyAccountMutation,
-  type ValidationError,
 } from "@/services/fyApi";
-import { type AxiosError } from "axios";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 const sessionStore = useSessionStore();
 
@@ -43,7 +39,7 @@ const deleting = ref(false);
 
 const submitting = ref(false);
 
-const { defineField, handleSubmit } = useForm({
+const { defineField, handleSubmit, setErrors } = useForm({
   initialValues: initialValues.value,
 });
 
@@ -97,7 +93,13 @@ const updateAccount = handleSubmit(async (values) => {
       });
     })
     .catch((error) => {
-      console.error(error);
+      const { message, formErrors } = validationErrorFrom(error);
+
+      setErrors(formErrors);
+
+      displayAlert({
+        text: message,
+      });
     })
     .finally(() => {
       submitting.value = false;
@@ -123,12 +125,12 @@ const runDestroy = async (destroyFleets: boolean) => {
       await router.push({ name: "home" }).catch(() => {});
     })
     .catch((error) => {
-      const response = (error as AxiosError<ValidationError>).response;
-      const data = response?.data;
-      const baseError = data?.errors
-        ?.find((field) => field.attribute === "base")
+      const { errors, message } = validationErrorFrom(error);
+      const baseError = errors
+        .find((field) => field.attribute === "base")
         ?.messages?.find(
-          (message) => message.code === "has_permanent_fleet_memberships",
+          (fieldMessage) =>
+            fieldMessage.code === "has_permanent_fleet_memberships",
         );
 
       if (baseError && !destroyFleets) {
@@ -153,10 +155,10 @@ const runDestroy = async (destroyFleets: boolean) => {
       }
 
       const fallback =
-        data?.errors
-          ?.flatMap((field) => field.messages.map((m) => m.message))
-          ?.join(" ") ||
-        data?.message ||
+        errors
+          .flatMap((field) => field.messages.map((m) => m.message))
+          .join(" ") ||
+        message ||
         t("messages.account.destroy.failure");
 
       displayAlert({ text: fallback });
@@ -228,10 +230,10 @@ const destroy = async () => {
       <div class="text-center">
         <Btn
           :loading="deleting"
-          :variant="BtnVariantsEnum.DANGER"
-          :size="BtnSizesEnum.LARGE"
           data-test="destroy-account"
           @click="destroy"
+          :size="BtnSizesEnum.LG"
+          :tone="BtnTonesEnum.DANGER"
         >
           {{ t("actions.destroyAccount") }}
         </Btn>

@@ -14,6 +14,96 @@
     "base_expediting_fee": "3230"
   },
   "mass": 28565.0,
+  "inventory_container_ref": "23bd1f1a-6ef7-4a9d-8e30-c033296e7047",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 7105.0,
+    "y": 2140.0,
+    "z": 8560.0
+  },
+  "hull_health": 10080.0,
+  "hull_parts": [
+    {
+      "name": "CNOU_Mustang",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 1900.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_landing_gear_front",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit_glass_frame",
+      "health": 80.0,
+      "category": "breakable"
+    },
+    {
+      "name": "cockpit_glass_frame_inner",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 1900.0,
+      "category": "vital"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 1200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_part02",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_part03",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "small_wing_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 1200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_part02",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_part03",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "small_wing_right",
+      "health": 150.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 18.0,
     "y": 21.5,

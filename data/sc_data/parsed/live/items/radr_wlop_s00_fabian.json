@@ -51,8 +51,27 @@
       }
     },
     "aim_assist_range": 759.0,
+    "aim_assist_min": 540.0,
     "ping_properties": {
       "cooldown_time": 2.5
-    }
+    },
+    "power_consumption": 2.0,
+    "power_minimum_fraction": 0.5,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 0.7
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 0.85
+      },
+      "high": {
+        "start": 1.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 640.0,
+    "signature_ir": 0.0
   }
 }

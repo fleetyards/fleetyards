@@ -4,7 +4,7 @@ export default {
 };
 </script>
 
-<script lang="ts" setup generic="T">
+<script lang="ts" setup>
 import { useTableSorting } from "@/shared/composables/useTableSorting";
 
 type Props = {

@@ -1,0 +1,33 @@
+{
+  "key": "vpw_bouncer_jacket_05_01_01",
+  "ref": "a331124b-362a-4ba7-ab20-867877f3eca0",
+  "name": "Creese Yormandi Jacket",
+  "description": "Make a splash with this Yormandi-themed jacket. Featuring the ferocious creature erupting from water, this predator snakes around the side of the dark teal jacket to showcase Vaporwear's logo on the back.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "bouncer",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7dfff1b9-2bfa-4ace-86d9-30329a2a0f30",
+  "tags": [],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

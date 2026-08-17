@@ -1,0 +1,37 @@
+{
+  "key": "cds_combat_superheavy_suit_02_01_01",
+  "ref": "96ce2bcb-ab1c-4125-8be4-91885ef1085e",
+  "name": "BUL-H4 Armor Stronghold",
+  "description": "Redefine personal protection with the BUL-H4 series. Utilizing advanced synthetic polymers, impacts are significantly mitigated transforming the wearer into a bulwark of defense. The armor's power-assisted frame helps maintain mobility, offsetting the heavy weight of the suit.\n\nThe Stronghold edition features the fierce symbology of the Nine Tails gang with bold neon pink accents.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "super_heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4.0",
+  "damage_reduction": "90.0",
+  "temperature_rating": "-70 / 100 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "$armor_mobi++",
+    "SM_RestrictedWep",
+    "fakeChestUIcontainer"
+  ],
+  "hidden": false,
+  "volume": 0.15,
+  "volume_dimensions": {
+    "x": 0.785,
+    "y": 0.572,
+    "z": 0.9
+  }
+}

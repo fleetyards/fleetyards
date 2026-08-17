@@ -1,0 +1,38 @@
+{
+  "key": "gys_helmet_01_01_imperator",
+  "ref": "3d60c9f3-82bf-4e79-bf62-09fd1ddc5187",
+  "name": "Ready-Up Helmet \"Pathfinder\"",
+  "description": "The Ready-Up is a dependable, affordable softshell helmet alternative that provides a vacuum-ready seal to keep you breathing for longer. The Pathfinder edition uses special space-age plastic with a purple tint to produce a truly unique look.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d56a3985-2f29-4095-b2f2-542376cc74f4",
+  "tags": [
+    "gys_helmet",
+    "Set_01",
+    "Color_imperator",
+    "KeepsShape"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

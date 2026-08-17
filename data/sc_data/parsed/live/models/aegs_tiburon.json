@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "8",
+  "min_crew": "7",
   "name": "Aegis Tiburon",
   "description": null,
   "career": "Combat",
@@ -14,10 +14,75 @@
     "base_expediting_fee": "24582"
   },
   "mass": 5158975.0,
+  "inventory_container_ref": "405c46f7-e3e1-4ac1-8a77-03287e1de5a2",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 12841.0,
+    "y": 6126.0,
+    "z": 40215.0
+  },
+  "hull_health": 187200.0,
+  "hull_parts": [
+    {
+      "name": "aegs_tiburon",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 60000.0,
+      "category": "vital"
+    },
+    {
+      "name": "dbr_engine_detach_main_bottom_right",
+      "health": 23000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_engine_detach_main_bottom_left",
+      "health": 23000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_engine_detach_main_top_right",
+      "health": 23000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_engine_detach_main_top_left",
+      "health": 23000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 25000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "cargo_door_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cargo_door_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bridge_glass",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
-    "x": 0.0,
-    "y": 0.0,
-    "z": 0.0
+    "x": 68.0,
+    "y": 121.0,
+    "z": 20.0
   },
   "loadout": [
     {

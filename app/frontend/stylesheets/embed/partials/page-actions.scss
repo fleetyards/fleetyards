@@ -1,10 +1,14 @@
+// Mirrors the frontend partial: spacing is `gap`, not the margin arithmetic that
+// existed to cancel Btn's own margins.
 .page-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
 
   &.page-actions-block {
-    .panel-btn {
+    .btn {
       flex-grow: 1;
     }
   }
@@ -15,46 +19,19 @@
 
   &.page-actions-left {
     justify-content: flex-start;
-
-    & > a,
-    & > button {
-      margin-right: 10px;
-      margin-left: 0;
-    }
   }
 
   &.page-actions-right {
     justify-content: flex-end;
-
-    & > a,
-    & > button {
-      margin-right: 0;
-      margin-left: 10px;
-    }
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
   .page-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     width: 100%;
     text-align: center;
 
-    &.page-actions-left {
-      > :last-child {
-        margin-right: 0;
-      }
-    }
-
-    &.page-actions-right {
-      > :first-child {
-        margin-left: 0;
-      }
-    }
-
-    .panel-btn {
+    .btn {
       flex-grow: 1;
     }
   }

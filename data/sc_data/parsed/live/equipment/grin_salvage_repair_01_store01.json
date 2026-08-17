@@ -1,0 +1,36 @@
+{
+  "key": "grin_salvage_repair_01_store01",
+  "ref": "48008537-1526-4712-9daf-ce57fdca18cb",
+  "name": "Cambio \"Heartthrob\" SRT",
+  "description": "Strip salvage and make repairs with the Cambio, a dual purpose salvage and repair tool (SRT) designed to collect and convert alloys and polymers found in scrap into recycled material composite that can either be sold or used to make quick repairs. The Cambio SRT features rapid stripping speeds and an impressive battery life, making it an essential gadget for mechanics and spacefarers.\n\nThe \"Heartthrob\" edition is a dreamy, shimmering violet; perfect for making friends and foes weak in the knees.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "utility",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": "5.0",
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_galant_rifle_64.tif",
+  "sub_type": "Gadget",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "d8eca6d3-b40c-46c0-953e-ef5840c1fa63",
+  "tags": [
+    "stocked",
+    "grin_salvage_01"
+  ],
+  "hidden": true,
+  "volume": 0.013,
+  "volume_dimensions": {
+    "x": 0.15,
+    "y": 0.15,
+    "z": 0.15
+  }
+}

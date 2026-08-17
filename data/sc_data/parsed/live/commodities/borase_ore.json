@@ -1,0 +1,10 @@
+{
+  "key": "borase_ore",
+  "sc_key": "items_commodities_borase_ore",
+  "ref": "fbc087d7-f674-4075-a39f-eb500557d39f",
+  "name": "Borase (Ore)",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "This highly thermally conductive material is often formed from cosmic ray spallation and is most typically found in younger star systems.",
+  "icon": "ui/textures/vector/general/items/inv_icon_borase.svg"
+}

@@ -10,7 +10,7 @@
 #  managed_by  :uuid
 #  name        :string           not null
 #  slug        :string           not null
-#  visibility  :integer          default("members_only"), not null
+#  visibility  :integer          default(0), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  fleet_id    :uuid             not null
@@ -28,20 +28,22 @@
 #
 class FleetInventory < ApplicationRecord
   include ActiveStorageVariants
+  include InventoryStock
+
+  has_paper_trail
 
   paginates_per 30
 
   belongs_to :fleet, touch: true
   belongs_to :manager, class_name: "User", foreign_key: :managed_by, optional: true
-  has_many :fleet_inventory_items, dependent: :destroy
+
+  inventory_items_association :fleet_inventory_items
 
   has_one_attached :image
 
   enum :visibility, {members_only: 0, officers_only: 1}
 
   validates :name, presence: true, uniqueness: {case_sensitive: false, scope: :fleet_id}
-
-  before_save :update_slugs
 
   AVAILABLE_PRIVILEGES = [
     "fleet:inventories:read",
@@ -57,13 +59,6 @@ class FleetInventory < ApplicationRecord
     member: ["fleet:inventories:read"]
   }.freeze
 
-  DEFAULT_SORTING_PARAMS = ["name asc"]
-  ALLOWED_SORTING_PARAMS = [
-    "name asc", "name desc",
-    "createdAt asc", "createdAt desc",
-    "updatedAt asc", "updatedAt desc"
-  ]
-
   def self.ransackable_attributes(_auth_object = nil)
     %w[name slug fleet_id visibility created_at updated_at]
   end
@@ -72,18 +67,7 @@ class FleetInventory < ApplicationRecord
     %w[fleet manager]
   end
 
-  def current_stock
-    fleet_inventory_items
-      .select(
-        "name, category, unit, quality",
-        "SUM(CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END) AS net_quantity"
-      )
-      .group(:name, :category, :unit, :quality)
-      .having("SUM(CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END) > 0")
-      .order(:name)
-  end
-
-  private def update_slugs
-    self.slug = generate_slug(name)
+  def ledger_attributes_for(user)
+    {added_by: user&.id}
   end
 end

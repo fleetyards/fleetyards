@@ -1,0 +1,35 @@
+{
+  "key": "grin_multitool_01_mining",
+  "ref": "da55ce5e-25dd-4160-9f04-fee8796c0b43",
+  "name": "OreBit Mining Attachment",
+  "description": "MUST BUY BASE MULTI-TOOL TO USE: \"Pyro RYT Multi-Tool\"\n\nManufacturer: Greycat Industrial\nItem Type: Multi-Tool Attachment\nClass: Mining\n\nThe OreBit attachment turns Greycat's Pyro RYT Multi-Tool into a handheld mining machine. It can scan rocks to find worthwhile deposits and then liberate the lode with its powerful mining laser. Next time you're planetside, be sure you bring this attachment or risk leaving easy credits behind.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "multitool",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Utility",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_multitool_01"
+  ],
+  "hidden": false,
+  "volume": 0.00034,
+  "volume_dimensions": {
+    "x": 0.0549,
+    "y": 0.0424,
+    "z": 0.133
+  }
+}

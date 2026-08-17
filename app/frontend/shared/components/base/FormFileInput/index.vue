@@ -304,11 +304,10 @@ defineExpose({
       />
       <Btn
         v-if="clearable && (internalSrc || inputValue)"
-        variant="link"
         v-tooltip="clearLabel"
-        inline
         @click="clear"
         class="base-image-input__clear"
+        variant="bare"
       >
         <i class="fa fa-times" />
       </Btn>

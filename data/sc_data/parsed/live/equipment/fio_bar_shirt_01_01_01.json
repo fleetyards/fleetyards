@@ -1,0 +1,37 @@
+{
+  "key": "fio_bar_shirt_01_01_01",
+  "ref": "452886b0-90dd-4b79-b865-3975844d9d64",
+  "name": "Bibiana Shirt",
+  "description": "Part of their Essential Professional line, Fiore designed the Bibiana for those who want that retro look but with modern durability. The top features a refined pinpoint Oxford long sleeve shirt woven into a dark grey vest and suspenders adorned with gold clips as colorful accents. Additional eye-catching accessories include a black bow tie and sleeve garters.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "bar",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_shirt",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

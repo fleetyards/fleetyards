@@ -8,12 +8,14 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Vehicle } from "@/services/fyApi";
+import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
 import {
   BtnSizesEnum,
+  BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -31,12 +33,14 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   hideEdit: false,
   wishlist: false,
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.SMALL,
+  variant: undefined,
+  size: undefined,
   inGroup: false,
 });
 
 const { t } = useI18n();
+
+const { isFeatureEnabled } = useFeatures();
 
 const deleting = ref(false);
 
@@ -204,6 +208,19 @@ const loadoutsRoute = computed(() => ({
   name: "hangar-vehicle-loadouts",
   params: { id: props.vehicle.serial || props.vehicle.id },
 }));
+
+const cargoRoute = computed(() => ({
+  name: "hangar-vehicle-cargo",
+  params: { id: props.vehicle.serial || props.vehicle.id },
+}));
+
+const cargoVisible = computed(
+  () =>
+    props.editable &&
+    !props.wishlist &&
+    props.vehicle.model?.inGame &&
+    isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
+);
 </script>
 
 <template>
@@ -214,12 +231,10 @@ const loadoutsRoute = computed(() => ({
     data-test="vehicle-menu"
     expand-left
     expand-bottom
-    inline
   >
     <Btn
       v-if="editable && !hideEdit"
       :aria-label="t('actions.edit')"
-      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit"
       @click="openEditModal"
     >
@@ -234,7 +249,6 @@ const loadoutsRoute = computed(() => ({
           slug: vehicle.model.slug,
         },
       }"
-      :size="BtnSizesEnum.SMALL"
     >
       <i class="fa-duotone fa-starship" />
       <span>{{ t("actions.showDetailPage") }}</span>
@@ -242,7 +256,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && !wishlist"
       :aria-label="t('actions.addToWishlist')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       data-test="vehicle-add-to-wishlist"
       @click="addToWishlist"
@@ -253,7 +266,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && wishlist"
       :aria-label="t('actions.addToHangar')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       data-test="vehicle-add-to-hangar"
       @click="addToHangar"
@@ -264,7 +276,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable"
       :aria-label="t('actions.hangar.editName')"
-      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit-name"
       @click="openNamingModal"
     >
@@ -274,7 +285,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && !wishlist"
       :aria-label="t('actions.hangar.editGroups')"
-      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit-groups"
       @click="openEditGroupsModal"
     >
@@ -284,7 +294,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="upgradable"
       :aria-label="t('labels.model.addons')"
-      :size="BtnSizesEnum.SMALL"
       @click="openAddonsModal"
     >
       <i class="fa fa-plus-octagon" />
@@ -293,16 +302,24 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && vehicle.model?.inGame"
       :aria-label="t('actions.hangar.manageLoadouts')"
-      :size="BtnSizesEnum.SMALL"
       :to="loadoutsRoute"
     >
       <i class="fa-duotone fa-crosshairs" />
       <span>{{ t("actions.hangar.manageLoadouts") }}</span>
     </Btn>
     <Btn
+      v-if="cargoVisible"
+      :aria-label="t('actions.hangar.manageCargo')"
+      data-test="vehicle-manage-cargo"
+      :to="cargoRoute"
+    >
+      <i class="fa-duotone fa-boxes-stacked" />
+      <span>{{ t("actions.hangar.manageCargo") }}</span>
+    </Btn>
+    <Btn
+      :tone="BtnTonesEnum.DANGER"
       v-if="editable"
       :aria-label="t('actions.remove')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="deleting"
       data-test="vehicle-remove"
       @click="remove"

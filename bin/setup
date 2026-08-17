@@ -32,6 +32,15 @@ def run_step_wait(*steps) = CliHelpers.run_step_wait(*steps, verbose: VERBOSE)
 
 WORKTREE_MARKER = "# -- worktree-managed --"
 
+# Gitignored data that is expensive to fetch lives once in the main worktree;
+# worktrees get symlinks so a single download serves all of them. `create`
+# paths are made on demand, the others are only linked when already present.
+SHARED_PATHS = [
+  {path: "storage", create: true},
+  {path: "dumps", create: true},
+  {path: "data/sc_data/raw", create: false}
+].freeze
+
 def detect_worktree
   git_path = File.join(APP_ROOT, ".git")
   return nil unless File.file?(git_path)
@@ -44,6 +53,39 @@ def main_worktree_root
   return nil if common_dir.empty? || !File.directory?(common_dir)
 
   File.dirname(common_dir)
+end
+
+def link_shared_paths(main_root)
+  return if main_root == APP_ROOT
+
+  SHARED_PATHS.each do |entry|
+    path = entry[:path]
+    source = File.join(main_root, path)
+    target = File.join(APP_ROOT, path)
+
+    next if File.symlink?(target) && File.readlink(target) == source
+
+    FileUtils.mkdir_p(source) if entry[:create]
+    next unless File.directory?(source)
+
+    if File.symlink?(target)
+      File.unlink(target)
+    elsif File.directory?(target)
+      unless Dir.empty?(target)
+        puts "   Kept local #{path}/ (not empty) — delete it to share #{source}"
+        next
+      end
+
+      FileUtils.rmdir(target)
+    elsif File.exist?(target)
+      puts "   Kept #{path} (not a directory) — delete it to share #{source}"
+      next
+    end
+
+    FileUtils.mkdir_p(File.dirname(target))
+    FileUtils.ln_s(source, target)
+    puts "   Linked #{path} -> #{source}" if VERBOSE
+  end
 end
 
 def worktree_port(name)
@@ -109,20 +151,24 @@ def write_superset_ports(port, vite_port)
   File.write(File.join(superset_dir, "ports.json"), JSON.pretty_generate(config) + "\n")
 end
 
-def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db, cookie_prefix: nil)
-  env_local = File.join(APP_ROOT, ".env.local")
+def write_managed_env(filename, managed_body)
+  path = File.join(APP_ROOT, filename)
 
   # Preserve user content above the marker
   user_content = ""
-  if File.exist?(env_local)
-    lines = File.readlines(env_local)
+  if File.exist?(path)
+    lines = File.readlines(path)
     marker_idx = lines.index { |l| l.strip == WORKTREE_MARKER }
-    user_content = lines[0...marker_idx].join if marker_idx
-    user_content = lines.join unless marker_idx
+    user_content = marker_idx ? lines[0...marker_idx].join : lines.join
   end
 
-  managed = <<~ENV
-    #{WORKTREE_MARKER}
+  user_content += "\n" unless user_content.empty? || user_content.end_with?("\n")
+
+  File.write(path, user_content + "#{WORKTREE_MARKER}\n" + managed_body)
+end
+
+def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db, cookie_prefix: nil)
+  write_managed_env(".env.local", <<~ENV)
     PORT=#{port}
     DB_PORT=#{db_port}
     REDIS_URL=redis://localhost:#{redis_port}
@@ -134,8 +180,21 @@ def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_red
     ON_SUBDOMAIN=false
     #{"COOKIE_PREFIX=#{cookie_prefix}" if cookie_prefix}
   ENV
+end
 
-  File.write(env_local, user_content + managed)
+# dotenv deliberately skips `.env.local` in the test environment, so the
+# worktree's suffix never reached `config/database.yml` there and every worktree
+# shared one `fleetyards_test`. Two suites running at once then fight over it,
+# and whichever purges the database first fails with PG::ObjectInUse.
+#
+# Only the variables that decide which database the suite talks to are repeated
+# here: the ports are the same shared containers for every worktree, and the web
+# and cookie settings would change what the tests themselves assert.
+def write_env_test_local(db_port, db_suffix)
+  write_managed_env(".env.test.local", <<~ENV)
+    DB_PORT=#{db_port}
+    WORKTREE_SUFFIX=#{db_suffix}
+  ENV
 end
 
 if ARGV.include?("--help") || ARGV.include?("-h")
@@ -189,7 +248,8 @@ FileUtils.chdir APP_ROOT do
 
     cookie_prefix = "FLTYRD_WT_#{sanitize_worktree_name(effective_name)}"
     write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db, cookie_prefix:)
-    puts "   Wrote .env.local" if VERBOSE
+    write_env_test_local(db_port, db_suffix)
+    puts "   Wrote .env.local and .env.test.local" if VERBOSE
 
     link_main_storage(main_worktree_root)
   end
@@ -204,6 +264,14 @@ FileUtils.chdir APP_ROOT do
   FileUtils.mkdir_p(File.join(APP_ROOT, "log"))
   FileUtils.mkdir_p(File.join(APP_ROOT, "tmp"))
 
+  # Git worktrees don't copy gitignored files, so share the downloaded uploads,
+  # DB dumps and sc-data exports with the main worktree instead of re-fetching.
+  if wt_name && (main_root = main_worktree_root)
+    link_shared_paths(main_root)
+  else
+    SHARED_PATHS.each { |entry| FileUtils.mkdir_p(File.join(APP_ROOT, entry[:path])) if entry[:create] }
+  end
+
   if FRESH
     run_step "Wiping application state", "docker compose down -v"
   end
@@ -214,11 +282,19 @@ FileUtils.chdir APP_ROOT do
   docker = run_step "Starting Docker services", "docker compose up -d --wait --wait-timeout 30", async: true
   run_step_wait(ruby_deps, node_deps, docker)
 
-  # Group B: Prepare databases and build Vite test assets (need deps + Docker)
-  dev_db = run_step "Preparing database (dev)", "DB_PORT=#{db_port} WORKTREE_SUFFIX=#{db_suffix} bin/rails db:prepare", async: true
-  test_db = run_step "Preparing database (test)", "DB_PORT=#{db_port} WORKTREE_SUFFIX=#{db_suffix} RAILS_ENV=test bin/rails db:prepare", async: true
+  # Group B: Prepare databases and build Vite assets (need deps + Docker)
+  # db:prepare rewrites db/schema.rb after migrating, so the dev and test runs
+  # must be sequential: a dump from one truncates the file the other is reading.
+  db_env = "DB_PORT=#{db_port} WORKTREE_SUFFIX=#{db_suffix}"
+  databases = run_step "Preparing databases (dev + test)",
+    "#{db_env} bin/rails db:prepare && #{db_env} RAILS_ENV=test bin/rails db:prepare", async: true
   vite_build = run_step "Building email assets (test)", "bin/build-email-assets", async: true
-  run_step_wait(dev_db, test_db, vite_build)
+  # auto-imports.d.ts and components.d.ts are gitignored and only written by the
+  # Vite plugins, so vue-tsc reports every auto-imported symbol as undefined
+  # until a build has run at least once. Builds to vite-dev, so it does not race
+  # the email assets build over the vite-test manifest.
+  frontend_types = run_step "Generating frontend type declarations", "bin/vite build", async: true
+  run_step_wait(databases, vite_build, frontend_types)
 
   # Group C: Clean logs/tmp (need databases)
   clean = run_step "Cleaning logs and temp files", "bin/rails log:clear tmp:clear", async: true

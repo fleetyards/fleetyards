@@ -24,7 +24,7 @@ module Api
         end
 
         def members
-          @q = @fleet.fleet_memberships.accepted.ransack(member_query_params)
+          @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params)
 
           members = @q.result
 
@@ -163,7 +163,7 @@ module Api
         # rubocop:enable Metrics/MethodLength
 
         def set_fleet
-          @fleet = Fleet.find_by!(slug: params[:fleet_slug])
+          @fleet = Fleet.kept.find_by!(slug: params[:fleet_slug])
 
           authorize! @fleet, to: :show_stats?, with: ::Public::FleetPolicy
         end

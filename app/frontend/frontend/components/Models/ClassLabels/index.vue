@@ -5,10 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { useMobile } from "@/shared/composables/useMobile";
-import { useRoute, useRouter } from "vue-router";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import ChipRow from "@/shared/components/base/Chip/Row/index.vue";
+import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
+import { useFilters } from "@/shared/composables/useFilters";
 
 type Props = {
   countData: {
@@ -17,105 +18,154 @@ type Props = {
     count: number;
   }[];
   filterKey?: string;
+  /**
+   * Query key for the third state. Without it the chip stays binary - in, then
+   * out - which is what a consumer whose endpoint has no `notIn` counterpart
+   * gets.
+   */
+  excludeFilterKey?: string;
   label?: string;
+  hideLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   filterKey: undefined,
+  excludeFilterKey: undefined,
   label: undefined,
+  hideLabel: false,
 });
 
-const mobile = useMobile();
+// The same composable the group row filters through, rather than a hand-rolled
+// router.replace: it drops keys whose array empties and resets the page, so
+// clicking a classification and clicking a group now leave the same URL shape.
+const { filter, filters } =
+  useFilters<Record<string, string | string[] | undefined>>();
 
-const route = useRoute();
-
-const router = useRouter();
-
-const filter = async (filter: string) => {
-  if (!props.filterKey) {
-    return;
-  }
-  const query = JSON.parse(JSON.stringify(route.query || {}));
-
-  if ((query[props.filterKey] || []).includes(filter)) {
-    const index = query[props.filterKey].findIndex(
-      (item: string) => item === filter,
-    );
-    if (index > -1) {
-      query[props.filterKey].splice(index, 1);
-    }
-  } else {
-    if (!query[props.filterKey]) {
-      query[props.filterKey] = [];
-    }
-    query[props.filterKey].push(filter);
-  }
-
-  await router.replace({
-    name: route.name || "home",
-    query,
-  });
+const toArray = (value: string | string[] | undefined): string[] => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return [value];
 };
 
-const isActive = (classification: string) => {
+const included = computed(() =>
+  props.filterKey ? toArray(filters.value[props.filterKey]) : [],
+);
+
+const excluded = computed(() =>
+  props.excludeFilterKey ? toArray(filters.value[props.excludeFilterKey]) : [],
+);
+
+const filterClassification = (classification: string) => {
+  if (!props.filterKey) return;
+
+  if (!props.excludeFilterKey) {
+    filter({
+      [props.filterKey]: included.value.includes(classification)
+        ? included.value.filter((item) => item !== classification)
+        : [...included.value, classification],
+    });
+    return;
+  }
+
+  if (included.value.includes(classification)) {
+    filter({
+      [props.filterKey]: included.value.filter(
+        (item) => item !== classification,
+      ),
+      [props.excludeFilterKey]: [...excluded.value, classification],
+    });
+    return;
+  }
+
+  if (excluded.value.includes(classification)) {
+    filter({
+      [props.excludeFilterKey]: excluded.value.filter(
+        (item) => item !== classification,
+      ),
+    });
+    return;
+  }
+
+  filter({ [props.filterKey]: [...included.value, classification] });
+};
+
+const classificationState = (classification: string) => {
   if (!props.filterKey) {
-    return false;
+    return ChipStatesEnum.NEUTRAL;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const classFilter = (route.query as Record<string, any>)[props.filterKey];
-  if (!classFilter) {
-    return false;
+  if (included.value.includes(classification)) {
+    return ChipStatesEnum.INCLUDED;
   }
 
-  if (classFilter.includes(classification)) {
-    return true;
+  if (excluded.value.includes(classification)) {
+    return ChipStatesEnum.EXCLUDED;
   }
 
-  return false;
+  return ChipStatesEnum.NEUTRAL;
 };
 </script>
 
 <template>
-  <BtnDropdown
-    v-if="mobile"
-    :mobile-block="true"
-    size="small"
-    class="labels-dropdown"
-  >
-    <template #label>Classifications</template>
-    <template #default>
-      <Btn
-        v-for="classification in countData"
-        :key="`dropdown-${classification.name}`"
-        variant="link"
-        class="labels-dropdown-item"
-        :class="{
-          active: isActive(classification.name),
-        }"
-        @click="filter(classification.name)"
-      >
-        {{ classification.label }}
-        <span class="label-count">{{ classification.count }}</span>
-      </Btn>
-    </template>
-  </BtnDropdown>
-  <div v-else class="labels">
-    <transition-group name="fade-list" appear>
-      <a
+  <ChipRow :label="label" :hide-label="hideLabel">
+    <transition-group name="chip-fade">
+      <Chip
         v-for="classification in countData"
         :key="classification.name"
-        :class="{
-          'label-link': filterKey,
-          active: isActive(classification.name),
-        }"
-        class="label fade-list-item"
-        @click="filter(classification.name)"
+        :state="classificationState(classification.name)"
+        :count="classification.count"
+        :disabled="!filterKey"
+        @toggle="filterClassification(classification.name)"
       >
-        <span class="label-inner">
-          {{ classification.label }}: {{ classification.count }}
-        </span>
-      </a>
+        {{ classification.label }}
+      </Chip>
     </transition-group>
-  </div>
+
+    <template #menu>
+      <Btn
+        v-for="classification in countData"
+        :key="`menu-${classification.name}`"
+        :active="
+          classificationState(classification.name) === ChipStatesEnum.INCLUDED
+        "
+        @click="filterClassification(classification.name)"
+      >
+        <Chip
+          bare
+          :state="classificationState(classification.name)"
+          :count="classification.count"
+        >
+          {{ classification.label }}
+        </Chip>
+      </Btn>
+    </template>
+  </ChipRow>
 </template>
+
+<style lang="scss" scoped>
+/*
+ * Local, at 150ms. The global `fade-list` this replaces put `transition: all .5s`
+ * on every chip - the 500ms the panel redesign retired - and its enter half never
+ * ran at all: the stylesheet still uses Vue 2's `-enter` rather than
+ * `-enter-from`.
+ */
+.chip-fade-enter-active,
+.chip-fade-leave-active {
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.chip-fade-enter-from,
+.chip-fade-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip-fade-enter-active,
+  .chip-fade-leave-active {
+    transition-duration: 1ms;
+  }
+}
+</style>

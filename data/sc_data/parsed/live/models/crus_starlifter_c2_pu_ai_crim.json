@@ -14,6 +14,71 @@
     "base_expediting_fee": "17580"
   },
   "mass": 2339240.06,
+  "inventory_container_ref": "a1b12c2a-fc72-4ed2-8820-ce7ea4458164",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 17032.0,
+    "y": 5495.0,
+    "z": 23078.0
+  },
+  "hull_health": 78400.0,
+  "hull_parts": [
+    {
+      "name": "CRUS_Starlifter",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Tail_Left",
+      "health": 3600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Right",
+      "health": 3600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 6600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 3600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "LGearBayDoorFront_R_Geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "LGearBayDoorFront_L_Geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose_Mesh",
+      "health": 7000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_door_left",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_door_right",
+      "health": 4500.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 94.0,
     "y": 70.0,
@@ -420,8 +485,8 @@
     },
     {
       "name": "hardpoint_rear_ramp",
-      "ref": null,
-      "key": "Door_Ship_Exterior_CRUS_Starlifter_Rear_Ramp"
+      "ref": "15de3627-2cae-424c-bd9d-24c5a697eedc",
+      "key": null
     },
     {
       "name": "hardpoint_cargo_large",

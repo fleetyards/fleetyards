@@ -1,0 +1,38 @@
+{
+  "key": "cds_armor_medium_arms_02_01_01",
+  "ref": "8ad97a3a-0a2b-40ca-8b67-5315b891fb82",
+  "name": "ORC-mkX Arms Singularity",
+  "description": "The mark X is the latest in CDS’ award-winning Omni-Role Combat armor series. This EVA-rated suit features new EdgeCore composite weave technology, maximizing protection against projectiles, explosives and the elements while minimizing operator agility.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Medium",
+    "Set_02",
+    "Color_01",
+    "SM_Marine"
+  ],
+  "hidden": false,
+  "volume": 0.01,
+  "volume_dimensions": {
+    "x": 0.107,
+    "y": 0.329,
+    "z": 0.415
+  }
+}

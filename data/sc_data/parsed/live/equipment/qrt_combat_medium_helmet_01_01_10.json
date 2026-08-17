@@ -1,0 +1,40 @@
+{
+  "key": "qrt_combat_medium_helmet_01_01_10",
+  "ref": "59814847-c7a3-4744-a40c-2496e9c2f7d9",
+  "name": "Testudo Helmet Nightveil",
+  "description": "Keep your eyes on the prize and your head protected with the Testudo helmet. It features a wide faceplate and a durable outer shell that protrudes above the forehead in a way specifically designed to absorb and efficiently disperse the energy of impacts.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-50 / 80 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "qrt_combat_medium",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

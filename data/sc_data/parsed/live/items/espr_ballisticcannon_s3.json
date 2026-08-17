@@ -90,17 +90,47 @@
     "fire_rate": 100.0,
     "heat_per_shot": 6.0,
     "damage_per_shot": {
-      "physical": 455.4,
+      "physical": 225.4,
       "energy": 0.0,
       "distortion": 0.0,
       "thermal": 0.0,
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.578
+    },
     "pellets_per_shot": 1,
     "speed": 1184.0,
     "range": 2995.5,
     "ammo_cost": 1,
-    "max_ammo": 387
+    "max_ammo": 387,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 20.2,
+      "time_till_cooling_starts": 0.667,
+      "overheat_fix_time": 3.08
+    },
+    "power_consumption": 0.1,
+    "weapon_class": "BallisticCannon",
+    "mountable": true,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 41.3,
+    "signature_ir": 0.0
   }
 }

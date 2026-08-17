@@ -71,10 +71,42 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.25
+    },
     "pellets_per_shot": 1,
     "speed": 1390.0,
     "range": 3197.0,
     "ammo_cost": 1,
-    "max_ammo": 0
+    "max_ammo": 0,
+    "regen": {
+      "max_ammo_load": 75.0,
+      "max_regen_per_second": 15.0,
+      "cost_per_bullet": 109.1,
+      "regeneration_cooldown": 0.882,
+      "requested_regen_per_second": 6819.0,
+      "requested_ammo_load": 40912.0
+    },
+    "power_consumption": 1.05,
+    "weapon_class": "LaserRepeater",
+    "mountable": true,
+    "power_minimum_fraction": 0.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 354.0,
+    "signature_ir": 0.0
   }
 }

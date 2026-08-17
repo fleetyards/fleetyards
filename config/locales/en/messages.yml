@@ -5,6 +5,10 @@ en:
       success: "%{resource} not used for Background."
     background_enabled:
       success: "%{resource} used for Background."
+    admin:
+      fleet_members:
+        invalid_role: The selected role does not belong to this fleet.
+        cannot_demote_last_admin: This is the fleet's last admin and cannot be demoted.
     confirm:
       delete: Are you sure you want to delete this entry?
       resend_confirmation: Are you sure you want to resend confirmation instructions for this user?
@@ -24,6 +28,9 @@ en:
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: Loaner Upload successfull.
+    destroyed_fleets:
+      fleet_still_exists: A fleet with this id still exists and cannot be restored.
+      fid_taken: Another fleet is already using this fleet's FID, so it cannot be restored.
     record_not_found:
       base: No Entry found
       fleet: No Fleet found
@@ -31,6 +38,10 @@ en:
       user: No User found
       invite: No Invite found
       model: No Model found
+      supporter_contribution: No Supporter Contribution found
+    supporter_contributions:
+      anonymous_name: An anonymous supporter
+      patreon_sync_enqueued: Patreon sync started. Refresh in a minute to see imported supporters.
     reload:
       started: "%{resource} reload started."
       success: "%{resource} successfully reloaded."

@@ -1,0 +1,37 @@
+{
+  "key": "ccc_medium_armor_core_01_02_01",
+  "ref": "945fab49-c444-411d-afe1-7f79f207ef65",
+  "name": "Aves Core Epoque",
+  "description": "Honor and embody the Tevarin aesthetic with the Aves armor. Cutting edge manufacturing techniques were used to apply plating perfectly to fit the Human form and evoke the shape language imbued into the Tevarin's iconic ships. This medium armor from CC's Conversions provides solid protection while keeping you light on your feet. When paired with the Aves helmet, the suit combines for a striking and unforgettable look.\n\nThe Epoque edition features a navy and black coloring, finished with baroque gold detailing.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "6.4",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light_medium",
+  "icon": "ui/textures/ea/loadouticons/medium_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "Set_01",
+    "Color_02",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.042,
+  "volume_dimensions": {
+    "x": 0.395,
+    "y": 0.408,
+    "z": 0.325
+  }
+}

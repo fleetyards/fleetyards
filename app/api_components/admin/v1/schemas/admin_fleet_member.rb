@@ -16,6 +16,7 @@ module Admin
             avatar: {"$ref": "#/components/schemas/MediaFile"},
             rsiHandle: {type: :string},
             role: {type: :string},
+            roleId: {type: :string, format: :uuid},
             status: {type: :string},
             acceptedAt: {type: :string, format: "date-time"},
             lastActiveAt: {type: :string, format: "date-time"},

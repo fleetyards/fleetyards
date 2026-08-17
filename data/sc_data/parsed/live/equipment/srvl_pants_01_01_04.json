@@ -1,0 +1,37 @@
+{
+  "key": "srvl_pants_01_01_04",
+  "ref": "d205448c-45cd-4d71-a2bf-c303d94562bf",
+  "name": "Restored Pants Green",
+  "description": "These pants may have seen better days, but they've got a lot of life left in them yet. Years of use have made them more comfortable than the day they were purchased.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "srvl_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

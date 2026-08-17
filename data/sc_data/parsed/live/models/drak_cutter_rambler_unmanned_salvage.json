@@ -14,6 +14,81 @@
     "base_expediting_fee": "480"
   },
   "mass": 81677.0,
+  "inventory_container_ref": "aa4ed5ae-30d1-40cf-b6f4-fab09a37b25c",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 4460.0,
+    "y": 3777.0,
+    "z": 5983.0
+  },
+  "hull_health": 17100.0,
+  "hull_parts": [
+    {
+      "name": "DRAK_Cutter",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 6500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_armour_top",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_r_geo",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_greeble_l",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_greeble_r",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_greeble_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "debrisproxy_spoiler_left",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debrisproxy_spoiler_right",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "window_armour_l",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "window_armour_r",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "vtol_l_geo",
+      "health": 3000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 16.0,
     "y": 20.0,

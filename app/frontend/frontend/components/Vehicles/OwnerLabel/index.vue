@@ -5,15 +5,17 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
+import PanelTag from "@/frontend/components/base/PanelTag/index.vue";
+import PanelUserTag from "@/frontend/components/base/PanelUserTag/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 
 const { t } = useI18n();
 
 type Props = {
   fleetSlug: string;
-  owner?: string;
+  owner?: MemberContact;
   modelSlug?: string;
 };
 
@@ -37,42 +39,13 @@ const openOwnersModal = () => {
 </script>
 
 <template>
-  <div class="owner">
-    <template v-if="modelSlug">
-      <Btn
-        variant="link"
-        :text-inline="true"
-        class="owner-more-action"
-        @click="openOwnersModal"
-      >
-        {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
-      </Btn>
-    </template>
-    <template v-else-if="owner">
-      {{ t("labels.vehicle.owner") }}
-      <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
-        {{ owner }}
-      </Btn>
-    </template>
-  </div>
+  <PanelTag v-if="modelSlug" @click="openOwnersModal">
+    {{ t("labels.vehicle.owner") }}
+    <i class="fa fa-bars-staggered" />
+  </PanelTag>
+  <PanelUserTag
+    v-else-if="owner"
+    :label="t('labels.vehicle.owner')"
+    :member="owner"
+  />
 </template>
-
-<style lang="scss" scoped>
-.owner {
-  position: absolute;
-  bottom: 10px;
-  right: 0;
-  padding: 4px 10px;
-  background-color: $primary;
-  border-radius: 10px 0 0 10px;
-  font-size: 0.85em;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #fff;
-
-  .btn {
-    color: #fff;
-  }
-}
-</style>

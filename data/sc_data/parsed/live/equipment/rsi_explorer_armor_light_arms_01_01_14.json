@@ -1,0 +1,38 @@
+{
+  "key": "rsi_explorer_armor_light_arms_01_01_14",
+  "ref": "c70526fd-e4ac-4fd7-a62e-7fb1ea55f003",
+  "name": "Venture Arms Sienna",
+  "description": "RSI's Venture is a lightweight armor set built for the unknown. This EVA-rated protection system features an undersuit built from a durable polymer weave that's designed to withstand extreme environmental conditions and features component armor pieces to protect you against impacts and particulates.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-38 / 68 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Color_14",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.008,
+  "volume_dimensions": {
+    "x": 0.088,
+    "y": 0.345,
+    "z": 0.323
+  }
+}

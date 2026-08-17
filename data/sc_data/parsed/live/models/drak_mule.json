@@ -14,6 +14,181 @@
     "base_expediting_fee": "70"
   },
   "mass": 2000.0,
+  "inventory_container_ref": "bd3d3bab-618e-4984-ab03-ebd09adc36d9",
+  "hull_health": 10600.0,
+  "hull_parts": [
+    {
+      "name": "DRAK_Mule",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_wheel_FL",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_FL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FL_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_ML",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_ML_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_ML_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_FR_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_MR",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_MR_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_MR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_RR",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_RR_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_RR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_RL",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_RL_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_RL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Cargo_Arms",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "SHIELD_SDF_01_FT",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arm_Hinge",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Components_Rear",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Rear_Components_Interior",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "sidetray_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "sidetray_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Entry_Door_Lower",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Door_Arms",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Entry_Door_Upper_node",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Seat_Hatch",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
+  "speeds": {
+    "max": 32.0,
+    "reverse": 7.0,
+    "acceleration": 8.0,
+    "decceleration": 12.0
+  },
   "metrics": {
     "x": 8.75,
     "y": 6.0,

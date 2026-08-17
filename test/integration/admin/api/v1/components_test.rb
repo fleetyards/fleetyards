@@ -267,6 +267,32 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /components/:id attaches a store image" do
+    component = create(:component)
+    sign_in @user
+
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: Rails.root.join("test/fixtures/files/test.png").open,
+      filename: "test.png",
+      content_type: "image/png"
+    )
+
+    assert_api_response :put, 200, path_params: {id: component.id}, body: {storeImage: blob.signed_id} do
+      assert parsed_body["media"]["storeImage"]["url"].present?
+    end
+
+    assert_predicate component.reload.store_image, :attached?
+  end
+
+  test "PUT /components/:id clears the store image" do
+    component = create(:component, :with_store_image)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: component.id}, body: {storeImage: nil}
+
+    assert_not_predicate component.reload.store_image, :attached?
+  end
+
   test "PUT /components/:id returns 404 for missing id" do
     sign_in @user
 

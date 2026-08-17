@@ -1,0 +1,38 @@
+{
+  "key": "mym_shirt_01_lum02_07",
+  "ref": "cea7e7ae-9531-48c7-82cb-7b8deee62a57",
+  "name": "Piconalia Sweater",
+  "description": "Light up the night this Luminalia with a little help from Pico the Penguin. Designed by MuyMuy in collaboration with microTech, the Piconalia Sweater was made with a blend of wools optimized to create long-lasting softness while preventing wear and tear.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": null,
+  "tags": [
+    "mym_shirt",
+    "Set_01",
+    "Texture_lum02",
+    "Color_07"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

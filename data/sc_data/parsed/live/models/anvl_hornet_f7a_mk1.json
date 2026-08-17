@@ -14,6 +14,196 @@
     "base_expediting_fee": "3375"
   },
   "mass": 72032.0,
+  "inventory_container_ref": "3f6304af-a8c0-45cd-86fd-ba35f4b61b05",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5998.0,
+    "y": 1675.0,
+    "z": 6485.0
+  },
+  "hull_health": 16758.0,
+  "hull_parts": [
+    {
+      "name": "ANVL_Hornet_F7A_MK1",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 2750.0,
+      "category": "vital"
+    },
+    {
+      "name": "EngineHousing",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thrust_vector_flap_c",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_b",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_a",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 1800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Debris",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail_livery_decal_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "$lod1_Tail_livery_decal_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod2_Tail_livery_decal_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod3_Tail_livery_decal_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod4_Tail_livery_decal_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod5_Tail_livery_decal_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail_livery_decal_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "$lod2_Tail_livery_decal_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod1_Tail_livery_decal_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod3_Tail_livery_decal_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod4_Tail_livery_decal_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod5_Tail_livery_decal_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 2750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Canopy",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingLeft",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingLeft_Debris",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingLeft_Debris_livery_decal",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "$lod1_WingLeft_Debris_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod2_WingLeft_Debris_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod3_WingLeft_Debris_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod4_WingLeft_Debris_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod5_WingLeft_Debris_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRight",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingRight_Debris",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingLeftRear",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRightRear",
+      "health": 700.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 25.5,
     "y": 28.25,

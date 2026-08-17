@@ -1,0 +1,38 @@
+{
+  "key": "cds_legacy_armor_medium_arms_01_01_covalex",
+  "ref": "3d1c919f-a17b-4e58-9b4f-33634b50b292",
+  "name": "ORC-mkV Arms Covalex Edition",
+  "description": "Dependable and durable armor never goes out of style. The ORC-mkV from Clark Defense Systems has been a battlefield staple for centuries. This highly regarded medium armor blends composite plating with a special fiber reinforced polymer to provide solid protection and a wide range of movement. The Covalex Edition was made specifically for the company.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-55 / 85 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Medium",
+    "Set_01",
+    "Color_covalex",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.01,
+  "volume_dimensions": {
+    "x": 0.107,
+    "y": 0.329,
+    "z": 0.415
+  }
+}

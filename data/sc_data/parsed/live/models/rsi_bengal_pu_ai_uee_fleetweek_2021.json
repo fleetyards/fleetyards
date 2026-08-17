@@ -14,6 +14,91 @@
     "base_expediting_fee": "333"
   },
   "mass": 113000000.0,
+  "inventory_container_ref": "8f4f7045-703a-4932-98c1-e2d56b0f89b1",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 33100.0,
+    "y": 15800.0,
+    "z": 72000.0
+  },
+  "hull_health": 370200.0,
+  "hull_parts": [
+    {
+      "name": "RSI_Bengal",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "EngineMount_Right",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_right_main",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_right_top",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_right_top_antennas",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "EngineMount_Left",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_left_main",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_left_top",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_left_top_antennas",
+      "health": 20000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Bridge",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rsi_bengal_bridge_mesh",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rsi_bengal_bridge_top_mesh",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose",
+      "health": 40000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 0.0,
     "y": 0.0,

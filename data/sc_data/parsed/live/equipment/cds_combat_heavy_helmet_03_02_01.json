@@ -1,0 +1,41 @@
+{
+  "key": "cds_combat_heavy_helmet_03_02_01",
+  "ref": "41d598bf-77fe-4b39-9e46-af9ee37f8498",
+  "name": "DCP Armor Helmet Cobalt Camo",
+  "description": "Endure the most brutal attacks with the DCP heavy armor. This set features easy-swing joints that provide freedom of movement in the heat of battle, and was crafted with a multi-layer shock-absorbing shell that helps its wearer shake off the hardest hits.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-70 / 100 °C",
+  "radiation_protection": "16800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Heavy",
+    "Set_03",
+    "Color_01",
+    "SM_Marine",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

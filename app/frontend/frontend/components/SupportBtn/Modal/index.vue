@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
@@ -16,6 +17,18 @@ const { t } = useI18n();
 <template>
   <Modal :title="t('headlines.support')">
     <div class="support-body">
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <SupportProgress />
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <p>{{ t("texts.support.goal") }}</p>
+        </div>
+      </div>
       <br />
       <div class="row">
         <div class="col-12">
@@ -41,27 +54,22 @@ const { t } = useI18n();
         {{ t("texts.support.subline") }}
       </p>
       <div class="page-actions page-actions-center">
-        <Btn href="https://paypal.me/mortik" size="large">
+        <Btn href="https://paypal.me/mortik" size="lg">
           <i class="fa-brands fa-paypal" />
           PayPal
         </Btn>
-        <Btn href="https://www.patreon.com/fleetyards" size="large">
+        <Btn href="https://www.patreon.com/fleetyards" size="lg">
           <i class="fa-brands fa-patreon" />
           Patreon
         </Btn>
-        <Btn href="https://ko-fi.com/fleetyardsnet" size="large">
+        <Btn href="https://ko-fi.com/fleetyardsnet" size="lg">
           <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
           Ko-fi
         </Btn>
-        <a
-          href="https://www.buymeacoffee.com/mortik"
-          aria-label="Buy me a coffee"
-          class="support-buymeacoffee"
-        >
-          <img
-            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
-          />
-        </a>
+        <Btn href="https://www.buymeacoffee.com/mortik" size="lg">
+          <i class="fa-solid fa-mug-hot" />
+          Buy me a coffee
+        </Btn>
       </div>
     </div>
   </Modal>

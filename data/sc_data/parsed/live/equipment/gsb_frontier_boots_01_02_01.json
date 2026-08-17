@@ -1,0 +1,38 @@
+{
+  "key": "gsb_frontier_boots_01_02_01",
+  "ref": "a9f31f63-c5d2-422e-b8d6-cc4ad5dec708",
+  "name": "Corsti Boots CFP",
+  "description": "Made with hardy and adaptable materials, the Corsti boots are suitable for any conditions, whether you're taking a day-long hike on a well-worn road or exploring a strange landscape on an untamed world.\n\nThe CFP edition is a deep fjord blue with black vamp detailing.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "frontier",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_frontier_boots",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

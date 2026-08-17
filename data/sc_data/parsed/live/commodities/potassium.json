@@ -1,0 +1,10 @@
+{
+  "key": "potassium",
+  "sc_key": "items_commodities_potassium",
+  "ref": "fb2ff434-6c54-471a-9f64-48f866498cd2",
+  "name": "Potassium",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "Potassium description.",
+  "icon": null
+}

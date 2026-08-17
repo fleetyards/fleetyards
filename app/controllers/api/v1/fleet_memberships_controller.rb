@@ -55,7 +55,7 @@ module Api
       end
 
       def destroy
-        return if @membership.destroy
+        return if @membership.discard
 
         render json: ValidationError.new("fleet_memberships.destroy", errors: @membership.errors), status: :bad_request
       end
@@ -71,7 +71,7 @@ module Api
       end
 
       private def set_membership
-        @membership = @fleet.fleet_memberships
+        @membership = @fleet.fleet_memberships.kept
           .includes(:user)
           .joins(:user)
           .find_by!(user_id: current_resource_owner.id)

@@ -1,0 +1,38 @@
+{
+  "key": "hwk_fashion_shoes_01_01_01",
+  "ref": "46e80a29-191c-4e64-8c64-4d45970e12cb",
+  "name": "Matiese Shoes",
+  "description": "Embody timeless elegance with the Matiese shoes from Hawksworth's. Made with fine artificial leather, the detailed upper design gives the shoes a clean, sleek profile suited to any occasion.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "fashion",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d7a8b196-8778-4e18-8c8c-38229eef01f1",
+  "tags": [
+    "hwk_fashion_shoes",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

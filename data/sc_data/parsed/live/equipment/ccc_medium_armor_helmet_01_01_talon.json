@@ -1,0 +1,39 @@
+{
+  "key": "ccc_medium_armor_helmet_01_01_talon",
+  "ref": "113b8ce8-6703-4004-8b30-a73b96d48c23",
+  "name": "Aves Talon Helmet",
+  "description": "CC's Conversions is proud to release the Aves Talon helmet to celebrate the beautiful and unique history of the Tevarin culture. This medium helmet honors traditional stylings with colorful green accents on black and white plating, giving the helmet a bold and dynamic feel worthy of this great species. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-55 / 85 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "Set_01",
+    "Color_talon",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "nvs_jacket_02_01_10",
+  "ref": "7a7348b2-d68d-4234-ae67-7807a9eddc02",
+  "name": "Second Tevarin War White Dress Jacket",
+  "description": "Honor the heroes that served in the Second Tevarin War by wearing a replica Navy uniform. Historically accurate down to every last stitch, period appropriate materials were used to make these uniforms match military specifications of the era. The white Dress Jacket features a sash adorned with metals and was worn for formal occasions and ceremonies.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f8efa046-7f79-4e09-b2fc-35d0df2429cf",
+  "tags": [
+    "nvs_jacket",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "key": "banu_melee_03",
+  "ref": "84d29f4f-36af-4343-b350-9b1954a07e15",
+  "name": "Sizi Knife",
+  "description": "With its trailing point tip, curved belly, and sturdy spine, the Sizi knife was crafted with meticulous attention to detail, balance, and usability. Featuring an intricate Banu design, additional chromium was added to the metal to ensure long-term resistance against corrosion.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "tags": [
+    "knife"
+  ],
+  "hidden": false,
+  "volume": 0.000198,
+  "volume_dimensions": {
+    "x": 0.02,
+    "y": 0.3095443,
+    "z": 0.0414129
+  }
+}

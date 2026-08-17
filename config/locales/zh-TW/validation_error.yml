@@ -20,6 +20,7 @@ zh-TW:
       accept: 無法接受艦隊成員。
       decline: 無法拒絕艦隊成員。
       destroy: 無法移除艦隊成員。
+      update: 無法更新艦隊成員。
     fleet_memberships:
       create: 艦隊邀請無法使用
       destroy: 無法離開艦隊。
@@ -30,6 +31,28 @@ zh-TW:
       create: 無法建立群組
       destroy: 無法刪除群組
       update: 無法更新群組
+    fleet_inventories:
+      create: 無法建立庫存。
+      update: 無法更新庫存。
+      destroy: 無法刪除庫存。
+    fleet_inventory_items:
+      create: 無法建立庫存記錄。
+      update: 無法更新庫存記錄。
+      destroy: 無法刪除庫存記錄。
+    hangar_inventories:
+      create: 無法建立庫存。
+      update: 無法更新庫存。
+      destroy: 無法刪除庫存。
+    hangar_inventory_items:
+      create: 無法建立庫存記錄。
+      update: 無法更新庫存記錄。
+      destroy: 無法刪除庫存記錄。
+    vehicle_inventory:
+      destroy: 無法刪除庫存。
+    vehicle_inventory_items:
+      create: 無法建立庫存記錄。
+      update: 無法更新庫存記錄。
+      destroy: 無法刪除庫存記錄。
     image:
       create: 無法建立圖片
       update: 無法更新圖片

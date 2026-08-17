@@ -14,6 +14,71 @@
     "base_expediting_fee": "205"
   },
   "mass": 6195.0,
+  "inventory_container_ref": "2e35bd8c-c53b-425f-9f4b-3e30a08f2217",
+  "weapon_pool_size": 2,
+  "signature_cross_section": {
+    "x": 5170.0,
+    "y": 2420.0,
+    "z": 5500.0
+  },
+  "hull_health": 6380.0,
+  "hull_parts": [
+    {
+      "name": "ARGO_MPUV_1T",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Leg_Left",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Leg_Right",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Power_Cap_mesh",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Cooler_Cap_mesh",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "headlight_bot_r",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "headlight_top_r",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "headlight_top_l",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "headlight_bot_l",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 9.0,
     "y": 10.5,

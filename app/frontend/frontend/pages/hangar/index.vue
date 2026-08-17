@@ -23,7 +23,12 @@ import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { type HangarGroupMetric, HangarGroup } from "@/services/fyApi";
+import {
+  type HangarGroupMetric,
+  type HangarGroupPublic,
+  FeatureFlagName,
+  HangarGroup,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -35,7 +40,8 @@ import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   ChannelsEnum,
   useSubscription,
@@ -46,6 +52,7 @@ import {
   useHangar as useHangarQuery,
   useHangarGroups as useHangarGroupsQuery,
   hangarExport as fetchHangarExport,
+  hangarLinkExport as fetchHangarLinkExport,
   useDestroyHangar as useDestroyHangarMutation,
   type HangarParams,
   getHangarQueryKey,
@@ -62,6 +69,8 @@ const deleting = ref(false);
 const highlightedGroup = ref<string>("");
 
 const mobile = useMobile();
+
+const { isFeatureEnabled } = useFeatures();
 
 const sessionStore = useSessionStore();
 
@@ -187,7 +196,7 @@ const showNewModal = () => {
   });
 };
 
-const highlightGroup = (group?: HangarGroup) => {
+const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
   if (!group) {
     highlightedGroup.value = "";
     return;
@@ -201,14 +210,8 @@ useSubscription({
   received: () => debounce(fetch, 500),
 });
 
-const exportJson = async () => {
-  if (!currentUser?.value) {
-    return;
-  }
-
-  const exportedData = await fetchHangarExport(hangarQueryParams);
-
-  if (!exportedData || !window.URL) {
+const downloadExport = (exportedData: unknown, suffix: string) => {
+  if (!currentUser?.value || !exportedData || !window.URL) {
     displayAlert({ text: t("messages.hangarExport.failure") });
     return;
   }
@@ -223,7 +226,7 @@ const exportJson = async () => {
 
   link.setAttribute(
     "download",
-    `fleetyards-${currentUser.value.username}-hangar-${format(
+    `fleetyards-${currentUser.value.username}-${suffix}-${format(
       new Date(),
       "yyyy-MM-dd",
     )}.json`,
@@ -234,6 +237,22 @@ const exportJson = async () => {
   link.click();
 
   document.body.removeChild(link);
+};
+
+const exportJson = async () => {
+  if (!currentUser?.value) {
+    return;
+  }
+
+  downloadExport(await fetchHangarExport(hangarQueryParams), "hangar");
+};
+
+const exportHangarLink = async () => {
+  if (!currentUser?.value) {
+    return;
+  }
+
+  downloadExport(await fetchHangarLinkExport(hangarQueryParams), "hangar-link");
 };
 
 const showResetIngameModal = () => {
@@ -291,8 +310,10 @@ const openDisplayOptionsModal = () => {
           <ModelClassLabels
             v-if="hangarStats"
             :count-data="hangarStats.classifications"
-            :label="t('labels.hangar')"
+            :label="t('labels.classifications')"
+            hide-label
             filter-key="classificationIn"
+            exclude-filter-key="classificationNotIn"
           />
           <GroupLabels
             v-if="hangarStats && hangarGroups"
@@ -361,7 +382,7 @@ const openDisplayOptionsModal = () => {
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn :to="{ name: 'hangar-wishlist' }">
+    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-wishlist' }">
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
@@ -371,17 +392,31 @@ const openDisplayOptionsModal = () => {
       </transition>
     </Btn>
 
-    <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      data-test="fleetchart-link"
+      @click="toggleFleetchart"
+    >
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
 
-    <Btn :to="{ name: 'hangar-stats' }">
+    <Btn
+      v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-inventories' }"
+    >
+      <i class="fa-duotone fa-boxes-stacked" />
+      {{ t("labels.hangarInventories") }}
+    </Btn>
+
+    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
       <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
     </Btn>
 
     <ShareBtn
+      :size="BtnSizesEnum.MD"
       v-if="currentUser && currentUser.publicHangar && shareUrl"
       :url="shareUrl"
       :title="shareTitle"
@@ -401,29 +436,32 @@ const openDisplayOptionsModal = () => {
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"
-        :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />
       </Btn>
-      <HangarSyncBtn :size="BtnSizesEnum.SMALL" />
-      <BtnDropdown :size="BtnSizesEnum.SMALL">
+      <HangarSyncBtn :size="BtnSizesEnum.SM" />
+      <BtnDropdown>
         <template v-if="mobile">
-          <Btn :to="{ name: 'hangar-wishlist' }" :size="BtnSizesEnum.SMALL">
+          <Btn :to="{ name: 'hangar-wishlist' }">
             <i class="fa-duotone fa-wand-sparkles" />
             <span>{{ t("labels.wishlist") }}</span>
           </Btn>
 
-          <Btn
-            data-test="fleetchart-link"
-            :size="BtnSizesEnum.SMALL"
-            @click="toggleFleetchart"
-          >
+          <Btn data-test="fleetchart-link" @click="toggleFleetchart">
             <i class="fa-duotone fa-starship" />
             <span>{{ t("labels.fleetchart") }}</span>
           </Btn>
 
-          <Btn :to="{ name: 'hangar-stats' }" :size="BtnSizesEnum.SMALL">
+          <Btn
+            v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
+            :to="{ name: 'hangar-inventories' }"
+          >
+            <i class="fa-duotone fa-boxes-stacked" />
+            <span>{{ t("labels.hangarInventories") }}</span>
+          </Btn>
+
+          <Btn :to="{ name: 'hangar-stats' }">
             <i class="fa-duotone fa-chart-bar" />
             <span>{{ t("labels.hangarStats") }}</span>
           </Btn>
@@ -432,17 +470,13 @@ const openDisplayOptionsModal = () => {
             v-if="currentUser && currentUser.publicHangar && shareUrl"
             :url="shareUrl"
             :title="shareTitle"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
           />
 
           <hr />
         </template>
 
-        <Btn
-          :aria-label="t('actions.showGuide')"
-          :size="BtnSizesEnum.SMALL"
-          @click="openGuide"
-        >
+        <Btn :aria-label="t('actions.showGuide')" @click="openGuide">
           <i class="fa-duotone fa-question" />
           <span>{{ t("actions.showGuide") }}</span>
         </Btn>
@@ -450,7 +484,6 @@ const openDisplayOptionsModal = () => {
         <hr />
 
         <Btn
-          :size="BtnSizesEnum.SMALL"
           href="https://robertsspaceindustries.com/account/pledges"
           target="_blank"
         >
@@ -460,19 +493,22 @@ const openDisplayOptionsModal = () => {
 
         <hr />
 
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          :aria-label="t('actions.export')"
-          @click="exportJson"
-        >
+        <Btn :aria-label="t('actions.export')" @click="exportJson">
           <i class="fa-light fa-download" />
           <span>{{ t("actions.export") }}</span>
         </Btn>
 
-        <HangarImportBtn :size="BtnSizesEnum.SMALL" @finished="fetch" />
+        <Btn
+          :aria-label="t('actions.exportHangarLink')"
+          @click="exportHangarLink"
+        >
+          <i class="fa-light fa-link" />
+          <span>{{ t("actions.exportHangarLink") }}</span>
+        </Btn>
+
+        <HangarImportBtn :size="BtnSizesEnum.SM" @finished="fetch" />
 
         <Btn
-          :size="BtnSizesEnum.SMALL"
           :aria-label="t('actions.hangar.resetIngame.openModal')"
           @click="showResetIngameModal"
         >
@@ -483,7 +519,7 @@ const openDisplayOptionsModal = () => {
         <hr />
 
         <Btn
-          :size="BtnSizesEnum.SMALL"
+          :tone="BtnTonesEnum.DANGER"
           :disabled="deleting"
           :aria-label="t('actions.hangar.destroyAll')"
           @click="destroyAll"
@@ -537,7 +573,7 @@ const openDisplayOptionsModal = () => {
             v-if="vehicles"
             :query-result-ref="vehicles"
             :per-page="perPage"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             :update-per-page="updatePerPage"
           />
         </template>

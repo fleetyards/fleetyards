@@ -1,0 +1,38 @@
+{
+  "key": "mym_shirt_01_lum02_02",
+  "ref": "7551d346-d777-4a0d-8d38-4f3072502dca",
+  "name": "Forgiveness Sweater",
+  "description": "This Luminalia, don't just strengthen your bonds with physical presents. Remember to offer your friends and family the most important thing you can: the gift of forgiveness. Featuring a cheeky member of the Nine Tails gang that has been causing havoc in the Stanton system, this collab from MuyMuy and Vaporwear shows that during the holiday season, anyone can turn over a new leaf.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": null,
+  "tags": [
+    "mym_shirt",
+    "Set_01",
+    "Texture_lum02",
+    "Color_02"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

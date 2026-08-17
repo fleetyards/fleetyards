@@ -7,9 +7,9 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
-  "name": "Grav Lev 1",
-  "short_name": "Grav Lev 1",
-  "description": "Grav Lev 1",
+  "name": "Grav-Lev 1",
+  "short_name": "Grav-Lev 1",
+  "description": "Grav-Lev 1",
   "inventory_consumption": {
     "micro_scu": 1.0,
     "dimensions": {
@@ -25,6 +25,22 @@
     "thrust_capacity": 250.0,
     "fuel_burn_rate_per10_k_newton": 0.125,
     "thruster_type": "Maneuver",
-    "thruster_class": null
+    "thruster_class": null,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

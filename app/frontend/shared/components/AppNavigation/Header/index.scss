@@ -15,12 +15,6 @@
     :deep(.base-input) {
       margin-bottom: 0;
     }
-
-    :deep(.panel-btn),
-    :deep(.panel-btn-group) {
-      margin-bottom: 0;
-      margin-right: 0;
-    }
   }
 
   &__right {
@@ -31,32 +25,33 @@
     :deep(.base-input) {
       margin-bottom: 0;
     }
-
-    :deep(.panel-btn),
-    :deep(.panel-btn-group) {
-      margin-bottom: 0;
-      margin-right: 0;
-    }
   }
 }
 
 @media (max-width: $desktop-breakpoint) {
   .navigation-header {
-    gap: 20px;
+    gap: 10px;
     right: 0;
     left: auto;
-    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 15px;
     transition: right ease $transition-base-speed;
 
     &__left {
-      width: 100%;
+      flex: 1 1 auto;
+      min-width: 0;
       max-width: 100%;
     }
 
     &__right {
-      width: 100%;
-      max-width: 100%;
+      flex: 0 0 auto;
       justify-content: flex-end;
+
+      // an empty teleport target would still claim the flex gap and pull the
+      // quicksearch away from the right edge the rows below align to
+      &:not(:has(*)) {
+        display: none;
+      }
     }
   }
 

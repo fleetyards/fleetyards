@@ -9,7 +9,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type ModelCreateInput,
-  type ValidationError,
   useCreateModel,
   getModelsQueryKey,
 } from "@/services/fyAdminApi";
@@ -26,9 +25,8 @@ import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGr
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { transformErrors } from "@/frontend/utils/transformErrors";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useQueryClient } from "@tanstack/vue-query";
-import { type AxiosError } from "axios";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -89,14 +87,12 @@ const onSubmit = handleSubmit(async (values) => {
       );
     })
     .catch((error) => {
-      const response = (error as AxiosError<ValidationError>).response;
+      const { message, formErrors } = validationErrorFrom(error);
 
-      if (response?.data?.errors) {
-        setErrors(transformErrors(response.data.errors));
-      }
+      setErrors(formErrors);
 
       displayAlert({
-        text: response?.data?.message || t("errors.generic"),
+        text: message || t("errors.generic"),
       });
     })
     .finally(() => {

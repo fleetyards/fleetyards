@@ -1,0 +1,39 @@
+{
+  "key": "cba_security_hat_01_01_01",
+  "ref": "36b4bc1f-88cf-470c-b23b-cd30d99aa9d9",
+  "name": "Ajax Security Uniform Hat",
+  "description": "This black soft-domed, billed hat from Code Blue Apparel features eye-catching bronze accents and is imprinted boldly with \"Security\" across the front. Comfortable and distinct, it makes for an ideal accessory to any security professional's uniform.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "security",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_security_hat",
+    "Set_01",
+    "Color_01",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

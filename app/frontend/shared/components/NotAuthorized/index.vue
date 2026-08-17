@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -17,7 +17,7 @@ const { t } = useI18n();
 
 <template>
   <Box
-    :variant="PanelVariantsEnum.ERROR"
+    :tone="PanelTonesEnum.ERROR"
     :heading-size="HeadingSizeEnum.HERO"
     animated
     large
@@ -29,7 +29,7 @@ const { t } = useI18n();
       <Text>{{ t("texts.accessDenied") }}</Text>
     </template>
     <template #footer>
-      <Btn :to="{ name: 'home' }" :exact="true">
+      <Btn :to="{ name: 'home' }">
         <i class="fa fa-chevron-left" />
         {{ t("actions.backToHome").toUpperCase() }}
       </Btn>

@@ -1,0 +1,39 @@
+{
+  "key": "cbd_hat_03_crusader_02_dec",
+  "ref": "3807da5c-488a-4ef6-bd9c-7528c51e081a",
+  "name": "Crusader Industries Hat",
+  "description": "To celebrate Pax Humana 2949, Crusader Industries released this hat in the colors associated with the holiday, blue and white. Wear this hat to join the company in supporting those that focus on the greater good. All proceeds from its purchase will go to the Terra-based nonprofit Empire's Overlooked.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "hat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_hat",
+    "Set_03",
+    "Color_crusader02",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

@@ -7,6 +7,7 @@
 #  created_by          :uuid
 #  default_timezone    :string           default("UTC"), not null
 #  description         :text
+#  discarded_at        :datetime
 #  discord             :string
 #  fid                 :string
 #  guilded             :string
@@ -27,7 +28,8 @@
 # Indexes
 #
 #  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
-#  index_fleets_on_fid                  (fid) UNIQUE
+#  index_fleets_on_discarded_at         (discarded_at)
+#  index_fleets_on_fid                  (fid) UNIQUE WHERE (discarded_at IS NULL)
 #
 FactoryBot.define do
   factory :fleet do

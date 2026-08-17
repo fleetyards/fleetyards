@@ -14,10 +14,60 @@
     "base_expediting_fee": "1375"
   },
   "mass": 7599.0,
+  "inventory_container_ref": "8a9663d1-5bd2-4627-9f49-5e0904deb339",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5928.0,
+    "y": 988.0,
+    "z": 3794.0
+  },
+  "hull_health": 2430.0,
+  "hull_parts": [
+    {
+      "name": "KRIG_P52_Merlin",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 950.0,
+      "category": "vital"
+    },
+    {
+      "name": "Canopy",
+      "health": 80.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body2",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_animation",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_left_animation_geo",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_animation",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_right_animation_geo",
+      "health": 200.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
-    "x": 5.25,
+    "x": 7.75,
     "y": 12.0,
-    "z": 3.0
+    "z": 3.25
   },
   "loadout": [
     {

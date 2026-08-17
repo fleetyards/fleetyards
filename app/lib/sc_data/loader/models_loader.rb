@@ -35,6 +35,7 @@ module ScData
         update_params = {}
 
         update_params = update_metrics(model_data, update_params)
+        update_params = update_personal_inventory(model_data, update_params)
         hardpoints = model.hardpoints.game_files
         update_params = update_cargo_holds(hardpoints, update_params)
         update_params = update_quantum_fuel_tanks(hardpoints, update_params)
@@ -42,6 +43,7 @@ module ScData
         update_params = update_external_fuel_tanks(hardpoints, update_params)
         update_params = update_refuel_boom(hardpoints, update_params)
         update_params = update_speeds(hardpoints, update_params)
+        update_params = update_ground_speeds(model_data, update_params)
 
         model.update!(update_params.merge(update_reason: :sc_data_loader))
       end
@@ -71,12 +73,79 @@ module ScData
 
       private def update_metrics(model_data, update_params)
         update_params[:mass] = model_data.dig("mass")&.to_f
+        update_params[:hull_health] = model_data.dig("hull_health")&.to_f
+        update_params[:hull_parts] = model_data.dig("hull_parts")
+        update_params[:hull_doors] = extract_hull_doors(model_data)
+        update_params[:weapon_pool_size] = model_data.dig("weapon_pool_size")
+        update_params[:signature_cross_section] = model_data.dig("signature_cross_section")
         update_params[:sc_length] = model_data.dig("metrics", "y")&.to_f
         update_params[:sc_beam] = model_data.dig("metrics", "x")&.to_f
         update_params[:sc_height] = model_data.dig("metrics", "z")&.to_f
         update_params[:ground] = model_data.dig("ground") || false
 
         update_params
+      end
+
+      # The ship's own storage container, which the vehicle entity points at
+      # directly rather than hanging off a hardpoint the way cargo grids do.
+      private def update_personal_inventory(model_data, update_params)
+        ref = model_data["inventory_container_ref"]
+
+        return update_params if ref.blank?
+
+        storage = personal_storage_index[ref]
+
+        return update_params if storage.blank?
+
+        update_params[:personal_inventory] = storage
+
+        update_params
+      end
+
+      # Same reason as door_health_index: load_items parses every item file, so
+      # index the containers once instead of once per model.
+      private def personal_storage_index
+        @personal_storage_index ||= load_items("items").each_with_object({}) do |item, index|
+          next unless item[:type] == "PersonalStorage"
+          next if item[:ref].blank?
+
+          storage = item.dig(:type_data, :storage).to_f
+          next unless storage.positive?
+
+          index[item[:ref]] = storage
+        end
+      end
+
+      # Breakable interior doors, which erkul shows as an area of their own. They
+      # are not hull parts: the vehicle XML lists them as `class="ItemPort"`
+      # entries, so collect_hull_parts skips them, and their health lives on the
+      # door item rather than the geometry. Kept out of hull_health for the same
+      # reason erkul separates them — shooting a door does not damage the hull.
+      private def extract_hull_doors(model_data)
+        doors = (model_data["loadout"] || []).filter_map do |entry|
+          health = door_health_index[entry["ref"]] ||
+            door_health_index[entry["key"]&.downcase]
+
+          next if health.blank?
+
+          {name: entry["name"], health: health}
+        end
+
+        doors.presence
+      end
+
+      # load_items globs and parses every item file, so index the doors once
+      # rather than looking each one up per model.
+      private def door_health_index
+        @door_health_index ||= load_items("items").each_with_object({}) do |item, index|
+          next unless item[:category] == "doors"
+
+          health = item.dig(:durability, :health).to_f
+          next unless health.positive?
+
+          index[item[:ref]] = health if item[:ref].present?
+          index[item[:key]&.downcase] = health if item[:key].present?
+        end
       end
 
       private def update_quantum_fuel_tanks(hardpoints, update_params)
@@ -161,6 +230,23 @@ module ScData
         update_params[:yaw_boosted] = ifcs.dig("boosted_angular_velocity", "yaw").to_f if ifcs.dig("boosted_angular_velocity", "yaw").present?
         update_params[:roll] = ifcs.dig("angular_velocity", "roll").to_f if ifcs.dig("angular_velocity", "roll").present?
         update_params[:roll_boosted] = ifcs.dig("boosted_angular_velocity", "roll").to_f if ifcs.dig("boosted_angular_velocity", "roll").present?
+
+        update_params
+      end
+
+      # Ground vehicles have no FlightController to read speeds off, so the
+      # parser takes them straight from the vehicle definition. Only the
+      # vehicles that declare a `Handling/Power` block get reverse speed and
+      # acceleration; the rest have a top speed and nothing else.
+      private def update_ground_speeds(model_data, update_params)
+        speeds = model_data.dig("speeds")
+
+        return update_params if speeds.blank?
+
+        update_params[:ground_max_speed] = speeds.dig("max").to_f if speeds.dig("max").present?
+        update_params[:ground_reverse_speed] = speeds.dig("reverse").to_f if speeds.dig("reverse").present?
+        update_params[:ground_acceleration] = speeds.dig("acceleration").to_f if speeds.dig("acceleration").present?
+        update_params[:ground_decceleration] = speeds.dig("decceleration").to_f if speeds.dig("decceleration").present?
 
         update_params
       end

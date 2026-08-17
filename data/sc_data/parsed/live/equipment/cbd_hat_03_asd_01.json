@@ -1,0 +1,39 @@
+{
+  "key": "cbd_hat_03_asd_01",
+  "ref": "29c5b17a-07f4-49a9-bb4a-a2fab66c609d",
+  "name": "ASD Hat",
+  "description": "A red and green cadet hat with ASD's name and logo emblazoned across the front panel.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "hat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_hat",
+    "Set_03",
+    "Color_01",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

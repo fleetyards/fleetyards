@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "2",
+  "min_crew": "9",
   "name": "Aegis Hammerhead",
   "description": "Manufacturer: Aegis Dynamics \\nFocus: Heavy Gunship\\n\\nA fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.",
   "career": "Combat",
@@ -14,6 +14,106 @@
     "base_expediting_fee": "24582"
   },
   "mass": 4542311.0,
+  "inventory_container_ref": "405c46f7-e3e1-4ac1-8a77-03287e1de5a2",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 39312.0,
+    "y": 8392.0,
+    "z": 6037.0
+  },
+  "hull_health": 295600.0,
+  "hull_parts": [
+    {
+      "name": "AEGS_Hammerhead",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 80000.0,
+      "category": "vital"
+    },
+    {
+      "name": "custom_decal",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 65000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "cargo_door_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cargo_door_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 80000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Airlock_Section",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airlock_doorA_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airlock_doorA_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Front_Right",
+      "health": 15200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Lift_Door_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Front_Left",
+      "health": 15200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Lift_Door_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_MountB_Right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_MountB_Left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_mountA_Right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_mountA_Left",
+      "health": 10000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 72.0,
     "y": 120.0,

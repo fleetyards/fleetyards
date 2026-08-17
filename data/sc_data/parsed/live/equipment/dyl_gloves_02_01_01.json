@@ -1,0 +1,37 @@
+{
+  "key": "dyl_gloves_02_01_01",
+  "ref": "264fe967-3f63-410d-8653-36cb98cb9caa",
+  "name": "Ahmanson Gloves",
+  "description": "The Ahmanson gloves achieve elegance with an edge thanks to Dyna Lei. These leather opera gloves have a sumptuous black patina that will become more spectacular with time, and are made with a comfortable cashmere lining.  \n\nMen sizes are currently unavailable.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "92b20988-dbf3-4e95-b4a9-7e5e22112516",
+  "tags": [
+    "dyl_gloves",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0015,
+  "volume_dimensions": {
+    "x": 0.301,
+    "y": 0.048,
+    "z": 0.207
+  }
+}

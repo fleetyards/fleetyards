@@ -1,0 +1,6 @@
+<h4>
+  <%= I18n.t("mailer.admin.new_supporter.headline") %>
+</h4>
+<p>
+  <%= I18n.t("mailer.admin.new_supporter.text", name: @supporter.display_name, amount: @supporter.formatted_amount) %>
+</p>

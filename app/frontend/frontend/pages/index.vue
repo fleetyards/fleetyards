@@ -76,7 +76,7 @@ const routeForImage = (image: Image) => {
 
 <template>
   <Teleport to="#header-right">
-    <SupportBtn />
+    <SupportBtn :size="BtnSizesEnum.MD" />
   </Teleport>
   <div class="home-screen-intro">
     <section>
@@ -110,8 +110,8 @@ const routeForImage = (image: Image) => {
                     <Btn
                       id="search-submit"
                       :aria-label="t('labels.search')"
-                      :size="BtnSizesEnum.LARGE"
                       @click="search"
+                      :size="BtnSizesEnum.LG"
                     >
                       <i class="fa-light fa-search" />
                     </Btn>
@@ -172,7 +172,6 @@ const routeForImage = (image: Image) => {
                 params: { slug: model.slug },
               }"
               level="h3"
-              slim
             />
           </div>
         </transition-group>

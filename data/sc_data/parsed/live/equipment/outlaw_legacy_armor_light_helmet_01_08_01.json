@@ -1,0 +1,41 @@
+{
+  "key": "outlaw_legacy_armor_light_helmet_01_08_01",
+  "ref": "d82a35f5-26ca-4a44-bb67-b845be8b7d46",
+  "name": "Oracle Helmet Rager",
+  "description": "Kastak Arms' Oracle provides an enclosed reinforced plating helmet with integrated diamond laminate over the eyes. It allows for maximum situational awareness while keeping the wearer safe in space and on the battlefield. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-31 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Light",
+    "Set_01",
+    "Texture_01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
+}

@@ -1,0 +1,17 @@
+// The fixed control row, shared by List and ListPanzoom. Both render the same
+// markup and both stylesheets are pulled into a scoped block, so the rule has to
+// reach each component - but from one source rather than two copies that were
+// already drifting apart by a comment.
+.fleetchart-wrapper .fleetchart-controls {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  // Btn and BtnGroup ship no margins, so this row owns the gap. Without it the
+  // two dropdowns and three buttons sat flush against each other and read as one
+  // control with seams. 10px matches .fleetchart-app-controls and every other
+  // control row in the app.
+  gap: 10px;
+}

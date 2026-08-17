@@ -1,0 +1,10 @@
+{
+  "key": "silnex",
+  "sc_key": "items_commodities_silnex",
+  "ref": "cf86cfe4-28fe-4530-a1a7-f2e6d3d2117e",
+  "name": "Silnex",
+  "commodity_type": "manmade",
+  "commodity_type_name": "Man-made",
+  "description": "An advanced silica ceramic developed by early RSI researchers to allow ships to better withstand atmospheric reentry.",
+  "icon": null
+}

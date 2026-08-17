@@ -14,6 +14,196 @@
     "base_expediting_fee": "3800"
   },
   "mass": 82224.0,
+  "inventory_container_ref": null,
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 11878.0,
+    "y": 4306.0,
+    "z": 12324.0
+  },
+  "hull_health": 10975.880000000001,
+  "hull_parts": [
+    {
+      "name": "XNAA_SanTokYai",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 3675.88,
+      "category": "vital"
+    },
+    {
+      "name": "canopy_glass_left_trs",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "canopy_glass_right_trs",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "canopy_glass_b",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "canopy_glass_c",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ejection_mesh_top",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_left",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_base_rotator_a_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wings_rotator_bottom_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_rotator_connection_bottom_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_ring_bottom_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_front_bottom_left",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_rotator_top_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_rotator_connection_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_ring_top_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_front_left",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_front_cover_01_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_front_cover_02_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wings_base_rotator_a_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wings_rotator_bottom_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_rotator_connection_bottom_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_ring_bottom_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_front_bottom_right",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_front_bottom_right_02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wings_rotator_top_right",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_rotator_connection_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_ring_top_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_front_right",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_front_cover_01_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_front_cover_02_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "tail_right",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_item_tray",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "front_item_tray_door_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_item_tray_door_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 23.0,
     "y": 24.0,

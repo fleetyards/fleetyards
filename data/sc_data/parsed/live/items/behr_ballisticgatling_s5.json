@@ -90,17 +90,47 @@
     "fire_rate": 900.0,
     "heat_per_shot": 0.5727273,
     "damage_per_shot": {
-      "physical": 126.5,
+      "physical": 102.5,
       "energy": 0.0,
       "distortion": 0.0,
       "thermal": 0.0,
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 1.0
+    },
     "pellets_per_shot": 1,
     "speed": 1251.0,
     "range": 4003.2,
     "ammo_cost": 1,
-    "max_ammo": 5004
+    "max_ammo": 5004,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 30.2,
+      "time_till_cooling_starts": 0.509,
+      "overheat_fix_time": 2.41
+    },
+    "power_consumption": 0.1,
+    "weapon_class": "BallisticGatling",
+    "mountable": true,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 36.0,
+    "signature_ir": 0.0
   }
 }

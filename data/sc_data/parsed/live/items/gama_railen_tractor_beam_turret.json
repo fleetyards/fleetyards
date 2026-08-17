@@ -1,0 +1,35 @@
+{
+  "key": "GAMA_Railen_Tractor_Beam_Turret",
+  "ref": "7b09efe4-cdee-45fb-a436-735dad5d05b7",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "adf5fa24-be2b-49aa-9af6-b335b6e0f9ac",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "TractorBeam"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8500.0
+  },
+  "type_data": {}
+}

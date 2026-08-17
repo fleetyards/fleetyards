@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Collapsed from "@/shared/components/Collapsed.vue";
-import {
-  BtnVariantsEnum,
-  BtnSizesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   selected: string[];
@@ -53,10 +50,8 @@ const handleClick = () => {
         </span>
         <Btn
           v-tooltip="t('filteredTable.actions.unselect')"
-          :size="BtnSizesEnum.SMALL"
-          :variant="BtnVariantsEnum.LINK"
-          inline
           @click="handleClick"
+          :variant="BtnVariantsEnum.BARE"
         >
           <i class="fa fa-times" />
         </Btn>

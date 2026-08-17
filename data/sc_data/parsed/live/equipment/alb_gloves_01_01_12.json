@@ -1,0 +1,38 @@
+{
+  "key": "alb_gloves_01_01_12",
+  "ref": "9d3bcfe2-80c3-4ed1-a864-3f5100a6bd73",
+  "name": "Deri Gloves Tactical",
+  "description": "Maintain a tactile sense of the world while also keeping your hands safe and dry with the Deri fingerless gloves. Featuring a comfortable inner lining, lightweight plating on the back of the hand and slip resistant palm padding, the Deri gloves are an ideal choice for a wide variety of tasks.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_gloves",
+    "Set_01",
+    "Texture_01",
+    "Color_12"
+  ],
+  "hidden": false,
+  "volume": 0.0015,
+  "volume_dimensions": {
+    "x": 0.301,
+    "y": 0.048,
+    "z": 0.207
+  }
+}

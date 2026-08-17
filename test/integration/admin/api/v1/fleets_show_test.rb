@@ -44,6 +44,16 @@ class Admin::Api::V1::FleetsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: fleet.id}
   end
 
+  test "GET /fleets/:id includes the fleet roles" do
+    fleet = create(:fleet)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: fleet.id}
+
+    role_names = response.parsed_body["fleetRoles"].map { |role| role["name"] }
+    assert_equal %w[Admin Officer Member], role_names
+  end
+
   test "GET /fleets/:id returns 404 for missing id" do
     sign_in @user
 

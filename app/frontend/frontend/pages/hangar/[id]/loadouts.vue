@@ -10,7 +10,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Vehicle,
@@ -144,7 +144,7 @@ const onActivate = async (record: VehicleLoadout) => {
       class="loadouts-page__ship-links"
     >
       <span>{{ t("labels.loadout.planOn") }}</span>
-      <BtnGroup inline>
+      <BtnGroup>
         <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
           <i />
           {{ t("labels.hardpoints.erkul") }}
@@ -162,7 +162,6 @@ const onActivate = async (record: VehicleLoadout) => {
 
     <div class="flex items-center justify-between loadouts-page__toolbar">
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :disabled="editableList?.creating"
         @click="editableList?.startCreate()"
       >
@@ -205,7 +204,6 @@ const onActivate = async (record: VehicleLoadout) => {
         <Btn
           v-if="!item.active"
           v-tooltip="t('labels.loadout.activate')"
-          :size="BtnSizesEnum.SMALL"
           @click="onActivate(item)"
         >
           <i class="fa-duotone fa-circle-check" />

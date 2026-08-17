@@ -116,13 +116,12 @@ const submit = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :loading="submitting"
           :disabled="!canSubmit"
-          :size="BtnSizesEnum.LARGE"
-          :inline="true"
           @click="submit"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.copy") }}
         </Btn>

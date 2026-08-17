@@ -1,0 +1,10 @@
+{
+  "key": "redfinenergymodulator",
+  "sc_key": "items_commodities_redfinenergymodulator",
+  "ref": "1d33767e-d9af-449c-a717-7e4de02f00b3",
+  "name": "Redfin Energy Modulators",
+  "commodity_type": "consumer_goods",
+  "commodity_type_name": "Consumer Goods",
+  "description": "Made by various Banu manufacturers, this energy modulator is distinct for its red-hued heatsinks. Though it can be installed into most Human component subsystems to reduce power draw, its extremely dangerous fail rate has caused it to be banned for import into the UEE.",
+  "icon": null
+}

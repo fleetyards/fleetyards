@@ -1,0 +1,37 @@
+{
+  "key": "ctl_pants_03_01_01",
+  "ref": "1bc4abfc-9c0d-4132-8c0a-90dfe2ab8c13",
+  "name": "Trace Pants",
+  "description": "Make all the right connections with the Trace pants from City Lights. These denim blue pants are inlaid with a silver circuit pattern on the lower leg and double-breasted chap embellishment on the top.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5ca8a669-44c2-40e4-89b2-7a5da790b832",
+  "tags": [
+    "ctl_pants",
+    "Set_03",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

@@ -14,6 +14,126 @@
     "base_expediting_fee": "6200"
   },
   "mass": 449970.0,
+  "inventory_container_ref": "f970d216-3d90-4566-83d6-b0df6b4275d0",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 19700.0,
+    "y": 7881.0,
+    "z": 8896.0
+  },
+  "hull_health": 34500.0,
+  "hull_parts": [
+    {
+      "name": "ARGO_SRV",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "VTOL_front_left_lower_mesh",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_front_left_upper_mesh",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_front_right_lower_mesh",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_front_right_upper_mesh",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Rear",
+      "health": 8500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nacelle_right",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_mid_right_cylinder_mesh",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_mid_right_upper_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "VTOL_mid_right_lower_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "VTOL_rear_right_cylinder_mesh",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_rear_right_lower_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "VTOL_rear_right_upper_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "DEBRIS_MainTractorBeamArm",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nacelle_left",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_mid_left_cylinder_mesh",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_mid_left_upper_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "VTOL_mid_left_lower_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "VTOL_rear_left_cylinder_mesh",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "VTOL_rear_left_lower_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "VTOL_rear_left_upper_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 21.5,
     "y": 31.5,

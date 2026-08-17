@@ -9,11 +9,12 @@ import Box from "@/shared/components/Box/index.vue";
 import Text from "@/shared/components/base/Text/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
+import type { FeatureFlagName } from "@/services/fyApi";
 
 type Props = {
-  feature: string;
+  feature: FeatureFlagName;
 };
 
 const props = defineProps<Props>();
@@ -28,7 +29,7 @@ const enabled = computed(() => isFeatureEnabled(props.feature));
   <slot v-if="enabled"></slot>
   <Box
     v-else
-    :variant="PanelVariantsEnum.PRIMARY"
+    :tone="PanelTonesEnum.PRIMARY"
     :heading-size="HeadingSizeEnum.HERO"
     large
   >
@@ -39,7 +40,7 @@ const enabled = computed(() => isFeatureEnabled(props.feature));
       <Text>{{ t("texts.featureNotReady") }}</Text>
     </template>
     <template #footer>
-      <Btn :to="{ name: 'home' }" :exact="true">
+      <Btn :to="{ name: 'home' }">
         <i class="fa fa-chevron-left" />
         {{ t("actions.backToHome").toUpperCase() }}
       </Btn>

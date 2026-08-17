@@ -8,7 +8,7 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
-        only: %i[index export fleetchart]
+        only: %i[index export export_hangar_link fleetchart]
 
       before_action :set_fleet
 
@@ -18,6 +18,7 @@ module Api
         :model_paint,
         :module_package,
         :vehicle_loadouts,
+        {user: [:omniauth_connections]},
         {model: [:manufacturer]},
         {vehicle_modules: :model_module},
         {vehicle_upgrades: :model_upgrade},
@@ -73,28 +74,13 @@ module Api
       def export
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles
+        @vehicles = export_vehicles
+      end
 
-        scope = scope.where(loaner: loaner_included?)
+      def export_hangar_link
+        authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = scope.where(user_id: for_members) if for_members.present?
-
-        vehicle_query_params["sorts"] = "model_name asc"
-
-        @q = scope.ransack(vehicle_query_params)
-        @vehicles = Vehicle.where(
-          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
-        )
-          .order(@q.result.order_values)
-          .includes(
-            :model_paint,
-            :model_modules,
-            :model_upgrades,
-            :hangar_groups,
-            {model: :manufacturer},
-            {user: {avatar_attachment: :blob}}
-          )
-          .joins(:model)
+        @vehicles = export_vehicles
       end
 
       def fleetchart
@@ -111,6 +97,32 @@ module Api
           .includes(VEHICLE_RENDER_INCLUDES)
           .joins(:model)
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
+      end
+
+      private def export_vehicles
+        scope = @fleet.vehicles
+
+        scope = scope.where(loaner: loaner_included?)
+
+        scope = scope.where(user_id: for_members) if for_members.present?
+
+        vehicle_query_params["sorts"] = "model_name asc"
+
+        @q = scope.ransack(vehicle_query_params)
+
+        Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
+          .order(@q.result.order_values)
+          .includes(
+            :model_paint,
+            :model_modules,
+            :model_upgrades,
+            :hangar_groups,
+            {model: :manufacturer},
+            {user: {avatar_attachment: :blob}}
+          )
+          .joins(:model)
       end
 
       private def set_fleet

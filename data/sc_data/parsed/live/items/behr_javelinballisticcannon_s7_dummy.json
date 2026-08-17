@@ -97,6 +97,32 @@
   "type_data": {
     "fire_rate": 90.0,
     "heat_per_shot": 17500.0,
-    "max_ammo": 276
+    "max_ammo": 276,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 23.9,
+      "time_till_cooling_starts": 0.884,
+      "overheat_fix_time": 4.73
+    },
+    "power_consumption": 0.1,
+    "weapon_class": "LaserCannon",
+    "mountable": true,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 49.5,
+    "signature_ir": 0.0
   }
 }

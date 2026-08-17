@@ -13,7 +13,7 @@ class FleetInventoryItemPolicy < FleetBasePolicy
 
   params_filter do |params|
     if record.try(:persisted?)
-      params.permit(:name, :notes, :category)
+      params.permit(:name, :notes, :category, :unit)
     else
       params.permit(:name, :category, :quantity, :unit, :entry_type, :quality, :member_id, :image, :notes, :item_type, :item_id)
     end

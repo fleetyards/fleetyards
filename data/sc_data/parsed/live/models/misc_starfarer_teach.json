@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "8",
   "name": "MISC Starfarer Teach's Special",
   "description": "Manufacturer: MISC\\nFocus: Heavy Refueling\\n\\nThe Starfarer differs from traditional bulk freighters in one key way: it is a dedicated fuel platform. The Starfarer is designed not only to load, store and protect fuel stasis units, it is designed to take in spaceborne gases and refine them for use without landing. And while it excels at this, the Starfarer can also be used to ferry traditional bulk cargo pods.\\n\\nCatering to the difficult work condition's of Nyx, Teach's Ship Shop has outfitted this special edition with a custom loadout featuring rugged components so you can better tackle the job at hand.",
   "career": "Support",
@@ -14,6 +14,56 @@
     "base_expediting_fee": "9000"
   },
   "mass": 3466606.0,
+  "inventory_container_ref": "c60deca0-2701-412c-b8fe-a153522d60cd",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 13437.0,
+    "y": 5836.0,
+    "z": 24431.0
+  },
+  "hull_health": 75800.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Starfarer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 31500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 31500.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_back_right",
+      "health": 3600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "spoiler_mid",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_right",
+      "health": 2200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_back_left",
+      "health": 3600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "leg_left",
+      "health": 2200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 48.5,
     "y": 102.0,

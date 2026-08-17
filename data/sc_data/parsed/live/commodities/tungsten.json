@@ -1,0 +1,10 @@
+{
+  "key": "tungsten",
+  "sc_key": "items_commodities_tungsten",
+  "ref": "28ec789c-a7ea-4f6c-a43f-77fe4480123a",
+  "name": "Tungsten",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "Used in many different alloys, tungsten in its pure form becomes malleable while maintaining its hardness.",
+  "icon": "ui/textures/vector/general/items/inv_icon_tungsten.svg"
+}

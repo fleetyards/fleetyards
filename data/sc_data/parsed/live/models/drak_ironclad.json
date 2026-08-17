@@ -14,10 +14,235 @@
     "base_expediting_fee": "9000"
   },
   "mass": 720000.0,
+  "inventory_container_ref": "2c186cac-5a8c-444e-9557-e7ec38377fcb",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 8800.0,
+    "y": 17200.0,
+    "z": 37000.0
+  },
+  "hull_health": 258000.0,
+  "hull_parts": [
+    {
+      "name": "drak_ironclad",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 120000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_mid",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_deck_fence_piece087",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece090",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece098",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_r_002",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_l_000",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_l_001",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_r_003",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece092",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece096",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece099",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece086",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_677",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_679",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_683",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_687",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_735",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_755",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_757",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_underbelly_piece010",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_underbelly_piece006",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_machined007",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_machined005",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nose_armour",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_op_slats",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_op_slats002",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_op_slats004",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_l_001",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_r_001",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_l_002",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_r_002",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_004",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_003",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_01",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_02",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_693",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_engine_fairing_018",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_engine_fairing_043",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_box_detail_009",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_fender_end001",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_fender_end",
+      "health": 2000.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
-    "x": 39.5,
-    "y": 13.4,
-    "z": 111.5
+    "x": 50.0,
+    "y": 117.0,
+    "z": 25.0
   },
   "loadout": [
     {
@@ -32,7 +257,7 @@
     },
     {
       "name": "hardpoint_seat_remote_turret_left",
-      "ref": "c85b5496-969b-4d7a-adf3-a6563366cbb8",
+      "ref": "19b03394-564f-4111-b8da-fbefe8938ce1",
       "key": null,
       "loadout": []
     },
@@ -128,6 +353,37 @@
             {
               "name": "hardpoint_class_2",
               "ref": "bbfbb4b5-c26e-4bee-9d41-9679e102e860",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_turret_interior",
+      "ref": "808eb52a-3b14-4370-a81a-4a9a9d1e6d5f",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "7034e330-3d22-4e89-83cb-c01815dbb875",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "7034e330-3d22-4e89-83cb-c01815dbb875",
               "key": null
             }
           ]
@@ -292,6 +548,11 @@
     {
       "name": "hardpoint_controller_weapon_tractor_beam_right",
       "ref": "b7cc5644-338f-4373-b6cb-320395344629",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_turret_interior",
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
       "key": null
     },
     {
@@ -751,6 +1012,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_interior_airlock_door",
+      "ref": "56003793-3611-402a-bed5-8475e6ed06cb",
+      "key": null
+    },
+    {
       "name": "hardpoint_docking_module",
       "ref": "aef5dfda-50ab-458b-8cb3-f7705b0e26e2",
       "key": null,
@@ -765,6 +1031,11 @@
     {
       "name": "hardpoint_command_module_docking_door",
       "ref": "acaf116d-cd25-4d32-ab9b-97de032f25f9",
+      "key": null
+    },
+    {
+      "name": "hardpoint_interior_cm_airlock_door",
+      "ref": "c4f5b7b1-cdb3-42a1-903c-4bd4410ecdac",
       "key": null
     },
     {
@@ -880,6 +1151,31 @@
     {
       "name": "hardpoint_nose_manned_turret_cap",
       "ref": "25ea1c06-9422-49b8-9d24-3ab9468e49d0",
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_02",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_03",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_04",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_05",
+      "ref": null,
       "key": null
     }
   ]

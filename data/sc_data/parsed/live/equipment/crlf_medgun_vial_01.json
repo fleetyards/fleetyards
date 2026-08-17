@@ -1,0 +1,35 @@
+{
+  "key": "crlf_medgun_vial_01",
+  "ref": "f10cba0e-bb94-4438-a628-5128913bb995",
+  "name": "ParaMed Refill",
+  "description": "This vial is used to refill the ParaMed Medical Device with CureLife Pancea MedGel.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "medgel_refill",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd55bc19-5212-4365-bbc8-73474f0257ed",
+  "tags": [
+    "crlf_medgun_01"
+  ],
+  "hidden": false,
+  "volume": 0.00018,
+  "volume_dimensions": {
+    "x": 0.0348,
+    "y": 0.15,
+    "z": 0.0252
+  }
+}

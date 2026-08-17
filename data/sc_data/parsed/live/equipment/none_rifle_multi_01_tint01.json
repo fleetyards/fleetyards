@@ -1,0 +1,36 @@
+{
+  "key": "none_rifle_multi_01_tint01",
+  "ref": "f75f27cb-0467-438e-8a13-fe203e802d8e",
+  "name": "Killshot \"Bleach\" Rifle",
+  "description": "Beauty is in the eye of the beholder, and if you aim just right, so will a round from the Killshot assault rifle. What it lacks in grace, this classic design has its own scrappy charm. \n\nThe Bleach version features a white paintjob.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "assault_rifle",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "525.0",
+  "range": "50.0",
+  "storage": "45.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_galant_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "stocked",
+    "none_rifle_multi_01"
+  ],
+  "hidden": true,
+  "volume": 0.013,
+  "volume_dimensions": {
+    "x": 0.0811,
+    "y": 0.8528,
+    "z": 0.2487
+  }
+}

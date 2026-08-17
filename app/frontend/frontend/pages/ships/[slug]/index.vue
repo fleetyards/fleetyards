@@ -23,9 +23,6 @@ import {
 import FleetchartImages from "@/frontend/components/Models/FleetchartImages/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
-import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
-import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
-import ModelExternalFuelTanks from "@/frontend/components/Models/ExternalFuelTanks/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -33,7 +30,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import Panel from "@/shared/components/base/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
@@ -263,7 +259,7 @@ const adiMap = computed(() => {
       <div class="row">
         <div class="col-12">
           <BreadCrumbs :crumbs="crumbs" />
-          <h1 class="headline">
+          <h1 class="headline" data-test="model-headline">
             {{ model.name }}
             <small class="text-muted manufacturer">
               <span class="manufacturer-prefix">from</span>
@@ -292,7 +288,6 @@ const adiMap = computed(() => {
             <BtnGroup class="toggle-3d" v-if="model.media.holo">
               <Btn
                 v-if="holoviewerVisible"
-                :size="BtnSizesEnum.SMALL"
                 :to="{
                   name: 'ship-viewer',
                   params: {
@@ -303,15 +298,11 @@ const adiMap = computed(() => {
               >
                 <i class="fa-light fa-external-link-alt" />
               </Btn>
-              <Btn
-                :active="holoviewerVisible"
-                :size="BtnSizesEnum.SMALL"
-                @click="toggleHoloviewer"
-              >
+              <Btn :active="holoviewerVisible" @click="toggleHoloviewer">
                 {{ t("labels.3dView") }}
               </Btn>
 
-              <Btn v-if="adiMap" :size="BtnSizesEnum.SMALL" :href="adiMap">
+              <Btn v-if="adiMap" :href="adiMap">
                 <img :src="adiIcon" class="adi-icon" />
                 {{ t("labels.3dMap") }}
               </Btn>
@@ -362,15 +353,8 @@ const adiMap = computed(() => {
               inline
             />
           </template>
-          <Panel slim>
-            <ModelBaseMetrics :model="model" :extended="extendedState" />
-          </Panel>
-          <Panel slim>
-            <ModelCrewMetrics :model="model" />
-          </Panel>
-          <Panel slim>
-            <ModelSpeedMetrics :model="model" />
-          </Panel>
+          <ModelBaseMetrics :model="model" :extended="extendedState" />
+          <ModelCrewMetrics :model="model" />
           <div class="page-actions page-actions-block">
             <Btn
               v-if="model.onSale && price"
@@ -390,24 +374,23 @@ const adiMap = computed(() => {
               {{ t("actions.model.store") }}
             </Btn>
 
-            <AddToHangar :model="model" :size="BtnSizesEnum.SMALL" />
+            <AddToHangar :model="model" :size="BtnSizesEnum.SM" />
 
             <ShareBtn
               v-if="!mobile"
               data-test="share"
               :url="shareUrl"
               :title="metaTitle || ''"
-              :size="BtnSizesEnum.SMALL"
+              :size="BtnSizesEnum.SM"
             />
 
-            <BtnDropdown data-test="model-dropdown" :size="BtnSizesEnum.SMALL">
+            <BtnDropdown data-test="model-dropdown">
               <Btn
                 v-if="model.hasImages"
                 :to="{
                   name: 'ship-images',
                   params: { slug: model.slug },
                 }"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa fa-images" />
                 <span>{{ t("nav.images") }}</span>
@@ -418,7 +401,6 @@ const adiMap = computed(() => {
                   name: 'ship-videos',
                   params: { slug: model.slug },
                 }"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-light fa-video" />
                 <span>{{ t("nav.videos") }}</span>
@@ -426,7 +408,6 @@ const adiMap = computed(() => {
               <Btn
                 v-if="model.media.brochure?.url"
                 :href="model.media.brochure.url"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-light fa-download" />
                 <span>{{ t("labels.model.brochure") }}</span>
@@ -437,7 +418,6 @@ const adiMap = computed(() => {
                   query: { models: [model.slug] },
                 }"
                 data-test="compare"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-light fa-code-compare" />
                 <span>{{ t("actions.compare.ships") }}</span>
@@ -447,17 +427,16 @@ const adiMap = computed(() => {
                 data-test="share"
                 :url="shareUrl"
                 :title="metaTitle || ''"
-                :size="BtnSizesEnum.SMALL"
+                :size="BtnSizesEnum.SM"
               />
               <Btn
                 v-if="model.links?.salesPageUrl"
                 :href="model.links?.salesPageUrl"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-duotone fa-megaphone" />
                 <span>{{ t("labels.model.salesPage") }}</span>
               </Btn>
-              <Btn :href="wikiUrl" :size="BtnSizesEnum.SMALL">
+              <Btn :href="wikiUrl">
                 <img :src="starcitizenToolsLogo" alt="Starcitizen.tools" />
                 <span>{{ t("labels.model.wiki") }}</span>
               </Btn>
@@ -466,14 +445,8 @@ const adiMap = computed(() => {
         </div>
       </div>
       <FleetchartImages v-model:extended="extendedState" :model="model" />
-      <ModelCargoMetrics
-        v-if="combinedCargoHolds.length"
-        :model="model"
-        :cargo-holds="combinedCargoHolds"
-      />
-      <ModelExternalFuelTanks :model="model" />
       <hr />
-      <Hardpoints :model="model" />
+      <Hardpoints :model="model" :cargo-holds="combinedCargoHolds" />
       <CrewPositions :model="model" />
     </div>
   </div>

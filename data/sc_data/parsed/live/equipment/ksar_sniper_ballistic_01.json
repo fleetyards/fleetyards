@@ -1,0 +1,36 @@
+{
+  "key": "ksar_sniper_ballistic_01",
+  "ref": "bab1362b-0860-4a52-ad5b-dfb63d12f651",
+  "name": "Scalpel Sniper Rifle",
+  "description": "The Scalpel is a unique and versatile sniper rifle from Kastak Arms. Designed with two barrels stacked atop of each other, it has two fire modes so you can adapt your shot to the situation. It can deliver a single, powerful shot from a long distance, or fire both barrels in quick succession to create a double-shot burst.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "sniper_rifle",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "30.0",
+  "range": "120.0",
+  "storage": "8.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_arms_scalpel_sniper_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "stocked",
+    "sniper"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.0559,
+    "y": 0.9987,
+    "z": 0.3436
+  }
+}

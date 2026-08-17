@@ -14,6 +14,166 @@
     "base_expediting_fee": "6805"
   },
   "mass": 380456.0,
+  "inventory_container_ref": "6abb4bb2-4539-4de1-ab8e-878565048c29",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 12794.0,
+    "y": 3737.0,
+    "z": 29117.0
+  },
+  "hull_health": 91000.0,
+  "hull_parts": [
+    {
+      "name": "DRAK_Corsair",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 15000.0,
+      "category": "vital"
+    },
+    {
+      "name": "landing_gear_door_front_left_a",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "landing_gear_door_front_left_b",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_door_front_right_a",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "landing_gear_door_front_right_b",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 15000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "yaw_mesh_base",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "pitch_mesh",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 15000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_left_mesh",
+      "health": 12500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_top_hinge_mesh",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_bottom_hinge_b_mesh",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "main_thruster_b_left_rotator",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "thruster_b_left_rotator_mesh",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_right_mesh",
+      "health": 12500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "right_wing_mesh",
+      "health": 5000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "rignt_wing_tip_antenna_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "right_wing_top_flap_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_rail_door_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_rail_door_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "right_wing_bottom_flap_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "right_wing_rotator_mesh",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thruster_b_right_rotator_mesh",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "landing_gear_door_left_rotator_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_door_left_slider_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_door_right_rotator_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_door_right_slider_mesh",
+      "health": 500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 30.0,
     "y": 53.0,

@@ -1,0 +1,38 @@
+{
+  "key": "grin_toxic_jumpsuit_01_03_01",
+  "ref": "f652aeee-00e1-4a1e-ba3c-bf280bb67a4d",
+  "name": "TruBarrier Hazard Suit Dark Biohazard",
+  "description": "Guard yourself from toxic environmental hazards with the TruBarrier Hazard Suit, constructed from industrial-grade fabric and coated with a multi-layered, laminated polymer that offers a broad range of chemical protection without sacrificing mobility. The encapsulated design provides full-body protection from direct contact with dangerous materials when worn with its accompanying mask.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "toxic",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": "-5 / 32 °C",
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_toxic_jumpsuit",
+    "set_01",
+    "texture_03",
+    "color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

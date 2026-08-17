@@ -1,0 +1,37 @@
+{
+  "key": "nvs_pants_01_01_13",
+  "ref": "9fb2d174-c31d-4cf7-888f-863ba6f9bbe7",
+  "name": "Second Tevarin War Red Dress Trousers",
+  "description": "Honor the heroes that served in the Second Tevarin War by wearing a replica Navy uniform. Historically accurate down to every last stitch, period appropriate materials were used to make these uniforms match military specifications of the era. The red Dress Trousers were worn with the matching jacket for formal occasions and ceremonies.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f8efa046-7f79-4e09-b2fc-35d0df2429cf",
+  "tags": [
+    "nvs_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

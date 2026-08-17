@@ -27,6 +27,7 @@
       "more": "更多...",
       "showMore": "顯示更多",
       "export": "匯出",
+      "exportHangarLink": "匯出至 hangar.link",
       "import": "匯入",
       "here": "這裡",
       "backToList": "返回列表",
@@ -71,6 +72,7 @@
       "disableGlobally": "全域停用",
       "addActor": "新增角色",
       "addGroup": "新增群組",
+      "editGroup": "編輯群組",
       "remove": "移除",
       "delete": "刪除",
       "deleteSelected": "刪除選中項",
@@ -148,7 +150,8 @@
           "openModal": "資料重置後重設遊戲內飛船",
           "moveToWishlist": "Move to Wishlist",
           "removeAll": "Remove all"
-        }
+        },
+        "manageCargo": "管理貨物"
       },
       "syncExtension": {
         "cancel": "取消",
@@ -182,29 +185,11 @@
           "demote": "Demote",
           "accept": "Accept",
           "decline": "Decline",
-          "remove": "移除"
+          "remove": "移除",
+          "editRole": "編輯角色"
         },
         "inviteUrls": {
           "create": "Create new Invite Url"
-        }
-      },
-      "fleets": {
-        "logistics": {
-          "viewInventories": "View Inventories",
-          "viewRequests": "View Requests",
-          "newRequest": "New Request",
-          "createRequest": "Create Request",
-          "createInventory": "New Inventory",
-          "submit": "Submit",
-          "approve": "Approve",
-          "reject": "Reject",
-          "startWork": "Start Work",
-          "fulfill": "Fulfill",
-          "cancel": "Cancel",
-          "addComment": "Add Comment",
-          "createItem": "Add Item",
-          "importCsv": "Import CSV",
-          "downloadTemplate": "Download Template"
         }
       },
       "model": {
@@ -249,6 +234,30 @@
       "roadmap": {
         "showRemoved": "Show Removed",
         "hideRemoved": "Hide Removed"
+      },
+      "logistics": {
+        "viewRequests": "View Requests",
+        "newRequest": "New Request",
+        "createRequest": "Create Request",
+        "createInventory": "New Inventory",
+        "submit": "Submit",
+        "approve": "Approve",
+        "reject": "Reject",
+        "startWork": "Start Work",
+        "fulfill": "Fulfill",
+        "cancel": "Cancel",
+        "addComment": "Add Comment",
+        "deposit": "Deposit",
+        "withdraw": "Withdraw",
+        "createItem": "Add Item",
+        "importCsv": "Import CSV",
+        "downloadTemplate": "Download Template",
+        "destroyInventory": "Delete Inventory",
+        "destroyEntry": "Delete Entry",
+        "editStockItem": "Edit Item",
+        "destroyStockItem": "Delete Item",
+        "editInventory": "Edit Inventory",
+        "clearCargo": "清空貨物"
       }
     }
   }

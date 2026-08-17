@@ -1,0 +1,37 @@
+{
+  "key": "ctl_pants_02_01_01",
+  "ref": "335cb29d-af24-46f0-bb07-f65286757e8b",
+  "name": "Guri Pants Lime",
+  "description": "Step up the style with these bold pants from City Lights. Six zipper pockets and a slanted fly will bring a bit of attitude to your wardrobe.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5ca8a669-44c2-40e4-89b2-7a5da790b832",
+  "tags": [
+    "ctl_pants",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

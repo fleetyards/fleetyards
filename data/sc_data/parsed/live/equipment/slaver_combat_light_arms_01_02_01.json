@@ -1,0 +1,38 @@
+{
+  "key": "slaver_combat_light_arms_01_02_01",
+  "ref": "e0d518c6-5255-42c1-a91d-d69944db522e",
+  "name": "Calico Arms Ultimatum",
+  "description": "Designed to be an EVA-compliant light combat suit, the Calico set is the perfect armor suit for infiltrators, snipers, thieves, basically anyone who likes to avoid kicking in doors. Built out of a combination of PAB3 armor and a custom helmet, it can help you weather some incoming fire without slowing you down.\n\nThe Ultimatum edition features the signature neon pink iconography of the Nine Tails gang.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-39 / 69 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Slaver_Light",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.008,
+  "volume_dimensions": {
+    "x": 0.088,
+    "y": 0.345,
+    "z": 0.323
+  }
+}

@@ -10,6 +10,7 @@
       "size": "Größe",
       "beam": "Breite",
       "cargo": "Fracht",
+      "personalInventory": "Schiffsinventar",
       "netCargo": "Fracht mit Rover/Snub",
       "crew": "Besatzung",
       "speed": "Geschwindigkeit",
@@ -60,6 +61,7 @@
       "modular": "Modular",
       "soldAt": "Verkauft bei?",
       "rentalAt": "Vermietung bei?",
+      "poweredByUex": "Bereitgestellt von UEX",
       "lastUpdatedAt": "Zuletzt aktualisiert am?"
     },
     "component": {

@@ -56,6 +56,9 @@
       "updateHangar": {
         "success": "Hangar-Einstellungen aktualisiert."
       },
+      "updatePrivacy": {
+        "success": "Datenschutz-Einstellungen aktualisiert."
+      },
       "features": {
         "updated": "Funktion aktualisiert.",
         "error": "Funktion konnte nicht aktualisiert werden.",
@@ -149,6 +152,20 @@
         "syncStarted": "Model-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist."
+      },
+      "fundingGoal": {
+        "created": "Finanzierungsziel angelegt.",
+        "updated": "Finanzierungsziel aktualisiert.",
+        "destroyed": "Finanzierungsziel gelöscht.",
+        "createFailed": "Finanzierungsziel konnte nicht angelegt werden.",
+        "updateFailed": "Finanzierungsziel konnte nicht aktualisiert werden."
+      },
+      "supporterContribution": {
+        "created": "Unterstützer-Beitrag angelegt.",
+        "updated": "Unterstützer-Beitrag aktualisiert.",
+        "destroyed": "Unterstützer-Beitrag gelöscht.",
+        "createFailed": "Unterstützer-Beitrag konnte nicht angelegt werden.",
+        "updateFailed": "Unterstützer-Beitrag konnte nicht aktualisiert werden."
       },
       "notification": {
         "granted": "Willkommen bei FleetYards.net Benachrichtigungen!"
@@ -254,38 +271,6 @@
           }
         }
       },
-      "fleets": {
-        "logistics": {
-          "request": {
-            "create": {
-              "success": "Logistics request created.",
-              "failure": "Could not create logistics request."
-            }
-          },
-          "inventory": {
-            "create": {
-              "success": "Inventory created.",
-              "failure": "Could not create inventory."
-            }
-          },
-          "inventoryItem": {
-            "create": {
-              "success": "Item added to inventory.",
-              "failure": "Could not add item to inventory."
-            }
-          },
-          "comment": {
-            "create": {
-              "success": "Comment added.",
-              "failure": "Could not add comment."
-            }
-          },
-          "csvImport": {
-            "success": "%{count} items imported successfully.",
-            "failure": "Could not import CSV file."
-          }
-        }
-      },
       "fleetInvite": {
         "used": "<b>Beitrittsanfrage für %{fleet} gesendet!</b><br>Sobald deine Mitgliedschaft akzeptiert wird, wirst du per E-Mail benachrichtigt",
         "failure": "Einladung konnte nicht verwendet werden.",
@@ -327,7 +312,8 @@
           "leave": "Bist du sicher, dass du die Flotte verlassen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
           "destroy": "Bist du sicher, dass du deine Flotte löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
           "members": {
-            "destroy": "Bist du sicher, dass du dieses Mitglied entfernen möchtest?"
+            "destroy": "Bist du sicher, dass du dieses Mitglied entfernen möchtest?",
+            "remove": "Möchtest du dieses Mitglied wirklich aus der Flotte entfernen?"
           },
           "invites": {
             "decline": "Bist du sicher, dass du diese Einladung ablehnen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
@@ -361,6 +347,12 @@
         },
         "manufacturer": {
           "destroy": "Bist du sicher, dass du diesen Hersteller löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "fundingGoal": {
+          "destroy": "Bist du sicher, dass du dieses Finanzierungsziel löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "supporterContribution": {
+          "destroy": "Bist du sicher, dass du diesen Unterstützer-Beitrag löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         "modelHardpoint": {
           "destroy": "Sind Sie sicher, dass Sie diesen Aufhängungspunkt löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
@@ -443,6 +435,81 @@
         "success": "Dein Hangar wurde synchronisiert.",
         "failure": "Dein Hangar konnte nicht synchronisiert werden.",
         "notLoggedIn": "Du musst auf <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> angemeldet sein, um deinen Hangar zu synchronisieren."
+      },
+      "admin": {
+        "supporterContributions": {
+          "patreonSyncStarted": "Patreon-Synchronisierung gestartet. Aktualisiere in einer Minute, um importierte Unterstützer zu sehen."
+        }
+      },
+      "logistics": {
+        "request": {
+          "create": {
+            "success": "Logistics request created.",
+            "failure": "Could not create logistics request."
+          }
+        },
+        "inventory": {
+          "create": {
+            "success": "Inventory created.",
+            "failure": "Could not create inventory."
+          },
+          "update": {
+            "success": "Inventory updated.",
+            "failure": "Could not update inventory."
+          },
+          "destroy": {
+            "success": "Inventar gelöscht.",
+            "failure": "Inventar konnte nicht gelöscht werden."
+          }
+        },
+        "inventoryItem": {
+          "create": {
+            "success": "Item added to inventory.",
+            "failure": "Could not add item to inventory."
+          },
+          "deposit": {
+            "success": "Deposit recorded.",
+            "failure": "Could not record deposit."
+          },
+          "withdrawal": {
+            "success": "Withdrawal recorded.",
+            "failure": "Could not record withdrawal. Check available stock."
+          },
+          "destroy": {
+            "success": "Entry deleted.",
+            "failure": "Could not delete entry.",
+            "confirm": "Delete this entry? The stock it added or removed is corrected accordingly."
+          }
+        },
+        "comment": {
+          "create": {
+            "success": "Comment added.",
+            "failure": "Could not add comment."
+          }
+        },
+        "csvImport": {
+          "success": "%{count} items imported successfully.",
+          "failure": "Could not import CSV file."
+        },
+        "stockItem": {
+          "update": {
+            "success": "Item updated.",
+            "failure": "Could not update item."
+          },
+          "destroy": {
+            "success": "Item deleted.",
+            "failure": "Could not delete item.",
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "Diesen Eintrag und alle zugehörigen Buchungen löschen? Das kann nicht rückgängig gemacht werden."
+          }
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "Fracht dieses Schiffs leeren? Alle Buchungen werden gelöscht.",
+            "success": "Fracht geleert.",
+            "failure": "Fracht konnte nicht geleert werden."
+          }
+        }
       }
     }
   }

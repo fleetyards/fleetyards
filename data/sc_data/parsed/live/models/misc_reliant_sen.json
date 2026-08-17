@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "MISC Reliant Sen",
   "description": "Manufacturer: MISC\\nFocus: Light Science\\n\\nMagellan, Pierce, Croshaw, names that echo through history thanks to their adventurous spirit, a curious nature, and a reliable ship. The Reliant Sen is a versatile mobile science platform; outfitted with long range capabilities to take you further, longer, and the advanced Samos sensor suite. Perfect for the aspiring explorer who wants to whisper their name into the halls of history.",
   "career": "Industrial",
@@ -14,6 +14,71 @@
     "base_expediting_fee": "2653"
   },
   "mass": 35153.0,
+  "inventory_container_ref": "718bdc00-e953-4af3-815f-3aebfd212b41",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 1601.0,
+    "y": 6519.0,
+    "z": 5819.0
+  },
+  "hull_health": 15460.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Reliant",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 3000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Top_Left",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Bottom_Left",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Top_Right",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Bottom_Right",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body",
+      "health": 3500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Engine_Left",
+      "health": 1180.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Right",
+      "health": 1180.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 28.5,
     "y": 14.75,

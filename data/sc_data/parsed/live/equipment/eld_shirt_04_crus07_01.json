@@ -1,0 +1,38 @@
+{
+  "key": "eld_shirt_04_crus07_01",
+  "ref": "02826a44-68c2-42a1-8270-36734610fa57",
+  "name": "Orison Shipyards T-Shirt White",
+  "description": "The massive Orison shipyards are a sight unlike any other in the UEE. This shirt features a floating ring platform flanked by blossoms from the Hosanna tree, which was specifically cultivated to grow in the gardens of Orison.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Material_crus07",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

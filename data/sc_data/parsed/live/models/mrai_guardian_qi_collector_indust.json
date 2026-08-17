@@ -14,6 +14,181 @@
     "base_expediting_fee": "6180"
   },
   "mass": 37700.0,
+  "inventory_container_ref": "8b90dcb9-41cf-41a0-af8f-4ee7c7130195",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 6000.0,
+    "y": 3333.0,
+    "z": 9000.0
+  },
+  "hull_health": 69200.0,
+  "hull_parts": [
+    {
+      "name": "mrai_guardian",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_body",
+      "health": 7100.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_top_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_wing_left_top_middle",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_left_top_back",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_left_top_front",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_arm_left_rear_top_a",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_top_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_wing_right_top_middle",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_right_top_back",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_right_top_front",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_arm_right_rear_top_a",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_bottom_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_wing_bottom_left_middle",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_bottom_left_back",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_bottom_left_front",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_landing_gear_housing_left_front",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_bottom_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_wing_bottom_right_middle",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_bottom_right_back",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_bottom_right_front",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_landing_gear_housing_right_front",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thruster_arm_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_thruster_arm_left_b",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_left_c",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_left_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "thruster_arm_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_thruster_arm_right_b",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_right_c",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_right_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_body_top_front_a",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_top_front_b",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 16.3,
     "y": 24.3,

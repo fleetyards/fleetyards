@@ -14,6 +14,481 @@
     "base_expediting_fee": "333"
   },
   "mass": 70275858.0,
+  "inventory_container_ref": null,
+  "weapon_pool_size": 20,
+  "signature_cross_section": {
+    "x": 40000.0,
+    "y": 15000.0,
+    "z": 90000.0
+  },
+  "hull_health": 5370010.0,
+  "hull_parts": [
+    {
+      "name": "VNCL_Mauler",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 5000000.0,
+      "category": "vital"
+    },
+    {
+      "name": "bottom_antenas_b",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_bottom_antenas_a",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_underside_plate_front",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bottom_antenas_e",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_bottom_antenas_c",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_bottom_antenas_d",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_front",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_front_antenas_c",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_antenas_b",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_antenas_a",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_antenas_d",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_left_06",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_side_left_mid_addon_1",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_side_left_addon_2",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_side_left_mid_addon_2",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_left_05",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_left",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_front_left_tip",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_left_spike",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_wing_front_left_tip",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_top_right_addon_1",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_right",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_front_right_spike",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_right_tip",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_wing_front_right_tip",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_rear",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_rear_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rear_upper_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_wing_rear_upper_left_01",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_wing_rear_upper_left_02",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_wing_rear_upper_left_spike",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_rear_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rear_lower_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_wing_rear_lower_right_02",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_wing_rear_lower_right_01",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rear_upper_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_wing_rear_upper_right_01",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_wing_rear_upper_right_02",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_wing_rear_upper_right_spike",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rear_lower_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_wing_rear_lower_left_01",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_wing_rear_lower_left_02",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_rear_left_01",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_rear_left_02",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_rear_right_02",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_rear_right_01",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_rear_left_tip",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_rear_right_tip",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_top_chunk_01",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_top_chunk_02",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_top_chunk_03",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_underside_plate_left",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_underside_plate_rear",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_underside_plate_right",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_left_addon_1",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_left_addon_3",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_left_addon_2",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_side_right_addon",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_side_left_addon_1",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_top_left_addon",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_top_right_addon_2",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_arm_right",
+      "health": 50000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_front_arm_right_01",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_front_arm_right_02",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_front_right_antenas",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_right_arm_spike_02",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_right_arm_spike_01",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_right_arm_spike_03",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_right_arm_spike_04",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_arm_left",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_front_arm_left_01",
+      "health": 50000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_front_left_arm_spike_02",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_left_arm_spike_01",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_left_arm_spike_03",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_left_arm_spike_04",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_front_arm_left_02",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debris_front_left_antenas",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_right_05",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_right_06",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_side_right_mid_addon_1",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_side_right_mid_addon_2",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_left_01",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_left_02",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_left_03",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_left_04",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_right_02",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_right_01",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_right_03",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "debris_body_side_right_04",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_right_addon_1",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_right_addon_2",
+      "health": 500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 125.0,
     "y": 425.0,

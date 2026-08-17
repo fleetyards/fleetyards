@@ -42,8 +42,11 @@ v1_api_routes = lambda do
   draw "api/hangar_routes"
   draw "api/vehicles_routes"
   draw "api/vehicle_loadouts_routes"
+  draw "api/vehicle_inventories_routes"
   draw "api/fleets_routes"
   draw "api/components_routes"
+  draw "api/commodities_routes"
+  draw "api/equipment_routes"
   draw "api/notifications_routes"
   draw "api/notification_preferences_routes"
 
@@ -58,6 +61,8 @@ v1_api_routes = lambda do
       end
     end
   end
+
+  get "supporters/progress", to: "supporters#progress"
 
   post "compare/share", to: "compare#share", as: :compare_share
 

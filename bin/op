@@ -4,7 +4,10 @@
 #        bin/op rake db:migrate
 set -euo pipefail
 
-if ! command -v op &> /dev/null; then
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+clean_path="$(awk -v RS=: -v ORS=: -v skip="$script_dir" '$0 != skip' <<< "$PATH" | sed 's/:$//')"
+
+if ! PATH="$clean_path" command -v op &> /dev/null; then
   echo "Error: 1Password CLI (op) is not installed." >&2
   echo "Install it from: https://developer.1password.com/docs/cli/get-started/" >&2
   exit 1
@@ -17,4 +20,4 @@ for env_file in .env.tpl .env .env.local; do
   fi
 done
 
-exec op run "${env_args[@]}" -- "$@"
+exec env PATH="$clean_path" op run "${env_args[@]}" -- "$@"

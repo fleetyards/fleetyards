@@ -66,6 +66,8 @@ module ScData
         # rest down to :unknown so they don't surface as module slots.
         category = "unknown" if category == "module" && type != "Module"
 
+        tags = values.dig("Components", "SAttachableComponentParams", "AttachDef", "Tags").to_s.split
+
         item = {
           key:,
           ref: value_or_nil(values.dig("__ref")),
@@ -213,6 +215,11 @@ module ScData
         if values.dig("Components", "SCItemQuantumDriveParams")
           item[:type_data] = {
             quantum_fuel_requirement: values.dig("Components", "SCItemQuantumDriveParams", "quantumFuelRequirement").to_f,
+            # Quantum-fuel consumption in milli-SCU per Gm of travel (from the
+            # drive's "Travelling" resource state). Max jump range (Gm) =
+            # quantum_fuel_tank_SCU * 1000 / quantum_fuel_consumption. Validated
+            # exact vs erkul.games and spviewer.eu across S1-S4 drives.
+            quantum_fuel_consumption: extract_resource_consumption(values, "QuantumFuel"),
             jump_range: values.dig("Components", "SCItemQuantumDriveParams", "jumpRange").to_f,
             disconnect_range: values.dig("Components", "SCItemQuantumDriveParams", "disconnectRange").to_f,
             drive_speed: values.dig("Components", "SCItemQuantumDriveParams", "params", "driveSpeed").to_f,
@@ -255,6 +262,17 @@ module ScData
 
         end
 
+        if values.dig("Components", "SCItemJumpDriveParams")
+          jump = values.dig("Components", "SCItemJumpDriveParams")
+          item[:type_data] = {
+            alignment_rate: jump["alignmentRate"]&.to_f,
+            alignment_decay_rate: jump["alignmentDecayRate"]&.to_f,
+            tuning_rate: jump["tuningRate"]&.to_f,
+            tuning_decay_rate: jump["tuningDecayRate"]&.to_f,
+            fuel_usage_efficiency_multiplier: jump["fuelUsageEfficiencyMultiplier"]&.to_f
+          }.compact
+        end
+
         if values.dig("Components", "SCItemRadarComponentParams")
           radar = values.dig("Components", "SCItemRadarComponentParams")
           detections = radar.dig("signatureDetection", "SCItemRadarSignatureDetection")
@@ -265,6 +283,7 @@ module ScData
           item[:type_data] = {
             signature_detection: extract_radar_signatures(detections),
             aim_assist_range: aim_assist&.dig("distanceMaxAssignment")&.to_f,
+            aim_assist_min: aim_assist&.dig("distanceMinAssignment")&.to_f,
             ping_properties: {
               cooldown_time: radar.dig("pingProperties", "cooldownTime")&.to_f
             }
@@ -411,7 +430,12 @@ module ScData
           beam = weapon_data.dig("fireActions", "SWeaponActionFireBeamParams")
           beam = beam.is_a?(Array) ? beam.first : beam
 
-          if beam.present?
+          tractor = weapon_data.dig("fireActions", "SWeaponActionFireTractorBeamParams")
+          tractor = tractor.is_a?(Array) ? tractor.first : tractor
+
+          if tractor.present?
+            item[:type_data] = extract_tractor_beam_data(tractor)
+          elsif beam.present?
             item[:type_data] = extract_beam_weapon_data(beam)
           else
             charged = weapon_data.dig("fireActions", "SWeaponActionFireChargedParams")
@@ -426,6 +450,7 @@ module ScData
               fire_rate: fire_actions&.dig("fireRate")&.to_f,
               heat_per_shot: fire_actions&.dig("heatPerShot")&.to_f,
               damage_per_shot: extract_ammo_damage(ammo),
+              penetration: extract_ammo_penetration(ammo),
               pellets_per_shot: fire_actions&.dig("launchParams", "SProjectileLauncher", "pelletCount")&.to_i,
               speed: projectile_speed,
               range: (projectile_speed && projectile_lifetime) ? (projectile_speed * projectile_lifetime).round(1) : nil,
@@ -437,6 +462,33 @@ module ScData
               type_data[:charge_time] = charged["chargeTime"]&.to_f
               type_data[:overcharge_time] = charged["overchargeTime"]&.to_f
             end
+
+            regen = weapon_data.dig("weaponRegenConsumerParams", "SWeaponRegenConsumerParams")
+            if regen.present?
+              type_data[:regen] = {
+                max_ammo_load: regen["maxAmmoLoad"]&.to_f,
+                max_regen_per_second: regen["maxRegenPerSec"]&.to_f,
+                cost_per_bullet: regen["regenerationCostPerBullet"]&.to_f,
+                regeneration_cooldown: regen["regenerationCooldown"]&.to_f,
+                requested_regen_per_second: regen["requestedRegenPerSec"]&.to_f,
+                requested_ammo_load: regen["requestedAmmoLoad"]&.to_f
+              }.compact
+            end
+
+            heat = weapon_data.dig("connectionParams", "simplifiedHeatParams", "SWeaponSimplifiedHeatParams")
+            if heat.present?
+              type_data[:heat] = {
+                overheat_temperature: heat["overheatTemperature"]&.to_f,
+                cooling_per_second: heat["coolingPerSecond"]&.to_f,
+                time_till_cooling_starts: heat["timeTillCoolingStarts"]&.to_f,
+                overheat_fix_time: heat["overheatFixTime"]&.to_f
+              }.compact
+            end
+
+            # Steady-state Power draw (resource units/s), used to size the ship's
+            # shared weapon-power pool for sustained-DPS throttling.
+            power_consumption = extract_resource_consumption(values, "Power")
+            type_data[:power_consumption] = power_consumption if power_consumption.present?
 
             item[:type_data] = type_data.compact
           end
@@ -478,17 +530,34 @@ module ScData
           armor_data = values.dig("Components", "SCItemVehicleArmorParams")
           damage_info = armor_data.dig("damageMultiplier", "DamageInfo") if armor_data.dig("damageMultiplier").is_a?(Hash)
           signal_data = armor_data.dig("signalCrossSection", "SItemSignalEmission") if armor_data.dig("signalCrossSection").is_a?(Hash)
+          deflection = armor_data.dig("armorDeflection", "deflectionValue")
+          resistances = values.dig("Components", "SHealthComponentParams", "DamageResistances", "DamageResistance")
           item[:type_data] = {
+            health: values.dig("Components", "SHealthComponentParams", "Health")&.to_f,
+            self_resistance_physical: resistances&.dig("PhysicalResistance", "Multiplier")&.to_f,
+            self_resistance_energy: resistances&.dig("EnergyResistance", "Multiplier")&.to_f,
+            self_resistance_distortion: resistances&.dig("DistortionResistance", "Multiplier")&.to_f,
+            self_resistance_thermal: resistances&.dig("ThermalResistance", "Multiplier")&.to_f,
             damage_physical: damage_info&.dig("DamagePhysical")&.to_f,
             damage_energy: damage_info&.dig("DamageEnergy")&.to_f,
             damage_distortion: damage_info&.dig("DamageDistortion")&.to_f,
             damage_thermal: damage_info&.dig("DamageThermal")&.to_f,
             damage_biochemical: damage_info&.dig("DamageBiochemical")&.to_f,
             damage_stun: damage_info&.dig("DamageStun")&.to_f,
+            deflection_physical: deflection&.dig("DamagePhysical")&.to_f,
+            deflection_energy: deflection&.dig("DamageEnergy")&.to_f,
+            deflection_distortion: deflection&.dig("DamageDistortion")&.to_f,
+            deflection_thermal: deflection&.dig("DamageThermal")&.to_f,
             signal_infrared: signal_data&.dig("Infrared")&.to_f,
             signal_electromagnetic: signal_data&.dig("Electromagnetic")&.to_f,
             signal_cross_section: signal_data&.dig("CrossSection")&.to_f
           }.compact
+        end
+
+        if item[:type_data].present? && type == "WeaponGun"
+          item[:type_data][:weapon_class] = extract_item_class(tags)
+          item[:type_data][:mountable] = tags.include?("weaponMountUsable")
+          item[:type_data].compact!
         end
 
         if values.dig("Components", "SCItemTurretParams")
@@ -501,7 +570,55 @@ module ScData
           }.compact
         end
 
+        # Power draw + its power-range modifier for power-drawing components —
+        # inputs for the ship-wide power-allocation sim (erkul's `z` /
+        # `powerRanges`). Any component that draws Power gets this, even ones
+        # without their own type_data block (e.g. life support), so the sim sees
+        # every power consumer.
+        power_draw = extract_resource_consumption(values, "Power")
+        if power_draw.present?
+          item[:type_data] = {} unless item[:type_data].is_a?(Hash)
+          item[:type_data][:power_consumption] ||= power_draw
+          minimum_fraction = extract_power_minimum_fraction(values)
+          item[:type_data][:power_minimum_fraction] ||= minimum_fraction if minimum_fraction.present?
+        end
+
+        # Signature emission (EM/IR) + its power-range modifier — captured for
+        # every resource-network component, including power plants (which
+        # produce, not consume, power but are the ship's biggest EM source).
+        signature = extract_signature(values)
+        power_ranges = extract_power_ranges(values)
+        if signature.present? || power_ranges.present?
+          item[:type_data] = {} unless item[:type_data].is_a?(Hash)
+          item[:type_data][:power_ranges] ||= power_ranges if power_ranges.present?
+          if signature.present?
+            item[:type_data][:signature_em] ||= signature[:em] unless signature[:em].nil?
+            item[:type_data][:signature_ir] ||= signature[:ir] unless signature[:ir].nil?
+          end
+        end
+
         item
+      end
+
+      # The AttachDef `Tags` attribute mixes manufacturer codes, engine flags and
+      # a weapon's class ("BallisticGatling", "LaserRepeater"). Only the class is
+      # useful, and it is the only classification the game files give us — Type
+      # and SubType are the far coarser "WeaponGun" / "Gun".
+      ITEM_CLASS_TAGS = %w[
+        BallisticGatling BallisticCannon BallisticRepeater
+        LaserCannon LaserRepeater LaserGatling
+        DistortionCannon DistortionRepeater DistortionScatterGun
+        PlasmaCannon NeutronCannon TachyonCannon
+        ScatterGun MassDriver
+      ].freeze
+
+      private def extract_item_class(tags)
+        # Longest match first so "DistortionScatterGun" is not read as
+        # "ScatterGun", and tolerate the vendor-prefixed forms the files use
+        # (e.g. "BANU_TachyonCannon").
+        ITEM_CLASS_TAGS
+          .sort_by { |candidate| -candidate.length }
+          .find { |candidate| tags.any? { |tag| tag.end_with?(candidate) } }
       end
 
       private def extract_item_loadout(values)
@@ -608,6 +725,21 @@ module ScData
         }.compact.presence
       end
 
+      private def extract_ammo_penetration(ammo)
+        return if ammo.blank?
+
+        bullet = ammo.dig("projectileParams", "BulletProjectileParams")
+        return if bullet.blank?
+
+        max_thickness = bullet.dig("pierceabilityParams", "maxPenetrationThickness")&.to_f
+        base_distance = bullet.dig("penetrationParams", "basePenetrationDistance")&.to_f
+
+        {
+          max_thickness:,
+          base_distance:
+        }.compact.presence
+      end
+
       private def extract_beam_weapon_data(beam)
         damage_info = beam.dig("damagePerSecond", "DamageInfo")
         damage_per_second = if damage_info.present?
@@ -627,6 +759,54 @@ module ScData
           heat_per_second: beam["heatPerSecond"]&.to_f,
           full_damage_range: beam["fullDamageRange"]&.to_f,
           zero_damage_range: beam["zeroDamageRange"]&.to_f
+        }.compact
+      end
+
+      # Tractor and towing beams are WeaponGun-shaped items with no projectile,
+      # ammo or damage — every stat that matters sits on their tractor fire
+      # action. Mirrors erkul's set: pull force and reach, the beam's handling,
+      # the far stronger cargo-mode overrides, and (towing beams) the tow force
+      # plus quantum-tow mass limit.
+      private def extract_tractor_beam_data(tractor)
+        rotation = tractor.dig("rotationParams")
+        movement = tractor.dig("movementParams")
+        cargo_mode = tractor.dig("attachDetachParams", "cargoModeOverrideParams")
+
+        towing = tractor.dig("towingBeamParams", "SWeaponActionFireTractorBeamTowingParams")
+        towing = towing.is_a?(Array) ? towing.first : towing
+
+        {
+          tractor_beam: true,
+          min_force: tractor["minForce"]&.to_f,
+          max_force: tractor["maxForce"]&.to_f,
+          min_distance: tractor["minDistance"]&.to_f,
+          max_distance: tractor["maxDistance"]&.to_f,
+          full_strength_distance: tractor["fullStrengthDistance"]&.to_f,
+          max_angle: tractor["maxAngle"]&.to_f,
+          max_volume: tractor["maxVolume"]&.to_f,
+          volume_force_coefficient: tractor["volumeForceCoefficient"]&.to_f,
+          tether_break_time: tractor["tetherBreakTime"]&.to_f,
+          heat_per_second: tractor["heatPerSecond"]&.to_f,
+          rotation: {
+            max_angular_velocity: rotation&.dig("maxAngularVelocity")&.to_f,
+            degrees_per_action: rotation&.dig("degreesPerAction")&.to_f
+          }.compact.presence,
+          movement: {
+            max_speed: movement&.dig("maxSpeed")&.to_f,
+            max_acceleration: movement&.dig("maxAcceleration")&.to_f
+          }.compact.presence,
+          cargo_mode: {
+            max_force: cargo_mode&.dig("maxForceOverride")&.to_f,
+            min_distance: cargo_mode&.dig("minDistanceOverride")&.to_f,
+            max_distance: cargo_mode&.dig("maxDistanceOverride")&.to_f,
+            full_strength_distance: cargo_mode&.dig("fullStrengthDistanceOverride")&.to_f
+          }.compact.presence,
+          towing: {
+            towing_force: towing&.dig("towingForce")&.to_f,
+            towing_max_distance: towing&.dig("towingMaxDistance")&.to_f,
+            towing_max_acceleration: towing&.dig("towingMaxAcceleration")&.to_f,
+            quantum_tow_mass_limit: towing&.dig("quantumTowMassLimit")&.to_f
+          }.compact.presence
         }.compact
       end
 
@@ -675,6 +855,21 @@ module ScData
             modifier: range["modifier"]&.to_f
           }
         end.presence
+      end
+
+      # A component's passive EM/IR signature emission at full power (erkul's
+      # `emNominal`/`irNominal`), read from the Online resource state. The sim
+      # scales these by active power segments (and IR by the cooling ratio).
+      private def extract_signature(values)
+        state = values.dig("Components", "ItemResourceComponentParams", "states", "ItemResourceState")
+        state = state.first if state.is_a?(Array)
+        params = state&.dig("signatureParams")
+        return if params.blank?
+
+        {
+          em: params.dig("EMSignature", "nominalSignature")&.to_f,
+          ir: params.dig("IRSignature", "nominalSignature")&.to_f
+        }.compact.presence
       end
 
       private def parse_inventory(key, values)
@@ -740,9 +935,9 @@ module ScData
           type_data[:storage] = if capacity.dig("SStandardCargoUnit").present?
             capacity.dig("SStandardCargoUnit", "standardCargoUnits").to_f
           elsif capacity.dig("SMicroCargoUnit").present?
-            capacity.dig("SMicroCargoUnit", "microSCU").to_f**-6
+            capacity.dig("SMicroCargoUnit", "microSCU").to_f / 1_000_000
           elsif capacity.dig("SCentiCargoUnit").present?
-            capacity.dig("SCentiCargoUnit", "centiSCU").to_f**-2
+            capacity.dig("SCentiCargoUnit", "centiSCU").to_f / 100
           end
         end
 
@@ -857,7 +1052,33 @@ module ScData
         nil
       end
 
+      # Both plain consumers (`ItemResourceDeltaConsumption`, e.g. weapons) and
+      # converters (`ItemResourceDeltaConversion`, e.g. shields/coolers/radar,
+      # which turn Power into their output) declare a `consumption` flow. The
+      # amount is a `SStandardResourceUnit` for standard-unit consumers or a
+      # `SPowerSegmentResourceUnit` for segment-based components — both map to
+      # erkul's `units`.
+      RESOURCE_DELTA_KEYS = %w[
+        ItemResourceDeltaConsumption
+        ItemResourceDeltaConversion
+      ].freeze
+
       private def extract_resource_consumption(values, resource_name)
+        each_resource_consumption(values, resource_name) { |units, _fraction| return units }
+        nil
+      end
+
+      # The `minimumConsumptionFraction` of a component's Power flow — the share
+      # that must stay powered (erkul's `minimumFraction`, sizing the critical
+      # allocation block).
+      private def extract_power_minimum_fraction(values)
+        each_resource_consumption(values, "Power") do |_units, fraction|
+          return fraction if fraction.present?
+        end
+        nil
+      end
+
+      private def each_resource_consumption(values, resource_name)
         irc = values.dig("Components", "ItemResourceComponentParams")
         return if irc.blank?
 
@@ -869,20 +1090,26 @@ module ScData
           deltas = state.dig("deltas")
           next if deltas.blank?
 
-          delta = deltas.dig("ItemResourceDeltaConsumption")
-          next if delta.blank?
+          RESOURCE_DELTA_KEYS.each do |delta_key|
+            delta = deltas.dig(delta_key)
+            next if delta.blank?
 
-          delta = [delta] if delta.is_a?(Hash)
-          delta.each do |d|
-            consumption = d.dig("consumption")
-            next if consumption.blank? || consumption.dig("resource") != resource_name
+            delta = [delta] if delta.is_a?(Hash)
+            delta.each do |d|
+              consumption = d.dig("consumption")
+              next if consumption.blank? || consumption.dig("resource") != resource_name
 
-            amount = consumption.dig("resourceAmountPerSecond")
-            next if amount.blank?
+              amount = consumption.dig("resourceAmountPerSecond")
+              next if amount.blank?
 
-            units = amount.dig("SStandardResourceUnit", "standardResourceUnits") ||
-              amount.dig("SStandardCargoUnit", "standardCargoUnits")
-            return units.to_f if units.present?
+              units = amount.dig("SStandardResourceUnit", "standardResourceUnits") ||
+                amount.dig("SPowerSegmentResourceUnit", "units") ||
+                amount.dig("SStandardCargoUnit", "standardCargoUnits") ||
+                amount.dig("SMicroResourceUnit", "microResourceUnits")
+              next if units.blank?
+
+              yield units.to_f, d.dig("minimumConsumptionFraction")&.to_f
+            end
           end
         end
 

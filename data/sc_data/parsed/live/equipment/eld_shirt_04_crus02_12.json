@@ -1,0 +1,38 @@
+{
+  "key": "eld_shirt_04_crus02_12",
+  "ref": "2203a993-73f7-4ade-95b8-4fc2039e45d2",
+  "name": "Orison T-Shirt Black",
+  "description": "Named after an old word for \"prayer,\" the city of Orison is unlike any other in the empire. Commemorate this special locale with the image of one of the city's iconic cloud vistas framed inside the name.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Material_crus02",
+    "Color_12"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

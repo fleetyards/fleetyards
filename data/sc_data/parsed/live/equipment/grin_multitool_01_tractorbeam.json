@@ -1,0 +1,35 @@
+{
+  "key": "grin_multitool_01_tractorbeam",
+  "ref": "03b3db91-0063-4da2-99f7-16b20ede4209",
+  "name": "TruHold Tractor Beam Attachment",
+  "description": "MUST BUY BASE MULTI-TOOL TO USE: \"Pyro RYT Multi-Tool\"\n\nManufacturer: Greycat Industrial\nItem Type: Multi-Tool Attachment\nClass: Tractor Beam\n\nWhether your feet are on the floor or floating in zero-G, the TruHold attachment for the Pyro RYT Multi-Tool makes lifting and positioning items easier than ever. With its impressive and efficient pull/draw ratio and easy-to-read range finder, the TruHold can be used solo or paired with other beams to tackle heavier targets. Plus, the TruHold has the added benefit of functioning as a personal zero-G traversal device when coupled to an object with a high enough mass.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "multitool",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Utility",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_multitool_01"
+  ],
+  "hidden": false,
+  "volume": 0.00034,
+  "volume_dimensions": {
+    "x": 0.0549,
+    "y": 0.0424,
+    "z": 0.133
+  }
+}

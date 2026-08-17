@@ -16,7 +16,9 @@
       "videos": "视频",
       "hangar": {
         "index": "我的机库",
-        "vehicleLoadouts": "Loadouts"
+        "vehicleLoadouts": "Loadouts",
+        "inventories": "Inventories",
+        "vehicleCargo": "货物"
       },
       "login": "登录",
       "logout": "登出",
@@ -87,10 +89,16 @@
         "index": "视觉测试",
         "panels": "面板",
         "buttons": "按钮",
+        "typography": "排版",
+        "forms": "表单",
         "tables": "表格",
+        "lists": "列表",
+        "metrics": "指标",
+        "states": "状态",
         "notifications": "通知",
         "syncModal": "同步弹窗",
-        "supportHint": "支持提示"
+        "supportHint": "支持提示",
+        "chips": "Chips"
       },
       "admin": {
         "index": "管理员",
@@ -167,6 +175,16 @@
           "workers": "工作进程",
           "tasks": "任务",
           "rsiApiStatus": "RSI API 状态"
+        },
+        "supporterContributions": {
+          "index": "支持者贡献",
+          "new": "新建支持者贡献",
+          "edit": "编辑支持者贡献"
+        },
+        "fundingGoals": {
+          "index": "资金目标",
+          "new": "新建资金目标",
+          "edit": "编辑资金目标"
         }
       }
     }

@@ -15,7 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelModule } from "@/services/fyApi";
 import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useMobile } from "@/shared/composables/useMobile";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
@@ -76,7 +76,6 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
       >
         <Panel
           :alignment="PanelAlignmentsEnum.LEFT"
-          slim
           class="module-panel"
           @click="selectModule(mod)"
         >
@@ -88,11 +87,7 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
             :alt="mod.name"
           />
           <div>
-            <PanelHeading
-              :level="HeadingLevelEnum.H3"
-              title-align="right"
-              multiline
-            >
+            <PanelHeading :level="HeadingLevelEnum.H3">
               {{ mod.name }}
             </PanelHeading>
             <div
@@ -107,13 +102,8 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
       </div>
     </div>
     <template #footer>
-      <div class="float-sm-right">
-        <Btn
-          v-if="selectedModuleSlug"
-          :size="BtnSizesEnum.SMALL"
-          :inline="true"
-          @click="clearModule"
-        >
+      <div class="modal-actions">
+        <Btn v-if="selectedModuleSlug" @click="clearModule">
           {{ t("labels.hardpoint.clearModule") }}
         </Btn>
       </div>

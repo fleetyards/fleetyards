@@ -1,0 +1,37 @@
+{
+  "key": "eld_shirt_04_fleetweek2025_invictus_02",
+  "ref": "d8be4209-eb85-4d5d-8717-ee027051c8f4",
+  "name": "Invictus T-Shirt Beige",
+  "description": "Commemorate the biggest fleet flyby of the year with this comfortable t-shirt, featuring the seal of the UEE Navy on the front and the Invictus Launch Week logo on the back.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Color_expo"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "key": "srvl_combat_medium_helmet_02_01_01",
+  "ref": "68cab282-0097-4e5b-a6b2-365daf59c84b",
+  "name": "Carrion Helmet Stalker",
+  "description": "Forged from scavenged metals and ragged clothes, the Carrion armor is a crude concoction of repurposed materials that demonstrates you'll do anything it takes to survive. The helmet features a high comb of iron bars and a faceplate framed by menacing pieces of Vanduul armor. \n\nThe Stalker variant has been tagged with orange paint, and features a long cape and integrated pieces of Vanduul armor plating.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-50 / 80 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

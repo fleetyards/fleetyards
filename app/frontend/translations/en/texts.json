@@ -5,9 +5,11 @@
       "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
       "indexQuoteSource": "Author Unknown, Source:",
       "support": {
-        "info": "If you like FleetYards.net and want to support the further development and maintenance<br>of this project please upvote our <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a>.",
+        "info": "Love FleetYards.net? Help us grow by upvoting our <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> — it's free and boosts our visibility in the community.",
+        "goal": "The monthly goal helps cover the running costs of FleetYards, like server hosting and data services. Every bit of support helps keep the site online, fast and up to date.",
         "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code when you buy Star Citizen:",
-        "subline": "or you can support us directly via:"
+        "subline": "or you can support us directly via:",
+        "thisMonth": "Raised this month"
       },
       "supportHint": {
         "hangarSync": "Background syncs are the biggest item on our hosting bill. FleetYards runs on donations — if you'd like to chip in, every bit helps.",
@@ -17,6 +19,7 @@
         "visitMilestone": "FleetYards is community-funded — no ads, no paywalls. If you find it useful, a small donation goes a long way."
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "forbidden": "Your clearance does not cover this area. If a feature is still being rolled out, you can switch it on yourself under Settings > Features once it is available to you.",
       "featureNotReady": "This feature is not yet ready and will be available soon. Stay tuned!",
       "accessDenied": "You are not authorized to view this page.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
@@ -27,6 +30,11 @@
       },
       "fleets": {
         "leaveInfo": "You can not leave the Fleet."
+      },
+      "admin": {
+        "destroyedFleets": {
+          "purgedWarning": "Restoring a purged fleet is best-effort. Roles, images, invite links and fleet vehicles are not restored."
+        }
       },
       "hangarGuide": {
         "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
@@ -94,6 +102,22 @@
         "p3": {
           "headline": "As a Guest",
           "text": "As a Guest on %{app} we collect the following data:"
+        },
+        "analytics": {
+          "headline": "Usage analytics",
+          "basis": "%{app} counts page views to understand which parts of the site are actually used. This runs on our legitimate interest in operating and improving the site, not on consent: the data is collected first-party only, IP addresses are anonymised before they are stored, no cookies or other identifiers are placed on your device, and nothing is shared with advertising networks.",
+          "retention": "Individual visits and page views are deleted after one month. Only aggregated counts, which cannot be traced back to a person, are kept beyond that. Deleting your account also deletes the visits recorded for it.",
+          "objection": {
+            "headline": "How to object",
+            "text": "You can object to usage analytics at any time, and we will stop recording it rather than merely hiding it.",
+            "user": "Your account setting under Settings is applied to every device you sign in on.",
+            "guest": "Without an account you can object here. We also honour the Global Privacy Control signal if your browser sends one."
+          }
+        }
+      },
+      "settings": {
+        "privacy": {
+          "tracking": "When this is enabled we count the pages you visit to see which parts of the site are used. IP addresses are anonymised, nothing is stored on your device, and individual visits are deleted after one month. Turning it off stops the recording entirely."
         }
       },
       "signup": {

@@ -10,50 +10,24 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
-import type { RouteLocationRaw } from "vue-router";
 import type { FleetyardsSyncEvent } from "@/frontend/lib/FleetyardsSyncHandler";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 
+// Only what the wrapper forwards. Anything else a caller sets falls through to
+// the Btn below on its own.
 type Props = {
   variant?: BtnVariantsEnum;
   size?: BtnSizesEnum;
-  inline?: boolean;
-  to?: RouteLocationRaw;
-  href?: string;
-  type?: "button" | "submit";
   loading?: boolean;
-  spinner?: boolean | SpinnerAlignment;
-  exact?: boolean;
-  block?: boolean;
-  mobileBlock?: boolean;
-  textInline?: boolean;
-  active?: boolean;
-  disabled?: boolean;
-  routeActiveClass?: string;
-  inGroup?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.DEFAULT,
-  inline: false,
-  to: undefined,
-  href: undefined,
-  type: "button",
+  variant: undefined,
+  size: undefined,
   loading: false,
-  spinner: false,
-  exact: false,
-  block: false,
-  mobileBlock: false,
-  textInline: false,
-  active: false,
-  disabled: false,
-  routeActiveClass: undefined,
-  inGroup: false,
 });
 
 const { t } = useI18n();

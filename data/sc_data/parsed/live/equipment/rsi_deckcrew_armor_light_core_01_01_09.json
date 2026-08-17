@@ -1,0 +1,38 @@
+{
+  "key": "rsi_deckcrew_armor_light_core_01_01_09",
+  "ref": "2fdc2c41-67cb-46d1-81fd-2c2ba8bda175",
+  "name": "MacFlex Core Violet",
+  "description": "Whether you're planetside or in vacuum, RSI's MacFlex industrial armor set has your back. Reinforced plating keeps you safe from environmental hazards while the array of pouches keep your tools accessible.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-37 / 67 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "DeckCrew",
+    "Set_01",
+    "Color_09",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.034,
+  "volume_dimensions": {
+    "x": 0.411,
+    "y": 0.367,
+    "z": 0.299
+  }
+}

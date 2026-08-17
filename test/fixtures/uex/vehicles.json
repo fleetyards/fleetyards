@@ -1,0 +1,36 @@
+{
+  "status": "ok",
+  "http_code": 200,
+  "data": [
+    {
+      "id": 1,
+      "slug": "orig-100i",
+      "name": "100i",
+      "name_full": "Origin 100i"
+    },
+    {
+      "id": 2,
+      "slug": "avenger-titan",
+      "name": "Avenger Titan",
+      "name_full": "Aegis Avenger Titan"
+    },
+    {
+      "id": 3,
+      "slug": "constellation-andromeda",
+      "name": "Andromeda",
+      "name_full": "Constellation Andromeda"
+    },
+    {
+      "id": 4,
+      "slug": "c2-hercules-starlifter",
+      "name": "C2 Hercules Starlifter",
+      "name_full": "Crusader C2 Hercules Starlifter"
+    },
+    {
+      "id": 5,
+      "slug": "vanduul-scythe",
+      "name": "Scythe",
+      "name_full": "Vanduul Scythe"
+    }
+  ]
+}

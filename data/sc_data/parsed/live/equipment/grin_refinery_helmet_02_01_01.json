@@ -1,0 +1,38 @@
+{
+  "key": "grin_refinery_helmet_02_01_01",
+  "ref": "2a6597be-f456-4751-830b-2284e14c9f77",
+  "name": "ThermoWeave Hood ASD Edition",
+  "description": "The ThermoWeave hood integrates a heat and impact resistant hard hat with a neck covering hood that includes a vapor barrier to keep moisture build-up to a minimum. A large faceplate provides a wide field of view and the built-in respirator features a state-of-the-art filter to help you breathe easy.\n\nWorn by employees who require an extra level of protection in their field, the ASD Edition showcases the reds and greens of the ASD branding.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "refinery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_refinery_helmet",
+    "Set_02",
+    "Color_01",
+    "KeepsShape"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

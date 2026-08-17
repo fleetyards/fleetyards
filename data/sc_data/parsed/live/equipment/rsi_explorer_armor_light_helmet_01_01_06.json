@@ -1,0 +1,40 @@
+{
+  "key": "rsi_explorer_armor_light_helmet_01_01_06",
+  "ref": "a7386a26-e974-47cd-a58e-1ca1a444e6f6",
+  "name": "Venture Helmet Seagreen",
+  "description": "RSI's Venture helmet is built from impact-resistant composites and designed to weather the harshest of environments. It also features an anti-scuff laminate faceplate that offers an unparalleled upward field of view, providing unobstructed sightlines to whatever wonders you discover.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-38 / 68 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Color_06",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
+}

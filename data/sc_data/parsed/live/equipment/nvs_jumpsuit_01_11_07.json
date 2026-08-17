@@ -1,0 +1,38 @@
+{
+  "key": "nvs_jumpsuit_01_11_07",
+  "ref": "55cbd999-778a-46d3-b17a-4972d036541b",
+  "name": "Falston Jumpsuit \"Cry-Astro Edition\"",
+  "description": "The Falston jumpsuit has a high collar to guard against the elements, triple-reinforced stitching, and an extra soft interior lining because everyone deserves a bit of comfort.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jumpsuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f8efa046-7f79-4e09-b2fc-35d0df2429cf",
+  "tags": [
+    "nvs_jumpsuit",
+    "Set_01",
+    "Texture_11",
+    "Color_07"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

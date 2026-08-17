@@ -9,67 +9,79 @@
 #  core_compatibility     :integer
 #  damage_reduction       :decimal(15, 2)
 #  description            :text
-#  equipment_type         :integer
-#  extras                 :string
+#  equipment_type         :string
+#  g_force_tolerance      :decimal(15, 2)
 #  grade                  :string
-#  hidden                 :boolean          default(TRUE)
-#  item_type              :integer
+#  hidden                 :boolean          default(FALSE)
+#  icon                   :string
+#  item_type              :string
 #  name                   :string
+#  radiation_protection   :decimal(15, 2)
+#  radiation_scrub_rate   :decimal(15, 2)
 #  range                  :decimal(15, 2)
 #  rate_of_fire           :decimal(15, 2)
+#  sc_key                 :string
+#  sc_ref                 :string
 #  size                   :string
 #  slot                   :integer
 #  slug                   :string
 #  storage                :decimal(15, 2)
-#  store_image            :string
-#  store_image_height     :integer
-#  store_image_width      :integer
+#  sub_type               :string
 #  temperature_rating     :string
-#  volume                 :decimal(15, 2)
-#  weapon_class           :integer
+#  version                :string
+#  volume                 :decimal(15, 6)
+#  volume_dimensions      :jsonb
+#  weapon_class           :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  manufacturer_id        :uuid
 #
 # Indexes
 #
+#  index_equipment_on_equipment_type   (equipment_type)
+#  index_equipment_on_item_type        (item_type)
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
+#  index_equipment_on_sc_key           (sc_key) UNIQUE
+#  index_equipment_on_slot             (slot)
 #
 class Equipment < ApplicationRecord
   paginates_per 50
 
   belongs_to :manufacturer, optional: true
+
+  # Nothing fills this from the game files: the loadout icons the records name
+  # are art the export leaves out on purpose. It is here for the same reason
+  # every other catalogue has one -- an upload, and the ledger's fallback to
+  # the referenced item's picture.
+  has_one_attached :store_image
   has_many :item_prices, as: :item, dependent: :destroy
 
   validates :name, presence: true
+  validates :sc_key, uniqueness: true, allow_nil: true
 
   before_save :update_slugs
 
-  # TODO: Equipment model appears unused — remove entirely in a future cleanup
-
   ransack_alias :name, :name_or_slug
 
-  def self.ransackable_attributes(auth_object = nil)
-    [
-      "backpack_compatibility", "core_compatibility", "created_at", "damage_reduction",
-      "description", "equipment_type", "extras", "grade", "hidden", "id", "id_value", "item_type",
-      "manufacturer_id", "name", "range", "rate_of_fire", "size", "slot", "slug", "storage",
-      "store_image", "temperature_rating", "updated_at", "volume", "weapon_class"
-    ]
-  end
+  # The game's own split, from AttachDef Type. Armour and clothing join these
+  # when the character trees land; they are the same kind of thing worn or
+  # carried by a player, and share this table.
+  EQUIPMENT_TYPES = %w[
+    weapon weapon_attachment tool armor clothing undersuit medical hacking_tool
+  ].freeze
 
-  def self.ransackable_associations(auth_object = nil)
-    ["manufacturer", "shop_commodities"]
-  end
+  # Kept as free strings rather than an enum: CIG adds weapon classes between
+  # builds, and a new one should load rather than raise. Same reasoning as
+  # Commodity#commodity_type.
+  WEAPON_CLASSES = %w[ballistic energy kinetic frag].freeze
 
-  enum :equipment_type,
-    {
-      undersuit: 0, armor: 1, weapon: 2, tool: 3, clothing: 4, medical: 5,
-      weapon_attachment: 6, hacking_tool: 7
-    }
-  ransacker :equipment_type, formatter: proc { |v| Equipment.equipment_types[v] } do |parent|
-    parent.table[:equipment_type]
-  end
+  DEFAULT_SORTING_PARAMS = ["name asc"]
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc",
+    "itemType asc", "itemType desc",
+    "createdAt asc", "createdAt desc",
+    "updatedAt asc", "updatedAt desc"
+  ]
 
   enum :slot,
     {
@@ -81,24 +93,6 @@ class Equipment < ApplicationRecord
     parent.table[:slot]
   end
 
-  enum :item_type,
-    {
-      flightsuit: 0, light_armor: 1, medium_armor: 2, heavy_armor: 3, magazine: 4, battery: 5,
-      pistol: 6, grenade: 7, smg: 8, rifle: 9, shotgun: 10, lmg: 11, sniper_rifle: 12,
-      special_railgun: 13, assault_rifle: 14, weapon_scope: 15, utility: 16, rocket_launcher: 17,
-      grenade_launcher: 18, knife: 19, backpack: 20, light_backpack: 21, medium_backpack: 22,
-      heavy_backpack: 23
-    }
-  ransacker :item_type, formatter: proc { |v| Equipment.item_types[v] } do |parent|
-    parent.table[:item_type]
-  end
-
-  enum :weapon_class,
-    {energy: 0, ballistic: 1, frag: 2}
-  ransacker :weapon_class, formatter: proc { |v| Equipment.weapon_classes[v] } do |parent|
-    parent.table[:weapon_class]
-  end
-
   enum :core_compatibility,
     {all: 0, medium_heavy: 1, heavy: 2},
     suffix: true
@@ -106,6 +100,28 @@ class Equipment < ApplicationRecord
   enum :backpack_compatibility,
     {all: 0, light_medium: 1, light: 2},
     suffix: true
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[
+      id name slug sc_key equipment_type item_type sub_type weapon_class size grade
+      hidden manufacturer_id range rate_of_fire storage created_at updated_at
+    ]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    ["manufacturer"]
+  end
+
+  # Gear from past patches stays in the table -- a ledger entry made last patch
+  # still has to resolve its item -- so anything meant for a picker narrows to
+  # the version the game currently ships. Component keeps the same scope.
+  scope :current_version, ->(flag = true) {
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      where(version: Rails.configuration.sc_data[:version])
+    else
+      all
+    end
+  }
 
   def self.visible
     where(hidden: false)
@@ -115,31 +131,25 @@ class Equipment < ApplicationRecord
     visible.order(name: :asc)
   end
 
-  def self.type_filters
-    Equipment.equipment_types.map do |(item, _index)|
-      Filter.new(
-        category: "equipment_type",
-        label: Equipment.human_enum_name(:equipment_type, item),
-        value: item
-      )
-    end
+  def self.equipment_types
+    visible.current_version.where.not(equipment_type: nil).distinct.order(:equipment_type).pluck(:equipment_type)
   end
 
-  def self.item_type_filters
-    Equipment.item_types.map do |(item, _index)|
+  def self.type_filters
+    equipment_types.map do |item|
       Filter.new(
-        category: "item_type",
-        label: Equipment.human_enum_name(:item_type, item),
+        category: "equipment_type",
+        label: I18n.t("filter.equipment.equipment_type.items.#{item}", default: item.humanize),
         value: item
       )
     end
   end
 
   def self.slot_filters
-    Equipment.slots.map do |(item, _index)|
+    slots.map do |(item, _index)|
       Filter.new(
         category: "slot",
-        label: Equipment.human_enum_name(:slot, item),
+        label: human_enum_name(:slot, item),
         value: item
       )
     end
@@ -153,27 +163,23 @@ class Equipment < ApplicationRecord
     item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
-  def equipment_type_label
-    Equipment.human_enum_name(:equipment_type, equipment_type)
+  # A picker that only offers weapons has no use for the ninety-odd types the
+  # armour and clothing rows contribute, so the caller can narrow by the game's
+  # own split before the types are collected.
+  def self.item_types(equipment_types = nil)
+    scope = visible.current_version.where.not(item_type: nil)
+    scope = scope.where(equipment_type: equipment_types) if equipment_types.present?
+
+    scope.distinct.order(:item_type).pluck(:item_type)
   end
 
-  def item_type_label
-    Equipment.human_enum_name(:item_type, item_type)
-  end
-
-  def slot_label
-    Equipment.human_enum_name(:slot, slot)
-  end
-
-  def weapon_class_label
-    Equipment.human_enum_name(:weapon_class, weapon_class)
-  end
-
-  def core_compatibility_label
-    Equipment.human_enum_name(:core_compatibility, core_compatibility)
-  end
-
-  def backpack_compatibility_label
-    Equipment.human_enum_name(:backpack_compatibility, backpack_compatibility)
+  def self.item_type_filters(equipment_types = nil)
+    item_types(equipment_types).map do |item|
+      Filter.new(
+        category: "item_type",
+        label: I18n.t("filter.equipment.item_type.items.#{item}", default: item.humanize),
+        value: item
+      )
+    end
   end
 end

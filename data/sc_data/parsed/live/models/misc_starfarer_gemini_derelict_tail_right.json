@@ -14,6 +14,56 @@
     "base_expediting_fee": "15995"
   },
   "mass": 400000.0,
+  "inventory_container_ref": "b791799d-24ed-4df6-bd46-ad45509a3f1e",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 11076.0,
+    "y": 4811.0,
+    "z": 20138.0
+  },
+  "hull_health": 75800.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Starfarer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 31500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 31500.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_back_right",
+      "health": 3600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "spoiler_mid",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_right",
+      "health": 2200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_back_left",
+      "health": 3600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "leg_left",
+      "health": 2200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 48.5,
     "y": 102.0,

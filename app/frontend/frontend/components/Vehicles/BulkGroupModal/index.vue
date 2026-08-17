@@ -105,13 +105,12 @@ const save = async () => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :loading="submitting"
-          :size="BtnSizesEnum.LARGE"
           data-test="vehicle-save"
-          :inline="true"
           @click="save"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.save") }}
         </Btn>

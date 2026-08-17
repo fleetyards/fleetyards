@@ -225,7 +225,7 @@ const onSubmit = handleSubmit(async (values) => {
           <OauthBtn
             v-if="!citizenIdConnected"
             :provider="OauthBtnProvidersEnum.CITIZENID"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             inline
           >
             {{ t("actions.verifyWithCitizenId") }}

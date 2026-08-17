@@ -1,0 +1,38 @@
+{
+  "key": "rsi_explorer_armor_light_legs_01_01_centurion",
+  "ref": "3f19b893-7330-44d1-b38b-9bb52889e5c4",
+  "name": "Venture Legs Voyager",
+  "description": "Robert Space Industries’ Venture Explorer Suit provides exceptional protection against the dangers of space. Designed for those who don't know where their next adventure might go, the suit combines comfort and safety without sacrificing mobility. The special Voyager edition features a red and black color scheme with white highlights. The result is a stylish suit that looks as good as it performs.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-41 / 71 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Color_centurion",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.036,
+  "volume_dimensions": {
+    "x": 0.44,
+    "y": 0.257,
+    "z": 0.454
+  }
+}

@@ -8,6 +8,8 @@ module ScData
         ::ScData::Loader::ItemsLoader.new.all
         ::ScData::Loader::ModelsLoader.new.all
         ::ScData::Loader::ModelModulesLoader.new.all
+        ::ScData::Loader::CommoditiesLoader.new.all
+        ::ScData::Loader::EquipmentLoader.new.all
       end
 
       def initialize
@@ -39,6 +41,66 @@ module ScData
 
       def lookup_manufacturer(ref)
         Manufacturer.find_by(sc_ref: ref)
+      end
+
+      # The parser carried the artwork into the parsed tree, so attaching it is
+      # a local read -- no bucket, no credentials, and it works offline.
+      #
+      # Guarded on the checksum ActiveStorage itself stores, because attaching
+      # an identical file writes a fresh blob every time: a load that changed
+      # nothing would otherwise leave a few hundred orphans behind on each run.
+      # Nothing is detached when the export stops naming artwork: these
+      # attachments are also where an admin's own upload lives -- the eight
+      # manufacturers the game names no logo for are exactly the ones somebody
+      # filled in by hand -- and a load cannot tell one from the other. A path
+      # that changes still replaces what it put there, since the checksum moves
+      # with it.
+      def attach_icon(record, attachment_name, icon_path)
+        file = parsed_icon(icon_path)
+
+        return if file.blank?
+
+        attachment = record.public_send(attachment_name)
+        checksum = Digest::MD5.file(file).base64digest
+
+        return if attachment.attached? && attachment.blob.checksum == checksum
+
+        File.open(file) do |io|
+          attachment.attach(
+            io:,
+            filename: File.basename(file),
+            content_type: Marcel::MimeType.for(name: File.basename(file))
+          )
+        end
+      end
+
+      # The record names the source art -- .tif -- while what was written is a
+      # .png or the .svg it already was, under a path that otherwise matches.
+      def parsed_icon(icon_path)
+        return if icon_path.blank?
+
+        Dir.glob(
+          Rails.root.join("data/sc_data/parsed/#{sc_environment}/icons/#{icon_path.sub(/\.\w+\z/, "")}.*")
+        ).first
+      end
+
+      # A record the export dropped keeps its row -- a ledger entry or a loadout
+      # made against it still has to resolve -- but it must stop claiming a
+      # build it is no longer part of, or `current_version` would go on
+      # offering it.
+      #
+      # Re-importing the same build is what makes this necessary: a new build
+      # leaves the row on its old version, but a reload of the one we are
+      # already on leaves it looking current.
+      #
+      # A run that loaded nothing retires nothing. `where.not(id: [])` is
+      # `1=1`, so an export that failed to sync -- or an environment whose tree
+      # does not carry this catalogue at all -- would otherwise take the whole
+      # of it in one statement.
+      def retire_absent(model, loaded)
+        return if loaded.blank?
+
+        model.where(version: sc_version).where.not(id: loaded).update_all(version: nil)
       end
 
       def update_cargo_holds(hardpoints, update_params)
@@ -111,13 +173,15 @@ module ScData
 
           if item["key"].blank? && item["ref"].blank? && parent.is_a?(Model) && item["name"]&.end_with?("_module")
             derived_key = "#{parent.sc_data_identifier}_module"
-            item["key"] = derived_key if Component.exists?(sc_key: derived_key, version: sc_version)
+            item["key"] = derived_key if Component.exists?(sc_key: derived_key)
           end
 
+          # Resolved by key alone: a component is one row now, and `version`
+          # says which build it was last seen in rather than which row to use.
           component = if item["key"].present?
-            Component.find_by(sc_key: item["key"]&.downcase, version: sc_version)
+            Component.find_by(sc_key: item["key"]&.downcase)
           elsif item["ref"].present?
-            Component.find_by(sc_ref: item["ref"], version: sc_version)
+            Component.find_by(sc_ref: item["ref"])
           end
 
           if component.present?
@@ -134,9 +198,9 @@ module ScData
                                  nested = nested_loadout.find { |nl| nl["name"]&.downcase == hp.sc_name }
                                  if nested.present?
                                    sub_component = if nested["key"].present?
-                                     Component.find_by(sc_key: nested["key"]&.downcase, version: sc_version)
+                                     Component.find_by(sc_key: nested["key"]&.downcase)
                                    elsif nested["ref"].present?
-                                     Component.find_by(sc_ref: nested["ref"], version: sc_version)
+                                     Component.find_by(sc_ref: nested["ref"])
                                    end
                                  end
                                end

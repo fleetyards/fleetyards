@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
-Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+Rack::Attack.cache.store =
+  if Rails.env.test?
+    ActiveSupport::Cache::MemoryStore.new
+  else
+    ActiveSupport::Cache::RedisCacheStore.new(
+      url: Rails.configuration.redis.url,
+      db: 1,
+      namespace: "rack-attack"
+    )
+  end
 
 limit_proc = proc do |req|
   if req.env["warden"].authenticate?(scope: :api_user)
@@ -13,17 +22,16 @@ end
 Rack::Attack.throttle("api", limit: limit_proc, period: 1.hour) do |req|
   if !req.path.match?(%r{^/v\d+$}) &&
       !req.path.match?(%r{^/v\d+/docs$}) &&
-      req.host.split(".").first == "api" &&
-      !(req.referer || "").start_with?("https://fleetyards.net")
-    req.ip
+      req.host.split(".").first == "api"
+    (req.get_header("action_dispatch.remote_ip") || req.ip).to_s
   end
 end
 
 Rack::Attack.throttled_response_retry_after_header = true
 
-Rack::Attack.throttled_responder = lambda do |env|
+Rack::Attack.throttled_responder = lambda do |request|
   now = Time.zone.now
-  match_data = env["rack.attack.match_data"] || {}
+  match_data = request.env["rack.attack.match_data"] || {}
 
   headers = {
     "X-RateLimit-Limit" => match_data[:limit].to_s,
@@ -34,7 +42,7 @@ Rack::Attack.throttled_responder = lambda do |env|
   [429, headers, [
     {
       code: "rate_limit.exceeded",
-      message: "API rate limit exceeded for #{env["rack.attack.match_discriminator"]}"
+      message: "API rate limit exceeded for #{request.env["rack.attack.match_discriminator"]}"
     }.to_json
   ]]
 end

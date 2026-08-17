@@ -89,10 +89,16 @@ v1_admin_api_routes = lambda do
       get :options
     end
 
-    resources :fleet_members, path: "members", only: %i[index] do
+    resources :fleet_members, path: "members", only: %i[index show update destroy] do
       member do
         get "login-as", to: "fleet_members#login_as"
       end
+    end
+  end
+
+  resources :destroyed_fleets, path: "destroyed-fleets", only: %i[index] do
+    member do
+      post :restore
     end
   end
 
@@ -117,6 +123,14 @@ v1_admin_api_routes = lambda do
 
   resources :imports, only: %i[index show]
 
+  resources :funding_goals, path: "funding-goals", only: %i[index show create update destroy]
+  resources :supporter_contributions, path: "supporter-contributions", only: %i[index show create update destroy] do
+    collection do
+      get :stats
+      post "sync-patreon" => "supporter_contributions#sync_patreon"
+    end
+  end
+
   resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy]
 
   resources :rsi_request_logs, path: "rsi-request-logs", only: %i[index] do
@@ -125,7 +139,19 @@ v1_admin_api_routes = lambda do
     end
   end
 
-  resources :features, only: %i[index show create destroy] do
+  resources :notifications, only: %i[index destroy] do
+    member do
+      put :read
+    end
+    collection do
+      get "unread-count", to: "notifications#unread_count"
+      put "read-all", to: "notifications#read_all"
+      delete "destroy-all", to: "notifications#destroy_all"
+    end
+  end
+
+  # Flag lifecycle belongs to config/feature_flags.yml, so no create/destroy here.
+  resources :features, only: %i[index show] do
     member do
       put :enable
       put :disable

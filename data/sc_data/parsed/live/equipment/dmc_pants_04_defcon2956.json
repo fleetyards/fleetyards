@@ -1,0 +1,38 @@
+{
+  "key": "dmc_pants_04_defcon2956",
+  "ref": "15d804c1-9610-488a-97f3-7ea6033a4064",
+  "name": "DefenseCon '56 Pants",
+  "description": "Carrying Capacity: 3K µSCU\n \nTurn up the heat and celebrate DefenseCon 2956 in style in these flame-accented cargo pants made from triple-stitched polymer weave fabric, with four easy access pockets.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_pants",
+    "Set_04",
+    "Color_expo",
+    "defcon2956"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

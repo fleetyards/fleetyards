@@ -19,7 +19,6 @@ import {
   publicFleetVehiclesEmbed as fetchPublicFleetVehiclesEmbed,
   type VehiclePublic,
 } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 export interface EnhancedModelMinimal extends Model {
   count: number;
@@ -219,7 +218,6 @@ const fetchHangarVehicles = async () => {
       <Btn
         v-show="groupedButton"
         data-test="fleetview-grouped-button"
-        :size="BtnSizesEnum.SMALL"
         @click="toggleGrouping"
       >
         <template v-if="grouping">
@@ -233,7 +231,6 @@ const fetchHangarVehicles = async () => {
         v-show="!fleetchart"
         :active="details"
         data-test="fleetview-details-button"
-        :size="BtnSizesEnum.SMALL"
         @click="toggleDetails"
       >
         <template v-if="details">
@@ -243,11 +240,7 @@ const fetchHangarVehicles = async () => {
           {{ t("actions.showDetails") }}
         </template>
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="fleetview-fleetchart-button"
-        @click="toggleFleetchart"
-      >
+      <Btn data-test="fleetview-fleetchart-button" @click="toggleFleetchart">
         <template v-if="fleetchart">
           {{ t("actions.hideFleetchart") }}
         </template>

@@ -35,7 +35,10 @@
         "public": "%{user} 機庫",
         "publicStats": "%{user} 機庫統計",
         "wishlist": "心願清單",
-        "publicWishlist": "%{user} 心願清單"
+        "publicWishlist": "%{user} 心願清單",
+        "vehicleCargo": "飛船貨物",
+        "inventories": "My Hangar Inventories",
+        "inventory": "%{inventory}"
       },
       "requestPassword": "請求密碼",
       "changePassword": "更改密碼",
@@ -98,10 +101,16 @@
         "index": "視覺測試",
         "panels": "面板 - 視覺測試",
         "buttons": "按鈕 - 視覺測試",
+        "typography": "排版 - 視覺測試",
+        "forms": "表單 - 視覺測試",
         "tables": "表格 - 視覺測試",
+        "lists": "列表 - 視覺測試",
+        "metrics": "指標 - 視覺測試",
+        "states": "狀態 - 視覺測試",
         "notifications": "通知 - 視覺測試",
         "syncModal": "同步彈窗 - 視覺測試",
-        "supportHint": "支援提示 - 視覺測試"
+        "supportHint": "支援提示 - 視覺測試",
+        "chips": "Chips - 視覺測試"
       },
       "admin": {
         "models": {
@@ -152,7 +161,8 @@
         },
         "fleets": {
           "index": "艦隊",
-          "edit": "編輯艦隊"
+          "edit": "編輯艦隊",
+          "memberEdit": "編輯艦隊成員"
         },
         "oauthApplications": {
           "index": "OAuth 應用程式",

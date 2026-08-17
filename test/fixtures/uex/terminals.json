@@ -1,0 +1,48 @@
+{
+  "status": "ok",
+  "http_code": 200,
+  "data": [
+    {
+      "id": 100,
+      "type": "vehicle_buy",
+      "name": "Astro Armada - Area 18",
+      "nickname": "Astro Armada",
+      "contact_url": ""
+    },
+    {
+      "id": 101,
+      "type": "vehicle_rent",
+      "name": "Vantage Rentals - Lorville",
+      "nickname": "Vantage Lorville",
+      "contact_url": "https://example.test/vantage"
+    },
+    {
+      "id": 102,
+      "type": "commodity",
+      "name": "Admin - ARC-L1",
+      "nickname": "ARC-L1",
+      "contact_url": null
+    },
+    {
+      "id": 103,
+      "type": "vehicle_buy",
+      "name": "New Deal - Teasa Spaceport - Lorville",
+      "nickname": "New Deal Lorville",
+      "contact_url": null
+    },
+    {
+      "id": 104,
+      "type": "commodity",
+      "name": "TDD - Trade and Development Division - Area 18",
+      "nickname": "TDD Area 18",
+      "contact_url": "https://example.test/tdd"
+    },
+    {
+      "id": 105,
+      "type": "commodity",
+      "name": "TDD - Trade and Development Division - Area 18",
+      "nickname": "TDD Area 18 Annex",
+      "contact_url": "https://example.test/tdd"
+    }
+  ]
+}

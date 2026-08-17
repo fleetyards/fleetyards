@@ -21,9 +21,8 @@ import { useForm } from "vee-validate";
 import {
   useStartOtpSetup as useStartOtpSetupMutation,
   useEnableOtpSetup as useEnableOtpSetupMutation,
-  type ValidationError,
 } from "@/services/fyApi";
-import { type ErrorType } from "@/services/axiosClient";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 const { t } = useI18n();
 
@@ -89,9 +88,9 @@ const onSubmit = handleSubmit(async (values) => {
       });
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const { code } = validationErrorFrom(error);
 
-      if (response.code === "requires_access_confirmation") {
+      if (code === "requires_access_confirmation") {
         comlink.emit("access-confirmation-required");
       } else {
         displayAlert({
@@ -130,10 +129,7 @@ const copyProvisioningUrl = () => {
   <div v-if="backupCodes" class="row two-factor-backup-codes">
     <div class="col-12 col-md-6 offset-md-3">
       <BackupCodesPanel :codes="backupCodes" />
-      <Btn
-        :to="{ name: 'settings-security', hash: '#two-factor' }"
-        :exact="true"
-      >
+      <Btn :to="{ name: 'settings-security', hash: '#two-factor' }">
         {{ t("actions.done") }}
       </Btn>
     </div>
@@ -176,7 +172,7 @@ const copyProvisioningUrl = () => {
 
             <br />
 
-            <Btn :loading="submitting" type="submit" size="large" :block="true">
+            <Btn :loading="submitting" type="submit" :block="true" size="lg">
               {{ t("actions.twoFactor.enable") }}
             </Btn>
           </div>

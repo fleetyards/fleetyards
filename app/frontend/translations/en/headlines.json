@@ -77,6 +77,16 @@
           "new": "New Manufacturer",
           "edit": "Edit Manufacturer"
         },
+        "supporterContributions": {
+          "index": "Supporter Contributions",
+          "new": "New Supporter Contribution",
+          "edit": "Edit Supporter Contribution"
+        },
+        "fundingGoals": {
+          "index": "Funding Goals",
+          "new": "New Funding Goal",
+          "edit": "Edit Funding Goal"
+        },
         "users": {
           "index": "Users",
           "edit": "Edit User",
@@ -89,7 +99,11 @@
         "fleets": {
           "index": "Fleets",
           "edit": "Edit Fleet",
-          "members": "Members"
+          "members": "Members",
+          "memberEdit": "Edit Member"
+        },
+        "destroyedFleets": {
+          "index": "Destroyed Fleets"
         },
         "admins": {
           "index": "Admins",
@@ -120,6 +134,9 @@
         },
         "imports": {
           "index": "Imports"
+        },
+        "notifications": {
+          "index": "Notifications"
         }
       },
       "welcome": "Welcome to",
@@ -132,6 +149,7 @@
       "images": "Images Index",
       "stats": "Stats",
       "notFound": "Navigation Error",
+      "forbidden": "Access Denied",
       "featureNotReady": "Coming Soon",
       "accessDenied": "Access Denied",
       "serverError": "Server Error",
@@ -174,7 +192,6 @@
       "fleets": {
         "owners": "Owners",
         "add": "Create a new Fleet",
-        "calendarSubscription": "Calendar Subscription",
         "invites": "Fleet Invites",
         "inviteUrls": "Invite Urls",
         "members": {
@@ -183,21 +200,22 @@
           "starmap": "Member Starmap"
         },
         "stats": "Stats",
-        "logistics": {
-          "index": "Logistics",
-          "inventories": "Inventories",
-          "requests": "Requests",
-          "newRequest": "New Request",
-          "requestItems": "Items",
-          "comments": "Comments",
-          "inventoryItems": "Inventory Items",
-          "createInventory": "Create Inventory",
-          "editInventory": "Edit Inventory",
-          "createItem": "Add Item",
-          "deposit": "Deposit",
-          "withdrawal": "Withdrawal",
-          "importCsv": "Import from CSV"
+        "preview": {
+          "h1": "Fleet Preview",
+          "h2": "To create a Fleet you need to have a FleetYards.net Account",
+          "h3": "What Features does your Fleet include?"
         },
+        "settings": {
+          "fleet": "Fleet Settings",
+          "membership": "Membership Settings",
+          "roles": "Fleet Roles",
+          "notifications": "Notification Settings",
+          "inAppNotifications": "In-app Notifications",
+          "discord": "Discord",
+          "calendar": "Calendar"
+        },
+        "inviteMember": "Invite new Member",
+        "calendarSubscription": "Calendar Subscription",
         "missions": {
           "index": "Missions",
           "create": "Create Mission",
@@ -239,22 +257,7 @@
           "addShip": "Add ship",
           "assignSlotFor": "Assign slot for %{username}",
           "reassignSlotFor": "Reassign slot for %{username}"
-        },
-        "preview": {
-          "h1": "Fleet Preview",
-          "h2": "To create a Fleet you need to have a FleetYards.net Account",
-          "h3": "What Features does your Fleet include?"
-        },
-        "settings": {
-          "fleet": "Fleet Settings",
-          "membership": "Membership Settings",
-          "roles": "Fleet Roles",
-          "notifications": "Notification Settings",
-          "inAppNotifications": "In-app Notifications",
-          "discord": "Discord",
-          "calendar": "Calendar"
-        },
-        "inviteMember": "Invite new Member"
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -267,11 +270,11 @@
         "account": "Account",
         "profile": "Profile Settings",
         "hangar": "Hangar Settings",
+        "privacy": "Privacy Settings",
         "features": "Feature Flags",
         "connections": "Connections",
         "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
-        "calendar": "Calendar Subscription",
         "verify": "Verify your RSI Account",
         "security": {
           "index": "Account Security",
@@ -281,7 +284,8 @@
           "enable": "Enable Two-factor Authentiation",
           "disable": "Disable Two-factor Authentiation",
           "backupCodes": "Generate Two-Factor Backup Codes"
-        }
+        },
+        "calendar": "Calendar Subscription"
       },
       "oauthApplications": {
         "new": "New OAuth Application",
@@ -322,10 +326,33 @@
         "overview": "Overview",
         "panels": "Panels",
         "buttons": "Buttons",
+        "typography": "Typography",
+        "forms": "Forms",
         "tables": "Tables",
+        "lists": "Lists",
+        "metrics": "Metrics",
+        "states": "States",
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
         "supportHint": "Support Hint"
+      },
+      "logistics": {
+        "index": "Logistics",
+        "inventories": "Inventories",
+        "requests": "Requests",
+        "newRequest": "New Request",
+        "requestItems": "Items",
+        "comments": "Comments",
+        "inventoryItems": "Inventory Items",
+        "createInventory": "Create Inventory",
+        "editInventory": "Edit Inventory",
+        "createItem": "Add Item",
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal",
+        "importCsv": "Import from CSV",
+        "hangarInventories": "Hangar Inventories",
+        "editItem": "Edit Entry",
+        "editStockItem": "Edit Item"
       }
     }
   }

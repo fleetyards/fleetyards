@@ -1,0 +1,35 @@
+{
+  "key": "fps_consumable_keycard_kaboos_decryptionkeycard1",
+  "ref": "fd6c343e-5888-4665-a302-6bab150feb59",
+  "name": "Decryption Key",
+  "description": "This single-use decryption key is required to access encrypted data files.",
+  "equipment_type": "hacking_tool",
+  "slot": null,
+  "item_type": "keycard",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "SystemAccess",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "KaboosDC1"
+  ],
+  "hidden": false,
+  "volume": 0.00014,
+  "volume_dimensions": {
+    "x": 0.0663,
+    "y": 0.1428,
+    "z": 0.0163
+  }
+}

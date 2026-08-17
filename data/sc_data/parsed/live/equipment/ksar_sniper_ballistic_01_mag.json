@@ -1,0 +1,35 @@
+{
+  "key": "ksar_sniper_ballistic_01_mag",
+  "ref": "d84a7601-c246-4384-88c3-b3be0fe10680",
+  "name": "Scalpel Sniper Rifle Magazine (12 cap)",
+  "description": "This magazine for the Kastak Arms Scalpel comes loaded with eight 7.62mm rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "12.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "ksar_sniper_ballistic_01"
+  ],
+  "hidden": false,
+  "volume": 0.00061,
+  "volume_dimensions": {
+    "x": 0.0339876,
+    "y": 0.08141628,
+    "z": 0.2206837
+  }
+}

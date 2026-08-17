@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
-import { PanelTransparenciesEnum } from "@/shared/components/base/Panel/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
@@ -65,11 +64,7 @@ const handleLogin = () => {
 
       <div class="row">
         <div class="col-12 col-lg-4">
-          <Panel
-            class="info-box"
-            :transparency="PanelTransparenciesEnum.MORE"
-            inset
-          >
+          <Panel class="info-box" translucent inset>
             <div class="panel-heading">
               <h2 class="panel-title text-center">
                 {{ t("texts.hangarPreview.notified.headline") }}
@@ -82,11 +77,7 @@ const handleLogin = () => {
           </Panel>
         </div>
         <div class="col-12 col-lg-4">
-          <Panel
-            class="info-box"
-            :transparency="PanelTransparenciesEnum.MORE"
-            inset
-          >
+          <Panel class="info-box" translucent inset>
             <div class="panel-heading">
               <h2 class="panel-title text-center">
                 {{ t("texts.hangarPreview.manage.headline") }}
@@ -99,11 +90,7 @@ const handleLogin = () => {
           </Panel>
         </div>
         <div class="col-12 col-lg-4">
-          <Panel
-            class="info-box"
-            :transparency="PanelTransparenciesEnum.MORE"
-            inset
-          >
+          <Panel class="info-box" translucent inset>
             <div class="panel-heading">
               <h2 class="panel-title text-center">
                 {{ t("texts.hangarPreview.fleetchart.headline") }}
@@ -126,9 +113,9 @@ const handleLogin = () => {
               name: 'signup',
             }"
             data-test="signup"
-            :size="BtnSizesEnum.LARGE"
             :block="true"
             @click="setBackRoute"
+            :size="BtnSizesEnum.LG"
           >
             {{ t("actions.signUp") }}
           </Btn>

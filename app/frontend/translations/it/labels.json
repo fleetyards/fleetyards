@@ -26,6 +26,7 @@
       "deselect": "Fare clic per deselezionare",
       "networkStatusOffline": "Stato Della Rete: Offline - Servizio Non Disponibile",
       "groups": "Gruppi",
+      "classifications": "Classificazioni",
       "features": {
         "stateOn": "Abilitato",
         "stateOff": "Disabilitato",
@@ -595,7 +596,8 @@
         "componentSubType": "Sottotipo componente",
         "itemType": "Tipo di oggetto",
         "scKey": "SC Key",
-        "scRef": "SC Ref"
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
       },
       "hardpoint": {
         "legend": {
@@ -795,81 +797,6 @@
       "supportUs": "Supporta FleetYards.net",
       "account": {
         "destroyInfo": "Se si desidera eliminare il tuo account e rimuovere tutte le informazioni da Fleetyards,nett e i suoi servizi fare clic sul pulsante qui sotto. Sii consapevole che questa è un'azione permanente e non può essere annullata."
-      },
-      "fleets": {
-        "logistics": {
-          "inventoryCount": "inventories",
-          "pending": "pending",
-          "inProgress": "in progress",
-          "drafts": "drafts",
-          "noInventories": "No inventories yet.",
-          "noRequests": "No requests found.",
-          "noItems": "No items in this inventory.",
-          "items": "items",
-          "comments": "comments",
-          "managedBy": "Managed by",
-          "itemName": "Name",
-          "category": "Category",
-          "quantity": "Quantity",
-          "unit": "Unit",
-          "notes": "Notes",
-          "status": "Status",
-          "requested": "Requested",
-          "fulfilled": "Fulfilled",
-          "itemFulfilled": "Fulfilled",
-          "itemPending": "Pending",
-          "requestTitle": "Title",
-          "description": "Description",
-          "requestType": "Type",
-          "priority": "Priority",
-          "requestedBy": "Requested by",
-          "approvedBy": "Approved by",
-          "fulfilledBy": "Fulfilled by",
-          "addComment": "Write a comment...",
-          "states": {
-            "draft": "Draft",
-            "submitted": "Submitted",
-            "approved": "Approved",
-            "in_progress": "In Progress",
-            "fulfilled": "Fulfilled",
-            "rejected": "Rejected",
-            "cancelled": "Cancelled"
-          },
-          "requestTypes": {
-            "supply": "Supply",
-            "outfitting": "Outfitting",
-            "general": "General"
-          },
-          "priorities": {
-            "routine": "Routine",
-            "standard": "Standard",
-            "urgent": "Urgent",
-            "critical": "Critical"
-          },
-          "searchInventories": "Search inventories...",
-          "inventoryName": "Inventory Name",
-          "visibility": "Visibility",
-          "visibilities": {
-            "members_only": "All Members",
-            "officers_only": "Officers Only"
-          },
-          "categories": {
-            "commodity": "Commodity",
-            "component": "Component",
-            "module_item": "Module",
-            "ship": "Ship",
-            "ammunition": "Ammunition",
-            "consumable": "Consumable",
-            "other": "Other"
-          },
-          "units": {
-            "scu": "SCU",
-            "units": "Units"
-          },
-          "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
-          "imported": "items imported",
-          "importErrors": "errors"
-        }
       },
       "filters": {
         "components": {
@@ -1207,7 +1134,122 @@
       "erkul": {
         "prefix": "Prova Loadouts con",
         "link": "Calcolatore DPS Di Erkul"
-      }
+      },
+      "logistics": {
+        "inventoryCount": "inventories",
+        "pending": "pending",
+        "inProgress": "in progress",
+        "drafts": "drafts",
+        "noInventories": "No inventories yet.",
+        "noRequests": "No requests found.",
+        "noItems": "No entries in this inventory.",
+        "entriesCount": "entries",
+        "comments": "comments",
+        "managedBy": "Managed by",
+        "itemName": "Name",
+        "category": "Category",
+        "component": "Component",
+        "componentCategory": "Component Type",
+        "commodity": "Commodity",
+        "commodityType": "Commodity Type",
+        "equipment": "Equipment",
+        "equipmentItemType": "Equipment Type",
+        "quantity": "Quantity",
+        "unit": "Unit",
+        "notes": "Notes",
+        "status": "Status",
+        "requested": "Requested",
+        "fulfilled": "Fulfilled",
+        "itemFulfilled": "Fulfilled",
+        "itemPending": "Pending",
+        "requestTitle": "Title",
+        "description": "Description",
+        "requestType": "Type",
+        "priority": "Priority",
+        "requestedBy": "Requested by",
+        "approvedBy": "Approved by",
+        "fulfilledBy": "Fulfilled by",
+        "addComment": "Write a comment...",
+        "states": {
+          "draft": "Draft",
+          "submitted": "Submitted",
+          "approved": "Approved",
+          "in_progress": "In Progress",
+          "fulfilled": "Fulfilled",
+          "rejected": "Rejected",
+          "cancelled": "Cancelled"
+        },
+        "requestTypes": {
+          "supply": "Supply",
+          "outfitting": "Outfitting",
+          "general": "General"
+        },
+        "priorities": {
+          "routine": "Routine",
+          "standard": "Standard",
+          "urgent": "Urgent",
+          "critical": "Critical"
+        },
+        "searchInventories": "Search inventories...",
+        "searchItems": "Search items...",
+        "quality": "Quality (0-1000)",
+        "qualityShort": "Quality",
+        "qualityMin": "Quality >=",
+        "qualityMax": "Quality <=",
+        "existingItem": "Select existing item",
+        "inventoryName": "Inventory Name",
+        "visibility": "Visibility",
+        "visibilities": {
+          "members_only": "All Members",
+          "officers_only": "Officers Only"
+        },
+        "inventory": "Inventory",
+        "notesPlaceholder": "Add notes...",
+        "entryType": "Type",
+        "entryTypes": {
+          "deposit": "Deposit",
+          "withdrawal": "Withdrawal"
+        },
+        "stockView": "Current Stock",
+        "logView": "Transaction Log",
+        "addedBy": "Logged by",
+        "member": "Member",
+        "selectItem": "Select item",
+        "currentStock": "Available",
+        "location": "Location",
+        "image": "Image",
+        "categories": {
+          "commodity": "Commodity",
+          "component": "Component",
+          "weapon": "Weapon",
+          "equipment": "Equipment",
+          "ammunition": "Attachments & Ammunition",
+          "consumable": "Consumable",
+          "other": "Other"
+        },
+        "units": {
+          "scu": "SCU",
+          "units": "Units"
+        },
+        "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
+        "imported": "items imported",
+        "importErrors": "errors",
+        "inStock": "In stock",
+        "entries": "Entries",
+        "lastEntry": "Last entry",
+        "history": "History",
+        "linkedItem": "Linked item",
+        "itemUnavailable": "Not in current patch",
+        "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "qualityRange": "Quality",
+        "stockItem": "Stock Item",
+        "overCapacity": "oltre la capacità di carico",
+        "cargoGrid": "Griglia di carico",
+        "shipInventory": "Inventario della nave",
+        "remaining": "Rimanente",
+        "unmeasured": "%{count} non ancora misurati"
+      },
+      "hangarInventories": "Inventories"
     }
   }
 }

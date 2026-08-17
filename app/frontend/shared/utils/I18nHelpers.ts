@@ -3,7 +3,9 @@ import { parseISO, formatDistance } from "date-fns";
 import { format } from "date-fns-tz";
 
 const formatStat = (i18n: I18n, value: number): string => {
-  const formatted = i18n.l("number", value);
+  // Collapse to a single decimal (27.55 -> 27.6) before formatting; trailing
+  // zeros are stripped below so whole numbers never show a bare ",00".
+  const formatted = i18n.l("number", Math.round(value * 10) / 10);
   const separator = i18n.t("number.format.separator") || ",";
   const delimiter = i18n.t("number.format.delimiter") || ".";
 
@@ -11,7 +13,10 @@ const formatStat = (i18n: I18n, value: number): string => {
   const stripped = decimal?.replace(/0+$/, "");
   const result = stripped ? `${integer}${separator}${stripped}` : integer;
 
-  return result.replaceAll(delimiter, "\u200A");
+  // Narrow no-break space as the thousands separator. A hair space (U+200A) was
+  // too thin to group six-figure values legibly (288000 read as one run of
+  // digits), and being breakable it let values split across lines mid-number.
+  return result.replaceAll(delimiter, "\u202F");
 };
 
 export const i18nHelpers = (i18n: I18n) => {
@@ -28,40 +33,19 @@ export const i18nHelpers = (i18n: I18n) => {
   };
 
   const toNumber = (value?: number | string | null, units = "") => {
-    let count: string | number = i18n.l("number", value);
+    // Default: round to a single decimal and strip trailing zeros so every stat
+    // reads cleanly (750,00 -> 750; 27,55 -> 27,6) while staying precise.
+    let count: string | number =
+      value != null && value !== "" && Number.isFinite(Number(value))
+        ? formatStat(i18n, Number(value))
+        : i18n.l("number", value);
 
     if (units === "weight") {
-      count = i18n.l("number", (value as number) / 1000);
+      count = formatStat(i18n, (value as number) / 1000);
     }
 
     if (units === "newton") {
       count = i18n.numberToRounded((value as number) / 1000, { precision: 0 });
-    }
-
-    if (
-      [
-        "integer",
-        "dps",
-        "damage",
-        "shieldHp",
-        "shieldRegen",
-        "coolingRate",
-        "powerOutput",
-        "powerPips",
-        "weaponRange",
-        "weaponSpeed",
-        "missileRange",
-        "missileSpeed",
-        "lockTime",
-        "regenTime",
-        "delayTime",
-        "spoolTime",
-        "cooldownTime",
-        "fuelRate",
-        "aimAssistRange",
-      ].includes(units)
-    ) {
-      count = formatStat(i18n, value as number);
     }
 
     if (units === "driveSpeed" || units === "thrust") {
@@ -83,7 +67,7 @@ export const i18nHelpers = (i18n: I18n) => {
     if (units === "speed" && value) {
       count = String(value || "")
         .split(" - ")
-        .map((item) => i18n.l("number", item))
+        .map((item) => formatStat(i18n, Number(item)))
         .join(" - ");
     }
 

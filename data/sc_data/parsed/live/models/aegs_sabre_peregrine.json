@@ -14,6 +14,111 @@
     "base_expediting_fee": "3934"
   },
   "mass": 73492.72,
+  "inventory_container_ref": "0be3820b-ee1c-4af1-b585-6d77badd9985",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 6467.0,
+    "y": 2357.0,
+    "z": 5551.0
+  },
+  "hull_health": 13550.0,
+  "hull_parts": [
+    {
+      "name": "AEGS_Sabre_Peregrine",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 2400.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose",
+      "health": 2400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "canopy",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "peregrine_rear_wing_l_bottom",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "peregrine_rear_wing_l_top",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "peregrine_rear_wing_r_bottom",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "peregrine_rear_wing_r_top",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_front_flap_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_flap_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_left_aileron_mesh_a",
+      "health": 75.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_aileron_mesh_b",
+      "health": 75.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_flap_left_rear",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right_aileron_mesh_b",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_aileron_mesh_a",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_flap_right_rear",
+      "health": 100.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 24.5,
     "y": 24.5,

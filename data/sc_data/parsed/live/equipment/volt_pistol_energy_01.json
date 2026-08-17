@@ -1,0 +1,35 @@
+{
+  "key": "volt_pistol_energy_01",
+  "ref": "02e848a0-d729-4826-a780-8506a2ae4a89",
+  "name": "Pulse Laser Pistol",
+  "description": "The Pulse Laser Pistol is a fully automatic pistol intended for close quarter combat. VOLT designed the weapon with a unique capacitor that condenses the pistol's laser energy, increasing its rate of fire at the cost of greater inaccuracy and a higher risk of overheating.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "pistol",
+  "weapon_class": "energy",
+  "rate_of_fire": "500.0",
+  "range": "15.0",
+  "storage": "60.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_pistol_energy_01_64.tif",
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e2787f3b-b892-4276-bb2e-eb2b4dc9666b",
+  "tags": [
+    "pistol"
+  ],
+  "hidden": false,
+  "volume": 0.0025,
+  "volume_dimensions": {
+    "x": 0.0387,
+    "y": 0.2359,
+    "z": 0.1553
+  }
+}

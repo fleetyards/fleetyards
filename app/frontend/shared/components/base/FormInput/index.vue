@@ -148,6 +148,7 @@ const innerPlaceholder = computed(() => {
 const cssClasses = computed(() => {
   return {
     "base-input--with-error": hasErrors.value,
+    "base-input--medium": props.size === InputSizesEnum.MEDIUM,
     "base-input--large": props.size === InputSizesEnum.LARGE,
     "base-input--clean": props.variant === InputVariantsEnum.CLEAN,
     "base-input--clearable": props.clearable,

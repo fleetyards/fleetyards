@@ -1,0 +1,40 @@
+{
+  "key": "987_hat_01_01_taba",
+  "ref": "767e592b-f750-43d9-ae17-2dda3395dcc6",
+  "name": "Bantam Hat TABA",
+  "description": "The Bantam hat from 987 offers a large bill and cushioned banding for all-day comfort. This version features a green front with a T.A.B.A Freightline logo paired with a dark gray back and bill.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "hat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3b54a8cc-5700-45f1-940a-2436b213926f",
+  "tags": [
+    "987_hat",
+    "Set_01",
+    "Color_01",
+    "Limp",
+    "$hatHair+",
+    "KeepsShape"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

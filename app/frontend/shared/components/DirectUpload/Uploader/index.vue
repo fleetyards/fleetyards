@@ -303,7 +303,7 @@ defineExpose({
         </template>
       </span>
       <span>{{ t("directUpload.dropzone.or") }}</span>
-      <Btn :variant="BtnVariantsEnum.LINK" text-inline @click="chooseFile">{{
+      <Btn @click="chooseFile" :variant="BtnVariantsEnum.BARE">{{
         t("directUpload.dropzone.browse")
       }}</Btn>
     </div>

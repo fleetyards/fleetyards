@@ -27,6 +27,7 @@
       "more": "Di più...",
       "showMore": "Mostra altro",
       "export": "Esporta",
+      "exportHangarLink": "Esporta per hangar.link",
       "import": "Importa",
       "here": "qui",
       "backToList": "Torna alla lista",
@@ -71,6 +72,7 @@
       "disableGlobally": "Disattiva globalmente",
       "addActor": "Aggiungi attore",
       "addGroup": "Aggiungi gruppo",
+      "editGroup": "Modifica gruppo",
       "remove": "Rimuovi",
       "delete": "Elimina",
       "deleteSelected": "Elimina selezionati",
@@ -148,7 +150,8 @@
           "openModal": "Resetta navi in-game dopo il wipe",
           "moveToWishlist": "Sposta nella lista dei desideri",
           "removeAll": "Rimuovi tutto"
-        }
+        },
+        "manageCargo": "Gestisci carico"
       },
       "syncExtension": {
         "cancel": "Annulla",
@@ -182,29 +185,11 @@
           "demote": "Retrocedi",
           "accept": "Accetta",
           "decline": "Rifiuta",
-          "remove": "Rimuovi"
+          "remove": "Rimuovi",
+          "editRole": "Modifica ruolo"
         },
         "inviteUrls": {
           "create": "Crea nuovo URL per invito"
-        }
-      },
-      "fleets": {
-        "logistics": {
-          "viewInventories": "View Inventories",
-          "viewRequests": "View Requests",
-          "newRequest": "New Request",
-          "createRequest": "Create Request",
-          "createInventory": "New Inventory",
-          "submit": "Submit",
-          "approve": "Approve",
-          "reject": "Reject",
-          "startWork": "Start Work",
-          "fulfill": "Fulfill",
-          "cancel": "Cancel",
-          "addComment": "Add Comment",
-          "createItem": "Add Item",
-          "importCsv": "Import CSV",
-          "downloadTemplate": "Download Template"
         }
       },
       "model": {
@@ -249,6 +234,30 @@
       "roadmap": {
         "showRemoved": "Mostra Rimossi",
         "hideRemoved": "Nascondi Rimossi"
+      },
+      "logistics": {
+        "viewRequests": "View Requests",
+        "newRequest": "New Request",
+        "createRequest": "Create Request",
+        "createInventory": "New Inventory",
+        "submit": "Submit",
+        "approve": "Approve",
+        "reject": "Reject",
+        "startWork": "Start Work",
+        "fulfill": "Fulfill",
+        "cancel": "Cancel",
+        "addComment": "Add Comment",
+        "deposit": "Deposit",
+        "withdraw": "Withdraw",
+        "createItem": "Add Item",
+        "importCsv": "Import CSV",
+        "downloadTemplate": "Download Template",
+        "destroyInventory": "Delete Inventory",
+        "destroyEntry": "Delete Entry",
+        "editStockItem": "Edit Item",
+        "destroyStockItem": "Delete Item",
+        "editInventory": "Edit Inventory",
+        "clearCargo": "Svuota carico"
       }
     }
   }

@@ -1,0 +1,42 @@
+{
+  "key": "thp_helmet_01_02_01",
+  "ref": "d9e65aa3-d49e-400b-b94e-428499603ecc",
+  "name": "Ixonia Helmet Verdant Steel",
+  "description": "Made to withstand the heaviest hits, the Ixonia helmet was crafted with the needs of on-the-ground combat in mind. It features a hybrid composite shell and foam inner core that work in tandem to ensure stability and high impact-reisistance. An optional hood and camo cape provide protection from the wind when worn with the matching jacket. Please note that this mask is not space-rated and should only be worn in naturally breathable environs.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-80 / 110 °C",
+  "radiation_protection": "52800.0",
+  "radiation_scrub_rate": "251.1",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable",
+    "thp_helmet",
+    "Set_01",
+    "Texture_01",
+    "Color_01",
+    "Texture_02"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

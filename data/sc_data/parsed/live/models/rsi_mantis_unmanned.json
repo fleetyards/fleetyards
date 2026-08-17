@@ -14,6 +14,116 @@
     "base_expediting_fee": "6750"
   },
   "mass": 224923.0,
+  "inventory_container_ref": "8b90dcb9-41cf-41a0-af8f-4ee7c7130195",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 7800.0,
+    "y": 3600.0,
+    "z": 14000.0
+  },
+  "hull_health": 32500.0,
+  "hull_parts": [
+    {
+      "name": "RSI_Mantis",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_main",
+      "health": 2650.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose_wingmount_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bottom_hull",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose_wingmount_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_frame_interdiction",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "top_cover_mid",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "interdiction_top_cover_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "interdiction_top_cover_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "interdiction_bottom_cover_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "interdiction_bottom_cover_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 1800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "tail_wing_left",
+      "health": 4000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "engines_base_left",
+      "health": 2800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "engine_left",
+      "health": 2800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right",
+      "health": 1800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "tail_wing_right",
+      "health": 4000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "engines_base_right",
+      "health": 2800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "engine_right",
+      "health": 2800.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 17.0,
     "y": 30.0,

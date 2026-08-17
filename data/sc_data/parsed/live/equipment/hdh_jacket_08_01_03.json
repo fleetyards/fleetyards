@@ -1,0 +1,38 @@
+{
+  "key": "hdh_jacket_08_01_03",
+  "ref": "a39a7c2d-4985-4ecb-b96f-ab898d8db6f7",
+  "name": "Detara Jacket Mandalay",
+  "description": "The Detara Jacket by Habidash weaves several long panels of durable fabric together to create a unique silhouette well suited to harsh environments.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_jacket",
+    "Set_08",
+    "Texture_01",
+    "Color_03"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

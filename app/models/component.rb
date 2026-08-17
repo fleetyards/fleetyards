@@ -34,12 +34,31 @@
 # Indexes
 #
 #  index_components_on_manufacturer_id  (manufacturer_id)
+#  index_components_on_sc_key           (sc_key) UNIQUE
+#  index_components_on_version          (version)
 #
 class Component < ApplicationRecord
   include ActiveStorageVariants
 
   paginates_per 50
   max_paginates_per 240
+
+  # One row per component, with the spec history kept as versions rather than as
+  # a row per build. `version` is deliberately not tracked: it moves on every
+  # import, and recording that would write a version per component per run for
+  # nothing. Only a spec that actually changed is worth keeping.
+  #
+  # The associations are renamed because PaperTrail's default `version` reader
+  # shadows this table's `version` column -- left alone, an update writes NULL
+  # over the build a component was last seen in.
+  has_paper_trail on: %i[update],
+    only: %i[
+      name description size grade item_type item_class component_class component_sub_type
+      component_type type_data durability power_connection heat_connection ammunition
+      inventory_consumption tracking_signal manufacturer_id hidden
+    ],
+    version: :paper_trail_version,
+    versions: {name: :paper_trail_versions}
 
   belongs_to :manufacturer, optional: true
 
@@ -60,6 +79,16 @@ class Component < ApplicationRecord
   serialize :heat_connection, coder: YAML
   serialize :ammunition, coder: YAML
   serialize :inventory_consumption, coder: YAML
+
+  # Components of past patches stay in the table, so anything meant for a
+  # picker has to narrow down to the version the game currently ships.
+  scope :current_version, ->(flag = true) {
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      where(version: Rails.configuration.sc_data[:version])
+    else
+      all
+    end
+  }
 
   DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
   ALLOWED_SORTING_PARAMS = [
@@ -84,15 +113,20 @@ class Component < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "ammunition", "component_class", "created_at", "description", "durability", "grade",
-      "heat_connection", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
+      "ammunition", "category", "component_class", "component_sub_type", "component_type",
+      "created_at", "description", "durability", "grade",
+      "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
       "power_connection", "size", "slug", "tracking_signal",
-      "type_data", "updated_at"
+      "type_data", "updated_at", "version"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
     ["manufacturer", "shop_commodities"]
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    ["current_version"]
   end
 
   def self.item_types
@@ -136,11 +170,45 @@ class Component < ApplicationRecord
     ]
   end
 
+  def self.categories
+    current_version.distinct.pluck(:category).compact_blank.sort
+  end
+
+  def self.sub_types(category: nil)
+    scope = current_version
+    scope = scope.where(category: category) if category.present?
+
+    scope.distinct.pluck(:component_sub_type).compact_blank.sort
+  end
+
   def self.item_type_filters
     Component.item_types.map do |item|
       Filter.new(
         category: "item_type",
         label: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        value: item
+      )
+    end
+  end
+
+  # Categories and sub types come straight out of the game files, so a patch can
+  # introduce values we have no label for yet — fall back to the raw value
+  # instead of rendering a translation-missing string into the API.
+  def self.category_filters
+    Component.categories.map do |item|
+      Filter.new(
+        category: "category",
+        label: I18n.t("filter.component.category.items.#{item}", default: item.titleize),
+        value: item
+      )
+    end
+  end
+
+  def self.sub_type_filters(category: nil)
+    Component.sub_types(category: category).map do |item|
+      Filter.new(
+        category: "sub_type",
+        label: I18n.t("filter.component.sub_type.items.#{item.underscore}", default: item.underscore.titleize),
         value: item
       )
     end

@@ -1,0 +1,37 @@
+{
+  "key": "r6p_boots_02_01_04",
+  "ref": "3f4af48b-5d66-4e7d-a208-13b0670307db",
+  "name": "Ponos Boots Yellow",
+  "description": "Quite simply, R6 Pro's Ponos boots were built for backbreaking work. Constructed out of Thermosulate technology, these waterproof and insulated workboots are rated for sub-arctic environments while the composite outsole ignores hazards to maintain traction when you need it most.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "boots",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1ddcadf0-7bb0-4fa9-94f0-6af19432631c",
+  "tags": [
+    "r6p_boots",
+    "Set_02",
+    "Color_04"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

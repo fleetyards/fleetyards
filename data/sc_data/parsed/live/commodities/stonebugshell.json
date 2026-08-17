@@ -1,0 +1,10 @@
+{
+  "key": "stonebugshell",
+  "sc_key": "items_commodities_stonebugshell",
+  "ref": null,
+  "name": "Stone Bug Shell",
+  "commodity_type": "natural",
+  "commodity_type_name": "Natural Materials",
+  "description": "Known to curl into a tight ball when threatened, the stone bug is sought after for its tough shell, which can be removed and used as a durable material that has even been utilized in certain armor composites.",
+  "icon": null
+}

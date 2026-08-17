@@ -1,0 +1,33 @@
+{
+  "key": "fps_consumable_harddrive_delving_hardened_asd_red",
+  "ref": "60a09784-0e4c-40f3-945e-daba453f81c8",
+  "name": "ASD Secure Drive",
+  "description": "An ASD Onyx Facility data drive made to securely store propriety information.",
+  "equipment_type": "hacking_tool",
+  "slot": null,
+  "item_type": "data_drive",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "SystemAccess",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [],
+  "hidden": false,
+  "volume": 0.00014,
+  "volume_dimensions": {
+    "x": 0.0663,
+    "y": 0.1428,
+    "z": 0.0163
+  }
+}

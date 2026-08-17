@@ -8,10 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
@@ -22,11 +19,10 @@ import {
   type Fleet,
   type FleetMember,
   type FleetUpdateInput,
-  type ValidationError,
   useUpdateFleet as useUpdateFleetMutation,
   useDestroyFleet as useDestroyFleetMutation,
 } from "@/services/fyApi";
-import { type ErrorType } from "@/services/axiosClient";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -76,7 +72,7 @@ const validationSchema = {
   name: "required|min:3|alpha_dash",
 };
 
-const { defineField, handleSubmit, meta, resetForm } = useForm({
+const { defineField, handleSubmit, meta, resetForm, setErrors } = useForm({
   initialValues: initialValues.value,
 });
 
@@ -118,17 +114,13 @@ const onSubmit = handleSubmit(async (values) => {
       }
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const { message, formErrors } = validationErrorFrom(error);
 
-      if (response.message) {
-        displayAlert({
-          text: response.message,
-        });
-      } else {
-        displayAlert({
-          text: t("messages.fleet.update.failure"),
-        });
-      }
+      setErrors(formErrors);
+
+      displayAlert({
+        text: message || t("messages.fleet.update.failure"),
+      });
     })
     .finally(() => {
       submitting.value = false;
@@ -317,10 +309,10 @@ const onDestroy = async () => {
       <div class="text-center">
         <Btn
           :loading="deleting"
-          :size="BtnSizesEnum.LARGE"
-          :variant="BtnVariantsEnum.DANGER"
           data-test="fleet-delete"
           @click="onDestroy"
+          :size="BtnSizesEnum.LG"
+          :tone="BtnTonesEnum.DANGER"
         >
           {{ t("actions.destroyFleet") }}
         </Btn>

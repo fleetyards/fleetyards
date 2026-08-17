@@ -1,0 +1,39 @@
+{
+  "key": "outlaw_legacy_armor_light_core_01_06_01",
+  "ref": "ee14c11f-ef77-40e6-87c8-15a4f4cb35ba",
+  "name": "Lynx Core Frostline",
+  "description": "Maintain your mobility with the Lynx combat armor. A high tech polymer weave allows the wearer to withstand enough damage to quickly escape danger. The suit's striking look became famous after being worn by the Seeker in the widely popular \"Fire and Fury\" vids of the mid-2800s.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8000.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-31 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Light",
+    "Set_01",
+    "Texture_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.034,
+  "volume_dimensions": {
+    "x": 0.411,
+    "y": 0.367,
+    "z": 0.299
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "key": "gold",
+  "sc_key": "items_commodities_gold",
+  "ref": "5e8cc1f5-8f21-4e4b-b534-214008c027dc",
+  "name": "Gold",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "A commonly found ductile metal favored for its conductivity. Though it falls in and out of fashion, it is often used for decorative purposes as well.",
+  "icon": "ui/textures/vector/general/items/inv_icon_gold.svg"
+}

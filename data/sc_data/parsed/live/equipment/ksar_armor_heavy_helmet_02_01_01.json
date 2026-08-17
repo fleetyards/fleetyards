@@ -1,0 +1,40 @@
+{
+  "key": "ksar_armor_heavy_helmet_02_01_01",
+  "ref": "55e7a629-b131-4e0e-8d59-75ce8db86237",
+  "name": "Manticore Helmet Epoque",
+  "description": "Dominate the battlefield in the Manticore Helmet. Crafted with a durable polymer weave for maximum protection, this fully enclosed combat helmet creates a foreboding silhouette.\n\nThe Epoque edition features a navy and black coloring, finished with baroque gold detailing.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-85 / 115 °C",
+  "radiation_protection": "52800.0",
+  "radiation_scrub_rate": "251.1",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable",
+    "Survival_Heavy",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

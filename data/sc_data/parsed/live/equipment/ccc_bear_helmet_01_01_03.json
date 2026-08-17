@@ -1,0 +1,41 @@
+{
+  "key": "ccc_bear_helmet_01_01_03",
+  "ref": "762b1a5c-55c5-4976-8633-c438aa4d811a",
+  "name": "Fieldsbury Dark Bear Helmet Orange",
+  "description": "Celebrate Day of the Vara in sinister style with this officially licensed Fieldsbury Dark Bear helmet. This twisted version of the Fieldsbury Bear mascot launched a seasonal soda flavor before being co-opted into a series of high-profile pranks. Ever since, the bear's big, toothy grin and off-set flickering eyes have become a standard sight at Day of the Vara celebrations. Now CC's Conversions has designed and delivered an official, high quality reproduction of this iconic mascot, available in six striking colors.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "flight_helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "10.0",
+  "temperature_rating": "-40 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "Bear",
+    "Set_01",
+    "Color_03",
+    "SM_RestrictedWep",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

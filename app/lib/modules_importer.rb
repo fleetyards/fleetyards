@@ -42,6 +42,12 @@ class ModulesImporter
     }
   end
 
+  # A run that only found new modules is a status update; missing models and
+  # import errors are the parts a human has to resolve.
+  def self.actionable?(results)
+    results[:new_with_error][:items].present? || results[:model_not_found][:items].present?
+  end
+
   def self.github_issue_body(results)
     lines = []
 

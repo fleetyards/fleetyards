@@ -1,9 +1,9 @@
 .hardpoint-item {
   display: flex;
   width: 100%;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 6px;
 
   &:last-child {
     margin-bottom: 0;
@@ -17,48 +17,53 @@
   min-width: 0;
 }
 
-.hardpoint-item__list {
-  display: flex;
-  align-items: center;
-}
-
-.hardpoint-item__list-icon {
-  width: 20px;
+.hardpoint-item__count {
+  flex: none;
+  padding: 3px 9px;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 999px;
+  background: rgba($gray-light, 0.14);
+  color: $text-color;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
 
 .hardpoint-item__inner {
   position: relative;
   display: flex;
-  flex-wrap: wrap-reverse;
+  flex-wrap: nowrap;
   align-items: center;
-  justify-content: space-between;
+  gap: 4px 8px;
   width: 100%;
-  margin-bottom: 10px;
-  padding: 6px 10px;
-  border: $panel-border-width solid $panel-inner-border;
-  border-radius: 10px;
+  margin-bottom: 6px;
+  padding: 8px 11px 8px 14px;
+  background: #1a1d21;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 9px;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
 
   &:last-child {
     margin-bottom: 0;
   }
 
-  &::before {
-    position: absolute;
-    top: -$panel-border-width;
-    right: 14px;
-    left: 14px;
-    height: $panel-border-width;
-    background-color: #444;
-    content: "";
+  &:hover {
+    border-color: rgba($primary, 0.7);
+    background: #1e2226;
   }
 
-  &::after {
-    position: absolute;
-    right: 14px;
-    bottom: -$panel-border-width;
-    left: 14px;
-    height: $panel-border-width;
-    background-color: #444;
+  // Primary-colour rail marks each mount, telegraphing the future edit surface.
+  &::before {
     content: "";
+    position: absolute;
+    top: 9px;
+    bottom: 9px;
+    left: 0;
+    width: 3px;
+    background: linear-gradient($primary, rgba($primary, 0.15));
+    border-radius: 2px;
+    opacity: 0.85;
   }
 }

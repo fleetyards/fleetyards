@@ -1,0 +1,38 @@
+{
+  "key": "qrt_combat_medium_legs_01_01_10",
+  "ref": "11bfd42b-929a-4e45-88d7-11aab92e6176",
+  "name": "Testudo Legs Nightveil",
+  "description": "The Testudo armor for Quirinus Tech blends battlefield durability with everyday comfort. It weaves tough, yet lightweight, plating with ultra-strong synthetic fibers to provide premium protection. Lining the inside is a proprietary micromodal fabric that's soft to the touch and wicks away moisture for supreme comfort.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4000.0",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-50 / 80 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "qrt_combat_medium",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.068,
+  "volume_dimensions": {
+    "x": 0.471,
+    "y": 0.363,
+    "z": 0.57
+  }
+}

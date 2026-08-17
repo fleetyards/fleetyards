@@ -4,6 +4,7 @@ interface TooltipOptions {
   content: string | false;
   placement: string;
   popperClass?: string;
+  html?: boolean;
 }
 
 function parseBinding(binding: DirectiveBinding): TooltipOptions {
@@ -15,6 +16,7 @@ function parseBinding(binding: DirectiveBinding): TooltipOptions {
       content: binding.value.content,
       placement: binding.value.placement || placement,
       popperClass: binding.value.popperClass,
+      html: binding.value.html,
     };
   }
 
@@ -22,6 +24,18 @@ function parseBinding(binding: DirectiveBinding): TooltipOptions {
     content: binding.value || false,
     placement,
   };
+}
+
+// Callers pass formatted i18n strings that carry markup — `toUEC` wraps its unit
+// in a muted span — so without this the tags render as literal text.
+function setContent(el: HTMLElement, options: TooltipOptions) {
+  if (options.html) {
+    el.innerHTML = String(options.content);
+
+    return;
+  }
+
+  el.textContent = String(options.content);
 }
 
 const ARROW_SIZE = 6;
@@ -43,7 +57,7 @@ function createTooltipEl(options: TooltipOptions): HTMLElement {
     "opacity:0",
     "transition:opacity .15s ease",
   ].join(";");
-  el.textContent = String(options.content);
+  setContent(el, options);
 
   const arrow = document.createElement("div");
   arrow.setAttribute("data-tooltip-arrow", "");
@@ -187,7 +201,7 @@ function show(el: HTMLElement) {
 
   // Update text (keep arrow element)
   const arrow = tip.querySelector("[data-tooltip-arrow]");
-  tip.textContent = String(state.options.content);
+  setContent(tip, state.options);
   if (arrow) tip.appendChild(arrow);
 
   // Measure at 0 opacity

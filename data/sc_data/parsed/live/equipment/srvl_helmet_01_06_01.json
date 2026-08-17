@@ -1,0 +1,41 @@
+{
+  "key": "srvl_helmet_01_06_01",
+  "ref": "660d1512-7078-4dc2-9d05-e58b0321e44e",
+  "name": "Deadhead Helmet Windfall",
+  "description": "Remind your enemies that death is coming with the Deadhead helmet. In place of a visor, the ghastly visage of a Human skull, lit from within by an infernal glow, is sure to send any opponent running.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-50 / 80 °C",
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable",
+    "srvl_helmet",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

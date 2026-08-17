@@ -13,14 +13,14 @@ module Api
         unless: :user_signed_in?,
         only: %i[create update destroy]
 
-      before_action :check_fleet_logistics_feature
       before_action :set_fleet
+      before_action :check_fleet_logistics_feature
       before_action :set_fleet_inventory, only: %i[show update destroy]
 
       def index
         authorize! with: FleetInventoryPolicy, context: {fleet: @fleet}
 
-        scope = @fleet.fleet_inventories
+        scope = @fleet.fleet_inventories.includes(manager: [:omniauth_connections])
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :visibility_eq, :s)
         normalize_sort_params(query_params)
@@ -81,7 +81,7 @@ module Api
       end
 
       private def check_fleet_logistics_feature
-        return if feature_enabled?("fleet_logistics")
+        return if feature_enabled?("fleet_logistics", @fleet)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

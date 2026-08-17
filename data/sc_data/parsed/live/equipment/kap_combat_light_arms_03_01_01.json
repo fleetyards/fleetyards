@@ -1,0 +1,37 @@
+{
+  "key": "kap_combat_light_arms_03_01_01",
+  "ref": "4dc6c72f-5649-47d7-b686-8519d9207ac8",
+  "name": "Geist Armor Arms Golden Blossom",
+  "description": "An ideal synthesis of strength and technology, the Geist Stealth Armor has been crafted from military-grade carbon silk sourced from the same manufacturers that protect the UEE's special forces. Hair-thin filaments woven into the fabric mask the wearer's emissions, making them undetectable via radar, and specialized tubing built into the soles of the boots dampens the sound of footsteps.\n\nThis matte black stealth armor is embellished with intricate golden flowers, giving your enemies one final glimpse of life before death.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-35 / 65 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a349d45f-cda5-4fdb-89ea-4ea91804a163",
+  "tags": [
+    "kap_light",
+    "Set_03",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.008,
+  "volume_dimensions": {
+    "x": 0.088,
+    "y": 0.345,
+    "z": 0.323
+  }
+}

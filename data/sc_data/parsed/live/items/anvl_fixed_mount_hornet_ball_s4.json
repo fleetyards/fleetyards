@@ -24,7 +24,8 @@
       "min_size": "4",
       "max_size": "4",
       "types": [
-        "WeaponGun"
+        "WeaponGun",
+        "Turret"
       ]
     }
   ],

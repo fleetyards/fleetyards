@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "5",
+  "min_crew": "4",
   "name": "Argo MOLE",
   "description": "Manufacturer: Argo Astronautics\\nFocus: Medium Mining\\n\\nArgo’s iconic multi-operator laser extractor, more commonly referred to as the MOLE, lets you work faster and more effectively than ever before, thanks to its patented trilateral mining system. Three independently controlled articulated extraction stations allow for maximum power and near-limitless versatility. The MOLE lives by the adage \"many hands make for light work\".",
   "career": "Industrial",
@@ -14,6 +14,71 @@
     "base_expediting_fee": "5715"
   },
   "mass": 852686.0,
+  "inventory_container_ref": "ec7e4c46-cd7f-4cda-b3b3-92594f830265",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 16155.0,
+    "y": 9693.0,
+    "z": 29373.0
+  },
+  "hull_health": 130000.0,
+  "hull_parts": [
+    {
+      "name": "ARGO_MOLE",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Front",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "thruster_front_vtol_left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_front_vtol_right",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Rear",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Vtol_Rear_Left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Top_Left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Bot_Left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Vtol_Rear_Right",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Top_Right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Bot_Right",
+      "health": 6000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 26.0,
     "y": 45.0,

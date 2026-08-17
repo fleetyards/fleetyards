@@ -26,7 +26,7 @@ const { t } = useI18n();
       params: { slug: fleet.slug, inventory: inventory.slug },
     }"
     block
-    align-start
+    class="justify-start"
   >
     <div>
       <h5>{{ inventory.name }}</h5>
@@ -35,8 +35,8 @@ const { t } = useI18n();
       </p>
       <div class="d-flex justify-content-between">
         <span class="text-muted">
-          {{ inventory.itemCount }}
-          {{ t("labels.fleets.logistics.items") }}
+          {{ inventory.entriesCount }}
+          {{ t("labels.logistics.entriesCount") }}
         </span>
         <span v-if="inventory.manager" class="text-muted">
           {{ inventory.manager.username }}

@@ -1,0 +1,38 @@
+{
+  "key": "doom_armor_medium_core_02_01_01",
+  "ref": "0e476efa-b76d-4300-ba37-677569084781",
+  "name": "Stitcher Core",
+  "description": "Dress to impress in scrapheap chic! The Stitcher armor might look like it's held together with tape and good intentions but we swear it's space safe. The intentional ramshackle design features a funky double collar, plenty of storage, and a ribbed industrial hose attached to a metal cylinder on the back just for the hell of it.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "6.4",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-52 / 82 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light_medium",
+  "icon": "ui/textures/ea/loadouticons/medium_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b495993e-c10a-41e4-876d-1de96de54e33",
+  "tags": [
+    "ShipJacker",
+    "Set_02",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.042,
+  "volume_dimensions": {
+    "x": 0.395,
+    "y": 0.408,
+    "z": 0.325
+  }
+}

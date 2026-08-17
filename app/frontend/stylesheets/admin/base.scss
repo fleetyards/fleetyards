@@ -20,23 +20,28 @@ button {
   position: relative;
 }
 
+// A hairline, not a 3px pill. The rounded slab was the old chrome's divider and
+// it out-shouted every surface this redesign quietens; this is the same colour
+// and weight the panel heading, the metrics rows and the dropdown menu already
+// divide with, so a rule between sections reads the same wherever it appears.
 hr {
-  height: 3px;
-  margin: 20px 5%;
-  background-color: $gray;
+  height: 1px;
+  // Full width of whatever contains it. The 5% side inset was part of the same
+  // old chrome as the 3px slab: it left a rule floating narrower than the
+  // content it divides, which is obvious anywhere the container is not the page
+  // - a modal, a panel, a form column.
+  margin: 20px 0;
+  background-color: rgba($gray-light, 0.28);
   border: none;
-  border-radius: 50%;
 
   &.large-spacer {
-    margin: 60px 5%;
-  }
-
-  &.dark {
-    background-color: $gray-black;
+    margin: 60px 0;
   }
 
   &.slim-spacer {
-    margin: 10px 5%;
+    // More room under than over: whatever sits above a divider carries its own
+    // bottom margin, so an even 10px reads tight below and airy above.
+    margin: 10px 0 30px;
   }
 
   &.space-bottom {

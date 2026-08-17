@@ -1,0 +1,40 @@
+{
+  "key": "sasu_medium_armor_helmet_01_01_19",
+  "ref": "c2cff339-9b7d-48a7-84f8-7868e17e1f6a",
+  "name": "Star Kitten Damon Helmet",
+  "description": "Celebrate your love of Genady Kuzo's classic Star Kitten cartoon with this commemorative helmet from Sakura Sun. The custom molding for this medium helmet faithfully recreates the show's icon character design without sacrificing its defensive capabilities. Integrated accent lights provide pops of color and highlight the helmet's unique silhouette. The helmet is sure to be a collectible among fans of the show and unusual armor enthusiasts. The Star Kitten Damon edition is primarily black to look like Sally's close friend who constantly tempts her to join his mischievous adventures.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "tags": [
+    "sasu_medium",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

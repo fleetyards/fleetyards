@@ -1,0 +1,32 @@
+{
+  "key": "cbd_pants_02_01_01",
+  "ref": "73882e93-2dbf-423a-b498-719f8e194876",
+  "name": "Franz Pants",
+  "description": "The Franz monochrome striped pants from CBD are elevated with the addition of bold black brush strokes applied freehand.\n\nMen's sizes currently not available.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073
+}

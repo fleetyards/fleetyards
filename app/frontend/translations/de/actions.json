@@ -8,6 +8,9 @@
           "reloadPaints": "Lackierungen neu laden",
           "reloadModules": "Module neu laden",
           "reloadLoaners": "Leihschiffe neu laden"
+        },
+        "supporterContributions": {
+          "syncFromPatreon": "Von Patreon synchronisieren"
         }
       },
       "showReleased": "Alte Versionen anzeigen",
@@ -30,6 +33,7 @@
       "more": "Mehr...",
       "showMore": "Mehr anzeigen",
       "export": "Export",
+      "exportHangarLink": "Export für hangar.link",
       "import": "Importieren",
       "here": "hier",
       "backToList": "Zurück zur Liste",
@@ -78,6 +82,7 @@
       "disableGlobally": "Global deaktivieren",
       "addActor": "Akteur hinzufügen",
       "addGroup": "Gruppe hinzufügen",
+      "editGroup": "Gruppe bearbeiten",
       "remove": "Entfernen",
       "delete": "Löschen",
       "deleteSelected": "Ausgewählte löschen",
@@ -155,7 +160,8 @@
           "openModal": "Ingame-Schiffe nach Wipe zurücksetzen",
           "moveToWishlist": "Zur Wunschliste verschieben",
           "removeAll": "Alle entfernen"
-        }
+        },
+        "manageCargo": "Fracht verwalten"
       },
       "syncExtension": {
         "cancel": "Abbrechen",
@@ -189,29 +195,11 @@
           "demote": "Degradieren",
           "accept": "Akzeptieren",
           "decline": "Ablehnen",
-          "remove": "Entfernen"
+          "remove": "Entfernen",
+          "editRole": "Rolle bearbeiten"
         },
         "inviteUrls": {
           "create": "Neue Einladungs-URL erstellen"
-        }
-      },
-      "fleets": {
-        "logistics": {
-          "viewInventories": "View Inventories",
-          "viewRequests": "View Requests",
-          "newRequest": "New Request",
-          "createRequest": "Create Request",
-          "createInventory": "New Inventory",
-          "submit": "Submit",
-          "approve": "Approve",
-          "reject": "Reject",
-          "startWork": "Start Work",
-          "fulfill": "Fulfill",
-          "cancel": "Cancel",
-          "addComment": "Add Comment",
-          "createItem": "Add Item",
-          "importCsv": "Import CSV",
-          "downloadTemplate": "Download Template"
         }
       },
       "model": {
@@ -256,6 +244,30 @@
       "roadmap": {
         "showRemoved": "Entfernte anzeigen",
         "hideRemoved": "Entfernte Einträge ausblenden"
+      },
+      "logistics": {
+        "viewRequests": "View Requests",
+        "newRequest": "New Request",
+        "createRequest": "Create Request",
+        "createInventory": "New Inventory",
+        "submit": "Submit",
+        "approve": "Approve",
+        "reject": "Reject",
+        "startWork": "Start Work",
+        "fulfill": "Fulfill",
+        "cancel": "Cancel",
+        "addComment": "Add Comment",
+        "deposit": "Deposit",
+        "withdraw": "Withdraw",
+        "createItem": "Add Item",
+        "importCsv": "Import CSV",
+        "downloadTemplate": "Download Template",
+        "destroyInventory": "Inventar löschen",
+        "destroyEntry": "Delete Entry",
+        "editStockItem": "Edit Item",
+        "destroyStockItem": "Delete Item",
+        "editInventory": "Edit Inventory",
+        "clearCargo": "Fracht leeren"
       }
     }
   }

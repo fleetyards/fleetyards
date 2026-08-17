@@ -8,31 +8,6 @@ class Admin::Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
   openapi_schema :"admin/v1/schema"
 
   api_path "/features" do
-    post("Create Feature") do
-      operationId "createAdminFeature"
-      tags "Features"
-      consumes "application/json"
-      produces "application/json"
-
-      request_body schema: {"$ref": "#/components/schemas/FeatureInput"}
-
-      response(201, "created") do
-        schema "$ref": "#/components/schemas/Feature"
-      end
-
-      response(422, "invalid") do
-        schema "$ref": "#/components/schemas/StandardError"
-      end
-
-      response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
-      end
-
-      response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
-      end
-    end
-
     get("Features list") do
       operationId "adminFeatures"
       tags "Features"
@@ -54,25 +29,6 @@ class Admin::Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
 
   api_path "/features/{id}" do
     parameter name: "id", in: :path, schema: {type: :string}, description: "Feature name", required: true
-
-    delete("Delete Feature") do
-      operationId "destroyAdminFeature"
-      tags "Features"
-
-      response(204, "deleted")
-
-      response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
-      end
-
-      response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
-      end
-
-      response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
-      end
-    end
 
     get("Feature Detail") do
       operationId "adminFeature"
@@ -101,27 +57,23 @@ class Admin::Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
     @user = create(:admin_user, resource_access: [:features])
   end
 
-  # POST /features
-  test "POST /features creates a feature" do
-    sign_in @user
+  # Flag lifecycle belongs to config/feature_flags.yml — see #4341. Creating a
+  # flag here would leave it without a registry entry, and the next deploy's
+  # `bin/feature-flags sync` would delete it along with every gate set on it.
+  test "the admin API exposes no flag lifecycle actions" do
+    actions = Admin::Api::V1::FeaturesController.action_methods
 
-    assert_api_response :post, 201, body: {name: "new-feature"}
-  end
+    assert_not_includes actions, "create"
+    assert_not_includes actions, "destroy"
 
-  test "POST /features returns 422 for blank name" do
-    sign_in @user
+    routed = Rails.application.routes.routes.filter_map do |route|
+      route.defaults[:action] if route.defaults[:controller] == "admin/api/v1/features"
+    end
 
-    assert_api_response :post, 422, body: {name: ""}
-  end
-
-  test "POST /features returns 401 when not signed in" do
-    assert_api_response :post, 401, body: {name: "new-feature"}
-  end
-
-  test "POST /features returns 403 for admin without access" do
-    sign_in create(:admin_user, resource_access: [])
-
-    assert_api_response :post, 403, body: {name: "new-feature"}
+    assert_not_includes routed, "create"
+    assert_not_includes routed, "destroy"
+    assert_includes routed, "index"
+    assert_includes routed, "enable"
   end
 
   # GET /features
@@ -143,33 +95,6 @@ class Admin::Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :get, 403
-  end
-
-  # DELETE /features/:id
-  test "DELETE /features/:id removes the feature" do
-    Flipper.add("TestFeature")
-    sign_in @user
-
-    assert_api_response :delete, 204, path_params: {id: "TestFeature"}
-  end
-
-  test "DELETE /features/:id returns 404 for unknown feature" do
-    sign_in @user
-
-    assert_api_response :delete, 404, path_params: {id: "NonExistentFeature"}
-  end
-
-  test "DELETE /features/:id returns 401 when not signed in" do
-    Flipper.add("TestFeature")
-
-    assert_api_response :delete, 401, path_params: {id: "TestFeature"}
-  end
-
-  test "DELETE /features/:id returns 403 for admin without access" do
-    Flipper.add("TestFeature")
-    sign_in create(:admin_user, resource_access: [])
-
-    assert_api_response :delete, 403, path_params: {id: "TestFeature"}
   end
 
   # GET /features/:id

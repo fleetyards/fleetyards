@@ -1,0 +1,37 @@
+{
+  "key": "mym_shirt_01_lum01_06",
+  "ref": "d58002fa-7cb6-4af2-93d1-e9e1327eaef3",
+  "name": "One Light Shirt Teal",
+  "description": "During Luminalia, we're all one family. Celebrate with your loved ones in immense joy with this festive shirt from City Lights, crafted with high-quality, ultra soft fabric that's made to last.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "mym_shirt",
+    "Set_01_lum01",
+    "Color_06"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "key": "alb_pants_03_02_01",
+  "ref": "9acc4629-465b-4e08-b84d-f6d8edc3117c",
+  "name": "Allpa Pants Shadow",
+  "description": "If you're in the adventure business, you'll need clothing that can take the heat. The Allpa Pants were made with heavyweight cotton that features AlejoFlex technology, providing the wearer with a wide range of movement during tough jobs while maintaining its durability.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_pants",
+    "Set_03",
+    "Texture_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

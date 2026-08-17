@@ -1,0 +1,38 @@
+{
+  "key": "dmc_frontier_gloves_01_01_20",
+  "ref": "ae2ccd9b-b429-44c2-9112-d4e55f6cf8ca",
+  "name": "Adroit Gloves Olive",
+  "description": "Lightweight, quick-drying, and durable, the Adroit fingerless gloves keep your hands warm while giving your fingers the freedom to perform delicate work. The material on the wrist extends to meet long-sleeved apparel, cutting down on places that might be exposed to the elements.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "frontier",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_frontier_gloves",
+    "Set_01",
+    "Texture_01",
+    "Color_20"
+  ],
+  "hidden": false,
+  "volume": 0.0015,
+  "volume_dimensions": {
+    "x": 0.301,
+    "y": 0.048,
+    "z": 0.207
+  }
+}

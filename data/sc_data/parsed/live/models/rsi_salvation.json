@@ -14,9 +14,104 @@
     "base_expediting_fee": "5620"
   },
   "mass": 62245.0,
+  "inventory_container_ref": "07b72e0c-74a4-4f62-81b5-da31c2afcb86",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5936.0,
+    "y": 1668.0,
+    "z": 7343.0
+  },
+  "hull_health": 5503.0,
+  "hull_parts": [
+    {
+      "name": "rsi_salvation",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 2400.0,
+      "category": "vital"
+    },
+    {
+      "name": "geo_cockpit_door_down",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_cockpit_door_up_01",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_salvage_tanker",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_plate_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_left_upper_wing",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_right_upper_wing",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_right_lower_wing",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_left_lower_wing",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_guard_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_guard_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_plate_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_back_left_wing",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_left_wing",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_right_wing",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_back_right_wing",
+      "health": 250.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
-    "x": 14.5,
-    "y": 8.5,
+    "x": 8.5,
+    "y": 14.5,
     "z": 4.0
   },
   "loadout": [

@@ -1,0 +1,36 @@
+{
+  "key": "arma_barrel_comp_s3",
+  "ref": "f739108f-7720-4a5e-b173-a65e07b314da",
+  "name": "Sion Compensator3",
+  "description": "Maintain accuracy by countering muzzle rise with the Sion Compensator3. ArmaMod's expertly designed S3 barrel attachment efficiently expels gasses to keep every shot on target.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "barrel",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Barrel",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a",
+  "tags": [
+    "FPS_Barrel",
+    "ballistic_attach"
+  ],
+  "hidden": false,
+  "volume": 0.00013,
+  "volume_dimensions": {
+    "x": 0.0348,
+    "y": 0.1082,
+    "z": 0.0336
+  }
+}

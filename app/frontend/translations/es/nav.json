@@ -16,7 +16,9 @@
       "videos": "Vídeos",
       "hangar": {
         "index": "Mi Hangar",
-        "vehicleLoadouts": "Loadouts"
+        "vehicleLoadouts": "Loadouts",
+        "inventories": "Inventories",
+        "vehicleCargo": "Carga"
       },
       "login": "Iniciar sesión",
       "logout": "Cerrar sesión",
@@ -87,10 +89,16 @@
         "index": "Pruebas Visuales",
         "panels": "Paneles",
         "buttons": "Botones",
+        "typography": "Tipografía",
+        "forms": "Formularios",
         "tables": "Tablas",
+        "lists": "Listas",
+        "metrics": "Métricas",
+        "states": "Estados",
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
-        "supportHint": "Aviso de apoyo"
+        "supportHint": "Aviso de apoyo",
+        "chips": "Chips"
       },
       "admin": {
         "index": "Admin",
@@ -167,6 +175,16 @@
           "workers": "Trabajadores",
           "tasks": "Tareas",
           "rsiApiStatus": "Estado API RSI"
+        },
+        "supporterContributions": {
+          "index": "Contribuciones de patrocinadores",
+          "new": "Nueva contribución",
+          "edit": "Editar contribución"
+        },
+        "fundingGoals": {
+          "index": "Objetivos de financiación",
+          "new": "Nuevo objetivo de financiación",
+          "edit": "Editar objetivo de financiación"
         }
       }
     }

@@ -68,6 +68,7 @@
 #  index_users_on_calendar_feed_token   (calendar_feed_token) UNIQUE
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
+#  index_users_on_last_active_at        (last_active_at)
 #  index_users_on_normalized_username   (normalized_username)
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
@@ -124,8 +125,15 @@ class User < ApplicationRecord
     -> { order(primary: :desc) },
     dependent: :destroy,
     inverse_of: false
+  has_many :kept_fleet_memberships,
+    -> { kept.order(primary: :desc) },
+    class_name: "FleetMembership",
+    inverse_of: false
   has_many :fleets,
-    through: :fleet_memberships
+    -> { kept },
+    through: :kept_fleet_memberships
+
+  has_many :inventories, as: :holder, dependent: :destroy
 
   has_many :notifications, dependent: :delete_all
   has_many :notification_preferences, dependent: :delete_all
@@ -260,21 +268,29 @@ class User < ApplicationRecord
   def citizenid_profile_url
     return unless rsi_handle_verified?
 
-    connection = omniauth_connections.find_by(provider: "citizenid")
+    connection = connection_for("citizenid")
     return if connection.blank?
 
     "#{Rails.configuration.app.citizenid[:issuer]}profile/#{connection.uid}"
   end
 
   def discord_profile_url
-    connection = omniauth_connections.find_by(provider: "discord")
+    connection = connection_for("discord")
     return if connection.blank?
 
     "https://discord.com/users/#{connection.uid}"
   end
 
   def discord_uid
-    omniauth_connections.find_by(provider: "discord")&.uid
+    connection_for("discord")&.uid
+  end
+
+  # detect rather than find_by: a user has at most a handful of connections, so
+  # reading them from a preloaded association costs one query for all providers
+  # instead of one per profile url - the fleet vehicle list asks every owner for
+  # two of them.
+  private def connection_for(provider)
+    omniauth_connections.detect { |connection| connection.provider == provider }
   end
 
   def public_wishlist_url
@@ -442,7 +458,7 @@ class User < ApplicationRecord
   attr_accessor :destroy_fleets
 
   private def check_fleet_memberships
-    permanent_memberships = fleet_memberships.joins(:fleet_role).where(fleet_roles: {permanent: true})
+    permanent_memberships = fleet_memberships.kept.joins(:fleet_role).where(fleet_roles: {permanent: true})
     return unless permanent_memberships.exists?
 
     blocking_fleets = []
@@ -451,7 +467,7 @@ class User < ApplicationRecord
 
     permanent_memberships.each do |membership|
       fleet = membership.fleet
-      other_admin_exists = fleet.fleet_memberships
+      other_admin_exists = fleet.fleet_memberships.kept
         .joins(:fleet_role)
         .where(fleet_roles: {permanent: true})
         .where.not(id: membership.id)
@@ -459,7 +475,7 @@ class User < ApplicationRecord
 
       if other_admin_exists
         memberships_to_delete << membership
-      elsif fleet.fleet_memberships.count == 1 || destroy_fleets
+      elsif fleet.fleet_memberships.kept.count == 1 || destroy_fleets
         fleets_to_destroy << [membership, fleet]
       else
         blocking_fleets << fleet.name

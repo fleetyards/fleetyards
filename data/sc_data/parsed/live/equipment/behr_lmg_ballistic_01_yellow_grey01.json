@@ -1,0 +1,37 @@
+{
+  "key": "behr_lmg_ballistic_01_yellow_grey01",
+  "ref": "4ee95d7b-4cbb-44a5-a03b-8e1698929f88",
+  "name": "FS-9 \"Finish Line\" LMG",
+  "description": "Behring designed the FS-9 to be an overwhelming battlefield force. This light machine gun features a full auto mode that makes it ideal for laying down covering fire or holding back advancing enemies. The FS-9 is also acclaimed for its ability to maintain accuracy while unleashing sustained fire. Updated with new yellow and grey coloring, this special Finish Line edition is an homage to starship racing.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "lmg",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "800.0",
+  "range": "40.0",
+  "storage": "75.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/gemini_f55_lmg_64.tif",
+  "sub_type": "Medium",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "lmg",
+    "behr_lmg_ballistic_01"
+  ],
+  "hidden": false,
+  "volume": 0.018,
+  "volume_dimensions": {
+    "x": 0.1294,
+    "y": 1.0254,
+    "z": 0.2967
+  }
+}

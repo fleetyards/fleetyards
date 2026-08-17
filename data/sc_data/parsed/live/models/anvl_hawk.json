@@ -14,10 +14,80 @@
     "base_expediting_fee": "3040"
   },
   "mass": 64166.0,
+  "inventory_container_ref": "f73a2123-39ac-441d-9ed0-2a055e086dbb",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 11201.0,
+    "y": 3024.0,
+    "z": 8064.0
+  },
+  "hull_health": 16600.0,
+  "hull_parts": [
+    {
+      "name": "ANVL_Hawk",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Nacelle_left",
+      "health": 1900.0,
+      "category": "secondary"
+    },
+    {
+      "name": "rear_wing_left",
+      "health": 1900.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nacelle_right",
+      "health": 1900.0,
+      "category": "secondary"
+    },
+    {
+      "name": "rear_wing_right",
+      "health": 1900.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "tail",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_connection",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
-    "x": 0.0,
-    "y": 0.0,
-    "z": 0.0
+    "x": 17.0,
+    "y": 23.0,
+    "z": 8.0
   },
   "loadout": [
     {

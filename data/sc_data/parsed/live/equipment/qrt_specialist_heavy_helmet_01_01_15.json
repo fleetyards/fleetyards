@@ -1,0 +1,40 @@
+{
+  "key": "qrt_specialist_heavy_helmet_01_01_15",
+  "ref": "71f5e2d7-bc27-4b65-95d3-c3e928f7d44c",
+  "name": "Antium Helmet Sand",
+  "description": "If you're in need of top-of-the-line protection enhanced with bleeding-edge technology, look no further than the Antium Armor Set. Developed by the award-winning engineering team at Quirinus Tech, the suit is fully enclosed to protect its wearer against hazardous environments and the dangers of the battlefield. Instead of a traditional laminate faceplate, the helmet utilizes a suite of sensors to create an uncompromised field of vision.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-85 / 115 °C",
+  "radiation_protection": "52800.0",
+  "radiation_scrub_rate": "251.1",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "qrt_specialist_heavy",
+    "Set_01",
+    "Color_15",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

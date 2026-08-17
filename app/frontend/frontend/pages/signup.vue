@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
-import { transformErrors } from "@/frontend/utils/transformErrors";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetStore } from "@/frontend/stores/fleet";
@@ -15,14 +15,12 @@ import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import {
   useSignup as useSignupMutation,
   type UserCreateInput,
-  type ValidationError,
 } from "@/services/fyApi";
 import { useRedirectBack } from "@/shared/composables/useRedirectBack";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
-import { type AxiosError } from "axios";
 
 const { t } = useI18n();
 
@@ -93,19 +91,13 @@ const onSubmit = handleSubmit(async (values) => {
       await handleRedirect();
     })
     .catch((error) => {
-      const response = (error as AxiosError<ValidationError>).response;
+      const { message, formErrors } = validationErrorFrom(error);
 
-      if (response?.data?.errors) {
-        setErrors(transformErrors(response.data.errors));
+      setErrors(formErrors);
 
-        displayAlert({
-          text: response?.data?.message,
-        });
-      } else {
-        displayAlert({
-          text: response?.data?.message,
-        });
-      }
+      displayAlert({
+        text: message,
+      });
     })
     .finally(() => {
       submitting.value = false;
@@ -181,8 +173,8 @@ const onSubmit = handleSubmit(async (values) => {
           :loading="submitting"
           :type="BtnTypesEnum.SUBMIT"
           data-test="submit-signup"
-          :size="BtnSizesEnum.LARGE"
           :block="true"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.signUp") }}
         </Btn>
@@ -205,7 +197,7 @@ const onSubmit = handleSubmit(async (values) => {
             {{ t("labels.alreadyRegistered") }}
           </p>
 
-          <Btn :to="loginRoute" :size="BtnSizesEnum.SMALL" :block="true">
+          <Btn :to="loginRoute" :block="true">
             {{ t("actions.login") }}
           </Btn>
         </footer>

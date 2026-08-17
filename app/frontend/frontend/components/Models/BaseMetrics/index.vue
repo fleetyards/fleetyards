@@ -5,10 +5,14 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const { t, toNumber, toDollar, toUEC } = useI18n();
+
+const comlink = useComlink();
 
 type Props = {
   model: Model;
@@ -45,151 +49,155 @@ const displayHeight = computed(() => {
 
   return props.model.metrics.height;
 });
+
+const hasPrice = computed(
+  () => !!props.model.price || !!props.model.pledgePrice,
+);
+
+const openAvailability = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/AvailabilityModal/index.vue"),
+    props: {
+      soldAt: soldAt.value,
+      rentalAt: rentalAt.value,
+    },
+  });
+};
 </script>
 
 <template>
-  <div class="row base-metrics metrics-padding">
-    <div class="col-12 col-lg-3">
-      <div class="metrics-title">
-        {{ t("labels.metrics.base") }}
-      </div>
-    </div>
-    <div class="col-12 col-lg-9 metrics-block">
-      <div class="row">
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ t("model.length") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(displayLength || "", "distance") }}
-          </div>
-          <div class="metrics-label">{{ t("model.beam") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(displayBeam || "", "distance") }}
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ t("model.height") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(displayHeight || "", "distance") }}
-          </div>
-          <div class="metrics-label">{{ t("model.mass") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(model.metrics.mass || "", "weight") }}
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ t("model.cargo") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(model.metrics.cargo || "", "cargo") }}
-          </div>
+  <MetricsCard :title="t('labels.metrics.base')" class="base-panel">
+    <template #head>
+      <span v-if="model.classificationLabel" class="base-panel__chip">
+        {{ model.classificationLabel }}
+      </span>
+    </template>
+
+    <div class="metrics-card__hero metrics-card__hero--grid">
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.length") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(displayLength || "", "distance") }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="seperator" />
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.beam") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(displayBeam || "", "distance") }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-6">
-              <div class="metrics-label">{{ t("model.classification") }}:</div>
-              <div class="metrics-value">
-                {{ model.classificationLabel }}
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="metrics-label">{{ t("model.size") }}:</div>
-              <div class="metrics-value">
-                {{ model.metrics.sizeLabel }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="row">
-            <div v-if="model.price" class="col-6">
-              <div class="metrics-label">{{ t("model.price") }}:</div>
-              <!-- eslint-disable vue/no-v-html -->
-              <div
-                v-tooltip="{ content: toUEC(model.price), html: true }"
-                class="metrics-value"
-                v-html="toUEC(model.price)"
-              />
-              <!-- eslint-enable vue/no-v-html -->
-            </div>
-            <div v-if="model.pledgePrice" class="col-6">
-              <div class="metrics-label">{{ t("model.pledgePrice") }}:</div>
-              <div class="metrics-value">
-                {{ toDollar(model.pledgePrice) }}
-              </div>
-            </div>
-          </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.height") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(displayHeight || "", "distance") }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="seperator" />
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.mass") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(model.metrics.mass || "", "weight") }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-            <div v-if="model.metrics.hydrogenFuelTankSize" class="col-6">
-              <div class="metrics-label">
-                {{ t("model.hydrogenFuelTankSize") }}:
-              </div>
-              <div class="metrics-value">
-                {{ toNumber(model.metrics.hydrogenFuelTankSize, "cargo") }}
-              </div>
-            </div>
-            <div v-if="model.metrics.quantumFuelTankSize" class="col-6">
-              <div class="metrics-label">
-                {{ t("model.quantumFuelTankSize") }}:
-              </div>
-              <div class="metrics-value">
-                {{ toNumber(model.metrics.quantumFuelTankSize, "cargo") }}
-              </div>
-            </div>
-          </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.cargo") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(model.metrics.cargo || "", "integer") }}
+          <span class="metrics-card__tile__unit">SCU</span>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="seperator" />
+      <div v-if="model.metrics.personalInventory" class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("model.personalInventory") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(model.metrics.personalInventory) }}
+          <span class="metrics-card__tile__unit">SCU</span>
         </div>
       </div>
-      <div class="row">
-        <div v-if="model.lastUpdatedAt" class="col-lg-12">
-          <div class="metrics-label">{{ t("model.lastUpdatedAt") }}:</div>
-          <div class="metrics-value">
-            {{ model.lastUpdatedAtLabel }}
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="row">
-            <div v-if="soldAt && soldAt.length" class="col-12">
-              <div class="metrics-label">{{ t("model.soldAt") }}:</div>
-              <div class="metrics-value">
-                <ul class="list-unstyled">
-                  <li v-for="modelPrice in soldAt" :key="modelPrice.id">
-                    {{ modelPrice.location }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div v-if="rentalAt && rentalAt.length" class="col-12">
-              <div class="metrics-label">{{ t("model.rentalAt") }}:</div>
-              <div class="metrics-value">
-                <ul class="list-unstyled">
-                  <li v-for="modelPrice in rentalAt" :key="modelPrice.id">
-                    {{ modelPrice.location }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.size") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ model.metrics.sizeLabel }}
         </div>
       </div>
     </div>
-  </div>
+
+    <template v-if="hasPrice">
+      <div class="metrics-card__section-label">
+        {{ t("labels.base.price") }}
+      </div>
+      <div class="metrics-card__rows metrics-card__rows--split">
+        <div v-if="model.price" class="metrics-card__row">
+          <span class="metrics-card__row__label">
+            {{ t("labels.base.priceInGame") }}
+          </span>
+          <!-- eslint-disable vue/no-v-html -->
+          <span
+            v-tooltip="{ content: toUEC(model.price), html: true }"
+            class="metrics-card__row__value"
+            v-html="toUEC(model.price)"
+          />
+          <!-- eslint-enable vue/no-v-html -->
+        </div>
+        <div v-if="model.pledgePrice" class="metrics-card__row">
+          <span class="metrics-card__row__label">
+            {{ t("labels.base.pricePledge") }}
+          </span>
+          <span class="metrics-card__row__value">
+            {{ toDollar(model.pledgePrice) }}
+          </span>
+        </div>
+      </div>
+    </template>
+
+    <div class="metrics-card__actions">
+      <button
+        type="button"
+        class="metrics-card__toggle"
+        @click="openAvailability"
+      >
+        {{ t("labels.base.availability") }}
+      </button>
+    </div>
+
+    <div v-if="model.lastUpdatedAt" class="metrics-card__footer">
+      <span class="base-panel__updated">
+        <span class="base-panel__updated-label">
+          {{ t("model.lastUpdatedAt") }}
+        </span>
+        {{ model.lastUpdatedAtLabel }}
+      </span>
+    </div>
+  </MetricsCard>
 </template>
+
+<style lang="scss" scoped>
+@import "@/shared/components/metricsCard";
+
+.base-panel {
+  &__chip {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gray-light;
+    border: 1px solid rgba($gray-light, 0.4);
+    border-radius: 999px;
+    padding: 4px 11px;
+    white-space: nowrap;
+  }
+
+  // Not `__hint`: that is sized for the explanatory sentences the other cards
+  // end on, and this is a value people actually read off the card.
+  &__updated {
+    font-size: 13px;
+    color: $text-color;
+    font-variant-numeric: tabular-nums;
+
+    &-label {
+      color: $gray-light;
+    }
+  }
+}
+</style>

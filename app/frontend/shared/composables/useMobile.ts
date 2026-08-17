@@ -1,4 +1,4 @@
-import { useMobileStore } from "@/shared/stores/mobile";
+import { isMobileWidth, useMobileStore } from "@/shared/stores/mobile";
 import { storeToRefs } from "pinia";
 
 export const useMobile = () => {
@@ -17,7 +17,7 @@ export const useMobile = () => {
   });
 
   const checkMobile = () => {
-    mobileStore.mobile = document.documentElement.clientWidth < 992;
+    mobileStore.mobile = isMobileWidth();
   };
 
   return mobile;

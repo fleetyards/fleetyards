@@ -1,0 +1,35 @@
+{
+  "key": "grin_multitool_01_healing",
+  "ref": "5c19c75e-fe9c-438b-862a-3639cf187763",
+  "name": "LifeGuard Medical Attachment",
+  "description": "MUST BUY BASE MULTI-TOOL TO USE: \"Pyro RYT Multi-Tool\"\n\nManufacturer: Greycat Industrial / CureLife\nItem Type: Multi-Tool Attachment\nClass: Medical\n\nCrafted as a joint effort between Greycat Industrial and leading medical device manufacturer CureLife, the LifeGuard attachment is a compact and light-weight emergency medical treatment option powered by the Pyro RYT Multi-Tool. It is perfect for handling jobsite emergencies and temporarily alleviating symptoms until professional medical care can be sought.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "multitool",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Utility",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_multitool_01"
+  ],
+  "hidden": false,
+  "volume": 0.00034,
+  "volume_dimensions": {
+    "x": 0.0549,
+    "y": 0.0424,
+    "z": 0.133
+  }
+}

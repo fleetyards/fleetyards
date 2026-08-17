@@ -14,10 +14,190 @@
     "base_expediting_fee": "6190"
   },
   "mass": 23350.0,
+  "inventory_container_ref": "8b90dcb9-41cf-41a0-af8f-4ee7c7130195",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5000.0,
+    "y": 833.0,
+    "z": 3200.0
+  },
+  "hull_health": 8523.0,
+  "hull_parts": [
+    {
+      "name": "krig_l21_wolf",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 1750.0,
+      "category": "vital"
+    },
+    {
+      "name": "fairing_cannon_top_small_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fairing_cannon_top_large_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fairing_cannon_top_small_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fairing_cannon_top_large_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_cooler_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_cooler_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "greeble_cooler_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "greeble_cooler_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_life_support_new002",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_life_support_new001",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_battery",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_power_plant_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_power_plant_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_shieldgen_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_shieldgen_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_quantum_drive",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_radar",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_computer_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_computer_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "personal_storage_flap_top",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "flap_personal_storage",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "ladder_flap_top",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "ladder_flap_bottom",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fin_back_left_large",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "fin_back_left_small",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fin_back_right_large",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "fin_back_right_small",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 1750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "fin_bottom",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
-    "x": 5.25,
-    "y": 12.0,
-    "z": 3.0
+    "x": 10.5,
+    "y": 21.5,
+    "z": 4.2
   },
   "loadout": [
     {
@@ -329,6 +509,56 @@
           "name": "hardpoint_fin_exterior_010",
           "ref": "70e72299-a5d5-4c7e-b367-d46eefb231c5",
           "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_01",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_02",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_03",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_04",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_05",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_06",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_07",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_08",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_09",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
         }
       ]
     },
@@ -385,6 +615,56 @@
         {
           "name": "hardpoint_fin_exterior_010",
           "ref": "70e72299-a5d5-4c7e-b367-d46eefb231c5",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_01",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_02",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_03",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_04",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_05",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_06",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_07",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_08",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_09",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
           "key": null
         }
       ]
@@ -443,6 +723,56 @@
           "name": "hardpoint_fin_exterior_010",
           "ref": "70e72299-a5d5-4c7e-b367-d46eefb231c5",
           "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_01",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_02",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_03",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_04",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_05",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_06",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_07",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_08",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_09",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
         }
       ]
     },
@@ -499,6 +829,56 @@
         {
           "name": "hardpoint_fin_exterior_010",
           "ref": "70e72299-a5d5-4c7e-b367-d46eefb231c5",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_01",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_02",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_03",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_04",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_05",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_06",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_07",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_08",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
+          "key": null
+        },
+        {
+          "name": "hardpoint_fin_interior_09",
+          "ref": "d32c880b-35b8-4089-9138-be690b2f2db4",
           "key": null
         }
       ]

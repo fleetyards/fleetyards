@@ -13,10 +13,7 @@ import InlineEditableList from "@/shared/components/InlineEditableList/index.vue
 import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   useUserFeatures,
   getUserFeaturesQueryKey,
@@ -110,10 +107,8 @@ const toggleFeature = async (feature: FeatureItem) => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.features.toggle')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleFeature(item)"
-        inline
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-power-off"

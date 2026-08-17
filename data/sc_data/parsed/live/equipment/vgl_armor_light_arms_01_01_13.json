@@ -1,0 +1,38 @@
+{
+  "key": "vgl_armor_light_arms_01_01_13",
+  "ref": "bb5394d0-d54d-4cf3-83d9-1de80156ed70",
+  "name": "TrueDef-Pro Arms Black/Grey/Red",
+  "description": "Virgil's TrueDef line of personal body armor provide strategic protection of vital areas while keeping you fast and mobile. Numerous planetary law enforcement organizations and even the Advocacy use versions of the TrueDef to protect their officers and agents.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-38 / 68 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "Virgil",
+    "Set_01",
+    "Color_13",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.008,
+  "volume_dimensions": {
+    "x": 0.088,
+    "y": 0.345,
+    "z": 0.323
+  }
+}

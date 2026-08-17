@@ -1,0 +1,38 @@
+{
+  "key": "nvs_shoes_01_01_01",
+  "ref": "0c111e7a-f912-4e91-9472-08fad4920cc8",
+  "name": "Cuesta Shoes",
+  "description": "An all-season ankle boot, the Cuesta features a practical design that can stand up to all kinds of weather and terrain, while the supportive insole provides comfort to last through your shift and beyond.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f8efa046-7f79-4e09-b2fc-35d0df2429cf",
+  "tags": [
+    "nvs_shoes",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

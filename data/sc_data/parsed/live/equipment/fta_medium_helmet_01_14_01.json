@@ -1,0 +1,41 @@
+{
+  "key": "fta_medium_helmet_01_14_01",
+  "ref": "61a4e6ba-b201-4ffd-a1ee-6d9755d6604e",
+  "name": "Strata Helmet Shubin Edition",
+  "description": null,
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "Set_01",
+    "Texture_01",
+    "Color_01",
+    "HelmetCarryable",
+    "FTA"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

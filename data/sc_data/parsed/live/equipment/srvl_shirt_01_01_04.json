@@ -1,0 +1,32 @@
+{
+  "key": "srvl_shirt_01_01_04",
+  "ref": "a82ef92b-84d6-4605-9bd3-faf472339907",
+  "name": "Good Enough Shirt Green",
+  "description": "This shirt from an unknown manufacturer has been mended and refashioned to give it a second life. Half of the right sleeve was beyond repair, so the rest of it was turned into an elbow cuff.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "srvl_shirt",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.009698
+}

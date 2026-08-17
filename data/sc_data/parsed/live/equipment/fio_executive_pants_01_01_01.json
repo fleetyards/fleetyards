@@ -1,0 +1,37 @@
+{
+  "key": "fio_executive_pants_01_01_01",
+  "ref": "30bf223f-73f9-4d8a-9a8d-f787b884f83c",
+  "name": "Koya Pants",
+  "description": "The Koya are stylish slim cut pants featuring color accents on the pockets and cuffs. Made from a special stain resistant, soft fabric blend, they are paired with a brown belt featuring a gold buckle.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "executive",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_executive_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

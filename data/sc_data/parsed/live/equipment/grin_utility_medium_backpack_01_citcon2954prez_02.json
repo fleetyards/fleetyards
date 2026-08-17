@@ -1,0 +1,40 @@
+{
+  "key": "grin_utility_medium_backpack_01_citcon2954prez_02",
+  "ref": "edee517a-f240-4037-ba34-ef840711b845",
+  "name": "Aril Backpack Red Alert",
+  "description": "Item Type: Medium Backpack\nCarrying Capacity: 85K µSCU\nCore Compatibility: Medium & Heavy\n \nOriginally designed for miners, the Aril armor comes with an attachable backpack that can accommodate a variety of tools and supplies to keep your hands free. The Aril backpack is available in a variety of vibrant colors to fit your personal taste and for easy identification on the jobsite.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "utility",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_medium",
+    "backpack",
+    "Set_01",
+    "Texture_01",
+    "Color_iae2022",
+    "SM_RestrictedArm"
+  ],
+  "hidden": true,
+  "volume": 0.043,
+  "volume_dimensions": {
+    "x": 0.462,
+    "y": 1.23,
+    "z": 0.329
+  }
+}

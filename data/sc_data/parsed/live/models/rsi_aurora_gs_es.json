@@ -14,6 +14,316 @@
     "base_expediting_fee": "1298"
   },
   "mass": 24486.0,
+  "inventory_container_ref": "d961541d-7667-402c-876f-760547e3dc6e",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 2618.0,
+    "y": 1178.0,
+    "z": 5355.0
+  },
+  "hull_health": 6350.0,
+  "hull_parts": [
+    {
+      "name": "rsi_aurora_gs",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 3100.0,
+      "category": "vital"
+    },
+    {
+      "name": "Nose_Landing_Gear_Door_Left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose_Landing_Gear_Door_Right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_radar_relay",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_door_dorsal_comp_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_door_dorsal_comp_right_mech",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_door_dorsal_comp_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_door_dorsal_comp_left_mech",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Top_Right",
+      "health": 700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Bottom_Right",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Hardpoint_Wing_Landing_Gear_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Landing_Gear_Right_Door_Left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Landing_Gear_Right_Door_Right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_04",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_04_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_03",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_03_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_02",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_02_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_01",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_rear_01_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_front_04",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_front_04_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_front_03",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_front_03_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_front_02",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_front_02_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_right_front_01",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_right_front_01_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_door_shield_gen_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_door_shield_gen_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Bottom_Left",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Landing_Gear_Left_Door_Right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Landing_Gear_Left_Door_Left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Hardpoint_Wing_Landing_Gear_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_03",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_03_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_04",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_04_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_02",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_02_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_01",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_rear_01_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_left_front_04",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_front_04_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_left_front_03",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_front_03_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_left_front_02",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_front_02_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_fan_left_front_01",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_door_fan_left_front_01_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Top_Left",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "mesh_door_comp_bay_left_top",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_comp_bay_left_bottom",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_comp_bay_right_top",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_door_comp_bay_right_bottom",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Debris_Hack_Hardpoint_Retro_Thruster_Left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Debris_Hack_Hardpoint_Retro_Thruster_Right",
+      "health": 200.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 8.75,
     "y": 19.0,

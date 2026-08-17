@@ -6,13 +6,14 @@ export default {
 
 <script lang="ts" setup>
 import NotFound from "@/shared/components/NotFound/index.vue";
+import Forbidden from "@/shared/components/Forbidden/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import {
   type AsyncStatus,
   ErrorTypesEnum,
 } from "@/shared/components/AsyncData.types";
-import { isAxiosError } from "axios";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 
 type Props = {
   asyncStatus: AsyncStatus;
@@ -29,23 +30,7 @@ const error = computed(() => {
   return props.asyncStatus.error?.value;
 });
 
-const status = computed(() => {
-  if (!error.value || !isAxiosError(error.value)) return;
-
-  return error.value.response?.status;
-});
-
-const errorType = computed(() => {
-  if (!status.value) {
-    return undefined;
-  }
-
-  if (status.value == 404) {
-    return ErrorTypesEnum.NOT_FOUND;
-  }
-
-  return ErrorTypesEnum.ERROR;
-});
+const errorType = computed(() => errorTypeFrom(error.value));
 
 const loading = computed(() => {
   return (
@@ -60,6 +45,7 @@ const loading = computed(() => {
 <template>
   <slot v-if="error && !hideError" name="error">
     <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
+    <Forbidden v-else-if="errorType === ErrorTypesEnum.FORBIDDEN" />
     <ServerError v-else />
   </slot>
   <slot v-else-if="loading" name="loading">

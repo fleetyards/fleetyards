@@ -71,10 +71,40 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 1.275
+    },
     "pellets_per_shot": 1,
     "speed": 1196.0,
     "range": 2703.0,
     "ammo_cost": 1,
-    "max_ammo": 492
+    "max_ammo": 492,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 30.6,
+      "time_till_cooling_starts": 0.838,
+      "overheat_fix_time": 4.26
+    },
+    "power_consumption": 0.1,
+    "weapon_class": "BallisticCannon",
+    "mountable": true,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 37.5,
+    "signature_ir": 0.0
   }
 }

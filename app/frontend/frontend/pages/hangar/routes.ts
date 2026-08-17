@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
 import { routes as publicHangarRoutes } from "@/frontend/pages/hangar/[username]/routes";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -20,7 +21,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/hangar/wishlist.vue"),
     meta: {
       needsAuthentication: true,
-      quickSearch: "searchCont",
       title: "hangar.wishlist",
       primaryAction: true,
       backgroundImage: "bg-5",
@@ -44,6 +44,41 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "inventories/",
+    name: "hangar-inventories",
+    component: () => import("@/frontend/pages/hangar/inventories/index.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.inventories",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
+    },
+  },
+  {
+    path: "inventories/:inventory/",
+    name: "hangar-inventory",
+    component: () =>
+      import("@/frontend/pages/hangar/inventories/[inventory].vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.inventories",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
+    },
+  },
+  {
+    path: "inventories/:inventory/items/:item/",
+    name: "hangar-inventory-item",
+    component: () =>
+      import("@/frontend/pages/hangar/inventories/[inventory]/[item].vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.inventories",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
+    },
+  },
+  {
     path: "stats/",
     name: "hangar-stats",
     component: () => import("@/frontend/pages/hangar/stats.vue"),
@@ -58,6 +93,21 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/hangar/[username].vue"),
     children: publicHangarRoutes,
     redirect: { name: publicHangarRoutes[0].name },
+  },
+  // Outside the vehicle's tab shell on purpose: everything under it becomes a
+  // tab, and a single cargo position is a page you drill into rather than a
+  // fifth place to stand. Same shape as /hangar/inventories/:inventory/:item.
+  {
+    path: ":id/cargo/:item/",
+    name: "hangar-vehicle-cargo-item",
+    component: () => import("@/frontend/pages/hangar/[id]/cargo/[item].vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.vehicleCargo",
+      backgroundImage: "bg-5",
+      customTitle: true,
+      feature: FeatureFlagName.SHIP_INVENTORIES,
+    },
   },
   {
     path: ":id/",

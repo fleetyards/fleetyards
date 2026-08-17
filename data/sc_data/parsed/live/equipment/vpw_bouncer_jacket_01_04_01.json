@@ -1,0 +1,32 @@
+{
+  "key": "vpw_bouncer_jacket_01_04_01",
+  "ref": "653afd3e-df71-47a9-b5c4-027ca1f1f4c9",
+  "name": "Creese Copperhead Jacket",
+  "description": "The Vaporwear Creese jacket features an old-Earth collar and tags around the shoulders. Armored shoulder accents and ventilated sleeves provide protection without restricting movement, allowing the jacket to be worn casually or piloting an open canopy vehicle. The special Copperhead edition features a snake enwrapping the front, back, and left arm of the jacket.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "bouncer",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7dfff1b9-2bfa-4ace-86d9-30329a2a0f30",
+  "tags": [
+    "vpw_jacket",
+    "Set_01",
+    "Color_04"
+  ],
+  "hidden": false,
+  "volume": 0.024547
+}

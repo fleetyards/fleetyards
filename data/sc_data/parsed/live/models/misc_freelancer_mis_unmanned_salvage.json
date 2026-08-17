@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "MISC Freelancer MIS",
   "description": "Manufacturer: MISC\\nFocus: Gunship\\n\\nThe Freelancer MIS is a limited edition militarized variant of the classic mercantile ship developed by the UEE. These were produced in very small quantity due to some early payload incidents. This version sacrifices the majority of the cargo capacity to make way for missiles.",
   "career": "Combat",
@@ -14,6 +14,61 @@
     "base_expediting_fee": "10465"
   },
   "mass": 219396.0,
+  "inventory_container_ref": "71ad6332-f4d3-4d6c-90d6-775e04500cd2",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 10222.0,
+    "y": 3814.0,
+    "z": 15257.0
+  },
+  "hull_health": 34900.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Freelancer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 9500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body",
+      "health": 9500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Tail",
+      "health": 9500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Roof_Scoop",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 1960.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wingflap_Left",
+      "health": 640.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 1960.0,
+      "category": "secondary"
+    },
+    {
+      "name": "WingFlap_Right",
+      "health": 640.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 23.5,
     "y": 38.0,

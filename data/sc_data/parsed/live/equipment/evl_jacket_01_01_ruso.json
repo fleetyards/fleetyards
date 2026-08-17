@@ -1,0 +1,37 @@
+{
+  "key": "evl_jacket_01_01_ruso",
+  "ref": "bf6026f8-9795-4219-b38d-55299d02866e",
+  "name": "Manaslu Jacket Rust Society",
+  "description": "The Rust Society edition adds eye-catching colors to this jacket's unique asymmetrical design. Made from a patented blend of fabrics, the Manaslu's surprisingly lightweight insulation will keep you warm in the coldest corners of the universe.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "5000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c0635984-4973-41c6-ac27-0c9a39ae051d",
+  "tags": [
+    "evl_jacket",
+    "set_01",
+    "Color_ruso"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

@@ -14,6 +14,221 @@
     "base_expediting_fee": "1080"
   },
   "mass": 10372.0,
+  "inventory_container_ref": "632cf6eb-b13a-4795-8a0a-6a980296d3c6",
+  "hull_health": 22700.0,
+  "hull_parts": [
+    {
+      "name": "RSI_Lynx",
+      "health": 1800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body",
+      "health": 11000.0,
+      "category": "vital"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel1",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel1_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel1_center",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel1_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel1_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel1_piston_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel1_piston_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel2_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2_center",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel2_piston_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2_piston_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel3",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel3_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel3_center",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel3_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel3_piston_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel3_piston_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel4",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel4_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel4_center",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel4_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel4_piston_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel4_piston_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel5",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel5_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel5_center",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel5_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel5_piston_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel5_piston_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel6",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel6_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel6_center",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel6_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel6_piston_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel6_piston_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
+  "speeds": {
+    "max": 27.0,
+    "reverse": 12.0,
+    "acceleration": 8.0,
+    "decceleration": 12.0
+  },
   "metrics": {
     "x": 5.7,
     "y": 7.75,
@@ -193,6 +408,11 @@
       "name": "hardpoint_fuelport",
       "ref": null,
       "key": "Door_Ship_Exterior_RSI_Lynx_Fuelport"
+    },
+    {
+      "name": "hardpoint_relay_interior",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
     },
     {
       "name": "hardpoint_armor",

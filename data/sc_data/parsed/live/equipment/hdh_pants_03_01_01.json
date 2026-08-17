@@ -1,0 +1,38 @@
+{
+  "key": "hdh_pants_03_01_01",
+  "ref": "657869b4-8c4f-489f-93c5-7a0a945f22d2",
+  "name": "Canelo Pants Marigold",
+  "description": "Whether you need them for work, play, or rest, the adaptable Canelo Pants from Habidash are guaranteed to fit the bill. Its convenient pockets allow you to carry all your essentials, and its stain-resistant fabric is comfortable enough to be worn for hours.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_pants",
+    "Set_03",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

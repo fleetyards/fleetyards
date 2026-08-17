@@ -9,6 +9,7 @@
 #  created_by          :uuid
 #  default_timezone    :string           default("UTC"), not null
 #  description         :text
+#  discarded_at        :datetime
 #  discord             :string
 #  fid                 :string
 #  guilded             :string
@@ -29,9 +30,11 @@
 # Indexes
 #
 #  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
-#  index_fleets_on_fid                  (fid) UNIQUE
+#  index_fleets_on_discarded_at         (discarded_at)
+#  index_fleets_on_fid                  (fid) UNIQUE WHERE (discarded_at IS NULL)
 #
 class Fleet < ApplicationRecord
+  include Discard::Model
   include UrlFieldConcern
   include ActiveStorageVariants
 
@@ -74,7 +77,7 @@ class Fleet < ApplicationRecord
     through: :models
 
   validates :fid,
-    uniqueness: {case_sensitive: false},
+    uniqueness: {case_sensitive: false, conditions: -> { where(discarded_at: nil) }},
     length: {minimum: 3},
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}

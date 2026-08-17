@@ -1,0 +1,15 @@
+name: Feature Flags Job
+
+on:
+  workflow_call:
+
+jobs:
+  feature-flags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: false
+      - name: validate the feature flag registry
+        run: ruby ./bin/feature-flags validate

@@ -1,0 +1,33 @@
+{
+  "key": "nvtc_optics_holo_x3_s1_tint01",
+  "ref": "b6f797fe-9c44-4eb1-b719-9271d7c69de8",
+  "name": "Gamma Plus \"Lumen\" (3x Holographic)",
+  "description": "NV-TAC's Gamma Plus is a 3x magnifier sight that utilizes ReadyBrite projection for quick target acquisition. Its durable design makes it perfect for any tactical situation.\n\nThe \"Lumen\" edition is matte white.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "weapon_scope",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "IronSight",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f113387e-0905-489a-829d-8cebfdc19e66",
+  "tags": [],
+  "hidden": true,
+  "volume": 0.0001,
+  "volume_dimensions": {
+    "x": 0.0398,
+    "y": 0.06,
+    "z": 0.0566
+  }
+}

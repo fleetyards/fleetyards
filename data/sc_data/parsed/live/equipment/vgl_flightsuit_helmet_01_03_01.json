@@ -1,0 +1,41 @@
+{
+  "key": "vgl_flightsuit_helmet_01_03_01",
+  "ref": "0723a3ce-0452-44ff-9b4c-8aa281002590",
+  "name": "Tailwind Flight Helmet Big Bite",
+  "description": "Styled on classic racing helmets, the Tailwind helmet offers crucial insulation and neck support from the rigors of the racing cockpit. The double layered visor provides essential protection from glare whilst ensuring the helmet remains airtight and that the wearer's vision remains unimpeded.\n\nThe Big Bite edition features jagged teeth and menacing eyes set against a camo green.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "flight_helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "15.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "vgl_flightsuit_helmet",
+    "Set_01",
+    "Texture_03",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

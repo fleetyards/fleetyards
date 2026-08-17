@@ -12,8 +12,8 @@ import {
   getImagesQueryKey,
 } from "@/services/fyAdminApi";
 import {
-  BtnSizesEnum,
   BtnVariantsEnum,
+  BtnTonesEnum,
 } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -73,9 +73,8 @@ const destroy = () => {
 <template>
   <Btn
     v-tooltip="!withLabels && t('labels.image.active')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.TRANSPARENT"
     @click="toggleField('enabled')"
+    :variant="BtnVariantsEnum.GHOST"
   >
     <i
       class="fa-duotone fa-circle-check"
@@ -85,9 +84,8 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('labels.image.global')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.TRANSPARENT"
     @click="toggleField('global')"
+    :variant="BtnVariantsEnum.GHOST"
   >
     <i
       class="fa-duotone fa-globe"
@@ -97,9 +95,8 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('labels.image.background')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.TRANSPARENT"
     @click="toggleField('background')"
+    :variant="BtnVariantsEnum.GHOST"
   >
     <i
       class="fa-duotone fa-image"
@@ -109,9 +106,8 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.delete')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
+    :tone="BtnTonesEnum.DANGER"
   >
     <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>

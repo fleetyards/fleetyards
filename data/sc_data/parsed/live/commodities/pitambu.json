@@ -1,0 +1,10 @@
+{
+  "key": "pitambu",
+  "sc_key": "items_commodities_pitambu",
+  "ref": "6a428cbb-21a4-434d-a477-a04a1f946629",
+  "name": "Pitambu",
+  "commodity_type": "natural",
+  "commodity_type_name": "Natural Materials",
+  "description": "NDR: 25\nHEI: 10\nEffects: Hydrating, Hypo-Metabolic, Immune Boosting\n\nThe skin of the pitambu is thin and waxy and easily peeled away using its green leaf-like growths. Inside is a is crisp and watery, bright red flesh which is filled with tiny white seeds that have a mild, nutty taste. The flesh and seeds are traditionally consumed together.",
+  "icon": "ui/textures/vector/general/items/inv_icon_pitambu.svg"
+}

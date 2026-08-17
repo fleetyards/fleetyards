@@ -5,7 +5,7 @@
   "gravlev": "1",
   "min_crew": "1",
   "name": "C.O. HoverQuad",
-  "description": "Manufacturer: Consolidated Outland\\nFocus: Passenger\\n\\nDesigned as a companion ground vehicle for the Nomad, the HoverQuad's sleek angular frame utilizes four gravlev pads for maximum maneuverability, making it the perfect transport across all kinds of surfaces.",
+  "description": "Manufacturer: Consolidated Outland\\nFocus: Passenger\\n\\nDesigned as a companion ground vehicle for the Nomad, the HoverQuad's sleek angular frame utilizes four grav-lev pads for maximum maneuverability, making it the perfect transport across all kinds of surfaces.",
   "career": "Exploration",
   "role": "Passenger",
   "insurance": {
@@ -14,6 +14,56 @@
     "base_expediting_fee": "75"
   },
   "mass": 4850.0,
+  "inventory_container_ref": "d8ebb993-cbf7-41d9-bfd1-413ec1fca5fb",
+  "weapon_pool_size": 2,
+  "signature_cross_section": {
+    "x": 205.0,
+    "y": 148.0,
+    "z": 247.0
+  },
+  "hull_health": 3500.0,
+  "hull_parts": [
+    {
+      "name": "CNOU_Hoverquad",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 750.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "gravlev_nacelle_r_left",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "gravlev_nacelle_r_right",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "gravlev_nacelle_f_right",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "gravlev_nacelle_f_left",
+      "health": 450.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 1.32,
     "y": 1.45,

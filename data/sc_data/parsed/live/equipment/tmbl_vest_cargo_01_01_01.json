@@ -1,0 +1,37 @@
+{
+  "key": "tmbl_vest_cargo_01_01_01",
+  "ref": "316dc5d5-e3a6-4659-83e1-42983b3e1dd9",
+  "name": "Renegade Vest Cargo",
+  "description": "Enjoy the open road and courier goods with the Renegade Cargo vest. A special synthetic weave bestows the vest with incredible tensile strength that can support the custom 0.375 SCU pannier, while reinforced straps keep it secured to your back even while traversing rugged terrain.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "vest",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "3000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "tags": [
+    "tmbl_vest_cargo",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

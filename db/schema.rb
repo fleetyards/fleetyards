@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_17_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -43,6 +43,31 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.uuid "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "admin_notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_user_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.string "dedupe_key"
+    t.datetime "expires_at", null: false
+    t.string "icon"
+    t.datetime "last_occurred_at", null: false
+    t.string "link"
+    t.string "notification_type", null: false
+    t.integer "occurrences", default: 1, null: false
+    t.datetime "read_at"
+    t.uuid "record_id"
+    t.string "record_type"
+    t.string "severity", default: "info", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id", "created_at"], name: "index_admin_notifications_on_admin_user_id_and_created_at", order: { created_at: :desc }
+    t.index ["admin_user_id", "notification_type", "dedupe_key"], name: "index_admin_notifications_on_dedupe", unique: true, where: "((read_at IS NULL) AND (dedupe_key IS NOT NULL))"
+    t.index ["admin_user_id", "read_at"], name: "index_admin_notifications_on_admin_user_id_and_read_at"
+    t.index ["expires_at"], name: "index_admin_notifications_on_expires_at"
+    t.index ["notification_type"], name: "index_admin_notifications_on_notification_type"
+    t.index ["record_type", "record_id"], name: "index_admin_notifications_on_record"
   end
 
   create_table "admin_users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -156,6 +181,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.index ["parent_type", "parent_id"], name: "index_cargo_holds_on_parent_type_and_parent_id"
   end
 
+  create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "commodity_type"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "icon"
+    t.string "name", null: false
+    t.string "sc_key"
+    t.string "sc_ref"
+    t.string "slug", null: false
+    t.string "uex_code"
+    t.integer "uex_id"
+    t.datetime "updated_at", null: false
+    t.string "version"
+    t.index ["commodity_type"], name: "index_commodities_on_commodity_type"
+    t.index ["sc_key"], name: "index_commodities_on_sc_key", unique: true
+    t.index ["slug"], name: "index_commodities_on_slug", unique: true
+    t.index ["uex_code"], name: "index_commodities_on_uex_code"
+  end
+
   create_table "compare_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "share_key"
@@ -194,6 +238,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.datetime "updated_at", precision: nil
     t.string "version"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
+    t.index ["sc_key"], name: "index_components_on_sc_key", unique: true
+    t.index ["version"], name: "index_components_on_version"
   end
 
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
@@ -226,27 +272,46 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.datetime "created_at", precision: nil, null: false
     t.decimal "damage_reduction", precision: 15, scale: 2
     t.text "description"
-    t.integer "equipment_type"
-    t.string "extras"
+    t.string "equipment_type"
+    t.decimal "g_force_tolerance", precision: 15, scale: 2
     t.string "grade"
-    t.boolean "hidden", default: true
-    t.integer "item_type"
+    t.boolean "hidden", default: false
+    t.string "icon"
+    t.string "item_type"
     t.uuid "manufacturer_id"
     t.string "name"
+    t.decimal "radiation_protection", precision: 15, scale: 2
+    t.decimal "radiation_scrub_rate", precision: 15, scale: 2
     t.decimal "range", precision: 15, scale: 2
     t.decimal "rate_of_fire", precision: 15, scale: 2
+    t.string "sc_key"
+    t.string "sc_ref"
     t.string "size"
     t.integer "slot"
     t.string "slug"
     t.decimal "storage", precision: 15, scale: 2
-    t.string "store_image"
-    t.integer "store_image_height"
-    t.integer "store_image_width"
+    t.string "sub_type"
     t.string "temperature_rating"
     t.datetime "updated_at", precision: nil, null: false
-    t.decimal "volume", precision: 15, scale: 2
-    t.integer "weapon_class"
+    t.string "version"
+    t.decimal "volume", precision: 15, scale: 6
+    t.jsonb "volume_dimensions"
+    t.string "weapon_class"
+    t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
+    t.index ["item_type"], name: "index_equipment_on_item_type"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
+    t.index ["sc_key"], name: "index_equipment_on_sc_key", unique: true
+    t.index ["slot"], name: "index_equipment_on_slot"
+  end
+
+  create_table "exchange_rates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "fetched_at", null: false
+    t.string "from_currency", null: false
+    t.decimal "rate", precision: 16, scale: 8, null: false
+    t.string "to_currency", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_currency", "to_currency"], name: "index_exchange_rates_on_from_currency_and_to_currency", unique: true
   end
 
   create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -453,6 +518,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.datetime "accepted_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "declined_at", precision: nil
+    t.datetime "discarded_at"
     t.uuid "fleet_id"
     t.uuid "fleet_role_id"
     t.uuid "hangar_group_id"
@@ -466,8 +532,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.string "used_invite_token"
     t.uuid "user_id"
     t.boolean "verified", default: false, null: false
+    t.index ["discarded_at"], name: "index_fleet_memberships_on_discarded_at"
     t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"
-    t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
+    t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true, where: "(discarded_at IS NULL)"
   end
 
   create_table "fleet_notification_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -508,6 +575,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.uuid "created_by"
     t.string "default_timezone", default: "UTC", null: false
     t.text "description"
+    t.datetime "discarded_at"
     t.string "discord"
     t.string "fid"
     t.string "guilded"
@@ -524,7 +592,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "youtube"
     t.index ["calendar_feed_token"], name: "index_fleets_on_calendar_feed_token", unique: true
-    t.index ["fid"], name: "index_fleets_on_fid", unique: true
+    t.index ["discarded_at"], name: "index_fleets_on_discarded_at"
+    t.index ["fid"], name: "index_fleets_on_fid", unique: true, where: "(discarded_at IS NULL)"
   end
 
   create_table "flipper_features", force: :cascade do |t|
@@ -541,6 +610,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.datetime "updated_at", null: false
     t.text "value"
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
+  create_table "funding_goals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "amount_cents", null: false
+    t.datetime "created_at", null: false
+    t.string "currency", default: "EUR", null: false
+    t.text "description"
+    t.date "effective_from", null: false
+    t.date "ended_at"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["effective_from"], name: "index_funding_goals_on_effective_from"
+    t.index ["ended_at"], name: "index_funding_goals_on_ended_at"
   end
 
   create_table "github_issue_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -618,6 +700,38 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.index ["type"], name: "index_imports_on_type"
   end
 
+  create_table "inventories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.uuid "holder_id", null: false
+    t.string "holder_type", null: false
+    t.string "location"
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "vehicle_id"
+    t.index "holder_type, holder_id, lower((name)::text)", name: "index_inventories_on_holder_and_lower_name", unique: true, where: "(vehicle_id IS NULL)"
+    t.index ["holder_type", "holder_id", "slug"], name: "index_inventories_on_holder_type_and_holder_id_and_slug", unique: true, where: "(vehicle_id IS NULL)"
+    t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_type_and_holder_id"
+    t.index ["vehicle_id"], name: "index_inventories_on_vehicle_id", unique: true, where: "(vehicle_id IS NOT NULL)"
+  end
+
+  create_table "inventory_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.integer "entry_type", default: 0, null: false
+    t.uuid "inventory_id", null: false
+    t.uuid "item_id"
+    t.string "item_type"
+    t.string "name", null: false
+    t.text "notes"
+    t.integer "quality", default: 0
+    t.decimal "quantity", precision: 15, scale: 2, default: "0.0", null: false
+    t.integer "unit", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
+  end
+
   create_table "item_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "item_id", null: false
@@ -657,6 +771,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.string "code_mapping"
     t.datetime "created_at", precision: nil
     t.text "description"
+    t.string "icon"
     t.string "known_for", limit: 255
     t.string "long_name"
     t.string "name", limit: 255
@@ -908,6 +1023,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
     t.boolean "hidden", default: true
     t.boolean "holo_colored", default: false
+    t.jsonb "hull_doors"
+    t.decimal "hull_health", precision: 15, scale: 2
+    t.jsonb "hull_parts"
     t.decimal "hydrogen_fuel_tank_size", precision: 15, scale: 2
     t.string "hydrogen_fuel_tanks"
     t.integer "images_count", default: 0
@@ -928,6 +1046,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.string "name", limit: 255
     t.boolean "notified", default: false
     t.boolean "on_sale", default: false
+    t.decimal "personal_inventory", precision: 15, scale: 2
     t.decimal "pitch", precision: 15, scale: 2
     t.decimal "pitch_boosted", precision: 15, scale: 2
     t.boolean "player_ownable", default: true, null: false
@@ -975,6 +1094,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.decimal "scm_speed_acceleration", precision: 15, scale: 2
     t.decimal "scm_speed_boosted", precision: 15, scale: 2
     t.decimal "scm_speed_decceleration", precision: 15, scale: 2
+    t.jsonb "signature_cross_section"
     t.string "size"
     t.string "slug", limit: 255
     t.datetime "store_images_updated_at", precision: nil
@@ -982,6 +1102,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.datetime "updated_at", precision: nil
     t.integer "upgrade_kits_count", default: 0
     t.integer "videos_count", default: 0
+    t.integer "weapon_pool_size"
     t.decimal "yaw", precision: 15, scale: 2
     t.decimal "yaw_boosted", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
@@ -1122,6 +1243,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.string "url"
   end
 
+  create_table "supporter_contributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "amount_cents", null: false
+    t.boolean "anonymous", default: false, null: false
+    t.datetime "created_at", null: false
+    t.string "currency", default: "EUR", null: false
+    t.date "ended_at"
+    t.string "name"
+    t.text "note"
+    t.string "patreon_member_id"
+    t.boolean "recurring", default: false, null: false
+    t.string "source", default: "manual", null: false
+    t.integer "source_amount_cents"
+    t.string "source_currency"
+    t.date "started_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["patreon_member_id"], name: "index_supporter_contributions_on_patreon_member_id", unique: true, where: "(patreon_member_id IS NOT NULL)"
+    t.index ["recurring", "ended_at"], name: "index_supporter_contributions_on_recurring_and_ended_at"
+    t.index ["started_at"], name: "index_supporter_contributions_on_started_at"
+  end
+
   create_table "task_forces", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.uuid "hangar_group_id"
@@ -1199,6 +1340,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.index ["calendar_feed_token"], name: "index_users_on_calendar_feed_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["last_active_at"], name: "index_users_on_last_active_at"
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -1308,6 +1450,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "admin_notifications", "admin_users", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
@@ -1336,6 +1479,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"
+  add_foreign_key "inventories", "vehicles", on_delete: :nullify
+  add_foreign_key "inventory_items", "inventories"
   add_foreign_key "mission_ships", "mission_teams"
   add_foreign_key "mission_ships", "models"
   add_foreign_key "mission_slots", "model_positions"

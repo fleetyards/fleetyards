@@ -1,0 +1,40 @@
+{
+  "key": "rsi_odyssey_undersuit_helmet_01_01_13",
+  "ref": "cddc5fb5-1989-4053-8b6e-474979132011",
+  "name": "Odyssey II Racing Helmet Dark Red",
+  "description": "Continuing RSI's legacy of rugged and reliable helmets, the Odyssey II streamlines the original design into a lighter frame without sacrificing durability. This omni-purpose helmet was extensively field-tested in a variety of conditions and environments to keep you safe every time you suit up.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "racing_helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Odyssey",
+    "Set_01",
+    "Color_13",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "key": "feynmaline",
+  "sc_key": "items_commodities_feynmaline",
+  "ref": null,
+  "name": "Feynmaline",
+  "commodity_type": "mineral",
+  "commodity_type_name": "Mineral",
+  "description": "The paramorphic crystalline structure of this mineral is extremely volatile. When extra energy is introduced, as is typical with modern mining, the ore will often explosively degrade into the more stably structured Janalite. This instability makes Feynamline very dangerous to acquire but also extremely valuable as an industrial anti-matter precursor if it can be properly harvested.",
+  "icon": null
+}

@@ -1,0 +1,39 @@
+{
+  "key": "alb_pants_01_02_18",
+  "ref": "6e952499-cd15-4bcc-bf81-85f960a1055c",
+  "name": "Strode Pants Grime Blue",
+  "description": "Strode Pants Grime Blue",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "frontier_desert",
+    "alb_pants",
+    "Set_01",
+    "Texture_02",
+    "Color_18"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

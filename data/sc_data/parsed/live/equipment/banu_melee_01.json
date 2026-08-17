@@ -1,0 +1,35 @@
+{
+  "key": "banu_melee_01",
+  "ref": "c5f73e29-47ab-49dd-a571-9d3280d938c8",
+  "name": "Njakte Knife",
+  "description": "Banu engineering and ingenuity combine in the Njakte knife. Its distinct curved blade and serrated edge is rust resistant and remains ultra-sharp even after extensive use thanks to a proprietary metal alloy that's a trade secret of the souli that manufacturers it. The intricately detailed handle gives it a distinctly Banu visual style and provides texture to ensure a great grip.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "tags": [
+    "knife"
+  ],
+  "hidden": false,
+  "volume": 0.000198,
+  "volume_dimensions": {
+    "x": 0.02,
+    "y": 0.3095443,
+    "z": 0.0414129
+  }
+}

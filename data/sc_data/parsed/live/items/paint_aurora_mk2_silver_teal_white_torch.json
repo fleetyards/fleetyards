@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Mk2_silver_teal_white_torch",
+  "ref": "418cfba5-06ca-4622-a274-c54735eda39d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1e5e7317-17f7-4e2d-93ff-b01e61c32345",
+  "name": "Aurora Mk II Foundation Guide Livery",
+  "short_name": "Aurora Mk II Foundation Guide Livery",
+  "description": "Foundation Festival is an opportunity for Citizens and Civilians to come together and strengthen the foundation of our community. Show your commitment to a better universe with this custom livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

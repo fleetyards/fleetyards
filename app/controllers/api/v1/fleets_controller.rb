@@ -25,7 +25,7 @@ module Api
       def invites
         authorize!
 
-        @invites = current_resource_owner.fleet_memberships.where(aasm_state: %w[requested invited]).all
+        @invites = current_resource_owner.fleet_memberships.kept.where(aasm_state: %w[requested invited]).all
       end
 
       def my
@@ -36,7 +36,7 @@ module Api
 
       def show
         @my_fleet = current_resource_owner.present? &&
-          @fleet.fleet_memberships.accepted.exists?(user: current_resource_owner)
+          @fleet.fleet_memberships.kept.accepted.exists?(user: current_resource_owner)
       end
 
       def create
@@ -58,13 +58,13 @@ module Api
       end
 
       def destroy
-        return if @fleet.destroy
+        return if @fleet.discard
 
         render json: ValidationError.new("fleet.destroy", errors: @fleet.errors), status: :bad_request
       end
 
       def check
-        render json: {taken: Fleet.exists?(normalized_fid: params.fetch(:value, "").downcase)}
+        render json: {taken: Fleet.kept.exists?(normalized_fid: params.fetch(:value, "").downcase)}
       end
 
       def find_by_invite
@@ -72,13 +72,13 @@ module Api
 
         @fleet = invite_url.fleet
         @my_fleet = current_resource_owner.present? &&
-          @fleet.fleet_memberships.accepted.exists?(user: current_resource_owner)
+          @fleet.fleet_memberships.kept.accepted.exists?(user: current_resource_owner)
 
         render "show"
       end
 
       private def set_fleet
-        @fleet = Fleet.find_by!(slug: params[:slug])
+        @fleet = Fleet.kept.find_by!(slug: params[:slug])
 
         authorize! @fleet
       end

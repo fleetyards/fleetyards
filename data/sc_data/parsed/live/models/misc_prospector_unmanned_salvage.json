@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "MISC Prospector",
-  "description": "Manufacturer: MISC\\nFocus: Mining\\n\\nFor years, the Prospector has been the universe’s preferred mining vessel for solo operators. Featuring MISC’s sleek design sensibility and a bevy of upgraded high-tech mining tools, the 2947 Prospector perfectly balances form and functionality.",
+  "description": "Manufacturer: MISC\\nFocus: Light Mining\\n\\nFor years, the Prospector has been the universe’s preferred mining vessel for solo operators. Featuring MISC’s sleek design sensibility and a bevy of upgraded high-tech mining tools, the 2947 Prospector perfectly balances form and functionality.",
   "career": "Industrial",
   "role": "Light Mining",
   "insurance": {
@@ -14,6 +14,106 @@
     "base_expediting_fee": "3040"
   },
   "mass": 122096.0,
+  "inventory_container_ref": "8cbd78f7-ddb8-4906-8b83-a17493037671",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 6800.0,
+    "y": 3200.0,
+    "z": 11000.0
+  },
+  "hull_health": 34000.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Prospector",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 13800.0,
+      "category": "vital"
+    },
+    {
+      "name": "Coupling_FR",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Basket_R",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Coupling_FL",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Basket_L",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose_Pipes",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_landinggear_front",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear",
+      "health": 13800.0,
+      "category": "vital"
+    },
+    {
+      "name": "Coupling_RL",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Coupling_RR",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear_Pipes",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_landinggear_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_landinggear_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_MainThruster_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_MainThruster_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_RetroThruster_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_RetroThruster_right",
+      "health": 200.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 16.5,
     "y": 26.5,
@@ -146,8 +246,15 @@
       "loadout": [
         {
           "name": "hardpoint_mining_laser",
-          "ref": "8bfc261a-6c67-4bec-b5b5-71407e086ec9",
-          "key": null
+          "ref": "24122aa8-495b-4b2f-9d81-9b7a87e51c8d",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_mining_laser",
+              "ref": "8bfc261a-6c67-4bec-b5b5-71407e086ec9",
+              "key": null
+            }
+          ]
         }
       ]
     },

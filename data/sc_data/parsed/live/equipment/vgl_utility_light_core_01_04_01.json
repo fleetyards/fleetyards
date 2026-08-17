@@ -1,0 +1,38 @@
+{
+  "key": "vgl_utility_light_core_01_04_01",
+  "ref": "32efc648-0489-4293-ba06-57b715e18714",
+  "name": "Chiron Core Purgatory Camo",
+  "description": "Item Type: Light Armor\nDamage Reduction: 20%\nTemp. Rating: -32 / 62 °C\nRadiation Protection: 26000 REM\nRadiation Scrub Rate: 145.8 REM/s\nCarrying Capacity: 4.0 µSCU\nBackpacks: Light\n \nBe the first on the scene with the Chiron armor. Designed to provide the essential protection that combat medics need, the armor features ultra-lightweight paneling to keep the wearer quick on their feet without compromising on safety. Crucial, high-impact sections have been reinforced with raised carbon plating on top of a highly durable polyfiber for maximum flexibility.\n \nThe Purgatory Camo edition features a sleek gray-on-gray pattern.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "utility",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "Virgil",
+    "Set_01",
+    "Color_01",
+    "SM_Marine"
+  ],
+  "hidden": false,
+  "volume": 0.034,
+  "volume_dimensions": {
+    "x": 0.411,
+    "y": 0.367,
+    "z": 0.299
+  }
+}

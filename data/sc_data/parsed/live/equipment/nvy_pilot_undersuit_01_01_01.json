@@ -1,0 +1,36 @@
+{
+  "key": "nvy_pilot_undersuit_01_01_01",
+  "ref": "924f5657-b59d-49fd-8897-a8588c114db5",
+  "name": "OMNI-CFS-Diamond Flight Suit",
+  "description": null,
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "pilot",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.023,
+  "volume_dimensions": {
+    "x": 0.315,
+    "y": 0.227,
+    "z": 0.41
+  }
+}

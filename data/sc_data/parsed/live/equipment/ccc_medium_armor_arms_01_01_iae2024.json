@@ -1,0 +1,38 @@
+{
+  "key": "ccc_medium_armor_arms_01_01_iae2024",
+  "ref": "83052c6c-2ea1-4f7b-9c10-2715f9519de3",
+  "name": "Aves Starchaser Arms",
+  "description": "Honor and embody the Tevarin aesthetic with the Aves Starchaser armor; manufactured with white, purple, and grey plating to perfectly evoke the shape language imbued into their iconic ships. This medium armor from CC's Conversions is both sensational and practical, providing solid protection without sacrificing your mobility. When paired with the Aves Starchaser helmet, the suit combines for a striking and unforgettable look.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "ccc_medium",
+    "Set_01",
+    "Color_IAE2024",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.01,
+  "volume_dimensions": {
+    "x": 0.107,
+    "y": 0.329,
+    "z": 0.415
+  }
+}

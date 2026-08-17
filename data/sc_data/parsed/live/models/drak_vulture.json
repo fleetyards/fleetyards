@@ -14,6 +14,116 @@
     "base_expediting_fee": "3040"
   },
   "mass": 182983.0,
+  "inventory_container_ref": "c4cdb9df-67a8-4a1c-8b61-c5865d05dab1",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 6009.0,
+    "y": 3339.0,
+    "z": 12520.0
+  },
+  "hull_health": 43700.0,
+  "hull_parts": [
+    {
+      "name": "DRAK_Vulture",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 12000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_tail",
+      "health": 7000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "drone",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "drone_wing_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "drone_wing_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_mid",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_lower",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_arm_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "front_nacelle_right",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debrisProxy_salvage_arm_right",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_arm_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "front_nacelle_left",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debrisProxy_salvage_arm_left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail",
+      "health": 2400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_main_engine_bridge",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "main_engine_left",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "main_engine_right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 16.0,
     "y": 34.0,

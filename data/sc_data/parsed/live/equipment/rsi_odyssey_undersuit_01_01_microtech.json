@@ -1,0 +1,39 @@
+{
+  "key": "rsi_odyssey_undersuit_01_01_microtech",
+  "ref": "14b28bd4-cf46-4c20-a65b-5df88fceac58",
+  "name": "Odyssey II Undersuit Alpha",
+  "description": null,
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "odyssey",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Odyssey",
+    "Set_01",
+    "Color_microtech",
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": true,
+  "volume": 0.023,
+  "volume_dimensions": {
+    "x": 0.315,
+    "y": 0.227,
+    "z": 0.41
+  }
+}

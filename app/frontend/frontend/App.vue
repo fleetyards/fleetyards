@@ -9,6 +9,7 @@ import FrontendNavigation from "@/frontend/components/Navigation/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
 import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
+import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
 import OffCanvas from "@/shared/components/OffCanvas/index.vue";
@@ -30,10 +31,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useMe as useMeQuery } from "@/services/fyApi";
 import FetchProgressBar from "@/shared/components/FetchProgressBar/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
 import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -281,6 +279,8 @@ const setLocale = (locale: string) => {
           :git-revision="appStore.gitRevision"
           :online="appStore.online"
         >
+          <!-- The `|` separators are gone: the row lays itself out with a gap,
+               and separators were never the call site's content. -->
           <a
             v-tooltip="'Roberts Space Industries'"
             href="https://robertsspaceindustries.com/"
@@ -289,39 +289,37 @@ const setLocale = (locale: string) => {
           >
             RSI
           </a>
-          |
           <router-link :to="{ name: 'privacy-policy' }">
             {{ t("nav.privacyPolicy") }}
           </router-link>
-          |
           <router-link :to="{ name: 'impressum' }">
             {{ t("nav.impressum") }}
           </router-link>
-          |
           <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
             {{ t("nav.api") }}
           </a>
-          |
-          <BtnDropdown
-            :text-inline="true"
-            :inline="true"
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.LINK"
-            :expand-top="true"
-          >
+          <BtnDropdown :expand-top="true" :variant="BtnVariantsEnum.BARE">
             <template #label>
               <i class="fa-duotone fa-language" /> {{ currentLocale() }}
             </template>
             <Btn
               v-for="availableLocale in locales"
               :key="`locale-${availableLocale}`"
-              :size="BtnSizesEnum.SMALL"
               :active="activeLocale(availableLocale)"
               @click="setLocale(availableLocale)"
             >
               {{ localeMapping[availableLocale] }} - {{ availableLocale }}
             </Btn>
           </BtnDropdown>
+
+          <!-- The support button lives here, not in AppFooter: it opens a
+               frontend modal, and the footer also renders in admin and docs. -->
+          <template #actions>
+            <SupportBtn :variant="BtnVariantsEnum.BARE">
+              {{ t("labels.supportUs") }}
+              <i class="fa fa-heart" />
+            </SupportBtn>
+          </template>
         </AppFooter>
       </div>
     </div>

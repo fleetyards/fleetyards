@@ -33,7 +33,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       redis:
-        image: redis:6.2.10-alpine
+        image: redis:7.2.15-alpine
         ports:
           - 6379:6379
         options: >-
@@ -43,7 +43,9 @@ jobs:
           --health-retries 5
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

@@ -10,6 +10,7 @@
       "size": "Taille",
       "beam": "Rayon",
       "cargo": "Soute",
+      "personalInventory": "Inventaire du vaisseau",
       "netCargo": "Soute avec véhicule",
       "crew": "Équipage",
       "speed": "Vitesse",
@@ -60,6 +61,7 @@
       "modular": "Modulaire",
       "soldAt": "Vendu à?",
       "rentalAt": "Location à ?",
+      "poweredByUex": "Propulsé par UEX",
       "lastUpdatedAt": "Dernière mise à jour le ?"
     },
     "component": {

@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Esperia Prowler",
   "description": "Manufacturer: Esperia\\nFocus: Drop Ship\\n\\nNamed after the UPE military designation, the Prowler is a modernized version of the infamous Tevarin boarding craft from the First Tevarin War. The Prowler’s effectiveness as a rapid personnel deployment vehicle was mainly due to its silence. With the Prowler, you will find the perfect fusion of two cultures: the elegance and effectiveness of the Tevarin war machine combined with the reliability of modern UEE technology.",
   "career": "Combat",
@@ -14,6 +14,81 @@
     "base_expediting_fee": "9993"
   },
   "mass": 148900.0,
+  "inventory_container_ref": "8624d002-c8bc-416f-9db2-763d0ec6b01f",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 6765.0,
+    "y": 3372.0,
+    "z": 6787.0
+  },
+  "hull_health": 76900.0,
+  "hull_parts": [
+    {
+      "name": "ESPR_Prowler",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 12500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 22000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_wing_stabilizer_right",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_wing_stabilizer_left",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "humerus_base_e_left",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "humerus_left",
+      "health": 6500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ulna_left",
+      "health": 6500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "phalange_shield_left",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "humerus_base_e_right",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "humerus_right",
+      "health": 6500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ulna_right",
+      "health": 6500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "phalange_shield_right",
+      "health": 700.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 32.0,
     "y": 34.0,

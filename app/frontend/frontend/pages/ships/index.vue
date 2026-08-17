@@ -87,6 +87,7 @@ const openDisplayOptionsModal = () => {
 
   <Teleport to="#header-right">
     <Btn
+      :size="BtnSizesEnum.MD"
       data-test="model-compare-link"
       :to="{
         name: 'compare',
@@ -98,6 +99,7 @@ const openDisplayOptionsModal = () => {
       {{ t("actions.compare.ships") }}
     </Btn>
     <Btn
+      :size="BtnSizesEnum.MD"
       data-test="fleetchart-link"
       :aria-label="t('labels.fleetchart')"
       mobile-icon-only
@@ -119,7 +121,6 @@ const openDisplayOptionsModal = () => {
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"
-        :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />
@@ -169,7 +170,7 @@ const openDisplayOptionsModal = () => {
             v-if="models"
             :query-result-ref="models"
             :per-page="perPage"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             :update-per-page="updatePerPage"
           />
         </template>

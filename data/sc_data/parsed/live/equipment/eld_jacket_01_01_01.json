@@ -1,0 +1,37 @@
+{
+  "key": "eld_jacket_01_01_01",
+  "ref": "d95171d9-52c2-4969-b30e-a36581e8d27f",
+  "name": "Archibald Jacket Cinder",
+  "description": "Simple, comfortable and understated. While most fashion designers avoid these terms, Escar Limited understands that sometimes you just want something that feels right. Based on the classic design from Centauri II, the Archibald is a simple, comfortable and understated light jacket made from a polyweave that doesn't restrict airflow.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_jacket",
+    "set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

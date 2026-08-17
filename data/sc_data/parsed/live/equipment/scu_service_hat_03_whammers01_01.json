@@ -1,0 +1,39 @@
+{
+  "key": "scu_service_hat_03_whammers01_01",
+  "ref": "c7d7dd99-4da9-425d-8b88-fe994554d872",
+  "name": "Spruce Cap Whammer's",
+  "description": "Lightweight and constructed from a sweat absorbant material that is easy to wash, Stegman's Spruce cap is ideal for comfortable all day wear.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "service",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_service_hat",
+    "Set_03",
+    "Texture_whammers01",
+    "Color_01",
+    "KeepsShape"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

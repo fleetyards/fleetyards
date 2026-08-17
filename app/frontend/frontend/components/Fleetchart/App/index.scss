@@ -37,8 +37,14 @@
     display: flex;
     position: absolute;
     left: 20px;
-    bottom: 0;
+    /* Clear of the viewport edge, matching .fleetchart-grid-label's 20px and the
+       controls opposite. */
+    bottom: 20px;
     z-index: 1000;
+    /* The filter toggle and the paginator are two separate controls, and Btn
+       ships no margin, so this row owns the gap between them. */
+    align-items: center;
+    gap: 10px;
   }
 
   &__offcanvas {
@@ -84,7 +90,7 @@
   .fleetchart-app {
     .fleetchart-app-controls {
       top: auto;
-      bottom: 0;
+      bottom: 20px;
     }
   }
 }

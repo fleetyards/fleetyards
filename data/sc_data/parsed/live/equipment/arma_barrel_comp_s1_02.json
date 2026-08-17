@@ -1,0 +1,36 @@
+{
+  "key": "arma_barrel_comp_s1_02",
+  "ref": "e3d211f4-3381-4ba1-9807-f96c446866de",
+  "name": "Vera Compensator1",
+  "description": "Ideal for operators that specialize in precision aiming, the Vera Compensator1's high density materials increases aim time in favor of reduced recoil.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "barrel",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Barrel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a",
+  "tags": [
+    "FPS_Barrel",
+    "ballistic_attach"
+  ],
+  "hidden": false,
+  "volume": 0.00002,
+  "volume_dimensions": {
+    "x": 0.0211,
+    "y": 0.0402,
+    "z": 0.02
+  }
+}

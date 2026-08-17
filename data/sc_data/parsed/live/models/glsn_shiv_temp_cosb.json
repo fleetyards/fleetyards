@@ -14,6 +14,226 @@
     "base_expediting_fee": "14820"
   },
   "mass": 206577.0,
+  "inventory_container_ref": "11289951-273e-4b91-9194-ece46fe88783",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 4380.0,
+    "y": 8628.0,
+    "z": 10213.0
+  },
+  "hull_health": 34300.0,
+  "hull_parts": [
+    {
+      "name": "GLSN_Shiv",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 5000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Side_Thruster_Body_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "dbr_Wing_Right_addons",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Wing_Right_addons_01",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right_cage",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Missile_Housing_Right",
+      "health": 1400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_Missile_Housing_Right_panel",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Missile_Housing_Left",
+      "health": 1400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_Missile_Housing_Left_panel",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_FL_Split",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Main_Left",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_FR_Split",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Main_Right",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Main_Base_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Thruster_Main_Base_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "fuel_greeble",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Tail_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "dbr_Tail_panel",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_fin_Left_02",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_fin_Left_01",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_bottom_greeble_03",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_fin_Right_01",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_fin_Right_02",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_fin_Right_03",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_fin_Left_03",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_bottom_greeble_02",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Tail_bottom_greeble_01",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Side_Thruster_Body_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "dbr_Wing_Left_addons",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Wing_Left_addons_01",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_cage",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Body_Left_addon",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Body_headlight_bar",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Body_bottom_03",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Body_bottom_01",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Body_bottom_02",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_Body_Right_addon",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 26.5,
     "y": 37.5,

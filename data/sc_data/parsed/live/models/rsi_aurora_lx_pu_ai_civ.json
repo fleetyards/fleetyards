@@ -14,6 +14,61 @@
     "base_expediting_fee": "1513"
   },
   "mass": 24736.0,
+  "inventory_container_ref": "bab8c647-63d7-49b7-8900-f652302500aa",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 2618.0,
+    "y": 1178.0,
+    "z": 5355.0
+  },
+  "hull_health": 5740.0,
+  "hull_parts": [
+    {
+      "name": "RSI_Aurora",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 1940.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body",
+      "health": 1880.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Bottom_Left",
+      "health": 480.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Hardpoint_Wing_Landing_Gear_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Top_Left",
+      "health": 480.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Bottom_Right",
+      "health": 480.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Hardpoint_Wing_Landing_Gear_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Top_Right",
+      "health": 480.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 8.75,
     "y": 19.0,

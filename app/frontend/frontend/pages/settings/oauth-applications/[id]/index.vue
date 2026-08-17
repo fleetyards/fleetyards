@@ -13,7 +13,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import {
   BtnVariantsEnum,
-  BtnSizesEnum,
+  BtnTonesEnum,
 } from "@/shared/components/base/Btn/types";
 import {
   type OauthApplication,
@@ -138,9 +138,8 @@ const confirmDestroy = () => {
 
   <div class="oauth-detail-header">
     <Heading hero>{{ oauthApplication.name }}</Heading>
-    <BtnGroup inline>
+    <BtnGroup>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :to="{
           name: 'settings-oauth-application-edit',
           params: { id: oauthApplication.id },
@@ -149,11 +148,7 @@ const confirmDestroy = () => {
         <i class="fa-duotone fa-pencil" />
         {{ t("actions.edit") }}
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.DANGER"
-        @click="confirmDestroy"
-      >
+      <Btn @click="confirmDestroy" :tone="BtnTonesEnum.DANGER">
         <i class="fa-duotone fa-trash" />
         {{ t("actions.delete") }}
       </Btn>
@@ -163,12 +158,7 @@ const confirmDestroy = () => {
   <div v-if="visibleSecret" class="oauth-secret-banner">
     <div class="oauth-secret-banner-header">
       <strong>{{ t("labels.oauthApplications.clientSecret") }}</strong>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.LINK"
-        @click="dismissSecret"
-        inline
-      >
+      <Btn @click="dismissSecret" :variant="BtnVariantsEnum.BARE">
         <i class="fa-duotone fa-times" />
       </Btn>
     </div>
@@ -177,11 +167,7 @@ const confirmDestroy = () => {
     </p>
     <div class="oauth-detail-value">
       <code>{{ visibleSecret }}</code>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        @click="copyToClipboard(visibleSecret)"
-        inline
-      >
+      <Btn @click="copyToClipboard(visibleSecret)">
         <i class="fa-duotone fa-copy" />
       </Btn>
     </div>
@@ -196,11 +182,7 @@ const confirmDestroy = () => {
           }}</span>
           <div class="oauth-detail-value">
             <code>{{ oauthApplication.uid }}</code>
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              @click="copyToClipboard(oauthApplication.uid)"
-              inline
-            >
+            <Btn @click="copyToClipboard(oauthApplication.uid)">
               <i class="fa-duotone fa-copy" />
             </Btn>
           </div>
@@ -211,7 +193,7 @@ const confirmDestroy = () => {
             t("labels.oauthApplications.clientSecret")
           }}</span>
           <div class="oauth-detail-value">
-            <Btn :size="BtnSizesEnum.SMALL" @click="confirmRegenerateSecret">
+            <Btn @click="confirmRegenerateSecret">
               <i class="fa-duotone fa-rotate" />
               {{ t("actions.oauthApplications.regenerateSecret") }}
             </Btn>
@@ -228,11 +210,7 @@ const confirmDestroy = () => {
             class="oauth-detail-value"
           >
             <code>{{ uri }}</code>
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              @click="copyToClipboard(uri)"
-              inline
-            >
+            <Btn @click="copyToClipboard(uri)">
               <i class="fa-duotone fa-copy" />
             </Btn>
           </div>

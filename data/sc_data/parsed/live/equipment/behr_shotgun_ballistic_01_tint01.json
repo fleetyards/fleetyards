@@ -1,0 +1,36 @@
+{
+  "key": "behr_shotgun_ballistic_01_tint01",
+  "ref": "e879aa01-f136-4724-b399-1877699f4584",
+  "name": "BR-2 \"Blacklist\" Shotgun",
+  "description": "Originally designed for the military, Behring decided to sell the BR-2 ballistic shotgun to the general public after the initial weapon testers kept requesting to take one home. Featuring a semi-auto fire mode that can rapidly deliver devastating stopping power, the BR-2 is the ideal choice for both offensive and defensive operations. \n\nThe Blacklist edition features a black finish.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "75.0",
+  "range": "15.0",
+  "storage": "12.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behring_br_2_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "shotgun"
+  ],
+  "hidden": true,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.1069,
+    "y": 0.8358,
+    "z": 0.2864
+  }
+}

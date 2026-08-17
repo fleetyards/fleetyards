@@ -81,7 +81,8 @@
         },
         "fleets": {
           "index": "舰队",
-          "edit": "编辑舰队"
+          "edit": "编辑舰队",
+          "memberEdit": "编辑成员"
         },
         "admins": {
           "index": "管理员",
@@ -121,6 +122,7 @@
       "images": "Images Index",
       "stats": "统计",
       "notFound": "导航错误",
+      "forbidden": "拒绝访问",
       "featureNotReady": "即将推出",
       "accessDenied": "拒绝访问",
       "serverError": "服务器错误",
@@ -170,17 +172,6 @@
           "starmap": "成员星图"
         },
         "stats": "统计",
-        "logistics": {
-          "index": "Logistics",
-          "inventories": "Inventories",
-          "requests": "Requests",
-          "newRequest": "New Request",
-          "requestItems": "Items",
-          "comments": "Comments",
-          "createInventory": "Create Inventory",
-          "createItem": "Add Item",
-          "importCsv": "Import from CSV"
-        },
         "preview": {
           "h1": "舰队预览",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",
@@ -275,7 +266,12 @@
         "overview": "概览",
         "panels": "面板",
         "buttons": "按钮",
+        "typography": "排版",
+        "forms": "表单",
         "tables": "表格",
+        "lists": "列表",
+        "metrics": "指标",
+        "states": "状态",
         "notifications": "通知",
         "syncModal": "同步弹窗",
         "supportHint": "支持提示"
@@ -292,7 +288,25 @@
       "stationImages": "Images of %{station} near %{celestialObject}",
       "shops": "Shops",
       "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      "commodities": "Commodities",
+      "logistics": {
+        "index": "Logistics",
+        "inventories": "Inventories",
+        "requests": "Requests",
+        "newRequest": "New Request",
+        "requestItems": "Items",
+        "comments": "Comments",
+        "inventoryItems": "Inventory Items",
+        "createInventory": "Create Inventory",
+        "editInventory": "Edit Inventory",
+        "createItem": "Add Item",
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal",
+        "importCsv": "Import from CSV",
+        "hangarInventories": "Hangar Inventories",
+        "editItem": "Edit Entry",
+        "editStockItem": "Edit Item"
+      }
     }
   }
 }

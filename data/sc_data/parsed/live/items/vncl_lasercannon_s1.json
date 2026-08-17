@@ -65,16 +65,48 @@
     "heat_per_shot": 0.0,
     "damage_per_shot": {
       "physical": 0.0,
-      "energy": 72.9,
+      "energy": 50.0,
       "distortion": 0.0,
       "thermal": 0.0,
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.1785
+    },
     "pellets_per_shot": 1,
     "speed": 1200.0,
     "range": 2004.0,
     "ammo_cost": 1,
-    "max_ammo": 0
+    "max_ammo": 0,
+    "regen": {
+      "max_ammo_load": 25.0,
+      "max_regen_per_second": 3.0,
+      "cost_per_bullet": 55.0,
+      "regeneration_cooldown": 1.74,
+      "requested_regen_per_second": 650.0,
+      "requested_ammo_load": 5625.0
+    },
+    "power_consumption": 1.13,
+    "weapon_class": "LaserCannon",
+    "mountable": true,
+    "power_minimum_fraction": 0.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 513.0,
+    "signature_ir": 0.0
   }
 }

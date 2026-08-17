@@ -1,0 +1,34 @@
+{
+  "key": "behr_rifle_ballistic_02_mag",
+  "ref": "62c58bdb-c65c-4883-82c6-83e50c37d40d",
+  "name": "P8-ARM Rifle Magazine (30 cap)",
+  "description": "This magazine for the Behring P8-ARM rifle comes pre-loaded with thirty 7.62mm rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "30.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "behr_rifle_ballistic_02"
+  ],
+  "hidden": false,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.208
+  }
+}

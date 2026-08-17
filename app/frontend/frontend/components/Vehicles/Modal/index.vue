@@ -155,7 +155,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
           </div>
         </div>
         <div class="col-12">
-          <hr class="dark slim-spacer" />
+          <hr class="slim-spacer" />
         </div>
         <div class="col-12 col-md-6">
           <FormToggle
@@ -189,13 +189,12 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :loading="submitting"
-          :size="BtnSizesEnum.LARGE"
           data-test="vehicle-save"
-          :inline="true"
           @click="onSubmit"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.save") }}
         </Btn>

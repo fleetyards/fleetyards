@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as fleetRoutes } from "@/admin/pages/fleets/[id]/routes";
+import { routes as fleetMemberRoutes } from "@/admin/pages/fleets/[id]/members/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -13,9 +14,21 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "destroyed/",
+    name: "admin-destroyed-fleets",
+    component: () => import("@/admin/pages/fleets/destroyed/index.vue"),
+    strict: true,
+    meta: {
+      needsAuthentication: true,
+      nav: "hidden",
+      activeRoute: "admin-fleets",
+      access: ["fleets"],
+    },
+  },
+  {
     path: ":id/",
     component: () => import("@/admin/pages/fleets/[id].vue"),
-    children: fleetRoutes,
+    children: [...fleetRoutes, ...fleetMemberRoutes],
     redirect: { name: fleetRoutes[0].name },
     meta: {
       needsAuthentication: true,

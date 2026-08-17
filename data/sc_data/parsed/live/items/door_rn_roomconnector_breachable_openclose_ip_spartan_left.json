@@ -20,6 +20,14 @@
   },
   "loadout": [
     {
+      "name": "IP_Interior",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
       "name": "IP_Exterior_Right",
       "min_size": "1",
       "max_size": "1",
@@ -30,6 +38,12 @@
   ],
   "default_loadout": [
     {
+      "name": "IP_Interior",
+      "key": "ControlPanel_Screen_DoorControl_Starlifter_Interior_Button_Spartan",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
       "name": "IP_Exterior_Right",
       "key": "ControlPanel_Screen_DoorControl_Physical_Spartan",
       "ref": null,
@@ -38,5 +52,23 @@
   ],
   "durability": {
     "health": 1000.0
+  },
+  "type_data": {
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

@@ -9,18 +9,18 @@ jobs:
   js-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/workflows/js-setup-action
 
   js-lint-fix:
     needs: js-setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/workflows/js-setup-action
       - run: pnpm run lint:fix
       - name: Commit changes
-        uses: EndBug/add-and-commit@v10
+        uses: EndBug/add-and-commit@v11
         with:
           message: "chore: lint translations"
           add: "app/frontend/translations/*"

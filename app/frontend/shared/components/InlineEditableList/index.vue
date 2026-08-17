@@ -6,8 +6,8 @@ export default {
 
 <script lang="ts" setup generic="T extends { id: string }">
 import {
-  BtnSizesEnum,
   BtnVariantsEnum,
+  BtnTonesEnum,
 } from "@/shared/components/base/Btn/types";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
@@ -174,10 +174,8 @@ defineExpose({
         </span>
         <Btn
           v-tooltip="t('filteredTable.actions.unselect')"
-          :size="BtnSizesEnum.SMALL"
-          :variant="BtnVariantsEnum.LINK"
-          inline
           @click="resetSelected"
+          :variant="BtnVariantsEnum.BARE"
         >
           <i class="fa fa-times" />
         </Btn>
@@ -204,19 +202,11 @@ defineExpose({
             <slot name="create" />
           </div>
           <div class="list-group__actions">
-            <BtnGroup inline>
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                data-test="save-create"
-                @click="saveCreate"
-              >
+            <BtnGroup>
+              <Btn data-test="save-create" @click="saveCreate">
                 <i class="fa-duotone fa-check" />
               </Btn>
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                data-test="cancel-create"
-                @click="cancelCreate"
-              >
+              <Btn data-test="cancel-create" @click="cancelCreate">
                 <i class="fa-duotone fa-times" />
               </Btn>
             </BtnGroup>
@@ -247,19 +237,11 @@ defineExpose({
 
     <template #actions="{ item }">
       <template v-if="editingId === item.id">
-        <BtnGroup inline>
-          <Btn
-            :size="BtnSizesEnum.SMALL"
-            data-test="save-edit"
-            @click="saveEdit"
-          >
+        <BtnGroup>
+          <Btn data-test="save-edit" @click="saveEdit">
             <i class="fa-duotone fa-check" />
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.SMALL"
-            data-test="cancel-edit"
-            @click="cancelEdit"
-          >
+          <Btn data-test="cancel-edit" @click="cancelEdit">
             <i class="fa-duotone fa-times" />
           </Btn>
         </BtnGroup>
@@ -271,44 +253,32 @@ defineExpose({
           :item="item"
           :mobile="mobile"
         />
-        <BtnDropdown v-else-if="mobile" :size="BtnSizesEnum.SMALL" inline>
+        <BtnDropdown v-else-if="mobile">
           <slot name="actions" :item="item" :mobile="mobile" />
-          <Btn
-            v-if="!hideEdit"
-            :size="BtnSizesEnum.SMALL"
-            data-test="start-edit"
-            @click="startEdit(item)"
-          >
+          <Btn v-if="!hideEdit" data-test="start-edit" @click="startEdit(item)">
             <i class="fa-duotone fa-pencil" />
             <span>{{ t("actions.edit") }}</span>
           </Btn>
           <Btn
             v-if="!hideDestroy"
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.DANGER"
             data-test="destroy"
             @click="destroy(item)"
+            :tone="BtnTonesEnum.DANGER"
           >
             <i class="fa-duotone fa-trash" />
             <span>{{ t("actions.delete") }}</span>
           </Btn>
         </BtnDropdown>
-        <BtnGroup v-else inline>
+        <BtnGroup v-else>
           <slot name="actions" :item="item" :mobile="false" />
-          <Btn
-            v-if="!hideEdit"
-            :size="BtnSizesEnum.SMALL"
-            data-test="start-edit"
-            @click="startEdit(item)"
-          >
+          <Btn v-if="!hideEdit" data-test="start-edit" @click="startEdit(item)">
             <i class="fa-duotone fa-pencil" />
           </Btn>
           <Btn
             v-if="!hideDestroy"
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.DANGER"
             data-test="destroy"
             @click="destroy(item)"
+            :tone="BtnTonesEnum.DANGER"
           >
             <i class="fa-duotone fa-trash" />
           </Btn>
@@ -351,7 +321,7 @@ defineExpose({
   white-space: nowrap;
   font-size: 120%;
 
-  :deep(.panel-btn-inner) {
+  :deep(.btn__content) {
     color: $primary;
   }
 }
@@ -367,12 +337,6 @@ defineExpose({
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
-
-  :deep(.panel-btn),
-  :deep(.panel-btn-group) {
-    margin-bottom: 0;
-    margin-right: 0;
-  }
 }
 
 .inline-editable-list__checkbox {

@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "7",
   "name": "Aegis Retaliator",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Modular\\n\\nThis civilian refit of the Retaliator updates the military ship's chassis with unladen space able to be fitted with various modules to suit your needs.",
   "career": "Combat",
@@ -14,6 +14,186 @@
     "base_expediting_fee": "32116"
   },
   "mass": 317870.29,
+  "inventory_container_ref": "4b2dbad4-ca1c-4016-9d1c-7850f565a160",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 15100.0,
+    "y": 4700.0,
+    "z": 36000.0
+  },
+  "hull_health": 138981.0,
+  "hull_parts": [
+    {
+      "name": "aegs_retaliator",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 35000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 50000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_lower_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_rl_geom",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_rl_damage",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_rl_fin_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_mlr_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_mlr_damage",
+      "health": 240.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_m_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_m_damage",
+      "health": 2800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "main_wing_slider_a_left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "large_wing_piston_geom_l",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "large_wing_piston_2",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "left_wing_rs_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_lower_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_rl_geom",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_rl_damage",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_rl_fin_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_mlr_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_mlr_damage",
+      "health": 240.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_m_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_m_damage",
+      "health": 2800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "right_wing_rs_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "main_wing_slider_a_right",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "main_wing_slider_a_left_r",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "large_wing_piston_003",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_left_wing",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "front_left_wing_damage",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_left_wing_flp_geom",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_right_wing",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "front_right_wing_damage",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_right_wing_flp_geom",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "glass",
+      "health": 100.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 44.0,
     "y": 70.5,
@@ -551,6 +731,11 @@
       "name": "hardpoint_ground_fuel_port",
       "ref": null,
       "key": "Door_NoRoomConnector_retaliator_Ground_FuelPort"
+    },
+    {
+      "name": "hardpoint_interior_docking_door",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Interior_Docking"
     },
     {
       "name": "hardpoint_exterior_docking_door",

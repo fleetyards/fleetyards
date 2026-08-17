@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import copyText from "@/frontend/utils/CopyText";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -23,7 +24,6 @@ import {
   FleetInviteUrl,
   FleetInviteUrlCreateInput,
 } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   fleet: Fleet;
@@ -193,14 +193,10 @@ const copy = (inviteUrl: FleetInviteUrl) => {
           class="url-input"
           @click="copy(inviteUrl)"
         />
-        <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="copy(inviteUrl)">
+        <Btn @click="copy(inviteUrl)">
           <i class="fa-duotone fa-copy" />
         </Btn>
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          :inline="true"
-          @click="remove(inviteUrl)"
-        >
+        <Btn :tone="BtnTonesEnum.DANGER" @click="remove(inviteUrl)">
           <i class="fa-duotone fa-trash" />
         </Btn>
       </div>

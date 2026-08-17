@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Aegis Vanguard Warden",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Fighter\\n\\nA hard-charging bulldog of a fighter which features extensive forward-mounted weaponry designed to tear through the shields and armor of other spacecraft. So-named because their multiple-jump range allows them to form the vanguard of any military expedition, Vanguards have seen extensive service against the Vanduul.",
   "career": "Combat",
@@ -14,6 +14,126 @@
     "base_expediting_fee": "9113"
   },
   "mass": 238070.26,
+  "inventory_container_ref": "608d3834-64e0-4982-be7b-3e3dc9cf7b00",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 17021.0,
+    "y": 3404.0,
+    "z": 16304.0
+  },
+  "hull_health": 42800.0,
+  "hull_parts": [
+    {
+      "name": "AEGS_Vanguard",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Arm_Right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arm_Left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_R",
+      "health": 7500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Fin_Right_Upper",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail_Fin_Right_Lower",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Right_Geo",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Right_Flaps",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Right_Flaps_Geo",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_L",
+      "health": 7500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Fin_Left_Upper",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail_Fin_Left_Lower",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Left_Geo",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Left_Flaps",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Left_Flaps_Geo",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Back_Right",
+      "health": 1800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Back_Left",
+      "health": 1800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 40.0,
     "y": 48.0,

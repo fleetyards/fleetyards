@@ -1,0 +1,38 @@
+{
+  "key": "dmc_jacket_05_01_07",
+  "ref": "1481eb65-dca8-4bbc-acbb-64d00d14d9c9",
+  "name": "Coloma Coat Blue and Brick",
+  "description": "Stuffed with water-resistant gilly down, the Coloma coat blocks wind, traps body heat, and allows the wearer to move freely, making it the perfect choice for changeable weather conditions. Additionally, its roomy pockets provide plenty of storage.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_jacket",
+    "Set_05",
+    "Texture_01",
+    "Color_07"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

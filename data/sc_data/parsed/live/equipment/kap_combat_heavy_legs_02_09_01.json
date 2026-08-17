@@ -1,0 +1,37 @@
+{
+  "key": "kap_combat_heavy_legs_02_09_01",
+  "ref": "7f6f828f-1508-4e01-bbad-a60b59b7c24d",
+  "name": "Monde Legs Purgatory Camo",
+  "description": "Item Type: Heavy Armor\nDamage Reduction: 40%\nTemp. Rating: -77 / 107 °C\nRadiation Protection: 26800 REM\nRadiation Scrub Rate: 145.8 REM/s\nCarrying Capacity: 7.5 µSCU\n \nFrom the masterwork designers of Kilgore & Poole comes the Monde heavy armor. Effortlessly integrating triple-laminate plating with the latest in defensive technology, this armor provides battle-ready protection with a next-class comfort system and specialized flex-point joints.\n \nThe Purgatory Camo edition features a sleek gray-on-gray pattern.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "combat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a349d45f-cda5-4fdb-89ea-4ea91804a163",
+  "tags": [
+    "Set_02",
+    "Color_06",
+    "SM_Marine"
+  ],
+  "hidden": false,
+  "volume": 0.071,
+  "volume_dimensions": {
+    "x": 0.509,
+    "y": 0.36,
+    "z": 0.553
+  }
+}

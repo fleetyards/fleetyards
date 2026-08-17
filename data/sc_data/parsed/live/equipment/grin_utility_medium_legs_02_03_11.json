@@ -1,0 +1,38 @@
+{
+  "key": "grin_utility_medium_legs_02_03_11",
+  "ref": "0a76542b-f550-4b1a-a8bc-180748bdcd3d",
+  "name": "Strata Legs Hurston Edition",
+  "description": "Made for miners but ready for any adventure, Greycat Industrial's Strata armor provides premium protection and convenient features. Each piece features an angular and precise design to deliver coverage where it's most needed most. A toolbelt with convenient pouches and a reinforced backpack offers plenty of storage. The award-winning helmet design has been copied by other manufacturers, but the original still reigns supreme with its high quality materials and next-gen air filtration system that enables clean breathing whether in a deep mine or hostile atmospheres. The Hurston Edition was made specifically for the company.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "10.0",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_medium",
+    "Set_02",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.068,
+  "volume_dimensions": {
+    "x": 0.471,
+    "y": 0.363,
+    "z": 0.57
+  }
+}

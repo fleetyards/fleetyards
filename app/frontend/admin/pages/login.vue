@@ -15,10 +15,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/admin/stores/session";
 import {
   useCreateSession as useCreateSessionMutation,
-  type ValidationError,
   type SessionInput,
 } from "@/services/fyAdminApi";
-import { type AxiosError } from "axios";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnTypesEnum, BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -78,13 +77,13 @@ const onSubmit = handleSubmit(async (values) => {
       await handleRedirect();
     })
     .catch((error) => {
-      const response = (error as AxiosError<ValidationError>).response;
+      const { code, message } = validationErrorFrom(error);
 
-      if (response?.data.code === "session.create.two_factor_required") {
+      if (code === "session.create.two_factor_required") {
         twoFactorRequired.value = true;
       } else {
         displayAlert({
-          text: response?.data.message || t("errors.generic"),
+          text: message || t("errors.generic"),
         });
       }
     })
@@ -151,8 +150,8 @@ const onSubmit = handleSubmit(async (values) => {
           :loading="submitting"
           :type="BtnTypesEnum.SUBMIT"
           data-test="submit-login"
-          :size="BtnSizesEnum.LARGE"
           :block="true"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.login") }}
         </Btn>

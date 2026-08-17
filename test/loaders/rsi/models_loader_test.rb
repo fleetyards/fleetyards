@@ -32,11 +32,11 @@ module Rsi
 
       assert_equal(
         {
-          models: initial_model_count + 211,
-          hardpoints: initial_hardpoint_count + 9104,
+          models: initial_model_count + 240,
+          hardpoints: initial_hardpoint_count + 4973,
           components: initial_component_count,
-          paints: initial_paint_count + 15,
-          manufacturers: initial_manufacturer_count + 18
+          paints: initial_paint_count + 10,
+          manufacturers: initial_manufacturer_count + 19
         },
         models: Model.count,
         hardpoints: Hardpoint.count,
@@ -60,7 +60,7 @@ module Rsi
       assert_equal(
         {
           models: initial_model_count + 1,
-          hardpoints: initial_hardpoint_count + 34,
+          hardpoints: initial_hardpoint_count + 17,
           components: initial_component_count,
           paints: initial_paint_count,
           manufacturers: initial_manufacturer_count + 1
@@ -118,8 +118,8 @@ module Rsi
 
       polaris.reload
 
-      assert_in_delta 166.0, polaris.length.to_f
-      assert_equal "2024-12-05T19:00:50Z", polaris.last_updated_at.utc.iso8601
+      assert_in_delta 181.0, polaris.length.to_f
+      assert_equal "2026-06-25T15:03:13Z", polaris.last_updated_at.utc.iso8601
     end
   end
 end

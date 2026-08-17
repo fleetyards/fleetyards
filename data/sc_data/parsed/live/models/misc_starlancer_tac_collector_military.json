@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "8",
   "name": "MISC Starlancer TAC Wikelo War Special",
   "description": "Manufacturer: MISC\\nFocus: Gunship\\n \\nFor those looking to for a versatile ship that can stand on its own in a fight, the engineers have upgraded the Starlancer TAC with an aggressive offensive package ready to face down the fiercest of foes. When you take on a high risk, high reward job, the Starlancer TAC is there to make sure you and your crew are able to see it through to the very end.\\n\\nWikelo here. Made useful modifications to make ship even more fighter like. Very impressive.",
   "career": "Combat",
@@ -14,6 +14,187 @@
     "base_expediting_fee": "7190"
   },
   "mass": 738070.5,
+  "inventory_container_ref": "4b2dbad4-ca1c-4016-9d1c-7850f565a160",
+  "weapon_pool_size": 8,
+  "signature_cross_section": null,
+  "hull_health": 116600.0,
+  "hull_parts": [
+    {
+      "name": "misc_starlancer_tac",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 38000.0,
+      "category": "vital"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_left_rear",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_fin_04",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_05",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_03",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_02",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_01",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_06",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_air_brake_left",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_plate_left",
+      "health": 6000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_left",
+      "health": 3000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_left_rear",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_aileron_left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spoiler_connection_left",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_spoiler_left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spoiler_connection_right",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_spoiler_right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "top_spoiler_left",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "top_spoiler_right",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 25000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_air_brake_right",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_right_rear",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_fin_007",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_008",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_009",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_010",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_011",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nacelle_fin_012",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_plate_right",
+      "health": 6000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right",
+      "health": 3000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right_rear",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_aileron_right",
+      "health": 500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 60.0,
     "y": 90.0,

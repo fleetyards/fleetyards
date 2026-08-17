@@ -1,0 +1,37 @@
+{
+  "key": "987_jacket_05_01_02",
+  "ref": "a737d3f7-dadb-4c60-b1cc-ba48a79376a9",
+  "name": "Faction Jacket Red",
+  "description": "Whether you're coasting through outdoor adventures or cruising to exclusive afterparties, the Faction coat is sure to turn heads. Fusing sections of ultra-insulated brick quilting with 987's DuraBull ripstop reinforced fabric, you'll stay warm while still looking cool.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3b54a8cc-5700-45f1-940a-2436b213926f",
+  "tags": [
+    "987_jacket",
+    "set_05",
+    "Color_02"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

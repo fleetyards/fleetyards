@@ -6,12 +6,14 @@ export default {
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import Avatar from "@/shared/components/Avatar/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import MemberContactMenu from "@/frontend/components/base/MemberContactMenu/index.vue";
+import OwnerRow from "@/frontend/components/Vehicles/OwnersModal/Row/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { sortBy, uniqByField as uniqByFieldArray } from "@/shared/utils/Array";
+import type { Owner } from "@/frontend/components/Vehicles/OwnersModal/types";
 import {
   type VehiclePublic,
   type FleetVehiclesParams,
@@ -49,61 +51,94 @@ const { data, status } = useFleetVehiclesQuery(props.fleetSlug, params);
 
 const loading = computed(() => status.value === "pending");
 
-const sortedVehicles = computed(() =>
-  sortBy((data.value?.items || []) as VehiclePublic[], "username").filter(
-    uniqByFieldArray("username"),
-  ),
-);
+const shipLabel = (vehicle: VehiclePublic) => {
+  if (vehicle.name && vehicle.serial) {
+    return `${vehicle.name} (${vehicle.serial})`;
+  }
+
+  return vehicle.name || vehicle.serial;
+};
+
+/*
+ * One row per member, not per vehicle: the fleet list already collapses a model
+ * to a single panel, so the modal behind it answers "who flies this", and a
+ * member with three Cutlasses was previously three rows - or, once deduplicated
+ * by username, one row silently dropping the other two ships.
+ *
+ * Vehicles whose owner is not public carry no identity at all, so they cannot be
+ * told apart and all fold into one trailing row with a count.
+ */
+const owners = computed<Owner[]>(() => {
+  const vehicles = (data.value?.items || []) as VehiclePublic[];
+
+  const named = new Map<string, Owner>();
+  const anonymous: Owner = { key: "anonymous", count: 0, ships: [] };
+
+  vehicles.forEach((vehicle) => {
+    const ship = shipLabel(vehicle);
+    const owner = vehicle.username
+      ? (named.get(vehicle.username) ?? {
+          key: vehicle.username,
+          member: {
+            username: vehicle.username,
+            rsiHandle: vehicle.userRsiHandle,
+            discordProfileUrl: vehicle.userDiscordProfileUrl,
+            citizenidProfileUrl: vehicle.userCitizenidProfileUrl,
+          },
+          avatar: vehicle.userAvatar,
+          count: 0,
+          ships: [],
+        })
+      : anonymous;
+
+    owner.count += 1;
+
+    if (ship) {
+      owner.ships.push(ship);
+    }
+
+    if (owner.member?.username) {
+      named.set(owner.member.username, owner);
+    }
+  });
+
+  const sorted = [...named.values()].sort((a, b) =>
+    (a.member?.username as string).localeCompare(
+      b.member?.username as string,
+      undefined,
+      {
+        sensitivity: "base",
+      },
+    ),
+  );
+
+  return anonymous.count > 0 ? [...sorted, anonymous] : sorted;
+});
 </script>
 
 <template>
   <Modal :title="t('headlines.fleets.owners')">
-    <div class="row">
-      <div v-if="loading" class="col-12">
-        <Loader :loading="loading" :inline="true" />
-      </div>
-      <template v-else>
-        <div
-          v-for="vehicle in sortedVehicles"
-          :key="vehicle.username"
-          class="col-12 col-md-6"
-        >
-          <Btn
-            v-if="vehicle.username"
-            :href="`/hangar/${vehicle.username}`"
-            block
-            align-start
-          >
-            <div class="user-item">
-              <Avatar :avatar="vehicle.userAvatar" size="small" />
-              <span class="user-item-username">
-                {{ vehicle.username }}
-                <span v-if="vehicle.name" class="user-item-ship">
-                  {{ vehicle.name }}
-                  <span v-if="vehicle.serial" class="user-item-ship-serial">
-                    ({{ vehicle.serial }})
-                  </span>
-                </span>
-              </span>
-            </div>
-          </Btn>
-          <Btn v-else disabled block align-start>
-            <div class="user-item">
-              <Avatar size="small" />
-              <span class="user-item-username">
-                {{ t("labels.anonymous") }}
-                <span v-if="vehicle.name" class="user-item-ship">
-                  {{ vehicle.name }}
-                  <span v-if="vehicle.serial" class="user-item-ship-serial">
-                    ({{ vehicle.serial }})
-                  </span>
-                </span>
-              </span>
-            </div>
-          </Btn>
-        </div>
-      </template>
-    </div>
+    <Loader v-if="loading" :loading="loading" :inline="true" />
+    <!-- Actions hidden: they reset the *page's* filters, which is not something
+         a modal opened over that page should offer. -->
+    <Empty v-else-if="!owners.length" :inline="true" :hide-actions="true" />
+    <ul v-else class="owners">
+      <li v-for="owner in owners" :key="owner.key">
+        <BtnDropdown v-if="owner.member">
+          <template #trigger="{ toggle, visible }">
+            <OwnerRow
+              :owner="owner"
+              as="button"
+              aria-haspopup="menu"
+              :aria-expanded="visible"
+              @click="toggle"
+            />
+          </template>
+          <MemberContactMenu :member="owner.member" :hangar="true" />
+        </BtnDropdown>
+        <OwnerRow v-else :owner="owner" />
+      </li>
+    </ul>
   </Modal>
 </template>
 

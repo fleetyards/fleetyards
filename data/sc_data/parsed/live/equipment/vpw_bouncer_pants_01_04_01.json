@@ -1,0 +1,32 @@
+{
+  "key": "vpw_bouncer_pants_01_04_01",
+  "ref": "9f371afa-ec9f-40d9-a03e-f6efad04a7a9",
+  "name": "Threshold Copperhead Pants",
+  "description": "The company's classic pant, the Threshold line features a glossy faux-organic exterior, an attached belt with real metal buckle, and reinforced knee and shin pads. Additionally, the pants are decorated with non-constructive stitching and include two hip pockets. The Copperhead edition features golden accents on knee and shin pads.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "bouncer",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7dfff1b9-2bfa-4ace-86d9-30329a2a0f30",
+  "tags": [
+    "vpw_pants",
+    "Set_01",
+    "Color_04"
+  ],
+  "hidden": false,
+  "volume": 0.013808
+}

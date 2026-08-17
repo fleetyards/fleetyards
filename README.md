@@ -37,6 +37,41 @@ bin/credentials production
 bin/credentials staging
 ```
 
+### Optional Integrations
+
+#### Patreon Supporter Sync
+
+A nightly Sidekiq job (`PatreonSupporterSyncJob`, 04:17 UTC) imports active
+Patreon patrons into the `supporter_contributions` table so the public progress
+bar reflects ongoing pledges. Imported rows default to `anonymous: true` until an
+admin flips them after getting the supporter's consent. Admins can also trigger
+an immediate run via the "Sync from Patreon" button on the admin Supporter
+Contributions page.
+
+The integration is one-way (Patreon → FleetYards) and disabled until the
+following credentials are set:
+
+```yaml
+patreon:
+  access_token: <creator-access-token> # from your Patreon creator dashboard
+  campaign_id: <campaign-id>           # GET /api/oauth2/v2/identity?include=campaign
+```
+
+USD pledge amounts are converted to EUR at sync time using the free
+[Frankfurter](https://frankfurter.app) ECB rate, cached for 12h and snapshotted
+to the `exchange_rates` table as a fallback when the rate API is unreachable. No
+extra credentials are required for the exchange-rate lookup.
+
+When a sync creates a brand-new active patron, the team is notified by email
+(super admins) and via a Discord webhook. The Discord post is sent to an internal
+channel and is skipped unless its webhook is configured:
+
+```yaml
+discord_admin_endpoint: <discord-webhook-url>
+```
+
+The email always sends; only the Discord half depends on this credential.
+
 ## Authors and Acknowledgement
 
 - [@mortik](https://www.github.com/mortik) for development and design.

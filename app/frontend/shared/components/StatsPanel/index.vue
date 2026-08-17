@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
-import { PanelBgColorsEnum } from "@/shared/components/base/Panel/types";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import NumberFlow from "@number-flow/vue";
 
 type Props = {
@@ -47,30 +48,62 @@ const suffix = computed(() => {
 </script>
 
 <template>
+  <!--
+    A metrics tile, not a filled panel. The blue fill this used to carry came
+    from Panel's bgColor and was the loudest thing on any stats page - sixteen
+    saturated blocks on hangar/stats alone. The emphasis is now the tile's 3px
+    $primary rail, which is how the ship page's cards mark their headline figure.
+
+    `slim` because these repeat: sixteen full frames with end-caps in col-lg-3
+    columns is exactly the noise that variant exists to avoid.
+  -->
   <Panel
-    :bg-color="PanelBgColorsEnum.PRIMARY"
+    class="stats-panel"
+    :variant="PanelVariantsEnum.SLIM"
     :outer-spacing="outerSpacing"
-    slim
   >
-    <div class="stats-panel">
-      <div class="stats-panel-icon">
-        <i :class="icon" />
-      </div>
-      <div class="stats-panel-text">
-        <div class="stats-panel-text-value">
+    <PanelBody class="stats-panel__body">
+      <div class="metrics-card__tile metrics-card__tile--primary">
+        <div class="metrics-card__tile__label">{{ label }}</div>
+        <div class="metrics-card__tile__value">
           <NumberFlow :value="innerValue" :prefix="prefix" />
-          <span v-if="suffix" class="stats-panel-text-suffix">
+          <span v-if="suffix" class="metrics-card__tile__unit">
             {{ suffix }}
           </span>
         </div>
-        <div class="stats-panel-text-info">
-          {{ label }}
-        </div>
+        <i :class="icon" class="stats-panel__icon" />
       </div>
-    </div>
+    </PanelBody>
   </Panel>
 </template>
 
 <style lang="scss" scoped>
-@import "index";
+@import "@/shared/components/metricsCard";
+
+/* The tile is the whole body, so the body adds no padding of its own. */
+.stats-panel__body {
+  padding: 0;
+}
+
+.stats-panel {
+  .metrics-card__tile {
+    // Its own fill and radius, rather than the hero's, since there is no shared
+    // container here - one tile per panel until the host grids are collapsed.
+    background: transparent;
+    padding: 16px 18px;
+  }
+
+  // The icon is decoration behind the figure, not a peer of it: quiet, and out of
+  // the flow so a long value keeps the full width of the tile.
+  .stats-panel__icon {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    font-size: 34px;
+    color: $gray-light;
+    opacity: 0.22;
+    pointer-events: none;
+  }
+}
 </style>

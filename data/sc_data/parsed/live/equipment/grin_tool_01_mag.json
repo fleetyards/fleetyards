@@ -1,0 +1,35 @@
+{
+  "key": "grin_tool_01_mag",
+  "ref": "680e69e1-4bf5-4647-92bc-989d1e4a5faa",
+  "name": "Cambrio SRT Battery",
+  "description": "This replacement battery powers Greycat's Cambrio salvage and repair tool, allowing your work to continue unabated.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "battery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_salvage_repair_01"
+  ],
+  "hidden": false,
+  "volume": 0.00028,
+  "volume_dimensions": {
+    "x": 0.0536,
+    "y": 0.1213,
+    "z": 0.0536
+  }
+}

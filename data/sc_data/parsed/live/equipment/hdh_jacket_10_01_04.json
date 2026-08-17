@@ -1,0 +1,38 @@
+{
+  "key": "hdh_jacket_10_01_04",
+  "ref": "e7ca1dbc-d84f-4aac-b66a-b2f03c61fd02",
+  "name": "Brocius Waist Apron Daylight",
+  "description": "Habidash's Brocius Waist Apron features a quilted front panel paired with side skirting to protect the wearer from any overspills or other dirtying work while still providing freedom of movement.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_jacket",
+    "Set_10",
+    "Texture_01",
+    "Color_04"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

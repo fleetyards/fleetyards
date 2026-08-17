@@ -46,7 +46,7 @@ jobs:
     needs: [deploy]
     environment: Stage
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 50
 

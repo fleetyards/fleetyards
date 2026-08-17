@@ -1,0 +1,40 @@
+{
+  "key": "rsi_deckcrew_armor_light_helmet_01_01_04",
+  "ref": "fa13c56c-3664-46e8-8ed9-af6e4bac3b67",
+  "name": "Horizon Helmet Yellow",
+  "description": "RSI's Horizon helmet is a durable and robust environmental enclosed work helmet. The single sheet laminate dome gives you an extremely wide field of view. A pair of side-mounted LED light modules provide additional illumination to make sure you can see what you're doing.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-37 / 67 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "DeckCrew",
+    "Set_01",
+    "Color_04",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
+}

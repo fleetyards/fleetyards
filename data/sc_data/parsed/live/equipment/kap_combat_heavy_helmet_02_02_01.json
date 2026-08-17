@@ -1,0 +1,39 @@
+{
+  "key": "kap_combat_heavy_helmet_02_02_01",
+  "ref": "7c8c4b7c-0497-408a-9bad-009d7ee8d2c0",
+  "name": "Monde Helmet Keystone",
+  "description": "From the masterwork designers of Kilgore & Poole comes the Monde helmet. Effortlessly integrating triple-laminate plating with the latest in defensive technology, this armor provides battle-ready protection with a next-class comfort system.\n\nThe Keystone edition features a white, gray and blue finish with URW logos.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-77 / 107 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a349d45f-cda5-4fdb-89ea-4ea91804a163",
+  "tags": [
+    "Set_02",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

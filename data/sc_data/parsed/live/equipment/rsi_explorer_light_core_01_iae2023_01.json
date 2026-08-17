@@ -1,0 +1,38 @@
+{
+  "key": "rsi_explorer_light_core_01_iae2023_01",
+  "ref": "5fcdda13-b65b-4d0f-bfac-a0418747608d",
+  "name": "Venture Core Ascension",
+  "description": "Robert Space Industries’ Venture Explorer Suit provides exceptional protection against the dangers of space. Designed for those who don't know where their next adventure might go, the suit combines comfort and safety without sacrificing mobility. This special Envy edition inspired by the Coramor festival features a vibrant pink and purple color scheme for the most enthusiastic of lovers.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-38 / 68 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Color_IAE2023",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.034,
+  "volume_dimensions": {
+    "x": 0.411,
+    "y": 0.367,
+    "z": 0.299
+  }
+}

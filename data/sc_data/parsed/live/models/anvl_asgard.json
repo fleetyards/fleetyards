@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Anvil Asgard",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Drop Ship\\n \\nAs the battles of today continue to grow in scale and complexity, Anvil Aerospace understands the impact a single vehicle can have on the outcome. Enter the Asgard. The next generation in ground vehicle transport, the Anvil Asgard features a quick-load ramp, a sizeable hold to securely store your assault vehicle of choice, and hefty array of armaments to ensure access to even the most combat-heavy of drop sites.",
   "career": "Combat",
@@ -14,6 +14,151 @@
     "base_expediting_fee": "9430"
   },
   "mass": 610246.06,
+  "inventory_container_ref": "4b2dbad4-ca1c-4016-9d1c-7850f565a160",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 20139.0,
+    "y": 7624.0,
+    "z": 27912.0
+  },
+  "hull_health": 77000.0,
+  "hull_parts": [
+    {
+      "name": "anvl_asgard",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Engine_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_FL_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_FR_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose_Bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Tail",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "tail_top",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_tail_body",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rl",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rr",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_roof_body",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_upper_left",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_upper_left_flap",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_RL_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_upper_right",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_upper_right_flap",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_RR_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_right_flap",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_left_flap",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose_Shell",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 38.0,
     "y": 48.0,

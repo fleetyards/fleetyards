@@ -8,7 +8,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   end
 
   resources :fleet_vehicles, path: "vehicles", only: %i[index] do
-    get :export, on: :collection
+    collection do
+      get :export
+      get "export/hangar-link", to: "fleet_vehicles#export_hangar_link"
+    end
   end
 
   resources :fleet_members, path: "members", param: :username, only: %i[index create destroy] do
@@ -41,6 +44,9 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       post :import, on: :collection
     end
     get "stock", to: "fleet_inventory_stock#index"
+    get "stock/:slug", to: "fleet_inventory_stock#show", as: "stock_item"
+    patch "stock/:slug", to: "fleet_inventory_stock#update"
+    delete "stock/:slug", to: "fleet_inventory_stock#destroy"
   end
 
   resources :missions, param: :slug, only: %i[index show create update destroy] do

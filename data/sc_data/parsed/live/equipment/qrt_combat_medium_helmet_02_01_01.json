@@ -1,0 +1,40 @@
+{
+  "key": "qrt_combat_medium_helmet_02_01_01",
+  "ref": "e5e93d7e-28e6-487b-8920-38734a27d071",
+  "name": "Testudo Helmet Clanguard",
+  "description": "Keep your eyes on the prize and your head protected with the Testudo helmet. It features a wide faceplate and a durable outer shell that protrudes above the forehead in a way specifically designed to absorb and efficiently disperse the energy of impacts. The Clanguard version has been modified with Vanduul materials and alien artifacts.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-50 / 80 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable",
+    "qrt_combat_medium",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

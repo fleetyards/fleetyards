@@ -1,0 +1,37 @@
+{
+  "key": "fio_bar_pants_01_01_01",
+  "ref": "d65a432e-7016-4eb2-8436-3f0b400b5cfe",
+  "name": "Lux Pants",
+  "description": "The Lux are elegant pinstripe pants infused with a modern edge. Fiore elevates these classic slacks with a stylish blue and grey geometric pattern along the outer seam to create a look that would work in any era.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "bar",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

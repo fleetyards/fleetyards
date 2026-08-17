@@ -1,0 +1,37 @@
+{
+  "key": "eld_shirt_04_required_dec",
+  "ref": "8d29adb6-6998-4c92-b67f-8911fac9742e",
+  "name": "Vacuums Kill T-Shirt",
+  "description": "This short sleeve shirt features the iconic warning sign found near airlocks across the universe. Wear the Vacuums Kill shirt to remind everyone of the horrors that happens when one removes their helmet in the vacuum of space.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Color_required"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

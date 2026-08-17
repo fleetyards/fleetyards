@@ -1,0 +1,37 @@
+{
+  "key": "987_jacket_03_01_01",
+  "ref": "4e8d6ec6-4aff-4250-8606-9e8b7b864387",
+  "name": "Tempo Jacket Gold",
+  "description": "Fashionable, fun and flashy, the Tempo is a quilt studded jacket featuring a unique metallic finish to make you stand out from the crowd. 987 balanced this bold design with sections of synthetic leather and complementary colors ringing the waistband and inner collar.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3b54a8cc-5700-45f1-940a-2436b213926f",
+  "tags": [
+    "987_jacket",
+    "set_03",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

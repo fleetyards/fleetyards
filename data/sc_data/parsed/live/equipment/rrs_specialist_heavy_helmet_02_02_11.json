@@ -1,0 +1,40 @@
+{
+  "key": "rrs_specialist_heavy_helmet_02_02_11",
+  "ref": "159eeeac-3523-4d1e-9d42-c67ab378912b",
+  "name": "Morozov-SH-C Helmet Smokescreen",
+  "description": "Featuring fortified armor plating, special anti-rip protective padding and ample storage, the Morozov-SH is ready to overcome all kinds of adversity. After consulting with security professionals, RRS added a unique high protective collar and a lightweight inner lining; making the Morozov-SH both comfortable and a battlefield stalwart. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-95 / 120 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "73a6ba90-8f53-423d-ad0b-96e81b7e18a5",
+  "tags": [
+    "rrs_specialist_heavy",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

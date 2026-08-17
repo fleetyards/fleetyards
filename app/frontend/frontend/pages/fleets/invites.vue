@@ -6,10 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { type FleetMember } from "@/services/fyApi";
@@ -123,7 +120,7 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
     </div>
     <div class="row lg:justify-center">
       <div class="col-12 col-lg-6">
-        <Panel slim>
+        <Panel>
           <transition-group
             name="fade"
             class="flex-list flex-list-users"
@@ -148,32 +145,21 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
                   {{ invite.fleetName }}
                 </div>
                 <div v-if="invited(invite)" class="actions">
-                  <Btn
-                    :size="BtnSizesEnum.SMALL"
-                    :disabled="submitting"
-                    :inline="true"
-                    @click="accept(invite)"
-                  >
+                  <Btn :disabled="submitting" @click="accept(invite)">
                     <i class="fa-light fa-check" />
                     {{ t("actions.fleet.acceptInvite") }}
                   </Btn>
                   <Btn
-                    :size="BtnSizesEnum.SMALL"
-                    :variant="BtnVariantsEnum.DANGER"
                     :disabled="submitting"
-                    :inline="true"
                     @click="decline(invite)"
+                    :tone="BtnTonesEnum.DANGER"
                   >
                     <i class="fa-light fa-times" />
                     {{ t("actions.fleet.declineInvite") }}
                   </Btn>
                 </div>
                 <div v-else-if="requested(invite)">
-                  <Btn
-                    :size="BtnSizesEnum.SMALL"
-                    :disabled="true"
-                    :inline="true"
-                  >
+                  <Btn :disabled="true">
                     <i class="fa-light fa-clock" />
                     {{ t("labels.fleet.awaitingConfirmation") }}
                   </Btn>

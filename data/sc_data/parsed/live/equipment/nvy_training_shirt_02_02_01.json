@@ -1,0 +1,32 @@
+{
+  "key": "nvy_training_shirt_02_02_01",
+  "ref": "5856406c-ec9e-45fb-ae44-755f3c133156",
+  "name": "Malenky T-Shirt Skullsplitter",
+  "description": "\"Inspired\" by classic military designs with CBD's own twist, the Malenky t-shirt features collar accents on both sides, a rear quarter-zip, and is made out of premium recycled materials to ensure just the right fit.\n\nThe gray and red Skullsplitter version showcases a red Vanduul skull shattered by a bloody streak.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "training",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "nvy_training_shirt",
+    "Set_02",
+    "Color_02"
+  ],
+  "hidden": false,
+  "volume": 0.0049
+}

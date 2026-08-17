@@ -1,3 +1,11 @@
+// See .hangar-labels - same container, same missing spacing.
+.fleet-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .fleet-metrics {
   display: flex;
   align-items: center;
@@ -8,13 +16,5 @@
   .metrics-label,
   .metrics-value {
     display: inline-block;
-  }
-}
-
-@media (max-width: $desktop-breakpoint) {
-  .fleet-header {
-    .fleet-labels {
-      margin-bottom: 20px;
-    }
   }
 }

@@ -1,0 +1,35 @@
+{
+  "key": "klwe_pistol_energy_01",
+  "ref": "0ff9144c-970d-4861-ae27-b27ee3c969a9",
+  "name": "Arclight Pistol",
+  "description": "A handheld laser made famous as Kyle Fenris’ sidearm on the hit vid show The Frontier, the Klaus & Werner Model II Arclight has become extremely popular on the civilian market. Despite its media appeal, the Model II offers a higher rate of fire than any of its ballistic counterparts. While that may diminish the weapon's stopping power, its power cell offers more than enough shots to finish the job.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "pistol",
+  "weapon_class": "energy",
+  "rate_of_fire": "300.0",
+  "range": "30.0",
+  "storage": "30.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_pistol_energy_01_64.tif",
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [
+    "pistol"
+  ],
+  "hidden": false,
+  "volume": 0.0025,
+  "volume_dimensions": {
+    "x": 0.0387,
+    "y": 0.2359,
+    "z": 0.1553
+  }
+}

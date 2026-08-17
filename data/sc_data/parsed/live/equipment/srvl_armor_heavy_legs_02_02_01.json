@@ -1,0 +1,38 @@
+{
+  "key": "srvl_armor_heavy_legs_02_02_01",
+  "ref": "24606af7-106f-4892-a522-081ac7d771f8",
+  "name": "Dust Devil Legs Epoque",
+  "description": "Reinforced alloys are carefully layered to recreate the appearance of warriors from Humanity's past to create an armor that's intimidating and fuctional. A decorative leather belt completes the look.\n\nThe Epoque edition features a navy and black coloring, finished with baroque gold detailing.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "40.0",
+  "temperature_rating": "-85 / 115 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "Survival_Heavy",
+    "Set_02",
+    "Color_02",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.071,
+  "volume_dimensions": {
+    "x": 0.509,
+    "y": 0.36,
+    "z": 0.553
+  }
+}

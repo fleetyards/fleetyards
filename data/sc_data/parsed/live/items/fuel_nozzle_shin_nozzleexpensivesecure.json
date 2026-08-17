@@ -3,7 +3,7 @@
   "ref": "76e7315c-44b8-4113-8837-d01cd839f15b",
   "category": "refuel_boom",
   "type": "DockingCollar",
-  "sub_type": null,
+  "sub_type": "Fuel",
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
@@ -35,6 +35,22 @@
   "type_data": {
     "capture_radius": 3.0,
     "fuel_flow_rate": 2.15,
-    "quantum_fuel_flow_rate": 1.18
+    "quantum_fuel_flow_rate": 1.18,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

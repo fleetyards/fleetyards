@@ -16,7 +16,9 @@
       "videos": "Videos",
       "hangar": {
         "index": "Mein Hangar",
-        "vehicleLoadouts": "Loadouts"
+        "vehicleLoadouts": "Loadouts",
+        "inventories": "Inventare",
+        "vehicleCargo": "Fracht"
       },
       "login": "Anmelden",
       "logout": "Abmelden",
@@ -77,6 +79,7 @@
         "security": "Sicherheit",
         "notifications": "Benachrichtigungen",
         "hangar": "Hangar",
+        "privacy": "Datenschutz",
         "features": "Funktionen",
         "connections": "Verbindungen",
         "oauthApplications": "OAuth-Apps",
@@ -87,10 +90,16 @@
         "index": "Visuelle Tests",
         "panels": "Bereiche",
         "buttons": "Schaltflächen",
+        "typography": "Typografie",
+        "forms": "Formulare",
         "tables": "Tabellen",
+        "lists": "Listen",
+        "metrics": "Metriken",
+        "states": "Zustände",
         "notifications": "Benachrichtigungen",
         "syncModal": "Sync-Modal",
-        "supportHint": "Support-Hinweis"
+        "supportHint": "Support-Hinweis",
+        "chips": "Chips"
       },
       "admin": {
         "index": "Admin",
@@ -170,6 +179,16 @@
           "tasks": "Aufgaben",
           "imports": "Importe",
           "rsiApiStatus": "RSI-API-Status"
+        },
+        "supporterContributions": {
+          "index": "Unterstützer-Beiträge",
+          "new": "Neuer Beitrag",
+          "edit": "Beitrag bearbeiten"
+        },
+        "fundingGoals": {
+          "index": "Finanzierungsziele",
+          "new": "Neues Finanzierungsziel",
+          "edit": "Finanzierungsziel bearbeiten"
         }
       }
     }

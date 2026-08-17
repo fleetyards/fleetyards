@@ -1,0 +1,273 @@
+# Flight / Power / Heat simulation — erkul parity
+
+Date: 2026-08-08. Branch: `feat/flight-power-heat-sim`.
+
+## Why
+
+Three erkul stats can't be matched with static-field lookups because they are
+live functions of subsystems FleetYards doesn't simulate. This project builds
+those subsystems. Each was individually spiked and confirmed sim-blocked
+(see `erkul-data-gaps.md §1, §6, §8`).
+
+| Unlocks | Needs |
+|---|---|
+| **§1** Sustained DPS at the *default* power distribution (we ship a max-power approximation today) | Power sim |
+| **§6** Emitted **EM** signature | Power sim |
+| **§6** Emitted **IR** signature | Power + Heat sim |
+| **§3** Per-weapon overheat state ("NO OVERHEAT") | Heat sim |
+| **§8** Flight boost (boosted SCM, boost regen, boost delay) | IFCS/flight sim |
+
+## Strategic driver — the interactive power-distribution calculator
+
+Confirmed 2026-08-09: the end goal is an erkul-style **interactive pip UI** where
+the user allocates power to weapons / shields / engines / etc. and sees DPS,
+sustained, and signatures respond live. That is what this sim is *for* — it's the
+dependency for the calculator's headline interactive feature. The `co()` port
+isn't just to reproduce erkul's *default* numbers; it becomes the **allocation
+engine the UI drives**: `co()` computes the auto-distribution, and the calculator
+lets the user override per-family pips, re-running the sim.
+
+**Finding (2026-08-09) — §1 is already exact at the default distribution.** From
+the decoded `Jn`, weapons are filled to `min(weaponConsumptionPoints, poolSize)`
+segments, so the default `poolRatio = min(1, poolSize/consumption)` = the
+`weaponPowerRatio` we already ship (Asgard → 1 681, exact). §1 only needs the
+full sim for **segment-starved** ships (rare) and the **interactive** case (user
+moves pips off weapons). So the sim's real payoffs are the **pip UI** (its reason
+to exist), **§6** emitted signatures, and **§3 / §8**.
+
+## Integration finding (2026-08-09)
+
+Family map from our `item_type` → erkul family: `WeaponGun`→weapon, `Shield`→
+shield, `Cooler`→coolers, `Radar`→radar, `QuantumDrive`→qdrive, `EMP`→emp,
+`PowerPlant`→segment source (`power_base`). **Coverage gap:** we don't currently
+parse a Power draw for `engine`/`lifeSupport` families that erkul's `co()`
+allocates to — so a faithful full allocation needs those added (or confirmed
+absent) plus the exact non-weapon block sizing. Until then the allocation core
+(`powerSim.ts`) stays a standalone tested unit, **not wired** into the shipped
+sustained calc (which is already exact for non-starved ships, so wiring an
+incomplete allocation would risk a regression for no visible gain).
+
+## Source of truth
+
+erkul's client-side calc engine, reverse-engineered from its JS bundle:
+`main-OLN2ALGO.js` + `chunk-FWWRRMGF.js` (~69 KB, the calc). Decode each needed
+function from there; validate our port against erkul's live numbers on a
+reference ship (**Anvil Asgard**, data `4.9.0-live.12344265`).
+
+### Already decoded (this project inherits)
+
+- **Sustained cycle** `Io(regen, alpha, fireRateHz, powerRatio)` — pool =
+  `round(maxAmmoLoad × powerRatio)`, regen = `maxRegenPerSec × powerRatio`,
+  cycle = `regenerationCooldown + pool/regen + pool/fireRateHz`,
+  `dpsSustain = pool × alpha / cycle`. Tuning multipliers `de` all = 1.
+- **Weapon-power ratio** `Mo` → `poolRatio = min(1, selected / consumption)`,
+  `weaponPowerRatio = min(1, poolSize / consumption)`. `U` = selected/enabled
+  segments; `ue` = `ceil(Σ z(weapon).units)`; `z` = weapon Power draw from
+  `resource.states[Online].flows.consumes[Power].units`; `Ot` = ship weapon
+  pool (`vehicle.powerPools.pools[Fixed,WeaponGun].poolSize`).
+- **Signatures** `Ao/Ro/dr/pr` — `signature = {em, ir, crossSection:{x,y,z},
+  armorModifier, sources[]}`. `Ro` = per-port `emNominal/irNominal` from each
+  item's `resource.states[Online].signature.{em,ir}.nominal`. `dr` (EM) sums
+  per-port nominal × **active power segments** × power-range modifier × armor EM
+  mult. `pr` (IR) = `Σ irNominal × (activeSegments/units) × modifier ×
+  ship.coolingRatio × armor IR mult`. `CS = max(vehicle.crossSection.{x,y,z}) ×
+  armor CS mult` (already clean — could ship standalone).
+
+### Still to decode (per phase)
+
+- **Power:** power-plant segment output `Lt` (`produces[Power, powerSegment]`);
+  full segment **distribution** across families (weapons/shields/thrusters/…),
+  the **default allocation** (pips), per-component `powerRanges` modifier curve,
+  `activeSegments` per component, `te`/`fr`/`Rn` helpers referenced in `dr`.
+- **Heat:** `coolingRatio` computation, heat `sources`, cooler aggregation,
+  overheat cycle (`Ie`/`Lo` for ballistic already partly seen).
+- **IFCS:** afterburner `capacitorMax`, `capacitorRegenPerSec`, NAV/SCM
+  `regenCurvePoints`, `regenDelayAfterUse`, base SCM speed, boost speed
+  multipliers; resolve the flight-controller from its slot.
+
+## Architecture
+
+- **Ruby (parse):** extend `items_parser`/`models_parser` to capture the raw
+  inputs (power-plant segment output, per-component power draw + power ranges,
+  cooler rates + per-component heat, flight-controller afterburner params, IFCS
+  SCM). Ship-level aggregates become `Model` columns (migrations) where erkul
+  reads them ship-wide.
+- **TS (simulate):** a shared `useLoadoutSim` composable that mirrors erkul's
+  engine — takes the parsed loadout, runs the power → heat → flight passes, and
+  returns `{power: {perPortRatio, poolRatio, weaponPowerRatio}, heat:
+  {coolingRatio, perWeaponOverheat}, signature: {em, ir, cs}, flight: {scm,
+  boostFwd, boostBack, boostRegenS, boostDelayS}}`.
+- **Wire:** `useLoadoutStats` (sustained DPS uses the real per-weapon ratio),
+  Combat/Survivability/Flight cards, and per-weapon rows consume the sim.
+
+## Phases
+
+Each phase: **decode → parse → build the sim pass → wire displays → validate vs
+erkul on the Asgard.** Land each as its own PR.
+
+### Phase 1 — Power allocation (foundation)
+Unlocks §1-exact + §6-EM. Biggest leverage; the sim's core.
+1. Decode `Lt`, the family distribution + default allocation, `powerRanges`,
+   `activeSegments`, and the helpers `dr` calls (`te`, `fr`, `Rn`).
+2. Parse power-plant segment output; per-component Power draw + `powerRanges`
+   (weapons have draw; add coolers/shields/thrusters/etc.); default allocation.
+3. Build the power pass: total segments → distribute by default pips → per-
+   component `activeSegments` + `poolRatio`/`weaponPowerRatio`.
+4. Wire: replace the max-power `weaponPowerRatio` in `useLoadoutStats` with the
+   real default `poolRatio`; expose per-port EM inputs.
+5. Validate: Asgard sustained → erkul's default figure (the old "1 835"
+   target, re-confirmed on current data).
+
+### Phase 2 — Heat
+Unlocks §6-IR + §3 overheat.
+1. Decode `coolingRatio`, heat sources, `Ie`/overheat cycle.
+2. Parse cooler rates + per-component heat (weapon overheat params already
+   parsed).
+3. Build the heat pass → `coolingRatio` + per-weapon overheat.
+4. Wire: emitted IR (with Phase-1 power inputs → full §6), per-weapon overheat.
+5. Validate: Asgard emitted IR/EM vs erkul.
+
+### Phase 3 — IFCS / flight
+Unlocks §8.
+1. Decode afterburner capacitor/regen curves, base SCM, boost multipliers.
+2. Parse flight-controller afterburner params + IFCS SCM (new `Model` metrics).
+3. Build the flight pass → boosted fwd/back, boost regen time, boost delay.
+4. Wire: a Flight card (or extend metrics) with the boost stats.
+5. Validate: Asgard SCM/boost/regen/delay vs erkul.
+
+## Data-parsing inventory
+
+| Input | Source | Status |
+|---|---|---|
+| Weapon Power draw | `resource.states[Online].consumes[Power]` | ✅ (`power_consumption`) |
+| Ship weapon pool size | `powerPools[Fixed,WeaponGun].poolSize` | ✅ (`weapon_pool_size`) |
+| Power-plant segment output | `resource.states[Online].produces[Power,powerSegment]` | ❌ |
+| Per-component Power draw (non-weapon) | same `consumes[Power]` path | ❌ |
+| Per-component `powerRanges` modifier | component params | ❌ |
+| Default power allocation / pips | vehicle `initialPowerAllocation` / global default | ❌ (needs decode) |
+| Component EM/IR nominal | `resource.states[Online].signature` | ❌ |
+| Ship cross-section | `crossSectionParams.SSCSignatureSystemManualCrossSectionParams.crossSection` | ❌ (clean) |
+| Cooler cooling rate | cooler params | ✅ (`coolingRate`) |
+| Weapon overheat params | `SWeaponSimplifiedHeatParams` | ✅ (`heat`) |
+| Per-component heat | component params | ❌ |
+| Flight-controller afterburner | `controller_flight_*` afterburner params | ❌ |
+| Base SCM speed | IFCS (currently RSI-sourced) | ❌ (needs decode) |
+
+## Decode log — Phase 1 (power allocation)
+
+Findings from `chunk-FWWRRMGF.js` (2026-08-08):
+
+- **Power-plant output:** `Lt(e)` = `resource.states[Online].flows[generate].
+  produces[Power, unitKind=powerSegment].units`. Total available segments = Σ
+  over powered-on plants.
+- **The default allocation is an ALGORITHM, not a data field.** The Asgard has
+  no `initialPowerAllocation`; erkul computes the distribution with `co(e, mode,
+  …)` — a multi-pass greedy allocator over per-family buckets `$n = {weapon,
+  engine, shield, qdrive, radar, lifeSupport, coolers, qed, emp, miningLaser,
+  salvage, tractorBeam, towingbeam}`:
+  1. `Zn` — base/minimum per family in priority order (SCM: lifeSupport →
+     miningLaser → salvage → emp → weapon(1) → shield → radar → engine …; NAV
+     swaps qdrive in for weapon/shield/emp).
+  2. `Jn` — fill: weapon up to `min(weaponConsumptionPoints, poolSize)`, then
+     shield / radar / engine.
+  3. `ft` — cooler-balancing loop (≤200 iters): add cooler segments until
+     cooling ≥ heat generation.
+  4. `Ct` / `rt` — cooler refinement + remaining distribution.
+  Per-mode (SCM vs NAV); `initialPowerAllocation` short-circuits it when present.
+- Helpers to port: `Xn, Zn, Jn, ft, it, Ct, rt, tt, W, $, nt, et, D, Rt, me, yt,
+  X, fo` + the `$n` family model.
+
+### Allocation primitives (decoded 2026-08-09)
+
+State `= {remaining, perPort:{}, perFamily:{…0}}`; each port `= {portPath,
+family, size, disabled, critical, selected, poweredOn, floor, units}` where
+`size` = the segments the component occupies.
+
+- **`D(state, port, family)`** — the atomic allocate: `port.selected=true;
+  perPort[port]+=size; perFamily[family]+=size; remaining-=size`. (`Re` = undo.)
+- **`W(ports, family, state)`** — base pass, **critical only**: allocate each
+  `!disabled && critical && !selected && size<=remaining`.
+- **`$(ports, family, state)`** — greedy fill a family: allocate each
+  `!disabled && !selected` until one doesn't fit (`size>remaining` → break).
+- **`nt(ports, cap, state)`** — weapons base: allocate weapon ports up to `cap`
+  segments (`Zn` calls `nt(weapon, 1)`).
+- **`et(ports, family, target, state)`** → **`ot`**: fill a family up to
+  `target - perFamily[family]` more segments (`Jn` calls
+  `et(weapon, min(weaponConsumptionPoints, poolSize))`).
+- **`Ae(ports, portPath, n, family, state)`** — fill one specific port up to n.
+- **`it(cooler, …, state)`** — **heat-coupled**: scan cooler segments from
+  `floor..units`, return the first where `cooling(seg) ≥ coolingConsumptionPerSec`
+  (this is the power↔heat link `ft` iterates).
+
+**Port model TODO (next decode):** how erkul builds each port's `size` /
+`family` / `critical` / `floor` / `units` from the item + loadout data (the
+`lo`/`An`/`Kn`/`te` helpers) — the input mapping the TS sim needs before it can
+run the passes above.
+
+### ⚠️ Power ↔ heat are coupled
+
+`ft` balances cooler segments against **heat generation vs cooling**, so the
+power allocation depends on the heat model. Phases 1 and 2 can't be fully
+independent — either build the heat pass alongside Phase 1, or Phase 1 uses a
+simplified cooler allocation (all coolers on) and Phase 2 refines it. **Revised
+approach:** treat "power + heat" as one combined phase; ship flight (IFCS)
+separately as it's the only truly independent piece.
+
+## Decode log — Phase 2 (heat + signature)
+
+Findings from `chunk-HVTWRICT.js` (erkul's current calc chunk; 2026-08-11).
+
+**Power-range modifier `L(powerRanges, seg)`** — `powerRanges` is an array of
+`{start, modifier}` sorted by `start`; `L` returns the entry whose
+`start ≤ seg < nextStart` (last = ∞), `.modifier` (default 1). Our parsed
+`power_ranges {low,medium,high:{start,modifier}}` is the same 3 entries —
+reshape to a start-sorted array for the lookup.
+
+**Cooling + coolingRatio (`Ze`/`G`)** — coolers only (`item.category==="Cooler"`).
+Per cooler: `units` = power draw, `ratedCooling` = `convert produces[Coolant].units`
+(our `cooling_rate`), `floor = round(units × (minimumFraction || 1/units))`.
+- `activeSeg = poweredOn && seg≥floor && floor>0 ? clamp(seg,0,units) : 0`.
+- `effectiveCoolingPerSec = ratedCooling × (activeSeg/units) × L(powerRanges,activeSeg)`.
+- `coolingPerSec` = Σ effective; `coolingMaxPerSec` = Σ `ratedCooling × L(powerRanges,units)`.
+- heat gen `u` = (Σ active segments across all families incl. shields + weapon
+  `min(selected,consumption)`) + (Σ over shield/lifeSupport/radar/qdrive of
+  `activeSeg × L(powerRanges,activeSeg)`).
+- **`coolingRatio = coolingPerSec>0 ? min(u/coolingPerSec, 1) : (u>0 ? 1 : 0)`.**
+
+**EM (`yr`)** = `armor.signalElectromagnetic × Σ terms`, 4 term categories:
+shields (`emNominal × L(pr,f)` × shieldRatio, `f=round(totalSeg×shieldRatio)/nShields`),
+weapons (`emNominal × L(pr,weaponSelected)` × selected/enabled), `fr` sources
+(shields/coolers/radar: `emNominal × L(pr,activeSeg) × activeSeg/units`), and
+remaining powered ports (`emNominal × L(pr,seg) × seg/powerSegmentUnits`).
+
+**IR (`gr`)** = `coolingRatio × armor.signalInfrared × Σ_{heat.sources}
+irNominal × (activeSeg/units) × L(powerRanges,activeSeg)`. Gated by coolingRatio
+(and 0 with no power).
+
+**CS (`ko`)** = `vehicle.crossSection.{x,y,z} × (armor.signalCrossSection ?? 1)`;
+displayed value = the max axis. Independent of power — trivial, ship first.
+
+**Inputs & parser gaps:** `emNominal`=`states[Online].signature.em.nominal` (❌
+new), `irNominal`=`…signature.ir.nominal` (❌ new), `powerSegmentUnits`=our
+`power_consumption` (✅), `powerRanges`=our `power_ranges` (✅ reshape),
+`ratedCooling`=our `cooling_rate` (⚠️ confirm = coolant produced),
+armor `signalElectromagnetic/Infrared/CrossSection` (❌ new, armor item),
+vehicle `crossSection.{x,y,z}` (❌ new Model metric). Armor mults default 1.
+
+**Delivery order (by cost):** CS (trivial, no power dep) → cooling %/coolingRatio
+(uses existing active-segments + cooler rates) → IR (needs `irNominal` parse) →
+EM (heaviest: 4 categories + `emNominal`). ⚠️ COOLING-bar display transform not
+in the calc chunk — verify `coolingRatio×100` vs `coolingPerSec/coolingMaxPerSec`
+against the live Ironclad (idle showed 90%) before committing.
+
+## Risks
+
+- **Faithfulness:** erkul's engine is intricate (power-range curves, per-mode
+  regen curves, default-pip assumptions). Exact parity is the goal but some
+  sub-models may need approximation; each phase validates against erkul and
+  documents any gap.
+- **Scope:** this is multi-session. Ship phase-by-phase; each PR leaves the app
+  in a better, validated state.
+- **Default allocation unknown:** the default pip distribution (erkul's
+  `selected`) is the one input not yet located in the game files — Phase 1 must
+  pin it down (decode from erkul, or reverse-fit against the Asgard).

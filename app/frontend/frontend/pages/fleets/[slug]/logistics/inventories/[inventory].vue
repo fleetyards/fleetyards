@@ -5,34 +5,32 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import BaseTable, {
-  type BaseTableCol,
-} from "@/shared/components/base/Table/index.vue";
-import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types";
 import {
   type Fleet,
   type FleetMember,
   type FleetInventoryItem,
-  type FleetInventoryStockItem,
   useFleetInventory,
   useFleetInventoryItems,
   useFleetInventoryStock,
+  useDestroyFleetInventoryItem,
 } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
-import InventoryItemFilterForm from "@/frontend/components/Fleets/Logistics/InventoryItemFilterForm/index.vue";
+import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
+import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
+import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
+import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
-import { useMobile } from "@/shared/composables/useMobile";
-
-type StockItemWithId = FleetInventoryStockItem & { id: string };
 
 type Props = {
   fleet: Fleet;
@@ -64,40 +62,7 @@ const {
   refetch: refetchStock,
 } = useFleetInventoryStock(fleetSlug, inventorySlug);
 
-const allStockItems = computed<StockItemWithId[]>(() => {
-  if (!stockData.value) return [];
-  return stockData.value.map((item, index) => ({
-    ...item,
-    id: `${item.name}-${item.category}-${item.unit}-${index}`,
-  }));
-});
-
-const stockList = computed(() => {
-  const nameFilter = (route.query.nameCont as string)?.toLowerCase();
-  const categoryFilter = route.query.categoryEq as string;
-  const qualityMin = route.query.qualityGteq
-    ? Number(route.query.qualityGteq)
-    : undefined;
-  const qualityMax = route.query.qualityLteq
-    ? Number(route.query.qualityLteq)
-    : undefined;
-
-  return allStockItems.value.filter((item) => {
-    if (nameFilter && !item.name.toLowerCase().includes(nameFilter)) {
-      return false;
-    }
-    if (categoryFilter && item.category !== categoryFilter) {
-      return false;
-    }
-    if (qualityMin !== undefined && (item.quality ?? 0) < qualityMin) {
-      return false;
-    }
-    if (qualityMax !== undefined && (item.quality ?? 0) > qualityMax) {
-      return false;
-    }
-    return true;
-  });
-});
+const { stockRecords } = useInventoryStockList(stockData);
 
 const refetchAll = async () => {
   await refetchLogItems();
@@ -127,105 +92,11 @@ const itemsList = computed<FleetInventoryItem[]>(
   () => items.value?.items ?? [],
 );
 
-const activeRecords = computed<(FleetInventoryItem | StockItemWithId)[]>(() =>
-  activeTab.value === "stock" ? stockList.value : itemsList.value,
+const activeRecords = computed<(FleetInventoryItem | InventoryStockRecord)[]>(
+  () => (activeTab.value === "stock" ? stockRecords.value : itemsList.value),
 );
 
-const stockColumns = computed<BaseTableCol<StockItemWithId>[]>(() => [
-  {
-    name: "name",
-    label: t("labels.fleets.logistics.itemName"),
-    sortable: true,
-    attributeKey: "name",
-  },
-  {
-    name: "category",
-    label: t("labels.fleets.logistics.category"),
-    sortable: true,
-    attributeKey: "category",
-    width: "140px",
-  },
-  {
-    name: "quality",
-    label: t("labels.fleets.logistics.quality"),
-    sortable: true,
-    attributeKey: "quality",
-    width: "100px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-    mobile: false,
-  },
-  {
-    name: "netQuantity",
-    label: t("labels.fleets.logistics.quantity"),
-    sortable: true,
-    attributeKey: "netQuantity",
-    width: "140px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-  },
-]);
-
-const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
-  {
-    name: "entryType",
-    label: t("labels.fleets.logistics.entryType"),
-    sortable: true,
-    attributeKey: "entryType",
-    width: "100px",
-  },
-  {
-    name: "name",
-    label: t("labels.fleets.logistics.itemName"),
-    sortable: true,
-    attributeKey: "name",
-  },
-  {
-    name: "category",
-    label: t("labels.fleets.logistics.category"),
-    sortable: true,
-    attributeKey: "category",
-    width: "120px",
-    mobile: false,
-  },
-  {
-    name: "quality",
-    label: t("labels.fleets.logistics.quality"),
-    sortable: true,
-    attributeKey: "quality",
-    width: "100px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-    mobile: false,
-  },
-  {
-    name: "quantity",
-    label: t("labels.fleets.logistics.quantity"),
-    sortable: true,
-    attributeKey: "quantity",
-    width: "120px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-  },
-  {
-    name: "member",
-    label: t("labels.fleets.logistics.member"),
-    sortable: false,
-    width: "120px",
-    mobile: false,
-  },
-  {
-    name: "addedBy",
-    label: t("labels.fleets.logistics.addedBy"),
-    sortable: false,
-    width: "120px",
-    mobile: false,
-  },
-  {
-    name: "notes",
-    label: t("labels.fleets.logistics.notes"),
-    sortable: false,
-    mobile: false,
-  },
-]);
-
-const canAddItems = computed(() =>
+const canManageInventory = computed(() =>
   checkAccess(props.resourceAccess, [
     "fleet:manage",
     "fleet:inventories:manage",
@@ -233,7 +104,43 @@ const canAddItems = computed(() =>
   ]),
 );
 
-const mobile = useMobile();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
+
+const stockItemRoute = (slug?: string) => ({
+  name: "fleet-logistics-inventory-item",
+  params: {
+    slug: props.fleet.slug,
+    inventory: inventorySlug.value,
+    item: slug,
+  },
+});
+
+const destroyMutation = useDestroyFleetInventoryItem();
+
+const destroyEntry = (entry: FleetInventoryItem) => {
+  displayConfirm({
+    text: t("messages.logistics.inventoryItem.destroy.confirm"),
+    onConfirm: async () => {
+      try {
+        await destroyMutation.mutateAsync({
+          fleetSlug: props.fleet.slug,
+          fleetInventorySlug: inventorySlug.value,
+          id: entry.id,
+        });
+
+        displaySuccess({
+          text: t("messages.logistics.inventoryItem.destroy.success"),
+        });
+
+        await refetch();
+      } catch {
+        displayAlert({
+          text: t("messages.logistics.inventoryItem.destroy.failure"),
+        });
+      }
+    },
+  });
+};
 
 const openDepositModal = () => {
   if (!inventory.value) return;
@@ -276,6 +183,19 @@ const openCsvImportModal = () => {
   });
 };
 
+const openEditModal = () => {
+  if (!inventory.value) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Logistics/InventoryModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      inventory: inventory.value,
+    },
+  });
+};
+
 onMounted(() => {
   comlink.on("fleet-inventory-item-created", () => void refetch());
   comlink.on("fleet-inventory-updated", () => void refetchInventory());
@@ -290,13 +210,6 @@ const crumbs = computed(() => [
     to: { name: "fleet-logistics", params: { slug: props.fleet.slug } },
     label: t("nav.fleets.logistics.index"),
   },
-  {
-    to: {
-      name: "fleet-logistics-inventories",
-      params: { slug: props.fleet.slug },
-    },
-    label: t("headlines.fleets.logistics.inventories"),
-  },
 ]);
 </script>
 
@@ -310,30 +223,48 @@ const crumbs = computed(() => [
           <template #default>
             {{ inventory.name }}
           </template>
-          <template
-            v-if="(inventory as unknown as { location?: string }).location"
-            #subHeading
-          >
-            {{ (inventory as unknown as { location: string }).location }}
+          <template v-if="inventory.location" #subHeading>
+            {{ inventory.location }}
           </template>
         </Heading>
         <p v-if="inventory.manager" class="inventory-detail-manager">
-          {{ t("labels.fleets.logistics.managedBy") }}
+          {{ t("labels.logistics.managedBy") }}
           <MemberName :member="inventory.manager as unknown as FleetMember" />
         </p>
         <p v-if="inventory.description" class="text-muted">
           {{ inventory.description }}
         </p>
-        <Teleport v-if="!mobile && canAddItems" to="#header-right">
-          <Btn :inline="true" @click="openDepositModal">
-            {{ t("actions.fleets.logistics.deposit") }}
+        <Teleport v-if="canManageInventory" to="#header-right">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openDepositModal"
+          >
+            <i class="fa-duotone fa-arrow-down-to-square" />
+            {{ t("actions.logistics.deposit") }}
           </Btn>
-          <Btn :inline="true" @click="openWithdrawModal">
-            {{ t("actions.fleets.logistics.withdraw") }}
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openWithdrawModal"
+          >
+            <i class="fa-duotone fa-arrow-up-from-square" />
+            {{ t("actions.logistics.withdraw") }}
           </Btn>
-          <Btn :inline="true" @click="openCsvImportModal">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openCsvImportModal"
+          >
             <i class="fa-duotone fa-file-csv" />
-            {{ t("actions.fleets.logistics.importCsv") }}
+            {{ t("actions.logistics.importCsv") }}
+          </Btn>
+          <Btn
+            :size="BtnSizesEnum.MD"
+            :aria-label="t('actions.logistics.editInventory')"
+            @click="openEditModal"
+          >
+            <i class="fa-duotone fa-pen" />
           </Btn>
         </Teleport>
 
@@ -350,90 +281,67 @@ const crumbs = computed(() => [
           </template>
 
           <template #actions-left>
-            <BtnGroup inline>
-              <Btn
-                :active="activeTab === 'stock'"
-                inline
-                size="small"
-                @click="activeTab = 'stock'"
-              >
-                {{ t("labels.fleets.logistics.stockView") }}
+            <BtnGroup segmented>
+              <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
+                {{ t("labels.logistics.stockView") }}
               </Btn>
-              <Btn
-                :active="activeTab === 'log'"
-                inline
-                size="small"
-                @click="activeTab = 'log'"
-              >
-                {{ t("labels.fleets.logistics.logView") }}
+              <Btn :active="activeTab === 'log'" @click="activeTab = 'log'">
+                {{ t("labels.logistics.logView") }}
               </Btn>
             </BtnGroup>
           </template>
 
           <template #default>
-            <!-- Stock View (aggregated) -->
-            <BaseTable
-              v-if="activeTab === 'stock'"
-              :records="stockList"
-              :columns="stockColumns"
-              primary-key="id"
-              :loading="stockLoading"
-              :empty-visible="!stockLoading && !stockList.length"
+            <InventoryLedgerTables
+              :active-tab="activeTab"
+              :stock-records="stockRecords"
+              :log-records="itemsList"
+              :stock-loading="stockLoading"
+              :log-loading="logLoading"
+              show-member
+              show-added-by
+              show-notes
             >
-              <template #col-category="{ record }">
-                {{ t(`labels.fleets.logistics.categories.${record.category}`) }}
+              <template #stock-name="{ record }">
+                <router-link :to="stockItemRoute(record.slug)">
+                  {{ record.name }}
+                </router-link>
               </template>
-              <template #col-netQuantity="{ record }">
-                {{ record.netQuantity }}
-                {{ t(`labels.fleets.logistics.units.${record.unit}`) }}
+              <template #log-name="{ record }">
+                <router-link :to="stockItemRoute(record.stockSlug)">
+                  {{ record.name }}
+                </router-link>
               </template>
-            </BaseTable>
-
-            <!-- Log View (all entries) -->
-            <BaseTable
-              v-if="activeTab === 'log'"
-              :records="itemsList"
-              :columns="logColumns"
-              primary-key="id"
-              :loading="logLoading"
-              :empty-visible="!logLoading && !itemsList.length"
-            >
-              <template #col-entryType="{ record }">
-                <span
-                  :class="
-                    record.entryType === 'deposit'
-                      ? 'text-success'
-                      : 'text-danger'
-                  "
+              <template v-if="canManageInventory" #log-actions="{ record }">
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  :tone="BtnTonesEnum.DANGER"
+                  :aria-label="t('actions.logistics.destroyEntry')"
+                  :title="t('actions.logistics.destroyEntry')"
+                  @click="destroyEntry(record as FleetInventoryItem)"
                 >
-                  {{
-                    t(`labels.fleets.logistics.entryTypes.${record.entryType}`)
-                  }}
-                </span>
+                  <i class="fa-duotone fa-trash" />
+                </Btn>
               </template>
-              <template #col-category="{ record }">
-                {{ t(`labels.fleets.logistics.categories.${record.category}`) }}
-              </template>
-              <template #col-quantity="{ record }">
-                {{ record.quantity }}
-                {{ t(`labels.fleets.logistics.units.${record.unit}`) }}
-              </template>
-              <template #col-member="{ record }">
+              <template #member="{ record }">
                 <MemberName
-                  v-if="record.member"
-                  :member="record.member as unknown as FleetMember"
+                  v-if="(record as FleetInventoryItem).member"
+                  :member="
+                    (record as FleetInventoryItem)
+                      .member as unknown as FleetMember
+                  "
                 />
               </template>
-              <template #col-addedBy="{ record }">
+              <template #addedBy="{ record }">
                 <MemberName
-                  v-if="record.addedBy"
-                  :member="record.addedBy as unknown as FleetMember"
+                  v-if="(record as FleetInventoryItem).addedBy"
+                  :member="
+                    (record as FleetInventoryItem)
+                      .addedBy as unknown as FleetMember
+                  "
                 />
               </template>
-              <template #col-notes="{ record }">
-                <span class="text-muted">{{ record.notes }}</span>
-              </template>
-            </BaseTable>
+            </InventoryLedgerTables>
           </template>
         </FilteredList>
       </template>

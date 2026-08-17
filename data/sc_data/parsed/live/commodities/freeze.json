@@ -1,0 +1,10 @@
+{
+  "key": "freeze",
+  "sc_key": "items_commodities_freeze",
+  "ref": "674f116f-d1b8-4000-bd8f-e17afbcf95ae",
+  "name": "Freeze",
+  "commodity_type": "vice",
+  "commodity_type_name": "Vice",
+  "description": "A synthetic tranquilizer used for muscle therapy that causes very heavy sedation in the user while also activating the nerve endings in their muscles. Originally created as a way to rebuild damaged/rebuilt muscle tissue, it found another use as a sedative weight-loss supplement, and when in a concentrated form, as a party drug.",
+  "icon": "ui/textures/vector/general/items/inv_icon_distilledspirits.svg"
+}

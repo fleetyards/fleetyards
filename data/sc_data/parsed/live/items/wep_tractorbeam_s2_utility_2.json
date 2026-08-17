@@ -61,16 +61,48 @@
     "max_restock_count": 3.0
   },
   "type_data": {
-    "damage_per_shot": {
-      "physical": 0.0,
-      "energy": 0.0,
-      "distortion": 0.0,
-      "thermal": 0.0,
-      "biochemical": 0.0,
-      "stun": 0.0
+    "tractor_beam": true,
+    "min_force": 1500.0,
+    "max_force": 1200000.0,
+    "min_distance": 0.5,
+    "max_distance": 130.0,
+    "full_strength_distance": 65.0,
+    "max_angle": 80.0,
+    "max_volume": 300000.0,
+    "volume_force_coefficient": 0.3,
+    "tether_break_time": 2.5,
+    "heat_per_second": 0.0,
+    "rotation": {
+      "max_angular_velocity": 2.0,
+      "degrees_per_action": 8.0
     },
-    "speed": 0.0,
-    "range": 0.0,
-    "max_ammo": 0
+    "movement": {
+      "max_speed": 10.0,
+      "max_acceleration": 20.0
+    },
+    "cargo_mode": {
+      "max_force": 9500001.0,
+      "min_distance": 0.5,
+      "max_distance": 225.0,
+      "full_strength_distance": 100.0
+    },
+    "power_consumption": 2.0,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

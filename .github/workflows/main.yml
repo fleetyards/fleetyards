@@ -17,13 +17,13 @@ jobs:
   js-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/workflows/js-setup-action
 
   ruby-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
@@ -56,6 +56,9 @@ jobs:
   ruby-tests:
     needs: ruby-setup
     uses: ./.github/workflows/ruby-tests.job.yml
+
+  feature-flags:
+    uses: ./.github/workflows/feature-flags.job.yml
 
   seeds:
     needs: ruby-setup

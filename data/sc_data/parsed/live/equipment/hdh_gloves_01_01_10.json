@@ -1,0 +1,38 @@
+{
+  "key": "hdh_gloves_01_01_10",
+  "ref": "27b1ba89-4098-443e-b96b-4fa435489bfc",
+  "name": "Sootho Gloves Silvertusk",
+  "description": "Pros at keeping your hands safe without sacrificing dexterity, the slip-resistant Sootho gloves deliver solid protection and lasting warmth during chilly or hostile conditions. The tough synthetic leather breaks in well and will stand up to years of frequent use.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_gloves",
+    "Set_01",
+    "Texture_01",
+    "Color_10"
+  ],
+  "hidden": false,
+  "volume": 0.0015,
+  "volume_dimensions": {
+    "x": 0.301,
+    "y": 0.048,
+    "z": 0.207
+  }
+}

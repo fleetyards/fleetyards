@@ -14,6 +14,116 @@
     "base_expediting_fee": "84375"
   },
   "mass": 111080494.0,
+  "inventory_container_ref": "8f4f7045-703a-4932-98c1-e2d56b0f89b1",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 35000.0,
+    "y": 12000.0,
+    "z": 66000.0
+  },
+  "hull_health": 7852400.0,
+  "hull_parts": [
+    {
+      "name": "AEGS_Javelin",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 5000000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Rear_Right_Top",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Rear_Right_Bottom",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Rear_Left_Top",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Rear_Left_Bottom",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 1000000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Mount_Left",
+      "health": 200000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Mount_Right",
+      "health": 200000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Neck",
+      "health": 1000000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 200000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose_Prong_Right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose_Prong_Left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Front_Left_Top",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Front_Left_Bottom",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body_Right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Body_Left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Bridge",
+      "health": 200000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Front_Right_Top",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Front_Right_Bottom",
+      "health": 5000.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 0.0,
     "y": 0.0,
@@ -554,6 +664,11 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_interior",
+          "ref": null,
+          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -581,6 +696,11 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_interior",
+          "ref": null,
+          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -608,6 +728,11 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_interior",
+          "ref": null,
+          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -635,6 +760,11 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_interior",
+          "ref": null,
+          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -662,6 +792,11 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_interior",
+          "ref": null,
+          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },
@@ -689,6 +824,11 @@
           "name": "hardpoint_gimbal_right",
           "ref": null,
           "key": "APAR_BallisticGatling_S4_test_inf_ammo"
+        },
+        {
+          "name": "hardpoint_interior",
+          "ref": null,
+          "key": "AEGS_Javelin_Side_Turret_Interior"
         }
       ]
     },

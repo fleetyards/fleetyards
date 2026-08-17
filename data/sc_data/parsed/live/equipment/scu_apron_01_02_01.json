@@ -1,0 +1,38 @@
+{
+  "key": "scu_apron_01_02_01",
+  "ref": "d68df611-c3c7-4aea-8e45-96f4f699dc2a",
+  "name": "Clean and Clear Work Apron",
+  "description": "Don't let your clothes suffer when you're just doing your job. Designed to be waterproof, stain resistant and easy to clean, the Clean and Clear work apron is ideal protection for your clothes when your job requires getting down and dirty.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "apron",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_apron",
+    "set_01",
+    "Texture_02",
+    "Color_01"
+  ],
+  "hidden": true,
+  "volume": 0.014335,
+  "volume_dimensions": {
+    "x": 0.3916321,
+    "y": 0.3741031,
+    "z": 1.109071
+  }
+}

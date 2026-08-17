@@ -14,11 +14,10 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import { BoughtViaEnum, type Vehicle } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import {
   PanelAlignmentsEnum,
-  PanelBgColorsEnum,
-  PanelVariantsEnum,
+  PanelTonesEnum,
 } from "@/shared/components/base/Panel/types";
 import { useModel as useModelQuery } from "@/services/fyApi";
 
@@ -138,6 +137,19 @@ const vehicle = computed<Vehicle | undefined>(() => {
   };
 });
 
+// The widths the grid actually produces, down to where the outer end-caps have
+// no room left at their fixed 80px inset.
+const panelWidths = ["160px", "200px", "258px", "290px", "600px"];
+
+const gridBodies = [
+  { title: "Short", text: "One line." },
+  {
+    title: "A heading long enough to wrap onto a second line",
+    text: "Accusamus laborum necessitatibus obcaecati exercitationem perferendis ad cupiditate dolorem quam autem. At qui eum temporibus ad similique ipsa id sed eos iure, quos veritatis.",
+  },
+  { title: "Short", text: "One line." },
+];
+
 const vehicleTruncated = computed<Vehicle | undefined>(() => {
   if (!vehicle.value) {
     return undefined;
@@ -157,7 +169,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         <Panel>
           <PanelHeading :level="HeadingLevelEnum.H2">Panel</PanelHeading>
           <PanelImage :image="modelImage" alt="Odyssey" />
-          <PanelBody no-min-height>
+          <PanelBody>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
             laborum necessitatibus obcaecati exercitationem perferendis ad
             cupiditate dolorem quam autem. At qui eum temporibus ad similique
@@ -172,7 +184,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Top</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -187,7 +199,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Bottom</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -200,7 +212,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
     </div>
     <div class="row">
       <div class="col-12 col-md-4">
-        <Panel :alignment="PanelAlignmentsEnum.LEFT" slim>
+        <Panel :alignment="PanelAlignmentsEnum.LEFT">
           <PanelImage
             :image="modelImage"
             image-size="auto"
@@ -211,7 +223,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Left</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -221,12 +233,12 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
-        <Panel :alignment="PanelAlignmentsEnum.RIGHT" slim>
+        <Panel :alignment="PanelAlignmentsEnum.RIGHT">
           <div>
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Image Right</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -243,12 +255,55 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
       </div>
     </div>
     <hr />
+    <h2>Panel widths</h2>
+    <p>
+      The end-caps are inset <code>max(10px, 12%)</code>, so one pair holds 76%
+      of the width at every size instead of shortening as the panel narrows —
+      the old fixed 80px inset left nothing at all below 160px. These are the
+      widths the grid actually produces: <code>col-3xl-2</code> and
+      <code>col-lg-4</code> land near 290px, <code>col-sm-6</code> near 258px.
+    </p>
+    <div class="row">
+      <div class="col-12">
+        <div class="panel-widths">
+          <div v-for="width in panelWidths" :key="width" :style="{ width }">
+            <Panel>
+              <PanelBody>{{ width }}</PanelBody>
+            </Panel>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+    <h2>Equal heights in a grid</h2>
+    <p>
+      The cards used to line up because of a 286px floor on
+      <code>.panel-inner</code>, not because the grid equalises them —
+      <code>base/Grid</code> is a Bootstrap row and the panel inside the column
+      is not <code>height: 100%</code> on its own. The floor is gone;
+      <code>fill-height</code> does the job instead, and better, since 286px was
+      both too tall for a row of short panels and too short for one whose
+      heading wraps. The middle panel carries extra content on purpose.
+    </p>
+    <div class="row">
+      <div v-for="body in gridBodies" :key="body.title" class="col-12 col-md-4">
+        <Panel fill-height>
+          <PanelHeading :level="HeadingLevelEnum.H2">{{
+            body.title
+          }}</PanelHeading>
+          <PanelBody>{{ body.text }}</PanelBody>
+        </Panel>
+      </div>
+    </div>
+
+    <hr />
     <h2>Panel Variants</h2>
     <div class="row">
       <div class="col-12 col-md-4">
-        <Panel :variant="PanelVariantsEnum.ERROR" slim>
+        <Panel :tone="PanelTonesEnum.ERROR">
           <PanelHeading :level="HeadingLevelEnum.H2">Panel Error</PanelHeading>
-          <PanelBody no-min-height>
+          <PanelBody>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
             laborum necessitatibus obcaecati exercitationem perferendis ad
             cupiditate dolorem quam autem. At qui eum temporibus ad similique
@@ -257,11 +312,11 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
-        <Panel :variant="PanelVariantsEnum.ERROR" animated slim>
+        <Panel :tone="PanelTonesEnum.ERROR" animated>
           <PanelHeading :level="HeadingLevelEnum.H2"
             >Panel Error Animated</PanelHeading
           >
-          <PanelBody no-min-height>
+          <PanelBody>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus
             laborum necessitatibus obcaecati exercitationem perferendis ad
             cupiditate dolorem quam autem. At qui eum temporibus ad similique
@@ -270,12 +325,12 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
-        <Panel :bg-color="PanelBgColorsEnum.PRIMARY" slim>
+        <Panel :tone="PanelTonesEnum.PRIMARY">
           <div>
             <PanelHeading :level="HeadingLevelEnum.H2"
-              >Panel Primary Background</PanelHeading
+              >Panel Primary Tone</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -285,12 +340,12 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
-        <Panel :variant="PanelVariantsEnum.SUCCESS" slim>
+        <Panel :tone="PanelTonesEnum.SUCCESS">
           <div>
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Success</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -300,12 +355,12 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
-        <Panel :variant="PanelVariantsEnum.SUCCESS" animated slim>
+        <Panel :tone="PanelTonesEnum.SUCCESS" animated>
           <div>
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Success Animated</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -315,12 +370,12 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
-        <Panel :variant="PanelVariantsEnum.PRIMARY" slim>
+        <Panel :tone="PanelTonesEnum.PRIMARY">
           <div>
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Primary</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -330,12 +385,12 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Panel>
       </div>
       <div class="col-12 col-md-4">
-        <Panel highlight slim>
+        <Panel :tone="PanelTonesEnum.HIGHLIGHT">
           <div>
             <PanelHeading :level="HeadingLevelEnum.H2"
               >Panel Highlight</PanelHeading
             >
-            <PanelBody no-min-height no-padding-top>
+            <PanelBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
               Accusamus laborum necessitatibus obcaecati exercitationem
               perferendis ad cupiditate dolorem quam autem. At qui eum
@@ -359,11 +414,9 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
           </div>
         </div>
       </div>
-      <div class="col-12">
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelPanel"> Toggle </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelOnSale">
-          Toggle on Sale
-        </Btn>
+      <div class="col-12 vt-row">
+        <Btn @click="toggleModelPanel"> Toggle </Btn>
+        <Btn @click="toggleModelOnSale"> Toggle on Sale </Btn>
       </div>
     </div>
     <hr />
@@ -392,26 +445,42 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
           </div>
         </div>
       </div>
-      <div class="col-12">
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanel">
-          Toggle
-        </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelModelOnSale">
+      <div class="col-12 vt-row">
+        <Btn @click="toggleVehiclePanel"> Toggle </Btn>
+        <Btn @click="toggleVehiclePanelModelOnSale">
           Toggle on Sale: {{ vehiclePanelModelOnSale }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelEditable">
+        <Btn @click="toggleVehiclePanelEditable">
           Toggle Edtiable: {{ vehiclePanelEditable ? "editable" : "read-only" }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelFlagship">
+        <Btn @click="toggleVehiclePanelFlagship">
           Toggle Flagship: {{ vehiclePanelFlagship }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoaner">
+        <Btn @click="toggleVehiclePanelLoaner">
           Toggle Loaner: {{ vehiclePanelLoaner }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoanerHint">
+        <Btn @click="toggleVehiclePanelLoanerHint">
           Toggle Loaner Hint: {{ vehiclePanelLoanerHint }}
         </Btn>
       </div>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+/* Btn ships no margins - spacing is the container's job. Matches the .vt-row on
+   visual-tests/buttons.vue rather than inventing a second convention. */
+.vt-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-widths {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 20px;
+}
+</style>

@@ -14,6 +14,41 @@
     "base_expediting_fee": "2526"
   },
   "mass": 45143.0,
+  "inventory_container_ref": "2333116f-681c-4b9c-aa72-3ed8be9abb42",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 6048.0,
+    "y": 2253.0,
+    "z": 10672.0
+  },
+  "hull_health": 4550.0,
+  "hull_parts": [
+    {
+      "name": "ORIG_100i",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 1700.0,
+      "category": "vital"
+    },
+    {
+      "name": "Spoiler",
+      "health": 850.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 1000.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 12.0,
     "y": 19.0,

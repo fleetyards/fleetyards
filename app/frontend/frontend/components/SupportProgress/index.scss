@@ -1,0 +1,32 @@
+.support-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &__header {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 1.1rem;
+  }
+
+  &__total {
+    font-weight: 600;
+  }
+
+  &__goal {
+    opacity: 0.7;
+  }
+
+  &__caption {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+
+  &--compact {
+    .support-progress__header {
+      font-size: 1rem;
+    }
+  }
+}

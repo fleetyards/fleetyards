@@ -35,7 +35,10 @@
         "public": "%{user} Hangar",
         "publicStats": "%{user} Hangar Statistiken",
         "wishlist": "Wunschliste",
-        "publicWishlist": "%{user} Wunschliste"
+        "publicWishlist": "%{user} Wunschliste",
+        "vehicleCargo": "Schiffsfracht",
+        "inventories": "Meine Hangar Inventare",
+        "inventory": "%{inventory}"
       },
       "requestPassword": "Passwort anfordern",
       "changePassword": "Passwort ändern",
@@ -71,6 +74,7 @@
         "profile": "Profileinstellungen",
         "account": "Konto",
         "hangar": "Hangar Einstellungen",
+        "privacy": "Datenschutz-Einstellungen",
         "features": "Feature-Flags",
         "connections": "Verbindungen",
         "oauthApplications": "OAuth-Anwendungen",
@@ -98,10 +102,16 @@
         "index": "Visuelle Tests",
         "panels": "Panels - Visuelle Tests",
         "buttons": "Buttons - Visuelle Tests",
+        "typography": "Typografie - Visuelle Tests",
+        "forms": "Formulare - Visuelle Tests",
         "tables": "Tabellen - Visuelle Tests",
+        "lists": "Listen - Visuelle Tests",
+        "metrics": "Metriken - Visuelle Tests",
+        "states": "Zustände - Visuelle Tests",
         "notifications": "Benachrichtigungen - Visuelle Tests",
         "syncModal": "Sync-Modal - Visuelle Tests",
-        "supportHint": "Support-Hinweis - Visuelle Tests"
+        "supportHint": "Support-Hinweis - Visuelle Tests",
+        "chips": "Chips - Visuelle Tests"
       },
       "admin": {
         "models": {
@@ -139,6 +149,16 @@
           "new": "Neuer Hersteller",
           "edit": "Hersteller bearbeiten"
         },
+        "supporterContributions": {
+          "index": "Unterstützer-Beiträge",
+          "new": "Neuer Beitrag",
+          "edit": "Beitrag bearbeiten"
+        },
+        "fundingGoals": {
+          "index": "Finanzierungsziele",
+          "new": "Neues Finanzierungsziel",
+          "edit": "Finanzierungsziel bearbeiten"
+        },
         "users": {
           "index": "Benutzer",
           "edit": "Benutzer bearbeiten"
@@ -153,7 +173,8 @@
         },
         "fleets": {
           "index": "Flotten",
-          "edit": "Flotte bearbeiten"
+          "edit": "Flotte bearbeiten",
+          "memberEdit": "Flottenmitglied bearbeiten"
         },
         "oauthApplications": {
           "index": "OAuth-Anwendungen",

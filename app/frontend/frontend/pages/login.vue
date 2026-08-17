@@ -16,15 +16,14 @@ import { useSessionStore } from "@/frontend/stores/session";
 import {
   useCreateSession as useCreateSessionMutation,
   type SessionInput,
-  type ValidationError,
 } from "@/services/fyApi";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import {
   BtnTypesEnum,
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import { type AxiosError } from "axios";
 import { useRedirectBack } from "@/shared/composables/useRedirectBack";
 import {
   HeadingLevelEnum,
@@ -85,19 +84,13 @@ const onSubmit = handleSubmit(async (values) => {
       await handleRedirect();
     })
     .catch((error) => {
-      const response = (error as AxiosError<ValidationError>).response;
+      const { code, message } = validationErrorFrom(error);
 
-      if (response) {
-        if (response?.data.code === "session.create.two_factor_required") {
-          twoFactorRequired.value = true;
-        } else {
-          displayAlert({
-            text: response?.data.message || t("errors.generic"),
-          });
-        }
+      if (code === "session.create.two_factor_required") {
+        twoFactorRequired.value = true;
       } else {
         displayAlert({
-          text: t("errors.generic"),
+          text: message || t("errors.generic"),
         });
       }
     })
@@ -170,8 +163,8 @@ const signupRoute = computed(() => {
           :loading="submitting"
           :type="BtnTypesEnum.SUBMIT"
           data-test="submit-login"
-          :size="BtnSizesEnum.LARGE"
           block
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.login") }}
         </Btn>
@@ -190,9 +183,8 @@ const signupRoute = computed(() => {
           :to="{
             name: 'request-password',
           }"
-          :variant="BtnVariantsEnum.LINK"
-          :size="BtnSizesEnum.SMALL"
           :block="true"
+          :variant="BtnVariantsEnum.BARE"
         >
           {{ t("actions.reset-password") }}
         </Btn>
@@ -200,12 +192,7 @@ const signupRoute = computed(() => {
           <p class="text-center">
             {{ t("labels.signup.link") }}
           </p>
-          <Btn
-            data-test="signup-link"
-            :to="signupRoute"
-            :size="BtnSizesEnum.SMALL"
-            :block="true"
-          >
+          <Btn data-test="signup-link" :to="signupRoute" :block="true">
             {{ t("actions.signUp") }}
           </Btn>
         </footer>

@@ -1,0 +1,38 @@
+{
+  "key": "cds_combat_medium_backpack_02_01_01",
+  "ref": "d3814df9-6fca-4ecc-aad7-6cbe2e4d8066",
+  "name": "GCD-Army Backpack",
+  "description": "Headed to the front lines? Bring everything you need and more with the GCD-Army Backpack. With an impressive carrying capacity and an outer shell made from an impact-resistant composite, it's the perfect way to ensure your valuables stay safe during the heat of combat.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "medium_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "105000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "medium_heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "cds_combat_medium",
+    "Color_01",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.036,
+  "volume_dimensions": {
+    "x": 0.332,
+    "y": 1.14,
+    "z": 0.291
+  }
+}

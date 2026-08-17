@@ -14,6 +14,181 @@
     "base_expediting_fee": "1030"
   },
   "mass": 76217.0,
+  "inventory_container_ref": "07b72e0c-74a4-4f62-81b5-da31c2afcb86",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 632.0,
+    "y": 1010.0,
+    "z": 502.0
+  },
+  "hull_health": 20700.0,
+  "hull_parts": [
+    {
+      "name": "drak_golem_ox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 2350.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "anim_vtol_rotate_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "m_det_fr_vtol",
+      "health": 1450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_vtol_rotate_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "m_det_fl_vtol",
+      "health": 1450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "m_body_rear",
+      "health": 2350.0,
+      "category": "breakable"
+    },
+    {
+      "name": "m_fin_connector",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_vtol_rotator_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "m_vtol_rear_cover_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "m_det_vtol_ext_main_housing_left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_vtol_rotator_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "m_vtol_rear_cover_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "m_det_vtol_ext_main_housing_right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_rr_cover",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_rr_fin",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "m_trac_beam_con",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "m_trac_beam_addon",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_rl_cover",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_rside_cover",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_lside_cover",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_rl_fin",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "det_m_body_rear_covers_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dmg_m_body_rear_covers_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "det_m_body_rear_covers_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dmg_m_body_rear_covers_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_body_rear_latch",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_fr_cover",
+      "health": 1600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_fl_cover",
+      "health": 1600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_fr_lower_cover",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_det_fl_lower_cover",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "m_front_fuelcover",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 15.5,
     "y": 7.0,

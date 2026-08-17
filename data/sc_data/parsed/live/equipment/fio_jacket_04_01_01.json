@@ -1,0 +1,37 @@
+{
+  "key": "fio_jacket_04_01_01",
+  "ref": "7f85c5a3-101f-4a8c-ab27-ad8a45dc671b",
+  "name": "Esteril Lab Coat ASD Edition",
+  "description": "The Esteril Lab Coat from luxury brand Fiore dares to answer the question, \"Should laboratory clothing be fashionable?\" with a resounding, \"Yes.\" Based on the bestselling Ati Jacket, this coat features slim tailoring, a high collar, and striking asymmetrical design.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_jacket",
+    "set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

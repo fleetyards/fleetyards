@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "3",
+  "min_crew": "4",
   "name": "Argo MOTH",
   "description": "Manufacturer: Argo Astronautics\\nFocus: Medium Salvage\\n\\nExperience Argo's centuries of industrial expertise with the MOTH. Using a tried and tested chassis as its foundation, the MOTH features three dedicated salvage turrets and an external salvage autoloader, so a four person crew can strip, rip, and store salvage as fast as they can get to it.",
   "career": "Industrial",
@@ -14,6 +14,71 @@
     "base_expediting_fee": "9470"
   },
   "mass": 852686.0,
+  "inventory_container_ref": "c5efc6cb-bbed-4e9c-a42b-623b30417ab0",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 16155.0,
+    "y": 9693.0,
+    "z": 29373.0
+  },
+  "hull_health": 130000.0,
+  "hull_parts": [
+    {
+      "name": "argo_moth",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Front",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Rear",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Vtol_Rear_Left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Top_Left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Bot_Left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Vtol_Rear_Right",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Top_Right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Bot_Right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_front_vtol_left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thruster_front_vtol_right",
+      "health": 4000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 0.0,
     "y": 0.0,

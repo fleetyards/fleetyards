@@ -10,6 +10,7 @@
       "size": "Dimensione",
       "beam": "Raggio",
       "cargo": "Carico",
+      "personalInventory": "Inventario della nave",
       "netCargo": "Carico con Rover/Snub",
       "crew": "Equipaggio",
       "speed": "Velocità",
@@ -60,6 +61,7 @@
       "modular": "Modulare",
       "soldAt": "Venduto a?",
       "rentalAt": "Noleggiato a?",
+      "poweredByUex": "Offerto da UEX",
       "lastUpdatedAt": "Ultimo aggiornamento?"
     },
     "component": {

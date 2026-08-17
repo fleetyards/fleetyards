@@ -14,6 +14,47 @@
     "base_expediting_fee": "333"
   },
   "mass": 80000.0,
+  "inventory_container_ref": "04555ac1-dfc1-4181-b847-dcd62f5147da",
+  "weapon_pool_size": 4,
+  "signature_cross_section": null,
+  "hull_health": 11475.0,
+  "hull_parts": [
+    {
+      "name": "probe_turret_1_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit",
+      "health": 4000.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose",
+      "health": 6000.0,
+      "category": "vital"
+    },
+    {
+      "name": "receiver_01",
+      "health": 75.0,
+      "category": "subpart"
+    },
+    {
+      "name": "receiver_02",
+      "health": 75.0,
+      "category": "subpart"
+    },
+    {
+      "name": "receiver_03",
+      "health": 75.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 1250.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 40.0,
     "y": 18.0,

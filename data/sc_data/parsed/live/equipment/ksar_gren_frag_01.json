@@ -1,0 +1,35 @@
+{
+  "key": "ksar_gren_frag_01",
+  "ref": "1a8b7ee2-0fab-45e8-aa79-0c24a4f4ffbc",
+  "name": "Scorch Plasma Grenade",
+  "description": "Manufacturer: Kastak Arms\nItem Type: Grenade\n \nArea of Effect: 7.5 m\nDamage Type: Plasma\n \nKastak Arms Scorch plasma grenade is sure to be a devastating addition to your next battle. Once primed and ready, the Scorch will explode on impact, unleashing a burst of intense plasma damage on your target that leave a lingering hazard area behind.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "gren",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/game_feed_icon_grenade.tif",
+  "sub_type": "Grenade",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "grenade"
+  ],
+  "hidden": false,
+  "volume": 0.0009,
+  "volume_dimensions": {
+    "x": 0.0709,
+    "y": 0.0773,
+    "z": 0.1613
+  }
+}

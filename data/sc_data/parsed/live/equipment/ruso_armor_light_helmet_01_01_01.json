@@ -1,0 +1,37 @@
+{
+  "key": "ruso_armor_light_helmet_01_01_01",
+  "ref": "54c91753-0a6e-420f-bfd7-d7e6b5f3ff8b",
+  "name": "Venture Helmet \"Rust Society\"",
+  "description": "Item Type: Light Armor\nDamage Reduction: 20%\nTemp. Rating: -37 / 67 °C\nRadiation Protection: 26000 REM\nRadiation Scrub Rate: 145.8 REM/s\n \nRSI's Venture helmet is built from impact-resistant composites and designed to weather the harshest of environments. It also features an anti-scuff laminate faceplate that offers an unparalleled upward field of view, providing unobstructed sightlines to whatever wonders you discover. The Rust Society edition adds a red and tan color scheme so you look good while working hard.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
+}

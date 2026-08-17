@@ -1,0 +1,38 @@
+{
+  "key": "grin_toxic_jumpsuit_01_01_04",
+  "ref": "a870e97f-75c7-4ba1-8ae0-7cd9ff975472",
+  "name": "TruBarrier Hazard Suit Hi-Vis Yellow",
+  "description": "Guard yourself from toxic environmental hazards with the TruBarrier Hazard Suit, constructed from industrial-grade fabric and coated with a multi-layered, laminated polymer that offers a broad range of chemical protection without sacrificing mobility. The encapsulated design provides full-body protection from direct contact with dangerous materials when worn with its accompanying mask.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "toxic",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": "-5 / 32 °C",
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_toxic_jumpsuit",
+    "set_01",
+    "texture_01",
+    "color_04"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

@@ -1,4 +1,10 @@
+// Just the ship picker now — the share and calculator links are the page's key actions
+// and live top-right in `Compare/Models/Actions`.
 .compare-form {
-  height: 242px;
-  max-width: 300px;
+  flex: 1 1 240px;
+  max-width: 320px;
+
+  :deep(.filter-group) {
+    margin-bottom: 0;
+  }
 }

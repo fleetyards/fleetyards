@@ -30,7 +30,6 @@ type Props = {
   withDescription?: boolean;
   fullscreen?: boolean;
   variant?: "default" | "text";
-  slim?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,7 +37,6 @@ const props = withDefaults(defineProps<Props>(), {
   withDescription: true,
   fullscreen: false,
   variant: "default",
-  slim: false,
 });
 
 const image = computed(() => {
@@ -57,7 +55,7 @@ const title = computed(() => {
 </script>
 
 <template>
-  <Panel :alignment="PanelAlignmentsEnum.LEFT" :slim="slim">
+  <Panel :alignment="PanelAlignmentsEnum.LEFT">
     <PanelImage
       :image="image"
       image-size="auto"
@@ -73,7 +71,7 @@ const title = computed(() => {
           {{ title }}
         </template>
       </PanelHeading>
-      <PanelBody no-min-height no-padding-top>
+      <PanelBody>
         <div v-if="!fullscreen" class="teaser-panel-body teaser-panel-item">
           <p v-if="withDescription">
             {{ item.description }}

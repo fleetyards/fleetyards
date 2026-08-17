@@ -1,0 +1,40 @@
+{
+  "key": "outlaw_legacy_armor_medium_helmet_01_01_02",
+  "ref": "a8c4dba6-592d-4049-a242-7026ec8f826a",
+  "name": "Morningstar Helmet Red",
+  "description": "Show no weakness while wearing the Morningstar. This fully-enclosed combat helmet is tailored to endure a variety of combat situations and provides protection against an array of threats from ballistic to concussive to energy. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-56 / 86 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Medium",
+    "Set_01",
+    "Color_02",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

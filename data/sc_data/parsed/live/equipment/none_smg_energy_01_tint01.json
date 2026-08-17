@@ -1,0 +1,37 @@
+{
+  "key": "none_smg_energy_01_tint01",
+  "ref": "6defe8cd-0894-4377-8fd0-2384b2109d70",
+  "name": "Ripper SMG",
+  "description": "Scrapped together from whatever parts and pieces were available, the Ripper SMG can probably do enough damage to get you out of a tight spot. Just be ready for things to get messy.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "smg",
+  "weapon_class": "energy",
+  "rate_of_fire": "800.0",
+  "range": "30.0",
+  "storage": "60.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_arms_custodian_smg.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "stocked",
+    "smg",
+    "none_smg_energy_01"
+  ],
+  "hidden": true,
+  "volume": 0.0075,
+  "volume_dimensions": {
+    "x": 0.0471,
+    "y": 0.7026,
+    "z": 0.2594
+  }
+}

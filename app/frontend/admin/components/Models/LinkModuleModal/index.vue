@@ -12,10 +12,7 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -171,7 +168,6 @@ const onConfirm = async () => {
           >
             <Panel
               :alignment="PanelAlignmentsEnum.LEFT"
-              slim
               class="link-module-panel"
               @click.capture="toggleSelect(mod.id)"
             >
@@ -184,11 +180,7 @@ const onConfirm = async () => {
                 :alt="mod.name"
               />
               <div>
-                <PanelHeading
-                  :level="HeadingLevelEnum.H3"
-                  title-align="right"
-                  multiline
-                >
+                <PanelHeading :level="HeadingLevelEnum.H3">
                   {{ mod.name }}
                 </PanelHeading>
                 <p v-if="mod.manufacturer" class="text-muted mb-0">
@@ -212,10 +204,9 @@ const onConfirm = async () => {
 
         <div v-if="hasMore" class="text-center mt-2">
           <Btn
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.TRANSPARENT"
             :loading="loading"
             @click="loadMore"
+            :variant="BtnVariantsEnum.GHOST"
           >
             {{ t("actions.loadMore") }}
           </Btn>
@@ -224,10 +215,8 @@ const onConfirm = async () => {
     </div>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
-          :size="BtnSizesEnum.SMALL"
-          :inline="true"
           :loading="linking"
           :disabled="!selectedIds.size"
           @click="onConfirm"

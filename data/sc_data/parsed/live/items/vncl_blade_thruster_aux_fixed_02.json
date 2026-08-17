@@ -22,9 +22,25 @@
     "health": 11000.0
   },
   "type_data": {
-    "thrust_capacity": 1431557.0,
+    "thrust_capacity": 1501585.0,
     "fuel_burn_rate_per10_k_newton": 0.125,
     "thruster_type": "Maneuver",
-    "thruster_class": "aux"
+    "thruster_class": "aux",
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

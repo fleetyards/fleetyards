@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "Drake Caterpillar",
   "description": "Manufacturer: Drake Interplanetary\\nFocus: Medium Freight\\n\\nFirst introduced in 2871, Drake Interplanetary's Caterpillar has long proven to be a reliable, cost-effective multi-role vessel, capable of being outfitted for everything from mercantile operations to combat support. Long hailed as a hard-fought alternative to the ubiquitous Hull series, the Caterpillar is a freighter that doesn't skimp on weaponry or customization.",
   "career": "Transporter",
@@ -14,6 +14,71 @@
     "base_expediting_fee": "7730"
   },
   "mass": 1508063.0,
+  "inventory_container_ref": "c02a4adc-3816-4c63-8c0f-a2ab54fd3212",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 12362.0,
+    "y": 5952.0,
+    "z": 45786.0
+  },
+  "hull_health": 91500.0,
+  "hull_parts": [
+    {
+      "name": "DRAK_Caterpillar",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 60000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body_Detach_Upper",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_Center_Left",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Center_Right",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_Right",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Left",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 25500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose_Pipes",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 39.5,
     "y": 13.4,

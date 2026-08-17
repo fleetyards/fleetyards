@@ -1,0 +1,39 @@
+{
+  "key": "clda_undersuit_01_01_04",
+  "ref": "9f88dd1f-8e47-4104-98e6-be0bdd2b5c06",
+  "name": "Levin Undersuit Limelight (Refurbished)",
+  "description": "Featuring flexible gaskets for greater comfort and more natural movement, along with a convenient range of chest connector port options, the Levin from Caldera has been a practical choice for explorers everywhere. This particular undersuit has been repaired for extended use.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "undersuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "10.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "eddc1a94-7840-4855-9889-544821d4d739",
+  "tags": [
+    "clda_undersuit",
+    "Set_01",
+    "Texture_01",
+    "Color_04",
+    "$armor_mobi++"
+  ],
+  "hidden": false,
+  "volume": 0.023,
+  "volume_dimensions": {
+    "x": 0.315,
+    "y": 0.227,
+    "z": 0.41
+  }
+}

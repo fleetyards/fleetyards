@@ -9,6 +9,7 @@ json.avatar do
 end
 json.rsi_handle member.user.rsi_handle
 json.role member.fleet_role&.name
+json.role_id member.fleet_role_id
 json.status member.aasm.current_state
 json.accepted_at member.accepted_at&.utc&.iso8601
 json.last_active_at member.user.last_active_at&.utc&.iso8601

@@ -9,9 +9,14 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
+import Forbidden from "@/shared/components/Forbidden/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
-import { type AsyncStatus } from "@/shared/components/AsyncData.types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  type AsyncStatus,
+  ErrorTypesEnum,
+} from "@/shared/components/AsyncData.types";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
+
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -82,6 +87,13 @@ const filterTooltip = computed(() => {
 const error = computed(() => {
   return props.asyncStatus.isError.value;
 });
+
+// A list behind a flag that is not on yet, or a record belonging to somebody
+// else, comes back 403 — which is an answer, not an outage.
+const forbidden = computed(
+  () =>
+    errorTypeFrom(props.asyncStatus.error?.value) === ErrorTypesEnum.FORBIDDEN,
+);
 
 const emptyVisible = computed(() => {
   return !!(
@@ -172,7 +184,6 @@ const toggleFilter = () => {
               v-tooltip="filterTooltip"
               :active="filterVisible"
               :aria-label="filterTooltip"
-              :size="BtnSizesEnum.SMALL"
               @click="toggleFilter"
             >
               <i v-if="isFilterSelected" class="fa-solid fa-filter" />
@@ -182,11 +193,10 @@ const toggleFilter = () => {
           </div>
           <div class="filtered-list__actions-right">
             <slot name="actions-right" :records="records" />
-            <slot v-if="!mobile" name="pagination-top" />
+            <div class="filtered-list__pagination-top">
+              <slot name="pagination-top" />
+            </div>
           </div>
-        </div>
-        <div v-if="mobile" class="col-12 filtered-list__pagination-top">
-          <slot name="pagination-top" />
         </div>
       </div>
       <div class="row">
@@ -214,7 +224,8 @@ const toggleFilter = () => {
         >
           <slot v-if="error" name="error">
             <transition name="fade">
-              <ServerError />
+              <Forbidden v-if="forbidden" />
+              <ServerError v-else />
             </transition>
           </slot>
 

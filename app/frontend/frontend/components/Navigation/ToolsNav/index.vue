@@ -8,6 +8,7 @@ export default {
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { FeatureFlagName } from "@/services/fyApi";
 
 const { t } = useI18n();
 const { isFeatureEnabled } = useFeatures();
@@ -34,13 +35,13 @@ const active = computed(() => {
         icon="fa-duotone fa-browsers"
       />
       <NavItem
-        v-if="isFeatureEnabled('tools_travel_times')"
+        v-if="isFeatureEnabled(FeatureFlagName.TOOLS_TRAVEL_TIMES)"
         :to="{ name: 'travel-times' }"
         :label="t('nav.tools.travelTimes')"
         icon="fa-duotone fa-gauge-high"
       />
       <NavItem
-        v-if="isFeatureEnabled('tools_cargo_grids')"
+        v-if="isFeatureEnabled(FeatureFlagName.TOOLS_CARGO_GRIDS)"
         :to="{ name: 'cargo-grids' }"
         :label="t('nav.tools.cargoGrids')"
         icon="fa-duotone fa-thin fa-cubes"

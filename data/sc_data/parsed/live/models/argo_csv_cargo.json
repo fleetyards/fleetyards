@@ -14,6 +14,241 @@
     "base_expediting_fee": "190"
   },
   "mass": 1000.0,
+  "inventory_container_ref": "10f318e6-dd40-47f3-a4a4-204ebd1fc78b",
+  "hull_health": 8100.0,
+  "hull_parts": [
+    {
+      "name": "argo_csv",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 3500.0,
+      "category": "vital"
+    },
+    {
+      "name": "front",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_barbreakbottom_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_panelbreak_bumper_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_panelbreak_bumper_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_barbreakbottom_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "AEsus_upper_brace_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_piston_lower_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AAsus_wheel_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AAsus_wheel_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_upper_brace_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel_rl_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel_rr_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_panelbreak_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_panelbreak_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "AAsus_wheel_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AAsus_wheel_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_piston_lower_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_piston_lower_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_upper_brace_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_upper_brace_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel_fl_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel_fr_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    }
+  ],
+  "speeds": {
+    "max": 13.08,
+    "reverse": null,
+    "acceleration": null,
+    "decceleration": null
+  },
   "metrics": {
     "x": 8.75,
     "y": 6.0,

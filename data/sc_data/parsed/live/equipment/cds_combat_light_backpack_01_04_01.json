@@ -1,0 +1,38 @@
+{
+  "key": "cds_combat_light_backpack_01_04_01",
+  "ref": "5d4fc095-7a9f-44a6-b9e6-adbd124fcc9c",
+  "name": "Geist Backpack Snow Camo",
+  "description": "An ideal synthesis of strength and technology, the Geist Stealth Armor has been crafted from military-grade carbon silk sourced from the same manufacturers that protect the UEE's special forces. Hair-thin filaments woven into the fabric mask the wearer's emissions, making them undetectable via radar, and specialized tubing built into the soles of the boots dampens the sound of footsteps.\n\nFeaturing a hooded shawl and a white digital camo pattern, the Snow Camo edition is perfect for stalking prey in frozen environments.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "light_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "54000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "all",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "cds_combat_light",
+    "Color_01",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.02,
+  "volume_dimensions": {
+    "x": 0.332,
+    "y": 1.126,
+    "z": 0.261
+  }
+}

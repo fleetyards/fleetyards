@@ -1,62 +1,81 @@
-.compare-cols {
+// Ship picker left, the page's key actions right.
+.compare-header {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 30px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-bottom: 18px;
 }
 
-.compare-image {
-  position: relative;
-  overflow: hidden;
-  height: 242px;
+// Sits directly on the table: the view modes at the left edge where the label rail
+// begins, the legend for whichever encodings are currently in play at the right.
+.compare-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  margin-bottom: 10px;
+}
 
-  & > a {
-    position: relative;
+.compare-toolbar__modes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compare-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: 11.5px;
+  color: $gray;
+
+  dd {
+    margin: 0 0 0 -9px;
+  }
+}
+
+.compare-legend__key {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+
+  &--best {
+    color: $gold;
+  }
+
+  &--worst {
+    color: $gray-light;
+  }
+
+  &--better {
+    color: lighten($success, 6%);
+  }
+
+  &--worse {
+    color: mix($danger, $text-color, 60%);
+  }
+
+  // A miniature of the cell's share bar, so the legend shows the mark rather than
+  // describing it.
+  &--bar span {
     display: block;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-top-right-radius: $border-radius-base;
-    border-top-left-radius: $border-radius-base;
-    -webkit-animation-name: fadein;
-    animation-name: fadeIn;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-  }
-
-  .remove-model {
-    position: absolute;
-    top: 10px;
-    right: 0;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $gray-darker;
-    border-radius: 10px 0 0 10px;
-    cursor: pointer;
-
-    i {
-      color: #fff;
-    }
+    width: 22px;
+    height: 2px;
+    background: $primary;
+    border-radius: 2px;
   }
 }
 
-.compare-title {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-size: 120%;
-  height: 40px;
-  position: sticky;
-  top: 0;
-  z-index: 500;
-  background-color: $gray-darker;
-  border-bottom-right-radius: $border-radius-base;
-  border-bottom-left-radius: $border-radius-base;
+// The panel supplies the frame; the table brings only its own scrolling, so the body
+// padding goes and the rows sit flush against the surface's inner edge.
+.compare-panel {
+  :deep(.panel-body) {
+    padding: 0;
+    overflow: hidden;
+  }
 }

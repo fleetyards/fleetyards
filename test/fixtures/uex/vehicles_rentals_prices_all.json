@@ -1,0 +1,22 @@
+{
+  "status": "ok",
+  "http_code": 200,
+  "data": [
+    {
+      "id": 1,
+      "id_vehicle": 2,
+      "id_terminal": 101,
+      "price_rent": 27165,
+      "vehicle_name": "Avenger Titan",
+      "terminal_name": "Vantage Lorville"
+    },
+    {
+      "id": 2,
+      "id_vehicle": 3,
+      "id_terminal": 101,
+      "price_rent": 254016,
+      "vehicle_name": "Andromeda",
+      "terminal_name": "Vantage Lorville"
+    }
+  ]
+}

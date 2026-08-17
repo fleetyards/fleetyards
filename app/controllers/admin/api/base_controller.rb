@@ -17,6 +17,7 @@ module Admin
 
       before_action :set_locale
       before_action :authenticate_admin_user!
+      before_action :set_paper_trail_whodunnit
 
       verify_authorized
 
@@ -32,6 +33,10 @@ module Admin
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         render json: {code: "not_found", message: I18n.t("errors.not_found.message")}, status: :not_found
+      end
+
+      private def set_paper_trail_whodunnit
+        PaperTrail.request.whodunnit = proc { current_admin_user&.id }
       end
 
       private def set_locale

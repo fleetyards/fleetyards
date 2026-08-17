@@ -1,0 +1,39 @@
+{
+  "key": "sch_tophat_01_01_01",
+  "ref": "dfe02e04-d809-4961-898b-b30c87c07c74",
+  "name": "Jacopo Tophat",
+  "description": "As part of their Dafne collection, Derion is proud to present the Jacopo tophat. Perfect for an elegant night on the town, this gossamer-lined top hat was commissioned in honor of the Port Renatus Metropolitan Opera House Quincentennial.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "tophat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0ad4a89d-ee14-47d8-8195-2923784eb8f7",
+  "tags": [
+    "sch_tophat",
+    "Set_01",
+    "Color_01",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

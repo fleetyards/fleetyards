@@ -1,0 +1,10 @@
+{
+  "key": "aluminum",
+  "sc_key": "items_commodities_aluminum",
+  "ref": "6eaded2d-1f4e-4192-b436-299ecdfac899",
+  "name": "Aluminum",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "A chemically reactive, gray metal that is malleable, lightweight, ductile, strong, and resistant to corrosion. Capable of superconductivity.",
+  "icon": "ui/textures/vector/general/items/inv_icon_aluminium.svg"
+}

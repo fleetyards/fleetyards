@@ -1,0 +1,40 @@
+{
+  "key": "srvl_parasite_helmet_02_01_01",
+  "ref": "e33d093a-c1bf-4d60-96e8-7ecadff067a1",
+  "name": "Parasite V: Dark Birth Replica Helmet",
+  "description": "Seven years after the original vid shocked the empire, Parasite V: Dark Birth took terror to a new level. CC's Conversions celebrated the release of the latest installment by collaborating with the vid's creators on an official and fully functional replica helmet. A special sensor built into the parasite's eye allows you a clear view of the reactions to every appalling detail. Carefully designed to honor the original prop and withstand the real rigors of space travel, the helmet is a premiere replica that will turn you into a walking nightmare!",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "flight_helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "10.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable",
+    "Parasite",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "alb_mask_04_01_01",
+  "ref": "d8036474-f729-4bdf-95dd-6c592200d364",
+  "name": "Volatus Balaclava Stealth Kitten",
+  "description": "The Volatus Balaclava is a staple for security and military operatives. Designed using strong, breathable, 100% Sol-grown cotton with reinforced polymer fibers embedded into the material, this balaclava serves to both keep you comfortable, as well as obscure your identity. The signature pink with blue whiskers imprinted on this mask, combined with the limited-edition Shinobi Sally icon make this face wear a statement piece for any look.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "mask",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_mask",
+    "Set_04",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

@@ -14,6 +14,96 @@
     "base_expediting_fee": "2343"
   },
   "mass": 48986.68,
+  "inventory_container_ref": "a623a5e1-27db-4e93-af6b-e54912b78e32",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5561.0,
+    "y": 1904.0,
+    "z": 7617.0
+  },
+  "hull_health": 11900.0,
+  "hull_parts": [
+    {
+      "name": "AEGS_Avenger",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Canopy",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 680.0,
+      "category": "breakable"
+    },
+    {
+      "name": "right_air_brake",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Flap_Right",
+      "health": 10.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingTip_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 680.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Flap_Left",
+      "health": 10.0,
+      "category": "subpart"
+    },
+    {
+      "name": "left_air_brake",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "WingTip_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "HullTail_Right",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Right_Tail_Fin_Flap",
+      "health": 10.0,
+      "category": "subpart"
+    },
+    {
+      "name": "HullTail_Left",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Left_Tail_Fin_Flap",
+      "health": 10.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 15.0,
     "y": 20.0,

@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "MISC Reliant Tana",
   "description": "Manufacturer: MISC\\nFocus: Light Fighter\\n\\nWith Humanity ever-expanding through the universe, the need for a versatile lightweight fighter has expanded with it. Easy to maintain with a rugged construction, the Reliant Tana makes for an ideal choice for frontier and outpost defense thanks to its custom high-yield power plant, stronger shields, and additional weapon mounts.",
   "career": "Combat",
@@ -14,6 +14,71 @@
     "base_expediting_fee": "3829"
   },
   "mass": 34968.0,
+  "inventory_container_ref": "9bac0387-efe2-421e-a092-99ff3fa55cb0",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 1601.0,
+    "y": 6519.0,
+    "z": 5819.0
+  },
+  "hull_health": 15460.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Reliant",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 3000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Top_Left",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Bottom_Left",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Top_Right",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Vertical_Stabilizer_Wing_Bottom_Right",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body",
+      "health": 3500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Engine_Left",
+      "health": 1180.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Right",
+      "health": 1180.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 28.5,
     "y": 14.75,

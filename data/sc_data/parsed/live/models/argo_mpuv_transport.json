@@ -14,6 +14,46 @@
     "base_expediting_fee": "270"
   },
   "mass": 9210.0,
+  "inventory_container_ref": "e314725d-c801-498f-9c0e-1fa0e64e5427",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5977.0,
+    "y": 2798.0,
+    "z": 6358.0
+  },
+  "hull_health": 5920.0,
+  "hull_parts": [
+    {
+      "name": "ARGO_MPUV_Transport",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Cargo_Container_Exterior",
+      "health": 440.0,
+      "category": "vital"
+    },
+    {
+      "name": "Leg_Left",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Leg_Right",
+      "health": 240.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 9.0,
     "y": 10.5,

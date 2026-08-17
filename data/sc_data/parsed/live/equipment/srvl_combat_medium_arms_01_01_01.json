@@ -1,0 +1,40 @@
+{
+  "key": "srvl_combat_medium_arms_01_01_01",
+  "ref": "87f789bf-f902-4a2a-b2ce-97652f06939d",
+  "name": "Carrion Arms",
+  "description": "Forged from scavenged metals and ragged clothes, the Carrion armor is a crude concoction of repurposed materials that demonstrates you'll do anything it takes to survive.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-50 / 80 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Survival",
+    "Medium",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.01,
+  "volume_dimensions": {
+    "x": 0.107,
+    "y": 0.329,
+    "z": 0.415
+  }
+}

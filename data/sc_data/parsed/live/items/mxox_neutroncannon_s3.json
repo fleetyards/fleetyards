@@ -71,10 +71,42 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.0425
+    },
     "pellets_per_shot": 1,
     "speed": 754.8,
     "range": 1502.1,
     "ammo_cost": 1,
-    "max_ammo": 0
+    "max_ammo": 0,
+    "regen": {
+      "max_ammo_load": 25.0,
+      "max_regen_per_second": 3.0,
+      "cost_per_bullet": 202.0,
+      "regeneration_cooldown": 0.4,
+      "requested_regen_per_second": 3375.0,
+      "requested_ammo_load": 20250.0
+    },
+    "power_consumption": 1.0,
+    "weapon_class": "NeutronCannon",
+    "mountable": true,
+    "power_minimum_fraction": 0.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 341.0,
+    "signature_ir": 0.0
   }
 }

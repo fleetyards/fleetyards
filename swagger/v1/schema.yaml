@@ -10,6 +10,42 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 paths:
+  "/commodities":
+    get:
+      summary: Commodities list
+      tags:
+      - Commodities
+      operationId: commodities
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/CommodityQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodities"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/compare/share":
     post:
       summary: Create a short share URL for a comparison
@@ -76,6 +112,55 @@ paths:
                 "$ref": "#/components/schemas/Components"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/components/weapons":
+    get:
+      summary: Ship guns for the deflection check
+      tags:
+      - Components
+      operationId: componentWeapons
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WeaponIndex"
+  "/equipment":
+    get:
+      summary: Equipment list
+      tags:
+      - Equipment
+      operationId: equipment
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/EquipmentQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipments"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     get:
       summary: Feature Flags for User
@@ -91,6 +176,36 @@ paths:
                 type: array
                 items:
                   type: string
+  "/filters/commodities/types":
+    get:
+      summary: Commodity Types Filters
+      tags:
+      - CommoditiesFilters
+      operationId: commodityTypesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+  "/filters/components/categories":
+    get:
+      summary: Components Categories Filters
+      tags:
+      - ComponentsFilters
+      operationId: componentCategoriesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/filters/components/classes":
     get:
       summary: Components Classes Filters
@@ -121,6 +236,60 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+  "/filters/components/sub-types":
+    get:
+      summary: Components Sub Type Filters
+      tags:
+      - ComponentsFilters
+      operationId: componentSubTypesFilters
+      parameters:
+      - name: category
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/equipment/item-types":
+    get:
+      summary: Equipment Item Type Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentItemTypesFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          properties:
+            equipmentTypeIn:
+              type: array
+              items:
+                type: string
+          additionalProperties: false
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/manufacturers/options":
     get:
       summary: Manufacturer Options
@@ -2649,6 +2818,146 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Stock position slug
+      required: true
+    get:
+      summary: Fleet Inventory Stock Position
+      tags:
+      - FleetInventoryStock
+      operationId: fleetInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Fleet Inventory Stock Position
+      tags:
+      - FleetInventoryStock
+      operationId: updateFleetInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryStockPositionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete Fleet Inventory Stock Position
+      tags:
+      - FleetInventoryStock
+      operationId: destroyFleetInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: no content
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/inventories/{slug}":
     parameters:
     - name: fleetSlug
@@ -4797,6 +5106,59 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/vehicles/export/hangar-link":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Export a Fleet for hangar.link
+      tags:
+      - Fleets
+      operationId: fleetVehiclesHangarLinkExport
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetVehicleExport"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{slug}":
     parameters:
     - name: slug
@@ -5009,6 +5371,46 @@ paths:
       tags:
       - Hangar
       operationId: hangarExport
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleExport"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/export/hangar-link":
+    get:
+      summary: Export your personal Hangar for hangar.link
+      tags:
+      - Hangar
+      operationId: hangarLinkExport
       parameters:
       - name: q
         in: query
@@ -5278,6 +5680,653 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+  "/hangar/inventories":
+    post:
+      summary: Create Hangar Inventory
+      tags:
+      - HangarInventories
+      operationId: createHangarInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarInventoryCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventory"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Hangar Inventories List
+      tags:
+      - HangarInventories
+      operationId: hangarInventories
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarInventoryQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventoriesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/items":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    post:
+      summary: Create Hangar Inventory Item
+      tags:
+      - HangarInventoryItems
+      operationId: createHangarInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarInventoryItemCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventoryItem"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Hangar Inventory Items List
+      tags:
+      - HangarInventoryItems
+      operationId: hangarInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarInventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/items/{id}":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Inventory item ID
+      required: true
+    delete:
+      summary: Delete Hangar Inventory Item
+      tags:
+      - HangarInventoryItems
+      operationId: destroyHangarInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Hangar Inventory Item
+      tags:
+      - HangarInventoryItems
+      operationId: updateHangarInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarInventoryItemUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventoryItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/stock":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    get:
+      summary: Hangar Inventory Stock
+      tags:
+      - HangarInventoryStock
+      operationId: hangarInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/HangarInventoryStockItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/stock/{slug}":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Stock position slug
+      required: true
+    get:
+      summary: Hangar Inventory Stock Position
+      tags:
+      - HangarInventoryStock
+      operationId: hangarInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Hangar Inventory Stock Position
+      tags:
+      - HangarInventoryStock
+      operationId: updateHangarInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryStockPositionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete Hangar Inventory Stock Position
+      tags:
+      - HangarInventoryStock
+      operationId: destroyHangarInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: no content
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    delete:
+      summary: Delete Hangar Inventory
+      tags:
+      - HangarInventories
+      operationId: destroyHangarInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Hangar Inventory
+      tags:
+      - HangarInventories
+      operationId: hangarInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Hangar Inventory
+      tags:
+      - HangarInventories
+      operationId: updateHangarInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarInventoryUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventory-items":
+    get:
+      summary: Hangar All Inventory Items
+      tags:
+      - HangarInventoryItems
+      operationId: hangarAllInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarInventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarInventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventory-stock":
+    get:
+      summary: Hangar All Inventory Stock
+      tags:
+      - HangarInventoryStock
+      operationId: hangarAllInventoryStock
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/InventoryStockQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/HangarInventoryStockItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/items":
     get:
       summary: Your personal Hangar items
@@ -6198,9 +7247,7 @@ paths:
               schema:
                 type: array
                 items:
-                  anyOf:
-                  - "$ref": "#/components/schemas/Hardpoint"
-                  - "$ref": "#/components/schemas/ModelHardpoint"
+                  "$ref": "#/components/schemas/Hardpoint"
         '404':
           description: not found
           content:
@@ -8315,6 +9362,19 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
+  "/supporters/progress":
+    get:
+      summary: Public Supporters Progress
+      tags:
+      - Supporters
+      operationId: supportersProgress
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupportProgress"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -8963,6 +10023,439 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/inventory":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    delete:
+      summary: Clear Vehicle Inventory
+      tags:
+      - VehicleInventory
+      operationId: destroyVehicleInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: no content
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Vehicle Inventory
+      tags:
+      - VehicleInventory
+      operationId: vehicleInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Inventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/inventory/items":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Vehicle Inventory Item
+      tags:
+      - VehicleInventoryItems
+      operationId: createVehicleInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryItemCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryItem"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Vehicle Inventory Items List
+      tags:
+      - VehicleInventoryItems
+      operationId: vehicleInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/InventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/inventory/items/{id}":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Inventory item ID
+      required: true
+    delete:
+      summary: Delete Vehicle Inventory Item
+      tags:
+      - VehicleInventoryItems
+      operationId: destroyVehicleInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Vehicle Inventory Item
+      tags:
+      - VehicleInventoryItems
+      operationId: updateVehicleInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryItemUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryItem"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles/{vehicle_id}/inventory/stock":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Vehicle Inventory Stock
+      tags:
+      - VehicleInventoryStock
+      operationId: vehicleInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/InventoryStockPosition"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/inventory/stock/{slug}":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Stock position slug
+      required: true
+    get:
+      summary: Vehicle Inventory Stock Position
+      tags:
+      - VehicleInventoryStock
+      operationId: vehicleInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Vehicle Inventory Stock Position
+      tags:
+      - VehicleInventoryStock
+      operationId: updateVehicleInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryStockPositionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete Vehicle Inventory Stock Position
+      tags:
+      - VehicleInventoryStock
+      operationId: destroyVehicleInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: no content
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/{vehicle_id}/loadouts":
     parameters:
     - name: vehicle_id
@@ -9385,6 +10878,49 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
+    AdminNotificationSeverityEnum:
+      type: string
+      enum:
+      - info
+      - warning
+      - error
+      x-enumNames:
+      - INFO
+      - WARNING
+      - ERROR
+      title: AdminNotificationSeverityEnum
+    AdminNotificationSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: AdminNotificationSortEnum
+    AdminNotificationTypeEnum:
+      type: string
+      enum:
+      - paints_import
+      - modules_import
+      - loaner_sync
+      - uex_prices_import
+      - uex_commodity_prices_import
+      - new_supporter
+      - rsi_api_blocked
+      - rsi_api_unblocked
+      - weekly_stats
+      x-enumNames:
+      - PAINTS_IMPORT
+      - MODULES_IMPORT
+      - LOANER_SYNC
+      - UEX_PRICES_IMPORT
+      - UEX_COMMODITY_PRICES_IMPORT
+      - NEW_SUPPORTER
+      - RSI_API_BLOCKED
+      - RSI_API_UNBLOCKED
+      - WEEKLY_STATS
+      title: AdminNotificationTypeEnum
     BarChartStats:
       type: object
       properties:
@@ -9517,6 +11053,7 @@ components:
     ChannelsEnum:
       type: string
       enum:
+      - AdminNotificationsChannel
       - AppVersionChannel
       - FleetMembersChannel
       - FleetVehiclesChannel
@@ -9534,6 +11071,7 @@ components:
       - WishlistCreateChannel
       - WishlistDestroyChannel
       x-enumNames:
+      - ADMIN_NOTIFICATIONS_CHANNEL
       - APP_VERSION_CHANNEL
       - FLEET_MEMBERS_CHANNEL
       - FLEET_VEHICLES_CHANNEL
@@ -9569,6 +11107,81 @@ components:
       required:
       - value
       title: CheckInput
+    Commodities:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Commodity"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Commodities
+    Commodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        commodityType:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      title: Commodity
+    CommodityQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        slugIn:
+          type: array
+          items:
+            type: string
+        commodityTypeIn:
+          type: array
+          items:
+            type: string
+        currentVersion:
+          type: boolean
+      additionalProperties: false
+      example: {}
+      title: CommodityQuery
     CompareShare:
       type: object
       required:
@@ -9660,12 +11273,17 @@ components:
         typeData:
           anyOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
+          - "$ref": "#/components/schemas/ComponentJumpDrive"
+          - "$ref": "#/components/schemas/ComponentArmor"
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
           - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentTractorBeam"
           - "$ref": "#/components/schemas/ComponentShield"
           - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentRadar"
+          - "$ref": "#/components/schemas/ComponentController"
           - "$ref": "#/components/schemas/ComponentPowerPlant"
         hardpoints:
           type: array
@@ -9688,6 +11306,47 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentArmor:
+      type: object
+      properties:
+        health:
+          type: number
+        damagePhysical:
+          type: number
+        damageEnergy:
+          type: number
+        damageDistortion:
+          type: number
+        damageThermal:
+          type: number
+        damageBiochemical:
+          type: number
+        damageStun:
+          type: number
+        deflectionPhysical:
+          type: number
+        deflectionEnergy:
+          type: number
+        deflectionDistortion:
+          type: number
+        deflectionThermal:
+          type: number
+        selfResistancePhysical:
+          type: number
+        selfResistanceEnergy:
+          type: number
+        selfResistanceDistortion:
+          type: number
+        selfResistanceThermal:
+          type: number
+        signalInfrared:
+          type: number
+        signalElectromagnetic:
+          type: number
+        signalCrossSection:
+          type: number
+      additionalProperties: false
+      title: ComponentArmor
     ComponentClassEnum:
       type: string
       enum:
@@ -9703,10 +11362,113 @@ components:
       - RSI_PROPULSION
       - RSI_THRUSTER
       title: ComponentClassEnum
+    ComponentController:
+      type: object
+      properties:
+        scmSpeed:
+          type: number
+        scmSpeedBoosted:
+          type: number
+        reverseSpeedBoosted:
+          type: number
+        maxSpeed:
+          type: number
+        angularVelocity:
+          type: object
+          properties:
+            pitch:
+              type: number
+            yaw:
+              type: number
+            roll:
+              type: number
+          additionalProperties: false
+        boostedAngularVelocity:
+          type: object
+          properties:
+            pitch:
+              type: number
+            yaw:
+              type: number
+            roll:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+      title: ComponentController
     ComponentCooler:
       type: object
       properties:
         coolingRate:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+        signatureIr:
           type: number
       additionalProperties: false
       required:
@@ -9727,6 +11489,21 @@ components:
       - MILITARY
       - COMPETITION
       title: ComponentItemClassEnum
+    ComponentJumpDrive:
+      type: object
+      properties:
+        alignmentRate:
+          type: number
+        alignmentDecayRate:
+          type: number
+        tuningRate:
+          type: number
+        tuningDecayRate:
+          type: number
+        fuelUsageEfficiencyMultiplier:
+          type: number
+      additionalProperties: false
+      title: ComponentJumpDrive
     ComponentPowerPlant:
       type: object
       properties:
@@ -9734,12 +11511,44 @@ components:
           type: number
         powerDraw:
           type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
       additionalProperties: false
       title: ComponentPowerPlant
     ComponentQuantumDrive:
       type: object
       properties:
         quantumFuelRequirement:
+          type: number
+        quantumFuelConsumption:
           type: number
         jumpRange:
           type: number
@@ -9773,6 +11582,40 @@ components:
           "$ref": "#/components/schemas/ComponentQuantumDriveJump"
         quantumBoostParams:
           "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
       additionalProperties: false
       title: ComponentQuantumDrive
     ComponentQuantumDriveBoost:
@@ -9847,9 +11690,112 @@ components:
           type: array
           items:
             type: string
+        categoryIn:
+          type: array
+          items:
+            type: string
+        componentSubTypeIn:
+          type: array
+          items:
+            type: string
+        currentVersion:
+          type: boolean
+        hiddenEq:
+          type: boolean
       additionalProperties: false
       example: {}
       title: ComponentQuery
+    ComponentRadar:
+      type: object
+      properties:
+        signatureDetection:
+          type: object
+          properties:
+            ir:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            em:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            cs:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            rs:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        pingProperties:
+          type: object
+          properties:
+            cooldownTime:
+              type: number
+          additionalProperties: false
+        aimAssistRange:
+          type: number
+        aimAssistMin:
+          type: number
+        sensitivityModifiers:
+          type: object
+          properties:
+            sensitivityAddition:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+      title: ComponentRadar
     ComponentShield:
       type: object
       properties:
@@ -9967,6 +11913,40 @@ components:
                   type: number
               additionalProperties: false
           additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
       additionalProperties: false
       required:
       - maxHealth
@@ -10002,6 +11982,107 @@ components:
       - thrusterType
       - fuelBurnRatePer10KNewton
       title: ComponentThruster
+    ComponentTractorBeam:
+      type: object
+      properties:
+        tractorBeam:
+          type: boolean
+        minForce:
+          type: number
+        maxForce:
+          type: number
+        minDistance:
+          type: number
+        maxDistance:
+          type: number
+        fullStrengthDistance:
+          type: number
+        maxAngle:
+          type: number
+        maxVolume:
+          type: number
+        volumeForceCoefficient:
+          type: number
+        tetherBreakTime:
+          type: number
+        heatPerSecond:
+          type: number
+        rotation:
+          type: object
+          properties:
+            maxAngularVelocity:
+              type: number
+            degreesPerAction:
+              type: number
+          additionalProperties: false
+        movement:
+          type: object
+          properties:
+            maxSpeed:
+              type: number
+            maxAcceleration:
+              type: number
+          additionalProperties: false
+        cargoMode:
+          type: object
+          properties:
+            maxForce:
+              type: number
+            minDistance:
+              type: number
+            maxDistance:
+              type: number
+            fullStrengthDistance:
+              type: number
+          additionalProperties: false
+        towing:
+          type: object
+          properties:
+            towingForce:
+              type: number
+            towingMaxDistance:
+              type: number
+            towingMaxAcceleration:
+              type: number
+            quantumTowMassLimit:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - tractorBeam
+      title: ComponentTractorBeam
     ComponentTypeEnum:
       type: string
       enum:
@@ -10162,6 +12243,38 @@ components:
           type: number
         heatPerShot:
           type: number
+        powerConsumption:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
         damagePerShot:
           type: object
           properties:
@@ -10214,6 +12327,42 @@ components:
           type: number
         overchargeTime:
           type: number
+        regen:
+          type: object
+          properties:
+            maxAmmoLoad:
+              type: number
+            maxRegenPerSecond:
+              type: number
+            costPerBullet:
+              type: number
+            regenerationCooldown:
+              type: number
+            requestedRegenPerSecond:
+              type: number
+            requestedAmmoLoad:
+              type: number
+          additionalProperties: false
+        heat:
+          type: object
+          properties:
+            overheatTemperature:
+              type: number
+            coolingPerSecond:
+              type: number
+            timeTillCoolingStarts:
+              type: number
+            overheatFixTime:
+              type: number
+          additionalProperties: false
+        penetration:
+          type: object
+          properties:
+            maxThickness:
+              type: number
+            baseDistance:
+              type: number
+          additionalProperties: false
       additionalProperties: false
       title: ComponentWeapon
     Components:
@@ -10360,6 +12509,94 @@ components:
           type: string
         slug:
           type: string
+        description:
+          type:
+          - string
+          - 'null'
+        equipmentType:
+          "$ref": "#/components/schemas/EquipmentTypeEnum"
+        itemType:
+          type:
+          - string
+          - 'null'
+        subType:
+          type:
+          - string
+          - 'null'
+        weaponClass:
+          type:
+          - string
+          - 'null'
+        slot:
+          type:
+          - string
+          - 'null'
+        size:
+          type:
+          - string
+          - 'null'
+        grade:
+          type:
+          - string
+          - 'null'
+        rateOfFire:
+          type:
+          - number
+          - 'null'
+        range:
+          type:
+          - number
+          - 'null'
+        storage:
+          type:
+          - number
+          - 'null'
+        volume:
+          type:
+          - number
+          - 'null'
+        volumeDimensions:
+          type:
+          - object
+          - 'null'
+          properties:
+            x:
+              type: number
+            "y":
+              type: number
+            z:
+              type: number
+          additionalProperties: false
+        damageReduction:
+          type:
+          - number
+          - 'null'
+        temperatureRating:
+          type:
+          - string
+          - 'null'
+        radiationProtection:
+          type:
+          - number
+          - 'null'
+        radiationScrubRate:
+          type:
+          - number
+          - 'null'
+        gForceTolerance:
+          type:
+          - number
+          - 'null'
+        coreCompatibility:
+          type:
+          - string
+          - 'null'
+        backpackCompatibility:
+          type:
+          - string
+          - 'null'
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
         availability:
           type: object
           properties:
@@ -10375,54 +12612,8 @@ components:
           required:
           - boughtAt
           - soldAt
-        backpackCompatibility:
-          type: string
-        coreCompatibility:
-          type: string
-        damageReduction:
-          type: string
-        description:
-          type: string
-        extras:
-          type: string
-        grade:
-          type: string
-        itemType:
-          type: string
-        itemTypeLabel:
-          type: string
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
-        range:
-          type: string
-        rateOfFire:
-          type: string
-        size:
-          type: string
-        slot:
-          type: string
-        slotLabel:
-          type: string
-        storage:
-          type: string
-        temperatureRating:
-          type: string
-        type:
-          type: string
-        typeLabel:
-          type: string
-        volume:
-          type: string
-        weaponClass:
-          type: string
-        weaponClassLabel:
-          type: string
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time
@@ -10435,7 +12626,6 @@ components:
       - name
       - slug
       - availability
-      - media
       - createdAt
       - updatedAt
       title: Equipment
@@ -10444,6 +12634,9 @@ components:
       properties:
         nameCont:
           type: string
+        currentVersion:
+          type: boolean
+          default: true
         idIn:
           type: array
           items:
@@ -10453,30 +12646,60 @@ components:
           type: array
           items:
             type: string
+        slugIn:
+          type: array
+          items:
+            type: string
+        equipmentTypeIn:
+          type: array
+          items:
+            type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        manufacturerSlugIn:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       example: {}
       title: EquipmentQuery
     EquipmentTypeEnum:
       type: string
       enum:
-      - undersuit
-      - armor
       - weapon
-      - tool
-      - clothing
-      - medical
       - weapon_attachment
+      - tool
+      - armor
+      - clothing
+      - undersuit
+      - medical
       - hacking_tool
       x-enumNames:
-      - UNDERSUIT
-      - ARMOR
       - WEAPON
-      - TOOL
-      - CLOTHING
-      - MEDICAL
       - WEAPON_ATTACHMENT
+      - TOOL
+      - ARMOR
+      - CLOTHING
+      - UNDERSUIT
+      - MEDICAL
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    Equipments:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Equipment"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Equipments
     ExternalFuelTank:
       type: object
       properties:
@@ -10490,6 +12713,39 @@ components:
       required:
       - capacity
       title: ExternalFuelTank
+    FeatureFlagName:
+      type: string
+      enum:
+      - fleet_logistics
+      - fleet_starmap
+      - fleet_worldmap
+      - hangar_inventories
+      - oauth-applications
+      - oauth-bluesky
+      - oauth-citizenid
+      - oauth-discord
+      - oauth-github
+      - oauth-google
+      - oauth-twitch
+      - ship_inventories
+      - tools_cargo_grids
+      - tools_travel_times
+      x-enumNames:
+      - FLEET_LOGISTICS
+      - FLEET_STARMAP
+      - FLEET_WORLDMAP
+      - HANGAR_INVENTORIES
+      - OAUTH_APPLICATIONS
+      - OAUTH_BLUESKY
+      - OAUTH_CITIZENID
+      - OAUTH_DISCORD
+      - OAUTH_GITHUB
+      - OAUTH_GOOGLE
+      - OAUTH_TWITCH
+      - SHIP_INVENTORIES
+      - TOOLS_CARGO_GRIDS
+      - TOOLS_TRAVEL_TIMES
+      title: FeatureFlagName
     FieldError:
       type: object
       properties:
@@ -11641,7 +13897,7 @@ components:
           - officers_only
         location:
           type: string
-        itemCount:
+        entriesCount:
           type: integer
         totalScu:
           type: number
@@ -11655,6 +13911,14 @@ components:
               format: uuid
             username:
               type: string
+            rsiHandle:
+              type: string
+            discordProfileUrl:
+              type: string
+              format: uri
+            citizenidProfileUrl:
+              type: string
+              format: uri
         image:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
@@ -11669,7 +13933,7 @@ components:
       - name
       - slug
       - visibility
-      - itemCount
+      - entriesCount
       - totalScu
       - totalUnits
       - createdAt
@@ -11714,6 +13978,8 @@ components:
           format: uuid
         name:
           type: string
+        stockSlug:
+          type: string
         category:
           type: string
         quantity:
@@ -11741,8 +14007,16 @@ components:
               format: uuid
             type:
               type: string
+              enum:
+              - Commodity
+              - Component
+              - Equipment
             name:
               type: string
+            slug:
+              type: string
+            available:
+              type: boolean
         inventory:
           type: object
           properties:
@@ -11833,6 +14107,11 @@ components:
           type:
           - string
           - 'null'
+          enum:
+          - Commodity
+          - Component
+          - Equipment
+          -
         itemId:
           type:
           - string
@@ -11848,6 +14127,13 @@ components:
       properties:
         nameCont:
           type: string
+        nameEq:
+          type: string
+        unitEq:
+          type: string
+          enum:
+          - scu
+          - units
         categoryEq:
           type: string
           enum:
@@ -11886,6 +14172,11 @@ components:
           - ammunition
           - consumable
           - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
       additionalProperties: false
       title: FleetInventoryItemUpdateInput
     FleetInventoryItemsList:
@@ -11904,6 +14195,8 @@ components:
     FleetInventoryStockItem:
       type: object
       properties:
+        slug:
+          type: string
         name:
           type: string
         category:
@@ -12540,6 +14833,10 @@ components:
           type: array
           items:
             type: string
+        classificationNotIn:
+          type: array
+          items:
+            type: string
         focusIn:
           type: array
           items:
@@ -12675,6 +14972,27 @@ components:
       required:
       - capacity
       title: FuelTank
+    FundingGoalSortEnum:
+      type: string
+      enum:
+      - title asc
+      - title desc
+      - effectiveFrom asc
+      - effectiveFrom desc
+      - amountCents asc
+      - amountCents desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - TITLE_ASC
+      - TITLE_DESC
+      - EFFECTIVE_FROM_ASC
+      - EFFECTIVE_FROM_DESC
+      - AMOUNT_CENTS_ASC
+      - AMOUNT_CENTS_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FundingGoalSortEnum
     Gallery:
       type: object
       properties:
@@ -12884,6 +15202,347 @@ components:
       - missing
       - imported
       title: HangarImportResult
+    HangarInventoriesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarInventory"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: HangarInventoriesList
+    HangarInventory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        entriesCount:
+          type: integer
+        totalScu:
+          type: number
+        totalUnits:
+          type: number
+        totalVolumeScu:
+          type: number
+        unmeasuredCount:
+          type: integer
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        vehicle:
+          "$ref": "#/components/schemas/InventoryVehicle"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - entriesCount
+      - totalScu
+      - totalUnits
+      - createdAt
+      - updatedAt
+      title: HangarInventory
+    HangarInventoryCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        image:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+      additionalProperties: false
+      title: HangarInventoryCreateInput
+    HangarInventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        stockSlug:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: number
+        unit:
+          type: string
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+        notes:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        item:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              type: string
+              enum:
+              - Commodity
+              - Component
+              - Equipment
+            name:
+              type: string
+            slug:
+              type: string
+            available:
+              type: boolean
+        inventory:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - category
+      - quantity
+      - unit
+      - entryType
+      - createdAt
+      - updatedAt
+      title: HangarInventoryItem
+    HangarInventoryItemCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        quantity:
+          type: number
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          maximum: 1000
+        image:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        itemType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Commodity
+          - Component
+          - Equipment
+          -
+        itemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      required:
+      - name
+      - quantity
+      additionalProperties: false
+      title: HangarInventoryItemCreateInput
+    HangarInventoryItemQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        nameEq:
+          type: string
+        unitEq:
+          type: string
+          enum:
+          - scu
+          - units
+        categoryEq:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        qualityGteq:
+          type: integer
+        qualityLteq:
+          type: integer
+        sorts:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: HangarInventoryItemQuery
+    HangarInventoryItemUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+      additionalProperties: false
+      title: HangarInventoryItemUpdateInput
+    HangarInventoryItemsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarInventoryItem"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: HangarInventoryItemsList
+    HangarInventoryQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        sorts:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: HangarInventoryQuery
+    HangarInventoryStockItem:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        unit:
+          type: string
+        quality:
+          type: integer
+        qualityMin:
+          type: integer
+        qualityMax:
+          type: integer
+        netQuantity:
+          type: number
+        inventory:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+      required:
+      - name
+      - category
+      - unit
+      - netQuantity
+      title: HangarInventoryStockItem
+    HangarInventoryUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        image:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: HangarInventoryUpdateInput
     HangarMetrics:
       type: object
       properties:
@@ -12990,6 +15649,10 @@ components:
         beamLteq:
           type: number
         classificationIn:
+          type: array
+          items:
+            type: string
+        classificationNotIn:
           type: array
           items:
             type: string
@@ -13562,6 +16225,8 @@ components:
       - Imports::HangarImport
       - Imports::ModulesImport
       - Imports::PaintsImport
+      - Imports::UexPricesImport
+      - Imports::UexCommodityPricesImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -13572,7 +16237,402 @@ components:
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_MODULES_IMPORT
       - IMPORTS_PAINTS_IMPORT
+      - IMPORTS_UEX_PRICES_IMPORT
+      - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       title: ImportTypeEnum
+    Inventory:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type: string
+        slug:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        entriesCount:
+          type: integer
+        totalScu:
+          type: number
+        totalUnits:
+          type: number
+        totalVolumeScu:
+          type: number
+        unmeasuredCount:
+          type: integer
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        vehicle:
+          "$ref": "#/components/schemas/InventoryVehicle"
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - entriesCount
+      - totalScu
+      - totalUnits
+      title: Inventory
+    InventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        stockSlug:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: number
+        unit:
+          type: string
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+        notes:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        item:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              type: string
+              enum:
+              - Commodity
+              - Component
+              - Equipment
+            name:
+              type: string
+            slug:
+              type: string
+            available:
+              type: boolean
+        inventory:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - category
+      - quantity
+      - unit
+      - entryType
+      - createdAt
+      - updatedAt
+      title: InventoryItem
+    InventoryItemCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        quantity:
+          type: number
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          maximum: 1000
+        image:
+          type:
+          - string
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        itemType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - Commodity
+          - Component
+          - Equipment
+          -
+        itemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      required:
+      - name
+      - quantity
+      additionalProperties: false
+      title: InventoryItemCreateInput
+    InventoryItemQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        nameEq:
+          type: string
+        unitEq:
+          type: string
+          enum:
+          - scu
+          - units
+        categoryEq:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        qualityGteq:
+          type: integer
+        qualityLteq:
+          type: integer
+        sorts:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: InventoryItemQuery
+    InventoryItemUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+      additionalProperties: false
+      title: InventoryItemUpdateInput
+    InventoryItemsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InventoryItem"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: InventoryItemsList
+    InventoryStockPosition:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+        netQuantity:
+          type: number
+        qualityMin:
+          type:
+          - integer
+          - 'null'
+        qualityMax:
+          type:
+          - integer
+          - 'null'
+        entriesCount:
+          type: integer
+        lastEntryAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        item:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              type: string
+              enum:
+              - Commodity
+              - Component
+              - Equipment
+            name:
+              type: string
+            slug:
+              type: string
+            available:
+              type: boolean
+        inventory:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+      additionalProperties: false
+      required:
+      - slug
+      - name
+      - category
+      - unit
+      - netQuantity
+      - entriesCount
+      title: InventoryStockPosition
+    InventoryStockPositionInput:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+      additionalProperties: false
+      title: InventoryStockPositionInput
+    InventoryStockQuery:
+      type: object
+      properties:
+        vehicleIdEq:
+          type: string
+          format: uuid
+      additionalProperties: false
+      example: {}
+      title: InventoryStockQuery
+    InventoryVehicle:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        serial:
+          type:
+          - string
+          - 'null'
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+            cargo:
+              type: number
+            personalInventory:
+              type: number
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: InventoryVehicle
     ItemPrice:
       type: object
       properties:
@@ -14421,6 +17481,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:
@@ -14457,8 +17523,57 @@ components:
               type: number
             massLabel:
               type: string
+            hullHealth:
+              type: number
+            hullParts:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                  category:
+                    type: string
+                    enum:
+                    - vital
+                    - secondary
+                    - breakable
+                    - subpart
+                    - cosmetic
+                required:
+                - name
+                - health
+                - category
+                additionalProperties: false
+            hullDoors:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                required:
+                - name
+                - health
+                additionalProperties: false
             quantumFuelTankSize:
               type: number
+            weaponPoolSize:
+              type: number
+            signatureCrossSection:
+              type: object
+              properties:
+                x:
+                  type: number
+                "y":
+                  type: number
+                z:
+                  type: number
+              additionalProperties: false
             size:
               type: string
             sizeLabel:
@@ -14725,6 +17840,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:
@@ -14761,8 +17882,57 @@ components:
               type: number
             massLabel:
               type: string
+            hullHealth:
+              type: number
+            hullParts:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                  category:
+                    type: string
+                    enum:
+                    - vital
+                    - secondary
+                    - breakable
+                    - subpart
+                    - cosmetic
+                required:
+                - name
+                - health
+                - category
+                additionalProperties: false
+            hullDoors:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                required:
+                - name
+                - health
+                additionalProperties: false
             quantumFuelTankSize:
               type: number
+            weaponPoolSize:
+              type: number
+            signatureCrossSection:
+              type: object
+              properties:
+                x:
+                  type: number
+                "y":
+                  type: number
+                z:
+                  type: number
+              additionalProperties: false
             size:
               type: string
             sizeLabel:
@@ -16391,6 +19561,108 @@ components:
       - wishlistsCount
       - shipOfTheMonthCount
       title: Stats
+    SupportProgress:
+      type: object
+      properties:
+        goal:
+          type: object
+          properties:
+            amountCents:
+              type: integer
+            currency:
+              type: string
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  amountCents:
+                    type: integer
+                  currency:
+                    type: string
+                additionalProperties: false
+                required:
+                - title
+                - amountCents
+                - currency
+          additionalProperties: false
+          required:
+          - amountCents
+          - currency
+          - items
+        monthlyTotal:
+          type: object
+          properties:
+            amountCents:
+              type: integer
+            currency:
+              type: string
+          additionalProperties: false
+          required:
+          - amountCents
+          - currency
+        contributions:
+          type: array
+          items:
+            type: object
+            properties:
+              displayName:
+                type: string
+              amountCents:
+                type: integer
+              currency:
+                type: string
+              recurring:
+                type: boolean
+            additionalProperties: false
+            required:
+            - displayName
+            - amountCents
+            - currency
+            - recurring
+      additionalProperties: false
+      required:
+      - monthlyTotal
+      - contributions
+      title: SupportProgress
+    SupporterContributionSortEnum:
+      type: string
+      enum:
+      - startedAt asc
+      - startedAt desc
+      - endedAt asc
+      - endedAt desc
+      - amountCents asc
+      - amountCents desc
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - STARTED_AT_ASC
+      - STARTED_AT_DESC
+      - ENDED_AT_ASC
+      - ENDED_AT_DESC
+      - AMOUNT_CENTS_ASC
+      - AMOUNT_CENTS_DESC
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: SupporterContributionSortEnum
+    SupporterContributionSourceEnum:
+      type: string
+      enum:
+      - manual
+      - patreon
+      x-enumNames:
+      - MANUAL
+      - PATREON
+      title: SupporterContributionSourceEnum
     SyncRsiHangarInput:
       type: object
       properties:
@@ -16471,6 +19743,8 @@ components:
           type: string
         hideOwner:
           type: boolean
+        tracking:
+          type: boolean
         twoFactorRequired:
           type: boolean
         twoFactorQrCodeUrl:
@@ -16511,6 +19785,7 @@ components:
       - publicHangarStats
       - publicWishlist
       - hideOwner
+      - tracking
       - twoFactorRequired
       - resourceAccess
       - authConnections
@@ -16666,6 +19941,8 @@ components:
         publicWishlist:
           type: boolean
         hideOwner:
+          type: boolean
+        tracking:
           type: boolean
         location:
           type:
@@ -17101,6 +20378,12 @@ components:
           format: uri
         userRsiHandle:
           type: string
+        userDiscordProfileUrl:
+          type: string
+          format: uri
+        userCitizenidProfileUrl:
+          type: string
+          format: uri
         modelModuleIds:
           type: array
           items:
@@ -17352,6 +20635,49 @@ components:
       - meta
       - items
       title: Videos
+    WeaponIndex:
+      type: array
+      items:
+        "$ref": "#/components/schemas/WeaponIndexItem"
+      title: WeaponIndex
+    WeaponIndexItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        size:
+          type: string
+        manufacturerCode:
+          type: string
+        beam:
+          type: boolean
+        weaponClass:
+          type: string
+        pelletsPerShot:
+          type: integer
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - damagePerShot
+      title: WeaponIndexItem
   securitySchemes:
     BearerAuth:
       type: http

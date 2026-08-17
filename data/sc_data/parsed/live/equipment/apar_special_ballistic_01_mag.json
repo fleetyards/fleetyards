@@ -1,0 +1,36 @@
+{
+  "key": "apar_special_ballistic_01_mag",
+  "ref": "92f958c7-71c5-4997-a575-d6ea3a6e304b",
+  "name": "Scourge Railgun Magazine (5 cap)",
+  "description": "This magazine holds the large specially designed .937 caliber tungsten sabot rounds fired by the Apocalypse Arms Scourge railgun.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "5.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "tags": [
+    "apar_special_ballistic_01",
+    "SM_RestrictedWep"
+  ],
+  "hidden": false,
+  "volume": 0.00053,
+  "volume_dimensions": {
+    "x": 0.04562791,
+    "y": 0.1166916,
+    "z": 0.09885663
+  }
+}

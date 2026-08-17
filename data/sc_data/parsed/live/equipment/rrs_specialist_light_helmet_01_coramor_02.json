@@ -1,0 +1,41 @@
+{
+  "key": "rrs_specialist_light_helmet_01_coramor_02",
+  "ref": "712e37de-3d0b-4884-8035-3b198f2a2847",
+  "name": "Arden-SL Helmet Coramor Edition \"Kismet\"",
+  "description": "With its excellent design and eye-catching style, the Arden-SL armor exemplifies why security specialists love Roussimoff Rehabilitation Systems. This versatile armor set lets the wearer stay agile but safe thanks to the precise placement of special composite armor plating and fabrics. It also features a fully enclosed helmet with an integrated cowl. The special Kismet edition of this armor features black and pink coloration in honor of the ship Yuri Ilyin flew in the classic vid 'Coramor' while he searched for his lost lover Corazon Tan. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-38 / 68 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "73a6ba90-8f53-423d-ad0b-96e81b7e18a5",
+  "tags": [
+    "rrs_specialist_light",
+    "Set_01",
+    "Color_02",
+    "SM_RestrictedArm",
+    "Texture_coramor",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
+}

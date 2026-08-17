@@ -6,8 +6,25 @@ if [ -n "$KAMAL_DESTINATION" ]; then
   DEST_FLAG="-d $KAMAL_DESTINATION"
 fi
 
-echo "Running database migrations..."
-kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" 'bin/rails db:migrate'
+# Run schema migrations, data migrations and the feature flag sync in a single
+# container over one SSH session. Splitting them across back-to-back
+# `kamal app exec` calls opened a second SSH connection that the host reset
+# (Errno::ECONNRESET), failing the deploy.
+# Retry to absorb the occasional genuinely transient reset; all three steps are
+# idempotent, so re-running them is safe.
+# Wrapped in `sh -c` because bin/docker-entrypoint execs its argv directly, so
+# the `&&` needs a shell of its own.
+echo "Running database and data migrations and syncing feature flags..."
 
-echo "Running data migrations..."
-kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" 'bin/rails data:migrate'
+attempt=1
+max_attempts=3
+until kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" \
+  'sh -c "bin/rails db:migrate data:migrate && bin/feature-flags sync"'; do
+  if [ "$attempt" -ge "$max_attempts" ]; then
+    echo "Migrations failed after $max_attempts attempts." >&2
+    exit 1
+  fi
+  echo "Migration attempt $attempt failed, retrying in 5s..." >&2
+  attempt=$((attempt + 1))
+  sleep 5
+done

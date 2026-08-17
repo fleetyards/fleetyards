@@ -10,7 +10,6 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
 import FleetVehiclesTable from "@/frontend/components/Fleets/VehiclesTable/index.vue";
 import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
@@ -34,6 +33,7 @@ import {
   useFleetModelCounts as useFleetModelCountsQuery,
   useFleetVehiclesStats as useFleetVehiclesStatsQuery,
   fleetVehiclesExport as fetchFleetVehiclesExport,
+  fleetVehiclesHangarLinkExport as fetchFleetVehiclesHangarLinkExport,
   useFleetVehicles as useFleetVehiclesQuery,
   getFleetVehiclesQueryKey,
   type FleetVehicleQuery,
@@ -43,8 +43,6 @@ import {
 
 type Props = {
   fleet: Fleet;
-  shareUrl: string;
-  shareTitle: string;
 };
 
 const props = defineProps<Props>();
@@ -75,10 +73,6 @@ const fleetchartStore = useFleetchartStore();
 const fleetchartVisible = computed(() => {
   return fleetchartStore.isVisible("fleet");
 });
-
-const toggleFleetchart = () => {
-  fleetchartStore.toggleFleetchart("fleet");
-};
 
 watch(
   () => grouped.value,
@@ -122,14 +116,28 @@ const exportJson = async () => {
       fleetVehiclesQueryParams,
     );
 
-    downloadExport(exportedData);
+    downloadExport(exportedData, "vehicles");
   } catch (error) {
     displayAlert({ text: t("messages.hangarExport.failure") });
     console.error(error);
   }
 };
 
-const downloadExport = (data?: VehicleExport[]) => {
+const exportHangarLink = async () => {
+  try {
+    const exportedData = await fetchFleetVehiclesHangarLinkExport(
+      fleetSlug,
+      fleetVehiclesQueryParams,
+    );
+
+    downloadExport(exportedData, "hangar-link");
+  } catch (error) {
+    displayAlert({ text: t("messages.hangarExport.failure") });
+    console.error(error);
+  }
+};
+
+const downloadExport = (data: VehicleExport[] | undefined, suffix: string) => {
   if (!data || !window.URL) {
     displayAlert({ text: t("messages.hangarExport.failure") });
     return;
@@ -143,7 +151,7 @@ const downloadExport = (data?: VehicleExport[]) => {
 
   link.setAttribute(
     "download",
-    `fleetyards-${props.fleet.slug}-vehicles-${format(
+    `fleetyards-${props.fleet.slug}-${suffix}-${format(
       new Date(),
       "yyyy-MM-dd",
     )}.json`,
@@ -210,9 +218,10 @@ const {
         <div class="fleet-labels">
           <ModelClassLabels
             v-if="fleetStats"
-            :label="t('labels.fleet.classes')"
+            :label="t('labels.classifications')"
             :count-data="fleetStats.classifications"
             filter-key="classificationIn"
+            exclude-filter-key="classificationNotIn"
           />
         </div>
       </div>
@@ -285,38 +294,22 @@ const {
         <template #actions-right>
           <Btn
             :aria-label="t('actions.models.openTableConfiguration')"
-            :size="BtnSizesEnum.SMALL"
             @click="openDisplayOptionsModal"
           >
             <i class="fa-duotone fa-sliders" />
           </Btn>
-          <BtnDropdown :size="BtnSizesEnum.SMALL">
-            <template v-if="mobile">
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                data-test="fleetchart-link"
-                @click="toggleFleetchart"
-              >
-                <i class="fa-duotone fa-starship" />
-                <span>{{ t("labels.fleetchart") }}</span>
-              </Btn>
-
-              <ShareBtn
-                v-if="fleet.publicFleet"
-                :url="shareUrl"
-                :title="shareTitle"
-                :size="BtnSizesEnum.SMALL"
-              />
-
-              <hr />
-            </template>
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              :aria-label="t('actions.export')"
-              @click="exportJson"
-            >
+          <BtnDropdown>
+            <Btn :aria-label="t('actions.export')" @click="exportJson">
               <i class="fa-light fa-download" />
               <span>{{ t("actions.export") }}</span>
+            </Btn>
+
+            <Btn
+              :aria-label="t('actions.exportHangarLink')"
+              @click="exportHangarLink"
+            >
+              <i class="fa-light fa-link" />
+              <span>{{ t("actions.exportHangarLink") }}</span>
             </Btn>
           </BtnDropdown>
         </template>
@@ -361,7 +354,7 @@ const {
                 v-if="fleetVehicles"
                 :query-result-ref="fleetVehicles"
                 :per-page="perPage"
-                :size="BtnSizesEnum.SMALL"
+                :size="BtnSizesEnum.SM"
                 :update-per-page="updatePerPage"
               />
             </template>

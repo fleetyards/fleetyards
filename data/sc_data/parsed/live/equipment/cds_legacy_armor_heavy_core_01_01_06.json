@@ -1,0 +1,38 @@
+{
+  "key": "cds_legacy_armor_heavy_core_01_01_06",
+  "ref": "7c2b7cfe-1dfc-405c-804b-72503d2ebfed",
+  "name": "ADP Core Seagreen",
+  "description": "Revolutionary when first released, the ADP heavy armor system was heralded as the pinnacle of personal protection. Clark Defense Systems' maximalist design provides plenty of attachment points and excellent protection against the elements and enemy fire. CDS refined and reshaped the ADP line over the years, but many still consider the original ADP to be the touchstone of military-grade heavy armor.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "40.0",
+  "temperature_rating": "-75 / 105 °C",
+  "radiation_protection": "52800.0",
+  "radiation_scrub_rate": "251.1",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "all",
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Heavy",
+    "Set_06",
+    "Color_06",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.055,
+  "volume_dimensions": {
+    "x": 0.454,
+    "y": 0.459,
+    "z": 0.331
+  }
+}

@@ -21,7 +21,7 @@
   align-items: center;
   font-size: 120%;
 
-  :deep(.panel-btn-inner) {
+  :deep(.btn__content) {
     color: $primary;
   }
 
@@ -37,10 +37,4 @@
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
-
-  :deep(.panel-btn),
-  :deep(.panel-btn-group) {
-    margin-bottom: 0;
-    margin-right: 0;
-  }
 }

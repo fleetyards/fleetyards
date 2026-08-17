@@ -1,0 +1,36 @@
+{
+  "key": "arma_barrel_comp_s3_02",
+  "ref": "e52d18bc-740e-4057-9ae9-9a1c27d088eb",
+  "name": "Vera Compensator3",
+  "description": "When modified with the Vera Compensator3, your weapon will have a faster recovery time at cost of some loss of finesse allowing you to provide devastating salvos of suppressive fire.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "barrel",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Barrel",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a",
+  "tags": [
+    "FPS_Barrel",
+    "ballistic_attach"
+  ],
+  "hidden": false,
+  "volume": 0.00002,
+  "volume_dimensions": {
+    "x": 0.0211,
+    "y": 0.0402,
+    "z": 0.02
+  }
+}

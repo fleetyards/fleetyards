@@ -14,6 +14,186 @@
     "base_expediting_fee": "19220"
   },
   "mass": 247552.0,
+  "inventory_container_ref": "41b19211-b6a2-4967-a7b7-541806e61127",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 6705.0,
+    "y": 9327.0,
+    "z": 17642.0
+  },
+  "hull_health": 47314.0,
+  "hull_parts": [
+    {
+      "name": "vncl_stinger",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 12500.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left",
+      "health": 8500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_tip",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_tip_spike_03",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_tip_spike_02",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_tip_spike_01",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_lg_door_front_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_tip_blade_inner",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_tip_blade_outer",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_tip_blade_rear",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_spike",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_blade_outer",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_blade_inner",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_blade_rear",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_comp_lower_hatch",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_lg_door_rear_01_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_lg_door_rear_02_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_lg_door_rear_03_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 8500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_spike",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tip",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_tip_blade_rear",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tip_blade_outer",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tip_blade_mid",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_lg_door_front_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tip_spike_01",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tip_spike_02",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tip_spike_03",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_blade_outer",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_blade_inner",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_blade_rear",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 32.0,
     "y": 36.0,

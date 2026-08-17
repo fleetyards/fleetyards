@@ -10,10 +10,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   useOauthApplications,
   getOauthApplicationsQueryKey,
@@ -81,10 +78,7 @@ const formatScopes = (scopes: string) => {
         {{ t("labels.oauthApplications.settingsIntro") }}
       </p>
     </div>
-    <Btn
-      :size="BtnSizesEnum.SMALL"
-      :to="{ name: 'settings-oauth-application-create' }"
-    >
+    <Btn :to="{ name: 'settings-oauth-application-create' }">
       <i class="fa-duotone fa-plus" />
       {{ t("actions.oauthApplications.create") }}
     </Btn>
@@ -132,9 +126,8 @@ const formatScopes = (scopes: string) => {
     </template>
 
     <template #actions="{ item }">
-      <BtnGroup inline>
+      <BtnGroup>
         <Btn
-          :size="BtnSizesEnum.SMALL"
           :to="{
             name: 'settings-oauth-application-edit',
             params: { id: item.id },
@@ -142,11 +135,7 @@ const formatScopes = (scopes: string) => {
         >
           <i class="fa-duotone fa-pencil" />
         </Btn>
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          :variant="BtnVariantsEnum.DANGER"
-          @click="confirmDestroy(item)"
-        >
+        <Btn @click="confirmDestroy(item)" :tone="BtnTonesEnum.DANGER">
           <i class="fa-duotone fa-trash" />
         </Btn>
       </BtnGroup>

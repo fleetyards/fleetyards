@@ -10,10 +10,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
@@ -30,8 +27,6 @@ import {
   enableAdminFeaturePercentageOfActors,
   enableAdminFeaturePercentageOfTime,
   toggleAdminFeatureSelfService,
-  createAdminFeature,
-  destroyAdminFeature,
   type Feature,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -55,13 +50,8 @@ const featureItems = computed<FeatureItem[]>(() => {
 
 const editableList = ref<{
   editingId: string | null;
-  creating: boolean;
   finishEdit: () => void;
-  finishCreate: () => void;
-  startCreate: () => void;
 } | null>(null);
-
-const newFeatureName = ref("");
 
 // Edit form state
 const editActorType = ref("User");
@@ -177,35 +167,6 @@ const toggleSelfServiceFlag = async (feature: FeatureItem) => {
   }
 };
 
-const onStartCreate = () => {
-  newFeatureName.value = "";
-};
-
-const onSaveCreate = async () => {
-  const name = newFeatureName.value.trim();
-  if (!name) return;
-
-  try {
-    await createAdminFeature({ name });
-    void invalidateFeatures();
-    newFeatureName.value = "";
-    editableList.value?.finishCreate();
-    displaySuccess({ text: t("messages.features.created") });
-  } catch {
-    displayAlert({ text: t("messages.features.createError") });
-  }
-};
-
-const onDestroy = async (item: FeatureItem) => {
-  try {
-    await destroyAdminFeature(item.name);
-    void invalidateFeatures();
-    displaySuccess({ text: t("messages.features.destroyed") });
-  } catch {
-    displayAlert({ text: t("messages.features.error") });
-  }
-};
-
 const onStartEdit = (_item: FeatureItem) => {
   editActorType.value = "User";
   selectedUser.value = undefined;
@@ -252,41 +213,19 @@ const hasSelectedActor = computed(() => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between">
-    <Heading hero>{{ t("headlines.admin.features.index") }}</Heading>
-    <Btn
-      :size="BtnSizesEnum.SMALL"
-      :disabled="editableList?.creating"
-      @click="editableList?.startCreate()"
-    >
-      <i class="fa-duotone fa-plus" />
-      {{ t("actions.add") }}
-    </Btn>
-  </div>
+  <Heading hero>{{ t("headlines.admin.features.index") }}</Heading>
+
+  <p class="text-muted">{{ t("labels.features.registryHint") }}</p>
 
   <InlineEditableList
     ref="editableList"
     empty-name="features"
     :loading="isLoading"
     :items="featureItems"
-    confirm-destroy-text="Are you sure you want to remove this feature flag?"
+    hide-destroy
     @start-edit="onStartEdit"
     @save-edit="onSaveEdit"
-    @start-create="onStartCreate"
-    @save-create="onSaveCreate"
-    @destroy="onDestroy"
   >
-    <template #create>
-      <FormInput
-        v-model="newFeatureName"
-        name="create-feature-name"
-        translation-key="features.name"
-        no-label
-        inline
-        @keyup.enter="onSaveCreate"
-      />
-    </template>
-
     <template #display="{ item }">
       <BasePill :variant="stateVariant(item.state)" uppercase margin-right>
         {{ stateLabel(item.state) }}
@@ -313,10 +252,9 @@ const hasSelectedActor = computed(() => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.features.toggle')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         data-test="toggle-feature"
         @click="toggleFeature(item)"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-power-off"
@@ -389,11 +327,7 @@ const hasSelectedActor = computed(() => {
               class="edit-group-item"
             >
               <BasePill margin-right>{{ group }}</BasePill>
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
-                @click.prevent="removeGroup(item.name, group)"
-              >
+              <Btn @click.prevent="removeGroup(item.name, group)">
                 <i class="fa-duotone fa-times" />
               </Btn>
             </div>
@@ -402,9 +336,7 @@ const hasSelectedActor = computed(() => {
                 (g) => !item.groups.includes(g),
               )"
               :key="group"
-              :size="BtnSizesEnum.SMALL"
               :data-test="`add-group-${group}`"
-              inline
               @click.prevent="addGroup(item.name, group)"
             >
               <i class="fa-duotone fa-plus" />
@@ -424,8 +356,6 @@ const hasSelectedActor = computed(() => {
               <BasePill uppercase margin-right>{{ actor.type }}</BasePill>
               <span>{{ actor.name }}</span>
               <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
                 @click.prevent="removeActor(item.name, actor.type, actor.id)"
               >
                 <i class="fa-duotone fa-times" />
@@ -453,11 +383,7 @@ const hasSelectedActor = computed(() => {
               name="feature-fleet"
               :no-label="false"
             />
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              :disabled="!hasSelectedActor"
-              @click.prevent="addActor(item)"
-            >
+            <Btn :disabled="!hasSelectedActor" @click.prevent="addActor(item)">
               <i class="fa-duotone fa-plus" />
               {{ t("actions.addActor") }}
             </Btn>

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
@@ -148,11 +148,10 @@ const destroyBulk = async () => {
 </script>
 
 <template>
-  <BtnGroup inline>
+  <BtnGroup>
     <span>{{ t("labels.public") }}</span>
     <Btn
       v-tooltip="t('actions.hangar.showOnPublicHangar')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       @click="showOnPublicHangar"
     >
@@ -160,44 +159,25 @@ const destroyBulk = async () => {
     </Btn>
     <Btn
       v-tooltip="t('actions.hangar.hideFromPublicHangar')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       @click="hideFromPublicHangar"
     >
       <i class="fa-duotone fa-eye-slash" />
     </Btn>
   </BtnGroup>
-  <Btn
-    v-if="wishlist"
-    :size="BtnSizesEnum.SMALL"
-    :disabled="updating"
-    inline
-    @click="addToHangarBulk"
-  >
+  <Btn v-if="wishlist" :disabled="updating" @click="addToHangarBulk">
     {{ t("actions.addToHangar") }}
   </Btn>
-  <Btn
-    v-else
-    :size="BtnSizesEnum.SMALL"
-    :disabled="updating"
-    inline
-    @click="addToWishlistBulk"
-  >
+  <Btn v-else :disabled="updating" @click="addToWishlistBulk">
     {{ t("actions.addToWishlist") }}
   </Btn>
-  <Btn
-    v-if="!wishlist"
-    :size="BtnSizesEnum.SMALL"
-    inline
-    @click="openBulkGroupEditModal"
-  >
+  <Btn v-if="!wishlist" @click="openBulkGroupEditModal">
     {{ t("actions.hangar.editGroupsSelected") }}
   </Btn>
   <Btn
+    :tone="BtnTonesEnum.DANGER"
     v-tooltip="t('actions.deleteSelected')"
-    :size="BtnSizesEnum.SMALL"
     :disabled="deleting"
-    inline
     @click="destroyBulk"
   >
     <i class="fa-light fa-trash" />

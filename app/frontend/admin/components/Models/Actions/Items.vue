@@ -13,10 +13,7 @@ import {
   useUseRsiImage,
   getModelsQueryKey,
 } from "@/services/fyAdminApi";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -150,7 +147,6 @@ const destroy = () => {
 <template>
   <Btn
     v-tooltip="!withLabels && t('actions.models.syncMatrix')"
-    :size="BtnSizesEnum.SMALL"
     :loading="isSyncingMatrix"
     spinner
     @click="syncMatrix"
@@ -160,7 +156,6 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.models.syncScData')"
-    :size="BtnSizesEnum.SMALL"
     :loading="isSyncingScData"
     spinner
     @click="syncScData"
@@ -170,7 +165,6 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.models.exchangeStoreImage')"
-    :size="BtnSizesEnum.SMALL"
     @click="exchangeStoreImage"
   >
     <i class="fa-duotone fa-arrow-right-arrow-left" />
@@ -178,7 +172,6 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.edit')"
-    :size="BtnSizesEnum.SMALL"
     :to="{ name: 'admin-model-edit', params: { id: props.model.id } }"
   >
     <i class="fa-duotone fa-pen-to-square" />
@@ -186,9 +179,8 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.delete')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
+    :tone="BtnTonesEnum.DANGER"
   >
     <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>

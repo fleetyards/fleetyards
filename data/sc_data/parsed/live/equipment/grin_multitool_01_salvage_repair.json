@@ -1,0 +1,35 @@
+{
+  "key": "grin_multitool_01_salvage_repair",
+  "ref": "99379aa0-7240-4014-813a-0ab460f885f5",
+  "name": "Cambio-Lite SRT Attachment",
+  "description": "MUST BUY BASE MULTI-TOOL TO USE: \"Pyro RYT Multi-Tool\"\n\nManufacturer: Greycat Industrial\nItem Type: Multi-Tool Attachment\nClass: Salvage and Repair\n\nGreycat delivers once again, bringing their popular salvage and repair tool (SRT) as an attachment for the Multi-Tool. Though not as powerful as the Cambio, the Cambio-Lite also collects and converts alloys and polymers found in scrap into recycled material composite that can either be sold or used to make quick repairs. Whether stripping salvage for creds or patching a hull to make a ship space-safe, the Cambio-Lite is ready to get to work.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "multitool",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Utility",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_multitool_01"
+  ],
+  "hidden": false,
+  "volume": 0.00034,
+  "volume_dimensions": {
+    "x": 0.0549,
+    "y": 0.0424,
+    "z": 0.133
+  }
+}

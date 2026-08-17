@@ -1,0 +1,37 @@
+{
+  "key": "scu_jacket_01_01_15",
+  "ref": "59e36878-6702-4024-9c06-d9f050c13c0b",
+  "name": "ClipVest Work Harness Tan",
+  "description": "Stegman's ClipVest is a multi-purpose work harness that keeps your tools handy when and where you need them. Built from industrial strength materials, this harness offers a back piece to help alleviate strain and provide counterbalance.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_jacket",
+    "set_01",
+    "Color_15"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

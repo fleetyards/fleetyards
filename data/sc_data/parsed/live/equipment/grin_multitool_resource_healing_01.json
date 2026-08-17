@@ -1,0 +1,36 @@
+{
+  "key": "grin_multitool_resource_healing_01",
+  "ref": "03fc4136-a491-4713-b278-ef7e4333431d",
+  "name": "LifeGuard Refill",
+  "description": "This vial is used to refill the LifeGuard medical multi-tool attachment with CureLife Pancea MedGel.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "medgel_refill",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_multitool_01",
+    "multitool_resource"
+  ],
+  "hidden": false,
+  "volume": 0.00018,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.134
+  }
+}

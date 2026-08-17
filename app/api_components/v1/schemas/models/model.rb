@@ -113,6 +113,8 @@ module V1
                 beamLabel: {type: :string},
                 cargo: {type: :number},
                 cargoLabel: {type: :string},
+                personalInventory: {type: :number},
+                personalInventoryLabel: {type: [:string, :null]},
                 fleetchartOffsetLength: {type: :number},
                 fleetchartOffsetBeam: {type: :number},
                 extendedLength: {type: :number},
@@ -131,7 +133,43 @@ module V1
                 lengthLabel: {type: :string},
                 mass: {type: :number},
                 massLabel: {type: :string},
+                hullHealth: {type: :number},
+                hullParts: {
+                  type: :array,
+                  items: {
+                    type: :object,
+                    properties: {
+                      name: {type: :string},
+                      health: {type: :number},
+                      category: {type: :string, enum: %w[vital secondary breakable subpart cosmetic]}
+                    },
+                    required: %w[name health category],
+                    additionalProperties: false
+                  }
+                },
+                hullDoors: {
+                  type: :array,
+                  items: {
+                    type: :object,
+                    properties: {
+                      name: {type: :string},
+                      health: {type: :number}
+                    },
+                    required: %w[name health],
+                    additionalProperties: false
+                  }
+                },
                 quantumFuelTankSize: {type: :number},
+                weaponPoolSize: {type: :number},
+                signatureCrossSection: {
+                  type: :object,
+                  properties: {
+                    x: {type: :number},
+                    y: {type: :number},
+                    z: {type: :number}
+                  },
+                  additionalProperties: false
+                },
                 size: {type: :string},
                 sizeLabel: {type: :string},
                 dockSize: {type: :string}

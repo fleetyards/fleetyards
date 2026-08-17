@@ -1,0 +1,38 @@
+{
+  "key": "alb_shirt_06_01_18",
+  "ref": "a6adc5eb-0e87-4b35-a917-cc8c75f9e7eb",
+  "name": "Cassidy Shirt Daylight",
+  "description": "Habidash's Cassidy short-sleeved henley t-shirt features a lightweight, breathable fabric blend paired with a neck covering and separated arm sleeves for a stylish look that remains practical in dustier climates.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_shirt",
+    "Set_06",
+    "Texture_01",
+    "Color_18"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

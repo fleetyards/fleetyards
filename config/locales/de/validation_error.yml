@@ -20,6 +20,7 @@ de:
       accept: Flottenmitglied konnte nicht akzeptiert werden.
       decline: Flottenmitglied konnte nicht abgelehnt werden.
       destroy: Flottenmitglied konnte nicht entfernt werden.
+      update: Flottenmitglied konnte nicht aktualisiert werden.
     fleet_memberships:
       create: Flotteneinladung konnte nicht verwendet werden
       destroy: Flotte konnte nicht verlassen werden.
@@ -31,6 +32,28 @@ de:
       create: Gruppe konnte nicht erstellt werden
       destroy: Gruppe konnte nicht gelöscht werden
       update: Gruppe konnte nicht aktualisiert werden
+    fleet_inventories:
+      create: Inventar konnte nicht erstellt werden.
+      update: Inventar konnte nicht aktualisiert werden.
+      destroy: Inventar konnte nicht gelöscht werden.
+    fleet_inventory_items:
+      create: Inventareintrag konnte nicht erstellt werden.
+      update: Inventareintrag konnte nicht aktualisiert werden.
+      destroy: Inventareintrag konnte nicht gelöscht werden.
+    hangar_inventories:
+      create: Inventar konnte nicht erstellt werden.
+      update: Inventar konnte nicht aktualisiert werden.
+      destroy: Inventar konnte nicht gelöscht werden.
+    hangar_inventory_items:
+      create: Inventareintrag konnte nicht erstellt werden.
+      update: Inventareintrag konnte nicht aktualisiert werden.
+      destroy: Inventareintrag konnte nicht gelöscht werden.
+    vehicle_inventory:
+      destroy: Inventar konnte nicht gelöscht werden.
+    vehicle_inventory_items:
+      create: Inventareintrag konnte nicht erstellt werden.
+      update: Inventareintrag konnte nicht aktualisiert werden.
+      destroy: Inventareintrag konnte nicht gelöscht werden.
     image:
       create: Bild konnte nicht erstellt werden
       update: Bild konnte nicht aktualisiert werden

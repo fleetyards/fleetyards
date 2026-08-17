@@ -1,0 +1,37 @@
+{
+  "key": "cba_jacket_01_01_07",
+  "ref": "aff73778-73a4-450e-b6dd-56817adac3cf",
+  "name": "Cumulus Jacket Teal",
+  "description": "Be bold and brave the cold in frigid conditions up to -35 °C with the Cumulus's special thermal lining. An oversized, insulated hood provides additional protection around the head, while the distinct quilted torso stops snow, ice, and wind from seeping in, ensuring the wearer remains warm and dry.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "5000.0",
+  "damage_reduction": null,
+  "temperature_rating": "-35 / 10 °C",
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_jacket",
+    "Set_01",
+    "Color_07"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

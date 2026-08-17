@@ -1,0 +1,40 @@
+{
+  "key": "ccc_combat_heavy_helmet_01_01_01",
+  "ref": "30a103e5-c48b-43d1-8b01-31a3cb153393",
+  "name": "Berserker Helmet",
+  "description": "Modern and ancient armor converge with the Berserker helmet. This wildly original armor from CC's Conversions features golden horns and wings, plus a face covering inspired by lamellar armor. Beneath these unique aesthetic flourishes, this heavy helmet provides supreme protection with plating that extends low enough to protect your neck. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-90 / 115 °C",
+  "radiation_protection": "52800.0",
+  "radiation_scrub_rate": "251.1",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "ccc_combat_heavy",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

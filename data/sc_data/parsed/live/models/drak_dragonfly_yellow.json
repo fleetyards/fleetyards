@@ -14,6 +14,81 @@
     "base_expediting_fee": "55"
   },
   "mass": 5600.0,
+  "inventory_container_ref": "6008a41b-d483-4164-9595-3c7b9cea1209",
+  "weapon_pool_size": 2,
+  "signature_cross_section": {
+    "x": 452.0,
+    "y": 334.0,
+    "z": 564.0
+  },
+  "hull_health": 1570.0,
+  "hull_parts": [
+    {
+      "name": "DRAK_Dragonfly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 880.0,
+      "category": "vital"
+    },
+    {
+      "name": "front_leg_mount",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_front_right_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_front_right_main",
+      "health": 160.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_front_left_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_front_left_main",
+      "health": 160.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_leg_mount",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_rear_left_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_rear_left_main",
+      "health": 160.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_rear_right_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_rear_right_main",
+      "health": 160.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 2.5,
     "y": 7.0,

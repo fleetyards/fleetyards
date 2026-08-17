@@ -1,0 +1,39 @@
+{
+  "key": "outlaw_legacy_armor_light_arms_01_04_9tails",
+  "ref": "64d4fc3f-1682-43a8-bb99-d45ca9a76018",
+  "name": "Lynx Arms (Modified)",
+  "description": "This version of Kastak Arms' Lynx arms has been modified from its original form. Maintain your mobility with the Lynx combat armor. A high tech polymer weave allows the wearer to withstand enough damage to quickly escape danger. The suit's striking look became famous after being worn by the Seeker in the widely popular \"Fire and Fury\" vids of the mid-2800s.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-31 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Light",
+    "Set_01",
+    "Texture_04",
+    "Color_9Tails",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.008,
+  "volume_dimensions": {
+    "x": 0.088,
+    "y": 0.345,
+    "z": 0.323
+  }
+}

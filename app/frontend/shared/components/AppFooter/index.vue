@@ -5,19 +5,29 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
 import CommunityLogo from "@/shared/components/CommunityLogo/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
-import { useAppStore } from "@/frontend/stores/app";
-import { storeToRefs } from "pinia";
-import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+
+// Declared, at last. All three apps - frontend, admin and docs - have always
+// passed these; the component read `@/frontend/stores/app` instead, so the bound
+// values landed on the root <footer> as DOM attributes and were ignored, and a
+// shared component reached into one specific app for its state. Admin and docs
+// also passed `revision`, which was never the store's key either.
+type Props = {
+  version?: string;
+  codename?: string;
+  gitRevision?: string;
+  online?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  version: undefined,
+  codename: undefined,
+  gitRevision: undefined,
+  online: false,
+});
 
 const { t } = useI18n();
-
-const appStore = useAppStore();
-
-const { online, version, codename, gitRevision } = storeToRefs(appStore);
 
 const copyrightOwner = computed(() => {
   return window.COPYRIGHT_OWNER;
@@ -27,36 +37,64 @@ const scDataVersion = computed(() => {
   return window.SC_DATA_VERSION;
 });
 
-const comlink = useComlink();
-
-const openSupportModal = () => {
-  comlink.emit("open-modal", {
-    component: () => import("@/frontend/components/SupportBtn/Modal/index.vue"),
-    wide: true,
-  });
-};
+// Was `new Date().getFullYear()` inline in the template, so it was recomputed on
+// every render and could not be frozen by a test.
+const currentYear = computed(() => new Date().getFullYear());
 </script>
 
 <template>
   <footer class="app-footer" data-test="app-footer">
-    <div class="app-footer__border app-footer__border-top">
-      <div class="app-footer__border-left" />
-      <div class="app-footer__border-right" />
-    </div>
     <div class="app-footer__inner">
-      <div class="app-footer__inner__border app-footer__inner__border-top">
-        <div class="app-footer__inner__border-bg" />
+      <div class="app-footer__logo">
+        <CommunityLogo />
       </div>
-      <div class="app-footer__links">
-        <slot />
+
+      <div class="app-footer__main">
+        <!-- Collapsed when empty: admin and docs pass no links, and the row
+             still occupied its gap. -->
+        <div v-if="$slots.default" class="app-footer__links">
+          <slot />
+        </div>
+
+        <div v-if="$slots.actions" class="app-footer__actions">
+          <slot name="actions" />
+        </div>
+
+        <div class="app-footer__disclaimer">
+          <p class="app-footer__disclaimer-copyright">
+            <span>Copyright &copy; {{ currentYear }}</span>
+            {{ copyrightOwner }}
+          </p>
+
+          <!-- One paragraph per sentence. A single wrapped block breaks
+               wherever the measure runs out, which centred reads as lines
+               opening mid-clause and split the brand name across two of them.
+               Not <br>, so these still rewrap at every width. -->
+          <div class="app-footer__disclaimer-rsi">
+            <p>
+              This is an unofficial Star Citizen fansite, not affiliated with
+              the Cloud Imperium group of companies.
+            </p>
+            <p>
+              All content on this site not authored by its host or users are
+              property of their respective owners.
+            </p>
+            <p>
+              Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud
+              Imperium® are registered trademarks of Cloud Imperium Rights LLC.
+              All rights reserved.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="app-footer__social-links">
+
+      <div class="app-footer__social" data-test="app-footer-social">
         <a
           v-tooltip="'Discord'"
           href="https://discord.gg/6EQKAsb"
           target="_blank"
           rel="noopener"
-          aria-label="Discrod"
+          aria-label="Discord"
         >
           <i class="fa-brands fa-discord" />
         </a>
@@ -88,54 +126,210 @@ const openSupportModal = () => {
           <i class="fa-brands fa-instagram" />
         </a>
       </div>
-      <div class="app-footer__support">
-        <Btn inline :variant="BtnVariantsEnum.LINK" @click="openSupportModal">
-          {{ t("labels.supportUs") }}
-          <i class="fa fa-heart" />
-        </Btn>
-      </div>
-      <div class="app-footer__disclaimer">
-        <p>
-          <span>Copyright &copy; {{ new Date().getFullYear() }}</span>
-          {{ copyrightOwner }}
-        </p>
-        <p class="app-footer__disclaimer-rsi">
-          This is an unofficial Star Citizen fansite, not affiliated with the
-          Cloud Imperium group of companies.
-          <br />
-          All content on this site not authored by its host or users are
-          property of their respective owners.
-          <br />
-          Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud
-          Imperium® are
-          <br />
-          registered trademarks of Cloud Imperium Rights LLC. All rights
-          reserved.
-        </p>
-      </div>
-      <div class="app-footer__community-logo">
-        <CommunityLogo />
-      </div>
-      <div class="app-footer__version">
-        {{ codename }} ({{ version }})
-        <span
-          v-tooltip="gitRevision"
-          :class="{
-            online: online,
-          }"
-          class="app-footer__git-revision"
-        >
-          <span class="hidden">{{ gitRevision }}</span>
-          <i class="fa-regular fa-fingerprint" />
-        </span>
-      </div>
-      <div class="app-footer__sc-data-version">
-        {{ t("labels.scDataVersion") }}: {{ scDataVersion }}
+
+      <div class="app-footer__meta">
+        <div class="app-footer__version" data-test="app-footer-version">
+          {{ codename }} ({{ version }})
+          <!-- The revision was a display:none span behind a tooltip, so it was
+               hidden from assistive tech as well and reachable by hover alone. -->
+          <span
+            :class="{ 'app-footer__revision--online': online }"
+            class="app-footer__revision"
+          >
+            <i class="fa-regular fa-fingerprint" />
+            <span class="app-footer__revision-value">{{ gitRevision }}</span>
+          </span>
+        </div>
+
+        <div class="app-footer__data-version">
+          {{ t("labels.scDataVersion") }}: {{ scDataVersion }}
+        </div>
       </div>
     </div>
   </footer>
 </template>
 
-<style lang="scss" scoped>
-@import "index";
+<!--
+  Plain CSS, not lang="scss", for the reason Btn documents: sass preprocesses the
+  block first and @apply/@reference reach the minifier as unknown at-rules.
+-->
+<style scoped>
+@reference "../../../entrypoints/tailwind.css";
+
+/*
+ * One band, one border, one pair of caps.
+ *
+ * What this replaces drew its top edge out of five elements: an outer pair of
+ * 80px stubs and a full-width inner bar inset 40px, in $panel-outer-border and
+ * #444 - the two values the panel redesign retired. It was the same end-cap motif
+ * built by hand with fixed insets, and at page width the fixed inset fails in the
+ * opposite direction from a narrow panel: 80px is 8% of a 992px viewport and 3%
+ * of a 2560px one, so the ticks read as artefacts rather than as a signature.
+ *
+ * See docs/exec-plans/footer-redesign.md.
+ */
+.app-footer {
+  @apply text-text relative border-t-2;
+  background-color: var(--color-surface, rgb(39 43 48 / 0.9));
+  border-top-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  /* 500ms deliberately, and the only 500ms left in the redesigned components:
+     this is the page sliding aside for the off-canvas nav, which `.main` in
+     shared/layout.scss animates at the same duration. The 150ms the redesign
+     standardised on is for controls answering a pointer. */
+  transition: transform 500ms ease;
+}
+
+/*
+ * Top edge only - the footer's bottom is the end of the document, so there is no
+ * edge there for a cap to signature. Geometry from the shared --cap-* tokens, so
+ * this cap and a panel's are one motif rather than two that drifted. The var()
+ * fallbacks follow Panel and Btn; every layout that renders this footer does load
+ * tailwind.css, so here they are consistency rather than necessity.
+ */
+.app-footer::before {
+  content: "";
+  @apply absolute z-[1];
+  left: max(10px, var(--cap-inset, 12%));
+  right: max(10px, var(--cap-inset, 12%));
+  top: -2px;
+  height: var(--cap-h, 4px);
+  background-color: var(--color-endcap, #7a8288);
+  border-radius: 0 0 var(--cap-r, 3px) var(--cap-r, 3px);
+}
+
+/*
+ * A real layout. The four corner regions were `position: absolute` over a
+ * centred block flow, with nothing relating the two - so the disclaimer had no
+ * reserved space and could run under them - and the whole mobile media query
+ * existed to reset those positions one by one.
+ */
+.app-footer__inner {
+  /* 30px top and a 24px side inset keep what shipped: the logo pinned top-left
+     and the social row top-right, both about 25px in. Less at the bottom, where
+     the meta row is the last thing on the page rather than a column start. */
+  @apply grid items-start gap-5 px-6 pt-[30px] pb-4 text-center;
+  /* auto, not a fixed 100px: the side columns size to the logo and to four
+     30px social icons with their gaps, which a fixed track would overflow. */
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    "logo main social"
+    "meta meta meta";
+}
+
+.app-footer a {
+  @apply text-text cursor-pointer no-underline;
+}
+
+.app-footer a:hover {
+  @apply text-white;
+}
+
+.app-footer__logo {
+  @apply flex h-[100px] w-[100px] items-center justify-center opacity-70;
+  grid-area: logo;
+}
+
+.app-footer__logo :deep(img) {
+  @apply max-h-full max-w-full;
+}
+
+.app-footer__main {
+  @apply flex flex-col items-center gap-4;
+  grid-area: main;
+}
+
+.app-footer__links {
+  @apply flex flex-wrap items-center justify-center gap-x-4 gap-y-2;
+}
+
+.app-footer__social {
+  @apply flex items-start justify-end gap-4 text-3xl;
+  grid-area: social;
+}
+
+/* Wide enough that the first two sentences each hold one line at 16px, which is
+   what makes the per-sentence paragraphs worth having. */
+.app-footer__disclaimer {
+  @apply max-w-[48rem];
+}
+
+.app-footer__disclaimer-copyright {
+  @apply mb-2;
+}
+
+/* Was darken($text-color, 20%) - one of the two hand-mixed greys this file used
+   in place of the token set. The sentences carry no margin; line-height alone
+   sets their rhythm, so the block reads as one paragraph. */
+.app-footer__disclaimer-rsi {
+  color: var(--color-muted, #7a8288);
+}
+
+/* The global p margin would set them 16px apart and undo that. */
+.app-footer__disclaimer-rsi p {
+  @apply mb-0;
+}
+
+/* Centred rather than spread to the corners: the two values are ~125px and
+   ~93px wide, so justify-between put the better part of 900px between them. */
+.app-footer__meta {
+  @apply flex flex-wrap items-center justify-center gap-x-8 gap-y-2;
+  grid-area: meta;
+}
+
+.app-footer__data-version {
+  color: var(--color-gray-light, #7a8288);
+}
+
+.app-footer__revision {
+  @apply inline-flex items-center gap-1;
+  /* Offline is not signalled by opacity alone: the value goes muted and the
+     fingerprint dims with it. */
+  color: var(--color-muted, #7a8288);
+}
+
+.app-footer__revision--online {
+  @apply text-text;
+}
+
+.app-footer__revision-value {
+  @apply font-mono text-xs;
+}
+
+/*
+ * The nav offset, on one token instead of a copied number. 300px appears four
+ * times in partials/app-navigation.scss and twice more in shared/layout.scss;
+ * the footer at least stops adding to that. Translate rather than left/right, so
+ * the slide runs on the compositor.
+ */
+@media (max-width: 992px) {
+  .app-footer__inner {
+    @apply px-4;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "logo"
+      "social"
+      "main"
+      "meta";
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-left: max(1rem, env(safe-area-inset-left));
+  }
+
+  .app-footer__logo {
+    @apply w-full;
+  }
+
+  .app-footer__social {
+    @apply justify-center;
+  }
+
+  .nav-visible .app-footer {
+    transform: translateX(calc(-1 * var(--nav-width, 300px)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-footer {
+    transition-duration: 1ms;
+  }
+}
 </style>

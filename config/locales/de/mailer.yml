@@ -4,6 +4,10 @@ de:
     account:
       action: Kontoeinstellungen verwalten
     admin:
+      new_supporter:
+        headline: FleetYards.net Command - Neuer Patreon-Unterstützer
+        subject: Neuer Patreon-Unterstützer
+        text: '%{name} ist jetzt Patreon-Unterstützer (%{amount})'
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
         subject: Verbindung zu RSI blockiert
@@ -13,12 +17,13 @@ de:
         subject: Verbindung zu RSI wiederhergestellt
         text: Automatische Aktualisierungen von RSI über "%{url}" wurden wiederhergestellt
       weekly:
-        fleets: Neue Flotten
         headline: FleetYards.net Command - Weekly
-        registrations: Neue Registrierungen
-        ships: Neue Schiffe
+        metrics:
+          fleets: Neue Flotten
+          registrations: Neue Registrierungen
+          ships: Neue Schiffe
+          vehicles: Neue Fahrzeuge
         subject: FleetYards.net Command Weekly
-        vehicles: Neue Fahrzeuge
     fleet_membership:
       fleet_accepted:
         action: "%{fleet} Homepage"

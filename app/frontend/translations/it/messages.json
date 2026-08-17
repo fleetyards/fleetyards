@@ -247,38 +247,6 @@
           }
         }
       },
-      "fleets": {
-        "logistics": {
-          "request": {
-            "create": {
-              "success": "Logistics request created.",
-              "failure": "Could not create logistics request."
-            }
-          },
-          "inventory": {
-            "create": {
-              "success": "Inventory created.",
-              "failure": "Could not create inventory."
-            }
-          },
-          "inventoryItem": {
-            "create": {
-              "success": "Item added to inventory.",
-              "failure": "Could not add item to inventory."
-            }
-          },
-          "comment": {
-            "create": {
-              "success": "Comment added.",
-              "failure": "Could not add comment."
-            }
-          },
-          "csvImport": {
-            "success": "%{count} items imported successfully.",
-            "failure": "Could not import CSV file."
-          }
-        }
-      },
       "fleetInvite": {
         "used": "<b>Richiesta di partecipazione a %{fleet} inviata!</b><br>Una volta che la tua iscrizione sarà accettata, sarai avvisato via email",
         "failure": "L'invito non può essere usato.",
@@ -319,7 +287,8 @@
           "leave": "Sei sicuro di voler lasciare questa Flotta? Questa azione non potrà essere annullata.",
           "destroy": "Sei sicuro di voler eliminare la tua Flotta? Questa azione non potrà essere annullata.",
           "members": {
-            "destroy": "Sei sicuro di voler rimuovere questo membro?"
+            "destroy": "Sei sicuro di voler rimuovere questo membro?",
+            "remove": "Sei sicuro di voler rimuovere questo membro dalla flotta?"
           },
           "invites": {
             "decline": "Sei sicuro di voler rifiutare questo invito? Questa azione non potrà essere annullata."
@@ -431,6 +400,76 @@
         "success": "Il tuo Hangar è stato sincronizzato.",
         "failure": "Il tuo Hangar non può essere sincronizzato.",
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
+      },
+      "logistics": {
+        "request": {
+          "create": {
+            "success": "Logistics request created.",
+            "failure": "Could not create logistics request."
+          }
+        },
+        "inventory": {
+          "create": {
+            "success": "Inventory created.",
+            "failure": "Could not create inventory."
+          },
+          "update": {
+            "success": "Inventory updated.",
+            "failure": "Could not update inventory."
+          },
+          "destroy": {
+            "success": "Inventory deleted.",
+            "failure": "Could not delete inventory."
+          }
+        },
+        "inventoryItem": {
+          "create": {
+            "success": "Item added to inventory.",
+            "failure": "Could not add item to inventory."
+          },
+          "deposit": {
+            "success": "Deposit recorded.",
+            "failure": "Could not record deposit."
+          },
+          "withdrawal": {
+            "success": "Withdrawal recorded.",
+            "failure": "Could not record withdrawal. Check available stock."
+          },
+          "destroy": {
+            "success": "Entry deleted.",
+            "failure": "Could not delete entry.",
+            "confirm": "Delete this entry? The stock it added or removed is corrected accordingly."
+          }
+        },
+        "comment": {
+          "create": {
+            "success": "Comment added.",
+            "failure": "Could not add comment."
+          }
+        },
+        "csvImport": {
+          "success": "%{count} items imported successfully.",
+          "failure": "Could not import CSV file."
+        },
+        "stockItem": {
+          "update": {
+            "success": "Item updated.",
+            "failure": "Could not update item."
+          },
+          "destroy": {
+            "success": "Item deleted.",
+            "failure": "Could not delete item.",
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "Eliminare questo articolo e tutte le sue voci? L'operazione non può essere annullata."
+          }
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "Svuotare il carico di questa nave? Tutte le voci verranno eliminate.",
+            "success": "Carico svuotato.",
+            "failure": "Impossibile svuotare il carico."
+          }
+        }
       }
     }
   }

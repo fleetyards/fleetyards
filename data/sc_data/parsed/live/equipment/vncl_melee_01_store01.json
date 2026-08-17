@@ -1,0 +1,35 @@
+{
+  "key": "vncl_melee_01_store01",
+  "ref": "23934f46-5787-4594-8215-4ffe019345a2",
+  "name": "VCK-1 \"Payback\" Blade",
+  "description": "Renowned as Humanity's fiercest enemy, the weapons wielded by the Vanduul are some of the most feared in the universe. Taking inspiration from those brutal knives, the VCK-1 from UltiFlex features a split blade, ceremonial detailing, and has been finished with a unique patina that closely resembles the Vanduul's own bespoke alloys.\n\nThe Payback edition features red 'X' markings.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "da264d7b-755b-48a2-9580-4adc17ff7ad5",
+  "tags": [
+    "knife"
+  ],
+  "hidden": true,
+  "volume": 0.00023,
+  "volume_dimensions": {
+    "x": 0.02,
+    "y": 0.3095443,
+    "z": 0.0414129
+  }
+}

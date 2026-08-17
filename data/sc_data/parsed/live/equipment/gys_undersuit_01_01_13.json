@@ -1,0 +1,39 @@
+{
+  "key": "gys_undersuit_01_01_13",
+  "ref": "9fb6a5f1-f5ae-4ca7-ac11-02a23e56c59d",
+  "name": "Deep-Space Undersuit Bruiser",
+  "description": "Confidently venture into the unknown with the Deep-Space undersuit. Smartly designed with several overlapping sections to guarantee the suit's integrity, Gyson has created an affordable and fashionable undersuit that helps make space travel more accessible to all.\n\nThe Bruiser version features dark crimson and midnight blue coloring with polished metal accents.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "undersuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "90.0",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d56a3985-2f29-4095-b2f2-542376cc74f4",
+  "tags": [
+    "gys_undersuit",
+    "Set_02",
+    "Texture_01",
+    "Color_01",
+    "$armor_mobi++"
+  ],
+  "hidden": false,
+  "volume": 0.023,
+  "volume_dimensions": {
+    "x": 0.315,
+    "y": 0.227,
+    "z": 0.41
+  }
+}

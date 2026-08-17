@@ -1,0 +1,35 @@
+{
+  "key": "banu_melee_01_blue01",
+  "ref": "1ead23f2-70df-4a7b-8c67-39d6d10ff7f5",
+  "name": "Pambada Knife",
+  "description": "Honed to a razor-fine edge, the Pambada knife has a wide range of applications. The serrated edge is great for cutting through soft and flexible materials like ropes or fabrics while the gut hook can be used to overcome materials with a tougher resistance. The sharpened angular point of the blade ensures the Pambada can still pierce, rounding out the weapon's versatile toolset. It is made with the same rust-resistant, ultra-sharp metal alloy found in other Banu knives and features an intricately detailed handle of distinctively Banu origin.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "tags": [
+    "knife"
+  ],
+  "hidden": false,
+  "volume": 0.000198,
+  "volume_dimensions": {
+    "x": 0.02,
+    "y": 0.3095443,
+    "z": 0.0414129
+  }
+}

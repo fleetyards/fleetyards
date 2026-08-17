@@ -18,34 +18,6 @@
       "z": 0.15
     }
   },
-  "loadout": [
-    {
-      "name": "hardpoint_Ext_Door_Left_Lg_HACK",
-      "min_size": "1",
-      "max_size": "1",
-      "types": []
-    },
-    {
-      "name": "hardpoint_Ext_Door_Left_Sm_HACK",
-      "min_size": "1",
-      "max_size": "1",
-      "types": []
-    }
-  ],
-  "default_loadout": [
-    {
-      "name": "hardpoint_Ext_Door_Left_Lg_HACK",
-      "key": "CRUS_Starlifter_Ext_Door_Left_Lg_HACK",
-      "ref": null,
-      "default_loadout": []
-    },
-    {
-      "name": "hardpoint_Ext_Door_Left_Sm_HACK",
-      "key": "CRUS_Starlifter_Ext_Door_Left_Sm_HACK",
-      "ref": null,
-      "default_loadout": []
-    }
-  ],
   "durability": {
     "health": 13500.0
   }

@@ -14,6 +14,206 @@
     "base_expediting_fee": "6750"
   },
   "mass": 238832.0,
+  "inventory_container_ref": "c25fb549-ef58-4223-b0dc-e1302d611f50",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 7800.0,
+    "y": 3600.0,
+    "z": 14000.0
+  },
+  "hull_health": 30150.0,
+  "hull_parts": [
+    {
+      "name": "rsi_meteor",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_main",
+      "health": 2750.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose_wingmount_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_spine_mid_housing",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_tail_wing_right",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_engine_connector_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engines_base_right",
+      "health": 2800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_engine_right",
+      "health": 2800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_wing_topcover_inner_right",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_topside_inner_fin_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_tail_wing_left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_engine_connector_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engines_base_left",
+      "health": 2800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_engine_left",
+      "health": 2800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_wing_topcover_inner_left",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_topside_inner_fin_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "glass_ext",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_main_spine",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_main_exhaust_housing",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_body_cap_rear_outer_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_cap_rear_outer_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_cap_rear_inner_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_cap_rear_inner_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_spine_topside_fin_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_spine_topside_fin_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_main_rear_connector",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_main_underside_torp_bay",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose_wingmount_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_rear_diffuser",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bottom_hull",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "dbr_small_fin_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_small_fin_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_underside_fin_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_underside_fin_right",
+      "health": 150.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 17.0,
     "y": 30.0,
@@ -420,6 +620,11 @@
     {
       "name": "hardpoint_air_traffic_controller",
       "ref": "f6ea8f48-88c9-4cd4-b6b9-166827baa570",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_interior",
+      "ref": "fd9d74e7-8b0a-46d3-8d14-7bf7c5e93900",
       "key": null
     },
     {

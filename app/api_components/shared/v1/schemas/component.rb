@@ -59,12 +59,17 @@ module Shared
             typeData: {
               anyOf: [
                 {"$ref": "#/components/schemas/ComponentQuantumDrive"},
+                {"$ref": "#/components/schemas/ComponentJumpDrive"},
+                {"$ref": "#/components/schemas/ComponentArmor"},
                 {"$ref": "#/components/schemas/CargoHold"},
                 {"$ref": "#/components/schemas/FuelTank"},
                 {"$ref": "#/components/schemas/ComponentThruster"},
                 {"$ref": "#/components/schemas/ComponentWeapon"},
+                {"$ref": "#/components/schemas/ComponentTractorBeam"},
                 {"$ref": "#/components/schemas/ComponentShield"},
                 {"$ref": "#/components/schemas/ComponentCooler"},
+                {"$ref": "#/components/schemas/ComponentRadar"},
+                {"$ref": "#/components/schemas/ComponentController"},
                 {"$ref": "#/components/schemas/ComponentPowerPlant"}
               ]
             },

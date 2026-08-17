@@ -1,0 +1,38 @@
+{
+  "key": "nvs_jumpsuit_01_16_10",
+  "ref": "2549e4d5-f716-4bfa-80fa-dad0c84c366e",
+  "name": "Falston Jumpsuit \"ASD Technician\"",
+  "description": "The Falston jumpsuit has a high collar to guard against the elements, triple-reinforced stitching, and an extra soft interior lining because everyone deserves a bit of comfort.  The ASD Technician version is white with green detailing.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jumpsuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f8efa046-7f79-4e09-b2fc-35d0df2429cf",
+  "tags": [
+    "nvs_jumpsuit",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

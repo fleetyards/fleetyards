@@ -1,0 +1,41 @@
+{
+  "key": "cds_legacy_armor_light_helmet_01_crus01_01",
+  "ref": "5b00ebda-fb53-4c21-8c08-4a7fc1c74a0c",
+  "name": "CBH-3 Helmet Crusader Edition",
+  "description": "Constructed using a lightweight alloy that can withstand a fair share of damage, the CBH-3 is a field-tested combat helmet featuring a large single-piece molded faceplate to allow for an expansive field of view for increased situational awareness. The Crusader Edition was made specifically for the company's security services. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-40 / 70 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Light",
+    "Set_01",
+    "Texture_crus01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
+}

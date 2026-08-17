@@ -14,6 +14,76 @@
     "base_expediting_fee": "3121"
   },
   "mass": 30510.0,
+  "inventory_container_ref": "993d5741-64a2-46df-9095-25ad42900d9f",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 5647.0,
+    "y": 1910.0,
+    "z": 7473.0
+  },
+  "hull_health": 7130.0,
+  "hull_parts": [
+    {
+      "name": "ANVL_Arrow",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 2050.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_left",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "stabilizer_left",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "stabilizer_right",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "vertical_stabilizer_bottom_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "vertical_stabilizer_bottom_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "vertical_stabilizer_top_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "vertical_stabilizer_top_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "canopy",
+      "health": 80.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 12.25,
     "y": 17.25,

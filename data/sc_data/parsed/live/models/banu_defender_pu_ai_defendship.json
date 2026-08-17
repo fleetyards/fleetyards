@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Banu Defender",
   "description": "Manufacturer: Banu \\nFocus: Light Fighter\\n\\nMeet the Banu Defender, a multi-crew fighter whose patchwork design highlights technology from a variety of species. Featuring modest accommodations for its crew and easy access to components, the Defender gets its name from the role it serves: the first line of defense against enemy attacks. That's why the Defender makes the ideal companion to the Merchantman: one to do the heavy hauling and the other to perform the deadly dogfighting.",
   "career": "Combat",
@@ -14,6 +14,76 @@
     "base_expediting_fee": "6168"
   },
   "mass": 119930.0,
+  "inventory_container_ref": "3aeea911-0ed8-4788-b1d7-cb9f2613bfde",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 8493.0,
+    "y": 3063.0,
+    "z": 18100.0
+  },
+  "hull_health": 13800.0,
+  "hull_parts": [
+    {
+      "name": "BANU_Defender",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 3500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Pod",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Body_Damage",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Hull_Left",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Hull_Right",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left_Arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Right_Arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Canopy_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Canopy_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body_Panels",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body_Panels_02",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 24.5,
     "y": 24.5,

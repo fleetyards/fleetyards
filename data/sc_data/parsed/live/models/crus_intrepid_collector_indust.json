@@ -14,6 +14,122 @@
     "base_expediting_fee": "1850"
   },
   "mass": 66943.0,
+  "inventory_container_ref": "617fed64-0fca-496c-bdd3-6edfd98beb67",
+  "weapon_pool_size": 4,
+  "signature_cross_section": null,
+  "hull_health": 15350.0,
+  "hull_parts": [
+    {
+      "name": "crus_intrepid",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 3300.0,
+      "category": "vital"
+    },
+    {
+      "name": "plating_top_central_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "plating_top_central_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "plating_weapon",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_right",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose",
+      "health": 3300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "canopy",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_left",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear",
+      "health": 3300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engines_left",
+      "health": 700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engines_right",
+      "health": 700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "plating_engines_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "plating_engines_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_fin_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_fin_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_top_left",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_top_right",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_right",
+      "health": 200.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 20.18,
     "y": 23.07,

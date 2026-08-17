@@ -2,6 +2,7 @@ resource :hangar, only: %i[show destroy] do
   get :items
   put :import
   get :export
+  get "export/hangar-link", to: "hangars#export_hangar_link"
   put "sync-rsi-hangar", to: "hangars#sync_rsi_hangar"
   get "sync-rsi-hangar/status", to: "hangars#sync_rsi_hangar_status"
 
@@ -16,6 +17,19 @@ resource :hangar, only: %i[show destroy] do
 
   resources :hangar_groups, path: "groups", only: %i[index create update destroy] do
     put :sort, on: :collection
+  end
+
+  get "inventory-items", to: "hangar_all_inventory_items#index"
+  get "inventory-stock", to: "hangar_all_inventory_stock#index"
+
+  resources :hangar_inventories, path: "inventories", param: :slug, only: %i[index show create update destroy] do
+    resources :hangar_inventory_items, path: "items", only: %i[index create update destroy] do
+      post :import, on: :collection
+    end
+    get "stock", to: "hangar_inventory_stock#index"
+    get "stock/:slug", to: "hangar_inventory_stock#show", as: "stock_item"
+    patch "stock/:slug", to: "hangar_inventory_stock#update"
+    delete "stock/:slug", to: "hangar_inventory_stock#destroy"
   end
 end
 

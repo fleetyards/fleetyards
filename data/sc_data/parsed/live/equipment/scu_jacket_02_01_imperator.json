@@ -1,0 +1,37 @@
+{
+  "key": "scu_jacket_02_01_imperator",
+  "ref": "1642e539-d07c-41c8-b832-8d9d84eabc1f",
+  "name": "IndVest Jacket \"Pathfinder\"",
+  "description": "Keep your tools within easy reach with Stegman's IndVest. The exclusive Pathfinder edition is made from black industrial strength materials that includes both purple and silver highlights. A rare jacket that's both stylish and sensible. \n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "5000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_jacket",
+    "set_02",
+    "Color_imperator"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

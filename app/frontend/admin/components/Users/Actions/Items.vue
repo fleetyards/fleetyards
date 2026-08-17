@@ -7,21 +7,17 @@ export default {
 <script lang="ts" setup>
 import {
   type User,
-  type ValidationError,
   loginAsUser,
   useResendUserConfirmation,
   useSendUserPasswordReset,
   useDestroyUser,
   getUsersQueryKey,
 } from "@/services/fyAdminApi";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
-import { type AxiosError } from "axios";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 type Props = {
   user: User;
@@ -100,12 +96,12 @@ const runDestroy = async (destroyFleets: boolean) => {
       params: destroyFleets ? { destroy_fleets: true } : undefined,
     });
   } catch (error) {
-    const response = (error as AxiosError<ValidationError>).response;
-    const data = response?.data;
-    const baseError = data?.errors
-      ?.find((field) => field.attribute === "base")
+    const { errors, message } = validationErrorFrom(error);
+    const baseError = errors
+      .find((field) => field.attribute === "base")
       ?.messages?.find(
-        (message) => message.code === "has_permanent_fleet_memberships",
+        (fieldMessage) =>
+          fieldMessage.code === "has_permanent_fleet_memberships",
       );
 
     if (baseError && !destroyFleets) {
@@ -126,10 +122,10 @@ const runDestroy = async (destroyFleets: boolean) => {
     }
 
     const fallback =
-      data?.errors
-        ?.flatMap((field) => field.messages.map((m) => m.message))
-        ?.join(" ") ||
-      data?.message ||
+      errors
+        .flatMap((field) => field.messages.map((m) => m.message))
+        .join(" ") ||
+      message ||
       t("messages.user.destroy.failure");
 
     displayAlert({ text: fallback });
@@ -151,23 +147,17 @@ const destroy = () => {
 <template>
   <Btn
     v-tooltip="!withLabels && t('actions.edit')"
-    :size="BtnSizesEnum.SMALL"
     :to="{ name: 'admin-user-edit', params: { id: user.id } }"
   >
     <i class="fa-duotone fa-pen-to-square" />
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
-  <Btn
-    v-tooltip="!withLabels && t('actions.users.loginAs')"
-    :size="BtnSizesEnum.SMALL"
-    @click="loginAs"
-  >
+  <Btn v-tooltip="!withLabels && t('actions.users.loginAs')" @click="loginAs">
     <i class="fa-duotone fa-right-to-bracket" />
     <span v-if="withLabels">{{ t("actions.users.loginAs") }}</span>
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.users.resendConfirmation')"
-    :size="BtnSizesEnum.SMALL"
     @click="resendConfirmation"
   >
     <i class="fa-duotone fa-envelope" />
@@ -175,7 +165,6 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.users.sendPasswordReset')"
-    :size="BtnSizesEnum.SMALL"
     @click="sendPasswordReset"
   >
     <i class="fa-duotone fa-key" />
@@ -183,9 +172,8 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.delete')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
+    :tone="BtnTonesEnum.DANGER"
   >
     <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>

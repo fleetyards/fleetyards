@@ -8,6 +8,18 @@
   }
 }
 
+// ChipRow carries no margins, for the reason controls.scss gives for Btn, and
+// this container only ever spaced its rows inside the mobile query below. On
+// desktop the spacing came from `.labels { margin-bottom: 20px }` in the
+// stylesheet the label redesign deleted, so the two rows - and the metrics line
+// under them - ended up stacked flush. Restored on the container, once.
+.hangar-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .hangar-metrics {
   display: flex;
   align-items: center;
@@ -27,8 +39,10 @@
     align-items: flex-start;
     justify-content: space-between;
 
+    // Side by side here, not stacked: each row collapses to a dropdown.
     .hangar-labels {
       display: flex;
+      flex-direction: row;
       justify-content: space-between;
       width: 100%;
       margin-bottom: 20px;

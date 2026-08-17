@@ -1,0 +1,37 @@
+{
+  "key": "klwe_rifle_energy_01_test_inf_ammo",
+  "ref": "2d4a0321-92ce-4947-9be5-cac36f9f5150",
+  "name": "Gallant Rifle",
+  "description": "Dependable assault weapons never go out of style. Klaus & Werner maintains that tradition by unveiling the Gallant. This energy-based assault rifle is capable of providing accurate and sustained fire at targets up to medium range, while its high-capacity power system allows operators to fire considerably more shots per battery.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "assault_rifle",
+  "weapon_class": "energy",
+  "rate_of_fire": "450.0",
+  "range": "50.0",
+  "storage": "45.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_galant_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [
+    "stocked",
+    "klwe_rifle_energy_01",
+    "rifle"
+  ],
+  "hidden": true,
+  "volume": 0.013,
+  "volume_dimensions": {
+    "x": 0.0811,
+    "y": 0.8528,
+    "z": 0.2487
+  }
+}

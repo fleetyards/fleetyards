@@ -1,0 +1,37 @@
+{
+  "key": "dyl_pants_02_01_01",
+  "ref": "8656b5d0-0202-4bc6-846b-a0a55b2e5ea0",
+  "name": "Koal Pants",
+  "description": "Dyna Lei updates an old classic with the Koal black leather pants that feature metallic trim along each leg for a thoroughly modern, dynamic look.\n\nMen's sizes currently not available.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "3000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "92b20988-dbf3-4e95-b4a9-7e5e22112516",
+  "tags": [
+    "dyl_pants",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

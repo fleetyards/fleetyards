@@ -121,7 +121,7 @@ module Api
             .permit(
               :avatar, :remove_avatar, :sale_notify, :date_format, :public_hangar, :public_hangar_stats, :public_wishlist, :rsi_handle,
               :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hide_owner,
-              :location, :current_system
+              :location, :current_system, :tracking
             )
           if permitted.delete(:remove_avatar).present?
             @user.avatar.purge if @user.avatar.attached?

@@ -1,0 +1,35 @@
+{
+  "key": "vlk_spewgun_ballistic_01_mag_juvi",
+  "ref": "ab85897c-940f-426e-962b-b3a2d459036c",
+  "name": "BR-2 Shotgun Magazine (12 cap)",
+  "description": "This magazine for the Behring BR-2 shotgun holds twelve 12-gauge rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "12.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "behr_shotgun_ballistic_01"
+  ],
+  "hidden": true,
+  "volume": 0.0024,
+  "volume_dimensions": {
+    "x": 0.09310678,
+    "y": 0.1532475,
+    "z": 0.1672849
+  }
+}

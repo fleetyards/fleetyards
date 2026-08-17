@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "MISC Starlancer MAX",
   "description": "Manufacturer: MISC\\nFocus: Medium Freight\\n \\nFor those looking to expand their hauling operations, the engineers at MISC have upgraded the Starlancer MAX with an extra spacious hold ready to transport cargo and vehicles. Paired with comfortable accommodations for longer trips and a full defensive package for when you go off the beaten path, it’s easy to see why the Starlancer MAX is the hauler of choice for industrious pilots across the ‘verse.",
   "career": "Transporter",
@@ -14,6 +14,117 @@
     "base_expediting_fee": "5190"
   },
   "mass": 498070.5,
+  "inventory_container_ref": "4b2dbad4-ca1c-4016-9d1c-7850f565a160",
+  "weapon_pool_size": 8,
+  "signature_cross_section": null,
+  "hull_health": 84200.0,
+  "hull_parts": [
+    {
+      "name": "misc_starlancer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 35000.0,
+      "category": "vital"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 7000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_left_rear",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_plate_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_rear",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_aileron_left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 7000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_right_rear",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_plate_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_rear",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_aileron_right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spoiler_connection_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_spoiler_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spoiler_connection_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_spoiler_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "top_spoiler_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "top_spoiler_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 20000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 60.0,
     "y": 90.0,

@@ -1,0 +1,37 @@
+{
+  "key": "gmni_sniper_ballistic_01_imp01",
+  "ref": "f4f425d2-34d8-4737-ad37-4c5fde1e52cf",
+  "name": "A03 \"Wildwood\" Sniper Rifle",
+  "description": "Devastate at distance with the A03 sniper rifle. Masterfully designed by Gemini's Tevarin co-founder Clem, the weapon balances a stylish and ergonomic design with a powerful ballistic punch. The A03 delivers an impressive rate of fire for a sniper rifle that sacrifices accuracy for urgency when successive shots are required. Considering its renowned design and unique features, it's easy to see why the A03 has become a favorite of security professionals across the empire.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "sniper_rifle",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "120.0",
+  "range": "80.0",
+  "storage": "15.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behr_p6_lr_sniper_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b33050cd-6ca9-4c57-baf8-f4114eb85237",
+  "tags": [
+    "stocked",
+    "gmni_sniper_ballistic_01",
+    "Color_mil"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.0559,
+    "y": 0.9987,
+    "z": 0.3436
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "behr_rifle_ballistic_01_green01",
+  "ref": "992e922f-8c21-41dd-b1b6-c2753c74c97b",
+  "name": "P4-AR \"Warhawk\" Rifle",
+  "description": "Behring's classic P4-AR rifle features a collapsible stock and shortened barrel, making it an ideal choice for close-quarter firefights. Its accuracy and general ease of use make it universally valued among security, military and civilian users.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "assault_rifle",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "550.0",
+  "range": "50.0",
+  "storage": "40.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behring_p4_ar_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "behr_rifle_ballistic_01",
+    "rifle"
+  ],
+  "hidden": false,
+  "volume": 0.013,
+  "volume_dimensions": {
+    "x": 0.0811,
+    "y": 0.8528,
+    "z": 0.2487
+  }
+}

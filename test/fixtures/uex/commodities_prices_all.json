@@ -1,0 +1,51 @@
+{
+  "status": "ok",
+  "http_code": 200,
+  "data": [
+    {
+      "id": 1,
+      "id_commodity": 33,
+      "id_terminal": 104,
+      "price_buy": 27527,
+      "price_sell": 28270,
+      "commodity_name": "Gold",
+      "terminal_name": "TDD - Trade and Development Division - Area 18"
+    },
+    {
+      "id": 2,
+      "id_commodity": 33,
+      "id_terminal": 105,
+      "price_buy": 26000,
+      "price_sell": 29000,
+      "commodity_name": "Gold",
+      "terminal_name": "TDD - Trade and Development Division - Area 18"
+    },
+    {
+      "id": 3,
+      "id_commodity": 24,
+      "id_terminal": 102,
+      "price_buy": 0,
+      "price_sell": 2245,
+      "commodity_name": "Agricium (Ore)",
+      "terminal_name": "Admin - ARC-L1"
+    },
+    {
+      "id": 4,
+      "id_commodity": 999,
+      "id_terminal": 104,
+      "price_buy": 5100,
+      "price_sell": 5100,
+      "commodity_name": "Aslarite",
+      "terminal_name": "TDD - Trade and Development Division - Area 18"
+    },
+    {
+      "id": 5,
+      "id_commodity": 137,
+      "id_terminal": 100,
+      "price_buy": 100,
+      "price_sell": 100,
+      "commodity_name": "Lastaphrene",
+      "terminal_name": "Astro Armada - Area 18"
+    }
+  ]
+}

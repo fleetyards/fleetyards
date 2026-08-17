@@ -19,10 +19,12 @@ module Api
     skip_before_action :track_ahoy_visit
 
     before_action :authenticate_user!, except: %i[root version provider]
+    before_action :set_paper_trail_whodunnit, except: %i[root version provider]
     before_action :set_locale
     before_action :set_last_active_at
 
     after_action :set_rate_limit_headers
+    after_action :track_api_usage
 
     authorize :user, through: :current_resource_owner
 
@@ -66,8 +68,8 @@ module Api
       @current_ability ||= Ability.new(current_resource_owner)
     end
 
-    def feature_enabled?(feature)
-      Flipper.enabled?(feature, current_resource_owner)
+    def feature_enabled?(feature, *actors)
+      Flipper.enabled?(feature, current_resource_owner, *actors)
     end
 
     def access_confirmed?
@@ -130,6 +132,16 @@ module Api
       return if current_user.last_active_at.present? && current_user.last_active_at > 15.minutes.ago
 
       current_user.update_column(:last_active_at, Time.current)
+    end
+
+    # Only OAuth clients carry a token — the web frontend authenticates through
+    # warden and is already covered by Ahoy.
+    private def track_api_usage
+      ApiUsageTracker.track(doorkeeper_token&.application_id)
+    end
+
+    private def set_paper_trail_whodunnit
+      PaperTrail.request.whodunnit = proc { current_resource_owner&.id }
     end
 
     private def set_locale

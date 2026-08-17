@@ -1,0 +1,40 @@
+{
+  "key": "cds_legacy_armor_medium_helmet_01_01_11",
+  "ref": "850d09ee-c2c0-4a78-b14c-db5db1f54d66",
+  "name": "G-2 Helmet Grey",
+  "description": "The G-2 provides protection and an uninhibited field of view without being bulky. Clark Defense Systems designed the helmet to withstand a wide variety of impact types without compromising its integrity. Visor is AR crosshair compatible.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-55 / 85 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Medium",
+    "Set_01",
+    "Color_11",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
+}

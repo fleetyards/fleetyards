@@ -1,0 +1,39 @@
+{
+  "key": "cds_legacy_armor_heavy_arms_01_crus01_01",
+  "ref": "80ee3b95-5665-4548-9e2d-d2067895c0ac",
+  "name": "ADP Arms Crusader Edition",
+  "description": "Revolutionary when first released, the ADP heavy armor system was heralded as the pinnacle of personal protection. Clark Defense Systems' maximalist design provides plenty of attachment points and excellent protection against the elements and enemy fire. CDS refined and reshaped the ADP line over the years, but many still consider the original ADP to be the touchstone of military-grade heavy armor. The Crusader Edition was made specifically for the company's security services.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-75 / 105 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Heavy",
+    "Set_01",
+    "Texture_crus01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.126,
+    "y": 0.371,
+    "z": 0.415
+  }
+}

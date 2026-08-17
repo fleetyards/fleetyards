@@ -9,7 +9,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { type Component } from "@/services/fyAdminApi";
 import ItemPricesList from "@/admin/components/ItemPrices/List.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   component: Component;
@@ -31,7 +30,6 @@ const itemPricesList = ref<{
       t("headlines.admin.components.edit.itemPrices")
     }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="itemPricesList?.creating"
       @click="itemPricesList?.startCreate()"
     >

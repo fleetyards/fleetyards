@@ -1,0 +1,37 @@
+{
+  "key": "ksar_rifle_energy_01_tow",
+  "ref": "b6ea104d-af56-4718-9dff-521e5ed5fcb6",
+  "name": "Karna Rifle",
+  "description": "The Karna is a classic Kastak Arms plasma assault rifle. This mid-range mauler features charged and full-auto fire modes to allow for quick and easy situational adjustments. Besides its renowned firepower, the Karna's rugged looks and reliability have made it one of Kastak Arms' most popular weapons.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "assault_rifle",
+  "weapon_class": "energy",
+  "rate_of_fire": "500.0",
+  "range": "50.0",
+  "storage": "35.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_arms_karna_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "stocked",
+    "rifle",
+    "ksar_rifle_energy_01"
+  ],
+  "hidden": true,
+  "volume": 0.013,
+  "volume_dimensions": {
+    "x": 0.0811,
+    "y": 0.8528,
+    "z": 0.2487
+  }
+}

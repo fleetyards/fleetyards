@@ -1,0 +1,38 @@
+{
+  "key": "nvy_shoes_01_01_15",
+  "ref": "900153fe-e56d-4cd8-9b08-cd871970ed1d",
+  "name": "Waylite Shoes Desert",
+  "description": "Stay on your feet all day with Northstar's Waylite. These slip resistant shoes utilize comfortable memory foam and shock absorbent technology to make these casual sneakers perfect for the office or home.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d133f90d-bc69-4273-9867-6c03631f0c4b",
+  "tags": [
+    "nvy_shoes",
+    "Set_01",
+    "Texture_01",
+    "Color_15"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

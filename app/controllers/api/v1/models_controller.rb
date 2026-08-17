@@ -119,21 +119,13 @@ module Api
         model = find_model_by_slug!
         return if performed?
 
-        scope = if feature_enabled?("hardpoints-v2")
-          model.hardpoints.includes(:component)
-        else
-          model.model_hardpoints.includes(:component).undeleted
-        end
+        scope = model.hardpoints.includes(:component)
 
         scope = scope.where(source: params[:source]) if params[:source].present?
 
         @hardpoints = scope
 
-        if feature_enabled?("hardpoints-v2")
-          render "api/v1/models/hardpoints"
-        else
-          render "api/v1/models/hardpoints_old"
-        end
+        render "api/v1/models/hardpoints"
       end
 
       def positions

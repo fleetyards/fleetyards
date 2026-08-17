@@ -12,7 +12,7 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -122,11 +122,7 @@ const resolve = async (log: RsiRequestLog) => {
           {{ l(record.createdAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">
-          <Btn
-            v-if="!record.resolved"
-            :size="BtnSizesEnum.SMALL"
-            @click.prevent="resolve(record)"
-          >
+          <Btn v-if="!record.resolved" @click.prevent="resolve(record)">
             <i class="fa-duotone fa-check" />
             {{ t("actions.resolve") }}
           </Btn>

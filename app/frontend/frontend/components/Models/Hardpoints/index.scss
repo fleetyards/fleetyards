@@ -1,0 +1,58 @@
+.hardpoints {
+  min-height: 400px;
+
+  // The loadout links and the source switch share one line - they used to be two
+  // stacked rows, which only read as two rows while the metrics grid separated
+  // them from the density switch further down. A ship-matrix view has no
+  // metrics, so all three collapsed into one stack of controls.
+  //
+  // BtnGroup ships no margin of its own and controls.scss only restores spacing
+  // for controls dropped into a grid column, a form or a float - not a flex row
+  // - so the row carries its own bottom spacing.
+  &__controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  &__source {
+    // Right-aligned whether or not the links are there to push it.
+    margin-inline-start: auto;
+  }
+
+  // Density stays with the hardpoint groups it controls rather than joining the
+  // row above, where it would be nowhere near what it changes.
+  &__viewbar {
+    display: flex;
+    align-items: center;
+    margin: 4px 0 16px;
+  }
+}
+
+// Metrics cards are packed rather than assigned to fixed columns: each spans a
+// measured number of 4px rows (see useMetricsMasonry) and `dense` flow lets a
+// later card backfill a column another card left short. Stacked on narrow
+// screens, three-up once there's room.
+.metrics-grid {
+  > * {
+    margin: 0 0 20px;
+  }
+
+  @media (min-width: 992px) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 4px;
+    grid-auto-flow: row dense;
+    column-gap: 20px;
+
+    > * {
+      margin: 0;
+      grid-row: span var(--metrics-card-span, 60);
+      // The span includes the gap below the card, so it must sit at its natural
+      // height instead of stretching into that trailing space.
+      align-self: start;
+    }
+  }
+}

@@ -81,7 +81,8 @@
         },
         "fleets": {
           "index": "Flotas",
-          "edit": "Editar flota"
+          "edit": "Editar flota",
+          "memberEdit": "Editar miembro"
         },
         "admins": {
           "index": "Administradores",
@@ -121,6 +122,7 @@
       "images": "Images Index",
       "stats": "Estadísticas",
       "notFound": "Error de navegación",
+      "forbidden": "Acceso denegado",
       "featureNotReady": "Próximamente",
       "accessDenied": "Acceso denegado",
       "serverError": "Error del servidor",
@@ -170,17 +172,6 @@
           "starmap": "Mapa estelar de miembros"
         },
         "stats": "Estadísticas",
-        "logistics": {
-          "index": "Logistics",
-          "inventories": "Inventories",
-          "requests": "Requests",
-          "newRequest": "New Request",
-          "requestItems": "Items",
-          "comments": "Comments",
-          "createInventory": "Create Inventory",
-          "createItem": "Add Item",
-          "importCsv": "Import from CSV"
-        },
         "preview": {
           "h1": "Vista previa de flota",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",
@@ -275,7 +266,12 @@
         "overview": "Resumen",
         "panels": "Paneles",
         "buttons": "Botones",
+        "typography": "Tipografía",
+        "forms": "Formularios",
         "tables": "Tablas",
+        "lists": "Listas",
+        "metrics": "Métricas",
+        "states": "Estados",
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
         "supportHint": "Aviso de apoyo"
@@ -292,7 +288,25 @@
       "stationImages": "Images of %{station} near %{celestialObject}",
       "shops": "Shops",
       "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      "commodities": "Commodities",
+      "logistics": {
+        "index": "Logistics",
+        "inventories": "Inventories",
+        "requests": "Requests",
+        "newRequest": "New Request",
+        "requestItems": "Items",
+        "comments": "Comments",
+        "inventoryItems": "Inventory Items",
+        "createInventory": "Create Inventory",
+        "editInventory": "Edit Inventory",
+        "createItem": "Add Item",
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal",
+        "importCsv": "Import from CSV",
+        "hangarInventories": "Hangar Inventories",
+        "editItem": "Edit Entry",
+        "editStockItem": "Edit Item"
+      }
     }
   }
 }

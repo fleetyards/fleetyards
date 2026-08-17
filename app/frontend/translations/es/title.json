@@ -35,7 +35,10 @@
         "public": "Hangar de %{user}",
         "publicStats": "%{user} Hangar Stats",
         "wishlist": "Lista de deseos",
-        "publicWishlist": "Lista de deseos de %{user}"
+        "publicWishlist": "Lista de deseos de %{user}",
+        "vehicleCargo": "Carga de la nave",
+        "inventories": "My Hangar Inventories",
+        "inventory": "%{inventory}"
       },
       "requestPassword": "Solicitar contraseña",
       "changePassword": "Cambiar contraseña",
@@ -98,10 +101,16 @@
         "index": "Pruebas Visuales",
         "panels": "Paneles - Pruebas Visuales",
         "buttons": "Botones - Pruebas Visuales",
+        "typography": "Tipografía - Pruebas visuales",
+        "forms": "Formularios - Pruebas visuales",
         "tables": "Tablas - Pruebas Visuales",
+        "lists": "Listas - Pruebas visuales",
+        "metrics": "Métricas - Pruebas visuales",
+        "states": "Estados - Pruebas visuales",
         "notifications": "Notificaciones - Pruebas Visuales",
         "syncModal": "Modal de sincronización - Pruebas Visuales",
-        "supportHint": "Aviso de apoyo - Pruebas Visuales"
+        "supportHint": "Aviso de apoyo - Pruebas Visuales",
+        "chips": "Chips - Pruebas Visuales"
       },
       "admin": {
         "models": {
@@ -152,7 +161,8 @@
         },
         "fleets": {
           "index": "Flotas",
-          "edit": "Editar Flota"
+          "edit": "Editar Flota",
+          "memberEdit": "Editar miembro de la flota"
         },
         "oauthApplications": {
           "index": "Aplicaciones OAuth",

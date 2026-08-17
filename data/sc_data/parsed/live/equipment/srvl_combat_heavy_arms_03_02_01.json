@@ -1,0 +1,35 @@
+{
+  "key": "srvl_combat_heavy_arms_03_02_01",
+  "ref": "7af65cb5-ac70-496d-9995-3af1ebaddae1",
+  "name": "Wrecker Arms Payback",
+  "description": "Favored by the most brutal of hunters, the Wrecker armor is a fusion of discarded metal and pilfered fabric cobbled together to offer protection while stalking prey.\n\nThe Payback version is sprayed with red paint and anointed with bone fragments and Vanduul armor pieces.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-70 / 100 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.126,
+    "y": 0.371,
+    "z": 0.415
+  }
+}

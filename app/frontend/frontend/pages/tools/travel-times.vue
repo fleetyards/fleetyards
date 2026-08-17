@@ -31,6 +31,7 @@ import {
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
+import { FeatureFlagName } from "@/services/fyApi";
 
 const { t } = useI18n();
 
@@ -143,7 +144,7 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
 </script>
 
 <template>
-  <FeatureGuard feature="tools_travel_times">
+  <FeatureGuard :feature="FeatureFlagName.TOOLS_TRAVEL_TIMES">
     <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
     <div class="row">

@@ -1,0 +1,39 @@
+{
+  "key": "rsi_deckcrew_undersuit_01_01_09",
+  "ref": "8abd144f-90ac-4039-9b28-64704499b058",
+  "name": "Beacon Undersuit Pink/White",
+  "description": "RSI's Beacon undersuit is a general use utility designed to provide total protection against environments and vacuum. Built out of a durable but flexible polymers, the Beacon provides a wide freedom of motion for a variety of body types.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "undersuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "90.0",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "DeckCrew",
+    "Set_01",
+    "Color_09",
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.023,
+  "volume_dimensions": {
+    "x": 0.315,
+    "y": 0.227,
+    "z": 0.41
+  }
+}

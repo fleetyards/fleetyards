@@ -27,6 +27,7 @@
       "more": "Détails...",
       "showMore": "Afficher plus",
       "export": "Exporter",
+      "exportHangarLink": "Exporter vers hangar.link",
       "import": "Importer",
       "here": "ici",
       "backToList": "Retour à la liste",
@@ -71,6 +72,7 @@
       "disableGlobally": "Désactiver globalement",
       "addActor": "Ajouter un acteur",
       "addGroup": "Ajouter un groupe",
+      "editGroup": "Modifier le groupe",
       "remove": "Retirer",
       "delete": "Supprimer",
       "deleteSelected": "Supprimer la sélection",
@@ -148,7 +150,8 @@
           "openModal": "Réinitialiser les vaisseaux obtenus dans le jeu",
           "moveToWishlist": "Déplacer dans la liste de souhaits",
           "removeAll": "Tout supprimer"
-        }
+        },
+        "manageCargo": "Gérer la cargaison"
       },
       "syncExtension": {
         "cancel": "Annuler",
@@ -182,29 +185,11 @@
           "demote": "Rétrograder",
           "accept": "Accepter",
           "decline": "Décliner",
-          "remove": "Retirer"
+          "remove": "Retirer",
+          "editRole": "Modifier le rôle"
         },
         "inviteUrls": {
           "create": "Créer le nouveau lien d'invitation"
-        }
-      },
-      "fleets": {
-        "logistics": {
-          "viewInventories": "View Inventories",
-          "viewRequests": "View Requests",
-          "newRequest": "New Request",
-          "createRequest": "Create Request",
-          "createInventory": "New Inventory",
-          "submit": "Submit",
-          "approve": "Approve",
-          "reject": "Reject",
-          "startWork": "Start Work",
-          "fulfill": "Fulfill",
-          "cancel": "Cancel",
-          "addComment": "Add Comment",
-          "createItem": "Add Item",
-          "importCsv": "Import CSV",
-          "downloadTemplate": "Download Template"
         }
       },
       "model": {
@@ -249,6 +234,30 @@
       "roadmap": {
         "showRemoved": "Afficher les retirées",
         "hideRemoved": "Masquer les retirées"
+      },
+      "logistics": {
+        "viewRequests": "View Requests",
+        "newRequest": "New Request",
+        "createRequest": "Create Request",
+        "createInventory": "New Inventory",
+        "submit": "Submit",
+        "approve": "Approve",
+        "reject": "Reject",
+        "startWork": "Start Work",
+        "fulfill": "Fulfill",
+        "cancel": "Cancel",
+        "addComment": "Add Comment",
+        "deposit": "Deposit",
+        "withdraw": "Withdraw",
+        "createItem": "Add Item",
+        "importCsv": "Import CSV",
+        "downloadTemplate": "Download Template",
+        "destroyInventory": "Delete Inventory",
+        "destroyEntry": "Delete Entry",
+        "editStockItem": "Edit Item",
+        "destroyStockItem": "Delete Item",
+        "editInventory": "Edit Inventory",
+        "clearCargo": "Vider la cargaison"
       }
     }
   }

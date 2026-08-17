@@ -1,0 +1,35 @@
+{
+  "key": "srvl_utility_light_core_01_01_07",
+  "ref": "c78ade7c-c1c9-4876-9b7c-e4cefbf77402",
+  "name": "Outback Core Grime Blue",
+  "description": "Those on the frontier know that survival is paramount. The tough and lived-in Outback Armor is hewn from reinforced leather, with a thick hooded cowl neck and layered skirting. With the necessary gear, there's no guarantee that you'll live to see another day, but now you've got a fighting chance. The Grime version is dyed a dusky blue to keep you subtle, but not unsightly.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-65 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.034,
+  "volume_dimensions": {
+    "x": 0.411,
+    "y": 0.367,
+    "z": 0.299
+  }
+}

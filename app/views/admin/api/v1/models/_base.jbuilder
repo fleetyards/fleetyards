@@ -136,6 +136,8 @@ json.metrics do
   json.beam_label model.beam_label
   json.cargo model.cargo.to_f
   json.cargo_label model.cargo_label
+  json.personal_inventory model.personal_inventory.to_f
+  json.personal_inventory_label model.personal_inventory_label
   json.fleetchart_offset_length (model.fleetchart_offset_length || model.length).to_f
   json.fleetchart_offset_beam (model.fleetchart_offset_beam || model.beam).to_f
   json.extended_length model.extended_length&.to_f

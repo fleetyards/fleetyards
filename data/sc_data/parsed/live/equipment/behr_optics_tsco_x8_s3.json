@@ -1,0 +1,33 @@
+{
+  "key": "behr_optics_tsco_x8_s3",
+  "ref": "0dabf62d-9b3e-4968-a371-ae0cb44057a1",
+  "name": "EE08 (8x Telescopic)",
+  "description": "Get a clear view of your target from afar with the EE08. Behring craftsmanship produced a 8x scope that's lightweight, durable, and deadly accurate. A rigorous 22-step testing process ensures the EE08 can deliver precision targeting even after encountering extreme weather or surviving battlefield wear and tear.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "weapon_scope",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "IronSight",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [],
+  "hidden": false,
+  "volume": 0.0019,
+  "volume_dimensions": {
+    "x": 0.0754,
+    "y": 0.2829,
+    "z": 0.0915
+  }
+}

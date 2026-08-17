@@ -1,0 +1,39 @@
+{
+  "key": "vgl_utility_light_legs_03_01_01",
+  "ref": "705c47ec-7b0f-41c0-b7c6-6d316f3ea714",
+  "name": "Chiron Legs AA Support",
+  "description": "Be the first on the scene with the Chiron armor. Designed to provide the essential protection that combat medics need, the armor features ultra-lightweight panelling to keep the wearer quick on their feet without compromising on safety. Crucial, high-impact sections have been reinforced with raised carbon plating on top of a highly durable polyfiber for maximum flexibility.\n\nThe AA Support edition uses sharp red coloring and bright yellow detailing, ensuring that Alliance Aid Support Units remain visible while assisting the people of Levski through their crisis.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.5",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-35 / 65 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "Virgil",
+    "Set_03",
+    "Color_01",
+    "$Legs++",
+    "SM_Marine"
+  ],
+  "hidden": false,
+  "volume": 0.036,
+  "volume_dimensions": {
+    "x": 0.44,
+    "y": 0.257,
+    "z": 0.454
+  }
+}

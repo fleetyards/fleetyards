@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "MISC Freelancer",
   "description": "Manufacturer: MISC\\nFocus: Light Freight\\n\\nFreelancers are used as long haul merchant ships by major corporations, but they are just as frequently repurposed as dedicated exploration vessels by independent captains who want to operate on the fringes of the galaxy.",
   "career": "Transporter",
@@ -14,6 +14,61 @@
     "base_expediting_fee": "6503"
   },
   "mass": 219396.0,
+  "inventory_container_ref": "e5465987-e166-4725-83d9-b59593c34e9d",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 10042.0,
+    "y": 3747.0,
+    "z": 14988.0
+  },
+  "hull_health": 34900.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Freelancer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 9500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body",
+      "health": 9500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Tail",
+      "health": 9500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Roof_Scoop",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 1960.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wingflap_Left",
+      "health": 640.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 1960.0,
+      "category": "secondary"
+    },
+    {
+      "name": "WingFlap_Right",
+      "health": 640.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 23.5,
     "y": 38.0,

@@ -1,0 +1,38 @@
+{
+  "key": "drn_business_shoes_01_01_01",
+  "ref": "62bb2ac1-d1e5-44e4-a0d0-1e66badaab59",
+  "name": "Lorber Shoes",
+  "description": "The Lorber shoes feature classic style with modern flourishes. Constructed with dark brown synthetic leather, the shoes also feature a light brown toe box with gold colored metallic accents to catch the eye, a magnetic closure that ensures a snug fit, and a soft faux-sheepskin footbed for supreme comfort.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "business",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2ab62815-6273-44b9-bbc6-28d36fed6fd8",
+  "tags": [
+    "drn_business_shoes",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

@@ -14,6 +14,267 @@
     "base_expediting_fee": "2700"
   },
   "mass": 107050.0,
+  "inventory_container_ref": "c492a371-5f34-4670-97d5-831ccaa31f51",
+  "weapon_pool_size": 4,
+  "signature_cross_section": null,
+  "hull_health": 91400.0,
+  "hull_parts": [
+    {
+      "name": "MISC_Hull_A",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 7000.0,
+      "category": "vital"
+    },
+    {
+      "name": "winglet_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "winglet_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spindle_connector_rear_geo",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hydraulic_arm_front_geo_left",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hydraulic_arm_connector_geo_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "hydraulic_cargoplates_mount_geo_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_cargoplate_top_left",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "SHIELD_SDF_01_LT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_02_LT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_03_LT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_04_LT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "DEBRIS_cargoplate_bot_left",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "SHIELD_SDF_01_LB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_02_LB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_03_LB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_04_LB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hydraulic_arm_front_geo_right",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hydraulic_arm_connector_geo_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "hydraulic_cargoplates_mount_geo_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_cargoplate_top_right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "SHIELD_SDF_01_RT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_02_RT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_03_RT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_04_RT",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "DEBRIS_cargoplate_bot_right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "SHIELD_SDF_01_RB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_02_RB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_03_RB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "SHIELD_SDF_04_RB",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "piston_01_geo",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "piston_02_tube",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "piston_02_geo",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_geo",
+      "health": 3000.0,
+      "category": "vital"
+    },
+    {
+      "name": "door_02_geo_rear_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_lock_geo_rear_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_01_geo_rear_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_geo_spinner",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_geo_bot",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_geo_top",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hydraulic_arm_back_geo_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hydraulic_arm_back_geo_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_02_geo_centre_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_lock_geo_centre_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_01_geo_centre_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_02_geo_centre_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_01_geo_centre_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 7000.0,
+      "category": "vital"
+    },
+    {
+      "name": "door_geo_front_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_geo_front_left",
+      "health": 400.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 12.5,
     "y": 30.0,

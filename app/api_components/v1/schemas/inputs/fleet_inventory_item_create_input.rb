@@ -18,7 +18,7 @@ module V1
             memberId: {type: [:string, :null], format: :uuid},
             image: {type: [:string, :null]},
             notes: {type: [:string, :null]},
-            itemType: {type: [:string, :null]},
+            itemType: {type: [:string, :null], enum: InventoryLedgerEntry::ITEM_TYPES + [nil]},
             itemId: {type: [:string, :null], format: :uuid}
           },
           required: %w[name quantity],

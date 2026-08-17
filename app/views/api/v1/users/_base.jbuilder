@@ -33,6 +33,7 @@ json.public_hangar_stats user.public_hangar_stats
 json.public_wishlist user.public_wishlist
 json.public_wishlist_url user.public_wishlist_url
 json.hide_owner user.hide_owner
+json.tracking user.tracking
 
 json.two_factor_required user.otp_required_for_login?
 unless user.otp_required_for_login?

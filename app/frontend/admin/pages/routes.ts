@@ -7,6 +7,7 @@ import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
 import { routes as oauthApplicationsRoutes } from "@/admin/pages/oauth-applications/routes";
 import { routes as maintenanceRoutes } from "@/admin/pages/maintenance/routes";
 import { routes as usersRoutes } from "@/admin/pages/users/routes";
+import { routes as supporterContributionsRoutes } from "@/admin/pages/supporter-contributions/routes";
 import { RouteRecordRaw } from "vue-router";
 
 export const routes: RouteRecordRaw[] = [
@@ -121,6 +122,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/supporter-contributions/",
+    component: () => import("@/admin/pages/supporter-contributions.vue"),
+    children: supporterContributionsRoutes,
+    redirect: { name: supporterContributionsRoutes[0].name },
+    meta: {
+      title: "admin.supporterContributions.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-hand-holding-heart",
+      access: ["supporters"],
+    },
+  },
+  {
     path: "/oauth-applications/",
     component: () => import("@/admin/pages/oauth-applications.vue"),
     children: oauthApplicationsRoutes,
@@ -143,6 +156,17 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-screwdriver-wrench",
       access: ["maintenance"],
+    },
+  },
+  {
+    path: "/notifications",
+    name: "admin-notifications",
+    component: () => import("@/admin/pages/notifications.vue"),
+    meta: {
+      title: "admin.notifications.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-bell",
+      nav: "hidden",
     },
   },
   {

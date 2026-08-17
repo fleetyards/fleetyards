@@ -1,0 +1,33 @@
+{
+  "key": "volt_optics_holo_x3_s1",
+  "ref": "1f799599-a91a-410f-848e-eca2bd41ae5d",
+  "name": "FocalWave-30 (3x Holographic)",
+  "description": "The FocalWave-30 provides enhanced vision to engage targets at close and medium distances. In addition, your weapon's heat and charge is displayed in the lens optics offering enhanced combat awareness.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "weapon_scope",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "IronSight",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e2787f3b-b892-4276-bb2e-eb2b4dc9666b",
+  "tags": [],
+  "hidden": false,
+  "volume": 0.0001,
+  "volume_dimensions": {
+    "x": 0.0398,
+    "y": 0.06,
+    "z": 0.0566
+  }
+}

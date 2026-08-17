@@ -1,0 +1,40 @@
+{
+  "key": "outlaw_legacy_armor_light_legs_01_06_18",
+  "ref": "54d19c1c-d538-4111-bcb5-ee117b8c4c16",
+  "name": "Lynx Legs Abyss",
+  "description": "Maintain your mobility with the Lynx combat armor. A high tech polymer weave allows the wearer to withstand enough damage to quickly escape danger. The suit's striking look became famous after being worn by the Seeker in the widely popular \"Fire and Fury\" vids of the mid-2800s.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "5000.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-31 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Light",
+    "Set_01",
+    "Texture_05",
+    "Color_01",
+    "$Legs++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.036,
+  "volume_dimensions": {
+    "x": 0.44,
+    "y": 0.257,
+    "z": 0.454
+  }
+}

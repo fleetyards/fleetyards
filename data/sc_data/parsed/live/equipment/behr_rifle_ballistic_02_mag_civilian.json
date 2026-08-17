@@ -1,0 +1,35 @@
+{
+  "key": "behr_rifle_ballistic_02_mag_civilian",
+  "ref": "dd21edb8-a0ba-42ab-a02a-bec325e96c87",
+  "name": "P8-AR Rifle Magazine (15 Cap)",
+  "description": "This magazine for the Behring P8-AR rifle comes pre-loaded with fifteen rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "15.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "behr_rifle_ballistic_02_civilian"
+  ],
+  "hidden": false,
+  "volume": 0.00061,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.208
+  }
+}

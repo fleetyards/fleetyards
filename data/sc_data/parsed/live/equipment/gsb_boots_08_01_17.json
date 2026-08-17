@@ -1,0 +1,38 @@
+{
+  "key": "gsb_boots_08_01_17",
+  "ref": "1d6a9e0b-c5cc-48a2-ae18-cd2317ced5b0",
+  "name": "SafeCore Boots Shuttle Gray",
+  "description": "The SafeCore boots are a soft-shelled offering from Grindstone intended to provide more flexibility while traversing in adverse conditions.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "boots",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_boots",
+    "Set_08",
+    "Texture_01",
+    "Color_17"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

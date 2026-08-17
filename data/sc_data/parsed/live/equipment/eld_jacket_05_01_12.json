@@ -1,0 +1,37 @@
+{
+  "key": "eld_jacket_05_01_12",
+  "ref": "d2585b66-0aa1-4f0a-b894-a31ef46cb687",
+  "name": "Hardean Jacket and Shirt Ash",
+  "description": "This gray and brown collarless synth-leather jacket from Escar Limited features quilted detailing around the opening and down the sleeves, and pairs effortlessly with a bold button-down, tropical-print shirt in light blue.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_jacket",
+    "set_05",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

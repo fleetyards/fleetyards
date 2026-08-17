@@ -6,12 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import PublicShipsList from "@/frontend/components/Fleets/PublicShipsList/index.vue";
 import ShipsList from "@/frontend/components/Fleets/ShipsList/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useMobile } from "@/shared/composables/useMobile";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { type Fleet, type FleetMember } from "@/services/fyApi";
@@ -26,8 +26,6 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 
 const { getTitle } = useMetaInfo();
-
-const mobile = useMobile();
 
 const shareUrl = computed(() => {
   if (!props.fleet) {
@@ -61,7 +59,7 @@ const toggleFleetchart = () => {
 
 <template>
   <div class="row">
-    <div class="col-12 col-lg-8">
+    <div class="col-12">
       <h1 class="heading">
         <Avatar
           v-if="fleet.logo"
@@ -72,36 +70,32 @@ const toggleFleetchart = () => {
         {{ fleet.name }} ({{ fleet.fid }})
       </h1>
     </div>
-    <div class="col-12 col-lg-4 flex justify-end items-center">
-      <div v-if="!mobile" class="page-actions">
-        <Btn
-          :inline="true"
-          data-test="fleetchart-link"
-          @click="toggleFleetchart"
-        >
-          <i class="fa-duotone fa-starship" />
-          {{ t("labels.fleetchart") }}
-        </Btn>
-
-        <ShareBtn
-          v-if="membership && fleet.publicFleet"
-          :url="shareUrl"
-          :title="shareTitle"
-          :inline="true"
-        />
-      </div>
-    </div>
   </div>
+
+  <Teleport to="#header-right">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
+      data-test="fleetchart-link"
+      @click="toggleFleetchart"
+    >
+      <i class="fa-duotone fa-starship" />
+      {{ t("labels.fleetchart") }}
+    </Btn>
+
+    <ShareBtn
+      v-if="membership && fleet.publicFleet"
+      :size="BtnSizesEnum.MD"
+      :mobile-icon-only="true"
+      :url="shareUrl"
+      :title="shareTitle"
+    />
+  </Teleport>
 
   <br />
 
   <template v-if="fleet">
-    <ShipsList
-      v-if="membership"
-      :fleet="fleet"
-      :share-url="shareUrl"
-      :share-title="shareTitle"
-    />
+    <ShipsList v-if="membership" :fleet="fleet" />
     <PublicShipsList v-else-if="fleet.publicFleet" :fleet="fleet" />
   </template>
 </template>

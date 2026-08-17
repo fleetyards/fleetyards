@@ -1,0 +1,37 @@
+{
+  "key": "klwe_smg_energy_01_mr01",
+  "ref": "da14a7b1-daa4-4109-8684-54be0d13bb61",
+  "name": "Lumin V \"SecondWind\" SMG",
+  "description": "Klaus & Werner's expert craftsmanship is once again on full display to make the Lumin V laser compact energy rifle even more deadly and dependable. A new \"interval autofire\" mode blasts five-round barrages when the trigger is held down, utilizing the target saturation that comes with autofire while providing breaks to recompensate aim. Even when constantly on the attack, the gun's excellent design provides low recoil and a tight spread. To honor those who came to Orison's aid in its time of need, the SecondWind edition compliments the weapon with a rich blue base adorned with a sleek, flowing air design along the length of the gun.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "smg",
+  "weapon_class": "energy",
+  "rate_of_fire": "562.5",
+  "range": "25.0",
+  "storage": "45.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_lumin_v_smg_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [
+    "stocked",
+    "smg",
+    "klwe_smg_energy_01"
+  ],
+  "hidden": true,
+  "volume": 0.0075,
+  "volume_dimensions": {
+    "x": 0.0471,
+    "y": 0.7026,
+    "z": 0.2594
+  }
+}

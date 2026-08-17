@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "5",
   "name": "Origin 600i 2951 BIS",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Expedition\\n\\nThis multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs. To celebrate the 600i being voted a Best in Show finalist for 2951, this edition of the ship features a special blue and black livery already applied.",
   "career": "Exploration",
@@ -14,6 +14,71 @@
     "base_expediting_fee": "17550"
   },
   "mass": 1544667.0,
+  "inventory_container_ref": "417e05b1-d424-4b79-a8e6-c8898743a8c6",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 14099.0,
+    "y": 4576.0,
+    "z": 24735.0
+  },
+  "hull_health": 197250.0,
+  "hull_parts": [
+    {
+      "name": "ORIG_600i",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "underpanel_rear_b",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 8625.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 8625.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 45000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "underpanel_rear_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Front",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "underpanel_front_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "underpanel_front_b",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 52.0,
     "y": 91.5,

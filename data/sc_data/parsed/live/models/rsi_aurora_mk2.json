@@ -14,6 +14,196 @@
     "base_expediting_fee": "5480"
   },
   "mass": 63500.0,
+  "inventory_container_ref": "633130a5-a3cf-4e76-bfba-c42f795228ee",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 6700.0,
+    "y": 3000.0,
+    "z": 13600.0
+  },
+  "hull_health": 19417.0,
+  "hull_parts": [
+    {
+      "name": "rsi_aurora_mk2",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_nose",
+      "health": 3000.0,
+      "category": "vital"
+    },
+    {
+      "name": "geo_shield_gen_door_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_shield_gen_door_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nose_side_fins",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body",
+      "health": 300.0,
+      "category": "secondary"
+    },
+    {
+      "name": "geo_wing_base_right",
+      "health": 1700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_cooler_right_housing_door_a",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_cooler_right_housing_door_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_top_front_right",
+      "health": 1700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_top_rear_right",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_base_left",
+      "health": 1700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_cooler_left_housing_door_a",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_cooler_left_housing_door_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_top_front_left",
+      "health": 1700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_top_rear_left",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_power_plant_housing_door_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_power_plant_housing_door_a",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_q_drive_housing_door_a",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_q_drive_housing_door_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_computer_housing_door_a",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_computer_housing_door_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_gravity_gen_housing_door_a",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_gravity_gen_housing_door_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_battery_housing_door_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_battery_housing_door_a",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "_geo_fuel_port_cover_back",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_bottom",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_bottom_front_right",
+      "health": 1700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_bottom_rear_right",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_bottom_left",
+      "health": 1700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_tail",
+      "health": 1000.0,
+      "category": "vital"
+    },
+    {
+      "name": "geo_tail_end",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_tail_spoiler",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_wing_left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_wing_right",
+      "health": 500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 27.7,
     "y": 27.4,

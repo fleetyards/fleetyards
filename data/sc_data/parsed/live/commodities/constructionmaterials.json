@@ -1,0 +1,10 @@
+{
+  "key": "constructionmaterials",
+  "sc_key": "items_commodities_constructionmaterials",
+  "ref": "383e3a8d-2b9a-4550-81fb-5700b7344ced",
+  "name": "Construction Materials",
+  "commodity_type": "consumer_goods",
+  "commodity_type_name": "Consumer Goods",
+  "description": "Various supplies used to build, repair, and maintain buildings and structures.",
+  "icon": null
+}

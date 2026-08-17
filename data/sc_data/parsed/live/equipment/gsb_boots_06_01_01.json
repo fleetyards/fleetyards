@@ -1,0 +1,38 @@
+{
+  "key": "gsb_boots_06_01_01",
+  "ref": "ec4add03-cb59-4c8e-806f-341b7ea2033d",
+  "name": "TrailTuff Boots",
+  "description": "Whether you're charting new territory on an untouched world or fixing fences at your homestead, Grindstone's TrailTuff boots are sturdy enough to take on the toughest terrain. Made with a proprietary synthetic leather that has all the qualities you love of the real thing and none of the downsides.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "boots",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_boots",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

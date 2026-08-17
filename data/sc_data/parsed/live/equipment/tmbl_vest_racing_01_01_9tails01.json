@@ -1,0 +1,37 @@
+{
+  "key": "tmbl_vest_racing_01_01_9tails01",
+  "ref": "b3ae128b-1c8a-467a-b1da-b1882c1c4ab9",
+  "name": "Renegade Racing Vest (Modified)",
+  "description": "This version of the Renegade Racing vest has been modified from its original form. The Renegade Racing vest provides protection against road rash without adding to your lap time. Graphene-based nanocomposite plating makes the vest extremely light yet ultra-durable. Ideal for everything from idyllic rides to heart pounding last laps.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "vest",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "tags": [
+    "tmbl_vest_racing",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

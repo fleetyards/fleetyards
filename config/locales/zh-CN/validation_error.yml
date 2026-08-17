@@ -20,6 +20,7 @@ zh-CN:
       accept: 无法接受舰队成员。
       decline: 无法拒绝舰队成员。
       destroy: 无法移除舰队成员。
+      update: 无法更新舰队成员。
     fleet_memberships:
       create: 舰队邀请无法使用
       destroy: 无法离开舰队。
@@ -30,6 +31,28 @@ zh-CN:
       create: 无法创建群组
       destroy: 无法删除群组
       update: 无法更新群组
+    fleet_inventories:
+      create: 无法创建库存。
+      update: 无法更新库存。
+      destroy: 无法删除库存。
+    fleet_inventory_items:
+      create: 无法创建库存记录。
+      update: 无法更新库存记录。
+      destroy: 无法删除库存记录。
+    hangar_inventories:
+      create: 无法创建库存。
+      update: 无法更新库存。
+      destroy: 无法删除库存。
+    hangar_inventory_items:
+      create: 无法创建库存记录。
+      update: 无法更新库存记录。
+      destroy: 无法删除库存记录。
+    vehicle_inventory:
+      destroy: 无法删除库存。
+    vehicle_inventory_items:
+      create: 无法创建库存记录。
+      update: 无法更新库存记录。
+      destroy: 无法删除库存记录。
     image:
       create: 无法创建图片
       update: 无法更新图片

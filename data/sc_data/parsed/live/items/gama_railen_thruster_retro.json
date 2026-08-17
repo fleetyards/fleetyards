@@ -1,0 +1,46 @@
+{
+  "key": "GAMA_Railen_Thruster_Retro",
+  "ref": "41d23dec-a0d3-410c-b827-0514e1e0cd7a",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "Retro",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 7000.0
+  },
+  "type_data": {
+    "thrust_capacity": 17150000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro",
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
+  }
+}

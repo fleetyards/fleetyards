@@ -4,6 +4,10 @@ en:
     account:
       action: Manage Account Settings
     admin:
+      new_supporter:
+        headline: FleetYards.net Command - New Patreon Supporter
+        subject: New Patreon Supporter
+        text: '%{name} just became a Patreon supporter (%{amount})'
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
         subject: Connection to RSI blocked
@@ -13,12 +17,49 @@ en:
         subject: Connection to RSI restored
         text: Automated updates from RSI using "%{url}" has been restored
       weekly:
-        fleets: New Fleets
+        columns:
+          current: This Week
+          delta: Change
+          metric: Metric
+          previous: Last Week
         headline: FleetYards.net Command - Weekly
-        registrations: New Registrations
-        ships: New Ships
+        metrics:
+          active_users: Active Users
+          email_rejections: Email Rejections
+          ended_supporters: Supporters Lost
+          failed_hangar_syncs: Failed Hangar Syncs
+          failed_imports: Failed Imports
+          fleet_memberships: New Fleet Members
+          fleets: New Fleets
+          hangar_syncs: Hangar Syncs
+          models_need_position_curation: Models Needing Position Curation
+          models_without_image: Models Without Store Image
+          models_without_price: Models Without Price
+          new_supporters: New Supporters
+          registrations: New Registrations
+          ships: New Ships
+          star_citizen_updates: RSI News Items
+          supporter_amount: Contributions
+          unique_visitors: Unique Visitors
+          unresolved_rsi_blocks: Unresolved RSI Blocks
+          vehicles: New Vehicles
+          visits: Visits
+          wishes: New Wishlist Entries
+        notifications:
+          action: Open Notification Center
+          empty: Nothing open — the notification center is clear.
+          headline:
+            one: Open Notification (%{count})
+            other: Open Notifications (%{count})
+            zero: Open Notifications
+        period: "%{from} – %{to}"
+        sections:
+          content: Content & Data Gaps
+          engagement: Engagement
+          growth: Growth
+          ops: Ops Health
+          supporters: Supporters
         subject: FleetYards.net Command Weekly
-        vehicles: New Vehicles
     fleet_event:
       action: View event
       published:

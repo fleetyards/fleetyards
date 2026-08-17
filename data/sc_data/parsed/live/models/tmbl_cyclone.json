@@ -14,6 +14,211 @@
     "base_expediting_fee": "810"
   },
   "mass": 3084.0,
+  "inventory_container_ref": "3fdc5058-9de3-480e-846b-031201a330b7",
+  "hull_health": 6910.0,
+  "hull_parts": [
+    {
+      "name": "TMBL_Cyclone",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wheelFL",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheelFR",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheelBR",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheelBL",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_spoke_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_main_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_spoke_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_main_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_body_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "rear_armor_plating_left",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mud_flap_bl",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mud_flap_fl",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mud_flap_fr",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_armor_plating_right",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mud_flap_br",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hood",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "livery_decal",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "$lod1_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod2_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_decals",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "$lod1_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod2_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod3_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod4_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod5_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    }
+  ],
+  "speeds": {
+    "max": 36.0,
+    "reverse": null,
+    "acceleration": null,
+    "decceleration": null
+  },
   "metrics": {
     "x": 8.75,
     "y": 6.0,

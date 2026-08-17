@@ -1,0 +1,35 @@
+{
+  "key": "fps_consumable_keycard_stormbreaker_maintenanceaccess",
+  "ref": "3da40a19-864d-4659-ba01-b920219e3180",
+  "name": "Maintenance Access: Farro Data Center",
+  "description": null,
+  "equipment_type": "hacking_tool",
+  "slot": null,
+  "item_type": "keycard",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "SystemAccess",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "STMGN_Maintenance"
+  ],
+  "hidden": false,
+  "volume": 0.00014,
+  "volume_dimensions": {
+    "x": 0.0663,
+    "y": 0.1428,
+    "z": 0.0163
+  }
+}

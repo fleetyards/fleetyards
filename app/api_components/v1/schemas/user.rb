@@ -35,6 +35,7 @@ module V1
           publicWishlist: {type: :boolean},
           publicWishlistUrl: {type: :string},
           hideOwner: {type: :boolean},
+          tracking: {type: :boolean},
           twoFactorRequired: {type: :boolean},
           twoFactorQrCodeUrl: {type: :string},
           twoFactorProvisioningUrl: {type: :string},
@@ -49,7 +50,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner
+          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner tracking
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })

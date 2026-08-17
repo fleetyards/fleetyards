@@ -1,0 +1,38 @@
+{
+  "key": "outlaw_legacy_medium_armor_core_01_02_18",
+  "ref": "fd9cf430-f6ca-4be6-bb4a-b62774811d16",
+  "name": "Inquisitor Core Outcrop",
+  "description": "Strength and speed combine with the new Inquisitor armor set. Strong yet lightweight alloy plating works alongside reinforced polyfiber weaving to save your skin, but not slow you down. When combined with Kastak Arms' intimidating aesthetic, it's easy to see why this medium armor has become infamous across the Empire.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "6.4",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-56 / 86 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light_medium",
+  "icon": "ui/textures/ea/loadouticons/medium_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Medium",
+    "Set_02",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.042,
+  "volume_dimensions": {
+    "x": 0.395,
+    "y": 0.408,
+    "z": 0.325
+  }
+}

@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { RSIHangarParser } from "@/frontend/lib/RSIHangarParser";
@@ -400,12 +397,10 @@ const refreshPage = async () => {
           <Btn
             v-if="identityStatus === 'notFound'"
             v-tooltip="t('labels.syncExtension.checkIdentity')"
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.LINK"
             class="check-identity-btn"
-            :text-inline="true"
             :disabled="loadingIdentity"
             @click="checkRSIIdentity"
+            :variant="BtnVariantsEnum.BARE"
           >
             <i class="fa-light fa-sync" />
           </Btn>
@@ -429,36 +424,22 @@ const refreshPage = async () => {
       </div>
     </transition>
     <template #footer>
-      <Btn
-        v-if="finished"
-        :size="BtnSizesEnum.SMALL"
-        :inline="true"
-        data-test="close-sync"
-        @click="cancel"
-      >
+      <Btn v-if="finished" data-test="close-sync" @click="cancel">
         {{ t("actions.syncExtension.close") }}
       </Btn>
       <template v-else>
         <Btn
-          :size="BtnSizesEnum.SMALL"
-          :inline="true"
           data-test="cancel-sync"
           :disabled="started && !finishedWithErrors"
           @click="cancel"
         >
           {{ t("actions.syncExtension.cancel") }}
         </Btn>
-        <Btn
-          v-if="retryable"
-          :inline="true"
-          data-test="start-sync"
-          @click.native="finishSync"
-        >
+        <Btn v-if="retryable" data-test="start-sync" @click.native="finishSync">
           {{ t("actions.syncExtension.retry") }}
         </Btn>
         <Btn
           v-else-if="hangarStore.extensionReady"
-          :inline="true"
           data-test="start-sync"
           :loading="started || loadingIdentity"
           :disabled="identityStatus !== 'connected' || hangarStore.syncRunning"
@@ -466,12 +447,7 @@ const refreshPage = async () => {
         >
           {{ t("actions.syncExtension.start") }}
         </Btn>
-        <Btn
-          v-else
-          :inline="true"
-          data-test="recheck-sync"
-          @click="refreshPage"
-        >
+        <Btn v-else data-test="recheck-sync" @click="refreshPage">
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>

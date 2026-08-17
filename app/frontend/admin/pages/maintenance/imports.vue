@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -12,7 +13,7 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -175,7 +176,7 @@ const columns: BaseTableCol<Import>[] = [
 
   <Teleport to="#header-right">
     <Btn
-      :size="BtnSizesEnum.SMALL"
+      :size="BtnSizesEnum.MD"
       :loading="isReloadingMatrix"
       :confirm="t('messages.confirm.model.reloadMatrix')"
       :aria-label="t('actions.admin.dashboard.reloadModels')"
@@ -187,7 +188,7 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
+      :size="BtnSizesEnum.MD"
       :loading="isReloadingScData"
       :confirm="t('messages.confirm.model.reloadScData')"
       :aria-label="t('actions.admin.dashboard.reloadScData')"
@@ -199,7 +200,7 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
+      :size="BtnSizesEnum.MD"
       :loading="isReloadingModules"
       :confirm="t('messages.confirm.model.reloadModules')"
       :aria-label="t('actions.admin.dashboard.reloadModules')"
@@ -211,7 +212,7 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadModules") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
+      :size="BtnSizesEnum.MD"
       :loading="isReloadingPaints"
       :confirm="t('messages.confirm.model.reloadPaints')"
       :aria-label="t('actions.admin.dashboard.reloadPaints')"
@@ -223,7 +224,7 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadPaints") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
+      :size="BtnSizesEnum.MD"
       :loading="isReloadingLoaners"
       :confirm="t('messages.confirm.model.reloadLoaners')"
       :aria-label="t('actions.admin.dashboard.reloadLoaners')"

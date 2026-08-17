@@ -14,6 +14,71 @@
     "base_expediting_fee": "20200"
   },
   "mass": 2339240.06,
+  "inventory_container_ref": "47c86cd6-2274-4791-b61d-60d3bf119a46",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 27795.0,
+    "y": 8966.0,
+    "z": 37657.0
+  },
+  "hull_health": 78400.0,
+  "hull_parts": [
+    {
+      "name": "CRUS_Starlifter",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Tail_Left",
+      "health": 3600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Right",
+      "health": 3600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 6600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 3600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "LGearBayDoorFront_R_Geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "LGearBayDoorFront_L_Geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose_Mesh",
+      "health": 7000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_door_left",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_door_right",
+      "health": 4500.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 94.0,
     "y": 70.0,
@@ -420,8 +485,8 @@
     },
     {
       "name": "hardpoint_rear_ramp",
-      "ref": null,
-      "key": "Door_Ship_Exterior_CRUS_Starlifter_Rear_Ramp_A2"
+      "ref": "617445c9-ec05-4b86-ad7a-d0b67fc32c44",
+      "key": null
     },
     {
       "name": "hardpoint_radar",
@@ -805,6 +870,11 @@
           "key": null
         },
         {
+          "name": "missile_02_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
           "name": "missile_03_attach",
           "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
           "key": null
@@ -953,11 +1023,161 @@
       "loadout": [
         {
           "name": "missile_01_attach",
+          "ref": null,
+          "key": "BOMB_S03_FSKI_Thunderball"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "BOMB_S03_FSKI_Thunderball"
+        },
+        {
+          "name": "missile_01_attach",
           "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
           "key": null
         },
         {
           "name": "missile_02_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_09_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_10_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_11_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_12_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_13_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_14_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_15_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_16_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_17_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_18_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_19_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_20_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_21_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_22_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_23_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_24_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_25_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_26_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_27_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_28_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_29_attach",
+          "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
+          "key": null
+        },
+        {
+          "name": "missile_30_attach",
           "ref": "3c3f79ae-acb2-4472-a08d-2ddb1afcc700",
           "key": null
         }

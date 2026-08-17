@@ -1,0 +1,39 @@
+{
+  "key": "basl_combat_light_flightsuit_02_01_01",
+  "ref": "b190d5a9-90da-4ceb-a262-cb789dd17d4f",
+  "name": "Ace Interceptor Racing Flight Suit",
+  "description": "Featuring a deceptively simple design, the Ace Interceptor flight suit is jet black with reinforced grey protective padding on the arms and legs. Basilisk's renowned craftsmanship make this flight suit durable and supremely comfortable, leaving no mystery as to why it's widely used by top pilots across the empire.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "racing_flight_suit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "100.0",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cdf6ea1e-7de3-4b58-bf9d-13c5fbafc49a",
+  "tags": [
+    "Set_01",
+    "Texture_01",
+    "Color_01",
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.023,
+  "volume_dimensions": {
+    "x": 0.315,
+    "y": 0.227,
+    "z": 0.41
+  }
+}

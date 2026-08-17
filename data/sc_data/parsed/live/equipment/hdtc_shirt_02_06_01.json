@@ -1,0 +1,38 @@
+{
+  "key": "hdtc_shirt_02_06_01",
+  "ref": "9369f8e2-d75b-474d-a6da-a3ccea845a79",
+  "name": "Bellator Shirt and Waistcoat Goldsmith",
+  "description": "Stylish, functional, and deadly: the Bellator clothing line is designed to fit in at dinner party just as well as a gunfight. Accompanied by a luxurious silk tie and smart fitting waistcoat, this shirts provides some combat protection thanks to the intricate weaving of layered graphene into its threads.\n\nThe Goldsmith edition gold filigree and seaming on luxurious black for an extravagant look.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_shirt",
+    "Set_02",
+    "Texture_06",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

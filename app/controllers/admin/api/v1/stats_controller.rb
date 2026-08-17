@@ -4,6 +4,8 @@ module Admin
   module Api
     module V1
       class StatsController < ::Admin::Api::BaseController
+        include TrackingStatsConcern
+
         def quick_stats
           authorize! with: ::Admin::StatsPolicy
 
@@ -74,17 +76,6 @@ module Admin
           end
 
           render json: registrations_per_month.to_json
-        end
-
-        private def online_count
-          Ahoy::Event.without_users(tracking_blocklist)
-            .select(:visit_id).distinct
-            .where("time > ?", 15.minutes.ago).count
-        end
-        helper_method :online_count
-
-        private def tracking_blocklist
-          @tracking_blocklist ||= User.where(tracking: false).pluck(:id)
         end
       end
     end

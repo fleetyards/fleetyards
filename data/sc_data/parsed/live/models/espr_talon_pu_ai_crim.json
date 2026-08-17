@@ -14,6 +14,336 @@
     "base_expediting_fee": "5243"
   },
   "mass": 46242.06,
+  "inventory_container_ref": "1158055c-a5ac-4a1d-9e44-9e4375247fd0",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 4045.0,
+    "y": 2556.0,
+    "z": 5017.0
+  },
+  "hull_health": 24930.0,
+  "hull_parts": [
+    {
+      "name": "ESPR_Talon",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "eject_joint",
+      "health": 80.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Cockpit",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hatch_geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "rail_extension",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Leg_Right",
+      "health": 1900.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Leg_Lower_Right",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "leg_feathers_01_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_02_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_03_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_04_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_05_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "slider_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "knee_joint_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_small_segment_01_right",
+      "health": 1300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_small_feathers_01_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_02_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_03_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_04_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_05_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_06_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_07_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "comp_jumpdrive_door_front",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "comp_jumpdrive_door_mid",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "comp_jumpdrive_door_rear",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "comp_jumpdrive_door_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "comp_jumpdrive_door_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_scanner_door_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_scanner_door_rear",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_scanner_door_mid",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_scanner_door_front",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar_scanner_door_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "coolers_door_mid",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "coolers_door_rear",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "coolers_door_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "coolers_door_front",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "coolers_door_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shieldgen_door_outer_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shieldgen_door_inner_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shieldgen_door_inner_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shieldgen_door_outer_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rudder_geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_spine",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Leg_Left",
+      "health": 1900.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Leg_Lower_Left",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "leg_feathers_05_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_04_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_03_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_02_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_feathers_01_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_small_segment_01_left",
+      "health": 1300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_small_feathers_01_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_02_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_03_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_04_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_05_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_06_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_small_feathers_07_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail_Left",
+      "health": 1650.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 1850.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 1850.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Right",
+      "health": 1650.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 15.0,
     "y": 24.0,

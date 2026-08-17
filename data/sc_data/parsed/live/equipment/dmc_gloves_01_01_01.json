@@ -1,0 +1,37 @@
+{
+  "key": "dmc_gloves_01_01_01",
+  "ref": "20eceede-2f6b-426b-93a6-1ddb71ff21ad",
+  "name": "Gauntlet Gloves",
+  "description": "DMC's Gauntlet gloves feel like a hard day's work. Built with resilient GranTec composite weaves, these Gauntlets live up to their name, providing maximum protection against environments and impacts so you can work another day.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_gloves",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0015,
+  "volume_dimensions": {
+    "x": 0.301,
+    "y": 0.048,
+    "z": 0.207
+  }
+}

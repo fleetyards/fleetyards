@@ -22,11 +22,20 @@
     "health": 9900.0
   },
   "type_data": {
+    "health": 9900.0,
+    "self_resistance_physical": 0.86,
+    "self_resistance_energy": 1.22,
+    "self_resistance_distortion": 1.0,
+    "self_resistance_thermal": 1.0,
     "damage_physical": 0.7,
     "damage_energy": 0.5,
     "damage_distortion": 1.0,
     "damage_thermal": 1.0,
     "damage_biochemical": 1.0,
-    "damage_stun": 1.0
+    "damage_stun": 1.0,
+    "deflection_physical": 62.0,
+    "deflection_energy": 33.0,
+    "deflection_distortion": 0.0,
+    "deflection_thermal": 0.0
   }
 }

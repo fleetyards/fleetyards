@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "5",
   "name": "Anvil Valkyrie Liberator",
   "description": "Manufacturer: Anvil Aerospace \\nFocus: Drop Ship\\n\\nFor over a century, Anvil ships have distinguished themselves in countless civilian and military combat operations. Honor that proud tradition of security with the limited Liberator Edition Valkyrie, featuring an exclusive trim package commemorating the ship's debut at CitizenCon 2948.",
   "career": "Combat",
@@ -14,6 +14,126 @@
     "base_expediting_fee": "11910"
   },
   "mass": 597246.06,
+  "inventory_container_ref": "571752ce-d873-463c-bb64-bb64f98ee582",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 18752.0,
+    "y": 5934.0,
+    "z": 23736.0
+  },
+  "hull_health": 90053.0,
+  "hull_parts": [
+    {
+      "name": "ANVL_Valkyrie",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Nose",
+      "health": 25000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Decal_Wing_Left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Decal_Wing_Right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 25000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_RR",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_RL",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_RR",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_RR_Split",
+      "health": 6500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Lights_Engine_RR_Split",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_RL",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_RL_Split",
+      "health": 6500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Shell",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose_Bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Engine_FL",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_FL_Split",
+      "health": 6500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_FR",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_FR_Split",
+      "health": 6500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Lights_Nose",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose_Shell",
+      "health": 50.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 38.0,
     "y": 48.0,

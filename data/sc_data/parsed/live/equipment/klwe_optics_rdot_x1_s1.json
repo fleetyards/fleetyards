@@ -1,0 +1,33 @@
+{
+  "key": "klwe_optics_rdot_x1_s1",
+  "ref": "b886d522-04ca-493e-9373-daa8a4f8066e",
+  "name": "RD-1 Jaeger (1x Red Dot)",
+  "description": "The RD-1 Jaeger's simple and functional design provides pinpoint accuracy and rapid target acquisition in close-quarters combat.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "weapon_scope",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "IronSight",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [],
+  "hidden": false,
+  "volume": 0.0001,
+  "volume_dimensions": {
+    "x": 0.0398,
+    "y": 0.06,
+    "z": 0.0566
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "key": "lbco_pistol_energy_01_sunset01",
+  "ref": "1874f421-36cc-4993-969a-b7c374b6f07a",
+  "name": "Yubarev \"Igniter\" Pistol",
+  "description": "Engineering excellence only scratches the surface of the distinct Yubarev pistol. Former merc turned weapon manufacturing mogul Irina Arkadova oversaw every aspect of the weapon, imbuing it with power, practicality, and panache. Featuring a classic woodgrain grip and cutting edge barrel design, the Yubarev fires a charged electron shot that impacts not only your target, amplifying the charge with each hit, but can spread to additional conductive targets in range. A lustrous orange coating makes the Igniter edition a colorful addition to any loadout.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "pistol",
+  "weapon_class": "energy",
+  "rate_of_fire": "350.0",
+  "range": "35.0",
+  "storage": "10.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/lbco_yubarev_pistol_64.tif",
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "98bb2e9e-fcc7-46e5-9ba6-d34c42c414e0",
+  "tags": [
+    "pistol"
+  ],
+  "hidden": false,
+  "volume": 0.0025,
+  "volume_dimensions": {
+    "x": 0.0387,
+    "y": 0.2359,
+    "z": 0.1553
+  }
+}

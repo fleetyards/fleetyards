@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Esperia Prowler Utility",
   "description": "Manufacturer: Esperia\\nFocus: Light Freight\\n\\nWhile no known Tevarin-made examples of this historical ship exist, historians at Esperia studied contemporary UPE military field reports to reconstruct this modified Prowler. Used by the Tevarin military to deliver urgently needed supplies to the frontlines, the Prowler Utility pairs a tractor beam with a fully accessible hold, alongside the warship’s still significant armaments, to make the transfer of cargo in battlefield conditions a precision operation.",
   "career": "Transporter",
@@ -14,6 +14,131 @@
     "base_expediting_fee": "9200"
   },
   "mass": 171700.0,
+  "inventory_container_ref": "8624d002-c8bc-416f-9db2-763d0ec6b01f",
+  "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 6765.0,
+    "y": 3372.0,
+    "z": 6787.0
+  },
+  "hull_health": 69300.0,
+  "hull_parts": [
+    {
+      "name": "ESPR_Prowler_Utility",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nose",
+      "health": 10500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 18000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_wing_stabilizer_right",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_right",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_extra_right",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_wing_stabilizer_left",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_left",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_extra_left",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "humerus_base_e_left",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "humerus_left",
+      "health": 6000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ulna_left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_phalange_a_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_b_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_c_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_d_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "humerus_base_e_right",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "humerus_right",
+      "health": 6000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ulna_right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_phalange_a_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_b_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_c_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_d_right",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 32.0,
     "y": 34.0,

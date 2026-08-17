@@ -20,7 +20,7 @@
   },
   "loadout": [
     {
-      "name": "IP_Exterior",
+      "name": "IP_Interior",
       "min_size": "0",
       "max_size": "1",
       "types": [
@@ -28,22 +28,24 @@
       ]
     },
     {
-      "name": "hardpoint_Ext_Door_Bottom_HACK",
-      "min_size": "1",
+      "name": "IP_Exterior",
+      "min_size": "0",
       "max_size": "1",
-      "types": []
+      "types": [
+        "ControlPanel"
+      ]
     }
   ],
   "default_loadout": [
     {
-      "name": "IP_Exterior",
-      "key": "ControlPanel_Screen_DoorControl_Starlifter_Exterior_Button",
+      "name": "IP_Interior",
+      "key": "ControlPanel_Screen_DoorControl_Starlifter_Interior_Button",
       "ref": null,
       "default_loadout": []
     },
     {
-      "name": "hardpoint_Ext_Door_Bottom_HACK",
-      "key": "CRUS_Starlifter_Ext_Door_Bottom",
+      "name": "IP_Exterior",
+      "key": "ControlPanel_Screen_DoorControl_Starlifter_Exterior_Button",
       "ref": null,
       "default_loadout": []
     }

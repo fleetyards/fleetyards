@@ -6,45 +6,41 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import Menu from "@/shared/components/base/BtnDropdown/Menu/index.vue";
+import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
+  BtnTonesEnum,
 } from "@/shared/components/base/Btn/types";
 
 type Props = {
   size?: `${BtnSizesEnum}`;
   variant?: `${BtnVariantsEnum}`;
+  tone?: `${BtnTonesEnum}`;
   expandLeft?: boolean;
   expandTop?: boolean;
   expandBottom?: boolean;
-  mobileBlock?: boolean;
-  inline?: boolean;
-  textInline?: boolean;
-  flush?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  size: BtnSizesEnum.DEFAULT,
-  variant: BtnVariantsEnum.DEFAULT,
+  size: undefined,
+  variant: BtnVariantsEnum.SOLID,
+  tone: BtnTonesEnum.NEUTRAL,
   expandLeft: false,
   expandTop: false,
   expandBottom: false,
-  mobileBlock: false,
-  inline: false,
-  textInline: false,
-  flush: false,
 });
 
 const visible = ref(false);
 
 const listPosition = ref<Record<string, string>>({});
 
-const cssClasses = computed(() => {
-  return {
-    "panel-btn-dropdown--inline": props.inline,
-    "panel-btn-dropdown--flush": props.flush,
-  };
-});
+// Injected, not provided: BtnGroup is an ancestor, and Menu is what provides the
+// "menu" context for the list items.
+const container = inject(BTN_CONTAINER, null);
+
+const grouped = computed(() => container?.container === "group");
 
 onMounted(() => {
   document.addEventListener("click", documentClick);
@@ -55,10 +51,12 @@ onUnmounted(() => {
 });
 
 const toggle = (event: MouseEvent) => {
-  const { target } = event;
+  // The trigger, not whatever was clicked inside it: a click landing on a label
+  // or an icon would otherwise anchor the menu to that glyph's box.
+  const target = (event.currentTarget || event.target) as HTMLElement | null;
 
   if (target) {
-    const bounding = (target as HTMLElement).getBoundingClientRect();
+    const bounding = target.getBoundingClientRect();
 
     const expandLeft =
       props.expandLeft || window.innerWidth - bounding.left < 300;
@@ -89,7 +87,9 @@ const toggle = (event: MouseEvent) => {
 };
 
 const wrapper = ref<HTMLElement | undefined>();
-const btnList = ref<HTMLElement | undefined>();
+// Menu is a component, so the ref is an instance - reach its root element via
+// $el for the outside-click test.
+const btnList = ref<{ $el?: HTMLElement } | undefined>();
 
 const documentClick = (event: MouseEvent) => {
   if (!visible.value) return;
@@ -99,7 +99,7 @@ const documentClick = (event: MouseEvent) => {
   if (
     target !== wrapper.value &&
     !wrapper.value?.contains(target as HTMLElement) &&
-    !btnList.value?.contains(target as HTMLElement)
+    !btnList.value?.$el?.contains(target as HTMLElement)
   ) {
     visible.value = false;
   }
@@ -107,37 +107,67 @@ const documentClick = (event: MouseEvent) => {
 </script>
 
 <template>
-  <div ref="wrapper" class="panel-btn-dropdown" :class="cssClasses">
-    <Btn
-      :size="size"
-      :variant="variant"
-      :active="visible"
-      :text-inline="textInline"
-      :mobile-block="mobileBlock"
-      inline
-      @click="toggle"
-    >
-      <slot name="label">
-        <i class="fa-solid fa-ellipsis-v" />
-      </slot>
-    </Btn>
+  <div
+    ref="wrapper"
+    class="btn-dropdown"
+    :class="{
+      'btn-dropdown--grouped': grouped,
+      'btn-dropdown--custom-trigger': !!$slots.trigger,
+    }"
+  >
+    <slot name="trigger" :toggle="toggle" :visible="visible">
+      <Btn
+        :size="size"
+        :variant="variant"
+        :tone="tone"
+        :active="visible"
+        aria-haspopup="menu"
+        :aria-expanded="visible"
+        @click="toggle"
+      >
+        <slot name="label">
+          <i class="fa-solid fa-ellipsis-v" />
+        </slot>
+      </Btn>
+    </slot>
     <Teleport to="body">
-      <div
+      <Menu
         ref="btnList"
-        class="panel-btn-dropdown__list"
-        :class="{
-          visible,
-        }"
-        data-test="dropdown-list"
-        :style="listPosition"
+        :visible="visible"
+        :position="listPosition"
         @click="visible = false"
       >
         <slot />
-      </div>
+      </Menu>
     </Teleport>
   </div>
 </template>
 
-<style lang="scss" scoped>
-@import "./index.scss";
+<style scoped>
+@reference "../../../../entrypoints/tailwind.css";
+
+.btn-dropdown {
+  @apply relative inline-block;
+  margin: 0;
+}
+
+/*
+ * Inside a BtnGroup this wrapper must not form a box, otherwise the trigger is
+ * both :first-child and :last-child of *the wrapper* - so it picks up rounded
+ * corners on both sides and the group's own :first/:last-child rules never match
+ * it. display:contents promotes the trigger to a direct flex child of the group.
+ * The outside-click test uses DOM containment, which is unaffected.
+ */
+.btn-dropdown--grouped {
+  display: contents;
+}
+
+/*
+ * A custom trigger brings its own box, and one that positions itself - the
+ * panel tag pins to the bottom of a panel - has to resolve against the panel
+ * rather than against this wrapper. Same call as above, for the same reason.
+ */
+.btn-dropdown--custom-trigger {
+  display: contents;
+}
 </style>

@@ -1,0 +1,37 @@
+{
+  "key": "oct_jacket_03_01_01",
+  "ref": "36bdc2b1-81c3-40bb-bb54-8508d6402fb5",
+  "name": "Zerua Jacket Crusader Edition",
+  "description": "Masterfully blending various colors and materials, the Zerua is a stylish jacket that features light yet breathable synthetics. Thanks to a unique dual layer design the jacket is meant to be worn open but is closable against the cold thanks to a snap button collar and zipper on the outer layer. The Crusader Edition is made specifically for company employees to weather the conditions present at Orison, and features the famous sword and C logo down the front and across the back of the jacket.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a05001d-0511-415f-8e32-618fbd75242b",
+  "tags": [
+    "oct_jacket",
+    "set_03",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

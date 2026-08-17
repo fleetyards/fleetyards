@@ -247,38 +247,6 @@
           }
         }
       },
-      "fleets": {
-        "logistics": {
-          "request": {
-            "create": {
-              "success": "Logistics request created.",
-              "failure": "Could not create logistics request."
-            }
-          },
-          "inventory": {
-            "create": {
-              "success": "Inventory created.",
-              "failure": "Could not create inventory."
-            }
-          },
-          "inventoryItem": {
-            "create": {
-              "success": "Item added to inventory.",
-              "failure": "Could not add item to inventory."
-            }
-          },
-          "comment": {
-            "create": {
-              "success": "Comment added.",
-              "failure": "Could not add comment."
-            }
-          },
-          "csvImport": {
-            "success": "%{count} items imported successfully.",
-            "failure": "Could not import CSV file."
-          }
-        }
-      },
       "fleetInvite": {
         "used": "<b>已發送加入%{fleet}的申請！</b><br>一旦您的會員資格被接受，您將收到電子郵件通知",
         "failure": "邀請無法使用。",
@@ -319,7 +287,8 @@
           "leave": "您確定要離開艦隊嗎？此操作無法復原。",
           "destroy": "您確定要刪除您的艦隊嗎？此操作無法復原。",
           "members": {
-            "destroy": "您確定要移除此成員嗎？"
+            "destroy": "您確定要移除此成員嗎？",
+            "remove": "確定要將該成員從艦隊中移除嗎？"
           },
           "invites": {
             "decline": "您確定要拒絕此邀請嗎？此操作無法復原。"
@@ -431,6 +400,76 @@
         "success": "您的機庫已同步。",
         "failure": "您的機庫無法同步。",
         "notLoggedIn": "您需要在<a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a>登入以同步您的機庫。"
+      },
+      "logistics": {
+        "request": {
+          "create": {
+            "success": "Logistics request created.",
+            "failure": "Could not create logistics request."
+          }
+        },
+        "inventory": {
+          "create": {
+            "success": "Inventory created.",
+            "failure": "Could not create inventory."
+          },
+          "update": {
+            "success": "Inventory updated.",
+            "failure": "Could not update inventory."
+          },
+          "destroy": {
+            "success": "Inventory deleted.",
+            "failure": "Could not delete inventory."
+          }
+        },
+        "inventoryItem": {
+          "create": {
+            "success": "Item added to inventory.",
+            "failure": "Could not add item to inventory."
+          },
+          "deposit": {
+            "success": "Deposit recorded.",
+            "failure": "Could not record deposit."
+          },
+          "withdrawal": {
+            "success": "Withdrawal recorded.",
+            "failure": "Could not record withdrawal. Check available stock."
+          },
+          "destroy": {
+            "success": "Entry deleted.",
+            "failure": "Could not delete entry.",
+            "confirm": "Delete this entry? The stock it added or removed is corrected accordingly."
+          }
+        },
+        "comment": {
+          "create": {
+            "success": "Comment added.",
+            "failure": "Could not add comment."
+          }
+        },
+        "csvImport": {
+          "success": "%{count} items imported successfully.",
+          "failure": "Could not import CSV file."
+        },
+        "stockItem": {
+          "update": {
+            "success": "Item updated.",
+            "failure": "Could not update item."
+          },
+          "destroy": {
+            "success": "Item deleted.",
+            "failure": "Could not delete item.",
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "刪除該物品及其所有記錄？此操作無法復原。"
+          }
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "清空這艘飛船的貨物？所有記錄都會被刪除。",
+            "success": "貨物已清空。",
+            "failure": "無法清空貨物。"
+          }
+        }
       }
     }
   }

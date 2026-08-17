@@ -16,7 +16,9 @@
       "videos": "Videos",
       "hangar": {
         "index": "My Hangar",
-        "vehicleLoadouts": "Loadouts"
+        "vehicleLoadouts": "Loadouts",
+        "inventories": "Inventories",
+        "vehicleCargo": "Cargo"
       },
       "login": "Login",
       "logout": "Logout",
@@ -98,6 +100,7 @@
         "notifications": "Notifications",
         "calendar": "Calendar",
         "hangar": "Hangar",
+        "privacy": "Privacy",
         "features": "Features",
         "connections": "Connections",
         "oauthApplications": "OAuth Apps",
@@ -108,10 +111,16 @@
         "index": "Visual Tests",
         "panels": "Panels",
         "buttons": "Buttons",
+        "typography": "Typography",
+        "forms": "Forms",
         "tables": "Tables",
+        "lists": "Lists",
+        "metrics": "Metrics",
+        "states": "States",
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
-        "supportHint": "Support Hint"
+        "supportHint": "Support Hint",
+        "chips": "Chips"
       },
       "admin": {
         "index": "Admin",
@@ -142,7 +151,6 @@
           "index": "Paints",
           "create": "Create Paint"
         },
-
         "modelModules": {
           "index": "Modules",
           "create": "Create Module",
@@ -181,6 +189,9 @@
           "edit": "Edit",
           "members": "Members"
         },
+        "destroyedFleets": {
+          "index": "Destroyed Fleets"
+        },
         "vehicles": {
           "index": "Vehicles"
         },
@@ -198,6 +209,19 @@
           "tasks": "Tasks",
           "imports": "Imports",
           "rsiApiStatus": "RSI API Status"
+        },
+        "supporterContributions": {
+          "index": "Supporter Contributions",
+          "new": "New Supporter Contribution",
+          "edit": "Edit Supporter Contribution"
+        },
+        "fundingGoals": {
+          "index": "Funding Goals",
+          "new": "New Funding Goal",
+          "edit": "Edit Funding Goal"
+        },
+        "notifications": {
+          "index": "Notifications"
         }
       }
     }

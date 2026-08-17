@@ -14,6 +14,121 @@
     "base_expediting_fee": "3934"
   },
   "mass": 73492.72,
+  "inventory_container_ref": "0be3820b-ee1c-4af1-b585-6d77badd9985",
+  "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 6467.0,
+    "y": 2357.0,
+    "z": 5551.0
+  },
+  "hull_health": 15510.0,
+  "hull_parts": [
+    {
+      "name": "AEGS_Sabre_Firebird",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "door_l1",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "door_r1",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_aileron_mesh",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_doors_rear_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "landing_gear_doors_rear_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_aileron_mesh",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landinggear_door_front_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landinggear_door_front_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "AEGS_Sabre_Firebird_winglet_right_debris",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "AEGS_Sabre_Firebird_winglet_left_debris",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "canopy",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "ladder_door",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "personal_storage_door",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "G_fuel_main_door",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "G_fuel_small_door",
+      "health": 1.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 24.5,
     "y": 24.5,

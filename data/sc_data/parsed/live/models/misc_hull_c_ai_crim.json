@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "MISC Hull C",
   "description": "Manufacturer: MISC\\nFocus: Heavy Freight\\n\\nOften called the most common ship in the galaxy, the Hull C is the most-produced of the range and is considered by many to be the most versatile. Intended to hit the ‘sweet spot’ between the smaller single-person transports and the massive superfreighters that make up the rest of the range, the Hull C offers the expansive modularity of the larger ships while still retaining a modicum of the maneuverability allowed the low end of the range.",
   "career": "Transporter",
@@ -14,6 +14,226 @@
     "base_expediting_fee": "22500"
   },
   "mass": 726530.0,
+  "inventory_container_ref": "38fed17c-864c-4a0b-8782-66f8dee118b4",
+  "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 15791.0,
+    "y": 15791.0,
+    "z": 32871.0
+  },
+  "hull_health": 323500.0,
+  "hull_parts": [
+    {
+      "name": "misc_hull_c",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 60000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Nose",
+      "health": 30000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Vtol_Door_L_Geo",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Vtol_Door_R_Geo",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tunnel_Front",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Center_1_ph_geo",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "FoldingSection001_geo",
+      "health": 8000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner005",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer005",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner006",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer006",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner007",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer007",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner008",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer008",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner001",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer001",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner004",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer004",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner003",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer003",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Inner002",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "DEBRIS_Strut_Outer002",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Rear",
+      "health": 20500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Left",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "EngineTop_Left",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "EngineDebris",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_Right",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "EngineTop_Right",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "EngineDebris001",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Center",
+      "health": 9000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_003_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_004_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_005_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_006_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_007_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_008_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_009_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_010_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_002_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_001_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
   "metrics": {
     "x": 36.05,
     "y": 91.17,
@@ -777,6 +997,11 @@
       "name": "hardpoint_lift_door",
       "ref": null,
       "key": "Door_Ship_Exterior_Hull_C_Exterior_Door"
+    },
+    {
+      "name": "hardpoint_airlock_door_interior",
+      "ref": null,
+      "key": "Door_Ship_Exterior_Hull_C_Airlock_Interior"
     },
     {
       "name": "hardpoint_seat_access_crane",

@@ -39,9 +39,10 @@ module Rsi
     end
 
     private def create_or_update(hardpoint_data, model, mount)
-      size = size_mapping(hardpoint_data[:size])
+      size = size_mapping(hardpoint_data[:size], hardpoint_data, model)
 
       key = [
+        hardpoint_data[:type],
         hardpoint_data[:name]&.strip&.tr(" ", "-"),
         size,
         hardpoint_data[:component_size],
@@ -120,6 +121,7 @@ module Rsi
         "quantum_drives" => :quantumdrive,
         "jump_modules" => :jumpdrive,
         "quantum_fuel_tanks" => :fueltanks,
+        "life_support" => :lifesupport,
         "power_plants" => :powerplant,
         "coolers" => :cooler,
         "shield_generators" => :shieldgenerator,
@@ -133,16 +135,15 @@ module Rsi
       mapping[hardpoint_type]
     end
 
-    private def extract_size(hardpoint_data)
-      size_mapping(hardpoint_data[:size])
-    end
+    private def size_mapping(size, hardpoint_data = nil, model = nil)
+      return if size.blank?
 
-    private def size_mapping(size)
       mapping = {
         "TBD" => nil,
         "-" => nil,
         "V" => 0,
         "SN" => 0,
+        "0" => 0,
         "S" => 1,
         "M" => 2,
         "L" => 3,
@@ -161,7 +162,10 @@ module Rsi
         "12" => 12
       }
 
-      raise "Size missing in Mapping \"#{size}\"" if mapping.keys.exclude?(size.strip)
+      if mapping.keys.exclude?(size.strip)
+        context = [model&.name, hardpoint_data&.dig(:type), hardpoint_data&.dig(:name)].compact_blank.join(" / ")
+        raise "Size missing in Mapping \"#{size}\"#{" for #{context}" if context.present?}"
+      end
 
       mapping[size.strip]
     end

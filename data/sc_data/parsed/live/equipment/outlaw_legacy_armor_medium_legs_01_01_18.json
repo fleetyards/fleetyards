@@ -1,0 +1,38 @@
+{
+  "key": "outlaw_legacy_armor_medium_legs_01_01_18",
+  "ref": "1ba906e1-5150-4bce-8f03-0fe08dd1afab",
+  "name": "Inquisitor Legs Twilight",
+  "description": "Strength and speed combine with the new Inquisitor armor set. Strong yet lightweight alloy plating works alongside reinforced polyfiber weaving to save your skin, but not slow you down. When combined with Kastak Arms' intimidating aesthetic, it's easy to see why this medium armor has become infamous across the Empire.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4.0",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-56 / 86 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Medium",
+    "Set_01",
+    "Color_18",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.068,
+  "volume_dimensions": {
+    "x": 0.471,
+    "y": 0.363,
+    "z": 0.57
+  }
+}

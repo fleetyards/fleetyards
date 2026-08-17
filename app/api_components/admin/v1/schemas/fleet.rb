@@ -25,11 +25,15 @@ module Admin
             publicFleetStats: {type: :boolean},
             logo: {"$ref": "#/components/schemas/MediaFile"},
             backgroundImage: {"$ref": "#/components/schemas/MediaFile"},
+            fleetRoles: {
+              type: :array,
+              items: {"$ref": "#/components/schemas/AdminFleetRole"}
+            },
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats fleetRoles createdAt updatedAt]
         })
       end
     end

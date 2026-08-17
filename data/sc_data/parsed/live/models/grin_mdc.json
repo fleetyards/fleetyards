@@ -14,6 +14,276 @@
     "base_expediting_fee": "5060"
   },
   "mass": 13000.0,
+  "inventory_container_ref": null,
+  "hull_health": 16991.0,
+  "hull_parts": [
+    {
+      "name": "GRIN_MXC",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body",
+      "health": 14500.0,
+      "category": "vital"
+    },
+    {
+      "name": "bar_front_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bar_front_right_cover",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_wings",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_mesh_028",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "front_roof",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_right",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "fender_right_light",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_light_sheild_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bar_front",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_left",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "fender_left_light",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bar_front_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bar_front_left_cover",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_light_sheild_right",
+      "health": 80.0,
+      "category": "subpart"
+    },
+    {
+      "name": "AAsus_wheel_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AAsus_wheel_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AAsus_wheel_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AAsus_wheel_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ABsus_spindle_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ACsus_hub_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "ADsus_piston_upper_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_lower_brace_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_piston_lower_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_piston_lower_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_piston_lower_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_piston_lower_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_shaft_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_upper_brace_FL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_upper_brace_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_upper_brace_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "AEsus_upper_brace_RR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_rear",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "head_light_sheild_right",
+      "health": 80.0,
+      "category": "subpart"
+    },
+    {
+      "name": "head_light_sheild_left",
+      "health": 80.0,
+      "category": "subpart"
+    }
+  ],
+  "speeds": {
+    "max": 19.15,
+    "reverse": null,
+    "acceleration": null,
+    "decceleration": null
+  },
   "metrics": {
     "x": 8.75,
     "y": 6.0,
@@ -123,7 +393,7 @@
     },
     {
       "name": "hardpoint_comp_computer_mdc",
-      "ref": null,
+      "ref": "a6b4604a-358b-4ee7-8c0f-f3f43427154d",
       "key": null
     },
     {
@@ -190,6 +460,11 @@
       "name": "hardpoint_towhook_04",
       "ref": null,
       "key": "constraint_MXC_towhook"
+    },
+    {
+      "name": "hardpoint_floor",
+      "ref": "e2af8af7-1098-4396-8f4b-16aa471f5e1c",
+      "key": null
     }
   ]
 }

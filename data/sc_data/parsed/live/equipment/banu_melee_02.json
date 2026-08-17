@@ -1,0 +1,35 @@
+{
+  "key": "banu_melee_02",
+  "ref": "dbba9ded-9920-4956-ac17-547f1f4226ca",
+  "name": "Myondo Knife",
+  "description": "The Myondo is a distinct, curved blade with a notched finger-well and bejeweled pommel. The texture on both the blade and handle come from the unique forging process used by the Banu craftsmen who make them.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "tags": [
+    "knife"
+  ],
+  "hidden": false,
+  "volume": 0.000198,
+  "volume_dimensions": {
+    "x": 0.02,
+    "y": 0.3095443,
+    "z": 0.0414129
+  }
+}

@@ -14,6 +14,466 @@
     "base_expediting_fee": "24850"
   },
   "mass": 4037000.0,
+  "inventory_container_ref": "4b2dbad4-ca1c-4016-9d1c-7850f565a160",
+  "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 8350.0,
+    "y": 11320.0,
+    "z": 35430.0
+  },
+  "hull_health": 389204.0,
+  "hull_parts": [
+    {
+      "name": "rsi_perseus",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_main_wings",
+      "health": 95000.0,
+      "category": "vital"
+    },
+    {
+      "name": "dbr_main_wings_panels_02_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_right",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_left",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_main_wings_panels_01_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_main_wings_panels_01_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_main_wings_panels_02_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nacelle_bottom_left",
+      "health": 30000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_air_brake_bottom_left",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nacelle_antenna_bottom_left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nacelle_bottom_right",
+      "health": 30000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_nacelle_antenna_bottom_right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_air_brake_bottom_right",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nacelle_top_left",
+      "health": 30000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_air_brake_top_left",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nacelle_antenna_top_left_02",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nacelle_top_right",
+      "health": 30000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_nacelle_antenna_top_right_02",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_air_brake_top_right",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_01_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_01_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_02_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_02_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_03_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_03_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_04_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_04_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_05_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_05_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_06_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_06_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_07_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_07_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_08_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_side_08_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_rear_01",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_top_spoiler_left",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_top_spoiler_right",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_front",
+      "health": 95000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_front_panel_side_06_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_06_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_01_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_02_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_03_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_01_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_02_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_03_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_airlock_sides_01_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_airlock_sides_01_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_airlock_sides_02_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_airlock_sides_02_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_04_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_top_04_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_01_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_02_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_03_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_04_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_05_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_05_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_04_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_03_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_02_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_side_01_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_01_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_01_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_02_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_02_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_03_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_03_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_04_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_04_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_05_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_panel_bottom_05_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_top_antenna_left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_top_antenna_right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_01_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_01_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_02_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_02_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_03_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_03_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_04_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_04_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_05_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_05_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_07_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_06_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_07_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_superstructure_panel_top_06_left",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 50.0,
     "y": 100.0,
@@ -283,6 +743,16 @@
     {
       "name": "hardpoint_airlock_door_exterior",
       "ref": "597db3b5-fb10-446a-a279-e2f3b7454c7e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_airlock_door_interior",
+      "ref": "c4c4ab1a-88c4-4825-b1c4-65dc635f295c",
+      "key": null
+    },
+    {
+      "name": "hardpoint_airlock_door_interior_mid",
+      "ref": "331d6500-232e-478c-ae38-c0023d9279cc",
       "key": null
     },
     {

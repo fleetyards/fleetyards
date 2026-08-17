@@ -1,0 +1,37 @@
+{
+  "key": "grin_refinery_jacket_02_01_01",
+  "ref": "7b1bfb5c-a26c-4244-b2af-4ba1dd243193",
+  "name": "ThermoWeave Coat ASD Edition",
+  "description": "The ThermoWeave coat provides complete upper body fire and heat defense. It features a high collar and additional frontside protection thanks to a lengthy apron made of aluminized fabric that reflects radiant heat.\n\nWorn by employees who require an extra level of protection in their field, the ASD Edition showcases the reds and greens of the ASD branding.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "refinery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_refinery_apron",
+    "set_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "r6p_gloves_01_01_01",
+  "ref": "8acb55be-2219-445b-abe9-ebc981aa8cbd",
+  "name": "Baru Gloves (Left Only)",
+  "description": "Ensure you hands are always dry and at the right temperature with the Baru gloves. An advanced sensor system protected by a metal plate on the back of the hand monitors and regulates conditions within the glove. A patented synthetic leather woven with special microfibers works with the sensors and a strap cuff provides a snug fit.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1ddcadf0-7bb0-4fa9-94f0-6af19432631c",
+  "tags": [
+    "r6p_gloves",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0015,
+  "volume_dimensions": {
+    "x": 0.301,
+    "y": 0.048,
+    "z": 0.207
+  }
+}

@@ -8,10 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   type ModelExtended,
   type ModelLoaner,
@@ -140,7 +137,6 @@ const onSaveCreate = async () => {
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.loaners") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
@@ -168,9 +164,8 @@ const onSaveCreate = async () => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.modelLoaner.hidden')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'hidden')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-eye"

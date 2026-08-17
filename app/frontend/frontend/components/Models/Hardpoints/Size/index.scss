@@ -1,5 +1,18 @@
 .hardpoint-item__size {
-  padding-right: 10px;
-  color: $gray-light;
+  flex: none;
+  min-width: 38px;
+  height: 34px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba($gray-light, 0.5);
+  border-radius: 7px;
+  background: rgba($gray-light, 0.08);
+  color: lighten($text-color, 15%);
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }

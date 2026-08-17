@@ -1,0 +1,37 @@
+{
+  "key": "scu_jacket_03_01_15",
+  "ref": "4876ca38-84d4-4913-83d7-4253426e26bb",
+  "name": "Cordimon Jacket Tan",
+  "description": "Stegman's classic worker's jacket has been a staple of job sites for over seventy years. This duotone pattern is cut from the toughest material meaning you can wear it anywhere, anytime. It may not be armor, but it damn sure feels like it.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "3000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_jacket",
+    "set_03",
+    "Color_15"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "key": "rsi_odyssey_caudillo_helmet_01_01_03",
+  "ref": "d88356fe-cf40-4304-86b2-b97e4b0a66c5",
+  "name": "Caudillo Helmet Burnt Orange",
+  "description": "Adept at surviving firefights in both atmosphere and in space, the Caudillo helmet provides solid head protection while offering the wearer the stylish look of classical armor thanks to its visually striking metal crest. The Burnt Orange variant is being offered as a limited edition run.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Caudillo",
+    "Set_01",
+    "Color_03",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
+}

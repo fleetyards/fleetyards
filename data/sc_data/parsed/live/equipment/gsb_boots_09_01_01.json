@@ -1,0 +1,38 @@
+{
+  "key": "gsb_boots_09_01_01",
+  "ref": "73affcbf-4f4a-4290-b4c9-3e261453c8cc",
+  "name": "Rockridge Boots",
+  "description": "With the Rockridge, Grindstone has created a comfortable boot with a wide laced collar that allows wearers to adjust the fit to their level of comfort while still keeping the elements out.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "boots",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_boots",
+    "Set_09",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

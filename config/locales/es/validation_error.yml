@@ -20,6 +20,7 @@ es:
       accept: No se pudo aceptar al miembro de la flota.
       decline: No se pudo rechazar al miembro de la flota.
       destroy: No se pudo eliminar al miembro de la flota.
+      update: No se pudo actualizar al miembro de la flota.
     fleet_memberships:
       create: La invitación de flota no pudo ser utilizada
       destroy: No se pudo abandonar la flota.
@@ -31,6 +32,28 @@ es:
       create: No se pudo crear el grupo
       destroy: No se pudo destruir el grupo
       update: No se pudo actualizar el grupo
+    fleet_inventories:
+      create: No se pudo crear el inventario.
+      update: No se pudo actualizar el inventario.
+      destroy: No se pudo eliminar el inventario.
+    fleet_inventory_items:
+      create: No se pudo crear la entrada de inventario.
+      update: No se pudo actualizar la entrada de inventario.
+      destroy: No se pudo eliminar la entrada de inventario.
+    hangar_inventories:
+      create: No se pudo crear el inventario.
+      update: No se pudo actualizar el inventario.
+      destroy: No se pudo eliminar el inventario.
+    hangar_inventory_items:
+      create: No se pudo crear la entrada de inventario.
+      update: No se pudo actualizar la entrada de inventario.
+      destroy: No se pudo eliminar la entrada de inventario.
+    vehicle_inventory:
+      destroy: No se pudo eliminar el inventario.
+    vehicle_inventory_items:
+      create: No se pudo crear la entrada de inventario.
+      update: No se pudo actualizar la entrada de inventario.
+      destroy: No se pudo eliminar la entrada de inventario.
     image:
       create: No se pudo crear la imagen
       update: No se pudo actualizar la imagen

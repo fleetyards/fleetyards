@@ -1,0 +1,42 @@
+{
+  "key": "rsi_utility_heavy_backpack_02_01_02",
+  "ref": "1eb980e9-1cad-41f5-b01f-d1c1d00d7c68",
+  "name": "Stirling Exploration Backpack Sediment Edition",
+  "description": "This heavy duty backpack is compatible with the Stirling suit and provides a convenient storage solution. The Sediment Edition blends reds, blacks, and grays reminiscent of clay and other planetary minerals.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "heavy_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "180000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "rsi_utility_heavy",
+    "Set_02",
+    "Color_02",
+    "backpack",
+    "$environment",
+    "$$Pack++",
+    "SM_RestrictedWep",
+    "clda_utility_heavy_explorer_04"
+  ],
+  "hidden": false,
+  "volume": 0.062,
+  "volume_dimensions": {
+    "x": 0.515,
+    "y": 1.38,
+    "z": 0.394
+  }
+}

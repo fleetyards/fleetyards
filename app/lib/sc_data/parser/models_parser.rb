@@ -41,6 +41,10 @@ module ScData
               base_expediting_fee: values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            inventory_container_ref: value_or_nil(values.dig("Components", "VehicleComponentParams", "inventoryContainerParams")),
+            weapon_pool_size: extract_weapon_pool_size(values),
+            signature_cross_section: extract_cross_section(values),
+            **extract_hull(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
@@ -93,6 +97,9 @@ module ScData
               base_expediting_fee: insurance.dig("shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            inventory_container_ref: value_or_nil(values.dig("Components", "VehicleComponentParams", "inventoryContainerParams")),
+            **extract_hull(values.dig("Components", "VehicleComponentParams")),
+            speeds: extract_ground_speeds(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
@@ -234,6 +241,205 @@ module ScData
         definition_data = extract_modification_definition(definition_data, modification_key)
 
         definition_data.dig("Vehicle", "Parts", "Part", "mass")&.to_f
+      end
+
+      # Hull health comes from the vehicle implementation XML's part tree. Each
+      # structural part carries a `damageMax`; the ItemPort parts (weapon/thruster
+      # mounts) are excluded, matching the hull HP erkul.games reports. Returns the
+      # per-part breakdown and their sum.
+      private def extract_hull(component_params)
+        definition_file_path = component_params.dig("vehicleDefinition")
+
+        return {} if definition_file_path.blank?
+
+        modification_key = component_params.dig("modification")
+
+        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+
+        definition_data = extract_modification_definition(definition_data, modification_key)
+
+        parts = collect_hull_parts(definition_data.dig("Vehicle", "Parts", "Part"))
+
+        return {} if parts.blank?
+
+        {
+          hull_health: parts.sum { |part| part[:health] },
+          hull_parts: parts
+        }
+      end
+
+      # Ground vehicles carry no flight controller, so their speeds come from the
+      # implementation XML's `MovementParams` rather than an IFCS item. Two
+      # independent limits live there and only around half the vehicles have the
+      # first one: `Handling/Power` is the arcade controller's target speed, while
+      # `wWheelsMax` caps how fast physics may spin the driven wheels. Whichever
+      # is lower is the speed the vehicle actually reaches.
+      private def extract_ground_speeds(component_params)
+        definition_file_path = component_params.dig("vehicleDefinition")
+
+        return {} if definition_file_path.blank?
+
+        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+
+        movement = extract_movement_params(definition_data, definition_file_path, component_params.dig("modification"))
+
+        return {} if movement.blank?
+
+        power = extract_handling_power(movement)
+        target_speed = power&.dig("topSpeed")&.to_f || movement.dig("TrackWheeled", "maxSpeed")&.to_f
+        wheel_speed = extract_wheel_speed_limit(movement, definition_data)
+
+        return {} if target_speed.blank? && wheel_speed.blank?
+
+        {
+          max: [target_speed, wheel_speed].compact.min,
+          reverse: power&.dig("reverseSpeed")&.to_f,
+          acceleration: power&.dig("acceleration")&.to_f,
+          decceleration: power&.dig("decceleration")&.to_f
+        }
+      end
+
+      # Variants replace the whole `MovementParams` block through their
+      # modification's `patchFile` — the inline `Elems` overrides that
+      # extract_modification_definition applies only carry display names and
+      # masses. The Cyclone tunes every variant this way (RN 55 down to MT 47).
+      private def extract_movement_params(definition_data, definition_file_path, modification_key)
+        base = definition_data.dig("Vehicle", "MovementParams")
+
+        return base if modification_key.blank?
+
+        modifications = definition_data.dig("Vehicle", "Modifications", "Modification")
+        modifications = [modifications] unless modifications.is_a?(Array)
+
+        patch_file = modifications.compact.find { |modification|
+          modification.dig("name") == modification_key
+        }&.dig("patchFile")
+
+        return base if patch_file.blank?
+
+        patch_path = "#{definition_path}/#{File.dirname(definition_file_path)}/#{patch_file}.xml"
+
+        return base unless File.exist?(patch_path)
+
+        Hash.from_xml(File.read(patch_path)).dig("Modifications", "MovementParams") || base
+      end
+
+      # The Lynx carries a second, stray `Handling` block as a sibling of its
+      # movement node; the one nested inside the movement node is the schema
+      # correct source, and document order puts it first.
+      private def extract_handling_power(movement)
+        nested = movement.values.filter_map { |node|
+          node.dig("Handling", "Power") if node.is_a?(Hash)
+        }.first
+
+        nested || movement.dig("Handling", "Power")
+      end
+
+      # `wWheelsMax` is the maximum angular velocity of a wheel in rad/s, so the
+      # speed it allows depends on the wheels the vehicle drives on.
+      private def extract_wheel_speed_limit(movement, definition_data)
+        max_angular_velocity = movement.values.filter_map { |node|
+          node.dig("PhysicsParams", "wWheelsMax") if node.is_a?(Hash)
+        }.first&.to_f
+
+        return if max_angular_velocity.blank?
+
+        radius = extract_driven_wheel_radius(definition_data)
+
+        return if radius.blank?
+
+        (max_angular_velocity * radius).round(2)
+      end
+
+      private def extract_driven_wheel_radius(definition_data)
+        wheels = collect_nodes(definition_data.dig("Vehicle", "Parts"), "SubPartWheel")
+        driven = wheels.select { |wheel| wheel.dig("driving") == "1" }
+
+        (driven.presence || wheels).filter_map { |wheel| wheel.dig("rimRadius")&.to_f }.max
+      end
+
+      private def collect_nodes(node, name)
+        case node
+        when Array
+          node.flat_map { |child| collect_nodes(child, name) }
+        when Hash
+          node.flat_map do |key, value|
+            next Array.wrap(value) if key == name
+
+            collect_nodes(value, name)
+          end
+        else
+          []
+        end
+      end
+
+      # The ship's shared weapon-power pool size (in power segments). Sustained
+      # DPS throttles once the mounted weapons' combined power draw exceeds it.
+      # Ships without a fixed weapon pool are power-unlimited (nil).
+      private def extract_weapon_pool_size(values)
+        pools = values.dig(
+          "Components",
+          "SItemPortContainerComponentParams",
+          "resourceNetworkPowerPools",
+          "itemPools",
+          "FixedPowerPool"
+        )
+        return if pools.blank?
+
+        pools = [pools] if pools.is_a?(Hash)
+        weapon_pool = pools.find { |pool| pool["itemType"] == "WeaponGun" }
+        weapon_pool&.dig("poolSize")&.to_i
+      end
+
+      # The ship's manual radar cross-section per axis — its passive
+      # detectability. erkul lets you pick which axis (x/y/z) to read.
+      private def extract_cross_section(values)
+        cross_section = values.dig(
+          "Components",
+          "SSCSignatureSystemParams",
+          "radarProperties",
+          "SSCRadarContactProperites",
+          "crossSectionParams",
+          "SSCSignatureSystemManualCrossSectionParams",
+          "crossSection"
+        )
+        return if cross_section.blank?
+
+        {
+          x: cross_section["x"].to_f,
+          y: cross_section["y"].to_f,
+          z: cross_section["z"].to_f
+        }
+      end
+
+      private def collect_hull_parts(node, parts = [])
+        case node
+        when Array
+          node.each { |value| collect_hull_parts(value, parts) }
+        when Hash
+          if node["name"].present? && node["class"] != "ItemPort"
+            damage_max = node["damageMax"].to_f
+            parts << {name: node["name"], health: damage_max, category: part_category(node, damage_max)}
+          end
+          collect_hull_parts(node.dig("Parts", "Part"), parts)
+        end
+
+        parts
+      end
+
+      # Mirrors the part grouping erkul.games shows: a part with no health at all
+      # (doors, ladders, step plates) is cosmetic, a part that triggers ship
+      # destruction is vital, a standalone detachable part is secondary, a
+      # structural part with sub-parts is breakable, and a leaf detail is a subpart.
+      private def part_category(node, damage_max)
+        return "cosmetic" unless damage_max.positive?
+
+        behaviors = Array.wrap(node.dig("DamageBehaviors", "DamageBehavior")).map { |behavior| behavior["class"] }
+
+        return "vital" if behaviors.include?("Group")
+        return "secondary" if behaviors.include?("DetachPart")
+
+        node["Parts"].present? ? "breakable" : "subpart"
       end
 
       private def extract_modification_definition(definition_data, modification_key)

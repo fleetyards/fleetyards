@@ -1,0 +1,38 @@
+{
+  "key": "alb_mask_02_01_13",
+  "ref": "e6c279ca-4f3d-4f3e-a85f-4b761c1fe084",
+  "name": "Katla Mask Crimson",
+  "description": "The Katla mask provides full face coverage from the elements or prying eyes. Oversized eyes provide a wide field of vision and a built-in air filter helps you breathe easy. Please note that this mask is not space-rated and should only be worn in naturally breathable environs.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "mask",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_mask",
+    "Set_01",
+    "Color_01",
+    "$hatHair_mask+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

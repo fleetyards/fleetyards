@@ -15,7 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { VehicleUpdateInput, type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import {
   useModelModules as useModelModulesQuery,
   useModelModulePackages as useModelModulePackagesQuery,
@@ -171,13 +171,8 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template v-if="editable" #footer>
-      <div class="float-sm-right">
-        <Btn
-          :loading="mutation.isPending.value"
-          :size="BtnSizesEnum.SMALL"
-          :inline="true"
-          @click="onSubmit"
-        >
+      <div class="modal-actions">
+        <Btn :loading="mutation.isPending.value" @click="onSubmit">
           {{ t("actions.save") }}
         </Btn>
       </div>

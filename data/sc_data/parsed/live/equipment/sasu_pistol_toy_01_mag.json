@@ -1,0 +1,35 @@
+{
+  "key": "sasu_pistol_toy_01_mag",
+  "ref": "db3a7de3-3e4c-49f6-98fd-7541c963f380",
+  "name": "WowBlast Desperado Toy Pistol Magazine (10 cap)",
+  "description": "This magazine for the WowBlast Desperado holds ten darts.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "10.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "tags": [
+    "sasu_pistol_toy_01"
+  ],
+  "hidden": false,
+  "volume": 0.00009,
+  "volume_dimensions": {
+    "x": 0.04400022,
+    "y": 0.04247732,
+    "z": 0.04573873
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "key": "behr_binoculars_01",
+  "ref": "08124949-6620-431c-96e3-65107e22dc9d",
+  "name": "XDL Monocular Rangefinder",
+  "description": "The highly accurate XDL Monocular Rangefinder from Behring is as suitable on an expedition as it is on the battlefield. Ruggedly constructed with high-quality lenses, easy-to-read display, and a light-amplification mode, the XDL provides 10x magnification to reliably provide exact-distance laser measurements on faraway targets.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "binoculars",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Gadget",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "binoculars"
+  ],
+  "hidden": false,
+  "volume": 0.0025,
+  "volume_dimensions": {
+    "x": 0.0612,
+    "y": 0.2677,
+    "z": 0.125
+  }
+}

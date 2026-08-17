@@ -1,0 +1,39 @@
+{
+  "key": "rsi_explorer_armor_light_helmet_01_01_carrack",
+  "ref": "596f9763-3231-4ee2-8c74-50d2fc7f01c3",
+  "name": "Venture Helmet Carrack Edition",
+  "description": "To celebrate 2950's Carrack Day, Anvil Aerospace partnered with RSI's armor division for a special version of their popular Venture helmet. Built with impact-resistant composites and an anti-scuff laminate faceplate offering an unparalleled upward field of view, the Venture Carrack Edition is white with grey accents and features the Carrack name and silhouette on the back.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-38 / 68 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
+}

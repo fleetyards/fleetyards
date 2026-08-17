@@ -32,10 +32,11 @@ import {
   InputTypesEnum,
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/constants";
 import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
+import { FeatureFlagName } from "@/services/fyApi";
 import { useCargoGridShip } from "@/frontend/composables/useCargoGridShip";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -307,7 +308,7 @@ const resetFilters = () => {
 </script>
 
 <template>
-  <FeatureGuard feature="tools_cargo_grids">
+  <FeatureGuard :feature="FeatureFlagName.TOOLS_CARGO_GRIDS">
     <div class="cargo-grids-page">
       <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
@@ -333,18 +334,14 @@ const resetFilters = () => {
             <Btn
               v-if="selectedSlugs.length > 0"
               v-tooltip="t('actions.reset')"
-              :size="BtnSizesEnum.SMALL"
               data-test="reset-filters"
-              inline
               @click="resetFilters"
             >
               <i class="fa-light fa-undo" />
             </Btn>
             <Btn
               v-if="sessionStore.isAuthenticated"
-              :size="BtnSizesEnum.SMALL"
               :active="hangarOnly"
-              inline
               @click="toggleHangarOnly"
             >
               {{ t("labels.cargoGridViewer.myHangar") }}
@@ -370,20 +367,10 @@ const resetFilters = () => {
               />
             </div>
             <div class="container-fields__actions">
-              <Btn
-                v-if="hasContainerRequests"
-                :size="BtnSizesEnum.SMALL"
-                inline
-                @click="applyContainerFilter"
-              >
+              <Btn v-if="hasContainerRequests" @click="applyContainerFilter">
                 {{ t("labels.cargoGridViewer.filterShips") }}
               </Btn>
-              <Btn
-                v-if="hasContainerRequests"
-                :size="BtnSizesEnum.SMALL"
-                inline
-                @click="clearContainers"
-              >
+              <Btn v-if="hasContainerRequests" @click="clearContainers">
                 {{ t("actions.clear") }}
               </Btn>
             </div>
@@ -403,11 +390,9 @@ const resetFilters = () => {
                 <Btn
                   v-for="mod in shipSlots[idx].modulesWithCargo.value"
                   :key="mod.id"
-                  :size="BtnSizesEnum.SMALL"
                   :active="
                     shipSlots[idx].selectedModuleSlugs.value.has(mod.slug)
                   "
-                  inline
                   @click="handleToggleModule(idx, mod.slug)"
                 >
                   {{ mod.name }}

@@ -1,0 +1,37 @@
+{
+  "key": "ksar_shotgun_ballistic_01_green01",
+  "ref": "03e1fa47-a15e-41bb-81f9-17d3be857a0d",
+  "name": "Ravager-212 \"Outcast\" Twin Shotgun",
+  "description": "The Kastak Arms Ravager-212 Twin shotgun earns its name from its unique dual-barrels that allow for multiple ammo types to be used in conjunction with each other for maximum tactical possibilities. The rough splashes of neon green against the gunmetal gray give the Outcast edition an aggressively chaotic appearance.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "105.0",
+  "range": "15.0",
+  "storage": "16.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_arms_ravager_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "stocked",
+    "ksar_shotgun_ballistic_01",
+    "shotgun"
+  ],
+  "hidden": false,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.1069,
+    "y": 0.8358,
+    "z": 0.2864
+  }
+}

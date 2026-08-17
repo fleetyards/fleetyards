@@ -1,0 +1,37 @@
+{
+  "key": "syfb_combat_light_arms_01_01_01",
+  "ref": "9e61b24f-ea3b-4757-9d26-f5c915ce6b47",
+  "name": "Xy'kara Arms",
+  "description": "Item Type: Light Armor\nDamage Reduction: 20%\nTemp. Rating: -31 / 61 °C\nRadiation Protection: 26000 REM\nRadiation Scrub Rate: 145.8 REM/s\n \nThe Xy'kara Armor from Syang Fabrications offers the result of thousands of years of Xi'an combat expertise in a Human package. Closely patterned to the Human physique, the Xy'kara armor provides unparalleled protection without sacrificing mobility and combat effectiveness without sacrificing style.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "combat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0d3e6377-4be0-4c38-8269-3ac5dbd132d8",
+  "tags": [
+    "syfb_light",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.008,
+  "volume_dimensions": {
+    "x": 0.088,
+    "y": 0.345,
+    "z": 0.323
+  }
+}

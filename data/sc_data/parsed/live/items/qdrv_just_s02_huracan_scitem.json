@@ -33,6 +33,7 @@
   },
   "type_data": {
     "quantum_fuel_requirement": 0.006104,
+    "quantum_fuel_consumption": 13.0,
     "jump_range": 3.402823e+38,
     "disconnect_range": 34693.0,
     "drive_speed": 314000000.0,
@@ -70,6 +71,24 @@
       "min_jump_distance": 0.0,
       "ifcs_handover_down_time": 0.0,
       "ifcs_handover_respool_time": 0.0
-    }
+    },
+    "power_consumption": 4.0,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 0.7
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 0.85
+      },
+      "high": {
+        "start": 1.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 34700.0,
+    "signature_ir": 0.0
   }
 }

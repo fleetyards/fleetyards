@@ -14,10 +14,121 @@
     "base_expediting_fee": "2000"
   },
   "mass": 77877.0,
+  "inventory_container_ref": "366b095a-6cee-43b9-a728-00bee8e49c3a",
+  "weapon_pool_size": 4,
+  "signature_cross_section": null,
+  "hull_health": 11740.0,
+  "hull_parts": [
+    {
+      "name": "GAMA_Syulen",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Mesh_Front",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Small_Bottom",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Small_Bottom_Fin_Left",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Small_Bottom_Fin_Right",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Small_Left",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Small_Left_Fin_Left",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Small_Left_Fin_Right",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Small_Right",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Small_Right_Fin_Left",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Small_Right_Fin_Right",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Large_Left",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Large_Left_Fin_Left",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Large_Left_Fin_Right",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Large_Top",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Large_Top_Fin_Left",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Large_Top_Fin_Right",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Large_Right",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Large_Right_Fin_Left",
+      "health": 220.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Large_Right_Fin_Right",
+      "health": 220.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
-    "x": 0.0,
-    "y": 0.0,
-    "z": 0.0
+    "x": 28.0,
+    "y": 25.0,
+    "z": 16.0
   },
   "loadout": [
     {

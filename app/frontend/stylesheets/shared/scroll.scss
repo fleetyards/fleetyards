@@ -1,0 +1,38 @@
+// Inner scroll panes must not rubber-band.
+//
+// On macOS a nested scroller keeps the elastic overscroll of the page, so dragging past
+// the end of a modal body or a wide table peels the pane away from its frame and springs
+// it back — the panel reads as coming loose. `overscroll-behavior: none` suppresses that
+// *and* stops the scroll chaining to the page behind, which is what a modal wants anyway.
+//
+// `contain` is the weaker relative: it stops the chaining but keeps the bounce, so it is
+// not enough here.
+//
+// This is a list rather than a rule because CSS cannot select "an element that scrolls" —
+// there is no `:has-overflow`. **When you add a scroll pane, add it here.** A missing
+// entry fails silently, which is the whole hazard of this file.
+//
+// Note the property is not inherited, so it has to land on the scrolling element itself;
+// setting it on a parent (or on `html`, which only governs the viewport) does nothing.
+
+// Overlays: modals, confirms, off-canvas, the mobile nav dropdown.
+.app-confirm,
+.availability__scroll,
+.parts-scroll,
+.table-wrap,
+.off-canvas__body,
+.tab-nav-dropdown__panel,
+.holo-viewer,
+
+// Wide content that scrolls sideways inside its frame.
+.base-table__wrapper,
+.base-table-container,
+.compare-table,
+
+// Long lists inside a fixed shell.
+.filter-group-items,
+.app-navigation__wrapper,
+.fleetchart-app__offcanvas,
+.fleetchart-scroll-wrapper {
+  overscroll-behavior: none;
+}

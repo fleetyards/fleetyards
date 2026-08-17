@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby file: ".tool-versions"
 
-gem "rails", "8.1.3"
+gem "rails", "8.1.3.1"
 
 gem "pg", "~> 1.0"
 
@@ -13,6 +13,7 @@ gem "sidekiq-scheduler"
 gem "sidekiq-failures"
 
 gem "paper_trail"
+gem "discard", "~> 2.0"
 
 gem "data_migrate"
 
@@ -55,6 +56,11 @@ gem "omniauth-rails_csrf_protection"
 
 gem "useragent"
 
+# ActionCable's redis pubsub adapter declares `gem "redis", ">= 4", "< 6"`, so
+# redis 6 raises Gem::LoadError on boot. redis-store 1.12 relaxed its own bound
+# to < 7, which is what let bundler resolve redis 6 in the first place. Unpin
+# once Rails ships the redis-client-based adapter (8.2+).
+gem "redis", "< 6"
 gem "redis-actionpack"
 gem "redis-store"
 
@@ -116,7 +122,7 @@ gem "flipper"
 gem "flipper-active_record"
 
 # openapi
-gem "openapi-ruby", "~> 4.0"
+gem "openapi-ruby", "~> 4.1"
 
 group :development do
   gem "annotaterb"
@@ -128,7 +134,9 @@ group :development do
 
   gem "web-console"
 
-  gem "kamal", require: false
+  # Pinned to 2.11.0: 2.12.0 intermittently resets the second back-to-back
+  # `kamal app exec` SSH connection in the pre-deploy hook (Errno::ECONNRESET).
+  gem "kamal", "2.11.0", require: false
 
   gem "letter_opener"
   gem "letter_opener_web", "~> 3.0"

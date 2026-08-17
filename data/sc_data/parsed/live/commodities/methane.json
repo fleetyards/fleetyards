@@ -1,0 +1,10 @@
+{
+  "key": "methane",
+  "sc_key": "items_commodities_methane",
+  "ref": null,
+  "name": "Methane",
+  "commodity_type": "gas",
+  "commodity_type_name": "Gas",
+  "description": "A highly flammable gas composed of carbon and hydrogen. It is colorless and odorless in its natural state.",
+  "icon": null
+}

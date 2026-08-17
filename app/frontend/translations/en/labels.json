@@ -4,46 +4,13 @@
       "true": "Yes",
       "false": "No",
       "null": "-",
+      "destroyedFleets": {
+        "discarded": "Discarded",
+        "purged": "Purged"
+      },
       "and": "and",
-      "optional": "optional",
       "hide": "Hide",
       "show": "Show",
-      "notificationTypes": {
-        "channels": {
-          "app": "App",
-          "mail": "Mail",
-          "push": "Push"
-        },
-        "groups": {
-          "account": "Account & hangar",
-          "fleetMembership": "Fleet membership",
-          "fleetEvents": "Fleet events"
-        },
-        "hangar_create": "Hangar created",
-        "hangar_destroy": "Hangar removed",
-        "hangar_sync_finished": "Hangar sync finished",
-        "hangar_sync_failed": "Hangar sync failed",
-        "wishlist_create": "Added to wishlist",
-        "wishlist_destroy": "Removed from wishlist",
-        "model_on_sale": "Model on sale",
-        "new_model": "New model released",
-        "fleet_invite": "Fleet invite received",
-        "fleet_member_requested": "Membership requested",
-        "fleet_member_accepted": "Membership accepted",
-        "fleet_request_accepted": "Join request accepted",
-        "fleet_inventory_item_added": "Fleet inventory item added",
-        "fleet_event_published": "Event published",
-        "fleet_event_locked": "Event sign-ups locked",
-        "fleet_event_starting_soon": "Event starting soon",
-        "fleet_event_started": "Event started",
-        "fleet_event_completed": "Event completed",
-        "fleet_event_cancelled": "Event cancelled",
-        "fleet_event_signup_added": "New signup",
-        "fleet_event_signup_withdrawn": "Signup withdrawn",
-        "fleet_event_signup_confirmed": "Signup confirmed",
-        "fleet_event_signup_assigned": "Assigned to a slot",
-        "fleet_event_signup_kicked": "Removed from a slot"
-      },
       "only": "Only",
       "description": "Description",
       "unavailable": "unavailable",
@@ -64,6 +31,7 @@
       "deselect": "Click to deselect",
       "networkStatusOffline": "Network Status: Offline - Service Unavailable",
       "groups": "Groups",
+      "classifications": "Classifications",
       "features": {
         "stateOn": "Enabled",
         "stateOff": "Disabled",
@@ -88,7 +56,8 @@
           "tools_travel_times": "Show estimated travel times between locations.",
           "tools_cargo_grids": "Show interactive cargo grid viewer for ships.",
           "fleet_starmap": "Show Star Citizen starmap on fleet member pages."
-        }
+        },
+        "registryHint": "Flags are declared in config/feature_flags.yml and created on deploy. Here you control their gates."
       },
       "oauthApplication": {
         "name": "Application Name",
@@ -312,7 +281,45 @@
         "addModel": {
           "nullablePrompt": "Add a Ship"
         },
-        "enough": "Don't you think 8 Ships are enough? ;)"
+        "enough": "Don't you think 8 Ships are enough? ;)",
+        "toggleSection": "Toggle %{section}",
+        "shipCount": {
+          "one": "%{count} Ship",
+          "other": "%{count} Ships"
+        },
+        "containersOfSize": "%{size} SCU Containers",
+        "shieldGenerators": "Shield Generators",
+        "armorHp": "Armor HP",
+        "fuelAndQuantum": "Fuel & Quantum",
+        "weaponPoolSize": "Weapon Power Pool",
+        "crossSection": {
+          "x": "Cross Section X",
+          "y": "Cross Section Y",
+          "z": "Cross Section Z"
+        },
+        "useAsBaseline": "Use as baseline",
+        "baseline": "Baseline",
+        "differencesOnly": "Differences only",
+        "compareToBaseline": "Compare to baseline",
+        "loadoutBySlot": "Loadout by slot",
+        "slots": {
+          "guns": "Main guns",
+          "turrets": "Turrets",
+          "missiles": "Missiles",
+          "shields": "Shield generators",
+          "powerPlants": "Power plants",
+          "coolers": "Coolers",
+          "quantumDrives": "Quantum drives",
+          "thrusters": "Main thrusters",
+          "countermeasures": "Countermeasures"
+        },
+        "legend": {
+          "best": "best in row",
+          "worst": "worst",
+          "share": "share of the row's best",
+          "better": "beats the baseline",
+          "worse": "behind it"
+        }
       },
       "cargoRoutes": "Cargo routes",
       "uecPerUnit": "aUEC / Unit",
@@ -329,31 +336,11 @@
         "name": "Name",
         "logo": "Logo",
         "rsiSid": "SID",
-        "calendarSubscription": {
-          "intro": "Generate a private link that members can use to subscribe to this fleet's events from their calendar app (Apple Calendar, Google Calendar, Outlook).",
-          "howTo": "Share the link above with your members. They paste it into their calendar app (\"Subscribe to calendar\" or \"Add by URL\"). The link is private — anyone with it can see this fleet's events."
-        },
-        "notifications": {
-          "inAppHeading": "In-app Notifications",
-          "inAppHint": "Pick which event lifecycle changes show up as in-app notifications for fleet members.",
-          "events": {
-            "fleet_event": {
-              "published": "Event published",
-              "locked": "Sign-ups locked",
-              "unlocked": "Sign-ups reopened",
-              "starting_soon": "Event starting soon",
-              "started": "Event started",
-              "completed": "Event completed",
-              "cancelled": "Event cancelled",
-              "archived": "Event archived",
-              "destroyed": "Event deleted"
-            },
-            "fleet_event_signup": {
-              "created": "Signup added",
-              "withdrawn": "Signup withdrawn"
-            }
-          }
-        },
+        "description": "Description",
+        "public": "Public Fleetview",
+        "publicFleet": "Public Fleet",
+        "publicStats": "Public Stats",
+        "publicFleetStats": "Public Fleet Stats",
         "discord": {
           "url": "Discord Server",
           "hint": "Connect a Discord server to mirror events as native scheduled events. Members can RSVP from Discord and the sign-up will sync back to Fleetyards.",
@@ -372,11 +359,6 @@
             "request_failed": "Could not reach Fleetyards. Try again."
           }
         },
-        "description": "Description",
-        "public": "Public Fleetview",
-        "publicFleet": "Public Fleet",
-        "publicStats": "Public Stats",
-        "publicFleetStats": "Public Fleet Stats",
         "guilded": "Guilded Server",
         "homepage": "Homepage",
         "twitch": "Twitch Channel",
@@ -502,6 +484,31 @@
             "25": "25 uses",
             "50": "50 uses",
             "100": "100 uses"
+          }
+        },
+        "calendarSubscription": {
+          "intro": "Generate a private link that members can use to subscribe to this fleet's events from their calendar app (Apple Calendar, Google Calendar, Outlook).",
+          "howTo": "Share the link above with your members. They paste it into their calendar app (\"Subscribe to calendar\" or \"Add by URL\"). The link is private — anyone with it can see this fleet's events."
+        },
+        "notifications": {
+          "inAppHeading": "In-app Notifications",
+          "inAppHint": "Pick which event lifecycle changes show up as in-app notifications for fleet members.",
+          "events": {
+            "fleet_event": {
+              "published": "Event published",
+              "locked": "Sign-ups locked",
+              "unlocked": "Sign-ups reopened",
+              "starting_soon": "Event starting soon",
+              "started": "Event started",
+              "completed": "Event completed",
+              "cancelled": "Event cancelled",
+              "archived": "Event archived",
+              "destroyed": "Event deleted"
+            },
+            "fleet_event_signup": {
+              "created": "Signup added",
+              "withdrawn": "Signup withdrawn"
+            }
           }
         }
       },
@@ -661,14 +668,228 @@
         "crew": "Crew",
         "speed": "Speed",
         "cargo": "Cargo",
+        "combat": "Combat",
         "hardpoints": "Hardpoints",
         "missileOptions": "Missle Options (if available)"
+      },
+      "flight": {
+        "title": "Flight",
+        "scm": "combat cruise",
+        "nav": "cruise",
+        "boost": "Boost",
+        "boostSub": "afterburner",
+        "reverse": "Reverse",
+        "maneuverability": "Maneuverability",
+        "fuel": "Fuel",
+        "fuelHydrogen": "Hydrogen",
+        "fuelQuantum": "Quantum",
+        "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
+      },
+      "base": {
+        "price": "Price",
+        "priceInGame": "In-game",
+        "pricePledge": "Pledge",
+        "availability": "Availability"
+      },
+      "availability": {
+        "title": "Availability",
+        "buy": "Buy",
+        "rent": "Rent",
+        "cheapest": {
+          "buy": "Cheapest buy",
+          "rent": "Cheapest rent"
+        },
+        "locations": {
+          "one": "%{count} location",
+          "other": "%{count} locations"
+        },
+        "empty": "No known buy or rental locations.",
+        "timeRange": {
+          "1-day": "1 day",
+          "3-days": "3 days",
+          "7-days": "7 days",
+          "30-days": "30 days"
+        }
+      },
+      "cargo": {
+        "title": "Cargo",
+        "holdsSub": "across %{count} holds",
+        "maxContainerSub": "largest box that fits",
+        "containers": "Container Capacity",
+        "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
+      },
+      "fuelTanks": {
+        "capacitySub": "across %{count} pods",
+        "podsSub": "external mounts",
+        "components": "Pod Types",
+        "perPod": "per pod",
+        "hint": "Fuel carried in pods mounted on external hardpoints; the bar shows each type's share of the total capacity."
+      },
+      "refuelBoom": {
+        "fuelFlowSub": "hydrogen transfer",
+        "quantumFlowSub": "quantum transfer",
+        "captureRadiusSub": "docking tolerance",
+        "equipment": "Equipment",
+        "hint": "Transfer rates of the refueling arm and the docking tolerance of its nozzle."
+      },
+      "combat": {
+        "title": "Combat",
+        "dps": "Burst DPS",
+        "dpsSub": "%{count} weapons",
+        "sustained": "Sustained DPS",
+        "sustainedSub": "with regen & heat",
+        "alpha": "Alpha",
+        "alphaSub": "per volley",
+        "weapons": "Weapons",
+        "missileDamage": "Missile Damage",
+        "composition": "Damage Composition",
+        "damagePhysical": "Physical",
+        "damageEnergy": "Energy",
+        "damageDistortion": "Distortion",
+        "damageThermal": "Thermal",
+        "hint": "DPS from the default loadout. Sustained factors in each weapon's energy-pool regen and overheat cycle. Missiles excluded."
+      },
+      "power": {
+        "title": "Power Distribution",
+        "scm": "SCM",
+        "nav": "NAV",
+        "reset": "Reset",
+        "auto": "Auto",
+        "aimAssist": "Aim Assist",
+        "cooling": "Cooling",
+        "ir": "IR",
+        "em": "EM",
+        "cs": "CS",
+        "csAxisHint": "Click to switch axis (x / y / z)",
+        "segmentsUsed": "%{used} / %{total} segments",
+        "hint": "Move power between systems. Weapons' sustained DPS scales with the power they get; the rest is auto-balanced.",
+        "families": {
+          "weapon": "Weapons",
+          "shield": "Shields",
+          "engine": "Engine",
+          "radar": "Radar",
+          "coolers": "Coolers",
+          "qdrive": "Quantum Drive",
+          "qed": "QED",
+          "emp": "EMP",
+          "lifeSupport": "Life Support",
+          "miningLaser": "Mining Laser",
+          "salvage": "Salvage",
+          "tractorBeam": "Tractor Beam",
+          "towingbeam": "Towing Beam"
+        }
+      },
+      "defense": {
+        "title": "Defense",
+        "shieldHp": "Shield HP",
+        "shieldHpSub": "%{count} generators",
+        "shieldRegen": "Regeneration",
+        "shieldResistances": "Resistance",
+        "shieldAbsorption": "Absorption",
+        "armor": "Armor",
+        "deflection": "Deflection",
+        "armorReduction": "Damage reduction",
+        "armorSelfResistance": "Self resistance",
+        "armorSignature": "Signature",
+        "damageType": {
+          "physical": "Phys",
+          "energy": "Energy",
+          "distortion": "Distort",
+          "thermal": "Thermal"
+        },
+        "signature": {
+          "electromagnetic": "EM",
+          "infrared": "IR",
+          "crossSection": "CS"
+        },
+        "hint": "Shield and armor values from the default loadout. Absorption below 100% means that damage type reaches the hull while the shields are still up.",
+        "openDeflectionCheck": "Deflection check"
+      },
+      "deflectionCheck": {
+        "title": "Deflection Check",
+        "intro": "— which guns pierce its defenses?",
+        "noArmor": "This ship carries no armor, so nothing is deflected.",
+        "allSizes": "All",
+        "deflected": "deflected",
+        "pierce": "pierce",
+        "weapon": "Weapon",
+        "boundary": "Deflection boundary",
+        "alpha": "Alpha",
+        "threshold": "Threshold crossed",
+        "absorbed": "absorbed",
+        "versus": "vs",
+        "hoverHint": "Hover a weapon for the per-type breakdown.",
+        "note": "Alpha is compared per pellet, after the shield's soak — a gun pierces when it beats the deflection on any damage type. Types the shields absorb completely never reach the armor, so they are listed as absorbed rather than deflected: stopped by the shield, not the hull. Shield absorption interpolates across its published min–max range by shield health, and armor deflection scales linearly with armor health. Laser beams are excluded — they deal continuous damage, so there is no per-shot alpha to test.",
+        "margin": "Margin",
+        "reachesArmor": "Reaches armor",
+        "stoppedByShields": "Shield absorbs",
+        "verdict": {
+          "absorbed": "Absorbed",
+          "deflected": "Deflected",
+          "pierces": "Pierced"
+        },
+        "shieldHealth": "Shield health",
+        "armorHealth": "Armor health",
+        "absorb": "Absorb",
+        "defl": "Defl",
+        "type": "Type",
+        "size": "Size"
+      },
+      "hull": {
+        "category": {
+          "vital": "Vital",
+          "secondary": "Secondary",
+          "breakable": "Breakable",
+          "subpart": "Subparts",
+          "cosmetic": "Cosmetic"
+        },
+        "composition": "Hull Composition",
+        "door": "Door",
+        "doors": "Doors",
+        "doorsNote": "Breakable interior doors are a separate area — they carry their own health and are not part of hull HP.",
+        "doorsSub": "%{count} breakable",
+        "hint": "Hull HP is the sum of all part health.",
+        "hullHp": "Hull HP",
+        "hullHpSub": "total across all parts",
+        "integrity": "Hull Integrity",
+        "noHp": "no HP",
+        "parts": "Hull Parts",
+        "partsNote": "Parts are ranked by health; cosmetic parts (doors, ladders, flaps) carry no health of their own. The game files expose no parent/child links, so this is a flat list rather than a structural tree.",
+        "partsSub": "across %{count} categories",
+        "partsTree": "Parts · damageMax",
+        "showParts": "Show hull parts",
+        "title": "Hull",
+        "totalHp": "Total Hull HP"
       },
       "manufacturer": {
         "longName": "Long Name",
         "code": "Code",
         "logo": "Logo",
         "scRef": "SC Ref"
+      },
+      "fundingGoal": {
+        "title": "Title",
+        "description": "Description",
+        "amount": "Amount",
+        "currency": "Currency",
+        "effectiveFrom": "Effective from",
+        "endedAt": "Ended at"
+      },
+      "supporterContribution": {
+        "name": "Supporter Name",
+        "amount": "Amount",
+        "currency": "Currency",
+        "anonymous": "Anonymous",
+        "recurring": "Recurring",
+        "startedAt": "Started at",
+        "endedAt": "Ended at",
+        "note": "Internal note",
+        "stats": {
+          "total": "Total",
+          "count": "Contributions",
+          "recurringCount": "Recurring",
+          "anonymousCount": "Anonymous"
+        }
       },
       "itemPrice": {
         "price": "Price",
@@ -766,7 +987,8 @@
         "componentSubType": "Component Sub Type",
         "itemType": "Item Type",
         "scKey": "SC Key",
-        "scRef": "SC Ref"
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
       },
       "hardpoint": {
         "legend": {
@@ -794,11 +1016,18 @@
         },
         "weapons": {
           "dps": "DPS",
+          "burstDps": "Burst DPS",
+          "sustainedDps": "Sustained DPS",
+          "efficiency": "Efficiency",
+          "penetration": "Penetration",
           "fireRate": "Fire Rate",
           "speed": "Speed",
           "range": "Range",
           "ammo": "Ammo",
           "ammoCost": "Ammo Cost",
+          "pool": "Energy Pool",
+          "maxRegen": "Max Regen/s",
+          "costPerShot": "Energy/Shot",
           "heatPerShot": "Heat/Shot",
           "heatPerSecond": "Heat/s",
           "chargeTime": "Charge Time",
@@ -817,6 +1046,20 @@
           "lockTime": "Lock Time",
           "trackingSignal": "Tracking"
         },
+        "tractorBeams": {
+          "maxForce": "Max Force",
+          "minForce": "Min Force",
+          "range": "Range",
+          "cone": "Cone",
+          "tetherBreak": "Tether Break",
+          "cargoForce": "Cargo Force",
+          "cargoRange": "Cargo Range",
+          "towForce": "Tow Force",
+          "towDistance": "Tow Range",
+          "quantumTowMass": "QT Mass Limit",
+          "rotationSpeed": "Rotation",
+          "moveSpeed": "Move Speed"
+        },
         "shields": {
           "hp": "HP",
           "regen": "Regen",
@@ -831,14 +1074,24 @@
           "coolingRate": "Cooling Rate"
         },
         "powerPlants": {
-          "output": "Output"
+          "output": "Output",
+          "pips": "Pips"
         },
         "quantumDrives": {
           "speed": "Speed",
           "range": "Range",
-          "fuelConsumption": "Fuel Rate",
+          "fuelConsumption": "Consumption",
           "spoolUpTime": "Spool Up",
-          "cooldownTime": "Cooldown"
+          "cooldownTime": "Cooldown",
+          "splineSpeed": "Orbit",
+          "accel": "Accel"
+        },
+        "jumpDrives": {
+          "fuelEfficiency": "Fuel Efficiency",
+          "alignRate": "Align Rate",
+          "tuneRate": "Tune Rate",
+          "alignDecay": "Align Decay",
+          "tuneDecay": "Tune Decay"
         },
         "radar": {
           "aimAssistRange": "Assist Range",
@@ -848,10 +1101,15 @@
           "rs": "RS"
         },
         "armor": {
+          "hp": "HP",
           "physical": "Physical",
           "energy": "Energy",
           "distortion": "Distortion",
-          "thermal": "Thermal"
+          "thermal": "Thermal",
+          "deflectPhysical": "Phys Deflect",
+          "deflectEnergy": "Energy Deflect",
+          "selfPhysical": "Self-Res Phys",
+          "selfEnergy": "Self-Res Energy"
         },
         "fuelIntakes": {
           "pushRate": "Push Rate",
@@ -860,6 +1118,11 @@
         "sources": {
           "game_files": "Game Files",
           "ship_matrix": "Ship Matrix"
+        },
+        "density": {
+          "title": "View",
+          "compact": "Compact",
+          "expanded": "Expanded"
         },
         "fuelTanks": {
           "hydrogen": "Hydrogen Fuel Tank",
@@ -873,6 +1136,7 @@
           "propulsion": "Propulsion",
           "thruster": "Thruster",
           "weapon": "Weapons",
+          "defense": "Defense",
           "other": "Other",
           "auxiliary": "Auxiliary",
           "seat": "Seats",
@@ -966,6 +1230,7 @@
         "publicHangarStats": "Public Hangar Stats enabled",
         "publicWishlist": "Public Wishlist enabled",
         "hideOwner": "Hide Ownership for Fleets",
+        "tracking": "Allow anonymous usage analytics",
         "lastActiveAt": "Last Active",
         "confirmedAt": "Confirmed at",
         "dateFormat": "Date format",
@@ -1055,101 +1320,531 @@
           "howTo": "Paste the link into your calendar app under \"Subscribe to calendar\" or \"Add by URL\". Anyone with this link can see the events you're signed up for — keep it private."
         }
       },
-      "fleets": {
-        "logistics": {
-          "inventoryCount": "inventories",
-          "pending": "pending",
-          "inProgress": "in progress",
-          "drafts": "drafts",
-          "noInventories": "No inventories yet.",
-          "noRequests": "No requests found.",
-          "noItems": "No items in this inventory.",
-          "items": "items",
-          "comments": "comments",
-          "managedBy": "Managed by",
-          "itemName": "Name",
-          "category": "Category",
-          "quantity": "Quantity",
-          "unit": "Unit",
-          "notes": "Notes",
-          "status": "Status",
-          "requested": "Requested",
-          "fulfilled": "Fulfilled",
-          "itemFulfilled": "Fulfilled",
-          "itemPending": "Pending",
-          "requestTitle": "Title",
-          "description": "Description",
-          "requestType": "Type",
-          "priority": "Priority",
-          "requestedBy": "Requested by",
-          "approvedBy": "Approved by",
-          "fulfilledBy": "Fulfilled by",
-          "addComment": "Write a comment...",
-          "states": {
-            "draft": "Draft",
-            "submitted": "Submitted",
-            "approved": "Approved",
-            "in_progress": "In Progress",
-            "fulfilled": "Fulfilled",
-            "rejected": "Rejected",
-            "cancelled": "Cancelled"
-          },
-          "requestTypes": {
-            "supply": "Supply",
-            "outfitting": "Outfitting",
-            "general": "General"
-          },
-          "priorities": {
-            "routine": "Routine",
-            "standard": "Standard",
-            "urgent": "Urgent",
-            "critical": "Critical"
-          },
-          "searchInventories": "Search inventories...",
-          "searchItems": "Search items...",
-          "quality": "Quality (0-1000)",
-          "qualityShort": "Quality",
-          "qualityMin": "Quality >=",
-          "qualityMax": "Quality <=",
-          "existingItem": "Select existing item",
-          "inventoryName": "Inventory Name",
-          "visibility": "Visibility",
-          "visibilities": {
-            "members_only": "All Members",
-            "officers_only": "Officers Only"
-          },
-          "inventory": "Inventory",
-          "notesPlaceholder": "Add notes...",
-          "entryType": "Type",
-          "entryTypes": {
-            "deposit": "Deposit",
-            "withdrawal": "Withdrawal"
-          },
-          "stockView": "Current Stock",
-          "logView": "Transaction Log",
-          "addedBy": "Logged by",
-          "member": "Member",
-          "selectItem": "Select item",
-          "currentStock": "Available",
-          "location": "Location",
-          "image": "Image",
-          "categories": {
-            "commodity": "Commodity",
-            "component": "Component",
-            "weapon": "Weapon",
-            "equipment": "Equipment",
-            "ammunition": "Ammunition",
-            "consumable": "Consumable",
-            "other": "Other"
-          },
-          "units": {
-            "scu": "SCU",
-            "units": "Units"
-          },
-          "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
-          "imported": "items imported",
-          "importErrors": "errors"
+      "filters": {
+        "components": {
+          "name": "Name",
+          "itemType": "Item Type",
+          "componentClass": "Component Class"
         },
+        "shops": {
+          "name": "Name",
+          "type": "Type",
+          "celestialObject": "Celestial object",
+          "model": "Ship",
+          "equipment": "Equipment",
+          "component": "Component",
+          "commodity": "Commodity",
+          "commodityType": "Commodity Type",
+          "starsystem": "Starsystem",
+          "station": "Station"
+        },
+        "shopCommodities": {
+          "commodityType": "Commodity Type",
+          "station": "Station",
+          "shopId": "Shop",
+          "equipment": "Equipment",
+          "component": "Component",
+          "componentItemTypeFilter": "Component Item Types",
+          "equipmentItemTypeFilter": "Equipment Item Types",
+          "equipmentTypeFilter": "Equipment Type",
+          "equipmentSlotFilter": "Equipment Slot",
+          "commodity": "Commodity",
+          "model": "Ship",
+          "name": "Name"
+        },
+        "shopItems": {
+          "category": "Category",
+          "subCategory": "Sub Category",
+          "name": "Name",
+          "manufacturer": "Manufacturer",
+          "minPrice": "min. Price",
+          "maxPrice": "max. Price"
+        },
+        "stations": {
+          "name": "Name",
+          "celestialObject": "Celestial Object",
+          "starsystem": "Starsystem",
+          "type": "Station Type",
+          "shops": "Shops",
+          "docks": "Docks",
+          "habs": "Habitation?",
+          "cargoHub": "Cargo Hub?",
+          "refinery": "Refinery Station?"
+        },
+        "vehicles": {
+          "name": "Name or Ship name",
+          "lengthLt": "Length <=",
+          "lengthGt": "Length >=",
+          "pledgePriceLt": "Pledge Price <=",
+          "pledgePriceGt": "Pledge Price >=",
+          "priceLt": "Price <=",
+          "priceGt": "Price >=",
+          "wanted": "Wanted",
+          "hidden": "Hidden",
+          "public": "Public",
+          "group": "Group",
+          "loaner": "Loaners",
+          "bundled": "Bundled Snub Crafts",
+          "boughtVia": "Bought via?"
+        },
+        "tradeRoutes": {
+          "sortBy": "Sort by",
+          "sortByValues": {
+            "percent": "Max. Percent",
+            "profit": "Max. Profit"
+          },
+          "cargoShip": "With Cargoship?",
+          "origin": "From?",
+          "destination": "To?",
+          "excludeCommodityType": "Exclude Commodity Type",
+          "originCelestialObject": "Origin Celestial Object",
+          "destinationCelestialObject": "Destination Celestial Object",
+          "originStarsystem": "Origin Starsystem",
+          "destinationStarsystem": "Destination Starsystem"
+        },
+        "models": {
+          "name": "Name",
+          "shipRole": "Ship Role",
+          "classification": "Classification",
+          "focus": "Focus",
+          "manufacturer": "Manufacturer",
+          "onSale": "On Sale",
+          "size": "Size",
+          "dockSize": "Dock Size",
+          "price": "Price",
+          "pledgePrice": "Pledge Price",
+          "productionStatus": "Production Status",
+          "lengthLt": "Length <=",
+          "lengthGt": "Length >=",
+          "beamLt": "Beam <=",
+          "beamGt": "Beam >=",
+          "heightLt": "Height <=",
+          "heightGt": "Height >=",
+          "pledgePriceLt": "Pledge Price <=",
+          "pledgePriceGt": "Pledge Price >=",
+          "priceLt": "Price <=",
+          "priceGt": "Price >=",
+          "willItFit": "Will it Fit?",
+          "withCargo": "With Cargo?",
+          "scKeyBlank": "Without SC Key?",
+          "positionsNeedCuration": "Positions Need Curation?",
+          "fleetchartImageBlank": "Without Fleetchart Image?",
+          "holoBlank": "Without Holo?",
+          "frontViewBlank": "Without Front View Image?",
+          "topViewColoredBlank": "Without Top View Colored Image?"
+        },
+        "modelModules": {
+          "name": "Name"
+        },
+        "manufacturers": {
+          "name": "Name",
+          "withModels": "With Models",
+          "logoBlank": "Without Logo"
+        },
+        "supporterContributions": {
+          "name": "Search by name",
+          "recurring": "Recurring",
+          "anonymous": "Anonymous",
+          "startedAtGteq": "Started from",
+          "startedAtLteq": "Started until"
+        },
+        "adminNotifications": {
+          "search": "Search"
+        },
+        "images": {
+          "station": "Station",
+          "model": "Ship"
+        },
+        "users": {
+          "search": "Search",
+          "username": "Username",
+          "email": "Email",
+          "rsiHandle": "RSI Handle"
+        },
+        "fleets": {
+          "name": "Name",
+          "fid": "FID",
+          "member": "Member",
+          "members": {
+            "role": "Role",
+            "state": "Status",
+            "acceptedAtGt": "Joined from",
+            "acceptedAtLt": "Joined until",
+            "invitedAtGt": "Invited from",
+            "invitedAtLt": "Invited until",
+            "requestedAtGt": "Requested from",
+            "requestedAtLt": "Requested until",
+            "declinedAtGt": "Declined from",
+            "declinedAtLt": "Declined until"
+          },
+          "inviteUrls": {
+            "expiresAfter": "Expire after",
+            "limit": "Max number of uses"
+          },
+          "logistics": {
+            "search": "Search items..."
+          }
+        },
+        "manufacturer": "Manufacturer"
+      },
+      "station": {
+        "docks": "Docks",
+        "location": "Location",
+        "type": "Type",
+        "habitation": "Habitation",
+        "habs": "Habs",
+        "shops": "Shops",
+        "locationPrefix": {
+          "default": "on",
+          "asteriod": "on asteroid near",
+          "orbit": "in orbit around"
+        },
+        "locationSuffix": "near %{location}"
+      },
+      "tradeRoutes": {
+        "buy": "Buy for: %{uec}",
+        "sell": "Sell for: %{uec}",
+        "cargoShip": "for %{cargo} SCU",
+        "sortByPercent": "Sort by Percent",
+        "sortByProfit": "Sort by Profit",
+        "sortByStation": "Sort by Station",
+        "showAveragePrices": "Display average Prices",
+        "showLatestPrices": "Display latest Prices"
+      },
+      "hardpoints": {
+        "prefix": "Tryout Loadouts with",
+        "erkul": "Erkul's DPS Calculator",
+        "spviewer": "SP Viewer",
+        "spviewerTitle": "SC Ships Performances Viewer"
+      },
+      "scunpacked": {
+        "prefix": "Loadouts based on Gamefiles powered by",
+        "link": "SCunpacked"
+      },
+      "newVehicle": {
+        "nullablePrompt": "Select a Ship"
+      },
+      "addAddon": {
+        "nullablePrompt": ""
+      },
+      "table": {
+        "selected": "%{count} Selected"
+      },
+      "commodityPrice": {
+        "shopId": "Shop",
+        "station": "Station",
+        "commodityItemType": "Commodity Type",
+        "commodityItemId": "Commodity Item",
+        "item": "ShopCommodity",
+        "price": "Price",
+        "type": "Type",
+        "shop": "Shop",
+        "submittedBy": "Submitted By"
+      },
+      "syncExtension": {
+        "warnings": "Warnings",
+        "status": {
+          "started": "Import Started...",
+          "finished": "Import Finished",
+          "failed": "Import Failed!"
+        },
+        "processSteps": {
+          "fetchHangar": "Fetching Data from the RSI Hangar",
+          "submitData": "Submitting Data to the Fleetyards.net Backend"
+        },
+        "sessionStatus": "RSI Session status",
+        "checkIdentity": "Check RSI Session",
+        "identityStatus": {
+          "pending": "Checking...",
+          "notFound": "not found",
+          "connected": "connected"
+        },
+        "platforms": {
+          "chrome": "Google Chrome or Chromium based Browsers",
+          "firefox": "Mozilla Firefox",
+          "edge": "Microsoft Edge",
+          "opera": "Opera",
+          "github": "GitHub"
+        },
+        "pledgeItems": {
+          "pages": "Pages",
+          "all": "All Pledge Items",
+          "ships": "Ships",
+          "components": "Modules",
+          "skins": "Paints",
+          "upgrades": "Upgrades"
+        },
+        "importedItems": {
+          "importedVehicles": "Added Ships",
+          "foundVehicles": "Found Ships",
+          "movedVehiclesToWanted": "Moved Ships to Wishlist",
+          "missingModels": "Ships not found",
+          "importedComponents": "Added Components",
+          "foundComponents": "Found Components",
+          "missingComponents": "Components not found",
+          "missingComponentVehicles": "No matching Ship found for Components",
+          "importedUpgrades": "Added Upgrades",
+          "foundUpgrades": "Found Upgrades",
+          "missingUpgrades": "Upgrades not found",
+          "missingUpgradeVehicles": "No matching Ship found for Upgrades"
+        }
+      },
+      "cargoGridViewer": {
+        "capacity": "Capacity",
+        "maxContainerSize": "Max. Container",
+        "packed": "Packed",
+        "totalCargo": "Total Cargo",
+        "didNotFit": "Did not fit",
+        "openInTool": "Open in Cargo Grid Tool",
+        "myHangar": "Show only my Ships",
+        "filterShips": "Filter Ships by Container Size",
+        "addShip": "Add Ship",
+        "removeShip": "Remove",
+        "autoFillShip": "Auto-fill"
+      },
+      "admin": {
+        "dashboard": {
+          "quickStats": {
+            "onlineUsers": "Online Users",
+            "totalUsers": "Total Users",
+            "totalShips": "Total Ships",
+            "newShipsInYear": "New Ships in %{year}",
+            "totalFleets": "Total Fleets"
+          }
+        },
+        "modelHardpoint": {
+          "loadouts": "Loadouts"
+        },
+        "supporterContributions": {
+          "source": {
+            "patreon": "Patreon",
+            "manual": "Manual"
+          }
+        }
+      },
+      "hangarTable": {
+        "extraColumns": "Columns",
+        "columns": {
+          "storeImage": "Image",
+          "storeImageWide": "Wide Image",
+          "angledView": "3D Image",
+          "angledViewWide": "Wide 3D Image",
+          "modelManufacturerName": "Manufacturer",
+          "modelLength": "Length",
+          "modelBeam": "Beam",
+          "modelHeight": "Height",
+          "modelMass": "Mass",
+          "modelCargo": "Cargo",
+          "modelMinCrew": "Crew",
+          "modelMaxCrew": "Max. Crew",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "Max Speed",
+          "modelGroundMaxSpeed": "Ground Speed",
+          "modelFocus": "Focus",
+          "modelProductionStatus": "Production Status",
+          "modelPrice": "Price",
+          "modelPledgePrice": "Pledge Price"
+        }
+      },
+      "fleetTable": {
+        "extraColumns": "Columns",
+        "columns": {
+          "storeImage": "Image",
+          "storeImageWide": "Wide Image",
+          "angledView": "3D Image",
+          "angledViewWide": "Wide 3D Image",
+          "modelManufacturerName": "Manufacturer",
+          "modelLength": "Length",
+          "modelBeam": "Beam",
+          "modelHeight": "Height",
+          "modelMass": "Mass",
+          "modelCargo": "Cargo",
+          "modelMinCrew": "Crew",
+          "modelMaxCrew": "Max. Crew",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "Max Speed",
+          "modelGroundMaxSpeed": "Ground Speed",
+          "modelProductionStatus": "Production Status",
+          "modelPrice": "Price",
+          "modelPledgePrice": "Pledge Price",
+          "owner": "Owner"
+        }
+      },
+      "logistics": {
+        "inventoryCount": "inventories",
+        "pending": "pending",
+        "inProgress": "in progress",
+        "drafts": "drafts",
+        "noInventories": "No inventories yet.",
+        "noRequests": "No requests found.",
+        "noItems": "No entries in this inventory.",
+        "entriesCount": "entries",
+        "comments": "comments",
+        "managedBy": "Managed by",
+        "itemName": "Name",
+        "category": "Category",
+        "component": "Component",
+        "componentCategory": "Component Type",
+        "commodity": "Commodity",
+        "commodityType": "Commodity Type",
+        "equipment": "Equipment",
+        "equipmentItemType": "Equipment Type",
+        "quantity": "Quantity",
+        "unit": "Unit",
+        "notes": "Notes",
+        "status": "Status",
+        "requested": "Requested",
+        "fulfilled": "Fulfilled",
+        "itemFulfilled": "Fulfilled",
+        "itemPending": "Pending",
+        "requestTitle": "Title",
+        "description": "Description",
+        "requestType": "Type",
+        "priority": "Priority",
+        "requestedBy": "Requested by",
+        "approvedBy": "Approved by",
+        "fulfilledBy": "Fulfilled by",
+        "addComment": "Write a comment...",
+        "states": {
+          "draft": "Draft",
+          "submitted": "Submitted",
+          "approved": "Approved",
+          "in_progress": "In Progress",
+          "fulfilled": "Fulfilled",
+          "rejected": "Rejected",
+          "cancelled": "Cancelled"
+        },
+        "requestTypes": {
+          "supply": "Supply",
+          "outfitting": "Outfitting",
+          "general": "General"
+        },
+        "priorities": {
+          "routine": "Routine",
+          "standard": "Standard",
+          "urgent": "Urgent",
+          "critical": "Critical"
+        },
+        "searchInventories": "Search inventories...",
+        "searchItems": "Search items...",
+        "quality": "Quality (0-1000)",
+        "qualityShort": "Quality",
+        "qualityMin": "Quality >=",
+        "qualityMax": "Quality <=",
+        "existingItem": "Select existing item",
+        "inventoryName": "Inventory Name",
+        "visibility": "Visibility",
+        "visibilities": {
+          "members_only": "All Members",
+          "officers_only": "Officers Only"
+        },
+        "inventory": "Inventory",
+        "notesPlaceholder": "Add notes...",
+        "entryType": "Type",
+        "entryTypes": {
+          "deposit": "Deposit",
+          "withdrawal": "Withdrawal"
+        },
+        "stockView": "Current Stock",
+        "logView": "Transaction Log",
+        "addedBy": "Logged by",
+        "member": "Member",
+        "selectItem": "Select item",
+        "currentStock": "Available",
+        "location": "Location",
+        "image": "Image",
+        "categories": {
+          "commodity": "Commodity",
+          "component": "Component",
+          "weapon": "Weapon",
+          "equipment": "Equipment",
+          "ammunition": "Attachments & Ammunition",
+          "consumable": "Consumable",
+          "other": "Other"
+        },
+        "units": {
+          "scu": "SCU",
+          "units": "Units"
+        },
+        "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
+        "imported": "items imported",
+        "importErrors": "errors",
+        "inStock": "In stock",
+        "entries": "Entries",
+        "lastEntry": "Last entry",
+        "history": "History",
+        "linkedItem": "Linked item",
+        "itemUnavailable": "Not in current patch",
+        "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "qualityRange": "Quality",
+        "stockItem": "Stock Item",
+        "overCapacity": "over cargo capacity",
+        "cargoGrid": "Cargo Grid",
+        "shipInventory": "Ship Inventory",
+        "remaining": "Remaining",
+        "unmeasured": "%{count} not measured yet"
+      },
+      "hangarInventories": "Inventories",
+      "adminNotifications": {
+        "unreadOnly": "Unread only",
+        "status": "Status",
+        "severity": "Severity",
+        "type": "Type",
+        "severities": {
+          "info": "Info",
+          "warning": "Warning",
+          "error": "Error"
+        },
+        "types": {
+          "paints_import": "Paints Import",
+          "modules_import": "Modules Import",
+          "loaner_sync": "Loaner Sync",
+          "uex_prices_import": "UEX Price Sync",
+          "uex_commodity_prices_import": "UEX Commodity Sync",
+          "new_supporter": "New Supporter",
+          "rsi_api_blocked": "RSI API Blocked",
+          "rsi_api_unblocked": "RSI API Restored",
+          "weekly_stats": "Weekly Report"
+        }
+      },
+      "optional": "optional",
+      "notificationTypes": {
+        "channels": {
+          "app": "App",
+          "mail": "Mail",
+          "push": "Push"
+        },
+        "groups": {
+          "account": "Account & hangar",
+          "fleetMembership": "Fleet membership",
+          "fleetEvents": "Fleet events"
+        },
+        "hangar_create": "Hangar created",
+        "hangar_destroy": "Hangar removed",
+        "hangar_sync_finished": "Hangar sync finished",
+        "hangar_sync_failed": "Hangar sync failed",
+        "wishlist_create": "Added to wishlist",
+        "wishlist_destroy": "Removed from wishlist",
+        "model_on_sale": "Model on sale",
+        "new_model": "New model released",
+        "fleet_invite": "Fleet invite received",
+        "fleet_member_requested": "Membership requested",
+        "fleet_member_accepted": "Membership accepted",
+        "fleet_request_accepted": "Join request accepted",
+        "fleet_inventory_item_added": "Fleet inventory item added",
+        "fleet_event_published": "Event published",
+        "fleet_event_locked": "Event sign-ups locked",
+        "fleet_event_starting_soon": "Event starting soon",
+        "fleet_event_started": "Event started",
+        "fleet_event_completed": "Event completed",
+        "fleet_event_cancelled": "Event cancelled",
+        "fleet_event_signup_added": "New signup",
+        "fleet_event_signup_withdrawn": "Signup withdrawn",
+        "fleet_event_signup_confirmed": "Signup confirmed",
+        "fleet_event_signup_assigned": "Assigned to a slot",
+        "fleet_event_signup_kicked": "Removed from a slot"
+      },
+      "fleets": {
         "missions": {
           "title": "Title",
           "description": "Description",
@@ -1337,340 +2032,6 @@
             "week": "Week",
             "weekTitle": "Week of %{date}"
           }
-        }
-      },
-      "filters": {
-        "components": {
-          "name": "Name",
-          "itemType": "Item Type",
-          "componentClass": "Component Class"
-        },
-        "shops": {
-          "name": "Name",
-          "type": "Type",
-          "celestialObject": "Celestial object",
-          "model": "Ship",
-          "equipment": "Equipment",
-          "component": "Component",
-          "commodity": "Commodity",
-          "commodityType": "Commodity Type",
-          "starsystem": "Starsystem",
-          "station": "Station"
-        },
-        "shopCommodities": {
-          "commodityType": "Commodity Type",
-          "station": "Station",
-          "shopId": "Shop",
-          "equipment": "Equipment",
-          "component": "Component",
-          "componentItemTypeFilter": "Component Item Types",
-          "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "Equipment Type",
-          "equipmentSlotFilter": "Equipment Slot",
-          "commodity": "Commodity",
-          "model": "Ship",
-          "name": "Name"
-        },
-        "shopItems": {
-          "category": "Category",
-          "subCategory": "Sub Category",
-          "name": "Name",
-          "manufacturer": "Manufacturer",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
-        },
-        "stations": {
-          "name": "Name",
-          "celestialObject": "Celestial Object",
-          "starsystem": "Starsystem",
-          "type": "Station Type",
-          "shops": "Shops",
-          "docks": "Docks",
-          "habs": "Habitation?",
-          "cargoHub": "Cargo Hub?",
-          "refinery": "Refinery Station?"
-        },
-        "vehicles": {
-          "name": "Name or Ship name",
-          "lengthLt": "Length <=",
-          "lengthGt": "Length >=",
-          "pledgePriceLt": "Pledge Price <=",
-          "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
-          "wanted": "Wanted",
-          "hidden": "Hidden",
-          "public": "Public",
-          "group": "Group",
-          "loaner": "Loaners",
-          "bundled": "Bundled Snub Crafts",
-          "boughtVia": "Bought via?"
-        },
-        "tradeRoutes": {
-          "sortBy": "Sort by",
-          "sortByValues": {
-            "percent": "Max. Percent",
-            "profit": "Max. Profit"
-          },
-          "cargoShip": "With Cargoship?",
-          "origin": "From?",
-          "destination": "To?",
-          "excludeCommodityType": "Exclude Commodity Type",
-          "originCelestialObject": "Origin Celestial Object",
-          "destinationCelestialObject": "Destination Celestial Object",
-          "originStarsystem": "Origin Starsystem",
-          "destinationStarsystem": "Destination Starsystem"
-        },
-        "models": {
-          "name": "Name",
-          "shipRole": "Ship Role",
-          "classification": "Classification",
-          "focus": "Focus",
-          "manufacturer": "Manufacturer",
-          "onSale": "On Sale",
-          "size": "Size",
-          "dockSize": "Dock Size",
-          "price": "Price",
-          "pledgePrice": "Pledge Price",
-          "productionStatus": "Production Status",
-          "lengthLt": "Length <=",
-          "lengthGt": "Length >=",
-          "beamLt": "Beam <=",
-          "beamGt": "Beam >=",
-          "heightLt": "Height <=",
-          "heightGt": "Height >=",
-          "pledgePriceLt": "Pledge Price <=",
-          "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
-          "willItFit": "Will it Fit?",
-          "withCargo": "With Cargo?",
-          "scKeyBlank": "Without SC Key?",
-          "positionsNeedCuration": "Positions Need Curation?",
-          "fleetchartImageBlank": "Without Fleetchart Image?",
-          "holoBlank": "Without Holo?",
-          "frontViewBlank": "Without Front View Image?",
-          "topViewColoredBlank": "Without Top View Colored Image?"
-        },
-        "modelModules": {
-          "name": "Name"
-        },
-        "manufacturers": {
-          "name": "Name",
-          "withModels": "With Models",
-          "logoBlank": "Without Logo"
-        },
-        "images": {
-          "station": "Station",
-          "model": "Ship"
-        },
-        "users": {
-          "search": "Search",
-          "username": "Username",
-          "email": "Email",
-          "rsiHandle": "RSI Handle"
-        },
-        "fleets": {
-          "name": "Name",
-          "fid": "FID",
-          "member": "Member",
-          "members": {
-            "role": "Role",
-            "state": "Status",
-            "acceptedAtGt": "Joined from",
-            "acceptedAtLt": "Joined until",
-            "invitedAtGt": "Invited from",
-            "invitedAtLt": "Invited until",
-            "requestedAtGt": "Requested from",
-            "requestedAtLt": "Requested until",
-            "declinedAtGt": "Declined from",
-            "declinedAtLt": "Declined until"
-          },
-          "inviteUrls": {
-            "expiresAfter": "Expire after",
-            "limit": "Max number of uses"
-          },
-          "logistics": {
-            "search": "Search items..."
-          }
-        },
-        "manufacturer": "Manufacturer"
-      },
-      "station": {
-        "docks": "Docks",
-        "location": "Location",
-        "type": "Type",
-        "habitation": "Habitation",
-        "habs": "Habs",
-        "shops": "Shops",
-        "locationPrefix": {
-          "default": "on",
-          "asteriod": "on asteroid near",
-          "orbit": "in orbit around"
-        },
-        "locationSuffix": "near %{location}"
-      },
-      "tradeRoutes": {
-        "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}",
-        "cargoShip": "for %{cargo} SCU",
-        "sortByPercent": "Sort by Percent",
-        "sortByProfit": "Sort by Profit",
-        "sortByStation": "Sort by Station",
-        "showAveragePrices": "Display average Prices",
-        "showLatestPrices": "Display latest Prices"
-      },
-      "hardpoints": {
-        "prefix": "Tryout Loadouts with",
-        "erkul": "Erkul's DPS Calculator",
-        "spviewer": "SP Viewer",
-        "spviewerTitle": "SC Ships Performances Viewer"
-      },
-      "scunpacked": {
-        "prefix": "Loadouts based on Gamefiles powered by",
-        "link": "SCunpacked"
-      },
-      "newVehicle": {
-        "nullablePrompt": "Select a Ship"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
-      },
-      "table": {
-        "selected": "%{count} Selected"
-      },
-      "commodityPrice": {
-        "shopId": "Shop",
-        "station": "Station",
-        "commodityItemType": "Commodity Type",
-        "commodityItemId": "Commodity Item",
-        "item": "ShopCommodity",
-        "price": "Price",
-        "type": "Type",
-        "shop": "Shop",
-        "submittedBy": "Submitted By"
-      },
-      "syncExtension": {
-        "warnings": "Warnings",
-        "status": {
-          "started": "Import Started...",
-          "finished": "Import Finished",
-          "failed": "Import Failed!"
-        },
-        "processSteps": {
-          "fetchHangar": "Fetching Data from the RSI Hangar",
-          "submitData": "Submitting Data to the Fleetyards.net Backend"
-        },
-        "sessionStatus": "RSI Session status",
-        "checkIdentity": "Check RSI Session",
-        "identityStatus": {
-          "pending": "Checking...",
-          "notFound": "not found",
-          "connected": "connected"
-        },
-        "platforms": {
-          "chrome": "Google Chrome or Chromium based Browsers",
-          "firefox": "Mozilla Firefox",
-          "edge": "Microsoft Edge",
-          "opera": "Opera",
-          "github": "GitHub"
-        },
-        "pledgeItems": {
-          "pages": "Pages",
-          "all": "All Pledge Items",
-          "ships": "Ships",
-          "components": "Modules",
-          "skins": "Paints",
-          "upgrades": "Upgrades"
-        },
-        "importedItems": {
-          "importedVehicles": "Added Ships",
-          "foundVehicles": "Found Ships",
-          "movedVehiclesToWanted": "Moved Ships to Wishlist",
-          "missingModels": "Ships not found",
-          "importedComponents": "Added Components",
-          "foundComponents": "Found Components",
-          "missingComponents": "Components not found",
-          "missingComponentVehicles": "No matching Ship found for Components",
-          "importedUpgrades": "Added Upgrades",
-          "foundUpgrades": "Found Upgrades",
-          "missingUpgrades": "Upgrades not found",
-          "missingUpgradeVehicles": "No matching Ship found for Upgrades"
-        }
-      },
-      "cargoGridViewer": {
-        "capacity": "Capacity",
-        "maxContainerSize": "Max. Container",
-        "packed": "Packed",
-        "totalCargo": "Total Cargo",
-        "didNotFit": "Did not fit",
-        "openInTool": "Open in Cargo Grid Tool",
-        "myHangar": "Show only my Ships",
-        "filterShips": "Filter Ships by Container Size",
-        "addShip": "Add Ship",
-        "removeShip": "Remove",
-        "autoFillShip": "Auto-fill"
-      },
-      "admin": {
-        "dashboard": {
-          "quickStats": {
-            "onlineUsers": "Online Users",
-            "totalUsers": "Total Users",
-            "totalShips": "Total Ships",
-            "newShipsInYear": "New Ships in %{year}",
-            "totalFleets": "Total Fleets"
-          }
-        },
-        "modelHardpoint": {
-          "loadouts": "Loadouts"
-        }
-      },
-      "hangarTable": {
-        "extraColumns": "Columns",
-        "columns": {
-          "storeImage": "Image",
-          "storeImageWide": "Wide Image",
-          "angledView": "3D Image",
-          "angledViewWide": "Wide 3D Image",
-          "modelManufacturerName": "Manufacturer",
-          "modelLength": "Length",
-          "modelBeam": "Beam",
-          "modelHeight": "Height",
-          "modelMass": "Mass",
-          "modelCargo": "Cargo",
-          "modelMinCrew": "Crew",
-          "modelMaxCrew": "Max. Crew",
-          "modelScmSpeed": "SCM Speed",
-          "modelMaxSpeed": "Max Speed",
-          "modelGroundMaxSpeed": "Ground Speed",
-          "modelFocus": "Focus",
-          "modelProductionStatus": "Production Status",
-          "modelPrice": "Price",
-          "modelPledgePrice": "Pledge Price"
-        }
-      },
-      "fleetTable": {
-        "extraColumns": "Columns",
-        "columns": {
-          "storeImage": "Image",
-          "storeImageWide": "Wide Image",
-          "angledView": "3D Image",
-          "angledViewWide": "Wide 3D Image",
-          "modelManufacturerName": "Manufacturer",
-          "modelLength": "Length",
-          "modelBeam": "Beam",
-          "modelHeight": "Height",
-          "modelMass": "Mass",
-          "modelCargo": "Cargo",
-          "modelMinCrew": "Crew",
-          "modelMaxCrew": "Max. Crew",
-          "modelScmSpeed": "SCM Speed",
-          "modelMaxSpeed": "Max Speed",
-          "modelGroundMaxSpeed": "Ground Speed",
-          "modelProductionStatus": "Production Status",
-          "modelPrice": "Price",
-          "modelPledgePrice": "Pledge Price",
-          "owner": "Owner"
         }
       }
     }

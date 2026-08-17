@@ -10,14 +10,12 @@ import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutati
 import {
   type ModelExtended,
   type ModelUpdateInput,
-  type ValidationError,
 } from "@/services/fyAdminApi";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
-import { transformErrors } from "@/frontend/utils/transformErrors";
-import { type AxiosError } from "axios";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 type FormMeta = {
   dirty: boolean;
@@ -55,14 +53,12 @@ const onSubmit = props.handleSubmit(async (values) => {
       data: values,
     })
     .catch((error) => {
-      const response = (error as AxiosError<ValidationError>).response;
+      const { message, formErrors } = validationErrorFrom(error);
 
-      if (response?.data?.errors && props.setErrors) {
-        props.setErrors(transformErrors(response.data.errors));
-      }
+      props.setErrors?.(formErrors);
 
       displayAlert({
-        text: response?.data?.message || t("errors.generic"),
+        text: message || t("errors.generic"),
       });
     })
     .finally(() => {

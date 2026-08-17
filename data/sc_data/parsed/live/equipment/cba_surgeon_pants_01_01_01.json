@@ -1,0 +1,32 @@
+{
+  "key": "cba_surgeon_pants_01_01_01",
+  "ref": "bd400419-0774-4be2-8a0e-5c8d1035bf35",
+  "name": "Taussig Surgical Pants",
+  "description": "Comfortable, lightweight, and breathable are the top three traits surgeons look for in their work pants, so CBA started there. The Taussig are not only comfortable to wear but are made from an antibacterial and anti-rip fabric that provides excellent protection against fluids, pathogens, and other hazards of the job.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "surgeon",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "50.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_surgeon_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.013808
+}

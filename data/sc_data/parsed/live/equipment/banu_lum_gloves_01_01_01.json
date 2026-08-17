@@ -1,0 +1,37 @@
+{
+  "key": "banu_lum_gloves_01_01_01",
+  "ref": "d0a4e9f2-b2f4-496d-8f81-3ac4b3e4d5d6",
+  "name": "Good Gift Gloves",
+  "description": "The Good Gift gloves are made to match the festive sweater of the same name. These comfortable holiday hand warmers not only look good but are fingerless to make interacting with items a breeze.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "lum",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "tags": [
+    "banu_gloves",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.029809,
+  "volume_dimensions": {
+    "x": 0.2500379,
+    "y": 0.504985,
+    "z": 0.2951066
+  }
+}

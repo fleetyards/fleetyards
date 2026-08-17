@@ -14,6 +14,166 @@
     "base_expediting_fee": "7398"
   },
   "mass": 73190.0,
+  "inventory_container_ref": "ff241293-22db-40cc-837e-f706d4b5124a",
+  "hull_health": 127600.0,
+  "hull_parts": [
+    {
+      "name": "TMBL_Nova",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_mesh",
+      "health": 40000.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_tread_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_tread_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "tread_guard_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "tread_guard_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_sprocket_right",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_small_right",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_drive_sprocket_left",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_small_left",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "primary_turret_debris",
+      "health": 30000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "hardpoint_wheel_right_07",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_06",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_05",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_04",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_03",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_02",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_01",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_07",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_06",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_05",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_04",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_03",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_02",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_01",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_hidden_rear_09",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_left_hidden_front_08",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_hidden_front_08",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_right_hidden_rear_09",
+      "health": 800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    }
+  ],
+  "speeds": {
+    "max": 25.0,
+    "reverse": null,
+    "acceleration": null,
+    "decceleration": null
+  },
   "metrics": {
     "x": 12.0,
     "y": 20.0,

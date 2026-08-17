@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -26,7 +27,6 @@ import {
   type ModelModule,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const modulesQueryParams = computed(() => {
   return {
@@ -236,10 +236,9 @@ const crumbs = [
         @selected-change="onSelectedChange"
       >
         <template #selected-actions>
-          <BtnGroup inline>
+          <BtnGroup>
             <Btn
               v-tooltip="t('actions.enableSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="activateSelected"
             >
@@ -247,15 +246,14 @@ const crumbs = [
             </Btn>
             <Btn
               v-tooltip="t('actions.disableSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="hideSelected"
             >
               <i class="fa-duotone fa-eye-slash" />
             </Btn>
             <Btn
+              :tone="BtnTonesEnum.DANGER"
               v-tooltip="t('actions.deleteSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="destroySelected"
             >
@@ -320,10 +318,9 @@ const crumbs = [
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">
-          <BtnGroup inline>
+          <BtnGroup>
             <Btn
               v-tooltip="t('actions.edit')"
-              :size="BtnSizesEnum.SMALL"
               :to="{
                 name: 'admin-model-module-edit',
                 params: { id: record.id },

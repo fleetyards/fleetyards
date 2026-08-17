@@ -13,7 +13,7 @@ module Api
       before_action :set_fleet
 
       def members
-        @q = @fleet.fleet_memberships.accepted.ransack(member_query_params)
+        @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params)
 
         members = @q.result
 
@@ -52,11 +52,17 @@ module Api
         modules = vehicles.map(&:model_modules)
         modules.flatten!
 
+        # Blind to its own filter, as the hangar's group counts are. This list is
+        # the chip row itself, not just its numbers, so deriving it from the
+        # filtered set would delete an excluded classification's chip - leaving no
+        # control to undo the exclusion with.
+        classification_models = scope.ransack(vehicle_query_params.except("classification_in", "classification_not_in")).result.map(&:model)
+
         @quick_stats = QuickStats.new(
           total: vehicles.count,
-          classifications: models.map(&:classification).uniq.compact.map do |classification|
+          classifications: classification_models.map(&:classification).uniq.compact.map do |classification|
             ClassificationCount.new(
-              classification_count: models.count { |model| model.classification == classification },
+              classification_count: classification_models.count { |model| model.classification == classification },
 
               name: classification,
               label: classification.humanize

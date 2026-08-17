@@ -1,0 +1,37 @@
+{
+  "key": "eld_pants_01_02_02",
+  "ref": "c9ea8c57-dceb-4804-967f-8828bb53b967",
+  "name": "99-BR/BL Pants",
+  "description": "Spice up your wardrobe with a pair of 99 pants from Escar Limited. The juxtaposition of colors, each made from a different fabric, form a striking design for when you want to make a statement.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_pants",
+    "Set_01",
+    "Color_02"
+  ],
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
+}

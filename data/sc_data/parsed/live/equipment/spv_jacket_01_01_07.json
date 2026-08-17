@@ -1,0 +1,37 @@
+{
+  "key": "spv_jacket_01_01_07",
+  "ref": "27d687db-101b-489d-839d-7d5199fb4753",
+  "name": "Castillo Jacket Ocean",
+  "description": "Refined enough for day, but ready for night, this jacket is essential for any young professional's collection. Notched lapels and a center back seam provide a tailored look at the Spar Van Miles price.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e7c9f9ee-a1db-40ee-bfa8-a8ffead4ac1d",
+  "tags": [
+    "spv_jacket",
+    "set_01",
+    "Color_07"
+  ],
+  "hidden": false,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

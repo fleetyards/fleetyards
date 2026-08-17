@@ -1,0 +1,38 @@
+{
+  "key": "hdtc_shoes_01_02_01",
+  "ref": "49e483b8-53b5-4cee-89a4-2b88333a9f81",
+  "name": "Spettro Shoes Continental",
+  "description": "Hand crafted from premium Quasi Grazer leather, the Spettro shoes are a sleek and refined addition to any wardrobe. Styled after traditional human dress shoes, they pair perfectly with any formal outfit.\n\nThe Continental edition is a deep mahogany brown with a black sole.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_shoes",
+    "Set_01",
+    "Texture_02",
+    "Color_01"
+  ],
+  "hidden": false,
+  "volume": 0.0144,
+  "volume_dimensions": {
+    "x": 0.279,
+    "y": 0.277,
+    "z": 0.265
+  }
+}

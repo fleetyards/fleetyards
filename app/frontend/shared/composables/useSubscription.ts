@@ -16,6 +16,7 @@ export enum ChannelsEnum {
   FLEET_VEHICLES = "FleetVehiclesChannel",
   NOTIFICATIONS = "NotificationsChannel",
   USER_NOTIFICATIONS = "UserNotificationsChannel",
+  ADMIN_NOTIFICATIONS = "AdminNotificationsChannel",
 }
 
 export const useSubscription = ({

@@ -1,0 +1,37 @@
+{
+  "key": "behr_sniper_ballistic_01_tint01",
+  "ref": "0c53417e-eb43-40da-b6c2-edc045bd2e23",
+  "name": "P6-LR \"Blacklist\" Sniper Rifle",
+  "description": "The Behring P6-LR ballistic sniper rifle more than makes up for its slow rate of fire with a high powered round that's effective from long range. Featuring a scope with variable zoom modes and a barrel composed of a proprietary high-strength alloy, the P6-LR was designed to deliver when needed most. The Blacklist edition features a dark black finish.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "sniper_rifle",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "20.0",
+  "range": "120.0",
+  "storage": "8.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behr_p6_lr_sniper_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "behr_sniper_ballistic_01",
+    "sniper"
+  ],
+  "hidden": true,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.0559,
+    "y": 0.9987,
+    "z": 0.3436
+  }
+}

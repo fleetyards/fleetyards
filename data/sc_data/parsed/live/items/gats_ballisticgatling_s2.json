@@ -97,10 +97,40 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 1.5
+    },
     "pellets_per_shot": 1,
     "speed": 1345.5,
     "range": 2166.3,
     "ammo_cost": 1,
-    "max_ammo": 4410
+    "max_ammo": 4410,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 42.0,
+      "time_till_cooling_starts": 0.519,
+      "overheat_fix_time": 2.42
+    },
+    "power_consumption": 0.1,
+    "weapon_class": "BallisticGatling",
+    "mountable": true,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 36.0,
+    "signature_ir": 0.0
   }
 }

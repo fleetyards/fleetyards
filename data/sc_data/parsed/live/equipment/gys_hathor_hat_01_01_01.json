@@ -1,0 +1,40 @@
+{
+  "key": "gys_hathor_hat_01_01_01",
+  "ref": "14c0dbb6-b0a2-4d30-8124-6c66d8ad2774",
+  "name": "Theaters of War: Hathor Group Hat",
+  "description": "This Hathor Group hat resurrects the original design worn by workers in Nexus when the company controlled the system. It has been intentionally distressed to reflect the harsh conditions in the system, and released as a special Theaters of War (Working Title) tie-in to promote their Nexus sim map.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "hathor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d56a3985-2f29-4095-b2f2-542376cc74f4",
+  "tags": [
+    "gys_hat",
+    "Hathor",
+    "Set_01",
+    "Color_01",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.159,
+    "y": 0.266,
+    "z": 0.142
+  }
+}

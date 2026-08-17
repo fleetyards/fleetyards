@@ -1,0 +1,37 @@
+{
+  "key": "oct_jacket_02_03_01",
+  "ref": "e12e6f4e-bd59-47a0-977f-31db657bf276",
+  "name": "Kamar Jacket",
+  "description": "The Kamar is a modern update on a classic style featuring a truly unique design and silhouette. Centered around an ultra-soft velvet front panel, it features a fitted collar, wide pleated waistband, and bishop sleeves cinched by extra long cuffs. The result is a formal top that's bold yet timeless.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a05001d-0511-415f-8e32-618fbd75242b",
+  "tags": [
+    "oct_jacket",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": true,
+  "volume": 0.0087,
+  "volume_dimensions": {
+    "x": 0.356,
+    "y": 0.183,
+    "z": 0.166
+  }
+}

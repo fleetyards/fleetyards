@@ -90,7 +90,7 @@ accessories:
       memory: 4g
 
   redis:
-    image: redis:7.2
+    image: redis:7.2.15
     port: "6379:6379"
     cmd: redis-server --maxmemory 1536mb --maxmemory-policy allkeys-lru
     directories:

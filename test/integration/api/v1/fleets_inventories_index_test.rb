@@ -63,6 +63,37 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/inventories is allowed when fleet_logistics is enabled for the fleet actor" do
+    Flipper.disable("fleet_logistics")
+    Flipper.enable_actor("fleet_logistics", @fleet)
+    create_list(:fleet_inventory, 3, fleet: @fleet)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 3, parsed_body["items"].count
+    end
+  end
+
+  test "GET /fleets/:slug/inventories is allowed when fleet_logistics is enabled for the user actor" do
+    Flipper.disable("fleet_logistics")
+    Flipper.enable_actor("fleet_logistics", @admin)
+    create_list(:fleet_inventory, 3, fleet: @fleet)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 3, parsed_body["items"].count
+    end
+  end
+
+  test "GET /fleets/:slug/inventories is forbidden when fleet_logistics is disabled for both user and fleet" do
+    Flipper.disable("fleet_logistics")
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/inventories"
+
+    assert_response :forbidden
+  end
+
   test "GET /fleets/:slug/inventories returns 404 for unknown fleet" do
     sign_in @admin
 

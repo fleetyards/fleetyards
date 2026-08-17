@@ -71,10 +71,41 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.255
+    },
     "pellets_per_shot": 1,
     "speed": 1136.2,
     "range": 2431.5,
     "ammo_cost": 1,
-    "max_ammo": 0
+    "max_ammo": 0,
+    "regen": {
+      "max_ammo_load": 25.0,
+      "max_regen_per_second": 3.0,
+      "cost_per_bullet": 60.0,
+      "regeneration_cooldown": 1.0,
+      "requested_regen_per_second": 1690.0,
+      "requested_ammo_load": 3750.0
+    },
+    "power_consumption": 0.25,
+    "mountable": true,
+    "power_minimum_fraction": 0.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 545.0,
+    "signature_ir": 0.0
   }
 }

@@ -9,6 +9,7 @@ import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vu
 import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vue";
 import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manufacturer/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
+import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import {
   HardpointSourceEnum,
   type Hardpoint,
@@ -49,9 +50,6 @@ const count = computed(() => {
                 `labels.hardpoint.thrusters.subTypes.${hardpoint.component.subType || "FixedThruster"}`,
               )
             }}
-            <span>
-              {{ toNumber(typeData.thrustCapacity, "thrust") }}
-            </span>
           </template>
           <template v-else>
             <span>TBD</span>
@@ -66,6 +64,11 @@ const count = computed(() => {
       </HardpointComponent>
       <HardpointManufacturer
         :manufacturer="hardpoint.component?.manufacturer"
+      />
+      <HardpointHeadline
+        v-if="typeData?.thrustCapacity"
+        :value="toNumber(typeData.thrustCapacity, 'thrust')"
+        :unit="t('labels.hardpoint.thrusters.thrust')"
       />
     </template>
   </HardpointItem>

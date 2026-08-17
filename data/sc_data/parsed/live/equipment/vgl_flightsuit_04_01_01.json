@@ -1,0 +1,41 @@
+{
+  "key": "vgl_flightsuit_04_01_01",
+  "ref": "8f3107e9-6ca7-465a-b215-3576dc32f94f",
+  "name": "Tailwind Flight Suit Anvil",
+  "description": "Taking its design cues from the early days of aviation, the Tailwind flight suit prioritizes functionality above all. Utilizing a thin layer of woolen insulation, a quilted collar, and breathable materials in key locations, this suit gives every pilot the best chance at success.\n\nTough, sleek, and industrial, the Anvil edition emphasizes the vehicle manufacturer's values with a military green base, sharp yellow stripes, and the company's logo emblazoned proudly on it.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "flight_suit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "15.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "97.5",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "VGL",
+    "flightsuit",
+    "Set_04",
+    "Texture_01",
+    "Color_01",
+    "$invis_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false,
+  "volume": 0.023,
+  "volume_dimensions": {
+    "x": 0.315,
+    "y": 0.227,
+    "z": 0.41
+  }
+}

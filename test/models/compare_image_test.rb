@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: compare_images
+#
+#  id         :uuid             not null, primary key
+#  share_key  :string
+#  short_code :string
+#  slug_set   :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_compare_images_on_share_key   (share_key) UNIQUE WHERE (share_key IS NOT NULL)
+#  index_compare_images_on_short_code  (short_code) UNIQUE WHERE (short_code IS NOT NULL)
+#  index_compare_images_on_slug_set    (slug_set) UNIQUE
+#
 require "test_helper"
 
 class CompareImageTest < ActiveSupport::TestCase
@@ -67,11 +84,39 @@ class CompareImageTest < ActiveSupport::TestCase
     assert_equal "BBBBBBBB", record.short_code
   end
 
+  test "composites the ships whose store image file is still there" do
+    present = create_model_with_store_image("rsi-constellation-andromeda")
+    missing = create_model_with_store_image("aegs-gladius")
+    missing.store_image.stubs(:download).raises(ActiveStorage::FileNotFoundError)
+
+    record = CompareImage.for([present, missing])
+
+    assert record.image.attached?
+  end
+
+  test "attaches nothing when every store image file is gone" do
+    first = create_model_with_store_image("rsi-constellation-andromeda")
+    second = create_model_with_store_image("aegs-gladius")
+    [first, second].each do |model|
+      model.store_image.stubs(:download).raises(ActiveStorage::FileNotFoundError)
+    end
+
+    record = CompareImage.for([first, second])
+
+    assert_not record.image.attached?
+  end
+
   private
 
   def create_model_with_slug(slug, legacy_slug: nil)
     model = create(:model)
     model.update_columns(slug: slug, legacy_slug: legacy_slug)
+    model
+  end
+
+  def create_model_with_store_image(slug)
+    model = create(:model, :with_store_image)
+    model.update_columns(slug: slug)
     model
   end
 end

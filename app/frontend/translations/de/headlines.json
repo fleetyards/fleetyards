@@ -71,6 +71,16 @@
           "new": "Neuer Hersteller",
           "edit": "Hersteller bearbeiten"
         },
+        "supporterContributions": {
+          "index": "Unterstützer-Beiträge",
+          "new": "Neuer Beitrag",
+          "edit": "Beitrag bearbeiten"
+        },
+        "fundingGoals": {
+          "index": "Finanzierungsziele",
+          "new": "Neues Finanzierungsziel",
+          "edit": "Finanzierungsziel bearbeiten"
+        },
         "users": {
           "index": "Benutzer",
           "edit": "Benutzer bearbeiten",
@@ -82,7 +92,8 @@
         },
         "fleets": {
           "index": "Flotten",
-          "edit": "Flotte bearbeiten"
+          "edit": "Flotte bearbeiten",
+          "memberEdit": "Mitglied bearbeiten"
         },
         "admins": {
           "index": "Administratoren",
@@ -125,6 +136,7 @@
       "images": "Images Index",
       "stats": "Statistiken",
       "notFound": "Navigationsfehler",
+      "forbidden": "Zugriff verweigert",
       "featureNotReady": "Demnächst",
       "accessDenied": "Zugriff verweigert",
       "serverError": "Serverfehler",
@@ -174,17 +186,6 @@
           "starmap": "Mitglieder-Sternenkarte"
         },
         "stats": "Statistiken",
-        "logistics": {
-          "index": "Logistics",
-          "inventories": "Inventories",
-          "requests": "Requests",
-          "newRequest": "New Request",
-          "requestItems": "Items",
-          "comments": "Comments",
-          "createInventory": "Create Inventory",
-          "createItem": "Add Item",
-          "importCsv": "Import from CSV"
-        },
         "preview": {
           "h1": "Flottenvorschau",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",
@@ -208,6 +209,7 @@
         "account": "Konto",
         "profile": "Profileinstellungen",
         "hangar": "Hangar-Einstellungen",
+        "privacy": "Datenschutz-Einstellungen",
         "features": "Feature-Flags",
         "connections": "Verbindungen",
         "oauthApplications": "OAuth-Anwendungen",
@@ -279,7 +281,12 @@
         "overview": "Übersicht",
         "panels": "Bereiche",
         "buttons": "Schaltflächen",
+        "typography": "Typografie",
+        "forms": "Formulare",
         "tables": "Tabellen",
+        "lists": "Listen",
+        "metrics": "Metriken",
+        "states": "Zustände",
         "notifications": "Benachrichtigungen",
         "syncModal": "Sync-Modal",
         "supportHint": "Support-Hinweis"
@@ -296,7 +303,25 @@
       "stationImages": "Images of %{station} near %{celestialObject}",
       "shops": "Shops",
       "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      "commodities": "Commodities",
+      "logistics": {
+        "index": "Logistics",
+        "inventories": "Inventories",
+        "requests": "Requests",
+        "newRequest": "New Request",
+        "requestItems": "Items",
+        "comments": "Comments",
+        "inventoryItems": "Inventory Items",
+        "createInventory": "Create Inventory",
+        "editInventory": "Edit Inventory",
+        "createItem": "Add Item",
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal",
+        "importCsv": "Import from CSV",
+        "hangarInventories": "Hangar Inventare",
+        "editItem": "Eintrag bearbeiten",
+        "editStockItem": "Edit Item"
+      }
     }
   }
 }

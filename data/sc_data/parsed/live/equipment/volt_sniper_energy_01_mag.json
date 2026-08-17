@@ -1,0 +1,35 @@
+{
+  "key": "volt_sniper_energy_01_mag",
+  "ref": "fa12a7a5-6fdd-4e7b-9237-1f2e131a43c4",
+  "name": "Zenith Laser Sniper Rifle Battery (22 Cap)",
+  "description": "This battery for the Zenith Laser Sniper Rifle holds enough energy for 22 shots.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "battery",
+  "weapon_class": "energy",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "22.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e2787f3b-b892-4276-bb2e-eb2b4dc9666b",
+  "tags": [
+    "volt_sniper_energy_01"
+  ],
+  "hidden": false,
+  "volume": 0.00048,
+  "volume_dimensions": {
+    "x": 0.04107491,
+    "y": 0.08062783,
+    "z": 0.1464011
+  }
+}

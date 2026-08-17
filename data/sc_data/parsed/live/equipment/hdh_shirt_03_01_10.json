@@ -1,0 +1,38 @@
+{
+  "key": "hdh_shirt_03_01_10",
+  "ref": "9ee82184-16d8-42c3-bace-bc743379a53f",
+  "name": "Enkel Shirt Valencia",
+  "description": "Habidash's Enkel is a simple, no-frills shirt designed to be comfortable, first and foremost.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_shirt",
+    "Set_03",
+    "Texture_01",
+    "Color_10"
+  ],
+  "hidden": false,
+  "volume": 0.0049,
+  "volume_dimensions": {
+    "x": 0.298,
+    "y": 0.147,
+    "z": 0.141
+  }
+}

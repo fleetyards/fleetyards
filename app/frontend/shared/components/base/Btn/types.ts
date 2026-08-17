@@ -5,15 +5,22 @@ export enum BtnTypesEnum {
 }
 
 export enum BtnSizesEnum {
-  DEFAULT = "default",
-  X_SMALL = "xsmall",
-  SMALL = "small",
-  LARGE = "large",
+  XS = "xs",
+  SM = "sm",
+  MD = "md",
+  LG = "lg",
 }
 
+// How much chrome the button carries. Kept separate from tone so that a quiet
+// destructive action is expressible, which the old single `variant` enum -
+// default | transparent | link | danger - could not do.
 export enum BtnVariantsEnum {
-  DEFAULT = "default",
-  TRANSPARENT = "transparent",
-  LINK = "link",
+  SOLID = "solid",
+  GHOST = "ghost",
+  BARE = "bare",
+}
+
+export enum BtnTonesEnum {
+  NEUTRAL = "neutral",
   DANGER = "danger",
 }
