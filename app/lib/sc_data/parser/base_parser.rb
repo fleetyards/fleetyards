@@ -7,6 +7,10 @@ module ScData
 
       DRAWABLE_FORMATS = %w[png svg].freeze
 
+      # Wide enough for the largest size anything asks these icons for -- the
+      # small representation caps at 500px -- without upscaling beyond it.
+      RASTER_WIDTH = 512
+
       SCU_DIMENSIONS = 1.25
 
       CARGO_CONTAINER_DIMENSIONS = [
@@ -157,14 +161,33 @@ module ScData
 
         return if source.blank?
 
-        target = "#{export_path}/icons/#{icon_path.sub(/\.\w+\z/, File.extname(source).downcase)}"
+        extension = File.extname(source).downcase
+        vector = extension == ".svg"
+        target = "#{export_path}/icons/#{icon_path.sub(/\.\w+\z/, vector ? ".png" : extension)}"
 
         clear_once(File.dirname(target))
 
         FileUtils.mkdir_p(File.dirname(target))
-        FileUtils.cp(source, target)
+
+        if vector
+          rasterize(source, target)
+        else
+          FileUtils.cp(source, target)
+        end
 
         target
+      end
+
+      # ActiveStorage will neither serve an SVG inline nor variant one: it is in
+      # content_types_to_serve_as_binary, so a browser is handed an attachment it
+      # cannot draw. Rasterizing here rather than relaxing that keeps the
+      # decision out of the request path -- this reads the game export, not
+      # anything a user uploaded -- and gives the record a blob that has real
+      # representations like every other picture in the app.
+      private def rasterize(source, target)
+        return if system("rsvg-convert", "--width", RASTER_WIDTH.to_s, "--keep-aspect-ratio", source, "--output", target)
+
+        raise "rsvg-convert failed for #{source} -- install librsvg to parse vector artwork"
       end
 
       # Matched without the extension and without case: the records were
