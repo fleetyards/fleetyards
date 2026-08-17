@@ -12720,6 +12720,7 @@ components:
       - fleet_starmap
       - fleet_worldmap
       - hangar_inventories
+      - mission_builder
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -12735,6 +12736,7 @@ components:
       - FLEET_STARMAP
       - FLEET_WORLDMAP
       - HANGAR_INVENTORIES
+      - MISSION_BUILDER
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID

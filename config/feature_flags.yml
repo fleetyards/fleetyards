@@ -41,6 +41,9 @@ ship_inventories:
   description: "Ship inventories — the cargo aboard a vehicle"
   self_service: true
 
+mission_builder:
+  description: "Mission builder — fleet missions, events, the calendar and Discord sync"
+
 oauth-applications:
   description: "User-owned OAuth applications in settings"
   permanent: true

@@ -165,7 +165,7 @@ onMounted(() => {
         <NavItem
           v-if="
             (hasEventsAccess || hasMissionsAccess) &&
-            isFeatureEnabled('mission_builder')
+            isFeatureEnabled(FeatureFlagName.MISSION_BUILDER)
           "
           :to="{
             name: 'fleet-events',

@@ -5,7 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type Fleet, type FleetMember } from "@/services/fyApi";
+import {
+  type Fleet,
+  type FleetMember,
+  FeatureFlagName,
+} from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
@@ -24,7 +28,7 @@ const resourceAccess = computed(
 
 <template>
   <router-view
-    v-if="isFeatureEnabled('mission_builder')"
+    v-if="isFeatureEnabled(FeatureFlagName.MISSION_BUILDER)"
     :fleet="props.fleet"
     :membership="props.membership"
     :resource-access="resourceAccess"
