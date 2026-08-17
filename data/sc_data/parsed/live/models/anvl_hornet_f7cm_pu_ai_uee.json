@@ -14,6 +14,7 @@
     "base_expediting_fee": "4789"
   },
   "mass": 72032.0,
+  "inventory_container_ref": "e70d213d-5abd-41fc-be4c-e4acd4d13dad",
   "weapon_pool_size": 4,
   "signature_cross_section": {
     "x": 7249.0,
