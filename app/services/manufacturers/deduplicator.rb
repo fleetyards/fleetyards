@@ -25,12 +25,22 @@ module Manufacturers
       @result = Result.new([], [], [])
     end
 
+    # All or nothing. The three phases feed each other -- a correction takes a row
+    # out of a group before the merge looks at it -- so a failure partway through
+    # would leave some names corrected, some placeholders gone and some collisions
+    # still standing, which is a worse table to recover from than the one we
+    # started with. Nothing here is undoable once committed.
+    #
+    # requires_new so it is a savepoint inside a surrounding transaction: #plan
+    # wraps it in one to roll the whole thing back, and the tests run in one.
     def call
       assert_every_association_covered!
 
-      apply_corrections
-      drop_records
-      merge_collisions
+      Manufacturer.transaction(requires_new: true) do
+        apply_corrections
+        drop_records
+        merge_collisions
+      end
 
       @result
     end

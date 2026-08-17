@@ -176,6 +176,35 @@ module Manufacturers
         ::Manufacturers::Deduplicator::ASSOCIATED_MODELS.map(&:table_name).sort
     end
 
+    # Nothing here is undoable once committed, and the phases feed each other, so
+    # a failure partway through would leave some names corrected, some
+    # placeholders gone and some collisions still standing -- a worse table to
+    # recover from than the one we started with.
+    test "#call undoes the earlier phases when a later one fails" do
+      renamed = create(:manufacturer, code: "MXOX", name: "Aegis Dynamics")
+      placeholder = create(:manufacturer, code: "TRAS", name: "Nothing points here")
+
+      deduplicator = FailingMerge.new(
+        corrections: {"MXOX" => "maxOx"},
+        dropped_codes: ["TRAS"]
+      )
+
+      assert_raises(FailingMerge::Boom) { deduplicator.call }
+
+      assert_equal "Aegis Dynamics", renamed.reload.name
+      assert_equal placeholder, Manufacturer.find_by(code: "TRAS")
+    end
+
+    # Overriding the last phase is the only way in: the merge is where a real
+    # failure would land, since it is the phase that destroys rows.
+    class FailingMerge < ::Manufacturers::Deduplicator
+      Boom = Class.new(StandardError)
+
+      private def merge_collisions
+        raise Boom
+      end
+    end
+
     # The report has to be reviewable on production before anything is
     # destroyed, so it must leave the table exactly as it found it.
     test "#plan reports the merge and rolls it back" do
