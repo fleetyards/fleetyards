@@ -6,7 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
 import {
@@ -180,20 +185,20 @@ const submitSignup = async () => {
   >
     <header class="event-slot-row__head">
       <div class="event-slot-row__title">
-        <strong>{{ slotData.title }}</strong>
+        <span class="event-slot-row__name">{{ slotData.title }}</span>
         <span v-if="slotData.positionType" class="event-slot-row__type">
           {{ slotData.positionType }}
         </span>
       </div>
       <div class="event-slot-row__action">
-        <span v-if="ownSignupHere" class="event-slot-row__here-badge">
-          <i class="fa-light fa-check" />
+        <!-- A chip, not a hand-rolled 999px pill: the state is carried by an
+             icon as well as a tint, and its name reaches the a11y tree. -->
+        <Chip v-if="ownSignupHere" :state="ChipStatesEnum.INCLUDED" bare>
           {{ t("labels.fleets.events.youAreHere") }}
-        </span>
+        </Chip>
         <Btn
           v-else-if="!expanded"
-          :size="BtnSizesEnum.SMALL"
-          inline
+          :size="BtnSizesEnum.XS"
           :disabled="!canSignup"
           :title="blockedReason"
           @click="startSignup"
@@ -204,12 +209,8 @@ const submitSignup = async () => {
       </div>
     </header>
 
-    <p
-      v-if="slotData.description"
-      class="event-slot-row__description text-muted"
-    >
-      <i class="fa-light fa-circle-info" />
-      <span>{{ slotData.description }}</span>
+    <p v-if="slotData.description" class="event-slot-row__description">
+      {{ slotData.description }}
     </p>
 
     <ul v-if="visibleSignups.length" class="event-slot-row__signups">
@@ -260,9 +261,8 @@ const submitSignup = async () => {
         </p>
         <div v-if="canReassign" class="event-slot-row__reassign">
           <Btn
-            :size="BtnSizesEnum.SMALL"
-            inline
-            variant="link"
+            :size="BtnSizesEnum.XS"
+            :variant="BtnVariantsEnum.BARE"
             @click="openReassign(signup)"
           >
             <i class="fa-light fa-arrow-right-arrow-left" />
@@ -284,21 +284,11 @@ const submitSignup = async () => {
         :label="`${t('labels.fleets.events.notes')} (${t('labels.optional')})`"
       />
       <div class="event-slot-row__form-actions">
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          inline
-          :loading="signupMutation.isPending.value"
-          @click="submitSignup"
-        >
+        <Btn :loading="signupMutation.isPending.value" @click="submitSignup">
           <i class="fa-light fa-check" />
           {{ t("actions.fleets.events.signup") }}
         </Btn>
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          inline
-          variant="link"
-          @click="cancelSignup"
-        >
+        <Btn :variant="BtnVariantsEnum.BARE" @click="cancelSignup">
           {{ t("actions.cancel") }}
         </Btn>
       </div>
@@ -307,126 +297,164 @@ const submitSignup = async () => {
 </template>
 
 <style lang="scss" scoped>
+/*
+ * A list row, not a card. Six slots on a ship used to stack six bordered boxes
+ * inside a bordered card inside a panel; one hairline per row is what the rest
+ * of the app uses for a repeated record, and it is the "one box" principle both
+ * the panel and button redesigns are built on.
+ */
 .event-slot-row {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
-  padding: 0.55rem 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: border-color 0.15s;
+  position: relative;
+  padding: 9px 0 9px 12px;
+  border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+  transition: background-color 150ms ease;
 }
-.event-slot-row--mine {
-  border-color: var(--accent, #4aa);
-  box-shadow: inset 0 0 0 1px var(--accent, #4aa);
+
+.event-slot-row:last-child {
+  border-bottom: 0;
 }
+
+/*
+ * "This one is yours" borrows metrics-card__tile--primary's rail rather than
+ * recolouring a border, which is the pattern the redesign retired. It reads at
+ * row scale and it is already in the codebase.
+ */
+.event-slot-row--mine::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    var(--color-primary, #428bca),
+    rgb(66 139 202 / 0.15)
+  );
+}
+
 .event-slot-row--expanded {
-  border-color: rgba(255, 255, 255, 0.18);
+  background-color: rgb(0 0 0 / 0.2);
 }
+
 .event-slot-row__head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.6rem;
+  gap: 12px;
   flex-wrap: wrap;
 }
+
 .event-slot-row__title {
   display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+  align-items: baseline;
+  gap: 10px;
   min-width: 0;
   flex: 1;
 }
-.event-slot-row__type {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-}
-.event-slot-row__here-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.78rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 999px;
-  background: rgba(74, 170, 170, 0.18);
-  color: var(--accent, #4aa);
-  white-space: nowrap;
-}
-.event-slot-row__description {
-  display: flex;
-  gap: 0.4rem;
-  font-size: 0.82rem;
-  margin: 0.35rem 0 0;
-  white-space: pre-wrap;
 
-  i {
-    margin-top: 0.2rem;
-  }
+.event-slot-row__name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--color-lifted, #eee);
 }
+
+.event-slot-row__type {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gray-light, #7a8288);
+}
+
+.event-slot-row__action {
+  flex: none;
+}
+
+.event-slot-row__description {
+  margin: 6px 0 0;
+  font-size: 13px;
+  white-space: pre-wrap;
+  color: var(--color-muted, #7a8288);
+}
+
 .event-slot-row__signups {
   list-style: none;
   padding: 0;
-  margin: 0.4rem 0 0;
+  margin: 8px 0 0;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 6px;
 }
-.event-slot-row__signup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
+
 .event-slot-row__signup-line {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
+  gap: 7px;
+  font-size: 13.5px;
   flex-wrap: wrap;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
+
 .event-slot-row__signup-name {
   min-width: 0;
   overflow-wrap: anywhere;
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--color-lifted, #eee);
 }
-.event-slot-row__signup-status {
-  font-size: 0.72rem;
-}
+
+.event-slot-row__signup-status,
 .event-slot-row__signup-vehicle {
-  font-size: 0.78rem;
+  font-size: 13px;
+  color: var(--color-muted, #7a8288);
 }
+
 .event-slot-row__signup-notes {
   display: flex;
-  gap: 0.4rem;
-  margin: 0;
-  padding-left: 1.4rem;
-  font-size: 0.8rem;
+  gap: 7px;
+  margin: 2px 0 0;
+  padding-left: 20px;
+  font-size: 13px;
   white-space: pre-wrap;
+  color: var(--color-muted, #7a8288);
 
   i {
-    margin-top: 0.2rem;
-    color: var(--text-muted);
+    margin-top: 3px;
   }
 }
-.event-slot-row__form {
-  margin-top: 0.6rem;
-  padding-top: 0.6rem;
-  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+
+.event-slot-row__signup-fit {
+  color: var(--color-success, #5cb85c);
 }
+
+.event-slot-row__signup-warn {
+  color: var(--color-warning, #fa6800);
+}
+
+.event-slot-row__reassign {
+  margin-top: 4px;
+}
+
+/* Solid, not dashed - a dashed rule appears nowhere else in the app. */
+.event-slot-row__form {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+}
+
 .event-slot-row__form-actions {
   display: flex;
-  gap: 0.4rem;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
 }
-.event-slot-row__signup-warn {
-  color: var(--warning, #ff9800);
-}
-.event-slot-row__signup-fit {
-  color: var(--success, #4caf50);
-}
-.event-slot-row__reassign {
-  margin-top: 0.25rem;
+
+@media (prefers-reduced-motion: reduce) {
+  .event-slot-row {
+    transition-duration: 1ms;
+  }
 }
 </style>

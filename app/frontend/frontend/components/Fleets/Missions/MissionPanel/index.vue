@@ -8,10 +8,9 @@ export default {
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import {
-  PanelShadowsEnum,
-  PanelBgRoundedEnum,
-} from "@/shared/components/base/Panel/types";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { type Fleet, type Mission } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -34,12 +33,14 @@ const cover = computed(() => resolve(props.mission));
 
 <template>
   <Panel
-    :shadow="PanelShadowsEnum.TOP"
     :bg-image="cover"
-    :bg-rounded="PanelBgRoundedEnum.TOP"
+    :bg-rounded="PanelRoundedEnum.TOP"
     class="mission-panel"
   >
-    <PanelHeading :level="HeadingLevelEnum.H2">
+    <PanelHeading
+      :level="HeadingLevelEnum.H2"
+      :shadow="PanelHeadingShadowEnum.TOP"
+    >
       <template #default>
         <router-link
           :to="{
@@ -50,67 +51,55 @@ const cover = computed(() => resolve(props.mission));
           {{ mission.title }}
         </router-link>
       </template>
-      <template v-if="mission.archived" #subtitle>
-        <span class="text-muted">
-          {{ t("labels.fleets.missions.archived") }}
-        </span>
+      <template v-if="mission.archived" #actions>
+        <Chip bare>{{ t("labels.fleets.missions.archived") }}</Chip>
       </template>
     </PanelHeading>
-    <PanelBody>
-      <p v-if="mission.description" class="mission-desc text-muted">
-        {{ mission.description }}
-      </p>
-      <ul class="mission-stats">
-        <li>
-          <strong>{{ mission.teamCount }}</strong>
-          {{ t("labels.fleets.missions.teams") }}
-        </li>
-        <li>
-          <strong>{{ mission.shipCount }}</strong>
-          {{ t("labels.fleets.missions.ships") }}
-        </li>
-      </ul>
-    </PanelBody>
+
+    <template #footer>
+      <PanelBody>
+        <p v-if="mission.description" class="mission-panel__lede">
+          {{ mission.description }}
+        </p>
+        <!-- Two peer figures, which is what the hero rail is for. -->
+        <div class="metrics-card__hero">
+          <div class="metrics-card__tile">
+            <div class="metrics-card__tile__label">
+              {{ t("labels.fleets.missions.teams") }}
+            </div>
+            <div class="metrics-card__tile__value">
+              {{ mission.teamCount }}
+            </div>
+          </div>
+          <div class="metrics-card__tile">
+            <div class="metrics-card__tile__label">
+              {{ t("labels.fleets.missions.ships") }}
+            </div>
+            <div class="metrics-card__tile__value">
+              {{ mission.shipCount }}
+            </div>
+          </div>
+        </div>
+      </PanelBody>
+    </template>
   </Panel>
 </template>
 
 <style lang="scss" scoped>
-$missionImageHeight: 200px;
+@import "@/shared/components/metricsCard";
 
-.mission-panel :deep(.panel-bg) {
-  height: $missionImageHeight;
-  bottom: auto;
+/*
+ * Replaces four :deep() rules into Panel's internals, two of which had already
+ * stopped matching: the redesign collapsed .panel-inner into .panel__inner, so
+ * the card lost the padding that kept its body clear of the cover.
+ */
+.mission-panel {
+  --panel-image-height: 200px;
 }
-.mission-panel :deep(.panel-inner) {
-  padding-top: $missionImageHeight;
-  position: relative;
-}
-.mission-panel :deep(.panel-heading) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: auto;
-  z-index: 1;
-}
-.mission-panel :deep(.panel-body) {
-  position: relative;
-}
-.mission-desc {
-  margin: 0 0 0.5rem;
-  font-size: 0.9rem;
-}
-.mission-stats {
-  display: flex;
-  gap: 1rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--text-muted);
 
-  strong {
-    color: var(--text);
-  }
+.mission-panel__lede {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: var(--color-muted, #7a8288);
 }
 </style>

@@ -9,14 +9,11 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import {
-  PanelShadowsEnum,
-  PanelBgRoundedEnum,
-} from "@/shared/components/base/Panel/types";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
+import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import {
   type Fleet,
   type FleetEvent,
@@ -43,6 +40,14 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(props.event));
+
+const { toneFor, labelKeyFor } = useEventStatus();
+const statusTone = computed(() =>
+  toneFor(props.event.status, props.event.past),
+);
+const statusLabel = computed(() =>
+  t(labelKeyFor(props.event.status, props.event.past)),
+);
 
 const recurringLabel = computed(() => {
   const interval = props.event.recurrenceInterval as string | undefined;
@@ -76,9 +81,9 @@ const unarchive = async () => {
 
 <template>
   <Panel
-    :shadow="PanelShadowsEnum.TOP"
     :bg-image="cover"
-    :bg-rounded="PanelBgRoundedEnum.TOP"
+    :bg-rounded="PanelRoundedEnum.TOP"
+    :tone="statusTone"
     class="event-panel"
   >
     <PanelHeading
@@ -95,113 +100,93 @@ const unarchive = async () => {
           {{ event.title }}
         </router-link>
       </template>
+      <!-- The cap already carries the lifecycle; this names it, for anyone who
+           cannot read a colour and for the states that share a tone. -->
+      <template #actions>
+        <Chip bare>{{ statusLabel }}</Chip>
+      </template>
     </PanelHeading>
-    <EventStatusBadge
-      :status="event.status"
-      :past="event.past"
-      variant="corner"
-    />
-    <PanelBody>
-      <p v-if="event.description" class="event-desc text-muted">
-        {{ event.description }}
-      </p>
-      <ul class="event-stats">
-        <li>
-          <i class="fa-light fa-calendar" />
-          <span>{{ startDate }}</span>
-        </li>
-        <li v-if="event.recurring">
-          <i class="fa-light fa-arrows-rotate" />
-          <span>{{ recurringLabel }}</span>
-        </li>
-        <li v-if="event.location">
-          <i class="fa-light fa-location-dot" />
-          <span>{{ event.location }}</span>
-        </li>
-        <li v-if="event.meetupLocation">
-          <i class="fa-light fa-flag" />
-          <span>{{ event.meetupLocation }}</span>
-        </li>
-        <li>
-          <i class="fa-light fa-users" />
-          <span>{{
-            t("labels.fleets.events.signupsCount", {
-              count: event.signupsCount,
-            })
-          }}</span>
-        </li>
-      </ul>
-      <div v-if="canManage && event.archived" class="event-panel__actions">
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          inline
-          :loading="unarchiveMutation.isPending.value"
-          @click="unarchive"
-        >
-          <i class="fa-light fa-box-open" />
-          {{ t("actions.fleets.events.unarchive") }}
-        </Btn>
-      </div>
-    </PanelBody>
+
+    <!--
+      Footer, not the default slot: Panel parents the background image to
+      .panel__inner so it covers the default slot and stops there. Anything that
+      belongs *below* the cover rather than on it goes here.
+    -->
+    <template #footer>
+      <PanelBody>
+        <p v-if="event.description" class="event-panel__lede">
+          {{ event.description }}
+        </p>
+        <div class="metrics-card__rows">
+          <div class="metrics-card__row">
+            <div class="metrics-card__row__label">
+              {{ t("labels.fleets.events.startsAt") }}
+            </div>
+            <div class="metrics-card__row__value">{{ startDate }}</div>
+          </div>
+          <div v-if="event.recurring" class="metrics-card__row">
+            <div class="metrics-card__row__label">
+              {{ t("labels.fleets.events.repeats") }}
+            </div>
+            <div class="metrics-card__row__value">{{ recurringLabel }}</div>
+          </div>
+          <div v-if="event.location" class="metrics-card__row">
+            <div class="metrics-card__row__label">
+              {{ t("labels.fleets.events.location") }}
+            </div>
+            <div class="metrics-card__row__value">{{ event.location }}</div>
+          </div>
+          <div v-if="event.meetupLocation" class="metrics-card__row">
+            <div class="metrics-card__row__label">
+              {{ t("labels.fleets.events.meetupLocation") }}
+            </div>
+            <div class="metrics-card__row__value">
+              {{ event.meetupLocation }}
+            </div>
+          </div>
+          <div class="metrics-card__row">
+            <div class="metrics-card__row__label">
+              {{ t("labels.fleets.events.signups") }}
+            </div>
+            <div class="metrics-card__row__value">
+              {{ event.signupsCount }}
+            </div>
+          </div>
+        </div>
+        <div v-if="canManage && event.archived" class="event-panel__actions">
+          <Btn :loading="unarchiveMutation.isPending.value" @click="unarchive">
+            <i class="fa-light fa-box-open" />
+            {{ t("actions.fleets.events.unarchive") }}
+          </Btn>
+        </div>
+      </PanelBody>
+    </template>
   </Panel>
 </template>
 
 <style lang="scss" scoped>
-$eventImageHeight: 200px;
+@import "@/shared/components/metricsCard";
 
-.event-panel :deep(.panel-bg) {
-  height: $eventImageHeight;
-  bottom: auto;
+/*
+ * The cover height, and the whole of what used to be five :deep() rules into
+ * Panel's internals. Panel exposes this so a consumer never has to reach in;
+ * two of the selectors it replaces no longer matched anything anyway, since the
+ * redesign collapsed .panel-inner into .panel__inner.
+ */
+.event-panel {
+  --panel-image-height: 200px;
 }
-.event-panel :deep(.panel-inner) {
-  padding-top: $eventImageHeight;
-  position: relative;
-  min-height: 0;
-}
-.event-panel :deep(.panel-heading) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: $eventImageHeight;
-  z-index: 1;
-  pointer-events: none;
-}
-.event-panel :deep(.panel-heading__title) {
-  pointer-events: auto;
-}
-.event-panel :deep(.panel-body) {
-  position: relative;
-}
-.event-desc {
-  margin: 0 0 0.5rem;
-  font-size: 0.9rem;
-}
-.event-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.85rem;
-  color: var(--text-muted);
 
-  li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  i {
-    width: 1rem;
-    text-align: center;
-  }
+.event-panel__lede {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--color-muted, #7a8288);
 }
+
 .event-panel__actions {
-  margin-top: 0.6rem;
   display: flex;
-  gap: 0.4rem;
   flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
 }
 </style>

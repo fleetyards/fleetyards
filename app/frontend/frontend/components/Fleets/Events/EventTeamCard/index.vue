@@ -6,6 +6,14 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import EventSlotList from "@/frontend/components/Fleets/Events/EventSlotList/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipCard from "@/frontend/components/Fleets/Events/EventShipCard/index.vue";
@@ -160,207 +168,176 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="event-team-box">
-    <button
-      v-if="editable"
-      type="button"
-      class="event-team-close"
-      :title="t('actions.delete')"
-      @click="removeTeam"
-    >
-      <i class="fa-light fa-xmark" />
-    </button>
-
-    <div class="event-team-header">
-      <span v-if="editable" class="event-team-drag-handle" title="Drag">
-        ⋮⋮
-      </span>
-      <h3 class="event-team-title">{{ team.title }}</h3>
-      <button
-        v-if="editable"
-        type="button"
-        class="event-team-edit"
-        :title="t('actions.edit')"
-        @click="openEditTeamModal"
-      >
-        <i class="fa-light fa-pen" />
-      </button>
-    </div>
-
-    <p v-if="team.description" class="event-team-desc">
-      {{ team.description }}
-    </p>
-
-    <div class="event-team-section">
-      <h4 class="event-team-section-label">
-        {{ t("headlines.fleets.missions.slots") }}
-      </h4>
-      <EventSlotList
-        v-if="editable"
-        slottable-type="FleetEventTeam"
-        :slottable-id="team.id"
-        :slots="team.slots"
-        editable
-      />
-      <div v-else class="event-team-team-slots">
-        <EventSlotRow
-          v-for="slot in team.slots as FleetEventSlot[]"
-          :key="slot.id"
-          :slot-data="slot"
-          :fleet="fleet"
-          :event="event"
-          :current-user-id="currentUserId"
-          :signups-locked="signupsLocked"
-          :signups-open="signupsOpen"
-          :own-active-slot-id="ownActiveSlotId"
-          :is-manager="isManager"
-        />
-      </div>
-    </div>
-
-    <div class="event-team-section">
-      <div class="event-team-section-header">
-        <h4 class="event-team-section-label">
-          {{ t("headlines.fleets.missions.ships") }}
-        </h4>
+  <Panel class="event-team-box">
+    <!--
+      The three controls here were bare <button> elements with their own hover
+      rules, one of which reached for a --danger that was never declared. They
+      are Btn now, at chip scale, so a card's actions match every other action
+      in the app - and each has a translated accessible name in place of the
+      untranslated title="Drag".
+    -->
+    <PanelHeading :level="HeadingLevelEnum.H3">
+      <template #default>
+        <span class="event-team-title-row">
+          <span
+            v-if="editable"
+            v-tooltip="t('actions.reorder')"
+            class="event-team-drag-handle"
+            :aria-label="t('actions.reorder')"
+          >
+            <i class="fa-light fa-grip-vertical" />
+          </span>
+          {{ team.title }}
+        </span>
+      </template>
+      <template v-if="editable" #actions>
         <Btn
-          v-if="editable"
-          :inline="true"
-          size="small"
-          @click="openAddShipModal"
+          :size="BtnSizesEnum.XS"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.edit')"
+          v-tooltip="t('actions.edit')"
+          @click="openEditTeamModal"
         >
-          <i class="fa-light fa-plus" />
-          <span>{{ t("actions.fleets.missions.addShip") }}</span>
+          <i class="fa-light fa-pen" />
         </Btn>
-      </div>
-      <div ref="shipsContainer" class="event-team-ships">
-        <EventShipCard
-          v-for="ship in ships"
-          :key="ship.id"
-          :data-ship-id="ship.id"
-          :ship="ship"
-          :fleet="fleet"
-          :event="event"
-          :team="team"
-          :editable="editable"
-          :current-user-id="currentUserId"
-          :signups-locked="signupsLocked"
-          :signups-open="signupsOpen"
-          :own-active-slot-id="ownActiveSlotId"
-          :is-manager="isManager"
-        />
-      </div>
-      <p v-if="!ships.length" class="text-muted event-team-no-ships">
-        {{ t("labels.fleets.missions.noShips") }}
+        <Btn
+          :size="BtnSizesEnum.XS"
+          :variant="BtnVariantsEnum.BARE"
+          tone="danger"
+          :aria-label="t('actions.delete')"
+          v-tooltip="t('actions.delete')"
+          @click="removeTeam"
+        >
+          <i class="fa-light fa-xmark" />
+        </Btn>
+      </template>
+    </PanelHeading>
+
+    <PanelBody>
+      <p v-if="team.description" class="event-team-desc">
+        {{ team.description }}
       </p>
-    </div>
-  </section>
+
+      <div class="event-team-section">
+        <p class="metrics-card__section-label">
+          {{ t("headlines.fleets.missions.slots") }}
+        </p>
+        <EventSlotList
+          v-if="editable"
+          slottable-type="FleetEventTeam"
+          :slottable-id="team.id"
+          :slots="team.slots"
+          editable
+        />
+        <div v-else>
+          <EventSlotRow
+            v-for="slot in team.slots as FleetEventSlot[]"
+            :key="slot.id"
+            :slot-data="slot"
+            :fleet="fleet"
+            :event="event"
+            :current-user-id="currentUserId"
+            :signups-locked="signupsLocked"
+            :signups-open="signupsOpen"
+            :own-active-slot-id="ownActiveSlotId"
+            :is-manager="isManager"
+          />
+        </div>
+      </div>
+
+      <div class="event-team-section">
+        <div class="event-team-section-header">
+          <p class="metrics-card__section-label">
+            {{ t("headlines.fleets.missions.ships") }}
+          </p>
+          <Btn
+            v-if="editable"
+            :size="BtnSizesEnum.XS"
+            @click="openAddShipModal"
+          >
+            <i class="fa-light fa-plus" />
+            <span>{{ t("actions.fleets.missions.addShip") }}</span>
+          </Btn>
+        </div>
+        <div ref="shipsContainer" class="event-team-ships">
+          <EventShipCard
+            v-for="ship in ships"
+            :key="ship.id"
+            :data-ship-id="ship.id"
+            :ship="ship"
+            :fleet="fleet"
+            :event="event"
+            :team="team"
+            :editable="editable"
+            :current-user-id="currentUserId"
+            :signups-locked="signupsLocked"
+            :signups-open="signupsOpen"
+            :own-active-slot-id="ownActiveSlotId"
+            :is-manager="isManager"
+          />
+        </div>
+        <p v-if="!ships.length" class="event-team-no-ships">
+          {{ t("labels.fleets.missions.noShips") }}
+        </p>
+      </div>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
-.event-team-box {
-  position: relative;
-  padding: 1.25rem;
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.45);
-  margin-bottom: 1.5rem;
-}
-.event-team-close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  font-size: 1rem;
-  line-height: 1;
-  border-radius: 4px;
-  transition:
-    color 0.15s,
-    background 0.15s;
+@import "@/shared/components/metricsCard";
 
-  &:hover {
-    color: var(--danger, #c66);
-    background: rgba(255, 255, 255, 0.06);
-  }
-}
-.event-team-header {
-  display: flex;
+/*
+ * The frame is Panel's now. What was here - a rgba(0,0,0,.45) fill at radius 6
+ * inside a 1px edge, plus three hand-styled bare buttons with their own hover
+ * transitions - is what D6 of the plan replaces wholesale.
+ */
+.event-team-title-row {
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding-right: 2.5rem;
+  gap: 10px;
 }
+
 .event-team-drag-handle {
   cursor: grab;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  letter-spacing: -0.15em;
+  color: var(--color-muted, #7a8288);
+  font-size: 13px;
   user-select: none;
 }
-.event-team-title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-.event-team-edit {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0.25rem 0.4rem;
-  border-radius: 3px;
-  font-size: 0.85rem;
-  transition:
-    color 0.15s,
-    background 0.15s;
 
-  &:hover {
-    color: var(--text);
-    background: rgba(255, 255, 255, 0.06);
-  }
-}
 .event-team-desc {
-  color: var(--text-muted);
-  margin: 0.5rem 0 0;
+  margin: 0 0 18px;
+  color: var(--color-muted, #7a8288);
 }
-.event-team-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+
+.event-team-section + .event-team-section {
+  margin-top: 22px;
 }
-.event-team-section-label {
-  margin: 0;
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-}
+
 .event-team-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 10px;
+
+  /* The label carries its own bottom margin for the stacked case; beside a
+     button it would push the row out of alignment. */
+  .metrics-card__section-label {
+    margin-bottom: 0;
+  }
 }
+
 .event-team-ships {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 14px;
   align-items: flex-start;
+  margin-top: 12px;
 }
-.event-team-team-slots {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
+
 .event-team-no-ships {
-  font-style: italic;
-  font-size: 0.9rem;
-  margin: 0;
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--color-muted, #7a8288);
 }
 </style>

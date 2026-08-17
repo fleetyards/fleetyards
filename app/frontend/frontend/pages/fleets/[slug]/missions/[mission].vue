@@ -8,8 +8,10 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
-import { PanelBgOverlayDirectionEnum } from "@/shared/components/base/Panel/types";
 import TeamCard from "@/frontend/components/Fleets/Missions/TeamCard/index.vue";
 import MissionAdminActions from "@/frontend/components/Fleets/Missions/MissionAdminActions/index.vue";
 import {
@@ -109,17 +111,15 @@ const coverImage = computed(() => resolveCover(mission.value));
   <Loader :loading="isLoading" />
 
   <div v-if="mission" class="mission-detail">
-    <Panel
-      :bg-image="coverImage"
-      bg-overlay
-      :bg-overlay-direction="PanelBgOverlayDirectionEnum.RIGHT"
-    >
-      <template #hero>
-        <Heading size="hero" hero>{{ mission.title }}</Heading>
+    <Panel :bg-image="coverImage" class="mission-detail__hero">
+      <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
+        {{ mission.title }}
+      </PanelHeading>
+      <template v-if="mission.description" #footer>
+        <PanelBody>
+          <p class="mission-description">{{ mission.description }}</p>
+        </PanelBody>
       </template>
-      <div v-if="mission.description" class="mission-overview">
-        <p class="mission-description">{{ mission.description }}</p>
-      </div>
     </Panel>
 
     <section v-if="teams.length" class="mission-section">
@@ -160,8 +160,8 @@ const coverImage = computed(() => resolveCover(mission.value));
   flex-direction: column;
   gap: 1rem;
 }
-.mission-overview {
-  padding: 1rem 1.5rem 1.25rem;
+.mission-detail__hero {
+  --panel-image-height: 260px;
 }
 .mission-description {
   margin: 0;
@@ -187,7 +187,12 @@ const coverImage = computed(() => resolveCover(mission.value));
   display: flex;
   flex-direction: column;
 }
-.spawned-events__item :deep(.panel-wrapper--outer-spacing) {
+/*
+ * The grid owns the gap, so the panel's own 21px would double it. Targets
+ * .panel--outer-spacing: .panel-wrapper is gone, collapsed into the single box
+ * the redesign left, so this selector had stopped matching anything.
+ */
+.spawned-events__item :deep(.panel--outer-spacing) {
   margin-bottom: 0;
 }
 .mission-teams {

@@ -6,7 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
 import {
   type FleetEvent,
@@ -50,89 +55,69 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
 </script>
 
 <template>
-  <section class="event-signup-cta">
-    <header class="event-signup-cta__head">
-      <div class="event-signup-cta__title">
-        <i class="fa-light fa-bullhorn" />
-        <span>{{ t("headlines.fleets.events.signupTitle") }}</span>
-      </div>
-      <p class="event-signup-cta__hint text-muted">
+  <Panel :variant="PanelVariantsEnum.SLIM" class="event-signup-cta">
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
+      {{ t("headlines.fleets.events.signupTitle") }}
+    </PanelHeading>
+    <PanelBody>
+      <p class="event-signup-cta__hint">
         {{ t("labels.fleets.events.signupCtaHint") }}
       </p>
-    </header>
-    <VehiclePicker v-model="vehicleId" />
-    <div class="event-signup-cta__actions">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        inline
-        :disabled="signupsLocked"
-        :loading="submitting"
-        :title="
-          signupsLocked ? t('labels.fleets.events.signupsLockedHint') : ''
-        "
-        @click="signup(FleetEventSignupCreateInputStatus.confirmed)"
-      >
-        <i class="fa-light fa-check" />
-        {{ t("labels.fleets.events.signupStatuses.confirmed") }}
-      </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        inline
-        variant="link"
-        :disabled="signupsLocked"
-        :loading="submitting"
-        @click="signup(FleetEventSignupCreateInputStatus.tentative)"
-      >
-        <i class="fa-light fa-circle-question" />
-        {{ t("labels.fleets.events.signupStatuses.tentative") }}
-      </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        inline
-        variant="link"
-        :disabled="signupsLocked"
-        :loading="submitting"
-        @click="signup(FleetEventSignupCreateInputStatus.interested)"
-      >
-        <i class="fa-light fa-eye" />
-        {{ t("labels.fleets.events.signupStatuses.interested") }}
-      </Btn>
-    </div>
-  </section>
+      <VehiclePicker v-model="vehicleId" />
+      <!--
+        A plain group, not a segmented one. The three are peers, which is what
+        the group fixes - the old markup made confirmed a solid button and the
+        other two links - but they are actions that submit, not a mode switch:
+        nothing is chosen when this renders, so radio semantics would be
+        claiming a selection that does not exist.
+      -->
+      <BtnGroup class="event-signup-cta__actions">
+        <Btn
+          :disabled="signupsLocked"
+          :loading="submitting"
+          :title="
+            signupsLocked ? t('labels.fleets.events.signupsLockedHint') : ''
+          "
+          @click="signup(FleetEventSignupCreateInputStatus.confirmed)"
+        >
+          <i class="fa-light fa-check" />
+          {{ t("labels.fleets.events.signupStatuses.confirmed") }}
+        </Btn>
+        <Btn
+          :disabled="signupsLocked"
+          :loading="submitting"
+          @click="signup(FleetEventSignupCreateInputStatus.tentative)"
+        >
+          <i class="fa-light fa-circle-question" />
+          {{ t("labels.fleets.events.signupStatuses.tentative") }}
+        </Btn>
+        <Btn
+          :disabled="signupsLocked"
+          :loading="submitting"
+          @click="signup(FleetEventSignupCreateInputStatus.interested)"
+        >
+          <i class="fa-light fa-eye" />
+          {{ t("labels.fleets.events.signupStatuses.interested") }}
+        </Btn>
+      </BtnGroup>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
-.event-signup-cta {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  padding: 0.85rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-.event-signup-cta__head {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-.event-signup-cta__title {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-
-  i {
-    color: var(--accent, #4aa);
-  }
-}
+/*
+ * The frame is Panel's now. What was here - a hand-mixed rgba(255,255,255,.03)
+ * fill inside a .08 edge at radius 6 - is the slim panel, and the heading with
+ * its gold status dot replaces the bullhorn icon that was the only thing
+ * carrying the app's invented second accent on this surface.
+ */
 .event-signup-cta__hint {
-  margin: 0;
-  font-size: 0.85rem;
+  margin: 4px 0 14px;
+  font-size: 14px;
+  color: var(--color-muted, #7a8288);
 }
+
 .event-signup-cta__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+  margin-top: 14px;
 }
 </style>

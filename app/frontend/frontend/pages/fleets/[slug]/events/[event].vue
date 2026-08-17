@@ -7,9 +7,13 @@ export default {
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
-import { PanelBgOverlayDirectionEnum } from "@/shared/components/base/Panel/types";
-import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipMeta from "@/frontend/components/Fleets/Events/EventShipMeta/index.vue";
 import EventShipMatchWarning from "@/frontend/components/Fleets/Events/EventShipMatchWarning/index.vue";
@@ -75,6 +79,14 @@ const stepperList = computed<string[]>(() =>
 
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(event.value));
+
+const { toneFor, labelKeyFor } = useEventStatus();
+const statusTone = computed(() =>
+  event.value ? toneFor(event.value.status, event.value.past) : undefined,
+);
+const statusLabel = computed(() =>
+  event.value ? t(labelKeyFor(event.value.status, event.value.past)) : "",
+);
 
 const canManage = computed(() =>
   checkAccess(props.resourceAccess, [
@@ -400,86 +412,115 @@ const crumbs = computed(() => [
   </BreadCrumbs>
 
   <div v-if="event" class="event-detail">
-    <Panel
-      :bg-image="cover"
-      bg-overlay
-      :bg-overlay-direction="PanelBgOverlayDirectionEnum.RIGHT"
-    >
-      <template #hero>
-        <Heading size="hero" hero>
+    <Panel :bg-image="cover" :tone="statusTone" class="event-detail__hero">
+      <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
+        <template #default>
           {{ event.title }}
-          <EventStatusBadge :status="event.status" :past="event.past" />
-        </Heading>
-        <div class="event-hero__meta">
-          <p>
-            <i class="fa-light fa-calendar" />
-            {{ startDate }}
-            <span v-if="endDate"> — {{ endDate }}</span>
-            <span v-if="event.timezone" class="event-hero__tz">
-              ({{ event.timezone }})
-            </span>
-          </p>
-          <p v-if="recurringChip">
-            <i class="fa-light fa-arrows-rotate" />
-            {{ recurringChip }}
-            <router-link
-              v-if="occurrenceParam"
-              :to="{
-                name: 'fleet-event',
-                params: { slug: fleet.slug, event: eventSlug },
-              }"
-              class="event-hero__series-link"
-            >
-              {{ t("labels.fleets.events.viewSeries") }}
-            </router-link>
-          </p>
-          <p v-if="event.location">
-            <i class="fa-light fa-location-dot" />
-            {{ event.location }}
-          </p>
-          <p v-if="event.meetupLocation">
-            <i class="fa-light fa-flag" />
-            {{ event.meetupLocation }}
-          </p>
-          <p v-if="event.category">
-            <i class="fa-light fa-tag" />
-            {{ t(`labels.fleets.missions.categories.${event.category}`) }}
-            <span v-if="event.scenario"> · {{ event.scenario }}</span>
-          </p>
-          <p v-if="event.visibility">
-            <i class="fa-light fa-eye" />
-            {{ t(`labels.fleets.events.visibilities.${event.visibility}`) }}
-          </p>
-          <p v-if="event.maxAttendees">
-            <i class="fa-light fa-users" />
-            {{
-              t("labels.fleets.events.maxAttendeesValue", {
-                count: event.maxAttendees,
-              })
-            }}
-          </p>
-          <p>
-            <a
-              v-if="icsDownloadUrl"
-              :href="icsDownloadUrl"
-              class="event-hero__ics"
-              download
-            >
+        </template>
+        <template #actions>
+          <Chip bare>{{ statusLabel }}</Chip>
+        </template>
+      </PanelHeading>
+
+      <!--
+        Below the cover, not on it. The scrim PanelHeading draws covers a
+        heading; it was never going to carry eight lines of metadata, which is
+        what the removed bg-overlay was really doing.
+      -->
+      <template #footer>
+        <PanelBody>
+          <div class="metrics-card__rows metrics-card__rows--split">
+            <div class="metrics-card__row">
+              <div class="metrics-card__row__label">
+                {{ t("labels.fleets.events.startsAt") }}
+              </div>
+              <div class="metrics-card__row__value">
+                {{ startDate }}
+                <template v-if="endDate"> — {{ endDate }}</template>
+                <span v-if="event.timezone" class="event-hero__tz">
+                  ({{ event.timezone }})
+                </span>
+              </div>
+            </div>
+            <div v-if="recurringChip" class="metrics-card__row">
+              <div class="metrics-card__row__label">
+                {{ t("labels.fleets.events.repeats") }}
+              </div>
+              <div class="metrics-card__row__value">
+                {{ recurringChip }}
+                <router-link
+                  v-if="occurrenceParam"
+                  :to="{
+                    name: 'fleet-event',
+                    params: { slug: fleet.slug, event: eventSlug },
+                  }"
+                  class="event-hero__series-link"
+                >
+                  {{ t("labels.fleets.events.viewSeries") }}
+                </router-link>
+              </div>
+            </div>
+            <div v-if="event.location" class="metrics-card__row">
+              <div class="metrics-card__row__label">
+                {{ t("labels.fleets.events.location") }}
+              </div>
+              <div class="metrics-card__row__value">{{ event.location }}</div>
+            </div>
+            <div v-if="event.meetupLocation" class="metrics-card__row">
+              <div class="metrics-card__row__label">
+                {{ t("labels.fleets.events.meetupLocation") }}
+              </div>
+              <div class="metrics-card__row__value">
+                {{ event.meetupLocation }}
+              </div>
+            </div>
+            <div v-if="event.category" class="metrics-card__row">
+              <div class="metrics-card__row__label">
+                {{ t("labels.fleets.missions.category") }}
+              </div>
+              <div class="metrics-card__row__value">
+                {{ t(`labels.fleets.missions.categories.${event.category}`) }}
+                <template v-if="event.scenario">
+                  · {{ event.scenario }}
+                </template>
+              </div>
+            </div>
+            <div v-if="event.visibility" class="metrics-card__row">
+              <div class="metrics-card__row__label">
+                {{ t("labels.fleets.events.visibility") }}
+              </div>
+              <div class="metrics-card__row__value">
+                {{ t(`labels.fleets.events.visibilities.${event.visibility}`) }}
+              </div>
+            </div>
+            <div v-if="event.maxAttendees" class="metrics-card__row">
+              <div class="metrics-card__row__label">
+                {{ t("labels.fleets.events.maxAttendees") }}
+              </div>
+              <div class="metrics-card__row__value">
+                {{ event.maxAttendees }}
+              </div>
+            </div>
+          </div>
+
+          <div v-if="icsDownloadUrl" class="event-hero__actions">
+            <Btn :href="icsDownloadUrl" variant="bare">
               <i class="fa-light fa-calendar-arrow-down" />
               {{ t("actions.fleets.events.addToCalendar") }}
-            </a>
-          </p>
-        </div>
+            </Btn>
+          </div>
+
+          <div v-if="hasOverviewContent" class="event-overview">
+            <p v-if="event.description" class="event-description">
+              {{ event.description }}
+            </p>
+            <details v-if="event.briefing" class="event-briefing">
+              <summary>{{ t("labels.fleets.events.briefing") }}</summary>
+              <p>{{ event.briefing }}</p>
+            </details>
+          </div>
+        </PanelBody>
       </template>
-      <div v-if="hasOverviewContent" class="event-overview">
-        <p v-if="event.description" class="event-description">
-          {{ event.description }}
-        </p>
-        <details v-if="event.briefing" class="event-briefing">
-          <summary>{{ t("labels.fleets.events.briefing") }}</summary>
-          <p>{{ event.briefing }}</p>
-        </details>
-      </div>
     </Panel>
 
     <YourSignupPanel
@@ -628,53 +669,44 @@ const crumbs = computed(() => [
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/metricsCard";
+
 .event-detail {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
+.event-detail__hero {
+  --panel-image-height: 260px;
+}
 .event-hero__tz {
   font-size: 0.85em;
   opacity: 0.75;
 }
-.event-hero__ics {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-
-  &:hover {
-    opacity: 0.85;
-  }
+.event-hero__series-link {
+  margin-left: 8px;
 }
-.event-hero__meta {
+.event-hero__actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  margin-top: 0.5rem;
-
-  p {
-    margin: 0;
-  }
-
-  i {
-    margin-right: 0.35rem;
-    opacity: 0.9;
-  }
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
 }
 .event-overview {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem 1.25rem;
+  gap: 12px;
+  margin-top: 18px;
 }
 .event-description {
   margin: 0;
   white-space: pre-wrap;
 }
 .event-briefing {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
+  background: rgb(0 0 0 / 0.2);
+  border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+  border-radius: var(--radius-control-bare, 6px);
+  padding: 10px 14px;
 
   summary {
     cursor: pointer;

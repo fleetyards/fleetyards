@@ -14,10 +14,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import {
-  PanelShadowsEnum,
-  PanelBgRoundedEnum,
-} from "@/shared/components/base/Panel/types";
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import SlotList from "@/frontend/components/Fleets/Missions/SlotList/index.vue";
 import {
@@ -81,8 +78,7 @@ const removeShip = async () => {
 
 const shipImage = computed<string | undefined>(() => {
   const img = props.ship.model?.image as
-    | { mediumUrl?: string; smallUrl?: string }
-    | undefined;
+    { mediumUrl?: string; smallUrl?: string } | undefined;
   return img?.mediumUrl || img?.smallUrl;
 });
 
@@ -92,9 +88,7 @@ const effectiveMinCrew = computed<number | null>(() => {
   const override = props.ship.filters?.minCrew;
   if (override != null) return override;
   const model = props.ship.model as
-    | { minCrew?: number | null }
-    | null
-    | undefined;
+    { minCrew?: number | null } | null | undefined;
   return model?.minCrew ?? null;
 });
 
@@ -102,7 +96,10 @@ const minCrewIsOverride = computed(
   () => props.ship.filters?.minCrew != null && !!props.ship.model,
 );
 
-type StatItem = { icon: string; label?: string; value: string };
+// Every requirement carries its own label now that these render as rows rather
+// than as an icon strip: the label is what says which figure you are reading,
+// so classification, focus and cargo can no longer rely on a glyph for it.
+type StatItem = { label: string; value: string };
 
 const filterStrip = computed<StatItem[]>(() => {
   if (props.ship.model) return [];
@@ -110,30 +107,31 @@ const filterStrip = computed<StatItem[]>(() => {
   if (!f) return [];
   const items: StatItem[] = [];
   if (f.classification)
-    items.push({ icon: "fa-light fa-tag", value: f.classification });
-  if (f.focus) items.push({ icon: "fa-light fa-bullseye", value: f.focus });
+    items.push({
+      label: t("labels.fleets.missions.classification"),
+      value: f.classification,
+    });
+  if (f.focus)
+    items.push({ label: t("labels.fleets.missions.focus"), value: f.focus });
   if (f.minSize)
     items.push({
-      icon: "fa-light fa-down-left-and-up-right-to-center",
       label: t("labels.fleets.missions.minSize"),
       value: f.minSize,
     });
   if (f.maxSize)
     items.push({
-      icon: "fa-light fa-up-right-and-down-left-from-center",
       label: t("labels.fleets.missions.maxSize"),
       value: f.maxSize,
     });
   if (f.minCrew != null)
     items.push({
-      icon: "fa-light fa-user-group",
       label: t("labels.fleets.missions.minCrew"),
       value: String(f.minCrew),
     });
   if (f.minCargo != null)
     items.push({
-      icon: "fa-light fa-box",
-      value: `${f.minCargo} SCU`,
+      label: t("labels.fleets.missions.minCargo"),
+      value: String(f.minCargo),
     });
   return items;
 });
@@ -155,8 +153,7 @@ const subtitle = computed(() => {
     class="mission-ship-panel"
     :class="{ 'mission-ship-panel--placeholder': !hasShipImage }"
     :bg-image="hasShipImage ? shipImage : undefined"
-    :bg-rounded="PanelBgRoundedEnum.TOP"
-    :shadow="PanelShadowsEnum.TOP"
+    :bg-rounded="PanelRoundedEnum.TOP"
   >
     <template #default>
       <div v-if="!hasShipImage" class="ship-placeholder" aria-hidden="true">
@@ -177,15 +174,15 @@ const subtitle = computed(() => {
         </template>
         <template v-if="editable" #actions>
           <BtnDropdown
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.LINK"
+            :size="BtnSizesEnum.SM"
+            :variant="BtnVariantsEnum.BARE"
             class="ship-context-menu"
             expand-left
             expand-bottom
             inline
           >
             <Btn
-              :size="BtnSizesEnum.SMALL"
+              :size="BtnSizesEnum.SM"
               :inline="true"
               @click="openEditShipModal"
             >
@@ -193,9 +190,9 @@ const subtitle = computed(() => {
               <span>{{ t("actions.edit") }}</span>
             </Btn>
             <Btn
-              :size="BtnSizesEnum.SMALL"
+              :size="BtnSizesEnum.SM"
               :inline="true"
-              variant="danger"
+              tone="danger"
               @click="removeShip"
             >
               <i class="fa-light fa-trash" />
@@ -204,90 +201,77 @@ const subtitle = computed(() => {
           </BtnDropdown>
         </template>
       </PanelHeading>
-      <div
-        v-if="effectiveMinCrew != null || filterStrip.length"
-        class="mission-ship-stats"
-      >
-        <span v-if="effectiveMinCrew != null" class="mission-ship-stat">
-          <i class="fa-light fa-user-group" />
-          <span class="mission-ship-stat__label">
-            {{ t("labels.fleets.missions.minCrew") }}
-          </span>
-          <span class="mission-ship-stat__value">
-            {{ effectiveMinCrew }}
-          </span>
-          <span v-if="minCrewIsOverride" class="mission-ship-stat__badge">
-            {{ t("labels.fleets.missions.minCrewOverride") }}
-          </span>
-        </span>
-        <span
-          v-for="(item, idx) in filterStrip"
-          :key="idx"
-          class="mission-ship-stat"
-        >
-          <i :class="item.icon" />
-          <span v-if="item.label" class="mission-ship-stat__label">
-            {{ item.label }}
-          </span>
-          <span class="mission-ship-stat__value">{{ item.value }}</span>
-        </span>
-      </div>
-
-      <PanelBody v-if="ship.description" class="mission-ship-body">
-        <p class="ship-desc">{{ ship.description }}</p>
-      </PanelBody>
     </template>
 
+    <!-- Below the cover. The heading is the only thing that belongs on it. -->
     <template #footer>
-      <div class="mission-ship-slots">
-        <h5 class="mission-ship-slots-label">
-          {{ t("headlines.fleets.missions.slots") }}
-        </h5>
-        <SlotList
-          slottable-type="MissionShip"
-          :slottable-id="ship.id"
-          :slots="ship.slots"
-          :editable="editable"
-        />
-      </div>
+      <PanelBody>
+        <div
+          v-if="effectiveMinCrew != null || filterStrip.length"
+          class="metrics-card__rows"
+        >
+          <div v-if="effectiveMinCrew != null" class="metrics-card__row">
+            <div class="metrics-card__row__label">
+              {{ t("labels.fleets.missions.minCrew") }}
+            </div>
+            <div class="metrics-card__row__value">
+              {{ effectiveMinCrew }}
+              <span
+                v-if="minCrewIsOverride"
+                class="mission-ship-card__override"
+              >
+                {{ t("labels.fleets.missions.minCrewOverride") }}
+              </span>
+            </div>
+          </div>
+          <div
+            v-for="(item, idx) in filterStrip"
+            :key="idx"
+            class="metrics-card__row"
+          >
+            <div class="metrics-card__row__label">{{ item.label }}</div>
+            <div class="metrics-card__row__value">{{ item.value }}</div>
+          </div>
+        </div>
+
+        <p v-if="ship.description" class="mission-ship-card__desc">
+          {{ ship.description }}
+        </p>
+
+        <div class="mission-ship-card__slots">
+          <p class="metrics-card__section-label">
+            {{ t("headlines.fleets.missions.slots") }}
+          </p>
+          <SlotList
+            slottable-type="MissionShip"
+            :slottable-id="ship.id"
+            :slots="ship.slots"
+            :editable="editable"
+          />
+        </div>
+      </PanelBody>
     </template>
   </Panel>
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/metricsCard";
+
+/*
+ * The cover height, replacing four :deep() rules into Panel's internals - two of
+ * which stopped matching anything when the redesign collapsed .panel-inner into
+ * .panel__inner, so the card had already lost its content offset.
+ */
 .mission-ship-panel {
+  --panel-image-height: 160px;
   width: 380px;
   min-width: 350px;
   flex-shrink: 0;
 }
-$shipImageHeight: 160px;
 
-.mission-ship-panel :deep(.panel-bg) {
-  height: $shipImageHeight;
-  bottom: auto;
-}
-.mission-ship-panel :deep(.panel-inner) {
-  padding-top: $shipImageHeight;
-  position: relative;
-  min-height: $shipImageHeight;
-}
-.mission-ship-panel :deep(.panel-heading) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: auto;
-  z-index: 1;
-}
-.mission-ship-panel :deep(.panel-body) {
-  padding: 0;
-}
 .ship-placeholder {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 160px;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -296,15 +280,19 @@ $shipImageHeight: 160px;
     rgba(60, 70, 90, 0.4) 0%,
     rgba(20, 25, 35, 0.7) 100%
   );
-  border-top-left-radius: $panelInnerBorderRadius;
-  border-top-right-radius: $panelInnerBorderRadius;
+  /* The panel's radius less its border, which is what the frame actually rounds
+     to. $panelInnerBorderRadius is 20px and overhung it by 6. */
+  border-top-left-radius: var(--radius-surface-inner, 14px);
+  border-top-right-radius: var(--radius-surface-inner, 14px);
   pointer-events: none;
   z-index: 0;
 }
+
 .ship-placeholder-ship {
   font-size: 4.5rem;
   color: rgba(255, 255, 255, 0.18);
 }
+
 .ship-placeholder-question {
   position: absolute;
   font-size: 1.6rem;
@@ -317,78 +305,44 @@ $shipImageHeight: 160px;
   align-items: center;
   justify-content: center;
 }
+
 .ship-title-row {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
 }
+
 .ship-drag-handle {
   cursor: grab;
-  color: var(--text-muted);
-  font-size: 0.8rem;
+  color: var(--color-muted, #7a8288);
+  font-size: 13px;
   letter-spacing: -0.15em;
   user-select: none;
 }
-.ship-subtitle {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-.ship-desc {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin: 0;
-}
-.mission-ship-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 0.85rem;
-  padding: 0.45rem 0.85rem;
-  background: rgba(0, 0, 0, 0.5);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-.mission-ship-stat {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.8rem;
-  color: var(--text);
 
-  i {
-    color: var(--text-muted);
-  }
+.ship-subtitle {
+  font-size: 13px;
+  color: var(--color-muted, #7a8288);
 }
-.mission-ship-stat__label {
-  color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.mission-ship-stat__value {
+
+/* The qualifier beside a value, borrowing the metrics tile's unit treatment
+   rather than the 999px tinted pill it replaces. */
+.mission-ship-card__override {
+  font-family: "Open Sans", sans-serif;
   font-weight: 600;
-}
-.mission-ship-stat__badge {
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.05rem 0.35rem;
-  border-radius: 999px;
-  background: rgba(74, 170, 170, 0.2);
-  color: var(--accent, #4aa);
-}
-.mission-ship-slots {
-  padding: 0.75rem 0.85rem;
-  background: rgba(0, 0, 0, 0.55);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom-left-radius: $panelInnerBorderRadius;
-  border-bottom-right-radius: $panelInnerBorderRadius;
-}
-.mission-ship-slots-label {
-  margin: 0 0 0.4rem;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-size: 12px;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--color-gray-light, #7a8288);
+  margin-left: 6px;
+}
+
+.mission-ship-card__desc {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--color-muted, #7a8288);
+}
+
+.mission-ship-card__slots {
+  margin-top: 18px;
 }
 </style>
