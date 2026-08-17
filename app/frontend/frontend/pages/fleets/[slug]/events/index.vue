@@ -230,9 +230,8 @@ const crumbs = computed(() => [
     <Btn
       v-if="canManageMissions"
       :to="{ name: 'fleet-missions', params: { slug: props.fleet.slug } }"
-      size="small"
       inline
-      variant="link"
+      variant="bare"
     >
       <i class="fa-light fa-flag-checkered" />
       <span>{{ t("actions.fleets.missions.viewMissions") }}</span>
@@ -240,7 +239,6 @@ const crumbs = computed(() => [
     <Btn
       v-if="canCreate"
       :to="{ name: 'fleet-event-new', params: { slug: props.fleet.slug } }"
-      size="small"
       inline
     >
       <i class="fa-light fa-plus" />
@@ -250,21 +248,11 @@ const crumbs = computed(() => [
 
   <div class="events-toolbar">
     <BtnGroup inline>
-      <Btn
-        :active="view === 'list'"
-        size="small"
-        inline
-        @click="toggleListCalendar('list')"
-      >
+      <Btn :active="view === 'list'" inline @click="toggleListCalendar('list')">
         <i class="fa-light fa-list" />
         {{ t("labels.fleets.events.listTab") }}
       </Btn>
-      <Btn
-        :active="isCalendar"
-        size="small"
-        inline
-        @click="toggleListCalendar('calendar')"
-      >
+      <Btn :active="isCalendar" inline @click="toggleListCalendar('calendar')">
         <i class="fa-light fa-calendar" />
         {{ t("labels.fleets.events.calendarTab") }}
       </Btn>
@@ -272,9 +260,8 @@ const crumbs = computed(() => [
     <Btn
       v-if="canSubscribe"
       v-tooltip="t('labels.fleets.events.subscribeHint')"
-      size="small"
       inline
-      variant="link"
+      variant="bare"
       @click="subscribe"
     >
       <i class="fa-light fa-calendar-arrow-down" />
@@ -283,9 +270,8 @@ const crumbs = computed(() => [
     <Btn
       v-else-if="showCalendarSetupNudge"
       :to="{ name: 'fleet-settings-calendar', params: { slug: fleet.slug } }"
-      size="small"
       inline
-      variant="link"
+      variant="bare"
     >
       <i class="fa-light fa-calendar-plus" />
       {{ t("actions.fleets.events.setUpCalendar") }}
@@ -302,23 +288,13 @@ const crumbs = computed(() => [
   >
     <template #actions-left>
       <BtnGroup>
-        <Btn
-          :active="tab === 'upcoming'"
-          inline
-          size="small"
-          @click="tab = 'upcoming'"
-        >
+        <Btn :active="tab === 'upcoming'" inline @click="tab = 'upcoming'">
           {{ t("labels.fleets.events.upcomingTab") }}
         </Btn>
-        <Btn :active="tab === 'past'" size="small" inline @click="tab = 'past'">
+        <Btn :active="tab === 'past'" inline @click="tab = 'past'">
           {{ t("labels.fleets.events.pastTab") }}
         </Btn>
-        <Btn
-          :active="tab === 'archived'"
-          size="small"
-          inline
-          @click="tab = 'archived'"
-        >
+        <Btn :active="tab === 'archived'" inline @click="tab = 'archived'">
           {{ t("labels.fleets.events.archivedTab") }}
         </Btn>
       </BtnGroup>

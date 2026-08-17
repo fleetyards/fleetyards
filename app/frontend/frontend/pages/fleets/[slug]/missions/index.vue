@@ -98,7 +98,7 @@ const crumbs = computed(() => [
     hide-empty
   >
     <template v-if="canCreate" #actions-right>
-      <Btn size="small" @click="goToCreate">
+      <Btn @click="goToCreate">
         <i class="fa-light fa-plus" />
         <span>{{ t("actions.fleets.missions.create") }}</span>
       </Btn>
@@ -106,20 +106,10 @@ const crumbs = computed(() => [
 
     <template #actions-left>
       <BtnGroup>
-        <Btn
-          :active="!showArchived"
-          inline
-          size="small"
-          @click="showArchived = false"
-        >
+        <Btn :active="!showArchived" inline @click="showArchived = false">
           {{ t("labels.fleets.missions.activeTab") }}
         </Btn>
-        <Btn
-          :active="showArchived"
-          size="small"
-          inline
-          @click="showArchived = true"
-        >
+        <Btn :active="showArchived" inline @click="showArchived = true">
           {{ t("labels.fleets.missions.archivedTab") }}
         </Btn>
       </BtnGroup>

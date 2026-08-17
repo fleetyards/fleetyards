@@ -8,10 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import {
   useMyCalendarSubscription,
@@ -122,7 +119,7 @@ const crumbs = computed(() => [
 
   <template v-if="!enabled">
     <Btn
-      :size="BtnSizesEnum.SMALL"
+      :size="BtnSizesEnum.SM"
       :loading="createMutation.isPending.value"
       @click="enable"
     >
@@ -140,7 +137,7 @@ const crumbs = computed(() => [
         class="calendar-settings__field"
         @focus="($event.target as HTMLInputElement).select()"
       />
-      <Btn :size="BtnSizesEnum.SMALL" inline @click="copyFeedUrl">
+      <Btn :size="BtnSizesEnum.SM" inline @click="copyFeedUrl">
         <i class="fa-light fa-copy" />
         <span>{{ t("actions.copy") }}</span>
       </Btn>
@@ -154,7 +151,7 @@ const crumbs = computed(() => [
 
     <div class="calendar-settings__actions">
       <Btn
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         :loading="rotateMutation.isPending.value"
         inline
         @click="rotate"
@@ -163,8 +160,8 @@ const crumbs = computed(() => [
         <span>{{ t("actions.account.calendarSubscription.rotate") }}</span>
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.DANGER"
+        :size="BtnSizesEnum.SM"
+        tone="danger"
         :loading="destroyMutation.isPending.value"
         inline
         @click="disable"

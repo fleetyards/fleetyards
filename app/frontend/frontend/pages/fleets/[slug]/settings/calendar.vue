@@ -6,10 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import {
   type Fleet,
@@ -125,7 +122,7 @@ const copyFeedUrl = async () => {
 
   <template v-if="!enabled">
     <Btn
-      :size="BtnSizesEnum.SMALL"
+      :size="BtnSizesEnum.SM"
       :loading="createMutation.isPending.value"
       @click="enable"
     >
@@ -143,7 +140,7 @@ const copyFeedUrl = async () => {
         class="calendar-settings__field"
         @focus="($event.target as HTMLInputElement).select()"
       />
-      <Btn :size="BtnSizesEnum.SMALL" inline @click="copyFeedUrl">
+      <Btn :size="BtnSizesEnum.SM" inline @click="copyFeedUrl">
         <i class="fa-light fa-copy" />
         <span>{{ t("actions.copy") }}</span>
       </Btn>
@@ -157,7 +154,7 @@ const copyFeedUrl = async () => {
 
     <div class="calendar-settings__actions">
       <Btn
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         :loading="rotateMutation.isPending.value"
         inline
         @click="rotate"
@@ -166,8 +163,8 @@ const copyFeedUrl = async () => {
         <span>{{ t("actions.fleet.calendarSubscription.rotate") }}</span>
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.DANGER"
+        :size="BtnSizesEnum.SM"
+        tone="danger"
         :loading="destroyMutation.isPending.value"
         inline
         @click="disable"

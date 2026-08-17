@@ -132,14 +132,14 @@ const handleDestroy = () => {
 
 <template>
   <BtnGroup inline>
-    <Btn v-if="canEdit" :size="BtnSizesEnum.SMALL" inline @click="goToEdit">
+    <Btn v-if="canEdit" :size="BtnSizesEnum.SM" inline @click="goToEdit">
       <i class="fa-light fa-pen" />
       <span>{{ t("actions.fleets.missions.edit") }}</span>
     </Btn>
-    <BtnDropdown :size="BtnSizesEnum.SMALL" inline>
+    <BtnDropdown :size="BtnSizesEnum.SM" inline>
       <Btn
         v-if="canCreateEvents && !archived"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         @click="goToSpawnEvent"
       >
@@ -148,7 +148,7 @@ const handleDestroy = () => {
       </Btn>
       <Btn
         v-if="archived"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="updateMutation.isPending.value"
         @click="unarchive"
@@ -158,9 +158,9 @@ const handleDestroy = () => {
       </Btn>
       <Btn
         v-if="canDelete && !archived"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
-        variant="danger"
+        tone="danger"
         :loading="destroyMutation.isPending.value"
         @click="performArchive"
       >
@@ -169,9 +169,9 @@ const handleDestroy = () => {
       </Btn>
       <Btn
         v-if="canDelete && archived"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
-        variant="danger"
+        tone="danger"
         @click="handleDestroy"
       >
         <i class="fa-light fa-trash" />

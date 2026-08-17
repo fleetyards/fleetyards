@@ -172,14 +172,14 @@ const openAdminsModal = () => {
 
 <template>
   <BtnGroup inline>
-    <Btn v-if="canManage" :size="BtnSizesEnum.SMALL" inline @click="goToEdit">
+    <Btn v-if="canManage" :size="BtnSizesEnum.SM" inline @click="goToEdit">
       <i class="fa-light fa-pen" />
       <span>{{ t("actions.fleets.events.edit") }}</span>
     </Btn>
-    <BtnDropdown :size="BtnSizesEnum.SMALL" inline>
+    <BtnDropdown :size="BtnSizesEnum.SM" inline>
       <Btn
         v-if="archived"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="unarchiveMutation.isPending.value"
         @click="transition('unarchive', unarchiveMutation as never)"
@@ -189,7 +189,7 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="!archived && status === 'draft'"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="publishMutation.isPending.value"
         @click="transition('publish', publishMutation as never)"
@@ -199,7 +199,7 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="!archived && status === 'open'"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="lockMutation.isPending.value"
         @click="transition('lockSignups', lockMutation as never)"
@@ -209,7 +209,7 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="!archived && status === 'locked'"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="unlockMutation.isPending.value"
         @click="transition('unlockSignups', unlockMutation as never)"
@@ -219,7 +219,7 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="!archived && (status === 'open' || status === 'locked')"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="startMutation.isPending.value"
         @click="transition('start', startMutation as never)"
@@ -229,7 +229,7 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="!archived && status === 'active'"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="completeMutation.isPending.value"
         @click="transition('complete', completeMutation as never)"
@@ -239,7 +239,7 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="!archived && discordConfigured"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         :loading="syncDiscordMutation.isPending.value"
         @click="transition('syncToDiscord', syncDiscordMutation as never)"
@@ -249,7 +249,7 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="isEventCreator"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
         @click="openAdminsModal"
       >
@@ -260,9 +260,9 @@ const openAdminsModal = () => {
         v-if="
           !archived && ['draft', 'open', 'locked', 'active'].includes(status)
         "
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
-        variant="danger"
+        tone="danger"
         :loading="cancelMutation.isPending.value"
         @click="handleCancel"
       >
@@ -271,9 +271,9 @@ const openAdminsModal = () => {
       </Btn>
       <Btn
         v-if="canDelete"
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
-        variant="danger"
+        tone="danger"
         @click="handleDestroy"
       >
         <i class="fa-light fa-trash" />

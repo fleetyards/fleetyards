@@ -139,7 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
       <div class="float-sm-right">
         <Btn
           :loading="submitting"
-          :size="BtnSizesEnum.LARGE"
+          :size="BtnSizesEnum.LG"
           :inline="true"
           @click="onSubmit"
         >
