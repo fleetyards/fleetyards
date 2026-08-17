@@ -153,8 +153,13 @@ def worktree_db_suffix(name)
   "_wt_#{sanitize_worktree_name(name)}"
 end
 
-def worktree_sidekiq_redis_db(name)
-  2 + (Zlib.crc32(name) % 500)
+# Every worktree points at the one shared Redis container, so the database index
+# is what keeps their Sidekiq queues, cache entries and sessions apart. It runs
+# the default `databases 16`, so anything past 15 is a number Redis would refuse
+# to SELECT; DB 0 is left to the main checkout. With more than 15 worktrees the
+# indexes wrap and two of them share a database again.
+def worktree_redis_db(slot)
+  1 + (slot % 15)
 end
 
 def write_superset_ports(port, vite_port)
@@ -187,15 +192,15 @@ def write_managed_env(filename, managed_body)
   File.write(path, user_content + "#{WORKTREE_MARKER}\n" + managed_body)
 end
 
-def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db, cookie_prefix: nil)
+def write_env_local(port, db_port, redis_port, vite_port, db_suffix, redis_db, cookie_prefix: nil)
   write_managed_env(".env.local", <<~ENV)
     PORT=#{port}
     DB_PORT=#{db_port}
     REDIS_URL=redis://localhost:#{redis_port}
+    REDIS_DB=#{redis_db}
     VITE_RUBY_HOST=localhost
     VITE_RUBY_PORT=#{vite_port}
     WORKTREE_SUFFIX=#{db_suffix}
-    SIDEKIQ_REDIS_DB=#{sidekiq_redis_db}
     DOMAIN=localhost:#{port}
     ON_SUBDOMAIN=false
     #{"COOKIE_PREFIX=#{cookie_prefix}" if cookie_prefix}
@@ -254,7 +259,7 @@ FileUtils.chdir APP_ROOT do
     redis_port = worktree_redis_port(effective_name)
     vite_port = VITE_PORT_OVERRIDE || slot_vite_port
     db_suffix = worktree_db_suffix(effective_name)
-    sidekiq_db = worktree_sidekiq_redis_db(effective_name)
+    redis_db = worktree_redis_db(slot)
 
     if VERBOSE
       puts "== Worktree detected: #{wt_name}#{" (as #{effective_name})" if NAME_OVERRIDE} =="
@@ -262,14 +267,14 @@ FileUtils.chdir APP_ROOT do
       puts "   Vite port:   #{vite_port}#{" (override)" if VITE_PORT_OVERRIDE}"
       puts "   DB port:     #{db_port}"
       puts "   Redis port:  #{redis_port}"
+      puts "   Redis DB:    #{redis_db}"
       puts "   DB suffix:   #{db_suffix}"
-      puts "   Sidekiq DB:  #{sidekiq_db}"
     else
       puts "  Worktree: #{effective_name} (port #{port})"
     end
 
     cookie_prefix = "FLTYRD_WT_#{sanitize_worktree_name(effective_name)}"
-    write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db, cookie_prefix:)
+    write_env_local(port, db_port, redis_port, vite_port, db_suffix, redis_db, cookie_prefix:)
     write_env_test_local(db_port, db_suffix)
     puts "   Wrote .env.local and .env.test.local" if VERBOSE
 
