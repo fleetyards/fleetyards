@@ -16,6 +16,10 @@
 #  updated_at   :datetime
 #  rsi_id       :integer
 #
+# Indexes
+#
+#  index_manufacturers_on_slug  (slug) UNIQUE
+#
 FactoryBot.define do
   factory :manufacturer do
     name { Faker::Name.name }
