@@ -36,12 +36,19 @@ module ScData
         }
       end
 
-      def overrides
+      # Readable without building a parser, which needs the raw export on disk --
+      # the corrections are a config file, and callers that only want to read them
+      # (the dedupe task, and its test) should not need a game dump to do it.
+      def self.overrides
         @overrides ||= begin
           path = Rails.root.join(OVERRIDES_PATH)
 
           path.exist? ? (YAML.safe_load_file(path) || {}) : {}
         end
+      end
+
+      def overrides
+        @overrides ||= self.class.overrides
       end
 
       # The record's own `manufacturer_Name<CODE>` key wins over the key its

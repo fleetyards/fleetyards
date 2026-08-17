@@ -66,9 +66,7 @@ module Maintenance
     # The corrections have to match the overrides the parser applies, or a fresh
     # import and a cleaned table would disagree about what a code is called.
     test "the corrections agree with the shipped parser overrides" do
-      overrides = ::ScData::Parser::ManufacturersParser.new(
-        base_folder: "data/sc_data", sc_version: "4.9.0-live.12344265", sc_environment: "live"
-      ).overrides
+      overrides = ::ScData::Parser::ManufacturersParser.overrides
 
       overrides.each do |code, entry|
         next if entry["name"].blank?

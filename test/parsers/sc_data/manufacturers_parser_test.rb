@@ -126,9 +126,7 @@ module ScData
       # Guards the shipped file rather than the mechanism: these four entries are
       # what keeps the export's copy-pasted records out of the table.
       test "the shipped overrides name the records the export gets wrong" do
-        overrides = ::ScData::Parser::ManufacturersParser.new(
-          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
-        ).overrides
+        overrides = ::ScData::Parser::ManufacturersParser.overrides
 
         assert_equal "Firestorm Kinetics", overrides.dig("FSKI", "name")
         assert_equal "Preacher Armaments", overrides.dig("PRAR", "name")
