@@ -1257,7 +1257,11 @@
         "components": {
           "name": "Name",
           "itemType": "Item Type",
-          "componentClass": "Component Class"
+          "componentClass": "Component Class",
+          "buyPriceGt": "Buy Price >=",
+          "buyPriceLt": "Buy Price <=",
+          "sellPriceGt": "Sell Price >=",
+          "sellPriceLt": "Sell Price <="
         },
         "shops": {
           "name": "Name",
@@ -1418,7 +1422,27 @@
             "search": "Search items..."
           }
         },
-        "manufacturer": "Manufacturer"
+        "manufacturer": "Manufacturer",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "Buy Price >=",
+          "buyPriceLt": "Buy Price <=",
+          "sellPriceGt": "Sell Price >=",
+          "sellPriceLt": "Sell Price <="
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "Buy Price >=",
+          "buyPriceLt": "Buy Price <=",
+          "sellPriceGt": "Sell Price >=",
+          "sellPriceLt": "Sell Price <="
+        }
       },
       "station": {
         "docks": "Docks",
@@ -1739,6 +1763,27 @@
           "rsi_api_unblocked": "RSI API Restored",
           "weekly_stats": "Weekly Report"
         }
+      },
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
       }
     }
   }

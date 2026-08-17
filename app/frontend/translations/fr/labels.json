@@ -802,7 +802,11 @@
         "components": {
           "name": "Nom",
           "itemType": "Type d'objet",
-          "componentClass": "Classe de composant"
+          "componentClass": "Classe de composant",
+          "buyPriceGt": "Prix d'achat >=",
+          "buyPriceLt": "Prix d'achat <=",
+          "sellPriceGt": "Prix de vente >=",
+          "sellPriceLt": "Prix de vente <="
         },
         "shops": {
           "name": "Nom",
@@ -948,7 +952,27 @@
             "limit": "Nombre maximum d’utilisations"
           }
         },
-        "manufacturer": "Fabricant"
+        "manufacturer": "Fabricant",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "Prix d'achat >=",
+          "buyPriceLt": "Prix d'achat <=",
+          "sellPriceGt": "Prix de vente >=",
+          "sellPriceLt": "Prix de vente <="
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "Prix d'achat >=",
+          "buyPriceLt": "Prix d'achat <=",
+          "sellPriceGt": "Prix de vente >=",
+          "sellPriceLt": "Prix de vente <="
+        }
       },
       "station": {
         "docks": "Quais",
@@ -1253,7 +1277,28 @@
         "remaining": "Restant",
         "unmeasured": "%{count} pas encore mesurés"
       },
-      "hangarInventories": "Inventories"
+      "hangarInventories": "Inventories",
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      }
     }
   }
 }

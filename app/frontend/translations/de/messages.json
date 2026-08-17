@@ -397,6 +397,12 @@
         },
         "adminVehicle": {
           "destroy": "Bist du sicher, dass du dieses Fahrzeug löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "commodity": {
+          "destroy": "Are you sure you want to delete this commodity? This action can't be reverted."
+        },
+        "equipment": {
+          "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
         }
       },
       "oauthAuthorize": {

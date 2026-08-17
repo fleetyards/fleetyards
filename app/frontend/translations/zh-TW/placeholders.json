@@ -201,9 +201,7 @@
           "email": "電子郵件"
         },
         "components": {
-          "name": "名稱",
-          "itemType": "物品類型",
-          "componentClass": "組件類別"
+          "name": "名稱"
         },
         "fleets": {
           "name": "名稱",
@@ -211,6 +209,13 @@
           "members": {
             "username": "使用者名稱"
           }
+        },
+        "commodities": {
+          "name": "Name",
+          "uexCode": "UEX Code"
+        },
+        "equipment": {
+          "name": "Name"
         }
       },
       "logistics": {
@@ -218,6 +223,23 @@
         "description": "Optional details about this inventory",
         "location": "e.g. Port Olisar, Area18",
         "itemName": "Titanium, Medical Supplies..."
+      },
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "size": "Size",
+        "grade": "Grade",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
       }
     }
   }

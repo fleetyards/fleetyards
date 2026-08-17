@@ -7,7 +7,7 @@ module Shared
         class ItemPriceItemTypeEnum
           include OpenapiRuby::Components::Base
 
-          TYPES = %w[Model ModelModule ModelPaint Component].freeze
+          TYPES = %w[Model ModelModule ModelPaint Component Equipment Commodity].freeze
 
           schema({
             type: :string,

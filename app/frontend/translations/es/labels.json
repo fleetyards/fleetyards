@@ -802,7 +802,11 @@
         "components": {
           "name": "Nombre",
           "itemType": "Tipo de objeto",
-          "componentClass": "Clase de componente"
+          "componentClass": "Clase de componente",
+          "buyPriceGt": "Precio de compra >=",
+          "buyPriceLt": "Precio de compra <=",
+          "sellPriceGt": "Precio de venta >=",
+          "sellPriceLt": "Precio de venta <="
         },
         "shops": {
           "name": "Nombre",
@@ -948,7 +952,27 @@
             "limit": "Max number of uses"
           }
         },
-        "manufacturer": "Fabricante"
+        "manufacturer": "Fabricante",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "Precio de compra >=",
+          "buyPriceLt": "Precio de compra <=",
+          "sellPriceGt": "Precio de venta >=",
+          "sellPriceLt": "Precio de venta <="
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "Precio de compra >=",
+          "buyPriceLt": "Precio de compra <=",
+          "sellPriceGt": "Precio de venta >=",
+          "sellPriceLt": "Precio de venta <="
+        }
       },
       "station": {
         "docks": "Muelles",
@@ -1249,7 +1273,28 @@
         "remaining": "Restante",
         "unmeasured": "%{count} sin medir todavía"
       },
-      "hangarInventories": "Inventories"
+      "hangarInventories": "Inventories",
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      }
     }
   }
 }
