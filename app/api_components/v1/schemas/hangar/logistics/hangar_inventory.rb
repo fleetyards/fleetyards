@@ -15,7 +15,7 @@ module V1
               slug: {type: :string},
               description: {type: :string},
               location: {type: :string},
-              itemCount: {type: :integer},
+              entriesCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},
               totalVolumeScu: {type: :number},
@@ -26,7 +26,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name slug itemCount totalScu totalUnits createdAt updatedAt]
+            required: %w[id name slug entriesCount totalScu totalUnits createdAt updatedAt]
           })
         end
       end

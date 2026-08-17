@@ -52,3 +52,12 @@ PUT /hangar/inventories/{hangarInventorySlug}/items/{id} added the new `Equipmen
 GET /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
 PATCH /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
 GET /hangar/inventory-items added the new `Equipment` enum value to the `items/items/item/type` response property for the response status `200`
+GET /fleets/{fleetSlug}/inventories removed the required property `items/items/itemCount` from the response with the `200` status
+POST /fleets/{fleetSlug}/inventories removed the required property `itemCount` from the response with the `201` status
+GET /fleets/{fleetSlug}/inventories/{slug} removed the required property `itemCount` from the response with the `200` status
+PUT /fleets/{fleetSlug}/inventories/{slug} removed the required property `itemCount` from the response with the `200` status
+GET /hangar/inventories removed the required property `items/items/itemCount` from the response with the `200` status
+POST /hangar/inventories removed the required property `itemCount` from the response with the `201` status
+GET /hangar/inventories/{slug} removed the required property `itemCount` from the response with the `200` status
+PUT /hangar/inventories/{slug} removed the required property `itemCount` from the response with the `200` status
+GET /vehicles/{vehicle_id}/inventory removed the required property `itemCount` from the response with the `200` status

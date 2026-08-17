@@ -5,7 +5,7 @@ json.name inventory.name
 json.slug inventory.slug
 json.description inventory.description
 json.location inventory.location
-json.item_count inventory.inventory_items.size
+json.entries_count inventory.inventory_items.size
 
 stock = inventory.persisted? ? inventory.current_stock : []
 json.total_scu stock.select { |s| s.unit == "scu" }.sum(&:net_quantity).to_f

@@ -104,10 +104,10 @@ const image = computed(
       <div class="inventory-panel-counts">
         <div class="inventory-panel-count">
           <span class="inventory-panel-count-number">
-            {{ inventory.itemCount }}
+            {{ inventory.entriesCount }}
           </span>
           <span class="inventory-panel-count-label">
-            {{ t("labels.logistics.items") }}
+            {{ t("labels.logistics.entriesCount") }}
           </span>
         </div>
         <template v-if="totalScu > 0 || totalUnits > 0">

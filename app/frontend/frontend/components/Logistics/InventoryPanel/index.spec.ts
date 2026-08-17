@@ -22,7 +22,7 @@ const inventory = (
   id: "1",
   name: "Ironclad Inventory",
   slug: "ironclad-inventory",
-  itemCount: 3,
+  entriesCount: 3,
   totalScu: 312,
   ...overrides,
 });
