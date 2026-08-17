@@ -25,6 +25,61 @@ module ScData
         assert_equal manufacturer_codes.uniq.size, manufacturer_codes.size
       end
 
+      # The export ships several codes per company and the by-code and by-name
+      # lookups only match a row without a ref, so a second code used to create a
+      # second row -- four of them ended up called "Aegis Dynamics".
+      test "#all leaves no two manufacturers sharing a name" do
+        @loader.all
+
+        assert_empty Manufacturer.where.not(name: nil).group(:name).having("count(*) > 1").count
+      end
+
+      test "#all reuses the manufacturer a second code names rather than adding one" do
+        existing = create(:manufacturer, name: "Sakura Sun", code: "SASU", sc_ref: "already-here")
+
+        @loader.all
+
+        assert_equal [existing.id], Manufacturer.where(name: "Sakura Sun").ids
+      end
+
+      # ROO and SASU are both Sakura Sun: whichever loads second must not take
+      # the column over, or the two spend every import trading it.
+      test "#all leaves an existing sc_ref alone when a second code matches by name" do
+        existing = create(:manufacturer, name: "Sakura Sun", code: "SASU", sc_ref: "already-here")
+
+        @loader.all
+
+        assert_equal "already-here", existing.reload.sc_ref
+      end
+
+      # ROO names no logo where SASU names Sakura Sun's, so following the export
+      # unconditionally would drop the picture depending on load order.
+      test "#all keeps the icon when the record that matches names none" do
+        existing = create(
+          :manufacturer,
+          name: "Sakura Sun", code: "SASU", sc_ref: "already-here",
+          icon: "ui/sharedassets/manufacturerlogos/sakurasun_256.tif"
+        )
+
+        @loader.all
+
+        assert_equal "ui/sharedassets/manufacturerlogos/sakurasun_256.tif", existing.reload.icon
+      end
+
+      test "#all skips the records the overrides drop" do
+        @loader.all
+
+        assert_empty Manufacturer.where(code: %w[TRAS GHEX])
+      end
+
+      test "#all loads the corrected name for a record the export mislabels" do
+        @loader.all
+
+        assert_equal "maxOx", Manufacturer.find_by(code: "MXOX").name
+        assert_equal "Preacher Armaments", Manufacturer.find_by(code: "PRAR").name
+        assert_equal ["AEG"], Manufacturer.where(name: "Aegis Dynamics").pluck(:code)
+      end
+
       test "#all attaches the logo the parser carried over" do
         @loader.all
 
@@ -104,7 +159,7 @@ module ScData
           rsi_models_loader.all
         end
 
-        assert_difference -> { Manufacturer.count }, 96 do
+        assert_difference -> { Manufacturer.count }, 93 do
           @loader.all
         end
 
