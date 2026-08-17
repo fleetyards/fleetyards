@@ -25,5 +25,11 @@
   "tags": [
     "behr_smg_ballistic_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00061,
+  "volume_dimensions": {
+    "x": 0.0339876,
+    "y": 0.08141628,
+    "z": 0.2206837
+  }
 }

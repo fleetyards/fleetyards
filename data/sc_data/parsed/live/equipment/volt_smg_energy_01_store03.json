@@ -28,5 +28,11 @@
     "volt_smg_energy_01",
     "store03"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.0075,
+  "volume_dimensions": {
+    "x": 0.0471,
+    "y": 0.7026,
+    "z": 0.2594
+  }
 }

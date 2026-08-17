@@ -25,5 +25,11 @@
   "tags": [
     "binoculars"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.0025,
+  "volume_dimensions": {
+    "x": 0.0612,
+    "y": 0.2677,
+    "z": 0.125
+  }
 }

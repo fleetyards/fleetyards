@@ -29,5 +29,11 @@
     "apar_hmg_ballistic_01",
     "SM_RestrictedWep"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.048,
+  "volume_dimensions": {
+    "x": 0.2,
+    "y": 1.2,
+    "z": 0.2
+  }
 }

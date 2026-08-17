@@ -32,5 +32,11 @@
     "Texture_01",
     "Color_01"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
 }

@@ -28,5 +28,11 @@
     "Color_carrack",
     "SM_RestrictedArm"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.034,
+  "volume_dimensions": {
+    "x": 0.411,
+    "y": 0.367,
+    "z": 0.299
+  }
 }

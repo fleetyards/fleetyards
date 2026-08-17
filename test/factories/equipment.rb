@@ -29,7 +29,8 @@
 #  sub_type               :string
 #  temperature_rating     :string
 #  version                :string
-#  volume                 :decimal(15, 2)
+#  volume                 :decimal(15, 6)
+#  volume_dimensions      :jsonb
 #  weapon_class           :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null

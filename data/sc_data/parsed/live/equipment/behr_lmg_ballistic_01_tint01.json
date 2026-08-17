@@ -27,5 +27,11 @@
     "lmg",
     "behr_lmg_ballistic_01"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.018,
+  "volume_dimensions": {
+    "x": 0.1294,
+    "y": 1.0254,
+    "z": 0.2967
+  }
 }

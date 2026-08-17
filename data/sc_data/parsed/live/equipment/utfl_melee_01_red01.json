@@ -25,5 +25,11 @@
   "tags": [
     "knife"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00023,
+  "volume_dimensions": {
+    "x": 0.02,
+    "y": 0.3095443,
+    "z": 0.0414129
+  }
 }

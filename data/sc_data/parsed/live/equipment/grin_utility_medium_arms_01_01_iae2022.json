@@ -29,5 +29,11 @@
     "Color_iae2022",
     "SM_RestrictedArm"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.01,
+  "volume_dimensions": {
+    "x": 0.107,
+    "y": 0.329,
+    "z": 0.415
+  }
 }

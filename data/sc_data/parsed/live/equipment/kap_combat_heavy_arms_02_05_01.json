@@ -27,5 +27,11 @@
     "Color_05",
     "SM_RestrictedArm"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.126,
+    "y": 0.371,
+    "z": 0.415
+  }
 }

@@ -27,5 +27,11 @@
     "glsn_shotgun_ballistic_01",
     "shotgun"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.1069,
+    "y": 0.8358,
+    "z": 0.2864
+  }
 }

@@ -23,5 +23,11 @@
   "grade": "1",
   "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
   "tags": [],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.0001,
+  "volume_dimensions": {
+    "x": 0.0398,
+    "y": 0.06,
+    "z": 0.0566
+  }
 }

@@ -29,5 +29,11 @@
     "SM_RestrictedArm",
     "Texture_coramor"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.034,
+  "volume_dimensions": {
+    "x": 0.411,
+    "y": 0.367,
+    "z": 0.299
+  }
 }

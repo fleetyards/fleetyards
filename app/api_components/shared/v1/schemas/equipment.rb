@@ -26,6 +26,19 @@ module Shared
             range: {type: [:number, :null]},
             storage: {type: [:number, :null]},
 
+            # What the piece costs a cargo grid or an inventory, and the box it
+            # fills once it snaps to one and stops sharing space.
+            volume: {type: [:number, :null]},
+            volumeDimensions: {
+              type: [:object, :null],
+              properties: {
+                x: {type: :number},
+                y: {type: :number},
+                z: {type: :number}
+              },
+              additionalProperties: false
+            },
+
             damageReduction: {type: [:number, :null]},
             temperatureRating: {type: [:string, :null]},
             radiationProtection: {type: [:number, :null]},

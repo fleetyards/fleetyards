@@ -26,5 +26,11 @@
     "stocked",
     "grin_tractor_01"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.016862,
+  "volume_dimensions": {
+    "x": 0.1151276,
+    "y": 0.6157813,
+    "z": 0.29732
+  }
 }

@@ -25,5 +25,11 @@
   "tags": [
     "grin_multitool_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00034,
+  "volume_dimensions": {
+    "x": 0.0549,
+    "y": 0.0424,
+    "z": 0.133
+  }
 }
