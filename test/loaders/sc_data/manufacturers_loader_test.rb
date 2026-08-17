@@ -34,12 +34,41 @@ module ScData
         assert_empty Manufacturer.where.not(name: nil).group(:name).having("count(*) > 1").count
       end
 
+      # The slug is the stricter of the two: names that differ only in case or
+      # punctuation pass a by-name check and still collide here.
+      test "#all leaves no two manufacturers sharing a slug" do
+        @loader.all
+
+        assert_empty Manufacturer.where.not(slug: nil).group(:slug).having("count(*) > 1").count
+      end
+
       test "#all reuses the manufacturer a second code names rather than adding one" do
         existing = create(:manufacturer, name: "Sakura Sun", code: "SASU", sc_ref: "already-here")
 
         @loader.all
 
         assert_equal [existing.id], Manufacturer.where(name: "Sakura Sun").ids
+      end
+
+      # An exact name is not the only way the table already holds a manufacturer.
+      # A row whose name differs from the export's only in case slugs to the same
+      # thing, so creating a second one puts two rows behind one public
+      # identifier -- and, once the slug is unique in the database, fails the
+      # import outright.
+      test "#all reuses a manufacturer whose name differs only in case" do
+        existing = create(:manufacturer, name: "SAKURA SUN", code: "SASU", sc_ref: "already-here")
+
+        @loader.all
+
+        assert_equal [existing.id], Manufacturer.where(slug: "sakura-sun").ids
+      end
+
+      test "#all reuses a manufacturer whose name differs only by a trailing space" do
+        existing = create(:manufacturer, name: "Sakura Sun ", code: "SASU", sc_ref: "already-here")
+
+        @loader.all
+
+        assert_equal [existing.id], Manufacturer.where(slug: "sakura-sun").ids
       end
 
       # ROO and SASU are both Sakura Sun: whichever loads second must not take
