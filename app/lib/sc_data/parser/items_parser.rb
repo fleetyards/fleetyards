@@ -27,6 +27,8 @@ module ScData
             parse_item(item[:key], item[:values], category)
           end
 
+          items.each { |item| save_icon(item[:icon]) }
+
           save_items(items, folder: "items")
         end
 
@@ -43,6 +45,35 @@ module ScData
           parse_item(key, data.values.first, "refuel_boom")
         end
         save_items(refuel_items, folder: "items")
+      end
+
+      # A paint names no artwork of its own. What it points at through
+      # `manufacturer_ref` is usually not a manufacturer but a record under
+      # scitemmanufacturer/paintcolorlogos whose only job is to name the colour
+      # swatch, so for a paint that logo is the icon. Only for a paint: a real
+      # manufacturer's logo is a picture of the maker, not of the item.
+      #
+      # Looked up only among those swatch records, because a couple of hundred
+      # paints point at a shipbuilder instead -- the base liveries and the
+      # templates -- and Origin's logo is not what any of them look like. Those
+      # come out without an icon, which is the honest answer.
+      private def paint_icon(item)
+        return unless item[:category] == "paints"
+
+        paint_logos[item[:manufacturer_ref]]
+      end
+
+      private def paint_logos
+        @paint_logos ||= Dir.glob("#{import_path}/scitemmanufacturer/paintcolorlogos/*.xml").filter_map { |file|
+          values = Hash.from_xml(File.read(file)).values.first
+          ref = value_or_nil(values["__ref"])
+          logo = value_or_nil(values["Logo"])
+
+          next if ref.blank? || logo.blank?
+
+          # Downcased to match how every other catalogue records an icon path.
+          [ref, logo.downcase]
+        }.to_h
       end
 
       private def categories
@@ -89,6 +120,9 @@ module ScData
             }
           }
         }
+
+        icon = paint_icon(item)
+        item[:icon] = icon if icon.present?
 
         loadout = extract_item_loadout(values)
         item[:loadout] = loadout if loadout.present?
