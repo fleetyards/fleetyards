@@ -43,6 +43,10 @@ module ScData
 
       WEAPON_CLASSES = %w[ballistic energy kinetic].freeze
 
+      # The pair CIG leaves on an unmeasured record: one microSCU in a 0.15m box.
+      UNMEASURED_MICRO_SCU = 1.0
+      UNMEASURED_SIDE = 0.15
+
       # Worn gear names its slot in the AttachDef Type rather than a SubType:
       # Char_Armor_Helmet, Char_Clothing_Feet. The torso carries two clothing
       # layers, which the slot enum already separates into shirt and jacket.
@@ -191,7 +195,8 @@ module ScData
           grade: value_or_nil(attach_def["Grade"]),
           manufacturer_ref: value_or_nil(attach_def["Manufacturer"]),
           tags: attach_def["Tags"].to_s.split,
-          hidden: variant?(key)
+          hidden: variant?(key),
+          **occupancy(attach_def)
         }
       end
 
@@ -203,6 +208,28 @@ module ScData
         return if carried_type.blank?
 
         [carried_type, DATA_DRIVE_KEY.match?(key) ? "data_drive" : carried_item_type]
+      end
+
+      # How much room the piece takes when it is carried rather than worn. The
+      # game states it twice: a volume, which is what a cargo grid and an
+      # inventory charge for it, and the box it physically fills, which is the
+      # ceiling once it snaps to a grid and stops sharing space with anything.
+      #
+      # One microSCU against a 0.15m cube is the value CIG leaves on a record
+      # nobody has measured -- creature bodies and ship storage boxes carry the
+      # same pair -- so it reads as unmeasured rather than as "vanishingly
+      # small", and stays nil.
+      private def occupancy(attach_def)
+        micro_scu = attach_def.dig("inventoryOccupancyVolume", "SMicroCargoUnit", "microSCU").to_f
+        dimensions = attach_def["inventoryOccupancyDimensions"] || {}
+        x, y, z = %w[x y z].map { |axis| dimensions[axis].to_f }
+
+        return {} if micro_scu <= UNMEASURED_MICRO_SCU && [x, y, z].all? { |side| side <= UNMEASURED_SIDE }
+
+        {
+          volume: (micro_scu / 1_000_000 if micro_scu > UNMEASURED_MICRO_SCU),
+          volume_dimensions: ({x:, y:, z:} if [x, y, z].all?(&:positive?))
+        }.compact
       end
 
       # Most descriptions open with a spec block -- "Item Type: Assault Rifle",

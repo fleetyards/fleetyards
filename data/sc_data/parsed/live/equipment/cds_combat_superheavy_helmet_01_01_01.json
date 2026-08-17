@@ -28,5 +28,11 @@
     "HelmetCarryable",
     "CdsSuperheavyHelmet_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.244,
+    "y": 0.298,
+    "z": 0.335
+  }
 }

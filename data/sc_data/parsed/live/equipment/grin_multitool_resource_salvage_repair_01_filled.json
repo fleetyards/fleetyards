@@ -26,5 +26,11 @@
     "grin_multitool_01",
     "multitool_resource"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.0003,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.134
+  }
 }

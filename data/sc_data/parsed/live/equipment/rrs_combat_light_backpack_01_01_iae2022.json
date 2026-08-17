@@ -30,5 +30,11 @@
     "backpack",
     "SM_RestrictedArm"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.02,
+  "volume_dimensions": {
+    "x": 0.332,
+    "y": 1.126,
+    "z": 0.261
+  }
 }

@@ -26,5 +26,11 @@
     "shouldered",
     "SM_RestrictedWep"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.035,
+  "volume_dimensions": {
+    "x": 0.2233,
+    "y": 1.1055,
+    "z": 0.4009
+  }
 }

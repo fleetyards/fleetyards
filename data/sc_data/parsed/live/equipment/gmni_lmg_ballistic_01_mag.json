@@ -25,5 +25,11 @@
   "tags": [
     "gmni_lmg_ballistic_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00048,
+  "volume_dimensions": {
+    "x": 0.09310678,
+    "y": 0.1532475,
+    "z": 0.1672849
+  }
 }

@@ -25,5 +25,11 @@
   "tags": [
     "crlf_medgun_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00018,
+  "volume_dimensions": {
+    "x": 0.0348,
+    "y": 0.15,
+    "z": 0.0252
+  }
 }

@@ -31,5 +31,11 @@
     "$$Pack++",
     "SM_RestrictedWep"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.062,
+  "volume_dimensions": {
+    "x": 0.515,
+    "y": 1.38,
+    "z": 0.394
+  }
 }

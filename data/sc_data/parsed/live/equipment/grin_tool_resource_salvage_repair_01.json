@@ -25,5 +25,11 @@
   "tags": [
     "grin_tool_salvage_01_canister"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.0012,
+  "volume_dimensions": {
+    "x": 0.055,
+    "y": 0.145,
+    "z": 0.15
+  }
 }

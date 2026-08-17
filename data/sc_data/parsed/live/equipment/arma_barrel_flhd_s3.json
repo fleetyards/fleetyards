@@ -27,5 +27,11 @@
     "ballistic_attach",
     "energy_attach"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.0002,
+  "volume_dimensions": {
+    "x": 0.0401,
+    "y": 0.1251,
+    "z": 0.0401
+  }
 }
