@@ -15,6 +15,7 @@ require "test_helper"
 #  g_force_tolerance      :decimal(15, 2)
 #  grade                  :string
 #  hidden                 :boolean          default(FALSE)
+#  icon                   :string
 #  item_type              :string
 #  name                   :string
 #  radiation_protection   :decimal(15, 2)
