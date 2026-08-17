@@ -72,6 +72,10 @@ class Component < ApplicationRecord
   before_save :update_slugs
   before_save :extract_data_from_description
 
+  # Kept apart from store_image, which is curated -- an admin upload or what the
+  # hangar sync brought in. A load owns the icon and nothing else, so it can
+  # rewrite artwork on every build without ever touching the curated picture.
+  has_one_attached :icon
   has_one_attached :store_image
   ransack_attachment :store_image
 

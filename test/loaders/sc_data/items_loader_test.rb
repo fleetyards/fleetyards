@@ -51,6 +51,35 @@ module ScData
         assert_nil retired.reload.version
         assert_equal Rails.configuration.sc_data[:version], kept.reload.version
       end
+
+      # A paint names no artwork itself -- the picture hangs off the record its
+      # manufacturer_ref points at.
+      test "#all attaches the colour swatch a paint reaches through its manufacturer" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
+
+        assert_predicate icon, :attached?
+        assert_equal "paint_100i_flame_black_orange_icon.png", icon.filename.to_s
+      end
+
+      # store_image is curated -- an admin upload, or what the hangar sync
+      # brought in -- so a load must never write to it.
+      test "#all leaves a curated store_image alone while attaching the icon" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        component = Component.find_by(sc_key: "paint_100i_black_orange")
+
+        assert_not_predicate component.store_image, :attached?
+      end
+
+      # Only a paint reaches a swatch this way. Every other item's manufacturer
+      # is a real one, and its logo is a picture of the maker, not of the item.
+      test "#all gives no icon to an item whose manufacturer is a real one" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        assert_not_predicate Component.find_by(sc_key: "aegs_avenger_cml_chaff").icon, :attached?
+      end
     end
   end
 end

@@ -69,6 +69,8 @@ module ScData
 
           component.update!(update_params)
 
+          attach_icon(component, :icon, item["icon"])
+
           loaded << component.id
         end
 
