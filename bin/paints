@@ -1,0 +1,89 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+COMMANDS = {
+  "match-report" => "Report which paint Components match a ModelPaint, writing nothing",
+  "copy-store-images" => "Copy curated store_images from matched ModelPaints onto their Components"
+}.freeze
+
+def usage
+  puts "Usage: bin/paints <command> [--dry-run]"
+  puts ""
+  puts "Commands:"
+  COMMANDS.each { |cmd, desc| puts "  %-18s %s" % [cmd, desc] }
+  puts ""
+  puts "Options:"
+  puts "  --dry-run          report what copy-store-images would do, without writing"
+  exit 1
+end
+
+command = ARGV.shift
+usage if command.nil? || command == "--help" || command == "-h"
+
+unless COMMANDS.key?(command)
+  puts "Unknown command: #{command}"
+  usage
+end
+
+dry_run = ARGV.delete("--dry-run")
+
+require_relative "../config/environment"
+
+components = Component.where(category: "paints").where.not(name: [nil, ""]).order(:name)
+matcher = PaintComponentMatcher.new
+
+case command
+when "match-report"
+  matched = components.count { |component| matcher.call(component) }
+
+  puts "paint components: #{components.count}"
+  puts "matched:          #{matched}"
+  puts "unmatched:        #{components.count - matched}"
+
+  puts ""
+  puts "Unmatched:"
+  components.reject { |component| matcher.call(component) }.each { |component| puts "  #{component.name}" }
+
+when "copy-store-images"
+  copied = skipped = unmatched = 0
+
+  components.find_each do |component|
+    # Never overwrite what an admin or the hangar sync put there. A component
+    # that already has a picture is curated by definition.
+    if component.store_image.attached?
+      skipped += 1
+      next
+    end
+
+    paint = matcher.call(component)
+
+    if paint.nil?
+      unmatched += 1
+      next
+    end
+
+    next unless paint.store_image.attached?
+
+    copied += 1
+
+    puts "  #{component.name} <- #{paint.model.name} / #{paint.name}"
+
+    next if dry_run
+
+    # Copied rather than attached by blob: the two records would otherwise
+    # share one, and purging the paint would take the component's picture with
+    # it -- exactly what happens if model_paints are ever consolidated away.
+    paint.store_image.blob.open do |file|
+      component.store_image.attach(
+        io: file,
+        filename: paint.store_image.filename.to_s,
+        content_type: paint.store_image.content_type
+      )
+    end
+  end
+
+  puts ""
+  puts "#{dry_run ? "would copy" : "copied"}: #{copied}"
+  puts "already had a picture: #{skipped}"
+  puts "no matching paint:     #{unmatched}"
+end
