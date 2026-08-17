@@ -7783,6 +7783,21 @@ components:
           - 'null'
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
         createdAt:
           type: string
           format: date-time
@@ -7822,6 +7837,7 @@ components:
       - id
       - name
       - slug
+      - availability
       - createdAt
       - updatedAt
       title: Commodity
