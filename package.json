@@ -172,6 +172,9 @@
       "serialize-javascript": ">=7.0.5",
       "vite": ">=7.3.2"
     },
+    "patchedDependencies": {
+      "@tresjs/core@5.8.1": "patches/@tresjs__core@5.8.1.patch"
+    },
     "peerDependencyRules": {
       "allowedVersions": {
         "vite-plugin-pwa>vite": "8"

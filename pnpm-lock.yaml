@@ -20,6 +20,11 @@ overrides:
   serialize-javascript: '>=7.0.5'
   vite: '>=7.3.2'
 
+patchedDependencies:
+  '@tresjs/core@5.8.1':
+    hash: 51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2
+    path: patches/@tresjs__core@5.8.1.patch
+
 importers:
 
   .:
@@ -44,10 +49,10 @@ importers:
         version: 5.101.4(vue@3.5.41(typescript@6.0.3))
       '@tresjs/cientos':
         specifier: ^5.7.2
-        version: 5.7.2(@tresjs/core@5.8.1(three@0.185.1)(vue@3.5.41(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))
+        version: 5.7.2(@tresjs/core@5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.185.1)(vue@3.5.41(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))
       '@tresjs/core':
         specifier: ^5.8.1
-        version: 5.8.1(three@0.185.1)(vue@3.5.41(typescript@6.0.3))
+        version: 5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))
       '@vee-validate/rules':
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.41(typescript@6.0.3))
@@ -7898,9 +7903,9 @@ snapshots:
       vue: 3.5.41(typescript@6.0.3)
       vue-demi: 0.14.10(vue@3.5.41(typescript@6.0.3))
 
-  '@tresjs/cientos@5.7.2(@tresjs/core@5.8.1(three@0.185.1)(vue@3.5.41(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))':
+  '@tresjs/cientos@5.7.2(@tresjs/core@5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.185.1)(vue@3.5.41(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))':
     dependencies:
-      '@tresjs/core': 5.8.1(three@0.185.1)(vue@3.5.41(typescript@6.0.3))
+      '@tresjs/core': 5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))
       '@vueuse/core': 13.9.0(vue@3.5.41(typescript@6.0.3))
       camera-controls: 2.10.1(three@0.185.1)
       stats-gl: 2.4.2(@types/three@0.184.1)(three@0.185.1)
@@ -7915,7 +7920,7 @@ snapshots:
       - '@types/three'
       - react
 
-  '@tresjs/core@5.8.1(three@0.185.1)(vue@3.5.41(typescript@6.0.3))':
+  '@tresjs/core@5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))':
     dependencies:
       '@pmndrs/pointer-events': 6.6.29
       '@vue/devtools-api': 7.7.9

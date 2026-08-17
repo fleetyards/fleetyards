@@ -1,0 +1,18 @@
+diff --git a/dist/tres.d.ts b/dist/tres.d.ts
+index e9b7f7e9ca98d521fc5a38fa3b91f319f0178057..120d7156afb9e5e5dea93d32848f354b54c2b188 100644
+--- a/dist/tres.d.ts
++++ b/dist/tres.d.ts
+@@ -445,7 +445,12 @@ interface TresScene extends THREE.Scene {
+   };
+ }
+ interface MathRepresentation {
+-  set(...args: number[] | [THREE.ColorRepresentation]): any;
++  // @types/three 0.185 made the trailing arg of Vector2/3/4.set optional, matching
++  // three's runtime (`if (z === undefined) z = this.z`). Vector3 therefore no longer
++  // satisfies the original signature, so WithMathProps silently dropped the tuple
++  // widening and every `:position="[x, y, z]"` stopped type-checking.
++  // Remove once tresjs/tres loosens this upstream.
++  set(...args: any[]): any;
+ }
+ interface VectorRepresentation extends MathRepresentation {
+   setScalar(s: number): any;
