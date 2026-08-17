@@ -25,5 +25,10 @@
   "tags": [
     "grin_multitool_energy_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.208
+  }
 }

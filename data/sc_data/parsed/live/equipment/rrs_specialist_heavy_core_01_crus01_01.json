@@ -28,5 +28,11 @@
     "Texture_crus01",
     "Color_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.055,
+  "volume_dimensions": {
+    "x": 0.454,
+    "y": 0.459,
+    "z": 0.331
+  }
 }

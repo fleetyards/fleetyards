@@ -25,5 +25,10 @@
   "tags": [
     "behr_rifle_ballistic_02"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.208
+  }
 }

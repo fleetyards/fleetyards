@@ -25,5 +25,11 @@
   "tags": [
     "sasu_pistol_toy_01"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.00009,
+  "volume_dimensions": {
+    "x": 0.04400022,
+    "y": 0.04247732,
+    "z": 0.04573873
+  }
 }

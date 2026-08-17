@@ -26,5 +26,11 @@
     "apar_hmg_ballistic_01",
     "apar_hmg_ballistic_01_mag"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.002641,
+  "volume_dimensions": {
+    "x": 0.2140364,
+    "y": 0.07163662,
+    "z": 0.1722501
+  }
 }

@@ -26,5 +26,11 @@
     "Stash_MediPen",
     "medical_injection"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.00018,
+  "volume_dimensions": {
+    "x": 0.0348,
+    "y": 0.15,
+    "z": 0.0336
+  }
 }

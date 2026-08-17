@@ -27,5 +27,11 @@
     "rifle",
     "ksar_rifle_energy_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.013,
+  "volume_dimensions": {
+    "x": 0.0811,
+    "y": 0.8528,
+    "z": 0.2487
+  }
 }

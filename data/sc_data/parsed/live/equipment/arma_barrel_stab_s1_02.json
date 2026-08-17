@@ -26,5 +26,11 @@
     "FPS_Barrel",
     "energy_attach"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00005,
+  "volume_dimensions": {
+    "x": 0.0264,
+    "y": 0.0631,
+    "z": 0.0265
+  }
 }

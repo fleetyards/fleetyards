@@ -29,5 +29,11 @@
     "KeepsShape",
     "$hatHair+"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.0032,
+  "volume_dimensions": {
+    "x": 0.5000758,
+    "y": 0.504985,
+    "z": 0.3106385
+  }
 }

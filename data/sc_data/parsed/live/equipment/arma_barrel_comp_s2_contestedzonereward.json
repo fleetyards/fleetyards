@@ -26,5 +26,11 @@
     "FPS_Barrel",
     "ballistic_attach"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.00006,
+  "volume_dimensions": {
+    "x": 0.0279,
+    "y": 0.075,
+    "z": 0.0266
+  }
 }

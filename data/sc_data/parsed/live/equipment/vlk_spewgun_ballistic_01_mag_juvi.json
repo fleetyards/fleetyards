@@ -25,5 +25,11 @@
   "tags": [
     "behr_shotgun_ballistic_01"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.0024,
+  "volume_dimensions": {
+    "x": 0.09310678,
+    "y": 0.1532475,
+    "z": 0.1672849
+  }
 }

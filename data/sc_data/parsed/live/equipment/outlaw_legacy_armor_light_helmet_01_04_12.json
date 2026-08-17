@@ -31,5 +31,11 @@
     "Helmet",
     "HelmetCarryable"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.012,
+  "volume_dimensions": {
+    "x": 0.206,
+    "y": 0.244,
+    "z": 0.294
+  }
 }

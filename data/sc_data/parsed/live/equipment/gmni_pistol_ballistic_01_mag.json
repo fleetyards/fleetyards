@@ -25,5 +25,11 @@
   "tags": [
     "gmni_pistol_ballistic_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00009,
+  "volume_dimensions": {
+    "x": 0.04400022,
+    "y": 0.04247732,
+    "z": 0.04573873
+  }
 }
