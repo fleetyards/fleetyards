@@ -66,9 +66,23 @@ const goToCreate = () => {
   });
 };
 
+const fleetMissionCreatedComlink = ref<() => void>();
+const fleetMissionUpdatedComlink = ref<() => void>();
+
 onMounted(() => {
-  comlink.on("fleet-mission-created", () => void refetch());
-  comlink.on("fleet-mission-updated", () => void refetch());
+  fleetMissionCreatedComlink.value = comlink.on(
+    "fleet-mission-created",
+    () => void refetch(),
+  );
+  fleetMissionUpdatedComlink.value = comlink.on(
+    "fleet-mission-updated",
+    () => void refetch(),
+  );
+});
+
+onUnmounted(() => {
+  fleetMissionCreatedComlink.value?.();
+  fleetMissionUpdatedComlink.value?.();
 });
 
 const crumbs = computed(() => [
