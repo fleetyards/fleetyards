@@ -7,14 +7,12 @@ module Models
   # database, and Maintenance::SeedManualModelsTask for one that already exists
   # and is missing them.
   module ManualRecords
+    # No slug: `update_slugs` derives it from the name on every save, so one
+    # declared here would be overwritten before it reached the row.
     MANUFACTURERS = [
-      {name: "Origin Jumpworks", slug: "origin-jumpworks", code: "ORIG"},
-      {name: "Drake Interplanetary", slug: "drake-interplanetary", code: "DRAK"},
-      {
-        name: "Musashi Industrial & Starflight Concern",
-        slug: "musashi-industrial-starflight-concern",
-        code: "MISC"
-      }
+      {name: "Origin Jumpworks", code: "ORIG"},
+      {name: "Drake Interplanetary", code: "DRAK"},
+      {name: "Musashi Industrial & Starflight Concern", code: "MISC"}
     ].freeze
 
     # Base models come first so a straight run creates them before the editions
@@ -60,8 +58,10 @@ module Models
       }
     ].freeze
 
-    # Everything else in a definition is a plain Model column. Listed so a typo in
-    # a definition raises here instead of being assigned to nothing.
+    # Everything else in a definition is a plain Model column. Assignment walks
+    # this list rather than the definition, so a key that is not here is dropped
+    # in silence -- the test that every definition names only these is what
+    # catches a typo.
     ATTRIBUTES = %i[rsi_name classification production_status size hidden].freeze
 
     def self.call
@@ -89,7 +89,6 @@ module Models
       raise ArgumentError, "no manual manufacturer named #{name.inspect}" if definition.nil?
 
       Manufacturer.find_or_create_by!(name: definition[:name]) do |manufacturer|
-        manufacturer.slug = definition[:slug]
         manufacturer.code = definition[:code]
       end
     end

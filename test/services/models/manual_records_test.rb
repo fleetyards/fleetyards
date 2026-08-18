@@ -66,6 +66,27 @@ module Models
       assert_not_predicate existing.reload, :hidden?
     end
 
+    # Nothing derives the code, so a manufacturer created here is the only place
+    # it comes from -- an import matching on code finds nothing if it is missing.
+    test ".upsert_manufacturer gives a manufacturer it creates its code" do
+      ::Models::ManualRecords::MANUFACTURERS.each do |definition|
+        manufacturer = ::Models::ManualRecords.upsert_manufacturer(definition[:name])
+
+        assert_equal definition[:code], manufacturer.code, "#{definition[:name]} was created without its code"
+      end
+    end
+
+    # The slug is not the definition's to give: `update_slugs` derives it from the
+    # name on every save, so the declared slug never reaches the row. Pinned
+    # because a rename would silently move the slug every URL is built from.
+    test ".upsert_manufacturer slugs a manufacturer it creates from its name" do
+      ::Models::ManualRecords::MANUFACTURERS.each do |definition|
+        manufacturer = ::Models::ManualRecords.upsert_manufacturer(definition[:name])
+
+        assert_equal definition[:name].parameterize, manufacturer.slug
+      end
+    end
+
     test ".upsert_manufacturer reuses a manufacturer that is already there" do
       existing = create(:manufacturer, name: "Origin Jumpworks", code: "ORIG")
 

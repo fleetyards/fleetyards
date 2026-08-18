@@ -1005,7 +1005,8 @@
         "prefix": "使用以下工具试用配置",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
-        "spviewerTitle": "SC Ships Performances Viewer"
+        "spviewerTitle": "SC Ships Performances Viewer",
+        "metricsCredit": "数据基于以下网站的计算公式"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",
