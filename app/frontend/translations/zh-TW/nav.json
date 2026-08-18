@@ -51,7 +51,8 @@
           "index": "設定",
           "fleet": "艦隊設定",
           "membership": "成員設定",
-          "roles": "角色"
+          "roles": "角色",
+          "features": "功能"
         }
       },
       "rsiProfile": "RSI 檔案",

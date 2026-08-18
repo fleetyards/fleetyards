@@ -223,7 +223,8 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Fleet Roles"
+          "roles": "Fleet Roles",
+          "features": "Fleet Features"
         },
         "inviteMember": "Invite new Member"
       },

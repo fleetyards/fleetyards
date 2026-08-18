@@ -6,7 +6,8 @@
         "forName": "Nessun %{name} trovato",
         "hangar": "Il tuo hangar è vuoto",
         "wishlist": "La tua lista dei desideri è vuota",
-        "features": "Nessuna funzione disponibile"
+        "features": "Nessuna funzione disponibile",
+        "fleetFeatures": "Nessuna funzionalità della flotta disponibile"
       },
       "actions": {
         "reset": "Resetta i filtri/pagine",
@@ -20,7 +21,8 @@
         "hangar": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
         "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
         "wishlist": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
-        "features": "Attualmente non sono disponibili funzioni self-service. Torna più tardi poiché vengono aggiunte regolarmente nuove funzioni."
+        "features": "Attualmente non sono disponibili funzioni self-service. Torna più tardi poiché vengono aggiunte regolarmente nuove funzioni.",
+        "fleetFeatures": "Attualmente non ci sono funzionalità che una flotta può attivare da sé. Torna più tardi poiché vengono aggiunte regolarmente nuove funzioni."
       }
     }
   }

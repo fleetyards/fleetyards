@@ -51,7 +51,8 @@
           "index": "Settings",
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Roles"
+          "roles": "Roles",
+          "features": "Features"
         }
       },
       "rsiProfile": "RSI Profile",

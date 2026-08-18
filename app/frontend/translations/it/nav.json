@@ -51,7 +51,8 @@
           "index": "Impostazioni",
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
-          "roles": "Ruoli"
+          "roles": "Ruoli",
+          "features": "Funzionalità"
         }
       },
       "rsiProfile": "Profilo RSI",

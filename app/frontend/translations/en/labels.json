@@ -57,7 +57,8 @@
           "tools_cargo_grids": "Show interactive cargo grid viewer for ships.",
           "fleet_starmap": "Show Star Citizen starmap on fleet member pages."
         },
-        "registryHint": "Flags are declared in config/feature_flags.yml and created on deploy. Here you control their gates."
+        "registryHint": "Flags are declared in config/feature_flags.yml and created on deploy. Here you control their gates.",
+        "fleetSettingsIntro": "Enable or disable features for the whole fleet. Every member sees what you switch on here."
       },
       "oauthApplication": {
         "name": "Application Name",

@@ -52,7 +52,8 @@
           "tools_cargo_grids": "Interaktiven Frachtraster-Viewer für Schiffe anzeigen.",
           "fleet_starmap": "Star Citizen Sternenkarte auf Flottenmitgliederseiten anzeigen."
         },
-        "registryHint": "Flags werden in config/feature_flags.yml deklariert und beim Deploy erstellt. Hier steuerst du ihre Gates."
+        "registryHint": "Flags werden in config/feature_flags.yml deklariert und beim Deploy erstellt. Hier steuerst du ihre Gates.",
+        "fleetSettingsIntro": "Aktivieren oder deaktivieren Sie Funktionen für die gesamte Flotte. Was Sie hier einschalten, sehen alle Mitglieder."
       },
       "oauthApplication": {
         "name": "Anwendungsname",
