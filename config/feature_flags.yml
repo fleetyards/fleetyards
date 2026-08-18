@@ -31,6 +31,9 @@ fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
   self_service: fleet
 
+fleet_mission_builder:
+  description: "Mission builder — fleet missions, events, the calendar and Discord sync"
+
 fleet_starmap:
   description: "Starmap on the fleet page"
 
