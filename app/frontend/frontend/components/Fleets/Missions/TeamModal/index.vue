@@ -58,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
   const data = {
     title: values.title,
-    description: values.description || undefined,
+    description: values.description || null,
   };
 
   const mutation = isEdit.value
