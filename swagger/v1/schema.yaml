@@ -992,6 +992,181 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/calendar":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Fleet Calendar
+      tags:
+      - Fleet Events
+      operationId: fleetCalendar
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: to
+        in: query
+        schema:
+          type: string
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/FleetEvent"
+                required:
+                - items
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/calendar/subscription":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Generate calendar subscription token
+      tags:
+      - Fleet Calendar
+      operationId: createFleetCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Disable calendar subscription
+      tags:
+      - Fleet Calendar
+      operationId: destroyFleetCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show calendar subscription
+      tags:
+      - Fleet Calendar
+      operationId: fleetCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/calendar/subscription/rotate":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Rotate calendar subscription token
+      tags:
+      - Fleet Calendar
+      operationId: rotateFleetCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events":
     parameters:
     - name: fleetSlug
@@ -6552,6 +6727,108 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
+  "/me/calendar/subscription":
+    post:
+      summary: Generate personal calendar subscription
+      tags:
+      - Me Calendar
+      operationId: createMyCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Disable personal calendar subscription
+      tags:
+      - Me Calendar
+      operationId: destroyMyCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Show personal calendar subscription
+      tags:
+      - Me Calendar
+      operationId: myCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/calendar/subscription/rotate":
+    post:
+      summary: Rotate personal calendar subscription
+      tags:
+      - Me Calendar
+      operationId: rotateMyCalendarSubscription
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/mission-slots":
     post:
       summary: Create Mission Slot
@@ -10684,6 +10961,19 @@ components:
       - PLEDGE_STORE
       - INGAME
       title: BoughtViaEnum
+    CalendarSubscription:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        feedUrl:
+          type: string
+          format: uri
+      required:
+      - enabled
+      - feedUrl
+      additionalProperties: false
+      title: CalendarSubscription
     CargoHold:
       type: object
       properties:
