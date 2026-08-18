@@ -8,6 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -16,7 +17,11 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useForm } from "vee-validate";
 import { useComlink } from "@/shared/composables/useComlink";
-import { type UserUpdateInput } from "@/services/fyApi";
+import {
+  type FilterOption,
+  type UserUpdateInput,
+  UserUpdateInputDateFormat,
+} from "@/services/fyApi";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
@@ -39,6 +44,9 @@ const initialValues = ref<UserUpdateInput>({
   youtube: sessionStore.currentUser?.youtube,
   twitch: sessionStore.currentUser?.twitch,
   guilded: sessionStore.currentUser?.guilded,
+  dateFormat:
+    (sessionStore.currentUser?.dateFormat as UserUpdateInputDateFormat) ??
+    UserUpdateInputDateFormat.dmy_dots,
 });
 
 const { defineField, handleSubmit } = useForm({
@@ -54,6 +62,14 @@ const [discord, discordProps] = defineField("discord");
 const [youtube, youtubeProps] = defineField("youtube");
 const [twitch, twitchProps] = defineField("twitch");
 const [guilded, guildedProps] = defineField("guilded");
+const [dateFormat, dateFormatProps] = defineField("dateFormat");
+
+const dateFormatOptions = computed<FilterOption[]>(() =>
+  Object.values(UserUpdateInputDateFormat).map((value) => ({
+    value,
+    label: t(`labels.user.dateFormats.${value}`),
+  })),
+);
 
 const submitting = ref(false);
 
@@ -87,6 +103,9 @@ const setupForm = () => {
   youtube.value = sessionStore.currentUser?.youtube;
   twitch.value = sessionStore.currentUser?.twitch;
   guilded.value = sessionStore.currentUser?.guilded;
+  dateFormat.value =
+    (sessionStore.currentUser?.dateFormat as UserUpdateInputDateFormat) ??
+    UserUpdateInputDateFormat.dmy_dots;
 };
 
 const comlink = useComlink();
@@ -282,6 +301,19 @@ const onSubmit = handleSubmit(async (values) => {
           icon="fa-brands fa-guilded"
           :clearable="true"
           translation-key="guilded"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FilterGroup
+          v-model="dateFormat"
+          v-bind="dateFormatProps"
+          :options="dateFormatOptions"
+          :label="t('labels.user.dateFormat')"
+          name="dateFormat"
+          :searchable="false"
         />
       </div>
     </div>
