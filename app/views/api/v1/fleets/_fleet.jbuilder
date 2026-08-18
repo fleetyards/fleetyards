@@ -10,3 +10,7 @@ json.my_fleet(local_assigns.fetch(:my_fleet, false))
 # record, so a cached copy would keep serving the old answer until the fleet
 # itself changed.
 json.features fleet.features
+
+if local_assigns.fetch(:my_fleet, false)
+  json.calendar_feed_token fleet.calendar_feed_token
+end
