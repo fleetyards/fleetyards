@@ -443,7 +443,10 @@ const crumbs = computed(() => [
           {{ event.title }}
         </template>
         <template #actions>
-          <Chip bare>{{ statusLabel }}</Chip>
+          <!-- Framed: bare is for a chip inside something already interactive,
+               which the hero is not, and without the frame the status read as
+               plain text sitting on the cover. -->
+          <Chip>{{ statusLabel }}</Chip>
         </template>
       </PanelHeading>
 
