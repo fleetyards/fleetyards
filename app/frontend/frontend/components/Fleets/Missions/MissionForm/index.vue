@@ -181,11 +181,11 @@ const onSubmit = handleSubmit(async (values) => {
 
   const data = {
     title: values.title,
-    description: values.description || undefined,
+    description: values.description || null,
     category: values.category as never,
     scenario: values.scenario || null,
     coverImagePreset: values.coverImage ? null : values.coverImagePreset,
-    coverImage: values.coverImage || undefined,
+    coverImage: values.coverImage || null,
   };
 
   const mutation = isEdit.value
