@@ -8,14 +8,14 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
-        only: %i[index show]
+        only: %i[index show ics]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
         only: %i[create update destroy unarchive publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
 
       before_action :check_fleet_mission_builder_feature
       before_action :set_fleet
-      before_action :set_event, only: %i[show update destroy unarchive publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
+      before_action :set_event, only: %i[show update destroy unarchive publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -186,6 +186,17 @@ module Api
         @fleet_event.unarchive!
         ActiveSupport::Notifications.instrument("fleet_event.unarchived", event: @fleet_event)
         render :show
+      end
+
+      def ics
+        authorize! @fleet_event, to: :show?
+
+        ics = Calendars::IcsBuilder.new([@fleet_event],
+          calendar_name: @fleet_event.title,
+          organizer_name: @fleet.name).to_ics
+        send_data ics,
+          type: "text/calendar; charset=utf-8",
+          disposition: %(attachment; filename="#{@fleet_event.slug}.ics")
       end
 
       %i[publish lock_signups unlock_signups start complete].each do |action|
