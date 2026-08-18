@@ -2265,6 +2265,52 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/events/{slug}/sync-to-discord":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Sync event to Discord
+      tags:
+      - Fleet Events
+      operationId: syncFleetEventToDiscord
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventExtended"
+        '422':
+          description: discord not configured
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events/{slug}/unarchive":
     parameters:
     - name: fleetSlug
@@ -4575,23 +4621,46 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/missions/{slug}/unarchive":
+  "/fleets/{fleetSlug}/notifications":
     parameters:
     - name: fleetSlug
       in: path
       schema:
         type: string
       required: true
-    - name: slug
-      in: path
-      schema:
-        type: string
-      required: true
-    put:
-      summary: Unarchive Mission
+    get:
+      summary: Show fleet notification settings
       tags:
-      - Missions
-      operationId: unarchiveFleetMission
+      - Fleet Notification Settings
+      operationId: fleetNotificationSetting
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetNotificationSetting"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update fleet notification settings
+      tags:
+      - Fleet Notification Settings
+      operationId: updateFleetNotificationSetting
       security:
       - SessionCookie: []
       - Oauth2:
@@ -4600,13 +4669,86 @@ paths:
       - OpenId:
         - fleet
         - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                discordGuildId:
+                  type:
+                  - string
+                  - 'null'
+                discordChannelId:
+                  type:
+                  - string
+                  - 'null'
+                discordWebhookUrl:
+                  type:
+                  - string
+                  - 'null'
+                enabledInAppEvents:
+                  type: array
+                  items:
+                    type: string
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/MissionExtended"
+                "$ref": "#/components/schemas/FleetNotificationSetting"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/notifications/discord-status":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Probe the fleet's Discord guild binding
+      tags:
+      - Fleet Notification Settings
+      operationId: fleetNotificationDiscordStatus
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  guildId:
+                    type: string
+                  guildName:
+                    type: string
+                  status:
+                    type: integer
+                  installUrl:
+                    type: string
         '401':
           description: unauthorized
           content:
@@ -13058,6 +13200,13 @@ components:
           type: boolean
         signupsOpen:
           type: boolean
+        discordEventId:
+          type: string
+        discordSyncedAt:
+          type: string
+          format: date-time
+        discordConfigured:
+          type: boolean
         recurring:
           type: boolean
         recurrenceInterval:
@@ -13106,6 +13255,7 @@ components:
       - teamCount
       - past
       - signupsOpen
+      - discordConfigured
       - createdAt
       - updatedAt
       title: FleetEvent
@@ -14656,6 +14806,38 @@ components:
       required:
       - modelCounts
       title: FleetModelCountsStats
+    FleetNotificationSetting:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetId:
+          type: string
+          format: uuid
+        enabledInAppEvents:
+          type: array
+          items:
+            type: string
+            enum:
+            - fleet_event.published
+            - fleet_event.locked
+            - fleet_event.starting_soon
+            - fleet_event.cancelled
+            - fleet_event_signup.created
+            - fleet_event_signup.withdrawn
+        discordGuildId:
+          type: string
+        discordChannelId:
+          type: string
+        discordWebhookConfigured:
+          type: boolean
+      required:
+      - id
+      - fleetId
+      - enabledInAppEvents
+      - discordWebhookConfigured
+      title: FleetNotificationSetting
     FleetPublicVehicles:
       type: object
       properties:
@@ -17360,6 +17542,11 @@ components:
           type:
           - string
           - 'null'
+        archivedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
       additionalProperties: false
       title: MissionUpdateInput
     MissionsList:
@@ -19168,6 +19355,8 @@ components:
           type: boolean
         mailAvailable:
           type: boolean
+        pushAvailable:
+          type: boolean
       additionalProperties: false
       required:
       - notificationType
@@ -19175,6 +19364,7 @@ components:
       - mail
       - push
       - mailAvailable
+      - pushAvailable
       title: NotificationPreference
     NotificationTypeEnum:
       type: string
@@ -19192,6 +19382,17 @@ components:
       - fleet_member_accepted
       - fleet_request_accepted
       - fleet_inventory_item_added
+      - fleet_event_published
+      - fleet_event_locked
+      - fleet_event_starting_soon
+      - fleet_event_started
+      - fleet_event_completed
+      - fleet_event_cancelled
+      - fleet_event_signup_added
+      - fleet_event_signup_withdrawn
+      - fleet_event_signup_confirmed
+      - fleet_event_signup_assigned
+      - fleet_event_signup_kicked
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -19206,6 +19407,17 @@ components:
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
       - FLEET_INVENTORY_ITEM_ADDED
+      - FLEET_EVENT_PUBLISHED
+      - FLEET_EVENT_LOCKED
+      - FLEET_EVENT_STARTING_SOON
+      - FLEET_EVENT_STARTED
+      - FLEET_EVENT_COMPLETED
+      - FLEET_EVENT_CANCELLED
+      - FLEET_EVENT_SIGNUP_ADDED
+      - FLEET_EVENT_SIGNUP_WITHDRAWN
+      - FLEET_EVENT_SIGNUP_CONFIRMED
+      - FLEET_EVENT_SIGNUP_ASSIGNED
+      - FLEET_EVENT_SIGNUP_KICKED
       title: NotificationTypeEnum
     Notifications:
       type: object
