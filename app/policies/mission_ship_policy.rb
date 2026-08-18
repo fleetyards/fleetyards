@@ -7,7 +7,7 @@ class MissionShipPolicy < FleetBasePolicy
     can_update_mission?
   end
 
-  alias_rule :update?, :destroy?, :sort?, to: :create?
+  alias_rule :update?, :destroy?, :sort?, :duplicate?, to: :create?
 
   params_filter do |params|
     params.permit(
