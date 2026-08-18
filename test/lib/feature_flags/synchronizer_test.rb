@@ -35,8 +35,8 @@ module FeatureFlags
       Registry.new(raw: names.to_h { |name| [name, {"description" => name}] })
     end
 
-    def self_service_registry(*names)
-      Registry.new(raw: names.to_h { |name| [name, {"description" => name, "self_service" => true}] })
+    def self_service_registry(*names, scope: "user")
+      Registry.new(raw: names.to_h { |name| [name, {"description" => name, "self_service" => scope}] })
     end
 
     def sync(registry:, flipper:, **options)
@@ -69,9 +69,9 @@ module FeatureFlags
 
       sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]))
 
-      assert_not FeatureSetting.self_service?("orphan"),
+      assert_not FeatureSetting.self_service?("orphan", scope: "user"),
         "a re-declared flag would otherwise come back user-toggleable"
-      assert FeatureSetting.self_service?("keeper")
+      assert FeatureSetting.self_service?("keeper", scope: "user")
     end
 
     test "cleans up settings for flags flipper no longer knows about" do
@@ -89,7 +89,7 @@ module FeatureFlags
     test "seeds the setting of a flag declared self-service" do
       sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new)
 
-      assert FeatureSetting.self_service?("hangar_inventories"),
+      assert FeatureSetting.self_service?("hangar_inventories", scope: "user"),
         "a self-service flag must arrive user-toggleable without a data migration"
     end
 
@@ -98,8 +98,36 @@ module FeatureFlags
 
       sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new(["hangar_inventories"]))
 
-      assert_not FeatureSetting.self_service?("hangar_inventories"),
+      assert_not FeatureSetting.self_service?("hangar_inventories", scope: "user"),
         "the registry seeds self-service; a deploy must not undo the admin"
+    end
+
+    test "seeds a fleet-scoped flag with the fleet scope" do
+      sync(registry: self_service_registry("fleet_logistics", scope: "fleet"), flipper: FakeFlipper.new)
+
+      assert FeatureSetting.self_service?("fleet_logistics", scope: "fleet")
+      assert_not FeatureSetting.self_service?("fleet_logistics", scope: "user"),
+        "a fleet-wide feature must not be offered in personal settings"
+    end
+
+    test "reconciles the scope of an existing setting" do
+      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: true, self_service_scope: "user")
+
+      sync(registry: self_service_registry("fleet_logistics", scope: "fleet"), flipper: FakeFlipper.new(["fleet_logistics"]))
+
+      assert_equal "fleet", FeatureSetting.find_by(feature_name: "fleet_logistics").self_service_scope,
+        "the scope belongs to the code reading the flag, so a release moving it must take effect"
+    end
+
+    test "reconciling the scope leaves an admin's self-service decision alone" do
+      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: false, self_service_scope: "user")
+
+      sync(registry: self_service_registry("fleet_logistics", scope: "fleet"), flipper: FakeFlipper.new(["fleet_logistics"]))
+
+      setting = FeatureSetting.find_by(feature_name: "fleet_logistics")
+
+      assert_equal "fleet", setting.self_service_scope
+      assert_not setting.self_service, "the registry seeds self-service; a deploy must not undo the admin"
     end
 
     test "leaves flags that do not declare self-service without a setting" do
@@ -119,7 +147,7 @@ module FeatureFlags
 
       sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]), dry_run: true)
 
-      assert FeatureSetting.self_service?("orphan")
+      assert FeatureSetting.self_service?("orphan", scope: "user")
     end
 
     test "prune: false leaves self-service settings alone" do
@@ -127,7 +155,7 @@ module FeatureFlags
 
       sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]), prune: false)
 
-      assert FeatureSetting.self_service?("orphan")
+      assert FeatureSetting.self_service?("orphan", scope: "user")
     end
 
     test "reports no changes when flipper already matches" do

@@ -195,7 +195,8 @@
         "settings": {
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
-          "roles": "Ruoli flotta"
+          "roles": "Ruoli flotta",
+          "features": "Funzionalità della flotta"
         },
         "inviteMember": "Invita nuovo membro"
       },

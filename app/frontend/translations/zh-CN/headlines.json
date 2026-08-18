@@ -195,7 +195,8 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "舰队角色"
+          "roles": "舰队角色",
+          "features": "舰队功能"
         },
         "inviteMember": "Invite new Member"
       },

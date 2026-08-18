@@ -51,7 +51,8 @@
           "index": "Einstellungen",
           "fleet": "Flotteneinstellungen",
           "membership": "Mitgliedschaftseinstellungen",
-          "roles": "Rollen"
+          "roles": "Rollen",
+          "features": "Funktionen"
         }
       },
       "rsiProfile": "RSI-Profil",

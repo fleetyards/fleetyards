@@ -71,7 +71,7 @@ const crumbs = computed(() => [
 </script>
 
 <template>
-  <FeatureGuard :feature="FeatureFlagName.FLEET_STARMAP">
+  <FeatureGuard :feature="FeatureFlagName.FLEET_STARMAP" :fleet="props.fleet">
     <BreadCrumbs :crumbs="crumbs" />
     <Heading>
       {{ t("headlines.fleets.members.starmap") }}

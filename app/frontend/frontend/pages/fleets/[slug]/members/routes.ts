@@ -22,6 +22,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       customTitle: true,
       feature: FeatureFlagName.FLEET_WORLDMAP,
+      featureScope: "fleet",
     },
   },
   {
@@ -34,6 +35,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       customTitle: true,
       feature: FeatureFlagName.FLEET_STARMAP,
+      featureScope: "fleet",
     },
   },
   {

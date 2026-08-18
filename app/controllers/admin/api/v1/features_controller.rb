@@ -88,9 +88,17 @@ module Admin
         def toggle_self_service
           setting = FeatureSetting.find_or_initialize_by(feature_name: @feature.name.to_s)
           setting.self_service = !setting.self_service
+          # Which surface reads the flag is the registry's call, not the admin's:
+          # a row created here would otherwise default to personal settings and
+          # offer a fleet-wide feature to individual members.
+          setting.self_service_scope = registry_self_service_scope || setting.self_service_scope
           setting.save!
 
           render :show
+        end
+
+        private def registry_self_service_scope
+          FeatureFlags::Registry.load.fetch(@feature.name)&.self_service_scope
         end
 
         private def set_feature

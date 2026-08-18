@@ -74,4 +74,44 @@ class Api::V1::UserFeaturesDisableTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 403, path_params: {id: "NonSelfServiceFeature"}
   end
+
+  test "PUT /user-features/:id/disable disables a fleet-scoped feature for the user alone" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    Flipper.enable_actor("FleetWideFeature", @user)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: "FleetWideFeature"} do
+      assert_not Flipper.enabled?("FleetWideFeature", @user)
+    end
+  end
+
+  test "PUT /user-features/:id/disable returns 403 when the user's fleet enabled it" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    fleet = create(:fleet, members: [@user])
+    Flipper.enable_actor("FleetWideFeature", fleet)
+    sign_in @user
+
+    assert_api_response :put, 403, path_params: {id: "FleetWideFeature"} do
+      assert Flipper.enabled?("FleetWideFeature", fleet),
+        "a member cannot override what their fleet turned on, so the API refuses " \
+        "rather than reporting a change they will not see"
+    end
+  end
+
+  test "PUT /user-features/:id/disable ignores a fleet the user has only been invited to" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    fleet = create(:fleet)
+    create(:fleet_membership, :invited, fleet:, user: @user)
+    Flipper.enable_actor("FleetWideFeature", fleet)
+    Flipper.enable_actor("FleetWideFeature", @user)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: "FleetWideFeature"} do
+      assert_not Flipper.enabled?("FleetWideFeature", @user),
+        "a pending invitation does not hand the fleet control of the user's toggle"
+    end
+  end
 end

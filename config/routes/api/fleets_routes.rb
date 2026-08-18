@@ -32,6 +32,13 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_roles, path: "roles", only: %i[index]
 
+  resources :fleet_features, path: "features", only: %i[index] do
+    member do
+      put :enable
+      put :disable
+    end
+  end
+
   get "inventory-items", to: "fleet_all_inventory_items#index"
   get "inventory-stock", to: "fleet_all_inventory_stock#index"
 

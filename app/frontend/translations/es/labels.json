@@ -51,7 +51,13 @@
           "tools_travel_times": "Mostrar tiempos de viaje estimados entre ubicaciones.",
           "tools_cargo_grids": "Mostrar visor interactivo de grilla de carga para naves.",
           "fleet_starmap": "Mostrar mapa estelar de Star Citizen en las páginas de miembros de flota."
-        }
+        },
+        "fleetSettingsIntro": "Habilite o deshabilite funciones para toda la flota. Todos los miembros ven lo que active aquí.",
+        "fleetFeature": "Función de flota",
+        "fleetFeatureInfo": "Activarla aquí la habilita solo para usted. Los administradores de su flota pueden habilitarla para toda la flota.",
+        "toggleForSelf": "Activar solo para usted",
+        "fleetFeatureGrantedShort": "Activado por la flota",
+        "fleetFeatureGranted": "Su flota lo activó para todos los miembros, por lo que no se puede desactivar aquí."
       },
       "oauthApplication": {
         "name": "Nombre de la aplicación",
