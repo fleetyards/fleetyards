@@ -58,6 +58,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :sort, on: :collection
       resources :mission_ships, path: "ships", only: %i[create update destroy] do
         put :sort, on: :collection
+        post :duplicate, on: :member
       end
     end
   end
