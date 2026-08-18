@@ -75,11 +75,35 @@ const spawnedEventList = computed<FleetEvent[]>(() => {
     : [];
 });
 
+const fleetEventCreatedComlink = ref<() => void>();
+const fleetEventUpdatedComlink = ref<() => void>();
+const fleetMissionUpdatedComlink = ref<() => void>();
+const missionChildrenChangedComlink = ref<() => void>();
+
 onMounted(() => {
-  comlink.on("fleet-event-created", () => void refetchSpawnedEvents());
-  comlink.on("fleet-event-updated", () => void refetchSpawnedEvents());
-  comlink.on("fleet-mission-updated", () => void refetch());
-  comlink.on("mission-children-changed", () => void refetch());
+  fleetEventCreatedComlink.value = comlink.on(
+    "fleet-event-created",
+    () => void refetchSpawnedEvents(),
+  );
+  fleetEventUpdatedComlink.value = comlink.on(
+    "fleet-event-updated",
+    () => void refetchSpawnedEvents(),
+  );
+  fleetMissionUpdatedComlink.value = comlink.on(
+    "fleet-mission-updated",
+    () => void refetch(),
+  );
+  missionChildrenChangedComlink.value = comlink.on(
+    "mission-children-changed",
+    () => void refetch(),
+  );
+});
+
+onUnmounted(() => {
+  fleetEventCreatedComlink.value?.();
+  fleetEventUpdatedComlink.value?.();
+  fleetMissionUpdatedComlink.value?.();
+  missionChildrenChangedComlink.value?.();
 });
 
 const crumbs = computed(() => [
