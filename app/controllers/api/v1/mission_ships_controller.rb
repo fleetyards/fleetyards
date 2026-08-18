@@ -11,7 +11,7 @@ module Api
       before_action :check_fleet_mission_builder_feature
       before_action :set_mission
       before_action :set_team
-      before_action :set_ship, only: %i[update destroy]
+      before_action :set_ship, only: %i[update destroy duplicate]
 
       def create
         @ship = @team.mission_ships.new(ship_params)
@@ -59,6 +59,34 @@ module Api
         end
 
         render json: {success: true}
+      end
+
+      # A copy of the ship at the end of the same team, slots included. Those
+      # slots carry titles and descriptions an organiser may have edited, so
+      # rebuilding them from the model would quietly discard that work — the
+      # rows are copied as they stand.
+      def duplicate
+        authorize! @ship, with: MissionShipPolicy, to: :duplicate?, context: {mission: @mission}
+
+        ActiveRecord::Base.transaction do
+          @copy = @team.mission_ships.create!(
+            @ship.slice(
+              :title, :description, :model_id,
+              :classification, :focus, :min_size, :max_size, :min_crew, :min_cargo
+            ).merge(position: next_position)
+          )
+
+          @ship.mission_slots.order(:position).each do |slot|
+            @copy.mission_slots.create!(
+              slot.slice(:title, :description, :model_position_id, :position)
+            )
+          end
+        end
+
+        @ship = @copy
+        render :show, status: :created
+      rescue ActiveRecord::RecordInvalid
+        render json: ValidationError.new("mission_ships.duplicate", errors: @copy&.errors || @ship.errors), status: :bad_request
       end
 
       private def ship_params
