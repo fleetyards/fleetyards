@@ -131,6 +131,7 @@ class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   include RoutingConcern
   include ActiveStorageVariants
+  include AttachmentRansackers
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -273,16 +274,7 @@ class Model < ApplicationRecord
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug
 
-  %i[front_view fleetchart_image top_view_colored holo].each do |attachment_name|
-    ransacker attachment_name do
-      Arel.sql(
-        "(SELECT CAST(active_storage_attachments.id AS TEXT) FROM active_storage_attachments " \
-        "WHERE active_storage_attachments.record_type = 'Model' " \
-        "AND active_storage_attachments.record_id = models.id " \
-        "AND active_storage_attachments.name = '#{attachment_name}')"
-      )
-    end
-  end
+  ransack_attachment :front_view, :fleetchart_image, :top_view_colored, :holo
 
   def self.ransackable_attributes(auth_object = nil)
     [

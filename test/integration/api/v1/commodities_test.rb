@@ -85,4 +85,28 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
       assert_equal "metal", gold["commodityType"]
     end
   end
+
+  # The UEX snapshot has priced commodities since it landed; until Commodity had
+  # an item_prices association there was nothing to render them from.
+  test "GET /commodities carries where a commodity is bought and sold" do
+    create(:item_price, item: @gold, price_type: :buy, location: "Area18 TDD", price: 6_100)
+    create(:item_price, item: @gold, price_type: :sell, location: "Lorville CBD", price: 6_450)
+
+    assert_api_response :get, 200 do
+      gold = parsed_body["items"].find { |item| item["name"] == "Gold" }
+
+      assert_equal ["Area18 TDD"], gold["availability"]["boughtAt"].map { |price| price["location"] }
+      assert_equal ["Lorville CBD"], gold["availability"]["soldAt"].map { |price| price["location"] }
+      assert_equal "Commodity", gold["availability"]["boughtAt"].first["itemType"]
+    end
+  end
+
+  test "GET /commodities carries empty availability for an unpriced commodity" do
+    assert_api_response :get, 200 do
+      waste = parsed_body["items"].find { |item| item["name"] == "Waste" }
+
+      assert_empty waste["availability"]["boughtAt"]
+      assert_empty waste["availability"]["soldAt"]
+    end
+  end
 end

@@ -859,7 +859,12 @@
         "components": {
           "name": "Name",
           "itemType": "Gegenstandstyp",
-          "componentClass": "Komponentenklasse"
+          "componentClass": "Komponentenklasse",
+          "buyPriceGt": "Kaufpreis >=",
+          "buyPriceLt": "Kaufpreis <=",
+          "sellPriceGt": "Verkaufspreis >=",
+          "sellPriceLt": "Verkaufspreis <=",
+          "storeImageBlank": "Ohne Shop-Bild?"
         },
         "shops": {
           "name": "Name",
@@ -1013,7 +1018,29 @@
             "limit": "Max number of uses"
           }
         },
-        "manufacturer": "Hersteller"
+        "manufacturer": "Hersteller",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "Kaufpreis >=",
+          "buyPriceLt": "Kaufpreis <=",
+          "sellPriceGt": "Verkaufspreis >=",
+          "sellPriceLt": "Verkaufspreis <=",
+          "storeImageBlank": "Ohne Shop-Bild?"
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "Kaufpreis >=",
+          "buyPriceLt": "Kaufpreis <=",
+          "sellPriceGt": "Verkaufspreis >=",
+          "sellPriceLt": "Verkaufspreis <=",
+          "storeImageBlank": "Ohne Shop-Bild?"
+        }
       },
       "station": {
         "docks": "Andockplätze",
@@ -1320,7 +1347,28 @@
         "remaining": "Verbleibend",
         "unmeasured": "%{count} noch nicht vermessen"
       },
-      "hangarInventories": "Inventare"
+      "hangarInventories": "Inventare",
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      }
     }
   }
 }

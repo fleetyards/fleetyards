@@ -56,6 +56,10 @@ FactoryBot.define do
     hidden { false }
     version { Rails.configuration.sc_data[:version] }
 
+    trait :with_store_image do
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
+    end
+
     trait :attachment do
       equipment_type { "weapon_attachment" }
       item_type { "weapon_scope" }

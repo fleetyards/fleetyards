@@ -23,6 +23,8 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComponentFilters } from "@/admin/composables/useComponentFilters";
 import ComponentActions from "@/admin/components/Components/Actions/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 
 const route = useRoute();
 
@@ -66,6 +68,12 @@ const {
 
 const columns: BaseTableCol<Component>[] = [
   {
+    name: "storeImage",
+    label: "",
+    width: "120px",
+    alignment: "center",
+  },
+  {
     name: "name",
     label: "Name",
     sortable: true,
@@ -97,6 +105,18 @@ const columns: BaseTableCol<Component>[] = [
     mobile: false,
   },
   {
+    name: "buyPrice",
+    label: "Buy",
+    alignment: "right",
+    mobile: false,
+  },
+  {
+    name: "sellPrice",
+    label: "Sell",
+    alignment: "right",
+    mobile: false,
+  },
+  {
     name: "hidden",
     label: "Hidden",
     mobile: false,
@@ -115,7 +135,7 @@ const columns: BaseTableCol<Component>[] = [
   },
 ];
 
-const { t, l } = useI18n();
+const { t, l, toUEC } = useI18n();
 </script>
 
 <template>
@@ -164,6 +184,15 @@ const { t, l } = useI18n();
         default-sort="name asc"
         selectable
       >
+        <template #col-storeImage="{ record }">
+          <ViewImage
+            :image="record.media.storeImage"
+            size="small"
+            alt="image"
+            :variant="LazyImageVariantsEnum.WIDE_SMALL"
+            shadow
+          />
+        </template>
         <template #col-name="{ record }">
           <router-link
             :to="{
@@ -191,6 +220,14 @@ const { t, l } = useI18n();
         <template #col-manufacturer="{ record }">
           {{ record.manufacturer?.name }}
         </template>
+        <!-- eslint-disable vue/no-v-html -->
+        <template #col-buyPrice="{ record }">
+          <div class="no-break" v-html="toUEC(record.buyPrice ?? undefined)" />
+        </template>
+        <template #col-sellPrice="{ record }">
+          <div class="no-break" v-html="toUEC(record.sellPrice ?? undefined)" />
+        </template>
+        <!-- eslint-enable vue/no-v-html -->
         <template #col-hidden="{ record }">
           <i v-if="record.hidden" class="fa-duotone fa-check" />
           <i v-else class="fa-duotone fa-times" />

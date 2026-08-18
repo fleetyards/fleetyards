@@ -8391,6 +8391,21 @@ components:
           - 'null'
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
         createdAt:
           type: string
           format: date-time
@@ -8402,6 +8417,7 @@ components:
       - id
       - name
       - slug
+      - availability
       - createdAt
       - updatedAt
       title: Commodity
@@ -8432,6 +8448,27 @@ components:
       additionalProperties: false
       example: {}
       title: CommodityQuery
+    CommoditySortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - commodityType asc
+      - commodityType desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - COMMODITY_TYPE_ASC
+      - COMMODITY_TYPE_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: CommoditySortEnum
     CompareShare:
       type: object
       required:
@@ -9915,6 +9952,27 @@ components:
       additionalProperties: false
       example: {}
       title: EquipmentQuery
+    EquipmentSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - itemType asc
+      - itemType desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - ITEM_TYPE_ASC
+      - ITEM_TYPE_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: EquipmentSortEnum
     EquipmentTypeEnum:
       type: string
       enum:
@@ -12911,11 +12969,15 @@ components:
       - ModelModule
       - ModelPaint
       - Component
+      - Equipment
+      - Commodity
       x-enumNames:
       - MODEL
       - MODEL_MODULE
       - MODEL_PAINT
       - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
       title: ItemPriceItemTypeEnum
     ItemPriceTimeRangeEnum:
       type: string

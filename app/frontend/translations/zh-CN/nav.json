@@ -185,6 +185,19 @@
           "index": "资金目标",
           "new": "新建资金目标",
           "edit": "编辑资金目标"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "edit": {
+            "index": "Base Data"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         }
       }
     }
