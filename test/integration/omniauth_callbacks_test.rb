@@ -103,6 +103,20 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The avatar is the provider's pick, not the user's, so one the app refuses
+  # to store must not cost them the sign-in. Nothing is fetched either: the URL
+  # here points nowhere, and reaching it would fail the test.
+  test "an avatar the app will not store is passed over rather than failing the sign in" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME, image: "https://example.com/avatar.svg")
+
+    assert_difference -> { User.count }, 1 do
+      post "/users/auth/google/callback"
+    end
+
+    assert_response :redirect
+    assert_not_predicate User.last.avatar, :attached?
+  end
+
   test "#failure redirects with an alert on authentication failure" do
     OmniAuth.config.mock_auth[:discord] = :invalid_credentials
 

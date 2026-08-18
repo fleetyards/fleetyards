@@ -3,6 +3,13 @@
 module ActiveStorageVariants
   extend ActiveSupport::Concern
 
+  # A vector has no representations to make -- it draws at whatever size it is
+  # handed -- so these are the content types that fall outside the sizes below.
+  # "image/svg" is not a registered type, but it is what a hand-rolled client
+  # sends, and Marcel passes a declared type through when the bytes tell it no
+  # better.
+  VECTOR_CONTENT_TYPES = ["image/svg+xml", "image/svg"].freeze
+
   REPRESENTATION_SIZES = {
     small: {format: :webp, resize_to_limit: [500, 500], saver: {quality: 80}},
     medium: {format: :webp, resize_to_limit: [1000, 1000], saver: {quality: 82}},

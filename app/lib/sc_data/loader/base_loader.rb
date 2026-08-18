@@ -74,8 +74,9 @@ module ScData
         end
       end
 
-      # The record names the source art -- .tif -- while what was written is a
-      # .png or the .svg it already was, under a path that otherwise matches.
+      # The record names the source art -- .tif -- while what was written is the
+      # picture the export ships for it, a .png or an .svg, under a path that
+      # otherwise matches.
       def parsed_icon(icon_path)
         return if icon_path.blank?
 

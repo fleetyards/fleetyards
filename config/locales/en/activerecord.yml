@@ -242,6 +242,7 @@ en:
       messages:
         blank: can't be blank
         record_invalid: Bad Data
+        svg_not_supported: must not be an SVG image
       models:
         fleet_role:
           attributes:

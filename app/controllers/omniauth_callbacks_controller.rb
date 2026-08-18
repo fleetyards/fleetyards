@@ -105,15 +105,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         )
       end
 
-      if !user.avatar.attached? && auth.info.image.present?
-        avatar_uri = URI.parse(auth.info.image)
-        filename = "avatar#{File.extname(avatar_uri.path)}"
-        user.avatar.attach(
-          io: avatar_uri.open,
-          filename: filename,
-          content_type: Marcel::MimeType.for(name: filename)
-        )
-      end
+      attach_remote_avatar(user, auth.info.image)
 
       extract_citizenid_claims(user) if citizenid_provider?
 
@@ -187,18 +179,23 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user.rsi_handle_verified = true
     end
 
+    attach_remote_avatar(user, raw_info["urn:user:rsi:avatar:url"])
+  end
+
+  # The picture is the provider's, not something the account holder picked, so
+  # one the app will not serve is passed over rather than left to fail the
+  # sign-in they actually asked for.
+  private def attach_remote_avatar(user, url)
     return if user.avatar.attached?
+    return if url.blank?
 
-    rsi_avatar_url = raw_info["urn:user:rsi:avatar:url"]
-    return if rsi_avatar_url.blank?
-
-    avatar_uri = URI.parse(rsi_avatar_url)
+    avatar_uri = URI.parse(url)
     filename = "avatar#{File.extname(avatar_uri.path)}"
-    user.avatar.attach(
-      io: avatar_uri.open,
-      filename: filename,
-      content_type: Marcel::MimeType.for(name: filename)
-    )
+    content_type = Marcel::MimeType.for(name: filename)
+
+    return if ActiveStorageVariants::VECTOR_CONTENT_TYPES.include?(content_type)
+
+    user.avatar.attach(io: avatar_uri.open, filename:, content_type:)
   end
 
   private def verify_fleet_memberships(user)
