@@ -14,6 +14,14 @@ resources :users, only: [] do
   end
 end
 
+namespace :me, defaults: {format: :json} do
+  resource :calendar_subscription, path: "calendar/subscription", only: %i[show create destroy] do
+    post :rotate
+  end
+  get "calendar/events.ics", to: "calendar_subscriptions#ics",
+    as: :calendar_feed, defaults: {format: "ics"}, constraints: {format: "ics"}
+end
+
 namespace :public do
   resources :users, param: :username, only: %i[show]
 end
