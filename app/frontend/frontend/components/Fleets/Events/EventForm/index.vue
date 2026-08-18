@@ -17,6 +17,11 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -397,45 +402,52 @@ const onSubmit = handleSubmit(async (values) => {
   <form id="event-form" class="event-form" @submit.prevent="onSubmit">
     <div v-if="!isEdit" class="row">
       <div class="col-12">
-        <div class="event-form__mission-prefill">
-          <span class="event-form__prefill-label">
+        <Panel
+          :variant="PanelVariantsEnum.SLIM"
+          class="event-form__mission-prefill"
+        >
+          <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
             {{ t("labels.fleets.events.fromMission") }}
-          </span>
-          <div v-if="selectedMissionSlug" class="event-form__prefill-active">
-            <span class="event-form__prefill-name">
-              <i class="fa-light fa-flag-checkered" />
-              {{ selectedMissionTitle }}
-              <span
-                v-if="selectedMissionCategory"
-                class="event-form__prefill-badge"
-              >
-                {{
-                  t(
-                    `labels.fleets.missions.categories.${selectedMissionCategory}`,
-                  )
-                }}
+          </PanelHeading>
+          <!-- Panel's default slot carries no padding, so the content goes in
+               PanelBody or it sits flush against the frame. -->
+          <PanelBody>
+            <div v-if="selectedMissionSlug" class="event-form__prefill-active">
+              <span class="event-form__prefill-name">
+                <i class="fa-light fa-flag-checkered" />
+                {{ selectedMissionTitle }}
+                <span
+                  v-if="selectedMissionCategory"
+                  class="event-form__prefill-badge"
+                >
+                  {{
+                    t(
+                      `labels.fleets.missions.categories.${selectedMissionCategory}`,
+                    )
+                  }}
+                </span>
               </span>
-            </span>
-            <div class="event-form__prefill-actions">
-              <Btn :size="BtnSizesEnum.SM" @click="openTemplatePicker">
-                <i class="fa-light fa-arrows-rotate" />
-                {{ t("labels.fleets.events.changeTemplate") }}
-              </Btn>
-              <Btn
-                :size="BtnSizesEnum.SM"
-                variant="bare"
-                @click="applyMissionPrefill(null)"
-              >
-                <i class="fa-light fa-xmark" />
-                {{ t("labels.fleets.events.clearTemplate") }}
-              </Btn>
+              <div class="event-form__prefill-actions">
+                <Btn :size="BtnSizesEnum.SM" @click="openTemplatePicker">
+                  <i class="fa-light fa-arrows-rotate" />
+                  {{ t("labels.fleets.events.changeTemplate") }}
+                </Btn>
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  variant="bare"
+                  @click="applyMissionPrefill(null)"
+                >
+                  <i class="fa-light fa-xmark" />
+                  {{ t("labels.fleets.events.clearTemplate") }}
+                </Btn>
+              </div>
             </div>
-          </div>
-          <Btn v-else :size="BtnSizesEnum.SM" @click="openTemplatePicker">
-            <i class="fa-light fa-folder-open" />
-            {{ t("labels.fleets.events.pickTemplate") }}
-          </Btn>
-        </div>
+            <Btn v-else :size="BtnSizesEnum.SM" @click="openTemplatePicker">
+              <i class="fa-light fa-folder-open" />
+              {{ t("labels.fleets.events.pickTemplate") }}
+            </Btn>
+          </PanelBody>
+        </Panel>
       </div>
     </div>
 
@@ -768,20 +780,11 @@ const onSubmit = handleSubmit(async (values) => {
 .event-form {
   width: 100%;
 }
+/* Frame, padding and heading come from Panel; only the stack inside is ours. */
 .event-form__mission-prefill {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 11px 14px;
-  border-radius: var(--radius-control-bare, 6px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-.event-form__prefill-label {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-muted, #7a8288);
 }
 .event-form__prefill-active {
   display: flex;

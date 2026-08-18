@@ -131,8 +131,12 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
   padding-right: 37px;
 }
 
+/* A head can carry more than one control - the calendar's paginator sits beside
+   its view switch - and they were separated by nothing but collapsed whitespace.
+   Same 12px the metric head puts between its title and this block. */
 .panel-heading__actions {
-  @apply absolute right-0 top-0;
+  @apply absolute right-0 top-0 flex items-center;
+  gap: 12px;
   margin-right: 10px;
   padding-top: 10px;
 }

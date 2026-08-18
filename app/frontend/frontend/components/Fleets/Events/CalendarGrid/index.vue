@@ -17,10 +17,8 @@ import "@event-calendar/core/index.css";
 import { MissionCategory } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
-import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { type Fleet, type FleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -327,43 +325,27 @@ onUnmounted(() => {
     default slot directly when it has no background image, which is what the
     grid wants.
   -->
-  <Panel :variant="PanelVariantsEnum.SLIM" class="fy-calendar">
-    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
+  <Panel class="fy-calendar">
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" divider>
       {{ titleLabel }}
       <template #actions>
         <!-- Actions, so a plain group; the view switch beside it is a switch. -->
         <BtnGroup>
-          <Btn
-            :size="BtnSizesEnum.XS"
-            :aria-label="t('actions.previous')"
-            @click="goPrev"
-          >
+          <Btn :aria-label="t('actions.previous')" @click="goPrev">
             <i class="fa-light fa-chevron-left" />
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.XS"
-            :aria-label="t('actions.next')"
-            @click="goNext"
-          >
+          <Btn :aria-label="t('actions.next')" @click="goNext">
             <i class="fa-light fa-chevron-right" />
           </Btn>
-          <Btn :size="BtnSizesEnum.XS" @click="goToday">
+          <Btn @click="goToday">
             {{ t("actions.today") }}
           </Btn>
         </BtnGroup>
         <BtnGroup segmented data-test="calendar-view-switch">
-          <Btn
-            :size="BtnSizesEnum.XS"
-            :active="props.view === 'month'"
-            @click="setView('month')"
-          >
+          <Btn :active="props.view === 'month'" @click="setView('month')">
             {{ t("labels.fleets.events.calendar.month") }}
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.XS"
-            :active="props.view === 'week'"
-            @click="setView('week')"
-          >
+          <Btn :active="props.view === 'week'" @click="setView('week')">
             {{ t("labels.fleets.events.calendar.week") }}
           </Btn>
         </BtnGroup>
@@ -396,6 +378,13 @@ onUnmounted(() => {
 
     background: transparent;
     color: var(--color-text, #c8c8c8);
+  }
+
+  // headerToolbar: false empties the library's nav but still mounts it, and the
+  // nav keeps its margin-block-end: 1em - a band of dead space above the day
+  // labels. Our toolbar is the panel head, so the nav has nothing left to do.
+  :deep(.ec-toolbar) {
+    display: none;
   }
 
   // The header rule wants to read as a divider rather than as another cell
