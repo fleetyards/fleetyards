@@ -5,6 +5,8 @@ module V1
     class User
       include OpenapiRuby::Components::Base
 
+      DATE_FORMATS = ::User::DATE_FORMATS.keys
+
       schema({
         type: :object,
         properties: {
@@ -25,6 +27,7 @@ module V1
           currentSystem: {type: :string},
           currentSystemCode: {type: :string},
           saleNotify: {type: :boolean},
+          dateFormat: {type: :string, enum: DATE_FORMATS},
           publicHangar: {type: :boolean},
           publicHangarUrl: {type: :string},
           publicHangarLoaners: {type: :boolean},
@@ -47,7 +50,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email saleNotify publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner tracking
+          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner tracking
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })
