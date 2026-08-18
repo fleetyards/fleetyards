@@ -9,7 +9,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import Chip from "@/shared/components/base/Chip/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
 import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -41,12 +41,15 @@ const comlink = useComlink();
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(props.event));
 
-const { toneFor, labelKeyFor } = useEventStatus();
+const { toneFor, labelKeyFor, pillVariantFor } = useEventStatus();
 const statusTone = computed(() =>
   toneFor(props.event.status, props.event.past),
 );
 const statusLabel = computed(() =>
   t(labelKeyFor(props.event.status, props.event.past)),
+);
+const statusVariant = computed(() =>
+  pillVariantFor(props.event.status, props.event.past),
 );
 
 const recurringLabel = computed(() => {
@@ -104,7 +107,11 @@ const unarchive = async () => {
       <!-- The cap already carries the lifecycle; this names it, for anyone who
            cannot read a colour and for the states that share a tone. -->
       <template #actions>
-        <Chip bare data-test="event-status">{{ statusLabel }}</Chip>
+        <!-- A Pill, not a Chip: the card is itself the click target, and a
+             chip's frame comes with a button inside it. -->
+        <Pill :variant="statusVariant" data-test="event-status">
+          {{ statusLabel }}
+        </Pill>
       </template>
     </PanelHeading>
 
