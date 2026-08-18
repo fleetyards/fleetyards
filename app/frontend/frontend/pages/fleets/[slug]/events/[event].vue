@@ -12,7 +12,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
-import Chip from "@/shared/components/base/Chip/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
 import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
@@ -78,12 +78,17 @@ const stepperList = computed<string[]>(() =>
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(event.value));
 
-const { toneFor, labelKeyFor } = useEventStatus();
+const { toneFor, labelKeyFor, pillVariantFor } = useEventStatus();
 const statusTone = computed(() =>
   event.value ? toneFor(event.value.status, event.value.past) : undefined,
 );
 const statusLabel = computed(() =>
   event.value ? t(labelKeyFor(event.value.status, event.value.past)) : "",
+);
+const statusVariant = computed(() =>
+  event.value
+    ? pillVariantFor(event.value.status, event.value.past)
+    : "neutral",
 );
 
 const canManage = computed(() =>
@@ -441,10 +446,9 @@ const crumbs = computed(() => [
           {{ event.title }}
         </template>
         <template #actions>
-          <!-- Framed: bare is for a chip inside something already interactive,
-               which the hero is not, and without the frame the status read as
-               plain text sitting on the cover. -->
-          <Chip>{{ statusLabel }}</Chip>
+          <!-- A status is not a control: a framed chip renders a button with
+               aria-pressed, which is what a Pill exists to avoid. -->
+          <Pill :variant="statusVariant">{{ statusLabel }}</Pill>
         </template>
       </PanelHeading>
 
