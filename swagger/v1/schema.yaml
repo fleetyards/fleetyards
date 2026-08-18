@@ -2269,6 +2269,557 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/missions":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    post:
+      summary: Create Mission
+      tags:
+      - Missions
+      operationId: createFleetMission
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionExtended"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot create
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: List Missions
+      tags:
+      - Missions
+      operationId: fleetMissions
+      parameters:
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{missionSlug}/teams":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Mission Team
+      tags:
+      - Missions
+      operationId: createMissionTeam
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionTeamCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionTeam"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{missionSlug}/teams/sort":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Sort Mission Teams
+      tags:
+      - Missions
+      operationId: sortMissionTeams
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SortInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    delete:
+      summary: Destroy Mission Team
+      tags:
+      - Missions
+      operationId: destroyMissionTeam
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Mission Team
+      tags:
+      - Missions
+      operationId: updateMissionTeam
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionTeamUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionTeam"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionTeamId
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Mission Ship
+      tags:
+      - Missions
+      operationId: createMissionShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionShipCreateInput"
+      responses:
+        '201':
+          description: successful - range filter
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionShip"
+        '400':
+          description: bad request - non-in-game model
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/sort":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionTeamId
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Sort Mission Ships
+      tags:
+      - Missions
+      operationId: sortMissionShips
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SortInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionTeamId
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    delete:
+      summary: Destroy Mission Ship
+      tags:
+      - Missions
+      operationId: destroyMissionShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Mission Ship
+      tags:
+      - Missions
+      operationId: updateMissionShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionShipUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionShip"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    delete:
+      summary: Archive Mission
+      tags:
+      - Missions
+      operationId: destroyFleetMission
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful - archived
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionExtended"
+        '204':
+          description: successful - permanent delete on already-archived mission
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show Mission
+      tags:
+      - Missions
+      operationId: fleetMission
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionExtended"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Mission
+      tags:
+      - Missions
+      operationId: updateFleetMission
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionExtended"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/roles":
     parameters:
     - name: fleetSlug
@@ -4381,6 +4932,144 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
+  "/mission-slots":
+    post:
+      summary: Create Mission Slot
+      tags:
+      - Missions
+      operationId: createMissionSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionSlotCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionSlot"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/mission-slots/sort":
+    put:
+      summary: Sort Mission Slots
+      tags:
+      - Missions
+      operationId: sortMissionSlots
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionSlotSortInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/mission-slots/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    delete:
+      summary: Destroy Mission Slot
+      tags:
+      - Missions
+      operationId: destroyMissionSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Mission Slot
+      tags:
+      - Missions
+      operationId: updateMissionSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MissionSlotUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionSlot"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-paints":
     get:
       summary: Model Paints List
@@ -13342,6 +14031,471 @@ components:
           "$ref": "#/components/schemas/Pagination"
       additionalProperties: false
       title: Meta
+    Mission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+          enum:
+          - other
+          - ship_combat
+          - ground_combat
+          - combined_combat
+          - mining
+          - salvage
+          - cargo_hauling
+          - exploration
+        scenario:
+          type: string
+        coverImagePreset:
+          type: string
+        coverImage:
+          "$ref": "#/components/schemas/MediaFile"
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+        teamCount:
+          type: integer
+        shipCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - title
+      - slug
+      - category
+      - archived
+      - teamCount
+      - shipCount
+      - createdAt
+      - updatedAt
+      title: Mission
+    MissionCreateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        category:
+          type: string
+          enum:
+          - other
+          - ship_combat
+          - ground_combat
+          - combined_combat
+          - mining
+          - salvage
+          - cargo_hauling
+          - exploration
+        scenario:
+          type:
+          - string
+          - 'null'
+        coverImagePreset:
+          type:
+          - string
+          - 'null'
+        coverImage:
+          type:
+          - string
+          - 'null'
+      required:
+      - title
+      additionalProperties: false
+      title: MissionCreateInput
+    MissionExtended:
+      allOf:
+      - "$ref": "#/components/schemas/Mission"
+      - type: object
+        properties:
+          teams:
+            type: array
+            items:
+              "$ref": "#/components/schemas/MissionTeam"
+        required:
+        - teams
+      title: MissionExtended
+    MissionShip:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        missionTeamId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        displayTitle:
+          type: string
+        description:
+          type: string
+        position:
+          type: integer
+        strict:
+          type: boolean
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+            minCrew:
+              type: integer
+            maxCrew:
+              type: integer
+            image:
+              "$ref": "#/components/schemas/MediaFile"
+          required:
+          - id
+          - name
+          - slug
+        filters:
+          type: object
+          properties:
+            classification:
+              type: string
+            focus:
+              type: string
+            minSize:
+              type: string
+            maxSize:
+              type: string
+            minCrew:
+              type: integer
+            minCargo:
+              type: number
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MissionSlot"
+      required:
+      - id
+      - missionTeamId
+      - position
+      - strict
+      - slots
+      additionalProperties: false
+      title: MissionShip
+    MissionShipCreateInput:
+      type: object
+      properties:
+        title:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        modelId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        classification:
+          type:
+          - string
+          - 'null'
+        focus:
+          type:
+          - string
+          - 'null'
+        minSize:
+          type:
+          - string
+          - 'null'
+        maxSize:
+          type:
+          - string
+          - 'null'
+        minCrew:
+          type:
+          - integer
+          - 'null'
+        minCargo:
+          type:
+          - number
+          - 'null'
+        positionIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Optional list of ModelPosition IDs to materialize as slots
+            when modelId is set
+      additionalProperties: false
+      title: MissionShipCreateInput
+    MissionShipUpdateInput:
+      type: object
+      properties:
+        title:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        modelId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        classification:
+          type:
+          - string
+          - 'null'
+        focus:
+          type:
+          - string
+          - 'null'
+        minSize:
+          type:
+          - string
+          - 'null'
+        maxSize:
+          type:
+          - string
+          - 'null'
+        minCrew:
+          type:
+          - integer
+          - 'null'
+        minCargo:
+          type:
+          - number
+          - 'null'
+      additionalProperties: false
+      title: MissionShipUpdateInput
+    MissionSlot:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        slottableType:
+          type: string
+          enum:
+          - MissionTeam
+          - MissionShip
+        slottableId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        position:
+          type: integer
+        derived:
+          type: boolean
+        positionType:
+          type: string
+      required:
+      - id
+      - slottableType
+      - slottableId
+      - title
+      - position
+      - derived
+      additionalProperties: false
+      title: MissionSlot
+    MissionSlotCreateInput:
+      type: object
+      properties:
+        slottableType:
+          type: string
+          enum:
+          - MissionTeam
+          - MissionShip
+        slottableId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+      required:
+      - slottableType
+      - slottableId
+      - title
+      additionalProperties: false
+      title: MissionSlotCreateInput
+    MissionSlotSortInput:
+      type: object
+      properties:
+        slottableType:
+          type: string
+          enum:
+          - MissionTeam
+          - MissionShip
+        slottableId:
+          type: string
+          format: uuid
+        sorting:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - slottableType
+      - slottableId
+      - sorting
+      additionalProperties: false
+      title: MissionSlotSortInput
+    MissionSlotUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: MissionSlotUpdateInput
+    MissionTeam:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        missionId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        position:
+          type: integer
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MissionSlot"
+        ships:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MissionShip"
+      required:
+      - id
+      - missionId
+      - title
+      - position
+      - slots
+      - ships
+      additionalProperties: false
+      title: MissionTeam
+    MissionTeamCreateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+      required:
+      - title
+      additionalProperties: false
+      title: MissionTeamCreateInput
+    MissionTeamUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: MissionTeamUpdateInput
+    MissionUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        category:
+          type: string
+          enum:
+          - other
+          - ship_combat
+          - ground_combat
+          - combined_combat
+          - mining
+          - salvage
+          - cargo_hauling
+          - exploration
+        scenario:
+          type:
+          - string
+          - 'null'
+        coverImagePreset:
+          type:
+          - string
+          - 'null'
+        coverImage:
+          type:
+          - string
+          - 'null'
+        archivedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      title: MissionUpdateInput
+    MissionsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Mission"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: MissionsList
     Model:
       type: object
       properties:
@@ -15468,6 +16622,18 @@ components:
           type: string
       additionalProperties: false
       title: SetupOtpInput
+    SortInput:
+      type: object
+      properties:
+        sorting:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - sorting
+      additionalProperties: false
+      title: SortInput
     StandardError:
       type: object
       properties:
