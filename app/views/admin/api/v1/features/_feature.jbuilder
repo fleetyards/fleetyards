@@ -3,7 +3,7 @@
 json.name feature.name
 json.state feature.state.to_s
 
-json.selfService FeatureSetting.self_service?(feature.name)
+json.selfService FeatureSetting.self_service_anywhere?(feature.name)
 
 json.percentageOfActors feature.percentage_of_actors_value
 json.percentageOfTime feature.percentage_of_time_value
