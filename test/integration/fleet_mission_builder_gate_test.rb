@@ -42,4 +42,18 @@ class FleetMissionBuilderGateTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "the events list is forbidden while the flag is off" do
+    get "/api/v1/fleets/#{@fleet.slug}/events"
+
+    assert_response :forbidden
+  end
+
+  test "enabling the flag for the fleet opens the events list" do
+    Flipper.enable_actor("fleet_mission_builder", @fleet)
+
+    get "/api/v1/fleets/#{@fleet.slug}/events"
+
+    assert_response :success
+  end
 end
