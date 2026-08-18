@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class AddMissionBuilderFeatureFlag < ActiveRecord::Migration[8.1]
+class AddFleetMissionBuilderFeatureFlag < ActiveRecord::Migration[8.1]
   def up
-    Flipper.add("mission_builder")
+    Flipper.add("fleet_mission_builder")
   end
 
   def down
