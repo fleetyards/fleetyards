@@ -6,7 +6,7 @@ module Notifications
   class NewModelJobTest < ActiveJob::TestCase
     test "#perform sends discord notification and marks model as notified" do
       model = create(:model, notified: false)
-      Discord::NewShip.expects(:new).with(model: model).returns(stub(run: true))
+      ::Discord::NewShip.expects(:new).with(model: model).returns(stub(run: true))
 
       ::Notifications::NewModelJob.new.perform(model.id)
 
