@@ -4671,6 +4671,46 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{slug}/unarchive":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Unarchive Mission
+      tags:
+      - Missions
+      operationId: unarchiveFleetMission
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionExtended"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/notifications":
     parameters:
     - name: fleetSlug
@@ -17596,11 +17636,6 @@ components:
           type:
           - string
           - 'null'
-        archivedAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
       additionalProperties: false
       title: MissionUpdateInput
     MissionsList:
