@@ -5,3 +5,4 @@ json.app notification_preference.app?
 json.mail notification_preference.mail?
 json.push notification_preference.push?
 json.mail_available NotificationPreference.mail_available?(notification_preference.notification_type)
+json.push_available NotificationPreference.push_available?(notification_preference.notification_type)

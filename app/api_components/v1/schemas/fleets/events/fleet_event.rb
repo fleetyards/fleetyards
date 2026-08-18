@@ -59,6 +59,9 @@ module V1
               teamCount: {type: :integer},
               past: {type: :boolean},
               signupsOpen: {type: :boolean},
+              discordEventId: {type: :string},
+              discordSyncedAt: {type: :string, format: "date-time"},
+              discordConfigured: {type: :boolean},
               recurring: {type: :boolean},
               recurrenceInterval: {
                 type: :string,
@@ -78,7 +81,7 @@ module V1
             },
             required: %w[
               id fleetId title slug status startsAt timezone visibility category
-              autoLockEnabled archived externalUid signupApproval signupsCount teamCount past signupsOpen createdAt updatedAt
+              autoLockEnabled archived externalUid signupApproval signupsCount teamCount past signupsOpen discordConfigured createdAt updatedAt
             ]
           })
         end
