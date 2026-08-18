@@ -5,6 +5,7 @@
 # Table name: users
 #
 #  id                        :uuid             not null, primary key
+#  calendar_feed_token       :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -63,6 +64,7 @@
 #
 # Indexes
 #
+#  index_users_on_calendar_feed_token   (calendar_feed_token) UNIQUE
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_last_active_at        (last_active_at)
