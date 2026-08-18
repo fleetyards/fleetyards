@@ -7,14 +7,12 @@ module Models
   # database, and Maintenance::SeedManualModelsTask for one that already exists
   # and is missing them.
   module ManualRecords
+    # No slug: `update_slugs` derives it from the name on every save, so one
+    # declared here would be overwritten before it reached the row.
     MANUFACTURERS = [
-      {name: "Origin Jumpworks", slug: "origin-jumpworks", code: "ORIG"},
-      {name: "Drake Interplanetary", slug: "drake-interplanetary", code: "DRAK"},
-      {
-        name: "Musashi Industrial & Starflight Concern",
-        slug: "musashi-industrial-starflight-concern",
-        code: "MISC"
-      }
+      {name: "Origin Jumpworks", code: "ORIG"},
+      {name: "Drake Interplanetary", code: "DRAK"},
+      {name: "Musashi Industrial & Starflight Concern", code: "MISC"}
     ].freeze
 
     # Base models come first so a straight run creates them before the editions
@@ -91,7 +89,6 @@ module Models
       raise ArgumentError, "no manual manufacturer named #{name.inspect}" if definition.nil?
 
       Manufacturer.find_or_create_by!(name: definition[:name]) do |manufacturer|
-        manufacturer.slug = definition[:slug]
         manufacturer.code = definition[:code]
       end
     end
