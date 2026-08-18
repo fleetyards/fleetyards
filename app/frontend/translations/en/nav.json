@@ -52,7 +52,27 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Roles",
-          "features": "Features"
+          "features": "Features",
+          "notifications": "Notifications",
+          "discord": "Discord",
+          "calendar": "Calendar"
+        },
+        "missions": {
+          "index": "Missions",
+          "edit": {
+            "basic": "Basic",
+            "description": "Description",
+            "teams": "Teams & slots"
+          }
+        },
+        "events": {
+          "index": "Events",
+          "calendar": "Calendar",
+          "edit": {
+            "basic": "Basic",
+            "description": "Description",
+            "teams": "Teams & slots"
+          }
         }
       },
       "rsiProfile": "RSI Profile",
@@ -84,7 +104,8 @@
         "features": "Features",
         "connections": "Connections",
         "oauthApplications": "OAuth Apps",
-        "verify": "RSI Account Verification"
+        "verify": "RSI Account Verification",
+        "calendar": "Calendar"
       },
       "reload": "Update available!",
       "visualTests": {
@@ -100,7 +121,8 @@
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
         "supportHint": "Support Hint",
-        "chips": "Chips"
+        "chips": "Chips",
+        "events": "Events"
       },
       "admin": {
         "index": "Admin",
