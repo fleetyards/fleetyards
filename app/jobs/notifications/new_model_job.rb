@@ -8,7 +8,7 @@ module Notifications
       model = Model.find(model_id)
       return if model.notified?
 
-      Discord::NewShip.new(model:).run
+      ::Discord::NewShip.new(model:).run
 
       model.update(notified: true)
     end

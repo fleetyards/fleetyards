@@ -50,7 +50,8 @@ class FleetRole < ApplicationRecord
       FleetRole::AVAILABLE_PRIVILEGES,
       FleetInventory::AVAILABLE_PRIVILEGES,
       Mission::AVAILABLE_PRIVILEGES,
-      FleetEvent::AVAILABLE_PRIVILEGES
+      FleetEvent::AVAILABLE_PRIVILEGES,
+      FleetNotificationSetting::AVAILABLE_PRIVILEGES
     ].flatten.uniq
   end
 

@@ -198,6 +198,13 @@ GEM
     didkit (0.3.3)
     discard (2.0.0)
       activerecord (>= 7.0, < 9.0)
+    discordrb (3.8.0)
+      base64 (~> 0.2)
+      discordrb-webhooks (~> 3.8.0)
+      ffi (>= 1.9.24)
+      opus-ruby
+      rest-client (>= 2.0.0)
+      websocket-client-simple (>= 0.9.0)
     discordrb-webhooks (3.8.0)
       rest-client (>= 2.0.0)
     domain_name (0.6.20240107)
@@ -228,6 +235,7 @@ GEM
     ethon (0.18.0)
       ffi (>= 1.15.0)
       logger
+    event_emitter (0.2.6)
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
@@ -532,6 +540,8 @@ GEM
       webfinger (~> 2.0)
     openssl (4.0.1)
     options (2.3.2)
+    opus-ruby (1.0.1)
+      ffi
     orm_adapter (0.5.0)
     ostruct (0.6.3)
     paper_trail (17.0.0)
@@ -827,6 +837,12 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
+    websocket (1.2.11)
+    websocket-client-simple (0.9.0)
+      base64
+      event_emitter
+      mutex_m
+      websocket
     websocket-driver (0.8.2)
       base64
       websocket-extensions (>= 0.1.0)
@@ -867,6 +883,7 @@ DEPENDENCIES
   devise
   devise-two-factor
   discard (~> 2.0)
+  discordrb
   discordrb-webhooks
   doorkeeper (~> 5.9)
   doorkeeper-jwt
@@ -1037,6 +1054,7 @@ CHECKSUMS
   devise-two-factor (6.4.0) sha256=09e3a23b5b9ae7da78881d238a89860454d9e2ba0912e175576e9c028757adb4
   didkit (0.3.3) sha256=caa71e8c5b1f2cdf99804b3345677f6a6a687cbcc9916aeb4d8ae17304324a39
   discard (2.0.0) sha256=0fc520786b4d7b9b1ea8b2b3dadbb13c3e41d2ce7d297d04869baf1c9e30d2c0
+  discordrb (3.8.0) sha256=53802e5e64aa557c566538c86f6a682f63f5da9380a23792b78f13b7a72b6f21
   discordrb-webhooks (3.8.0) sha256=20bdf1ab54a1f5d9d4774c8facc34353e728601815f6def182e5e86798500ced
   domain_name (0.6.20240107) sha256=5f693b2215708476517479bf2b3802e49068ad82167bcd2286f899536a17d933
   doorkeeper (5.9.6) sha256=19b0d2c1099750762d8ddbf7ef4d79e38d2c80f583d97bbfd122a73c4af20d95
@@ -1053,6 +1071,7 @@ CHECKSUMS
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   et-orbi (1.4.0) sha256=6c7e3c90779821f9e3b324c5e96fda9767f72995d6ae435b96678a4f3e2de8bc
   ethon (0.18.0) sha256=b598afc9f30448cb068b850714b7d6948e941476095d04f90a4ac65b8d6efcb2
+  event_emitter (0.2.6) sha256=c72697bd5cce9d36594be1972c17f1c9a573236f44303a4d1d548080364e1391
   factory_bot (6.5.6) sha256=12beb373214dccc086a7a63763d6718c49769d5606f0501e0a4442676917e077
   factory_bot_rails (6.5.1) sha256=d3cc4851eae4dea8a665ec4a4516895045e710554d2b5ac9e68b94d351bc6d68
   faker (3.8.0) sha256=c147b308df73a90f27a4fc84f18d4c22ef0ad9c2a64b2b61c86fd0ca71753efc
@@ -1159,6 +1178,7 @@ CHECKSUMS
   openid_connect (2.3.1) sha256=5d808380cff80d78e3d3d54cfaebe2d6461d835c674faa29e2314a402c1b2182
   openssl (4.0.1) sha256=e27974136b7b02894a1bce46c5397ee889afafe704a839446b54dc81cb9c5f7d
   options (2.3.2) sha256=32413a4b9e363234eed2eecfb2a1a9deb32810f72c54820a37a62f65b905c5e8
+  opus-ruby (1.0.1) sha256=8dc808d6773a488469374cccf252808b2ad7bc7e00229a319832f0e09012ce53
   orm_adapter (0.5.0) sha256=aa5d0be5d540cbb46d3a93e88061f4ece6a25f6e97d6a47122beb84fe595e9b9
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
   paper_trail (17.0.0) sha256=1c2842061d3874ca7015908e821e2aa14f9b982af2acb2a7974713bf79021c85
@@ -1274,6 +1294,8 @@ CHECKSUMS
   web-console (4.3.0) sha256=e13b71301cdfc2093f155b5aa3a622db80b4672d1f2f713119cc7ec7ac6a6da4
   webfinger (2.1.3) sha256=567a52bde77fb38ca6b67e55db755f988766ec4651c1d24916a65aa70540695c
   webmock (3.26.2) sha256=774556f2ea6371846cca68c01769b2eac0d134492d21f6d0ab5dd643965a4c90
+  websocket (1.2.11) sha256=b7e7a74e2410b5e85c25858b26b3322f29161e300935f70a0e0d3c35e0462737
+  websocket-client-simple (0.9.0) sha256=f9a37c5e4922b35a711e21e6d73ed1e25892efa47d183203ab2f5beb4e563109
   websocket-driver (0.8.2) sha256=97c556b019bf3410b4961002ac501621e9322d3f8a7bc02161a09301cc4c4146
   websocket-extensions (0.1.5) sha256=1c6ba63092cda343eb53fc657110c71c754c56484aad42578495227d717a8241
   with_advisory_lock (7.6.0) sha256=638de2441fb1b50cc42752b80b74b4c0f3625fc68c7a8f24a0635ce5573b0336
