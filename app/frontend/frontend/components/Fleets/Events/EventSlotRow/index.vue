@@ -60,7 +60,18 @@ const signupsAllowed = computed(() =>
   props.signupsOpen === undefined ? !props.signupsLocked : props.signupsOpen,
 );
 
-const { t } = useI18n();
+const { t, tExists } = useI18n();
+
+// The API sends the enum value, so a turret seat read TURRET_GUNNER once the
+// label uppercased it. Unmapped values still read as words.
+const positionTypeLabel = computed(() => {
+  const type = props.slotData.positionType;
+  if (!type) return null;
+
+  const key = `labels.modelPosition.types.${type}`;
+
+  return tExists(key) ? t(key) : type.replace(/_/g, " ");
+});
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -187,8 +198,8 @@ const submitSignup = async () => {
     <header class="event-slot-row__head">
       <div class="event-slot-row__title">
         <span class="event-slot-row__name">{{ slotData.title }}</span>
-        <span v-if="slotData.positionType" class="event-slot-row__type">
-          {{ slotData.positionType }}
+        <span v-if="positionTypeLabel" class="event-slot-row__type">
+          {{ positionTypeLabel }}
         </span>
       </div>
       <div class="event-slot-row__action">
@@ -362,6 +373,10 @@ const submitSignup = async () => {
 }
 
 .event-slot-row__type {
+  /* Never at the name's expense: as a flex sibling it used to take its share and
+     break a seat called "Turret Side Back Left" over four lines. */
+  flex: none;
+  white-space: nowrap;
   font-family: "Orbitron", tahoma, sans-serif;
   font-size: 10px;
   letter-spacing: 0.16em;

@@ -14,9 +14,7 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { useEventStatus } from "@/frontend/composables/useEventStatus";
-import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
-import EventShipMeta from "@/frontend/components/Fleets/Events/EventShipMeta/index.vue";
-import EventShipMatchWarning from "@/frontend/components/Fleets/Events/EventShipMatchWarning/index.vue";
+import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
 import EventAdminActions from "@/frontend/components/Fleets/Events/EventAdminActions/index.vue";
 import UnassignedSignups from "@/frontend/components/Fleets/Events/UnassignedSignups/index.vue";
@@ -637,61 +635,20 @@ const crumbs = computed(() => [
         {{ t("labels.fleets.events.signupsLockedHint") }}
       </p>
 
-      <div
+      <!-- The same card the edit page uses, read-only: it carries each ship's
+           cover, which the hand-rolled block here did not. -->
+      <EventTeamCard
         v-for="team in event.teams as FleetEventTeam[]"
         :key="team.id"
-        class="event-team"
-      >
-        <h3 class="event-team__title">{{ team.title }}</h3>
-        <p v-if="team.description" class="text-muted">{{ team.description }}</p>
-
-        <div v-if="team.slots?.length" class="event-slots">
-          <EventSlotRow
-            v-for="slot in team.slots as FleetEventSlot[]"
-            :key="slot.id"
-            :slot-data="slot"
-            :fleet="fleet"
-            :event="event"
-            :current-user-id="currentUserId"
-            :signups-locked="signupsLocked"
-            :signups-open="signupsOpenForEvent"
-            :own-active-slot-id="ownActiveSlotId"
-            :is-manager="canManageSignups"
-          />
-        </div>
-
-        <div v-if="team.ships?.length" class="event-ships">
-          <div
-            v-for="ship in team.ships as FleetEventShip[]"
-            :key="ship.id"
-            class="event-ship"
-          >
-            <h4 class="event-ship__title">
-              {{ ship.displayTitle || ship.title || "Ship" }}
-            </h4>
-            <p v-if="ship.description" class="text-muted small">
-              {{ ship.description }}
-            </p>
-            <EventShipMeta :ship="ship" />
-            <EventShipMatchWarning :ship="ship" />
-            <div class="event-slots">
-              <EventSlotRow
-                v-for="slot in ship.slots as FleetEventSlot[]"
-                :key="slot.id"
-                :slot-data="slot"
-                :ship="ship"
-                :fleet="fleet"
-                :event="event"
-                :current-user-id="currentUserId"
-                :signups-locked="signupsLocked"
-                :signups-open="signupsOpenForEvent"
-                :own-active-slot-id="ownActiveSlotId"
-                :is-manager="canManageSignups"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+        :fleet="fleet"
+        :event="event"
+        :team="team"
+        :current-user-id="currentUserId"
+        :signups-locked="signupsLocked"
+        :signups-open="signupsOpenForEvent"
+        :own-active-slot-id="ownActiveSlotId"
+        :is-manager="canManageSignups"
+      />
     </section>
   </div>
 </template>
@@ -745,35 +702,6 @@ const crumbs = computed(() => [
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-.event-team {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 16px;
-}
-.event-team__title {
-  margin: 0 0 4px;
-}
-.event-slots {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 8px;
-}
-.event-ships {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-  margin-top: 16px;
-}
-.event-ship {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--radius-control-bare, 6px);
-  padding: 12px;
-}
-.event-ship__title {
-  margin: 0 0 8px;
-  font-size: 15px;
 }
 .event-occurrences {
   display: flex;
