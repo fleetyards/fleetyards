@@ -19,7 +19,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { isFeatureEnabled } = useFeatures();
+const { isFleetFeatureEnabled } = useFeatures();
 
 const resourceAccess = computed(
   () => props.membership?.fleetRole?.resourceAccess,
@@ -28,7 +28,9 @@ const resourceAccess = computed(
 
 <template>
   <router-view
-    v-if="isFeatureEnabled(FeatureFlagName.FLEET_MISSION_BUILDER)"
+    v-if="
+      isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_MISSION_BUILDER)
+    "
     :fleet="props.fleet"
     :membership="props.membership"
     :resource-access="resourceAccess"

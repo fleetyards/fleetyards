@@ -18,7 +18,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
 const { t } = useI18n();
-const { isFeatureEnabled } = useFeatures();
+const { isFeatureEnabled, isFleetFeatureEnabled } = useFeatures();
 
 const route = useRoute();
 
@@ -165,7 +165,10 @@ onMounted(() => {
         <NavItem
           v-if="
             (hasEventsAccess || hasMissionsAccess) &&
-            isFeatureEnabled(FeatureFlagName.FLEET_MISSION_BUILDER)
+            isFleetFeatureEnabled(
+              currentFleet,
+              FeatureFlagName.FLEET_MISSION_BUILDER,
+            )
           "
           :to="{
             name: 'fleet-events',

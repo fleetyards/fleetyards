@@ -33,11 +33,7 @@ fleet_logistics:
 
 fleet_mission_builder:
   description: "Mission builder — fleet missions, events, the calendar and Discord sync"
-  self_service: true
-
-fleet_mission_builder:
-  description: "Mission builder — fleet missions, events, the calendar and Discord sync"
-  self_service: true
+  self_service: fleet
 
 fleet_starmap:
   description: "Starmap on the fleet page"

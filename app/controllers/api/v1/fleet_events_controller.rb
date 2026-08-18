@@ -15,8 +15,8 @@ module Api
         unless: :user_signed_in?,
         only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
 
-      before_action :check_fleet_mission_builder_feature
       before_action :set_fleet
+      before_action :check_fleet_mission_builder_feature
       before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
       before_action :set_mission, only: %i[create]
 
@@ -310,7 +310,7 @@ module Api
       end
 
       private def check_fleet_mission_builder_feature
-        return if feature_enabled?("fleet_mission_builder")
+        return if feature_enabled?("fleet_mission_builder", @fleet)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

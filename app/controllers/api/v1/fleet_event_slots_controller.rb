@@ -7,9 +7,9 @@ module Api
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?
 
-      before_action :check_fleet_mission_builder_feature
       before_action :set_slottable, only: %i[create]
       before_action :set_slot, only: %i[update destroy]
+      before_action :check_fleet_mission_builder_feature
 
       def create
         @slot = @slottable.fleet_event_slots.new(slot_attrs)
@@ -85,7 +85,10 @@ module Api
       end
 
       private def check_fleet_mission_builder_feature
-        return if feature_enabled?("fleet_mission_builder")
+        # Slots are addressed directly, without a fleet in the path, so the
+        # actor comes off whichever record this action loaded.
+        fleet = (@slottable || @slot)&.fleet_event&.fleet
+        return if feature_enabled?("fleet_mission_builder", fleet)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

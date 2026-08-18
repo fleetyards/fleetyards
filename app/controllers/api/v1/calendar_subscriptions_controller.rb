@@ -11,8 +11,8 @@ module Api
         unless: :user_signed_in?,
         only: %i[create destroy rotate]
 
-      before_action :check_fleet_mission_builder_feature
       before_action :set_fleet
+      before_action :check_fleet_mission_builder_feature
 
       def show
         authorize! @fleet, to: :show?
@@ -43,7 +43,7 @@ module Api
       end
 
       private def check_fleet_mission_builder_feature
-        return if feature_enabled?("fleet_mission_builder")
+        return if feature_enabled?("fleet_mission_builder", @fleet)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
