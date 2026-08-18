@@ -53,7 +53,12 @@
           "fleet_starmap": "Star Citizen Sternenkarte auf Flottenmitgliederseiten anzeigen."
         },
         "registryHint": "Flags werden in config/feature_flags.yml deklariert und beim Deploy erstellt. Hier steuerst du ihre Gates.",
-        "fleetSettingsIntro": "Aktivieren oder deaktivieren Sie Funktionen für die gesamte Flotte. Was Sie hier einschalten, sehen alle Mitglieder."
+        "fleetSettingsIntro": "Aktivieren oder deaktivieren Sie Funktionen für die gesamte Flotte. Was Sie hier einschalten, sehen alle Mitglieder.",
+        "fleetFeature": "Flottenfunktion",
+        "fleetFeatureInfo": "Hier eingeschaltet gilt sie nur für Sie. Die Admins Ihrer Flotte können sie für die gesamte Flotte aktivieren.",
+        "toggleForSelf": "Nur für Sie umschalten",
+        "fleetFeatureGrantedShort": "Von Flotte aktiviert",
+        "fleetFeatureGranted": "Ihre Flotte hat dies für alle Mitglieder aktiviert, daher kann es hier nicht abgeschaltet werden."
       },
       "oauthApplication": {
         "name": "Anwendungsname",

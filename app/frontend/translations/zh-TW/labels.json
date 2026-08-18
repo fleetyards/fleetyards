@@ -52,7 +52,12 @@
           "tools_cargo_grids": "顯示飛船的互動式貨物網格檢視器。",
           "fleet_starmap": "在艦隊成員頁面顯示 Star Citizen 星圖。"
         },
-        "fleetSettingsIntro": "為整個艦隊啟用或停用功能。您在此啟用的內容對所有成員可見。"
+        "fleetSettingsIntro": "為整個艦隊啟用或停用功能。您在此啟用的內容對所有成員可見。",
+        "fleetFeature": "艦隊功能",
+        "fleetFeatureInfo": "在此啟用僅對您生效。您艦隊的管理員可為整個艦隊啟用。",
+        "toggleForSelf": "僅為自己切換",
+        "fleetFeatureGrantedShort": "艦隊已啟用",
+        "fleetFeatureGranted": "您的艦隊已為所有成員啟用此功能，因此無法在此處關閉。"
       },
       "oauthApplication": {
         "name": "應用程式名稱",

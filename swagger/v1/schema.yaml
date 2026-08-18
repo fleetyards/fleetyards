@@ -10350,6 +10350,18 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetFeature:
+      type: object
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - enabled
+      title: FleetFeature
     FleetInventoriesList:
       type: object
       properties:
@@ -15765,10 +15777,33 @@ components:
           type: string
         enabled:
           type: boolean
+        enabledForSelf:
+          type: boolean
+        scope:
+          type: string
+          enum:
+          - user
+          - fleet
+        fleets:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              slug:
+                type: string
+            additionalProperties: false
+            required:
+            - name
+            - slug
       additionalProperties: false
       required:
       - name
       - enabled
+      - enabledForSelf
+      - scope
+      - fleets
       title: UserFeature
     UserPublic:
       type: object
