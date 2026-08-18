@@ -28,7 +28,16 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), { editable: false });
 
-const { t } = useI18n();
+const { t, tExists } = useI18n();
+
+// The API sends the enum value, so "turret_gunner" reached the badge as
+// TURRET_GUNNER once uppercased. Unmapped values still read as words rather
+// than as identifiers.
+const positionTypeLabel = (type: string) => {
+  const key = `labels.modelPosition.types.${type}`;
+
+  return tExists(key) ? t(key) : type.replace(/_/g, " ");
+};
 const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
@@ -190,7 +199,7 @@ onUnmounted(() => {
           <i class="fa-light fa-grip-vertical" />
         </span>
         <span v-if="slot.positionType" class="slot-type-badge">
-          {{ slot.positionType }}
+          {{ positionTypeLabel(slot.positionType) }}
         </span>
         <input
           v-if="editable && editingId === slot.id"
