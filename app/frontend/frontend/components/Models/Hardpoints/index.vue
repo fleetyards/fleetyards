@@ -244,6 +244,24 @@ useMetricsMasonry(metricsGrid);
         <ModelExternalFuelTanks :model="model" />
         <ModelRefuelBoom :model="model" />
       </div>
+      <div v-if="showMetrics" class="hardpoints__credit">
+        <a
+          class="hardpoints__credit-link"
+          href="https://www.erkul.games/"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="hardpoints__credit-icon" aria-hidden="true" />
+          <span>
+            {{ t("labels.hardpoints.metricsCredit") }}
+            <span class="hardpoints__credit-source">erkul.games</span>
+          </span>
+          <i
+            class="fa-regular fa-arrow-up-right-from-square"
+            aria-hidden="true"
+          />
+        </a>
+      </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
         <BtnGroup segmented :aria-label="t('labels.hardpoint.density.title')">
           <Btn
