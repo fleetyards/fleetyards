@@ -21,6 +21,10 @@ class FleetPolicy < FleetBasePolicy
     fleet_membership.present?
   end
 
+  def manage_calendar?
+    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage"])
+  end
+
   def manage?
     accepted_fleet_membership&.has_access?(["fleet:manage"])
   end
@@ -35,10 +39,6 @@ class FleetPolicy < FleetBasePolicy
 
   def destroy?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:delete"])
-  end
-
-  def manage_calendar?
-    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage"])
   end
 
   relation_scope do |relation|

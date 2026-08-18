@@ -42,16 +42,6 @@ module Frontend
       render_frontend
     end
 
-    def settings
-      if fleet.present?
-        @title = I18n.t("title.frontend.fleet_settings", fleet: fleet.name)
-        @og_type = "article"
-        @og_image = fleet.logo.attached? ? rails_blob_url(fleet.logo) : nil
-      end
-
-      render_frontend
-    end
-
     def event
       fleet_for_event = Fleet.find_by(slug: (params[:fleet_slug] || "").downcase)
       fleet_event = fleet_for_event&.fleet_events&.find_by(slug: params[:event_slug])
@@ -59,6 +49,16 @@ module Frontend
         @title = fleet_event.title
         @og_type = "article"
         @og_image = fleet_event.cover_image.attached? ? rails_blob_url(fleet_event.cover_image) : nil
+      end
+
+      render_frontend
+    end
+
+    def settings
+      if fleet.present?
+        @title = I18n.t("title.frontend.fleet_settings", fleet: fleet.name)
+        @og_type = "article"
+        @og_image = fleet.logo.attached? ? rails_blob_url(fleet.logo) : nil
       end
 
       render_frontend

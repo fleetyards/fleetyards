@@ -169,15 +169,6 @@ class User < ApplicationRecord
     uniqueness: {case_sensitive: false},
     presence: true
 
-  DATE_FORMATS = {
-    "dmy_dots" => "dd.MM.yyyy",
-    "dmy_slash" => "dd/MM/yyyy",
-    "mdy_slash" => "MM/dd/yyyy",
-    "ymd_dash" => "yyyy-MM-dd"
-  }.freeze
-
-  validates :date_format, inclusion: {in: DATE_FORMATS.keys}
-
   attr_accessor :login
 
   before_validation :clean_username
@@ -281,14 +272,50 @@ class User < ApplicationRecord
     "https://discord.com/users/#{connection.uid}"
   end
 
-  def discord_uid
-    connection_for("discord")&.uid
-  end
-
   # detect rather than find_by: a user has at most a handful of connections, so
   # reading them from a preloaded association costs one query for all providers
   # instead of one per profile url - the fleet vehicle list asks every owner for
   # two of them.
+  DATE_FORMATS = {
+    "dmy_dots" => "dd.MM.yyyy",
+    "dmy_slash" => "dd/MM/yyyy",
+    "mdy_slash" => "MM/dd/yyyy",
+    "ymd_dash" => "yyyy-MM-dd"
+  }.freeze
+
+  validates :date_format, inclusion: {in: DATE_FORMATS.keys}
+
+  def discord_uid
+    connection_for("discord")&.uid
+  end
+
+  def calendar_feed_enabled?
+    calendar_feed_token.present?
+  end
+
+  def ensure_calendar_feed_token!
+    return calendar_feed_token if calendar_feed_token.present?
+
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def rotate_calendar_feed_token!
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def clear_calendar_feed_token!
+    update_column(:calendar_feed_token, nil)
+  end
+
+  def self.generate_calendar_feed_token
+    loop do
+      token = SecureRandom.urlsafe_base64(32)
+      break token unless exists?(calendar_feed_token: token)
+    end
+  end
+
   private def connection_for(provider)
     omniauth_connections.detect { |connection| connection.provider == provider }
   end
@@ -333,33 +360,6 @@ class User < ApplicationRecord
 
   def confirm_access_token
     Digest::MD5.hexdigest(Digest::MD5.hexdigest(Rails.application.credentials.confirm_access_secret!) + Digest::MD5.hexdigest(id))
-  end
-
-  def calendar_feed_enabled?
-    calendar_feed_token.present?
-  end
-
-  def ensure_calendar_feed_token!
-    return calendar_feed_token if calendar_feed_token.present?
-
-    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
-    calendar_feed_token
-  end
-
-  def rotate_calendar_feed_token!
-    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
-    calendar_feed_token
-  end
-
-  def clear_calendar_feed_token!
-    update_column(:calendar_feed_token, nil)
-  end
-
-  def self.generate_calendar_feed_token
-    loop do
-      token = SecureRandom.urlsafe_base64(32)
-      break token unless exists?(calendar_feed_token: token)
-    end
   end
 
   STAR_SYSTEMS = {
