@@ -5,6 +5,7 @@ module Notifications
     class FleetEventSubscriber
       UPSERT_EVENTS = %w[
         fleet_event.published
+        fleet_event.unarchived
         fleet_event.locked
         fleet_event.unlocked
         fleet_event.started
@@ -49,7 +50,7 @@ module Notifications
         return unless ::Discord::ApiClient.configured?
         return if event.fleet.fleet_notification_setting&.discord_guild_id.blank?
 
-        ::Discord::SyncFleetEventJob.perform_async(event.id, "action" => @action.to_s)
+        ::Discord::SyncFleetEventJob.perform_async(event.id, @action.to_s)
       end
     end
   end
