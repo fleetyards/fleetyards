@@ -143,6 +143,76 @@ module Calendars
           assert_includes ::Calendars::IcsBuilder.new([event]).to_ics, "UNTIL=20260604T235959Z"
         end
 
+        test "converts UNTIL from the event's local end-of-day" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: @thursday, timezone: "America/Los_Angeles",
+            recurring: true, recurrence_interval: "weekly",
+            recurrence_until: Date.parse("2026-06-04"))
+
+          # 23:59:59 on 4 June in Los Angeles is 06:59:59Z the next day, so
+          # stamping T235959Z would drop that evening's occurrence.
+          assert_includes ::Calendars::IcsBuilder.new([event]).to_ics, "UNTIL=20260605T065959Z"
+        end
+
+        test "keeps the last local occurrence a behind-UTC series still has" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: Time.zone.parse("2026-05-07 19:00"),
+            timezone: "America/Los_Angeles",
+            recurring: true, recurrence_interval: "weekly",
+            recurrence_until: Date.parse("2026-06-04"))
+
+          last = event.occurrences(from: Time.zone.parse("2026-05-01"),
+            to: Time.zone.parse("2026-07-01")).last
+
+          assert_equal Date.parse("2026-06-04"), last.in_time_zone("America/Los_Angeles").to_date
+        end
+
+        test "emits a RECURRENCE-ID override for an occurrence that differs" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: @thursday, timezone: "UTC",
+            title: "Weekly Op", location: "Port Olisar",
+            recurring: true, recurrence_interval: "weekly")
+          occurrence = event.occurrences(from: @thursday, to: @thursday + 3.weeks)[1]
+          event.fleet_event_occurrence_states.create!(
+            occurrence_date: occurrence.to_date,
+            title: "Moved Op", location: "Everus Harbor"
+          )
+
+          ics = ::Calendars::IcsBuilder.new([event]).to_ics
+
+          assert_includes ics, "RECURRENCE-ID:#{occurrence.utc.strftime("%Y%m%dT%H%M%SZ")}"
+          assert_includes ics, "SUMMARY:Moved Op"
+          assert_includes ics, "LOCATION:Everus Harbor"
+          # the parent still carries the series
+          assert_includes ics, "SUMMARY:Weekly Op"
+          assert_equal 2, ics.scan("BEGIN:VEVENT").size
+        end
+
+        test "marks a cancelled occurrence cancelled without touching the series" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: @thursday, timezone: "UTC",
+            recurring: true, recurrence_interval: "weekly")
+          occurrence = event.occurrences(from: @thursday, to: @thursday + 3.weeks)[1]
+          event.fleet_event_occurrence_states.create!(
+            occurrence_date: occurrence.to_date, cancelled_at: Time.current
+          )
+
+          ics = ::Calendars::IcsBuilder.new([event]).to_ics
+
+          assert_includes ics, "STATUS:CANCELLED"
+          assert_equal 2, ics.scan("BEGIN:VEVENT").size
+        end
+
+        test "leaves a series without overrides as a single VEVENT" do
+          event = create(:fleet_event, :open,
+            fleet: @fleet, starts_at: @thursday, timezone: "UTC",
+            recurring: true, recurrence_interval: "weekly")
+
+          ics = ::Calendars::IcsBuilder.new([event]).to_ics
+
+          assert_equal 1, ics.scan("BEGIN:VEVENT").size
+        end
+
         test "emits COUNT when recurrence_count is set" do
           event = create(:fleet_event, :open,
             fleet: @fleet, starts_at: @thursday, timezone: "UTC",

@@ -63,4 +63,27 @@ class Api::V1::FleetsCalendarIcsTest < ActionDispatch::IntegrationTest
 
     assert_response :forbidden
   end
+  test "keeps an old recurring series that still has occurrences ahead" do
+    create(:fleet_event, :open, fleet: @fleet, title: "Weekly Op",
+      starts_at: 6.months.ago, recurring: true, recurrence_interval: "weekly")
+
+    get "/api/v1/fleets/#{@fleet.slug}/events.ics",
+      params: {token: @fleet.calendar_feed_token}
+
+    assert_response :ok
+    assert_includes response.body, "Weekly Op"
+    assert_includes response.body, "RRULE:FREQ=WEEKLY"
+  end
+
+  test "drops a recurring series that ended before the window" do
+    create(:fleet_event, :open, fleet: @fleet, title: "Finished Op",
+      starts_at: 8.months.ago, recurring: true, recurrence_interval: "weekly",
+      recurrence_until: 7.months.ago.to_date)
+
+    get "/api/v1/fleets/#{@fleet.slug}/events.ics",
+      params: {token: @fleet.calendar_feed_token}
+
+    assert_response :ok
+    refute_includes response.body, "Finished Op"
+  end
 end
