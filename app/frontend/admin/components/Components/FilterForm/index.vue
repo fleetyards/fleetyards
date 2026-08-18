@@ -5,22 +5,36 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
+import {
+  InputSizesEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import RadioList from "@/shared/components/base/RadioList/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
+import ComponentClassFilterGroup from "@/admin/components/base/ComponentClassFilterGroup/index.vue";
+import ComponentItemTypeFilterGroup from "@/admin/components/base/ComponentItemTypeFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type ComponentQuery } from "@/services/fyAdminApi";
 import { useComponentFilters } from "@/admin/composables/useComponentFilters";
 
 const { t } = useI18n();
 
+const { booleanOptions } = useFilterOptions();
+
 const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
-    itemTypeCont: filters.value.itemTypeCont,
-    componentClassCont: filters.value.componentClassCont,
+    itemTypeIn: filters.value.itemTypeIn || [],
+    storeImageBlank: filters.value.storeImageBlank,
+    componentClassIn: filters.value.componentClassIn || [],
     manufacturerIdIn: filters.value.manufacturerIdIn || [],
+    buyPriceGteq: filters.value.buyPriceGteq,
+    buyPriceLteq: filters.value.buyPriceLteq,
+    sellPriceGteq: filters.value.sellPriceGteq,
+    sellPriceLteq: filters.value.sellPriceLteq,
   };
 };
 
@@ -66,19 +80,62 @@ watch(
       name="manufacturer"
     />
 
-    <FormInput
-      v-model="form.itemTypeCont"
-      name="itemType"
-      translation-key="filters.components.itemType"
-      :clearable="true"
+    <ComponentClassFilterGroup
+      v-model="form.componentClassIn"
+      name="component-class"
     />
 
-    <FormInput
-      v-model="form.componentClassCont"
-      name="componentClass"
-      translation-key="filters.components.componentClass"
-      :clearable="true"
+    <ComponentItemTypeFilterGroup v-model="form.itemTypeIn" name="item-type" />
+
+    <RadioList
+      v-model="form.storeImageBlank"
+      :label="t('labels.filters.components.storeImageBlank')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="storeImageBlank"
     />
+
+    <div class="row">
+      <div class="col-6">
+        <FormInput
+          v-model="form.buyPriceGteq"
+          name="component-buy-price-gteq"
+          :type="InputTypesEnum.NUMBER"
+          translation-key="filters.components.buyPriceGt"
+          :no-placeholder="true"
+        />
+      </div>
+      <div class="col-6">
+        <FormInput
+          v-model="form.buyPriceLteq"
+          name="component-buy-price-lteq"
+          :type="InputTypesEnum.NUMBER"
+          translation-key="filters.components.buyPriceLt"
+          :no-placeholder="true"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <FormInput
+          v-model="form.sellPriceGteq"
+          name="component-sell-price-gteq"
+          :type="InputTypesEnum.NUMBER"
+          translation-key="filters.components.sellPriceGt"
+          :no-placeholder="true"
+        />
+      </div>
+      <div class="col-6">
+        <FormInput
+          v-model="form.sellPriceLteq"
+          name="component-sell-price-lteq"
+          :type="InputTypesEnum.NUMBER"
+          translation-key="filters.components.sellPriceLt"
+          :no-placeholder="true"
+        />
+      </div>
+    </div>
 
     <br />
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">

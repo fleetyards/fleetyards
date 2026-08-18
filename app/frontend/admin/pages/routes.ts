@@ -1,6 +1,8 @@
 import { routes as modelsRoutes } from "@/admin/pages/models/routes";
 import { routes as manufacturersRoutes } from "@/admin/pages/manufacturers/routes";
 import { routes as componentsRoutes } from "@/admin/pages/components/routes";
+import { routes as equipmentRoutes } from "@/admin/pages/equipment/routes";
+import { routes as commoditiesRoutes } from "@/admin/pages/commodities/routes";
 import { routes as fleetsRoutes } from "@/admin/pages/fleets/routes";
 import { routes as vehiclesRoutes } from "@/admin/pages/vehicles/routes";
 import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
@@ -46,6 +48,30 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-flux-capacitor",
       access: ["components"],
+    },
+  },
+  {
+    path: "/equipment/",
+    component: () => import("@/admin/pages/equipment.vue"),
+    children: equipmentRoutes,
+    redirect: { name: equipmentRoutes[0].name },
+    meta: {
+      title: "admin.equipment.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-gun",
+      access: ["equipment"],
+    },
+  },
+  {
+    path: "/commodities/",
+    component: () => import("@/admin/pages/commodities.vue"),
+    children: commoditiesRoutes,
+    redirect: { name: commoditiesRoutes[0].name },
+    meta: {
+      title: "admin.commodities.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-boxes-stacked",
+      access: ["commodities"],
     },
   },
   {

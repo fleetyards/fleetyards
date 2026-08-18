@@ -45,6 +45,9 @@
 #  index_equipment_on_slot             (slot)
 #
 class Equipment < ApplicationRecord
+  include AttachmentRansackers
+  include ItemPriceConcern
+
   paginates_per 50
 
   belongs_to :manufacturer, optional: true
@@ -54,7 +57,7 @@ class Equipment < ApplicationRecord
   # every other catalogue has one -- an upload, and the ledger's fallback to
   # the referenced item's picture.
   has_one_attached :store_image
-  has_many :item_prices, as: :item, dependent: :destroy
+  ransack_attachment :store_image
 
   validates :name, presence: true
   validates :sc_key, uniqueness: true, allow_nil: true
@@ -102,10 +105,12 @@ class Equipment < ApplicationRecord
     suffix: true
 
   def self.ransackable_attributes(_auth_object = nil)
+    # `slot` is listed so the ransacker above is reachable -- ransack ignores a
+    # ransacker that is not whitelisted here, silently dropping the condition.
     %w[
       id name slug sc_key equipment_type item_type sub_type weapon_class size grade
-      hidden manufacturer_id range rate_of_fire storage created_at updated_at
-    ]
+      slot hidden manufacturer_id range rate_of_fire storage store_image created_at updated_at
+    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -145,6 +150,23 @@ class Equipment < ApplicationRecord
     end
   end
 
+  # Read off the table rather than from WEAPON_CLASSES for the same reason the
+  # column is a free string: a class a patch introduces has to reach the picker
+  # without waiting on the constant being updated.
+  def self.weapon_classes
+    visible.current_version.where.not(weapon_class: nil).distinct.order(:weapon_class).pluck(:weapon_class)
+  end
+
+  def self.weapon_class_filters
+    weapon_classes.map do |item|
+      Filter.new(
+        category: "weapon_class",
+        label: I18n.t("filter.equipment.weapon_class.items.#{item}", default: item.humanize),
+        value: item
+      )
+    end
+  end
+
   def self.slot_filters
     slots.map do |(item, _index)|
       Filter.new(
@@ -153,14 +175,6 @@ class Equipment < ApplicationRecord
         value: item
       )
     end
-  end
-
-  def sold_at
-    item_prices.sell.order(price: :asc).uniq(&:location)
-  end
-
-  def bought_at
-    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   # A picker that only offers weapons has no use for the ninety-odd types the

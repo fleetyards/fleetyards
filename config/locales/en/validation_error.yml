@@ -93,3 +93,11 @@ en:
       destroy: Account could not be destroyed.
     hangar:
       import: Import failed
+    equipment:
+      create: Equipment could not be created.
+      update: Equipment could not be updated.
+      destroy: Equipment could not be destroyed.
+    commodity:
+      create: Commodity could not be created.
+      update: Commodity could not be updated.
+      destroy: Commodity could not be destroyed.

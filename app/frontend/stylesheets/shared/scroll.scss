@@ -24,9 +24,7 @@
 .tab-nav-dropdown__panel,
 .holo-viewer,
 
-// Wide content that scrolls sideways inside its frame.
-.base-table__wrapper,
-.base-table-container,
+// Wide content in a pane that caps its own height and so owns both axes.
 .compare-table,
 
 // Long lists inside a fixed shell.
@@ -35,4 +33,16 @@
 .fleetchart-app__offcanvas,
 .fleetchart-scroll-wrapper {
   overscroll-behavior: none;
+}
+
+// The list tables, which scroll sideways only: nothing caps their height, so the page is
+// what scrolls vertically.
+//
+// The y-axis has to keep chaining. `overscroll-behavior: none` blocks propagation to the
+// ancestor even on an axis the container cannot scroll, so the both-axes value freezes the
+// page whenever the pointer is over a table wide enough to overflow — which is every table
+// once it gains a column.
+.base-table__wrapper,
+.base-table-container {
+  overscroll-behavior-x: none;
 }

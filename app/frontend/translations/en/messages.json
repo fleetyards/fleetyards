@@ -446,6 +446,12 @@
         },
         "adminVehicle": {
           "destroy": "Are you sure you want to delete this vehicle? This action can't be reverted."
+        },
+        "commodity": {
+          "destroy": "Are you sure you want to delete this commodity? This action can't be reverted."
+        },
+        "equipment": {
+          "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
         }
       },
       "oauthAuthorize": {

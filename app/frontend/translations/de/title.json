@@ -213,6 +213,21 @@
         },
         "modelModulePackages": {
           "index": "Modell Modul Pakete"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "prices": "Edit Equipment Prices"
+          }
         }
       }
     }

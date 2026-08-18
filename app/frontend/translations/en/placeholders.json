@@ -265,9 +265,7 @@
           "email": "Email"
         },
         "components": {
-          "name": "Name",
-          "itemType": "Item Type",
-          "componentClass": "Component Class"
+          "name": "Name"
         },
         "fleets": {
           "name": "Name",
@@ -278,7 +276,31 @@
         },
         "destroyedFleets": {
           "nameOrFid": "Name or FID"
+        },
+        "commodities": {
+          "name": "Name",
+          "uexCode": "UEX Code"
+        },
+        "equipment": {
+          "name": "Name"
         }
+      },
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "size": "Size",
+        "grade": "Grade",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
       }
     }
   }

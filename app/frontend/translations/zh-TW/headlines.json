@@ -110,6 +110,21 @@
         },
         "images": {
           "index": "圖片"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "itemPrices": "Item Prices"
+          }
         }
       },
       "welcome": "Welcome to",

@@ -13,7 +13,7 @@ module Api
         # Commodities a later patch stopped shipping are left out unless
         # currentVersion=false asks for them -- the rows stay so old ledger
         # entries still resolve, they are just not offered for new ones.
-        @q = Commodity.current_version(current_version).ransack(commodities_query_params)
+        @q = Commodity.current_version(current_version).includes(:item_prices).ransack(commodities_query_params)
 
         @commodities = @q.result
           .page(params[:page])

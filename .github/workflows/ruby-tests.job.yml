@@ -48,8 +48,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-      - name: Install libvips
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev
+      # librsvg2-bin supplies rsvg-convert, which BaseParser#save_icon shells out
+      # to for vector artwork. Without it the icon tests fail on the runner while
+      # passing locally, where Homebrew has it.
+      - name: Install libvips and librsvg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libvips-dev librsvg2-bin
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true

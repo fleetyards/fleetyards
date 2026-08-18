@@ -802,7 +802,12 @@
         "components": {
           "name": "名稱",
           "itemType": "物品類型",
-          "componentClass": "組件類別"
+          "componentClass": "組件類別",
+          "buyPriceGt": "購買價格 >=",
+          "buyPriceLt": "購買價格 <=",
+          "sellPriceGt": "出售價格 >=",
+          "sellPriceLt": "出售價格 <=",
+          "storeImageBlank": "沒有商店圖片?"
         },
         "shops": {
           "name": "名稱",
@@ -948,7 +953,29 @@
             "limit": "Max number of uses"
           }
         },
-        "manufacturer": "製造商"
+        "manufacturer": "製造商",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "購買價格 >=",
+          "buyPriceLt": "購買價格 <=",
+          "sellPriceGt": "出售價格 >=",
+          "sellPriceLt": "出售價格 <=",
+          "storeImageBlank": "沒有商店圖片?"
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "購買價格 >=",
+          "buyPriceLt": "購買價格 <=",
+          "sellPriceGt": "出售價格 >=",
+          "sellPriceLt": "出售價格 <=",
+          "storeImageBlank": "沒有商店圖片?"
+        }
       },
       "station": {
         "docks": "停靠口",
@@ -1245,7 +1272,28 @@
         "remaining": "剩餘",
         "unmeasured": "%{count} 項尚未測量"
       },
-      "hangarInventories": "Inventories"
+      "hangarInventories": "Inventories",
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      }
     }
   }
 }

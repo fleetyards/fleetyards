@@ -185,6 +185,19 @@
           "index": "Objetivos de financiación",
           "new": "Nuevo objetivo de financiación",
           "edit": "Editar objetivo de financiación"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "edit": {
+            "index": "Base Data"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         }
       }
     }

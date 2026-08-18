@@ -39,6 +39,8 @@
 #
 class Component < ApplicationRecord
   include ActiveStorageVariants
+  include AttachmentRansackers
+  include ItemPriceConcern
 
   paginates_per 50
   max_paginates_per 240
@@ -66,12 +68,12 @@ class Component < ApplicationRecord
   has_many :hardpoint_loadouts, class_name: "Hardpoint", dependent: :nullify
 
   has_many :model_hardpoints, dependent: :nullify
-  has_many :item_prices, as: :item, dependent: :destroy
 
   before_save :update_slugs
   before_save :extract_data_from_description
 
   has_one_attached :store_image
+  ransack_attachment :store_image
 
   serialize :type_data, coder: YAML
   serialize :durability, coder: YAML
@@ -116,9 +118,9 @@ class Component < ApplicationRecord
       "ammunition", "category", "component_class", "component_sub_type", "component_type",
       "created_at", "description", "durability", "grade",
       "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
-      "power_connection", "size", "slug", "tracking_signal",
+      "power_connection", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
-    ]
+    ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -241,14 +243,6 @@ class Component < ApplicationRecord
         self.item_class = value.gsub(/[[:space:]]+/, "").downcase
       end
     end
-  end
-
-  def sold_at
-    item_prices.sell.order(price: :asc).uniq(&:location)
-  end
-
-  def bought_at
-    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def grade_label

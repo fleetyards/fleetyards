@@ -185,6 +185,19 @@
           "index": "資金目標",
           "new": "新增資金目標",
           "edit": "編輯資金目標"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "edit": {
+            "index": "Base Data"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         }
       }
     }

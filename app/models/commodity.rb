@@ -26,6 +26,9 @@
 #  index_commodities_on_uex_code        (uex_code)
 #
 class Commodity < ApplicationRecord
+  include AttachmentRansackers
+  include ItemPriceConcern
+
   paginates_per 60
 
   has_many :fleet_inventory_items, as: :item, dependent: :nullify
@@ -35,6 +38,7 @@ class Commodity < ApplicationRecord
   # pointing at a commodity draws it through the same fallback that already
   # gives a component its artwork.
   has_one_attached :store_image
+  ransack_attachment :store_image
 
   before_save :update_slugs
 
@@ -70,7 +74,8 @@ class Commodity < ApplicationRecord
   ]
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[id name slug commodity_type sc_key uex_code created_at updated_at]
+    %w[id name slug commodity_type sc_key uex_code store_image created_at updated_at] +
+      ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 
   def self.ransackable_associations(_auth_object = nil)
