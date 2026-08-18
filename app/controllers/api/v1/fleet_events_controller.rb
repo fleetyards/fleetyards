@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "discord/scheduled_event_sync"
+
 module Api
   module V1
     class FleetEventsController < ::Api::BaseController
@@ -11,11 +13,11 @@ module Api
         only: %i[index show ics]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy unarchive publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
+        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
-      before_action :set_event, only: %i[show update destroy unarchive publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
+      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -119,6 +121,17 @@ module Api
         parsed = Date.parse(date.to_s)
         @fleet_event.skip_occurrence!(parsed)
 
+        # If this occurrence was previously pushed to Discord, drop the
+        # scheduled event there so members don't see an orphan.
+        state = @fleet_event.occurrence_state_for(parsed)
+        if state&.discord_event_id.present?
+          begin
+            ::Discord::ScheduledEventSync.new(@fleet_event, occurrence_date: parsed).delete!
+          rescue ::Discord::ApiClient::Error => e
+            Rails.logger.warn("[discord-sync] could not clean up scheduled event after skip: #{e.message}")
+          end
+        end
+
         render :show
       end
 
@@ -197,6 +210,40 @@ module Api
         send_data ics,
           type: "text/calendar; charset=utf-8",
           disposition: %(attachment; filename="#{@fleet_event.slug}.ics")
+      end
+
+      # Manually push the event to Discord. Useful for events that were
+      # already published before the fleet connected its Discord server,
+      # since publish-time notifications already fired and won't be replayed.
+      DISCORD_SYNC_OCCURRENCE_COUNT = 4
+
+      def sync_to_discord
+        authorize! @fleet_event, to: :update?
+
+        sync = ::Discord::ScheduledEventSync.new(@fleet_event)
+        unless sync.runnable?
+          render json: {code: "discord_not_configured", message: "Discord isn't configured for this fleet"}, status: :unprocessable_entity
+          return
+        end
+
+        if @fleet_event.recurring?
+          occurrences = @fleet_event
+            .occurrences(from: Time.current, to: 16.weeks.from_now)
+            .first(DISCORD_SYNC_OCCURRENCE_COUNT)
+
+          occurrences.each do |occurrence|
+            ::Discord::ScheduledEventSync.new(
+              @fleet_event,
+              occurrence_date: occurrence.to_date
+            ).upsert!
+          end
+        else
+          sync.upsert!
+        end
+
+        render :show
+      rescue ::Discord::ApiClient::Error => e
+        render json: {code: "discord_error", message: e.message, status: e.status}, status: :bad_gateway
       end
 
       %i[publish lock_signups unlock_signups start complete].each do |action|
