@@ -13,6 +13,7 @@ module Admin
               nameCont: {type: :string},
               itemTypeCont: {type: :string},
               componentClassCont: {type: :string},
+              storeImageBlank: {type: :boolean},
               idIn: {type: :array, items: {type: :string, format: :uuid}},
               nameIn: {type: :array, items: {type: :string}},
               itemTypeIn: {type: :array, items: {type: :string}},

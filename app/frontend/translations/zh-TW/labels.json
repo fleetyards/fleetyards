@@ -806,7 +806,8 @@
           "buyPriceGt": "購買價格 >=",
           "buyPriceLt": "購買價格 <=",
           "sellPriceGt": "出售價格 >=",
-          "sellPriceLt": "出售價格 <="
+          "sellPriceLt": "出售價格 <=",
+          "storeImageBlank": "沒有商店圖片?"
         },
         "shops": {
           "name": "名稱",
@@ -960,7 +961,8 @@
           "buyPriceGt": "購買價格 >=",
           "buyPriceLt": "購買價格 <=",
           "sellPriceGt": "出售價格 >=",
-          "sellPriceLt": "出售價格 <="
+          "sellPriceLt": "出售價格 <=",
+          "storeImageBlank": "沒有商店圖片?"
         },
         "equipment": {
           "name": "Name",
@@ -971,7 +973,8 @@
           "buyPriceGt": "購買價格 >=",
           "buyPriceLt": "購買價格 <=",
           "sellPriceGt": "出售價格 >=",
-          "sellPriceLt": "出售價格 <="
+          "sellPriceLt": "出售價格 <=",
+          "storeImageBlank": "沒有商店圖片?"
         }
       },
       "station": {

@@ -11,16 +11,20 @@ import {
 } from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import RadioList from "@/shared/components/base/RadioList/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
 import EquipmentSlotFilterGroup from "@/admin/components/base/EquipmentSlotFilterGroup/index.vue";
 import EquipmentTypeFilterGroup from "@/admin/components/base/EquipmentTypeFilterGroup/index.vue";
 import EquipmentItemTypeFilterGroup from "@/admin/components/base/EquipmentItemTypeFilterGroup/index.vue";
 import EquipmentWeaponClassFilterGroup from "@/admin/components/base/EquipmentWeaponClassFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type EquipmentQuery } from "@/services/fyAdminApi";
 import { useEquipmentFilters } from "@/admin/composables/useEquipmentFilters";
 
 const { t } = useI18n();
+
+const { booleanOptions } = useFilterOptions();
 
 const prefillFormValues = () => {
   return {
@@ -29,6 +33,7 @@ const prefillFormValues = () => {
     itemTypeIn: filters.value.itemTypeIn || [],
     weaponClassIn: filters.value.weaponClassIn || [],
     slotIn: filters.value.slotIn || [],
+    storeImageBlank: filters.value.storeImageBlank,
     manufacturerIdIn: filters.value.manufacturerIdIn || [],
     buyPriceGteq: filters.value.buyPriceGteq,
     buyPriceLteq: filters.value.buyPriceLteq,
@@ -92,6 +97,14 @@ watch(
     />
 
     <EquipmentSlotFilterGroup v-model="form.slotIn" name="slot" />
+
+    <RadioList
+      v-model="form.storeImageBlank"
+      :label="t('labels.filters.equipment.storeImageBlank')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="storeImageBlank"
+    />
 
     <div class="row">
       <div class="col-6">

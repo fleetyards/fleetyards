@@ -11,19 +11,24 @@ import {
 } from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import RadioList from "@/shared/components/base/RadioList/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
 import ComponentClassFilterGroup from "@/admin/components/base/ComponentClassFilterGroup/index.vue";
 import ComponentItemTypeFilterGroup from "@/admin/components/base/ComponentItemTypeFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type ComponentQuery } from "@/services/fyAdminApi";
 import { useComponentFilters } from "@/admin/composables/useComponentFilters";
 
 const { t } = useI18n();
 
+const { booleanOptions } = useFilterOptions();
+
 const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
     itemTypeIn: filters.value.itemTypeIn || [],
+    storeImageBlank: filters.value.storeImageBlank,
     componentClassIn: filters.value.componentClassIn || [],
     manufacturerIdIn: filters.value.manufacturerIdIn || [],
     buyPriceGteq: filters.value.buyPriceGteq,
@@ -81,6 +86,14 @@ watch(
     />
 
     <ComponentItemTypeFilterGroup v-model="form.itemTypeIn" name="item-type" />
+
+    <RadioList
+      v-model="form.storeImageBlank"
+      :label="t('labels.filters.components.storeImageBlank')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="storeImageBlank"
+    />
 
     <div class="row">
       <div class="col-6">

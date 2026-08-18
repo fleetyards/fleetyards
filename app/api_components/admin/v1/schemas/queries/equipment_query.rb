@@ -16,6 +16,7 @@ module Admin
               subTypeCont: {type: :string},
               weaponClassCont: {type: :string},
               hiddenEq: {type: :boolean},
+              storeImageBlank: {type: :boolean},
               idIn: {type: :array, items: {type: :string, format: :uuid}},
               nameIn: {type: :array, items: {type: :string}},
               equipmentTypeIn: {type: :array, items: {type: :string}},

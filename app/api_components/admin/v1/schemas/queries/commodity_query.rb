@@ -13,6 +13,7 @@ module Admin
               nameCont: {type: :string},
               commodityTypeCont: {type: :string},
               uexCodeCont: {type: :string},
+              storeImageBlank: {type: :boolean},
               idIn: {type: :array, items: {type: :string, format: :uuid}},
               nameIn: {type: :array, items: {type: :string}},
               commodityTypeIn: {type: :array, items: {type: :string}},

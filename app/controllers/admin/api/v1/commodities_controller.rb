@@ -70,7 +70,7 @@ module Admin
         private def commodity_query_params
           @commodity_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :id_eq, :commodity_type_eq, :commodity_type_cont,
-            :uex_code_cont, :buy_price_gteq, :buy_price_lteq, :sell_price_gteq,
+            :uex_code_cont, :store_image_blank, :buy_price_gteq, :buy_price_lteq, :sell_price_gteq,
             :sell_price_lteq, :sorts,
             sorts: [], name_in: [], id_in: [], commodity_type_in: []
           ]).fetch(:q, {})

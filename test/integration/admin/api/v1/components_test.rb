@@ -197,6 +197,20 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components filters by storeImageBlank" do
+    create(:component, :with_store_image, name: "Bulldog")
+    create(:component, name: "Salvo")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"storeImageBlank" => true}} do
+      assert_equal ["Salvo"], parsed_body["items"].map { |item| item["name"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {"storeImageBlank" => false}} do
+      assert_equal ["Bulldog"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /components filters by a sell price range" do
     cheap = create(:component, name: "Salvo")
     create(:item_price, item: cheap, price_type: :sell, price: 900)

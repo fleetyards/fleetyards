@@ -79,7 +79,7 @@ module Admin
         private def component_query_params
           @component_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :id_eq, :item_type_eq,
-            :item_type_cont, :component_class_cont, :buy_price_gteq,
+            :item_type_cont, :component_class_cont, :store_image_blank, :buy_price_gteq,
             :buy_price_lteq, :sell_price_gteq, :sell_price_lteq, :sorts,
             sorts: [], name_in: [], id_in: [], item_type_in: [], component_class_in: [],
             manufacturer_id_in: []

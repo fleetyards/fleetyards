@@ -109,7 +109,7 @@ module Admin
           @equipment_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :id_eq, :equipment_type_eq, :equipment_type_cont,
             :item_type_eq, :item_type_cont, :sub_type_cont, :weapon_class_cont,
-            :hidden_eq, :buy_price_gteq, :buy_price_lteq, :sell_price_gteq,
+            :hidden_eq, :store_image_blank, :buy_price_gteq, :buy_price_lteq, :sell_price_gteq,
             :sell_price_lteq, :sorts,
             sorts: [], name_in: [], id_in: [], equipment_type_in: [], item_type_in: [],
             weapon_class_in: [], slot_in: [], manufacturer_id_in: []

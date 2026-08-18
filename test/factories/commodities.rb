@@ -33,6 +33,10 @@ FactoryBot.define do
     description { Faker::Lorem.sentence }
     version { Rails.configuration.sc_data[:version] }
 
+    trait :with_store_image do
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
+    end
+
     trait :mineral do
       commodity_type { "mineral" }
     end

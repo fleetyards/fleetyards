@@ -11,18 +11,23 @@ import {
 } from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import RadioList from "@/shared/components/base/RadioList/index.vue";
 import CommodityTypeFilterGroup from "@/admin/components/base/CommodityTypeFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type CommodityQuery } from "@/services/fyAdminApi";
 import { useCommodityFilters } from "@/admin/composables/useCommodityFilters";
 
 const { t } = useI18n();
+
+const { booleanOptions } = useFilterOptions();
 
 const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
     commodityTypeIn: filters.value.commodityTypeIn || [],
     uexCodeCont: filters.value.uexCodeCont,
+    storeImageBlank: filters.value.storeImageBlank,
     buyPriceGteq: filters.value.buyPriceGteq,
     buyPriceLteq: filters.value.buyPriceLteq,
     sellPriceGteq: filters.value.sellPriceGteq,
@@ -76,6 +81,14 @@ watch(
       name="uexCode"
       translation-key="filters.commodities.uexCode"
       :clearable="true"
+    />
+
+    <RadioList
+      v-model="form.storeImageBlank"
+      :label="t('labels.filters.commodities.storeImageBlank')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="storeImageBlank"
     />
 
     <div class="row">

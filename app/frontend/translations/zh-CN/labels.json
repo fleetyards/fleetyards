@@ -806,7 +806,8 @@
           "buyPriceGt": "买入价格 >=",
           "buyPriceLt": "买入价格 <=",
           "sellPriceGt": "卖出价格 >=",
-          "sellPriceLt": "卖出价格 <="
+          "sellPriceLt": "卖出价格 <=",
+          "storeImageBlank": "没有商店图片?"
         },
         "shops": {
           "name": "名称",
@@ -960,7 +961,8 @@
           "buyPriceGt": "买入价格 >=",
           "buyPriceLt": "买入价格 <=",
           "sellPriceGt": "卖出价格 >=",
-          "sellPriceLt": "卖出价格 <="
+          "sellPriceLt": "卖出价格 <=",
+          "storeImageBlank": "没有商店图片?"
         },
         "equipment": {
           "name": "Name",
@@ -971,7 +973,8 @@
           "buyPriceGt": "买入价格 >=",
           "buyPriceLt": "买入价格 <=",
           "sellPriceGt": "卖出价格 >=",
-          "sellPriceLt": "卖出价格 <="
+          "sellPriceLt": "卖出价格 <=",
+          "storeImageBlank": "没有商店图片?"
         }
       },
       "station": {

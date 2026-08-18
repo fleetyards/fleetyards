@@ -45,6 +45,7 @@
 #  index_equipment_on_slot             (slot)
 #
 class Equipment < ApplicationRecord
+  include AttachmentRansackers
   include ItemPriceConcern
 
   paginates_per 50
@@ -56,6 +57,7 @@ class Equipment < ApplicationRecord
   # every other catalogue has one -- an upload, and the ledger's fallback to
   # the referenced item's picture.
   has_one_attached :store_image
+  ransack_attachment :store_image
 
   validates :name, presence: true
   validates :sc_key, uniqueness: true, allow_nil: true
@@ -107,7 +109,7 @@ class Equipment < ApplicationRecord
     # ransacker that is not whitelisted here, silently dropping the condition.
     %w[
       id name slug sc_key equipment_type item_type sub_type weapon_class size grade
-      slot hidden manufacturer_id range rate_of_fire storage created_at updated_at
+      slot hidden manufacturer_id range rate_of_fire storage store_image created_at updated_at
     ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 

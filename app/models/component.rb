@@ -39,6 +39,7 @@
 #
 class Component < ApplicationRecord
   include ActiveStorageVariants
+  include AttachmentRansackers
   include ItemPriceConcern
 
   paginates_per 50
@@ -72,6 +73,7 @@ class Component < ApplicationRecord
   before_save :extract_data_from_description
 
   has_one_attached :store_image
+  ransack_attachment :store_image
 
   serialize :type_data, coder: YAML
   serialize :durability, coder: YAML
@@ -116,7 +118,7 @@ class Component < ApplicationRecord
       "ammunition", "category", "component_class", "component_sub_type", "component_type",
       "created_at", "description", "durability", "grade",
       "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
-      "power_connection", "size", "slug", "tracking_signal",
+      "power_connection", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
     ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end

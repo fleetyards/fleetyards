@@ -1261,7 +1261,8 @@
           "buyPriceGt": "Buy Price >=",
           "buyPriceLt": "Buy Price <=",
           "sellPriceGt": "Sell Price >=",
-          "sellPriceLt": "Sell Price <="
+          "sellPriceLt": "Sell Price <=",
+          "storeImageBlank": "Without Store Image?"
         },
         "shops": {
           "name": "Name",
@@ -1430,7 +1431,8 @@
           "buyPriceGt": "Buy Price >=",
           "buyPriceLt": "Buy Price <=",
           "sellPriceGt": "Sell Price >=",
-          "sellPriceLt": "Sell Price <="
+          "sellPriceLt": "Sell Price <=",
+          "storeImageBlank": "Without Store Image?"
         },
         "equipment": {
           "name": "Name",
@@ -1441,7 +1443,8 @@
           "buyPriceGt": "Buy Price >=",
           "buyPriceLt": "Buy Price <=",
           "sellPriceGt": "Sell Price >=",
-          "sellPriceLt": "Sell Price <="
+          "sellPriceLt": "Sell Price <=",
+          "storeImageBlank": "Without Store Image?"
         }
       },
       "station": {

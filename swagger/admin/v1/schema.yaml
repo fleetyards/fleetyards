@@ -7885,6 +7885,8 @@ components:
           type: string
         uexCodeCont:
           type: string
+        storeImageBlank:
+          type: boolean
         idIn:
           type: array
           items:
@@ -8448,6 +8450,8 @@ components:
           type: string
         componentClassCont:
           type: string
+        storeImageBlank:
+          type: boolean
         idIn:
           type: array
           items:
@@ -9686,6 +9690,8 @@ components:
         weaponClassCont:
           type: string
         hiddenEq:
+          type: boolean
+        storeImageBlank:
           type: boolean
         idIn:
           type: array

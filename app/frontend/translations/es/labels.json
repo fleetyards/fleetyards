@@ -806,7 +806,8 @@
           "buyPriceGt": "Precio de compra >=",
           "buyPriceLt": "Precio de compra <=",
           "sellPriceGt": "Precio de venta >=",
-          "sellPriceLt": "Precio de venta <="
+          "sellPriceLt": "Precio de venta <=",
+          "storeImageBlank": "¿Sin imagen de tienda?"
         },
         "shops": {
           "name": "Nombre",
@@ -960,7 +961,8 @@
           "buyPriceGt": "Precio de compra >=",
           "buyPriceLt": "Precio de compra <=",
           "sellPriceGt": "Precio de venta >=",
-          "sellPriceLt": "Precio de venta <="
+          "sellPriceLt": "Precio de venta <=",
+          "storeImageBlank": "¿Sin imagen de tienda?"
         },
         "equipment": {
           "name": "Name",
@@ -971,7 +973,8 @@
           "buyPriceGt": "Precio de compra >=",
           "buyPriceLt": "Precio de compra <=",
           "sellPriceGt": "Precio de venta >=",
-          "sellPriceLt": "Precio de venta <="
+          "sellPriceLt": "Precio de venta <=",
+          "storeImageBlank": "¿Sin imagen de tienda?"
         }
       },
       "station": {

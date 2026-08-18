@@ -254,6 +254,20 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /commodities filters by storeImageBlank" do
+    create(:commodity, :with_store_image, name: "Laranite")
+    create(:commodity, name: "Titanium")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/commodities", params: {q: {"storeImageBlank" => true}} do
+      assert_equal ["Titanium"], parsed_body["items"].map { |item| item["name"] }
+    end
+
+    assert_api_response :get, 200, api_path: "/commodities", params: {q: {"storeImageBlank" => false}} do
+      assert_equal ["Laranite"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /commodities filters by a buy price range" do
     cheap = create(:commodity, name: "Scrap")
     create(:item_price, item: cheap, price_type: :buy, price: 5)

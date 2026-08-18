@@ -248,6 +248,20 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /equipment filters by storeImageBlank" do
+    create(:equipment, :with_store_image, name: "Karna Rifle")
+    create(:equipment, name: "Devastator Shotgun")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/equipment", params: {q: {"storeImageBlank" => true}} do
+      assert_equal ["Devastator Shotgun"], parsed_body["items"].map { |item| item["name"] }
+    end
+
+    assert_api_response :get, 200, api_path: "/equipment", params: {q: {"storeImageBlank" => false}} do
+      assert_equal ["Karna Rifle"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /equipment filters by a buy price range" do
     cheap = create(:equipment, name: "Pistol")
     create(:item_price, item: cheap, price_type: :buy, price: 200)
