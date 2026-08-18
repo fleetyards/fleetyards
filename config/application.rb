@@ -60,6 +60,13 @@ module Fleetyards
     # This is global, which is why every attachment an account holder can write
     # rejects a vector outright. See NoVectorImageValidator.
     #
+    # Only what is uploaded from here on is affected. The bucket is public, so a
+    # blob is served under the content type and disposition it was stamped with
+    # at upload -- `Blob#service_metadata`, read once -- and changing these
+    # settings neither re-uploads nor re-stamps anything already stored. An SVG
+    # accepted before the validator existed therefore stays the download it was
+    # stored as, rather than becoming a page that runs on the storage origin.
+    #
     # `variable_content_types` is deliberately left alone: a vector has no sizes
     # to resize to, and letting vips at one would put the rasterizing this
     # replaces straight back into the request path.
