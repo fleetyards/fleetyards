@@ -39,6 +39,7 @@ import {
 const NOW = "2026-09-04T19:30:00Z";
 
 const fleet: Fleet = {
+  features: [],
   id: "fleet-1",
   fid: "SILENTWINGS",
   name: "Silent Wings",
