@@ -14,15 +14,30 @@ type Props = {
   currentId?: string;
   stepperList?: string[];
   stepperListMeta?: ListMeta;
+  stepperRoute?: string;
+  stepperParam?: string;
+  stepperExtraParams?: Record<string, string>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   crumbs: undefined,
+  stepperRoute: "admin-model-edit",
+  stepperParam: "id",
+  stepperExtraParams: () => ({}),
+});
+
+const stepperParamsFor = (id: string) => ({
+  ...props.stepperExtraParams,
+  [props.stepperParam]: id,
 });
 
 const { t } = useI18n();
 
 const { extend } = useBreadCrumbs();
+
+const hasStepperList = computed(
+  () => !!props.stepperList && props.stepperList.length > 0,
+);
 
 const prevItem = computed(() => {
   const index = props.stepperList?.findIndex((id) => id === props.currentId);
@@ -42,7 +57,7 @@ const nextItem = computed(() => {
 </script>
 
 <template>
-  <div class="breadcrumbs" v-if="crumbs || stepperList">
+  <div class="breadcrumbs" v-if="crumbs || hasStepperList || $slots.actions">
     <ol v-if="crumbs" aria-label="breadcrumb" class="breadcrumb">
       <li class="breadcrumb-item">
         <router-link :to="{ name: 'home' }">
@@ -56,24 +71,26 @@ const nextItem = computed(() => {
         <span v-else>{{ crumb.label }}</span>
       </li>
     </ol>
-    <div v-if="stepperList || $slots.actions" class="stepper">
+    <div v-if="hasStepperList || $slots.actions" class="stepper">
       <slot name="actions" />
-      <router-link
-        v-if="prevItem"
-        :to="{ name: 'admin-model-edit', params: { id: prevItem } }"
-        ><i class="fa fa-chevron-left"></i
-      ></router-link>
-      <a v-else class="disabled" :aria-label="t('pagination.previous')"
-        ><i class="fa fa-chevron-left"></i
-      ></a>
-      <router-link
-        v-if="nextItem"
-        :to="{ name: 'admin-model-edit', params: { id: nextItem } }"
-        ><i class="fa fa-chevron-right"></i
-      ></router-link>
-      <a v-else class="disabled" :aria-label="t('pagination.next')"
-        ><i class="fa fa-chevron-right"></i
-      ></a>
+      <template v-if="hasStepperList">
+        <router-link
+          v-if="prevItem"
+          :to="{ name: stepperRoute, params: stepperParamsFor(prevItem) }"
+          ><i class="fa fa-chevron-left"></i
+        ></router-link>
+        <a v-else class="disabled" :aria-label="t('pagination.previous')"
+          ><i class="fa fa-chevron-left"></i
+        ></a>
+        <router-link
+          v-if="nextItem"
+          :to="{ name: stepperRoute, params: stepperParamsFor(nextItem) }"
+          ><i class="fa fa-chevron-right"></i
+        ></router-link>
+        <a v-else class="disabled" :aria-label="t('pagination.next')"
+          ><i class="fa fa-chevron-right"></i
+        ></a>
+      </template>
     </div>
   </div>
 </template>

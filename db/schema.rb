@@ -1291,6 +1291,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
     t.string "current_sign_in_ip", limit: 255
     t.string "current_system"
     t.string "current_system_code"
+    t.string "date_format", default: "dmy_dots", null: false
     t.string "discord"
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_otp_secret"
