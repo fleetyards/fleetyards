@@ -30,9 +30,23 @@ const eventSlug = computed(() => route.params.event as string);
 
 const { data: event, refetch } = useFleetEvent(fleetSlug, eventSlug);
 
+const fleetEventUpdatedComlink = ref<() => void>();
+const fleetEventChildrenChangedComlink = ref<() => void>();
+
 onMounted(() => {
-  comlink.on("fleet-event-updated", () => void refetch());
-  comlink.on("fleet-event-children-changed", () => void refetch());
+  fleetEventUpdatedComlink.value = comlink.on(
+    "fleet-event-updated",
+    () => void refetch(),
+  );
+  fleetEventChildrenChangedComlink.value = comlink.on(
+    "fleet-event-children-changed",
+    () => void refetch(),
+  );
+});
+
+onUnmounted(() => {
+  fleetEventUpdatedComlink.value?.();
+  fleetEventChildrenChangedComlink.value?.();
 });
 
 const crumbs = computed(() => [

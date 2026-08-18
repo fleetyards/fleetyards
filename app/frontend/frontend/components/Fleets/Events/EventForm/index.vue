@@ -315,20 +315,20 @@ const onSubmit = handleSubmit(async (values) => {
 
   const data = {
     title: values.title,
-    description: values.description || undefined,
-    briefing: values.briefing || undefined,
+    description: values.description || null,
+    briefing: values.briefing || null,
     startsAt: new Date(values.startsAt as string).toISOString(),
     endsAt: values.endsAt
       ? new Date(values.endsAt as string).toISOString()
       : null,
     timezone: values.timezone,
-    location: values.location || undefined,
-    meetupLocation: values.meetupLocation || undefined,
+    location: values.location || null,
+    meetupLocation: values.meetupLocation || null,
     visibility: values.visibility as never,
     category: values.category as never,
     scenario: values.scenario || null,
     coverImagePreset: values.coverImage ? null : values.coverImagePreset,
-    coverImage: values.coverImage || undefined,
+    coverImage: values.coverImage || null,
     maxAttendees: values.maxAttendees ? Number(values.maxAttendees) : null,
     autoLockEnabled: !!values.autoLockEnabled,
     autoLockMinutesBefore: values.autoLockEnabled

@@ -162,7 +162,7 @@ const submitSignup = async () => {
       id: props.slotData.id,
       data: {
         status: FleetEventSignupStatus.confirmed,
-        notes: notes.value.trim() || undefined,
+        notes: notes.value.trim() || null,
         vehicleId: vehicleId.value ?? undefined,
       },
     });

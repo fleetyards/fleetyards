@@ -98,14 +98,14 @@ const save = async () => {
         id: slotId.value,
         data: {
           status: FleetEventSignupStatus.confirmed,
-          notes: notes.value || undefined,
+          notes: notes.value || null,
           vehicleId: vehicleId.value ?? undefined,
         },
       });
     } else {
       await signupFleetEvent(props.fleetSlug, props.eventSlug, {
         status: status.value,
-        notes: notes.value || undefined,
+        notes: notes.value || null,
         vehicleId: vehicleId.value ?? undefined,
       });
     }

@@ -102,11 +102,17 @@ const viewerEventRole = computed(
       ?.viewerEventRole ?? null,
 );
 
-const isEventManager = computed(() => {
+// Two different policies, so two different gates. FleetEventPolicy#update?
+// admits the creator and per-event admins; FleetEventSignupPolicy goes through
+// event_moderator_or_admin?, which is what a moderator role is actually for.
+const canManageEvent = computed(() => {
   if (canManage.value) return true;
-  return ["creator", "admin", "moderator"].includes(
-    viewerEventRole.value ?? "",
-  );
+  return ["creator", "admin"].includes(viewerEventRole.value ?? "");
+});
+
+const canManageSignups = computed(() => {
+  if (canManageEvent.value) return true;
+  return viewerEventRole.value === "moderator";
 });
 
 const currentUserId = computed(() => session.currentUser?.id);
@@ -375,10 +381,29 @@ const endSeriesAt = (iso: string) => {
   });
 };
 
+const fleetEventUpdatedComlink = ref<() => void>();
+const fleetEventSignupChangedComlink = ref<() => void>();
+const fleetEventChildrenChangedComlink = ref<() => void>();
+
 onMounted(() => {
-  comlink.on("fleet-event-updated", () => void refetch());
-  comlink.on("fleet-event-signup-changed", () => void refetch());
-  comlink.on("fleet-event-children-changed", () => void refetch());
+  fleetEventUpdatedComlink.value = comlink.on(
+    "fleet-event-updated",
+    () => void refetch(),
+  );
+  fleetEventSignupChangedComlink.value = comlink.on(
+    "fleet-event-signup-changed",
+    () => void refetch(),
+  );
+  fleetEventChildrenChangedComlink.value = comlink.on(
+    "fleet-event-children-changed",
+    () => void refetch(),
+  );
+});
+
+onUnmounted(() => {
+  fleetEventUpdatedComlink.value?.();
+  fleetEventSignupChangedComlink.value?.();
+  fleetEventChildrenChangedComlink.value?.();
 });
 
 const crumbs = computed(() => [
@@ -402,7 +427,7 @@ const crumbs = computed(() => [
     stepper-param="event"
     :stepper-extra-params="{ slug: fleet.slug }"
   >
-    <template v-if="isEventManager && event" #actions>
+    <template v-if="canManageEvent && event" #actions>
       <EventAdminActions
         :fleet="fleet"
         :event="event"
@@ -540,7 +565,7 @@ const crumbs = computed(() => [
     />
 
     <UnassignedSignups
-      v-if="isEventManager && unassignedSignups.length"
+      v-if="canManageSignups && unassignedSignups.length"
       :fleet="fleet"
       :event="event"
       :signups="unassignedSignups"
@@ -567,7 +592,7 @@ const crumbs = computed(() => [
           <span v-if="entry.excluded" class="event-occurrences__badge">
             {{ t("labels.fleets.events.excludedBadge") }}
           </span>
-          <div v-if="isEventManager" class="event-occurrences__actions">
+          <div v-if="canManageEvent" class="event-occurrences__actions">
             <button
               v-if="!entry.excluded"
               type="button"
@@ -628,7 +653,7 @@ const crumbs = computed(() => [
             :signups-locked="signupsLocked"
             :signups-open="signupsOpenForEvent"
             :own-active-slot-id="ownActiveSlotId"
-            :is-manager="isEventManager"
+            :is-manager="canManageSignups"
           />
         </div>
 
@@ -658,7 +683,7 @@ const crumbs = computed(() => [
                 :signups-locked="signupsLocked"
                 :signups-open="signupsOpenForEvent"
                 :own-active-slot-id="ownActiveSlotId"
-                :is-manager="isEventManager"
+                :is-manager="canManageSignups"
               />
             </div>
           </div>

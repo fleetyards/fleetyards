@@ -200,15 +200,23 @@ const subscribe = async () => {
   }
 };
 
+const fleetEventCreatedComlink = ref<() => void>();
+const fleetEventUpdatedComlink = ref<() => void>();
+
 onMounted(() => {
-  comlink.on("fleet-event-created", () => {
+  fleetEventCreatedComlink.value = comlink.on("fleet-event-created", () => {
     void refetchList();
     void refetchCalendar();
   });
-  comlink.on("fleet-event-updated", () => {
+  fleetEventUpdatedComlink.value = comlink.on("fleet-event-updated", () => {
     void refetchList();
     void refetchCalendar();
   });
+});
+
+onUnmounted(() => {
+  fleetEventCreatedComlink.value?.();
+  fleetEventUpdatedComlink.value?.();
 });
 
 const crumbs = computed(() => [

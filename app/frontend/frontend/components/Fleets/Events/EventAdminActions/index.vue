@@ -63,8 +63,20 @@ const viewerEventRole = computed(
     null,
 );
 
-const isEventCreator = computed(
-  () => viewerEventRole.value === "creator" || canManage.value,
+// Mirrors FleetEventPolicy#update?, which admits the creator and per-event
+// admins on top of fleet-level access.
+const canUpdate = computed(
+  () =>
+    canManage.value ||
+    ["creator", "admin"].includes(viewerEventRole.value ?? ""),
+);
+
+// manage_admins? is narrower than update?: the creator, or someone who manages
+// the fleet or its events — fleet:events:update alone is not enough.
+const canManageAdmins = computed(
+  () =>
+    viewerEventRole.value === "creator" ||
+    checkAccess(props.resourceAccess, ["fleet:manage", "fleet:events:manage"]),
 );
 
 const publishMutation = usePublishFleetEvent();
@@ -172,13 +184,13 @@ const openAdminsModal = () => {
 
 <template>
   <BtnGroup>
-    <Btn v-if="canManage" :size="BtnSizesEnum.SM" @click="goToEdit">
+    <Btn v-if="canUpdate" :size="BtnSizesEnum.SM" @click="goToEdit">
       <i class="fa-light fa-pen" />
       <span>{{ t("actions.fleets.events.edit") }}</span>
     </Btn>
     <BtnDropdown :size="BtnSizesEnum.SM">
       <Btn
-        v-if="archived"
+        v-if="archived && canDelete"
         :size="BtnSizesEnum.SM"
         :loading="unarchiveMutation.isPending.value"
         @click="transition('unarchive', unarchiveMutation as never)"
@@ -241,7 +253,7 @@ const openAdminsModal = () => {
         <span>{{ t("actions.fleets.events.syncToDiscord") }}</span>
       </Btn>
       <Btn
-        v-if="isEventCreator"
+        v-if="canManageAdmins"
         :size="BtnSizesEnum.SM"
         @click="openAdminsModal"
       >
