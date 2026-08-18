@@ -52,15 +52,26 @@ module Api
 
           now = Time.current
           events = FleetEvent
+            .includes(:fleet_event_occurrence_states)
             .joins(fleet_event_signups: :fleet_membership)
-            .where(fleet_memberships: {user_id: @user.id})
+            # Signups outlive the membership that made them, so the feed has to
+            # ask for a membership that is still accepted and still kept.
+            # Without that, a removed member keeps pulling the fleet's private
+            # event details through a token nobody thought to revoke.
+            .where(
+              fleet_memberships: {
+                user_id: @user.id,
+                aasm_state: "accepted",
+                discarded_at: nil
+              }
+            )
             .where(
               fleet_event_signups: {
                 status: %w[confirmed pending tentative interested]
               }
             )
             .where(archived_at: nil)
-            .where("fleet_events.starts_at >= ?", now - FEED_PAST_HORIZON)
+            .starting_after(now - FEED_PAST_HORIZON)
             .where(
               "fleet_events.status != ? OR fleet_events.starts_at >= ?",
               "cancelled",
