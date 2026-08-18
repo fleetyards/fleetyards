@@ -187,24 +187,24 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   const data: Record<string, unknown> = {
-    title: values.title || undefined,
-    description: values.description || undefined,
+    title: values.title || null,
+    description: values.description || null,
   };
 
   if (mode.value === "specific") {
-    data.modelId = selectedModelId.value || undefined;
+    data.modelId = selectedModelId.value || null;
     if (!isEdit.value) {
       data.positionIds = Array.from(selectedPositionIds.value);
     }
     data.minCrew = values.minCrew == null ? null : Number(values.minCrew);
   } else {
     data.modelId = null;
-    data.classification = values.classification || undefined;
-    data.focus = values.focus || undefined;
-    data.minSize = values.minSize || undefined;
-    data.maxSize = values.maxSize || undefined;
-    data.minCrew = values.minCrew || undefined;
-    data.minCargo = values.minCargo || undefined;
+    data.classification = values.classification || null;
+    data.focus = values.focus || null;
+    data.minSize = values.minSize || null;
+    data.maxSize = values.maxSize || null;
+    data.minCrew = values.minCrew || null;
+    data.minCargo = values.minCargo || null;
   }
 
   const mutation = isEdit.value
