@@ -1,0 +1,20 @@
+<h2>
+  <%= I18n.t('mailer.hello', username: @user.username) %>
+</h2>
+<p>
+  <%= @notification.title %>
+</p>
+<% if @notification.body.present? %>
+  <p>
+    <em><%= @notification.body %></em>
+  </p>
+<% end %>
+<p>
+  <%= I18n.t("mailer.fleet_event.#{@key}.body", fleet: @event.fleet.name) %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <button href="<%= frontend_fleet_event_url(fleet_slug: @event.fleet.slug, event_slug: @event.slug) %>">
+    <%= I18n.t('mailer.fleet_event.action') %>
+  </button>
+</center>
