@@ -60,8 +60,10 @@ module Models
       }
     ].freeze
 
-    # Everything else in a definition is a plain Model column. Listed so a typo in
-    # a definition raises here instead of being assigned to nothing.
+    # Everything else in a definition is a plain Model column. Assignment walks
+    # this list rather than the definition, so a key that is not here is dropped
+    # in silence -- the test that every definition names only these is what
+    # catches a typo.
     ATTRIBUTES = %i[rsi_name classification production_status size hidden].freeze
 
     def self.call
