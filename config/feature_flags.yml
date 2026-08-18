@@ -43,6 +43,7 @@ ship_inventories:
 
 mission_builder:
   description: "Mission builder — fleet missions, events, the calendar and Discord sync"
+  self_service: true
 
 oauth-applications:
   description: "User-owned OAuth applications in settings"
