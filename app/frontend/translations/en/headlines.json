@@ -223,9 +223,56 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Fleet Roles"
+          "roles": "Fleet Roles",
+          "notifications": "Notification Settings",
+          "inAppNotifications": "In-app Notifications",
+          "discord": "Discord",
+          "calendar": "Calendar"
         },
-        "inviteMember": "Invite new Member"
+        "inviteMember": "Invite new Member",
+        "calendarSubscription": "Calendar Subscription",
+        "missions": {
+          "index": "Missions",
+          "create": "Create Mission",
+          "edit": "Edit Mission",
+          "editBasic": "Basic details",
+          "editDescription": "Description & cover",
+          "editTeams": "Teams & slots",
+          "teams": "Teams",
+          "ships": "Ships",
+          "slots": "Slots",
+          "addTeam": "Add Team",
+          "editTeam": "Edit Team",
+          "addShip": "Add Ship",
+          "editShip": "Edit Ship"
+        },
+        "events": {
+          "index": "Events",
+          "calendar": "Calendar",
+          "create": "Create Event",
+          "edit": "Edit Event",
+          "editBasic": "Basic details",
+          "editDescription": "Description & cover",
+          "editTeams": "Teams & slots",
+          "spawn": "Spawn Event",
+          "details": "Event Details",
+          "schedule": "Schedule",
+          "settings": "Settings",
+          "lifecycle": "Lifecycle",
+          "signupTitle": "Sign me up",
+          "yourSignup": "Your signup",
+          "spawnedFrom": "Spawned from this mission",
+          "pickTemplate": "Pick a Mission Template",
+          "unassignedSignups": "Unassigned signups",
+          "eventTeam": "Event team",
+          "grantRole": "Grant a role",
+          "editTeam": "Edit team",
+          "addTeam": "Add team",
+          "editShip": "Edit ship",
+          "addShip": "Add ship",
+          "assignSlotFor": "Assign slot for %{username}",
+          "reassignSlotFor": "Reassign slot for %{username}"
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -252,7 +299,8 @@
           "enable": "Enable Two-factor Authentiation",
           "disable": "Disable Two-factor Authentiation",
           "backupCodes": "Generate Two-Factor Backup Codes"
-        }
+        },
+        "calendar": "Calendar Subscription"
       },
       "oauthApplications": {
         "new": "New OAuth Application",
@@ -293,6 +341,7 @@
         "overview": "Overview",
         "panels": "Panels",
         "buttons": "Buttons",
+        "events": "Events",
         "typography": "Typography",
         "forms": "Forms",
         "tables": "Tables",

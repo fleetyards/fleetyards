@@ -377,6 +377,13 @@ paths:
       tags:
       - ModelsFilters
       operationId: modelFocusFilters
+      parameters:
+      - name: classification
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Restrict the result to focuses of models with this classification
       responses:
         '200':
           description: successful
@@ -386,6 +393,8 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/options":
     get:
       summary: Model Options
@@ -12868,6 +12877,10 @@ components:
           type: boolean
         publicFleetStats:
           type: boolean
+        defaultTimezone:
+          type: string
+        calendarFeedToken:
+          type: string
         logo:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
@@ -18981,6 +18994,8 @@ components:
           type: boolean
         inHangar:
           type: boolean
+        inGameEq:
+          type: boolean
         s:
           anyOf:
           - type: array
@@ -19771,6 +19786,13 @@ components:
           type: string
         saleNotify:
           type: boolean
+        dateFormat:
+          type: string
+          enum:
+          - dmy_dots
+          - dmy_slash
+          - mdy_slash
+          - ymd_dash
         publicHangar:
           type: boolean
         publicHangarUrl:
@@ -19821,6 +19843,7 @@ components:
       - username
       - email
       - saleNotify
+      - dateFormat
       - publicHangar
       - publicHangarLoaners
       - publicHangarStats
@@ -19966,6 +19989,13 @@ components:
           - 'null'
         saleNotify:
           type: boolean
+        dateFormat:
+          type: string
+          enum:
+          - dmy_dots
+          - dmy_slash
+          - mdy_slash
+          - ymd_dash
         publicHangar:
           type: boolean
         publicHangarLoaners:
