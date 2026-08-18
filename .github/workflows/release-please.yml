@@ -23,9 +23,9 @@ jobs:
       - uses: actions/checkout@v7
         if: steps.release.outputs.release_created
         with:
-          token: ${{ secrets.RELEASE_TOKEN }}
+          ref: ${{ steps.release.outputs.tag_name }}
 
-      - name: Apply codename
+      - name: Name the release after the codename
         if: steps.release.outputs.release_created
         env:
           GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -33,14 +33,4 @@ jobs:
           CODENAME=$(yq '.codename' config/release.yml)
           TAG="${{ steps.release.outputs.tag_name }}"
 
-          # Update config/version.rb CODENAME
-          sed -i "s/CODENAME = \"[^\"]*\"/CODENAME = \"${CODENAME}\"/" config/version.rb
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add config/version.rb
-          git commit -m "chore(release): set codename ${CODENAME} for ${TAG}" || true
-          git push
-
-          # Update GitHub release title to include codename
           gh release edit "${TAG}" --title "${TAG} (${CODENAME})"

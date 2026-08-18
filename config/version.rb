@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "yaml"
+
 module Fleetyards
-  CODENAME = "Aurora"
+  CODENAME = YAML.load_file(File.expand_path("release.yml", __dir__)).fetch("codename").freeze
   VERSION = "v6.33.1" # x-release-please-version
 end
