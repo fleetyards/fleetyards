@@ -56,8 +56,9 @@ module Api
 
         now = Time.current
         events = @fleet.fleet_events
+          .includes(:fleet_event_occurrence_states)
           .where(archived_at: nil)
-          .where("starts_at >= ?", now - FEED_PAST_HORIZON)
+          .starting_after(now - FEED_PAST_HORIZON)
           .where(
             "status != ? OR starts_at >= ?",
             "cancelled",

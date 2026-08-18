@@ -27,7 +27,10 @@ module Calendars
 
       timezone_blocks.each { |block| lines.concat(block) }
 
-      @events.each { |event| lines.concat(event_lines(event)) }
+      @events.each do |event|
+        lines.concat(event_lines(event))
+        lines.concat(occurrence_override_lines(event)) if event.recurring?
+      end
 
       lines << "END:VCALENDAR"
       lines.join("\r\n") + "\r\n"
@@ -69,7 +72,11 @@ module Calendars
 
       rrule = freq.dup
       if event.recurrence_until.present?
-        rrule << ";UNTIL=#{event.recurrence_until.strftime("%Y%m%d")}T235959Z"
+        # UNTIL has to be UTC when DTSTART carries a TZID, so convert the
+        # event's local end-of-day rather than stamping 23:59:59Z, which ends
+        # the series early for every zone behind UTC.
+        until_utc = event.recurrence_until.in_time_zone(tz || "UTC").end_of_day
+        rrule << ";UNTIL=#{format_utc(until_utc)}"
       elsif event.recurrence_count.present?
         rrule << ";COUNT=#{event.recurrence_count}"
       end
@@ -77,8 +84,7 @@ module Calendars
 
       Array(event.excluded_dates).each do |date|
         d = date.is_a?(String) ? Date.parse(date) : date
-        time = event.starts_at.in_time_zone(tz || "UTC")
-        excluded_local = time.change(year: d.year, month: d.month, day: d.day)
+        excluded_local = occurrence_start(event, d, tz)
         lines << if tz && !UTC_IDENTIFIERS.include?(tz)
           "EXDATE;TZID=#{tz}:#{format_local(excluded_local)}"
         else
@@ -101,6 +107,68 @@ module Calendars
         ["DTSTART:#{format_utc(event.starts_at)}",
           "DTEND:#{format_utc(event.ends_at || event.starts_at + 1.hour)}"]
       end
+    end
+
+    # A recurring series is one VEVENT plus one override per occurrence that
+    # differs from it, tied back by RECURRENCE-ID. Without these a client shows
+    # the parent's title and location for an occurrence the organiser moved or
+    # cancelled.
+    OVERRIDABLE = %i[title description location meetup_location].freeze
+
+    private def occurrence_override_lines(event)
+      tz = event_timezone(event)
+
+      event.fleet_event_occurrence_states.filter_map { |state|
+        next if state.occurrence_date.blank?
+        next unless overridden?(state)
+
+        occurrence = occurrence_start(event, state.occurrence_date, tz)
+        next if occurrence.nil?
+
+        override_vevent(event, state, occurrence, tz)
+      }.flatten
+    end
+
+    private def overridden?(state)
+      state.cancelled? || OVERRIDABLE.any? { |attr| state.public_send(attr).present? }
+    end
+
+    private def override_vevent(event, state, occurrence, tz)
+      duration = (event.ends_at || event.starts_at + 1.hour) - event.starts_at
+      location = [state.effective(:location), state.effective(:meetup_location)]
+        .compact_blank.join(" — ")
+      status = state.cancelled? ? "cancelled" : (state.status.presence || event.status)
+
+      lines = ["BEGIN:VEVENT", "UID:#{event.external_uid}@fleetyards.net"]
+      lines << "DTSTAMP:#{format_utc(state.updated_at)}"
+      lines << "LAST-MODIFIED:#{format_utc(state.updated_at)}"
+      if tz && !UTC_IDENTIFIERS.include?(tz)
+        lines << "RECURRENCE-ID;TZID=#{tz}:#{format_local(occurrence)}"
+        lines << "DTSTART;TZID=#{tz}:#{format_local(occurrence)}"
+        lines << "DTEND;TZID=#{tz}:#{format_local(occurrence + duration)}"
+      else
+        lines << "RECURRENCE-ID:#{format_utc(occurrence)}"
+        lines << "DTSTART:#{format_utc(occurrence)}"
+        lines << "DTEND:#{format_utc(occurrence + duration)}"
+      end
+      lines << "SUMMARY:#{escape(state.effective(:title))}"
+      description = state.effective(:description)
+      lines << "DESCRIPTION:#{escape(description)}" if description.present?
+      lines << "STATUS:#{ics_status(status)}"
+      lines << "CATEGORIES:#{escape(event.category.to_s.upcase)}" if event.category.present?
+      lines << "LOCATION:#{escape(location)}" if location.present?
+      lines << "URL:#{event_url(event)}"
+      lines << "ORGANIZER;CN=#{escape(@organizer_name)}:mailto:noreply@fleetyards.net" if @organizer_name.present?
+      lines << "END:VEVENT"
+      lines
+    end
+
+    # The parent's time of day, moved onto the occurrence's date in its zone.
+    private def occurrence_start(event, date, tz)
+      return nil if event.starts_at.blank?
+
+      local = event.starts_at.in_time_zone(tz || "UTC")
+      local.change(year: date.year, month: date.month, day: date.day)
     end
 
     private def timezone_blocks
