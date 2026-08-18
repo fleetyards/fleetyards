@@ -84,4 +84,40 @@ class Api::V1::FleetsShowTest < ActionDispatch::IntegrationTest
       path_params: {slug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["public"])
   end
+
+  test "GET /fleets/:slug reports the flags enabled for this fleet" do
+    Flipper.add("FleetWideFeature")
+    Flipper.enable_actor("FleetWideFeature", @fleet)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {slug: @fleet.slug} do
+      assert_equal %w[FleetWideFeature], parsed_body["features"]
+    end
+  end
+
+  test "GET /fleets/:slug omits a flag enabled only for the viewer" do
+    Flipper.add("PersonalFeature")
+    Flipper.enable_actor("PersonalFeature", @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {slug: @fleet.slug} do
+      assert_empty parsed_body["features"]
+    end
+  end
+
+  test "GET /fleets/:slug picks up a flag toggled after the fleet was last cached" do
+    Flipper.add("FleetWideFeature")
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {slug: @fleet.slug} do
+      assert_empty parsed_body["features"]
+    end
+
+    Flipper.enable_actor("FleetWideFeature", @fleet)
+
+    assert_api_response :get, 200, path_params: {slug: @fleet.slug} do
+      assert_equal %w[FleetWideFeature], parsed_body["features"],
+        "flag state must sit outside the fragment cache keyed on the fleet record"
+    end
+  end
 end

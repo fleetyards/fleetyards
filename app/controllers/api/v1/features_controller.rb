@@ -7,15 +7,13 @@ module Api
 
       before_action :authenticate_user!, only: %i[]
 
+      # The viewer's own flags only. Flags enabled for a fleet ride on that
+      # fleet's payload instead — folding them in here answered "on for any fleet
+      # you are in", which showed a fleet's features on every other fleet's page.
       def show
-        user_features = Flipper.features.filter_map do |feature|
+        @features = Flipper.features.filter_map do |feature|
           Flipper.enabled?(feature.name, current_resource_owner) ? feature.to_s : nil
         end
-        fleet_features = Flipper.features.filter_map do |feature|
-          (current_resource_owner&.fleets&.any? { |fleet| Flipper.enabled?(feature.name, fleet) }) ? feature.to_s : nil
-        end
-
-        @features = (user_features + fleet_features).uniq
       end
     end
   end

@@ -25,6 +25,10 @@ class FleetPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage"])
   end
 
+  def manage_features?
+    manage?
+  end
+
   def update?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:update", "fleet:update:description", "fleet:update:images"])
   end
