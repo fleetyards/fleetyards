@@ -13,7 +13,7 @@ import {
   type Fleet,
   type MissionExtended,
   useDestroyFleetMission,
-  useUpdateFleetMission,
+  useUnarchiveFleetMission,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -61,7 +61,7 @@ const canCreateEvents = computed(() =>
 const archived = computed(() => !!props.mission.archived);
 
 const destroyMutation = useDestroyFleetMission();
-const updateMutation = useUpdateFleetMission();
+const unarchiveMutation = useUnarchiveFleetMission();
 
 const goToEdit = () => {
   void router.push({
@@ -93,10 +93,9 @@ const performArchive = async () => {
 
 const unarchive = async () => {
   try {
-    await updateMutation.mutateAsync({
+    await unarchiveMutation.mutateAsync({
       fleetSlug: props.fleet.slug,
       slug: props.mission.slug,
-      data: { archivedAt: null },
     });
     displaySuccess({ text: t("messages.fleets.mission.unarchive.success") });
     comlink.emit("fleet-mission-updated");
@@ -146,9 +145,9 @@ const handleDestroy = () => {
         <span>{{ t("actions.fleets.events.spawn") }}</span>
       </Btn>
       <Btn
-        v-if="archived"
+        v-if="archived && canDelete"
         :size="BtnSizesEnum.SM"
-        :loading="updateMutation.isPending.value"
+        :loading="unarchiveMutation.isPending.value"
         @click="unarchive"
       >
         <i class="fa-light fa-box-open" />
