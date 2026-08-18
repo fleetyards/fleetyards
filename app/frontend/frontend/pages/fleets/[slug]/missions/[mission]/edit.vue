@@ -34,9 +34,23 @@ const missionSlug = computed(() => route.params.mission as string);
 
 const { data: mission, refetch } = useFleetMission(fleetSlug, missionSlug);
 
+const fleetMissionUpdatedComlink = ref<() => void>();
+const missionChildrenChangedComlink = ref<() => void>();
+
 onMounted(() => {
-  comlink.on("fleet-mission-updated", () => void refetch());
-  comlink.on("mission-children-changed", () => void refetch());
+  fleetMissionUpdatedComlink.value = comlink.on(
+    "fleet-mission-updated",
+    () => void refetch(),
+  );
+  missionChildrenChangedComlink.value = comlink.on(
+    "mission-children-changed",
+    () => void refetch(),
+  );
+});
+
+onUnmounted(() => {
+  fleetMissionUpdatedComlink.value?.();
+  missionChildrenChangedComlink.value?.();
 });
 
 const crumbs = computed(() => [
