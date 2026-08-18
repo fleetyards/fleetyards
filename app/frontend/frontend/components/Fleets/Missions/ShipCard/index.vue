@@ -23,6 +23,7 @@ import {
   type MissionShip,
   type MissionTeam,
   useDestroyMissionShip,
+  useDuplicateMissionShip,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -56,6 +57,28 @@ const openEditShipModal = () => {
 };
 
 const destroyMutation = useDestroyMissionShip();
+const duplicateMutation = useDuplicateMissionShip();
+
+const duplicateShip = async () => {
+  await duplicateMutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      missionSlug: props.mission.slug,
+      missionTeamId: props.team.id,
+      id: props.ship.id,
+    })
+    .then(() => {
+      displaySuccess({
+        text: t("messages.fleets.missionShip.duplicate.success"),
+      });
+      comlink.emit("mission-children-changed");
+    })
+    .catch(() => {
+      displayAlert({
+        text: t("messages.fleets.missionShip.duplicate.failure"),
+      });
+    });
+};
 
 const removeShip = async () => {
   await destroyMutation
@@ -188,6 +211,14 @@ const subtitle = computed(() => {
             <Btn :size="BtnSizesEnum.SM" @click="openEditShipModal">
               <i class="fa fa-pencil" />
               <span>{{ t("actions.edit") }}</span>
+            </Btn>
+            <Btn
+              :size="BtnSizesEnum.SM"
+              :loading="duplicateMutation.isPending.value"
+              @click="duplicateShip"
+            >
+              <i class="fa-light fa-copy" />
+              <span>{{ t("actions.duplicate") }}</span>
             </Btn>
             <Btn :size="BtnSizesEnum.SM" tone="danger" @click="removeShip">
               <i class="fa-light fa-trash" />

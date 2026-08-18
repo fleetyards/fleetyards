@@ -254,7 +254,9 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="ship-form" @submit.prevent="onSubmit">
-      <div class="flex">
+      <!-- The switch is a section break, so it keeps the 1rem the fields below
+           it carry between them. -->
+      <div class="mb-4 flex">
         <BtnGroup segmented>
           <Btn :active="mode === 'specific'" @click="mode = 'specific'">
             {{ t("labels.fleets.missions.modelSpecific") }}

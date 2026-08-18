@@ -39,7 +39,11 @@ module V1
             recurring: {type: :boolean},
             recurrenceInterval: {
               type: [:string, :null],
-              enum: ::FleetEvent::RECURRENCE_INTERVALS
+              # An enum constrains the value alongside the type rather than
+              # instead of it, so a nullable enum has to list null too. Without
+              # it a one-off event could not be created at all: the model
+              # requires the interval to be absent unless the event recurs.
+              enum: ::FleetEvent::RECURRENCE_INTERVALS + [nil]
             },
             recurrenceUntil: {type: [:string, :null], format: :date},
             recurrenceCount: {type: [:integer, :null]}

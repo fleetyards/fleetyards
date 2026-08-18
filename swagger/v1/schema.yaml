@@ -4520,6 +4520,56 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}/duplicate":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: missionTeamId
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Duplicate Mission Ship
+      tags:
+      - Missions
+      operationId: duplicateMissionShip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MissionShip"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/missions/{slug}":
     parameters:
     - name: fleetSlug
@@ -13466,6 +13516,7 @@ components:
           - weekly
           - biweekly
           - monthly
+          -
         recurrenceUntil:
           type:
           - string
@@ -14104,6 +14155,7 @@ components:
           - weekly
           - biweekly
           - monthly
+          -
         recurrenceUntil:
           type:
           - string
