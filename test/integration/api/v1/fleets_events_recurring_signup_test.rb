@@ -4,7 +4,7 @@ require "openapi_helper"
 
 class Api::V1::FleetsEventsRecurringSignupTest < ActionDispatch::IntegrationTest
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     travel_to Time.zone.parse("2026-05-13 20:00:00 UTC")
     @admin = create(:user)
     @member = create(:user)

@@ -10,6 +10,11 @@ module FeatureFlags
     # entry accidentally left out, which is all the guard below can see.
     RETIRED_FLAG_NAMES = %w[hardpoints-v2].freeze
 
+    # Flags a data migration created under a name a later migration renamed. The
+    # old key is absent from the registry on purpose — the rename migration moves
+    # its gates onto the new key before the next sync prunes it.
+    RENAMED_FLAG_NAMES = %w[mission_builder].freeze
+
     def registry(raw)
       Registry.new(raw: raw)
     end
@@ -130,16 +135,16 @@ module FeatureFlags
     end
 
     test "the checked-in registry covers every flag created by a data migration" do
-      missing = migration_flag_names - Registry.new.names - RETIRED_FLAG_NAMES
+      missing = migration_flag_names - Registry.new.names - RETIRED_FLAG_NAMES - RENAMED_FLAG_NAMES
 
       assert_empty missing,
         "flags created by data migrations but missing from config/feature_flags.yml (sync would prune them). " \
-        "Retiring one on purpose? Add it to RETIRED_FLAG_NAMES."
+        "Retiring one on purpose? Add it to RETIRED_FLAG_NAMES. Renaming one? RENAMED_FLAG_NAMES."
     end
 
-    test "a flag listed as retired is really gone from the registry" do
-      assert_empty RETIRED_FLAG_NAMES & Registry.new.names,
-        "declared again in config/feature_flags.yml — drop it from RETIRED_FLAG_NAMES so the guard sees it"
+    test "a flag listed as retired or renamed is really gone from the registry" do
+      assert_empty (RETIRED_FLAG_NAMES + RENAMED_FLAG_NAMES) & Registry.new.names,
+        "declared again in config/feature_flags.yml — drop it from RETIRED_FLAG_NAMES/RENAMED_FLAG_NAMES so the guard sees it"
     end
 
     test "the migration scan finds both the literal and %w forms" do

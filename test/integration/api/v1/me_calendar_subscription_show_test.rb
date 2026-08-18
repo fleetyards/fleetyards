@@ -30,7 +30,7 @@ class Api::V1::MeCalendarSubscriptionShowTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     @account = create(:user)
   end
 

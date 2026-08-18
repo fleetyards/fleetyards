@@ -38,7 +38,7 @@ class Api::V1::FleetsMissionTeamsShipsUpdateTest < ActionDispatch::IntegrationTe
   end
 
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin])
     @mission = create(:mission, fleet: @fleet, created_by: @admin)

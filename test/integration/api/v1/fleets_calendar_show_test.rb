@@ -37,7 +37,7 @@ class Api::V1::FleetsCalendarShowTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin])
   end

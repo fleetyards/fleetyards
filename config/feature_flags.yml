@@ -25,6 +25,10 @@ fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
   self_service: true
 
+fleet_mission_builder:
+  description: "Mission builder — fleet missions, events, the calendar and Discord sync"
+  self_service: true
+
 fleet_starmap:
   description: "Starmap on the fleet page"
 
@@ -39,10 +43,6 @@ hangar_inventories:
 # separate surface and rolls out on its own schedule.
 ship_inventories:
   description: "Ship inventories — the cargo aboard a vehicle"
-  self_service: true
-
-mission_builder:
-  description: "Mission builder — fleet missions, events, the calendar and Discord sync"
   self_service: true
 
 oauth-applications:

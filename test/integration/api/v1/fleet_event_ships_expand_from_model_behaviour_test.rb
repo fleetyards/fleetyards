@@ -4,7 +4,7 @@ require "openapi_helper"
 
 class Api::V1::FleetEventShipsExpandFromModelBehaviourTest < ActionDispatch::IntegrationTest
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin])
     @event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin)

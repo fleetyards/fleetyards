@@ -7,7 +7,7 @@ module Api
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?
 
-      before_action :check_mission_builder_feature
+      before_action :check_fleet_mission_builder_feature
       before_action :set_slottable, only: %i[create]
       before_action :set_slot, only: %i[update destroy]
 
@@ -84,8 +84,8 @@ module Api
         (@slottable.mission_slots.maximum(:position) || -1) + 1
       end
 
-      private def check_mission_builder_feature
-        return if feature_enabled?("mission_builder")
+      private def check_fleet_mission_builder_feature
+        return if feature_enabled?("fleet_mission_builder")
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

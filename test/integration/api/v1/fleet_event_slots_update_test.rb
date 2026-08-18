@@ -54,7 +54,7 @@ class Api::V1::FleetEventSlotsUpdateTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin])
     @fleet_event = create(:fleet_event, fleet: @fleet, created_by: @admin)

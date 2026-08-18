@@ -8,7 +8,7 @@ module Api
         unless: :user_signed_in?,
         only: %i[show]
 
-      before_action :check_mission_builder_feature, only: %i[show]
+      before_action :check_fleet_mission_builder_feature, only: %i[show]
       before_action :set_fleet, only: %i[show]
       skip_verify_authorized only: %i[ics]
 
@@ -82,8 +82,8 @@ module Api
         authorize! @fleet, to: :show?
       end
 
-      private def check_mission_builder_feature
-        return if feature_enabled?("mission_builder")
+      private def check_fleet_mission_builder_feature
+        return if feature_enabled?("fleet_mission_builder")
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

@@ -4,7 +4,7 @@ require "test_helper"
 
 class Api::V1::MeCalendarSubscriptionIcsTest < ActionDispatch::IntegrationTest
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     @user = create(:user)
     @fleet = create(:fleet, members: [@user])
     @other_user = create(:user)

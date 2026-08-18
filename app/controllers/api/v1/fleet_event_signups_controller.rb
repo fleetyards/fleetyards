@@ -7,7 +7,7 @@ module Api
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?
 
-      before_action :check_mission_builder_feature
+      before_action :check_fleet_mission_builder_feature
       before_action :set_slot, only: %i[create update destroy_self]
       before_action :set_event_for_event_signup, only: %i[event_signup]
       before_action :set_membership_for_slot, only: %i[create update destroy_self]
@@ -307,8 +307,8 @@ module Api
         @signup = FleetEventSignup.find(params[:id])
       end
 
-      private def check_mission_builder_feature
-        return if feature_enabled?("mission_builder")
+      private def check_fleet_mission_builder_feature
+        return if feature_enabled?("fleet_mission_builder")
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

@@ -4,7 +4,7 @@ require "openapi_helper"
 
 class Api::V1::FleetsCalendarIcsTest < ActionDispatch::IntegrationTest
   setup do
-    Flipper.enable("mission_builder")
+    Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin], calendar_feed_token: SecureRandom.hex(16))
   end
