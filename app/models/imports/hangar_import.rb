@@ -37,6 +37,9 @@ module Imports
     has_one_attached :import
 
     validate :import_file_presence
+    # An import is a JSON file, but it is a user upload whose blob URL the
+    # admin UI links to, so it is held to the same rule as the pictures.
+    validates :import, no_vector_image: true
 
     def import_file_presence
       return if import.attached?

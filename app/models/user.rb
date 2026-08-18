@@ -179,6 +179,7 @@ class User < ApplicationRecord
   after_save :touch_fleet_memberships
 
   has_one_attached :avatar
+  validates :avatar, no_vector_image: true
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = [

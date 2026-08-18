@@ -40,6 +40,7 @@ class Inventory < ApplicationRecord
   inventory_items_association :inventory_items
 
   has_one_attached :image
+  validates :image, no_vector_image: true
 
   # The inventories a user created by hand, as opposed to the ones a ship
   # provisioned for itself.
