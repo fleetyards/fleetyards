@@ -11,11 +11,17 @@
 #     description: "…"           # REQUIRED — what does the flag toggle?
 #     permanent: true            # optional — long-lived infrastructure gate
 #                                #   rather than a temporary rollout
-#     self_service: true         # optional — ships user-toggleable from
-#                                #   Settings > Features. Sync seeds the setting
-#                                #   once and never overwrites it, so admins keep
-#                                #   ownership and dropping the key retracts
-#                                #   nothing.
+#     self_service: user         # optional — ships with a self-service toggle.
+#                                #   `user` puts it in Settings > Features;
+#                                #   `fleet` puts it in a fleet's settings, for
+#                                #   holders of fleet:manage, so one member
+#                                #   cannot switch a feature on for everyone.
+#                                #   `true` is an alias for `user`. Sync seeds
+#                                #   the setting once and never overwrites it, so
+#                                #   admins keep ownership and dropping the key
+#                                #   retracts nothing — but the scope is
+#                                #   reconciled every sync, because it belongs to
+#                                #   the code reading the flag, not to a rollout.
 #
 # Rules are enforced by `bin/feature-flags validate`, which CI runs on every
 # push. Seeded from the flags live in Flipper at the time the registry was
@@ -23,7 +29,7 @@
 
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
-  self_service: true
+  self_service: fleet
 
 fleet_starmap:
   description: "Starmap on the fleet page"
@@ -33,13 +39,13 @@ fleet_worldmap:
 
 hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"
-  self_service: true
+  self_service: user
 
 # Rides its own gate rather than hangar_inventories: a ship's cargo is a
 # separate surface and rolls out on its own schedule.
 ship_inventories:
   description: "Ship inventories — the cargo aboard a vehicle"
-  self_service: true
+  self_service: user
 
 oauth-applications:
   description: "User-owned OAuth applications in settings"
