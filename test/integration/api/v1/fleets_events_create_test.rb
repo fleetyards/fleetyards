@@ -64,6 +64,24 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # What the form sends for an event that does not repeat: the model requires the
+  # interval to be absent unless the event recurs, so null is the only value it
+  # can carry, and the schema has to accept it.
+  test "POST /fleets/:slug/events accepts a null recurrence interval" do
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug},
+      body: valid_body.merge(
+        recurring: false,
+        recurrenceInterval: nil,
+        recurrenceUntil: nil,
+        recurrenceCount: nil
+      ) do
+      assert_not parsed_body["recurring"]
+    end
+  end
+
   test "POST /fleets/:slug/events returns 403 when a member tries to create" do
     sign_in @member
 
