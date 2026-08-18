@@ -629,6 +629,10 @@
           "destroy": {
             "success": "Ship removed.",
             "failure": "Could not remove ship."
+          },
+          "duplicate": {
+            "success": "Ship duplicated.",
+            "failure": "Could not duplicate the ship."
           }
         },
         "missionSlot": {
