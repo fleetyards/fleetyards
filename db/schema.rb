@@ -538,6 +538,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true, where: "(discarded_at IS NULL)"
   end
 
+  create_table "fleet_notification_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "discord_channel_id"
+    t.string "discord_guild_id"
+    t.text "discord_webhook_url"
+    t.text "enabled_in_app_events", default: "---\n- fleet_event.published\n- fleet_event.locked\n- fleet_event.starting_soon\n- fleet_event.cancelled\n- fleet_event_signup.created\n- fleet_event_signup.withdrawn"
+    t.uuid "fleet_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id"], name: "index_fleet_notification_settings_on_fleet_id", unique: true
+  end
+
   create_table "fleet_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "fleet_id", null: false
@@ -1464,6 +1475,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
   add_foreign_key "fleet_inventory_items", "users", column: "added_by"
   add_foreign_key "fleet_inventory_items", "users", column: "member_id"
   add_foreign_key "fleet_memberships", "fleet_roles"
+  add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"

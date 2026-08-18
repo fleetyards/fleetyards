@@ -74,6 +74,11 @@ cleanup_visits_job:
   class: 'Cleanup::VisitsJob'
   queue: 'cleanup'
 
+fleet_event_starting_soon_job:
+  cron: '*/5 * * * *' # Every 5 minutes
+  class: 'Notifications::FleetEventStartingSoonJob'
+  queue: 'notifications'
+
 fleet_events_auto_lock_job:
   cron: '*/5 * * * *' # Every 5 minutes
   class: 'FleetEvents::AutoLockJob'
