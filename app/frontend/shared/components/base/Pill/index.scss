@@ -11,6 +11,15 @@
   border: 1px solid rgba($primary, 0.4);
   color: color.adjust($primary, $lightness: 20%);
 
+  // The event lifecycle needs a quiet state as well as coloured ones: draft,
+  // completed and past all mean "nothing to react to", and the default fill is
+  // the primary blue.
+  &--neutral {
+    background: rgba($gray-light, 0.18);
+    border-color: rgba($gray-light, 0.4);
+    color: $text-color;
+  }
+
   &--danger {
     background: rgba($danger, 0.2);
     border-color: rgba($danger, 0.4);
