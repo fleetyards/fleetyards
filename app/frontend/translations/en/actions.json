@@ -13,6 +13,7 @@
           "syncFromPatreon": "Sync from Patreon"
         }
       },
+      "duplicate": "Duplicate",
       "showReleased": "Show old Releases",
       "hideReleased": "Hide old Releases",
       "upgrade": "Update available!",
