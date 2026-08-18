@@ -56,4 +56,35 @@ class FleetMissionBuilderGateTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test "restoring an archived mission needs delete access, not just update" do
+    updater = create(:user)
+    role = @fleet.fleet_roles.create!(
+      name: "Mission editor", rank: 90,
+      resource_access: ["fleet:missions:read", "fleet:missions:update"]
+    )
+    create(:fleet_membership, fleet: @fleet, user: updater,
+      fleet_role: role, aasm_state: :accepted)
+    mission = create(:mission, fleet: @fleet, created_by: @admin,
+      archived_at: 1.day.ago)
+    Flipper.enable_actor("fleet_mission_builder", @fleet)
+
+    sign_in updater
+    put "/api/v1/fleets/#{@fleet.slug}/missions/#{mission.slug}/unarchive"
+
+    assert_response :forbidden
+    assert_not_nil mission.reload.archived_at
+  end
+
+  test "an update cannot clear archived_at on its own" do
+    mission = create(:mission, fleet: @fleet, created_by: @admin,
+      archived_at: 1.day.ago)
+    Flipper.enable_actor("fleet_mission_builder", @fleet)
+
+    patch "/api/v1/fleets/#{@fleet.slug}/missions/#{mission.slug}",
+      params: {archivedAt: nil}, as: :json
+
+    assert_response :success
+    assert_not_nil mission.reload.archived_at
+  end
 end

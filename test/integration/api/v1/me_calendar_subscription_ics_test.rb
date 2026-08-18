@@ -58,4 +58,32 @@ class Api::V1::MeCalendarSubscriptionIcsTest < ActionDispatch::IntegrationTest
 
     assert_response :forbidden
   end
+  test "drops events once the membership behind the signup is removed" do
+    membership = @fleet.fleet_memberships.find_by(user: @user)
+    event = create(:fleet_event, :open, fleet: @fleet, title: "Revoked Op",
+      starts_at: 2.days.from_now)
+    signup_for(membership, event)
+
+    membership.discard
+
+    get "/api/v1/me/calendar/events.ics", params: {token: @user.calendar_feed_token}
+
+    assert_response :ok
+    refute_includes response.body, "Revoked Op"
+  end
+
+  test "drops events while the membership is not yet accepted" do
+    pending_user = create(:user)
+    pending_user.ensure_calendar_feed_token!
+    membership = create(:fleet_membership, fleet: @fleet, user: pending_user)
+    event = create(:fleet_event, :open, fleet: @fleet, title: "Requested Op",
+      starts_at: 2.days.from_now)
+    signup_for(membership, event)
+
+    get "/api/v1/me/calendar/events.ics",
+      params: {token: pending_user.calendar_feed_token}
+
+    assert_response :ok
+    refute_includes response.body, "Requested Op"
+  end
 end

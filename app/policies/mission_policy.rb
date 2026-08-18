@@ -19,7 +19,12 @@ class MissionPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:missions:manage", "fleet:missions:delete"])
   end
 
+  # Archiving happens through destroy, so restoring has to cost the same
+  # privilege. Left on update? it would let someone with only
+  # fleet:missions:update pull a mission back into the active list.
+  alias_rule :unarchive?, to: :destroy?
+
   params_filter do |params|
-    params.permit(:title, :description, :archived_at, :category, :scenario, :cover_image, :cover_image_preset)
+    params.permit(:title, :description, :category, :scenario, :cover_image, :cover_image_preset)
   end
 end

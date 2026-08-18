@@ -10,7 +10,7 @@
 #  auto_lock_minutes_before  :integer          default(60), not null
 #  briefing                  :text
 #  cancelled_reason          :text
-#  category                  :integer          default("other"), not null
+#  category                  :integer          default(0), not null
 #  cover_image_preset        :string
 #  description               :text
 #  discord_synced_at         :datetime
@@ -110,6 +110,19 @@ class FleetEvent < ApplicationRecord
   scope :past, -> { where("starts_at < ?", Time.current).order(starts_at: :desc) }
   scope :active_status, -> { where(archived_at: nil) }
   scope :archived, -> { where.not(archived_at: nil) }
+
+  # A recurring event keeps its whole series on the parent row, so filtering by
+  # starts_at would drop a weekly op that began before the cutoff along with
+  # every occurrence it still has ahead of it. Recurring rows are therefore only
+  # excluded when the series can be shown to have finished; a count-bounded or
+  # open-ended series stays, and its RRULE simply yields nothing in the past.
+  scope :starting_after, ->(cutoff) {
+    where(
+      "(recurring IS NOT TRUE AND starts_at >= :cutoff) OR " \
+      "(recurring IS TRUE AND (recurrence_until IS NULL OR recurrence_until >= :cutoff_date))",
+      cutoff: cutoff, cutoff_date: cutoff.to_date
+    )
+  }
 
   AVAILABLE_PRIVILEGES = [
     "fleet:events:read",
@@ -305,7 +318,11 @@ class FleetEvent < ApplicationRecord
     cursor = starts_at
     limit = recurrence_count.presence
     iterations = 0
-    until_time = recurrence_until&.end_of_day&.in_time_zone(timezone || "UTC")
+    # Date#end_of_day resolves in Time.zone, so the cutoff used to follow the
+    # server's zone rather than the event's. in_time_zone on the date puts
+    # midnight in the event's zone first, so this is the inclusive local
+    # end-of-day an organiser means by "repeats until".
+    until_time = recurrence_until&.in_time_zone(timezone || "UTC")&.end_of_day
 
     while cursor <= to && (limit.nil? || iterations < limit)
       break if until_time && cursor > until_time
