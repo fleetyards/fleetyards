@@ -69,6 +69,7 @@ class Fleet < ApplicationRecord
   has_many :fleet_inventories, dependent: :destroy
   has_many :missions, dependent: :destroy
   has_many :fleet_events, dependent: :destroy
+  has_one :fleet_notification_setting, dependent: :destroy
   has_many :fleet_vehicles, dependent: :destroy
   has_many :vehicles, through: :fleet_vehicles, source: :vehicle
   has_many :models, through: :vehicles, source: :model

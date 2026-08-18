@@ -18,6 +18,7 @@ gem "discard", "~> 2.0"
 gem "data_migrate"
 
 gem "discordrb-webhooks"
+gem "discordrb", require: false
 
 gem "vite_rails"
 
