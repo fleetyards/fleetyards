@@ -21,10 +21,12 @@
 class Manufacturer < ApplicationRecord
   include ActionView::Helpers::OutputSafetyHelper
   include ActiveStorageVariants
+  include AttachmentRansackers
 
   paginates_per 30
 
   has_one_attached :logo
+  ransack_attachment :logo
 
   has_many :models,
     dependent: :nullify
@@ -39,7 +41,7 @@ class Manufacturer < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for",
-      "long_name", "name", "rsi_id", "slug", "updated_at"
+      "logo", "long_name", "name", "rsi_id", "slug", "updated_at"
     ]
   end
 
