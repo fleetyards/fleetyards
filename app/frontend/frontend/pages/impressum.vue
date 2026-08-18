@@ -35,6 +35,15 @@ const { t } = useI18n();
           </a>
         </p>
         <br />
+        <h3>Erkul's DPS Calculator</h3>
+        <p>{{ t("texts.impressum.erkul") }}</p>
+        <p>
+          {{ t("texts.impressum.visit") }}
+          <a href="https://www.erkul.games/" target="_blank" rel="noopener">
+            erkul.games
+          </a>
+        </p>
+        <br />
         <h2>{{ t("sublines.impressum.sponsors") }}</h2>
         <h3>AppSignal</h3>
         <p>{{ t("texts.impressum.appSignal") }}</p>

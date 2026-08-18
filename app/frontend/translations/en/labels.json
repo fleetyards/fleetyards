@@ -1475,7 +1475,8 @@
         "prefix": "Tryout Loadouts with",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
-        "spviewerTitle": "SC Ships Performances Viewer"
+        "spviewerTitle": "SC Ships Performances Viewer",
+        "metricsCredit": "Metrics based on the formulas of"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",
