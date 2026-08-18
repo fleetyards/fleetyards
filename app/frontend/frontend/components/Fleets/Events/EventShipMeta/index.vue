@@ -96,15 +96,15 @@ const items = computed<StatItem[]>(() => {
 .event-ship-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 0.85rem;
-  margin: 0.25rem 0 0.5rem;
-  font-size: 0.78rem;
+  gap: 6px 14px;
+  margin: 4px 0 8px;
+  font-size: 12px;
   color: var(--color-text, #c8c8c8);
 }
 .event-ship-meta__item {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 4px;
 
   i {
     color: var(--color-muted, #7a8288);
@@ -114,7 +114,7 @@ const items = computed<StatItem[]>(() => {
   color: var(--color-muted, #7a8288);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 0.7rem;
+  font-size: 11px;
 }
 .event-ship-meta__value {
   font-weight: 600;

@@ -149,6 +149,6 @@ const onSubmit = handleSubmit(async (values) => {
 .override-form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 </style>

@@ -243,7 +243,7 @@ onUnmounted(() => {
 .slot-list {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 4px;
 }
 .slot-list-items {
   list-style: none;
@@ -255,10 +255,10 @@ onUnmounted(() => {
 .slot-item {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.15rem 0.25rem;
-  font-size: 0.85rem;
-  border-radius: 3px;
+  gap: 6px;
+  padding: 2px 4px;
+  font-size: 13px;
+  border-radius: var(--radius-control-bare, 6px);
 
   &:hover {
     background: var(--bg-subtle, rgba(255, 255, 255, 0.04));
@@ -271,17 +271,17 @@ onUnmounted(() => {
 .slot-drag-handle {
   cursor: grab;
   color: var(--color-muted, #7a8288);
-  font-size: 0.75rem;
+  font-size: 12px;
   letter-spacing: -0.15em;
   user-select: none;
   flex-shrink: 0;
 }
 .slot-type-badge {
-  font-size: 0.65rem;
+  font-size: 10px;
   text-transform: uppercase;
   color: var(--color-muted, #7a8288);
   flex-shrink: 0;
-  padding: 0 0.25rem;
+  padding: 0 4px;
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 2px;
   letter-spacing: 0.04em;
@@ -291,7 +291,7 @@ onUnmounted(() => {
   text-align: left;
   background: transparent;
   border: none;
-  padding: 0.1rem 0.25rem;
+  padding: 2px 4px;
   cursor: text;
   color: inherit;
   font: inherit;
@@ -310,7 +310,7 @@ onUnmounted(() => {
   background: var(--bg-elevated, rgba(255, 255, 255, 0.06));
   border: 1px solid var(--color-primary, #428bca);
   border-radius: 2px;
-  padding: 0.1rem 0.35rem;
+  padding: 2px 6px;
   font: inherit;
   color: inherit;
   outline: none;
@@ -320,9 +320,9 @@ onUnmounted(() => {
   border: none;
   color: var(--color-muted, #7a8288);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 16px;
   line-height: 1;
-  padding: 0 0.25rem;
+  padding: 0 4px;
   opacity: 0;
   transition:
     opacity 0.15s,
@@ -338,17 +338,17 @@ onUnmounted(() => {
   }
 }
 .slot-add {
-  margin-top: 0.15rem;
+  margin-top: 2px;
 }
 .slot-add-input {
   width: 100%;
   background: transparent;
   border: 1px dashed var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 3px;
-  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-control-bare, 6px);
+  padding: 4px 6px;
   font: inherit;
   color: inherit;
-  font-size: 0.85rem;
+  font-size: 13px;
 
   &:focus {
     outline: none;
@@ -358,7 +358,7 @@ onUnmounted(() => {
 }
 .slot-empty {
   font-style: italic;
-  font-size: 0.85rem;
+  font-size: 13px;
   margin: 0;
 }
 </style>

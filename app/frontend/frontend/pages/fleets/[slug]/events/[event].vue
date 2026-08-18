@@ -674,7 +674,7 @@ const crumbs = computed(() => [
 .event-detail {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 .event-detail__hero {
   --panel-image-height: 260px;
@@ -716,41 +716,41 @@ const crumbs = computed(() => [
 .event-teams {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 12px;
 }
 .event-team {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 1rem;
+  padding-top: 16px;
 }
 .event-team__title {
-  margin: 0 0 0.25rem;
+  margin: 0 0 4px;
 }
 .event-slots {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+  gap: 12px;
+  margin-top: 8px;
 }
 .event-ships {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 16px;
+  margin-top: 16px;
 }
 .event-ship {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  padding: 0.75rem;
+  border-radius: var(--radius-control-bare, 6px);
+  padding: 12px;
 }
 .event-ship__title {
-  margin: 0 0 0.5rem;
-  font-size: 0.95rem;
+  margin: 0 0 8px;
+  font-size: 15px;
 }
 .event-occurrences {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 .event-occurrences__list {
   list-style: none;
@@ -758,17 +758,17 @@ const crumbs = computed(() => [
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 4px;
 }
 .event-occurrences__item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
+  gap: 12px;
+  padding: 8px 12px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  font-size: 0.9rem;
+  border-radius: var(--radius-control-bare, 6px);
+  font-size: 14px;
 
   &--excluded {
     opacity: 0.55;
@@ -779,22 +779,22 @@ const crumbs = computed(() => [
   flex: 1;
 }
 .event-occurrences__badge {
-  font-size: 0.75rem;
-  padding: 0.15rem 0.5rem;
+  font-size: 12px;
+  padding: 2px 8px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
 }
 .event-occurrences__actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
 }
 .event-occurrences__btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: inherit;
-  font-size: 0.8rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 3px;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: var(--radius-control-bare, 6px);
   cursor: pointer;
 
   &:hover {
@@ -802,6 +802,6 @@ const crumbs = computed(() => [
   }
 }
 .small {
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 </style>

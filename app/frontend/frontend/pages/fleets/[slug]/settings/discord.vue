@@ -224,10 +224,10 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
 .discord-install {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   flex-wrap: wrap;
-  margin: 0.4rem 0 0.8rem;
-  font-size: 0.95rem;
+  margin: 6px 0 13px;
+  font-size: 15px;
 
   i {
     color: var(--color-primary, #428bca);
@@ -240,15 +240,15 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
 .discord-status-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 10px;
   flex-wrap: wrap;
-  margin: 0.5rem 0 1rem;
+  margin: 8px 0 16px;
 }
 .discord-status {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
+  gap: 6px;
+  font-size: 13px;
 }
 .discord-status--ok {
   color: var(--color-success, #5cb85c);

@@ -220,11 +220,11 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .team-box {
   position: relative;
-  padding: 1.25rem;
+  padding: 20px;
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 6px;
+  border-radius: var(--radius-control-bare, 6px);
   background: rgba(0, 0, 0, 0.45);
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
 }
 .team-close {
   position: absolute;
@@ -234,10 +234,10 @@ onUnmounted(() => {
   border: none;
   color: var(--color-muted, #7a8288);
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  font-size: 1rem;
+  padding: 4px 8px;
+  font-size: 16px;
   line-height: 1;
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
   transition:
     color 0.15s,
     background 0.15s;
@@ -250,19 +250,19 @@ onUnmounted(() => {
 .team-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding-right: 2.5rem;
+  gap: 8px;
+  padding-right: 40px;
 }
 .team-drag-handle {
   cursor: grab;
   color: var(--color-muted, #7a8288);
-  font-size: 0.85rem;
+  font-size: 13px;
   letter-spacing: -0.15em;
   user-select: none;
 }
 .team-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 19px;
   font-weight: 600;
 }
 .team-edit {
@@ -270,9 +270,9 @@ onUnmounted(() => {
   border: none;
   color: var(--color-muted, #7a8288);
   cursor: pointer;
-  padding: 0.25rem 0.4rem;
-  border-radius: 3px;
-  font-size: 0.85rem;
+  padding: 4px 6px;
+  border-radius: var(--radius-control-bare, 6px);
+  font-size: 13px;
   transition:
     color 0.15s,
     background 0.15s;
@@ -284,17 +284,17 @@ onUnmounted(() => {
 }
 .team-desc {
   color: var(--color-muted, #7a8288);
-  margin: 0.5rem 0 0;
+  margin: 8px 0 0;
 }
 .team-section {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 8px;
+  margin-top: 16px;
 }
 .team-section-label {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -304,18 +304,18 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 8px;
 }
 .team-ships {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 12px;
   align-items: flex-start;
 }
 .no-ships {
   font-style: italic;
-  font-size: 0.9rem;
+  font-size: 14px;
   margin: 0;
 }
 </style>

@@ -771,14 +771,14 @@ const onSubmit = handleSubmit(async (values) => {
 .event-form__mission-prefill {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
   background: rgba(255, 255, 255, 0.03);
-  padding: 0.7rem 0.85rem;
-  border-radius: 6px;
+  padding: 11px 14px;
+  border-radius: var(--radius-control-bare, 6px);
   border: 1px solid rgba(255, 255, 255, 0.07);
 }
 .event-form__prefill-label {
-  font-size: 0.78rem;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-muted, #7a8288);
@@ -787,13 +787,13 @@ const onSubmit = handleSubmit(async (values) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .event-form__prefill-name {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   font-weight: 600;
 
   i {
@@ -801,30 +801,30 @@ const onSubmit = handleSubmit(async (values) => {
   }
 }
 .event-form__prefill-badge {
-  font-size: 0.65rem;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.1rem 0.4rem;
-  border-radius: 999px;
+  padding: 2px 6px;
+  border-radius: var(--radius-control-bare, 6px);
   background: rgba(74, 170, 170, 0.18);
   color: var(--color-primary, #428bca);
 }
 .event-form__prefill-actions {
   display: flex;
-  gap: 0.4rem;
+  gap: 6px;
   flex-wrap: wrap;
 }
 .cover-presets-label {
   display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.85rem;
+  margin-bottom: 6px;
+  font-size: 13px;
   color: var(--color-muted, #7a8288);
 }
 .cover-presets-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 .cover-preset {
   position: relative;
@@ -833,7 +833,7 @@ const onSubmit = handleSubmit(async (values) => {
   background-position: center;
   background-repeat: no-repeat;
   border: 2px solid transparent;
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
   cursor: pointer;
   padding: 0;
   transition:
@@ -852,33 +852,33 @@ const onSubmit = handleSubmit(async (values) => {
 .event-teams-section__header {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 .event-teams {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 .series-end {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.4rem;
+  gap: 8px;
+  margin-top: 6px;
 }
 .series-end__option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   cursor: pointer;
 }
 .series-end__input {
-  padding: 0.25rem 0.5rem;
+  padding: 4px 8px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: var(--radius-control-bare, 6px);
   color: inherit;
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 13px;
 
   &:disabled {
     opacity: 0.4;
@@ -888,6 +888,6 @@ const onSubmit = handleSubmit(async (values) => {
   width: 5rem;
 }
 .small {
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 </style>

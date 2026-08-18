@@ -178,25 +178,25 @@ const copyFeedUrl = async () => {
 .calendar-settings__url {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0.5rem 0;
+  gap: 8px;
+  margin: 8px 0;
 }
 .calendar-settings__field {
   flex: 1;
-  padding: 0.4rem 0.6rem;
+  padding: 6px 10px;
   font-family: monospace;
-  font-size: 0.85rem;
+  font-size: 13px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: var(--radius-control-bare, 6px);
   color: inherit;
 }
 .calendar-settings__actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .small {
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 </style>

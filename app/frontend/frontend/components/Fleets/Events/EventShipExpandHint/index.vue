@@ -100,14 +100,14 @@ const openExpandModal = () => {
 .ship-expand-hint {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0.4rem 0 0.6rem;
-  padding: 0.4rem 0.7rem;
-  font-size: 0.82rem;
+  gap: 8px;
+  margin: 6px 0 10px;
+  padding: 6px 11px;
+  font-size: 13px;
   color: var(--color-primary, #428bca);
   background: rgba(74, 170, 170, 0.08);
   border: 1px solid rgba(74, 170, 170, 0.4);
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
 
   i {
     color: inherit;

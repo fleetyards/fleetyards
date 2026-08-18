@@ -430,23 +430,23 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
 .series-end {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.4rem;
+  gap: 8px;
+  margin-top: 6px;
 }
 .series-end__option {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   cursor: pointer;
 }
 .series-end__input {
-  padding: 0.25rem 0.5rem;
+  padding: 4px 8px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: var(--radius-control-bare, 6px);
   color: inherit;
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: 13px;
 
   &:disabled {
     opacity: 0.4;
@@ -456,6 +456,6 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
   width: 5rem;
 }
 .small {
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 </style>

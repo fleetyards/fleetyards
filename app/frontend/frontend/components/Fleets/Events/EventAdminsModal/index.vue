@@ -216,11 +216,11 @@ const revoke = (admin: FleetEventAdmin) => {
 .event-admins {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.85rem;
+  gap: 6px;
+  margin-top: 14px;
 }
 .event-admins__head {
-  font-size: 0.78rem;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-muted, #7a8288);
@@ -228,7 +228,7 @@ const revoke = (admin: FleetEventAdmin) => {
 .event-admins__creator {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 6px;
 
   i {
     color: var(--color-gold, #d4af37);
@@ -240,26 +240,26 @@ const revoke = (admin: FleetEventAdmin) => {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 4px;
 }
 .event-admins__entry {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.4rem 0.55rem;
+  gap: 7px;
+  padding: 6px 9px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
 
   i {
     color: var(--color-muted, #7a8288);
   }
 }
 .event-admins__role {
-  font-size: 0.7rem;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.1rem 0.4rem;
-  border-radius: 999px;
+  padding: 2px 6px;
+  border-radius: var(--radius-control-bare, 6px);
   background: rgba(74, 170, 170, 0.18);
   color: var(--color-primary, #428bca);
   margin-right: auto;
@@ -267,7 +267,7 @@ const revoke = (admin: FleetEventAdmin) => {
 .event-admins__form {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 0.4rem;
+  gap: 6px;
   align-items: end;
 }
 @media (max-width: 480px) {
@@ -276,6 +276,6 @@ const revoke = (admin: FleetEventAdmin) => {
   }
 }
 .small {
-  font-size: 0.78rem;
+  font-size: 12px;
 }
 </style>

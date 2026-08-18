@@ -158,7 +158,7 @@ const coverImage = computed(() => resolveCover(mission.value));
 .mission-detail {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 .mission-detail__hero {
   --panel-image-height: 260px;
@@ -168,19 +168,19 @@ const coverImage = computed(() => resolveCover(mission.value));
   white-space: pre-wrap;
 }
 .mission-section {
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
+  gap: 16px;
+  margin-bottom: 12px;
 }
 .spawned-events {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
+  gap: 16px;
   align-items: start;
 }
 .spawned-events__item {
@@ -198,6 +198,6 @@ const coverImage = computed(() => resolveCover(mission.value));
 .mission-teams {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 </style>

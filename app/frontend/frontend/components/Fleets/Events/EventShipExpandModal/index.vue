@@ -168,8 +168,8 @@ const submit = async () => {
 <style lang="scss" scoped>
 .expand-toolbar {
   display: flex;
-  gap: 0.4rem;
-  margin: 0.4rem 0;
+  gap: 6px;
+  margin: 6px 0;
 }
 .expand-positions {
   list-style: none;
@@ -177,24 +177,24 @@ const submit = async () => {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 4px;
   max-height: 320px;
   overflow-y: auto;
 }
 .expand-positions__item label {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   cursor: pointer;
-  padding: 0.3rem 0.4rem;
-  border-radius: 4px;
+  padding: 4px 6px;
+  border-radius: var(--radius-control-bare, 6px);
 
   &:hover {
     background: rgba(255, 255, 255, 0.04);
   }
 }
 .expand-positions__type {
-  font-size: 0.75rem;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }

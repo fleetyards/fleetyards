@@ -395,44 +395,44 @@ const onSubmit = handleSubmit(async (values) => {
 .seat-checklist {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.5rem;
+  gap: 4px;
+  padding: 8px;
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 4px;
-  margin-top: 0.5rem;
+  border-radius: var(--radius-control-bare, 6px);
+  margin-top: 8px;
 }
 .seat-checklist-label {
   display: block;
-  margin-bottom: 0.25rem;
-  font-size: 0.85rem;
+  margin-bottom: 4px;
+  font-size: 13px;
   color: var(--color-muted, #7a8288);
 }
 .seat-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 14px;
 }
 .seat-name {
   flex: 1;
 }
 .seat-type {
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--color-muted, #7a8288);
   text-transform: uppercase;
 }
 .min-crew-override {
-  margin-top: 0.5rem;
+  margin-top: 8px;
 }
 .min-crew-override .small {
-  font-size: 0.78rem;
-  margin: 0.2rem 0 0;
+  font-size: 12px;
+  margin: 4px 0 0;
 }
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
+  gap: 10px;
 }
 @media (max-width: 480px) {
   .form-row {

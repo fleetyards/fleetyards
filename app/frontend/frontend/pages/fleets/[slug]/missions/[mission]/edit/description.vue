@@ -133,22 +133,22 @@ const wrapHandleSubmit = (cb: SubmissionHandler<MissionUpdateInput>) =>
 <style lang="scss" scoped>
 .cover-presets-label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 13px;
   color: var(--color-muted, #7a8288);
-  margin-bottom: 0.35rem;
+  margin-bottom: 6px;
 }
 .cover-presets-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 .cover-preset {
   aspect-ratio: 16 / 9;
   background-size: cover;
   background-position: center;
   border: 2px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
   cursor: pointer;
   padding: 0;
   transition: border-color 0.15s;

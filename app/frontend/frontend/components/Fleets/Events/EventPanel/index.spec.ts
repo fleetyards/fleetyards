@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import {
@@ -12,8 +12,11 @@ import {
 } from "@/services/fyApi";
 
 // The card carries a cover image, and jsdom has no IntersectionObserver for
-// useLazyBackground to hand it to.
-beforeAll(() => {
+// useLazyBackground to hand it to. Re-stubbed per test rather than once: another
+// spec sharing this worker can call unstubAllGlobals between them, and without
+// the observer the panel body never renders - which showed up once as this file
+// failing in a full run and passing on its own.
+beforeEach(() => {
   vi.stubGlobal(
     "IntersectionObserver",
     class {

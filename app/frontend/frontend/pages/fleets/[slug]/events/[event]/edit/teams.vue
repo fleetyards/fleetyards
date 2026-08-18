@@ -74,11 +74,11 @@ const openAddTeamModal = () => {
 .event-edit-teams__header {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 .event-edit-teams__list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 </style>

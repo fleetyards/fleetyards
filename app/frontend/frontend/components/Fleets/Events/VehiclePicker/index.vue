@@ -154,12 +154,12 @@ watch(selectedMatches, (value) => emit("match", value), { immediate: true });
 .vehicle-picker {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 4px;
 }
 .vehicle-picker__warning {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 6px;
   margin: 0;
   color: var(--color-warning, #fa6800);
 
@@ -168,6 +168,6 @@ watch(selectedMatches, (value) => emit("match", value), { immediate: true });
   }
 }
 .small {
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 </style>

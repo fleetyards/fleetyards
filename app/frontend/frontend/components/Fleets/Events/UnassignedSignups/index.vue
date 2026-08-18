@@ -120,16 +120,16 @@ const remove = (signup: FleetEventSignup) => {
 .unassigned-signups {
   background: rgba(255, 152, 0, 0.06);
   border: 1px solid rgba(255, 152, 0, 0.35);
-  border-radius: 6px;
-  padding: 0.85rem 1rem;
+  border-radius: var(--radius-control-bare, 6px);
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 10px;
 }
 .unassigned-signups__head {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -139,9 +139,9 @@ const remove = (signup: FleetEventSignup) => {
   }
 }
 .unassigned-signups__count {
-  font-size: 0.7rem;
-  padding: 0.1rem 0.45rem;
-  border-radius: 999px;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: var(--radius-control-bare, 6px);
   background: var(--color-warning, #fa6800);
   color: #000;
 }
@@ -151,21 +151,21 @@ const remove = (signup: FleetEventSignup) => {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 .unassigned-signups__item {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  padding: 0.55rem 0.75rem;
+  gap: 4px;
+  padding: 9px 12px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
 }
 .unassigned-signups__person {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.92rem;
+  gap: 7px;
+  font-size: 14px;
   flex-wrap: wrap;
 
   i {
@@ -174,22 +174,22 @@ const remove = (signup: FleetEventSignup) => {
 }
 .unassigned-signups__notes {
   display: flex;
-  gap: 0.4rem;
+  gap: 6px;
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 13px;
   white-space: pre-wrap;
 
   i {
-    margin-top: 0.2rem;
+    margin-top: 4px;
   }
 }
 .unassigned-signups__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 6px;
   align-items: center;
 }
 .small {
-  font-size: 0.78rem;
+  font-size: 12px;
 }
 </style>

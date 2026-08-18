@@ -375,15 +375,15 @@ const onSubmit = handleSubmit(async (values) => {
 }
 .cover-presets-label {
   display: block;
-  margin-bottom: 0.4rem;
-  font-size: 0.85rem;
+  margin-bottom: 6px;
+  font-size: 13px;
   color: var(--color-muted, #7a8288);
 }
 .cover-presets-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 .cover-preset {
   position: relative;
@@ -392,7 +392,7 @@ const onSubmit = handleSubmit(async (values) => {
   background-position: center;
   background-repeat: no-repeat;
   border: 2px solid transparent;
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
   cursor: pointer;
   padding: 0;
   transition:
@@ -411,11 +411,11 @@ const onSubmit = handleSubmit(async (values) => {
 .teams-section__header {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 0.75rem;
+  margin-bottom: 12px;
 }
 .mission-teams {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 </style>

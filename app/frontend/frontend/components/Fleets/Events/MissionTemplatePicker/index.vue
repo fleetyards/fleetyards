@@ -125,18 +125,18 @@ const pick = (mission: Mission | null) => {
 .template-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 0.75rem;
-  margin-top: 0.75rem;
+  gap: 12px;
+  margin-top: 12px;
 }
 .template-card {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 6px;
   text-align: left;
   padding: 0;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  border-radius: var(--radius-control-bare, 6px);
   cursor: pointer;
   overflow: hidden;
   transition:
@@ -155,8 +155,8 @@ const pick = (mission: Mission | null) => {
 .template-card--clear {
   flex-direction: row;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.85rem;
+  gap: 12px;
+  padding: 14px;
   min-height: 76px;
 }
 .template-card__icon {
@@ -171,30 +171,30 @@ const pick = (mission: Mission | null) => {
   background-repeat: no-repeat;
 }
 .template-card__body {
-  padding: 0.6rem 0.85rem;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 4px;
   flex: 1;
 }
 .template-card--clear .template-card__body {
   padding: 0;
 }
 .template-card__title {
-  font-size: 0.95rem;
+  font-size: 15px;
 }
 .template-card__meta {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 6px;
   flex-wrap: wrap;
 }
 .template-card__badge {
-  font-size: 0.65rem;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.1rem 0.4rem;
-  border-radius: 999px;
+  padding: 2px 6px;
+  border-radius: var(--radius-control-bare, 6px);
   background: rgba(74, 170, 170, 0.18);
   color: var(--color-primary, #428bca);
 }
@@ -207,13 +207,13 @@ const pick = (mission: Mission | null) => {
 }
 .template-card__stats {
   display: flex;
-  gap: 0.85rem;
+  gap: 14px;
 
   strong {
     color: var(--color-text, #c8c8c8);
   }
 }
 .small {
-  font-size: 0.78rem;
+  font-size: 12px;
 }
 </style>

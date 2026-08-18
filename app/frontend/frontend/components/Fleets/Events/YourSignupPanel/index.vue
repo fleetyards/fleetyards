@@ -228,9 +228,9 @@ const statusLabel = computed(() =>
 .your-signup {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.85rem 1rem;
-  border-radius: 6px;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: var(--radius-control-bare, 6px);
   background: rgba(74, 170, 170, 0.1);
   border: 1px solid var(--color-primary, #428bca);
 }
@@ -238,15 +238,15 @@ const statusLabel = computed(() =>
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.6rem;
+  gap: 10px;
   flex-wrap: wrap;
 }
 .your-signup__title {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 
@@ -255,11 +255,11 @@ const statusLabel = computed(() =>
   }
 }
 .your-signup__status {
-  font-size: 0.7rem;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
+  padding: 2px 8px;
+  border-radius: var(--radius-control-bare, 6px);
   border: 1px solid currentColor;
 }
 .your-signup__status--confirmed {
@@ -271,7 +271,7 @@ const statusLabel = computed(() =>
 .your-signup__location {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 6px;
   flex-wrap: wrap;
 
   i {
@@ -280,19 +280,19 @@ const statusLabel = computed(() =>
 }
 .your-signup__notes {
   display: flex;
-  gap: 0.5rem;
+  gap: 8px;
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 14px;
   white-space: pre-wrap;
 
   i {
     color: var(--color-muted, #7a8288);
-    margin-top: 0.25rem;
+    margin-top: 4px;
   }
 }
 .your-signup__actions {
   display: flex;
-  gap: 0.4rem;
+  gap: 6px;
   flex-wrap: wrap;
 }
 </style>

@@ -239,23 +239,23 @@ const teams = computed<FleetEventTeam[]>(
 .slot-picker {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
   max-height: 60vh;
   overflow-y: auto;
 }
 .slot-picker__team {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.6rem 0.8rem;
+  gap: 6px;
+  padding: 10px 13px;
   background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
 }
 .slot-picker__team-head {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.95rem;
+  gap: 7px;
+  font-size: 15px;
 
   i {
     color: var(--color-muted, #7a8288);
@@ -264,9 +264,9 @@ const teams = computed<FleetEventTeam[]>(
 .slot-picker__ship {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  margin-left: 1rem;
-  padding: 0.4rem 0.6rem;
+  gap: 4px;
+  margin-left: 16px;
+  padding: 6px 10px;
   background: rgba(255, 255, 255, 0.02);
   border-left: 2px solid rgba(255, 255, 255, 0.1);
   border-radius: 0 4px 4px 0;
@@ -274,8 +274,8 @@ const teams = computed<FleetEventTeam[]>(
 .slot-picker__ship-head {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.88rem;
+  gap: 6px;
+  font-size: 14px;
 
   i {
     color: var(--color-muted, #7a8288);
@@ -283,7 +283,7 @@ const teams = computed<FleetEventTeam[]>(
 }
 .slot-picker__ship-fit {
   color: var(--color-success, #5cb85c);
-  margin-left: 0.2rem;
+  margin-left: 4px;
 }
 .slot-picker__slots {
   list-style: none;
@@ -291,10 +291,10 @@ const teams = computed<FleetEventTeam[]>(
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 4px;
 }
 .slot-picker__slots--ship {
-  margin-top: 0.2rem;
+  margin-top: 4px;
 }
 .slot-picker__slot {
   display: flex;
@@ -304,16 +304,16 @@ const teams = computed<FleetEventTeam[]>(
   flex: 1;
 }
 .slot-picker__slot-type {
-  font-size: 0.72rem;
+  font-size: 11.5px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-left: 0.4rem;
+  margin-left: 6px;
 }
 .slot-picker__slot-badge {
-  margin-left: 0.5rem;
-  font-size: 0.7rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 999px;
+  margin-left: 8px;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: var(--radius-control-bare, 6px);
 }
 .slot-picker__slot-badge--current {
   background: rgba(74, 170, 170, 0.18);
@@ -324,6 +324,6 @@ const teams = computed<FleetEventTeam[]>(
   color: var(--color-muted, #7a8288);
 }
 .small {
-  font-size: 0.78rem;
+  font-size: 12px;
 }
 </style>

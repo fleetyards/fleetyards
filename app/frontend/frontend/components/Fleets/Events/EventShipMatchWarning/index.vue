@@ -61,15 +61,15 @@ const message = computed(() =>
 .ship-match-warning {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0.4rem 0 0.6rem;
-  padding: 0.4rem 0.7rem;
-  font-size: 0.82rem;
+  gap: 8px;
+  margin: 6px 0 10px;
+  padding: 6px 11px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--color-warning, #fa6800);
   background: rgba(255, 152, 0, 0.1);
   border: 1px solid rgba(255, 152, 0, 0.4);
-  border-radius: 4px;
+  border-radius: var(--radius-control-bare, 6px);
 
   i {
     color: inherit;
