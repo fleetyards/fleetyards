@@ -482,20 +482,32 @@ Not done here, and the reason: `Fleets/Missions/TeamCard` is the near-duplicate
 of `EventTeamCard` and has not had the D6 pass. That is Q5 — the mission side as
 a sibling — rather than an oversight.
 
-### Phase 3 — Controls
+### Phase 3 — Controls — **DONE**
 
 11. Five switches → `BtnGroup segmented` (D5).
 12. Strip `inline` (124), map sizes and variants (F1), delete the margin-fighting
     in `events-toolbar`.
 13. Bare `<button>` elements in `EventTeamCard` / `EventShipCard` → `Btn` (D6).
 
-### Phase 4 — Calendar
+### Phase 4 — Calendar — **DONE**
 
 14. Drop `PanelBody`; toolbar into `PanelHeading tone="metric" divider` (D7).
 15. `.ec-*` overrides → custom-property assignments from tokens.
 16. Month chip → `Chip bare`; delete `.fy-event-chip--compact`.
 
-### Phase 5 — Scale cleanup and verification
+### Phase 5 — Scale cleanup and verification — **MOSTLY DONE**
+
+Reordered: the visual-tests page and the specs landed *before* the sweep, not
+after, which is how the button redesign sequenced its own Phase 0. A 329-value
+mechanical restyle wants a baseline that already exists — and the net earned its
+keep immediately, catching a stubbing flake in the EventPanel spec on the first
+full run after the sweep.
+
+Still open: the 19 hand-rolled uppercase label treatments (D9's last clause —
+each needs restructuring onto `metrics-card__row__label` or a metric heading,
+not a find-and-replace); the six hand-rolled badges that should be `Chip`;
+`Fleets/Missions/TeamCard`'s D6 pass; and `pnpm test:e2e:run` plus `knip`, which
+have not been run.
 
 17. D9's type / spacing / radius sweep; `lang="scss"` → plain `<style scoped>`
     where `@apply` is wanted.
