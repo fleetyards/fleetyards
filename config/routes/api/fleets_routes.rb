@@ -32,6 +32,13 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_roles, path: "roles", only: %i[index]
 
+  resources :fleet_features, path: "features", only: %i[index] do
+    member do
+      put :enable
+      put :disable
+    end
+  end
+
   resource :fleet_notification_setting, path: "notifications", only: %i[show update] do
     get "discord-status", action: :discord_status
   end

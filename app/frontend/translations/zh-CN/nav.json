@@ -51,7 +51,8 @@
           "index": "设置",
           "fleet": "舰队设置",
           "membership": "成员设置",
-          "roles": "角色"
+          "roles": "角色",
+          "features": "功能"
         }
       },
       "rsiProfile": "RSI 档案",

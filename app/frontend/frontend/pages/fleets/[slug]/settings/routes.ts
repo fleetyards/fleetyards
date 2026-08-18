@@ -72,4 +72,16 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: "features/",
+    name: "fleet-settings-features",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/features.vue"),
+    meta: {
+      title: "fleets.settings.features",
+      needsAuthentication: true,
+      access: ["fleet:manage"],
+      customTitle: true,
+    },
+  },
 ];

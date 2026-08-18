@@ -71,7 +71,8 @@
           "roles": "Roles",
           "notifications": "Notifications",
           "discord": "Discord",
-          "calendar": "Calendar"
+          "calendar": "Calendar",
+          "features": "Features"
         }
       },
       "rsiProfile": "RSI Profile",

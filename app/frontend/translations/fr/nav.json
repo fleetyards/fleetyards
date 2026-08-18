@@ -51,7 +51,8 @@
           "index": "Paramètres",
           "fleet": "Paramètres de Flotte",
           "membership": "Paramètres d'Adhésion",
-          "roles": "Rôles"
+          "roles": "Rôles",
+          "features": "Fonctionnalités"
         }
       },
       "rsiProfile": "Profil RSI",

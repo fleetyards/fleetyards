@@ -6,7 +6,8 @@
         "forName": "未找到 %{name}",
         "hangar": "您的機庫是空的",
         "wishlist": "您的願望清單是空的",
-        "features": "沒有可用功能"
+        "features": "沒有可用功能",
+        "fleetFeatures": "沒有可用的艦隊功能"
       },
       "actions": {
         "reset": "Reset Filters/Pages",
@@ -20,7 +21,8 @@
         "hangar": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
         "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
         "wishlist": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
-        "features": "目前沒有可用的自助服務功能。請稍後再查看，我們會定期新增新功能。"
+        "features": "目前沒有可用的自助服務功能。請稍後再查看，我們會定期新增新功能。",
+        "fleetFeatures": "目前沒有艦隊可以自行啟用的功能。請稍後再查看，我們會定期新增新功能。"
       }
     }
   }

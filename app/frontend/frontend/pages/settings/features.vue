@@ -20,6 +20,7 @@ import {
   getFeaturesQueryKey,
   enableUserFeature,
   disableUserFeature,
+  UserFeatureScope,
   type UserFeature,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -44,9 +45,21 @@ const featureItems = computed<FeatureItem[]>(() => {
   return features.value.map((f) => ({ ...f, id: f.name }));
 });
 
+// A fleet feature has two switches with different reach: this one enables it for
+// you alone, and a fleet admin's enables it for everyone in that fleet. The pill
+// and its tooltip are what keep the two apart.
+const isFleetFeature = (feature: FeatureItem) =>
+  feature.scope === UserFeatureScope.fleet;
+
+// The fleet already gives every member the feature, so there is nothing for a
+// personal switch to add — and it cannot take it away either.
+const grantedByFleet = (feature: FeatureItem) => feature.fleets.length > 0;
+
 const toggleFeature = async (feature: FeatureItem) => {
+  if (grantedByFleet(feature)) return;
+
   try {
-    if (feature.enabled) {
+    if (feature.enabledForSelf) {
       await disableUserFeature(feature.name);
     } else {
       await enableUserFeature(feature.name);
@@ -102,11 +115,43 @@ const toggleFeature = async (feature: FeatureItem) => {
       <span class="feature-name">
         {{ item.name.replace(/_/g, " ").replace(/-/g, " ") }}
       </span>
+      <span
+        v-if="isFleetFeature(item)"
+        v-tooltip="
+          grantedByFleet(item)
+            ? t('labels.features.fleetFeatureGranted')
+            : t('labels.features.fleetFeatureInfo')
+        "
+        class="feature-scope"
+      >
+        <BasePill uppercase>
+          {{
+            grantedByFleet(item)
+              ? t("labels.features.fleetFeatureGrantedShort")
+              : t("labels.features.fleetFeature")
+          }}
+        </BasePill>
+      </span>
+      <span v-if="grantedByFleet(item)" class="feature-fleets">
+        <template v-for="(fleet, index) in item.fleets" :key="fleet.slug">
+          <span v-if="index > 0">, </span>
+          <router-link :to="{ name: 'fleet', params: { slug: fleet.slug } }">
+            {{ fleet.name }}
+          </router-link>
+        </template>
+      </span>
     </template>
 
     <template #actions="{ item, mobile }">
       <Btn
-        v-tooltip="t('labels.features.toggle')"
+        v-tooltip="
+          grantedByFleet(item)
+            ? t('labels.features.fleetFeatureGranted')
+            : isFleetFeature(item)
+              ? t('labels.features.toggleForSelf')
+              : t('labels.features.toggle')
+        "
+        :disabled="grantedByFleet(item)"
         @click="toggleFeature(item)"
         :variant="BtnVariantsEnum.GHOST"
       >
@@ -129,5 +174,14 @@ const toggleFeature = async (feature: FeatureItem) => {
 .feature-name {
   font-weight: 600;
   text-transform: capitalize;
+}
+
+.feature-scope {
+  margin-left: 0.5rem;
+}
+
+.feature-fleets {
+  margin-left: 0.5rem;
+  color: var(--text-muted);
 }
 </style>

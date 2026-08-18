@@ -227,7 +227,8 @@
           "notifications": "Notification Settings",
           "inAppNotifications": "In-app Notifications",
           "discord": "Discord",
-          "calendar": "Calendar"
+          "calendar": "Calendar",
+          "features": "Fleet Features"
         },
         "inviteMember": "Invite new Member",
         "calendarSubscription": "Calendar Subscription",

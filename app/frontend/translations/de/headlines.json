@@ -209,7 +209,8 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Flottenrollen"
+          "roles": "Flottenrollen",
+          "features": "Flottenfunktionen"
         },
         "inviteMember": "Invite new Member"
       },

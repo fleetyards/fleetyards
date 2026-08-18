@@ -189,6 +189,15 @@ class Fleet < ApplicationRecord
     vehicles.where(model_id:, loaner: false).size
   end
 
+  # Every flag enabled for this fleet as a Flipper actor — deliberately not the
+  # ones a member enabled for themselves, so a fleet page can tell whether a
+  # feature is on for *this* fleet rather than for any fleet the viewer is in.
+  def features
+    Flipper.features.filter_map do |feature|
+      Flipper.enabled?(feature.name, self) ? feature.name.to_s : nil
+    end
+  end
+
   def calendar_feed_enabled?
     calendar_feed_token.present?
   end

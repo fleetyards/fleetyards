@@ -2482,6 +2482,164 @@ paths:
                 "$ref": "#/components/schemas/FleetEventOccurrenceState"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/features":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Features List
+      tags:
+      - FleetFeatures
+      operationId: fleetFeatures
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetFeature"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/features/{id}/disable":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Disable Fleet Feature
+      tags:
+      - FleetFeatures
+      operationId: disableFleetFeature
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetFeature"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/features/{id}/enable":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Enable Fleet Feature
+      tags:
+      - FleetFeatures
+      operationId: enableFleetFeature
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetFeature"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/inventories":
     parameters:
     - name: fleetSlug
@@ -12887,6 +13045,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         myFleet:
           type: boolean
+        features:
+          type: array
+          items:
+            type: string
         createdAt:
           type: string
           format: date-time
@@ -12901,6 +13063,7 @@ components:
       - slug
       - publicFleet
       - publicFleetStats
+      - features
       - createdAt
       - updatedAt
       title: Fleet
@@ -13925,6 +14088,18 @@ components:
       - items
       - meta
       title: FleetEventsList
+    FleetFeature:
+      type: object
+      properties:
+        name:
+          type: string
+        enabled:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - enabled
+      title: FleetFeature
     FleetInventoriesList:
       type: object
       properties:
@@ -19884,10 +20059,33 @@ components:
           type: string
         enabled:
           type: boolean
+        enabledForSelf:
+          type: boolean
+        scope:
+          type: string
+          enum:
+          - user
+          - fleet
+        fleets:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              slug:
+                type: string
+            additionalProperties: false
+            required:
+            - name
+            - slug
       additionalProperties: false
       required:
       - name
       - enabled
+      - enabledForSelf
+      - scope
+      - fleets
       title: UserFeature
     UserPublic:
       type: object

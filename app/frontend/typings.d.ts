@@ -16,6 +16,8 @@ declare module "vue-router" {
     mobileNav?: number;
     href?: string;
     feature?: FeatureFlagName;
+    // Read `feature` against the fleet in the route rather than the viewer.
+    featureScope?: "fleet";
     hideWhenAuthenticated?: boolean;
     needsNoAuthentication?: boolean;
   }

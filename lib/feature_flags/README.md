@@ -12,11 +12,11 @@ code that read it — `hardpoints-v2` sat in Flipper for months after #4176 dele
 its last reference. A version-controlled registry makes the inventory a PR diff
 and lets a deploy reconcile reality with it.
 
-The registry owns the flag **list** and the self-service each flag **starts**
-with. The admin UI still owns each flag's **gates** (boolean, actors, groups,
-percentages) and its `feature_settings.self_service` from then on, which is what
-decides whether users may toggle the flag for themselves from Settings →
-Features.
+The registry owns the flag **list**, the self-service each flag **starts** with,
+and which surface that self-service lives on. The admin UI still owns each flag's
+**gates** (boolean, actors, groups, percentages) and its
+`feature_settings.self_service` from then on, which is what decides whether the
+flag may be toggled outside `/admin/features` at all.
 
 Creating and deleting flags through the admin UI was removed along with this
 change. It could not coexist with pruning: a flag added there has no registry
@@ -26,9 +26,9 @@ entry, so the next deploy deleted it and every gate configured on it.
 
 | File | Purpose |
 | --- | --- |
-| `config/feature_flags.yml` | Registry — per flag: `description`, optional `permanent`, `self_service` |
+| `config/feature_flags.yml` | Registry — per flag: `description`, optional `permanent`, `self_service` (`user` or `fleet`) |
 | `FeatureFlags::Registry` | Loads and validates the YAML (naming, required/known keys) |
-| `FeatureFlags::Definition` | Value object for one flag (`name`, `description`, `permanent?`, `self_service?`) |
+| `FeatureFlags::Definition` | Value object for one flag (`name`, `description`, `permanent?`, `self_service?`, `self_service_scope`) |
 | `FeatureFlags::Synchronizer` | Reconciles Flipper with the registry: adds missing, seeds self-service, prunes orphaned |
 | `bin/feature-flags` | CLI: `validate`, `plan`, `sync`, `export` |
 
@@ -52,7 +52,7 @@ bin/feature-flags export     # print a YAML skeleton of the live Flipper state
    ```yaml
    my_new_flag:
      description: "What this toggles"
-     self_service: true  # optional — users may switch it on themselves
+     self_service: user  # optional — see Self-service scopes below
    ```
 
 2. Validate: `bin/feature-flags validate`.
@@ -63,6 +63,45 @@ bin/feature-flags export     # print a YAML skeleton of the live Flipper state
 Sync seeds `self_service` once and never overwrites it, so the admin toggle at
 `/admin/features` survives every deploy — and dropping the key from the registry
 retracts nothing. Untoggle it there instead.
+
+## Self-service scopes
+
+`self_service` says *who* owns the toggle, not just that one exists:
+
+| Value | Fleet-wide switch lives at | Who may flip it |
+| --- | --- | --- |
+| `user` | nowhere — the flag is personal | — |
+| `fleet` | a fleet's Settings → Features | members holding `fleet:manage` |
+| `true` | alias for `user` | — |
+| omitted | nowhere | `/admin/features` only |
+
+The scope says where the **fleet-wide** switch lives. Every self-service flag,
+whatever its scope, also keeps a **personal** toggle in Settings → Features:
+enabling a fleet flag there is a preview for that one user and never switches the
+feature on for the rest of the fleet, because Flipper gates each actor
+separately.
+
+The two do not fight. A fleet's grant covers every member and cannot be
+overridden per user — the backend ORs both actors — so once a user's fleet has
+the flag on, `GET /user-features` reports the row as `enabled`, names the fleets
+responsible in `fleets`, and `enable`/`disable` return 403 rather than reporting
+a change the user would not see.
+
+Pick `fleet` when the feature belongs to a whole fleet. A member must not be able
+to switch one on for everyone, and because the backend gate ORs the user actor in
+(`Flipper.enabled?(flag, user, fleet)`), a user-scoped toggle on a fleet feature
+would let them do exactly that in every fleet they belong to.
+
+Unlike `self_service`, the **scope is reconciled on every sync**: it describes
+which surface the code reads the flag from, so a release that moves a flag from
+personal settings to a fleet's has to take effect rather than wait for an admin.
+
+Read a fleet-scoped flag against the fleet — `Flipper.enabled?(:my_flag, fleet)`
+in Ruby (or `feature_enabled?(:my_flag, @fleet)` in a controller, which ORs the
+current user in), and `isFleetFeatureEnabled(fleet, FeatureFlagName.MY_FLAG)` in
+Vue off the fleet payload's `features`. A route behind one needs
+`featureScope: "fleet"` in its meta so the router guard consults the fleet rather
+than the viewer.
 
 Read it in code exactly as before: `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
 `isFeatureEnabled('my_new_flag')` in Vue.

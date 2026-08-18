@@ -51,7 +51,13 @@
           "tools_travel_times": "显示地点之间的预计旅行时间。",
           "tools_cargo_grids": "显示飞船的交互式货物网格查看器。",
           "fleet_starmap": "在舰队成员页面显示 Star Citizen 星图。"
-        }
+        },
+        "fleetSettingsIntro": "为整个舰队启用或禁用功能。您在此启用的内容对所有成员可见。",
+        "fleetFeature": "舰队功能",
+        "fleetFeatureInfo": "在此启用仅对您生效。您舰队的管理员可为整个舰队启用。",
+        "toggleForSelf": "仅为自己切换",
+        "fleetFeatureGrantedShort": "舰队已启用",
+        "fleetFeatureGranted": "您的舰队已为所有成员启用此功能，因此无法在此处关闭。"
       },
       "oauthApplication": {
         "name": "应用名称",

@@ -2,6 +2,7 @@ import {
   getFeaturesQueryOptions,
   useFeatures as useFeaturesQuery,
   type FeatureFlagName,
+  type Fleet,
 } from "@/services/fyApi";
 import { usePrefetch } from "@/shared/composables/usePrefetch";
 
@@ -34,8 +35,18 @@ export const useFeatures = () => {
   const isFeatureEnabled = (feature: FeatureFlagName) =>
     features.value?.includes(feature) || false;
 
+  // Mirrors the backend gate, `Flipper.enabled?(flag, user, fleet)`: on for the
+  // viewer or on for this fleet. Only for *this* fleet — the viewer's flag list
+  // used to fold in every fleet they belong to, which showed one fleet's
+  // features on every other fleet's page.
+  const isFleetFeatureEnabled = (
+    fleet: Pick<Fleet, "features"> | undefined | null,
+    feature: FeatureFlagName,
+  ) => isFeatureEnabled(feature) || fleet?.features?.includes(feature) || false;
+
   return {
     features,
     isFeatureEnabled,
+    isFleetFeatureEnabled,
   };
 };
