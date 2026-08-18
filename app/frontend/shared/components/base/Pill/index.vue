@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 type Props = {
   tag?: "span" | "div" | "p";
-  variant?: "default" | "success" | "warning" | "danger";
+  variant?: "default" | "neutral" | "success" | "warning" | "danger";
   uppercase?: boolean;
   marginRight?: boolean;
 };
