@@ -37,6 +37,12 @@ FactoryBot.define do
       store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
 
+    # What the export actually ships for a commodity, and what the loader
+    # attaches: the game draws these icons from vectors.
+    trait :with_vector_store_image do
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/vector.svg"), "image/svg+xml") }
+    end
+
     trait :mineral do
       commodity_type { "mineral" }
     end

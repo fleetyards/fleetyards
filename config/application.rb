@@ -50,6 +50,22 @@ module Fleetyards
 
     config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::HashWithIndifferentAccess]
 
+    # The game export ships its commodity and equipment icons as vectors, and
+    # they are drawn at whatever size a panel asks for, so they are served as
+    # they are rather than rasterized on the way in. ActiveStorage refuses that
+    # by default -- an SVG is markup and can carry a script -- and both settings
+    # are needed: the first stops the blob being stamped as an octet-stream, the
+    # second stops it being handed over as a download.
+    #
+    # This is global, which is why every attachment an account holder can write
+    # rejects a vector outright. See NoVectorImageValidator.
+    #
+    # `variable_content_types` is deliberately left alone: a vector has no sizes
+    # to resize to, and letting vips at one would put the rasterizing this
+    # replaces straight back into the request path.
+    config.active_storage.content_types_to_serve_as_binary -= ["image/svg+xml"]
+    config.active_storage.content_types_allowed_inline += ["image/svg+xml"]
+
     # Hack to fix Zeitwerk issue
     Rails.autoloaders.main.ignore(Rails.root.join("app/frontend/images"))
 
