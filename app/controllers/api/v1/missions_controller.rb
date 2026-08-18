@@ -11,11 +11,11 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy]
+        only: %i[create update destroy unarchive]
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
-      before_action :set_mission, only: %i[show update destroy]
+      before_action :set_mission, only: %i[show update destroy unarchive]
 
       def index
         authorize! with: MissionPolicy, context: {fleet: @fleet}
@@ -71,6 +71,16 @@ module Api
           render :show
         else
           render json: ValidationError.new("missions.destroy", errors: @mission.errors), status: :bad_request
+        end
+      end
+
+      def unarchive
+        authorize! @mission, to: :unarchive?
+
+        if @mission.unarchive!
+          render :show
+        else
+          render json: ValidationError.new("missions.unarchive", errors: @mission.errors), status: :bad_request
         end
       end
 
