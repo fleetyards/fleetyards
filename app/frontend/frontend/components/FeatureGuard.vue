@@ -11,18 +11,25 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
-import type { FeatureFlagName } from "@/services/fyApi";
+import type { FeatureFlagName, Fleet } from "@/services/fyApi";
 
 type Props = {
   feature: FeatureFlagName;
+  // Pass the fleet for a flag a fleet can be gated on, so the answer is about
+  // this fleet and not about every fleet the viewer belongs to.
+  fleet?: Fleet;
 };
 
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-const { isFeatureEnabled } = useFeatures();
+const { isFeatureEnabled, isFleetFeatureEnabled } = useFeatures();
 
-const enabled = computed(() => isFeatureEnabled(props.feature));
+const enabled = computed(() =>
+  props.fleet
+    ? isFleetFeatureEnabled(props.fleet, props.feature)
+    : isFeatureEnabled(props.feature),
+);
 </script>
 
 <template>
