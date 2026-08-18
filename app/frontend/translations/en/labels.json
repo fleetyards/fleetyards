@@ -926,7 +926,18 @@
         "name": "Name",
         "positionType": "Position Type",
         "source": "Source",
-        "position": "Sort Order"
+        "position": "Sort Order",
+        "types": {
+          "pilot": "Pilot",
+          "copilot": "Co-pilot",
+          "turret_gunner": "Turret gunner",
+          "engineer": "Engineer",
+          "gunner": "Gunner",
+          "loadmaster": "Loadmaster",
+          "passenger": "Passenger",
+          "operator": "Operator",
+          "custom": "Custom"
+        }
       },
       "modelHardpoint": {
         "name": "Name",
