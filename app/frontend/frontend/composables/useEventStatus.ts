@@ -25,6 +25,24 @@ const TONE_BY_STATUS: Record<string, `${PanelTonesEnum}`> = {
   cancelled: PanelTonesEnum.ERROR,
 };
 
+/*
+ * A pill's palette is narrower than the cap's: its default fill is the primary
+ * blue, which suits a live event, so the quiet states ask for `neutral` and the
+ * gold held state maps to `warning`. Kept beside the tone map because a badge
+ * and the cap above it must not disagree about what the event is doing.
+ */
+type PillVariant = "default" | "neutral" | "success" | "warning" | "danger";
+
+const PILL_VARIANT_BY_STATUS: Record<string, PillVariant> = {
+  draft: "neutral",
+  open: "success",
+  locked: "warning",
+  active: "default",
+  completed: "neutral",
+  past: "neutral",
+  cancelled: "danger",
+};
+
 export const useEventStatus = () => {
   const effectiveStatus = (
     status: FleetEventStatus,
@@ -38,5 +56,8 @@ export const useEventStatus = () => {
   const labelKeyFor = (status: FleetEventStatus, past?: boolean) =>
     `labels.fleets.events.statuses.${effectiveStatus(status, past)}`;
 
-  return { effectiveStatus, toneFor, labelKeyFor };
+  const pillVariantFor = (status: FleetEventStatus, past?: boolean) =>
+    PILL_VARIANT_BY_STATUS[effectiveStatus(status, past)] ?? "neutral";
+
+  return { effectiveStatus, toneFor, labelKeyFor, pillVariantFor };
 };
