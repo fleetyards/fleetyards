@@ -283,6 +283,33 @@ class User < ApplicationRecord
   # reading them from a preloaded association costs one query for all providers
   # instead of one per profile url - the fleet vehicle list asks every owner for
   # two of them.
+  def calendar_feed_enabled?
+    calendar_feed_token.present?
+  end
+
+  def ensure_calendar_feed_token!
+    return calendar_feed_token if calendar_feed_token.present?
+
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def rotate_calendar_feed_token!
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def clear_calendar_feed_token!
+    update_column(:calendar_feed_token, nil)
+  end
+
+  def self.generate_calendar_feed_token
+    loop do
+      token = SecureRandom.urlsafe_base64(32)
+      break token unless exists?(calendar_feed_token: token)
+    end
+  end
+
   private def connection_for(provider)
     omniauth_connections.detect { |connection| connection.provider == provider }
   end
