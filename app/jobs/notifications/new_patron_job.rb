@@ -19,7 +19,7 @@ module Notifications
       )
 
       begin
-        Discord::NewSupporter.new(supporter:).run
+        ::Discord::NewSupporter.new(supporter:).run
       rescue => e
         Appsignal.report_error(e)
       end

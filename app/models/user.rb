@@ -277,6 +277,10 @@ class User < ApplicationRecord
   # reading them from a preloaded association costs one query for all providers
   # instead of one per profile url - the fleet vehicle list asks every owner for
   # two of them.
+  def discord_uid
+    connection_for("discord")&.uid
+  end
+
   def calendar_feed_enabled?
     calendar_feed_token.present?
   end
