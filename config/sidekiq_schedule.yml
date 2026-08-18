@@ -73,3 +73,8 @@ cleanup_visits_job:
   cron: '0 0 1 * *' # Monthly on the first day at 0:00
   class: 'Cleanup::VisitsJob'
   queue: 'cleanup'
+
+fleet_events_auto_lock_job:
+  cron: '*/5 * * * *' # Every 5 minutes
+  class: 'FleetEvents::AutoLockJob'
+  queue: 'default'
