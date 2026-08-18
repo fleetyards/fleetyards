@@ -17,8 +17,7 @@ module V1
             },
             scenario: {type: [:string, :null]},
             coverImagePreset: {type: [:string, :null]},
-            coverImage: {type: [:string, :null]},
-            archivedAt: {type: [:string, :null], format: "date-time"}
+            coverImage: {type: [:string, :null]}
           },
           additionalProperties: false
         })
