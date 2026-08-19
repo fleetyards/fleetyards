@@ -18,6 +18,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import copyText from "@/shared/utils/CopyText";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const route = useRoute();
 
@@ -44,18 +45,16 @@ const formatType = (type: string): string =>
     .replace(/^ /, "")
     .trim();
 
-const statusVariant = (
-  status: ImportStatusEnum,
-): "default" | "success" | "warning" | "danger" => {
+const statusVariant = (status: ImportStatusEnum): `${PillVariantsEnum}` => {
   switch (status) {
     case ImportStatusEnum.FINISHED:
-      return "success";
+      return PillVariantsEnum.SUCCESS;
     case ImportStatusEnum.FAILED:
-      return "danger";
+      return PillVariantsEnum.DANGER;
     case ImportStatusEnum.STARTED:
-      return "warning";
+      return PillVariantsEnum.WARNING;
     default:
-      return "default";
+      return PillVariantsEnum.DEFAULT;
   }
 };
 
