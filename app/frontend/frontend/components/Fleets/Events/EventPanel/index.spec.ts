@@ -127,8 +127,10 @@ describe("FleetEventsPanel", () => {
     // WCAG 1.4.1: four of the seven states share the neutral tone, so the cap
     // cannot be the only thing distinguishing them either.
     const wrapper = await mount(event({ status: FleetEventStatus.locked }));
+    const badge = wrapper.find('[data-test="event-status"]');
 
-    expect(wrapper.find(".chip").exists()).toBe(true);
+    expect(badge.exists()).toBe(true);
+    expect(badge.text()).not.toBe("");
   });
 
   it("renders the meta as metrics rows rather than an icon list", async () => {
