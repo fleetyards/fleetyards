@@ -18,6 +18,7 @@ import { SwaggerUIBundle } from "swagger-ui-dist";
 import copyText from "@/shared/utils/CopyText";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const { t } = useI18n();
 const { displayInfo, displayAlert } = useAppNotifications();
@@ -112,7 +113,9 @@ onMounted(() => {
     <Heading :size="HeadingSizeEnum.HERO" hero> FleetYards.net API </Heading>
     <div class="version-pills">
       <BasePill>{{ apiVersion }}</BasePill>
-      <BasePill variant="success">OAS {{ oasVersion }}</BasePill>
+      <BasePill :variant="PillVariantsEnum.SUCCESS"
+        >OAS {{ oasVersion }}</BasePill
+      >
     </div>
   </div>
 

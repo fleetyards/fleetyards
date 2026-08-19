@@ -5,16 +5,21 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import {
+  PillTagsEnum,
+  PillVariantsEnum,
+} from "@/shared/components/base/Pill/types";
+
 type Props = {
-  tag?: "span" | "div" | "p";
-  variant?: "default" | "neutral" | "success" | "warning" | "danger";
+  tag?: `${PillTagsEnum}`;
+  variant?: `${PillVariantsEnum}`;
   uppercase?: boolean;
   marginRight?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  tag: "span",
-  variant: "default",
+  tag: PillTagsEnum.SPAN,
+  variant: PillVariantsEnum.DEFAULT,
   uppercase: false,
   marginRight: false,
 });
@@ -22,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 const cssClasses = computed(() => {
   return {
     "base-pill": true,
-    [`base-pill--${props.variant}`]: props.variant !== "default",
+    [`base-pill--${props.variant}`]: props.variant !== PillVariantsEnum.DEFAULT,
     "base-pill--uppercase": props.uppercase,
     "base-pill--margin-right": props.marginRight,
   };

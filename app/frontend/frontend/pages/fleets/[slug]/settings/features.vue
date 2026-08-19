@@ -23,6 +23,7 @@ import {
   type FleetMember,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 type Props = {
   fleet: Fleet;
@@ -100,7 +101,9 @@ const toggleFeature = async (feature: FeatureItem) => {
   >
     <template #display="{ item }">
       <BasePill
-        :variant="item.enabled ? 'success' : 'danger'"
+        :variant="
+          item.enabled ? PillVariantsEnum.SUCCESS : PillVariantsEnum.DANGER
+        "
         uppercase
         margin-right
       >
