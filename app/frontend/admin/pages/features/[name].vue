@@ -27,6 +27,7 @@ import {
   disableAdminFeatureGroup,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -142,18 +143,16 @@ const removeGroup = async (group: string) => {
   }
 };
 
-const stateVariant = (
-  state: string,
-): "success" | "danger" | "warning" | "default" => {
+const stateVariant = (state: string): `${PillVariantsEnum}` => {
   switch (state) {
     case "on":
-      return "success";
+      return PillVariantsEnum.SUCCESS;
     case "off":
-      return "danger";
+      return PillVariantsEnum.DANGER;
     case "conditional":
-      return "warning";
+      return PillVariantsEnum.WARNING;
     default:
-      return "default";
+      return PillVariantsEnum.DEFAULT;
   }
 };
 
