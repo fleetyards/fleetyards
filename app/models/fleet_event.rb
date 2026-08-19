@@ -229,7 +229,7 @@ class FleetEvent < ApplicationRecord
         )
       )
 
-      mission.mission_teams.includes(mission_ships: :model, mission_slots: :model_position).order(:position).each do |team|
+      mission.mission_teams.includes(mission_ships: [:model, :mission_ship_models], mission_slots: :model_position).order(:position).each do |team|
         event_team = event.fleet_event_teams.create!(
           source_team_id: team.id,
           title: team.title,
@@ -262,6 +262,15 @@ class FleetEvent < ApplicationRecord
             min_cargo: ship.min_cargo,
             position: ship.position
           )
+
+          # A spot that names a list of ships has to arrive with the list, or the
+          # event would spawn asking for nothing in particular.
+          ship.mission_ship_models.order(:position).each_with_index do |allowed, index|
+            event_ship.fleet_event_ship_models.create!(
+              model_id: allowed.model_id,
+              position: index
+            )
+          end
 
           ship.mission_slots.order(:position).each do |slot|
             FleetEventSlot.create!(

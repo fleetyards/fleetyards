@@ -10,30 +10,18 @@ json.strict fleet_event_ship.strict?
 
 if fleet_event_ship.model.present?
   json.model do
-    json.id fleet_event_ship.model.id
-    json.name fleet_event_ship.model.name
-    json.slug fleet_event_ship.model.slug
-    json.min_crew fleet_event_ship.model.min_crew
-    json.max_crew fleet_event_ship.model.max_crew
-
-    image_attr = if fleet_event_ship.model.store_image.attached?
-      :store_image
-    elsif fleet_event_ship.model.angled_view.attached?
-      :angled_view
-    elsif fleet_event_ship.model.fleetchart_image.attached?
-      :fleetchart_image
-    end
-
-    if image_attr
-      json.image do
-        json.partial! "api/v1/shared/file", record: fleet_event_ship.model, attr: image_attr
-      end
-    else
-      json.image nil
-    end
+    json.partial! "api/v1/shared/ship_model", model: fleet_event_ship.model
   end
 else
   json.model nil
+end
+
+# The models this spot will take when it names several rather than one. Empty for
+# the other two kinds of spot, so the client can tell them apart by shape.
+json.allowed_models do
+  json.array!(fleet_event_ship.allowed_models) do |model|
+    json.partial! "api/v1/shared/ship_model", model: model
+  end
 end
 
 json.filters do
