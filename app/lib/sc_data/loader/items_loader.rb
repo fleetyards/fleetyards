@@ -4,7 +4,7 @@ module ScData
       def all
         items = load_items("items").reject { |item| item["category"] == "inventory" }
         loaded = []
-        without_icon = []
+        carrying_icon = component_ids_carrying_icon
 
         # Pass 1: create/update all components so they exist for cross-references
         items.each do |item|
@@ -72,14 +72,12 @@ module ScData
 
           if item["icon"].present?
             attach_icon(component, :icon, item["icon"])
-          else
-            without_icon << component.id
+          elsif carrying_icon.include?(component.id)
+            component.icon.purge
           end
 
           loaded << component.id
         end
-
-        purge_dropped_icons(without_icon)
 
         # Pass 2: link loadouts (all components now exist for cross-references)
         items.each do |item|
@@ -104,15 +102,17 @@ module ScData
       # resolve is a broken parse rather than a dropped picture, and throwing
       # the artwork away over one would lose what the export still carries.
       #
-      # Queried in one go rather than asked per item: almost none of the eight
-      # thousand components has an icon, and checking each would be eight
-      # thousand round trips to find a handful.
-      private def purge_dropped_icons(component_ids)
-        return if component_ids.blank?
-
+      # Read in one go up front rather than asked per item: almost none of the
+      # eight thousand components has an icon, so a single query names the
+      # handful that per-item checks would spend eight thousand round trips
+      # finding. Dropping the picture then happens beside the update that
+      # orphaned it, so a pass that dies partway still takes the icons of
+      # everything it got through with it.
+      private def component_ids_carrying_icon
         ActiveStorage::Attachment
-          .where(record_type: "Component", name: "icon", record_id: component_ids)
-          .each(&:purge)
+          .where(record_type: "Component", name: "icon")
+          .pluck(:record_id)
+          .to_set
       end
 
       private def add_loadout(item, component)

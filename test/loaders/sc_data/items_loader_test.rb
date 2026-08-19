@@ -99,6 +99,32 @@ module ScData
         assert_not_predicate component.reload.icon, :attached?
       end
 
+      # A pass that dies partway has already committed the components it got
+      # through, so the icons the export orphaned go with those updates rather
+      # than wait for whichever later load happens to run to the end.
+      test "#all drops the icon of a record it got through before a later item raised" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        component = Component.find_by(sc_key: "aegs_avenger_cml_chaff")
+        component.icon.attach(
+          io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+          filename: "test.png",
+          content_type: "image/png"
+        )
+
+        loader = ::ScData::Loader::ItemsLoader.new
+        items = loader.send(:load_items, "items")
+        orphaned = items.find { |item| item["key"].downcase == "aegs_avenger_cml_chaff" }
+        raises_later = items.find { |item| item["key"].downcase == "paint_100i_black_orange" }
+
+        loader.stubs(:load_items).returns([orphaned, raises_later])
+        loader.stubs(:attach_icon).raises("the export went bad partway through")
+
+        assert_raises(RuntimeError) { loader.all }
+
+        assert_not_predicate component.reload.icon, :attached?
+      end
+
       # A path that fails to resolve is a broken parse, not a dropped picture.
       test "#all keeps the icon of a record that still names one" do
         ::ScData::Loader::ItemsLoader.new.all
