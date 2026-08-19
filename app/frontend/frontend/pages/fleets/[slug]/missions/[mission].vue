@@ -124,6 +124,11 @@ const crumbs = computed(() => [
 
 const { resolve: resolveCover } = useMissionCover();
 const coverImage = computed(() => resolveCover(mission.value));
+
+// The cover reaches the panel's own edge when nothing sits under it, so its
+// rounding follows the footer rather than being fixed — the pair
+// Modules/Panel already uses.
+const hasFooter = computed(() => !!mission.value?.description);
 </script>
 
 <template>
@@ -140,18 +145,21 @@ const coverImage = computed(() => resolveCover(mission.value));
   <Loader :loading="isLoading" />
 
   <div v-if="mission" class="mission-detail">
-    <!-- The cover sits at the top with the body under it, so it rounds only
-         its top corners; the default rounds all four and cut a notch out of the
-         image where the two meet. -->
+    <!--
+      The rounding follows the body: a description puts content under the cover,
+      so the cover's bottom corners have to stay square where the two meet, and
+      without one the cover reaches the panel's own edge and has to round with
+      it. Same condition as the footer below.
+    -->
     <Panel
       :bg-image="coverImage"
-      :bg-rounded="PanelRoundedEnum.TOP"
+      :bg-rounded="hasFooter ? PanelRoundedEnum.TOP : PanelRoundedEnum.ALL"
       class="mission-detail__hero"
     >
       <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
         {{ mission.title }}
       </PanelHeading>
-      <template v-if="mission.description" #footer>
+      <template v-if="hasFooter" #footer>
         <PanelBody>
           <p class="mission-description">{{ mission.description }}</p>
         </PanelBody>
