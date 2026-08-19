@@ -11,6 +11,7 @@ import EventPanel from "@/frontend/components/Fleets/Events/EventPanel/index.vue
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipCard from "@/frontend/components/Fleets/Events/EventShipCard/index.vue";
+import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import MissionPanel from "@/frontend/components/Fleets/Missions/MissionPanel/index.vue";
 import {
   type Fleet,
@@ -28,6 +29,7 @@ import {
   FleetEventStatus,
   FleetEventVisibility,
   MissionCategory,
+  useModel as useModelQuery,
 } from "@/services/fyApi";
 
 /*
@@ -153,6 +155,70 @@ const ship = (overrides: Partial<FleetEventShip> = {}): FleetEventShip => ({
   filters: { classification: "Combat", minCrew: 3, minCargo: 96 },
   ...overrides,
 });
+
+/*
+ * A ship pinned to one model rather than described by filters. The model is
+ * fetched rather than written out here, the way the metrics and panels pages do
+ * it: a hand-made image URL goes stale, and the point of this card is how a real
+ * cover and a real crew count render.
+ */
+const SHIP_SLUG = "rsi-constellation-andromeda";
+
+const { data: shipModel } = useModelQuery(SHIP_SLUG);
+
+const dedicatedShip = computed<FleetEventShip>(() =>
+  ship({
+    id: "ship-3",
+    title: "Wing lead",
+    description: "Flies point, calls the merge.",
+    filters: undefined,
+    model: shipModel.value,
+  } as Partial<FleetEventShip>),
+);
+
+/*
+ * The calendar reads startsAt, so its fixtures sit in the month being shown
+ * rather than on the fixed date the cards use — otherwise the grid opens on the
+ * current month and renders empty.
+ */
+// A fixed evening slot on days around today: the week view only draws
+// 08:00–24:00, so a fixture at the current clock time can fall outside it.
+const at = (dayOffset: number) => {
+  const d = new Date();
+  d.setDate(d.getDate() + dayOffset);
+  d.setHours(19, 30, 0, 0);
+
+  return d.toISOString();
+};
+
+const forTwoHours = (iso: string) =>
+  new Date(new Date(iso).getTime() + 2 * 60 * 60 * 1000).toISOString();
+
+const calendarEvents: FleetEvent[] = [
+  eventFor(FleetEventStatus.open, {
+    id: "cal-1",
+    slug: "cal-open",
+    title: "Convoy escort",
+    startsAt: at(2),
+    endsAt: forTwoHours(at(2)),
+  }),
+  eventFor(FleetEventStatus.locked, {
+    id: "cal-2",
+    slug: "cal-locked",
+    title: "Salvage sweep",
+    category: FleetEventCategory.salvage,
+    startsAt: at(5),
+    endsAt: forTwoHours(at(5)),
+  }),
+  eventFor(FleetEventStatus.active, {
+    id: "cal-3",
+    slug: "cal-live",
+    title: "Mining run",
+    category: FleetEventCategory.mining,
+    startsAt: at(-3),
+    endsAt: forTwoHours(at(-3)),
+  }),
+];
 
 const team: FleetEventTeam = {
   id: "team-1",
@@ -286,7 +352,27 @@ const CURRENT_USER = "user-ThalosVex";
       :current-user-id="CURRENT_USER"
       signups-open
     />
+    <EventShipCard
+      :fleet="fleet"
+      :event="openEvent"
+      :team="team"
+      :ship="dedicatedShip"
+      :current-user-id="CURRENT_USER"
+      signups-open
+    />
   </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Calendar</Heading>
+  <p>
+    The month grid, driven through the library's own custom properties. Its
+    toolbar is the panel's head — the paginator and the view switch are a plain
+    group and a segmented one, per D7. Events sit around today so the cells are
+    not empty.
+  </p>
+  <CalendarGrid :fleet="fleet" :events="calendarEvents" view="month" />
+
+  <p>The same events in the week view.</p>
+  <CalendarGrid :fleet="fleet" :events="calendarEvents" view="week" />
 </template>
 
 <style lang="scss" scoped>

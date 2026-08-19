@@ -114,10 +114,19 @@ const styleFor = (category?: string | null): CategoryStyle =>
   (category && categoryStyles[category]) ||
   categoryStyles[MissionCategory.other];
 
+// An hour when the event carries no end, which is what Calendars::IcsBuilder
+// assumes too. Handing the library no end at all made it stretch the event
+// across the day and spill a second segment onto the next one.
+const DEFAULT_DURATION_MS = 60 * 60 * 1000;
+
 const buildCalendarEvent = (event: FleetEvent) => ({
   id: event.slug,
   start: event.startsAt,
-  end: event.endsAt ?? undefined,
+  end:
+    event.endsAt ??
+    new Date(
+      new Date(event.startsAt).getTime() + DEFAULT_DURATION_MS,
+    ).toISOString(),
   title: event.title,
   extendedProps: { fleetEvent: event },
 });
