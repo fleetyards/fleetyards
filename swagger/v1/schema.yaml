@@ -14252,25 +14252,11 @@ components:
         strict:
           type: boolean
         model:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-            minCrew:
-              type: integer
-            maxCrew:
-              type: integer
-            image:
-              "$ref": "#/components/schemas/MediaFile"
-          required:
-          - id
-          - name
-          - slug
+          "$ref": "#/components/schemas/ShipModel"
+        allowedModels:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ShipModel"
         filters:
           type: object
           properties:
@@ -14295,6 +14281,7 @@ components:
       - missionTeamId
       - position
       - strict
+      - allowedModels
       - slots
       additionalProperties: false
       title: MissionShip
@@ -14338,6 +14325,13 @@ components:
           type:
           - number
           - 'null'
+        allowedModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Models this spot will accept, when it names several rather
+            than one
         positionIds:
           type: array
           items:
@@ -14387,6 +14381,13 @@ components:
           type:
           - number
           - 'null'
+        allowedModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Models this spot will accept, when it names several rather
+            than one
       additionalProperties: false
       title: MissionShipUpdateInput
     MissionSlot:
@@ -16707,6 +16708,27 @@ components:
           type: string
       additionalProperties: false
       title: SetupOtpInput
+    ShipModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        minCrew:
+          type: integer
+        maxCrew:
+          type: integer
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+      required:
+      - id
+      - name
+      - slug
+      title: ShipModel
     SortInput:
       type: object
       properties:
