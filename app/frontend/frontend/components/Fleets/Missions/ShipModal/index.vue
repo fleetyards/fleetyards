@@ -49,8 +49,19 @@ const comlink = useComlink();
 const isEdit = computed(() => !!props.ship);
 const submitting = ref(false);
 
-const initialMode = props.ship?.strict ? "specific" : "filter";
-const mode = ref<"specific" | "filter">(initialMode);
+type ShipMode = "specific" | "list" | "filter";
+
+const initialMode: ShipMode = props.ship?.strict
+  ? "specific"
+  : props.ship?.allowedModels?.length
+    ? "list"
+    : "filter";
+const mode = ref<ShipMode>(initialMode);
+
+// The models a listed spot will take, in the order they were picked.
+const selectedModelIds = ref<string[]>(
+  (props.ship?.allowedModels ?? []).map((model) => model.id),
+);
 
 const sizeOptions: FilterOption[] = [
   { value: "snub", label: "Snub" },
@@ -193,11 +204,24 @@ const onSubmit = handleSubmit(async (values) => {
 
   if (mode.value === "specific") {
     data.modelId = selectedModelId.value || null;
+    data.allowedModelIds = [];
     if (!isEdit.value) {
       data.positionIds = Array.from(selectedPositionIds.value);
     }
     data.minCrew = values.minCrew == null ? null : Number(values.minCrew);
+  } else if (mode.value === "list") {
+    // Each mode is the whole answer, so switching to a list clears the model and
+    // the criteria rather than leaving a spot that says two things at once.
+    data.modelId = null;
+    data.allowedModelIds = selectedModelIds.value;
+    data.classification = null;
+    data.focus = null;
+    data.minSize = null;
+    data.maxSize = null;
+    data.minCrew = null;
+    data.minCargo = null;
   } else {
+    data.allowedModelIds = [];
     data.modelId = null;
     data.classification = values.classification || null;
     data.focus = values.focus || null;
@@ -261,13 +285,34 @@ const onSubmit = handleSubmit(async (values) => {
           <Btn :active="mode === 'specific'" @click="mode = 'specific'">
             {{ t("labels.fleets.missions.modelSpecific") }}
           </Btn>
+          <Btn :active="mode === 'list'" @click="mode = 'list'">
+            {{ t("labels.fleets.missions.modelList") }}
+          </Btn>
           <Btn :active="mode === 'filter'" @click="mode = 'filter'">
             {{ t("labels.fleets.missions.filterRange") }}
           </Btn>
         </BtnGroup>
       </div>
 
-      <template v-if="mode === 'specific'">
+      <template v-if="mode === 'list'">
+        <!-- The same picker the specific mode uses, taking several: a spot that
+             names its ships is a list of one or more, not a filter. -->
+        <FilterGroup
+          v-model="selectedModelIds"
+          :query-fn="fetchModelOptions"
+          :query-response-formatter="formatModels"
+          :label="t('labels.fleets.missions.allowedShips')"
+          name="allowedModelIds"
+          multiple
+          :searchable="true"
+          :paginated="true"
+        />
+        <p class="text-muted small">
+          {{ t("labels.fleets.missions.modelListHint") }}
+        </p>
+      </template>
+
+      <template v-else-if="mode === 'specific'">
         <FilterGroup
           v-model="selectedModelId"
           :query-fn="fetchModelOptions"
