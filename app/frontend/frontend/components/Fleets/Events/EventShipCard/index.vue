@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -178,7 +179,13 @@ const subtitle = computed(() => {
         <i class="fa-duotone fa-starship ship-placeholder-ship" />
         <i class="fa-solid fa-question ship-placeholder-question" />
       </div>
-      <PanelHeading :level="HeadingLevelEnum.H4">
+      <!-- Same gradient the event card's title gets: the name sits on the
+           ship's cover, and a bright hull swallows it otherwise. Only when there
+           is a cover — over the placeholder it would shade nothing. -->
+      <PanelHeading
+        :level="HeadingLevelEnum.H4"
+        :shadow="hasShipImage ? PanelHeadingShadowEnum.TOP : undefined"
+      >
         <template #default>
           <span class="ship-title-row">
             <span
@@ -349,6 +356,12 @@ const subtitle = computed(() => {
 .ship-subtitle {
   font-size: 13px;
   color: var(--color-muted, #7a8288);
+}
+
+/* Muted reads as secondary on a panel, but as illegible on a photograph — the
+   heading's scrim darkens the hull behind it and this lifts the text off it. */
+.event-ship-panel:not(.event-ship-panel--placeholder) .ship-subtitle {
+  color: var(--color-lifted, #eee);
 }
 
 /* The qualifier beside a value, borrowing the metrics tile's unit treatment

@@ -166,13 +166,27 @@ const SHIP_SLUG = "rsi-constellation-andromeda";
 
 const { data: shipModel } = useModelQuery(SHIP_SLUG);
 
+/*
+ * The ship payload carries its own trimmed model, whose `image` the API picks
+ * from store_image, then angled_view, then the fleetchart — the full Model this
+ * query returns keeps its pictures under `media` instead, so handing it over
+ * whole leaves the card with no cover. Same order as the jbuilder.
+ */
 const dedicatedShip = computed<FleetEventShip>(() =>
   ship({
     id: "ship-3",
     title: "Wing lead",
     description: "Flies point, calls the merge.",
     filters: undefined,
-    model: shipModel.value,
+    model: shipModel.value && {
+      id: shipModel.value.id,
+      name: shipModel.value.name,
+      slug: shipModel.value.slug,
+      minCrew: shipModel.value.crew?.min,
+      maxCrew: shipModel.value.crew?.max,
+      image:
+        shipModel.value.media?.storeImage ?? shipModel.value.media?.angledView,
+    },
   } as Partial<FleetEventShip>),
 );
 

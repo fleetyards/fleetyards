@@ -112,7 +112,15 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
   @apply items-start;
   border-top-left-radius: var(--radius-surface-inner, 14px);
   border-top-right-radius: var(--radius-surface-inner, 14px);
-  background: linear-gradient(to bottom, rgb(0 0 0 / 0.8), transparent);
+  /* Held through the middle rather than fading immediately: a heading that
+     carries a subtitle as well as a title had nothing left under the second
+     line, and a bright hull swallowed it. */
+  background: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.8),
+    rgb(0 0 0 / 0.55) 55%,
+    transparent
+  );
 }
 
 .panel-heading--bottom {
