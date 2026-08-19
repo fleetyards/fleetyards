@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 type Props = {
   gitRevision?: string;
@@ -24,12 +25,12 @@ const route = useRoute();
 
 const environtmentVariant = computed(() => {
   if (window.NODE_ENV === "staging") {
-    return "warning";
+    return PillVariantsEnum.WARNING;
   } else if (window.NODE_ENV === "production") {
-    return "danger";
+    return PillVariantsEnum.DANGER;
   }
 
-  return "default";
+  return PillVariantsEnum.DEFAULT;
 });
 
 const cssClasses = computed(() => {
