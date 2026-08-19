@@ -10,7 +10,7 @@
 #  auto_lock_minutes_before  :integer          default(60), not null
 #  briefing                  :text
 #  cancelled_reason          :text
-#  category                  :integer          default("other"), not null
+#  category                  :integer          default(0), not null
 #  cover_image_preset        :string
 #  description               :text
 #  discord_synced_at         :datetime

@@ -154,6 +154,7 @@ const ship = (overrides: Partial<FleetEventShip> = {}): FleetEventShip => ({
   title: "Escort — Constellation",
   description: "Shields up, stay on the Hull-C's port side.",
   filters: { classification: "Combat", minCrew: 3, minCargo: 96 },
+  allowedModels: [],
   ...overrides,
 });
 
@@ -246,6 +247,18 @@ const team: FleetEventTeam = {
 
 // The team as the detail page renders it: its own slots, and a ship holding
 // more of them.
+// The third kind of spot: no filters, a hand-picked list of ships that fit.
+const listedShip = ship({
+  id: "ship-4",
+  title: "Escort — either will do",
+  description: "Whatever is on the pad.",
+  filters: undefined,
+  allowedModels: [
+    { id: "model-a", name: "Constellation Andromeda", slug: "connie" },
+    { id: "model-b", name: "Freelancer MAX", slug: "freelancer-max" },
+  ],
+});
+
 const populatedTeam = computed<FleetEventTeam>(() => ({
   ...team,
   description: "Two Connies on the Hull-C's flanks, one scanning ahead.",
@@ -381,6 +394,14 @@ const CURRENT_USER = "user-ThalosVex";
       :event="openEvent"
       :team="team"
       :ship="dedicatedShip"
+      :current-user-id="CURRENT_USER"
+      signups-open
+    />
+    <EventShipCard
+      :fleet="fleet"
+      :event="openEvent"
+      :team="team"
+      :ship="listedShip"
       :current-user-id="CURRENT_USER"
       signups-open
     />

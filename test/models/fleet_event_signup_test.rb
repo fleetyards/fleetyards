@@ -2,6 +2,38 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: fleet_event_signups
+#
+#  id                  :uuid             not null, primary key
+#  confirmed_at        :datetime
+#  notes               :text
+#  occurrence_date     :date
+#  status              :string           default("confirmed"), not null
+#  withdrawn_at        :datetime
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  fleet_event_id      :uuid             not null
+#  fleet_event_slot_id :uuid
+#  fleet_membership_id :uuid             not null
+#  vehicle_id          :uuid
+#
+# Indexes
+#
+#  idx_fleet_event_signups_on_event_and_occurrence_and_member  (fleet_event_id,occurrence_date,fleet_membership_id)
+#  index_fleet_event_signups_on_fleet_event_id                 (fleet_event_id)
+#  index_fleet_event_signups_on_fleet_event_slot_id            (fleet_event_slot_id)
+#  index_fleet_event_signups_on_fleet_membership_id            (fleet_membership_id)
+#  index_fleet_event_signups_unique_active_per_event           (fleet_event_id,occurrence_date,fleet_membership_id) UNIQUE WHERE ((status)::text <> 'withdrawn'::text)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (fleet_event_id => fleet_events.id)
+#  fk_rails_...  (fleet_event_slot_id => fleet_event_slots.id)
+#  fk_rails_...  (fleet_membership_id => fleet_memberships.id)
+#  fk_rails_...  (vehicle_id => vehicles.id) ON DELETE => nullify
+#
 class FleetEventSignupTest < ActiveSupport::TestCase
   setup do
     @event = create(:fleet_event, :open)

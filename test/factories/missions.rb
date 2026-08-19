@@ -6,7 +6,7 @@
 #
 #  id                 :uuid             not null, primary key
 #  archived_at        :datetime
-#  category           :integer          default("other"), not null
+#  category           :integer          default(0), not null
 #  cover_image_preset :string
 #  description        :text
 #  scenario           :string

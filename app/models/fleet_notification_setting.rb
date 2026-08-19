@@ -6,7 +6,7 @@
 #
 #  id                    :uuid             not null, primary key
 #  discord_webhook_url   :text
-#  enabled_in_app_events :text             default(["fleet_event.published", "fleet_event.locked", "fleet_event.starting_soon", "fleet_event.cancelled", "fleet_event_signup.created", "fleet_event_signup.withdrawn"])
+#  enabled_in_app_events :text             default("---\n- fleet_event.published\n- fleet_event.locked\n- fleet_event.starting_soon\n- fleet_event.cancelled\n- fleet_event_signup.created\n- fleet_event_signup.withdrawn")
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  discord_channel_id    :string

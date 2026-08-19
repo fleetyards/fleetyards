@@ -51,6 +51,14 @@ export const vehicleMatchesShip = (
     return m.id === ship.model.id;
   }
 
+  // A listed spot takes any one of the ships it names, so the list is the whole
+  // test — the criteria below describe a different kind of spot and a listed one
+  // carries none.
+  const allowed = ship.allowedModels ?? [];
+  if (allowed.length) {
+    return allowed.some((model) => model.id === m.id);
+  }
+
   const f = ship.filters;
   if (!f) return true;
 
