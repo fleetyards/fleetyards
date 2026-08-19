@@ -243,6 +243,14 @@ en:
         blank: can't be blank
         record_invalid: Bad Data
       models:
+        mission_ship:
+          attributes:
+            base:
+              model_or_filter_required: needs a ship, a list of ships, or filters
+            model_id:
+              must_be_in_game: is not in the game yet
+            allowed_model_ids:
+              must_be_in_game: name a ship that is not in the game yet
         fleet_role:
           attributes:
             resource_access:
