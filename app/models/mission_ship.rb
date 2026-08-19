@@ -34,6 +34,8 @@ class MissionShip < ApplicationRecord
   belongs_to :mission_team, touch: true
   belongs_to :model, optional: true
   has_many :mission_slots, as: :slottable, dependent: :destroy
+  has_many :mission_ship_models, dependent: :destroy
+  has_many :allowed_models, through: :mission_ship_models, source: :model
 
   delegate :mission, to: :mission_team
 
@@ -43,9 +45,16 @@ class MissionShip < ApplicationRecord
 
   validate :model_or_filter_required
   validate :model_must_be_in_game
+  validate :allowed_models_must_be_in_game
 
   def strict?
     model_id.present?
+  end
+
+  # A hand-picked set of models rather than criteria: the spot takes any one of
+  # them, so a signup matches if its ship is in the list.
+  def listed?
+    mission_ship_models.any?
   end
 
   def filtered?
@@ -57,7 +66,7 @@ class MissionShip < ApplicationRecord
   end
 
   private def model_or_filter_required
-    return if strict? || filtered?
+    return if strict? || listed? || filtered?
 
     errors.add(:base, :model_or_filter_required)
   end
@@ -67,5 +76,17 @@ class MissionShip < ApplicationRecord
     return if model.in_game?
 
     errors.add(:model_id, :must_be_in_game)
+  end
+
+  # The same bar the single model has to clear: a spot cannot ask for a ship that
+  # is not in the game yet, however it names it.
+  #
+  # Read through the join rows rather than through allowed_models: a has_many
+  # :through on an unsaved parent queries the database and so comes back empty,
+  # which let a new spot list a concept ship unchecked.
+  private def allowed_models_must_be_in_game
+    return if mission_ship_models.map(&:model).compact.all?(&:in_game?)
+
+    errors.add(:allowed_model_ids, :must_be_in_game)
   end
 end

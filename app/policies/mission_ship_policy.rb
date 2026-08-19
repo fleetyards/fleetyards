@@ -12,7 +12,8 @@ class MissionShipPolicy < FleetBasePolicy
   params_filter do |params|
     params.permit(
       :title, :description, :model_id,
-      :classification, :focus, :min_size, :max_size, :min_crew, :min_cargo
+      :classification, :focus, :min_size, :max_size, :min_crew, :min_cargo,
+      allowed_model_ids: []
     )
   end
 

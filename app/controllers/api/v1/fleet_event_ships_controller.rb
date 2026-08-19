@@ -16,6 +16,10 @@ module Api
       def create
         @ship = @team.fleet_event_ships.new(ship_params)
         @ship.position = next_position
+        # Built rather than written: model_or_filter_required runs on save and a
+        # spot that names only a list has nothing else to satisfy it, so the rows
+        # have to exist in memory by then.
+        build_allowed_models(@ship, allowed_model_ids_param)
 
         authorize! @ship, with: FleetEventShipPolicy, context: {fleet_event: @event}, to: :create?
 
@@ -23,6 +27,10 @@ module Api
           @ship.save!
           materialize_position_slots(@ship, position_ids_param)
         end
+
+        # The associations were read during validation, when the rows were still
+        # in memory, so the response would otherwise serialise that stale view.
+        @ship.reload
 
         render :show, status: :created
       rescue ActiveRecord::RecordInvalid
@@ -32,11 +40,14 @@ module Api
       def update
         authorize! @ship, with: FleetEventShipPolicy, context: {fleet_event: @event}, to: :update?
 
-        if @ship.update(ship_params)
-          render :show
-        else
-          render json: ValidationError.new("fleet_event_ships.update", errors: @ship.errors), status: :bad_request
+        ActiveRecord::Base.transaction do
+          sync_allowed_models!(@ship, allowed_model_ids_param)
+          @ship.update!(ship_params)
         end
+
+        render :show
+      rescue ActiveRecord::RecordInvalid
+        render json: ValidationError.new("fleet_event_ships.update", errors: @ship.errors), status: :bad_request
       end
 
       def destroy
@@ -101,7 +112,39 @@ module Api
       end
 
       private def ship_params
-        authorized(params, with: FleetEventShipPolicy)
+        authorized(params, with: FleetEventShipPolicy).except(:allowed_model_ids)
+      end
+
+      # nil when the client did not mention the list at all, which leaves it
+      # alone; [] is a client clearing it.
+      private def allowed_model_ids_param
+        permitted = authorized(params, with: FleetEventShipPolicy)
+        return unless permitted.key?(:allowed_model_ids)
+
+        Array(permitted[:allowed_model_ids]).map(&:to_s).compact_blank.uniq
+      end
+
+      private def build_allowed_models(ship, ids)
+        return if ids.blank?
+
+        ids.each_with_index do |model_id, index|
+          ship.fleet_event_ship_models.build(model_id: model_id, position: index)
+        end
+      end
+
+      # A supplied list is the whole answer to "which ships fit here", so rows
+      # that are not in it go. Reset afterwards so the validation on update reads
+      # the list as it now stands rather than as it was loaded.
+      private def sync_allowed_models!(ship, ids)
+        return if ids.nil?
+
+        ship.fleet_event_ship_models.where.not(model_id: ids).destroy_all
+        ids.each_with_index do |model_id, index|
+          record = ship.fleet_event_ship_models.find_or_initialize_by(model_id: model_id)
+          record.position = index
+          record.save! if record.changed?
+        end
+        ship.fleet_event_ship_models.reset
       end
 
       private def position_ids_param
