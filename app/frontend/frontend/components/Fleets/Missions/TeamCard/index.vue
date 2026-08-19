@@ -6,6 +6,15 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import SlotList from "@/frontend/components/Fleets/Missions/SlotList/index.vue";
 import ShipCard from "@/frontend/components/Fleets/Missions/ShipCard/index.vue";
 import {
@@ -140,147 +149,112 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="team-box">
-    <button
-      v-if="editable"
-      type="button"
-      class="team-close"
-      :title="t('actions.delete')"
-      @click="removeTeam"
-    >
-      <i class="fa-light fa-xmark" />
-    </button>
-
-    <div class="team-header">
-      <span
-        v-if="editable"
-        v-tooltip="t('actions.reorder')"
-        class="team-drag-handle"
-        :aria-label="t('actions.reorder')"
-      >
-        <i class="fa-light fa-grip-vertical" />
-      </span>
-      <h3 class="team-title">{{ team.title }}</h3>
-      <button
-        v-if="editable"
-        type="button"
-        class="team-edit"
-        :title="t('actions.edit')"
-        @click="openEditTeamModal"
-      >
-        <i class="fa-light fa-pen" />
-      </button>
-    </div>
-
-    <p v-if="team.description" class="team-desc">
-      {{ team.description }}
-    </p>
-
-    <div class="team-section">
-      <h4 class="team-section-label">
-        {{ t("headlines.fleets.missions.slots") }}
-      </h4>
-      <SlotList
-        slottable-type="MissionTeam"
-        :slottable-id="team.id"
-        :slots="team.slots"
-        :editable="editable"
-      />
-    </div>
-
-    <div class="team-section">
-      <div class="team-section-header">
-        <h4 class="team-section-label">
-          {{ t("headlines.fleets.missions.ships") }}
-        </h4>
-        <Btn v-if="editable" @click="openAddShipModal">
-          <i class="fa-light fa-plus" />
-          <span>{{ t("actions.fleets.missions.addShip") }}</span>
+  <Panel :variant="PanelVariantsEnum.SLIM" class="team-box">
+    <!--
+      D6: a titled sub-surface inside a page, so a slim panel with a divider
+      under its head rather than a hand-rolled fill. The three controls were
+      bare buttons with their own hover rules and an untranslated title="Drag";
+      they are Btn at chip scale now, the same as the event team card's.
+    -->
+    <PanelHeading :level="HeadingLevelEnum.H3" compact divider>
+      <template #default>
+        <span class="team-title-row">
+          <span
+            v-if="editable"
+            v-tooltip="t('actions.reorder')"
+            class="team-drag-handle"
+            :aria-label="t('actions.reorder')"
+          >
+            <i class="fa-light fa-grip-vertical" />
+          </span>
+          {{ team.title }}
+        </span>
+      </template>
+      <template v-if="editable" #actions>
+        <Btn
+          v-tooltip="t('actions.edit')"
+          :size="BtnSizesEnum.XS"
+          :variant="BtnVariantsEnum.BARE"
+          :aria-label="t('actions.edit')"
+          @click="openEditTeamModal"
+        >
+          <i class="fa-light fa-pen" />
         </Btn>
-      </div>
-      <div ref="shipsContainer" class="team-ships">
-        <ShipCard
-          v-for="ship in ships"
-          :key="ship.id"
-          :data-ship-id="ship.id"
-          :ship="ship"
-          :fleet="fleet"
-          :mission="mission"
-          :team="team"
+        <Btn
+          v-tooltip="t('actions.delete')"
+          :size="BtnSizesEnum.XS"
+          :variant="BtnVariantsEnum.BARE"
+          tone="danger"
+          :aria-label="t('actions.delete')"
+          @click="removeTeam"
+        >
+          <i class="fa-light fa-xmark" />
+        </Btn>
+      </template>
+    </PanelHeading>
+
+    <PanelBody>
+      <p v-if="team.description" class="team-desc">
+        {{ team.description }}
+      </p>
+
+      <div class="team-section">
+        <p class="metrics-card__section-label">
+          {{ t("headlines.fleets.missions.slots") }}
+        </p>
+        <SlotList
+          slottable-type="MissionTeam"
+          :slottable-id="team.id"
+          :slots="team.slots"
           :editable="editable"
         />
       </div>
-      <p v-if="!ships.length" class="text-muted no-ships">
-        {{ t("labels.fleets.missions.noShips") }}
-      </p>
-    </div>
-  </section>
+
+      <div class="team-section">
+        <div class="team-section-header">
+          <p class="metrics-card__section-label">
+            {{ t("headlines.fleets.missions.ships") }}
+          </p>
+          <Btn v-if="editable" @click="openAddShipModal">
+            <i class="fa-light fa-plus" />
+            <span>{{ t("actions.fleets.missions.addShip") }}</span>
+          </Btn>
+        </div>
+        <div ref="shipsContainer" class="team-ships">
+          <ShipCard
+            v-for="ship in ships"
+            :key="ship.id"
+            :data-ship-id="ship.id"
+            :ship="ship"
+            :fleet="fleet"
+            :mission="mission"
+            :team="team"
+            :editable="editable"
+          />
+        </div>
+        <p v-if="!ships.length" class="text-muted no-ships">
+          {{ t("labels.fleets.missions.noShips") }}
+        </p>
+      </div>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
-.team-box {
-  position: relative;
-  padding: 20px;
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: var(--radius-control-bare, 6px);
-  background: rgba(0, 0, 0, 0.45);
-  margin-bottom: 24px;
-}
-.team-close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: transparent;
-  border: none;
-  color: var(--color-muted, #7a8288);
-  cursor: pointer;
-  padding: 4px 8px;
-  font-size: 16px;
-  line-height: 1;
-  border-radius: var(--radius-control-bare, 6px);
-  transition:
-    color 0.15s,
-    background 0.15s;
+@import "@/shared/components/metricsCard";
 
-  &:hover {
-    color: var(--color-danger, #dc3545);
-    background: rgba(255, 255, 255, 0.06);
-  }
-}
-.team-header {
-  display: flex;
+.team-title-row {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding-right: 40px;
+  gap: 10px;
 }
+
 .team-drag-handle {
   cursor: grab;
   color: var(--color-muted, #7a8288);
   font-size: 13px;
   letter-spacing: -0.15em;
   user-select: none;
-}
-.team-title {
-  margin: 0;
-  font-size: 19px;
-  font-weight: 600;
-}
-.team-edit {
-  background: transparent;
-  border: none;
-  color: var(--color-muted, #7a8288);
-  cursor: pointer;
-  padding: 4px 6px;
-  border-radius: var(--radius-control-bare, 6px);
-  font-size: 13px;
-  transition:
-    color 0.15s,
-    background 0.15s;
-
-  &:hover {
-    color: var(--color-text, #c8c8c8);
-    background: rgba(255, 255, 255, 0.06);
-  }
 }
 .team-desc {
   color: var(--color-muted, #7a8288);
@@ -291,14 +265,6 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 8px;
   margin-top: 16px;
-}
-.team-section-label {
-  margin: 0;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-muted, #7a8288);
 }
 .team-section-header {
   display: flex;
