@@ -454,12 +454,15 @@ const crumbs = computed(() => [
         <template #default>
           {{ event.title }}
         </template>
-        <template #actions>
-          <!-- A status is not a control: a framed chip renders a button with
-               aria-pressed, which is what a Pill exists to avoid. -->
-          <Pill :variant="statusVariant">{{ statusLabel }}</Pill>
-        </template>
       </PanelHeading>
+
+      <!-- In the cover's far corner rather than beside the title, the same as
+           the event card: a long status crowded the title, and the title is
+           what a reader scans for. A status is not a control either, so a Pill
+           and not a framed chip, which renders a button with aria-pressed. -->
+      <div class="event-detail__status">
+        <Pill :variant="statusVariant">{{ statusLabel }}</Pill>
+      </div>
 
       <!--
         Below the cover, not on it. The scrim PanelHeading draws covers a
@@ -676,6 +679,24 @@ const crumbs = computed(() => [
 }
 .event-detail__hero {
   --panel-image-height: 260px;
+}
+
+/* Anchored to .panel__inner, which is the cover: Panel gives it the image's
+   height, so its far corner is the image's far corner. */
+.event-detail__status {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+}
+
+/*
+ * A pill's tint is 20% alpha, drawn for a dark surface. Over a cover it washes
+ * out, and the bottom of the image has no scrim the way the heading has its top
+ * shadow.
+ */
+.event-detail__status :deep(.base-pill) {
+  backdrop-filter: blur(6px) brightness(0.45);
 }
 .event-hero__tz {
   font-size: 0.85em;
