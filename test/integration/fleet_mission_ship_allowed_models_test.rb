@@ -83,6 +83,37 @@ class FleetMissionShipAllowedModelsTest < ActionDispatch::IntegrationTest
     assert_equal [@connie.id], ship.allowed_models.map(&:id)
   end
 
+  # The factory gives a ship filters, which satisfied model_or_filter_required on
+  # its own and so hid an ordering bug: a spot whose whole spec is a list has
+  # nothing in its columns.
+  def listed_ship(*model_ids)
+    ship = MissionShip.new(mission_team: @team, title: "Listed", position: 0)
+    model_ids.each_with_index do |id, index|
+      ship.mission_ship_models.build(model_id: id, position: index)
+    end
+    ship.save!
+    ship
+  end
+
+  test "duplicating a spot whose whole spec is a list" do
+    ship = listed_ship(@connie.id, @freelancer.id)
+
+    post "#{ships_path}/#{ship.id}/duplicate"
+
+    assert_response :created
+    copy = @team.mission_ships.order(:position).last
+    assert_not_equal ship.id, copy.id
+    assert_equal [@connie.id, @freelancer.id], copy.allowed_models.map(&:id)
+    assert_nil copy.classification
+  end
+
+  test "a spot that says nothing at all reports it rather than raising" do
+    post ships_path, params: {title: "Empty"}, as: :json
+
+    assert_response :bad_request
+    assert_includes response.body.downcase, "ship"
+  end
+
   test "duplicating a spot carries its list" do
     ship = create(:mission_ship, mission_team: @team)
     ship.mission_ship_models.create!(model_id: @connie.id, position: 0)
