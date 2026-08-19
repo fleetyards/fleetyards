@@ -262,7 +262,7 @@ class FleetEvent < ApplicationRecord
         end
 
         team.mission_ships.order(:position).each do |ship|
-          event_ship = event_team.fleet_event_ships.create!(
+          event_ship = event_team.fleet_event_ships.new(
             source_ship_id: ship.id,
             model_id: ship.model_id,
             title: ship.title,
@@ -276,14 +276,17 @@ class FleetEvent < ApplicationRecord
             position: ship.position
           )
 
-          # A spot that names a list of ships has to arrive with the list, or the
-          # event would spawn asking for nothing in particular.
+          # Before the save, and not only so the event arrives with the list: a
+          # spot whose whole spec is a list has nothing in its columns, so saving
+          # first left model_or_filter_required with nothing to accept.
           ship.mission_ship_models.order(:position).each_with_index do |allowed, index|
-            event_ship.fleet_event_ship_models.create!(
+            event_ship.fleet_event_ship_models.build(
               model_id: allowed.model_id,
               position: index
             )
           end
+
+          event_ship.save!
 
           ship.mission_slots.order(:position).each do |slot|
             FleetEventSlot.create!(

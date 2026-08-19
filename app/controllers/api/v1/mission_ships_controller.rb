@@ -80,16 +80,21 @@ module Api
         authorize! @ship, with: MissionShipPolicy, to: :duplicate?, context: {mission: @mission}
 
         ActiveRecord::Base.transaction do
-          @copy = @team.mission_ships.create!(
+          @copy = @team.mission_ships.new(
             @ship.slice(
               :title, :description, :model_id,
               :classification, :focus, :min_size, :max_size, :min_crew, :min_cargo
             ).merge(position: next_position)
           )
 
+          # Before the save, not after: a spot whose whole spec is a list of ships
+          # has nothing in its columns, so creating the copy first left
+          # model_or_filter_required with nothing to accept.
           @ship.mission_ship_models.order(:position).each_with_index do |allowed, index|
-            @copy.mission_ship_models.create!(model_id: allowed.model_id, position: index)
+            @copy.mission_ship_models.build(model_id: allowed.model_id, position: index)
           end
+
+          @copy.save!
 
           @ship.mission_slots.order(:position).each do |slot|
             @copy.mission_slots.create!(
