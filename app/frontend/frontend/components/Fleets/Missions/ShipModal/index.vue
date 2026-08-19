@@ -51,11 +51,16 @@ const submitting = ref(false);
 
 type ShipMode = "specific" | "list" | "filter";
 
-const initialMode: ShipMode = props.ship?.strict
-  ? "specific"
-  : props.ship?.allowedModels?.length
-    ? "list"
-    : "filter";
+// A new spot opens on the list. Naming the handful of ships that fit is the
+// answer most spots want; one exact ship and a range of criteria are the
+// narrower and the broader exception either side of it.
+const initialMode: ShipMode = !props.ship
+  ? "list"
+  : props.ship.strict
+    ? "specific"
+    : props.ship.allowedModels?.length
+      ? "list"
+      : "filter";
 const mode = ref<ShipMode>(initialMode);
 
 // The models a listed spot will take, in the order they were picked.
@@ -282,14 +287,14 @@ const onSubmit = handleSubmit(async (values) => {
            it carry between them. -->
       <div class="mb-4 flex">
         <BtnGroup segmented>
-          <Btn :active="mode === 'specific'" @click="mode = 'specific'">
-            {{ t("labels.fleets.missions.modelSpecific") }}
-          </Btn>
           <Btn :active="mode === 'list'" @click="mode = 'list'">
             {{ t("labels.fleets.missions.modelList") }}
           </Btn>
           <Btn :active="mode === 'filter'" @click="mode = 'filter'">
             {{ t("labels.fleets.missions.filterRange") }}
+          </Btn>
+          <Btn :active="mode === 'specific'" @click="mode = 'specific'">
+            {{ t("labels.fleets.missions.modelSpecific") }}
           </Btn>
         </BtnGroup>
       </div>
