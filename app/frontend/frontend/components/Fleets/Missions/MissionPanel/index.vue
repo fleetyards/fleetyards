@@ -101,6 +101,16 @@ const cover = computed(() => resolve(props.mission));
   z-index: 2;
 }
 
+/*
+ * A pill's tint is 20% alpha, drawn to sit on a dark surface — over a photograph
+ * it washes out, and the cover has no scrim down here the way the heading has
+ * its top shadow. Darkening what is behind the badge keeps the variant's colour
+ * doing the talking instead of replacing it with an opaque fill.
+ */
+.mission-panel__status :deep(.base-pill) {
+  backdrop-filter: blur(6px) brightness(0.45);
+}
+
 @import "@/shared/components/metricsCard";
 
 /*
