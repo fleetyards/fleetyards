@@ -8,7 +8,8 @@ export default {
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import Chip from "@/shared/components/base/Chip/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -51,10 +52,16 @@ const cover = computed(() => resolve(props.mission));
           {{ mission.title }}
         </router-link>
       </template>
-      <template v-if="mission.archived" #actions>
-        <Chip bare>{{ t("labels.fleets.missions.archived") }}</Chip>
-      </template>
     </PanelHeading>
+
+    <!-- Same treatment the event card gets: a pill in the cover's corner rather
+         than a frameless chip beside the title. Neutral, because an archived
+         mission asks nothing of the reader. -->
+    <div v-if="mission.archived" class="mission-panel__status">
+      <Pill :variant="PillVariantsEnum.NEUTRAL">
+        {{ t("labels.fleets.missions.archived") }}
+      </Pill>
+    </div>
 
     <template #footer>
       <PanelBody>
@@ -86,6 +93,14 @@ const cover = computed(() => resolve(props.mission));
 </template>
 
 <style lang="scss" scoped>
+/* Anchored to .panel__inner, which is the cover. */
+.mission-panel__status {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+}
+
 @import "@/shared/components/metricsCard";
 
 /*

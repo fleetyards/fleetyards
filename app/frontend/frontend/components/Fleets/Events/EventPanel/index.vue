@@ -104,16 +104,18 @@ const unarchive = async () => {
           {{ event.title }}
         </router-link>
       </template>
-      <!-- The cap already carries the lifecycle; this names it, for anyone who
-           cannot read a colour and for the states that share a tone. -->
-      <template #actions>
-        <!-- A Pill, not a Chip: the card is itself the click target, and a
-             chip's frame comes with a button inside it. -->
-        <Pill :variant="statusVariant" data-test="event-status">
-          {{ statusLabel }}
-        </Pill>
-      </template>
     </PanelHeading>
+
+    <!-- The cap already carries the lifecycle; this names it, for anyone who
+         cannot read a colour and for the states that share a tone. It sits in
+         the cover's far corner rather than beside the title, which a long
+         status pushed into wrapping. A Pill, not a Chip: the card is itself the
+         click target, and a chip's frame comes with a button inside it. -->
+    <div class="event-panel__status">
+      <Pill :variant="statusVariant" data-test="event-status">
+        {{ statusLabel }}
+      </Pill>
+    </div>
 
     <!--
       Footer, not the default slot: Panel parents the background image to
@@ -173,6 +175,15 @@ const unarchive = async () => {
 </template>
 
 <style lang="scss" scoped>
+/* Anchored to .panel__inner, which is the cover: relative, and given the
+   image's height when the panel carries one. */
+.event-panel__status {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 2;
+}
+
 @import "@/shared/components/metricsCard";
 
 /*
