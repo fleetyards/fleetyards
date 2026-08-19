@@ -17,7 +17,12 @@ module V1
             minSize: {type: [:string, :null]},
             maxSize: {type: [:string, :null]},
             minCrew: {type: [:integer, :null]},
-            minCargo: {type: [:number, :null]}
+            minCargo: {type: [:number, :null]},
+            allowedModelIds: {
+              type: :array,
+              items: {type: :string, format: :uuid},
+              description: "Models this spot will accept, when it names several rather than one"
+            }
           },
           additionalProperties: false
         })
