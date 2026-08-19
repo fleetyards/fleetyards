@@ -24,6 +24,7 @@ import {
   type UserFeature,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -102,7 +103,9 @@ const toggleFeature = async (feature: FeatureItem) => {
   >
     <template #display="{ item }">
       <BasePill
-        :variant="item.enabled ? 'success' : 'danger'"
+        :variant="
+          item.enabled ? PillVariantsEnum.SUCCESS : PillVariantsEnum.DANGER
+        "
         uppercase
         margin-right
       >

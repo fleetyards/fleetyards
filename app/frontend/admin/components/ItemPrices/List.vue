@@ -26,6 +26,7 @@ import {
 } from "@/services/fyAdminApi";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 interface ItemPriceFormData extends ItemPriceInput {
   timeRange?: (typeof ItemPriceTimeRangeEnum)[keyof typeof ItemPriceTimeRangeEnum];
@@ -179,10 +180,10 @@ defineExpose({
       <BasePill
         :variant="
           item.priceType === 'buy'
-            ? 'success'
+            ? PillVariantsEnum.SUCCESS
             : item.priceType === 'rental'
-              ? 'warning'
-              : 'default'
+              ? PillVariantsEnum.WARNING
+              : PillVariantsEnum.DEFAULT
         "
         uppercase
         margin-right

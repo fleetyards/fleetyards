@@ -9,6 +9,7 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { InventoryStockPosition } from "@/services/fyApi";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 type Props = {
   stockItem: InventoryStockPosition;
@@ -83,7 +84,7 @@ const quality = computed(() => {
               {{ stockItem.item.name }}
               <BasePill
                 v-if="stockItem.item.available === false"
-                variant="warning"
+                :variant="PillVariantsEnum.WARNING"
                 :title="t('labels.logistics.itemUnavailableHint')"
               >
                 {{ t("labels.logistics.itemUnavailable") }}
