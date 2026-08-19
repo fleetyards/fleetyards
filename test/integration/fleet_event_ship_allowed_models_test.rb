@@ -53,6 +53,28 @@ class FleetEventShipAllowedModelsTest < ActionDispatch::IntegrationTest
     assert_equal [@freelancer.id], ship.reload.allowed_models.map(&:id)
   end
 
+  # The factory gives a ship filters, which satisfied model_or_filter_required on
+  # its own and so hid an ordering bug: a spot whose whole spec is a list has
+  # nothing in its columns.
+  test "an event spawns from a mission spot whose whole spec is a list" do
+    mission = create(:mission, fleet: @fleet, created_by: @admin)
+    mission_team = create(:mission_team, mission: mission)
+    listed = MissionShip.new(mission_team: mission_team, title: "Listed", position: 0)
+    listed.mission_ship_models.build(model_id: @connie.id, position: 0)
+    listed.save!
+
+    event = FleetEvent.from_mission!(
+      mission,
+      created_by: @admin,
+      starts_at: 2.days.from_now,
+      timezone: "UTC"
+    )
+
+    spawned = event.fleet_event_teams.first.fleet_event_ships.first
+    assert_equal [@connie.id], spawned.allowed_models.map(&:id)
+    assert_nil spawned.classification
+  end
+
   test "an event spawned from a mission carries each spot's list" do
     mission = create(:mission, fleet: @fleet, created_by: @admin)
     mission_team = create(:mission_team, mission: mission)
