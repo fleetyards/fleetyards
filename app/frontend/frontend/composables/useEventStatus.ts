@@ -1,5 +1,6 @@
 import type { FleetEventStatus } from "@/services/fyApi";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 // A past event still sitting in a pre-finished status reads as "past" to the
 // viewer rather than misleadingly advertising open signups. Kept here rather
@@ -31,16 +32,14 @@ const TONE_BY_STATUS: Record<string, `${PanelTonesEnum}`> = {
  * gold held state maps to `warning`. Kept beside the tone map because a badge
  * and the cap above it must not disagree about what the event is doing.
  */
-type PillVariant = "default" | "neutral" | "success" | "warning" | "danger";
-
-const PILL_VARIANT_BY_STATUS: Record<string, PillVariant> = {
-  draft: "neutral",
-  open: "success",
-  locked: "warning",
-  active: "default",
-  completed: "neutral",
-  past: "neutral",
-  cancelled: "danger",
+const PILL_VARIANT_BY_STATUS: Record<string, `${PillVariantsEnum}`> = {
+  draft: PillVariantsEnum.NEUTRAL,
+  open: PillVariantsEnum.SUCCESS,
+  locked: PillVariantsEnum.WARNING,
+  active: PillVariantsEnum.DEFAULT,
+  completed: PillVariantsEnum.NEUTRAL,
+  past: PillVariantsEnum.NEUTRAL,
+  cancelled: PillVariantsEnum.DANGER,
 };
 
 export const useEventStatus = () => {
@@ -57,7 +56,8 @@ export const useEventStatus = () => {
     `labels.fleets.events.statuses.${effectiveStatus(status, past)}`;
 
   const pillVariantFor = (status: FleetEventStatus, past?: boolean) =>
-    PILL_VARIANT_BY_STATUS[effectiveStatus(status, past)] ?? "neutral";
+    PILL_VARIANT_BY_STATUS[effectiveStatus(status, past)] ??
+    PillVariantsEnum.NEUTRAL;
 
   return { effectiveStatus, toneFor, labelKeyFor, pillVariantFor };
 };

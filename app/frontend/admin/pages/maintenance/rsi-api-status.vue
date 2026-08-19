@@ -23,6 +23,7 @@ import {
   type RsiRequestLog,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const { t, l } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -110,7 +111,14 @@ const resolve = async (log: RsiRequestLog) => {
           {{ record.url }}
         </template>
         <template #col-resolved="{ record }">
-          <BasePill :variant="record.resolved ? 'success' : 'danger'" uppercase>
+          <BasePill
+            :variant="
+              record.resolved
+                ? PillVariantsEnum.SUCCESS
+                : PillVariantsEnum.DANGER
+            "
+            uppercase
+          >
             {{
               record.resolved
                 ? t("labels.rsiRequestLogs.resolved")

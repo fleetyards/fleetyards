@@ -13,6 +13,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const sessionStore = useSessionStore();
 void sessionStore.refreshUser();
@@ -58,12 +59,12 @@ const generateBackupCodes = () => {
             <small>
               <BasePill
                 v-if="sessionStore.currentUser.twoFactorRequired"
-                variant="success"
+                :variant="PillVariantsEnum.SUCCESS"
               >
                 <i class="fa-solid fa-check" />
                 {{ t("labels.enabled") }}
               </BasePill>
-              <BasePill v-else variant="danger">
+              <BasePill v-else :variant="PillVariantsEnum.DANGER">
                 <i class="fa-solid fa-times" />
                 {{ t("labels.disabled") }}
               </BasePill>
