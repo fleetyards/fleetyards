@@ -36,6 +36,10 @@ const crumbs = computed(() => [
     label: props.fleet.name,
   },
   {
+    to: { name: "fleet-events", params: { slug: props.fleet.slug } },
+    label: t("headlines.fleets.events.index"),
+  },
+  {
     to: { name: "fleet-missions", params: { slug: props.fleet.slug } },
     label: t("nav.fleets.missions.index"),
   },
