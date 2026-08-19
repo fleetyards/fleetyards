@@ -11,6 +11,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import TeamCard from "@/frontend/components/Fleets/Missions/TeamCard/index.vue";
 import MissionAdminActions from "@/frontend/components/Fleets/Missions/MissionAdminActions/index.vue";
@@ -135,7 +136,14 @@ const coverImage = computed(() => resolveCover(mission.value));
   <Loader :loading="isLoading" />
 
   <div v-if="mission" class="mission-detail">
-    <Panel :bg-image="coverImage" class="mission-detail__hero">
+    <!-- The cover sits at the top with the body under it, so it rounds only
+         its top corners; the default rounds all four and cut a notch out of the
+         image where the two meet. -->
+    <Panel
+      :bg-image="coverImage"
+      :bg-rounded="PanelRoundedEnum.TOP"
+      class="mission-detail__hero"
+    >
       <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
         {{ mission.title }}
       </PanelHeading>
