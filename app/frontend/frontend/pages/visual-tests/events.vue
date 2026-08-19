@@ -12,6 +12,7 @@ import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/i
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipCard from "@/frontend/components/Fleets/Events/EventShipCard/index.vue";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
+import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import MissionPanel from "@/frontend/components/Fleets/Missions/MissionPanel/index.vue";
 import {
   type Fleet,
@@ -243,6 +244,15 @@ const team: FleetEventTeam = {
   ships: [ship()],
 };
 
+// The team as the detail page renders it: its own slots, and a ship holding
+// more of them.
+const populatedTeam = computed<FleetEventTeam>(() => ({
+  ...team,
+  description: "Two Connies on the Hull-C's flanks, one scanning ahead.",
+  slots: slots.slice(0, 2),
+  ships: [dedicatedShip.value],
+}));
+
 const mission: Mission = {
   id: "mission-1",
   title: "Standing Jumptown Run",
@@ -387,6 +397,20 @@ const CURRENT_USER = "user-ThalosVex";
 
   <p>The same events in the week view.</p>
   <CalendarGrid :fleet="fleet" :events="calendarEvents" view="week" />
+
+  <Heading :level="HeadingLevelEnum.H2">Team card</Heading>
+  <p>
+    A titled sub-surface, so a slim panel with a divider under its head rather
+    than the full frame — per D6, and the same treatment the mission team card
+    carries. Read-only here; the edit page passes <code>editable</code>.
+  </p>
+  <EventTeamCard
+    :fleet="fleet"
+    :event="openEvent"
+    :team="populatedTeam"
+    :current-user-id="CURRENT_USER"
+    signups-open
+  />
 </template>
 
 <style lang="scss" scoped>

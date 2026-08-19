@@ -13,6 +13,7 @@ import {
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import EventSlotList from "@/frontend/components/Fleets/Events/EventSlotList/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
@@ -168,7 +169,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Panel class="event-team-box">
+  <Panel :variant="PanelVariantsEnum.SLIM" class="event-team-box">
     <!--
       The three controls here were bare <button> elements with their own hover
       rules, one of which reached for a --danger that was never declared. They
@@ -176,7 +177,12 @@ onUnmounted(() => {
       in the app - and each has a translated accessible name in place of the
       untranslated title="Drag".
     -->
-    <PanelHeading :level="HeadingLevelEnum.H3">
+    <!--
+      Slim with a divider, per D6: a team is a titled sub-surface inside a page,
+      not a card in its own right. The full frame's 2px edge, 16px radius and
+      end-caps made a page of teams read as a stack of competing surfaces.
+    -->
+    <PanelHeading :level="HeadingLevelEnum.H3" compact divider>
       <template #default>
         <span class="event-team-title-row">
           <span
