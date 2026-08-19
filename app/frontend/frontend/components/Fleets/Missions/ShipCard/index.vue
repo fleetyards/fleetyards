@@ -303,9 +303,25 @@ const subtitle = computed(() => {
   flex-shrink: 0;
 }
 
+/*
+ * A cover gives .panel__inner its height, so the title sits on the image and the
+ * body starts below it. Without one the inner collapses to the title's height
+ * and the rows underneath ran straight through the placeholder art — so the
+ * stand-in reserves the same strip the image would have taken.
+ */
+.mission-ship-panel--placeholder :deep(.panel__inner) {
+  min-height: var(--panel-image-height, 160px);
+}
+
 .ship-placeholder {
   position: absolute;
-  inset: 0;
+  /*
+   * The cover's strip, not the whole card. inset: 0 stretched the gradient over
+   * the slot rows as a watermark, and since it rounded only its top corners it
+   * ran square past the card's rounded bottom.
+   */
+  inset: 0 0 auto;
+  height: var(--panel-image-height, 160px);
   display: flex;
   align-items: center;
   justify-content: center;

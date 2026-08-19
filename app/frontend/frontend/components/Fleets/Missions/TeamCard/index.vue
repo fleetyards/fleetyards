@@ -14,7 +14,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
-import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import SlotList from "@/frontend/components/Fleets/Missions/SlotList/index.vue";
 import ShipCard from "@/frontend/components/Fleets/Missions/ShipCard/index.vue";
 import {
@@ -156,7 +156,12 @@ onUnmounted(() => {
       bare buttons with their own hover rules and an untranslated title="Drag";
       they are Btn at chip scale now, the same as the event team card's.
     -->
-    <PanelHeading :level="HeadingLevelEnum.H3" compact divider>
+    <!--
+      The metric head, so the team carries the gold dot every other titled
+      sub-surface in the app does. It renders a span rather than a document
+      heading, which is the system's existing call for this tone.
+    -->
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       <template #default>
         <span class="team-title-row">
           <span
