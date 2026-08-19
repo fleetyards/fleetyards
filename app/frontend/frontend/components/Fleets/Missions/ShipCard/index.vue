@@ -359,6 +359,12 @@ const subtitle = computed(() => {
   color: var(--color-muted, #7a8288);
 }
 
+/* Muted reads as secondary on a panel, but as illegible on a photograph — the
+   heading's scrim darkens the hull behind it and this lifts the text off it. */
+.mission-ship-panel:not(.mission-ship-panel--placeholder) .ship-subtitle {
+  color: var(--color-lifted, #eee);
+}
+
 /* The qualifier beside a value, borrowing the metrics tile's unit treatment
    rather than the 999px tinted pill it replaces. */
 .mission-ship-card__override {
