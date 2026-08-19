@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -183,7 +184,14 @@ const subtitle = computed(() => {
         <i class="fa-duotone fa-starship ship-placeholder-ship" />
         <i class="fa-solid fa-question ship-placeholder-question" />
       </div>
-      <PanelHeading :level="HeadingLevelEnum.H4">
+      <!-- The name sits on the ship's cover, so it needs the same gradient the
+           event card's title gets; without it a bright hull swallows the text.
+           Only when there is a cover — over the placeholder it would be a
+           shadow with nothing to shade. -->
+      <PanelHeading
+        :level="HeadingLevelEnum.H4"
+        :shadow="hasShipImage ? PanelHeadingShadowEnum.TOP : undefined"
+      >
         <template #default>
           <span class="ship-title-row">
             <span
