@@ -253,45 +253,11 @@ const crumbs = computed(() => [
   </Teleport>
 
   <div class="events-toolbar">
-    <BtnGroup segmented data-test="events-view-switch">
-      <Btn :active="view === 'list'" @click="toggleListCalendar('list')">
-        <i class="fa-light fa-list" />
-        {{ t("labels.fleets.events.listTab") }}
-      </Btn>
-      <Btn :active="isCalendar" @click="toggleListCalendar('calendar')">
-        <i class="fa-light fa-calendar" />
-        {{ t("labels.fleets.events.calendarTab") }}
-      </Btn>
-    </BtnGroup>
-    <Btn
-      v-if="canSubscribe"
-      v-tooltip="t('labels.fleets.events.subscribeHint')"
-      variant="bare"
-      @click="subscribe"
-    >
-      <i class="fa-light fa-calendar-arrow-down" />
-      {{ t("actions.fleets.events.subscribe") }}
-    </Btn>
-    <Btn
-      v-else-if="showCalendarSetupNudge"
-      :to="{ name: 'fleet-settings-calendar', params: { slug: fleet.slug } }"
-      variant="bare"
-    >
-      <i class="fa-light fa-calendar-plus" />
-      {{ t("actions.fleets.events.setUpCalendar") }}
-    </Btn>
-  </div>
-
-  <FilteredList
-    v-if="view === 'list'"
-    key="fleet-events-index"
-    :name="route.name?.toString() || ''"
-    :records="eventList"
-    :async-status="asyncStatus"
-    hide-empty
-  >
-    <template #actions-left>
-      <BtnGroup segmented data-test="events-tab-switch">
+    <!-- The leading slot answers "which events", and what that means depends on
+         the view: a list narrows by when, a calendar already shows the month and
+         offers to hand it to your own calendar instead. -->
+    <div class="events-toolbar__lead">
+      <BtnGroup v-if="view === 'list'" segmented data-test="events-tab-switch">
         <Btn :active="tab === 'upcoming'" @click="tab = 'upcoming'">
           {{ t("labels.fleets.events.upcomingTab") }}
         </Btn>
@@ -302,8 +268,45 @@ const crumbs = computed(() => [
           {{ t("labels.fleets.events.archivedTab") }}
         </Btn>
       </BtnGroup>
-    </template>
+      <Btn
+        v-else-if="canSubscribe"
+        v-tooltip="t('labels.fleets.events.subscribeHint')"
+        variant="bare"
+        @click="subscribe"
+      >
+        <i class="fa-light fa-calendar-arrow-down" />
+        {{ t("actions.fleets.events.subscribe") }}
+      </Btn>
+      <Btn
+        v-else-if="showCalendarSetupNudge"
+        :to="{ name: 'fleet-settings-calendar', params: { slug: fleet.slug } }"
+        variant="bare"
+      >
+        <i class="fa-light fa-calendar-plus" />
+        {{ t("actions.fleets.events.setUpCalendar") }}
+      </Btn>
+    </div>
 
+    <BtnGroup segmented data-test="events-view-switch">
+      <Btn :active="view === 'list'" @click="toggleListCalendar('list')">
+        <i class="fa-light fa-list" />
+        {{ t("labels.fleets.events.listTab") }}
+      </Btn>
+      <Btn :active="isCalendar" @click="toggleListCalendar('calendar')">
+        <i class="fa-light fa-calendar" />
+        {{ t("labels.fleets.events.calendarTab") }}
+      </Btn>
+    </BtnGroup>
+  </div>
+
+  <FilteredList
+    v-if="view === 'list'"
+    key="fleet-events-index"
+    :name="route.name?.toString() || ''"
+    :records="eventList"
+    :async-status="asyncStatus"
+    hide-empty
+  >
     <template #default="{ records }">
       <Grid :records="records as FleetEvent[]" primary-key="id">
         <template #default="{ record }">
@@ -331,7 +334,17 @@ const crumbs = computed(() => [
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   margin-bottom: 12px;
+}
+
+/* Holds the row's height when the view offers nothing to put here, so the view
+   switch on the right does not jump as you move between the two. */
+.events-toolbar__lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 1px;
 }
 </style>
