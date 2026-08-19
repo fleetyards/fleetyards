@@ -117,12 +117,6 @@ const toggleLoading = () => {
   </div>
 
   <Heading :level="HeadingLevelEnum.H2"
-    >Group — container owns the chrome</Heading
-  >
-  <Heading :level="HeadingLevelEnum.H2"
-    >Segmented — a switch, not a row of actions</Heading
-  >
-  <Heading :level="HeadingLevelEnum.H2"
     >Group of toggles — independent, several can be on</Heading
   >
   <div class="row">
@@ -147,6 +141,9 @@ const toggleLoading = () => {
     </div>
   </div>
 
+  <Heading :level="HeadingLevelEnum.H2"
+    >Segmented — a switch, not a row of actions</Heading
+  >
   <div class="row">
     <div class="col-12 vt-row">
       <BtnGroup segmented>
@@ -188,6 +185,9 @@ const toggleLoading = () => {
       </BtnGroup>
     </div>
   </div>
+  <Heading :level="HeadingLevelEnum.H2"
+    >Group — container owns the chrome</Heading
+  >
   <div class="row">
     <div class="col-12 vt-row" data-test="group-with-label">
       <!-- A group holding a plain label segment as well as buttons, the shape

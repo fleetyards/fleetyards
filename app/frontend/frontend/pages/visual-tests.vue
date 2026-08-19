@@ -19,5 +19,27 @@ const { t } = useI18n();
     >Visual Tests {{ t(`headlines.${route.meta?.title}`) }}</Heading
   >
 
-  <router-view />
+  <div class="visual-tests">
+    <router-view />
+  </div>
 </template>
+
+<style lang="scss" scoped>
+/*
+ * Each page is a stack of titled sections. The app's Heading carries no top
+ * margin — it is used inside panels, where one would be wrong — so the rhythm
+ * between sections belongs to the page that stacks them, not to the heading.
+ */
+.visual-tests :deep(h2) {
+  margin-top: 44px;
+}
+
+.visual-tests :deep(h2:first-child) {
+  margin-top: 0;
+}
+
+/* A section's prose sits under its heading, not adrift between the two. */
+.visual-tests :deep(h2 + p) {
+  margin-bottom: 16px;
+}
+</style>

@@ -90,5 +90,11 @@ const { t } = useI18n();
       icon="fadt fa-tag"
       prefix="12"
     />
+    <NavItem
+      :to="{ name: 'visual-tests-events' }"
+      :label="t('nav.visualTests.events')"
+      icon="fadt fa-calendar-day"
+      prefix="13"
+    />
   </div>
 </template>
