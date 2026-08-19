@@ -202,7 +202,7 @@ const subtitle = computed(() => {
            shadow with nothing to shade. -->
       <PanelHeading
         :level="HeadingLevelEnum.H4"
-        :shadow="hasShipImage ? PanelHeadingShadowEnum.TOP : undefined"
+        :shadow="PanelHeadingShadowEnum.TOP"
       >
         <template #default>
           <span class="ship-title-row">
@@ -338,8 +338,12 @@ const subtitle = computed(() => {
   inset: 0 0 auto;
   height: var(--panel-image-height, 160px);
   display: flex;
-  align-items: center;
+  /* Low in the strip rather than centred: the heading's title and subtitle open
+     at the top of the same 160px, and a listed spot's list ran straight through
+     the question mark. */
+  align-items: flex-end;
   justify-content: center;
+  padding-bottom: 14px;
   background: linear-gradient(
     180deg,
     rgba(60, 70, 90, 0.4) 0%,
@@ -385,14 +389,11 @@ const subtitle = computed(() => {
   user-select: none;
 }
 
+/* Muted reads as secondary on a panel, but the heading never sits on one: it
+   sits on a hull or on the placeholder's art. A listed spot names its ships
+   here, so this is the card's substance rather than an aside. */
 .ship-subtitle {
   font-size: 13px;
-  color: var(--color-muted, #7a8288);
-}
-
-/* Muted reads as secondary on a panel, but as illegible on a photograph — the
-   heading's scrim darkens the hull behind it and this lifts the text off it. */
-.mission-ship-panel:not(.mission-ship-panel--placeholder) .ship-subtitle {
   color: var(--color-lifted, #eee);
 }
 
