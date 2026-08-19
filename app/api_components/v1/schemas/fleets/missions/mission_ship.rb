@@ -17,17 +17,12 @@ module V1
               description: {type: :string},
               position: {type: :integer},
               strict: {type: :boolean},
-              model: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  name: {type: :string},
-                  slug: {type: :string},
-                  minCrew: {type: :integer},
-                  maxCrew: {type: :integer},
-                  image: {"$ref": "#/components/schemas/MediaFile"}
-                },
-                required: %w[id name slug]
+              model: {"$ref": "#/components/schemas/ShipModel"},
+              # The models a spot will take when it names several rather than
+              # one; empty for the other two kinds of spot.
+              allowedModels: {
+                type: :array,
+                items: {"$ref": "#/components/schemas/ShipModel"}
               },
               filters: {
                 type: :object,
@@ -45,7 +40,7 @@ module V1
                 items: {"$ref": "#/components/schemas/MissionSlot"}
               }
             },
-            required: %w[id missionTeamId position strict slots],
+            required: %w[id missionTeamId position strict allowedModels slots],
             additionalProperties: false
           })
         end
