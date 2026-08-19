@@ -304,13 +304,16 @@ const subtitle = computed(() => {
 }
 
 /*
- * A cover gives .panel__inner its height, so the title sits on the image and the
- * body starts below it. Without one the inner collapses to the title's height
- * and the rows underneath ran straight through the placeholder art — so the
- * stand-in reserves the same strip the image would have taken.
+ * With a cover, Panel wraps the default slot in .panel__inner and gives it the
+ * image's height, so the title sits on the photograph and the rows start below
+ * it. Without one there is no inner at all — Panel only adds it for a background
+ * image, an alignment or an inset — so the head kept its natural height and the
+ * rows ran straight through the placeholder art. Reserving the strip on the head
+ * puts the stand-in exactly where a cover would be.
  */
-.mission-ship-panel--placeholder :deep(.panel__inner) {
+.mission-ship-panel--placeholder :deep(.panel-heading) {
   min-height: var(--panel-image-height, 160px);
+  align-items: flex-start;
 }
 
 .ship-placeholder {
