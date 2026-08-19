@@ -302,9 +302,29 @@ const subtitle = computed(() => {
   flex-shrink: 0;
 }
 
+/*
+ * With a cover, Panel wraps the default slot in .panel__inner and gives it the
+ * image's height, so the title sits on the photograph and the rows start below
+ * it. Without one there is no inner at all — Panel only adds it for a background
+ * image, an alignment or an inset — so the head kept its natural height and the
+ * rows ran straight through the placeholder art. Reserving the strip on the head
+ * puts the stand-in exactly where a cover would be.
+ */
+.event-ship-panel--placeholder :deep(.panel-heading) {
+  min-height: var(--panel-image-height, 160px);
+  align-items: flex-start;
+}
+
 .ship-placeholder {
   position: absolute;
-  inset: 0;
+  /*
+   * The cover's strip, not the whole card. inset: 0 stretched the gradient over
+   * the slot rows as a watermark, and since it rounded only its top corners it
+   * ran square past the card's rounded bottom. Same height the background image
+   * occupies, so with or without one the art sits in the same place.
+   */
+  inset: 0 0 auto;
+  height: var(--panel-image-height, 160px);
   display: flex;
   align-items: center;
   justify-content: center;

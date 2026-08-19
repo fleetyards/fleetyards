@@ -14,7 +14,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
-import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import EventSlotList from "@/frontend/components/Fleets/Events/EventSlotList/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipCard from "@/frontend/components/Fleets/Events/EventShipCard/index.vue";
@@ -182,7 +182,7 @@ onUnmounted(() => {
       not a card in its own right. The full frame's 2px edge, 16px radius and
       end-caps made a page of teams read as a stack of competing surfaces.
     -->
-    <PanelHeading :level="HeadingLevelEnum.H3" compact divider>
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       <template #default>
         <span class="event-team-title-row">
           <span

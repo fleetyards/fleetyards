@@ -12,6 +12,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
@@ -440,7 +441,15 @@ const crumbs = computed(() => [
   </BreadCrumbs>
 
   <div v-if="event" class="event-detail">
-    <Panel :bg-image="cover" :tone="statusTone" class="event-detail__hero">
+    <!-- The cover sits at the top with the body under it, so it rounds only
+         its top corners; the default rounds all four and cut a notch out of the
+         image where the two meet. -->
+    <Panel
+      :bg-image="cover"
+      :bg-rounded="PanelRoundedEnum.TOP"
+      :tone="statusTone"
+      class="event-detail__hero"
+    >
       <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
         <template #default>
           {{ event.title }}
