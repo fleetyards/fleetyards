@@ -127,6 +127,7 @@ type StatItem = { label: string; value: string };
 
 const filterStrip = computed<StatItem[]>(() => {
   if (props.ship.model) return [];
+  if (props.ship.allowedModels?.length) return [];
   const f = props.ship.filters;
   if (!f) return [];
   const items: StatItem[] = [];
@@ -164,10 +165,21 @@ const headerTitle = computed(
   () => props.ship.displayTitle ?? props.ship.title ?? "—",
 );
 
+const allowedModels = computed(() => props.ship.allowedModels ?? []);
+
 const subtitle = computed(() => {
   if (props.ship.model?.name && headerTitle.value !== props.ship.model.name) {
     return props.ship.model.name;
   }
+
+  // A listed spot has no single model to name, so the subtitle names the ships it
+  // will take instead — that is the whole content of the spec.
+  if (allowedModels.value.length) {
+    return `${t("labels.fleets.missions.anyOf")} ${allowedModels.value
+      .map((model) => model.name)
+      .join(" · ")}`;
+  }
+
   return null;
 });
 </script>
