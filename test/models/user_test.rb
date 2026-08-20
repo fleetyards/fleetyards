@@ -154,6 +154,49 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  class SupporterTest < UserTest
+    setup do
+      @user = create(:user)
+    end
+
+    test "a live contribution makes the user a supporter" do
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      assert @user.supporter?
+      assert @user.public_supporter?
+    end
+
+    test "an anonymous contribution still earns supporter status but no public badge" do
+      create(:supporter_contribution, :anonymous, user: @user, started_at: Date.current)
+
+      assert @user.supporter?
+      refute @user.public_supporter?
+    end
+
+    test "a contribution that ended before this month counts for neither" do
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: 2.months.ago.to_date)
+
+      refute @user.supporter?
+      refute @user.public_supporter?
+    end
+
+    test "an unlinked contribution belongs to nobody" do
+      create(:supporter_contribution, started_at: Date.current)
+
+      refute @user.supporter?
+    end
+
+    test "destroying the account keeps the contribution and drops the link" do
+      contribution = create(:supporter_contribution, user: @user)
+
+      assert @user.destroy
+
+      assert SupporterContribution.exists?(contribution.id)
+      assert_nil contribution.reload.user_id
+    end
+  end
+
   class UrlValidationTest < UserTest
     setup do
       @user = create(:user)

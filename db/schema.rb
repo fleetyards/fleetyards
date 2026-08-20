@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_20_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1040,9 +1040,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
     t.string "source_currency"
     t.date "started_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id"
     t.index ["patreon_member_id"], name: "index_supporter_contributions_on_patreon_member_id", unique: true, where: "(patreon_member_id IS NOT NULL)"
     t.index ["recurring", "ended_at"], name: "index_supporter_contributions_on_recurring_and_ended_at"
     t.index ["started_at"], name: "index_supporter_contributions_on_started_at"
+    t.index ["user_id"], name: "index_supporter_contributions_on_user_id"
   end
 
   create_table "task_forces", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1253,6 +1255,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
   add_foreign_key "omniauth_connections", "users"
+  add_foreign_key "supporter_contributions", "users"
   add_foreign_key "vehicle_loadout_hardpoints", "components"
   add_foreign_key "vehicle_loadout_hardpoints", "model_hardpoints"
   add_foreign_key "vehicle_loadout_hardpoints", "vehicle_loadouts"
