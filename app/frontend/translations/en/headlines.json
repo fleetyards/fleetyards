@@ -80,7 +80,8 @@
         "supporterContributions": {
           "index": "Supporter Contributions",
           "new": "New Supporter Contribution",
-          "edit": "Edit Supporter Contribution"
+          "edit": "Edit Supporter Contribution",
+          "perMonth": "Contributions per Month"
         },
         "fundingGoals": {
           "index": "Funding Goals",

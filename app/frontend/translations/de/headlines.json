@@ -74,7 +74,8 @@
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",
           "new": "Neuer Beitrag",
-          "edit": "Beitrag bearbeiten"
+          "edit": "Beitrag bearbeiten",
+          "perMonth": "Beiträge pro Monat"
         },
         "fundingGoals": {
           "index": "Finanzierungsziele",

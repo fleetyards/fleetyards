@@ -570,6 +570,10 @@
           "count": "Beiträge",
           "recurringCount": "Wiederkehrend",
           "anonymousCount": "Anonym"
+        },
+        "chart": {
+          "contributions": "Beiträge",
+          "goal": "Ziel"
         }
       },
       "itemPrice": {

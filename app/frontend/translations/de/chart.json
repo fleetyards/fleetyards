@@ -29,6 +29,14 @@
         "visit": {
           "one": "%{label}:<br><b>%{count}</b> Besuch",
           "other": "%{label}:<br><b>%{count}</b> Besuche"
+        },
+        "supporterContribution": {
+          "amount": "Beiträge: <b>%{amount}</b>",
+          "goal": "Ziel: <b>%{amount}</b>",
+          "count": {
+            "one": "<b>%{count}</b> Unterstützer",
+            "other": "<b>%{count}</b> Unterstützer"
+          }
         }
       }
     }
