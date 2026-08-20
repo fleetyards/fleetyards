@@ -8,12 +8,16 @@ export default {
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import SupporterContributionActions from "@/admin/components/SupporterContributions/Actions/index.vue";
 import FilterForm from "@/admin/components/SupporterContributions/FilterForm/index.vue";
 import Stats from "@/admin/components/SupporterContributions/Stats/index.vue";
+import MonthlyChart from "@/admin/components/SupporterContributions/MonthlyChart/index.vue";
 import {
   useSupporterContributions,
   useSupporterContributionsStats,
@@ -202,6 +206,14 @@ const syncFromPatreon = () => {
     </template>
     <template #header>
       <Stats :params="statsQueryParams" />
+      <Panel>
+        <PanelHeading>
+          {{ t("headlines.admin.supporterContributions.perMonth") }}
+        </PanelHeading>
+        <PanelBody>
+          <MonthlyChart :params="statsQueryParams" />
+        </PanelBody>
+      </Panel>
     </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
