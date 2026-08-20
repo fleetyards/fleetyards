@@ -24,6 +24,39 @@
     opacity: 0.7;
   }
 
+  &__thanks {
+    margin-top: 12px;
+
+    &__headline {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &__item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.9rem;
+    }
+
+    &__recurring {
+      font-size: 0.75rem;
+      opacity: 0.6;
+    }
+  }
+
   &--compact {
     .support-progress__header {
       font-size: 1rem;
