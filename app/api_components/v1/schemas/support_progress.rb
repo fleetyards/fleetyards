@@ -46,6 +46,7 @@ module V1
               type: :object,
               properties: {
                 displayName: {type: :string},
+                username: {type: :string},
                 amountCents: {type: :integer},
                 currency: {type: :string},
                 recurring: {type: :boolean}

@@ -15577,6 +15577,8 @@ components:
             properties:
               displayName:
                 type: string
+              username:
+                type: string
               amountCents:
                 type: integer
               currency:
@@ -15834,12 +15836,15 @@ components:
           type: boolean
         publicWishlist:
           type: boolean
+        supporter:
+          type: boolean
       additionalProperties: false
       required:
       - username
       - publicHangarLoaners
       - publicHangarStats
       - publicWishlist
+      - supporter
       title: UserPublic
     UserSortEnum:
       type: string

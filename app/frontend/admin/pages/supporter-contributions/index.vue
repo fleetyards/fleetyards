@@ -102,6 +102,11 @@ const columns: BaseTableCol<SupporterContribution>[] = [
     sortable: false,
   },
   {
+    name: "user",
+    label: "Account",
+    mobile: false,
+  },
+  {
     name: "startedAt",
     label: "Started at",
     sortable: true,
@@ -238,6 +243,15 @@ const syncFromPatreon = () => {
         </template>
         <template #col-amount="{ record }">
           {{ formatCents(record.amountCents, record.currency) }}
+        </template>
+        <template #col-user="{ record }">
+          <router-link
+            v-if="record.user"
+            :to="{ name: 'admin-user-edit', params: { id: record.user.id } }"
+          >
+            {{ record.user.username }}
+          </router-link>
+          <span v-else>—</span>
         </template>
         <template #col-startedAt="{ record }">
           {{ l(record.startedAt, "datetime.formats.short") }}

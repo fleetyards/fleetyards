@@ -5,3 +5,5 @@ POST /images the 'size' response's property type/format changed from 'integer'/'
 PUT /images/{id} the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
 POST /features api removed without deprecation
 DELETE /features/{id} api removed without deprecation
+POST /supporter-contributions removed the required property `details` from the response with the `400` status
+POST /supporter-contributions removed the required property `error` from the response with the `400` status

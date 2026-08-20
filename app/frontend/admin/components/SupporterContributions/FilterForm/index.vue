@@ -10,6 +10,7 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type SupporterContributionQuery } from "@/services/fyAdminApi";
 import { useSupporterContributionFilters } from "@/admin/composables/useSupporterContributionFilters";
@@ -19,6 +20,19 @@ const { booleanOptions } = useFilterOptions();
 
 const { t } = useI18n();
 
+// userIdNull is inverted from the reader's point of view: "linked" means the
+// column is *not* null.
+const linkedOptions = [
+  {
+    label: t("labels.filters.supporterContributions.linkedOnly"),
+    value: "false",
+  },
+  {
+    label: t("labels.filters.supporterContributions.unlinkedOnly"),
+    value: "true",
+  },
+];
+
 const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
@@ -26,6 +40,8 @@ const prefillFormValues = () => {
     anonymousEq: filters.value.anonymousEq,
     startedAtGteq: filters.value.startedAtGteq,
     startedAtLteq: filters.value.startedAtLteq,
+    userIdEq: filters.value.userIdEq,
+    userIdNull: filters.value.userIdNull,
   };
 };
 
@@ -79,6 +95,23 @@ watch(
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="anonymousEq"
+    />
+
+    <UserFilterGroup
+      v-model="form.userIdEq"
+      :label="t('labels.filters.supporterContributions.user')"
+      :no-label="false"
+      :multiple="false"
+      value-attr="id"
+      name="userIdEq"
+    />
+
+    <RadioList
+      v-model="form.userIdNull"
+      :label="t('labels.filters.supporterContributions.linked')"
+      :reset-label="t('labels.all')"
+      :options="linkedOptions"
+      name="userIdNull"
     />
 
     <FormDatePicker

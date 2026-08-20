@@ -4,6 +4,10 @@
       "true": "Ja",
       "false": "Nein",
       "null": "-",
+      "supporter": {
+        "badge": "Unterstützer",
+        "tooltip": "Unterstützt FleetYards.net diesen Monat"
+      },
       "and": "und",
       "hide": "Verbergen",
       "show": "Anzeigen",
@@ -558,6 +562,7 @@
       },
       "supporterContribution": {
         "name": "Unterstützer-Name",
+        "user": "Verknüpftes Konto",
         "amount": "Betrag",
         "currency": "Währung",
         "anonymous": "Anonym",
@@ -995,7 +1000,11 @@
           "recurring": "Wiederkehrend",
           "anonymous": "Anonym",
           "startedAtGteq": "Beginnt ab",
-          "startedAtLteq": "Beginnt bis"
+          "startedAtLteq": "Beginnt bis",
+          "user": "Verknüpftes Konto",
+          "linked": "Konto-Verknüpfung",
+          "linkedOnly": "Verknüpft",
+          "unlinkedOnly": "Nicht verknüpft"
         },
         "images": {
           "station": "Station",

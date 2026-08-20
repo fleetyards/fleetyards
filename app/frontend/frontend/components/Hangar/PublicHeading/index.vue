@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type UserPublic } from "@/services/fyApi";
 
@@ -45,6 +46,16 @@ const props = withDefaults(defineProps<Props>(), {
       <span>
         {{ t(props.headlineKey, { user: usernamePlural }) }}
       </span>
+      <Pill
+        v-if="props.user.supporter"
+        v-tooltip="t('labels.supporter.tooltip')"
+        class="hangar-public-heading__supporter"
+        variant="success"
+        uppercase
+      >
+        <i class="fa-duotone fa-heart" />
+        {{ t("labels.supporter.badge") }}
+      </Pill>
     </div>
   </Heading>
 </template>

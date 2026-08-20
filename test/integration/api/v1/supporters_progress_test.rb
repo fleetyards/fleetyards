@@ -50,6 +50,42 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /supporters/progress attributes a linked contribution to its profile" do
+    user = create(:user, :public_hangar, username: "linkedsupporter")
+    create(:supporter_contribution, name: nil, anonymous: false, user:, amount_cents: 700, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 700 }
+
+      assert_equal "linkedsupporter", entry["displayName"]
+      assert_equal "linkedsupporter", entry["username"]
+    end
+  end
+
+  test "GET /supporters/progress keeps the name but omits the link for a private hangar" do
+    user = create(:user, :private_hangar)
+    create(:supporter_contribution, name: "Dora", user:, amount_cents: 800, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 800 }
+
+      assert_equal "Dora", entry["displayName"]
+      refute entry.key?("username")
+    end
+  end
+
+  test "GET /supporters/progress never links an anonymous contribution" do
+    user = create(:user, :public_hangar)
+    create(:supporter_contribution, :anonymous, name: "Erin", user:, amount_cents: 900, started_at: Date.current)
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 900 }
+
+      assert_equal "Anonymous", entry["displayName"]
+      refute entry.key?("username")
+    end
+  end
+
   test "GET /supporters/progress works without an active goal" do
     assert_api_response :get, 200 do
       assert_nil parsed_body["goal"]

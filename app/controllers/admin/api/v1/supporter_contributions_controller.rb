@@ -18,6 +18,7 @@ module Admin
           q = SupporterContribution.ransack(supporter_contribution_query_params)
 
           @supporter_contributions = q.result(distinct: true)
+            .includes(:user)
             .page(params[:page])
             .per(per_page(SupporterContribution))
         end
@@ -84,7 +85,7 @@ module Admin
         private def supporter_contribution_params
           @supporter_contribution_params ||= params.permit(
             :name, :amount_cents, :currency, :anonymous, :recurring,
-            :started_at, :ended_at, :note
+            :started_at, :ended_at, :note, :user_id
           )
         end
 
@@ -92,6 +93,7 @@ module Admin
           @supporter_contribution_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :recurring_eq, :anonymous_eq, :source_eq,
             :started_at_gteq, :started_at_lteq, :ended_at_gteq, :ended_at_lteq,
+            :user_id_eq, :user_id_null, :user_username_cont,
             :sorts, sorts: []
           ]).fetch(:q, {})
         end

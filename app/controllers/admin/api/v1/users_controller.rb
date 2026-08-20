@@ -83,7 +83,7 @@ module Admin
 
         private def user_query_params
           @user_query_params ||= params.permit(q: [
-            :search_cont, :username_cont, :username_eq, :email_cont, :rsi_handle_cont, :sorts,
+            :id_eq, :search_cont, :username_cont, :username_eq, :email_cont, :rsi_handle_cont, :sorts,
             id_in: [], username_in: [], email_in: [], rsi_handle_in: [], sorts: []
           ]).fetch(:q, {})
         end

@@ -6147,6 +6147,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/SupporterContribution"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '403':
           description: forbidden
           content:
@@ -6159,8 +6165,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Supporter Contributions list
       tags:
@@ -14493,6 +14497,11 @@ components:
           format: date
         note:
           type: string
+        userId:
+          type: string
+          format: uuid
+        user:
+          "$ref": "#/components/schemas/UserOption"
         createdAt:
           type: string
           format: date-time
@@ -14532,6 +14541,11 @@ components:
           format: date
         note:
           type: string
+        userId:
+          type:
+          - string
+          - 'null'
+          format: uuid
       additionalProperties: false
       required:
       - amountCents
@@ -14594,6 +14608,13 @@ components:
         endedAtLteq:
           type: string
           format: date
+        userIdEq:
+          type: string
+          format: uuid
+        userIdNull:
+          type: boolean
+        userUsernameCont:
+          type: string
         sorts:
           anyOf:
           - type: array
@@ -14823,6 +14844,9 @@ components:
       properties:
         searchCont:
           type: string
+        idEq:
+          type: string
+          format: uuid
         usernameCont:
           type: string
         usernameEq:

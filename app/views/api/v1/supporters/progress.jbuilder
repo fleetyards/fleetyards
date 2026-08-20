@@ -22,7 +22,10 @@ json.monthly_total do
 end
 
 json.contributions @contributions do |contribution|
-  json.display_name contribution.anonymous? ? "Anonymous" : contribution.name
+  profile_username = contribution.public_profile_username
+
+  json.display_name contribution.public_name || "Anonymous"
+  json.username profile_username if profile_username.present?
   json.amount_cents contribution.amount_cents
   json.currency contribution.currency
   json.recurring contribution.recurring

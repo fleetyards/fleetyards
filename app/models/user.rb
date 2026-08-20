@@ -138,6 +138,10 @@ class User < ApplicationRecord
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
   has_many :omniauth_connections, dependent: :destroy
 
+  # Nullify, never destroy: a deleted account must not erase the bookkeeping for
+  # money that was actually received.
+  has_many :supporter_contributions, dependent: :nullify
+
   has_many :access_grants,
     class_name: "Oauth::AccessGrant",
     foreign_key: :resource_owner_id,
@@ -194,14 +198,16 @@ class User < ApplicationRecord
     [
       "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
-      "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
+      "id", "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube",
+      "search"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
     [
       "fleet_memberships", "fleets", "manufacturers", "models", "public_models", "public_vehicles",
-      "purchased_vehicles", "vehicle_modules", "vehicle_upgrades", "vehicles", "wanted_vehicles"
+      "purchased_vehicles", "supporter_contributions", "vehicle_modules", "vehicle_upgrades",
+      "vehicles", "wanted_vehicles"
     ]
   end
 
@@ -304,6 +310,18 @@ class User < ApplicationRecord
 
   def placeholder_email?
     email.ends_with?("@users.noreply.fleetyards.net")
+  end
+
+  # Gate perks on this one: it ignores anonymity, so an anonymous supporter keeps
+  # whatever their contribution earns them.
+  def supporter?
+    supporter_contributions.active_now.exists?
+  end
+
+  # Safe to expose: an anonymous contribution must not out its supporter, so the
+  # public badge only reflects the ones cleared for attribution.
+  def public_supporter?
+    supporter_contributions.active_now.where(anonymous: false).exists?
   end
 
   def reset_password(new_password, new_password_confirmation)
