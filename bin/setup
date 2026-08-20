@@ -107,21 +107,21 @@ def link_shared_paths(main_root)
 end
 
 # A worktree owns one slot, and that slot owns the adjacent port pair
-# (base + 2N, base + 2N + 1) and the Redis database (base + N). Deriving all
-# three from a single number is what keeps one worktree's Vite port off another's
-# Rails port, and what stops two worktrees from sharing a Redis database. The
-# port base clears the shared Postgres/Redis containers and the main checkout's
-# own ports, so only worktrees ever compete for this range.
+# (base + 2N, base + 2N + 1) and a band of Redis databases. Deriving all of them
+# from a single number is what keeps one worktree's Vite port off another's Rails
+# port, and what stops two worktrees from sharing a Redis database. The port base
+# clears the shared Postgres/Redis containers and the main checkout's own ports,
+# so only worktrees ever compete for this range.
 PORT_SLOT_BASE = 8300
-PORT_SLOTS = 32
+PORT_SLOTS = 200
 
-# Each checkout owns a band of consecutive Redis databases, one per subsystem —
-# config/redis.yml maps the offsets. The main checkout leaves REDIS_DB unset and
-# takes the first band, so worktrees start after it. The top of the range
+# Each checkout owns a band of consecutive Redis databases; config/redis.yml maps
+# each subsystem to an offset within it. The main checkout leaves REDIS_DB unset
+# and takes the first band, so worktrees start after it. The top of the range
 # (REDIS_DB_BASE + PORT_SLOTS * REDIS_DBS_PER_CHECKOUT) has to stay under the
 # `--databases` docker-compose.yml starts the shared Redis with, or a high slot
 # gets an index Redis rejects at runtime with `ERR DB index is out of range`.
-REDIS_DBS_PER_CHECKOUT = 6
+REDIS_DBS_PER_CHECKOUT = 4
 REDIS_DB_BASE = REDIS_DBS_PER_CHECKOUT
 
 def slot_ports(slot)
