@@ -33,6 +33,32 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/users/:username flags a supporter" do
+    user = create(:user, :public_hangar)
+    create(:supporter_contribution, user:, started_at: Date.current)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal true, parsed_body["supporter"]
+    end
+  end
+
+  test "GET /public/users/:username does not flag an anonymous supporter" do
+    user = create(:user, :public_hangar)
+    create(:supporter_contribution, :anonymous, user:, started_at: Date.current)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal false, parsed_body["supporter"]
+    end
+  end
+
+  test "GET /public/users/:username does not flag a plain user" do
+    user = create(:user, :public_hangar)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal false, parsed_body["supporter"]
+    end
+  end
+
   test "GET /public/users/:username returns 404 when hangar is private" do
     user = create(:user, :private_hangar)
 
