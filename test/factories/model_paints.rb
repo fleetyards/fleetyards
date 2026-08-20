@@ -21,8 +21,17 @@
 #  store_url               :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  component_id            :uuid
 #  model_id                :uuid
 #  rsi_id                  :integer
+#
+# Indexes
+#
+#  index_model_paints_on_component_id  (component_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (component_id => components.id) ON DELETE => nullify
 #
 FactoryBot.define do
   factory :model_paint do

@@ -4,6 +4,7 @@ module ScData
       def all
         items = load_items("items").reject { |item| item["category"] == "inventory" }
         loaded = []
+        carrying_icon = component_ids_carrying_icon
 
         # Pass 1: create/update all components so they exist for cross-references
         items.each do |item|
@@ -69,6 +70,12 @@ module ScData
 
           component.update!(update_params)
 
+          if item["icon"].present?
+            attach_icon(component, :icon, item["icon"])
+          elsif carrying_icon.include?(component.id)
+            component.icon.purge
+          end
+
           loaded << component.id
         end
 
@@ -82,6 +89,30 @@ module ScData
         end
 
         retire_absent(Component, loaded)
+      end
+
+      # A build that stops shipping a paint's swatch has to take the picture
+      # with it. The curated attachments are left alone when the export goes
+      # quiet -- a load cannot tell an admin's upload from its own -- but
+      # nothing except a load ever writes here, so there is no upload to
+      # protect and an icon the current build does not carry would otherwise go
+      # on being served.
+      #
+      # Only for a record that names no icon at all. A path that fails to
+      # resolve is a broken parse rather than a dropped picture, and throwing
+      # the artwork away over one would lose what the export still carries.
+      #
+      # Read in one go up front rather than asked per item: almost none of the
+      # eight thousand components has an icon, so a single query names the
+      # handful that per-item checks would spend eight thousand round trips
+      # finding. Dropping the picture then happens beside the update that
+      # orphaned it, so a pass that dies partway still takes the icons of
+      # everything it got through with it.
+      private def component_ids_carrying_icon
+        ActiveStorage::Attachment
+          .where(record_type: "Component", name: "icon")
+          .pluck(:record_id)
+          .to_set
       end
 
       private def add_loadout(item, component)
