@@ -146,7 +146,7 @@
     "vite-plugin-rails": "0.6.0",
     "vitest": "4.1.10",
     "vue-component-type-helpers": "^3.3.9",
-    "vue-tsc": "3.3.9",
+    "vue-tsc": "3.3.10",
     "workbox-build": "^7.4.1",
     "workbox-window": "^7.4.1"
   },
