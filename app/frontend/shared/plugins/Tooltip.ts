@@ -39,6 +39,7 @@ function setContent(el: HTMLElement, options: TooltipOptions) {
 }
 
 const ARROW_SIZE = 6;
+const FADE_DURATION = 150;
 
 function createTooltipEl(options: TooltipOptions): HTMLElement {
   const el = document.createElement("div");
@@ -55,7 +56,8 @@ function createTooltipEl(options: TooltipOptions): HTMLElement {
     "line-height:1.4",
     "white-space:nowrap",
     "opacity:0",
-    "transition:opacity .15s ease",
+    "display:none",
+    `transition:opacity ${FADE_DURATION}ms ease`,
   ].join(";");
   setContent(el, options);
 
@@ -161,6 +163,8 @@ function positionTooltip(
   tooltip.style.left = `${left}px`;
 
   positionArrow(tooltip, placement);
+
+  return rect;
 }
 
 interface TooltipState {
@@ -168,30 +172,107 @@ interface TooltipState {
   options: TooltipOptions;
   showHandler: () => void;
   hideHandler: () => void;
-  scrollHandler: () => void;
-  scrollParents: EventTarget[];
+  focusHandler: () => void;
+  fadeFrame: number;
+  hideTimer: number;
+  anchorRect: DOMRect | null;
 }
 
 const stateMap = new WeakMap<HTMLElement, TooltipState>();
 
-function getScrollParents(el: HTMLElement): EventTarget[] {
-  const parents: EventTarget[] = [window];
-  let current: HTMLElement | null = el.parentElement;
+// Only one tooltip is ever on screen, so a single anchor watcher and one set of
+// global listeners cover whichever is currently up.
+let activeEl: HTMLElement | null = null;
+let watchFrame = 0;
 
-  while (current) {
-    const { overflow, overflowX, overflowY } = getComputedStyle(current);
-    if (/(auto|scroll|overlay)/.test(overflow + overflowX + overflowY)) {
-      parents.push(current);
+function anchorMoved(previous: DOMRect, next: DOMRect) {
+  return (
+    Math.abs(next.top - previous.top) > 0.5 ||
+    Math.abs(next.left - previous.left) > 0.5 ||
+    Math.abs(next.width - previous.width) > 0.5 ||
+    Math.abs(next.height - previous.height) > 0.5
+  );
+}
+
+// A tooltip is only ever correct for the anchor's current box. Scrolling and
+// reflow move that box, and an anchor can be hidden or torn down outside Vue
+// without ever firing a leave event — in which case the tooltip would be left
+// hanging in mid-air.
+function watchAnchor() {
+  watchFrame = requestAnimationFrame(() => {
+    watchFrame = 0;
+
+    const el = activeEl;
+    if (!el) return;
+
+    const state = stateMap.get(el);
+    if (!state?.tooltipEl || !state.anchorRect) return;
+
+    const rect = el.getBoundingClientRect();
+    if (!el.isConnected || (!rect.width && !rect.height)) {
+      hide(el);
+      return;
     }
-    current = current.parentElement;
+
+    if (anchorMoved(state.anchorRect, rect)) {
+      state.anchorRect = positionTooltip(
+        el,
+        state.tooltipEl,
+        state.options.placement,
+      );
+    }
+
+    watchAnchor();
+  });
+}
+
+function onPointerOver(event: Event) {
+  const el = activeEl;
+  if (!el) return;
+
+  const target = event.target as Node | null;
+  if (target && (el === target || el.contains(target))) return;
+
+  hide(el);
+}
+
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === "Escape" && activeEl) hide(activeEl);
+}
+
+function onWindowHide() {
+  if (activeEl) hide(activeEl);
+}
+
+function addGlobalListeners() {
+  document.addEventListener("pointerover", onPointerOver, true);
+  document.addEventListener("keydown", onKeydown, true);
+  document.addEventListener("visibilitychange", onWindowHide);
+  window.addEventListener("blur", onWindowHide);
+}
+
+function removeGlobalListeners() {
+  document.removeEventListener("pointerover", onPointerOver, true);
+  document.removeEventListener("keydown", onKeydown, true);
+  document.removeEventListener("visibilitychange", onWindowHide);
+  window.removeEventListener("blur", onWindowHide);
+}
+
+function deactivate() {
+  if (watchFrame) {
+    cancelAnimationFrame(watchFrame);
+    watchFrame = 0;
   }
 
-  return parents;
+  activeEl = null;
+  removeGlobalListeners();
 }
 
 function show(el: HTMLElement) {
   const state = stateMap.get(el);
-  if (!state || !state.options.content) return;
+  if (!state || !state.options.content || !el.isConnected) return;
+
+  if (activeEl && activeEl !== el) hide(activeEl);
 
   if (!state.tooltipEl) {
     state.tooltipEl = createTooltipEl(state.options);
@@ -204,56 +285,86 @@ function show(el: HTMLElement) {
   setContent(tip, state.options);
   if (arrow) tip.appendChild(arrow);
 
+  window.clearTimeout(state.hideTimer);
+
   // Measure at 0 opacity
   tip.style.opacity = "0";
   tip.style.display = "block";
 
-  positionTooltip(el, tip, state.options.placement);
+  state.anchorRect = positionTooltip(el, tip, state.options.placement);
+
+  activeEl = el;
+  addGlobalListeners();
 
   // Fade in
-  requestAnimationFrame(() => {
+  if (state.fadeFrame) cancelAnimationFrame(state.fadeFrame);
+  state.fadeFrame = requestAnimationFrame(() => {
+    state.fadeFrame = 0;
+    // A hide within the same frame must win, otherwise the tooltip fades back
+    // in with nothing left to dismiss it.
+    if (activeEl !== el) return;
     tip.style.opacity = "1";
   });
 
-  state.scrollParents = getScrollParents(el);
-  for (const parent of state.scrollParents) {
-    parent.addEventListener("scroll", state.scrollHandler, { passive: true });
-  }
+  if (!watchFrame) watchAnchor();
 }
 
 function hide(el: HTMLElement) {
+  if (activeEl === el) deactivate();
+
   const state = stateMap.get(el);
   if (!state?.tooltipEl) return;
 
-  state.tooltipEl.style.opacity = "0";
-
-  for (const parent of state.scrollParents) {
-    parent.removeEventListener("scroll", state.scrollHandler);
+  if (state.fadeFrame) {
+    cancelAnimationFrame(state.fadeFrame);
+    state.fadeFrame = 0;
   }
-  state.scrollParents = [];
+
+  const tip = state.tooltipEl;
+  tip.style.opacity = "0";
+  state.anchorRect = null;
+
+  window.clearTimeout(state.hideTimer);
+  state.hideTimer = window.setTimeout(() => {
+    tip.style.display = "none";
+  }, FADE_DURATION);
 }
 
 function cleanup(el: HTMLElement) {
   const state = stateMap.get(el);
   if (!state) return;
 
+  if (activeEl === el) deactivate();
+
   el.removeEventListener("mouseenter", state.showHandler);
   el.removeEventListener("mouseleave", state.hideHandler);
   el.removeEventListener("pointerleave", state.hideHandler);
   el.removeEventListener("click", state.hideHandler);
-  el.removeEventListener("focus", state.showHandler);
+  el.removeEventListener("focus", state.focusHandler);
   el.removeEventListener("blur", state.hideHandler);
 
-  for (const parent of state.scrollParents) {
-    parent.removeEventListener("scroll", state.scrollHandler);
-  }
+  if (state.fadeFrame) cancelAnimationFrame(state.fadeFrame);
+  window.clearTimeout(state.hideTimer);
 
   state.tooltipEl?.remove();
   stateMap.delete(el);
 }
 
+// Pointer focus already gets the tooltip from `mouseenter`; showing it on every
+// focus also pops one up when focus is restored after a modal closes, far away
+// from the cursor.
+function isKeyboardFocus(el: HTMLElement) {
+  try {
+    return el.matches(":focus-visible");
+  } catch {
+    return true;
+  }
+}
+
 const vTooltip: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
+    cleanup(el);
+
     const options = parseBinding(binding);
 
     const state: TooltipState = {
@@ -261,8 +372,12 @@ const vTooltip: Directive = {
       options,
       showHandler: () => show(el),
       hideHandler: () => hide(el),
-      scrollHandler: () => hide(el),
-      scrollParents: [],
+      focusHandler: () => {
+        if (isKeyboardFocus(el)) show(el);
+      },
+      fadeFrame: 0,
+      hideTimer: 0,
+      anchorRect: null,
     };
 
     stateMap.set(el, state);
@@ -271,7 +386,7 @@ const vTooltip: Directive = {
     el.addEventListener("mouseleave", state.hideHandler);
     el.addEventListener("pointerleave", state.hideHandler);
     el.addEventListener("click", state.hideHandler);
-    el.addEventListener("focus", state.showHandler);
+    el.addEventListener("focus", state.focusHandler);
     el.addEventListener("blur", state.hideHandler);
   },
 
