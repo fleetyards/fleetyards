@@ -20,6 +20,8 @@ module Admin
             startedAt: {type: :string, format: :date},
             endedAt: {type: :string, format: :date},
             note: {type: :string},
+            userId: {type: :string, format: :uuid},
+            user: {"$ref": "#/components/schemas/UserOption"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

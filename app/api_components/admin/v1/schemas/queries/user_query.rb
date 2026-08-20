@@ -11,6 +11,7 @@ module Admin
             type: :object,
             properties: {
               searchCont: {type: :string},
+              idEq: {type: :string, format: :uuid},
               usernameCont: {type: :string},
               usernameEq: {type: :string},
               emailCont: {type: :string},
