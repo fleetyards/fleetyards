@@ -92,10 +92,11 @@ Rails.application.configure do
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # Use Redis for caching (DB 1 to isolate from sessions/Sidekiq/Action Cable on DB 0)
+  # Use Redis for caching on its own database, isolated from sessions, Sidekiq
+  # and Action Cable — see config/redis.yml for the full band layout.
   config.cache_store = :redis_cache_store, {
     url: Rails.configuration.redis.url,
-    db: 1,
+    db: Rails.configuration.redis.cache_db,
     namespace: "fleetyards-#{Rails.env}",
     expires_in: 1.day
   }

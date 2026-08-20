@@ -4,7 +4,7 @@ require "sidekiq/web"
 require "sidekiq-scheduler/web"
 require "sidekiq-failures"
 
-sidekiq_config = {url: Rails.configuration.redis.url, db: Rails.configuration.redis.db}
+sidekiq_config = {url: Rails.configuration.redis.url, db: Rails.configuration.redis.sidekiq_db}
 
 Sidekiq.configure_server do |config|
   config.redis = sidekiq_config

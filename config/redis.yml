@@ -1,3 +1,19 @@
+<% base = (ENV["REDIS_DB"] || 0).to_i %>
+# Each checkout owns a contiguous band of Redis databases starting at REDIS_DB,
+# and every subsystem takes a fixed offset within it. One index per subsystem
+# rather than one shared index, so a keyspace-wide operation on one — a cache
+# clear, a flush — cannot reach another's data. bin/setup hands each worktree a
+# band of its own (see PORT_SLOTS / REDIS_DBS_PER_CHECKOUT there); the main
+# checkout leaves REDIS_DB unset and takes the first band.
+#
+# Offsets are append-only: renumbering one migrates live data, and moving the
+# session index logs every user out.
 shared:
-  url: <%= ENV["REDIS_URL"] || 'redis://localhost:8272' %>
-  db: <%= ENV["REDIS_DB"] || 0 %>
+  url: <%= ENV["REDIS_URL"] || "redis://localhost:8272" %>
+  db: <%= base %>
+  sidekiq_db: <%= base %>
+  cache_db: <%= base + 1 %>
+  session_db: <%= base + 2 %>
+  rack_attack_db: <%= base + 3 %>
+  cable_db: <%= base + 4 %>
+  api_usage_db: <%= base + 5 %>

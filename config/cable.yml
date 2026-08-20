@@ -1,7 +1,12 @@
 production: &default
   adapter: redis
   url: <%= Rails.configuration.redis.url %>
-  channel_prefix: fleetyards_<%= Rails.env %>
+  # Scopes keyed data written over this connection, such as presence sets.
+  db: <%= Rails.configuration.redis.cable_db %>
+  # Broadcasts need the prefix as well: PUBLISH/SUBSCRIBE are server-wide rather
+  # than per-database, so `db` alone would still let worktrees receive each
+  # other's messages.
+  channel_prefix: fleetyards_<%= Rails.env %><%= ENV["WORKTREE_SUFFIX"] %>
 
 staging:
   <<: *default
