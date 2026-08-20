@@ -101,6 +101,23 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A vector has no representations to build, and a client that asks for a size
+  # is every panel in the frontend -- they draw `smallUrl`, so leaving the sized
+  # URLs out drops the icon back to the placeholder it used to fall through to.
+  test "GET /commodities offers a vector icon at every size" do
+    create(:commodity, :with_vector_store_image, name: "Aluminium")
+
+    assert_api_response :get, 200 do
+      image = parsed_body["items"].find { |item| item["name"] == "Aluminium" }["storeImage"]
+
+      assert_equal "image/svg+xml", image["contentType"]
+      assert_equal(
+        [image["url"]] * 4,
+        image.values_at("smallUrl", "mediumUrl", "largeUrl", "xlargeUrl")
+      )
+    end
+  end
+
   test "GET /commodities carries empty availability for an unpriced commodity" do
     assert_api_response :get, 200 do
       waste = parsed_body["items"].find { |item| item["name"] == "Waste" }

@@ -6,8 +6,6 @@ require "tmpdir"
 module ScData
   module Parser
     class BaseParserTest < ActiveSupport::TestCase
-      # Sized, because rsvg-convert cannot render a vector that declares no
-      # dimensions and no viewBox.
       VECTOR = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><rect width='16' height='16'/></svg>"
 
       setup do
@@ -79,19 +77,15 @@ module ScData
         assert_equal File.binread(source), File.binread(target)
       end
 
-      # ActiveStorage will neither serve a vector inline nor variant one, so a
-      # record that kept its .svg would end up with a blob no browser draws.
-      test "#save_icon rasterizes a vector icon" do
-        write_asset("ui/logos/acme.svg", VECTOR)
+      # A vector is carried over as it is: it draws at whatever size a panel
+      # asks for, and rasterizing here would fix it at one.
+      test "#save_icon copies a vector icon unchanged" do
+        source = write_asset("ui/logos/acme.svg", VECTOR)
 
         target = @parser.send(:save_icon, "ui/logos/acme.svg")
 
-        assert_equal "#{@export_path}/icons/ui/logos/acme.png", target
-        assert_equal "\x89PNG".b, File.binread(target, 4)
-
-        # The IHDR width, which follows the 8-byte signature and the chunk's own
-        # length and type.
-        assert_equal ::ScData::Parser::BaseParser::RASTER_WIDTH, File.binread(target, 4, 16).unpack1("N")
+        assert_equal "#{@export_path}/icons/ui/logos/acme.svg", target
+        assert_equal File.binread(source), File.binread(target)
       end
 
       # Every catalogue writes into the same icons root, so sweeping that root
@@ -108,8 +102,8 @@ module ScData
           base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
         ).send(:save_icon, "ui/items/widget.svg")
 
-        assert_path_exists "#{@export_path}/icons/ui/logos/acme.png"
-        assert_path_exists "#{@export_path}/icons/ui/items/widget.png"
+        assert_path_exists "#{@export_path}/icons/ui/logos/acme.svg"
+        assert_path_exists "#{@export_path}/icons/ui/items/widget.svg"
       end
 
       test "#save_icon drops an icon its own folder no longer names" do
@@ -119,7 +113,7 @@ module ScData
 
         @parser.send(:save_icon, "ui/logos/acme.svg")
 
-        assert_equal ["acme.png"], Dir.children("#{@export_path}/icons/ui/logos")
+        assert_equal ["acme.svg"], Dir.children("#{@export_path}/icons/ui/logos")
       end
 
       test "#save_icon writes nothing when the export carries no such asset" do

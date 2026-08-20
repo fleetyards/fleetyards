@@ -110,6 +110,7 @@ class Fleet < ApplicationRecord
 
   has_one_attached :logo
   has_one_attached :background_image
+  validates :logo, :background_image, no_vector_image: true
 
   accepts_nested_attributes_for :fleet_memberships
 

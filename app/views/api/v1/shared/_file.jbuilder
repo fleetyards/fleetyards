@@ -14,6 +14,14 @@ if record.try(attr) && record.send(attr).attached?
     json.medium_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]))
     json.large_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:large]))
     json.xlarge_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:xlarge]))
+  elsif ActiveStorageVariants::VECTOR_CONTENT_TYPES.include?(file.content_type)
+    # A vector has no representations, but every caller asks for a size --
+    # `smallUrl` is what the panels draw -- and for this one file all four
+    # sizes are the same picture.
+    json.small_url rails_blob_url(file)
+    json.medium_url rails_blob_url(file)
+    json.large_url rails_blob_url(file)
+    json.xlarge_url rails_blob_url(file)
   end
   json.width file.metadata[:width]
   json.height file.metadata[:height]

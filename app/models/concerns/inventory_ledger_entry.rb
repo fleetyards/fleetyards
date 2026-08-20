@@ -53,6 +53,7 @@ module InventoryLedgerEntry
     enum :entry_type, ENTRY_TYPES
 
     validates :name, presence: true
+    validates :image, no_vector_image: true
     validates :quantity, numericality: {greater_than: 0}
     validates :quality, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000}, allow_nil: true
     validates :item_type, inclusion: {in: ITEM_TYPES}, allow_blank: true
