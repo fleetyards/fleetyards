@@ -14,6 +14,8 @@ import {
 import { useForm } from "vee-validate";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
+import ViewsFolderUpload from "@/admin/components/Models/ViewsFolderUpload/index.vue";
+import { type ViewField } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 
 type Props = {
@@ -45,9 +47,25 @@ const initialValues = ref<ModelUpdateInput>({
   extendedAngledViewColored: undefined,
 });
 
-const { defineField, handleSubmit, meta } = useForm<ModelUpdateInput>({
-  initialValues: initialValues.value,
-});
+const { defineField, handleSubmit, meta, setFieldValue } =
+  useForm<ModelUpdateInput>({
+    initialValues: initialValues.value,
+  });
+
+// Kept for as long as the page lives. A save refetches the model, but the trim
+// that follows replaces the blob and purges the one that refetch named, so the
+// local file is the picture that stays true.
+const previews = ref<Partial<Record<ViewField, string>>>({});
+
+const onFolderSelected = (views: Partial<Record<ViewField, string>>) => {
+  previews.value = views;
+};
+
+const onFolderMapped = (views: Partial<Record<ViewField, string>>) => {
+  Object.entries(views).forEach(([field, signedId]) => {
+    setFieldValue(field as ViewField, signedId);
+  });
+};
 
 const [holo, holoProps] = defineField("holo");
 const [extendedHolo, extendedHoloProps] = defineField("extendedHolo");
@@ -85,6 +103,10 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
   <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
+    <ViewsFolderUpload @selected="onFolderSelected" @mapped="onFolderMapped" />
+
+    <hr />
+
     <div class="row">
       <div class="col-12 col-md-6">
         <FormFileInput
@@ -121,6 +143,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           v-bind="topViewProps"
           :allowed-types="AllowedFileTypes.IMAGE"
           name="topView"
+          :preview-src="previews.topView"
           transparent
           clearable
         />
@@ -133,6 +156,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="sideViewProps"
           name="sideView"
+          :preview-src="previews.sideView"
           transparent
           clearable
         />
@@ -145,6 +169,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="frontViewProps"
           name="frontView"
+          :preview-src="previews.frontView"
           transparent
           clearable
         />
@@ -157,6 +182,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="angledViewProps"
           name="angledView"
+          :preview-src="previews.angledView"
           transparent
           clearable
         />
@@ -172,6 +198,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="topViewColoredProps"
           name="topViewColored"
+          :preview-src="previews.topViewColored"
           transparent
           clearable
         />
@@ -184,6 +211,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="sideViewColoredProps"
           name="sideViewColored"
+          :preview-src="previews.sideViewColored"
           transparent
           clearable
         />
@@ -196,6 +224,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="frontViewColoredProps"
           name="frontViewColored"
+          :preview-src="previews.frontViewColored"
           transparent
           clearable
         />
@@ -208,6 +237,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="angledViewColoredProps"
           name="angledViewColored"
+          :preview-src="previews.angledViewColored"
           transparent
           clearable
         />
@@ -225,6 +255,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           v-bind="extendedTopViewProps"
           :allowed-types="AllowedFileTypes.IMAGE"
           name="extendedTopView"
+          :preview-src="previews.extendedTopView"
           transparent
           clearable
         />
@@ -237,6 +268,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedSideViewProps"
           name="extendedSideView"
+          :preview-src="previews.extendedSideView"
           transparent
           clearable
         />
@@ -249,6 +281,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedFrontViewProps"
           name="extendedFrontView"
+          :preview-src="previews.extendedFrontView"
           transparent
           clearable
         />
@@ -261,6 +294,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedAngledViewProps"
           name="extendedAngledView"
+          :preview-src="previews.extendedAngledView"
           transparent
           clearable
         />
@@ -276,6 +310,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedTopViewColoredProps"
           name="extendedTopViewColored"
+          :preview-src="previews.extendedTopViewColored"
           transparent
           clearable
         />
@@ -288,6 +323,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedSideViewColoredProps"
           name="extendedSideViewColored"
+          :preview-src="previews.extendedSideViewColored"
           transparent
           clearable
         />
@@ -300,6 +336,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedFrontViewColoredProps"
           name="extendedFrontViewColored"
+          :preview-src="previews.extendedFrontViewColored"
           transparent
           clearable
         />
@@ -312,6 +349,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="extendedAngledViewColoredProps"
           name="extendedAngledViewColored"
+          :preview-src="previews.extendedAngledViewColored"
           transparent
           clearable
         />

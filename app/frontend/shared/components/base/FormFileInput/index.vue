@@ -25,6 +25,7 @@ type Props = {
   file?: MediaFile;
   icon?: string;
   modelValue?: string | null;
+  previewSrc?: string;
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -52,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   file: undefined,
   icon: undefined,
   modelValue: undefined,
+  previewSrc: undefined,
   translationKey: undefined,
   autofocus: false,
   autocomplete: undefined,
@@ -264,9 +266,18 @@ defineExpose({
       </label>
     </transition>
     <div class="base-image-input__wrapper">
-      <template v-if="!inputValue">
+      <template v-if="!inputValue || previewSrc">
+        <!-- A value set from outside brings its own picture: the upload that
+             filled it happened elsewhere, so this input has none to show. -->
         <LazyImage
-          v-if="(isImage || isPdf) && internalSrc"
+          v-if="previewSrc"
+          v-tooltip.right="hasErrors && errorMessage"
+          :src="previewSrc"
+          :transparent="transparent || avatar"
+          :shadow="!transparent && !avatar"
+        />
+        <LazyImage
+          v-else-if="(isImage || isPdf) && internalSrc"
           v-tooltip.right="hasErrors && errorMessage"
           :src="internalSrc"
           :transparent="transparent || avatar"

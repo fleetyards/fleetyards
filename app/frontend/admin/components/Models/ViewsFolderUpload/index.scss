@@ -1,0 +1,34 @@
+.views-folder-upload {
+  margin-bottom: 30px;
+}
+
+.views-folder-upload__hint,
+.views-folder-upload__ignored {
+  color: $gray-lighter;
+  font-size: 0.9rem;
+}
+
+.views-folder-upload__summary {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+
+.views-folder-upload__matched {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 5px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.views-folder-upload__filename {
+  color: $gray-lighter;
+  font-size: 0.85rem;
+}
