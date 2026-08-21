@@ -74,6 +74,17 @@ const hasFilterSlot = computed(() => {
   return !!slots.filter;
 });
 
+// A list that brings no filter, no actions and no pagination has an empty
+// toolbar, and an empty toolbar is still 20px of margin between the page and
+// the records.
+const hasActions = computed(
+  () =>
+    hasFilterSlot.value ||
+    !!slots["actions-left"] ||
+    !!slots["actions-right"] ||
+    !!slots["pagination-top"],
+);
+
 const { t } = useI18n();
 
 const filterTooltip = computed(() => {
@@ -177,7 +188,7 @@ const toggleFilter = () => {
         <div class="col-12 filtered-list__header">
           <slot name="header" />
         </div>
-        <div class="col-12 filtered-list__actions">
+        <div v-if="hasActions" class="col-12 filtered-list__actions">
           <div class="filtered-list__actions-left">
             <Btn
               v-if="hasFilterSlot"

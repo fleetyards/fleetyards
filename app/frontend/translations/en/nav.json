@@ -47,16 +47,6 @@
         "logistics": {
           "index": "Logistics"
         },
-        "settings": {
-          "index": "Settings",
-          "fleet": "Fleet Settings",
-          "membership": "Membership Settings",
-          "roles": "Roles",
-          "features": "Features",
-          "notifications": "Notifications",
-          "discord": "Discord",
-          "calendar": "Calendar"
-        },
         "missions": {
           "index": "Missions",
           "edit": {
@@ -73,6 +63,16 @@
             "description": "Description",
             "teams": "Teams & slots"
           }
+        },
+        "settings": {
+          "index": "Settings",
+          "fleet": "Fleet Settings",
+          "membership": "Membership Settings",
+          "roles": "Roles",
+          "notifications": "Notifications",
+          "discord": "Discord",
+          "calendar": "Calendar",
+          "features": "Features"
         }
       },
       "rsiProfile": "RSI Profile",
@@ -99,19 +99,20 @@
         "account": "Account",
         "security": "Security",
         "notifications": "Notifications",
+        "calendar": "Calendar",
         "hangar": "Hangar",
         "privacy": "Privacy",
         "features": "Features",
         "connections": "Connections",
         "oauthApplications": "OAuth Apps",
-        "verify": "RSI Account Verification",
-        "calendar": "Calendar"
+        "verify": "RSI Account Verification"
       },
       "reload": "Update available!",
       "visualTests": {
         "index": "Visual Tests",
         "panels": "Panels",
         "buttons": "Buttons",
+        "events": "Events",
         "typography": "Typography",
         "forms": "Forms",
         "tables": "Tables",
@@ -121,8 +122,7 @@
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
         "supportHint": "Support Hint",
-        "chips": "Chips",
-        "events": "Events"
+        "chips": "Chips"
       },
       "admin": {
         "index": "Admin",

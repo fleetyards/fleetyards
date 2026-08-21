@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require_relative "../support/hangar_import_fixtures"
+require "support/hangar_import_fixtures"
 
 class HangarSyncTest < ActiveSupport::TestCase
   include HangarImportFixtures

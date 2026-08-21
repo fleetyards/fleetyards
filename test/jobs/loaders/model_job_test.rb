@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require_relative "../../support/import_wrapping_job_tests"
+require "support/import_wrapping_job_tests"
 
 module Loaders
   class ModelJobTest < ActiveJob::TestCase

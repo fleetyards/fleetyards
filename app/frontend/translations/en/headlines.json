@@ -225,11 +225,11 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Fleet Roles",
-          "features": "Fleet Features",
           "notifications": "Notification Settings",
           "inAppNotifications": "In-app Notifications",
           "discord": "Discord",
-          "calendar": "Calendar"
+          "calendar": "Calendar",
+          "features": "Fleet Features"
         },
         "inviteMember": "Invite new Member",
         "calendarSubscription": "Calendar Subscription",
@@ -344,6 +344,8 @@
         "overview": "Overview",
         "panels": "Panels",
         "buttons": "Buttons",
+        "chips": "Visual Tests Chips",
+        "events": "Events",
         "typography": "Typography",
         "forms": "Forms",
         "tables": "Tables",
@@ -352,8 +354,7 @@
         "states": "States",
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
-        "supportHint": "Support Hint",
-        "events": "Events"
+        "supportHint": "Support Hint"
       },
       "logistics": {
         "index": "Logistics",

@@ -183,7 +183,7 @@ const handleCancel = async () => {
         <FormInput
           v-model="discord"
           v-bind="discordProps"
-          translation-key="fleet.discord"
+          translation-key="fleet.discord.url"
           name="discord"
         />
         <FormInput
