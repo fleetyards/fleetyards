@@ -4,31 +4,34 @@
 #
 # Table name: fleets
 #
-#  id                 :uuid             not null, primary key
-#  created_by         :uuid
-#  description        :text
-#  discarded_at       :datetime
-#  discord            :string
-#  fid                :string
-#  guilded            :string
-#  homepage           :string
-#  name               :string
-#  normalized_fid     :string
-#  public_fleet       :boolean          default(FALSE)
-#  public_fleet_stats :boolean          default(FALSE)
-#  rsi_sid            :string
-#  sid                :string
-#  slug               :string
-#  ts                 :string
-#  twitch             :string
-#  youtube            :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                  :uuid             not null, primary key
+#  calendar_feed_token :string
+#  created_by          :uuid
+#  default_timezone    :string           default("UTC"), not null
+#  description         :text
+#  discarded_at        :datetime
+#  discord             :string
+#  fid                 :string
+#  guilded             :string
+#  homepage            :string
+#  name                :string
+#  normalized_fid      :string
+#  public_fleet        :boolean          default(FALSE)
+#  public_fleet_stats  :boolean          default(FALSE)
+#  rsi_sid             :string
+#  sid                 :string
+#  slug                :string
+#  ts                  :string
+#  twitch              :string
+#  youtube             :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 # Indexes
 #
-#  index_fleets_on_discarded_at  (discarded_at)
-#  index_fleets_on_fid           (fid) UNIQUE WHERE (discarded_at IS NULL)
+#  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
+#  index_fleets_on_discarded_at         (discarded_at)
+#  index_fleets_on_fid                  (fid) UNIQUE WHERE (discarded_at IS NULL)
 #
 class Fleet < ApplicationRecord
   include Discard::Model
@@ -64,6 +67,7 @@ class Fleet < ApplicationRecord
   has_many :fleet_invite_urls,
     dependent: :destroy
   has_many :fleet_inventories, dependent: :destroy
+  has_many :missions, dependent: :destroy
   has_many :fleet_vehicles, dependent: :destroy
   has_many :vehicles, through: :fleet_vehicles, source: :vehicle
   has_many :models, through: :vehicles, source: :model

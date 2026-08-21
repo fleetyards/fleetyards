@@ -52,6 +52,17 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     delete "stock/:slug", to: "fleet_inventory_stock#destroy"
   end
 
+  resources :missions, param: :slug, only: %i[index show create update destroy] do
+    put :unarchive, on: :member
+    resources :mission_teams, path: "teams", only: %i[create update destroy] do
+      put :sort, on: :collection
+      resources :mission_ships, path: "ships", only: %i[create update destroy] do
+        put :sort, on: :collection
+        post :duplicate, on: :member
+      end
+    end
+  end
+
   resource :fleet_stats, path: "stats", only: %i[] do
     get "model-counts", to: "fleet_stats#model_counts"
     get "vehicles", to: "fleet_stats#vehicles"
