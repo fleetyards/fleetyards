@@ -33,6 +33,12 @@ class ModelModulePackage < ApplicationRecord
   has_one_attached :front_view
   has_one_attached :angled_view
 
+  # A fleetchart item takes each viewpoint from the first of paint, package and
+  # model that has one, and scales all of them against the largest. Leaving the
+  # package views padded would skew that comparison for every ship carrying a
+  # package. See Model.
+  trim_attachment :top_view, :side_view, :front_view, :angled_view
+
   accepts_nested_attributes_for :module_package_items, allow_destroy: true
 
   ALLOWED_SORTING_PARAMS = [

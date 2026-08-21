@@ -58,6 +58,10 @@ class ModelPaint < ApplicationRecord
   has_one_attached :front_view
   has_one_attached :angled_view
 
+  # A painted ship is drawn on the fleetchart from its own views, on the same
+  # terms as the model's. See Model.
+  trim_attachment :top_view, :side_view, :front_view, :angled_view
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "created_at",

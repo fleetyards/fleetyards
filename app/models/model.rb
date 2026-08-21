@@ -250,6 +250,16 @@ class Model < ApplicationRecord
   has_one_attached :extended_front_view_colored
   has_one_attached :extended_angled_view_colored
 
+  # The fleetchart sizes a ship from the pixel dimensions of the view it draws,
+  # so transparent padding around the hull reads as part of the ship. The store
+  # images are left alone: they are framed artwork, not measured against
+  # anything. See AttachmentTrimmer.
+  trim_attachment :top_view, :side_view, :front_view, :angled_view,
+    :top_view_colored, :side_view_colored, :front_view_colored, :angled_view_colored,
+    :extended_top_view, :extended_side_view, :extended_front_view, :extended_angled_view,
+    :extended_top_view_colored, :extended_side_view_colored,
+    :extended_front_view_colored, :extended_angled_view_colored
+
   before_save :update_slugs
 
   before_save :update_from_hardpoints
