@@ -19,15 +19,24 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  patreon_member_id   :string
+#  user_id             :uuid
 #
 # Indexes
 #
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
 #  index_supporter_contributions_on_recurring_and_ended_at  (recurring,ended_at)
 #  index_supporter_contributions_on_started_at              (started_at)
+#  index_supporter_contributions_on_user_id                 (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 class SupporterContribution < ApplicationRecord
   paginates_per 30
+
+  # Touch so a linked account's cached public profile picks the badge up.
+  belongs_to :user, optional: true, touch: true
 
   DEFAULT_SORTING_PARAMS = "started_at desc"
   ALLOWED_SORTING_PARAMS = [
@@ -43,9 +52,12 @@ class SupporterContribution < ApplicationRecord
   validates :amount_cents, presence: true, numericality: {greater_than: 0, only_integer: true}
   validates :currency, presence: true
   validates :started_at, presence: true
+  validates :user, presence: true, if: :user_id?
   validate :ended_at_after_started_at
 
   before_validation :force_anonymous_when_name_blank
+
+  scope :active_now, ->(date = Date.current) { active_in(date.beginning_of_month, date.end_of_month) }
 
   scope :active_in, ->(month_start, month_end) {
     where(
@@ -60,18 +72,16 @@ class SupporterContribution < ApplicationRecord
     [
       "name", "amount_cents", "currency", "anonymous", "recurring",
       "started_at", "ended_at", "note", "source", "patreon_member_id",
-      "created_at", "updated_at", "id"
+      "created_at", "updated_at", "id", "user_id"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    []
+    ["user"]
   end
 
   def self.monthly_total(date = Date.current)
-    month_start = date.beginning_of_month
-    month_end = date.end_of_month
-    active_in(month_start, month_end).sum(:amount_cents)
+    active_now(date).sum(:amount_cents)
   end
 
   def formatted_amount
@@ -79,7 +89,23 @@ class SupporterContribution < ApplicationRecord
   end
 
   def display_name
-    name.presence || I18n.t("messages.supporter_contributions.anonymous_name")
+    name.presence || user&.username || I18n.t("messages.supporter_contributions.anonymous_name")
+  end
+
+  # Nil whenever the contribution must not be attributed publicly, so callers
+  # can fall back to their own anonymous wording.
+  def public_name
+    return if anonymous?
+
+    name.presence || user&.username
+  end
+
+  # Only usernames with a reachable public hangar, otherwise the profile link
+  # we render would land on a 404.
+  def public_profile_username
+    return if anonymous?
+
+    user&.username if user&.public_hangar?
   end
 
   private def ended_at_after_started_at
@@ -90,6 +116,6 @@ class SupporterContribution < ApplicationRecord
   end
 
   private def force_anonymous_when_name_blank
-    self.anonymous = true if name.blank?
+    self.anonymous = true if name.blank? && user_id.blank?
   end
 end

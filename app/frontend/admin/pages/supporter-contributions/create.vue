@@ -19,6 +19,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { todayIsoDateLocal } from "@/shared/utils/dateHelpers";
@@ -39,6 +40,7 @@ type FormValues = {
   recurring: boolean;
   anonymous: boolean;
   note?: string;
+  userId?: string;
 };
 
 const validationSchema = {
@@ -66,6 +68,7 @@ const [endedAt, endedAtProps] = defineField("endedAt");
 const [recurring, recurringProps] = defineField("recurring");
 const [anonymous, anonymousProps] = defineField("anonymous");
 const [note, noteProps] = defineField("note");
+const [userId, userIdProps] = defineField("userId");
 
 const submitting = ref(false);
 
@@ -90,6 +93,7 @@ const onSubmit = handleSubmit(async (values) => {
     recurring: values.recurring,
     anonymous: values.anonymous,
     note: values.note || undefined,
+    userId: values.userId || undefined,
   };
 
   await createMutation
@@ -163,6 +167,15 @@ const handleCancel = async () => {
           v-bind="anonymousProps"
           translation-key="supporterContribution.anonymous"
           name="anonymous"
+        />
+        <UserFilterGroup
+          v-model="userId"
+          v-bind="userIdProps"
+          :label="t('labels.supporterContribution.user')"
+          :no-label="false"
+          :multiple="false"
+          value-attr="id"
+          name="userId"
         />
         <FormTextarea
           v-model="note"

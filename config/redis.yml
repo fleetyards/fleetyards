@@ -1,3 +1,27 @@
+<% base = (ENV["REDIS_DB"] || 0).to_i %>
+# Each checkout owns a contiguous band of Redis databases starting at REDIS_DB,
+# and every subsystem takes a fixed offset within it. bin/setup hands each
+# worktree a band of its own (see PORT_SLOTS / REDIS_DBS_PER_CHECKOUT there), so
+# their queues, sessions and cache entries cannot mix; the main checkout leaves
+# REDIS_DB unset and takes the first band.
+#
+# Sidekiq gets an offset to itself: its queues are the one keyspace another
+# subsystem's bulk operation must never be able to touch, and its keys are not
+# namespaced. It holds offset +0 so that its absolute index in production does
+# not move — renumbering it would strand whatever sits in `queue:*`, `retry` and
+# `schedule` at cutover, and dropped jobs fail silently and permanently, where a
+# reassigned session index merely costs everyone one login.
+#
+# The subsystems sharing offset +1 are each namespaced, and Rails clears a
+# namespaced cache with a prefix scan rather than FLUSHDB, so none of them can
+# reach another's keys. +1 keeps the index production already uses too, so the
+# rate-limit and usage counters survive a deploy.
 shared:
-  url: <%= ENV["REDIS_URL"] || 'redis://localhost:8272' %>
-  db: <%= ENV["REDIS_DB"] || 0 %>
+  url: <%= ENV["REDIS_URL"] || "redis://localhost:8272" %>
+  db: <%= base %>
+  sidekiq_db: <%= base %>
+  cache_db: <%= base + 1 %>
+  rack_attack_db: <%= base + 1 %>
+  api_usage_db: <%= base + 1 %>
+  session_db: <%= base + 2 %>
+  cable_db: <%= base + 3 %>

@@ -6,7 +6,7 @@ Rack::Attack.cache.store =
   else
     ActiveSupport::Cache::RedisCacheStore.new(
       url: Rails.configuration.redis.url,
-      db: 1,
+      db: Rails.configuration.redis.rack_attack_db,
       namespace: "rack-attack"
     )
   end

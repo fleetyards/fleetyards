@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Reporting only. Linking and copying are maintenance tasks, so the writes that
+# have to run against production do so where they can be watched, throttled and
+# resumed, rather than from somebody's shell.
+
+COMMANDS = {
+  "link-report" => "Report the state of the paint <-> component links",
+  "match-preview" => "Report what linking would match, without writing"
+}.freeze
+
+def usage
+  puts "Usage: bin/paints <command>"
+  puts ""
+  puts "Commands:"
+  COMMANDS.each { |cmd, desc| puts "  %-16s %s" % [cmd, desc] }
+  exit 1
+end
+
+command = ARGV.shift
+usage if command.nil? || command == "--help" || command == "-h"
+
+unless COMMANDS.key?(command)
+  puts "Unknown command: #{command}"
+  usage
+end
+
+require_relative "../config/environment"
+
+case command
+when "link-report"
+  linked = ModelPaint.where.not(component_id: nil)
+
+  puts "model paints:       #{ModelPaint.count}"
+  puts "  linked:           #{linked.count}"
+  puts "  no counterpart:   #{ModelPaint.where(component_id: nil).count}"
+  puts ""
+  puts "paint components:   #{Component.where(category: "paints").count}"
+  puts "  linked:           #{Component.where(category: "paints").joins(:model_paints).distinct.count}"
+
+when "match-preview"
+  components = Component.where(category: "paints").where.not(name: [nil, ""]).order(:name)
+  matcher = PaintComponentMatcher.new
+  matched, unmatched = components.partition { |component| matcher.call(component) }
+
+  puts "paint components: #{components.count}"
+  puts "would match:      #{matched.size}"
+  puts "would not:        #{unmatched.size}"
+  puts ""
+  puts "Unmatched:"
+  unmatched.each { |component| puts "  #{component.name}" }
+end

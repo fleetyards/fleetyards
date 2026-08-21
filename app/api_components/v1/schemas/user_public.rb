@@ -20,10 +20,11 @@ module V1
           homepage: {type: :string},
           publicHangarLoaners: {type: :boolean},
           publicHangarStats: {type: :boolean},
-          publicWishlist: {type: :boolean}
+          publicWishlist: {type: :boolean},
+          supporter: {type: :boolean}
         },
         additionalProperties: false,
-        required: %w[username publicHangarLoaners publicHangarStats publicWishlist]
+        required: %w[username publicHangarLoaners publicHangarStats publicWishlist supporter]
       })
     end
   end

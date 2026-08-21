@@ -138,6 +138,7 @@ v1_admin_api_routes = lambda do
   resources :supporter_contributions, path: "supporter-contributions", only: %i[index show create update destroy] do
     collection do
       get :stats
+      get "per-month" => "supporter_contributions#per_month"
       post "sync-patreon" => "supporter_contributions#sync_patreon"
     end
   end

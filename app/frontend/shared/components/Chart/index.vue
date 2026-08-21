@@ -9,7 +9,7 @@ import Highcharts from "highcharts";
 import "highcharts/modules/accessibility";
 import type { PieChartStats, BarChartStats } from "@/services/fyApi";
 import { v4 as uuidv4 } from "uuid";
-import defaultTheme from "./defaultTheme";
+import { useChartTheme } from "@/shared/composables/useChartTheme";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -49,7 +49,7 @@ const instance = ref<Highcharts.Chart | undefined>();
 
 const interval = ref<NodeJS.Timeout | undefined>();
 
-const theme = ref<Highcharts.Options>(defaultTheme);
+const { theme } = useChartTheme();
 
 const chartWithCategory = computed(() => {
   return ["bar", "line", "column", "area"].includes(props.type);

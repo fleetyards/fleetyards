@@ -8,7 +8,7 @@ cookie_domain = Rails.configuration.app.cookie_domain
 cookie_domain = :all if cookie_domain.to_s == "all"
 
 session_store_options = {
-  servers: "#{Rails.configuration.redis.url}/#{Rails.configuration.redis.db}/fleetyards-#{Rails.env}-session",
+  servers: "#{Rails.configuration.redis.url}/#{Rails.configuration.redis.session_db}/fleetyards-#{Rails.env}-session",
   key: Rails.configuration.cookie_prefix,
   domain: cookie_domain,
   secure: Rails.env.production? || Rails.env.staging?,

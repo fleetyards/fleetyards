@@ -20,6 +20,10 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
         schema "$ref": "#/components/schemas/SupporterContribution"
       end
 
+      response(400, "bad request") do
+        schema "$ref": "#/components/schemas/ValidationError"
+      end
+
       response(403, "forbidden") do
         schema "$ref": "#/components/schemas/StandardError"
       end
@@ -150,6 +154,27 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  test "POST /supporter-contributions links the contribution to a user" do
+    user = create(:user)
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, userId: user.id}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal user.id, parsed_body["userId"]
+      assert_equal user.username, parsed_body["user"]["username"]
+      assert_equal false, parsed_body["anonymous"]
+    end
+  end
+
+  test "POST /supporter-contributions rejects a userId with no account" do
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, userId: SecureRandom.uuid}
+
+    assert_api_response :post, 400, body: body
+  end
+
   test "POST /supporter-contributions returns 401 when not signed in" do
     assert_api_response :post, 401, body: {amountCents: 100, startedAt: Date.current.iso8601}
   end
@@ -176,6 +201,39 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
 
     assert_api_response :get, 200, params: {q: {"recurringEq" => true}} do
       assert_equal 3, parsed_body["items"].count
+    end
+  end
+
+  test "GET /supporter-contributions filters by userIdEq" do
+    user = create(:user)
+    create(:supporter_contribution, user:)
+    create_list(:supporter_contribution, 2)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"userIdEq" => user.id}} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal user.username, parsed_body["items"].first["user"]["username"]
+    end
+  end
+
+  test "GET /supporter-contributions filters by userUsernameCont" do
+    user = create(:user, username: "supporterone")
+    create(:supporter_contribution, user:)
+    create_list(:supporter_contribution, 2)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"userUsernameCont" => "supporteron"}} do
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
+
+  test "GET /supporter-contributions filters the unlinked ones by userIdNull" do
+    create(:supporter_contribution, user: create(:user))
+    create_list(:supporter_contribution, 2)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"userIdNull" => true}} do
+      assert_equal 2, parsed_body["items"].count
     end
   end
 
@@ -247,6 +305,18 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
 
     assert_api_response :put, 200, path_params: {id: contribution.id}, body: {name: "Updated Name", amountCents: 999, startedAt: Date.current.iso8601} do
       assert_equal "Updated Name", parsed_body["name"]
+    end
+  end
+
+  test "PUT /supporter-contributions/:id clears the link when userId is null" do
+    contribution = create(:supporter_contribution, user: create(:user))
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, userId: nil}
+
+    assert_api_response :put, 200, path_params: {id: contribution.id}, body: body do
+      refute parsed_body.key?("userId")
+      assert_nil contribution.reload.user_id
     end
   end
 

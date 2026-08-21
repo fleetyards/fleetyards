@@ -19,12 +19,18 @@
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  patreon_member_id   :string
+#  user_id             :uuid
 #
 # Indexes
 #
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
 #  index_supporter_contributions_on_recurring_and_ended_at  (recurring,ended_at)
 #  index_supporter_contributions_on_started_at              (started_at)
+#  index_supporter_contributions_on_user_id                 (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 FactoryBot.define do
   factory :supporter_contribution do

@@ -66,6 +66,18 @@ class Admin::Api::V1::SupporterContributionsStatsTest < ActionDispatch::Integrat
     end
   end
 
+  test "GET /supporter-contributions/stats narrows to one linked account" do
+    supporter = create(:user)
+    create(:supporter_contribution, user: supporter, amount_cents: 500)
+    create(:supporter_contribution, amount_cents: 1_000)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"userIdEq" => supporter.id}} do
+      assert_equal 500, parsed_body["totalAmountCents"]
+      assert_equal 1, parsed_body["totalCount"]
+    end
+  end
+
   test "GET /supporter-contributions/stats returns 401 when not signed in" do
     assert_api_response :get, 401
   end

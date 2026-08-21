@@ -19,6 +19,9 @@ module Admin
               startedAtLteq: {type: :string, format: :date},
               endedAtGteq: {type: :string, format: :date},
               endedAtLteq: {type: :string, format: :date},
+              userIdEq: {type: :string, format: :uuid},
+              userIdNull: {type: :boolean},
+              userUsernameCont: {type: :string},
               sorts: {anyOf: [{
                 type: :array, items: {"$ref": "#/components/schemas/SupporterContributionSortEnum"}
               }, {

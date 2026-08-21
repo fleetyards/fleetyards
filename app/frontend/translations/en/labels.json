@@ -4,6 +4,10 @@
       "true": "Yes",
       "false": "No",
       "null": "-",
+      "supporter": {
+        "badge": "Supporter",
+        "tooltip": "Supports FleetYards.net this month"
+      },
       "destroyedFleets": {
         "discarded": "Discarded",
         "purged": "Purged"
@@ -883,6 +887,7 @@
       },
       "supporterContribution": {
         "name": "Supporter Name",
+        "user": "Linked Account",
         "amount": "Amount",
         "currency": "Currency",
         "anonymous": "Anonymous",
@@ -895,6 +900,10 @@
           "count": "Contributions",
           "recurringCount": "Recurring",
           "anonymousCount": "Anonymous"
+        },
+        "chart": {
+          "contributions": "Contributions",
+          "goal": "Goal"
         }
       },
       "itemPrice": {
@@ -1468,7 +1477,11 @@
           "recurring": "Recurring",
           "anonymous": "Anonymous",
           "startedAtGteq": "Started from",
-          "startedAtLteq": "Started until"
+          "startedAtLteq": "Started until",
+          "user": "Linked account",
+          "linked": "Account link",
+          "linkedOnly": "Linked",
+          "unlinkedOnly": "Not linked"
         },
         "adminNotifications": {
           "search": "Search"

@@ -74,7 +74,8 @@
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",
           "new": "Neuer Beitrag",
-          "edit": "Beitrag bearbeiten"
+          "edit": "Beitrag bearbeiten",
+          "perMonth": "Beiträge pro Monat"
         },
         "fundingGoals": {
           "index": "Finanzierungsziele",
@@ -262,6 +263,7 @@
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
+      "supporters": "Danke an unsere Unterstützer",
       "supportHint": {
         "hangarSync": "Schön, dass dir der Sync hilft",
         "vehicleAdded": "Dein Hangar wächst",

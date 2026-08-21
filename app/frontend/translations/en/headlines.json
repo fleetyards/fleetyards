@@ -80,7 +80,8 @@
         "supporterContributions": {
           "index": "Supporter Contributions",
           "new": "New Supporter Contribution",
-          "edit": "Edit Supporter Contribution"
+          "edit": "Edit Supporter Contribution",
+          "perMonth": "Contributions per Month"
         },
         "fundingGoals": {
           "index": "Funding Goals",
@@ -317,6 +318,7 @@
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
+      "supporters": "Thanks to our supporters",
       "supportHint": {
         "hangarSync": "Glad we could help with your sync",
         "vehicleAdded": "Your hangar is growing",
