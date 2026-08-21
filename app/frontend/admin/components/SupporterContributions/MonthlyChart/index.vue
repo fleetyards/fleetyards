@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Highcharts from "highcharts";
-import "highcharts/modules/accessibility";
+import "highcharts/esm/modules/accessibility";
 import { useChartTheme } from "@/shared/composables/useChartTheme";
 import {
   useSupporterContributionsPerMonth,

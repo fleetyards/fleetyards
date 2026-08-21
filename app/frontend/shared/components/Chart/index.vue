@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Highcharts from "highcharts";
-import "highcharts/modules/accessibility";
+import "highcharts/esm/modules/accessibility";
 import type { PieChartStats, BarChartStats } from "@/services/fyApi";
 import { v4 as uuidv4 } from "uuid";
 import { useChartTheme } from "@/shared/composables/useChartTheme";
