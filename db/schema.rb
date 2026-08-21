@@ -357,6 +357,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_120000) do
     t.index ["fleet_event_id", "occurrence_date"], name: "idx_fleet_event_occurrence_states_on_event_and_date", unique: true
   end
 
+  create_table "fleet_event_ship_models", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "fleet_event_ship_id", null: false
+    t.uuid "model_id", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_event_ship_id", "model_id"], name: "index_fleet_event_ship_models_on_ship_and_model", unique: true
+    t.index ["fleet_event_ship_id", "position"], name: "index_fleet_event_ship_models_on_ship_and_position"
+    t.index ["fleet_event_ship_id"], name: "index_fleet_event_ship_models_on_ship"
+    t.index ["model_id"], name: "index_fleet_event_ship_models_on_model_id"
+  end
+
   create_table "fleet_event_ships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "classification"
     t.datetime "created_at", null: false
@@ -1472,6 +1484,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_120000) do
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"
+  add_foreign_key "fleet_event_ship_models", "fleet_event_ships", on_delete: :cascade
+  add_foreign_key "fleet_event_ship_models", "models", on_delete: :cascade
   add_foreign_key "fleet_event_ships", "fleet_event_teams"
   add_foreign_key "fleet_event_ships", "mission_ships", column: "source_ship_id", on_delete: :nullify
   add_foreign_key "fleet_event_ships", "models"
