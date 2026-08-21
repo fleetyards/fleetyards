@@ -13,8 +13,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
-import AsyncData from "@/shared/components/AsyncData.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useModelsByClassification as useModelsByClassificationQuery } from "@/services/fyApi";
 import { useModelsBySize as useModelsBySizeQuery } from "@/services/fyApi";
@@ -70,20 +68,14 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } =
         {{ t("headlines.admin.dashboard.modelsByClassification") }}
       </PanelHeading>
       <PanelBody class="dashboard-panel-body">
-        <AsyncData :async-status="modelsByClassificationStatus" hide-error>
-          <template #loading>
-            <Loader :loading="true" relative admin />
-          </template>
-          <template #resolved>
-            <Chart
-              name="models-by-manufacturer"
-              type="pie"
-              :options="modelsByClassification"
-              :async-status="modelsByClassificationStatus"
-              tooltip-type="ship-pie"
-            />
-          </template>
-        </AsyncData>
+        <Chart
+          name="models-by-manufacturer"
+          type="pie"
+          :options="modelsByClassification"
+          :async-status="modelsByClassificationStatus"
+          tooltip-type="ship-pie"
+          admin
+        />
       </PanelBody>
     </Panel>
   </div>
@@ -132,20 +124,14 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } =
         {{ t("headlines.admin.dashboard.modelsByStatus") }}
       </PanelHeading>
       <PanelBody class="dashboard-panel-body">
-        <AsyncData :async-status="modelsByProductionStatusStatus" hide-error>
-          <template #loading>
-            <Loader :loading="true" relative admin />
-          </template>
-          <template #resolved>
-            <Chart
-              name="models-by-status"
-              type="pie"
-              :options="modelsByProductionStatus"
-              :async-status="modelsByProductionStatusStatus"
-              tooltip-type="ship-pie"
-            />
-          </template>
-        </AsyncData>
+        <Chart
+          name="models-by-status"
+          type="pie"
+          :options="modelsByProductionStatus"
+          :async-status="modelsByProductionStatusStatus"
+          tooltip-type="ship-pie"
+          admin
+        />
       </PanelBody>
     </Panel>
   </div>
@@ -155,20 +141,14 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } =
         {{ t("headlines.admin.dashboard.modelsBySize") }}
       </PanelHeading>
       <PanelBody class="dashboard-panel-body">
-        <AsyncData :async-status="modelsBySizeStatus" hide-error>
-          <template #loading>
-            <Loader :loading="true" relative admin />
-          </template>
-          <template #resolved>
-            <Chart
-              name="models-by-size"
-              type="pie"
-              :options="modelsBySize"
-              :async-status="modelsBySizeStatus"
-              tooltip-type="ship-pie"
-            />
-          </template>
-        </AsyncData>
+        <Chart
+          name="models-by-size"
+          type="pie"
+          :options="modelsBySize"
+          :async-status="modelsBySizeStatus"
+          tooltip-type="ship-pie"
+          admin
+        />
       </PanelBody>
     </Panel>
   </div>
@@ -178,21 +158,15 @@ const { data: modelsPerMonth, ...modelsPerMonthStatus } =
         {{ t("headlines.admin.dashboard.modelsPerMonth") }}
       </PanelHeading>
       <PanelBody class="dashboard-panel-body">
-        <AsyncData :async-status="modelsPerMonthStatus" hide-error>
-          <template #loading>
-            <Loader :loading="true" relative admin />
-          </template>
-          <template #resolved>
-            <Chart
-              name="models-per-month"
-              type="column"
-              :options="modelsPerMonth"
-              :async-status="modelsPerMonthStatus"
-              tooltip-type="ship"
-              :height="400"
-            />
-          </template>
-        </AsyncData>
+        <Chart
+          name="models-per-month"
+          type="column"
+          :options="modelsPerMonth"
+          :async-status="modelsPerMonthStatus"
+          tooltip-type="ship"
+          :height="400"
+          admin
+        />
       </PanelBody>
     </Panel>
   </div>
