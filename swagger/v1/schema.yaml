@@ -10183,6 +10183,7 @@ components:
       type: string
       enum:
       - fleet_logistics
+      - fleet_mission_builder
       - fleet_starmap
       - fleet_worldmap
       - hangar_inventories
@@ -10198,6 +10199,7 @@ components:
       - tools_travel_times
       x-enumNames:
       - FLEET_LOGISTICS
+      - FLEET_MISSION_BUILDER
       - FLEET_STARMAP
       - FLEET_WORLDMAP
       - HANGAR_INVENTORIES
