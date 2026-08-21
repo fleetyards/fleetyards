@@ -39,6 +39,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
+  resource :fleet_notification_setting, path: "notifications", only: %i[show update] do
+    get "discord-status", action: :discord_status
+  end
+
   get "inventory-items", to: "fleet_all_inventory_items#index"
   get "inventory-stock", to: "fleet_all_inventory_stock#index"
 
@@ -80,6 +84,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :complete
       put :cancel
       put :unarchive
+      post "sync-to-discord", action: :sync_to_discord
       post "skip-occurrence", action: :skip_occurrence
       post "end-series", action: :end_series
       patch "update-occurrence", action: :update_occurrence
