@@ -3,12 +3,16 @@
 module Loaders
   module ScData
     class AllJob < ::Loaders::BaseJob
+      include FetchesParsedTree
+
       def perform(version = nil, admin_user_id = nil)
         version ||= Rails.configuration.sc_data[:version]
 
         import = Imports::ScData::AllImport.create(version:, admin_user_id:)
 
         import.start!
+
+        fetch_parsed_tree!(version)
 
         ::ScData::Loader::BaseLoader.all
 
