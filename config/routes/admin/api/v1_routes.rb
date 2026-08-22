@@ -173,8 +173,8 @@ v1_admin_api_routes = lambda do
       put "disable-group", to: "features#disable_group"
       put "enable-percentage-of-actors", to: "features#enable_percentage_of_actors"
       put "enable-percentage-of-time", to: "features#enable_percentage_of_time"
-      put "toggle-self-service", to: "features#toggle_self_service"
-      put "self-service-scope", to: "features#update_self_service_scope"
+      put "toggle-user-self-service", to: "features#toggle_user_self_service"
+      put "toggle-fleet-self-service", to: "features#toggle_fleet_self_service"
     end
   end
 end

@@ -32,7 +32,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
     Flipper.add("TestFeature")
-    FeatureSetting.create!(feature_name: "TestFeature", self_service: true)
+    FeatureSetting.create!(feature_name: "TestFeature", self_service_user: true)
   end
 
   test "GET /user-features lists self-service features for the signed-in user" do
@@ -80,7 +80,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /user-features lists a fleet-scoped feature the user may preview" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     create(:fleet, members: [@user])
     sign_in @user
 
@@ -97,7 +97,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /user-features reports a fleet-scoped feature the user previews as enabled" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     Flipper.enable_actor("FleetWideFeature", @user)
     sign_in @user
 
@@ -111,7 +111,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /user-features reports a feature the fleet enabled as enabled" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     fleet = create(:fleet, members: [@user])
     Flipper.enable_actor("FleetWideFeature", fleet)
     sign_in @user
@@ -130,7 +130,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /user-features names every fleet of the user's that enabled the feature" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     granting = create(:fleet, members: [@user])
     other_granting = create(:fleet, members: [@user])
     create(:fleet, members: [@user])
@@ -149,7 +149,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /user-features names no fleet for a feature the user enabled themselves" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     create(:fleet, members: [@user])
     Flipper.enable_actor("FleetWideFeature", @user)
     sign_in @user
@@ -162,7 +162,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /user-features ignores a fleet the user has only been invited to" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     fleet = create(:fleet)
     create(:fleet_membership, :invited, fleet:, user: @user)
     Flipper.enable_actor("FleetWideFeature", fleet)
@@ -187,7 +187,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /user-features lists a fleet-scoped feature for a user in no fleet" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     sign_in @user
 
     assert_api_response :get, 200 do

@@ -45,7 +45,7 @@ class Api::V1::FleetsFeaturesIndexTest < ActionDispatch::IntegrationTest
     @fleet = create(:fleet, admins: [@admin], members: [@member])
 
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
   end
 
   test "GET /fleets/:slug/features lists the fleet-scoped features with their state" do
@@ -77,7 +77,7 @@ class Api::V1::FleetsFeaturesIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /fleets/:slug/features excludes user-scoped features" do
     Flipper.add("PersonalFeature")
-    FeatureSetting.create!(feature_name: "PersonalFeature", self_service: true, self_service_scope: "user")
+    FeatureSetting.create!(feature_name: "PersonalFeature", self_service_user: true)
     sign_in @admin
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do

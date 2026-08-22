@@ -38,7 +38,7 @@ class Api::V1::UserFeaturesDisableTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
     Flipper.add("TestFeature")
-    FeatureSetting.create!(feature_name: "TestFeature", self_service: true)
+    FeatureSetting.create!(feature_name: "TestFeature", self_service_user: true)
     Flipper.feature("TestFeature").enable_actor(@user)
   end
 
@@ -77,7 +77,7 @@ class Api::V1::UserFeaturesDisableTest < ActionDispatch::IntegrationTest
 
   test "PUT /user-features/:id/disable disables a fleet-scoped feature for the user alone" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     Flipper.enable_actor("FleetWideFeature", @user)
     sign_in @user
 
@@ -88,7 +88,7 @@ class Api::V1::UserFeaturesDisableTest < ActionDispatch::IntegrationTest
 
   test "PUT /user-features/:id/disable returns 403 when the user's fleet enabled it" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     fleet = create(:fleet, members: [@user])
     Flipper.enable_actor("FleetWideFeature", fleet)
     sign_in @user
@@ -102,7 +102,7 @@ class Api::V1::UserFeaturesDisableTest < ActionDispatch::IntegrationTest
 
   test "PUT /user-features/:id/disable ignores a fleet the user has only been invited to" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     fleet = create(:fleet)
     create(:fleet_membership, :invited, fleet:, user: @user)
     Flipper.enable_actor("FleetWideFeature", fleet)

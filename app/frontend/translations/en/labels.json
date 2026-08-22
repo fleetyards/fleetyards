@@ -68,10 +68,8 @@
         "toggleForSelf": "Toggle for yourself only",
         "fleetFeatureGrantedShort": "Enabled by fleet",
         "fleetFeatureGranted": "Your fleet enabled this for all members, so it cannot be switched off here.",
-        "selfServiceScope": "Toggle lives in",
-        "scopeUser": "User settings",
-        "scopeFleet": "Fleet settings",
-        "selfServiceScopeHint": "A personal toggle on a fleet-wide feature lets any member switch it on for every fleet they belong to."
+        "selfServiceUser": "Users can toggle",
+        "selfServiceFleet": "Fleet admins can toggle"
       },
       "oauthApplication": {
         "name": "Application Name",

@@ -58,10 +58,8 @@
         "toggleForSelf": "Activer pour vous uniquement",
         "fleetFeatureGrantedShort": "Activé par la flotte",
         "fleetFeatureGranted": "Votre flotte l'a activé pour tous les membres, il ne peut donc pas être désactivé ici.",
-        "selfServiceScope": "L'interrupteur se trouve dans",
-        "scopeUser": "Paramètres utilisateur",
-        "scopeFleet": "Paramètres de flotte",
-        "selfServiceScopeHint": "Un interrupteur personnel sur une fonctionnalité de flotte permet à tout membre de l'activer pour toutes ses flottes."
+        "selfServiceUser": "Les utilisateurs peuvent basculer",
+        "selfServiceFleet": "Les admins de flotte peuvent basculer"
       },
       "oauthApplication": {
         "name": "Nom de l'application",

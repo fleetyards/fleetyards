@@ -46,7 +46,7 @@ class Api::V1::FleetsFeaturesDisableTest < ActionDispatch::IntegrationTest
     @fleet = create(:fleet, admins: [@admin], members: [@member])
 
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     Flipper.enable_actor("FleetWideFeature", @fleet)
   end
 
@@ -86,7 +86,7 @@ class Api::V1::FleetsFeaturesDisableTest < ActionDispatch::IntegrationTest
 
   test "PUT /fleets/:slug/features/:id/disable returns 403 for a user-scoped feature" do
     Flipper.add("PersonalFeature")
-    FeatureSetting.create!(feature_name: "PersonalFeature", self_service: true, self_service_scope: "user")
+    FeatureSetting.create!(feature_name: "PersonalFeature", self_service_user: true)
     sign_in @admin
 
     assert_api_response :put, 403, path_params: {fleetSlug: @fleet.slug, id: "PersonalFeature"}

@@ -58,10 +58,8 @@
         "toggleForSelf": "僅為自己切換",
         "fleetFeatureGrantedShort": "艦隊已啟用",
         "fleetFeatureGranted": "您的艦隊已為所有成員啟用此功能，因此無法在此處關閉。",
-        "selfServiceScope": "開關位於",
-        "scopeUser": "使用者設定",
-        "scopeFleet": "艦隊設定",
-        "selfServiceScopeHint": "為艦隊級功能提供個人開關，會讓任何成員為其所屬的每個艦隊啟用該功能。"
+        "selfServiceUser": "使用者可自行切換",
+        "selfServiceFleet": "艦隊管理員可切換"
       },
       "oauthApplication": {
         "name": "應用程式名稱",

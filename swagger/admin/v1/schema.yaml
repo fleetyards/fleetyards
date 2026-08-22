@@ -1760,7 +1760,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/features/{id}/self-service-scope":
+  "/features/{id}/toggle-fleet-self-service":
     parameters:
     - name: id
       in: path
@@ -1769,15 +1769,10 @@ paths:
       description: Feature name
       required: true
     put:
-      summary: Set Feature Self-Service Scope
+      summary: Toggle Feature Fleet Self-Service
       tags:
       - Features
-      operationId: updateAdminFeatureSelfServiceScope
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeatureSelfServiceScopeInput"
+      operationId: toggleAdminFeatureFleetSelfService
       responses:
         '200':
           description: successful
@@ -1805,7 +1800,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/features/{id}/toggle-self-service":
+  "/features/{id}/toggle-user-self-service":
     parameters:
     - name: id
       in: path
@@ -1814,10 +1809,10 @@ paths:
       description: Feature name
       required: true
     put:
-      summary: Toggle Feature Self-Service
+      summary: Toggle Feature User Self-Service
       tags:
       - Features
-      operationId: toggleAdminFeatureSelfService
+      operationId: toggleAdminFeatureUserSelfService
       responses:
         '200':
           description: successful
@@ -9914,13 +9909,10 @@ components:
           type: string
         state:
           type: string
-        selfService:
+        selfServiceUser:
           type: boolean
-        selfServiceScope:
-          type: string
-          enum:
-          - user
-          - fleet
+        selfServiceFleet:
+          type: boolean
         percentageOfActors:
           type: number
         percentageOfTime:
@@ -9937,8 +9929,8 @@ components:
       required:
       - name
       - state
-      - selfService
-      - selfServiceScope
+      - selfServiceUser
+      - selfServiceFleet
       - percentageOfActors
       - percentageOfTime
       - groups
@@ -9991,18 +9983,6 @@ components:
       required:
       - percentage
       title: FeaturePercentageInput
-    FeatureSelfServiceScopeInput:
-      type: object
-      properties:
-        scope:
-          type: string
-          enum:
-          - user
-          - fleet
-      additionalProperties: false
-      required:
-      - scope
-      title: FeatureSelfServiceScopeInput
     FieldError:
       type: object
       properties:

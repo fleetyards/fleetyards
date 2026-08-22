@@ -5,8 +5,8 @@ json.state feature.state.to_s
 
 setting = FeatureSetting.find_by(feature_name: feature.name.to_s)
 
-json.selfService setting&.self_service || false
-json.selfServiceScope setting&.self_service_scope || FeatureSetting::USER_SCOPE
+json.selfServiceUser setting&.self_service_user || false
+json.selfServiceFleet setting&.self_service_fleet || false
 
 json.percentageOfActors feature.percentage_of_actors_value
 json.percentageOfTime feature.percentage_of_time_value

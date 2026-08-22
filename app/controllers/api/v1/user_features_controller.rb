@@ -24,19 +24,22 @@ module Api
       # `fleets` names the ones responsible, so a member can see where the feature
       # came from instead of only that they cannot switch it off.
       def index
-        @features = FeatureSetting.self_service_scopes.filter_map do |feature_name, scope|
+        @features = FeatureSetting.user_toggleable.pluck(:feature_name, :self_service_fleet)
+          .filter_map do |feature_name, fleet_toggleable|
           feature = Flipper.feature(feature_name)
 
           next if feature.state == :on
 
           enabled_for_self = Flipper.enabled?(feature.name, current_resource_owner)
-          fleets = granting_fleets(feature.name, scope)
+          fleets = granting_fleets(feature.name, fleet_toggleable)
 
           {
             name: feature.name,
             enabled: enabled_for_self || fleets.any?,
             enabled_for_self:,
-            scope:,
+            # A feature with a fleet switch as well reads as fleet-scoped here:
+            # that is what tells the page this switch only covers the viewer.
+            scope: fleet_toggleable ? FeatureSetting::FLEET_SCOPE : FeatureSetting::USER_SCOPE,
             fleets: fleets.map { |fleet| {name: fleet.name, slug: fleet.slug} }
           }
         end
@@ -45,7 +48,7 @@ module Api
       def enable
         feature_name = params[:id]
 
-        unless FeatureSetting.self_service_anywhere?(feature_name)
+        unless FeatureSetting.user_toggleable?(feature_name)
           return render json: {code: "forbidden", message: "This feature cannot be self-activated"}, status: :forbidden
         end
         return if refuse_fleet_override(feature_name)
@@ -58,7 +61,7 @@ module Api
       def disable
         feature_name = params[:id]
 
-        unless FeatureSetting.self_service_anywhere?(feature_name)
+        unless FeatureSetting.user_toggleable?(feature_name)
           return render json: {code: "forbidden", message: "This feature cannot be self-deactivated"}, status: :forbidden
         end
         return if refuse_fleet_override(feature_name)
@@ -81,18 +84,14 @@ module Api
 
       # The user's fleets that switched this feature on for their members.
       #
-      # Only for a fleet-scoped flag: nothing reads a user-scoped one against a
-      # fleet actor, so a gate there would grant the user nothing and must not
-      # count. Accepted memberships only — a pending invitation does not give the
-      # user the feature yet.
-      private def granting_fleets(feature_name, scope = self_service_scope(feature_name))
-        return [] unless scope == FeatureSetting::FLEET_SCOPE
+      # Only for a flag with a fleet switch: nothing reads a purely personal one
+      # against a fleet actor, so a gate there would grant the user nothing and
+      # must not count. Accepted memberships only — a pending invitation does not
+      # give the user the feature yet.
+      private def granting_fleets(feature_name, fleet_toggleable = FeatureSetting.fleet_toggleable?(feature_name))
+        return [] unless fleet_toggleable
 
         accepted_fleets.select { |fleet| Flipper.enabled?(feature_name, fleet) }
-      end
-
-      private def self_service_scope(feature_name)
-        FeatureSetting.find_by(feature_name:)&.self_service_scope
       end
 
       private def accepted_fleets
