@@ -9,6 +9,7 @@ import Highcharts from "highcharts";
 import "highcharts/esm/modules/accessibility";
 import type { PieChartStats, BarChartStats } from "@/services/fyApi";
 import { v4 as uuidv4 } from "uuid";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useChartTheme } from "@/shared/composables/useChartTheme";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -29,6 +30,7 @@ type Props = {
   reload?: number;
   tooltipType?: string;
   height?: number;
+  admin?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,6 +39,7 @@ const props = withDefaults(defineProps<Props>(), {
   tooltipType: "",
   reload: undefined,
   height: 400,
+  admin: false,
 });
 
 const { t } = useI18n();
@@ -92,6 +95,20 @@ const chartData = computed(() => {
   return props.options;
 });
 
+// A background refetch keeps the drawn chart on screen, so it must not read as
+// loading - otherwise the `reload` interval flashes the spinner over a chart
+// that is already there.
+const loading = computed(() => {
+  return (
+    (props.asyncStatus.isPending?.value ||
+      props.asyncStatus.isFetching?.value ||
+      props.asyncStatus.isLoading?.value) &&
+    !props.asyncStatus.isRefetching?.value
+  );
+});
+
+const failed = computed(() => !!props.asyncStatus.error?.value);
+
 onMounted(() => {
   uuid.value = `chart-${uuidv4()}`;
 
@@ -120,12 +137,6 @@ const tooltipFormat = (tooltip: Highcharts.Point) => {
   return t(`chart.labels.${props.tooltipType}`, options);
 };
 
-const loading = computed(() => {
-  return (
-    props.asyncStatus.isLoading.value || props.asyncStatus.isFetching.value
-  );
-});
-
 watch(
   () => props.options,
   () => {
@@ -139,6 +150,12 @@ watch(
     deep: true,
   },
 );
+
+watch(loading, () => {
+  if (!instance.value) {
+    setupChart();
+  }
+});
 
 const reloadChart = () => {
   const series = instance.value?.series[0];
@@ -164,7 +181,9 @@ const reloadChart = () => {
 };
 
 const setupChart = () => {
-  if (!chart.value) {
+  // Drawing before the data lands would put a bare axis frame behind the
+  // spinner, and drawing after an error would put one there for good.
+  if (!chart.value || loading.value || failed.value) {
     return;
   }
 
@@ -201,12 +220,20 @@ const setupChart = () => {
 </script>
 
 <template>
-  <div
-    :id="uuid"
-    ref="chart"
-    :class="{
-      loading,
-    }"
-    class="chart"
-  />
+  <!--
+    The chart only gets its height once Highcharts has drawn it, so the box
+    holds that height from the start - without it the panel collapses to the
+    spinner and snaps open when the data lands.
+  -->
+  <div class="chart-container" :style="{ minHeight: `${height}px` }">
+    <div :id="uuid" ref="chart" class="chart" />
+
+    <Loader :loading="loading" :admin="admin" relative />
+  </div>
 </template>
+
+<style scoped>
+.chart-container {
+  position: relative;
+}
+</style>
