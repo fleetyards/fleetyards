@@ -15,7 +15,10 @@ import { useForm } from "vee-validate";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import ViewsFolderUpload from "@/admin/components/Models/ViewsFolderUpload/index.vue";
-import { type ViewField } from "@/admin/components/Models/ViewsFolderUpload/mapping";
+import {
+  type FolderField,
+  type ViewField,
+} from "@/admin/components/Models/ViewsFolderUpload/mapping";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 
 type Props = {
@@ -61,9 +64,9 @@ const onFolderSelected = (views: Partial<Record<ViewField, string>>) => {
   previews.value = views;
 };
 
-const onFolderMapped = (views: Partial<Record<ViewField, string>>) => {
-  Object.entries(views).forEach(([field, signedId]) => {
-    setFieldValue(field as ViewField, signedId);
+const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
+  Object.entries(fields).forEach(([field, signedId]) => {
+    setFieldValue(field as FolderField, signedId);
   });
 };
 

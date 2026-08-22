@@ -37,9 +37,15 @@
         },
         "models": {
           "viewsFolder": {
-            "hint": "Drop a folder of views named top.png, side.png, front.png and angled.png. Suffix _colored for the painted set, prefix extended_ for the extended one.",
-            "uploading": "Uploading %{count} views…",
-            "matched": "%{count} views ready — save to apply them.",
+            "hint": "Drop a folder of views named top.png, side.png, front.png and angled.png. Suffix _colored for the painted set, prefix extended_ for the extended one. holo.gltf and extended_holo.gltf come along too.",
+            "uploading": {
+              "one": "Uploading one file…",
+              "other": "Uploading %{count} files…"
+            },
+            "matched": {
+              "one": "One file ready — save to apply it.",
+              "other": "%{count} files ready — save to apply them."
+            },
             "ignored": "Ignored: %{files}"
           }
         }

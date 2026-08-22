@@ -2,21 +2,19 @@
   margin-bottom: 30px;
 }
 
-.views-folder-upload__hint,
-.views-folder-upload__ignored {
+.views-folder-upload__hint {
   color: $gray-lighter;
   font-size: 0.9rem;
 }
 
 .views-folder-upload__summary {
-  margin-top: 15px;
-  margin-bottom: 5px;
+  margin: 20px 0 10px;
 }
 
 .views-folder-upload__matched {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 5px 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px 30px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -24,11 +22,42 @@
   li {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    min-width: 0;
   }
 }
 
+// A fixed box for either icon keeps the labels lined up down the column,
+// whether a row is still uploading or done.
+.views-folder-upload__state {
+  flex: 0 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+}
+
+.views-folder-upload__field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.views-folder-upload__label,
 .views-folder-upload__filename {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.views-folder-upload__filename {
+  color: $gray-lighter;
+  font-size: 0.8rem;
+}
+
+.views-folder-upload__ignored {
+  margin-top: 20px;
   color: $gray-lighter;
   font-size: 0.85rem;
 }

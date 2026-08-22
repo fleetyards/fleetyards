@@ -10,40 +10,38 @@ import DirectUpload, {
   type FileUpload,
 } from "@/shared/components/DirectUpload/index.vue";
 import {
-  AllowedFileTypes,
-  fileTypeMap,
-} from "@/shared/components/DirectUpload/types";
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
-import {
-  mapViewFiles,
-  type MappedView,
+  isViewField,
+  mapFolderFiles,
+  type FolderField,
+  type MappedFile,
   type ViewField,
 } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 
-type PlannedView = MappedView & { file: File };
+type PlannedFile = MappedFile & { file: File };
 
 const { t } = useI18n();
 
 const emit = defineEmits<{
   selected: [previews: Partial<Record<ViewField, string>>];
-  mapped: [views: Partial<Record<ViewField, string>>];
+  mapped: [fields: Partial<Record<FolderField, string>>];
 }>();
 
-const plan = ref<PlannedView[]>([]);
-const previews = new Map<ViewField, string>();
+const plan = ref<PlannedFile[]>([]);
 const ignored = ref<string[]>([]);
 const uploaded = ref<File[]>([]);
 const uploading = ref(false);
+const previews = new Map<ViewField, string>();
 
 // The file input reports the folder in webkitRelativePath, a drop does not.
 const nameOf = (file: File) => file.webkitRelativePath || file.name;
 
 const basename = (filename: string) => filename.split("/").pop() || filename;
 
-// Runs before a single byte goes up, so a folder's odds and ends never become
-// blobs that no view is ever attached to.
-const filterViews = (files: File[]) => {
-  const { matched } = mapViewFiles(files, nameOf);
+// Runs before a single byte goes up, and it is the only gate: a name that spells
+// out a field, with the extension that field takes, or the file stays where it
+// is. So a folder's odds and ends never become blobs no view is attached to.
+const filterFolder = (files: File[]) => {
+  const { matched } = mapFolderFiles(files, nameOf);
 
   plan.value = matched.map(({ field, filename, item }) => ({
     field,
@@ -52,9 +50,14 @@ const filterViews = (files: File[]) => {
   }));
   uploaded.value = [];
 
-  // A signed id only arrives once the upload finishes, but the picture can be
+  // A signed id only arrives once the upload finishes, but a picture can be
   // shown from the local file at once, so no input sits there empty meanwhile.
+  // A holo has no still to show, and is left to its own viewer.
   plan.value.forEach(({ field, file }) => {
+    if (!isViewField(field)) {
+      return;
+    }
+
     const previous = previews.get(field);
 
     if (previous) {
@@ -86,16 +89,18 @@ const onUploadDone = (files: FileUpload[]) => {
   uploading.value = false;
   uploaded.value = files.filter((file) => !!file.blob).map((file) => file.file);
 
-  const views = plan.value.flatMap(({ field, file }): [ViewField, string][] => {
-    const upload = files.find((candidate) => candidate.file === file);
+  const fields = plan.value.flatMap(
+    ({ field, file }): [FolderField, string][] => {
+      const upload = files.find((candidate) => candidate.file === file);
 
-    return upload?.blob ? [[field, upload.blob.signed_id]] : [];
-  });
+      return upload?.blob ? [[field, upload.blob.signed_id]] : [];
+    },
+  );
 
-  emit("mapped", Object.fromEntries(views));
+  emit("mapped", Object.fromEntries(fields));
 };
 
-const isUploaded = (view: PlannedView) => uploaded.value.includes(view.file);
+const isUploaded = (entry: PlannedFile) => uploaded.value.includes(entry.file);
 </script>
 
 <template>
@@ -109,8 +114,7 @@ const isUploaded = (view: PlannedView) => uploaded.value.includes(view.file);
       inline
       directory
       direct-upload
-      :allowed-types="fileTypeMap[AllowedFileTypes.IMAGE]"
-      :filter="filterViews"
+      :filter="filterFolder"
       @upload:start="onUploadStart"
       @upload:done="onUploadDone"
       @files:rejected="onFilesRejected"
@@ -129,14 +133,22 @@ const isUploaded = (view: PlannedView) => uploaded.value.includes(view.file);
         }}
       </p>
       <ul class="views-folder-upload__matched">
-        <li v-for="view in plan" :key="view.field">
-          <i
-            v-if="isUploaded(view)"
-            class="fa-duotone fa-circle-check text-success"
-          />
-          <SmallLoader v-else loading />
-          <span>{{ t(`labels.model.${view.field}`) }}</span>
-          <span class="views-folder-upload__filename">{{ view.filename }}</span>
+        <li v-for="entry in plan" :key="entry.field">
+          <span class="views-folder-upload__state">
+            <i
+              v-if="isUploaded(entry)"
+              class="fa-duotone fa-circle-check text-success"
+            />
+            <i v-else class="fa-light fa-cloud-upload" />
+          </span>
+          <span class="views-folder-upload__field">
+            <span class="views-folder-upload__label">
+              {{ t(`labels.model.${entry.field}`) }}
+            </span>
+            <span class="views-folder-upload__filename">
+              {{ entry.filename }}
+            </span>
+          </span>
         </li>
       </ul>
     </template>
