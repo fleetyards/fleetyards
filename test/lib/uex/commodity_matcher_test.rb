@@ -46,10 +46,13 @@ module Uex
       assert_equal [999], @matcher.misses.map { |row| row["id"] }
     end
 
+    # Read from a committed fixture rather than the parsed tree, which is not in
+    # git and so is absent on CI. `bin/scdata parse` rewrites the fixture, so a
+    # build that renames or drops a commodity shows up here as a diff.
     test "every mapping points at a commodity key the parser produces" do
-      keys = Dir.glob(Rails.root.join("data/sc_data/parsed/live/commodities/*.json"))
-        .map { |file| JSON.parse(File.read(file))["sc_key"] }
-        .to_set
+      keys = JSON.parse(
+        Rails.root.join("test/fixtures/sc_data/live/commodity_keys.json").read
+      ).to_set
 
       assert_empty Uex::CommodityMatcher::MAPPINGS.values.reject { |key| keys.include?(key) }
     end

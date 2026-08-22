@@ -56,6 +56,8 @@ jobs:
   ruby-tests:
     needs: ruby-setup
     uses: ./.github/workflows/ruby-tests.job.yml
+    secrets:
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   feature-flags:
     uses: ./.github/workflows/feature-flags.job.yml
