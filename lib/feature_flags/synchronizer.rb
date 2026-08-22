@@ -5,7 +5,8 @@ module FeatureFlags
   #
   #   * flags in the registry but missing in Flipper are added
   #   * flags in Flipper but absent from the registry are removed (prune)
-  #   * flags declared `self_service: true` get their FeatureSetting seeded
+  #   * the self-service scope of a flag that already has a FeatureSetting is
+  #     brought in line with the registry
   #
   # Pruning removes the flag along with all of its gate values, which is what
   # makes the registry authoritative. FEATURE_FLAGS_PRUNE=false disables removal
@@ -76,7 +77,7 @@ module FeatureFlags
     def apply!(to_add, to_remove)
       to_add.each { |name| flipper.add(name) }
 
-      seed_self_service_settings
+      reconcile_self_service_scopes
 
       return unless prune
 
@@ -93,24 +94,23 @@ module FeatureFlags
       FeatureSetting.where.not(feature_name: registry.names).destroy_all
     end
 
-    # The registry seeds self-service, it does not own it: admins flip it at
-    # /admin/features, and a deploy must not undo that. So `self_service` on an
-    # existing row is left exactly as it is, and dropping the key from the
-    # registry retracts nothing — only removing the flag does, through the prune
-    # above.
+    # Whether a flag may be toggled outside /admin/features is the admin UI's
+    # call alone. Sync never writes `self_service` and never creates a row to
+    # carry one: an admin flipping the toggle there creates the row, and a deploy
+    # has no business overruling them in either direction.
     #
-    # The scope is different: it says which surface reads the flag, which is a
-    # property of the code, not a rollout decision. A release that moves a flag
-    # from personal settings to a fleet's has to take effect, so it is reconciled
-    # on every run.
-    def seed_self_service_settings
-      registry.definitions.select(&:self_service?).each do |definition|
-        setting = FeatureSetting.find_or_initialize_by(feature_name: definition.name) do |new_setting|
-          new_setting.self_service = true
-        end
+    # The scope is not a rollout decision — it says which surface the code reads
+    # the flag from, so a release that moves a flag from personal settings to a
+    # fleet's has to take effect rather than wait for an admin. Existing rows
+    # only, for the same reason: a flag nobody has switched on has no setting to
+    # correct, and the admin UI seeds the scope from the registry when it creates
+    # one.
+    def reconcile_self_service_scopes
+      scoped = registry.definitions.select(&:self_service_scope).index_by(&:name)
+      return if scoped.empty?
 
-        setting.self_service_scope = definition.self_service_scope
-        setting.save! if setting.changed?
+      FeatureSetting.where(feature_name: scoped.keys).find_each do |setting|
+        setting.update!(self_service_scope: scoped.fetch(setting.feature_name).self_service_scope)
       end
     end
 
