@@ -13,8 +13,8 @@ fi
 # Retry to absorb the occasional genuinely transient reset; all three steps are
 # idempotent, so re-running them is safe.
 # The steps live in bin/deploy-release rather than an `sh -c "a && b"` argument
-# here: that argument has to survive six layers of re-parsing, and one of them
-# was dropping the sync's own argument.
+# here, so this passes a single bare token and the log names the step it
+# reached.
 echo "Running database and data migrations and syncing feature flags..."
 
 attempt=1

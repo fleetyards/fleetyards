@@ -1,11 +1,9 @@
 #!/bin/bash -e
 
 # Runs inside the app image, from the kamal pre-deploy hook. Kept as a script
-# rather than an `sh -c "a && b"` argument to `kamal app exec` because the
-# argument has to survive the hook shell, Thor, SSHKit, the remote shell,
-# docker and bin/docker-entrypoint: on 2026-08-22 the trailing `sync` was
-# dropped somewhere along that chain and bin/feature-flags fell back to its
-# usage banner, failing every live deploy. A bare token can't be re-split.
+# rather than an `sh -c "a && b"` argument to `kamal app exec` so the hook
+# passes a single bare token, and so a failing deploy log says which step it
+# reached.
 
 echo "==> Schema and data migrations"
 bin/rails db:migrate data:migrate
