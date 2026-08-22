@@ -573,6 +573,8 @@
         "stats": {
           "total": "Gesamt",
           "count": "Beiträge",
+          "currentMonth": "Diesen Monat",
+          "currentMonthCount": "%{count} Beiträge",
           "recurringCount": "Wiederkehrend",
           "anonymousCount": "Anonym"
         },

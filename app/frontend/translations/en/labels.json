@@ -898,6 +898,8 @@
         "stats": {
           "total": "Total",
           "count": "Contributions",
+          "currentMonth": "This Month",
+          "currentMonthCount": "%{count} contributions",
           "recurringCount": "Recurring",
           "anonymousCount": "Anonymous"
         },

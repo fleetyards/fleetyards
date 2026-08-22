@@ -27,12 +27,24 @@ module Admin
           authorize! with: ::Admin::SupporterContributionPolicy
 
           q = SupporterContribution.ransack(supporter_contribution_query_params.except("sorts"))
-          @stats = q.result(distinct: true).pick(
+          scope = q.result(distinct: true)
+
+          @stats = scope.pick(
             Arel.sql("COALESCE(SUM(amount_cents), 0)"),
             Arel.sql("MAX(currency)"),
             Arel.sql("COUNT(*)"),
             Arel.sql("COUNT(*) FILTER (WHERE recurring)"),
             Arel.sql("COUNT(*) FILTER (WHERE anonymous)")
+          )
+          # Its own query rather than a FILTER beside the others: `active_now`
+          # takes a recurring contribution for every month it spans, which is
+          # what the chart's current-month column shows. Raw SQL for the same
+          # reason the totals above use it - `sum` on a `distinct` relation
+          # emits SUM(DISTINCT amount_cents), which would collapse two
+          # supporters giving the same amount into one.
+          @current_month = scope.active_now.pick(
+            Arel.sql("COALESCE(SUM(amount_cents), 0)"),
+            Arel.sql("COUNT(*)")
           )
         end
 

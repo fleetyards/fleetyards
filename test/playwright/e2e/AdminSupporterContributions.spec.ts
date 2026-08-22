@@ -18,6 +18,31 @@ test.describe("Admin Supporter Contributions", () => {
     await expect(page).toHaveURL(/\/admin\/?$/);
   });
 
+  test("Shows the current month beside the all-time totals", async ({ page }) => {
+    await page.goto("/admin/supporter-contributions/");
+
+    const stats = page.getByTestId("supporter-contributions-stats");
+
+    await expect(stats).toBeVisible();
+
+    // Anchored on the label, because the month figure carries the word
+    // "contributions" too and a plain substring match would hit both entries.
+    const entry = (label: RegExp) =>
+      stats
+        .locator(".supporter-contributions-stats__entry")
+        .filter({ hasText: label })
+        .locator(".supporter-contributions-stats__value");
+
+    // Two of the scenario's three contributions are active this month, worth
+    // EUR 75.00 together: the still-running recurring one and today's one-off.
+    // The third churned three months ago, so it counts towards the all-time
+    // total and not towards the month.
+    await expect(entry(/^Total/)).toHaveText("€85.00");
+    await expect(entry(/^This Month/)).toContainText("€75.00");
+    await expect(entry(/^This Month/)).toContainText("2 contributions");
+    await expect(entry(/^Contributions/)).toHaveText("3");
+  });
+
   test("Renders the monthly contributions chart against the funding goal", async ({
     page,
   }) => {

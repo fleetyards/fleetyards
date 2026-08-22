@@ -51,7 +51,36 @@ class Admin::Api::V1::SupporterContributionsStatsTest < ActionDispatch::Integrat
       assert_equal 3, parsed_body["totalCount"]
       assert_equal 1, parsed_body["recurringCount"]
       assert_equal 1, parsed_body["anonymousCount"]
+      assert_equal 1_750, parsed_body["currentMonthAmountCents"]
+      assert_equal 3, parsed_body["currentMonthCount"]
       assert_equal false, parsed_body["patreonSyncEnabled"]
+    end
+  end
+
+  test "GET /supporter-contributions/stats sums what is active this month" do
+    create(:supporter_contribution, amount_cents: 300, started_at: 3.months.ago.to_date)
+    create(:supporter_contribution, :recurring, amount_cents: 1_000, started_at: 6.months.ago.to_date)
+    create(:supporter_contribution, :recurring, amount_cents: 700, started_at: 8.months.ago.to_date, ended_at: 4.months.ago.to_date)
+    create(:supporter_contribution, amount_cents: 500, started_at: Date.current)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal 2_500, parsed_body["totalAmountCents"]
+      assert_equal 4, parsed_body["totalCount"]
+      assert_equal 1_500, parsed_body["currentMonthAmountCents"]
+      assert_equal 2, parsed_body["currentMonthCount"]
+    end
+  end
+
+  # Two supporters at the same amount, because `sum` on the ransack relation
+  # would emit SUM(DISTINCT amount_cents) and report half of this.
+  test "GET /supporter-contributions/stats keeps equal amounts apart" do
+    create(:supporter_contribution, amount_cents: 1_000)
+    create(:supporter_contribution, amount_cents: 1_000)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal 2_000, parsed_body["currentMonthAmountCents"]
     end
   end
 
