@@ -12,11 +12,11 @@ code that read it — `hardpoints-v2` sat in Flipper for months after #4176 dele
 its last reference. A version-controlled registry makes the inventory a PR diff
 and lets a deploy reconcile reality with it.
 
-The registry owns the flag **list** and which surface a self-service toggle for
-each flag belongs on. The admin UI owns each flag's **gates** (boolean, actors,
-groups, percentages) and its `feature_settings.self_service`, which is what
-decides whether the flag may be toggled outside `/admin/features` at all — the
-registry cannot declare that, and sync never writes it.
+The registry owns the flag **list**, and nothing else about a flag's behaviour.
+The admin UI owns its **gates** (boolean, actors, groups, percentages) and its
+self-service — both whether the flag may be toggled outside `/admin/features` at
+all and which surface that toggle lives on. The registry cannot declare either,
+and sync never writes them.
 
 Creating and deleting flags through the admin UI was removed along with this
 change. It could not coexist with pruning: a flag added there has no registry
@@ -26,10 +26,11 @@ entry, so the next deploy deleted it and every gate configured on it.
 
 | File | Purpose |
 | --- | --- |
-| `config/feature_flags.yml` | Registry — per flag: `description`, optional `permanent`, `self_service_scope` (`user` or `fleet`) |
+| `config/feature_flags.yml` | Registry — per flag: `description`, optional `permanent` |
 | `FeatureFlags::Registry` | Loads and validates the YAML (naming, required/known keys) |
-| `FeatureFlags::Definition` | Value object for one flag (`name`, `description`, `permanent?`, `self_service_scope`) |
-| `FeatureFlags::Synchronizer` | Reconciles Flipper with the registry: adds missing, reconciles scopes, prunes orphaned |
+| `FeatureFlags::Definition` | Value object for one flag (`name`, `description`, `permanent?`) |
+| `FeatureFlags::Synchronizer` | Reconciles Flipper with the registry: adds missing, prunes orphaned |
+| `FeatureSetting` | The self-service decision — whether a toggle exists and which surface it lives on. Written only by `/admin/features` |
 | `bin/feature-flags` | CLI: `validate`, `plan`, `sync`, `export` |
 
 Rails autoloads `lib/` (`config.autoload_lib`), so these classes carry no
@@ -52,7 +53,6 @@ bin/feature-flags export     # print a YAML skeleton of the live Flipper state
    ```yaml
    my_new_flag:
      description: "What this toggles"
-     self_service_scope: fleet  # optional — see Self-service scopes below
    ```
 
 2. Validate: `bin/feature-flags validate`.
@@ -60,25 +60,28 @@ bin/feature-flags export     # print a YAML skeleton of the live Flipper state
    **off** by default, with no self-service toggle.
 4. Turn it on per user, per fleet, or globally at `/admin/features`.
 5. Offer users a toggle of their own, if the flag should have one, with the
-   **Self-service** switch on the same page.
+   **Self-service** switch on the same page — and pick where it lives with
+   **Toggle lives in** beside it.
 
-Step 5 is the admin UI's alone. Sync never writes
-`feature_settings.self_service`, in either direction, so a deploy can neither
-hand out a toggle nor take one away — which also means a new flag arrives with no
-toggle until somebody grants it one, on a fresh development database included.
+Step 5 is the admin UI's alone. Sync never writes `self_service` or
+`self_service_scope`, in either direction, so a deploy can neither hand out a
+toggle nor take one away nor move one — which also means a new flag arrives with
+no toggle until somebody grants it one, on a fresh development database
+included.
 
 ## Self-service scopes
 
-`self_service_scope` says *who* owns the toggle, given an admin has granted one:
+`feature_settings.self_service_scope` says *who* owns the toggle, given an admin
+has granted one. It is set with **Toggle lives in** at `/admin/features`, and
+defaults to `user`:
 
 | Value | Fleet-wide switch lives at | Who may flip it |
 | --- | --- | --- |
 | `user` | nowhere — the flag is personal | — |
 | `fleet` | a fleet's Settings → Features | members holding `fleet:manage` |
-| omitted | nowhere — the column default makes it personal | — |
 
-It never says whether a toggle exists. That is `feature_settings.self_service`,
-written only by the **Self-service** switch at `/admin/features`.
+The scope can be set before self-service is switched on, so a fleet feature never
+has to pass through a state where it is personally toggleable.
 
 The scope says where the **fleet-wide** switch lives. Every self-service flag,
 whatever its scope, also keeps a **personal** toggle in Settings → Features:
@@ -97,12 +100,6 @@ to switch one on for everyone, and because the backend gate ORs the user actor i
 (`Flipper.enabled?(flag, user, fleet)`), a user-scoped toggle on a fleet feature
 would let them do exactly that in every fleet they belong to.
 
-The **scope is reconciled on every sync**, unlike the setting it qualifies: it describes
-which surface the code reads the flag from, so a release that moves a flag from
-personal settings to a fleet's has to take effect rather than wait for an admin.
-Existing settings only — a flag nobody has granted a toggle has no row to
-correct, and the admin UI seeds the scope from the registry when it creates one.
-
 Read a fleet-scoped flag against the fleet — `Flipper.enabled?(:my_flag, fleet)`
 in Ruby (or `feature_enabled?(:my_flag, @fleet)` in a controller, which ORs the
 current user in), and `isFleetFeatureEnabled(fleet, FeatureFlagName.MY_FLAG)` in
@@ -113,7 +110,8 @@ than the viewer.
 Read it in code exactly as before: `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
 `isFeatureEnabled('my_new_flag')` in Vue.
 
-Locally, `bin/feature-flags sync` creates the flag in your dev database.
+Locally, `bin/feature-flags sync` creates the flag in your dev database — off, and
+with no self-service toggle until you grant one at `/admin/features`.
 
 `permanent: true` marks a long-lived infrastructure gate (the OAuth provider
 flags, for example) rather than a temporary rollout expected to be cleaned up. It

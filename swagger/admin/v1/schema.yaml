@@ -1760,6 +1760,51 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/features/{id}/self-service-scope":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Set Feature Self-Service Scope
+      tags:
+      - Features
+      operationId: updateAdminFeatureSelfServiceScope
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureSelfServiceScopeInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/toggle-self-service":
     parameters:
     - name: id
@@ -9871,6 +9916,11 @@ components:
           type: string
         selfService:
           type: boolean
+        selfServiceScope:
+          type: string
+          enum:
+          - user
+          - fleet
         percentageOfActors:
           type: number
         percentageOfTime:
@@ -9888,6 +9938,7 @@ components:
       - name
       - state
       - selfService
+      - selfServiceScope
       - percentageOfActors
       - percentageOfTime
       - groups
@@ -9940,6 +9991,18 @@ components:
       required:
       - percentage
       title: FeaturePercentageInput
+    FeatureSelfServiceScopeInput:
+      type: object
+      properties:
+        scope:
+          type: string
+          enum:
+          - user
+          - fleet
+      additionalProperties: false
+      required:
+      - scope
+      title: FeatureSelfServiceScopeInput
     FieldError:
       type: object
       properties:

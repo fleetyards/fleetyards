@@ -12,13 +12,14 @@ module Admin
             name: {type: :string},
             state: {type: :string},
             selfService: {type: :boolean},
+            selfServiceScope: {type: :string, enum: FeatureSetting::SELF_SERVICE_SCOPES},
             percentageOfActors: {type: :number},
             percentageOfTime: {type: :number},
             groups: {type: :array, items: {type: :string}},
             actors: {type: :array, items: {"$ref": "#/components/schemas/FeatureActor"}}
           },
           additionalProperties: false,
-          required: %w[name state selfService percentageOfActors percentageOfTime groups actors]
+          required: %w[name state selfService selfServiceScope percentageOfActors percentageOfTime groups actors]
         })
       end
     end

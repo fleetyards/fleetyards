@@ -27,6 +27,8 @@ import {
   enableAdminFeaturePercentageOfActors,
   enableAdminFeaturePercentageOfTime,
   toggleAdminFeatureSelfService,
+  updateAdminFeatureSelfServiceScope,
+  FeatureSelfServiceScopeInputScope,
   type Feature,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -62,6 +64,20 @@ const selectedFleet = ref<string | undefined>(undefined);
 const actorTypeOptions = [
   { label: t("labels.features.user"), value: "User" },
   { label: t("labels.features.fleet"), value: "Fleet" },
+];
+
+// Where a self-service toggle lives, for a flag that has one. A personal toggle
+// on a fleet-wide feature lets any member switch it on for every fleet they are
+// in, because the backend ORs the user actor in — so it is a choice per flag.
+const selfServiceScopeOptions = [
+  {
+    label: t("labels.features.scopeUser"),
+    value: FeatureSelfServiceScopeInputScope.user,
+  },
+  {
+    label: t("labels.features.scopeFleet"),
+    value: FeatureSelfServiceScopeInputScope.fleet,
+  },
 ];
 
 const availableGroups = ["testers", "admins"];
@@ -161,6 +177,21 @@ const updatePercentageOfTime = async (
 const toggleSelfServiceFlag = async (feature: FeatureItem) => {
   try {
     await toggleAdminFeatureSelfService(feature.name);
+    void invalidateFeatures();
+    displaySuccess({ text: t("messages.features.updated") });
+  } catch {
+    displayAlert({ text: t("messages.features.error") });
+  }
+};
+
+const updateSelfServiceScope = async (
+  feature: FeatureItem,
+  scope: FeatureSelfServiceScopeInputScope,
+) => {
+  if (scope === feature.selfServiceScope) return;
+
+  try {
+    await updateAdminFeatureSelfServiceScope(feature.name, { scope });
     void invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
   } catch {
@@ -277,6 +308,24 @@ const hasSelectedActor = computed(() => {
             data-test="toggle-self-service"
             @toggle="toggleSelfServiceFlag(item)"
           />
+          <FilterGroup
+            :model-value="item.selfServiceScope"
+            inline
+            name="self-service-scope"
+            :options="selfServiceScopeOptions"
+            :nullable="false"
+            :label="t('labels.features.selfServiceScope')"
+            data-test="self-service-scope"
+            @update:model-value="
+              updateSelfServiceScope(
+                item,
+                $event as FeatureSelfServiceScopeInputScope,
+              )
+            "
+          />
+          <p class="edit-hint">
+            {{ t("labels.features.selfServiceScopeHint") }}
+          </p>
         </div>
 
         <div class="edit-section" data-test="edit-section">
@@ -414,6 +463,12 @@ const hasSelectedActor = computed(() => {
     margin: 0 0 0.5rem;
     font-size: 0.9rem;
   }
+}
+
+.edit-hint {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
 }
 
 .edit-percentage {

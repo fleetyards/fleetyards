@@ -16,8 +16,15 @@
 #  index_feature_settings_on_feature_name  (feature_name) UNIQUE
 #
 class FeatureSetting < ApplicationRecord
+  # Which surface a flag's self-service toggle lives on. Owned here rather than
+  # in the registry: whether a flag is self-service at all, and where, is decided
+  # at /admin/features, and a deploy has no say in either.
+  USER_SCOPE = "user"
+  FLEET_SCOPE = "fleet"
+  SELF_SERVICE_SCOPES = [USER_SCOPE, FLEET_SCOPE].freeze
+
   validates :feature_name, presence: true, uniqueness: true
-  validates :self_service_scope, inclusion: {in: FeatureFlags::Definition::SELF_SERVICE_SCOPES}
+  validates :self_service_scope, inclusion: {in: SELF_SERVICE_SCOPES}
 
   scope :self_service, -> { where(self_service: true) }
 

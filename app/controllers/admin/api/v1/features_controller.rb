@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class FeaturesController < ::Admin::Api::BaseController
-        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_self_service]
+        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_self_service update_self_service_scope]
 
         def index
           authorize! with: ::Admin::FeaturePolicy
@@ -88,17 +88,33 @@ module Admin
         def toggle_self_service
           setting = FeatureSetting.find_or_initialize_by(feature_name: @feature.name.to_s)
           setting.self_service = !setting.self_service
-          # Which surface reads the flag is the registry's call, not the admin's:
-          # a row created here would otherwise default to personal settings and
-          # offer a fleet-wide feature to individual members.
-          setting.self_service_scope = registry_self_service_scope || setting.self_service_scope
           setting.save!
 
           render :show
         end
 
-        private def registry_self_service_scope
-          FeatureFlags::Registry.load.fetch(@feature.name)&.self_service_scope
+        # Which surface the toggle lives on, for a flag that has one. A personal
+        # toggle on a fleet-wide feature would let any member switch it on for
+        # every fleet they belong to, because the backend ORs the user actor in —
+        # so this is a deliberate choice per flag, not a default to fall into.
+        def update_self_service_scope
+          scope = params[:scope].to_s
+
+          # Request validation rejects an out-of-enum scope before this runs, so
+          # this is only here to keep an unvalidated request off the model
+          # validation, which would 500 rather than say what was wrong.
+          unless FeatureSetting::SELF_SERVICE_SCOPES.include?(scope)
+            return render json: {
+              code: "feature.invalid_self_service_scope",
+              message: "Scope must be one of #{FeatureSetting::SELF_SERVICE_SCOPES.join(", ")}"
+            }, status: :unprocessable_entity
+          end
+
+          setting = FeatureSetting.find_or_initialize_by(feature_name: @feature.name.to_s)
+          setting.self_service_scope = scope
+          setting.save!
+
+          render :show
         end
 
         private def set_feature

@@ -3,7 +3,10 @@
 json.name feature.name
 json.state feature.state.to_s
 
-json.selfService FeatureSetting.self_service_anywhere?(feature.name)
+setting = FeatureSetting.find_by(feature_name: feature.name.to_s)
+
+json.selfService setting&.self_service || false
+json.selfServiceScope setting&.self_service_scope || FeatureSetting::USER_SCOPE
 
 json.percentageOfActors feature.percentage_of_actors_value
 json.percentageOfTime feature.percentage_of_time_value

@@ -62,7 +62,11 @@
         "fleetFeatureInfo": "Hier eingeschaltet gilt sie nur für Sie. Die Admins Ihrer Flotte können sie für die gesamte Flotte aktivieren.",
         "toggleForSelf": "Nur für Sie umschalten",
         "fleetFeatureGrantedShort": "Von Flotte aktiviert",
-        "fleetFeatureGranted": "Ihre Flotte hat dies für alle Mitglieder aktiviert, daher kann es hier nicht abgeschaltet werden."
+        "fleetFeatureGranted": "Ihre Flotte hat dies für alle Mitglieder aktiviert, daher kann es hier nicht abgeschaltet werden.",
+        "selfServiceScope": "Schalter liegt in",
+        "scopeUser": "Benutzereinstellungen",
+        "scopeFleet": "Flotteneinstellungen",
+        "selfServiceScopeHint": "Ein persönlicher Schalter für eine flottenweite Funktion erlaubt jedem Mitglied, sie für alle seine Flotten zu aktivieren."
       },
       "oauthApplication": {
         "name": "Anwendungsname",

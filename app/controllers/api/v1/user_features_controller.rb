@@ -86,7 +86,7 @@ module Api
       # count. Accepted memberships only — a pending invitation does not give the
       # user the feature yet.
       private def granting_fleets(feature_name, scope = self_service_scope(feature_name))
-        return [] unless scope == FeatureFlags::Definition::FLEET_SCOPE
+        return [] unless scope == FeatureSetting::FLEET_SCOPE
 
         accepted_fleets.select { |fleet| Flipper.enabled?(feature_name, fleet) }
       end

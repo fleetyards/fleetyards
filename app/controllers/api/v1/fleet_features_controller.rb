@@ -57,7 +57,7 @@ module Api
       # Only flags the registry declared fleet-scoped. A user-scoped flag toggled
       # here would put a personal surface behind a fleet's admins.
       private def fleet_self_service_feature_names
-        FeatureSetting.self_service_feature_names(scope: FeatureFlags::Definition::FLEET_SCOPE)
+        FeatureSetting.self_service_feature_names(scope: FeatureSetting::FLEET_SCOPE)
       end
 
       private def toggleable_feature?

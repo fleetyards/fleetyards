@@ -57,7 +57,11 @@
         "fleetFeatureInfo": "Attivandola qui vale solo per te. Gli amministratori della tua flotta possono attivarla per tutta la flotta.",
         "toggleForSelf": "Attiva solo per te",
         "fleetFeatureGrantedShort": "Attivato dalla flotta",
-        "fleetFeatureGranted": "La tua flotta l'ha attivata per tutti i membri, quindi non può essere disattivata qui."
+        "fleetFeatureGranted": "La tua flotta l'ha attivata per tutti i membri, quindi non può essere disattivata qui.",
+        "selfServiceScope": "L'interruttore si trova in",
+        "scopeUser": "Impostazioni utente",
+        "scopeFleet": "Impostazioni flotta",
+        "selfServiceScopeHint": "Un interruttore personale su una funzionalità di flotta permette a ogni membro di attivarla per tutte le sue flotte."
       },
       "oauthApplication": {
         "name": "Nome applicazione",
