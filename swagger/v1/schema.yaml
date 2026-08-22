@@ -14188,10 +14188,18 @@ components:
           type: string
         enabled:
           type: boolean
+        toggleable:
+          type: boolean
+        groups:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       required:
       - name
       - enabled
+      - toggleable
+      - groups
       title: FleetFeature
     FleetInventoriesList:
       type: object
@@ -20178,6 +20186,8 @@ components:
           enum:
           - user
           - fleet
+        toggleable:
+          type: boolean
         fleets:
           type: array
           items:
@@ -20191,13 +20201,19 @@ components:
             required:
             - name
             - slug
+        groups:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       required:
       - name
       - enabled
       - enabledForSelf
       - scope
+      - toggleable
       - fleets
+      - groups
       title: UserFeature
     UserPublic:
       type: object

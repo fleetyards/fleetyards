@@ -101,4 +101,17 @@ class Api::V1::FleetsFeaturesDisableTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 404, path_params: {fleetSlug: @fleet.slug, id: "FleetWideFeature"}
   end
+
+  test "PUT /fleets/:slug/features/:id/disable returns 403 when a group the fleet is in enabled it" do
+    with_flipper_group(:fleets, ->(actor, _context) { actor.respond_to?(:slug) }) do
+      Flipper.enable_group("FleetWideFeature", :fleets)
+      sign_in @admin
+
+      assert_api_response :put, 403, path_params: {fleetSlug: @fleet.slug, id: "FleetWideFeature"} do
+        assert Flipper.enabled?("FleetWideFeature", @fleet),
+          "clearing the fleet's own gate would not take the group's grant away, so the API refuses " \
+          "rather than reporting a change nobody will see"
+      end
+    end
+  end
 end

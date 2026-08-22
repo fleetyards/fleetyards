@@ -114,4 +114,16 @@ class Api::V1::UserFeaturesDisableTest < ActionDispatch::IntegrationTest
         "a pending invitation does not hand the fleet control of the user's toggle"
     end
   end
+
+  test "PUT /user-features/:id/disable returns 403 when a group the user is in enabled it" do
+    tester = create(:user, :tester)
+    Flipper.enable_group("TestFeature", :testers)
+    sign_in tester
+
+    assert_api_response :put, 403, path_params: {id: "TestFeature"} do
+      assert Flipper.enabled?("TestFeature", tester),
+        "clearing the personal gate would not take the group's grant away, so the API refuses " \
+        "rather than reporting a change the user will not see"
+    end
+  end
 end

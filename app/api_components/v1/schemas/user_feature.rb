@@ -15,6 +15,7 @@ module V1
           enabled: {type: :boolean},
           enabledForSelf: {type: :boolean},
           scope: {type: :string, enum: FeatureFlags::Definition::SELF_SERVICE_SCOPES},
+          toggleable: {type: :boolean},
           fleets: {
             type: :array,
             items: {
@@ -26,10 +27,14 @@ module V1
               additionalProperties: false,
               required: %w[name slug]
             }
+          },
+          groups: {
+            type: :array,
+            items: {type: :string}
           }
         },
         additionalProperties: false,
-        required: %w[name enabled enabledForSelf scope fleets]
+        required: %w[name enabled enabledForSelf scope toggleable fleets groups]
       })
     end
   end

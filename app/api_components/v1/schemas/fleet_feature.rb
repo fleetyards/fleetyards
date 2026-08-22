@@ -9,10 +9,15 @@ module V1
         type: :object,
         properties: {
           name: {type: :string},
-          enabled: {type: :boolean}
+          enabled: {type: :boolean},
+          toggleable: {type: :boolean},
+          groups: {
+            type: :array,
+            items: {type: :string}
+          }
         },
         additionalProperties: false,
-        required: %w[name enabled]
+        required: %w[name enabled toggleable groups]
       })
     end
   end
