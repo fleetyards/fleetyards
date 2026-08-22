@@ -37,7 +37,8 @@ WORKTREE_MARKER = "# -- worktree-managed --"
 SHARED_PATHS = [
   {path: "storage", create: true},
   {path: "dumps", create: true},
-  {path: "data/sc_data/raw", create: false}
+  {path: "data/sc_data/raw", create: false},
+  {path: "data/sc_data/parsed", create: false}
 ].freeze
 
 def detect_worktree
