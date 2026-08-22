@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.3](https://github.com/fleetyards/fleetyards/compare/v7.0.2...v7.0.3) (2026-08-22)
+
+
+### Bug Fixes
+
+* **bin:** read ARGV without consuming it before booting Rails ([056098a](https://github.com/fleetyards/fleetyards/commit/056098ac1fbc85c13c7bd1ae5f31c62ca38f2d07))
+
 ## [7.0.2](https://github.com/fleetyards/fleetyards/compare/v7.0.1...v7.0.2) (2026-08-22)
 
 
