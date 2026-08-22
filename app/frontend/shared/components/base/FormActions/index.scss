@@ -3,5 +3,8 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    // The two buttons were separated by collapsed whitespace alone. Same 12px
+    // the panel heading puts between the controls in its actions block.
+    gap: 12px;
   }
 }

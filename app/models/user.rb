@@ -5,6 +5,7 @@
 # Table name: users
 #
 #  id                        :uuid             not null, primary key
+#  calendar_feed_token       :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -13,6 +14,7 @@
 #  current_sign_in_ip        :string(255)
 #  current_system            :string
 #  current_system_code       :string
+#  date_format               :string           default("dmy_dots"), not null
 #  discord                   :string
 #  email                     :string(255)      default(""), not null
 #  encrypted_otp_secret      :string
@@ -63,6 +65,7 @@
 #
 # Indexes
 #
+#  index_users_on_calendar_feed_token   (calendar_feed_token) UNIQUE
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_last_active_at        (last_active_at)
@@ -280,6 +283,46 @@ class User < ApplicationRecord
   # reading them from a preloaded association costs one query for all providers
   # instead of one per profile url - the fleet vehicle list asks every owner for
   # two of them.
+  DATE_FORMATS = {
+    "dmy_dots" => "dd.MM.yyyy",
+    "dmy_slash" => "dd/MM/yyyy",
+    "mdy_slash" => "MM/dd/yyyy",
+    "ymd_dash" => "yyyy-MM-dd"
+  }.freeze
+
+  validates :date_format, inclusion: {in: DATE_FORMATS.keys}
+
+  def discord_uid
+    connection_for("discord")&.uid
+  end
+
+  def calendar_feed_enabled?
+    calendar_feed_token.present?
+  end
+
+  def ensure_calendar_feed_token!
+    return calendar_feed_token if calendar_feed_token.present?
+
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def rotate_calendar_feed_token!
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def clear_calendar_feed_token!
+    update_column(:calendar_feed_token, nil)
+  end
+
+  def self.generate_calendar_feed_token
+    loop do
+      token = SecureRandom.urlsafe_base64(32)
+      break token unless exists?(calendar_feed_token: token)
+    end
+  end
+
   private def connection_for(provider)
     omniauth_connections.detect { |connection| connection.provider == provider }
   end

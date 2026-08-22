@@ -44,9 +44,24 @@ withDefaults(defineProps<Props>(), {
  * - there was no class for it in the map and no rule in the stylesheet.
  */
 .panel-body {
-  @apply relative overflow-hidden;
+  @apply relative;
   padding: 4px 18px 18px;
   transition: border-radius 150ms ease;
+}
+
+/*
+ * Clipping belongs to the rounded variants, not to every body. A select's list
+ * is positioned out of the flow and taller than the space under its field, so a
+ * body that clipped unconditionally cut the options off at the panel's edge —
+ * which is what the sign-up panel's vehicle picker did. The rounded case still
+ * clips, and the full-bleed link inside it has its own overflow rule below.
+ */
+.panel-body--rounded,
+.panel-body--rounded-top,
+.panel-body--rounded-right,
+.panel-body--rounded-bottom,
+.panel-body--rounded-left {
+  @apply overflow-hidden;
 }
 
 /*

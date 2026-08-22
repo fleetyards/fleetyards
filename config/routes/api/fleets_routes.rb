@@ -39,6 +39,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
+  resource :fleet_notification_setting, path: "notifications", only: %i[show update] do
+    get "discord-status", action: :discord_status
+  end
+
   get "inventory-items", to: "fleet_all_inventory_items#index"
   get "inventory-stock", to: "fleet_all_inventory_stock#index"
 
@@ -50,6 +54,53 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     get "stock/:slug", to: "fleet_inventory_stock#show", as: "stock_item"
     patch "stock/:slug", to: "fleet_inventory_stock#update"
     delete "stock/:slug", to: "fleet_inventory_stock#destroy"
+  end
+
+  resources :missions, param: :slug, only: %i[index show create update destroy] do
+    put :unarchive, on: :member
+    resources :mission_teams, path: "teams", only: %i[create update destroy] do
+      put :sort, on: :collection
+      resources :mission_ships, path: "ships", only: %i[create update destroy] do
+        put :sort, on: :collection
+        post :duplicate, on: :member
+      end
+    end
+    resources :fleet_events, path: "events", only: %i[create]
+  end
+
+  get "calendar", to: "fleet_calendars#show"
+  get "events.ics", to: "fleet_calendars#ics", as: :calendar_feed, defaults: {format: "ics"}, constraints: {format: "ics"}
+
+  resource :calendar_subscription, path: "calendar/subscription", only: %i[show create destroy] do
+    post :rotate
+  end
+
+  resources :fleet_events, path: "events", param: :slug, only: %i[index show create update destroy], constraints: {slug: %r{[^/.]+}} do
+    member do
+      put :publish
+      put "lock-signups", action: :lock_signups
+      put "unlock-signups", action: :unlock_signups
+      put :start
+      put :complete
+      put :cancel
+      put :unarchive
+      post "sync-to-discord", action: :sync_to_discord
+      post "skip-occurrence", action: :skip_occurrence
+      post "end-series", action: :end_series
+      patch "update-occurrence", action: :update_occurrence
+      post :signup, to: "fleet_event_signups#event_signup"
+      get "event.ics", action: :ics, defaults: {format: "ics"}, constraints: {format: "ics"}
+    end
+
+    resources :fleet_event_admins, path: "admins", only: %i[index create destroy]
+
+    resources :fleet_event_teams, path: "teams", only: %i[create update destroy] do
+      put :sort, on: :collection
+      resources :fleet_event_ships, path: "ships", only: %i[create update destroy] do
+        put :sort, on: :collection
+        post "expand-from-model", action: :expand_from_model, on: :member
+      end
+    end
   end
 
   resource :fleet_stats, path: "stats", only: %i[] do

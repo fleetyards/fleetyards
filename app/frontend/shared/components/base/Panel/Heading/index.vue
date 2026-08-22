@@ -112,7 +112,15 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
   @apply items-start;
   border-top-left-radius: var(--radius-surface-inner, 14px);
   border-top-right-radius: var(--radius-surface-inner, 14px);
-  background: linear-gradient(to bottom, rgb(0 0 0 / 0.8), transparent);
+  /* Held through the middle rather than fading immediately: a heading that
+     carries a subtitle as well as a title had nothing left under the second
+     line, and a bright hull swallowed it. */
+  background: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.8),
+    rgb(0 0 0 / 0.55) 55%,
+    transparent
+  );
 }
 
 .panel-heading--bottom {
@@ -131,8 +139,12 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
   padding-right: 37px;
 }
 
+/* A head can carry more than one control - the calendar's paginator sits beside
+   its view switch - and they were separated by nothing but collapsed whitespace.
+   Same 12px the metric head puts between its title and this block. */
 .panel-heading__actions {
-  @apply absolute right-0 top-0;
+  @apply absolute right-0 top-0 flex items-center;
+  gap: 12px;
   margin-right: 10px;
   padding-top: 10px;
 }

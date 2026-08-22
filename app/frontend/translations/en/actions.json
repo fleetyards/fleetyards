@@ -13,6 +13,7 @@
           "syncFromPatreon": "Sync from Patreon"
         }
       },
+      "duplicate": "Duplicate",
       "showReleased": "Show old Releases",
       "hideReleased": "Hide old Releases",
       "upgrade": "Update available!",
@@ -38,6 +39,8 @@
       "here": "here",
       "backToList": "Back to List",
       "backToTop": "Back to Top",
+      "previous": "Previous",
+      "next": "Next",
       "cancel": "Cancel",
       "ok": "Ok",
       "reset": "Reset",
@@ -84,6 +87,7 @@
       "addGroup": "Add Group",
       "editGroup": "Edit Group",
       "remove": "Remove",
+      "reorder": "Reorder",
       "delete": "Delete",
       "deleteSelected": "Delete Selected",
       "enableSelected": "Enable Selected",
@@ -205,6 +209,15 @@
         },
         "inviteUrls": {
           "create": "Create new Invite Url"
+        },
+        "discord": {
+          "test": "Test Discord connection",
+          "installBot": "Install the Fleetyards bot in your Discord server"
+        },
+        "calendarSubscription": {
+          "enable": "Generate subscription link",
+          "rotate": "Rotate link",
+          "disable": "Disable subscription"
         }
       },
       "model": {
@@ -280,6 +293,60 @@
         "destroyAll": "Delete all",
         "sortOldest": "Oldest first",
         "sortNewest": "Newest first"
+      },
+      "account": {
+        "calendarSubscription": {
+          "enable": "Generate personal calendar link",
+          "rotate": "Rotate link",
+          "disable": "Disable subscription"
+        }
+      },
+      "today": "Today",
+      "fleets": {
+        "missions": {
+          "create": "Create Mission",
+          "edit": "Edit Mission",
+          "archive": "Archive Mission",
+          "unarchive": "Unarchive",
+          "destroy": "Delete Permanently",
+          "addTeam": "Add Team",
+          "addShip": "Add Ship",
+          "addSlot": "Add Slot",
+          "viewMissions": "View Missions"
+        },
+        "events": {
+          "create": "Create Event",
+          "edit": "Edit Event",
+          "spawn": "Spawn from this Mission",
+          "archive": "Archive Event",
+          "unarchive": "Restore from archive",
+          "syncToDiscord": "Sync to Discord",
+          "destroy": "Delete Permanently",
+          "publish": "Publish",
+          "lockSignups": "Lock signups",
+          "unlockSignups": "Unlock signups",
+          "start": "Start",
+          "complete": "Complete",
+          "cancel": "Cancel",
+          "signup": "Sign up",
+          "withdraw": "Withdraw",
+          "kick": "Remove signup",
+          "viewEvents": "View Events",
+          "viewCalendar": "View Calendar",
+          "exportIcs": "Export iCal",
+          "addToCalendar": "Add to calendar",
+          "subscribe": "Subscribe",
+          "setUpCalendar": "Set up calendar subscriptions",
+          "assignSlot": "Assign to slot",
+          "reassignSlot": "Move to another slot",
+          "addSeats": "Add seats",
+          "manageEventTeam": "Manage event team",
+          "grantRole": "Grant role",
+          "revokeRole": "Revoke",
+          "editSchedule": "Edit teams & ships",
+          "doneEditing": "Done editing",
+          "addTeam": "Add team"
+        }
       }
     }
   }

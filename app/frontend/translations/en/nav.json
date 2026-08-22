@@ -47,11 +47,31 @@
         "logistics": {
           "index": "Logistics"
         },
+        "missions": {
+          "index": "Missions",
+          "edit": {
+            "basic": "Basic",
+            "description": "Description",
+            "teams": "Teams & slots"
+          }
+        },
+        "events": {
+          "index": "Events",
+          "calendar": "Calendar",
+          "edit": {
+            "basic": "Basic",
+            "description": "Description",
+            "teams": "Teams & slots"
+          }
+        },
         "settings": {
           "index": "Settings",
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Roles",
+          "notifications": "Notifications",
+          "discord": "Discord",
+          "calendar": "Calendar",
           "features": "Features"
         }
       },
@@ -79,6 +99,7 @@
         "account": "Account",
         "security": "Security",
         "notifications": "Notifications",
+        "calendar": "Calendar",
         "hangar": "Hangar",
         "privacy": "Privacy",
         "features": "Features",
@@ -91,6 +112,7 @@
         "index": "Visual Tests",
         "panels": "Panels",
         "buttons": "Buttons",
+        "events": "Events",
         "typography": "Typography",
         "forms": "Forms",
         "tables": "Tables",

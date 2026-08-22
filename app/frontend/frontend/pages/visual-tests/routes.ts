@@ -9,6 +9,15 @@ export const routes = [
     },
   },
   {
+    path: "events/",
+    name: "visual-tests-events",
+    component: () => import("@/frontend/pages/visual-tests/events.vue"),
+    meta: {
+      title: "visualTests.events",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "buttons/",
     name: "visual-tests-buttons",
     component: () => import("@/frontend/pages/visual-tests/buttons.vue"),

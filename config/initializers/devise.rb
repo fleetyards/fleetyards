@@ -247,7 +247,7 @@ Devise.setup do |config|
   config.omniauth :google_oauth2, Rails.configuration.app.google[:oauth_client_id], Rails.configuration.app.google[:oauth_secret], name: :google
   config.omniauth :github, Rails.configuration.app.github[:oauth_client_id], Rails.configuration.app.github[:oauth_secret], scope: "user"
   config.omniauth :twitch, Rails.configuration.app.twitch[:oauth_client_id], Rails.configuration.app.twitch[:oauth_secret]
-  config.omniauth :discord, Rails.configuration.app.discord[:oauth_client_id], Rails.configuration.app.discord[:oauth_secret], scope: "identify email"
+  config.omniauth :discord, Rails.configuration.app.discord[:client_id], Rails.configuration.app.discord[:oauth_secret], scope: "identify email"
   bluesky_private_key = Rails.application.credentials.dig(:bluesky, :private_key)
   bluesky_jwk = Rails.application.credentials.dig(:bluesky, :jwk)
   if bluesky_private_key.present? && bluesky_jwk.present?

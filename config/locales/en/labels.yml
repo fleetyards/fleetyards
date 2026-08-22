@@ -76,3 +76,5 @@ en:
       url: URL
     tax_excluded: excl. VAT
     unknown: Unknown
+    mission_ship:
+      placeholder: Unspecified Ship
