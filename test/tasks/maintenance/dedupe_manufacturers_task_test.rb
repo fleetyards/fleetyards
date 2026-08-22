@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require_relative "../../support/legacy_manufacturer_duplicates"
 
 module Maintenance
   class DedupeManufacturersTaskTest < ActiveSupport::TestCase
+    include LegacyManufacturerDuplicates
+
+    # The duplicates the task cleans up are ones the database now refuses to
+    # hold, so the index comes off for the duration of each test.
     setup do
       Manufacturer.delete_all
+      allow_duplicate_manufacturer_slugs
     end
 
     # An accidental run has to report rather than destroy, so the safe mode is

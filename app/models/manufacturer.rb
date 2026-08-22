@@ -18,6 +18,10 @@
 #  updated_at   :datetime
 #  rsi_id       :integer
 #
+# Indexes
+#
+#  index_manufacturers_on_slug  (slug) UNIQUE
+#
 class Manufacturer < ApplicationRecord
   include ActionView::Helpers::OutputSafetyHelper
   include ActiveStorageVariants
