@@ -57,7 +57,13 @@
         "fleetFeatureInfo": "L'activer ici ne l'active que pour vous. Les administrateurs de votre flotte peuvent l'activer pour toute la flotte.",
         "toggleForSelf": "Activer pour vous uniquement",
         "fleetFeatureGrantedShort": "Activé par la flotte",
-        "fleetFeatureGranted": "Votre flotte l'a activé pour tous les membres, il ne peut donc pas être désactivé ici."
+        "fleetFeatureGranted": "Votre flotte l'a activé pour tous les membres, il ne peut donc pas être désactivé ici.",
+        "groupFeatureGrantedShort": "Activé par le groupe",
+        "groupFeatureGranted": "Un groupe dont vous faites partie a activé cette fonctionnalité, elle ne peut donc pas être désactivée ici.",
+        "groupFeatureGrantedFleet": "Un groupe dont cette flotte fait partie a activé cette fonctionnalité, elle ne peut donc pas être désactivée ici.",
+        "managedFeatureShort": "Géré",
+        "managedFeature": "Cette fonctionnalité a été activée pour votre compte et ne peut pas être modifiée ici.",
+        "managedFeatureFleet": "Cette fonctionnalité a été activée pour cette flotte et ne peut pas être modifiée ici."
       },
       "oauthApplication": {
         "name": "Nom de l'application",

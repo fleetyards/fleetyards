@@ -57,7 +57,13 @@
         "fleetFeatureInfo": "Activarla aquí la habilita solo para usted. Los administradores de su flota pueden habilitarla para toda la flota.",
         "toggleForSelf": "Activar solo para usted",
         "fleetFeatureGrantedShort": "Activado por la flota",
-        "fleetFeatureGranted": "Su flota lo activó para todos los miembros, por lo que no se puede desactivar aquí."
+        "fleetFeatureGranted": "Su flota lo activó para todos los miembros, por lo que no se puede desactivar aquí.",
+        "groupFeatureGrantedShort": "Activado por el grupo",
+        "groupFeatureGranted": "Un grupo al que pertenece tiene esta función activada, por lo que no se puede desactivar aquí.",
+        "groupFeatureGrantedFleet": "Un grupo al que pertenece esta flota tiene esta función activada, por lo que no se puede desactivar aquí.",
+        "managedFeatureShort": "Gestionado",
+        "managedFeature": "Esta función se activó para su cuenta y no se puede cambiar aquí.",
+        "managedFeatureFleet": "Esta función se activó para esta flota y no se puede cambiar aquí."
       },
       "oauthApplication": {
         "name": "Nombre de la aplicación",

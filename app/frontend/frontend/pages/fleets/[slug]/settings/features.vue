@@ -62,7 +62,20 @@ const featureItems = computed<FeatureItem[]>(
     features.value?.map((feature) => ({ ...feature, id: feature.name })) ?? [],
 );
 
+// Nothing here can reach a group gate, and clearing the fleet's own gate would
+// not undo one, so a flag a group grants is listed to explain where it came from
+// and nothing else. Same for a flag the registry never declared fleet
+// self-service — the API refuses either way.
+const readOnly = (feature: FeatureItem) => !feature.toggleable;
+
+const grantTooltip = (feature: FeatureItem) =>
+  feature.groups.length
+    ? t("labels.features.groupFeatureGrantedFleet")
+    : t("labels.features.managedFeatureFleet");
+
 const toggleFeature = async (feature: FeatureItem) => {
+  if (readOnly(feature)) return;
+
   try {
     if (feature.enabled) {
       await disableFleetFeature(props.fleet.slug, feature.name);
@@ -116,11 +129,30 @@ const toggleFeature = async (feature: FeatureItem) => {
       <span class="feature-name">
         {{ item.name.replace(/_/g, " ").replace(/-/g, " ") }}
       </span>
+      <span
+        v-if="readOnly(item)"
+        v-tooltip="grantTooltip(item)"
+        class="feature-scope"
+      >
+        <BasePill uppercase>
+          {{
+            item.groups.length
+              ? t("labels.features.groupFeatureGrantedShort")
+              : t("labels.features.managedFeatureShort")
+          }}
+        </BasePill>
+      </span>
+      <span v-if="item.groups.length" class="feature-groups">
+        {{ item.groups.join(", ") }}
+      </span>
     </template>
 
     <template #actions="{ item, mobile }">
       <Btn
-        v-tooltip="t('labels.features.toggle')"
+        v-tooltip="
+          readOnly(item) ? grantTooltip(item) : t('labels.features.toggle')
+        "
+        :disabled="readOnly(item)"
         @click="toggleFeature(item)"
         :variant="BtnVariantsEnum.GHOST"
       >
@@ -143,5 +175,14 @@ const toggleFeature = async (feature: FeatureItem) => {
 .feature-name {
   font-weight: 600;
   text-transform: capitalize;
+}
+
+.feature-scope {
+  margin-left: 0.5rem;
+}
+
+.feature-groups {
+  margin-left: 0.5rem;
+  color: var(--text-muted);
 }
 </style>
