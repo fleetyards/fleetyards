@@ -10,6 +10,7 @@ import DirectUpload, {
   type FileUpload,
 } from "@/shared/components/DirectUpload/index.vue";
 import {
+  isHoloField,
   mapFolderFiles,
   type FolderField,
   type MappedFile,
@@ -35,6 +36,33 @@ const nameOf = (file: File) => file.webkitRelativePath || file.name;
 
 const basename = (filename: string) => filename.split("/").pop() || filename;
 
+// What the preview beside a single upload has always handed the holo viewer,
+// and what three's FileLoader decodes where it stands rather than fetching. The
+// pictures are happy behind a blob: URL; a model behind one was not.
+const readDataUrl = (file: File) =>
+  new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+
+    reader.readAsDataURL(file);
+  });
+
+const publishPreviews = () => {
+  emit("selected", Object.fromEntries(previews));
+};
+
+const forget = (field: FolderField) => {
+  const previous = previews.get(field);
+
+  if (previous?.startsWith("blob:")) {
+    URL.revokeObjectURL(previous);
+  }
+
+  previews.delete(field);
+};
+
 // Runs before a single byte goes up, and it is the only gate: a name that spells
 // out a field, with the extension that field takes, or the file stays where it
 // is. So a folder's odds and ends never become blobs no view is attached to.
@@ -50,25 +78,30 @@ const filterFolder = (files: File[]) => {
 
   // A signed id only arrives once the upload finishes, but the file itself can
   // be shown at once -- a picture as a picture, a holo in its viewer -- so no
-  // input sits there empty meanwhile.
+  // input sits there empty meanwhile. Reading a holo takes a moment, so it
+  // lands in a second round.
   plan.value.forEach(({ field, file }) => {
-    const previous = previews.get(field);
+    forget(field);
 
-    if (previous) {
-      URL.revokeObjectURL(previous);
+    if (isHoloField(field)) {
+      void readDataUrl(file).then((url) => {
+        previews.set(field, url);
+        publishPreviews();
+      });
+
+      return;
     }
 
     previews.set(field, URL.createObjectURL(file));
   });
 
-  emit("selected", Object.fromEntries(previews));
+  publishPreviews();
 
   return matched.map(({ item }) => item);
 };
 
 onBeforeUnmount(() => {
-  previews.forEach((url) => URL.revokeObjectURL(url));
-  previews.clear();
+  Array.from(previews.keys()).forEach(forget);
 });
 
 const onFilesRejected = (files: File[]) => {
