@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.2](https://github.com/fleetyards/fleetyards/compare/v7.0.1...v7.0.2) (2026-08-22)
+
+
+### Bug Fixes
+
+* **deploy:** move the pre-deploy steps into bin/deploy-release ([b28737c](https://github.com/fleetyards/fleetyards/commit/b28737ce2d9db2f94eae5f12114773272f9d1c5a))
+
 ## [7.0.1](https://github.com/fleetyards/fleetyards/compare/v7.0.0...v7.0.1) (2026-08-22)
 
 
