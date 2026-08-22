@@ -122,8 +122,11 @@ Already wired in `config/deploy.yml`. The `discord_bot` role:
   decrypts credentials with the existing `RAILS_MASTER_KEY` env, so
   the role doesn't need any extra `env.secret` entries.
 - 512 MB memory cap.
-- Pinned to a single host (default: the primary web host, override via
-  `KAMAL_DISCORD_BOT_HOST`). **Do not scale this past 1** — Discord
+- Pinned to a single host in each destination config — the first web IP
+  returned by `.kamal/server-ips web <dest>`, override via
+  `KAMAL_DISCORD_BOT_HOST`. Any override has to be a host the deploy job
+  already keyscanned, i.e. one of the web or accessory IPs.
+  **Do not scale this past 1** — Discord
   rejects the second Gateway connection per application and the bot
   silently restarts in a tight loop.
 - `DISCORD_BOT_TOKEN` flows through `env.secret`.

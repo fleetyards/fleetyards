@@ -21,9 +21,7 @@ servers:
   discord_bot:
     # Long-running Gateway listener that turns Discord scheduled-event RSVPs
     # into Fleetyards signups. Single instance per Discord application — do
-    # not scale this role above 1.
-    hosts:
-      - <%= ENV.fetch("KAMAL_DISCORD_BOT_HOST", "fleetyards-web-1") %>
+    # not scale this role above 1. Host comes from the destination config.
     cmd: bin/discord-bot
     options:
       memory: 512m

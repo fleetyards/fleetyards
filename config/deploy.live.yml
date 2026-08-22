@@ -11,6 +11,9 @@ servers:
   worker:
     hosts:
 <%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
+  discord_bot:
+    hosts:
+      - <%= ENV.fetch("KAMAL_DISCORD_BOT_HOST", web_ips.first) %>
 
 builder:
   args:
