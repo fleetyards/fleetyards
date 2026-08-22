@@ -35,8 +35,8 @@ module FeatureFlags
       Registry.new(raw: names.to_h { |name| [name, {"description" => name}] })
     end
 
-    def self_service_registry(*names, scope: "user")
-      Registry.new(raw: names.to_h { |name| [name, {"description" => name, "self_service" => scope}] })
+    def scoped_registry(*names, scope: "fleet")
+      Registry.new(raw: names.to_h { |name| [name, {"description" => name, "self_service_scope" => scope}] })
     end
 
     def sync(registry:, flipper:, **options)
@@ -86,60 +86,59 @@ module FeatureFlags
         "an interrupted prune must be repaired by the next run"
     end
 
-    test "seeds the setting of a flag declared self-service" do
-      sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new)
+    test "creates no setting for a flag that names a scope" do
+      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new)
 
-      assert FeatureSetting.self_service?("hangar_inventories", scope: "user"),
-        "a self-service flag must arrive user-toggleable without a data migration"
+      assert_not FeatureSetting.exists?(feature_name: "fleet_logistics"),
+        "whether a flag may be toggled outside /admin/features is the admin UI's call, " \
+        "and a row exists to record that decision"
     end
 
-    test "leaves a self-service setting an admin has switched off alone" do
-      FeatureSetting.create!(feature_name: "hangar_inventories", self_service: false)
+    test "never switches self-service on" do
+      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: false)
 
-      sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new(["hangar_inventories"]))
+      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new(["fleet_logistics"]))
 
-      assert_not FeatureSetting.self_service?("hangar_inventories", scope: "user"),
-        "the registry seeds self-service; a deploy must not undo the admin"
+      assert_not FeatureSetting.find_by(feature_name: "fleet_logistics").self_service,
+        "a deploy must not overrule an admin who left the toggle off"
     end
 
-    test "seeds a fleet-scoped flag with the fleet scope" do
-      sync(registry: self_service_registry("fleet_logistics", scope: "fleet"), flipper: FakeFlipper.new)
+    test "never switches self-service off" do
+      FeatureSetting.create!(feature_name: "plain", self_service: true)
 
-      assert FeatureSetting.self_service?("fleet_logistics", scope: "fleet")
-      assert_not FeatureSetting.self_service?("fleet_logistics", scope: "user"),
-        "a fleet-wide feature must not be offered in personal settings"
+      sync(registry: registry("plain"), flipper: FakeFlipper.new(["plain"]))
+
+      assert FeatureSetting.find_by(feature_name: "plain").self_service,
+        "and must not overrule an admin who switched it on, whatever the registry says"
     end
 
     test "reconciles the scope of an existing setting" do
       FeatureSetting.create!(feature_name: "fleet_logistics", self_service: true, self_service_scope: "user")
 
-      sync(registry: self_service_registry("fleet_logistics", scope: "fleet"), flipper: FakeFlipper.new(["fleet_logistics"]))
-
-      assert_equal "fleet", FeatureSetting.find_by(feature_name: "fleet_logistics").self_service_scope,
-        "the scope belongs to the code reading the flag, so a release moving it must take effect"
-    end
-
-    test "reconciling the scope leaves an admin's self-service decision alone" do
-      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: false, self_service_scope: "user")
-
-      sync(registry: self_service_registry("fleet_logistics", scope: "fleet"), flipper: FakeFlipper.new(["fleet_logistics"]))
+      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new(["fleet_logistics"]))
 
       setting = FeatureSetting.find_by(feature_name: "fleet_logistics")
 
-      assert_equal "fleet", setting.self_service_scope
-      assert_not setting.self_service, "the registry seeds self-service; a deploy must not undo the admin"
+      assert_equal "fleet", setting.self_service_scope,
+        "the scope belongs to the code reading the flag, so a release moving it must take effect"
+      assert setting.self_service, "which is no reason to touch the admin's decision"
     end
 
-    test "leaves flags that do not declare self-service without a setting" do
-      sync(registry: registry("plain"), flipper: FakeFlipper.new)
+    test "leaves the scope of a flag that names none alone" do
+      FeatureSetting.create!(feature_name: "plain", self_service: true, self_service_scope: "fleet")
 
-      assert_not FeatureSetting.exists?(feature_name: "plain")
+      sync(registry: registry("plain"), flipper: FakeFlipper.new(["plain"]))
+
+      assert_equal "fleet", FeatureSetting.find_by(feature_name: "plain").self_service_scope,
+        "silence in the registry is not a claim that the flag is personal"
     end
 
-    test "dry_run seeds nothing" do
-      sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new, dry_run: true)
+    test "dry_run reconciles nothing" do
+      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: true, self_service_scope: "user")
 
-      assert_not FeatureSetting.exists?(feature_name: "hangar_inventories")
+      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new(["fleet_logistics"]), dry_run: true)
+
+      assert_equal "user", FeatureSetting.find_by(feature_name: "fleet_logistics").self_service_scope
     end
 
     test "dry_run leaves self-service settings alone" do
