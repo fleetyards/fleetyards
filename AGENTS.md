@@ -236,8 +236,7 @@ Flags are declared in **`config/feature_flags.yml`** — the single source of tr
 To add a flag:
 
 1. Add an entry with a `description` (plus `permanent: true` for long-lived
-   infrastructure gates like the OAuth providers, and `self_service_scope: fleet`
-   if a toggle for it belongs in a fleet's settings rather than a user's):
+   infrastructure gates like the OAuth providers):
 
    ```yaml
    my_new_flag:
@@ -249,14 +248,12 @@ To add a flag:
 4. Read it as usual — `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
    `isFeatureEnabled('my_new_flag')` in Vue.
 
-Flags are created **off**, and toggling their gates stays at `/admin/features`.
-Whether a flag may be toggled *outside* `/admin/features` is also decided there
-alone — the registry cannot declare it, and sync never writes
-`feature_settings.self_service` in either direction. `self_service_scope` only
-says which surface such a toggle belongs on, and *is* reconciled on every sync,
-because it describes which surface the code reads the flag from. Read a
-fleet-scoped flag against the fleet (`isFleetFeatureEnabled(fleet, …)` in Vue,
-off the fleet payload's `features`).
+Flags are created **off** and with no self-service toggle. Everything about a
+flag's behaviour is decided at `/admin/features`: its gates, and a self-service
+switch per surface — **Users can toggle** for a personal one, **Fleet admins can
+toggle** for a fleet-wide one, either or both. The registry declares none of it,
+and sync never writes `feature_settings`. Read a fleet feature against the fleet
+(`isFleetFeatureEnabled(fleet, …)` in Vue, off the fleet payload's `features`).
 
 To remove a flag, delete its entry — the next deploy prunes the Flipper feature,
 all of its gate values and its `FeatureSetting` row (irreversible).

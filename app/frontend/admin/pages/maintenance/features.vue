@@ -26,7 +26,8 @@ import {
   disableAdminFeatureGroup,
   enableAdminFeaturePercentageOfActors,
   enableAdminFeaturePercentageOfTime,
-  toggleAdminFeatureSelfService,
+  toggleAdminFeatureUserSelfService,
+  toggleAdminFeatureFleetSelfService,
   type Feature,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -158,9 +159,19 @@ const updatePercentageOfTime = async (
   }
 };
 
-const toggleSelfServiceFlag = async (feature: FeatureItem) => {
+const toggleUserSelfService = async (feature: FeatureItem) => {
   try {
-    await toggleAdminFeatureSelfService(feature.name);
+    await toggleAdminFeatureUserSelfService(feature.name);
+    void invalidateFeatures();
+    displaySuccess({ text: t("messages.features.updated") });
+  } catch {
+    displayAlert({ text: t("messages.features.error") });
+  }
+};
+
+const toggleFleetSelfService = async (feature: FeatureItem) => {
+  try {
+    await toggleAdminFeatureFleetSelfService(feature.name);
     void invalidateFeatures();
     displaySuccess({ text: t("messages.features.updated") });
   } catch {
@@ -230,8 +241,11 @@ const hasSelectedActor = computed(() => {
         {{ stateLabel(item.state) }}
       </BasePill>
       <span class="feature-name" data-test="feature-name">{{ item.name }}</span>
-      <BasePill v-if="item.selfService" margin-right>
-        {{ t("labels.features.selfService") }}
+      <BasePill v-if="item.selfServiceUser" margin-right>
+        {{ t("labels.features.selfServiceUser") }}
+      </BasePill>
+      <BasePill v-if="item.selfServiceFleet" margin-right>
+        {{ t("labels.features.selfServiceFleet") }}
       </BasePill>
       <BasePill v-if="item.percentageOfActors > 0" margin-right>
         {{ item.percentageOfActors }}%
@@ -268,14 +282,16 @@ const hasSelectedActor = computed(() => {
         <div class="edit-section" data-test="edit-section">
           <h4>{{ t("headlines.admin.features.selfService") }}</h4>
           <Toggle
-            :active="item.selfService"
-            :label="
-              item.selfService
-                ? t('labels.features.selfServiceEnabled')
-                : t('labels.features.selfServiceDisabled')
-            "
+            :active="item.selfServiceUser"
+            :label="t('labels.features.selfServiceUser')"
             data-test="toggle-self-service"
-            @toggle="toggleSelfServiceFlag(item)"
+            @toggle="toggleUserSelfService(item)"
+          />
+          <Toggle
+            :active="item.selfServiceFleet"
+            :label="t('labels.features.selfServiceFleet')"
+            data-test="toggle-fleet-self-service"
+            @toggle="toggleFleetSelfService(item)"
           />
         </div>
 
@@ -353,8 +369,9 @@ const hasSelectedActor = computed(() => {
               class="edit-actor-item"
             >
               <BasePill uppercase margin-right>{{ actor.type }}</BasePill>
-              <span>{{ actor.name }}</span>
+              <span class="edit-actor-name">{{ actor.name }}</span>
               <Btn
+                class="edit-actor-remove"
                 @click.prevent="removeActor(item.name, actor.type, actor.id)"
               >
                 <i class="fa-duotone fa-times" />
@@ -445,10 +462,12 @@ const hasSelectedActor = computed(() => {
   gap: 0.25rem;
 }
 
+// A flag can carry a few dozen actors, and one per row left the panel a narrow
+// strip down the left with the rest of the width empty.
 .edit-actors {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.25rem 1rem;
   margin-bottom: 0.75rem;
 }
 
@@ -456,6 +475,19 @@ const hasSelectedActor = computed(() => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  min-width: 0;
+}
+
+.edit-actor-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Against the right edge of its own column, so the buttons line up instead of
+// stepping in and out with the length of each name.
+.edit-actor-remove {
+  margin-left: auto;
 }
 
 .add-actor-form {

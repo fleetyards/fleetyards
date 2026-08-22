@@ -59,31 +59,19 @@ module FeatureFlags
       assert_includes errors.join, "permanent must be a boolean"
     end
 
-    test "leaves a flag that names no scope on the personal default" do
-      definition = registry("plain" => {"description" => "A"}).fetch("plain")
-
-      assert_nil definition.self_service_scope,
-        "the surface is unclaimed, and the column default makes a toggle personal"
-    end
-
-    test "reads the fleet self_service scope" do
-      definition = registry("fleet_flag" => {"description" => "A", "self_service_scope" => "fleet"}).fetch("fleet_flag")
-
-      assert_equal "fleet", definition.self_service_scope
-    end
-
     test "rejects self_service, which no longer belongs in the registry" do
       errors = registry("my_flag" => {"description" => "x", "self_service" => "user"}).validation_errors
 
       assert_includes errors.join, "unknown keys",
-        "whether a flag may be toggled outside /admin/features is the admin UI's call, " \
-        "so a stale key has to fail rather than read as if it still did something"
+        "self-service is the admin UI's call, so a stale key has to fail rather " \
+        "than read as if it still did something"
     end
 
-    test "rejects an unknown self_service scope" do
-      errors = registry("my_flag" => {"description" => "x", "self_service_scope" => "squadron"}).validation_errors
+    test "rejects self_service_scope, which no longer belongs in the registry either" do
+      errors = registry("my_flag" => {"description" => "x", "self_service_scope" => "fleet"}).validation_errors
 
-      assert_includes errors.join, "self_service_scope must be one of"
+      assert_includes errors.join, "unknown keys",
+        "which surface the toggle lives on is part of the same decision"
     end
 
     test "allows hyphens so the oauth provider gates stay valid" do

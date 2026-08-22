@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class FeaturesController < ::Admin::Api::BaseController
-        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_self_service]
+        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_user_self_service toggle_fleet_self_service]
 
         def index
           authorize! with: ::Admin::FeaturePolicy
@@ -85,20 +85,24 @@ module Admin
           render :show
         end
 
-        def toggle_self_service
+        # One toggle per surface, because the two are independent. A fleet feature
+        # normally wants both: the fleet switch covers every member, and the
+        # personal one lets a member preview it without switching it on for the
+        # rest of the fleet.
+        def toggle_user_self_service
+          toggle_self_service(:self_service_user)
+        end
+
+        def toggle_fleet_self_service
+          toggle_self_service(:self_service_fleet)
+        end
+
+        private def toggle_self_service(column)
           setting = FeatureSetting.find_or_initialize_by(feature_name: @feature.name.to_s)
-          setting.self_service = !setting.self_service
-          # Which surface reads the flag is the registry's call, not the admin's:
-          # a row created here would otherwise default to personal settings and
-          # offer a fleet-wide feature to individual members.
-          setting.self_service_scope = registry_self_service_scope || setting.self_service_scope
+          setting[column] = !setting[column]
           setting.save!
 
           render :show
-        end
-
-        private def registry_self_service_scope
-          FeatureFlags::Registry.load.fetch(@feature.name)&.self_service_scope
         end
 
         private def set_feature

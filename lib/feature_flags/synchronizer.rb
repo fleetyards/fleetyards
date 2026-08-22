@@ -5,8 +5,10 @@ module FeatureFlags
   #
   #   * flags in the registry but missing in Flipper are added
   #   * flags in Flipper but absent from the registry are removed (prune)
-  #   * the self-service scope of a flag that already has a FeatureSetting is
-  #     brought in line with the registry
+  #
+  # It never touches a flag's self-service, in either direction — not whether a
+  # toggle is offered and not which surface it lives on. Both are decided at
+  # /admin/features, and a deploy has no say in either.
   #
   # Pruning removes the flag along with all of its gate values, which is what
   # makes the registry authoritative. FEATURE_FLAGS_PRUNE=false disables removal
@@ -77,8 +79,6 @@ module FeatureFlags
     def apply!(to_add, to_remove)
       to_add.each { |name| flipper.add(name) }
 
-      reconcile_self_service_scopes
-
       return unless prune
 
       to_remove.each { |name| flipper.remove(name) }
@@ -92,26 +92,6 @@ module FeatureFlags
       # strand a setting whose feature is already gone — and no later run would
       # ever look at it again, because it is no longer in Flipper to be removed.
       FeatureSetting.where.not(feature_name: registry.names).destroy_all
-    end
-
-    # Whether a flag may be toggled outside /admin/features is the admin UI's
-    # call alone. Sync never writes `self_service` and never creates a row to
-    # carry one: an admin flipping the toggle there creates the row, and a deploy
-    # has no business overruling them in either direction.
-    #
-    # The scope is not a rollout decision — it says which surface the code reads
-    # the flag from, so a release that moves a flag from personal settings to a
-    # fleet's has to take effect rather than wait for an admin. Existing rows
-    # only, for the same reason: a flag nobody has switched on has no setting to
-    # correct, and the admin UI seeds the scope from the registry when it creates
-    # one.
-    def reconcile_self_service_scopes
-      scoped = registry.definitions.select(&:self_service_scope).index_by(&:name)
-      return if scoped.empty?
-
-      FeatureSetting.where(feature_name: scoped.keys).find_each do |setting|
-        setting.update!(self_service_scope: scoped.fetch(setting.feature_name).self_service_scope)
-      end
     end
 
     def log_result(to_add, to_remove)

@@ -35,10 +35,6 @@ module FeatureFlags
       Registry.new(raw: names.to_h { |name| [name, {"description" => name}] })
     end
 
-    def scoped_registry(*names, scope: "fleet")
-      Registry.new(raw: names.to_h { |name| [name, {"description" => name, "self_service_scope" => scope}] })
-    end
-
     def sync(registry:, flipper:, **options)
       Synchronizer.new(registry: registry, flipper: flipper, **options).call
     end
@@ -64,18 +60,18 @@ module FeatureFlags
     end
 
     test "pruning a flag also removes its self-service setting" do
-      FeatureSetting.create!(feature_name: "orphan", self_service: true)
-      FeatureSetting.create!(feature_name: "keeper", self_service: true)
+      FeatureSetting.create!(feature_name: "orphan", self_service_user: true)
+      FeatureSetting.create!(feature_name: "keeper", self_service_user: true)
 
       sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]))
 
-      assert_not FeatureSetting.self_service?("orphan", scope: "user"),
+      assert_not FeatureSetting.user_toggleable?("orphan"),
         "a re-declared flag would otherwise come back user-toggleable"
-      assert FeatureSetting.self_service?("keeper", scope: "user")
+      assert FeatureSetting.user_toggleable?("keeper")
     end
 
     test "cleans up settings for flags flipper no longer knows about" do
-      FeatureSetting.create!(feature_name: "ghost", self_service: true)
+      FeatureSetting.create!(feature_name: "ghost", self_service_user: true)
       flipper = FakeFlipper.new(["keeper"])
 
       result = sync(registry: registry("keeper"), flipper: flipper)
@@ -86,75 +82,55 @@ module FeatureFlags
         "an interrupted prune must be repaired by the next run"
     end
 
-    test "creates no setting for a flag that names a scope" do
-      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new)
+    test "creates no setting for a flag it adds" do
+      sync(registry: registry("fleet_logistics"), flipper: FakeFlipper.new)
 
       assert_not FeatureSetting.exists?(feature_name: "fleet_logistics"),
-        "whether a flag may be toggled outside /admin/features is the admin UI's call, " \
-        "and a row exists to record that decision"
+        "self-service is the admin UI's call, and a row is what records that call"
     end
 
     test "never switches self-service on" do
-      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: false)
+      FeatureSetting.create!(feature_name: "fleet_logistics", self_service_user: false)
 
-      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new(["fleet_logistics"]))
+      sync(registry: registry("fleet_logistics"), flipper: FakeFlipper.new(["fleet_logistics"]))
 
-      assert_not FeatureSetting.find_by(feature_name: "fleet_logistics").self_service,
+      assert_not FeatureSetting.user_toggleable?("fleet_logistics"),
         "a deploy must not overrule an admin who left the toggle off"
     end
 
     test "never switches self-service off" do
-      FeatureSetting.create!(feature_name: "plain", self_service: true)
+      FeatureSetting.create!(feature_name: "plain", self_service_user: true)
 
       sync(registry: registry("plain"), flipper: FakeFlipper.new(["plain"]))
 
-      assert FeatureSetting.find_by(feature_name: "plain").self_service,
-        "and must not overrule an admin who switched it on, whatever the registry says"
+      assert FeatureSetting.user_toggleable?("plain"),
+        "and must not overrule an admin who switched it on"
     end
 
-    test "reconciles the scope of an existing setting" do
-      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: true, self_service_scope: "user")
-
-      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new(["fleet_logistics"]))
-
-      setting = FeatureSetting.find_by(feature_name: "fleet_logistics")
-
-      assert_equal "fleet", setting.self_service_scope,
-        "the scope belongs to the code reading the flag, so a release moving it must take effect"
-      assert setting.self_service, "which is no reason to touch the admin's decision"
-    end
-
-    test "leaves the scope of a flag that names none alone" do
-      FeatureSetting.create!(feature_name: "plain", self_service: true, self_service_scope: "fleet")
+    test "leaves the fleet toggle alone" do
+      FeatureSetting.create!(feature_name: "plain", self_service_user: true, self_service_fleet: true)
 
       sync(registry: registry("plain"), flipper: FakeFlipper.new(["plain"]))
 
-      assert_equal "fleet", FeatureSetting.find_by(feature_name: "plain").self_service_scope,
-        "silence in the registry is not a claim that the flag is personal"
-    end
-
-    test "dry_run reconciles nothing" do
-      FeatureSetting.create!(feature_name: "fleet_logistics", self_service: true, self_service_scope: "user")
-
-      sync(registry: scoped_registry("fleet_logistics"), flipper: FakeFlipper.new(["fleet_logistics"]), dry_run: true)
-
-      assert_equal "user", FeatureSetting.find_by(feature_name: "fleet_logistics").self_service_scope
+      assert FeatureSetting.fleet_toggleable?("plain"),
+        "which surfaces a flag is toggleable on is the admin's call too, and the " \
+        "registry cannot express it to disagree"
     end
 
     test "dry_run leaves self-service settings alone" do
-      FeatureSetting.create!(feature_name: "orphan", self_service: true)
+      FeatureSetting.create!(feature_name: "orphan", self_service_user: true)
 
       sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]), dry_run: true)
 
-      assert FeatureSetting.self_service?("orphan", scope: "user")
+      assert FeatureSetting.user_toggleable?("orphan")
     end
 
     test "prune: false leaves self-service settings alone" do
-      FeatureSetting.create!(feature_name: "orphan", self_service: true)
+      FeatureSetting.create!(feature_name: "orphan", self_service_user: true)
 
       sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]), prune: false)
 
-      assert FeatureSetting.self_service?("orphan", scope: "user")
+      assert FeatureSetting.user_toggleable?("orphan")
     end
 
     test "reports no changes when flipper already matches" do

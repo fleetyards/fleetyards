@@ -11,19 +11,6 @@
 #     description: "…"           # REQUIRED — what does the flag toggle?
 #     permanent: true            # optional — long-lived infrastructure gate
 #                                #   rather than a temporary rollout
-#     self_service_scope: fleet  # optional — which surface a self-service
-#                                #   toggle for this flag belongs on. `user`
-#                                #   (the default) means Settings > Features;
-#                                #   `fleet` means a fleet's settings, for
-#                                #   holders of fleet:manage, so one member
-#                                #   cannot switch a feature on for everyone.
-#                                #   Reconciled on every sync, because it
-#                                #   belongs to the code reading the flag.
-#                                #
-#                                #   Whether a toggle is offered at all is NOT
-#                                #   declared here — that is admins' call at
-#                                #   /admin/features, and a deploy never
-#                                #   overrules it in either direction.
 #
 # Rules are enforced by `bin/feature-flags validate`, which CI runs on every
 # push. Seeded from the flags live in Flipper at the time the registry was
@@ -31,7 +18,6 @@
 
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
-  self_service_scope: fleet
 
 fleet_mission_builder:
   description: "Mission builder — fleet missions, events, the calendar and Discord sync"

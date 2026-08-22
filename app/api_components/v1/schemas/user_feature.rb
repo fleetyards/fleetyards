@@ -14,7 +14,7 @@ module V1
           name: {type: :string},
           enabled: {type: :boolean},
           enabledForSelf: {type: :boolean},
-          scope: {type: :string, enum: FeatureFlags::Definition::SELF_SERVICE_SCOPES},
+          scope: {type: :string, enum: FeatureSetting::SELF_SERVICE_SCOPES},
           toggleable: {type: :boolean},
           fleets: {
             type: :array,

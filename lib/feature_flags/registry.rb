@@ -11,10 +11,6 @@ module FeatureFlags
   #   hangar_inventories:
   #     description: "Personal hangar inventories"
   #
-  #   fleet_logistics:
-  #     description: "Fleet inventories"
-  #     self_service_scope: fleet
-  #
   #   oauth-discord:
   #     description: "Discord login"
   #     permanent: true
@@ -27,7 +23,7 @@ module FeatureFlags
     NAME_PATTERN = /\A[a-z][a-z0-9_-]*\z/
     MAX_NAME_LENGTH = 60
     REQUIRED_KEYS = %w[description].freeze
-    KNOWN_KEYS = %w[description permanent self_service_scope].freeze
+    KNOWN_KEYS = %w[description permanent].freeze
     BOOLEAN_KEYS = %w[permanent].freeze
 
     class InvalidRegistryError < StandardError; end
@@ -107,17 +103,7 @@ module FeatureFlags
         errors << "#{name}: #{key} must be a boolean"
       end
 
-      errors.concat(self_service_scope_errors(name, attrs))
-    end
-
-    # A typo like `self_service_scope: fleets` has to fail loudly rather than
-    # quietly leaving the flag on the personal default, which would offer a
-    # fleet-wide feature to individual members.
-    private def self_service_scope_errors(name, attrs)
-      value = attrs["self_service_scope"]
-      return [] if value.nil? || Definition::SELF_SERVICE_SCOPES.include?(value)
-
-      ["#{name}: self_service_scope must be one of #{Definition::SELF_SERVICE_SCOPES.inspect}"]
+      errors
     end
 
     private def build_definition(name, attrs)
@@ -126,8 +112,7 @@ module FeatureFlags
       Definition.new(
         name: name,
         description: attrs["description"],
-        permanent: attrs["permanent"] == true,
-        self_service_scope: attrs["self_service_scope"]
+        permanent: attrs["permanent"] == true
       )
     end
 
