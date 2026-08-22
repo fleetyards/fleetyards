@@ -5,9 +5,11 @@
       "chooseFiles": "Choose files",
       "dropzone": {
         "textMultiple": "Drop files here",
+        "textDirectory": "Drop a folder here",
         "text": "Drop file here",
         "or": "or",
-        "browse": "browse"
+        "browse": "browse",
+        "browseDirectory": "choose a folder"
       },
       "previewImage": {
         "remove": "Remove"
