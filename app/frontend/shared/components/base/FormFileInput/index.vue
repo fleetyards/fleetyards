@@ -130,6 +130,11 @@ const isHolo = computed(() => {
 
 const internalSrc = ref<string>();
 
+// Whether this input's own upload is showing what it uploaded. A value set from
+// outside -- the views folder filling the whole form -- is not that, and hiding
+// the picture for it left the input blank.
+const uploadedHere = ref(false);
+
 const hasErrors = computed(() => {
   return errors.value.length;
 });
@@ -153,6 +158,8 @@ onMounted(() => {
 const emit = defineEmits(["update:modelValue"]);
 
 const clear = () => {
+  uploadedHere.value = false;
+
   if (inputValue.value) {
     directUpload.value?.clear();
   } else {
@@ -167,11 +174,14 @@ const onUploadDone = (files: FileUpload[]) => {
     return;
   }
 
+  uploadedHere.value = true;
   inputValue.value = files[0].blob.signed_id;
   emit("update:modelValue", files[0].blob.signed_id);
 };
 
 const onUploadClear = () => {
+  uploadedHere.value = false;
+
   resetField({
     value: props.modelValue,
   });
@@ -209,6 +219,8 @@ const slots = useSlots();
 const directUpload = ref<InstanceType<typeof DirectUpload>>();
 
 const setup = () => {
+  uploadedHere.value = false;
+
   directUpload.value?.clear();
 
   internalSrc.value = isHolo.value ? props.file?.url : props.file?.smallUrl;
@@ -266,7 +278,7 @@ defineExpose({
       </label>
     </transition>
     <div class="base-image-input__wrapper">
-      <template v-if="!inputValue || previewSrc">
+      <template v-if="!uploadedHere">
         <!-- A value set from outside brings its own picture: the upload that
              filled it happened elsewhere, so this input has none to show. -->
         <LazyImage
