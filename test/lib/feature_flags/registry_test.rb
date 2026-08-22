@@ -59,56 +59,19 @@ module FeatureFlags
       assert_includes errors.join, "permanent must be a boolean"
     end
 
-    test "reads self_service, defaulting to off" do
-      definitions = registry(
-        "plain" => {"description" => "A"},
-        "toggleable" => {"description" => "B", "self_service" => "user"}
-      ).definitions
+    test "rejects self_service, which no longer belongs in the registry" do
+      errors = registry("my_flag" => {"description" => "x", "self_service" => "user"}).validation_errors
 
-      assert_not_predicate definitions.first, :self_service?
-      assert_nil definitions.first.self_service_scope
-      assert_predicate definitions.last, :self_service?
-      assert_predicate definitions.last, :self_service_user?
+      assert_includes errors.join, "unknown keys",
+        "self-service is the admin UI's call, so a stale key has to fail rather " \
+        "than read as if it still did something"
     end
 
-    test "reads the fleet self_service scope" do
-      definition = registry("fleet_flag" => {"description" => "A", "self_service" => "fleet"}).fetch("fleet_flag")
+    test "rejects self_service_scope, which no longer belongs in the registry either" do
+      errors = registry("my_flag" => {"description" => "x", "self_service_scope" => "fleet"}).validation_errors
 
-      assert_predicate definition, :self_service?
-      assert_predicate definition, :self_service_fleet?
-      assert_not_predicate definition, :self_service_user?
-      assert_equal "fleet", definition.self_service_scope
-    end
-
-    test "treats self_service true as the user scope" do
-      definition = registry("legacy" => {"description" => "A", "self_service" => true}).fetch("legacy")
-
-      assert_predicate definition, :self_service_user?
-      assert_equal "user", definition.self_service_scope
-    end
-
-    test "treats self_service false as no toggle" do
-      definition = registry("plain" => {"description" => "A", "self_service" => false}).fetch("plain")
-
-      assert_not_predicate definition, :self_service?
-      assert_empty registry("plain" => {"description" => "A", "self_service" => false}).validation_errors
-    end
-
-    test "self_service selects the definitions for one scope" do
-      subject = registry(
-        "personal" => {"description" => "A", "self_service" => "user"},
-        "fleet_wide" => {"description" => "B", "self_service" => "fleet"},
-        "admin_only" => {"description" => "C"}
-      )
-
-      assert_equal %w[personal], subject.self_service("user").map(&:name)
-      assert_equal %w[fleet_wide], subject.self_service("fleet").map(&:name)
-    end
-
-    test "rejects an unknown self_service scope" do
-      errors = registry("my_flag" => {"description" => "x", "self_service" => "squadron"}).validation_errors
-
-      assert_includes errors.join, "self_service must be one of"
+      assert_includes errors.join, "unknown keys",
+        "which surface the toggle lives on is part of the same decision"
     end
 
     test "allows hyphens so the oauth provider gates stay valid" do

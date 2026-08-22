@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_20_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_22_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -317,8 +317,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_20_120000) do
   create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "feature_name", null: false
-    t.boolean "self_service", default: false, null: false
-    t.string "self_service_scope", default: "user", null: false
+    t.boolean "self_service_fleet", default: false, null: false
+    t.boolean "self_service_user", default: false, null: false
     t.datetime "updated_at", null: false
     t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
   end

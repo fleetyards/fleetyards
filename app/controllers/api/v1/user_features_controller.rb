@@ -11,10 +11,10 @@ module Api
       before_action -> { doorkeeper_authorize! "profile:write" },
         unless: :user_signed_in?
 
-      # Every self-service flag, whatever surface owns its fleet-wide switch,
-      # plus every other flag something has already switched on for this user —
-      # their own actor gate, a group they are in, or one of their fleets. A
-      # feature the user has but cannot find here reads as unexplained magic.
+      # Every flag the user has a personal switch for, plus every other flag
+      # something has already switched on for them — their own actor gate, a
+      # group they are in, or one of their fleets. A feature the user has but
+      # cannot find here reads as unexplained magic.
       #
       # Three states, because a flag has more switches than the one on this page:
       #
@@ -26,9 +26,9 @@ module Api
       #                      elsewhere reads as enabled rather than as something
       #                      they still have to turn on.
       #   toggleable       — whether the switch here changes anything. It does
-      #                      not without a self-service toggle, and it cannot
-      #                      take away what a fleet or a group grants too,
-      #                      because the gates are ORed.
+      #                      not without a personal switch, and it cannot take
+      #                      away what a fleet or a group grants too, because the
+      #                      gates are ORed.
       #
       # `fleets` and `groups` name who is responsible, so a member can see where
       # the feature came from instead of only that they cannot switch it off.
@@ -39,7 +39,7 @@ module Api
       def enable
         feature_name = params[:id]
 
-        unless FeatureSetting.self_service_anywhere?(feature_name)
+        unless FeatureSetting.user_toggleable?(feature_name)
           return render json: {code: "forbidden", message: "This feature cannot be self-activated"}, status: :forbidden
         end
         return if refuse_external_grant(feature_name)
@@ -52,7 +52,7 @@ module Api
       def disable
         feature_name = params[:id]
 
-        unless FeatureSetting.self_service_anywhere?(feature_name)
+        unless FeatureSetting.user_toggleable?(feature_name)
           return render json: {code: "forbidden", message: "This feature cannot be self-deactivated"}, status: :forbidden
         end
         return if refuse_external_grant(feature_name)
@@ -65,25 +65,26 @@ module Api
       private def feature_entry(feature)
         return if feature.state == :on
 
-        scope = self_service_scopes[feature.key]
-        fleets = granting_fleets(feature, scope)
+        own_switch = user_toggleable?(feature)
+        fleets = granting_fleets(feature)
         groups = granting_groups(feature)
         enabled_for_self = personal_gate?(feature)
 
-        # A flag with no self-service toggle is only the user's business once
-        # something granted it to them; listing the rest would name every flag in
-        # the registry on a page where none of them can be switched.
-        return if scope.nil? && !enabled_for_self && fleets.empty? && groups.empty?
+        # Without a switch of their own, the flag is only the user's business
+        # once something granted it to them; listing the rest would name every
+        # flag in the registry on a page where none of them can be switched.
+        return if !own_switch && !enabled_for_self && fleets.empty? && groups.empty?
 
         {
           name: feature.name,
           enabled: Flipper.enabled?(feature.name, current_resource_owner) || fleets.any?,
           enabled_for_self:,
-          # A flag the registry never declared self-service has no owning
-          # surface, so the grant names it: a fleet gate makes this a fleet
-          # matter, anything else is the user's own.
-          scope: scope || (fleets.any? ? FeatureFlags::Definition::FLEET_SCOPE : FeatureFlags::Definition::USER_SCOPE),
-          toggleable: !scope.nil? && fleets.empty? && groups.empty?,
+          # Fleet-scoped either because a fleet's admins have a switch of their
+          # own for it, or — for a flag with no switch anywhere — because a fleet
+          # is what granted it. Both tell the page the switch here covers only
+          # the viewer.
+          scope: (fleet_toggleable?(feature) || fleets.any?) ? FeatureSetting::FLEET_SCOPE : FeatureSetting::USER_SCOPE,
+          toggleable: own_switch && fleets.empty? && groups.empty?,
           fleets: fleets.map { |fleet| {name: fleet.name, slug: fleet.slug} },
           groups:
         }
@@ -115,19 +116,31 @@ module Api
 
       # The user's fleets that switched this feature on for their members.
       #
-      # Skipped for a user-scoped flag: nothing reads a personal surface's flag
-      # against a fleet actor, so a gate there would grant the user nothing and
-      # must not count. A flag with no self-service scope has no such surface, so
-      # its fleet gates do count. Accepted memberships only — a pending
-      # invitation does not give the user the feature yet.
-      private def granting_fleets(feature, scope = self_service_scopes[feature.key])
-        return [] if scope == FeatureFlags::Definition::USER_SCOPE
+      # Skipped for a flag that is only ever read against a user: a gate on a
+      # fleet would grant them nothing there and must not count. A flag with a
+      # fleet switch is read against the fleet, and so is one with no switch at
+      # all, so both count. Accepted memberships only — a pending invitation does
+      # not give the user the feature yet.
+      private def granting_fleets(feature)
+        return [] if user_toggleable?(feature) && !fleet_toggleable?(feature)
 
         accepted_fleets.select { |fleet| Flipper.enabled?(feature.name, fleet) }
       end
 
-      private def self_service_scopes
-        @self_service_scopes ||= FeatureSetting.self_service_scopes.to_h
+      private def user_toggleable?(feature)
+        user_toggleable_names.include?(feature.key)
+      end
+
+      private def fleet_toggleable?(feature)
+        fleet_toggleable_names.include?(feature.key)
+      end
+
+      private def user_toggleable_names
+        @user_toggleable_names ||= FeatureSetting.user_toggleable_feature_names.to_set
+      end
+
+      private def fleet_toggleable_names
+        @fleet_toggleable_names ||= FeatureSetting.fleet_toggleable_feature_names.to_set
       end
 
       private def accepted_fleets

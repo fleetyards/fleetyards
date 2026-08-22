@@ -63,7 +63,9 @@
         "groupFeatureGrantedFleet": "Un grupo al que pertenece esta flota tiene esta función activada, por lo que no se puede desactivar aquí.",
         "managedFeatureShort": "Gestionado",
         "managedFeature": "Esta función se activó para su cuenta y no se puede cambiar aquí.",
-        "managedFeatureFleet": "Esta función se activó para esta flota y no se puede cambiar aquí."
+        "managedFeatureFleet": "Esta función se activó para esta flota y no se puede cambiar aquí.",
+        "selfServiceUser": "Los usuarios pueden alternar",
+        "selfServiceFleet": "Los admins de flota pueden alternar"
       },
       "oauthApplication": {
         "name": "Nombre de la aplicación",

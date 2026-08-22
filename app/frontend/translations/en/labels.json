@@ -73,7 +73,9 @@
         "groupFeatureGrantedFleet": "A group this fleet is in has this feature enabled, so it cannot be switched off here.",
         "managedFeatureShort": "Managed",
         "managedFeature": "This feature was enabled for your account and cannot be changed here.",
-        "managedFeatureFleet": "This feature was enabled for this fleet and cannot be changed here."
+        "managedFeatureFleet": "This feature was enabled for this fleet and cannot be changed here.",
+        "selfServiceUser": "Users can toggle",
+        "selfServiceFleet": "Fleet admins can toggle"
       },
       "oauthApplication": {
         "name": "Application Name",

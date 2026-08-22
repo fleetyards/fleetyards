@@ -11,14 +11,15 @@ module Admin
           properties: {
             name: {type: :string},
             state: {type: :string},
-            selfService: {type: :boolean},
+            selfServiceUser: {type: :boolean},
+            selfServiceFleet: {type: :boolean},
             percentageOfActors: {type: :number},
             percentageOfTime: {type: :number},
             groups: {type: :array, items: {type: :string}},
             actors: {type: :array, items: {"$ref": "#/components/schemas/FeatureActor"}}
           },
           additionalProperties: false,
-          required: %w[name state selfService percentageOfActors percentageOfTime groups actors]
+          required: %w[name state selfServiceUser selfServiceFleet percentageOfActors percentageOfTime groups actors]
         })
       end
     end

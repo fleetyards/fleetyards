@@ -10,11 +10,6 @@ module FeatureFlags
   #
   #   hangar_inventories:
   #     description: "Personal hangar inventories"
-  #     self_service: user
-  #
-  #   fleet_logistics:
-  #     description: "Fleet inventories"
-  #     self_service: fleet
   #
   #   oauth-discord:
   #     description: "Discord login"
@@ -28,9 +23,8 @@ module FeatureFlags
     NAME_PATTERN = /\A[a-z][a-z0-9_-]*\z/
     MAX_NAME_LENGTH = 60
     REQUIRED_KEYS = %w[description].freeze
-    KNOWN_KEYS = %w[description permanent self_service].freeze
+    KNOWN_KEYS = %w[description permanent].freeze
     BOOLEAN_KEYS = %w[permanent].freeze
-    SELF_SERVICE_VALUES = (Definition::SELF_SERVICE_SCOPES + [true, false]).freeze
 
     class InvalidRegistryError < StandardError; end
 
@@ -63,10 +57,6 @@ module FeatureFlags
 
     def fetch(name)
       definitions.find { |definition| definition.name == name.to_s }
-    end
-
-    def self_service(scope)
-      definitions.select { |definition| definition.self_service_scope == scope.to_s }
     end
 
     def validate!
@@ -113,17 +103,7 @@ module FeatureFlags
         errors << "#{name}: #{key} must be a boolean"
       end
 
-      errors.concat(self_service_errors(name, attrs))
-    end
-
-    # `true` is still accepted as an alias for the user scope, so a typo like
-    # `self_service: fleets` fails loudly instead of quietly dropping the flag
-    # out of every self-service surface.
-    private def self_service_errors(name, attrs)
-      value = attrs["self_service"]
-      return [] if value.nil? || SELF_SERVICE_VALUES.include?(value)
-
-      ["#{name}: self_service must be one of #{SELF_SERVICE_VALUES.inspect}"]
+      errors
     end
 
     private def build_definition(name, attrs)
@@ -132,8 +112,7 @@ module FeatureFlags
       Definition.new(
         name: name,
         description: attrs["description"],
-        permanent: attrs["permanent"] == true,
-        self_service: attrs["self_service"]
+        permanent: attrs["permanent"] == true
       )
     end
 

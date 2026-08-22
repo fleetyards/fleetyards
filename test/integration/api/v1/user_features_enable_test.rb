@@ -38,7 +38,7 @@ class Api::V1::UserFeaturesEnableTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
     Flipper.add("TestFeature")
-    FeatureSetting.create!(feature_name: "TestFeature", self_service: true)
+    FeatureSetting.create!(feature_name: "TestFeature", self_service_user: true)
   end
 
   test "PUT /user-features/:id/enable enables the feature for the signed-in user" do
@@ -76,7 +76,7 @@ class Api::V1::UserFeaturesEnableTest < ActionDispatch::IntegrationTest
 
   test "PUT /user-features/:id/enable enables a fleet-scoped feature for the user alone" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     other_member = create(:user)
     fleet = create(:fleet, members: [@user, other_member])
     sign_in @user
@@ -92,7 +92,7 @@ class Api::V1::UserFeaturesEnableTest < ActionDispatch::IntegrationTest
 
   test "PUT /user-features/:id/enable returns 403 when the user's fleet already enabled it" do
     Flipper.add("FleetWideFeature")
-    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service: true, self_service_scope: "fleet")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
     fleet = create(:fleet, members: [@user])
     Flipper.enable_actor("FleetWideFeature", fleet)
     sign_in @user

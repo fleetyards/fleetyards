@@ -68,7 +68,9 @@
         "groupFeatureGrantedFleet": "Eine Gruppe, in der diese Flotte ist, hat diese Funktion aktiviert, daher kann sie hier nicht abgeschaltet werden.",
         "managedFeatureShort": "Verwaltet",
         "managedFeature": "Diese Funktion wurde für Ihr Konto aktiviert und kann hier nicht geändert werden.",
-        "managedFeatureFleet": "Diese Funktion wurde für diese Flotte aktiviert und kann hier nicht geändert werden."
+        "managedFeatureFleet": "Diese Funktion wurde für diese Flotte aktiviert und kann hier nicht geändert werden.",
+        "selfServiceUser": "Benutzer können umschalten",
+        "selfServiceFleet": "Flotten-Admins können umschalten"
       },
       "oauthApplication": {
         "name": "Anwendungsname",

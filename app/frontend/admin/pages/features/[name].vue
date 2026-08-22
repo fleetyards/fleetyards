@@ -179,8 +179,11 @@ const stateLabel = (state: string) => {
     <Heading hero>
       {{ feature.name }}
       <template #small>
-        <BasePill v-if="feature.selfService">
-          {{ t("labels.features.selfService") }}
+        <BasePill v-if="feature.selfServiceUser">
+          {{ t("labels.features.selfServiceUser") }}
+        </BasePill>
+        <BasePill v-if="feature.selfServiceFleet">
+          {{ t("labels.features.selfServiceFleet") }}
         </BasePill>
       </template>
     </Heading>

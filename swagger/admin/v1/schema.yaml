@@ -1760,7 +1760,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/features/{id}/toggle-self-service":
+  "/features/{id}/toggle-fleet-self-service":
     parameters:
     - name: id
       in: path
@@ -1769,10 +1769,50 @@ paths:
       description: Feature name
       required: true
     put:
-      summary: Toggle Feature Self-Service
+      summary: Toggle Feature Fleet Self-Service
       tags:
       - Features
-      operationId: toggleAdminFeatureSelfService
+      operationId: toggleAdminFeatureFleetSelfService
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/features/{id}/toggle-user-self-service":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Toggle Feature User Self-Service
+      tags:
+      - Features
+      operationId: toggleAdminFeatureUserSelfService
       responses:
         '200':
           description: successful
@@ -9869,7 +9909,9 @@ components:
           type: string
         state:
           type: string
-        selfService:
+        selfServiceUser:
+          type: boolean
+        selfServiceFleet:
           type: boolean
         percentageOfActors:
           type: number
@@ -9887,7 +9929,8 @@ components:
       required:
       - name
       - state
-      - selfService
+      - selfServiceUser
+      - selfServiceFleet
       - percentageOfActors
       - percentageOfTime
       - groups

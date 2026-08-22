@@ -63,7 +63,9 @@
         "groupFeatureGrantedFleet": "該艦隊所在的某個群組已啟用此功能，因此無法在此處關閉。",
         "managedFeatureShort": "受管理",
         "managedFeature": "此功能已為您的帳戶啟用，無法在此處變更。",
-        "managedFeatureFleet": "此功能已為該艦隊啟用，無法在此處變更。"
+        "managedFeatureFleet": "此功能已為該艦隊啟用，無法在此處變更。",
+        "selfServiceUser": "使用者可自行切換",
+        "selfServiceFleet": "艦隊管理員可切換"
       },
       "oauthApplication": {
         "name": "應用程式名稱",
