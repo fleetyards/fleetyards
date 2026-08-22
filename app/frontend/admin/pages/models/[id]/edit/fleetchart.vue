@@ -15,10 +15,7 @@ import { useForm } from "vee-validate";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import ViewsFolderUpload from "@/admin/components/Models/ViewsFolderUpload/index.vue";
-import {
-  type FolderField,
-  type ViewField,
-} from "@/admin/components/Models/ViewsFolderUpload/mapping";
+import { type FolderField } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 
 type Props = {
@@ -58,10 +55,10 @@ const { defineField, handleSubmit, meta, setFieldValue } =
 // Kept for as long as the page lives. A save refetches the model, but the trim
 // that follows replaces the blob and purges the one that refetch named, so the
 // local file is the picture that stays true.
-const previews = ref<Partial<Record<ViewField, string>>>({});
+const previews = ref<Partial<Record<FolderField, string>>>({});
 
-const onFolderSelected = (views: Partial<Record<ViewField, string>>) => {
-  previews.value = views;
+const onFolderSelected = (fields: Partial<Record<FolderField, string>>) => {
+  previews.value = fields;
 };
 
 const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
@@ -118,6 +115,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           translation-key="model.defaultHolo"
           v-bind="holoProps"
           name="holo"
+          :preview-src="previews.holo"
           :allowed-types="AllowedFileTypes.HOLO"
           clearable
         />
@@ -129,6 +127,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           translation-key="model.extendedHolo"
           v-bind="extendedHoloProps"
           name="extendedHolo"
+          :preview-src="previews.extendedHolo"
           :allowed-types="AllowedFileTypes.HOLO"
           clearable
         />

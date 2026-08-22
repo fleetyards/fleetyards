@@ -242,6 +242,32 @@ watch(
   },
 );
 
+// The types this input takes, however they were passed.
+const allowedTypeList = computed(() => {
+  if (!props.allowedTypes) {
+    return [];
+  }
+
+  return Array.isArray(props.allowedTypes)
+    ? props.allowedTypes
+    : [props.allowedTypes];
+});
+
+// A holo is drawn by its viewer rather than shown as a picture, so a previewSrc
+// for one is a local file to load, not an image to display.
+const previewHoloModel = computed(() => {
+  if (
+    !props.previewSrc ||
+    !allowedTypeList.value.includes(AllowedFileTypes.HOLO)
+  ) {
+    return undefined;
+  }
+
+  return {
+    path: props.previewSrc,
+  };
+});
+
 const holoModel = computed(() => {
   if (props.file?.url && isHolo.value) {
     return {
@@ -279,10 +305,16 @@ defineExpose({
     </transition>
     <div class="base-image-input__wrapper">
       <template v-if="!uploadedHere">
-        <!-- A value set from outside brings its own picture: the upload that
+        <!-- A value set from outside brings its own file: the upload that
              filled it happened elsewhere, so this input has none to show. -->
+        <HoloViewer
+          v-if="previewHoloModel"
+          :controllable="false"
+          :models="[previewHoloModel]"
+          inline
+        />
         <LazyImage
-          v-if="previewSrc"
+          v-else-if="previewSrc"
           v-tooltip.right="hasErrors && errorMessage"
           :src="previewSrc"
           :transparent="transparent || avatar"

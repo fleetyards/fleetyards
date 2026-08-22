@@ -31,9 +31,6 @@ export type FolderField = ViewField | HoloField;
 // The order the fields are listed in, whatever order the folder was read in.
 const FIELD_ORDER: readonly FolderField[] = [...VIEW_FIELDS, ...HOLO_FIELDS];
 
-export const isViewField = (field: FolderField): field is ViewField =>
-  (VIEW_FIELDS as readonly string[]).includes(field);
-
 export type MappedFile = {
   field: FolderField;
   filename: string;

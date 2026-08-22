@@ -10,11 +10,9 @@ import DirectUpload, {
   type FileUpload,
 } from "@/shared/components/DirectUpload/index.vue";
 import {
-  isViewField,
   mapFolderFiles,
   type FolderField,
   type MappedFile,
-  type ViewField,
 } from "@/admin/components/Models/ViewsFolderUpload/mapping";
 
 type PlannedFile = MappedFile & { file: File };
@@ -22,7 +20,7 @@ type PlannedFile = MappedFile & { file: File };
 const { t } = useI18n();
 
 const emit = defineEmits<{
-  selected: [previews: Partial<Record<ViewField, string>>];
+  selected: [previews: Partial<Record<FolderField, string>>];
   mapped: [fields: Partial<Record<FolderField, string>>];
 }>();
 
@@ -30,7 +28,7 @@ const plan = ref<PlannedFile[]>([]);
 const ignored = ref<string[]>([]);
 const uploaded = ref<File[]>([]);
 const uploading = ref(false);
-const previews = new Map<ViewField, string>();
+const previews = new Map<FolderField, string>();
 
 // The file input reports the folder in webkitRelativePath, a drop does not.
 const nameOf = (file: File) => file.webkitRelativePath || file.name;
@@ -50,14 +48,10 @@ const filterFolder = (files: File[]) => {
   }));
   uploaded.value = [];
 
-  // A signed id only arrives once the upload finishes, but a picture can be
-  // shown from the local file at once, so no input sits there empty meanwhile.
-  // A holo has no still to show, and is left to its own viewer.
+  // A signed id only arrives once the upload finishes, but the file itself can
+  // be shown at once -- a picture as a picture, a holo in its viewer -- so no
+  // input sits there empty meanwhile.
   plan.value.forEach(({ field, file }) => {
-    if (!isViewField(field)) {
-      return;
-    }
-
     const previous = previews.get(field);
 
     if (previous) {
