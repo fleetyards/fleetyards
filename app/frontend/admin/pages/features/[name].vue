@@ -263,6 +263,7 @@ const stateLabel = (state: string) => {
       <div class="add-actor-form">
         <FilterGroup
           v-model="actorType"
+          inline
           name="actor-type"
           :options="actorTypeOptions"
           :nullable="false"
@@ -272,12 +273,14 @@ const stateLabel = (state: string) => {
           v-if="actorType === 'User'"
           v-model="selectedUser"
           name="feature-user"
+          inline
           :no-label="false"
         />
         <FleetFilterGroup
           v-if="actorType === 'Fleet'"
           v-model="selectedFleet"
           name="feature-fleet"
+          inline
           :no-label="false"
         />
         <Btn

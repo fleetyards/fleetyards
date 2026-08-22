@@ -365,6 +365,7 @@ const hasSelectedActor = computed(() => {
           <div class="add-actor-form">
             <FilterGroup
               v-model="editActorType"
+              inline
               name="actor-type"
               :options="actorTypeOptions"
               :nullable="false"
@@ -374,12 +375,14 @@ const hasSelectedActor = computed(() => {
               v-if="editActorType === 'User'"
               v-model="selectedUser"
               name="feature-user"
+              inline
               :no-label="false"
             />
             <FleetFilterGroup
               v-if="editActorType === 'Fleet'"
               v-model="selectedFleet"
               name="feature-fleet"
+              inline
               :no-label="false"
             />
             <Btn :disabled="!hasSelectedActor" @click.prevent="addActor(item)">

@@ -23,6 +23,7 @@ type Props = {
   noLabel?: boolean;
   label?: string;
   valueAttr?: "username" | "id";
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   noLabel: true,
   label: undefined,
   valueAttr: "username",
+  inline: false,
 });
 
 const { t } = useI18n();
@@ -106,5 +108,6 @@ const fetch = async (params: FilterGroupParams<UserOption>) => {
     :searchable="true"
     :multiple="multiple"
     :no-label="noLabel"
+    :inline="inline"
   />
 </template>
