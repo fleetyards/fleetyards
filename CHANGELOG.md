@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.1](https://github.com/fleetyards/fleetyards/compare/v7.0.0...v7.0.1) (2026-08-22)
+
+
+### Bug Fixes
+
+* **deploy:** resolve the discord_bot host from the destination config ([d23ab0f](https://github.com/fleetyards/fleetyards/commit/d23ab0fceed1eac6e902ecc7cab141e5944445db))
+
 ## [7.0.0](https://github.com/fleetyards/fleetyards/compare/v6.33.1...v7.0.0) (2026-08-22)
 
 
