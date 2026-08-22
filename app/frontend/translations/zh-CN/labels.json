@@ -57,7 +57,13 @@
         "fleetFeatureInfo": "在此启用仅对您生效。您舰队的管理员可为整个舰队启用。",
         "toggleForSelf": "仅为自己切换",
         "fleetFeatureGrantedShort": "舰队已启用",
-        "fleetFeatureGranted": "您的舰队已为所有成员启用此功能，因此无法在此处关闭。"
+        "fleetFeatureGranted": "您的舰队已为所有成员启用此功能，因此无法在此处关闭。",
+        "groupFeatureGrantedShort": "群组已启用",
+        "groupFeatureGranted": "您所在的某个群组已启用此功能，因此无法在此处关闭。",
+        "groupFeatureGrantedFleet": "该舰队所在的某个群组已启用此功能，因此无法在此处关闭。",
+        "managedFeatureShort": "受管理",
+        "managedFeature": "此功能已为您的账户启用，无法在此处更改。",
+        "managedFeatureFleet": "此功能已为该舰队启用，无法在此处更改。"
       },
       "oauthApplication": {
         "name": "应用名称",

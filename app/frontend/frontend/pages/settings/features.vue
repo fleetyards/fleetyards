@@ -56,8 +56,33 @@ const isFleetFeature = (feature: FeatureItem) =>
 // personal switch to add — and it cannot take it away either.
 const grantedByFleet = (feature: FeatureItem) => feature.fleets.length > 0;
 
+// Same for a Flipper group: the gates are ORed, so clearing the personal one
+// changes nothing the user would see.
+const grantedByGroup = (feature: FeatureItem) => feature.groups.length > 0;
+
+// The API decides what this page may switch, and it lists features it will not
+// let the user touch: the ones an admin, a group or a fleet turned on for them.
+// Those rows are here to explain where a feature came from, nothing more.
+const readOnly = (feature: FeatureItem) => !feature.toggleable;
+
+const grantTooltip = (feature: FeatureItem) => {
+  if (grantedByFleet(feature)) return t("labels.features.fleetFeatureGranted");
+  if (grantedByGroup(feature)) return t("labels.features.groupFeatureGranted");
+
+  return t("labels.features.managedFeature");
+};
+
+const grantPill = (feature: FeatureItem) => {
+  if (grantedByFleet(feature))
+    return t("labels.features.fleetFeatureGrantedShort");
+  if (grantedByGroup(feature))
+    return t("labels.features.groupFeatureGrantedShort");
+
+  return t("labels.features.managedFeatureShort");
+};
+
 const toggleFeature = async (feature: FeatureItem) => {
-  if (grantedByFleet(feature)) return;
+  if (readOnly(feature)) return;
 
   try {
     if (feature.enabledForSelf) {
@@ -119,21 +144,18 @@ const toggleFeature = async (feature: FeatureItem) => {
         {{ item.name.replace(/_/g, " ").replace(/-/g, " ") }}
       </span>
       <span
-        v-if="isFleetFeature(item)"
-        v-tooltip="
-          grantedByFleet(item)
-            ? t('labels.features.fleetFeatureGranted')
-            : t('labels.features.fleetFeatureInfo')
-        "
+        v-if="readOnly(item)"
+        v-tooltip="grantTooltip(item)"
         class="feature-scope"
       >
-        <BasePill uppercase>
-          {{
-            grantedByFleet(item)
-              ? t("labels.features.fleetFeatureGrantedShort")
-              : t("labels.features.fleetFeature")
-          }}
-        </BasePill>
+        <BasePill uppercase>{{ grantPill(item) }}</BasePill>
+      </span>
+      <span
+        v-else-if="isFleetFeature(item)"
+        v-tooltip="t('labels.features.fleetFeatureInfo')"
+        class="feature-scope"
+      >
+        <BasePill uppercase>{{ t("labels.features.fleetFeature") }}</BasePill>
       </span>
       <span v-if="grantedByFleet(item)" class="feature-fleets">
         <template v-for="(fleet, index) in item.fleets" :key="fleet.slug">
@@ -143,18 +165,21 @@ const toggleFeature = async (feature: FeatureItem) => {
           </router-link>
         </template>
       </span>
+      <span v-else-if="grantedByGroup(item)" class="feature-fleets">
+        {{ item.groups.join(", ") }}
+      </span>
     </template>
 
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="
-          grantedByFleet(item)
-            ? t('labels.features.fleetFeatureGranted')
+          readOnly(item)
+            ? grantTooltip(item)
             : isFleetFeature(item)
               ? t('labels.features.toggleForSelf')
               : t('labels.features.toggle')
         "
-        :disabled="grantedByFleet(item)"
+        :disabled="readOnly(item)"
         @click="toggleFeature(item)"
         :variant="BtnVariantsEnum.GHOST"
       >

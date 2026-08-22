@@ -106,4 +106,16 @@ class Api::V1::FleetsFeaturesEnableTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 404, path_params: {fleetSlug: @fleet.slug, id: "FleetWideFeature"}
   end
+
+  test "PUT /fleets/:slug/features/:id/enable returns 403 when a group the fleet is in already enabled it" do
+    with_flipper_group(:fleets, ->(actor, _context) { actor.respond_to?(:slug) }) do
+      Flipper.enable_group("FleetWideFeature", :fleets)
+      sign_in @admin
+
+      assert_api_response :put, 403, path_params: {fleetSlug: @fleet.slug, id: "FleetWideFeature"} do
+        assert_not_includes Flipper.feature("FleetWideFeature").actors_value, @fleet.flipper_id,
+          "there is nothing to enable — the group already grants it"
+      end
+    end
+  end
 end

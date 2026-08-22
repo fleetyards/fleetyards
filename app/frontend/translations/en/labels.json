@@ -67,7 +67,13 @@
         "fleetFeatureInfo": "Switching this on here enables it for you alone. Your fleet's admins can enable it for the whole fleet.",
         "toggleForSelf": "Toggle for yourself only",
         "fleetFeatureGrantedShort": "Enabled by fleet",
-        "fleetFeatureGranted": "Your fleet enabled this for all members, so it cannot be switched off here."
+        "fleetFeatureGranted": "Your fleet enabled this for all members, so it cannot be switched off here.",
+        "groupFeatureGrantedShort": "Enabled by group",
+        "groupFeatureGranted": "A group you are in has this feature enabled, so it cannot be switched off here.",
+        "groupFeatureGrantedFleet": "A group this fleet is in has this feature enabled, so it cannot be switched off here.",
+        "managedFeatureShort": "Managed",
+        "managedFeature": "This feature was enabled for your account and cannot be changed here.",
+        "managedFeatureFleet": "This feature was enabled for this fleet and cannot be changed here."
       },
       "oauthApplication": {
         "name": "Application Name",

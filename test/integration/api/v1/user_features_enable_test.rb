@@ -102,4 +102,15 @@ class Api::V1::UserFeaturesEnableTest < ActionDispatch::IntegrationTest
         "there is nothing to enable — the fleet already grants it"
     end
   end
+
+  test "PUT /user-features/:id/enable returns 403 when a group the user is in already enabled it" do
+    tester = create(:user, :tester)
+    Flipper.enable_group("TestFeature", :testers)
+    sign_in tester
+
+    assert_api_response :put, 403, path_params: {id: "TestFeature"} do
+      assert_not_includes Flipper.feature("TestFeature").actors_value, tester.flipper_id,
+        "there is nothing to enable — the group already grants it"
+    end
+  end
 end

@@ -62,7 +62,13 @@
         "fleetFeatureInfo": "Hier eingeschaltet gilt sie nur für Sie. Die Admins Ihrer Flotte können sie für die gesamte Flotte aktivieren.",
         "toggleForSelf": "Nur für Sie umschalten",
         "fleetFeatureGrantedShort": "Von Flotte aktiviert",
-        "fleetFeatureGranted": "Ihre Flotte hat dies für alle Mitglieder aktiviert, daher kann es hier nicht abgeschaltet werden."
+        "fleetFeatureGranted": "Ihre Flotte hat dies für alle Mitglieder aktiviert, daher kann es hier nicht abgeschaltet werden.",
+        "groupFeatureGrantedShort": "Von Gruppe aktiviert",
+        "groupFeatureGranted": "Eine Gruppe, in der Sie sind, hat diese Funktion aktiviert, daher kann sie hier nicht abgeschaltet werden.",
+        "groupFeatureGrantedFleet": "Eine Gruppe, in der diese Flotte ist, hat diese Funktion aktiviert, daher kann sie hier nicht abgeschaltet werden.",
+        "managedFeatureShort": "Verwaltet",
+        "managedFeature": "Diese Funktion wurde für Ihr Konto aktiviert und kann hier nicht geändert werden.",
+        "managedFeatureFleet": "Diese Funktion wurde für diese Flotte aktiviert und kann hier nicht geändert werden."
       },
       "oauthApplication": {
         "name": "Anwendungsname",

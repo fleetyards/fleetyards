@@ -3,3 +3,4 @@
 require "test_helper"
 require "openapi_ruby/minitest"
 require "support/oauth_test_helpers"
+require "support/flipper_group_test_helpers"
