@@ -13,12 +13,16 @@ type Props = {
   loading?: boolean;
   emptyName?: string;
   hideEmpty?: boolean;
+  // The row whose content slot holds a tall panel rather than a single line.
+  // Its actions align to the bottom instead of floating in the middle of it.
+  expandedId?: string | null;
 };
 
 withDefaults(defineProps<Props>(), {
   loading: false,
   emptyName: "entries",
   hideEmpty: false,
+  expandedId: undefined,
 });
 </script>
 
@@ -33,7 +37,10 @@ withDefaults(defineProps<Props>(), {
         class="list-group__item"
         data-test="list-group-item"
       >
-        <div class="list-group__row">
+        <div
+          class="list-group__row"
+          :class="{ 'list-group__row--expanded': item.id === expandedId }"
+        >
           <div class="list-group__content">
             <slot name="display" :item="item" />
           </div>
