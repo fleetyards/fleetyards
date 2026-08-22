@@ -2,6 +2,11 @@ name: Ruby Tests Job
 
 on:
   workflow_call:
+    secrets:
+      # Reads the object-storage keys for the parsed sc_data tree. Secrets are
+      # not inherited by a called workflow, so main.yml passes this one through.
+      OP_SERVICE_ACCOUNT_TOKEN:
+        required: true
 
 jobs:
   ruby-tests:
