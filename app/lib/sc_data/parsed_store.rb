@@ -31,13 +31,33 @@ module ScData
 
     attr_reader :environment
 
+    # The parsed tree sits in a different bucket from ActiveStorage's, but on the
+    # same account and endpoint -- and object-storage keys here are
+    # project-scoped, so the pair already deployed for `config/storage.yml`
+    # reaches this bucket too.
+    #
+    # Everything but the bucket therefore falls back to that existing config, so
+    # the only value production carries for this is the one that actually
+    # differs. Each `sc_data_s3` key stays an override, for a separate account
+    # later or for running the CLI outside 1Password.
     def self.settings
+      creds = Rails.application.credentials
+
       {
-        endpoint: Rails.app.creds.option(:sc_data_s3, :endpoint),
-        access_key_id: Rails.app.creds.option(:sc_data_s3, :access_key_id),
-        secret_access_key: Rails.app.creds.option(:sc_data_s3, :secret_access_key),
+        endpoint: Rails.app.creds.option(:sc_data_s3, :endpoint) || storage_endpoint(creds),
+        access_key_id: Rails.app.creds.option(:sc_data_s3, :access_key_id) || creds.s3_access_key,
+        secret_access_key: Rails.app.creds.option(:sc_data_s3, :secret_access_key) || creds.s3_secret_key,
         bucket: Rails.app.creds.option(:sc_data_s3, :bucket)
       }
+    end
+
+    # `config/storage.yml` stores the scheme apart from the host, so it has to be
+    # rejoined here. Nil rather than a bare "://" when either half is missing, so
+    # `configured?` reports it as absent instead of building a broken client.
+    def self.storage_endpoint(creds)
+      return if creds.s3_protocol.blank? || creds.s3_endpoint.blank?
+
+      "#{creds.s3_protocol}://#{creds.s3_endpoint}"
     end
 
     def self.configured?(settings = self.settings)
