@@ -45,7 +45,11 @@ rescue FeatureFlags::Registry::InvalidRegistryError => e
   exit 1
 end
 
-command = ARGV.shift
+# Read ARGV without consuming it. Booting Rails runs `bundler/setup`, which
+# re-execs this process with the *current* ARGV when the activated bundler
+# differs from the lockfile's — so a shifted ARGV comes back empty and every
+# Rails-booting command falls through to usage.
+command = ARGV.first
 usage if command.nil? || command == "--help" || command == "-h"
 
 unless COMMANDS.key?(command)

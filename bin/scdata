@@ -46,7 +46,11 @@ def latest_version(export_folder, sc_environment)
   folders.last
 end
 
-command = ARGV.shift
+# Shift a copy, never ARGV itself — see the note in bin/feature-flags: booting
+# Rails can re-exec this process with the current ARGV, so a consumed ARGV
+# comes back short and the positional args land in the wrong slots.
+args = ARGV.dup
+command = args.shift
 usage if command.nil? || command == "--help" || command == "-h"
 
 case command
@@ -59,7 +63,7 @@ when "sync"
   s3_secret_key = `op read "op://Fleetyards/HETZNER_S3/secret_access_key"`.strip
   s3cmd = "s3cmd --host=#{s3_endpoint} --host-bucket='%(bucket)s.#{s3_endpoint}' --access_key=#{s3_access_key} --secret_key=#{s3_secret_key}"
 
-  version = ARGV.shift
+  version = args.shift
 
   if version.nil?
     CliHelpers.run_step("Finding latest version in s3://#{s3_bucket}") do
@@ -93,7 +97,7 @@ when "parse"
     [true, ""]
   }
 
-  sc_environment = ARGV.shift || Rails.configuration.sc_data[:environment]
+  sc_environment = args.shift || Rails.configuration.sc_data[:environment]
   sc_version = latest_version(EXPORT_FOLDER, sc_environment)
 
   CliHelpers.run_step("Parsing SC Data #{sc_version} (#{sc_environment})") do

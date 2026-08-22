@@ -18,7 +18,9 @@ def usage
   exit 1
 end
 
-command = ARGV.shift
+# Read ARGV without consuming it — see the note in bin/feature-flags: booting
+# Rails can re-exec this process with the current ARGV.
+command = ARGV.first
 usage if command.nil? || command == "--help" || command == "-h"
 
 unless COMMANDS.key?(command)
