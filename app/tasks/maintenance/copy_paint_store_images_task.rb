@@ -10,7 +10,7 @@ module Maintenance
   # the link is a decision, so the guess is made in one place and recorded.
   class CopyPaintStoreImagesTask < MaintenanceTasks::Task
     def collection
-      ModelPaint.where.not(component_id: nil).order(:id)
+      ModelPaint.where.not(component_id: nil)
     end
 
     def count

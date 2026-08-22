@@ -84,5 +84,11 @@ module Maintenance
 
       assert_equal [linked.id], @task.collection.map(&:id)
     end
+
+    # job-iteration cursors over the primary key themselves and refuse a relation
+    # that carries its own ORDER BY.
+    test "#collection can be iterated by a cursor" do
+      assert_empty @task.collection.order_values
+    end
   end
 end

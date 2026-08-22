@@ -8,7 +8,7 @@ module Maintenance
   # a paint that found nothing last time may find something now.
   class LinkPaintComponentsTask < MaintenanceTasks::Task
     def collection
-      Component.where(category: "paints").where.not(name: [nil, ""]).order(:id)
+      Component.where(category: "paints").where.not(name: [nil, ""])
     end
 
     def count
