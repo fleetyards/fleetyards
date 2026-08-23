@@ -32,7 +32,13 @@ const GROUPS = [
   {
     key: "feedback",
     icon: "fadt fa-comment-dots",
-    members: ["states", "notifications", "support-hint", "sync-modal"],
+    members: [
+      "states",
+      "notifications",
+      "support-hint",
+      "sync-modal",
+      "overlays",
+    ],
   },
 ];
 
@@ -97,6 +103,11 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-sync-modal",
     label: "syncModal",
     icon: "fadt fa-arrows-rotate",
+  },
+  overlays: {
+    route: "visual-tests-overlays",
+    label: "overlays",
+    icon: "fadt fa-window-restore",
   },
 };
 

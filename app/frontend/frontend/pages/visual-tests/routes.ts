@@ -120,6 +120,15 @@ export const routes = [
     },
   },
   {
+    path: "overlays/",
+    name: "visual-tests-overlays",
+    component: () => import("@/frontend/pages/visual-tests/overlays.vue"),
+    meta: {
+      title: "visualTests.overlays",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "media/",
     name: "visual-tests-media",
     component: () => import("@/frontend/pages/visual-tests/media.vue"),
