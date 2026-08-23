@@ -134,6 +134,11 @@ const activeAnchor = ref("clean");
     page. In the app <code>FilteredList</code> only opens it on mobile, so this
     is the one place to see it at desktop width.
   </p>
+  <p class="text-muted">
+    There is no close button out here on purpose: the backdrop covers the page
+    while the panel is open, so nothing behind it can be clicked. Close it from
+    inside the panel, or by clicking the backdrop.
+  </p>
   <div class="row">
     <div class="col-12 vt-row">
       <Btn
@@ -151,7 +156,6 @@ const activeAnchor = ref("clean");
       <Btn data-test="off-canvas-untitled" @click="openOffCanvas('left')">
         Open without a title
       </Btn>
-      <Btn data-test="off-canvas-close" @click="closeOffCanvas">Close</Btn>
     </div>
   </div>
 
