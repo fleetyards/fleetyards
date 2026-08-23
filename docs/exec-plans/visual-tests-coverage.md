@@ -298,6 +298,56 @@ Judgement call, not a checklist to clear: decide per row and record the skips.
 The media group is the obvious next slice — four components, one shared theme
 (loading, broken, missing), and no data behind any of them.
 
+### Spacing and grouping — DONE, out of band
+
+Reported from looking at the pages, not found by any of the phases.
+
+**Buttons were touching, in three different ways.** `Btn` ships no margin of its
+own — spacing belongs to the container — and several demo containers brought
+none. Each round of fixing found a case the previous detection had been blind to:
+
+1. Containers with no spacing parent at all (`AppNotifications/visual.vue`,
+   `lists.vue`). Found by searching for adjacent `<Btn>` siblings.
+2. `support-hint.vue`, where the buttons come from a `v-for` — one element
+   rendering N buttons, so a search for adjacent siblings could never see it.
+3. Three paginators stacked in bare rows. A paginator *is* a BtnGroup, so the
+   horizontal search skipped it twice over: members of a group are meant to
+   touch, but two whole groups are not.
+
+`.vt-row` and `.vt-stack` now live once on the host page, which already owned the
+pages' vertical rhythm. Four pages had grown their own copy of `.vt-row`, and
+`events.vue`'s copy was quietly different — top-aligned, wider gutter — because
+it lays out cards, so it became `.vt-cards`.
+
+Two things deliberately not done. `.row + .row { margin-top }` on the host page
+would fix the class in one rule, but the host's styles reach the demos through
+`:deep()`, which also reaches inside the real components they render — a gallery
+that distorts what it is showing is worse than one with a missing gap. And 153
+markup-adjacent button pairs in the real app were left alone: adjacency is not a
+missing gap, since dropdowns, `FormActions` and context menus all bring their
+own, and confirming a real one means measuring the rendered page.
+
+**`VisualTestsSpacing.spec.ts`** measures instead of reading templates, which is
+what catches the `v-for` case, checks both axes, treats a BtnGroup as one
+control, and lists every route so a new page cannot be quietly left out.
+
+**The nav is grouped.** Fourteen flat entries became three submenus —
+Foundations (typography, panels, buttons, chips), Data (tables, lists, metrics,
+charts), Feedback (states, notifications, support-hint, sync-modal) — with Forms
+and Events staying top-level, because a group of one is an entry wearing a
+folder. A group stays highlighted while one of its pages is open.
+
+The grouping lives in `VisualTestsNav` only; route names and URLs stay flat. One
+place to regroup rather than two that drift, and the specs pointing at
+`/visual-tests/<name>/` keep working. Nesting the URLs to match is possible
+later — it would cost 14 route paths, three spec files and the translations.
+
+**`VisualTestsNav.spec.ts`** guards the invariant that actually breaks: a new
+page needs four separate edits — route, nav entry, and keys in
+`en/{headlines,nav,title}.json` — and forgetting the nav leaves a page that
+exists but cannot be found. So it asserts every route has exactly one nav link,
+rather than checking the nav against another copy of the same list.
+
 ### Phase 4 — State, variant and viewport coverage
 
 Presence is not state coverage. The demos lean happy-path. Per family:
@@ -363,5 +413,7 @@ branch's chart baselines are its only coverage.
       lint rule in place, family and composed pages left central
 - [~] Phase 3 — Chart, FormDateTime and FormTabs covered (+ a new FormTabs spec);
       24 shared components still uncovered, media group next
+- [x] Spacing fixed (three classes of it) and the nav grouped into submenus,
+      both guarded by specs
 - [ ] Phase 4 — State, variant and narrow-viewport coverage
 - [ ] Phase 5 — Rebase and re-target the pixel baselines
