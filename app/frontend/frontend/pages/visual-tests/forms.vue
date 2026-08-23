@@ -10,6 +10,7 @@ import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
+import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
@@ -19,6 +20,7 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import Slider from "@/shared/components/base/Slider/index.vue";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import ErrorStates from "@/frontend/pages/visual-tests/forms/ErrorStates.vue";
+import TabsDemo from "@/frontend/pages/visual-tests/forms/TabsDemo.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
@@ -41,6 +43,9 @@ const color = ref("#ffcc00");
 const clearable = ref("Clear me");
 const prefixed = ref(1250);
 const empty = ref<string | null>(null);
+const dateTime = ref<string | null>("2029-06-14T19:30:00.000Z");
+const dateOnly = ref<string | null>("2029-06-14T00:00:00.000Z");
+const dateTimeEmpty = ref<string | null>(null);
 const large = ref("Large size");
 const clean = ref("Clean variant");
 const rightAligned = ref(998);
@@ -344,6 +349,66 @@ const powerMarks = (value: number) => ({ label: String(value) });
       <p class="text-muted">Value: {{ date || "—" }}</p>
     </div>
   </div>
+
+  <Heading :level="HeadingLevelEnum.H2">FormDateTime</Heading>
+  <p>
+    Date and time in one control, bound to an ISO string. The displayed format
+    follows the signed-in user's setting, so it reads as
+    <code>dd.mm.yyyy</code> or <code>mm/dd/yyyy</code> for the same value.
+  </p>
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-3">
+      <FormDateTime v-model="dateTime" name="startsAt" label="Starts at" />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <FormDateTime
+        v-model="dateOnly"
+        name="dateOnly"
+        label="Date only"
+        :enable-time-picker="false"
+      />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <FormDateTime
+        v-model="dateTimeEmpty"
+        name="emptyDateTime"
+        label="Empty, not clearable"
+        :clearable="false"
+      />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <FormDateTime
+        v-model="dateTime"
+        name="disabledDateTime"
+        label="Disabled"
+        disabled
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-3">
+      <FormDateTime
+        v-model="dateTimeEmpty"
+        name="invalidDateTime"
+        label="With an error"
+        error-message="Pick a date after today"
+      />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <FormDateTime
+        v-model="dateTime"
+        name="hourlyDateTime"
+        label="Whole hours only"
+        :minutes-increment="60"
+      />
+    </div>
+    <div class="col-12 col-md-6">
+      <p class="text-muted">Value: {{ dateTime || "—" }}</p>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">FormTabs</Heading>
+  <TabsDemo />
 
   <Heading :level="HeadingLevelEnum.H2">FormFileInput</Heading>
   <p>The drop target, plus the avatar and transparent variants.</p>
