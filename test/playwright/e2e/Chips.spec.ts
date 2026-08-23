@@ -5,10 +5,12 @@ import { test, expect } from "../support/commands";
 /*
  * Guards the invariants of the rebuilt filter chips.
  *
- * Asserted against the public hangar's group row rather than the visual-tests
- * page: those routes are gated out of any production build, which the e2e run
- * uses. Public rather than the signed-in hangar because it renders the same
- * GroupLabels with the same tri-state filter and needs no session.
+ * Asserted against the public hangar's group row rather than visual-tests/chips.vue.
+ * The gallery page is reachable from the e2e build now, but it renders ChipRow over
+ * a static array with no filters store and no router behind it, and every
+ * assertion here is about state that round-trips through the query string. Public
+ * rather than the signed-in hangar because it renders the same GroupLabels with
+ * the same tri-state filter and needs no session.
  *
  * The tri-state cycle is the behaviour a screenshot cannot confirm - neutral,
  * then included, then excluded, then back - and the stylesheet this replaces

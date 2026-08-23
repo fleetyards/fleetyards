@@ -5,11 +5,12 @@ import { test, expect } from "../support/commands";
 /*
  * Guards the invariants of the rebuilt Panel.
  *
- * Asserted against the ships list rather than visual-tests/panels.vue: those
- * routes are gated behind `NODE_ENV !== "production"` in frontend/pages/routes.ts
- * and the e2e run uses a production build, so a spec pointed at them passes only
- * against a dev server. The ships list happens to render the component's hardest
- * case anyway - a card whose whole height comes from a background image.
+ * Asserted against the ships list rather than visual-tests/panels.vue. The gate
+ * is on the Vite mode now, so the gallery is reachable from the e2e build, but
+ * its ModelPanel draws on a live `useModel("galaxy")` query and these assertions
+ * need a card whose whole height comes from a background image - which is what
+ * the seeded ships list renders, and what the demo page can only render if the
+ * fixture behind it happens to carry a store image.
  *
  * Computed style rather than pixel snapshots, for the same reasons Buttons.spec.ts
  * gives: each of these was a real defect, and an assertion names the broken
