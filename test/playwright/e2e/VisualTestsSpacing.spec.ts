@@ -31,6 +31,7 @@ const routes = [
   "sync-modal",
   "support-hint",
   "chips",
+  "media",
   "charts",
 ];
 

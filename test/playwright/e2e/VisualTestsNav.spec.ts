@@ -11,7 +11,7 @@ import { test, expect } from "../support/commands";
  */
 
 const GROUPED = {
-  foundations: ["typography", "panels", "buttons", "chips"],
+  foundations: ["typography", "panels", "buttons", "chips", "media"],
   data: ["tables", "lists", "metrics", "charts"],
   feedback: ["states", "notifications", "support-hint", "sync-modal"],
 };
