@@ -10,22 +10,21 @@ module FeatureFlags
   #
   #   hangar_inventories:
   #     description: "Personal hangar inventories"
-  #     self_service: true
   #
   #   oauth-discord:
   #     description: "Discord login"
   #     permanent: true
   #
-  # Kept to plain Ruby (no Rails, no ActiveSupport) because bin/lint-feature-flags
-  # loads this file without booting the application.
+  # Kept to plain Ruby (no Rails, no ActiveSupport) because
+  # `bin/feature-flags validate` loads this file without booting the application.
   class Registry
     # Hyphens are allowed because the OAuth provider gates are evaluated as
     # "oauth-#{provider}" in the frontend and cannot be renamed independently.
     NAME_PATTERN = /\A[a-z][a-z0-9_-]*\z/
     MAX_NAME_LENGTH = 60
     REQUIRED_KEYS = %w[description].freeze
-    KNOWN_KEYS = %w[description permanent self_service].freeze
-    BOOLEAN_KEYS = %w[permanent self_service].freeze
+    KNOWN_KEYS = %w[description permanent].freeze
+    BOOLEAN_KEYS = %w[permanent].freeze
 
     class InvalidRegistryError < StandardError; end
 
@@ -113,8 +112,7 @@ module FeatureFlags
       Definition.new(
         name: name,
         description: attrs["description"],
-        permanent: attrs["permanent"] == true,
-        self_service: attrs["self_service"] == true
+        permanent: attrs["permanent"] == true
       )
     end
 

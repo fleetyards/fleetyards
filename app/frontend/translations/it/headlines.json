@@ -110,6 +110,21 @@
         },
         "images": {
           "index": "Immagini"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "itemPrices": "Item Prices"
+          }
         }
       },
       "welcome": "Benvenuto su",
@@ -122,6 +137,7 @@
       "images": "Indice Delle Immagini",
       "stats": "Statistiche",
       "notFound": "Errore di Navigazione",
+      "forbidden": "Accesso negato",
       "featureNotReady": "In arrivo",
       "accessDenied": "Accesso negato",
       "serverError": "Errore del server",
@@ -179,7 +195,8 @@
         "settings": {
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
-          "roles": "Ruoli flotta"
+          "roles": "Ruoli flotta",
+          "features": "Funzionalità della flotta"
         },
         "inviteMember": "Invita nuovo membro"
       },

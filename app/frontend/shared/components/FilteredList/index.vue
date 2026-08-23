@@ -9,8 +9,13 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
+import Forbidden from "@/shared/components/Forbidden/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
-import { type AsyncStatus } from "@/shared/components/AsyncData.types";
+import {
+  type AsyncStatus,
+  ErrorTypesEnum,
+} from "@/shared/components/AsyncData.types";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -69,6 +74,17 @@ const hasFilterSlot = computed(() => {
   return !!slots.filter;
 });
 
+// A list that brings no filter, no actions and no pagination has an empty
+// toolbar, and an empty toolbar is still 20px of margin between the page and
+// the records.
+const hasActions = computed(
+  () =>
+    hasFilterSlot.value ||
+    !!slots["actions-left"] ||
+    !!slots["actions-right"] ||
+    !!slots["pagination-top"],
+);
+
 const { t } = useI18n();
 
 const filterTooltip = computed(() => {
@@ -82,6 +98,13 @@ const filterTooltip = computed(() => {
 const error = computed(() => {
   return props.asyncStatus.isError.value;
 });
+
+// A list behind a flag that is not on yet, or a record belonging to somebody
+// else, comes back 403 — which is an answer, not an outage.
+const forbidden = computed(
+  () =>
+    errorTypeFrom(props.asyncStatus.error?.value) === ErrorTypesEnum.FORBIDDEN,
+);
 
 const emptyVisible = computed(() => {
   return !!(
@@ -165,7 +188,7 @@ const toggleFilter = () => {
         <div class="col-12 filtered-list__header">
           <slot name="header" />
         </div>
-        <div class="col-12 filtered-list__actions">
+        <div v-if="hasActions" class="col-12 filtered-list__actions">
           <div class="filtered-list__actions-left">
             <Btn
               v-if="hasFilterSlot"
@@ -212,7 +235,8 @@ const toggleFilter = () => {
         >
           <slot v-if="error" name="error">
             <transition name="fade">
-              <ServerError />
+              <Forbidden v-if="forbidden" />
+              <ServerError v-else />
             </transition>
           </slot>
 

@@ -38,9 +38,8 @@ const params = computed<ModelsParams>(() => ({
 
 const { data, refetch, ...asyncStatus } = useModelsQuery(params);
 
-const models = computed(
-  () =>
-    data.value?.items.filter((model) => items.value.includes(model.slug)) || [],
+const models = computed(() =>
+  (data.value?.items || []).filter((model) => items.value.includes(model.slug)),
 );
 
 const { hardpointsFor, loading: hardpointsLoading } = useCompareHardpoints(

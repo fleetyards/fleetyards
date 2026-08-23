@@ -24,7 +24,10 @@ import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryIt
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
-import type { InventoryStockRecord } from "@/frontend/types/logistics";
+import type {
+  InventoryStockRecord,
+  InventoryTarget,
+} from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -113,14 +116,19 @@ const destroyEntry = (entry: HangarInventoryItem) => {
   });
 };
 
+const modalTarget = computed<InventoryTarget>(() => ({
+  kind: "hangar",
+  slug: inventorySlug.value,
+}));
+
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
   if (!inventory.value) return;
 
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Hangar/Logistics/InventoryItemModal/index.vue"),
+      import("@/frontend/components/Logistics/InventoryItemModal/index.vue"),
     props: {
-      inventory: inventory.value,
+      target: modalTarget.value,
       initialEntryType,
     },
   });
@@ -131,8 +139,8 @@ const openCsvImportModal = () => {
 
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Hangar/Logistics/CsvImportModal/index.vue"),
-    props: { inventory: inventory.value },
+      import("@/frontend/components/Logistics/CsvImportModal/index.vue"),
+    props: { target: modalTarget.value },
   });
 };
 
@@ -147,7 +155,7 @@ const openEditModal = () => {
 };
 
 onMounted(() => {
-  comlink.on("hangar-inventory-item-created", () => void refetch());
+  comlink.on("inventory-item-created", () => void refetch());
   comlink.on("hangar-inventory-updated", () => void refetchInventory());
 });
 

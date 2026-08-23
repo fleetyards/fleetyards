@@ -19,6 +19,7 @@
         "visitMilestone": "FleetYards is community-funded — no ads, no paywalls. If you find it useful, a small donation goes a long way."
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "forbidden": "Your clearance does not cover this area. If a feature is still being rolled out, you can switch it on yourself under Settings > Features once it is available to you.",
       "featureNotReady": "This feature is not yet ready and will be available soon. Stay tuned!",
       "accessDenied": "You are not authorized to view this page.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
@@ -33,6 +34,20 @@
       "admin": {
         "destroyedFleets": {
           "purgedWarning": "Restoring a purged fleet is best-effort. Roles, images, invite links and fleet vehicles are not restored."
+        },
+        "models": {
+          "viewsFolder": {
+            "hint": "Drop a folder of views named top.png, side.png, front.png and angled.png. Suffix _colored for the painted set, prefix extended_ for the extended one. holo.gltf and extended_holo.gltf come along too.",
+            "uploading": {
+              "one": "Uploading one file…",
+              "other": "Uploading %{count} files…"
+            },
+            "matched": {
+              "one": "One file ready — save to apply it.",
+              "other": "%{count} files ready — save to apply them."
+            },
+            "ignored": "Ignored: %{files}"
+          }
         }
       },
       "hangarGuide": {
@@ -78,6 +93,7 @@
       "impressum": {
         "visit": "Visit",
         "ytShipImages": "The Awesome Ship Images in the Hangar Fleetchart view are the work of <a href=\"https://twitter.com/WhyTeeZero\" target=\"_blank\" rel=\"noopener\">YT (Twitter: @WhyTeeZero)</a>.<br>Please visit his Spectrum post (see links below) and give him a upvote.",
+        "erkul": "The ship metrics on Fleetyards are modelled on the formulas and readouts of Erkul's DPS Calculator. Thanks to the erkul.games team for sharing their work with the community.",
         "appSignal": "AppSignal provided a sponsored Open Source Account which helps to improve Fleetyards.net even further. Thanks :)",
         "copyright": "The contents and works created by the page operators, on these pages are subject to German copyright. Duplication, processing, distribution and any kind of exploitation outside the limits of Copyright require the written consent of the respective author or creator. Downloads and copies of this page are only for private, non-commercial use. Insofar as the content on This page was not created by the operator, are third-party copyrights respected. In particular, Third-party content as such. Please Contact us if you notice any sort of copyright infringement. We will remove any content immediately as we become aware of such violations.",
         "disclaimer": {

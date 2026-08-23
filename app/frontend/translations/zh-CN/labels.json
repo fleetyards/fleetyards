@@ -51,7 +51,21 @@
           "tools_travel_times": "显示地点之间的预计旅行时间。",
           "tools_cargo_grids": "显示飞船的交互式货物网格查看器。",
           "fleet_starmap": "在舰队成员页面显示 Star Citizen 星图。"
-        }
+        },
+        "fleetSettingsIntro": "为整个舰队启用或禁用功能。您在此启用的内容对所有成员可见。",
+        "fleetFeature": "舰队功能",
+        "fleetFeatureInfo": "在此启用仅对您生效。您舰队的管理员可为整个舰队启用。",
+        "toggleForSelf": "仅为自己切换",
+        "fleetFeatureGrantedShort": "舰队已启用",
+        "fleetFeatureGranted": "您的舰队已为所有成员启用此功能，因此无法在此处关闭。",
+        "groupFeatureGrantedShort": "群组已启用",
+        "groupFeatureGranted": "您所在的某个群组已启用此功能，因此无法在此处关闭。",
+        "groupFeatureGrantedFleet": "该舰队所在的某个群组已启用此功能，因此无法在此处关闭。",
+        "managedFeatureShort": "受管理",
+        "managedFeature": "此功能已为您的账户启用，无法在此处更改。",
+        "managedFeatureFleet": "此功能已为该舰队启用，无法在此处更改。",
+        "selfServiceUser": "用户可自行切换",
+        "selfServiceFleet": "舰队管理员可切换"
       },
       "oauthApplication": {
         "name": "应用名称",
@@ -802,7 +816,12 @@
         "components": {
           "name": "名称",
           "itemType": "物品类型",
-          "componentClass": "组件类别"
+          "componentClass": "组件类别",
+          "buyPriceGt": "买入价格 >=",
+          "buyPriceLt": "买入价格 <=",
+          "sellPriceGt": "卖出价格 >=",
+          "sellPriceLt": "卖出价格 <=",
+          "storeImageBlank": "没有商店图片?"
         },
         "shops": {
           "name": "名称",
@@ -948,7 +967,29 @@
             "limit": "Max number of uses"
           }
         },
-        "manufacturer": "制造商"
+        "manufacturer": "制造商",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "买入价格 >=",
+          "buyPriceLt": "买入价格 <=",
+          "sellPriceGt": "卖出价格 >=",
+          "sellPriceLt": "卖出价格 <=",
+          "storeImageBlank": "没有商店图片?"
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "买入价格 >=",
+          "buyPriceLt": "买入价格 <=",
+          "sellPriceGt": "卖出价格 >=",
+          "sellPriceLt": "卖出价格 <=",
+          "storeImageBlank": "没有商店图片?"
+        }
       },
       "station": {
         "docks": "停靠口",
@@ -978,7 +1019,8 @@
         "prefix": "使用以下工具试用配置",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
-        "spviewerTitle": "SC Ships Performances Viewer"
+        "spviewerTitle": "SC Ships Performances Viewer",
+        "metricsCredit": "数据基于以下网站的计算公式"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",
@@ -1138,8 +1180,8 @@
         "drafts": "drafts",
         "noInventories": "No inventories yet.",
         "noRequests": "No requests found.",
-        "noItems": "No items in this inventory.",
-        "items": "items",
+        "noItems": "No entries in this inventory.",
+        "entriesCount": "entries",
         "comments": "comments",
         "managedBy": "Managed by",
         "itemName": "Name",
@@ -1219,7 +1261,7 @@
           "component": "Component",
           "weapon": "Weapon",
           "equipment": "Equipment",
-          "ammunition": "Ammunition",
+          "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
           "other": "Other"
         },
@@ -1238,9 +1280,35 @@
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
         "qualityRange": "Quality",
-        "stockItem": "Stock Item"
+        "stockItem": "Stock Item",
+        "overCapacity": "超出货舱容量",
+        "cargoGrid": "货舱网格",
+        "shipInventory": "飞船库存",
+        "remaining": "剩余",
+        "unmeasured": "%{count} 项尚未测量"
       },
-      "hangarInventories": "Inventories"
+      "hangarInventories": "Inventories",
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      }
     }
   }
 }

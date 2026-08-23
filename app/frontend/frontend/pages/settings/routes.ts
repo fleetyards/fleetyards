@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as securityRoutes } from "./security/routes";
 import { routes as oauthApplicationRoutes } from "./oauth-applications/routes";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -28,6 +29,15 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/settings/notifications.vue"),
     meta: {
       title: "settings.notifications",
+      needsAuthentication: true,
+    },
+  },
+  {
+    path: "calendar/",
+    name: "settings-calendar",
+    component: () => import("@/frontend/pages/settings/calendar.vue"),
+    meta: {
+      title: "settings.calendar",
       needsAuthentication: true,
     },
   },
@@ -64,7 +74,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.oauthApplications",
       needsAuthentication: true,
-      feature: "oauth-applications",
+      feature: FeatureFlagName.OAUTH_APPLICATIONS,
     },
     redirect: {
       name: "settings-oauth-applications",

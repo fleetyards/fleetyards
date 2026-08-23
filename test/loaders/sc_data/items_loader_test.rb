@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require_relative "../../support/hangar_import_fixtures"
+require "support/hangar_import_fixtures"
 
 module ScData
   module Loader
@@ -50,6 +50,94 @@ module ScData
         assert Component.exists?(retired.id), "the row has to stay for the loadouts pointing at it"
         assert_nil retired.reload.version
         assert_equal Rails.configuration.sc_data[:version], kept.reload.version
+      end
+
+      # A paint names no artwork itself -- the picture hangs off the record its
+      # manufacturer_ref points at.
+      test "#all attaches the colour swatch a paint reaches through its manufacturer" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
+
+        assert_predicate icon, :attached?
+        assert_equal "paint_100i_flame_black_orange_icon.png", icon.filename.to_s
+      end
+
+      # store_image is curated -- an admin upload, or what the hangar sync
+      # brought in -- so a load must never write to it.
+      test "#all leaves a curated store_image alone while attaching the icon" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        component = Component.find_by(sc_key: "paint_100i_black_orange")
+
+        assert_not_predicate component.store_image, :attached?
+      end
+
+      # Only a paint reaches a swatch this way. Every other item's manufacturer
+      # is a real one, and its logo is a picture of the maker, not of the item.
+      test "#all gives no icon to an item whose manufacturer is a real one" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        assert_not_predicate Component.find_by(sc_key: "aegs_avenger_cml_chaff").icon, :attached?
+      end
+
+      # Nothing but a load writes to the icon, so a build that stops naming one
+      # has to take the picture with it -- otherwise the component goes on
+      # serving artwork the current export does not carry.
+      test "#all drops an icon the export stopped naming" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        component = Component.find_by(sc_key: "aegs_avenger_cml_chaff")
+        component.icon.attach(
+          io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+          filename: "test.png",
+          content_type: "image/png"
+        )
+
+        ::ScData::Loader::ItemsLoader.new.all
+
+        assert_not_predicate component.reload.icon, :attached?
+      end
+
+      # A pass that dies partway has already committed the components it got
+      # through, so the icons the export orphaned go with those updates rather
+      # than wait for whichever later load happens to run to the end.
+      test "#all drops the icon of a record it got through before a later item raised" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        component = Component.find_by(sc_key: "aegs_avenger_cml_chaff")
+        component.icon.attach(
+          io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+          filename: "test.png",
+          content_type: "image/png"
+        )
+
+        loader = ::ScData::Loader::ItemsLoader.new
+        items = loader.send(:load_items, "items")
+        orphaned = items.find { |item| item["key"].downcase == "aegs_avenger_cml_chaff" }
+        raises_later = items.find { |item| item["key"].downcase == "paint_100i_black_orange" }
+
+        loader.stubs(:load_items).returns([orphaned, raises_later])
+        loader.stubs(:attach_icon).raises("the export went bad partway through")
+
+        assert_raises(RuntimeError) { loader.all }
+
+        assert_not_predicate component.reload.icon, :attached?
+      end
+
+      # A path that fails to resolve is a broken parse, not a dropped picture.
+      test "#all keeps the icon of a record that still names one" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
+        blob_id = icon.blob.id
+
+        ::ScData::Loader::ItemsLoader.new.all
+
+        icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
+
+        assert_predicate icon, :attached?
+        assert_equal blob_id, icon.blob.id, "an unchanged icon should not be re-attached"
       end
     end
   end

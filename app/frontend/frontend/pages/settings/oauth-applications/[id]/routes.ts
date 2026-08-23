@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -9,7 +10,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.oauthApplications",
       needsAuthentication: true,
-      feature: "oauth-applications",
+      feature: FeatureFlagName.OAUTH_APPLICATIONS,
     },
   },
   {
@@ -20,7 +21,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.oauthApplications",
       needsAuthentication: true,
-      feature: "oauth-applications",
+      feature: FeatureFlagName.OAUTH_APPLICATIONS,
     },
   },
 ];

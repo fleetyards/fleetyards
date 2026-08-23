@@ -13,8 +13,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
-import AsyncData from "@/shared/components/AsyncData.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComponents, type Component } from "@/services/fyAdminApi";
 import { useComponentsByClass } from "@/services/fyApi";
@@ -98,20 +96,14 @@ const columns: BaseTableCol<Component>[] = [
         {{ t("headlines.admin.dashboard.componentsByClass") }}
       </PanelHeading>
       <PanelBody class="dashboard-panel-body">
-        <AsyncData :async-status="componentsByClassStatus" hide-error>
-          <template #loading>
-            <Loader :loading="true" relative admin />
-          </template>
-          <template #resolved>
-            <Chart
-              name="components-by-class"
-              type="pie"
-              :options="componentsByClass"
-              :async-status="componentsByClassStatus"
-              tooltip-type="component-pie"
-            />
-          </template>
-        </AsyncData>
+        <Chart
+          name="components-by-class"
+          type="pie"
+          :options="componentsByClass"
+          :async-status="componentsByClassStatus"
+          tooltip-type="component-pie"
+          admin
+        />
       </PanelBody>
     </Panel>
   </div>

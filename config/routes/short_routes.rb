@@ -7,4 +7,6 @@ namespace :short, path: "", host: Rails.configuration.app.short_domain do
   get "sc", to: "base#model_compare", as: :model_compare
   get "c/:short_code", to: "base#model_compare_share", as: :model_compare_share,
     constraints: {short_code: /[A-Za-z0-9]{8}/}
+  get "fe/:fleet_fid/:event_slug", to: "base#fleet_event", as: :fleet_event,
+    constraints: {event_slug: %r{[^/.]+}}
 end

@@ -30,13 +30,32 @@ const { data: stats } = useSupporterContributionsStats(queryParams);
 </script>
 
 <template>
-  <div v-if="stats" class="supporter-contributions-stats">
+  <div
+    v-if="stats"
+    class="supporter-contributions-stats"
+    data-test="supporter-contributions-stats"
+  >
     <div class="supporter-contributions-stats__entry">
       <span class="supporter-contributions-stats__label">
         {{ t("labels.supporterContribution.stats.total") }}
       </span>
       <span class="supporter-contributions-stats__value">
         {{ formatCents(stats.totalAmountCents, stats.currency) }}
+      </span>
+    </div>
+    <div class="supporter-contributions-stats__entry">
+      <span class="supporter-contributions-stats__label">
+        {{ t("labels.supporterContribution.stats.currentMonth") }}
+      </span>
+      <span class="supporter-contributions-stats__value">
+        {{ formatCents(stats.currentMonthAmountCents, stats.currency) }}
+        <span class="supporter-contributions-stats__meta">
+          {{
+            t("labels.supporterContribution.stats.currentMonthCount", {
+              count: stats.currentMonthCount,
+            })
+          }}
+        </span>
       </span>
     </div>
     <div class="supporter-contributions-stats__entry">
@@ -90,6 +109,12 @@ const { data: stats } = useSupporterContributionsStats(queryParams);
   &__value {
     font-size: 1.2rem;
     font-weight: 600;
+  }
+
+  &__meta {
+    font-size: 0.85rem;
+    font-weight: 400;
+    opacity: 0.7;
   }
 }
 </style>

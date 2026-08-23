@@ -23,8 +23,17 @@
 #  store_url               :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  component_id            :uuid
 #  model_id                :uuid
 #  rsi_id                  :integer
+#
+# Indexes
+#
+#  index_model_paints_on_component_id  (component_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (component_id => components.id) ON DELETE => nullify
 #
 class ModelPaint < ApplicationRecord
   include ActiveStorageVariants
@@ -32,6 +41,11 @@ class ModelPaint < ApplicationRecord
   paginates_per 30
 
   belongs_to :model, optional: true, touch: true, counter_cache: true
+
+  # The record the game files carry for this paint, where there is one. Absent
+  # says the build does not ship it yet -- FleetYards learns about a paint from
+  # the store, which is ahead of the game -- rather than that it was dropped.
+  belongs_to :component, optional: true
 
   has_many :vehicles, dependent: :nullify
   has_many :item_prices, as: :item, dependent: :destroy
@@ -43,6 +57,10 @@ class ModelPaint < ApplicationRecord
   has_one_attached :side_view
   has_one_attached :front_view
   has_one_attached :angled_view
+
+  # A painted ship is drawn on the fleetchart from its own views, on the same
+  # terms as the model's. See Model.
+  trim_attachment :top_view, :side_view, :front_view, :angled_view
 
   def self.ransackable_attributes(auth_object = nil)
     [

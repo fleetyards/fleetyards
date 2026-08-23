@@ -25,6 +25,7 @@ type Props = {
   file?: MediaFile;
   icon?: string;
   modelValue?: string | null;
+  previewSrc?: string;
   translationKey?: string;
   autofocus?: boolean;
   autocomplete?: string;
@@ -52,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   file: undefined,
   icon: undefined,
   modelValue: undefined,
+  previewSrc: undefined,
   translationKey: undefined,
   autofocus: false,
   autocomplete: undefined,
@@ -128,6 +130,11 @@ const isHolo = computed(() => {
 
 const internalSrc = ref<string>();
 
+// Whether this input's own upload is showing what it uploaded. A value set from
+// outside -- the views folder filling the whole form -- is not that, and hiding
+// the picture for it left the input blank.
+const uploadedHere = ref(false);
+
 const hasErrors = computed(() => {
   return errors.value.length;
 });
@@ -151,6 +158,8 @@ onMounted(() => {
 const emit = defineEmits(["update:modelValue"]);
 
 const clear = () => {
+  uploadedHere.value = false;
+
   if (inputValue.value) {
     directUpload.value?.clear();
   } else {
@@ -165,11 +174,14 @@ const onUploadDone = (files: FileUpload[]) => {
     return;
   }
 
+  uploadedHere.value = true;
   inputValue.value = files[0].blob.signed_id;
   emit("update:modelValue", files[0].blob.signed_id);
 };
 
 const onUploadClear = () => {
+  uploadedHere.value = false;
+
   resetField({
     value: props.modelValue,
   });
@@ -207,6 +219,8 @@ const slots = useSlots();
 const directUpload = ref<InstanceType<typeof DirectUpload>>();
 
 const setup = () => {
+  uploadedHere.value = false;
+
   directUpload.value?.clear();
 
   internalSrc.value = isHolo.value ? props.file?.url : props.file?.smallUrl;
@@ -227,6 +241,32 @@ watch(
     setup();
   },
 );
+
+// The types this input takes, however they were passed.
+const allowedTypeList = computed(() => {
+  if (!props.allowedTypes) {
+    return [];
+  }
+
+  return Array.isArray(props.allowedTypes)
+    ? props.allowedTypes
+    : [props.allowedTypes];
+});
+
+// A holo is drawn by its viewer rather than shown as a picture, so a previewSrc
+// for one is a local file to load, not an image to display.
+const previewHoloModel = computed(() => {
+  if (
+    !props.previewSrc ||
+    !allowedTypeList.value.includes(AllowedFileTypes.HOLO)
+  ) {
+    return undefined;
+  }
+
+  return {
+    path: props.previewSrc,
+  };
+});
 
 const holoModel = computed(() => {
   if (props.file?.url && isHolo.value) {
@@ -264,9 +304,24 @@ defineExpose({
       </label>
     </transition>
     <div class="base-image-input__wrapper">
-      <template v-if="!inputValue">
+      <template v-if="!uploadedHere">
+        <!-- A value set from outside brings its own file: the upload that
+             filled it happened elsewhere, so this input has none to show. -->
+        <HoloViewer
+          v-if="previewHoloModel"
+          :controllable="false"
+          :models="[previewHoloModel]"
+          inline
+        />
         <LazyImage
-          v-if="(isImage || isPdf) && internalSrc"
+          v-else-if="previewSrc"
+          v-tooltip.right="hasErrors && errorMessage"
+          :src="previewSrc"
+          :transparent="transparent || avatar"
+          :shadow="!transparent && !avatar"
+        />
+        <LazyImage
+          v-else-if="(isImage || isPdf) && internalSrc"
           v-tooltip.right="hasErrors && errorMessage"
           :src="internalSrc"
           :transparent="transparent || avatar"

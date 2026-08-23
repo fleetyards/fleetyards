@@ -41,6 +41,7 @@ module ScData
               base_expediting_fee: values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            inventory_container_ref: value_or_nil(values.dig("Components", "VehicleComponentParams", "inventoryContainerParams")),
             weapon_pool_size: extract_weapon_pool_size(values),
             signature_cross_section: extract_cross_section(values),
             **extract_hull(values.dig("Components", "VehicleComponentParams")),
@@ -96,6 +97,7 @@ module ScData
               base_expediting_fee: insurance.dig("shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            inventory_container_ref: value_or_nil(values.dig("Components", "VehicleComponentParams", "inventoryContainerParams")),
             **extract_hull(values.dig("Components", "VehicleComponentParams")),
             speeds: extract_ground_speeds(values.dig("Components", "VehicleComponentParams")),
             metrics: {

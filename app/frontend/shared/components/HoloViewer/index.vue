@@ -382,6 +382,7 @@ defineExpose({
       <Suspense>
         <Model
           v-for="model in models"
+          :key="model.path"
           :model="model"
           :color="modelColor"
           :on-grid="grid"

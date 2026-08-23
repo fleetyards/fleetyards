@@ -49,6 +49,8 @@ const formattedTotal = computed(() =>
 const formattedGoal = computed(() =>
   formatCents(goalAmount.value, currency.value),
 );
+
+const supporters = computed(() => progress.value?.contributions ?? []);
 </script>
 
 <template>
@@ -66,6 +68,34 @@ const formattedGoal = computed(() =>
     <p v-if="!compact && progress?.goal" class="support-progress__caption">
       {{ t("texts.support.thisMonth") }}
     </p>
+    <div v-if="!compact && supporters.length" class="support-progress__thanks">
+      <h4 class="support-progress__thanks__headline">
+        {{ t("headlines.supporters") }}
+      </h4>
+      <ul class="support-progress__thanks__list">
+        <li
+          v-for="(supporter, index) in supporters"
+          :key="`${supporter.displayName}-${index}`"
+          class="support-progress__thanks__item"
+        >
+          <router-link
+            v-if="supporter.username"
+            :to="{
+              name: 'hangar-public',
+              params: { username: supporter.username },
+            }"
+          >
+            {{ supporter.displayName }}
+          </router-link>
+          <span v-else>{{ supporter.displayName }}</span>
+          <i
+            v-if="supporter.recurring"
+            v-tooltip="t('labels.supporterContribution.recurring')"
+            class="fa-duotone fa-arrows-rotate support-progress__thanks__recurring"
+          />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 

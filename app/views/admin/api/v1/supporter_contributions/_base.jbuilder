@@ -12,4 +12,11 @@ json.started_at supporter_contribution.started_at.iso8601
 json.ended_at supporter_contribution.ended_at&.iso8601 if supporter_contribution.ended_at.present?
 json.note supporter_contribution.note if supporter_contribution.note.present?
 
+if supporter_contribution.user.present?
+  json.user_id supporter_contribution.user_id
+  json.user do
+    json.partial! "admin/api/v1/users/option", user: supporter_contribution.user
+  end
+end
+
 json.partial! "api/shared/dates", record: supporter_contribution

@@ -21,12 +21,18 @@ type Props = {
   modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
+  label?: string;
+  valueAttr?: "username" | "id";
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   multiple: false,
   noLabel: true,
+  label: undefined,
+  valueAttr: "username",
+  inline: false,
 });
 
 const { t } = useI18n();
@@ -57,7 +63,7 @@ const formatter = (response: UserOptions) => {
   return response.items.map((user) => {
     return {
       label: user.username,
-      value: user.username,
+      value: user[props.valueAttr],
     };
   });
 };
@@ -70,7 +76,13 @@ const fetch = async (params: FilterGroupParams<UserOption>) => {
   }
 
   if (params.missing) {
-    if (props.multiple) {
+    if (props.valueAttr === "id") {
+      if (props.multiple) {
+        q.idIn = params.missing as string[];
+      } else {
+        q.idEq = params.missing as string;
+      }
+    } else if (props.multiple) {
       q.usernameIn = params.missing as string[];
     } else {
       q.usernameEq = params.missing as string;
@@ -87,7 +99,7 @@ const fetch = async (params: FilterGroupParams<UserOption>) => {
 <template>
   <FilterGroup
     v-model="internalValue"
-    :label="t('labels.selectUser')"
+    :label="label || t('labels.selectUser')"
     :search-label="t('labels.findUser')"
     :query-fn="fetch"
     :query-response-formatter="formatter"
@@ -96,5 +108,6 @@ const fetch = async (params: FilterGroupParams<UserOption>) => {
     :searchable="true"
     :multiple="multiple"
     :no-label="noLabel"
+    :inline="inline"
   />
 </template>

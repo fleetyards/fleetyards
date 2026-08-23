@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require_relative "../../support/hangar_import_fixtures"
+require "support/hangar_import_fixtures"
 
 module ScData
   module Loader
@@ -75,6 +75,40 @@ module ScData
 
         assert_equal 36.0, model.ground_max_speed.to_f
         assert_equal 9.0, model.ground_reverse_speed.to_f
+      end
+
+      test "#load_model persists the personal inventory the container declares" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Personal Inventory Test", in_game: true)
+
+        loader.stubs(:load_model_data).returns(
+          {
+            "mass" => 1000.0,
+            "loadout" => [],
+            "inventory_container_ref" => "74fd8018-4e99-4dd6-a968-4b9c948aa759"
+          }
+        )
+        loader.stubs(:personal_storage_index).returns(
+          {"74fd8018-4e99-4dd6-a968-4b9c948aa759" => 3.43}
+        )
+
+        loader.load_model(model)
+
+        assert_equal 3.43, model.reload.personal_inventory.to_f
+      end
+
+      test "#load_model keeps the personal inventory when the container is unknown" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Unknown Container Test", in_game: true, personal_inventory: 1.72)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "inventory_container_ref" => "missing-ref"}
+        )
+        loader.stubs(:personal_storage_index).returns({})
+
+        loader.load_model(model)
+
+        assert_equal 1.72, model.reload.personal_inventory.to_f
       end
     end
   end

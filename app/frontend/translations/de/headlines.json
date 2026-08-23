@@ -74,7 +74,8 @@
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",
           "new": "Neuer Beitrag",
-          "edit": "Beitrag bearbeiten"
+          "edit": "Beitrag bearbeiten",
+          "perMonth": "Beiträge pro Monat"
         },
         "fundingGoals": {
           "index": "Finanzierungsziele",
@@ -124,6 +125,21 @@
         },
         "imports": {
           "index": "Importe"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "itemPrices": "Item Prices"
+          }
         }
       },
       "welcome": "Willkommen auf",
@@ -136,6 +152,7 @@
       "images": "Images Index",
       "stats": "Statistiken",
       "notFound": "Navigationsfehler",
+      "forbidden": "Zugriff verweigert",
       "featureNotReady": "Demnächst",
       "accessDenied": "Zugriff verweigert",
       "serverError": "Serverfehler",
@@ -193,7 +210,8 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Flottenrollen"
+          "roles": "Flottenrollen",
+          "features": "Flottenfunktionen"
         },
         "inviteMember": "Invite new Member"
       },
@@ -245,6 +263,7 @@
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
+      "supporters": "Danke an unsere Unterstützer",
       "supportHint": {
         "hangarSync": "Schön, dass dir der Sync hilft",
         "vehicleAdded": "Dein Hangar wächst",

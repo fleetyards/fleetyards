@@ -32,6 +32,7 @@ import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import FilterForm from "@/admin/components/Imports/FilterForm/index.vue";
 import { useFilters } from "@/shared/composables/useFilters";
 import type { ImportQuery } from "@/services/fyAdminApi";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const { t, l } = useI18n();
 const router = useRouter();
@@ -105,18 +106,16 @@ const formatType = (type: string): string =>
     .replace(/^ /, "")
     .trim();
 
-const statusVariant = (
-  status: ImportStatusEnum,
-): "default" | "success" | "warning" | "danger" => {
+const statusVariant = (status: ImportStatusEnum): `${PillVariantsEnum}` => {
   switch (status) {
     case ImportStatusEnum.FINISHED:
-      return "success";
+      return PillVariantsEnum.SUCCESS;
     case ImportStatusEnum.FAILED:
-      return "danger";
+      return PillVariantsEnum.DANGER;
     case ImportStatusEnum.STARTED:
-      return "warning";
+      return PillVariantsEnum.WARNING;
     default:
-      return "default";
+      return PillVariantsEnum.DEFAULT;
   }
 };
 

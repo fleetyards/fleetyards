@@ -36,6 +36,7 @@
         "publicStats": "%{user} 机库统计",
         "wishlist": "心愿单",
         "publicWishlist": "%{user} 心愿单",
+        "vehicleCargo": "飞船货物",
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}"
       },
@@ -198,6 +199,21 @@
         },
         "modelModulePackages": {
           "index": "模型模块包"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "prices": "Edit Equipment Prices"
+          }
         }
       }
     }

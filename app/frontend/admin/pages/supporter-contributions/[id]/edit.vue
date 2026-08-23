@@ -21,6 +21,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { toCents } from "@/shared/utils/currencyHelpers";
@@ -47,6 +48,7 @@ type FormValues = {
   anonymous: boolean;
   note?: string;
   currency?: string;
+  userId?: string;
 };
 
 const initialValues = ref<FormValues>({
@@ -58,6 +60,7 @@ const initialValues = ref<FormValues>({
   anonymous: props.supporterContribution.anonymous,
   note: props.supporterContribution.note,
   currency: props.supporterContribution.currency,
+  userId: props.supporterContribution.userId,
 });
 
 const validationSchema = {
@@ -77,6 +80,7 @@ const [endedAt, endedAtProps] = defineField("endedAt");
 const [recurring, recurringProps] = defineField("recurring");
 const [anonymous, anonymousProps] = defineField("anonymous");
 const [note, noteProps] = defineField("note");
+const [userId, userIdProps] = defineField("userId");
 
 const submitting = ref(false);
 
@@ -109,6 +113,7 @@ const onSubmit = handleSubmit(async (values) => {
     anonymous: values.anonymous,
     note: values.note || undefined,
     currency: values.currency,
+    userId: values.userId || null,
   };
 
   await updateMutation
@@ -186,6 +191,15 @@ const handleCancel = async () => {
           v-bind="anonymousProps"
           translation-key="supporterContribution.anonymous"
           name="anonymous"
+        />
+        <UserFilterGroup
+          v-model="userId"
+          v-bind="userIdProps"
+          :label="t('labels.supporterContribution.user')"
+          :no-label="false"
+          :multiple="false"
+          value-attr="id"
+          name="userId"
         />
         <FormTextarea
           v-model="note"

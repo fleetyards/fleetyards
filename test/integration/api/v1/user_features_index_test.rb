@@ -32,7 +32,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:user)
     Flipper.add("TestFeature")
-    FeatureSetting.create!(feature_name: "TestFeature", self_service: true)
+    FeatureSetting.create!(feature_name: "TestFeature", self_service_user: true)
   end
 
   test "GET /user-features lists self-service features for the signed-in user" do
@@ -67,6 +67,260 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       assert_kind_of Array, parsed_body
       assert_empty parsed_body
+    end
+  end
+
+  test "GET /user-features marks the viewer's own features as user-scoped" do
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal "user", parsed_body.first["scope"]
+    end
+  end
+
+  test "GET /user-features lists a fleet-scoped feature the user may preview" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    create(:fleet, members: [@user])
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      fleet_feature = parsed_body.find { |feature| feature["name"] == "FleetWideFeature" }
+
+      assert_not_nil fleet_feature
+      assert_equal "fleet", fleet_feature["scope"],
+        "the scope is what tells the page this switch only covers the viewer"
+      assert_not fleet_feature["enabled"]
+      assert_not fleet_feature["enabledForSelf"]
+    end
+  end
+
+  test "GET /user-features reports a fleet-scoped feature the user previews as enabled" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    Flipper.enable_actor("FleetWideFeature", @user)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      fleet_feature = parsed_body.find { |feature| feature["name"] == "FleetWideFeature" }
+
+      assert fleet_feature["enabled"]
+      assert fleet_feature["enabledForSelf"], "the switch stays theirs to flip back"
+    end
+  end
+
+  test "GET /user-features reports a feature the fleet enabled as enabled" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    fleet = create(:fleet, members: [@user])
+    Flipper.enable_actor("FleetWideFeature", fleet)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      fleet_feature = parsed_body.find { |feature| feature["name"] == "FleetWideFeature" }
+
+      assert fleet_feature["enabled"],
+        "the member has the feature, so the list must not ask them to turn it on"
+      assert_not fleet_feature["enabledForSelf"],
+        "and the page needs to know it came from the fleet, to disable the switch"
+      assert_equal [{"name" => fleet.name, "slug" => fleet.slug}], fleet_feature["fleets"],
+        "naming the fleet tells the member where the feature came from"
+    end
+  end
+
+  test "GET /user-features names every fleet of the user's that enabled the feature" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    granting = create(:fleet, members: [@user])
+    other_granting = create(:fleet, members: [@user])
+    create(:fleet, members: [@user])
+    Flipper.enable_actor("FleetWideFeature", granting)
+    Flipper.enable_actor("FleetWideFeature", other_granting)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      slugs = parsed_body.find { |feature| feature["name"] == "FleetWideFeature" }["fleets"]
+        .map { |fleet| fleet["slug"] }
+
+      assert_equal [granting.slug, other_granting.slug].sort, slugs.sort,
+        "the fleet that has it switched off is not responsible for anything"
+    end
+  end
+
+  test "GET /user-features names no fleet for a feature the user enabled themselves" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    create(:fleet, members: [@user])
+    Flipper.enable_actor("FleetWideFeature", @user)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_empty parsed_body.find { |feature| feature["name"] == "FleetWideFeature" }["fleets"],
+        "their own preview is not their fleet's doing, and stays theirs to switch off"
+    end
+  end
+
+  test "GET /user-features ignores a fleet the user has only been invited to" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    fleet = create(:fleet)
+    create(:fleet_membership, :invited, fleet:, user: @user)
+    Flipper.enable_actor("FleetWideFeature", fleet)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_not parsed_body.find { |feature| feature["name"] == "FleetWideFeature" }["enabled"],
+        "a pending invitation is not membership"
+    end
+  end
+
+  test "GET /user-features does not count a fleet gate on a user-scoped feature" do
+    fleet = create(:fleet, members: [@user])
+    Flipper.enable_actor("TestFeature", fleet)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_not parsed_body.find { |feature| feature["name"] == "TestFeature" }["enabled"],
+        "nothing reads a user-scoped flag against a fleet, so such a gate grants nothing"
+    end
+  end
+
+  test "GET /user-features lists a fleet-scoped feature for a user in no fleet" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_includes parsed_body.map { |feature| feature["name"] }, "FleetWideFeature",
+        "the toggle covers the viewer, so it does not depend on which fleets they are in"
+    end
+  end
+
+  test "GET /user-features lists a flag with no toggle that was enabled for the user" do
+    Flipper.add("AdminGrantedFeature")
+    Flipper.enable_actor("AdminGrantedFeature", @user)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      feature = parsed_body.find { |item| item["name"] == "AdminGrantedFeature" }
+
+      assert_not_nil feature, "a feature the user has must not be missing from the page listing their features"
+      assert feature["enabled"]
+      assert feature["enabledForSelf"]
+      assert_not feature["toggleable"], "there is no self-service toggle to flip"
+    end
+  end
+
+  test "GET /user-features omits a flag with no toggle that nothing granted" do
+    Flipper.add("AdminGrantedFeature")
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_not_includes parsed_body.map { |item| item["name"] }, "AdminGrantedFeature",
+        "without a toggle and without a grant the row would say nothing"
+    end
+  end
+
+  test "GET /user-features lists a flag enabled for a group the user is in" do
+    tester = create(:user, :tester)
+    Flipper.add("TesterFeature")
+    Flipper.enable_group("TesterFeature", :testers)
+    sign_in tester
+
+    assert_api_response :get, 200 do
+      feature = parsed_body.find { |item| item["name"] == "TesterFeature" }
+
+      assert_not_nil feature
+      assert feature["enabled"]
+      assert_not feature["enabledForSelf"], "the group holds the gate, not the user"
+      assert_not feature["toggleable"]
+      assert_equal ["testers"], feature["groups"],
+        "naming the group tells the user where the feature came from"
+    end
+  end
+
+  test "GET /user-features omits a flag whose group the user is not in" do
+    Flipper.add("TesterFeature")
+    Flipper.enable_group("TesterFeature", :testers)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_not_includes parsed_body.map { |item| item["name"] }, "TesterFeature"
+    end
+  end
+
+  test "GET /user-features lists a flag with no toggle that the user's fleet enabled" do
+    Flipper.add("FleetGrantedFeature")
+    fleet = create(:fleet, members: [@user])
+    Flipper.enable_actor("FleetGrantedFeature", fleet)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      feature = parsed_body.find { |item| item["name"] == "FleetGrantedFeature" }
+
+      assert_not_nil feature
+      assert feature["enabled"]
+      assert_not feature["toggleable"]
+      assert_equal "fleet", feature["scope"], "the fleet gate is what makes this a fleet matter"
+      assert_equal [{"name" => fleet.name, "slug" => fleet.slug}], feature["fleets"]
+    end
+  end
+
+  test "GET /user-features omits a flag enabled for a fleet the user is not in" do
+    Flipper.add("FleetGrantedFeature")
+    Flipper.enable_actor("FleetGrantedFeature", create(:fleet))
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_not_includes parsed_body.map { |item| item["name"] }, "FleetGrantedFeature"
+    end
+  end
+
+  test "GET /user-features omits a flag rolled out to a percentage of actors" do
+    Flipper.add("PercentageFeature")
+    Flipper.enable_percentage_of_actors("PercentageFeature", 100)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_not_includes parsed_body.map { |item| item["name"] }, "PercentageFeature",
+        "a percentage rollout targets nobody in particular, so there is nothing to explain here"
+    end
+  end
+
+  test "GET /user-features marks a self-service feature as toggleable" do
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert parsed_body.find { |item| item["name"] == "TestFeature" }["toggleable"]
+    end
+  end
+
+  test "GET /user-features marks a fleet-granted self-service feature as not toggleable" do
+    Flipper.add("FleetWideFeature")
+    FeatureSetting.create!(feature_name: "FleetWideFeature", self_service_user: true, self_service_fleet: true)
+    fleet = create(:fleet, members: [@user])
+    Flipper.enable_actor("FleetWideFeature", fleet)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_not parsed_body.find { |item| item["name"] == "FleetWideFeature" }["toggleable"],
+        "the switch cannot take away what the fleet grants"
+    end
+  end
+
+  test "GET /user-features marks a group-granted self-service feature as not toggleable" do
+    tester = create(:user, :tester)
+    Flipper.enable_group("TestFeature", :testers)
+    sign_in tester
+
+    assert_api_response :get, 200 do
+      feature = parsed_body.find { |item| item["name"] == "TestFeature" }
+
+      assert feature["enabled"]
+      assert_not feature["enabledForSelf"]
+      assert_not feature["toggleable"],
+        "switching the personal gate off would not take the feature away"
+      assert_equal ["testers"], feature["groups"]
     end
   end
 end

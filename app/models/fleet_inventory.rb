@@ -40,6 +40,7 @@ class FleetInventory < ApplicationRecord
   inventory_items_association :fleet_inventory_items
 
   has_one_attached :image
+  validates :image, no_vector_image: true
 
   enum :visibility, {members_only: 0, officers_only: 1}
 

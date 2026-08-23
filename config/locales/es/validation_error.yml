@@ -48,6 +48,12 @@ es:
       create: No se pudo crear la entrada de inventario.
       update: No se pudo actualizar la entrada de inventario.
       destroy: No se pudo eliminar la entrada de inventario.
+    vehicle_inventory:
+      destroy: No se pudo eliminar el inventario.
+    vehicle_inventory_items:
+      create: No se pudo crear la entrada de inventario.
+      update: No se pudo actualizar la entrada de inventario.
+      destroy: No se pudo eliminar la entrada de inventario.
     image:
       create: No se pudo crear la imagen
       update: No se pudo actualizar la imagen

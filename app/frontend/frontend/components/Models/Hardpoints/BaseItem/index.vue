@@ -13,6 +13,7 @@ import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vu
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manufacturer/index.vue";
+import HardpointStats from "@/frontend/components/Models/Hardpoints/Stats/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { useHardpointStats } from "@/frontend/composables/useHardpointStats";
 import {
@@ -196,22 +197,13 @@ const hardpointNames = computed(() => {
         <HardpointManufacturer
           :manufacturer="hardpoint.component?.manufacturer"
         />
-        <div v-if="inlineStats.length" class="hardpoint-item__stats">
-          <span
-            v-for="(s, i) in inlineStats"
-            :key="i"
-            class="hardpoint-item__stat"
-          >
-            <span class="hardpoint-item__stat-k">{{ s.label }}</span>
-            <span class="hardpoint-item__stat-v">{{ s.value }}</span>
-          </span>
-        </div>
       </div>
       <HardpointHeadline
         v-if="primaryStat"
         :value="primaryStat.value"
         :unit="primaryStat.label"
       />
+      <HardpointStats :stats="inlineStats" />
     </template>
     <template #loadout>
       <div v-if="loadout.length" class="hardpoint-item__loadout">

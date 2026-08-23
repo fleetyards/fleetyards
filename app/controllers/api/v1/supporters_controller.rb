@@ -11,7 +11,8 @@ module Api
         today = Date.current
         @goals = FundingGoal.active_for_month(today)
         @monthly_total = SupporterContribution.monthly_total(today)
-        @contributions = SupporterContribution.active_in(today.beginning_of_month, today.end_of_month)
+        @contributions = SupporterContribution.active_now(today)
+          .includes(:user)
           .order(started_at: :desc, created_at: :desc)
       end
     end

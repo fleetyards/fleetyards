@@ -5,3 +5,16 @@ POST /images the 'size' response's property type/format changed from 'integer'/'
 PUT /images/{id} the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
 POST /features api removed without deprecation
 DELETE /features/{id} api removed without deprecation
+POST /supporter-contributions removed the required property `details` from the response with the `400` status
+POST /supporter-contributions removed the required property `error` from the response with the `400` status
+GET /features removed the required property `items/selfService` from the response with the `200` status
+GET /features/{id} removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/disable removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/disable-actor removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/disable-group removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/enable removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/enable-actor removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/enable-group removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/enable-percentage-of-actors removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/enable-percentage-of-time removed the required property `selfService` from the response with the `200` status
+PUT /features/{id}/toggle-self-service api path removed without deprecation

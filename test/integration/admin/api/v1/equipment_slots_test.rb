@@ -1,0 +1,65 @@
+# frozen_string_literal: true
+
+require "openapi_helper"
+
+class Admin::Api::V1::EquipmentSlotsTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
+
+  openapi_schema :"admin/v1/schema"
+
+  api_path "/equipment/slots" do
+    get("Equipment slots") do
+      operationId "equipmentSlots"
+      tags "Equipment"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+      end
+
+      response(401, "unauthorized") do
+        schema "$ref": "#/components/schemas/StandardError"
+      end
+    end
+  end
+
+  setup do
+    @user = create(:admin_user, resource_access: [:equipment])
+  end
+
+  test "GET /equipment/slots returns every slot as a filter option" do
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      values = parsed_body.map { |filter| filter["value"] }
+
+      assert_equal Equipment.slots.keys, values
+      assert(parsed_body.all? { |filter| filter["label"].present? })
+      assert(parsed_body.all? { |filter| filter["category"] == "slot" })
+    end
+  end
+
+  # The list is the enum, not what happens to be in the table, so an empty
+  # database still offers every slot.
+  test "GET /equipment/slots does not depend on existing records" do
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal Equipment.slots.count, parsed_body.count
+    end
+  end
+
+  test "GET /equipment/slots returns 401 when not signed in" do
+    assert_api_response :get, 401
+  end
+
+  test "GET /equipment/slots returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :get, 403
+  end
+end

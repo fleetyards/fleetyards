@@ -54,6 +54,7 @@
 #  name                              :string(255)
 #  notified                          :boolean          default(FALSE)
 #  on_sale                           :boolean          default(FALSE)
+#  personal_inventory                :decimal(15, 2)
 #  pitch                             :decimal(15, 2)
 #  pitch_boosted                     :decimal(15, 2)
 #  player_ownable                    :boolean          default(TRUE), not null
@@ -130,12 +131,13 @@ class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
   include RoutingConcern
   include ActiveStorageVariants
+  include AttachmentRansackers
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   has_paper_trail on: %i[update], only: %i[
     classification production_status production_note focus pledge_price length beam height mass
-    cargo size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
+    cargo personal_inventory size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
     max_speed_acceleration max_speed_decceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
@@ -248,6 +250,16 @@ class Model < ApplicationRecord
   has_one_attached :extended_front_view_colored
   has_one_attached :extended_angled_view_colored
 
+  # The fleetchart sizes a ship from the pixel dimensions of the view it draws,
+  # so transparent padding around the hull reads as part of the ship. The store
+  # images are left alone: they are framed artwork, not measured against
+  # anything. See AttachmentTrimmer.
+  trim_attachment :top_view, :side_view, :front_view, :angled_view,
+    :top_view_colored, :side_view_colored, :front_view_colored, :angled_view_colored,
+    :extended_top_view, :extended_side_view, :extended_front_view, :extended_angled_view,
+    :extended_top_view_colored, :extended_side_view_colored,
+    :extended_front_view_colored, :extended_angled_view_colored
+
   before_save :update_slugs
 
   before_save :update_from_hardpoints
@@ -272,16 +284,7 @@ class Model < ApplicationRecord
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug
 
-  %i[front_view fleetchart_image top_view_colored holo].each do |attachment_name|
-    ransacker attachment_name do
-      Arel.sql(
-        "(SELECT CAST(active_storage_attachments.id AS TEXT) FROM active_storage_attachments " \
-        "WHERE active_storage_attachments.record_type = 'Model' " \
-        "AND active_storage_attachments.record_id = models.id " \
-        "AND active_storage_attachments.name = '#{attachment_name}')"
-      )
-    end
-  end
+  ransack_attachment :front_view, :fleetchart_image, :top_view_colored, :holo
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -295,7 +298,7 @@ class Model < ApplicationRecord
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
       "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
-      "name", "notified", "on_sale", "pitch", "player_ownable", "pledge_price", "price", "production_note",
+      "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "price", "production_note",
       "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
@@ -361,8 +364,10 @@ class Model < ApplicationRecord
     Model.visible.active.order(classification: :asc).all.map(&:classification).compact_blank.compact.uniq
   end
 
-  def self.focus_filters
-    Model.visible.active.all.map(&:focus).compact_blank.compact.uniq.map do |item|
+  def self.focus_filters(classification: nil)
+    scope = Model.visible.active
+    scope = scope.where(classification: classification) if classification.present?
+    scope.map(&:focus).compact_blank.compact.uniq.map do |item|
       Filter.new(
         category: "focus",
         label: item.humanize,
@@ -565,6 +570,21 @@ class Model < ApplicationRecord
 
     number = number_with_precision(
       cargo,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "SCU"].join(" ")
+  end
+
+  # The ship's own storage container, which the game keeps apart from the cargo
+  # grid: it holds personal gear rather than freight, and most ships measure it
+  # in fractions of an SCU.
+  def personal_inventory_label
+    return if personal_inventory.blank? || personal_inventory.zero?
+
+    number = number_with_precision(
+      personal_inventory,
       precision: 2,
       strip_insignificant_zeros: true
     )

@@ -28,7 +28,13 @@ Rails.application.configure do
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
-    config.cache_store = :redis_cache_store, {url: Rails.configuration.redis.url, db: Rails.configuration.redis.db}
+    # Namespaced so `Rails.cache.clear` deletes by prefix; an un-namespaced
+    # RedisCacheStore clears with FLUSHDB, which takes the whole database.
+    config.cache_store = :redis_cache_store, {
+      url: Rails.configuration.redis.url,
+      db: Rails.configuration.redis.cache_db,
+      namespace: "fleetyards-#{Rails.env}"
+    }
 
     config.public_file_server.headers = {
       "Cache-Control" => "public, max-age=#{2.days.to_i}"

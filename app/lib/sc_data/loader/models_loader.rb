@@ -35,6 +35,7 @@ module ScData
         update_params = {}
 
         update_params = update_metrics(model_data, update_params)
+        update_params = update_personal_inventory(model_data, update_params)
         hardpoints = model.hardpoints.game_files
         update_params = update_cargo_holds(hardpoints, update_params)
         update_params = update_quantum_fuel_tanks(hardpoints, update_params)
@@ -83,6 +84,36 @@ module ScData
         update_params[:ground] = model_data.dig("ground") || false
 
         update_params
+      end
+
+      # The ship's own storage container, which the vehicle entity points at
+      # directly rather than hanging off a hardpoint the way cargo grids do.
+      private def update_personal_inventory(model_data, update_params)
+        ref = model_data["inventory_container_ref"]
+
+        return update_params if ref.blank?
+
+        storage = personal_storage_index[ref]
+
+        return update_params if storage.blank?
+
+        update_params[:personal_inventory] = storage
+
+        update_params
+      end
+
+      # Same reason as door_health_index: load_items parses every item file, so
+      # index the containers once instead of once per model.
+      private def personal_storage_index
+        @personal_storage_index ||= load_items("items").each_with_object({}) do |item, index|
+          next unless item[:type] == "PersonalStorage"
+          next if item[:ref].blank?
+
+          storage = item.dig(:type_data, :storage).to_f
+          next unless storage.positive?
+
+          index[item[:ref]] = storage
+        end
       end
 
       # Breakable interior doors, which erkul shows as an area of their own. They

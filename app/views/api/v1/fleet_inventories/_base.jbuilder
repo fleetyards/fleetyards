@@ -6,7 +6,7 @@ json.slug fleet_inventory.slug
 json.description fleet_inventory.description
 json.visibility fleet_inventory.visibility
 json.location fleet_inventory.location
-json.item_count fleet_inventory.fleet_inventory_items.size
+json.entries_count fleet_inventory.fleet_inventory_items.size
 
 stock = fleet_inventory.current_stock
 json.total_scu stock.select { |s| s.unit == "scu" }.sum(&:net_quantity).to_f

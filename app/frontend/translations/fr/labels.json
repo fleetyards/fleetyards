@@ -51,7 +51,21 @@
           "tools_travel_times": "Afficher les temps de trajet estimés entre les emplacements.",
           "tools_cargo_grids": "Afficher la visionneuse interactive de grille de cargaison pour les vaisseaux.",
           "fleet_starmap": "Afficher la carte stellaire Star Citizen sur les pages des membres de flotte."
-        }
+        },
+        "fleetSettingsIntro": "Activez ou désactivez des fonctionnalités pour toute la flotte. Tous les membres voient ce que vous activez ici.",
+        "fleetFeature": "Fonctionnalité de flotte",
+        "fleetFeatureInfo": "L'activer ici ne l'active que pour vous. Les administrateurs de votre flotte peuvent l'activer pour toute la flotte.",
+        "toggleForSelf": "Activer pour vous uniquement",
+        "fleetFeatureGrantedShort": "Activé par la flotte",
+        "fleetFeatureGranted": "Votre flotte l'a activé pour tous les membres, il ne peut donc pas être désactivé ici.",
+        "groupFeatureGrantedShort": "Activé par le groupe",
+        "groupFeatureGranted": "Un groupe dont vous faites partie a activé cette fonctionnalité, elle ne peut donc pas être désactivée ici.",
+        "groupFeatureGrantedFleet": "Un groupe dont cette flotte fait partie a activé cette fonctionnalité, elle ne peut donc pas être désactivée ici.",
+        "managedFeatureShort": "Géré",
+        "managedFeature": "Cette fonctionnalité a été activée pour votre compte et ne peut pas être modifiée ici.",
+        "managedFeatureFleet": "Cette fonctionnalité a été activée pour cette flotte et ne peut pas être modifiée ici.",
+        "selfServiceUser": "Les utilisateurs peuvent basculer",
+        "selfServiceFleet": "Les admins de flotte peuvent basculer"
       },
       "oauthApplication": {
         "name": "Nom de l'application",
@@ -802,7 +816,12 @@
         "components": {
           "name": "Nom",
           "itemType": "Type d'objet",
-          "componentClass": "Classe de composant"
+          "componentClass": "Classe de composant",
+          "buyPriceGt": "Prix d'achat >=",
+          "buyPriceLt": "Prix d'achat <=",
+          "sellPriceGt": "Prix de vente >=",
+          "sellPriceLt": "Prix de vente <=",
+          "storeImageBlank": "Sans image de boutique ?"
         },
         "shops": {
           "name": "Nom",
@@ -948,7 +967,29 @@
             "limit": "Nombre maximum d’utilisations"
           }
         },
-        "manufacturer": "Fabricant"
+        "manufacturer": "Fabricant",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "Prix d'achat >=",
+          "buyPriceLt": "Prix d'achat <=",
+          "sellPriceGt": "Prix de vente >=",
+          "sellPriceLt": "Prix de vente <=",
+          "storeImageBlank": "Sans image de boutique ?"
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "Prix d'achat >=",
+          "buyPriceLt": "Prix d'achat <=",
+          "sellPriceGt": "Prix de vente >=",
+          "sellPriceLt": "Prix de vente <=",
+          "storeImageBlank": "Sans image de boutique ?"
+        }
       },
       "station": {
         "docks": "Quais",
@@ -978,7 +1019,8 @@
         "prefix": "Essayer les configurations avec",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
-        "spviewerTitle": "SC Ships Performances Viewer"
+        "spviewerTitle": "SC Ships Performances Viewer",
+        "metricsCredit": "Statistiques basées sur les formules de"
       },
       "scunpacked": {
         "prefix": "Configurations basées sur les produits développés par Gamefiles ",
@@ -1146,8 +1188,8 @@
         "drafts": "drafts",
         "noInventories": "No inventories yet.",
         "noRequests": "No requests found.",
-        "noItems": "No items in this inventory.",
-        "items": "items",
+        "noItems": "No entries in this inventory.",
+        "entriesCount": "entries",
         "comments": "comments",
         "managedBy": "Managed by",
         "itemName": "Name",
@@ -1227,7 +1269,7 @@
           "component": "Component",
           "weapon": "Weapon",
           "equipment": "Equipment",
-          "ammunition": "Ammunition",
+          "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
           "other": "Other"
         },
@@ -1246,9 +1288,35 @@
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
         "qualityRange": "Quality",
-        "stockItem": "Stock Item"
+        "stockItem": "Stock Item",
+        "overCapacity": "au-delà de la capacité de fret",
+        "cargoGrid": "Grille de fret",
+        "shipInventory": "Inventaire du vaisseau",
+        "remaining": "Restant",
+        "unmeasured": "%{count} pas encore mesurés"
       },
-      "hangarInventories": "Inventories"
+      "hangarInventories": "Inventories",
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      }
     }
   }
 }

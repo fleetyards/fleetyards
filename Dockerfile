@@ -62,7 +62,9 @@ RUN bundle install --jobs 4 && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
 # Install Node dependencies (skip postinstall, orval runs after full copy)
+# patches/ comes along because package.json's patchedDependencies reads from it
 COPY package.json pnpm-lock.yaml ./
+COPY patches ./patches
 RUN pnpm install --frozen-lockfile --ignore-scripts
 
 # Copy the rest of the application

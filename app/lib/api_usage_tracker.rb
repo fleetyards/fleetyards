@@ -76,7 +76,7 @@ class ApiUsageTracker
     private def store
       @store ||= ActiveSupport::Cache::RedisCacheStore.new(
         url: Rails.configuration.redis.url,
-        db: 1,
+        db: Rails.configuration.redis.api_usage_db,
         namespace:
       )
     end

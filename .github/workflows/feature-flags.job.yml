@@ -12,4 +12,4 @@ jobs:
         with:
           bundler-cache: false
       - name: validate the feature flag registry
-        run: ruby ./bin/lint-feature-flags
+        run: ruby ./bin/feature-flags validate

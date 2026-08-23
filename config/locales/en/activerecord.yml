@@ -242,7 +242,24 @@ en:
       messages:
         blank: can't be blank
         record_invalid: Bad Data
+        svg_not_supported: must not be an SVG image
       models:
+        mission_ship:
+          attributes:
+            base:
+              model_or_filter_required: needs a ship, a list of ships, or filters
+            model_id:
+              must_be_in_game: is not in the game yet
+            allowed_model_ids:
+              must_be_in_game: name a ship that is not in the game yet
+        fleet_event_ship:
+          attributes:
+            base:
+              model_or_filter_required: needs a ship, a list of ships, or filters
+            model_id:
+              must_be_in_game: is not in the game yet
+            allowed_model_ids:
+              must_be_in_game: name a ship that is not in the game yet
         fleet_role:
           attributes:
             resource_access:
@@ -275,3 +292,9 @@ en:
               invalid: Token is invalid
             username:
               taken: is already taken.
+        fleet_event_signup:
+          attributes:
+            fleet_membership_id:
+              already_signed_up: is already signed up to this slot
+            fleet_event_slot_id:
+              already_taken: is already taken by another member

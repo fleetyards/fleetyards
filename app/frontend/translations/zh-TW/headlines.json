@@ -110,6 +110,21 @@
         },
         "images": {
           "index": "圖片"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "itemPrices": "Item Prices"
+          }
         }
       },
       "welcome": "Welcome to",
@@ -122,6 +137,7 @@
       "images": "Images Index",
       "stats": "統計",
       "notFound": "導航錯誤",
+      "forbidden": "拒絕存取",
       "featureNotReady": "即將推出",
       "accessDenied": "拒絕存取",
       "serverError": "伺服器錯誤",
@@ -179,7 +195,8 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "艦隊角色"
+          "roles": "艦隊角色",
+          "features": "艦隊功能"
         },
         "inviteMember": "Invite new Member"
       },

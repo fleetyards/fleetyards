@@ -11,6 +11,7 @@ import BaseTable, {
 } from "@/shared/components/base/Table/index.vue";
 import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import type {
   InventoryLedgerRecord,
   InventoryStockRecord,
@@ -204,6 +205,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       {{ record.netQuantity }}
       {{ t(`labels.logistics.units.${record.unit}`) }}
     </template>
+    <template v-if="$slots['stock-actions']" #actions="{ record }">
+      <slot name="stock-actions" :record="record" />
+    </template>
   </BaseTable>
 
   <BaseTable
@@ -225,7 +229,7 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       <slot name="log-name" :record="record">{{ record.name }}</slot>
       <BasePill
         v-if="record.item && record.item.available === false"
-        variant="warning"
+        :variant="PillVariantsEnum.WARNING"
         :title="t('labels.logistics.itemUnavailableHint')"
       >
         {{ t("labels.logistics.itemUnavailable") }}

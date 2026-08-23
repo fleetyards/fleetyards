@@ -162,6 +162,7 @@ module ScData
         clear_once(File.dirname(target))
 
         FileUtils.mkdir_p(File.dirname(target))
+
         FileUtils.cp(source, target)
 
         target

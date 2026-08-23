@@ -1,0 +1,33 @@
+# Corrections for manufacturer records the game export ships wrong, keyed by the
+# record's `Code`.
+#
+# Several `scitemmanufacturer` records carry a copy-pasted `Localization` block
+# that points at another manufacturer's keys -- `fski.xml` asks for
+# `@manufacturer_NameAEGS` and so resolves to "Aegis Dynamics". Where the export
+# also defines the record's own `manufacturer_Name<CODE>` key the parser prefers
+# that and needs no help here; this file covers the records where it does not.
+#
+# `name:` replaces the resolved name. `skip: true` drops the record entirely.
+#
+# Delete an entry once CIG fixes the record upstream -- the parser prefers the
+# export whenever the record's own key exists, so a fixed record makes its entry
+# redundant rather than conflicting.
+---
+# Logo is `firestormkinetics_256.tif` and its components are the Arrester,
+# Tempest, Ignite and Spark lines.
+FSKI:
+  name: Firestorm Kinetics
+
+# Its components are the Absolution, Condemnation and Salvation Distortion
+# Scatterguns -- Preacher Armaments' naming.
+PRAR:
+  name: Preacher Armaments
+
+# Placeholder records: both are byte-for-byte copies of another manufacturer
+# (logo included) and nothing in the export references either ref, so there is
+# no evidence of what they are meant to be and no item that would lose its
+# manufacturer by dropping them.
+TRAS:
+  skip: true
+GHEX:
+  skip: true

@@ -4,6 +4,10 @@
       "true": "Ja",
       "false": "Nein",
       "null": "-",
+      "supporter": {
+        "badge": "Unterstützer",
+        "tooltip": "Unterstützt FleetYards.net diesen Monat"
+      },
       "and": "und",
       "hide": "Verbergen",
       "show": "Anzeigen",
@@ -52,7 +56,21 @@
           "tools_cargo_grids": "Interaktiven Frachtraster-Viewer für Schiffe anzeigen.",
           "fleet_starmap": "Star Citizen Sternenkarte auf Flottenmitgliederseiten anzeigen."
         },
-        "registryHint": "Flags werden in config/feature_flags.yml deklariert und beim Deploy erstellt. Hier steuerst du ihre Gates."
+        "registryHint": "Flags werden in config/feature_flags.yml deklariert und beim Deploy erstellt. Hier steuerst du ihre Gates.",
+        "fleetSettingsIntro": "Aktivieren oder deaktivieren Sie Funktionen für die gesamte Flotte. Was Sie hier einschalten, sehen alle Mitglieder.",
+        "fleetFeature": "Flottenfunktion",
+        "fleetFeatureInfo": "Hier eingeschaltet gilt sie nur für Sie. Die Admins Ihrer Flotte können sie für die gesamte Flotte aktivieren.",
+        "toggleForSelf": "Nur für Sie umschalten",
+        "fleetFeatureGrantedShort": "Von Flotte aktiviert",
+        "fleetFeatureGranted": "Ihre Flotte hat dies für alle Mitglieder aktiviert, daher kann es hier nicht abgeschaltet werden.",
+        "groupFeatureGrantedShort": "Von Gruppe aktiviert",
+        "groupFeatureGranted": "Eine Gruppe, in der Sie sind, hat diese Funktion aktiviert, daher kann sie hier nicht abgeschaltet werden.",
+        "groupFeatureGrantedFleet": "Eine Gruppe, in der diese Flotte ist, hat diese Funktion aktiviert, daher kann sie hier nicht abgeschaltet werden.",
+        "managedFeatureShort": "Verwaltet",
+        "managedFeature": "Diese Funktion wurde für Ihr Konto aktiviert und kann hier nicht geändert werden.",
+        "managedFeatureFleet": "Diese Funktion wurde für diese Flotte aktiviert und kann hier nicht geändert werden.",
+        "selfServiceUser": "Benutzer können umschalten",
+        "selfServiceFleet": "Flotten-Admins können umschalten"
       },
       "oauthApplication": {
         "name": "Anwendungsname",
@@ -552,6 +570,7 @@
       },
       "supporterContribution": {
         "name": "Unterstützer-Name",
+        "user": "Verknüpftes Konto",
         "amount": "Betrag",
         "currency": "Währung",
         "anonymous": "Anonym",
@@ -562,8 +581,14 @@
         "stats": {
           "total": "Gesamt",
           "count": "Beiträge",
+          "currentMonth": "Diesen Monat",
+          "currentMonthCount": "%{count} Beiträge",
           "recurringCount": "Wiederkehrend",
           "anonymousCount": "Anonym"
+        },
+        "chart": {
+          "contributions": "Beiträge",
+          "goal": "Ziel"
         }
       },
       "itemPrice": {
@@ -859,7 +884,12 @@
         "components": {
           "name": "Name",
           "itemType": "Gegenstandstyp",
-          "componentClass": "Komponentenklasse"
+          "componentClass": "Komponentenklasse",
+          "buyPriceGt": "Kaufpreis >=",
+          "buyPriceLt": "Kaufpreis <=",
+          "sellPriceGt": "Verkaufspreis >=",
+          "sellPriceLt": "Verkaufspreis <=",
+          "storeImageBlank": "Ohne Shop-Bild?"
         },
         "shops": {
           "name": "Name",
@@ -980,7 +1010,11 @@
           "recurring": "Wiederkehrend",
           "anonymous": "Anonym",
           "startedAtGteq": "Beginnt ab",
-          "startedAtLteq": "Beginnt bis"
+          "startedAtLteq": "Beginnt bis",
+          "user": "Verknüpftes Konto",
+          "linked": "Konto-Verknüpfung",
+          "linkedOnly": "Verknüpft",
+          "unlinkedOnly": "Nicht verknüpft"
         },
         "images": {
           "station": "Station",
@@ -1013,7 +1047,29 @@
             "limit": "Max number of uses"
           }
         },
-        "manufacturer": "Hersteller"
+        "manufacturer": "Hersteller",
+        "commodities": {
+          "name": "Name",
+          "commodityType": "Commodity Type",
+          "uexCode": "UEX Code",
+          "buyPriceGt": "Kaufpreis >=",
+          "buyPriceLt": "Kaufpreis <=",
+          "sellPriceGt": "Verkaufspreis >=",
+          "sellPriceLt": "Verkaufspreis <=",
+          "storeImageBlank": "Ohne Shop-Bild?"
+        },
+        "equipment": {
+          "name": "Name",
+          "equipmentType": "Equipment Type",
+          "itemType": "Item Type",
+          "weaponClass": "Weapon Class",
+          "slot": "Slot",
+          "buyPriceGt": "Kaufpreis >=",
+          "buyPriceLt": "Kaufpreis <=",
+          "sellPriceGt": "Verkaufspreis >=",
+          "sellPriceLt": "Verkaufspreis <=",
+          "storeImageBlank": "Ohne Shop-Bild?"
+        }
       },
       "station": {
         "docks": "Andockplätze",
@@ -1043,7 +1099,8 @@
         "prefix": "Konfigurationen testen mit",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
-        "spviewerTitle": "SC Ships Performances Viewer"
+        "spviewerTitle": "SC Ships Performances Viewer",
+        "metricsCredit": "Werte basieren auf den Formeln von"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",
@@ -1213,8 +1270,8 @@
         "drafts": "drafts",
         "noInventories": "No inventories yet.",
         "noRequests": "No requests found.",
-        "noItems": "No items in this inventory.",
-        "items": "items",
+        "noItems": "No entries in this inventory.",
+        "entriesCount": "entries",
         "comments": "comments",
         "managedBy": "Managed by",
         "itemName": "Name",
@@ -1294,7 +1351,7 @@
           "component": "Component",
           "weapon": "Weapon",
           "equipment": "Equipment",
-          "ammunition": "Ammunition",
+          "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
           "other": "Other"
         },
@@ -1313,9 +1370,35 @@
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
         "qualityRange": "Quality",
-        "stockItem": "Stock Item"
+        "stockItem": "Stock Item",
+        "overCapacity": "über der Frachtkapazität",
+        "cargoGrid": "Frachtraster",
+        "shipInventory": "Schiffsinventar",
+        "remaining": "Verbleibend",
+        "unmeasured": "%{count} noch nicht vermessen"
       },
-      "hangarInventories": "Inventare"
+      "hangarInventories": "Inventare",
+      "commodity": {
+        "commodityType": "Commodity Type",
+        "uexId": "UEX ID",
+        "uexCode": "UEX Code",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      },
+      "equipment": {
+        "equipmentType": "Equipment Type",
+        "itemType": "Item Type",
+        "subType": "Sub Type",
+        "weaponClass": "Weapon Class",
+        "slot": "Slot",
+        "size": "Size",
+        "grade": "Grade",
+        "hidden": "Hidden?",
+        "scKey": "SC Key",
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
+      }
     }
   }
 }

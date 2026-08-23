@@ -59,20 +59,19 @@ module FeatureFlags
       assert_includes errors.join, "permanent must be a boolean"
     end
 
-    test "reads self_service, defaulting to off" do
-      definitions = registry(
-        "plain" => {"description" => "A"},
-        "toggleable" => {"description" => "B", "self_service" => true}
-      ).definitions
+    test "rejects self_service, which no longer belongs in the registry" do
+      errors = registry("my_flag" => {"description" => "x", "self_service" => "user"}).validation_errors
 
-      assert_not_predicate definitions.first, :self_service?
-      assert_predicate definitions.last, :self_service?
+      assert_includes errors.join, "unknown keys",
+        "self-service is the admin UI's call, so a stale key has to fail rather " \
+        "than read as if it still did something"
     end
 
-    test "rejects a non-boolean self_service" do
-      errors = registry("my_flag" => {"description" => "x", "self_service" => "yes"}).validation_errors
+    test "rejects self_service_scope, which no longer belongs in the registry either" do
+      errors = registry("my_flag" => {"description" => "x", "self_service_scope" => "fleet"}).validation_errors
 
-      assert_includes errors.join, "self_service must be a boolean"
+      assert_includes errors.join, "unknown keys",
+        "which surface the toggle lives on is part of the same decision"
     end
 
     test "allows hyphens so the oauth provider gates stay valid" do

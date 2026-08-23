@@ -53,6 +53,7 @@ module InventoryLedgerEntry
     enum :entry_type, ENTRY_TYPES
 
     validates :name, presence: true
+    validates :image, no_vector_image: true
     validates :quantity, numericality: {greater_than: 0}
     validates :quality, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000}, allow_nil: true
     validates :item_type, inclusion: {in: ITEM_TYPES}, allow_blank: true
@@ -126,6 +127,29 @@ module InventoryLedgerEntry
     return true unless item.respond_to?(:version)
 
     item.version == Rails.configuration.sc_data[:version]
+  end
+
+  # What one piece costs a cargo grid, in SCU. Bulk cargo is already counted in
+  # SCU, so only gear needs the lookup, and only gear the entry actually points
+  # at can answer it — a hand-typed "Medpen" has no volume anywhere.
+  #
+  # The two catalogues keep the figure in different shapes because they were
+  # imported years apart: Equipment stores SCU on the row, Component keeps the
+  # game's microSCU inside the occupancy blob. One microSCU is what CIG leaves
+  # on a record nobody measured, so it reads as unknown rather than as nothing.
+  def item_volume
+    return unless referenced_item?
+
+    case item
+    when ::Equipment then item.volume&.to_f
+    when ::Component then component_item_volume
+    end&.then { |volume| volume if volume.positive? }
+  end
+
+  private def component_item_volume
+    micro_scu = item.inventory_consumption.try(:[], "micro_scu").to_f
+
+    micro_scu / 1_000_000 if micro_scu > 1.0
   end
 
   private def set_name_from_item

@@ -5,7 +5,10 @@ module FeatureFlags
   #
   #   * flags in the registry but missing in Flipper are added
   #   * flags in Flipper but absent from the registry are removed (prune)
-  #   * flags declared `self_service: true` get their FeatureSetting seeded
+  #
+  # It never touches a flag's self-service, in either direction — not whether a
+  # toggle is offered and not which surface it lives on. Both are decided at
+  # /admin/features, and a deploy has no say in either.
   #
   # Pruning removes the flag along with all of its gate values, which is what
   # makes the registry authoritative. FEATURE_FLAGS_PRUNE=false disables removal
@@ -76,8 +79,6 @@ module FeatureFlags
     def apply!(to_add, to_remove)
       to_add.each { |name| flipper.add(name) }
 
-      seed_self_service_settings
-
       return unless prune
 
       to_remove.each { |name| flipper.remove(name) }
@@ -91,18 +92,6 @@ module FeatureFlags
       # strand a setting whose feature is already gone — and no later run would
       # ever look at it again, because it is no longer in Flipper to be removed.
       FeatureSetting.where.not(feature_name: registry.names).destroy_all
-    end
-
-    # The registry seeds self-service, it does not own it: admins flip it at
-    # /admin/features, and a deploy must not undo that. So an existing row is
-    # left exactly as it is, and dropping the key from the registry retracts
-    # nothing — only removing the flag does, through the prune above.
-    def seed_self_service_settings
-      registry.definitions.select(&:self_service?).each do |definition|
-        FeatureSetting.find_or_create_by!(feature_name: definition.name) do |setting|
-          setting.self_service = true
-        end
-      end
     end
 
     def log_result(to_add, to_remove)

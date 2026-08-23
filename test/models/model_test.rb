@@ -56,6 +56,7 @@ require "test_helper"
 #  name                              :string(255)
 #  notified                          :boolean          default(FALSE)
 #  on_sale                           :boolean          default(FALSE)
+#  personal_inventory                :decimal(15, 2)
 #  pitch                             :decimal(15, 2)
 #  pitch_boosted                     :decimal(15, 2)
 #  player_ownable                    :boolean          default(TRUE), not null
@@ -151,5 +152,17 @@ class ModelTest < ActiveSupport::TestCase
     model.update_columns(legacy_slug: nil, slug: "corsair")
 
     assert_equal "corsair", model.hangar_link_slug
+  end
+
+  test "#personal_inventory_label keeps the fraction most ships store in" do
+    model = create(:model, name: "Cutlass Red", personal_inventory: 3.43)
+
+    assert_equal "3.43 SCU", model.personal_inventory_label
+  end
+
+  test "#personal_inventory_label is blank without a storage container" do
+    model = create(:model, name: "No Storage", personal_inventory: nil)
+
+    assert_nil model.personal_inventory_label
   end
 end

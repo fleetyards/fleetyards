@@ -5,6 +5,7 @@
 # Table name: users
 #
 #  id                        :uuid             not null, primary key
+#  calendar_feed_token       :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -13,6 +14,7 @@
 #  current_sign_in_ip        :string(255)
 #  current_system            :string
 #  current_system_code       :string
+#  date_format               :string           default("dmy_dots"), not null
 #  discord                   :string
 #  email                     :string(255)      default(""), not null
 #  encrypted_otp_secret      :string
@@ -63,6 +65,7 @@
 #
 # Indexes
 #
+#  index_users_on_calendar_feed_token   (calendar_feed_token) UNIQUE
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_last_active_at        (last_active_at)
@@ -151,6 +154,49 @@ class UserTest < ActiveSupport::TestCase
       assert_equal "SoleAdmin", error.options[:fleets]
       assert Fleet.exists?(shared_admin_fleet.id)
       assert Fleet.exists?(sole_admin_fleet.id)
+    end
+  end
+
+  class SupporterTest < UserTest
+    setup do
+      @user = create(:user)
+    end
+
+    test "a live contribution makes the user a supporter" do
+      create(:supporter_contribution, user: @user, started_at: Date.current)
+
+      assert @user.supporter?
+      assert @user.public_supporter?
+    end
+
+    test "an anonymous contribution still earns supporter status but no public badge" do
+      create(:supporter_contribution, :anonymous, user: @user, started_at: Date.current)
+
+      assert @user.supporter?
+      refute @user.public_supporter?
+    end
+
+    test "a contribution that ended before this month counts for neither" do
+      create(:supporter_contribution, :recurring, user: @user,
+        started_at: 1.year.ago.to_date, ended_at: 2.months.ago.to_date)
+
+      refute @user.supporter?
+      refute @user.public_supporter?
+    end
+
+    test "an unlinked contribution belongs to nobody" do
+      create(:supporter_contribution, started_at: Date.current)
+
+      refute @user.supporter?
+    end
+
+    test "destroying the account keeps the contribution and drops the link" do
+      contribution = create(:supporter_contribution, user: @user)
+
+      assert @user.destroy
+
+      assert SupporterContribution.exists?(contribution.id)
+      assert_nil contribution.reload.user_id
     end
   end
 

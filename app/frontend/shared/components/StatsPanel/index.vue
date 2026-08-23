@@ -95,14 +95,21 @@ const suffix = computed(() => {
 
   // The icon is decoration behind the figure, not a peer of it: quiet, and out of
   // the flow so a long value keeps the full width of the tile.
+  //
+  // One flat tone rather than duotone's two: the secondary layer's default 0.4
+  // multiplied into the wrapper's opacity, so half of every glyph sat under 10%
+  // and the shape broke up against the page image showing through the 0.9-alpha
+  // panel. $gray-lighter at 0.4 is the same weight the old 0.22 was aiming for,
+  // now actually reached.
   .stats-panel__icon {
     position: absolute;
     top: 50%;
     right: 16px;
     transform: translateY(-50%);
     font-size: 34px;
-    color: $gray-light;
-    opacity: 0.22;
+    color: $gray-lighter;
+    opacity: 0.4;
+    --fa-secondary-opacity: 1;
     pointer-events: none;
   }
 }

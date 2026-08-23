@@ -59,7 +59,7 @@ class Admin::Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
 
   # Flag lifecycle belongs to config/feature_flags.yml — see #4341. Creating a
   # flag here would leave it without a registry entry, and the next deploy's
-  # feature_flags:sync would delete it along with every gate set on it.
+  # `bin/feature-flags sync` would delete it along with every gate set on it.
   test "the admin API exposes no flag lifecycle actions" do
     actions = Admin::Api::V1::FeaturesController.action_methods
 

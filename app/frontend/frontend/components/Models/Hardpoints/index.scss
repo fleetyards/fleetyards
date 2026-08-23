@@ -22,6 +22,98 @@
     margin-inline-start: auto;
   }
 
+  // Beside the link group, not inside it. As a member of the BtnGroup track it
+  // added its own width to a control that cannot wrap, so on a phone the two
+  // buttons were pushed off the viewport and their labels clipped against the
+  // track's `overflow: hidden`. Out here it wraps onto its own line instead.
+  &__links-label {
+    flex: 0 1 auto;
+  }
+
+  // Safety net for a translation long enough that even the two buttons alone
+  // overrun the row: the group clips inside the page rather than widening it.
+  &__links {
+    max-width: 100%;
+  }
+
+  // The metrics cards are modelled on erkul's formulas, so the credit sits once
+  // under the whole grid instead of being repeated in every card. Right-aligned
+  // to answer the loadout links at the top of the block: the same attribution,
+  // opening and closing the metrics.
+  &__credit {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 16px;
+  }
+
+  // Tokens rather than @apply: sass preprocesses this file first, so tailwind's
+  // at-rules would never reach the minifier (see base/Chip for the same note).
+  &__credit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    border-radius: var(--radius-control-bare, 6px);
+    color: var(--color-muted, #7a8288);
+    font-size: 12px;
+    line-height: 1.4;
+    text-decoration: none;
+    transition:
+      background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out,
+      color 0.15s ease-in-out;
+
+    i {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+      background-color: var(--color-control, rgb(39 43 48 / 0.9));
+      color: var(--color-text, #c8c8c8);
+    }
+  }
+
+  // The name carries the credit, so it stays readable while the sentence around
+  // it recedes.
+  &__credit-source {
+    color: var(--color-text, #c8c8c8);
+    transition: color 0.15s ease-in-out;
+  }
+
+  &__credit-link:hover &__credit-source,
+  &__credit-link:focus-visible &__credit-source {
+    color: var(--color-lifted, #eee);
+  }
+
+  &__credit-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    background-image: url("@/images/sc_dps_calculator.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    opacity: 0.75;
+    transition: opacity 0.15s ease-in-out;
+  }
+
+  &__credit-link:hover &__credit-icon,
+  &__credit-link:focus-visible &__credit-icon {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__credit-link,
+    &__credit-source,
+    &__credit-icon {
+      transition-duration: 1ms;
+    }
+  }
+
   // Density stays with the hardpoint groups it controls rather than joining the
   // row above, where it would be nowhere near what it changes.
   &__viewbar {

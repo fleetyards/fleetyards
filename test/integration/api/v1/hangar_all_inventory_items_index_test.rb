@@ -58,6 +58,30 @@ class Api::V1::HangarAllInventoryItemsIndexTest < ActionDispatch::IntegrationTes
     end
   end
 
+  test "GET /hangar/inventory-items leaves out a ship's entries while ship_inventories is off" do
+    Flipper.disable("ship_inventories")
+    aboard = create(:inventory, holder: @user, vehicle: create(:vehicle, user: @user))
+    create_list(:inventory_item, 2, inventory: @inventory)
+    create_list(:inventory_item, 3, inventory: aboard)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal 2, parsed_body["items"].count
+    end
+  end
+
+  test "GET /hangar/inventory-items includes a ship's entries when ship_inventories is enabled" do
+    Flipper.enable("ship_inventories")
+    aboard = create(:inventory, holder: @user, vehicle: create(:vehicle, user: @user))
+    create_list(:inventory_item, 2, inventory: @inventory)
+    create_list(:inventory_item, 3, inventory: aboard)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal 5, parsed_body["items"].count
+    end
+  end
+
   test "GET /hangar/inventory-items does not include other users' entries" do
     create_list(:inventory_item, 2, inventory: create(:inventory, holder: @other_user))
     sign_in @user

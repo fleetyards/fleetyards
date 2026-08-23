@@ -1,6 +1,10 @@
 .hardpoint-item__component {
   flex-grow: 1;
   min-width: 0;
+  // Backstop for a name with no space to break at (`ColdSnap`, `Cargogrid`) in
+  // a cell too narrow for it: break the word rather than let the row's
+  // `overflow: hidden` clip it mid-letter.
+  overflow-wrap: break-word;
   margin-right: 5px;
   gap: 0 5px;
   display: flex;

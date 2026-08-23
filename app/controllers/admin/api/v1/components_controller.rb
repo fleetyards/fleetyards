@@ -4,8 +4,6 @@ module Admin
   module Api
     module V1
       class ComponentsController < ::Admin::Api::BaseController
-        skip_verify_authorized only: %i[class_filters item_type_filters]
-
         before_action :set_component, only: %i[show update destroy]
 
         def index
@@ -13,7 +11,7 @@ module Admin
 
           component_query_params["sorts"] = sorting_params(Component, component_query_params[:sorts])
 
-          @q = authorized_scope(Component.all).includes(:manufacturer).ransack(component_query_params)
+          @q = authorized_scope(Component.all).includes(:manufacturer, :item_prices).ransack(component_query_params)
 
           @components = @q.result
             .page(params[:page])
@@ -45,13 +43,20 @@ module Admin
           render json: ValidationError.new("component.destroy", errors: @component.errors), status: :bad_request
         end
 
+        # Both are declared in the schema and reached by a generated client, so
+        # they answer 401/403 like the rest of the resource rather than handing
+        # the type lists to any signed-in admin.
         def class_filters
+          authorize! with: ::Admin::ComponentPolicy
+
           @filters = Component.class_filters
 
           render "api/shared/filters"
         end
 
         def item_type_filters
+          authorize! with: ::Admin::ComponentPolicy
+
           @filters = Component.item_type_filters
 
           render "api/shared/filters"
@@ -74,7 +79,8 @@ module Admin
         private def component_query_params
           @component_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :id_eq, :item_type_eq,
-            :item_type_cont, :component_class_cont, :sorts,
+            :item_type_cont, :component_class_cont, :store_image_blank, :buy_price_gteq,
+            :buy_price_lteq, :sell_price_gteq, :sell_price_lteq, :sorts,
             sorts: [], name_in: [], id_in: [], item_type_in: [], component_class_in: [],
             manufacturer_id_in: []
           ]).fetch(:q, {})

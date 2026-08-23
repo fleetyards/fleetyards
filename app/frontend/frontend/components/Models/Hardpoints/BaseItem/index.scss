@@ -40,37 +40,18 @@
   transition: color 0.2s;
 }
 
+// A basis rather than `auto`: the name block asks for enough room to read
+// before the headline is allowed to share its line, so on a narrow row the
+// headline wraps below instead of shrinking this to a few clipped characters.
+// `min-width: 0` still lets it shrink past the basis once it has a line of its
+// own.
 .hardpoint-item__main {
-  flex: 1 1 auto;
+  flex: 1 1 120px;
   min-width: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 1px;
-}
-
-// erkul-style inline stat strip: label/value pairs, always visible.
-.hardpoint-item__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1px 12px;
-  margin-top: 5px;
-}
-
-.hardpoint-item__stat {
-  font-size: 11.5px;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.hardpoint-item__stat-k {
-  color: $gray-light;
-}
-
-.hardpoint-item__stat-v {
-  margin-left: 4px;
-  color: lighten($text-color, 15%);
-  font-weight: 600;
 }
 
 .hardpoint-item__loadout {

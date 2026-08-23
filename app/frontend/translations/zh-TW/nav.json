@@ -17,7 +17,8 @@
       "hangar": {
         "index": "我的機庫",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventories"
+        "inventories": "Inventories",
+        "vehicleCargo": "貨物"
       },
       "login": "登入",
       "logout": "登出",
@@ -50,7 +51,8 @@
           "index": "設定",
           "fleet": "艦隊設定",
           "membership": "成員設定",
-          "roles": "角色"
+          "roles": "角色",
+          "features": "功能"
         }
       },
       "rsiProfile": "RSI 檔案",
@@ -184,6 +186,19 @@
           "index": "資金目標",
           "new": "新增資金目標",
           "edit": "編輯資金目標"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "edit": {
+            "index": "Base Data"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         }
       }
     }

@@ -24,6 +24,7 @@ import {
   getVehicleLoadoutsQueryKey,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 type Props = {
   vehicle: Vehicle;
@@ -184,7 +185,11 @@ const onActivate = async (record: VehicleLoadout) => {
     >
       <template #display="{ item }">
         <div class="loadouts-page__item-display">
-          <Pill v-if="item.active" variant="success" uppercase>
+          <Pill
+            v-if="item.active"
+            :variant="PillVariantsEnum.SUCCESS"
+            uppercase
+          >
             {{ t("labels.loadout.active") }}
           </Pill>
           <div class="loadouts-page__item-info">

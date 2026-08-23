@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+# Runs inside the app image, from the kamal pre-deploy hook. Kept as a script
+# rather than an `sh -c "a && b"` argument to `kamal app exec` so the hook
+# passes a single bare token, and so a failing deploy log says which step it
+# reached.
+
+echo "==> Schema and data migrations"
+bin/rails db:migrate data:migrate
+
+echo "==> Feature flag sync"
+bin/feature-flags sync

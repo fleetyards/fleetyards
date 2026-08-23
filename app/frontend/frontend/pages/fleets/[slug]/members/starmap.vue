@@ -10,6 +10,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
+import { FeatureFlagName } from "@/services/fyApi";
 import MembersStarMap from "@/frontend/components/Fleets/MembersStarMap/index.vue";
 import {
   useFleetMembers as useFleetMembersQuery,
@@ -70,7 +71,7 @@ const crumbs = computed(() => [
 </script>
 
 <template>
-  <FeatureGuard feature="fleet_starmap">
+  <FeatureGuard :feature="FeatureFlagName.FLEET_STARMAP" :fleet="props.fleet">
     <BreadCrumbs :crumbs="crumbs" />
     <Heading>
       {{ t("headlines.fleets.members.starmap") }}

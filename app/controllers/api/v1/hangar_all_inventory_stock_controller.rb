@@ -4,6 +4,7 @@ module Api
   module V1
     class HangarAllInventoryStockController < ::Api::BaseController
       include HangarInventoriesFeatureConcern
+      include ShipInventoriesFeatureConcern
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
@@ -14,7 +15,7 @@ module Api
       def index
         authorize! with: HangarInventoryItemPolicy, to: :index?
 
-        inventory_ids = current_resource_owner.inventories.pluck(:id)
+        inventory_ids = filtered_inventories.pluck(:id)
 
         @stock = InventoryItem
           .where(inventory_id: inventory_ids)
@@ -40,6 +41,16 @@ module Api
           .order("inventory_items.name")
 
         render "api/v1/hangar_inventory_stock/index"
+      end
+
+      private def filtered_inventories
+        scope = current_resource_owner.inventories
+        return scope.hand_made unless ship_inventories_enabled?
+
+        vehicle_id = params.dig(:q, :vehicle_id_eq)
+        return scope if vehicle_id.blank?
+
+        scope.where(vehicle_id: current_resource_owner.vehicles.where(id: vehicle_id))
       end
     end
   end

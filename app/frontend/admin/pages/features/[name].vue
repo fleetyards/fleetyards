@@ -27,6 +27,7 @@ import {
   disableAdminFeatureGroup,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -142,18 +143,16 @@ const removeGroup = async (group: string) => {
   }
 };
 
-const stateVariant = (
-  state: string,
-): "success" | "danger" | "warning" | "default" => {
+const stateVariant = (state: string): `${PillVariantsEnum}` => {
   switch (state) {
     case "on":
-      return "success";
+      return PillVariantsEnum.SUCCESS;
     case "off":
-      return "danger";
+      return PillVariantsEnum.DANGER;
     case "conditional":
-      return "warning";
+      return PillVariantsEnum.WARNING;
     default:
-      return "default";
+      return PillVariantsEnum.DEFAULT;
   }
 };
 
@@ -180,8 +179,11 @@ const stateLabel = (state: string) => {
     <Heading hero>
       {{ feature.name }}
       <template #small>
-        <BasePill v-if="feature.selfService">
-          {{ t("labels.features.selfService") }}
+        <BasePill v-if="feature.selfServiceUser">
+          {{ t("labels.features.selfServiceUser") }}
+        </BasePill>
+        <BasePill v-if="feature.selfServiceFleet">
+          {{ t("labels.features.selfServiceFleet") }}
         </BasePill>
       </template>
     </Heading>
@@ -264,6 +266,7 @@ const stateLabel = (state: string) => {
       <div class="add-actor-form">
         <FilterGroup
           v-model="actorType"
+          inline
           name="actor-type"
           :options="actorTypeOptions"
           :nullable="false"
@@ -273,12 +276,14 @@ const stateLabel = (state: string) => {
           v-if="actorType === 'User'"
           v-model="selectedUser"
           name="feature-user"
+          inline
           :no-label="false"
         />
         <FleetFilterGroup
           v-if="actorType === 'Fleet'"
           v-model="selectedFleet"
           name="feature-fleet"
+          inline
           :no-label="false"
         />
         <Btn

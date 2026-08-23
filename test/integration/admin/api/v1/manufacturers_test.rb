@@ -184,6 +184,20 @@ class Admin::Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /manufacturers filters by logoBlank" do
+    create(:manufacturer, :with_logo, name: "Anvil Aerospace")
+    create(:manufacturer, name: "Drake Interplanetary")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"logoBlank" => true}} do
+      assert_equal ["Drake Interplanetary"], parsed_body["items"].map { |item| item["name"] }
+    end
+
+    assert_api_response :get, 200, params: {q: {"logoBlank" => false}} do
+      assert_equal ["Anvil Aerospace"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /manufacturers paginates with perPage" do
     create_list(:manufacturer, 3)
     create_list(:manufacturer, 3, :with_models)

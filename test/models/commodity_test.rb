@@ -88,4 +88,74 @@ class CommodityTest < ActiveSupport::TestCase
     assert_not_includes Commodity.current_version, dropped
     assert_includes Commodity.current_version(false), dropped
   end
+
+  # ItemPriceConcern, exercised here because a commodity is priced at every
+  # terminal that trades it and so has the most rows of the three catalogues.
+  test "reports the cheapest price of each direction" do
+    commodity = create(:commodity)
+    create(:item_price, item: commodity, price_type: :buy, price: 30)
+    create(:item_price, item: commodity, price_type: :buy, price: 12)
+    create(:item_price, item: commodity, price_type: :sell, price: 44)
+
+    assert_equal 12, commodity.buy_price
+    assert_equal 44, commodity.sell_price
+  end
+
+  test "has no price for a direction nothing quotes" do
+    commodity = create(:commodity)
+    create(:item_price, item: commodity, price_type: :sell, price: 44)
+
+    assert_nil commodity.buy_price
+    assert_equal 44, commodity.sell_price
+  end
+
+  test "filters on the same cheapest price it reports" do
+    cheap = create(:commodity, name: "Scrap")
+    create(:item_price, item: cheap, price_type: :buy, price: 5)
+    create(:item_price, item: cheap, price_type: :buy, price: 90)
+    dear = create(:commodity, name: "Quantanium")
+    create(:item_price, item: dear, price_type: :buy, price: 88)
+
+    # Scrap is held out by its cheapest row, not admitted by its dearest.
+    assert_equal ["Quantanium"], Commodity.ransack(buy_price_gteq: "50").result.map(&:name)
+    assert_equal ["Scrap"], Commodity.ransack(buy_price_lteq: "50").result.map(&:name)
+  end
+
+  # A joined filter would return the commodity once per matching price row.
+  test "returns a commodity once however many of its prices match" do
+    commodity = create(:commodity)
+    create_list(:item_price, 3, item: commodity, price_type: :sell, price: 60)
+
+    assert_equal 1, Commodity.ransack(sell_price_gteq: "10").result.count
+  end
+
+  test "keys the cached payload on the prices as well as the commodity" do
+    commodity = create(:commodity)
+    price = create(:item_price, item: commodity, price_type: :buy, price: 10)
+    before = commodity.reload.item_prices_cache_key
+
+    price.update!(price: 20)
+
+    assert_not_equal before, commodity.reload.item_prices_cache_key
+  end
+
+  test "keys the cached payload on the price count, so a removal shows" do
+    commodity = create(:commodity)
+    create(:item_price, item: commodity, price_type: :buy, price: 10)
+    price = create(:item_price, item: commodity, price_type: :buy, price: 20)
+    before = commodity.reload.item_prices_cache_key
+
+    price.destroy!
+
+    assert_not_equal before, commodity.reload.item_prices_cache_key
+  end
+
+  test "destroys its prices with it" do
+    commodity = create(:commodity)
+    create(:item_price, item: commodity, price_type: :buy, price: 10)
+
+    assert_difference -> { ItemPrice.count }, -1 do
+      commodity.destroy!
+    end
+  end
 end

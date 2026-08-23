@@ -13,8 +13,6 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
-import AsyncData from "@/shared/components/AsyncData.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useRegistrationsPerMonth, type User } from "@/services/fyAdminApi";
 import { useUsers as useUsersQuery } from "@/services/fyAdminApi";
@@ -67,20 +65,14 @@ const columns: BaseTableCol<User>[] = [
         {{ t("headlines.admin.dashboard.registrationsPerMonth") }}
       </PanelHeading>
       <PanelBody class="dashboard-panel-body">
-        <AsyncData :async-status="registrationsPerMonthStatus" hide-error>
-          <template #loading>
-            <Loader :loading="true" relative admin />
-          </template>
-          <template #resolved>
-            <Chart
-              name="models-by-manufacturer"
-              type="column"
-              :options="registrationsPerMonth"
-              :async-status="registrationsPerMonthStatus"
-              tooltip-type="user"
-            />
-          </template>
-        </AsyncData>
+        <Chart
+          name="models-by-manufacturer"
+          type="column"
+          :options="registrationsPerMonth"
+          :async-status="registrationsPerMonthStatus"
+          tooltip-type="user"
+          admin
+        />
       </PanelBody>
     </Panel>
   </div>

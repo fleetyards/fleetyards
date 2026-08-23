@@ -48,6 +48,12 @@ de:
       create: Inventareintrag konnte nicht erstellt werden.
       update: Inventareintrag konnte nicht aktualisiert werden.
       destroy: Inventareintrag konnte nicht gelöscht werden.
+    vehicle_inventory:
+      destroy: Inventar konnte nicht gelöscht werden.
+    vehicle_inventory_items:
+      create: Inventareintrag konnte nicht erstellt werden.
+      update: Inventareintrag konnte nicht aktualisiert werden.
+      destroy: Inventareintrag konnte nicht gelöscht werden.
     image:
       create: Bild konnte nicht erstellt werden
       update: Bild konnte nicht aktualisiert werden

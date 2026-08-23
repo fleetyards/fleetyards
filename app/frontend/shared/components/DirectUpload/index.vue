@@ -25,6 +25,8 @@ type Props = {
   allowedSizeMb?: number;
   directUpload?: boolean;
   inputOnly?: boolean;
+  directory?: boolean;
+  filter?: (files: File[]) => File[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,6 +39,8 @@ const props = withDefaults(defineProps<Props>(), {
   allowedSizeMb: undefined,
   directUpload: false,
   inputOnly: false,
+  directory: false,
+  filter: undefined,
 });
 
 const uploader = ref<InstanceType<typeof DirectUploadUploader>>();
@@ -55,6 +59,7 @@ const emit = defineEmits<{
   "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
   "upload:done": [files: FileUpload[]];
+  "files:rejected": [files: File[]];
   clear: [];
 }>();
 
@@ -68,6 +73,10 @@ const handleUploadProgress = (progress: number) => {
 
 const handleUploadDone = (files: FileUpload[]) => {
   emit("upload:done", files);
+};
+
+const handleFilesRejected = (files: File[]) => {
+  emit("files:rejected", files);
 };
 
 const handleClear = () => {
@@ -103,9 +112,12 @@ defineExpose({
         :allowed-size-mb="allowedSizeMb"
         :direct-upload="directUpload"
         :input-only="inputOnly"
+        :directory="directory"
+        :filter="filter"
         @upload:done="handleUploadDone"
         @upload:progress="handleUploadProgress"
         @upload:start="handleUploadStart"
+        @files:rejected="handleFilesRejected"
         @clear="handleClear"
       />
       <DirectUploadActions

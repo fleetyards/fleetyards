@@ -14,6 +14,9 @@ json.availability do
   end
 end
 
+json.buy_price component.buy_price&.to_f
+json.sell_price component.sell_price&.to_f
+
 json.class component.component_class
 json.grade component.grade
 json.item_class component.item_class

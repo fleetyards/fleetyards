@@ -42,6 +42,7 @@ v1_api_routes = lambda do
   draw "api/hangar_routes"
   draw "api/vehicles_routes"
   draw "api/vehicle_loadouts_routes"
+  draw "api/vehicle_inventories_routes"
   draw "api/fleets_routes"
   draw "api/components_routes"
   draw "api/commodities_routes"
@@ -67,6 +68,25 @@ v1_api_routes = lambda do
 
   resources :images, only: %i[index] do
     get :random, on: :collection
+  end
+
+  resources :mission_slots, path: "mission-slots", only: %i[create update destroy] do
+    put :sort, on: :collection
+  end
+
+  resources :fleet_event_slots, path: "fleet-event-slots", only: %i[create update destroy] do
+    put :sort, on: :collection
+    member do
+      post :signup, to: "fleet_event_signups#create"
+      patch :signup, to: "fleet_event_signups#update"
+      delete :signup, to: "fleet_event_signups#destroy_self"
+    end
+  end
+
+  resources :fleet_event_signups, path: "fleet-event-signups", only: %i[destroy] do
+    member do
+      patch :assign, to: "fleet_event_signups#update_admin"
+    end
   end
 
   namespace :stats do

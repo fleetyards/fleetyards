@@ -17,7 +17,8 @@
       "hangar": {
         "index": "Il Mio Hangar",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventories"
+        "inventories": "Inventories",
+        "vehicleCargo": "Carico"
       },
       "login": "Accedi",
       "logout": "Esci",
@@ -50,7 +51,8 @@
           "index": "Impostazioni",
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
-          "roles": "Ruoli"
+          "roles": "Ruoli",
+          "features": "Funzionalità"
         }
       },
       "rsiProfile": "Profilo RSI",
@@ -184,6 +186,19 @@
           "index": "Obiettivi di finanziamento",
           "new": "Nuovo obiettivo di finanziamento",
           "edit": "Modifica obiettivo di finanziamento"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "edit": {
+            "index": "Base Data"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         }
       }
     }

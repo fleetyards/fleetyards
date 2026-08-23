@@ -23,14 +23,17 @@ module V1
             description: {type: :string},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
+            defaultTimezone: {type: :string},
+            calendarFeedToken: {type: :string},
             logo: {"$ref": "#/components/schemas/MediaFile"},
             backgroundImage: {"$ref": "#/components/schemas/MediaFile"},
             myFleet: {type: :boolean},
+            features: {type: :array, items: {type: :string}},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats features createdAt updatedAt]
         })
       end
     end

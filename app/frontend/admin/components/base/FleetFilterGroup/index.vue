@@ -21,12 +21,14 @@ type Props = {
   modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   multiple: false,
   noLabel: true,
+  inline: false,
 });
 
 const { t } = useI18n();
@@ -98,5 +100,6 @@ const fetch = async (params: FilterGroupParams<FleetOption>) => {
     :searchable="true"
     :multiple="multiple"
     :no-label="noLabel"
+    :inline="inline"
   />
 </template>

@@ -85,8 +85,9 @@ module ScData
         assert_operator Commodity.current_version.count, :>=, 160
       end
 
-      # The icons are vectors and are carried over as they are, so what a
-      # commodity ends up with is the file the game ships.
+      # The game ships these as vectors and they stay vectors: the app serves
+      # them inline instead of asking ActiveStorage for representations it
+      # cannot make of one.
       test "#all attaches the icon the parser carried over" do
         @loader.all
 
@@ -95,6 +96,7 @@ module ScData
         assert_predicate image, :attached?
         assert_equal "inv_icon_gold.svg", image.filename.to_s
         assert_equal "image/svg+xml", image.content_type
+        assert_not_predicate image, :representable?
       end
 
       test "#all keeps a commodity that already exists without an sc_key" do

@@ -12,12 +12,15 @@ fi
 # (Errno::ECONNRESET), failing the deploy.
 # Retry to absorb the occasional genuinely transient reset; all three steps are
 # idempotent, so re-running them is safe.
+# The steps live in bin/deploy-release rather than an `sh -c "a && b"` argument
+# here, so this passes a single bare token and the log names the step it
+# reached.
 echo "Running database and data migrations and syncing feature flags..."
 
 attempt=1
 max_attempts=3
 until kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" \
-  'bin/rails db:migrate data:migrate feature_flags:sync'; do
+  bin/deploy-release; do
   if [ "$attempt" -ge "$max_attempts" ]; then
     echo "Migrations failed after $max_attempts attempts." >&2
     exit 1

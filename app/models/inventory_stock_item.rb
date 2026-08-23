@@ -36,6 +36,17 @@ class InventoryStockItem
     reference_entry.nil? || reference_entry.item_available?
   end
 
+  # How much of a hold this position fills. Bulk cargo says so itself; gear is
+  # counted per piece, so it only answers once the position points at something
+  # the catalogues have measured.
+  def volume_scu
+    return net_quantity.to_f if unit == "scu"
+
+    per_piece = reference_entry&.item_volume
+
+    per_piece && (per_piece * net_quantity.to_f)
+  end
+
   def image
     reference_entry&.display_image
   end

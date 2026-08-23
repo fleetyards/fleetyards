@@ -12,9 +12,15 @@ module V1
     class FeatureFlagName
       include OpenapiRuby::Components::Base
 
+      NAMES = FeatureFlags::Registry.load.names.sort.freeze
+
+      # Without the names a dashed flag generates a quoted key the client can
+      # only reach with bracket access. The values stay the flag strings Flipper
+      # knows.
       schema({
         type: :string,
-        enum: FeatureFlags::Registry.load.names.sort
+        enum: NAMES,
+        "x-enumNames": NAMES.map { |name| transform_enum_key(name) }
       })
     end
   end

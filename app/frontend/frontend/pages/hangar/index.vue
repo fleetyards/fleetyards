@@ -193,6 +193,7 @@ const showNewModal = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/NewVehiclesModal/index.vue"),
+    wide: true,
   });
 };
 
@@ -402,7 +403,7 @@ const openDisplayOptionsModal = () => {
     </Btn>
 
     <Btn
-      v-if="isFeatureEnabled(FeatureFlagName.hangar_inventories)"
+      v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'hangar-inventories' }"
     >
@@ -454,7 +455,7 @@ const openDisplayOptionsModal = () => {
           </Btn>
 
           <Btn
-            v-if="isFeatureEnabled(FeatureFlagName.hangar_inventories)"
+            v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
             :to="{ name: 'hangar-inventories' }"
           >
             <i class="fa-duotone fa-boxes-stacked" />

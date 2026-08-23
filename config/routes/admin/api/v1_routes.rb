@@ -84,6 +84,17 @@ v1_admin_api_routes = lambda do
     get :item_type_filters, on: :collection
   end
 
+  resources :equipment, only: %i[index show create update destroy] do
+    get :type_filters, on: :collection
+    get :item_type_filters, on: :collection
+    get :weapon_class_filters, on: :collection
+    get "slots", to: "equipment#slot_filters", on: :collection
+  end
+
+  resources :commodities, only: %i[index show create update destroy] do
+    get :type_filters, on: :collection
+  end
+
   resources :fleets, only: %i[index show create update destroy] do
     collection do
       get :options
@@ -127,6 +138,7 @@ v1_admin_api_routes = lambda do
   resources :supporter_contributions, path: "supporter-contributions", only: %i[index show create update destroy] do
     collection do
       get :stats
+      get "per-month" => "supporter_contributions#per_month"
       post "sync-patreon" => "supporter_contributions#sync_patreon"
     end
   end
@@ -161,7 +173,8 @@ v1_admin_api_routes = lambda do
       put "disable-group", to: "features#disable_group"
       put "enable-percentage-of-actors", to: "features#enable_percentage_of_actors"
       put "enable-percentage-of-time", to: "features#enable_percentage_of_time"
-      put "toggle-self-service", to: "features#toggle_self_service"
+      put "toggle-user-self-service", to: "features#toggle_user_self_service"
+      put "toggle-fleet-self-service", to: "features#toggle_fleet_self_service"
     end
   end
 end

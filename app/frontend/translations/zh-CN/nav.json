@@ -17,7 +17,8 @@
       "hangar": {
         "index": "我的机库",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventories"
+        "inventories": "Inventories",
+        "vehicleCargo": "货物"
       },
       "login": "登录",
       "logout": "登出",
@@ -50,7 +51,8 @@
           "index": "设置",
           "fleet": "舰队设置",
           "membership": "成员设置",
-          "roles": "角色"
+          "roles": "角色",
+          "features": "功能"
         }
       },
       "rsiProfile": "RSI 档案",
@@ -184,6 +186,19 @@
           "index": "资金目标",
           "new": "新建资金目标",
           "edit": "编辑资金目标"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "edit": {
+            "index": "Base Data"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prices"
+          }
         }
       }
     }

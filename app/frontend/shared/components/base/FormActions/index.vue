@@ -66,6 +66,8 @@ onBeforeUnmount(() => {
       <Btn
         v-if="!hideCancel"
         :type="BtnTypesEnum.BUTTON"
+        :size="BtnSizesEnum.LG"
+        tone="danger"
         data-test="submit-cancel"
         @click="handleCancel"
       >

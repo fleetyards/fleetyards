@@ -36,6 +36,7 @@
         "publicStats": "%{user} 機庫統計",
         "wishlist": "心願清單",
         "publicWishlist": "%{user} 心願清單",
+        "vehicleCargo": "飛船貨物",
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}"
       },
@@ -198,6 +199,21 @@
         },
         "modelModulePackages": {
           "index": "模型模組套件"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "prices": "Edit Equipment Prices"
+          }
         }
       }
     }

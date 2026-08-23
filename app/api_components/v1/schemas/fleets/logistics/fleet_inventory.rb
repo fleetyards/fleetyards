@@ -16,7 +16,7 @@ module V1
               description: {type: :string},
               visibility: {type: :string, enum: %w[members_only officers_only]},
               location: {type: :string},
-              itemCount: {type: :integer},
+              entriesCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},
               manager: {
@@ -34,7 +34,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name slug visibility itemCount totalScu totalUnits createdAt updatedAt]
+            required: %w[id name slug visibility entriesCount totalScu totalUnits createdAt updatedAt]
           })
         end
       end

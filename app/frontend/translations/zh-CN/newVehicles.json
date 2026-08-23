@@ -1,0 +1,23 @@
+{
+  "zh-CN": {
+    "newVehicles": {
+      "title": "将舰船添加到你的机库",
+      "wishlistTitle": "将舰船添加到你的愿望清单",
+      "labels": {
+        "search": "按名称或制造商搜索",
+        "results": "%{count} 艘舰船",
+        "selected": "已选择 %{count} 艘"
+      },
+      "actions": {
+        "resetFilters": "重置筛选",
+        "clearSelection": "清除选择",
+        "increase": "再添加一艘 %{name}",
+        "decrease": "移除一艘 %{name}"
+      },
+      "badges": {
+        "inHangar": "已在机库",
+        "onWishlist": "已在愿望清单"
+      }
+    }
+  }
+}

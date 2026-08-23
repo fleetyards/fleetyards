@@ -36,6 +36,7 @@
         "publicStats": "Statistiques du Hangar de %{user}",
         "wishlist": "Liste de souhait",
         "publicWishlist": "%{user} Liste de souhait",
+        "vehicleCargo": "Cargaison du vaisseau",
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}"
       },
@@ -198,6 +199,21 @@
         },
         "modelModulePackages": {
           "index": "Paquets de Modules de Modèles"
+        },
+        "commodities": {
+          "index": "Commodities",
+          "new": "New Commodity",
+          "edit": {
+            "index": "Edit Commodity"
+          }
+        },
+        "equipment": {
+          "index": "Equipment",
+          "new": "New Equipment",
+          "edit": {
+            "index": "Edit Equipment",
+            "prices": "Edit Equipment Prices"
+          }
         }
       }
     }

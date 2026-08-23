@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require "fileutils"
 require "json"
-require "zlib"
 require "open3"
 
 APP_ROOT = File.expand_path("..", __dir__)
@@ -48,11 +47,30 @@ def detect_worktree
   File.basename(APP_ROOT)
 end
 
-def main_worktree_root
-  common_dir = `git -C "#{APP_ROOT}" rev-parse --path-format=absolute --git-common-dir 2>/dev/null`.strip
-  return nil if common_dir.empty? || !File.directory?(common_dir)
+def git_common_dir
+  dir = `git -C "#{APP_ROOT}" rev-parse --path-format=absolute --git-common-dir 2>/dev/null`.strip
+  return nil if dir.empty? || !File.directory?(dir)
 
-  File.dirname(common_dir)
+  dir
+end
+
+def main_worktree_root
+  dir = git_common_dir
+  dir && File.dirname(dir)
+end
+
+# Allocation reads every sibling's `.env.local` and then writes its own, so two
+# worktrees setting up at once would both scan before either wrote and both
+# claim the same slot. The lock lives in the shared git directory, which every
+# worktree of this repo resolves to the same path.
+def with_allocation_lock
+  common_dir = git_common_dir
+  return yield unless common_dir
+
+  File.open(File.join(common_dir, "fleetyards-setup.lock"), File::CREAT | File::RDWR, 0o644) do |lock|
+    lock.flock(File::LOCK_EX)
+    yield
+  end
 end
 
 def link_shared_paths(main_root)
@@ -88,12 +106,118 @@ def link_shared_paths(main_root)
   end
 end
 
-def worktree_port(name)
-  8270 + (Zlib.crc32(name) % 500)
+# A worktree owns one slot, and that slot owns the adjacent port pair
+# (base + 2N, base + 2N + 1) and a band of Redis databases. Deriving all of them
+# from a single number is what keeps one worktree's Vite port off another's Rails
+# port, and what stops two worktrees from sharing a Redis database. The port base
+# clears the shared Postgres/Redis containers and the main checkout's own ports,
+# so only worktrees ever compete for this range.
+PORT_SLOT_BASE = 8300
+PORT_SLOTS = 200
+
+# Each checkout owns a band of consecutive Redis databases; config/redis.yml maps
+# each subsystem to an offset within it. The main checkout leaves REDIS_DB unset
+# and takes the first band, so worktrees start after it. The top of the range
+# (REDIS_DB_BASE + PORT_SLOTS * REDIS_DBS_PER_CHECKOUT) has to stay under the
+# `--databases` docker-compose.yml starts the shared Redis with, or a high slot
+# gets an index Redis rejects at runtime with `ERR DB index is out of range`.
+REDIS_DBS_PER_CHECKOUT = 4
+REDIS_DB_BASE = REDIS_DBS_PER_CHECKOUT
+
+def slot_ports(slot)
+  first = PORT_SLOT_BASE + (slot * 2)
+  [first, first + 1]
 end
 
-def worktree_vite_port(name)
-  8273 + (Zlib.crc32(name) % 500)
+def slot_redis_db(slot)
+  REDIS_DB_BASE + (slot * REDIS_DBS_PER_CHECKOUT)
+end
+
+def slot_redis_dbs(slot)
+  base = slot_redis_db(slot)
+  base...(base + REDIS_DBS_PER_CHECKOUT)
+end
+
+def slot_in_range(slot)
+  slot if slot && (0...PORT_SLOTS).cover?(slot)
+end
+
+# The slot a worktree currently holds, read from its `.env.local`. Worktrees set
+# up before the slot was recorded have no WORKTREE_SLOT line, so fall back to
+# deriving it from the port they are still serving on. A pair that maps to no
+# slot at all — one below the base, or one left over from a wider range — yields
+# nothing here, and only its raw ports get reserved.
+def recorded_slot(body)
+  explicit = slot_in_range(body[/^WORKTREE_SLOT=(\d+)/, 1]&.to_i)
+  return explicit if explicit
+
+  port = body[/^PORT=(\d+)/, 1]&.to_i
+  return nil unless port
+
+  offset = port - PORT_SLOT_BASE
+  slot_in_range(offset / 2) if offset >= 0 && offset.even?
+end
+
+# Every worktree's recorded assignment, ours included. Slots are read rather than
+# recomputed so we can keep the one we already hold. Raw ports and Redis database
+# indexes are collected alongside them because the two used to be allocated by
+# separate hashes: a worktree set up that way sits on a port implying one slot
+# and a database implying another, so reserving only the slot its port maps to
+# would leave the database its Sidekiq is still draining free for the taker of
+# the overlapping band.
+def worktree_claims
+  out, status = Open3.capture2("git", "-C", APP_ROOT, "worktree", "list", "--porcelain")
+  return {own_slot: nil, slots: [], ports: [], redis_dbs: []} unless status.success?
+
+  own_slot = nil
+  slots = []
+  ports = []
+  redis_dbs = []
+
+  out.lines.each do |line|
+    next unless line.start_with?("worktree ")
+
+    root = line.split(" ", 2).last.strip
+    env_path = File.join(root, ".env.local")
+    next unless File.file?(env_path)
+
+    body = File.read(env_path)
+
+    # Compared by inode rather than string: `git worktree list` may report a
+    # path that resolves to APP_ROOT without matching it character for
+    # character, and mistaking our own claim for a sibling's would move us off
+    # the slot we are trying to keep.
+    if File.identical?(root, APP_ROOT)
+      own_slot = recorded_slot(body)
+      next
+    end
+
+    slot = recorded_slot(body)
+    slots << slot if slot
+    ports.concat([body[/^PORT=(\d+)/, 1], body[/^VITE_RUBY_PORT=(\d+)/, 1]].compact.map(&:to_i))
+    redis_db = body[/^REDIS_DB=(\d+)/, 1]
+    redis_dbs << redis_db.to_i if redis_db
+  end
+
+  {own_slot:, slots:, ports:, redis_dbs:}
+end
+
+# Keep the slot we already hold, so ports and the Redis database never move under
+# a running server — a re-run only gives it up if a sibling turns out to hold it
+# too. New worktrees take the lowest free slot, which reuses whatever a removed
+# worktree left behind and keeps the Redis database index small.
+def allocate_slot(claims)
+  free = lambda do |slot|
+    !claims[:slots].include?(slot) &&
+      (slot_ports(slot) & claims[:ports]).empty? &&
+      claims[:redis_dbs].none? { |db| slot_redis_dbs(slot).cover?(db) }
+  end
+
+  own = claims[:own_slot]
+  return own if own && free.call(own)
+
+  PORT_SLOTS.times.find(&free) ||
+    abort("All #{PORT_SLOTS} worktree slots are taken. Free one, or pass --port and --vite-port.")
 end
 
 def sanitize_worktree_name(name)
@@ -110,10 +234,6 @@ end
 
 def worktree_db_suffix(name)
   "_wt_#{sanitize_worktree_name(name)}"
-end
-
-def worktree_sidekiq_redis_db(name)
-  2 + (Zlib.crc32(name) % 500)
 end
 
 def write_superset_ports(port, vite_port)
@@ -146,15 +266,16 @@ def write_managed_env(filename, managed_body)
   File.write(path, user_content + "#{WORKTREE_MARKER}\n" + managed_body)
 end
 
-def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db, cookie_prefix: nil)
+def write_env_local(slot, port, db_port, redis_port, vite_port, db_suffix, redis_db, cookie_prefix: nil)
   write_managed_env(".env.local", <<~ENV)
+    WORKTREE_SLOT=#{slot}
     PORT=#{port}
     DB_PORT=#{db_port}
     REDIS_URL=redis://localhost:#{redis_port}
+    REDIS_DB=#{redis_db}
     VITE_RUBY_HOST=localhost
     VITE_RUBY_PORT=#{vite_port}
     WORKTREE_SUFFIX=#{db_suffix}
-    SIDEKIQ_REDIS_DB=#{sidekiq_redis_db}
     DOMAIN=localhost:#{port}
     ON_SUBDOMAIN=false
     #{"COOKIE_PREFIX=#{cookie_prefix}" if cookie_prefix}
@@ -185,9 +306,9 @@ if ARGV.include?("--help") || ARGV.include?("-h")
     Options:
       --fresh         Wipe application state (Docker volumes) before setup
                       WARNING: affects all worktrees (shared Docker services)
-      --name=NAME     Override the worktree name used for DB suffix, ports, etc.
-      --port=N        Override the Rails port (default: derived from name)
-      --vite-port=N   Override the Vite dev server port (default: derived from name)
+      --name=NAME     Override the worktree name used for the DB suffix, cookies, etc.
+      --port=N        Override the Rails port (default: derived from the slot)
+      --vite-port=N   Override the Vite dev server port (default: derived from the slot)
       --dev           Start the development server after setup
       --dev-<flag>    Forward --<flag> to bin/dev (e.g. --dev-docker, --dev-open)
       --verbose       Show full command output (default: concise status lines)
@@ -203,33 +324,41 @@ FileUtils.chdir APP_ROOT do
   port = 8270
   db_port = 8271
   vite_port = 8274
+  db_suffix = nil
 
   if wt_name
     effective_name = NAME_OVERRIDE || wt_name
-    port = PORT_OVERRIDE || worktree_port(effective_name)
-    db_port = worktree_db_port(effective_name)
-    redis_port = worktree_redis_port(effective_name)
-    vite_port = VITE_PORT_OVERRIDE || worktree_vite_port(effective_name)
-    db_suffix = worktree_db_suffix(effective_name)
-    sidekiq_db = worktree_sidekiq_redis_db(effective_name)
 
-    if VERBOSE
-      puts "== Worktree detected: #{wt_name}#{" (as #{effective_name})" if NAME_OVERRIDE} =="
-      puts "   Rails port:  #{port}#{" (override)" if PORT_OVERRIDE}"
-      puts "   Vite port:   #{vite_port}#{" (override)" if VITE_PORT_OVERRIDE}"
-      puts "   DB port:     #{db_port}"
-      puts "   Redis port:  #{redis_port}"
-      puts "   DB suffix:   #{db_suffix}"
-      puts "   Sidekiq DB:  #{sidekiq_db}"
-    else
-      puts "  Worktree: #{effective_name} (port #{port})"
+    # Scanning the siblings and writing our own claim have to happen under one
+    # lock, or a concurrent setup reads the range before we appear in it.
+    with_allocation_lock do
+      slot = allocate_slot(worktree_claims)
+      slot_port, slot_vite_port = slot_ports(slot)
+      port = PORT_OVERRIDE || slot_port
+      db_port = worktree_db_port(effective_name)
+      redis_port = worktree_redis_port(effective_name)
+      vite_port = VITE_PORT_OVERRIDE || slot_vite_port
+      db_suffix = worktree_db_suffix(effective_name)
+      redis_db = slot_redis_db(slot)
+
+      if VERBOSE
+        puts "== Worktree detected: #{wt_name}#{" (as #{effective_name})" if NAME_OVERRIDE} =="
+        puts "   Slot:        #{slot}"
+        puts "   Rails port:  #{port}#{" (override)" if PORT_OVERRIDE}"
+        puts "   Vite port:   #{vite_port}#{" (override)" if VITE_PORT_OVERRIDE}"
+        puts "   DB port:     #{db_port}"
+        puts "   Redis port:  #{redis_port}"
+        puts "   Redis DB:    #{redis_db}"
+        puts "   DB suffix:   #{db_suffix}"
+      else
+        puts "  Worktree: #{effective_name} (slot #{slot}, port #{port})"
+      end
+
+      cookie_prefix = "FLTYRD_WT_#{sanitize_worktree_name(effective_name)}"
+      write_env_local(slot, port, db_port, redis_port, vite_port, db_suffix, redis_db, cookie_prefix:)
+      write_env_test_local(db_port, db_suffix)
+      puts "   Wrote .env.local and .env.test.local" if VERBOSE
     end
-
-    cookie_prefix = "FLTYRD_WT_#{sanitize_worktree_name(effective_name)}"
-    write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db, cookie_prefix:)
-    write_env_test_local(db_port, db_suffix)
-    puts "   Wrote .env.local and .env.test.local" if VERBOSE
-
   end
 
   write_superset_ports(port, vite_port)

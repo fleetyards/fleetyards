@@ -230,31 +230,30 @@ When adding new API endpoints, follow this order:
 
 Flags are declared in **`config/feature_flags.yml`** — the single source of truth.
 `FeatureFlags::Synchronizer` reconciles Flipper with it on every deploy
-(`.kamal/hooks/pre-deploy` runs `feature_flags:sync`). Full reference:
+(`.kamal/hooks/pre-deploy` runs `bin/feature-flags sync`). Full reference:
 [lib/feature_flags/README.md](lib/feature_flags/README.md).
 
 To add a flag:
 
 1. Add an entry with a `description` (plus `permanent: true` for long-lived
-   infrastructure gates like the OAuth providers, and `self_service: true` if
-   users should be able to switch it on themselves):
+   infrastructure gates like the OAuth providers):
 
    ```yaml
    my_new_flag:
      description: "What this toggles"
-     self_service: true
    ```
 
-2. Validate with `bin/rails feature_flags:validate`; CI runs the same rules via
-   `bin/lint-feature-flags`.
-3. Run `bin/rails feature_flags:sync` to create it in your dev database.
+2. Validate with `bin/feature-flags validate`; CI runs the same command.
+3. Run `bin/feature-flags sync` to create it in your dev database.
 4. Read it as usual — `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
    `isFeatureEnabled('my_new_flag')` in Vue.
 
-Flags are created **off**, and toggling their gates stays at `/admin/features`.
-`self_service: true` seeds the flag's `FeatureSetting` on sync so it arrives
-user-toggleable; admins own it from then on, so dropping the key later retracts
-nothing — untoggle it at `/admin/features` instead.
+Flags are created **off** and with no self-service toggle. Everything about a
+flag's behaviour is decided at `/admin/features`: its gates, and a self-service
+switch per surface — **Users can toggle** for a personal one, **Fleet admins can
+toggle** for a fleet-wide one, either or both. The registry declares none of it,
+and sync never writes `feature_settings`. Read a fleet feature against the fleet
+(`isFleetFeatureEnabled(fleet, …)` in Vue, off the fleet payload's `features`).
 
 To remove a flag, delete its entry — the next deploy prunes the Flipper feature,
 all of its gate values and its `FeatureSetting` row (irreversible).

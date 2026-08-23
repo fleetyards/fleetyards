@@ -5,6 +5,7 @@
 # Table name: users
 #
 #  id                        :uuid             not null, primary key
+#  calendar_feed_token       :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -13,6 +14,7 @@
 #  current_sign_in_ip        :string(255)
 #  current_system            :string
 #  current_system_code       :string
+#  date_format               :string           default("dmy_dots"), not null
 #  discord                   :string
 #  email                     :string(255)      default(""), not null
 #  encrypted_otp_secret      :string
@@ -63,6 +65,7 @@
 #
 # Indexes
 #
+#  index_users_on_calendar_feed_token   (calendar_feed_token) UNIQUE
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_last_active_at        (last_active_at)
@@ -138,6 +141,10 @@ class User < ApplicationRecord
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
   has_many :omniauth_connections, dependent: :destroy
 
+  # Nullify, never destroy: a deleted account must not erase the bookkeeping for
+  # money that was actually received.
+  has_many :supporter_contributions, dependent: :nullify
+
   has_many :access_grants,
     class_name: "Oauth::AccessGrant",
     foreign_key: :resource_owner_id,
@@ -179,6 +186,7 @@ class User < ApplicationRecord
   after_save :touch_fleet_memberships
 
   has_one_attached :avatar
+  validates :avatar, no_vector_image: true
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = [
@@ -193,14 +201,16 @@ class User < ApplicationRecord
     [
       "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
-      "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
+      "id", "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube",
+      "search"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
     [
       "fleet_memberships", "fleets", "manufacturers", "models", "public_models", "public_vehicles",
-      "purchased_vehicles", "vehicle_modules", "vehicle_upgrades", "vehicles", "wanted_vehicles"
+      "purchased_vehicles", "supporter_contributions", "vehicle_modules", "vehicle_upgrades",
+      "vehicles", "wanted_vehicles"
     ]
   end
 
@@ -273,6 +283,46 @@ class User < ApplicationRecord
   # reading them from a preloaded association costs one query for all providers
   # instead of one per profile url - the fleet vehicle list asks every owner for
   # two of them.
+  DATE_FORMATS = {
+    "dmy_dots" => "dd.MM.yyyy",
+    "dmy_slash" => "dd/MM/yyyy",
+    "mdy_slash" => "MM/dd/yyyy",
+    "ymd_dash" => "yyyy-MM-dd"
+  }.freeze
+
+  validates :date_format, inclusion: {in: DATE_FORMATS.keys}
+
+  def discord_uid
+    connection_for("discord")&.uid
+  end
+
+  def calendar_feed_enabled?
+    calendar_feed_token.present?
+  end
+
+  def ensure_calendar_feed_token!
+    return calendar_feed_token if calendar_feed_token.present?
+
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def rotate_calendar_feed_token!
+    update_column(:calendar_feed_token, self.class.generate_calendar_feed_token)
+    calendar_feed_token
+  end
+
+  def clear_calendar_feed_token!
+    update_column(:calendar_feed_token, nil)
+  end
+
+  def self.generate_calendar_feed_token
+    loop do
+      token = SecureRandom.urlsafe_base64(32)
+      break token unless exists?(calendar_feed_token: token)
+    end
+  end
+
   private def connection_for(provider)
     omniauth_connections.detect { |connection| connection.provider == provider }
   end
@@ -303,6 +353,18 @@ class User < ApplicationRecord
 
   def placeholder_email?
     email.ends_with?("@users.noreply.fleetyards.net")
+  end
+
+  # Gate perks on this one: it ignores anonymity, so an anonymous supporter keeps
+  # whatever their contribution earns them.
+  def supporter?
+    supporter_contributions.active_now.exists?
+  end
+
+  # Safe to expose: an anonymous contribution must not out its supporter, so the
+  # public badge only reflects the ones cleared for attribution.
+  def public_supporter?
+    supporter_contributions.active_now.where(anonymous: false).exists?
   end
 
   def reset_password(new_password, new_password_confirmation)

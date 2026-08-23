@@ -291,6 +291,225 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/commodities":
+    post:
+      summary: Create Commodity
+      tags:
+      - Commodities
+      operationId: createCommodity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CommodityInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodity"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Commodities list
+      tags:
+      - Commodities
+      operationId: commodities
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/CommodityQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodities"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/commodities/type_filters":
+    get:
+      summary: Commodity types
+      tags:
+      - Commodities
+      operationId: commodityTypes
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/commodities/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Commodity id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Commodity
+      tags:
+      - Commodities
+      operationId: destroyCommodity
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodity"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Commodity Detail
+      tags:
+      - Commodities
+      operationId: commodity
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodity"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Commodity
+      tags:
+      - Commodities
+      operationId: updateCommodity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CommodityInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodity"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/components":
     post:
       summary: Create Component
@@ -372,6 +591,60 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/components/class_filters":
+    get:
+      summary: Component classes
+      tags:
+      - Components
+      operationId: componentClasses
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/components/item_type_filters":
+    get:
+      summary: Component item types
+      tags:
+      - Components
+      operationId: componentItemTypes
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/components/{id}":
     parameters:
     - name: id
@@ -750,6 +1023,306 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Dock"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/equipment":
+    post:
+      summary: Create Equipment
+      tags:
+      - Equipment
+      operationId: createEquipment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/EquipmentInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipment"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Equipment list
+      tags:
+      - Equipment
+      operationId: equipment
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/EquipmentQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipments"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/equipment/item_type_filters":
+    get:
+      summary: Equipment item types
+      tags:
+      - Equipment
+      operationId: equipmentItemTypes
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/equipment/slots":
+    get:
+      summary: Equipment slots
+      tags:
+      - Equipment
+      operationId: equipmentSlots
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/equipment/type_filters":
+    get:
+      summary: Equipment types
+      tags:
+      - Equipment
+      operationId: equipmentTypes
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/equipment/weapon_class_filters":
+    get:
+      summary: Equipment weapon classes
+      tags:
+      - Equipment
+      operationId: equipmentWeaponClasses
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/equipment/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Equipment id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Equipment
+      tags:
+      - Equipment
+      operationId: destroyEquipment
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipment"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Equipment Detail
+      tags:
+      - Equipment
+      operationId: equipmentDetail
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipment"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Equipment
+      tags:
+      - Equipment
+      operationId: updateEquipment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/EquipmentInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipment"
         '404':
           description: not found
           content:
@@ -1187,7 +1760,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/features/{id}/toggle-self-service":
+  "/features/{id}/toggle-fleet-self-service":
     parameters:
     - name: id
       in: path
@@ -1196,10 +1769,50 @@ paths:
       description: Feature name
       required: true
     put:
-      summary: Toggle Feature Self-Service
+      summary: Toggle Feature Fleet Self-Service
       tags:
       - Features
-      operationId: toggleAdminFeatureSelfService
+      operationId: toggleAdminFeatureFleetSelfService
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/features/{id}/toggle-user-self-service":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Toggle Feature User Self-Service
+      tags:
+      - Features
+      operationId: toggleAdminFeatureUserSelfService
       responses:
         '200':
           description: successful
@@ -5574,6 +6187,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/SupporterContribution"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '403':
           description: forbidden
           content:
@@ -5586,8 +6205,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Supporter Contributions list
       tags:
@@ -5617,6 +6234,42 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/SupporterContributions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/supporter-contributions/per-month":
+    get:
+      summary: Supporter Contributions Per Month
+      tags:
+      - SupporterContributions
+      operationId: supporterContributionsPerMonth
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/SupporterContributionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContributionMonthlyStats"
         '403':
           description: forbidden
           content:
@@ -7176,6 +7829,195 @@ components:
       required:
       - value
       title: CheckInput
+    Commodities:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Commodity"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Commodities
+    Commodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        commodityType:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        buyPrice:
+          type:
+          - number
+          - 'null'
+        sellPrice:
+          type:
+          - number
+          - 'null'
+        uexId:
+          type:
+          - integer
+          - 'null'
+        uexCode:
+          type:
+          - string
+          - 'null'
+        scKey:
+          type:
+          - string
+          - 'null'
+        scRef:
+          type:
+          - string
+          - 'null'
+        version:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - createdAt
+      - updatedAt
+      title: Commodity
+    CommodityInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        commodityType:
+          type:
+          - string
+          - 'null'
+        uexId:
+          type:
+          - integer
+          - 'null'
+        uexCode:
+          type:
+          - string
+          - 'null'
+        storeImage:
+          type:
+          - string
+          - 'null'
+        scKey:
+          type:
+          - string
+          - 'null'
+        scRef:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: CommodityInput
+    CommodityQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        commodityTypeCont:
+          type: string
+        uexCodeCont:
+          type: string
+        storeImageBlank:
+          type: boolean
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        commodityTypeIn:
+          type: array
+          items:
+            type: string
+        buyPriceGteq:
+          type: number
+        buyPriceLteq:
+          type: number
+        sellPriceGteq:
+          type: number
+        sellPriceLteq:
+          type: number
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/CommoditySortEnum"
+          - "$ref": "#/components/schemas/CommoditySortEnum"
+      additionalProperties: false
+      example: {}
+      title: CommodityQuery
+    CommoditySortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - commodityType asc
+      - commodityType desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - COMMODITY_TYPE_ASC
+      - COMMODITY_TYPE_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: CommoditySortEnum
     Component:
       type: object
       properties:
@@ -7260,6 +8102,14 @@ components:
         updatedAt:
           type: string
           format: date-time
+        buyPrice:
+          type:
+          - number
+          - 'null'
+        sellPrice:
+          type:
+          - number
+          - 'null'
       additionalProperties: false
       required:
       - id
@@ -7680,6 +8530,8 @@ components:
           type: string
         componentClassCont:
           type: string
+        storeImageBlank:
+          type: boolean
         idIn:
           type: array
           items:
@@ -7702,6 +8554,14 @@ components:
           items:
             type: string
             format: uuid
+        buyPriceGteq:
+          type: number
+        buyPriceLteq:
+          type: number
+        sellPriceGteq:
+          type: number
+        sellPriceLteq:
+          type: number
         sorts:
           anyOf:
           - type: array
@@ -8740,6 +9600,28 @@ components:
         updatedAt:
           type: string
           format: date-time
+        hidden:
+          type: boolean
+        buyPrice:
+          type:
+          - number
+          - 'null'
+        sellPrice:
+          type:
+          - number
+          - 'null'
+        scKey:
+          type:
+          - string
+          - 'null'
+        scRef:
+          type:
+          - string
+          - 'null'
+        version:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - id
@@ -8748,7 +9630,230 @@ components:
       - availability
       - createdAt
       - updatedAt
+      - hidden
       title: Equipment
+    EquipmentInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        equipmentType:
+          type:
+          - string
+          - 'null'
+        itemType:
+          type:
+          - string
+          - 'null'
+        subType:
+          type:
+          - string
+          - 'null'
+        weaponClass:
+          type:
+          - string
+          - 'null'
+        slot:
+          type:
+          - string
+          - 'null'
+          enum:
+          - undersuit
+          - arms
+          - helmet
+          - torso
+          - legs
+          - footwear
+          - hat
+          - gloves
+          - pants
+          - shirt
+          - jacket
+          - backpack
+          -
+        size:
+          type:
+          - string
+          - 'null'
+        grade:
+          type:
+          - string
+          - 'null'
+        rateOfFire:
+          type:
+          - number
+          - 'null'
+        range:
+          type:
+          - number
+          - 'null'
+        storage:
+          type:
+          - number
+          - 'null'
+        volume:
+          type:
+          - number
+          - 'null'
+        damageReduction:
+          type:
+          - number
+          - 'null'
+        temperatureRating:
+          type:
+          - string
+          - 'null'
+        radiationProtection:
+          type:
+          - number
+          - 'null'
+        radiationScrubRate:
+          type:
+          - number
+          - 'null'
+        gForceTolerance:
+          type:
+          - number
+          - 'null'
+        coreCompatibility:
+          type:
+          - string
+          - 'null'
+          enum:
+          - all
+          - medium_heavy
+          - heavy
+          -
+        backpackCompatibility:
+          type:
+          - string
+          - 'null'
+          enum:
+          - all
+          - light_medium
+          - light
+          -
+        manufacturerId:
+          type: string
+          format: uuid
+        hidden:
+          type: boolean
+        storeImage:
+          type:
+          - string
+          - 'null'
+        scKey:
+          type:
+          - string
+          - 'null'
+        scRef:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: EquipmentInput
+    EquipmentQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        equipmentTypeCont:
+          type: string
+        itemTypeCont:
+          type: string
+        subTypeCont:
+          type: string
+        weaponClassCont:
+          type: string
+        hiddenEq:
+          type: boolean
+        storeImageBlank:
+          type: boolean
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        equipmentTypeIn:
+          type: array
+          items:
+            type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        weaponClassIn:
+          type: array
+          items:
+            type: string
+        slotIn:
+          type: array
+          items:
+            type: string
+            enum:
+            - undersuit
+            - arms
+            - helmet
+            - torso
+            - legs
+            - footwear
+            - hat
+            - gloves
+            - pants
+            - shirt
+            - jacket
+            - backpack
+        manufacturerIdIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        buyPriceGteq:
+          type: number
+        buyPriceLteq:
+          type: number
+        sellPriceGteq:
+          type: number
+        sellPriceLteq:
+          type: number
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/EquipmentSortEnum"
+          - "$ref": "#/components/schemas/EquipmentSortEnum"
+      additionalProperties: false
+      example: {}
+      title: EquipmentQuery
+    EquipmentSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - itemType asc
+      - itemType desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - ITEM_TYPE_ASC
+      - ITEM_TYPE_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: EquipmentSortEnum
     EquipmentTypeEnum:
       type: string
       enum:
@@ -8770,6 +9875,20 @@ components:
       - MEDICAL
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    Equipments:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Equipment"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Equipments
     ExternalFuelTank:
       type: object
       properties:
@@ -8790,7 +9909,9 @@ components:
           type: string
         state:
           type: string
-        selfService:
+        selfServiceUser:
+          type: boolean
+        selfServiceFleet:
           type: boolean
         percentageOfActors:
           type: number
@@ -8808,7 +9929,8 @@ components:
       required:
       - name
       - state
-      - selfService
+      - selfServiceUser
+      - selfServiceFleet
       - percentageOfActors
       - percentageOfTime
       - groups
@@ -9895,6 +11017,36 @@ components:
       - netQuantity
       - entriesCount
       title: InventoryStockPosition
+    InventoryVehicle:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        serial:
+          type:
+          - string
+          - 'null'
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+            cargo:
+              type: number
+            personalInventory:
+              type: number
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: InventoryVehicle
     ItemPrice:
       type: object
       properties:
@@ -9960,11 +11112,15 @@ components:
       - ModelModule
       - ModelPaint
       - Component
+      - Equipment
+      - Commodity
       x-enumNames:
       - MODEL
       - MODEL_MODULE
       - MODEL_PAINT
       - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
       title: ItemPriceItemTypeEnum
     ItemPriceQuery:
       type: object
@@ -10372,6 +11528,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:
@@ -10843,6 +12005,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:
@@ -13006,6 +14174,17 @@ components:
       - fleet_member_accepted
       - fleet_request_accepted
       - fleet_inventory_item_added
+      - fleet_event_published
+      - fleet_event_locked
+      - fleet_event_starting_soon
+      - fleet_event_started
+      - fleet_event_completed
+      - fleet_event_cancelled
+      - fleet_event_signup_added
+      - fleet_event_signup_withdrawn
+      - fleet_event_signup_confirmed
+      - fleet_event_signup_assigned
+      - fleet_event_signup_kicked
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -13020,6 +14199,17 @@ components:
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
       - FLEET_INVENTORY_ITEM_ADDED
+      - FLEET_EVENT_PUBLISHED
+      - FLEET_EVENT_LOCKED
+      - FLEET_EVENT_STARTING_SOON
+      - FLEET_EVENT_STARTED
+      - FLEET_EVENT_COMPLETED
+      - FLEET_EVENT_CANCELLED
+      - FLEET_EVENT_SIGNUP_ADDED
+      - FLEET_EVENT_SIGNUP_WITHDRAWN
+      - FLEET_EVENT_SIGNUP_CONFIRMED
+      - FLEET_EVENT_SIGNUP_ASSIGNED
+      - FLEET_EVENT_SIGNUP_KICKED
       title: NotificationTypeEnum
     OauthApplication:
       type: object
@@ -13372,6 +14562,11 @@ components:
           format: date
         note:
           type: string
+        userId:
+          type: string
+          format: uuid
+        user:
+          "$ref": "#/components/schemas/UserOption"
         createdAt:
           type: string
           format: date-time
@@ -13411,11 +14606,48 @@ components:
           format: date
         note:
           type: string
+        userId:
+          type:
+          - string
+          - 'null'
+          format: uuid
       additionalProperties: false
       required:
       - amountCents
       - startedAt
       title: SupporterContributionInput
+    SupporterContributionMonthlyStats:
+      type: object
+      properties:
+        currency:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              tooltip:
+                type: string
+              amountCents:
+                type: integer
+              goalAmountCents:
+                type: integer
+              count:
+                type: integer
+            additionalProperties: false
+            required:
+            - label
+            - tooltip
+            - amountCents
+            - goalAmountCents
+            - count
+      additionalProperties: false
+      required:
+      - currency
+      - items
+      title: SupporterContributionMonthlyStats
     SupporterContributionQuery:
       type: object
       properties:
@@ -13441,6 +14673,13 @@ components:
         endedAtLteq:
           type: string
           format: date
+        userIdEq:
+          type: string
+          format: uuid
+        userIdNull:
+          type: boolean
+        userUsernameCont:
+          type: string
         sorts:
           anyOf:
           - type: array
@@ -13497,6 +14736,10 @@ components:
           type: integer
         anonymousCount:
           type: integer
+        currentMonthAmountCents:
+          type: integer
+        currentMonthCount:
+          type: integer
         patreonSyncEnabled:
           type: boolean
       additionalProperties: false
@@ -13506,6 +14749,8 @@ components:
       - totalCount
       - recurringCount
       - anonymousCount
+      - currentMonthAmountCents
+      - currentMonthCount
       - patreonSyncEnabled
       title: SupporterContributionStats
     SupporterContributions:
@@ -13670,6 +14915,9 @@ components:
       properties:
         searchCont:
           type: string
+        idEq:
+          type: string
+          format: uuid
         usernameCont:
           type: string
         usernameEq:

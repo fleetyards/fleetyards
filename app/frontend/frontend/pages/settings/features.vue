@@ -20,9 +20,11 @@ import {
   getFeaturesQueryKey,
   enableUserFeature,
   disableUserFeature,
+  UserFeatureScope,
   type UserFeature,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -44,9 +46,46 @@ const featureItems = computed<FeatureItem[]>(() => {
   return features.value.map((f) => ({ ...f, id: f.name }));
 });
 
+// A fleet feature has two switches with different reach: this one enables it for
+// you alone, and a fleet admin's enables it for everyone in that fleet. The pill
+// and its tooltip are what keep the two apart.
+const isFleetFeature = (feature: FeatureItem) =>
+  feature.scope === UserFeatureScope.fleet;
+
+// The fleet already gives every member the feature, so there is nothing for a
+// personal switch to add — and it cannot take it away either.
+const grantedByFleet = (feature: FeatureItem) => feature.fleets.length > 0;
+
+// Same for a Flipper group: the gates are ORed, so clearing the personal one
+// changes nothing the user would see.
+const grantedByGroup = (feature: FeatureItem) => feature.groups.length > 0;
+
+// The API decides what this page may switch, and it lists features it will not
+// let the user touch: the ones an admin, a group or a fleet turned on for them.
+// Those rows are here to explain where a feature came from, nothing more.
+const readOnly = (feature: FeatureItem) => !feature.toggleable;
+
+const grantTooltip = (feature: FeatureItem) => {
+  if (grantedByFleet(feature)) return t("labels.features.fleetFeatureGranted");
+  if (grantedByGroup(feature)) return t("labels.features.groupFeatureGranted");
+
+  return t("labels.features.managedFeature");
+};
+
+const grantPill = (feature: FeatureItem) => {
+  if (grantedByFleet(feature))
+    return t("labels.features.fleetFeatureGrantedShort");
+  if (grantedByGroup(feature))
+    return t("labels.features.groupFeatureGrantedShort");
+
+  return t("labels.features.managedFeatureShort");
+};
+
 const toggleFeature = async (feature: FeatureItem) => {
+  if (readOnly(feature)) return;
+
   try {
-    if (feature.enabled) {
+    if (feature.enabledForSelf) {
       await disableUserFeature(feature.name);
     } else {
       await enableUserFeature(feature.name);
@@ -89,7 +128,9 @@ const toggleFeature = async (feature: FeatureItem) => {
   >
     <template #display="{ item }">
       <BasePill
-        :variant="item.enabled ? 'success' : 'danger'"
+        :variant="
+          item.enabled ? PillVariantsEnum.SUCCESS : PillVariantsEnum.DANGER
+        "
         uppercase
         margin-right
       >
@@ -102,11 +143,43 @@ const toggleFeature = async (feature: FeatureItem) => {
       <span class="feature-name">
         {{ item.name.replace(/_/g, " ").replace(/-/g, " ") }}
       </span>
+      <span
+        v-if="readOnly(item)"
+        v-tooltip="grantTooltip(item)"
+        class="feature-scope"
+      >
+        <BasePill uppercase>{{ grantPill(item) }}</BasePill>
+      </span>
+      <span
+        v-else-if="isFleetFeature(item)"
+        v-tooltip="t('labels.features.fleetFeatureInfo')"
+        class="feature-scope"
+      >
+        <BasePill uppercase>{{ t("labels.features.fleetFeature") }}</BasePill>
+      </span>
+      <span v-if="grantedByFleet(item)" class="feature-fleets">
+        <template v-for="(fleet, index) in item.fleets" :key="fleet.slug">
+          <span v-if="index > 0">, </span>
+          <router-link :to="{ name: 'fleet', params: { slug: fleet.slug } }">
+            {{ fleet.name }}
+          </router-link>
+        </template>
+      </span>
+      <span v-else-if="grantedByGroup(item)" class="feature-fleets">
+        {{ item.groups.join(", ") }}
+      </span>
     </template>
 
     <template #actions="{ item, mobile }">
       <Btn
-        v-tooltip="t('labels.features.toggle')"
+        v-tooltip="
+          readOnly(item)
+            ? grantTooltip(item)
+            : isFleetFeature(item)
+              ? t('labels.features.toggleForSelf')
+              : t('labels.features.toggle')
+        "
+        :disabled="readOnly(item)"
         @click="toggleFeature(item)"
         :variant="BtnVariantsEnum.GHOST"
       >
@@ -129,5 +202,14 @@ const toggleFeature = async (feature: FeatureItem) => {
 .feature-name {
   font-weight: 600;
   text-transform: capitalize;
+}
+
+.feature-scope {
+  margin-left: 0.5rem;
+}
+
+.feature-fleets {
+  margin-left: 0.5rem;
+  color: var(--text-muted);
 }
 </style>

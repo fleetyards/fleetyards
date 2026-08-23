@@ -21,8 +21,16 @@ class FleetPolicy < FleetBasePolicy
     fleet_membership.present?
   end
 
+  def manage_calendar?
+    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage"])
+  end
+
   def manage?
     accepted_fleet_membership&.has_access?(["fleet:manage"])
+  end
+
+  def manage_features?
+    manage?
   end
 
   def update?

@@ -6,6 +6,8 @@ require "tmpdir"
 module ScData
   module Parser
     class BaseParserTest < ActiveSupport::TestCase
+      VECTOR = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><rect width='16' height='16'/></svg>"
+
       setup do
         @base_folder = Dir.mktmpdir
         @export_path = "#{@base_folder}/parsed/test"
@@ -75,22 +77,22 @@ module ScData
         assert_equal File.binread(source), File.binread(target)
       end
 
-      # Vectors are already drawable, and rasterising one would only lose it
-      # its resolution.
-      test "#save_icon copies a vector icon as it is" do
-        source = write_asset("ui/logos/acme.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
+      # A vector is carried over as it is: it draws at whatever size a panel
+      # asks for, and rasterizing here would fix it at one.
+      test "#save_icon copies a vector icon unchanged" do
+        source = write_asset("ui/logos/acme.svg", VECTOR)
 
         target = @parser.send(:save_icon, "ui/logos/acme.svg")
 
         assert_equal "#{@export_path}/icons/ui/logos/acme.svg", target
-        assert_equal File.read(source), File.read(target)
+        assert_equal File.binread(source), File.binread(target)
       end
 
       # Every catalogue writes into the same icons root, so sweeping that root
       # would leave whichever parser ran last as the only one with artwork.
       test "#save_icon leaves the icons another catalogue wrote alone" do
-        write_asset("ui/logos/acme.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
-        write_asset("ui/items/widget.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
+        write_asset("ui/logos/acme.svg", VECTOR)
+        write_asset("ui/items/widget.svg", VECTOR)
 
         @parser.send(:save_icon, "ui/logos/acme.svg")
 
@@ -106,8 +108,8 @@ module ScData
 
       test "#save_icon drops an icon its own folder no longer names" do
         FileUtils.mkdir_p("#{@export_path}/icons/ui/logos")
-        File.write("#{@export_path}/icons/ui/logos/gone.svg", "")
-        write_asset("ui/logos/acme.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
+        File.write("#{@export_path}/icons/ui/logos/gone.png", "")
+        write_asset("ui/logos/acme.svg", VECTOR)
 
         @parser.send(:save_icon, "ui/logos/acme.svg")
 

@@ -362,6 +362,12 @@
         },
         "adminVehicle": {
           "destroy": "Are you sure you want to delete this vehicle? This action can't be reverted."
+        },
+        "commodity": {
+          "destroy": "Are you sure you want to delete this commodity? This action can't be reverted."
+        },
+        "equipment": {
+          "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
         }
       },
       "oauthAuthorize": {
@@ -459,7 +465,15 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "Eliminare questo articolo e tutte le sue voci? L'operazione non può essere annullata."
+          }
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "Svuotare il carico di questa nave? Tutte le voci verranno eliminate.",
+            "success": "Carico svuotato.",
+            "failure": "Impossibile svuotare il carico."
           }
         }
       }

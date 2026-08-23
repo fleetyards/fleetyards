@@ -18,6 +18,7 @@ module Admin
           q = SupporterContribution.ransack(supporter_contribution_query_params)
 
           @supporter_contributions = q.result(distinct: true)
+            .includes(:user)
             .page(params[:page])
             .per(per_page(SupporterContribution))
         end
@@ -26,13 +27,32 @@ module Admin
           authorize! with: ::Admin::SupporterContributionPolicy
 
           q = SupporterContribution.ransack(supporter_contribution_query_params.except("sorts"))
-          @stats = q.result(distinct: true).pick(
+          scope = q.result(distinct: true)
+
+          @stats = scope.pick(
             Arel.sql("COALESCE(SUM(amount_cents), 0)"),
             Arel.sql("MAX(currency)"),
             Arel.sql("COUNT(*)"),
             Arel.sql("COUNT(*) FILTER (WHERE recurring)"),
             Arel.sql("COUNT(*) FILTER (WHERE anonymous)")
           )
+          # Its own query rather than a FILTER beside the others: `active_now`
+          # takes a recurring contribution for every month it spans, which is
+          # what the chart's current-month column shows. Raw SQL for the same
+          # reason the totals above use it - `sum` on a `distinct` relation
+          # emits SUM(DISTINCT amount_cents), which would collapse two
+          # supporters giving the same amount into one.
+          @current_month = scope.active_now.pick(
+            Arel.sql("COALESCE(SUM(amount_cents), 0)"),
+            Arel.sql("COUNT(*)")
+          )
+        end
+
+        def per_month
+          authorize! with: ::Admin::SupporterContributionPolicy
+
+          q = SupporterContribution.ransack(supporter_contribution_query_params.except("sorts"))
+          @monthly_stats = SupporterMonthlyStats.new(scope: q.result(distinct: true))
         end
 
         def sync_patreon
@@ -77,7 +97,7 @@ module Admin
         private def supporter_contribution_params
           @supporter_contribution_params ||= params.permit(
             :name, :amount_cents, :currency, :anonymous, :recurring,
-            :started_at, :ended_at, :note
+            :started_at, :ended_at, :note, :user_id
           )
         end
 
@@ -85,6 +105,7 @@ module Admin
           @supporter_contribution_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :recurring_eq, :anonymous_eq, :source_eq,
             :started_at_gteq, :started_at_lteq, :ended_at_gteq, :ended_at_lteq,
+            :user_id_eq, :user_id_null, :user_username_cont,
             :sorts, sorts: []
           ]).fetch(:q, {})
         end

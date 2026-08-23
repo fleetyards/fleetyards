@@ -48,6 +48,12 @@ fr:
       create: L'entrée d'inventaire n'a pas pu être créée.
       update: L'entrée d'inventaire n'a pas pu être mise à jour.
       destroy: L'entrée d'inventaire n'a pas pu être détruite.
+    vehicle_inventory:
+      destroy: L'inventaire n'a pas pu être détruit.
+    vehicle_inventory_items:
+      create: L'entrée d'inventaire n'a pas pu être créée.
+      update: L'entrée d'inventaire n'a pas pu être mise à jour.
+      destroy: L'entrée d'inventaire n'a pas pu être détruite.
     image:
       create: Impossible de créer l'image
       update: Impossible de mettre à jour l'image

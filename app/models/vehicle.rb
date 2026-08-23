@@ -75,6 +75,8 @@ class Vehicle < ApplicationRecord
 
   has_many :vehicle_loadouts, dependent: :destroy
 
+  has_one :inventory, dependent: nil
+
   has_many :vehicle_modules, dependent: :destroy
   has_many :model_modules, through: :vehicle_modules
 
@@ -95,6 +97,8 @@ class Vehicle < ApplicationRecord
   before_save :set_module_package
   before_save :reset_pledge_id_if_wanted
   before_save :update_slugs
+
+  before_destroy :freeze_inventory_location
 
   after_create :broadcast_create
   after_destroy :remove_loaners, :remove_bundled_snub_crafts, :broadcast_destroy
@@ -347,6 +351,14 @@ class Vehicle < ApplicationRecord
     model.rsi_name || model.name
   end
 
+  def display_name
+    name.presence || model.name
+  end
+
+  def default_inventory_name
+    "#{display_name} Inventory"
+  end
+
   def model_manufacturer
     model.manufacturer.name
   end
@@ -395,6 +407,15 @@ class Vehicle < ApplicationRecord
 
   protected def nil_if_blank
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
+  end
+
+  # The foreign key nullifies `vehicle_id`, which would otherwise leave the stock
+  # with no hint of where it came from.
+  private def freeze_inventory_location
+    return if inventory.blank?
+    return if inventory.location.present?
+
+    inventory.update(location: display_name)
   end
 
   private def model_must_be_player_ownable

@@ -194,10 +194,11 @@ defineExpose({
     :loading="loading"
     :empty-name="emptyName"
     :hide-empty="creating"
+    :expanded-id="editingId"
   >
     <template #prepend>
       <div v-if="creating" key="__create__" class="list-group__item">
-        <div class="list-group__row">
+        <div class="list-group__row list-group__row--expanded">
           <div class="inline-editable-list__form">
             <slot name="create" />
           </div>

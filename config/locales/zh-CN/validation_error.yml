@@ -47,6 +47,12 @@ zh-CN:
       create: 无法创建库存记录。
       update: 无法更新库存记录。
       destroy: 无法删除库存记录。
+    vehicle_inventory:
+      destroy: 无法删除库存。
+    vehicle_inventory_items:
+      create: 无法创建库存记录。
+      update: 无法更新库存记录。
+      destroy: 无法删除库存记录。
     image:
       create: 无法创建图片
       update: 无法更新图片

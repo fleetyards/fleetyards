@@ -10,6 +10,7 @@
       "size": "Size",
       "beam": "Beam",
       "cargo": "Cargo",
+      "personalInventory": "Ship Inventory",
       "netCargo": "Cargo with Rover/Snub",
       "crew": "Crew",
       "speed": "Speed",

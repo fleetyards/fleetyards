@@ -58,12 +58,12 @@ const canManageInvites = computed(() =>
   ]),
 );
 
-const { isFeatureEnabled } = useFeatures();
+const { isFleetFeatureEnabled } = useFeatures();
 const starmapEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.fleet_starmap),
+  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_STARMAP),
 );
 const worldmapEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.fleet_worldmap),
+  isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_WORLDMAP),
 );
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
