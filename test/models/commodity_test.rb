@@ -9,7 +9,6 @@ require "test_helper"
 #  id             :uuid             not null, primary key
 #  commodity_type :string
 #  description    :text
-#  icon           :string
 #  name           :string           not null
 #  sc_key         :string
 #  sc_ref         :string
