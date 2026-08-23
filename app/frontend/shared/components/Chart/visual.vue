@@ -38,9 +38,16 @@ const pending = status({
   isLoading: ref(true),
 });
 
+// Carries a refetch so the retry button is on screen; clearing the error is what
+// a successful retry would amount to here.
+const failedError = ref<Error | null>(new Error("the request failed"));
+
 const failed = status({
   isError: ref(true),
-  error: ref(new Error("the request failed")),
+  error: failedError,
+  refetch: () => {
+    failedError.value = null;
+  },
 });
 
 // A background refetch must keep the drawn chart on screen. If this one shows a
@@ -206,7 +213,9 @@ const redraw = () => {
     </div>
     <div class="col-12 col-lg-4">
       <p class="text-muted">
-        Failed — no axis frame is drawn, so none is left behind for good.
+        Failed — no axis frame is drawn, and the box says why rather than
+        sitting empty. With a <code>refetch</code> on the status it offers a
+        retry.
       </p>
       <Chart
         name="vt-failed"
@@ -233,8 +242,9 @@ const redraw = () => {
 
   <Heading :level="HeadingLevelEnum.H2">No data</Heading>
   <p>
-    Settled with an empty series. Highcharts draws its own no-data state here,
-    which is not the same thing as the failed box above.
+    Settled with an empty series. Left to Highcharts this drew a bare pair of
+    axes, which reads as a chart that failed rather than one with nothing to
+    plot, so the component says so instead.
   </p>
   <div class="row">
     <div class="col-12 col-lg-6">

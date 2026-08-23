@@ -249,7 +249,12 @@ first — a `chips-*.js` from before the move was still sitting in the test buil
 Done, highest value first:
 
 - **`Chart`** — new co-located `shared/components/Chart/visual.vue`, on its own
-  `/visual-tests/charts/` route. All five Highcharts types, a flat series, a
+  `/visual-tests/charts/` route. Seeing the states side by side showed that two
+  of them said nothing at all: a failed chart drew no axes and put no message in
+  their place, and a settled chart with an empty series was left to Highcharts,
+  which drew a bare pair of axes that reads as a chart that broke. Both now say
+  which they are, and a failure offers a retry when the status carries a
+  `refetch`. Guarded by `Charts.spec.ts`. All five Highcharts types, a flat series, a
   single-slice pie, and the async states driven by a hand-built `asyncStatus`
   bag: pending, failed, and the refetching case the component's own comment
   calls out (the drawn chart must stay, with no spinner over it). Plus the admin
