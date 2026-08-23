@@ -22,6 +22,20 @@
     margin-inline-start: auto;
   }
 
+  // Beside the link group, not inside it. As a member of the BtnGroup track it
+  // added its own width to a control that cannot wrap, so on a phone the two
+  // buttons were pushed off the viewport and their labels clipped against the
+  // track's `overflow: hidden`. Out here it wraps onto its own line instead.
+  &__links-label {
+    flex: 0 1 auto;
+  }
+
+  // Safety net for a translation long enough that even the two buttons alone
+  // overrun the row: the group clips inside the page rather than widening it.
+  &__links {
+    max-width: 100%;
+  }
+
   // The metrics cards are modelled on erkul's formulas, so the credit sits once
   // under the whole grid instead of being repeated in every card. Right-aligned
   // to answer the loadout links at the top of the block: the same attribution,
