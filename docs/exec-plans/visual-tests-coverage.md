@@ -244,15 +244,44 @@ Worth knowing for any future check like this: `vite.config.ts` sets
 `public/vite*`. A grep there proves nothing unless the directory is removed
 first — a `chips-*.js` from before the move was still sitting in the test build.
 
-### Phase 3 — Cover the missing components
+### Phase 3 — Cover the missing components — STARTED, 3 of 27
 
-Two base components have no demo at all: `FormDateTime`, `FormTabs`.
+Done, highest value first:
 
-Uncovered in `shared/components/`:
+- **`Chart`** — new co-located `shared/components/Chart/visual.vue`, on its own
+  `/visual-tests/charts/` route. All five Highcharts types, a flat series, a
+  single-slice pie, and the async states driven by a hand-built `asyncStatus`
+  bag: pending, failed, and the refetching case the component's own comment
+  calls out (the drawn chart must stay, with no spinner over it). Plus the admin
+  palette and a redraw button, because Highcharts holds its instance outside
+  Vue's control. Verified: 10 chart roots draw with no page errors, which also
+  exercises the ESM core plus a11y module import in a real build.
+- **`FormDateTime`** and **`FormTabs`** — the two base components that had no
+  demo at all. Both went into `forms.vue` rather than beside their component:
+  form controls are compared side by side, so the family page is where they
+  belong. FormTabs needs a vee-validate context to show its error marker, so it
+  lives in `forms/TabsDemo.vue` next to `ErrorStates.vue`, using the same
+  validate-on-mount trick.
+
+A new route needs four things, not one: the entry in
+`pages/visual-tests/routes.ts`, a `NavItem` in `VisualTestsNav`, and keys under
+`visualTests` in `en/{headlines,nav,title}.json`. English only — `crowdin.yml`
+makes `en` the source and propagates the rest.
+
+**`FormTabs.spec.ts` is new**, and it is the first spec written *because* the
+gate and the demos now work. It asserts what a screenshot cannot: that a tab is
+marked invalid only for its own fields and never inherits a sibling's failure,
+that a disabled tab is out of the tab order and refuses activation, that a
+hidden tab is absent from the strip rather than disabled in it, and that the
+active tab round-trips through `?demotab=`. No seeded data, so no scenario.
+The real hooks are `data-test="tab-anchor-<id>"` with `has-errors` / `disabled`
+/ `active` classes on `TabNavView/AnchorItems`.
+
+Still uncovered in `shared/components/` (24), unchanged from the audit except
+for `Chart`:
 
 | Component | Note |
 |---|---|
-| `Chart` | Highcharts wrapper. Highest value — see `parked/visual-baselines` and the ESM/UMD dual-instance trap |
 | `Avatar`, `LazyImage`, `ViewImage`, `Video` | Media states: loading, broken, missing |
 | `StatsPanel`, `TeaserPanel`, `TeaserPanel2` | Panel variants `panels.vue` does not reach |
 | `Markdown` | User-supplied content — the states worth pinning are the hostile ones |
@@ -266,6 +295,8 @@ Uncovered in `shared/components/`:
 correct, not a gap.
 
 Judgement call, not a checklist to clear: decide per row and record the skips.
+The media group is the obvious next slice — four components, one shared theme
+(loading, broken, missing), and no data behind any of them.
 
 ### Phase 4 — State, variant and viewport coverage
 
@@ -330,6 +361,7 @@ branch's chart baselines are its only coverage.
       `Chips` and `Panels` blocked on demo-page data wiring, see Phase 4
 - [x] Phase 2 — Co-located the three single-owner demos; auto-scan exclusion and
       lint rule in place, family and composed pages left central
-- [ ] Phase 3 — Demos for the uncovered components
+- [~] Phase 3 — Chart, FormDateTime and FormTabs covered (+ a new FormTabs spec);
+      24 shared components still uncovered, media group next
 - [ ] Phase 4 — State, variant and narrow-viewport coverage
 - [ ] Phase 5 — Rebase and re-target the pixel baselines
