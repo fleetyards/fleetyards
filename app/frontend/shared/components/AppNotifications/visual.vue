@@ -61,7 +61,7 @@ const fireWithImage = () => {
   displaySuccess({
     text: "Ship added to your hangar.",
     component: () =>
-      import("@/frontend/pages/visual-tests/notifications/ImageDemo.vue"),
+      import("@/shared/components/AppNotifications/visual/ImageDemo.vue"),
     componentProps: {
       title: "FleetYards",
       body: "An example notification rendering a component with an image alongside the text.",
@@ -80,7 +80,7 @@ const fireWithCta = () => {
     persist: true,
     timeout: false,
     component: () =>
-      import("@/frontend/pages/visual-tests/notifications/CtaDemo.vue"),
+      import("@/shared/components/AppNotifications/visual/CtaDemo.vue"),
     componentProps: {
       title: "Action required",
       body: "An example notification with a primary call-to-action button.",
