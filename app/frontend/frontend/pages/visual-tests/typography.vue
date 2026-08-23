@@ -10,6 +10,7 @@ import BasePill from "@/shared/components/base/Pill/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import Box from "@/shared/components/Box/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import Markdown from "@/shared/components/Markdown/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Spacer from "@/shared/components/base/Spacer/index.vue";
@@ -42,6 +43,57 @@ const headingAlignments = [
 ];
 
 const pillVariants = ["default", "success", "warning", "danger"] as const;
+
+/*
+ * Markdown renders a deliberately small subset and escapes everything before it
+ * adds a tag, and index.test.ts already proves the escaping and the link guard.
+ * So what is left for a page is what the result looks like: whether escaped
+ * markup reads as text, whether an unbroken string bursts its column, and
+ * whether the headings sit right inside a panel.
+ */
+const markdownSample = [
+  "# Report",
+  "",
+  "A paragraph with **bold**, `inline code` and a [link](https://fleetyards.net).",
+  "Continued on the next line of the same paragraph.",
+  "",
+  "## Findings",
+  "",
+  "- First item",
+  "- Second item with `code`",
+  "- Third item",
+  "",
+  "### Deeper",
+  "",
+  "Headings shift two levels down, so a document heading never competes with the",
+  "page's own.",
+].join("\n");
+
+// The escaping is unit-tested; this is here to show that the result is legible
+// rather than a wall of entities.
+const markdownHostile = [
+  "# Passed through as text",
+  "",
+  // The escaped slash below is load-bearing: writing the closing tag out in
+  // full would end this SFC's script block.
+  "<script>alert(1)<\/script>",
+  "",
+  '<img src="x" onerror="alert(1)">',
+  "",
+  "A [javascript link](javascript:alert(1)) stays text, and so does a",
+  "[data one](data:text/html,<h1>x</h1>).",
+  "",
+  '- An entity: &amp; and a quote: "quoted"',
+  "- **Unbalanced bold and `unclosed code",
+].join("\n");
+
+const markdownOverflow = [
+  "## Nothing to wrap on",
+  "",
+  "Reticulating-splines-Aegis-Dynamics-Idris-P-frigate-hangar-bay-capital-ship-identifier-0000000000",
+  "",
+  "`a-single-code-span-with-no-spaces-in-it-at-all-0000000000000000000000000000`",
+].join("\n");
 
 const gridRecords = [
   { id: "1", name: "Galaxy", manufacturer: "RSI" },
@@ -314,4 +366,70 @@ const gridRecords = [
       </Panel>
     </template>
   </BaseGrid>
+
+  <Heading :level="HeadingLevelEnum.H2">Markdown</Heading>
+  <p>
+    The small subset our generated report bodies use. Headings shift two levels
+    down, so a document's own <code>#</code> cannot compete with the page.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <Panel>
+        <PanelBody>
+          <Markdown :source="markdownSample" />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-lg-6">
+      <Panel>
+        <PanelBody>
+          <Markdown :source="markdownHostile" />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+  <p class="text-muted">
+    Right: everything outside the subset is escaped and shown as text, and a
+    link that is not http or same-origin never becomes an href. Proven in
+    <code>Markdown/index.test.ts</code>; here to check the result stays
+    readable.
+  </p>
+
+  <Heading :level="HeadingLevelEnum.H2">Markdown | Nothing to wrap on</Heading>
+  <p>
+    A long unbroken string has no break opportunity, so this is where a
+    paragraph bursts its column if the styles let it.
+  </p>
+  <div class="row">
+    <!--
+      col-6 and col-3 rather than col-lg-*: this project's `lg` starts at 1500px,
+      so a col-lg-3 is full width on an ordinary laptop and would show nothing.
+    -->
+    <div class="col-6">
+      <Panel>
+        <PanelBody>
+          <Markdown :source="markdownOverflow" />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-3">
+      <Panel>
+        <PanelBody>
+          <Markdown :source="markdownOverflow" />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Markdown | Empty</Heading>
+  <p>An empty source renders nothing at all, not an empty box.</p>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <Panel>
+        <PanelBody>
+          <Markdown />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
 </template>

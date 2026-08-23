@@ -13,6 +13,9 @@ import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
+import StatsPanel from "@/shared/components/StatsPanel/index.vue";
+import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
+import TeaserPanel2 from "@/shared/components/TeaserPanel2/index.vue";
 import { BoughtViaEnum, type Vehicle } from "@/services/fyApi";
 
 import {
@@ -45,6 +48,21 @@ const internalModel = computed(() => {
 });
 
 const { data: model } = useModelQuery("galaxy");
+
+// TeaserPanel takes a shape, not an API type, so it can be written out here.
+const teaser = computed(() => ({
+  name: "Aegis Idris P",
+  title: "Aegis Dynamics",
+  label: "Capital",
+  description:
+    "A frigate built around a hangar bay, sold as a capital ship for organisations rather than individuals.",
+  media: { storeImage: model.value?.media?.storeImage },
+}));
+
+const teaserWithoutImage = computed(() => ({
+  ...teaser.value,
+  media: undefined,
+}));
 
 const modelImage = computed(() => {
   return model.value?.media?.storeImage?.mediumUrl;
@@ -465,11 +483,84 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
       </div>
     </div>
   </div>
+
+  <Heading :level="HeadingLevelEnum.H2">StatsPanel</Heading>
+  <p>
+    A single figure with a label and an icon. <code>prefix</code> and
+    <code>suffix</code> sit tight against the number, and
+    <code>outerSpacing</code> is on unless a grid already spaces the panels.
+  </p>
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-3">
+      <StatsPanel label="Ships" icon="fa-duotone fa-rocket" :value="1284" />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <StatsPanel
+        label="Total value"
+        icon="fa-duotone fa-money-bill"
+        :value="4350"
+        prefix="$"
+      />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <StatsPanel
+        label="Cargo"
+        icon="fa-duotone fa-boxes-stacked"
+        :value="1920"
+        suffix="SCU"
+      />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <StatsPanel
+        label="Zero is a value"
+        icon="fa-duotone fa-circle-0"
+        :value="0"
+        :outer-spacing="false"
+      />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">TeaserPanel</Heading>
+  <p>
+    The image-led teaser. <code>variant="text"</code> drops the image,
+    <code>withDescription</code> off keeps the frame but not the prose, and
+    without a store image it falls back rather than collapsing.
+  </p>
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-3">
+      <TeaserPanel :item="teaser" />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <TeaserPanel :item="teaser" :with-description="false" />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <TeaserPanel :item="teaser" variant="text" />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <TeaserPanel :item="teaserWithoutImage" />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">TeaserPanel2</Heading>
+  <p>
+    The later teaser, which takes a model rather than a shape and picks its own
+    image size for mobile. The heading level is a prop, so it can sit under
+    whatever the page around it already uses.
+  </p>
+  <div class="row">
+    <div v-if="model" class="col-12 col-md-6">
+      <TeaserPanel2 :item="model" />
+    </div>
+    <div v-if="model" class="col-12 col-md-6">
+      <TeaserPanel2 :item="model" :level="HeadingLevelEnum.H4" />
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-/* Btn ships no margins - spacing is the container's job. Matches the .vt-row on
-   visual-tests/buttons.vue rather than inventing a second convention. */
+/* Btn ships no margins - spacing is the container's job. This is the wider,
+   top-aligned variant the panel grid wants; the shared .vt-row lives on
+   visual-tests.vue. */
 .panel-widths {
   display: flex;
   flex-wrap: wrap;
