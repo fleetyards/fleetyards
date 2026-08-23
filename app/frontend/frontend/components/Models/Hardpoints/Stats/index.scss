@@ -1,0 +1,34 @@
+// erkul-style inline stat strip: label/value pairs, always visible. A full-width
+// basis puts it on its own line under the identity, where it packs several pairs
+// per line - confined to the name column it managed one per line on a phone and
+// left the space beside the headline empty.
+.hardpoint-item__stats {
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px 12px;
+  margin-top: 5px;
+}
+
+.hardpoint-item__stat {
+  font-size: 11.5px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+
+  // A stat whose label and value run long (the boom's quantum fuel flow rate)
+  // asks for room rather than demanding a line: it shares one where the band is
+  // wide enough and drops to its own where it is not.
+  &--wide {
+    flex: 1 1 240px;
+  }
+}
+
+.hardpoint-item__stat-k {
+  color: $gray-light;
+}
+
+.hardpoint-item__stat-v {
+  margin-left: 4px;
+  color: lighten($text-color, 15%);
+  font-weight: 600;
+}
