@@ -1,0 +1,23 @@
+{
+  "de": {
+    "newVehicles": {
+      "title": "Schiffe zum Hangar hinzufügen",
+      "wishlistTitle": "Schiffe zur Wunschliste hinzufügen",
+      "labels": {
+        "search": "Nach Name oder Hersteller suchen",
+        "results": "%{count} Schiffe",
+        "selected": "%{count} ausgewählt"
+      },
+      "actions": {
+        "resetFilters": "Filter zurücksetzen",
+        "clearSelection": "Auswahl aufheben",
+        "increase": "Weitere %{name} hinzufügen",
+        "decrease": "Eine %{name} entfernen"
+      },
+      "badges": {
+        "inHangar": "Im Hangar",
+        "onWishlist": "Auf der Wunschliste"
+      }
+    }
+  }
+}

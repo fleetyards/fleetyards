@@ -1,0 +1,23 @@
+{
+  "es": {
+    "newVehicles": {
+      "title": "Añadir naves a tu hangar",
+      "wishlistTitle": "Añadir naves a tu lista de deseos",
+      "labels": {
+        "search": "Buscar por nombre o fabricante",
+        "results": "%{count} naves",
+        "selected": "%{count} seleccionadas"
+      },
+      "actions": {
+        "resetFilters": "Restablecer filtros",
+        "clearSelection": "Borrar la selección",
+        "increase": "Añadir otra %{name}",
+        "decrease": "Quitar una %{name}"
+      },
+      "badges": {
+        "inHangar": "En el hangar",
+        "onWishlist": "En la lista de deseos"
+      }
+    }
+  }
+}

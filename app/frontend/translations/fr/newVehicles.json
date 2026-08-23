@@ -1,0 +1,23 @@
+{
+  "fr": {
+    "newVehicles": {
+      "title": "Ajouter des vaisseaux à votre hangar",
+      "wishlistTitle": "Ajouter des vaisseaux à votre liste de souhaits",
+      "labels": {
+        "search": "Rechercher par nom ou constructeur",
+        "results": "%{count} vaisseaux",
+        "selected": "%{count} sélectionnés"
+      },
+      "actions": {
+        "resetFilters": "Réinitialiser les filtres",
+        "clearSelection": "Effacer la sélection",
+        "increase": "Ajouter un autre %{name}",
+        "decrease": "Retirer un %{name}"
+      },
+      "badges": {
+        "inHangar": "Dans le hangar",
+        "onWishlist": "Dans la liste de souhaits"
+      }
+    }
+  }
+}
