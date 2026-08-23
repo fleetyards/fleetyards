@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.1.0](https://github.com/fleetyards/fleetyards/compare/v7.0.3...v7.1.0) (2026-08-23)
+
+
+### Features
+
+* **features:** list the flags granted to a user or fleet, and lock their switches ([#4473](https://github.com/fleetyards/fleetyards/issues/4473)) ([92d29c7](https://github.com/fleetyards/fleetyards/commit/92d29c7af03274a1ac28f7eaa5058b6545809325))
+* **hangar:** redesign the add-ships picker as a filterable card grid ([#4476](https://github.com/fleetyards/fleetyards/issues/4476)) ([630d8ab](https://github.com/fleetyards/fleetyards/commit/630d8ab59b5bcca4495dd93b04fddfc2f01d9b0a))
+
+
+### Bug Fixes
+
+* **admin:** bottom-align the add-actor row ([84ec5ac](https://github.com/fleetyards/fleetyards/commit/84ec5ac6667b1eaa3061b85221ac80101fc6d376))
+* **compare:** guard the models list against a payload without items ([7f99dc6](https://github.com/fleetyards/fleetyards/commit/7f99dc6a078f8fccfbd67d487cec02ecb1237ade))
+* **hardpoints:** repair the metrics and hardpoint rows on mobile ([#4478](https://github.com/fleetyards/fleetyards/issues/4478)) ([0fc7426](https://github.com/fleetyards/fleetyards/commit/0fc74261aa889271b7233e199c78600aa384fffb))
+* **manufacturers:** make the slug unique in the database ([#4433](https://github.com/fleetyards/fleetyards/issues/4433)) ([7906a8e](https://github.com/fleetyards/fleetyards/commit/7906a8ea68aa1bbebf2e5256ee9cb9eac10cd75f))
+* **scdata:** load catalogues added after the current build was imported ([#4477](https://github.com/fleetyards/fleetyards/issues/4477)) ([84dde95](https://github.com/fleetyards/fleetyards/commit/84dde955555dbe9fd69b362e85bf99280cc7e928))
+* **tasks:** drop the ORDER BY that blocks cursor iteration ([e7b179a](https://github.com/fleetyards/fleetyards/commit/e7b179a1a984114d1dcf6d4e7dd1858f48a30329))
+
+
+### Refactorings
+
+* **features:** hand self_service to the admin UI alone ([#4474](https://github.com/fleetyards/fleetyards/issues/4474)) ([3b5ceac](https://github.com/fleetyards/fleetyards/commit/3b5ceac515db408cfa287e533a66bfcef6a281db))
+
+
+### Chores
+
+* **sc_data:** drop the icon paths the images replaced ([#4414](https://github.com/fleetyards/fleetyards/issues/4414)) ([1e58f26](https://github.com/fleetyards/fleetyards/commit/1e58f26d77f2ba387f1cd009e01ba7bfb19c6cd9))
+
 ## [7.0.3](https://github.com/fleetyards/fleetyards/compare/v7.0.2...v7.0.3) (2026-08-22)
 
 
