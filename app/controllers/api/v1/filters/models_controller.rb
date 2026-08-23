@@ -55,16 +55,39 @@ module Api
           normalize_sort_params(model_query_params)
           model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
-          @q = Model.visible.active.ransack(model_query_params)
+          scope = Model.visible.active.includes(:manufacturer)
+          scope = scope.where(id: current_resource_owner.models.select(:id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
+
+          @q = scope.ransack(model_query_params)
 
           @models = result_with_pagination(@q.result, per_page(Model))
+
+          @owned_model_ids, @wanted_model_ids = hangar_model_ids(@models)
+        end
+
+        # Which of the models on this page the current user already has a vehicle
+        # for, split by wanted, so the option rows can be marked without asking
+        # per row - Model#in_hangar is one query each.
+        private def hangar_model_ids(models)
+          return [[], []] if current_resource_owner.blank?
+
+          pairs = current_resource_owner.vehicles
+            .where(model_id: models.map(&:id))
+            .pluck(:model_id, :wanted)
+
+          [
+            pairs.reject(&:second).map(&:first).uniq,
+            pairs.select(&:second).map(&:first).uniq
+          ]
         end
 
         private def model_query_params
           @model_query_params ||= params.permit(
             q: [
-              :name_cont, :name_eq, :slug_eq, :s, :sorts,
-              name_in: [], slug_in: [], id_in: []
+              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :s, :sorts,
+              name_in: [], slug_in: [], id_in: [], id_not_in: [],
+              manufacturer_in: [], classification_in: [], focus_in: [],
+              size_in: [], production_status_in: []
             ]
           )[:q].presence || {}
         end

@@ -18875,6 +18875,38 @@ components:
           type: string
         slug:
           type: string
+        manufacturer:
+          type: object
+          properties:
+            name:
+              type:
+              - string
+              - 'null'
+            slug:
+              type:
+              - string
+              - 'null'
+            code:
+              type:
+              - string
+              - 'null'
+          additionalProperties: false
+          required:
+          - name
+          - slug
+          - code
+        classification:
+          type:
+          - string
+          - 'null'
+        classificationLabel:
+          type:
+          - string
+          - 'null'
+        inHangar:
+          type: boolean
+        onWishlist:
+          type: boolean
         media:
           type: object
           properties:
@@ -18886,6 +18918,11 @@ components:
       - id
       - name
       - slug
+      - manufacturer
+      - classification
+      - classificationLabel
+      - inHangar
+      - onWishlist
       - media
       title: ModelOption
     ModelOptions:
