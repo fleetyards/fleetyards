@@ -105,6 +105,13 @@ const html = computed(() => {
 
 <style lang="scss" scoped>
 .markdown {
+  /*
+   * Report bodies carry generated identifiers - slugs, ids, urls - with no space
+   * to break on, and this renders inside a narrow admin panel. `anywhere` rather
+   * than `break-all`, so ordinary prose still breaks between words.
+   */
+  overflow-wrap: anywhere;
+
   :deep(h3),
   :deep(h4),
   :deep(h5),
