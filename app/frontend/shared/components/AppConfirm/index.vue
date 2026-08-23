@@ -9,6 +9,11 @@ import { AppConfirmOptions } from "@/shared/components/AppConfirm/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
+import {
+  BtnTonesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import { afterNextPaint } from "@/shared/utils/Transitions";
 
 const text = ref<string>();
@@ -16,6 +21,18 @@ const confirmText = ref<string>();
 const cancelText = ref<string>();
 const onConfirm = ref<() => void | Promise<unknown>>();
 const onClose = ref<() => void | Promise<unknown>>();
+
+// A confirm always interrupts, so it always carries an accent. `highlight` says
+// "this wants your attention"; a caller destroying something passes `error`.
+const tone = ref<`${PanelTonesEnum}`>(PanelTonesEnum.HIGHLIGHT);
+
+const confirmButtonTone = computed(() =>
+  tone.value === PanelTonesEnum.ERROR
+    ? BtnTonesEnum.DANGER
+    : BtnTonesEnum.NEUTRAL,
+);
+
+const confirmRef = ref<{ $el?: HTMLElement } | null>(null);
 
 const visible = ref(false);
 
@@ -29,6 +46,7 @@ const show = (options: AppConfirmOptions) => {
   cancelText.value = options.cancelText || "Cancel";
   onConfirm.value = options.onConfirm;
   onClose.value = options.onClose;
+  tone.value = options.tone || PanelTonesEnum.HIGHLIGHT;
 
   visible.value = true;
 
@@ -37,6 +55,10 @@ const show = (options: AppConfirmOptions) => {
   // this snap into place.
   afterNextPaint(() => {
     entered.value = true;
+
+    // Focus the default action, so Enter is handled natively by the button
+    // rather than by a window listener racing it.
+    confirmRef.value?.$el?.focus();
   });
 };
 
@@ -52,9 +74,12 @@ const comlink = useComlink();
 const handleKeyDown = (event: KeyboardEvent) => {
   if (!visible.value) return;
 
-  if (event.key === "Enter") {
-    handleConfirm().catch(console.error);
-  }
+  /*
+   * Enter is deliberately absent: the confirming button holds focus and the
+   * browser already activates it. Handling it here as well meant Enter fired the
+   * focused button *and* this handler - and with autofocus previously on Cancel,
+   * one keypress ran both outcomes.
+   */
   if (event.key === "Escape") {
     handleCancel().catch(console.error);
   }
@@ -95,7 +120,7 @@ const handleCancel = async () => {
     @click.self="handleCancel"
   >
     <div class="app-confirm__dialog">
-      <Panel :outer-spacing="false">
+      <Panel :tone="tone" :outer-spacing="false">
         <PanelBody>
           <!-- eslint-disable-next-line vue/no-v-html -->
           <div class="app-confirm__text" v-html="text" />
@@ -104,12 +129,21 @@ const handleCancel = async () => {
       <!-- Outside the panel, like the modal footer: the actions belong to the
            dialog, not to the surface holding the question. -->
       <div class="app-confirm__buttons" data-test="confirm-buttons">
-        <Btn data-test="confirm-cancel" autofocus @click="handleCancel">{{
-          cancelText
-        }}</Btn>
-        <Btn data-test="confirm-ok" @click="handleConfirm">{{
-          confirmText
-        }}</Btn>
+        <Btn
+          :variant="BtnVariantsEnum.GHOST"
+          data-test="confirm-cancel"
+          @click="handleCancel"
+        >
+          {{ cancelText }}
+        </Btn>
+        <Btn
+          ref="confirmRef"
+          :tone="confirmButtonTone"
+          data-test="confirm-ok"
+          @click="handleConfirm"
+        >
+          {{ confirmText }}
+        </Btn>
       </div>
     </div>
   </div>

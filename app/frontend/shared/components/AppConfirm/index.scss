@@ -1,8 +1,13 @@
 /*
- * The dialog follows the app modal: a dimmed scrim that fades, a Panel holding
- * the question, and the actions outside it. It previously had no scrim at all
- * and animated the full-screen container with `scaleY(0.01) translate(30px)`,
- * which is why it appeared to jump rather than arrive.
+ * The dialog was a copy of a toast - same 325px card, same shadow, and the same
+ * `scaleY(0.01) translate(30px, 0)` entrance, which is written for something
+ * arriving in the top-right corner rather than a centred overlay. That is why it
+ * appeared to jump.
+ *
+ * It keeps the toasts' idea - a neutral surface with an accent that says what
+ * the message means - but expressed the way the app does it now: the accent is
+ * the panel's end-caps rather than a border on one side. Actions sit outside the
+ * panel, as they do in the modal footer.
  */
 .app-confirm {
   position: fixed;
@@ -14,6 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
   overflow-y: auto;
   background-color: rgba(black, 0.7);
   transition: opacity $transition-base-speed ease-in-out;
@@ -22,13 +28,15 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    // Between the toast's 325px and the modal's 600px: a question needs more
+    // room than a notification and less than a form.
     width: 420px;
-    max-width: 90vw;
+    max-width: 100%;
     transition: transform $transition-base-speed ease-in-out;
   }
 
   &__text {
-    // Questions carry names and ids with nothing to break on.
+    // Questions name things - models, groups, ids - with nothing to break on.
     overflow-wrap: anywhere;
   }
 
@@ -41,7 +49,7 @@
     padding-top: 1rem;
   }
 
-  // Start state, painted before `in` is added.
+  // Start state, painted before `in` is added. See afterNextPaint in index.vue.
   &.fade {
     opacity: 0;
 
@@ -55,6 +63,17 @@
       .app-confirm__dialog {
         transform: translate(0, 0);
       }
+    }
+  }
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .app-confirm__buttons {
+    // Thumb-reachable and full width, like the toasts go full width here.
+    justify-content: stretch;
+
+    :deep(.btn) {
+      flex: 1;
     }
   }
 }
