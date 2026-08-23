@@ -27,6 +27,7 @@ module Loaders
       creator.expects(:run).returns(true)
       GithubIssueCreator.expects(:new).with(
         task_type: "uex_prices_import",
+        report_key: nil,
         title: "UEX Price Sync — Unmatched Vehicles",
         body: anything
       ).returns(creator)

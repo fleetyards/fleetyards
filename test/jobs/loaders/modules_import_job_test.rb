@@ -41,6 +41,7 @@ module Loaders
       creator.expects(:run).returns(true)
       GithubIssueCreator.expects(:new).with(
         task_type: "modules_import",
+        report_key: nil,
         title: "Modules Import Results",
         body: anything
       ).returns(creator)

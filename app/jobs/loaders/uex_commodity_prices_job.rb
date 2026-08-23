@@ -20,7 +20,8 @@ module Loaders
         title: unmapped ? "UEX Commodity Sync — Unmapped Commodities" : "UEX Commodity Mapping Results",
         body: ::Uex::CommodityMapper.github_issue_body(mapping),
         actionable: unmapped,
-        record: import
+        record: import,
+        report_key: "uex_commodity_mapping"
       )
 
       AdminReport.deliver(
@@ -28,7 +29,8 @@ module Loaders
         title: unknown ? "UEX Commodity Sync — Priced Commodities We Do Not Carry" : "UEX Commodity Price Sync Results",
         body: ::Uex::CommodityPriceSyncer.github_issue_body(result),
         actionable: unknown,
-        record: import
+        record: import,
+        report_key: "uex_commodity_prices"
       )
 
       import.update!(

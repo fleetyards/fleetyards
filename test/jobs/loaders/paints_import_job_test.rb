@@ -41,6 +41,7 @@ module Loaders
       creator.expects(:run).returns(true)
       GithubIssueCreator.expects(:new).with(
         task_type: "paints_import",
+        report_key: nil,
         title: "Paints Import Results",
         body: anything
       ).returns(creator)

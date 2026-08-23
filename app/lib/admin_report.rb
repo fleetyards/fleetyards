@@ -5,17 +5,18 @@
 # report contains something a human has to act on, so clean runs stop opening
 # issues nobody can close.
 class AdminReport
-  def self.deliver(task_type:, title:, body:, actionable:, link: nil, record: nil)
-    new(task_type:, title:, body:, actionable:, link:, record:).deliver
+  def self.deliver(task_type:, title:, body:, actionable:, link: nil, record: nil, report_key: nil)
+    new(task_type:, title:, body:, actionable:, link:, record:, report_key:).deliver
   end
 
-  def initialize(task_type:, title:, body:, actionable:, link: nil, record: nil)
+  def initialize(task_type:, title:, body:, actionable:, link: nil, record: nil, report_key: nil)
     @task_type = task_type.to_sym
     @title = title
     @body = body
     @actionable = actionable
     @link = link
     @record = record
+    @report_key = report_key
   end
 
   def deliver
@@ -31,6 +32,11 @@ class AdminReport
 
     return unless @actionable
 
-    GithubIssueCreator.new(task_type: @task_type.to_s, title: @title, body: @body).run
+    GithubIssueCreator.new(
+      task_type: @task_type.to_s,
+      report_key: @report_key,
+      title: @title,
+      body: @body
+    ).run
   end
 end

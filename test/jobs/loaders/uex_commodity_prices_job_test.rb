@@ -46,6 +46,7 @@ module Loaders
       creator.expects(:run).returns(true)
       GithubIssueCreator.expects(:new).with(
         task_type: "uex_commodity_prices_import",
+        report_key: "uex_commodity_mapping",
         title: "UEX Commodity Sync — Unmapped Commodities",
         body: anything
       ).returns(creator)
@@ -62,6 +63,7 @@ module Loaders
       creator.expects(:run).returns(true)
       GithubIssueCreator.expects(:new).with(
         task_type: "uex_commodity_prices_import",
+        report_key: "uex_commodity_prices",
         title: "UEX Commodity Sync — Priced Commodities We Do Not Carry",
         body: anything
       ).returns(creator)

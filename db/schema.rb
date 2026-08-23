@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_22_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_23_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -642,8 +642,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_22_120000) do
     t.string "content_digest", null: false
     t.datetime "created_at", null: false
     t.integer "issue_number"
+    t.string "report_key", null: false
     t.string "task_type", null: false
     t.datetime "updated_at", null: false
+    t.index ["report_key"], name: "index_github_issue_logs_on_report_key"
     t.index ["task_type"], name: "index_github_issue_logs_on_task_type"
   end
 
