@@ -25,3 +25,7 @@ withDefaults(defineProps<Props>(), {
   />
   <!-- eslint-enable vue/no-v-html -->
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>
