@@ -193,27 +193,56 @@ on to decide the server is up — did not respond at all while the Rails test
 server was busy. It resolved once the server was idle. Not investigated, and not
 caused by this work, but it is a plausible source of flaky CI startup.
 
-### Phase 2 — Move the demos next to their components
+### Phase 2 — Co-locate the single-owner demos — DONE
 
-Mechanical, but two snags to handle:
+A demo now lives beside the component it documents, but only where **exactly
+one** component owns it. Three moved:
 
-1. **`unplugin-vue-components` auto-scans the tree.** `vite.config.ts` runs
-   `Components({ dirs: ["shared/components/base"], directoryAsNamespace: true,
-   dts: true })`, so a co-located `visual.vue` gets globally auto-registered and
-   lands in the generated `components.d.ts`. Needs an exclude pattern.
-2. **`shared/` is imported by frontend, admin, embed and docs.** A stray import
-   from real code would silently ship a demo file. The current single directory
-   makes that mistake visible in review; co-location trades that away for
-   locality. A lint rule forbidding imports of `visual.vue` from non-demo files
-   buys it back.
+| Was | Now |
+|---|---|
+| `pages/visual-tests/chips.vue` | `shared/components/base/Chip/visual.vue` |
+| `pages/visual-tests/notifications.vue` (+ `CtaDemo`, `ImageDemo`) | `shared/components/AppNotifications/visual.vue` (+ `visual/`) |
+| `pages/visual-tests/sync-modal.vue` (+ `StatePreview`) | `frontend/components/Hangar/SyncBtn/Result/visual.vue` (+ `visual/`) |
 
-Also check `knip.config.ts` — `project` is `app/frontend/**/*.{js,ts,vue}` with
-entry only `entrypoints/*.ts`, so co-located demos reachable solely through the
-gated branch may be reported unused.
+Route names and paths are unchanged, so nothing outside the route index moved
+with them.
 
-Composed, page-level demos (`events.vue`, `sync-modal.vue`, `metrics.vue`) have
-no single owning component. Leave those where they are — co-location applies to
-component-scoped demos, not to every page.
+**What stayed, and why.** A page covering a whole family has no single owner:
+`buttons.vue` documents Btn, BtnGroup and BtnDropdown, so filing it under `Btn/`
+would hide the other two from whoever changes them. Same for `tables.vue`
+(Table, Table2) and `panels.vue`. The composed pages — `forms.vue` at 13
+components, `lists.vue`, `states.vue`, `metrics.vue`, `events.vue`,
+`typography.vue` — have no owner at all.
+
+`support-hint.vue` is the interesting one. It renders the hint in its real
+context, inside the sync result panel, so it imports `StatePreview` from a
+`frontend/` component. Co-locating it under `shared/components/SupportHint/`
+would have made `shared/` depend on `frontend/`, so it stays where it is.
+
+**The auto-scan needed the exclusion Phase 2 predicted.** Without it,
+`Chip/visual.vue` was registered globally and written into `components.d.ts` as
+`ChipVisual` — confirmed, then fixed with `globsExclude: ["**/visual.vue",
+"**/visual/**"]` on the `Components()` plugin. Those patterns become the glob's
+`ignore` list, so no `!` prefix.
+
+**A lint rule replaces the safety the single directory used to give.**
+`no-restricted-imports` on `**/visual.vue` and `**/visual/*`, exempting the
+route index, the demos themselves and the pages under `visual-tests/`.
+Verified in both directions: it fires on a real import from `pages/index.vue`,
+and every legitimate importer stays clean.
+
+**knip needed nothing.** It follows the route index, so no demo is reported
+unused. It does exit 1 on this repo, but on pre-existing findings — 23 unused
+files, none of them mine — and it is not wired into CI.
+
+Verified: `--mode production` drops every moved demo (checked on strings unique
+to them, not on words the real components also render), `--mode test` keeps
+them, and all three routes render with no page errors. 32 specs green.
+
+Worth knowing for any future check like this: `vite.config.ts` sets
+`build.emptyOutDir: false`, so stale chunks from earlier builds stay in
+`public/vite*`. A grep there proves nothing unless the directory is removed
+first — a `chips-*.js` from before the move was still sitting in the test build.
 
 ### Phase 3 — Cover the missing components
 
@@ -299,7 +328,8 @@ branch's chart baselines are its only coverage.
       production mode and present in test mode
 - [~] Phase 1b — `Buttons.spec.ts` re-pointed at the gallery, 11/11 green CI-style;
       `Chips` and `Panels` blocked on demo-page data wiring, see Phase 4
-- [ ] Phase 2 — Co-locate component-scoped demos; handle auto-import and knip
+- [x] Phase 2 — Co-located the three single-owner demos; auto-scan exclusion and
+      lint rule in place, family and composed pages left central
 - [ ] Phase 3 — Demos for the uncovered components
 - [ ] Phase 4 — State, variant and narrow-viewport coverage
 - [ ] Phase 5 — Rebase and re-target the pixel baselines
