@@ -24,6 +24,7 @@ module Loaders
       creator.expects(:run).returns(true)
       GithubIssueCreator.expects(:new).with(
         task_type: "loaner_sync",
+        report_key: nil,
         title: "Missing Loaners",
         body: anything
       ).returns(creator)

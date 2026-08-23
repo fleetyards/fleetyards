@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 class GithubIssueCreator
-  def initialize(task_type:, title:, body:)
+  # One task type can deliver more than one report -- the commodity sync sends
+  # both its mapping and its price result under "uex_commodity_prices_import".
+  # The dedupe below only ever looks at the newest log, so the reports need
+  # separate keys or each run reads the other one's digest as "last seen" and
+  # opens a duplicate issue for both.
+  def initialize(task_type:, title:, body:, report_key: nil)
     @task_type = task_type
+    @report_key = report_key.presence || task_type
     @title = title
     @body = body
   end
@@ -12,7 +18,7 @@ class GithubIssueCreator
 
     digest = Digest::SHA256.hexdigest(@body)
 
-    last_log = GithubIssueLog.where(task_type: @task_type).order(created_at: :desc).first
+    last_log = GithubIssueLog.where(report_key: @report_key).order(created_at: :desc).first
 
     return if last_log&.content_digest == digest
 
@@ -20,6 +26,7 @@ class GithubIssueCreator
 
     GithubIssueLog.create!(
       task_type: @task_type,
+      report_key: @report_key,
       content_digest: digest,
       issue_number: issue[:number]
     )
