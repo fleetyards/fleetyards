@@ -103,7 +103,8 @@ export const routes = [
   {
     path: "sync-modal/",
     name: "visual-tests-sync-modal",
-    component: () => import("@/frontend/components/Hangar/SyncBtn/Result/visual.vue"),
+    component: () =>
+      import("@/frontend/components/Hangar/SyncBtn/Result/visual.vue"),
     meta: {
       title: "visualTests.syncModal",
       backgroundImage: "bg-7",
@@ -115,6 +116,15 @@ export const routes = [
     component: () => import("@/frontend/pages/visual-tests/support-hint.vue"),
     meta: {
       title: "visualTests.supportHint",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "charts/",
+    name: "visual-tests-charts",
+    component: () => import("@/shared/components/Chart/visual.vue"),
+    meta: {
+      title: "visualTests.charts",
       backgroundImage: "bg-7",
     },
   },

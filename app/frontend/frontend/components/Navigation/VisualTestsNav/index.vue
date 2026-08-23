@@ -85,6 +85,12 @@ const { t } = useI18n();
       prefix="11"
     />
     <NavItem
+      :to="{ name: 'visual-tests-charts' }"
+      :label="t('nav.visualTests.charts')"
+      icon="fadt fa-chart-line"
+      prefix="14"
+    />
+    <NavItem
       :to="{ name: 'visual-tests-chips' }"
       :label="t('nav.visualTests.chips')"
       icon="fadt fa-tag"
