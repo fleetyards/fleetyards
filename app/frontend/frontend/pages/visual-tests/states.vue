@@ -136,19 +136,19 @@ const updatePerPage = (value: number | string) => {
     <code>progress</code> draws the two edge bars.
   </p>
   <div class="row">
-    <div class="col-12 col-lg-3">
+    <div class="col-12 col-lg-3 vt-stack">
       <BaseText muted no-spacing>relative</BaseText>
       <Loader loading relative />
     </div>
-    <div class="col-12 col-lg-3">
+    <div class="col-12 col-lg-3 vt-stack">
       <BaseText muted no-spacing>inline</BaseText>
       <Loader loading inline />
     </div>
-    <div class="col-12 col-lg-3">
+    <div class="col-12 col-lg-3 vt-stack">
       <BaseText muted no-spacing>admin</BaseText>
       <Loader loading relative admin />
     </div>
-    <div class="col-12 col-lg-3">
+    <div class="col-12 col-lg-3 vt-stack">
       <BaseText muted no-spacing>with progress ({{ progress }}%)</BaseText>
       <Loader loading relative :progress="progress" />
       <Btn data-test="bump-progress" @click="bumpProgress"> Advance </Btn>
@@ -196,21 +196,13 @@ const updatePerPage = (value: number | string) => {
     write to the route, so clicking one navigates this page.
   </p>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 vt-stack">
       <Paginator
         :query-result-ref="paginated"
         :per-page="perPage"
         :update-per-page="updatePerPage"
       />
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
       <Paginator :query-result-ref="paginated" inline />
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12">
       <Paginator :query-result-ref="singlePage" />
     </div>
   </div>

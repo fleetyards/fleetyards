@@ -58,7 +58,7 @@ const openSyncModalPreview = () => {
     Fires the SupportHint as a persistent notification — bypasses the cooldown.
   </p>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 vt-row">
       <Btn
         v-for="context in contexts"
         :key="`trigger-${context}`"

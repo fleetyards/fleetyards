@@ -119,7 +119,7 @@ const fireVehicleAdded = () => {
   <Heading :level="HeadingLevelEnum.H2">Notification types</Heading>
   <p>Each button triggers a notification of the given type.</p>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 vt-row">
       <Btn data-test="trigger-notification-info" @click="fireInfo"> Info </Btn>
       <Btn data-test="trigger-notification-success" @click="fireSuccess">
         Success
@@ -136,7 +136,7 @@ const fireVehicleAdded = () => {
   <Heading :level="HeadingLevelEnum.H2">Variants</Heading>
   <p>Persistent notifications and long-text wrapping.</p>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 vt-row">
       <Btn
         data-test="trigger-notification-persistent"
         @click="fireInfoPersistent"
@@ -155,7 +155,7 @@ const fireVehicleAdded = () => {
     inline CTA, or the actual add-vehicle success notification.
   </p>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 vt-row">
       <Btn data-test="trigger-notification-image" @click="fireWithImage">
         With image
       </Btn>
