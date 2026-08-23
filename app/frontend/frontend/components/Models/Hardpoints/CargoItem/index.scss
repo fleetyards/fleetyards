@@ -1,12 +1,8 @@
-.hardpoint-item__cargo-container {
-  padding-right: 10px;
-  color: $gray-light;
-  white-space: nowrap;
-}
-
+// A basis rather than `width: 100%`, which made the name claim the whole row as
+// its hypothetical size and left the other two parts fighting over what was
+// left once the row could not wrap.
 .hardpoint-item__cargo-component {
-  width: 100%;
-  flex-grow: 1;
+  flex: 1 1 120px;
   margin-right: 5px;
   text-transform: capitalize;
 }

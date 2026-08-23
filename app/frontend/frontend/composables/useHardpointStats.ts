@@ -54,6 +54,9 @@ export const useHardpointStats = (
   // power-plant Category, so each plant can show its own pip share.
   const powerPlantContext = inject(powerPlantContextKey, undefined);
 
+  // `integer`, not a unit format, wherever the label already names the unit
+  // ("Sustained DPS", "HP", "Cooling Rate", "Output", "Pips"): every consumer
+  // renders `label` beside `value`, so a unit format there prints it twice.
   const stat = (
     labelKey: string,
     value: number,
@@ -247,15 +250,20 @@ export const useHardpointStats = (
         const burstTotal = burstValue * stackCount;
         if (efficiency < 1) {
           result.push(
-            stat("weapons.sustainedDps", burstTotal * efficiency, "dps", true),
+            stat(
+              "weapons.sustainedDps",
+              burstTotal * efficiency,
+              "integer",
+              true,
+            ),
           );
-          result.push(stat("weapons.burstDps", burstTotal, "dps"));
+          result.push(stat("weapons.burstDps", burstTotal, "integer"));
           result.push({
             label: t("labels.hardpoint.weapons.efficiency"),
             value: `${Math.round(efficiency * 100)}%`,
           });
         } else {
-          result.push(stat("weapons.burstDps", burstTotal, "dps", true));
+          result.push(stat("weapons.burstDps", burstTotal, "integer", true));
         }
       };
 
@@ -396,7 +404,7 @@ export const useHardpointStats = (
       const shield = typeData as ComponentShield;
 
       if (shield.maxHealth) {
-        result.push(stat("shields.hp", shield.maxHealth, "shieldHp", true));
+        result.push(stat("shields.hp", shield.maxHealth, "integer", true));
       }
       if (shield.maxHealth && shield.maxRegen) {
         result.push(
@@ -450,7 +458,7 @@ export const useHardpointStats = (
       const cooler = typeData as ComponentCooler;
       if (cooler.coolingRate) {
         result.push(
-          stat("coolers.coolingRate", cooler.coolingRate, "coolingRate", true),
+          stat("coolers.coolingRate", cooler.coolingRate, "integer", true),
         );
       }
     } else if (category === HardpointCategoryEnum.POWERPLANT) {
@@ -460,9 +468,7 @@ export const useHardpointStats = (
       // total the category header used to show).
       const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
       if (pp.powerBase) {
-        result.push(
-          stat("powerPlants.output", pp.powerBase, "powerOutput", true),
-        );
+        result.push(stat("powerPlants.output", pp.powerBase, "integer", true));
       }
       const context = toValue(powerPlantContext);
       const size = Number(hp.component?.size);
@@ -471,7 +477,7 @@ export const useHardpointStats = (
           stat(
             "powerPlants.pips",
             powerPlantPips(pp.powerBase, size, context) * stackCount,
-            "powerPips",
+            "integer",
           ),
         );
       }

@@ -567,12 +567,15 @@ const cellHeight = (span: number) =>
 // The columns wrap, so the row never needs to scroll — and an `overflow-x`
 // scroll container here also turns overflow-y into `auto`, which put scrollbars
 // on the pane as soon as a ship had enough columns to wrap.
+// Centred, not `space-between`: a row that does wrap leaves its last row short,
+// and space-between parked that remainder against the left edge as if columns
+// were missing rather than continued.
 .power-bars {
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 14px 10px;
+  gap: 14px 6px;
   min-height: 170px;
 }
 
@@ -581,12 +584,16 @@ const cellHeight = (span: number) =>
   flex-direction: column;
   align-items: center;
   flex: 1 1 0;
-  min-width: 34px;
+  // Narrow enough that the eight families a typical ship carries still fit one
+  // row in ~290px - the width of this card both on a phone and at three-up on
+  // desktop. They grow to `max-width` whenever there is more room.
+  min-width: 30px;
   max-width: 72px;
   gap: 6px;
 
   &__count {
-    font-size: 13px;
+    // Sized so "8 / 8" fits a column at its minimum width instead of wrapping.
+    font-size: 12px;
     font-variant-numeric: tabular-nums;
     color: $text-color;
     min-height: 16px;

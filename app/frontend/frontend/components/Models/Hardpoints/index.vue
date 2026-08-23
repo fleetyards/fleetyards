@@ -181,21 +181,25 @@ useMetricsMasonry(metricsGrid);
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
       <div class="hardpoints__controls">
-        <BtnGroup v-if="model.inGame" class="hardpoints__links">
-          <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
-          <Btn :href="erkulUrl" class="erkul-link w-full md:w-auto">
-            <i />
-            {{ t("labels.hardpoints.erkul") }}
-          </Btn>
-          <Btn
-            v-tooltip="t('labels.hardpoints.spviewerTitle')"
-            :href="spviewerUrl"
-            class="spviewer-link w-full md:w-auto"
-          >
-            <i />
-            {{ t("labels.hardpoints.spviewer") }}
-          </Btn>
-        </BtnGroup>
+        <template v-if="model.inGame">
+          <span class="hardpoints__links-label text-muted">
+            {{ t("labels.hardpoints.prefix") }}
+          </span>
+          <BtnGroup class="hardpoints__links">
+            <Btn :href="erkulUrl" class="erkul-link">
+              <i />
+              {{ t("labels.hardpoints.erkul") }}
+            </Btn>
+            <Btn
+              v-tooltip="t('labels.hardpoints.spviewerTitle')"
+              :href="spviewerUrl"
+              class="spviewer-link"
+            >
+              <i />
+              {{ t("labels.hardpoints.spviewer") }}
+            </Btn>
+          </BtnGroup>
+        </template>
         <BtnGroup segmented class="hardpoints__source">
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"

@@ -34,7 +34,7 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 4px 8px;
+  gap: 8px;
   width: 100%;
   margin-bottom: 6px;
   padding: 8px 11px 8px 14px;
@@ -66,4 +66,28 @@
     border-radius: 2px;
     opacity: 0.85;
   }
+}
+
+// The row content wraps, so a narrow card (a phone, or a metrics card at
+// three-up) drops the gold headline onto its own line instead of squeezing the
+// component name down to a few clipped characters. Each part declares a
+// flex-basis it would like, so wrapping is decided by the space actually
+// available rather than by a breakpoint.
+.hardpoint-item__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+
+// Count badge and row controls stay pinned to the right on the first line
+// however the content behind them wraps, so the chevron never moves.
+.hardpoint-item__rail {
+  flex: none;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
