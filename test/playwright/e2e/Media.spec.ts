@@ -32,6 +32,27 @@ test.describe("Media", () => {
     await expect(broken).toHaveAttribute("src", /store_image/);
   });
 
+  test("Avatar falls back to the icon when the image fails", async ({
+    page,
+  }) => {
+    // Not to the img's alt text, which the round frame clips - a deleted upload
+    // or a CDN miss used to show up as a cropped word.
+    const broken = page
+      .locator(".avatar", { has: page.locator("img[src*='does-not-exist']") })
+      .first();
+
+    await expect(broken).toHaveCount(0);
+    // Every avatar on the page either shows an image that loads, or the icon.
+    const stranded = await page.evaluate(
+      () =>
+        [...document.querySelectorAll<HTMLImageElement>(".avatar img")].filter(
+          (img) => img.complete && img.naturalWidth === 0,
+        ).length,
+    );
+
+    expect(stranded).toBe(0);
+  });
+
   test("ViewImage renders nothing when told to skip its fallback", async ({
     page,
   }) => {

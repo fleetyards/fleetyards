@@ -295,8 +295,8 @@ simply wrong.
 iframe exists before consent** — absent, not hidden — and it reappears only after
 the visitor agrees.
 
-**The page found two real bugs in app CSS, both in `Video`.** This is the payoff
-of putting a component somewhere it can be looked at.
+**The page found three real bugs, two in `Video` and one in `Avatar`.** This is
+the payoff of putting a component somewhere it can be looked at.
 
 First, the consent prompt's two buttons touched: `.youtube-placeholder-buttons`
 carried no rules at all and `Btn` ships no margin, so "Allow video embeds" and
@@ -314,6 +314,13 @@ padding-bottom hack, which depended on the `height: 0` the class no longer sets.
 
 Both fixed in `stylesheets/frontend/partials/media.scss`. The embed app carries
 the same dead rules but never renders `Video`, so it was left alone.
+
+Third, spotted by eye on the rendered page: **`Avatar` had no error state.** It
+falls back to an icon when there is no avatar, but a URL that no longer resolves
+left the browser rendering the img's `alt="avatar"`, which the round frame clips
+into a cropped word. A deleted upload or a CDN miss looked like a rendering
+glitch. It now falls back to the same icon, which is what its sibling `LazyImage`
+already did — the two were inconsistent.
 
 Still uncovered in `shared/components/` (20), unchanged from the audit except
 for `Chart` and the media group:

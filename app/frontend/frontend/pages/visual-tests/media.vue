@@ -84,8 +84,9 @@ const video = {
 <template>
   <Heading :level="HeadingLevelEnum.H2">Avatar | Sizes</Heading>
   <p>
-    Round by default. Without an <code>avatar</code> it falls back to an icon
-    rather than to a placeholder image.
+    Round by default. Both a missing <code>avatar</code> and one whose URL no
+    longer resolves fall back to the icon — the same thing to whoever is
+    looking, and without the second case the frame clipped the img's alt text.
   </p>
   <div class="row">
     <div class="col-12 vt-row">
@@ -104,7 +105,7 @@ const video = {
   </div>
   <p class="text-muted">
     Left to right: three sizes, square, no image, a different fallback icon, a
-    src that resolves to nothing, and transparent.
+    src that resolves to nothing (icon again), and transparent.
   </p>
 
   <Heading :level="HeadingLevelEnum.H2">Avatar | Editable</Heading>
