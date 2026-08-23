@@ -7,6 +7,9 @@ export default {
 <script lang="ts" setup>
 import { AppConfirmOptions } from "@/shared/components/AppConfirm/types";
 import { useComlink } from "@/shared/composables/useComlink";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { afterNextPaint } from "@/shared/utils/Transitions";
 
 const text = ref<string>();
 const confirmText = ref<string>();
@@ -16,6 +19,10 @@ const onClose = ref<() => void | Promise<unknown>>();
 
 const visible = ref(false);
 
+// Mounted, then moved: `visible` puts the dialog in the DOM at its start
+// position, `entered` animates it in.
+const entered = ref(false);
+
 const show = (options: AppConfirmOptions) => {
   text.value = options.text || "Are you sure?";
   confirmText.value = options.confirmText || "Confirm";
@@ -24,9 +31,17 @@ const show = (options: AppConfirmOptions) => {
   onClose.value = options.onClose;
 
   visible.value = true;
+
+  // Same two-step the app modal uses: mount at the start position, let it paint,
+  // then add `in` so the dialog travels. Setting both in one frame is what made
+  // this snap into place.
+  afterNextPaint(() => {
+    entered.value = true;
+  });
 };
 
 const hide = () => {
+  entered.value = false;
   visible.value = false;
   onConfirm.value = undefined;
   onClose.value = undefined;
@@ -72,22 +87,32 @@ const handleCancel = async () => {
 </script>
 
 <template>
-  <Transition name="app-confirm-fade">
-    <div v-if="visible" class="app-confirm" data-test="confirm-dialog">
-      <div class="app-confirm__inner">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div class="app-confirm__text" v-html="text" />
-        <div class="app-confirm__buttons" data-test="confirm-buttons">
-          <Btn data-test="confirm-cancel" autofocus @click="handleCancel">{{
-            cancelText
-          }}</Btn>
-          <Btn data-test="confirm-ok" @click="handleConfirm">{{
-            confirmText
-          }}</Btn>
-        </div>
+  <div
+    v-if="visible"
+    class="app-confirm fade"
+    :class="{ in: entered }"
+    data-test="confirm-dialog"
+    @click.self="handleCancel"
+  >
+    <div class="app-confirm__dialog">
+      <Panel :outer-spacing="false">
+        <PanelBody>
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <div class="app-confirm__text" v-html="text" />
+        </PanelBody>
+      </Panel>
+      <!-- Outside the panel, like the modal footer: the actions belong to the
+           dialog, not to the surface holding the question. -->
+      <div class="app-confirm__buttons" data-test="confirm-buttons">
+        <Btn data-test="confirm-cancel" autofocus @click="handleCancel">{{
+          cancelText
+        }}</Btn>
+        <Btn data-test="confirm-ok" @click="handleConfirm">{{
+          confirmText
+        }}</Btn>
       </div>
     </div>
-  </Transition>
+  </div>
 </template>
 
 <style lang="scss" scoped>
