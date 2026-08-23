@@ -8,7 +8,104 @@ export default {
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
+/*
+ * Fourteen flat entries had outgrown a single list, so the pages are grouped by
+ * what they are for: the base visual language, how data is displayed, and how
+ * the app reports back. Forms and Events stay on their own - a group of one is
+ * just an entry wearing a folder.
+ *
+ * The grouping lives here and not in the route paths. Route names and URLs stay
+ * flat, so the e2e specs keep working and there is one place to regroup rather
+ * than two that can drift apart.
+ */
+const GROUPS = [
+  {
+    key: "foundations",
+    icon: "fadt fa-shapes",
+    members: ["typography", "panels", "buttons", "chips"],
+  },
+  {
+    key: "data",
+    icon: "fadt fa-chart-simple",
+    members: ["tables", "lists", "metrics", "charts"],
+  },
+  {
+    key: "feedback",
+    icon: "fadt fa-comment-dots",
+    members: ["states", "notifications", "support-hint", "sync-modal"],
+  },
+];
+
+const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
+  typography: {
+    route: "visual-tests-typography",
+    label: "typography",
+    icon: "fadt fa-text-size",
+  },
+  panels: {
+    route: "visual-tests-panels",
+    label: "panels",
+    icon: "fadt fa-columns-3",
+  },
+  buttons: {
+    route: "visual-tests-buttons",
+    label: "buttons",
+    icon: "fadt fa-toggle-on",
+  },
+  chips: { route: "visual-tests-chips", label: "chips", icon: "fadt fa-tag" },
+  tables: {
+    route: "visual-tests-tables",
+    label: "tables",
+    icon: "fadt fa-table",
+  },
+  lists: {
+    route: "visual-tests-lists",
+    label: "lists",
+    icon: "fadt fa-list-ul",
+  },
+  metrics: {
+    route: "visual-tests-metrics",
+    label: "metrics",
+    icon: "fadt fa-gauge-high",
+  },
+  charts: {
+    route: "visual-tests-charts",
+    label: "charts",
+    icon: "fadt fa-chart-line",
+  },
+  states: {
+    route: "visual-tests-states",
+    label: "states",
+    icon: "fadt fa-spinner",
+  },
+  notifications: {
+    route: "visual-tests-notifications",
+    label: "notifications",
+    icon: "fadt fa-bell",
+  },
+  "support-hint": {
+    route: "visual-tests-support-hint",
+    label: "supportHint",
+    icon: "fadt fa-heart",
+  },
+  "sync-modal": {
+    route: "visual-tests-sync-modal",
+    label: "syncModal",
+    icon: "fadt fa-arrows-rotate",
+  },
+};
+
 const { t } = useI18n();
+
+const route = useRoute();
+
+const groupItems = (members: string[]) =>
+  members.map((member) => ITEMS[member]);
+
+// A group stays highlighted while one of its pages is open, which is what tells
+// you where you are once the submenu has closed again.
+const groupActive = (members: string[]) =>
+  groupItems(members).some((item) => item.route === String(route.name));
 </script>
 
 <template>
@@ -18,24 +115,27 @@ const { t } = useI18n();
       :label="t('nav.back')"
       icon="fa-light fa-chevron-left"
     />
+
     <NavItem
-      :to="{ name: 'visual-tests-panels' }"
-      :label="t('nav.visualTests.panels')"
-      icon="fadt fa-columns-3"
-      prefix="01"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-buttons' }"
-      :label="t('nav.visualTests.buttons')"
-      icon="fadt fa-toggle-on"
-      prefix="02"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-typography' }"
-      :label="t('nav.visualTests.typography')"
-      icon="fadt fa-text-size"
-      prefix="03"
-    />
+      v-for="(group, index) in GROUPS"
+      :key="group.key"
+      :label="t(`nav.visualTests.groups.${group.key}`)"
+      :menu-key="`visual-tests-${group.key}-menu`"
+      :submenu-active="groupActive(group.members)"
+      :icon="group.icon"
+      :prefix="String(index + 1).padStart(2, '0')"
+    >
+      <template #submenu>
+        <NavItem
+          v-for="item in groupItems(group.members)"
+          :key="item.route"
+          :to="{ name: item.route }"
+          :label="t(`nav.visualTests.${item.label}`)"
+          :icon="item.icon"
+        />
+      </template>
+    </NavItem>
+
     <NavItem
       :to="{ name: 'visual-tests-forms' }"
       :label="t('nav.visualTests.forms')"
@@ -43,64 +143,10 @@ const { t } = useI18n();
       prefix="04"
     />
     <NavItem
-      :to="{ name: 'visual-tests-tables' }"
-      :label="t('nav.visualTests.tables')"
-      icon="fadt fa-table"
-      prefix="05"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-lists' }"
-      :label="t('nav.visualTests.lists')"
-      icon="fadt fa-list-ul"
-      prefix="06"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-metrics' }"
-      :label="t('nav.visualTests.metrics')"
-      icon="fadt fa-gauge-high"
-      prefix="07"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-states' }"
-      :label="t('nav.visualTests.states')"
-      icon="fadt fa-spinner"
-      prefix="08"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-notifications' }"
-      :label="t('nav.visualTests.notifications')"
-      icon="fadt fa-bell"
-      prefix="09"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-sync-modal' }"
-      :label="t('nav.visualTests.syncModal')"
-      icon="fadt fa-arrows-rotate"
-      prefix="10"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-support-hint' }"
-      :label="t('nav.visualTests.supportHint')"
-      icon="fadt fa-heart"
-      prefix="11"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-charts' }"
-      :label="t('nav.visualTests.charts')"
-      icon="fadt fa-chart-line"
-      prefix="14"
-    />
-    <NavItem
-      :to="{ name: 'visual-tests-chips' }"
-      :label="t('nav.visualTests.chips')"
-      icon="fadt fa-tag"
-      prefix="12"
-    />
-    <NavItem
       :to="{ name: 'visual-tests-events' }"
       :label="t('nav.visualTests.events')"
       icon="fadt fa-calendar-day"
-      prefix="13"
+      prefix="05"
     />
   </div>
 </template>

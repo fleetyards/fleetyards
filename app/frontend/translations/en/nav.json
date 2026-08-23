@@ -123,7 +123,12 @@
         "syncModal": "Sync Modal",
         "supportHint": "Support Hint",
         "charts": "Charts",
-        "chips": "Chips"
+        "chips": "Chips",
+        "groups": {
+          "foundations": "Foundations",
+          "data": "Data",
+          "feedback": "Feedback"
+        }
       },
       "admin": {
         "index": "Admin",
