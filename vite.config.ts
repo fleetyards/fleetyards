@@ -79,6 +79,10 @@ export default defineConfig({
       ],
       // relative paths to the directory to search for components.
       dirs: ["shared/components/base"],
+      // A co-located `visual.vue` documents its neighbour; it is a route, not a
+      // component anyone may drop into a template. Without this it is registered
+      // globally and written into components.d.ts.
+      globsExclude: ["**/visual.vue", "**/visual/**"],
     }),
     AutoImport({
       dts: true,
