@@ -22,7 +22,7 @@ const GROUPS = [
   {
     key: "foundations",
     icon: "fadt fa-shapes",
-    members: ["typography", "panels", "buttons", "chips"],
+    members: ["typography", "panels", "buttons", "chips", "media"],
   },
   {
     key: "data",
@@ -53,6 +53,11 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     icon: "fadt fa-toggle-on",
   },
   chips: { route: "visual-tests-chips", label: "chips", icon: "fadt fa-tag" },
+  media: {
+    route: "visual-tests-media",
+    label: "media",
+    icon: "fadt fa-image",
+  },
   tables: {
     route: "visual-tests-tables",
     label: "tables",

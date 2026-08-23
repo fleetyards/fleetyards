@@ -120,6 +120,15 @@ export const routes = [
     },
   },
   {
+    path: "media/",
+    name: "visual-tests-media",
+    component: () => import("@/frontend/pages/visual-tests/media.vue"),
+    meta: {
+      title: "visualTests.media",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "charts/",
     name: "visual-tests-charts",
     component: () => import("@/shared/components/Chart/visual.vue"),
