@@ -1,0 +1,23 @@
+{
+  "en": {
+    "newVehicles": {
+      "title": "Add Ships to your Hangar",
+      "wishlistTitle": "Add Ships to your Wishlist",
+      "labels": {
+        "search": "Search by name or manufacturer",
+        "results": "%{count} Ships",
+        "selected": "%{count} Selected"
+      },
+      "actions": {
+        "resetFilters": "Reset Filters",
+        "clearSelection": "Clear Selection",
+        "increase": "Add another %{name}",
+        "decrease": "Remove one %{name}"
+      },
+      "badges": {
+        "inHangar": "In Hangar",
+        "onWishlist": "On Wishlist"
+      }
+    }
+  }
+}

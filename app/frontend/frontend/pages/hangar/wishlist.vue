@@ -145,6 +145,7 @@ const showNewModal = () => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/NewVehiclesModal/index.vue"),
+    wide: true,
     props: {
       wanted: true,
     },
