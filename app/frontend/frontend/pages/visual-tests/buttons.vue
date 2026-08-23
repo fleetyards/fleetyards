@@ -243,11 +243,4 @@ const toggleLoading = () => {
 <style lang="scss" scoped>
 // The page is the only place that needs to space loose buttons; Btn ships no
 // margins of its own.
-.vt-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
 </style>

@@ -470,13 +470,6 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
 <style lang="scss" scoped>
 /* Btn ships no margins - spacing is the container's job. Matches the .vt-row on
    visual-tests/buttons.vue rather than inventing a second convention. */
-.vt-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-}
-
 .panel-widths {
   display: flex;
   flex-wrap: wrap;
