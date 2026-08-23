@@ -277,12 +277,49 @@ active tab round-trips through `?demotab=`. No seeded data, so no scenario.
 The real hooks are `data-test="tab-anchor-<id>"` with `has-errors` / `disabled`
 / `active` classes on `TabNavView/AnchorItems`.
 
-Still uncovered in `shared/components/` (24), unchanged from the audit except
-for `Chart`:
+**The media group is covered too** — `Avatar`, `LazyImage`, `ViewImage` and
+`Video`, on one central `media.vue` page. Four separate owners, so by the Phase 2
+rule it stays central rather than being split four ways, and it joins the
+Foundations submenu.
+
+They share one problem, which is what makes them a group: what they show when the
+image is not there. Each answers differently — a bundled placeholder, an icon, or
+nothing at all — and writing the page corrected a belief worth recording:
+**LazyImage's error fallback is the same bundled placeholder as its missing-src
+fallback**. A broken URL and a URL that was never set are therefore
+indistinguishable by eye; only the `--error` class separates them. The first
+draft of the page claimed the browser was left with a broken image, which was
+simply wrong.
+
+`Media.spec.ts` covers that, plus the one that matters beyond looks: **no YouTube
+iframe exists before consent** — absent, not hidden — and it reappears only after
+the visitor agrees.
+
+**The page found two real bugs in app CSS, both in `Video`.** This is the payoff
+of putting a component somewhere it can be looked at.
+
+First, the consent prompt's two buttons touched: `.youtube-placeholder-buttons`
+carried no rules at all and `Btn` ships no margin, so "Allow video embeds" and
+"Copy Youtube URL" read as one control. Caught by `VisualTestsSpacing.spec.ts`.
+
+Second, and worse: **the video box had no height.** The markup still carries
+Bootstrap's `embed-responsive embed-responsive-16by9` and `embed-responsive-item`
+class names, but only `.embed-responsive` survived the Bootstrap removal — with
+its cosmetics and none of its geometry, so no `position: relative` and no aspect
+ratio. Both the iframe and the consent placeholder collapsed to nothing.
+`Video` is rendered by `pages/ships/[slug]/videos.vue` and
+`components/Hangar/GuideModal`, neither of which supplies a size, so this was
+invisible in production. Restored with `aspect-ratio` rather than Bootstrap's
+padding-bottom hack, which depended on the `height: 0` the class no longer sets.
+
+Both fixed in `stylesheets/frontend/partials/media.scss`. The embed app carries
+the same dead rules but never renders `Video`, so it was left alone.
+
+Still uncovered in `shared/components/` (20), unchanged from the audit except
+for `Chart` and the media group:
 
 | Component | Note |
 |---|---|
-| `Avatar`, `LazyImage`, `ViewImage`, `Video` | Media states: loading, broken, missing |
 | `StatsPanel`, `TeaserPanel`, `TeaserPanel2` | Panel variants `panels.vue` does not reach |
 | `Markdown` | User-supplied content — the states worth pinning are the hostile ones |
 | `OffCanvas`, `AppConfirm`, `BreadCrumbs`, `TabNavView` | Navigation and overlay chrome |
@@ -295,8 +332,10 @@ for `Chart`:
 correct, not a gap.
 
 Judgement call, not a checklist to clear: decide per row and record the skips.
-The media group is the obvious next slice — four components, one shared theme
-(loading, broken, missing), and no data behind any of them.
+Next: the panel variants (`StatsPanel`, `TeaserPanel`, `TeaserPanel2`) sit
+closest to what `panels.vue` already does, so they are the cheapest real gain.
+`Markdown` is the most valuable of the rest, since the states worth pinning there
+are the hostile ones.
 
 ### Spacing and grouping — DONE, out of band
 
@@ -411,8 +450,8 @@ branch's chart baselines are its only coverage.
       `Chips` and `Panels` blocked on demo-page data wiring, see Phase 4
 - [x] Phase 2 — Co-located the three single-owner demos; auto-scan exclusion and
       lint rule in place, family and composed pages left central
-- [~] Phase 3 — Chart, FormDateTime and FormTabs covered (+ a new FormTabs spec);
-      24 shared components still uncovered, media group next
+- [~] Phase 3 — Chart, FormDateTime, FormTabs and the media group covered (+ new
+      FormTabs and Media specs); 20 shared components still uncovered
 - [x] Spacing fixed (three classes of it) and the nav grouped into submenus,
       both guarded by specs
 - [ ] Phase 4 — State, variant and narrow-viewport coverage
