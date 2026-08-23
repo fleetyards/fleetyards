@@ -22,7 +22,9 @@ test.describe("Overlays", () => {
 
     await page.getByText("Confirm", { exact: true }).click();
 
-    await expect(page.getByText("confirmed (default text)")).toBeVisible();
+    await expect(
+      page.getByTestId("fired-confirmed (default text)"),
+    ).toBeVisible();
   });
 
   test("escape cancels the confirm", async ({ page }) => {
@@ -32,17 +34,57 @@ test.describe("Overlays", () => {
 
     await page.keyboard.press("Escape");
 
-    await expect(page.getByText("cancelled (custom text)")).toBeVisible();
+    await expect(
+      page.getByTestId("fired-cancelled (custom text)"),
+    ).toBeVisible();
     await expect(page.getByText("Delete it")).toHaveCount(0);
   });
 
-  test("enter confirms the confirm", async ({ page }) => {
+  test("the accent says what the decision means", async ({ page }) => {
+    // The toasts signal their kind with a coloured edge; here the panel's tone
+    // carries it, and a destructive confirm also tones its button.
+    await page.getByTestId("confirm-destructive").click();
+
+    const panel = page.locator(".app-confirm .panel");
+    await expect(panel).toHaveClass(/panel--error/);
+    await expect(page.getByTestId("confirm-ok")).toHaveClass(
+      /btn--tone-danger/,
+    );
+
+    await page.keyboard.press("Escape");
+
+    // The default is an accent too, since a confirm always interrupts.
     await page.getByTestId("confirm-default").click();
-    await expect(page.getByText("Confirm", { exact: true })).toBeVisible();
+    await expect(panel).toHaveClass(/panel--highlight/);
+  });
+
+  test("enter runs the handler once, not twice", async ({ page }) => {
+    /*
+     * autofocus used to sit on Cancel while a window listener confirmed on
+     * Enter, so one keypress ran both outcomes. The confirming button holds
+     * focus now and Enter is left to the browser.
+     */
+    await page.getByTestId("confirm-default").click();
+    await expect(page.getByTestId("confirm-ok")).toBeFocused();
 
     await page.keyboard.press("Enter");
 
-    await expect(page.getByText("confirmed (default text)")).toBeVisible();
+    await expect(
+      page.getByTestId("fired-confirmed (default text)"),
+    ).toBeVisible();
+    // The point of the test: the cancel path must not also have run.
+    await expect(page.getByTestId("fired-cancelled")).toHaveCount(0);
+    await expect(page.getByTestId("confirm-dialog")).toHaveCount(0);
+  });
+
+  test("the backdrop cancels", async ({ page }) => {
+    await page.getByTestId("confirm-default").click();
+
+    // Clicking the scrim itself, not the dialog on top of it.
+    await page.locator(".app-confirm").click({ position: { x: 5, y: 5 } });
+
+    await expect(page.getByTestId("fired-cancelled")).toBeVisible();
+    await expect(page.getByTestId("confirm-dialog")).toHaveCount(0);
   });
 
   test("the off-canvas opens on either side and closes", async ({ page }) => {

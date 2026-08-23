@@ -15,6 +15,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useComlink } from "@/shared/composables/useComlink";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
 
 /*
@@ -28,8 +29,14 @@ const comlink = useComlink();
 
 const log = ref<string[]>([]);
 
+// One list item per outcome, each with its own hook: a joined string cannot be
+// asserted against precisely, which quietly made "cancel did not run" trivially
+// true in a test.
 const record = (entry: string) => {
-  log.value = [entry, ...log.value].slice(0, 6);
+  log.value = [entry, ...log.value.filter((seen) => seen !== entry)].slice(
+    0,
+    6,
+  );
 };
 
 const confirmDefault = () => {
@@ -60,6 +67,24 @@ const confirmSlow = () => {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       record("slow confirm finished");
     },
+  });
+};
+
+const confirmDestructive = () => {
+  comlink.emit("show-confirm", {
+    text: "Delete all 284 ships from your hangar?",
+    confirmText: "Delete everything",
+    tone: PanelTonesEnum.ERROR,
+    onConfirm: () => record("confirmed (error tone)"),
+  });
+};
+
+const confirmNeutral = () => {
+  comlink.emit("show-confirm", {
+    text: "Reload the ship matrix? This runs for a while.",
+    confirmText: "Reload",
+    tone: PanelTonesEnum.NEUTRAL,
+    onConfirm: () => record("confirmed (neutral)"),
   });
 };
 
@@ -107,8 +132,15 @@ const activeAnchor = ref("clean");
   <Heading :level="HeadingLevelEnum.H2">AppConfirm</Heading>
   <p>
     Mounted once in <code>App.vue</code> and shown by a
-    <code>show-confirm</code> event, so there is nothing to render here. Enter
-    confirms and Escape cancels, which is the part no screenshot shows.
+    <code>show-confirm</code> event, so there is nothing to render here. The
+    confirming button holds focus, so Enter activates it natively; Escape and
+    the backdrop cancel.
+  </p>
+  <p class="text-muted">
+    The accent is the panel's end-caps, which is how this design carries what a
+    toast carries in its coloured edge. <code>highlight</code> is the default —
+    a confirm always interrupts — and a caller destroying something passes
+    <code>error</code>, which also turns the confirming button danger-toned.
   </p>
   <div class="row">
     <div class="col-12 vt-row">
@@ -116,13 +148,23 @@ const activeAnchor = ref("clean");
       <Btn data-test="confirm-custom" @click="confirmCustom">Custom texts</Btn>
       <Btn data-test="confirm-slow" @click="confirmSlow">Async handler</Btn>
       <Btn data-test="confirm-long" @click="confirmLong">Long question</Btn>
+      <Btn data-test="confirm-destructive" @click="confirmDestructive">
+        Error tone
+      </Btn>
+      <Btn data-test="confirm-neutral" @click="confirmNeutral">
+        Neutral tone
+      </Btn>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <BaseText muted no-spacing>
-        Handlers fired: {{ log.length ? log.join(" · ") : "—" }}
-      </BaseText>
+      <BaseText muted no-spacing>Handlers fired:</BaseText>
+      <ul data-test="confirm-log">
+        <li v-for="entry in log" :key="entry" :data-test="`fired-${entry}`">
+          {{ entry }}
+        </li>
+        <li v-if="!log.length">—</li>
+      </ul>
     </div>
   </div>
 
