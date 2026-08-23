@@ -31,6 +31,23 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+/*
+ * A missing avatar and one whose URL no longer resolves are the same thing to
+ * whoever is looking, so both fall back to the icon. Without this the browser
+ * renders the img's alt text instead, and the round frame clips it - a deleted
+ * upload or a CDN miss showed up as a cropped word.
+ */
+const loadFailed = ref(false);
+
+watch(
+  () => props.avatar,
+  () => {
+    loadFailed.value = false;
+  },
+);
+
+const showImage = computed(() => !!props.avatar && !loadFailed.value);
+
 const emit = defineEmits(["upload", "destroy"]);
 
 const emitClick = () => {
@@ -52,7 +69,12 @@ const emitClick = () => {
       'avatar-round': round,
     }"
   >
-    <img v-if="avatar" :src="avatar" alt="avatar" />
+    <img
+      v-if="showImage"
+      :src="avatar"
+      alt="avatar"
+      @error="loadFailed = true"
+    />
     <div v-else class="no-avatar">
       <i :class="icon" />
     </div>
