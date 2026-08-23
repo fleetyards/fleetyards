@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require_relative "../../support/legacy_manufacturer_duplicates"
 
 module Manufacturers
   class DeduplicatorTest < ActiveSupport::TestCase
+    include LegacyManufacturerDuplicates
+
     # The service looks for collisions across the whole table, so anything left
     # behind by another run would decide the winners instead of the fixtures.
+    #
+    # The duplicates it cleans up are ones the database now refuses to hold, so
+    # the index comes off for the duration of each test.
     setup do
       Manufacturer.delete_all
+      allow_duplicate_manufacturer_slugs
     end
 
     test "#call renames a record the export mislabelled" do
