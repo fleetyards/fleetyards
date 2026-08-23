@@ -327,13 +327,39 @@ into a cropped word. A deleted upload or a CDN miss looked like a rendering
 glitch. It now falls back to the same icon, which is what its sibling `LazyImage`
 already did — the two were inconsistent.
 
-Still uncovered in `shared/components/` (20), unchanged from the audit except
-for `Chart` and the media group:
+**The panel variants and `Markdown` are covered.** `StatsPanel`, `TeaserPanel`
+and `TeaserPanel2` went onto `panels.vue`, which already had the surrounding
+material and a `useModel("galaxy")` query `TeaserPanel2` could be handed
+directly. `TeaserPanel` takes a plain shape rather than an API type, so its
+fixture is written out in the page.
+
+`Markdown` went onto `typography.vue` — text rendering compared beside the other
+text components. Its escaping and its link guard are already covered by
+`Markdown/index.test.ts`, so the page shows what is left: whether escaped markup
+reads as text rather than a wall of entities, and whether a generated identifier
+with nothing to break on bursts its column.
+
+It did. **`Markdown` had no wrapping rule**, and it renders notification bodies
+in `admin/pages/notifications.vue` — generated reports full of slugs and ids, in
+a narrow panel. Fixed with `overflow-wrap: anywhere` (not `break-all`, so prose
+still breaks between words).
+
+Two things worth not rediscovering:
+
+- **A literal `</script>` inside an SFC ends the script block.** The hostile
+  markdown sample needs `<\/script>`, and the *comment* explaining it must not
+  spell the tag out either — writing it there broke the file a second time.
+- **This project's grid breakpoints are much larger than Bootstrap's**: `md` is
+  992px and `lg` is **1500px**. A `col-lg-3` is full width on an ordinary laptop,
+  so measuring one and finding it container-width is correct, not a broken grid —
+  a near-miss here. Demos that need a genuinely narrow column use an
+  unconditional `col-6` / `col-3`.
+
+Still uncovered in `shared/components/` (16), unchanged from the audit except for
+`Chart`, the media group, the panel variants and `Markdown`:
 
 | Component | Note |
 |---|---|
-| `StatsPanel`, `TeaserPanel`, `TeaserPanel2` | Panel variants `panels.vue` does not reach |
-| `Markdown` | User-supplied content — the states worth pinning are the hostile ones |
 | `OffCanvas`, `AppConfirm`, `BreadCrumbs`, `TabNavView` | Navigation and overlay chrome |
 | `SocialLogins`, `OauthBtn`, `RsiProfileLink`, `CommunityLogo` | Third-party branding, easy to break unnoticed |
 | `HoloViewer`, `LoadoutMarker` | 3D/canvas — may not suit a static demo |
@@ -344,10 +370,10 @@ for `Chart` and the media group:
 correct, not a gap.
 
 Judgement call, not a checklist to clear: decide per row and record the skips.
-Next: the panel variants (`StatsPanel`, `TeaserPanel`, `TeaserPanel2`) sit
-closest to what `panels.vue` already does, so they are the cheapest real gain.
-`Markdown` is the most valuable of the rest, since the states worth pinning there
-are the hostile ones.
+Next: the navigation and overlay chrome (`OffCanvas`, `AppConfirm`,
+`BreadCrumbs`, `TabNavView`) is the largest remaining group, and `AppConfirm` is
+the one most likely to be hiding something, since a confirm dialog is only ever
+seen mid-action.
 
 ### Spacing and grouping — DONE, out of band
 
@@ -462,8 +488,8 @@ branch's chart baselines are its only coverage.
       `Chips` and `Panels` blocked on demo-page data wiring, see Phase 4
 - [x] Phase 2 — Co-located the three single-owner demos; auto-scan exclusion and
       lint rule in place, family and composed pages left central
-- [~] Phase 3 — Chart, FormDateTime, FormTabs and the media group covered (+ new
-      FormTabs and Media specs); 20 shared components still uncovered
+- [~] Phase 3 — Chart, FormDateTime, FormTabs, the media group, the panel variants
+      and Markdown covered; 16 shared components still uncovered
 - [x] Spacing fixed (three classes of it) and the nav grouped into submenus,
       both guarded by specs
 - [ ] Phase 4 — State, variant and narrow-viewport coverage
