@@ -355,12 +355,35 @@ Two things worth not rediscovering:
   a near-miss here. Demos that need a genuinely narrow column use an
   unconditional `col-6` / `col-3`.
 
-Still uncovered in `shared/components/` (16), unchanged from the audit except for
-`Chart`, the media group, the panel variants and `Markdown`:
+**The overlay and nav chrome is covered** on a new `overlays.vue`:
+`AppConfirm`, `OffCanvas`, `BreadCrumbs` and `TabNavView`.
+
+The first two are the reason this page earns its place. Both are singletons
+mounted once in `App.vue` and driven by comlink events, so they are only ever on
+screen mid-action — the confirm during a destructive click, and the off-canvas on
+mobile, since `FilteredList` is the only thing that opens it and only below the
+breakpoint. At desktop width there was previously nowhere to look at either. The
+page asks the app to show them, and teleports its own content into
+`#off-canvas-content`, which is how the off-canvas is filled.
+
+`TabNavView`'s routes mode is fed the real visual-tests route records: it reads
+`nav.<meta.title>` for each label and those keys already exist. Its admin stepper
+mode is deliberately absent from `BreadCrumbs` here — it targets
+`admin-model-edit`, a route this app does not have.
+
+`Overlays.spec.ts` covers what no screenshot can: that Enter confirms and Escape
+cancels, that the handler actually runs, that the off-canvas opens on either
+side, and that a crumb without a target is not a link.
+
+**This slice found no bugs** — 24 assertions green on the first run. Worth saying
+plainly after four slices that each turned one up: the gallery is not a divining
+rod, and these four components were simply in good shape.
+
+Still uncovered in `shared/components/` (12), unchanged from the audit except for
+`Chart`, the media group, the panel variants, `Markdown` and the overlay chrome:
 
 | Component | Note |
 |---|---|
-| `OffCanvas`, `AppConfirm`, `BreadCrumbs`, `TabNavView` | Navigation and overlay chrome |
 | `SocialLogins`, `OauthBtn`, `RsiProfileLink`, `CommunityLogo` | Third-party branding, easy to break unnoticed |
 | `HoloViewer`, `LoadoutMarker` | 3D/canvas — may not suit a static demo |
 | `PrimaryAction`, `UploadProgress`, `Forbidden`, `ModelMetricRows` | Small, cheap |
@@ -370,10 +393,12 @@ Still uncovered in `shared/components/` (16), unchanged from the audit except fo
 correct, not a gap.
 
 Judgement call, not a checklist to clear: decide per row and record the skips.
-Next: the navigation and overlay chrome (`OffCanvas`, `AppConfirm`,
-`BreadCrumbs`, `TabNavView`) is the largest remaining group, and `AppConfirm` is
-the one most likely to be hiding something, since a confirm dialog is only ever
-seen mid-action.
+Next: the third-party branding group (`SocialLogins`, `OauthBtn`,
+`RsiProfileLink`, `CommunityLogo`) — four cheap components whose breakage is the
+kind nobody notices, followed by the four small ones (`PrimaryAction`,
+`UploadProgress`, `Forbidden`, `ModelMetricRows`). That would leave only
+`HoloViewer` and `LoadoutMarker`, which may not suit a static demo, and the
+always-on shell components, which are on screen everywhere already.
 
 ### Spacing and grouping — DONE, out of band
 
@@ -488,8 +513,9 @@ branch's chart baselines are its only coverage.
       `Chips` and `Panels` blocked on demo-page data wiring, see Phase 4
 - [x] Phase 2 — Co-located the three single-owner demos; auto-scan exclusion and
       lint rule in place, family and composed pages left central
-- [~] Phase 3 — Chart, FormDateTime, FormTabs, the media group, the panel variants
-      and Markdown covered; 16 shared components still uncovered
+- [~] Phase 3 — Chart, FormDateTime, FormTabs, the media group, the panel variants,
+      Markdown and the overlay/nav chrome covered; 12 shared components still
+      uncovered
 - [x] Spacing fixed (three classes of it) and the nav grouped into submenus,
       both guarded by specs
 - [ ] Phase 4 — State, variant and narrow-viewport coverage

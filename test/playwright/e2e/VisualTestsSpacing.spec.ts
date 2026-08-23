@@ -29,6 +29,7 @@ const routes = [
   "states",
   "notifications",
   "sync-modal",
+  "overlays",
   "support-hint",
   "chips",
   "media",
