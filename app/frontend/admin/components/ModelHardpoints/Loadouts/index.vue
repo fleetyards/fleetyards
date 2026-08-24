@@ -110,7 +110,7 @@ const onSaveCreate = async () => {
 
 <template>
   <div class="hardpoint-loadouts">
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between mb-4">
       <h4 class="hardpoint-loadouts__title">
         {{ t("labels.admin.modelHardpoint.loadouts") }}
       </h4>

@@ -2,16 +2,28 @@
 
 require "test_helper"
 require "support/hangar_import_fixtures"
+require "support/sc_data_fixture_tree"
 
 module ScData
   module Loader
     class ItemsLoaderTest < ActiveSupport::TestCase
       include HangarImportFixtures
+      include ScDataFixtureTree
 
       setup do
         clean_loader_tables
       end
 
+      def items_loader
+        fixture_loader(::ScData::Loader::ItemsLoader)
+      end
+
+      # Deliberately the real tree, and the only test here that reads it: an
+      # export whose shape moved -- a renamed field, a category that stopped
+      # being written -- shows up as a load that stops producing components,
+      # and no curated fixture can tell you that. Everything below runs
+      # against test/fixtures/sc_data, because a load of the real tree walks
+      # ~7,800 files and writes ~7,300 components per call.
       test "#all loads data from game files" do
         loader = ::ScData::Loader::ItemsLoader.new
 
@@ -29,7 +41,7 @@ module ScData
         stale = create(:component, sc_key: "aegs_avenger_thruster_main", version: "0.0.1-live.1", name: "Stale")
 
         assert_no_difference -> { Component.where(sc_key: "aegs_avenger_thruster_main").count } do
-          ::ScData::Loader::ItemsLoader.new.all
+          items_loader.all
         end
 
         # The same row, carrying the build it has now been seen in.
@@ -40,12 +52,12 @@ module ScData
       # current_version filters it out. Re-importing the build we are already on
       # does not: the row keeps claiming it, and every picker keeps offering it.
       test "#all stops a dropped component claiming the build it is no longer in" do
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         retired = create(:component, sc_key: "gone_from_the_export", version: Rails.configuration.sc_data[:version])
         kept = Component.where.not(id: retired.id).where(version: Rails.configuration.sc_data[:version]).first
 
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         assert Component.exists?(retired.id), "the row has to stay for the loadouts pointing at it"
         assert_nil retired.reload.version
@@ -55,7 +67,7 @@ module ScData
       # A paint names no artwork itself -- the picture hangs off the record its
       # manufacturer_ref points at.
       test "#all attaches the colour swatch a paint reaches through its manufacturer" do
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
 
@@ -66,7 +78,7 @@ module ScData
       # store_image is curated -- an admin upload, or what the hangar sync
       # brought in -- so a load must never write to it.
       test "#all leaves a curated store_image alone while attaching the icon" do
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         component = Component.find_by(sc_key: "paint_100i_black_orange")
 
@@ -76,7 +88,7 @@ module ScData
       # Only a paint reaches a swatch this way. Every other item's manufacturer
       # is a real one, and its logo is a picture of the maker, not of the item.
       test "#all gives no icon to an item whose manufacturer is a real one" do
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         assert_not_predicate Component.find_by(sc_key: "aegs_avenger_cml_chaff").icon, :attached?
       end
@@ -85,7 +97,7 @@ module ScData
       # has to take the picture with it -- otherwise the component goes on
       # serving artwork the current export does not carry.
       test "#all drops an icon the export stopped naming" do
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         component = Component.find_by(sc_key: "aegs_avenger_cml_chaff")
         component.icon.attach(
@@ -94,7 +106,7 @@ module ScData
           content_type: "image/png"
         )
 
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         assert_not_predicate component.reload.icon, :attached?
       end
@@ -103,7 +115,7 @@ module ScData
       # through, so the icons the export orphaned go with those updates rather
       # than wait for whichever later load happens to run to the end.
       test "#all drops the icon of a record it got through before a later item raised" do
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         component = Component.find_by(sc_key: "aegs_avenger_cml_chaff")
         component.icon.attach(
@@ -112,7 +124,7 @@ module ScData
           content_type: "image/png"
         )
 
-        loader = ::ScData::Loader::ItemsLoader.new
+        loader = items_loader
         items = loader.send(:load_items, "items")
         orphaned = items.find { |item| item["key"].downcase == "aegs_avenger_cml_chaff" }
         raises_later = items.find { |item| item["key"].downcase == "paint_100i_black_orange" }
@@ -127,17 +139,28 @@ module ScData
 
       # A path that fails to resolve is a broken parse, not a dropped picture.
       test "#all keeps the icon of a record that still names one" do
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
         blob_id = icon.blob.id
 
-        ::ScData::Loader::ItemsLoader.new.all
+        items_loader.all
 
         icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
 
         assert_predicate icon, :attached?
         assert_equal blob_id, icon.blob.id, "an unchanged icon should not be re-attached"
+      end
+
+      # What a cargo grid holds -- its dimensions and capacity -- is written on
+      # the `category: inventory` row a load itself skips, and the grid only
+      # names that row's ref.
+      test "#all carries the type_data of the inventory row a grid's ref names" do
+        items_loader.all
+
+        grid = Component.find_by(sc_key: "aegs_avenger_cargogrid_stalker")
+
+        assert_equal 4, grid.type_data["capacity"]
       end
     end
   end

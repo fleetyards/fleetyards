@@ -25,7 +25,7 @@ const itemPricesList = ref<{
 </script>
 
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-4">
     <Heading hero>{{ t("headlines.admin.equipment.edit.itemPrices") }}</Heading>
     <Btn
       :disabled="itemPricesList?.creating"

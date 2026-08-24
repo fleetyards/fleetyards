@@ -260,7 +260,7 @@ const toggleFilteredListEmpty = () => {
     list in place. Rows are selectable, and the expand toggle opens the
     <code>expanded</code> slot.
   </p>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-4">
     <div>
       <Btn
         :disabled="editableList?.creating"

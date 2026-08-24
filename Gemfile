@@ -113,7 +113,7 @@ gem "pg_query", ">= 0.9.0"
 gem "git"
 gem "rdoc"
 
-gem "psych", "~> 5.2"
+gem "psych", "~> 5.5"
 
 gem "progress_bar"
 
@@ -122,7 +122,7 @@ gem "flipper"
 gem "flipper-active_record"
 
 # openapi
-gem "openapi-ruby", "~> 4.1"
+gem "openapi-ruby", "~> 4.2"
 
 group :development do
   gem "annotaterb"

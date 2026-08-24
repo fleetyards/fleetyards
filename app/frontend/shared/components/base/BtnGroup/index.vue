@@ -118,8 +118,8 @@ provide(BTN_CONTAINER, {
 
 /*
  * The metrics-card__hero pattern: the container owns the border and radius, and
- * the 1px gap lets the track's background read as hairline dividers between
- * members. Members are flat fills with no chrome of their own.
+ * the 1px gaps between members are filled by a hairline each member draws on its
+ * own leading edge. Members are flat fills with no chrome of their own.
  */
 .btn-group {
   @apply relative inline-flex;
@@ -136,12 +136,15 @@ provide(BTN_CONTAINER, {
  * The clipping lives here rather than on .btn-group because the group's end-caps
  * sit outside its border and overflow:hidden would crop them.
  *
- * --color-seam, not an edge token: this fill is only ever seen through the 1px
- * gaps, and at that width a translucent grey took its colour from whatever the
- * control was sitting on. See the token's note in tailwind.css.
+ * It also clips the members' dividers, which is the second job this element
+ * does. The seam used to be a fill *here*, seen through the 1px gaps - but a
+ * member's fill is translucent, so that fill also sat behind every member and
+ * tinted it away from the standalone surface it is meant to share. Each member
+ * paints its own leading hairline instead, and the one on the first member falls
+ * outside this box and is clipped.
  */
 .btn-group__track {
-  @apply bg-seam flex items-stretch overflow-hidden;
+  @apply flex items-stretch overflow-hidden;
   gap: 1px;
   width: 100%;
   border-radius: var(--radius-control-inner, 7px);
@@ -235,6 +238,8 @@ provide(BTN_CONTAINER, {
  */
 .btn-group__track > :deep(span) {
   @apply bg-control text-text flex items-center justify-center px-3.5;
+  /* And the divider a member would draw, for the same reason. */
+  box-shadow: -1px 0 0 var(--color-seam, #3a3f44);
   /* Mirrors .btn--sm's label and height, since a group with a label segment is a
      paginator and paginators are sm. If Btn's type scale moves, this moves with
      it - it cannot inherit, because size is a per-member prop the group cannot

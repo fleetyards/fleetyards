@@ -86,7 +86,7 @@ const onUnlinkModel = (item: Model) => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-4">
     <Heading hero>{{ t("headlines.admin.modelModules.models") }}</Heading>
     <Btn
       :disabled="editableList?.creating"
