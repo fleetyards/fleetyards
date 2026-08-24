@@ -323,6 +323,22 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: mod.id}, body: {name: "Updated Module"}
   end
 
+  # Clearing sends a null -- that is what the file input emits -- so the request
+  # schema has to accept one, or the admin UI cannot remove a picture at all.
+  test "PUT /model-modules/:id clears the store image" do
+    mod = create(:model_module)
+    mod.store_image.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      filename: "test.png",
+      content_type: "image/png"
+    )
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: mod.id}, body: {storeImage: nil}
+
+    assert_not_predicate mod.reload.store_image, :attached?
+  end
+
   test "PUT /model-modules/:id returns 404 for missing id" do
     sign_in @user
 

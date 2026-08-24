@@ -266,6 +266,22 @@ class Admin::Api::V1::ModelPaintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Clearing sends a null -- that is what the file input emits -- so the request
+  # schema has to accept one, or the admin UI cannot remove a picture at all.
+  test "PUT /model-paints/:id clears the store image" do
+    paint = create(:model_paint)
+    paint.store_image.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      filename: "test.png",
+      content_type: "image/png"
+    )
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: paint.id}, body: {storeImage: nil}
+
+    assert_not_predicate paint.reload.store_image, :attached?
+  end
+
   test "PUT /model-paints/:id returns 404 for missing id" do
     sign_in @user
 

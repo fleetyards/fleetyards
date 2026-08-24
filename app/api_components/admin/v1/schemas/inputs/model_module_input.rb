@@ -19,7 +19,7 @@ module Admin
               productionStatus: {type: :string},
               active: {type: :boolean},
               hidden: {type: :boolean},
-              storeImage: {type: :string},
+              storeImage: {type: [:string, :null]},
               scKey: {type: [:string, :null]}
             },
             additionalProperties: false

@@ -10221,9 +10221,13 @@ components:
         rsiSid:
           type: string
         logo:
-          type: string
+          type:
+          - string
+          - 'null'
         backgroundImage:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: FleetInput
     FleetMembershipShipsFilterEnum:
@@ -12966,7 +12970,9 @@ components:
         hidden:
           type: boolean
         storeImage:
-          type: string
+          type:
+          - string
+          - 'null'
         scKey:
           type:
           - string
@@ -13127,13 +13133,21 @@ components:
         hidden:
           type: boolean
         storeImage:
-          type: string
+          type:
+          - string
+          - 'null'
         angledView:
-          type: string
+          type:
+          - string
+          - 'null'
         sideView:
-          type: string
+          type:
+          - string
+          - 'null'
         topView:
-          type: string
+          type:
+          - string
+          - 'null'
         moduleIds:
           type: array
           items:
@@ -13469,17 +13483,29 @@ components:
         storeUrl:
           type: string
         storeImage:
-          type: string
+          type:
+          - string
+          - 'null'
         rsiStoreImage:
-          type: string
+          type:
+          - string
+          - 'null'
         fleetchartImage:
-          type: string
+          type:
+          - string
+          - 'null'
         topView:
-          type: string
+          type:
+          - string
+          - 'null'
         sideView:
-          type: string
+          type:
+          - string
+          - 'null'
         angledView:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: ModelPaintInput
     ModelPaintQuery:
@@ -14224,7 +14250,9 @@ components:
         hidden:
           type: boolean
         storeImage:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: ModelUpgradeInput
     ModelUpgradeQuery:
@@ -14993,7 +15021,9 @@ components:
         tester:
           type: boolean
         avatar:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: UserInput
     UserOption:
