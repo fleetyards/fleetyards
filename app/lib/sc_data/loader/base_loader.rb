@@ -1,7 +1,9 @@
 module ScData
   module Loader
     class BaseLoader
-      attr_accessor :sc_version, :sc_environment
+      DEFAULT_BASE_FOLDER = Rails.root.join("data/sc_data").freeze
+
+      attr_accessor :sc_version, :sc_environment, :base_folder
 
       def self.all
         ::ScData::Loader::ManufacturersLoader.new.all
@@ -12,13 +14,21 @@ module ScData
         ::ScData::Loader::EquipmentLoader.new.all
       end
 
-      def initialize
+      def initialize(base_folder: DEFAULT_BASE_FOLDER)
+        self.base_folder = base_folder
         self.sc_version = Rails.configuration.sc_data[:version]
         self.sc_environment = Rails.configuration.sc_data[:environment]
       end
 
+      # Read on every call rather than built in the constructor: callers set
+      # `sc_environment` on a loader they already have -- a load of the
+      # preview tree is the same loader pointed somewhere else.
+      def export_path
+        Pathname(base_folder).join("parsed", sc_environment.to_s)
+      end
+
       def load_item(path)
-        file_path = Rails.root.join("data/sc_data/parsed/#{sc_environment}/#{path}.json")
+        file_path = export_path.join("#{path}.json")
 
         return unless file_path.exist?
 
@@ -34,7 +44,7 @@ module ScData
       end
 
       def load_items(path)
-        Dir.glob(Rails.root.join("data/sc_data/parsed/#{sc_environment}/#{path}/**/*.json")).map do |file|
+        Dir.glob(export_path.join(path, "**", "*.json")).map do |file|
           JSON.parse(File.read(file)).with_indifferent_access
         end
       end
@@ -81,7 +91,7 @@ module ScData
         return if icon_path.blank?
 
         Dir.glob(
-          Rails.root.join("data/sc_data/parsed/#{sc_environment}/icons/#{icon_path.sub(/\.\w+\z/, "")}.*")
+          export_path.join("icons", "#{icon_path.sub(/\.\w+\z/, "")}.*")
         ).first
       end
 
