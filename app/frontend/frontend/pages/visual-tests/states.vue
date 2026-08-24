@@ -9,12 +9,14 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import Forbidden from "@/shared/components/Forbidden/index.vue";
 import NotAuthorized from "@/shared/components/NotAuthorized/index.vue";
 import NotFound from "@/shared/components/NotFound/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ProgressBar from "@/shared/components/ProgressBar/index.vue";
+import UploadProgress from "@/shared/components/UploadProgress/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -207,13 +209,43 @@ const updatePerPage = (value: number | string) => {
     </div>
   </div>
 
+  <Heading :level="HeadingLevelEnum.H2">UploadProgress</Heading>
+  <p>
+    The striped bar a direct upload draws. <code>active</code> animates the
+    stripes; <code>error</code> is what a failed upload leaves behind, which has
+    to stay on screen rather than resetting to nothing.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <BaseText muted no-spacing>idle at 0</BaseText>
+      <UploadProgress />
+    </div>
+    <div class="col-12 col-lg-4">
+      <BaseText muted no-spacing>active at {{ progress }}%</BaseText>
+      <UploadProgress :progress="progress" active />
+    </div>
+    <div class="col-12 col-lg-4">
+      <BaseText muted no-spacing>failed part-way</BaseText>
+      <UploadProgress :progress="progress" error />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <BaseText muted no-spacing>complete</BaseText>
+      <UploadProgress :progress="100" />
+    </div>
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2">Error Pages</Heading>
   <p>
-    The three full-page error blocks. They are normally rendered as a whole
-    route, so they bring their own heading.
+    The four full-page error blocks. They are normally rendered as a whole
+    route, so they bring their own heading. <code>Forbidden</code> is the one
+    for a resource that exists and is not yours, as against
+    <code>NotAuthorized</code> for not being signed in at all.
   </p>
   <NotFound />
   <NotAuthorized />
+  <Forbidden />
   <ServerError />
 
   <Heading :level="HeadingLevelEnum.H2">FetchProgressBar</Heading>

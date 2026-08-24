@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
+import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   BtnSizesEnum,
@@ -15,6 +16,15 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+
+// PrimaryAction renders nothing without an `action`, and it is fixed-position, so
+// the only way to tell it works is to mount it and count the clicks.
+const primaryActionMounted = ref(false);
+const primaryActionClicks = ref(0);
+
+const primaryAction = () => {
+  primaryActionClicks.value += 1;
+};
 
 const ships = ref(["Aegis Idris P", "Anvil Carrack", "Drake Cutlass Black"]);
 
@@ -225,6 +235,34 @@ const toggleLoading = () => {
       </BtnGroup>
     </div>
   </div>
+
+  <Heading :level="HeadingLevelEnum.H2">PrimaryAction</Heading>
+  <p>
+    The floating action a page offers as its one obvious next step. It is
+    fixed-position and renders nothing at all without an <code>action</code>, so
+    it appears in the corner rather than here. On a real page the route's
+    <code>meta.primaryAction</code> is what puts it there — and the environment
+    pill shifts to make room for it.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <Btn
+        :active="primaryActionMounted"
+        data-test="toggle-primary-action"
+        @click="primaryActionMounted = !primaryActionMounted"
+      >
+        {{ primaryActionMounted ? "Remove it" : "Show it" }}
+      </Btn>
+      <span data-test="primary-action-clicks">
+        Clicked {{ primaryActionClicks }}×
+      </span>
+    </div>
+  </div>
+  <PrimaryAction
+    v-if="primaryActionMounted"
+    :action="primaryAction"
+    label="Add a ship"
+  />
 
   <Heading :level="HeadingLevelEnum.H2">Inline confirm</Heading>
   <p>
