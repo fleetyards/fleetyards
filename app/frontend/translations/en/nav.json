@@ -249,6 +249,12 @@
         "visualTests": {
           "index": "Visual Tests",
           "notifications": "Notifications"
+        },
+        "groups": {
+          "catalogue": "Catalogue",
+          "community": "Community",
+          "people": "People",
+          "system": "System"
         }
       }
     }

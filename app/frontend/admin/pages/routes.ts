@@ -207,6 +207,9 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.maintenance.index",
       needsAuthentication: true,
+      // The System group renders these pages directly, so the parent no longer
+      // appears as its own row.
+      nav: "hidden",
       icon: "fa-duotone fa-screwdriver-wrench",
       access: ["maintenance"],
     },
