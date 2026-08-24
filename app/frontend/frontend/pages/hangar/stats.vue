@@ -90,9 +90,9 @@ const missingClassifications = computed(
   () => quickStats.value?.metrics.missingClassifications || [],
 );
 
-const wishlistToHangarRatio = computed(() => {
-  if (!totalCount.value) return "";
-  return `${wishlistTotal.value} / ${totalCount.value}`;
+const wishlistPercent = computed(() => {
+  if (!totalCount.value || !wishlistTotal.value) return "";
+  return `(${Math.round((wishlistTotal.value / totalCount.value) * 100)}%)`;
 });
 
 // use refs and watch for stats to trigger animation on every page visit
@@ -330,8 +330,8 @@ const wishlistTotalCreditsCompact = computed(() =>
       <StatsPanel
         icon="fa-duotone fa-heart fa-4x"
         :value="wishlistTotal"
-        :label="t('labels.hangar')"
-        :suffix="wishlistToHangarRatio"
+        :label="t('labels.wishlist')"
+        :suffix="wishlistPercent"
       />
     </div>
   </div>
