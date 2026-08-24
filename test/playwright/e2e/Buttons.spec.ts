@@ -178,6 +178,56 @@ test.describe("Buttons", () => {
   });
 });
 
+test.describe("PrimaryAction", () => {
+  /*
+   * The hangar's one obvious next step. It was a `div` with a click handler in a
+   * circle, so it could not be tabbed to, showed no focus ring and reported no
+   * role - the same defects Btn was rebuilt to fix, in the control that matters
+   * most on the page.
+   */
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/visual-tests/buttons/");
+    await page.getByTestId("toggle-primary-action").click();
+  });
+
+  test("is a real button, reachable from the keyboard", async ({ page }) => {
+    const action = page.getByTestId("primary-action");
+
+    await expect(action).toBeVisible();
+    expect(await action.evaluate((el) => el.tagName)).toBe("BUTTON");
+
+    await action.focus();
+    await expect(action).toBeFocused();
+
+    await page.keyboard.press("Enter");
+
+    await expect(page.getByTestId("primary-action-clicks")).toContainText("1×");
+  });
+
+  test("carries the button surface, not a circle of its own", async ({
+    page,
+  }) => {
+    // It borrows Btn's chrome now, so it has the end-caps every other button
+    // has and none of the retired panel's border tokens.
+    const caps = await page
+      .getByTestId("primary-action")
+      .evaluate((el) =>
+        ["::before", "::after"].map(
+          (pseudo) => getComputedStyle(el, pseudo).content,
+        ),
+      );
+
+    for (const cap of caps) {
+      expect(cap).not.toBe("none");
+    }
+
+    const radius = await page
+      .getByTestId("primary-action")
+      .evaluate((el) => getComputedStyle(el).borderTopLeftRadius);
+    expect(radius).not.toBe("50%");
+  });
+});
+
 test.describe("Buttons in a real toolbar", () => {
   test("the toolbar keeps a gap to the content below", async ({ page }) => {
     // Btn no longer ships margin-bottom, so the toolbar owns this spacing.

@@ -244,6 +244,12 @@ const toggleLoading = () => {
     <code>meta.primaryAction</code> is what puts it there — and the environment
     pill shifts to make room for it.
   </p>
+  <p class="text-muted">
+    It is a <code>Btn</code>, so it is reachable from the keyboard and shows a
+    focus ring. It used to be a <code>div</code> with a click handler in a
+    circle, which meant the hangar's primary action could not be tabbed to at
+    all.
+  </p>
   <div class="row">
     <div class="col-12 vt-row">
       <Btn
