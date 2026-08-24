@@ -19,7 +19,7 @@ test.describe("Admin Features", () => {
   test("Loads the features page", async ({ page }) => {
     await page.goto("/admin/features/");
 
-    await expect(page).toHaveURL(/\/maintenance\/features/);
+    await expect(page).toHaveURL(/\/admin\/features/);
     await expect(page.locator("h1")).toBeVisible();
   });
 
