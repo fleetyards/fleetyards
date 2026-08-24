@@ -204,27 +204,29 @@ test.describe("PrimaryAction", () => {
     await expect(page.getByTestId("primary-action-clicks")).toContainText("1×");
   });
 
-  test("carries the button surface, not a circle of its own", async ({
+  test("stays a circle, and drops the caps that cannot sit on one", async ({
     page,
   }) => {
-    // It borrows Btn's chrome now, so it has the end-caps every other button
-    // has and none of the retired panel's border tokens.
-    const caps = await page
-      .getByTestId("primary-action")
-      .evaluate((el) =>
-        ["::before", "::after"].map(
+    /*
+     * The round shape is deliberate. A cap is a horizontal bar inset from the
+     * sides, so it would cut across the curve - Btn already has capless states
+     * for the same reason, and this is one of them.
+     */
+    const shape = await page.getByTestId("primary-action").evaluate((el) => {
+      const cs = getComputedStyle(el);
+      const box = el.getBoundingClientRect();
+      return {
+        radius: cs.borderTopLeftRadius,
+        square: Math.round(box.width) === Math.round(box.height),
+        caps: ["::before", "::after"].map(
           (pseudo) => getComputedStyle(el, pseudo).content,
         ),
-      );
+      };
+    });
 
-    for (const cap of caps) {
-      expect(cap).not.toBe("none");
-    }
-
-    const radius = await page
-      .getByTestId("primary-action")
-      .evaluate((el) => getComputedStyle(el).borderTopLeftRadius);
-    expect(radius).not.toBe("50%");
+    expect(shape.radius).toBe("50%");
+    expect(shape.square, "a circle needs equal sides").toBe(true);
+    expect(shape.caps).toEqual(["none", "none"]);
   });
 });
 

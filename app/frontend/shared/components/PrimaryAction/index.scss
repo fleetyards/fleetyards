@@ -1,6 +1,6 @@
 /*
- * Placement only - the control itself is a Btn, so its surface, caps, hover and
- * focus all come from there rather than being restated here.
+ * Placement, and the one shape override. The control itself is a Btn, so its
+ * surface, hover and focus ring all come from there rather than being restated.
  */
 .primary-action {
   position: sticky;
@@ -16,7 +16,23 @@
 
 .primary-action__btn {
   pointer-events: auto;
+  width: 59px;
+  height: 59px;
+  padding: 0;
+  font-size: 1.75rem;
+  border-radius: 50%;
   box-shadow: 0 0 6px rgba(black, 0.5);
+
+  /*
+   * A cap is a horizontal bar inset from the sides, so on a circle it cuts
+   * across the curve instead of closing an edge. Btn already has capless states
+   * - bare, grouped, xs - which rely on the hover tint for their marker, so this
+   * is a shape the component has rather than a new one.
+   */
+  &::before,
+  &::after {
+    content: none;
+  }
 }
 
 @media (max-width: $desktop-breakpoint) {

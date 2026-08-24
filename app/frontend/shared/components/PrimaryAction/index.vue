@@ -18,9 +18,11 @@ import {
  * same defect Btn was rebuilt to fix, in the one control that matters most on
  * the page.
  *
- * So it renders a Btn now. That brings the keyboard, the focus ring and the
- * end-caps with it, and drops a circle the design has nowhere else, a hover
- * colour computed with `invert()`, and the retired panel's border tokens.
+ * So it renders a Btn now, which brings the keyboard, the focus ring, the
+ * surface and the hover with it, and drops a hover colour computed with
+ * `invert()` along with two border tokens belonging to the panel this design
+ * retired. The circle stays - it is the one shape override, and the app is round
+ * elsewhere too, in Avatar.
  */
 type Props = {
   action?: () => void;
