@@ -883,6 +883,8 @@
         "longName": "Long Name",
         "code": "Code",
         "logo": "Logo",
+        "icon": "Icon (game files)",
+        "iconOverridden": "Icon (overridden)",
         "scRef": "SC Ref"
       },
       "fundingGoal": {

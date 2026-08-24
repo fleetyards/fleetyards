@@ -11316,6 +11316,8 @@ components:
           type: string
         logo:
           "$ref": "#/components/schemas/MediaFile"
+        icon:
+          "$ref": "#/components/schemas/MediaFile"
         longName:
           type: string
         scRef:
@@ -11329,6 +11331,8 @@ components:
         id:
           type: string
           format: uuid
+        iconOverridden:
+          type: boolean
       additionalProperties: false
       required:
       - name
@@ -11336,6 +11340,7 @@ components:
       - createdAt
       - updatedAt
       - id
+      - iconOverridden
       title: Manufacturer
     ManufacturerInput:
       type: object
@@ -11351,7 +11356,13 @@ components:
         knownFor:
           type: string
         logo:
-          type: string
+          type:
+          - string
+          - 'null'
+        icon:
+          type:
+          - string
+          - 'null'
         scRef:
           type: string
       additionalProperties: false
@@ -11367,6 +11378,8 @@ components:
         slug:
           type: string
         logo:
+          "$ref": "#/components/schemas/MediaFile"
+        icon:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:

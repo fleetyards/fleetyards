@@ -32,8 +32,8 @@ class Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @manufacturers = create_list(:manufacturer, 2)
-    @manufacturers_with_models = create_list(:manufacturer, 5, :with_models)
+    @manufacturers = create_list(:manufacturer, 2, :with_logo, :with_icon)
+    @manufacturers_with_models = create_list(:manufacturer, 5, :with_logo, :with_icon, :with_models)
   end
 
   test "GET /manufacturers lists all manufacturers" do

@@ -6,19 +6,20 @@ require "test_helper"
 #
 # Table name: manufacturers
 #
-#  id           :uuid             not null, primary key
-#  code         :string
-#  code_mapping :string
-#  description  :text
-#  icon         :string
-#  known_for    :string(255)
-#  long_name    :string
-#  name         :string(255)
-#  sc_ref       :string
-#  slug         :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  rsi_id       :integer
+#  id              :uuid             not null, primary key
+#  code            :string
+#  code_mapping    :string
+#  description     :text
+#  icon_overridden :boolean          default(FALSE), not null
+#  icon_path       :string
+#  known_for       :string(255)
+#  long_name       :string
+#  name            :string(255)
+#  sc_ref          :string
+#  slug            :string(255)
+#  created_at      :datetime
+#  updated_at      :datetime
+#  rsi_id          :integer
 #
 # Indexes
 #
@@ -73,5 +74,32 @@ class ManufacturerTest < ActiveSupport::TestCase
     end
 
     assert_equal 2, Manufacturer.where(slug: nil).count
+  end
+
+  # Filter lists take the export's art, which covers far more manufacturers than
+  # the curated logos and so reads as one set. The logo is the ship detail
+  # page's picture, not this one's.
+  test "#to_filter prefers the export's icon over the curated logo" do
+    manufacturer = create(:manufacturer, :with_logo, :with_icon)
+
+    assert_equal blob_url(manufacturer.icon), manufacturer.to_filter.icon
+  end
+
+  # `to_filter` reads the `logo` attachment too, so a local variable named for
+  # either one silently resolves to nil instead -- and the manufacturers with
+  # only one of the two raise rather than falling back.
+  test "#to_filter falls back to the curated logo when the game names no art" do
+    manufacturer = create(:manufacturer, :with_logo)
+
+    assert_not_predicate manufacturer.icon, :attached?
+    assert_equal blob_url(manufacturer.logo), manufacturer.to_filter.icon
+  end
+
+  test "#to_filter leaves the icon empty when the manufacturer has no picture" do
+    assert_nil create(:manufacturer).to_filter.icon
+  end
+
+  private def blob_url(attachment)
+    Rails.application.routes.url_helpers.rails_blob_url(attachment)
   end
 end

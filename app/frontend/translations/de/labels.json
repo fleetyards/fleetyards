@@ -558,6 +558,8 @@
         "longName": "Vollständiger Name",
         "code": "Code",
         "logo": "Logo",
+        "icon": "Icon (Spieldateien)",
+        "iconOverridden": "Icon (überschrieben)",
         "scRef": "SC Ref"
       },
       "fundingGoal": {

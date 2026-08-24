@@ -30,18 +30,18 @@ class Api::V1::FiltersManufacturersOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /filters/manufacturers/options returns id/name/slug/logo for each manufacturer" do
-    create_list(:manufacturer, 6, :with_logo, :with_models)
+  test "GET /filters/manufacturers/options returns id/name/slug/logo/icon for each manufacturer" do
+    create_list(:manufacturer, 6, :with_logo, :with_icon, :with_models)
 
     assert_api_response :get, 200 do
       items = parsed_body["items"]
       assert_equal 6, items.count
-      assert_equal %w[id name slug logo].sort, items.first.keys.sort
+      assert_equal %w[id name slug logo icon].sort, items.first.keys.sort
     end
   end
 
   test "GET /filters/manufacturers/options filters by nameCont" do
-    manufacturers = create_list(:manufacturer, 6, :with_logo, :with_models)
+    manufacturers = create_list(:manufacturer, 6, :with_logo, :with_icon, :with_models)
 
     assert_api_response :get, 200, params: {q: {"nameCont" => manufacturers.first.name}} do
       items = parsed_body["items"]

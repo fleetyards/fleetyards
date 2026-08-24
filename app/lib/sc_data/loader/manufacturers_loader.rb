@@ -29,14 +29,14 @@ module ScData
 
           if manufacturer.present?
             # The description and the code are left alone once set, because a
-            # curated one is better than the game's. The icon has no curated
-            # counterpart -- it is a path into the export -- so it follows it,
-            # but is never blanked: the codes that share a manufacturer do not
-            # all name a logo -- ROO has none where SASU has Sakura Sun's -- so
-            # following the export unconditionally would drop the picture
+            # curated one is better than the game's. The icon path has no
+            # curated counterpart -- it points into the export -- so it follows
+            # it, but is never blanked: the codes that share a manufacturer do
+            # not all name a logo -- ROO has none where SASU has Sakura Sun's
+            # -- so following the export unconditionally would drop the picture
             # depending on which record was loaded last.
             update_params = {}
-            update_params[:icon] = manufacturer_data["icon"] if manufacturer_data["icon"].present?
+            update_params[:icon_path] = manufacturer_data["icon"] if manufacturer_data["icon"].present?
 
             # Only claimed while free. A row matched on slug can already hold a
             # different ref -- the export gives Sakura Sun both ROO and SASU --
@@ -56,7 +56,18 @@ module ScData
 
             manufacturer.update!(update_params)
 
-            attach_icon(manufacturer, :logo, manufacturer_data["icon"])
+            # Onto `icon`, never onto `logo`: the logo is curated -- an admin
+            # uploads it, and RSI's own artwork lands there -- and writing the
+            # export into it replaced somebody's picture on every load. Its own
+            # attachment follows the export freely, so a build that reworks the
+            # art still lands.
+            #
+            # Unless an admin has put their own picture there. The flag is what
+            # separates the two, because the attachment alone cannot: a
+            # checksum that differs from the parsed file means either that the
+            # export changed or that somebody overrode it, and guessing wrong
+            # in either direction loses work.
+            attach_icon(manufacturer, :icon, manufacturer_data["icon"]) unless manufacturer.icon_overridden?
 
             manufacturer
           elsif name.present?
@@ -65,10 +76,10 @@ module ScData
               name:,
               code: manufacturer_data["code"],
               description: manufacturer_data["description"],
-              icon: manufacturer_data["icon"]
+              icon_path: manufacturer_data["icon"]
             )
 
-            attach_icon(created, :logo, manufacturer_data["icon"])
+            attach_icon(created, :icon, manufacturer_data["icon"])
 
             created
           end

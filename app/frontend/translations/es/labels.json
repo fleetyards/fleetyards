@@ -524,6 +524,8 @@
         "longName": "Nombre completo",
         "code": "Código",
         "logo": "Logo",
+        "icon": "Icono (archivos del juego)",
+        "iconOverridden": "Icono (sobrescrito)",
         "scRef": "SC Ref"
       },
       "itemPrice": {

@@ -56,7 +56,7 @@ watch(
 const formatter = (response: ManufacturerOptions) => {
   return response.items.map((manufacturer) => {
     return {
-      icon: manufacturer.logo?.smallUrl,
+      icon: manufacturer.icon?.smallUrl || manufacturer.logo?.smallUrl,
       label: manufacturer.name,
       value: manufacturer.slug,
     };

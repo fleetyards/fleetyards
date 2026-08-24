@@ -40,6 +40,7 @@ const initialValues = ref<ManufacturerInput>({
   description: undefined,
   knownFor: undefined,
   logo: undefined,
+  icon: undefined,
   scRef: props.manufacturer.scRef,
 });
 
@@ -57,6 +58,16 @@ const [longName, longNameProps] = defineField("longName");
 const [code, codeProps] = defineField("code");
 const [scRef, scRefProps] = defineField("scRef");
 const [logo, logoProps] = defineField("logo");
+const [icon, iconProps] = defineField("icon");
+
+// The only place the override is visible: once it is on, the sc_data load stops
+// writing here, and clearing the field is what hands the icon back to the game
+// files.
+const iconLabel = computed(() =>
+  props.manufacturer.iconOverridden
+    ? t("labels.manufacturer.iconOverridden")
+    : t("labels.manufacturer.icon"),
+);
 
 const submitting = ref(false);
 
@@ -131,6 +142,16 @@ const handleCancel = async () => {
           :file="manufacturer.logo"
           translation-key="manufacturer.logo"
           name="logo"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          avatar
+          clearable
+        />
+        <FormFileInput
+          v-model="icon"
+          v-bind="iconProps"
+          :file="manufacturer.icon"
+          :label="iconLabel"
+          name="icon"
           :allowed-types="AllowedFileTypes.IMAGE"
           avatar
           clearable

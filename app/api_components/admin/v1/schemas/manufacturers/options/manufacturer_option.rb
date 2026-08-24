@@ -14,7 +14,8 @@ module Admin
                 id: {type: :string, format: :uuid},
                 name: {type: :string},
                 slug: {type: :string},
-                logo: {"$ref": "#/components/schemas/MediaFile"}
+                logo: {"$ref": "#/components/schemas/MediaFile"},
+                icon: {"$ref": "#/components/schemas/MediaFile"}
               },
               additionalProperties: false,
               required: %w[id name slug logo]

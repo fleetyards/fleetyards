@@ -8,4 +8,8 @@ json.cache! ["v1/filters/manufacturers/option", manufacturer] do
   json.logo do
     json.partial! "api/v1/shared/file", record: manufacturer, attr: :logo
   end
+
+  json.icon do
+    json.partial! "api/v1/shared/file", record: manufacturer, attr: :icon
+  end
 end

@@ -87,12 +87,12 @@ module ScData
         existing = create(
           :manufacturer,
           name: "Sakura Sun", code: "SASU", sc_ref: "already-here",
-          icon: "ui/sharedassets/manufacturerlogos/sakurasun_256.tif"
+          icon_path: "ui/sharedassets/manufacturerlogos/sakurasun_256.tif"
         )
 
         @loader.all
 
-        assert_equal "ui/sharedassets/manufacturerlogos/sakurasun_256.tif", existing.reload.icon
+        assert_equal "ui/sharedassets/manufacturerlogos/sakurasun_256.tif", existing.reload.icon_path
       end
 
       test "#all skips the records the overrides drop" do
@@ -109,35 +109,42 @@ module ScData
         assert_equal ["AEG"], Manufacturer.where(name: "Aegis Dynamics").pluck(:code)
       end
 
-      test "#all attaches the logo the parser carried over" do
+      test "#all attaches the icon the parser carried over" do
         @loader.all
 
-        logo = Manufacturer.find_by(code: "TALN").logo
+        icon = Manufacturer.find_by(code: "TALN").icon
 
-        assert_predicate logo, :attached?
-        assert_equal "talon_256.png", logo.filename.to_s
-        assert_equal "image/png", logo.content_type
+        assert_predicate icon, :attached?
+        assert_equal "talon_256.png", icon.filename.to_s
+        assert_equal "image/png", icon.content_type
+      end
+
+      # The export writes to `icon` alone. The logo is curated, and a load that
+      # wrote there replaced an admin's upload on every run.
+      test "#all leaves the logo untouched" do
+        @loader.all
+
+        assert_not_predicate Manufacturer.find_by(code: "TALN").logo, :attached?
       end
 
       # Attaching an identical file writes a fresh blob, so a load that changed
       # nothing would leave a few hundred orphans behind on every run.
-      test "#all leaves an unchanged logo attached to the blob it already had" do
+      test "#all leaves an unchanged icon attached to the blob it already had" do
         @loader.all
-        blob = Manufacturer.find_by(code: "TALN").logo.blob
+        blob = Manufacturer.find_by(code: "TALN").icon.blob
 
         assert_no_difference -> { ActiveStorage::Blob.count } do
           @loader.all
         end
 
-        assert_equal blob, Manufacturer.find_by(code: "TALN").logo.blob
+        assert_equal blob, Manufacturer.find_by(code: "TALN").icon.blob
       end
 
-      # A load cannot tell its own attachment from one an admin uploaded, and
-      # the manufacturers the game names no logo for are exactly the ones
-      # somebody filled in by hand -- so a blank path leaves the file alone
-      # rather than taking their work with it.
-      test "#all leaves an uploaded logo alone when the game names none" do
-        curated = create(:manufacturer, code: "NOSUCHCODE", sc_ref: nil, icon: nil)
+      # The logo is curated -- an admin uploads it, and RSI's artwork lands
+      # there first -- and a load cannot tell those from its own writes, so it
+      # writes to `icon` instead and leaves the logo alone either way.
+      test "#all leaves an uploaded logo alone where the game names art of its own" do
+        curated = create(:manufacturer, code: "TALN", sc_ref: nil, icon_path: nil)
         curated.logo.attach(
           io: File.open(Rails.root.join("test/fixtures/files/test.png")),
           filename: "curated.png",
@@ -146,26 +153,50 @@ module ScData
 
         @loader.all
 
-        assert_predicate curated.reload.logo, :attached?
-        assert_equal "curated.png", curated.logo.filename.to_s
+        assert_equal "curated.png", curated.reload.logo.filename.to_s
+        assert_equal "talon_256.png", curated.icon.filename.to_s
+      end
+
+      # The flag is the only thing separating an admin's picture from the
+      # loader's own, since a checksum that differs from the parsed file means
+      # either that the export changed or that somebody overrode it.
+      test "#all leaves an overridden icon alone" do
+        overridden = create(:manufacturer, code: "TALN", sc_ref: nil, icon_path: nil, icon_overridden: true)
+        overridden.icon.attach(
+          io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+          filename: "by-hand.png",
+          content_type: "image/png"
+        )
+
+        @loader.all
+
+        assert_equal "by-hand.png", overridden.reload.icon.filename.to_s
+      end
+
+      test "#all writes the icon for a manufacturer that has no override" do
+        plain = create(:manufacturer, code: "TALN", sc_ref: nil, icon_path: nil)
+
+        @loader.all
+
+        assert_equal "talon_256.png", plain.reload.icon.filename.to_s
       end
 
       test "#all records the logo the game names for a manufacturer" do
         @loader.all
 
         assert_equal "ui/sharedassets/manufacturerlogos/talon_256.tif",
-          Manufacturer.find_by(code: "TALN").icon
-        assert_operator Manufacturer.where.not(icon: nil).count, :>=, 100
+          Manufacturer.find_by(code: "TALN").icon_path
+        assert_operator Manufacturer.where.not(icon_path: nil).count, :>=, 100
       end
 
       # A curated description beats the game's, but an icon has no curated
       # counterpart -- it is a path into the export.
       test "#all fills the logo in on a manufacturer that predates it" do
-        existing = create(:manufacturer, code: "TALN", sc_ref: nil, icon: nil)
+        existing = create(:manufacturer, code: "TALN", sc_ref: nil, icon_path: nil)
 
         @loader.all
 
-        assert_equal "ui/sharedassets/manufacturerlogos/talon_256.tif", existing.reload.icon
+        assert_equal "ui/sharedassets/manufacturerlogos/talon_256.tif", existing.reload.icon_path
       end
 
       test "reuses existing entries with matrix data" do

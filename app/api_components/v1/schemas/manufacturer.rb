@@ -12,6 +12,7 @@ module V1
           slug: {type: :string},
           code: {type: :string},
           logo: {"$ref": "#/components/schemas/MediaFile"},
+          icon: {"$ref": "#/components/schemas/MediaFile"},
           longName: {type: :string},
           scRef: {type: :string},
           createdAt: {type: :string, format: "date-time"},

@@ -2,19 +2,20 @@
 #
 # Table name: manufacturers
 #
-#  id           :uuid             not null, primary key
-#  code         :string
-#  code_mapping :string
-#  description  :text
-#  icon         :string
-#  known_for    :string(255)
-#  long_name    :string
-#  name         :string(255)
-#  sc_ref       :string
-#  slug         :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  rsi_id       :integer
+#  id              :uuid             not null, primary key
+#  code            :string
+#  code_mapping    :string
+#  description     :text
+#  icon_overridden :boolean          default(FALSE), not null
+#  icon_path       :string
+#  known_for       :string(255)
+#  long_name       :string
+#  name            :string(255)
+#  sc_ref          :string
+#  slug            :string(255)
+#  created_at      :datetime
+#  updated_at      :datetime
+#  rsi_id          :integer
 #
 # Indexes
 #
@@ -29,6 +30,11 @@ FactoryBot.define do
 
     trait :with_logo do
       logo { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
+    end
+
+    trait :with_icon do
+      icon_path { "ui/sharedassets/manufacturerlogos/test_256.tif" }
+      icon { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
 
     trait :with_description do

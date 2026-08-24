@@ -127,6 +127,15 @@ const storeImage = computed(() => {
   return fallbackImageJpg;
 });
 
+// The one place that leads with the curated logo: it is a hero element here,
+// where a hand-made mark beats the game's. Everywhere else -- filter lists, the
+// panels -- takes the export's icon first, which covers far more manufacturers.
+const manufacturerLogo = computed(() => {
+  const { logo, icon } = props.model.manufacturer ?? {};
+
+  return logo?.smallUrl || logo?.url || icon?.smallUrl || icon?.url;
+});
+
 const metaTitle = computed(() => {
   if (!props.model) {
     return undefined;
@@ -265,11 +274,8 @@ const adiMap = computed(() => {
               <span class="manufacturer-prefix">from</span>
               <span>{{ model.manufacturer?.name }}</span>
               <img
-                v-if="model.manufacturer && model.manufacturer.logo"
-                :src="
-                  model.manufacturer.logo.smallUrl ||
-                  model.manufacturer.logo.url
-                "
+                v-if="manufacturerLogo"
+                :src="manufacturerLogo"
                 class="manufacturer-logo"
                 alt="manufacturer-logo"
               />

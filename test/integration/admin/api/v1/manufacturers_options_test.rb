@@ -34,14 +34,14 @@ class Admin::Api::V1::ManufacturersOptionsTest < ActionDispatch::IntegrationTest
     @user = create(:admin_user, resource_access: [:manufacturers])
   end
 
-  test "GET /manufacturers/options returns id/name/slug/logo for each manufacturer" do
-    create_list(:manufacturer, 6, :with_logo)
+  test "GET /manufacturers/options returns id/name/slug/logo/icon for each manufacturer" do
+    create_list(:manufacturer, 6, :with_logo, :with_icon)
     sign_in @user
 
     assert_api_response :get, 200 do
       items = parsed_body["items"]
       assert_equal 6, items.count
-      assert_equal %w[id name slug logo].sort, items.first.keys.sort
+      assert_equal %w[id name slug logo icon].sort, items.first.keys.sort
     end
   end
 

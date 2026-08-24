@@ -38,6 +38,7 @@ const [longName, longNameProps] = defineField("longName");
 const [code, codeProps] = defineField("code");
 const [scRef, scRefProps] = defineField("scRef");
 const [logo, logoProps] = defineField("logo");
+const [icon, iconProps] = defineField("icon");
 
 const submitting = ref(false);
 
@@ -109,6 +110,14 @@ const handleCancel = async () => {
           v-bind="logoProps"
           translation-key="manufacturer.logo"
           name="logo"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          avatar
+        />
+        <FormFileInput
+          v-model="icon"
+          v-bind="iconProps"
+          translation-key="manufacturer.icon"
+          name="icon"
           :allowed-types="AllowedFileTypes.IMAGE"
           avatar
         />
