@@ -19,6 +19,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 
 type Props = {
   vehicle: Vehicle | VehiclePublic;
@@ -137,8 +138,21 @@ const openAddonsModal = () => {
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
 
-const shouldHighlight = computed(() => {
-  return props.highlight || (props.vehicle as Vehicle).flagship;
+// Two separate meanings on one edge, so they cannot share a tone: gold is the
+// flagship, matching its certificate icon, and the group tone is the transient
+// hover on a group chip. The group wins while it is hovered - otherwise a
+// flagship inside the hovered group would be the one ship whose membership you
+// cannot read, which is what the shared gold broke.
+const tone = computed(() => {
+  if (props.highlight) {
+    return PanelTonesEnum.PRIMARY;
+  }
+
+  if ((props.vehicle as Vehicle).flagship) {
+    return PanelTonesEnum.HIGHLIGHT;
+  }
+
+  return PanelTonesEnum.NEUTRAL;
 });
 </script>
 
@@ -148,7 +162,7 @@ const shouldHighlight = computed(() => {
     :model="model"
     class="vehicle-panel"
     :details="details"
-    :highlight="shouldHighlight"
+    :tone="tone"
     :store-image="image"
   >
     <template #heading-title>
