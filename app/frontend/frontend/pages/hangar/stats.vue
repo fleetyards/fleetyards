@@ -15,6 +15,7 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
+import MissingRolesPanel from "@/shared/components/MissingRolesPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -86,12 +87,7 @@ const flightReadyPercent = computed(() => {
 });
 
 const missingClassifications = computed(
-  () =>
-    quickStats.value?.metrics.missingClassifications
-      ?.map((c: string) =>
-        c.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
-      )
-      .join(", ") || "",
+  () => quickStats.value?.metrics.missingClassifications || [],
 );
 
 const wishlistToHangarRatio = computed(() => {
@@ -326,24 +322,16 @@ const wishlistTotalCreditsCompact = computed(() =>
     </div>
   </div>
 
-  <div v-if="missingClassifications" class="row">
-    <div class="col-12 col-sm-6">
-      <Panel>
-        <PanelHeading :level="HeadingLevelEnum.H2">
-          {{ t("labels.hangarMetrics.missingClassifications") }}
-        </PanelHeading>
-        <PanelBody>
-          <p>{{ missingClassifications }}</p>
-        </PanelBody>
-      </Panel>
+  <div class="row">
+    <div v-if="missingClassifications.length" class="col-12 col-sm-6 col-lg-3">
+      <MissingRolesPanel :roles="missingClassifications" />
     </div>
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fa-duotone fa-heart fa-4x"
         :value="wishlistTotal"
         :label="t('labels.hangar')"
         :suffix="wishlistToHangarRatio"
-        :outer-spacing="false"
       />
     </div>
   </div>
