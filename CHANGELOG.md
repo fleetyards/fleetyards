@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.2.0](https://github.com/fleetyards/fleetyards/compare/v7.1.0...v7.2.0) (2026-08-24)
+
+
+### Features
+
+* **admin:** a visual-tests gallery, and a navigation that fits ([#4498](https://github.com/fleetyards/fleetyards/issues/4498)) ([734de51](https://github.com/fleetyards/fleetyards/commit/734de51cd40c5f84cf2aa0303e49080487da3572))
+* **admin:** read notifications in a reading pane, with an archive ([#4489](https://github.com/fleetyards/fleetyards/issues/4489)) ([8e8f16a](https://github.com/fleetyards/fleetyards/commit/8e8f16a23d9b8969991504bfd9b43e2b56f1f334))
+* **hangar:** render missing roles as a stats tile ([#4490](https://github.com/fleetyards/fleetyards/issues/4490)) ([bd2f7b1](https://github.com/fleetyards/fleetyards/commit/bd2f7b16bc4ea0ba7da628bc06fbfeb4ae2a21fc))
+
+
+### Bug Fixes
+
+* **hangar:** give the group highlight its own tone ([#4500](https://github.com/fleetyards/fleetyards/issues/4500)) ([e5a979f](https://github.com/fleetyards/fleetyards/commit/e5a979f491ff8a7bca1184948544ea17cc317c48))
+* **manufacturers:** separate the curated logo from the export's artwork ([#4496](https://github.com/fleetyards/fleetyards/issues/4496)) ([746d7f0](https://github.com/fleetyards/fleetyards/commit/746d7f0f04b391841faa6d797c813e05d03892ae))
+* **ui:** list add-action spacing, a form footer gap, and a grouped button's surface ([#4497](https://github.com/fleetyards/fleetyards/issues/4497)) ([1e14f74](https://github.com/fleetyards/fleetyards/commit/1e14f748a25a7c65fc2f3461006e12d431f320c4))
+
+
+### Refactorings
+
+* **users:** insert a new user's notification preferences in one statement ([#4495](https://github.com/fleetyards/fleetyards/issues/4495)) ([bd884b3](https://github.com/fleetyards/fleetyards/commit/bd884b3da4320d827e471bed7bb7c60ac7b0978d))
+
+
+### Chores
+
+* **deps-dev:** bump sass from 1.102.0 to 1.103.1 ([#4483](https://github.com/fleetyards/fleetyards/issues/4483)) ([2742748](https://github.com/fleetyards/fleetyards/commit/2742748371c8af866d805bb6d199429cb2507785))
+* **deps-dev:** bump vite from 8.2.1 to 8.2.2 ([#4487](https://github.com/fleetyards/fleetyards/issues/4487)) ([771ac15](https://github.com/fleetyards/fleetyards/commit/771ac15b7437826bb9adf8a0f1ea91cff35b6d32))
+* **deps-dev:** bump vitest from 4.1.10 to 4.1.11 ([#4486](https://github.com/fleetyards/fleetyards/issues/4486)) ([8ab3134](https://github.com/fleetyards/fleetyards/commit/8ab3134b224aebcd4e4e578d5ebd1ed54a164b7a))
+* **deps:** bump appsignal from 4.10.0 to 4.10.1 ([#4480](https://github.com/fleetyards/fleetyards/issues/4480)) ([41f03d5](https://github.com/fleetyards/fleetyards/commit/41f03d598431532e4192a4b73f9b2d3dbf6d9c20))
+* **deps:** bump git from 5.0.5 to 5.1.0 ([#4482](https://github.com/fleetyards/fleetyards/issues/4482)) ([2655a14](https://github.com/fleetyards/fleetyards/commit/2655a144d503ef5218bfa7763db1fcfc3b280902))
+* **deps:** bump openapi-ruby from 4.1.0 to 4.2.0 ([#4479](https://github.com/fleetyards/fleetyards/issues/4479)) ([6b8e8bd](https://github.com/fleetyards/fleetyards/commit/6b8e8bd075915dcb0fbebae3a4c4a237480143ce))
+* **deps:** bump psych from 5.4.0 to 5.5.0 ([#4484](https://github.com/fleetyards/fleetyards/issues/4484)) ([9d0cfc8](https://github.com/fleetyards/fleetyards/commit/9d0cfc886380b87019573a9e821f2278459ef3d4))
+* **deps:** bump swagger-ui-dist from 5.32.13 to 5.32.14 ([#4485](https://github.com/fleetyards/fleetyards/issues/4485)) ([d005149](https://github.com/fleetyards/fleetyards/commit/d0051493854425e89a04d22d5efa9dec86cf0fc3))
+* **deps:** bump uuid from 14.0.1 to 14.0.2 ([#4481](https://github.com/fleetyards/fleetyards/issues/4481)) ([35f64fc](https://github.com/fleetyards/fleetyards/commit/35f64fc38eccee77a27f1cb50ebdd617182cfba6))
+
 ## [7.1.0](https://github.com/fleetyards/fleetyards/compare/v7.0.3...v7.1.0) (2026-08-23)
 
 
