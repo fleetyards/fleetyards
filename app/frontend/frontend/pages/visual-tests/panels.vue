@@ -68,6 +68,12 @@ const toggleVehiclePanelFlagship = () => {
   vehiclePanelFlagship.value = !vehiclePanelFlagship.value;
 };
 
+const vehiclePanelHighlight = ref(false);
+
+const toggleVehiclePanelHighlight = () => {
+  vehiclePanelHighlight.value = !vehiclePanelHighlight.value;
+};
+
 const vehiclePanelLoaner = ref(false);
 
 const toggleVehiclePanelLoaner = () => {
@@ -430,6 +436,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
               :vehicle="vehicle"
               :details="vehiclePanelDetails"
               :editable="vehiclePanelEditable"
+              :highlight="vehiclePanelHighlight"
               :loaners-hint-visible="vehiclePanelLoanerHint"
             />
           </div>
@@ -440,6 +447,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
               :vehicle="vehicleTruncated"
               :details="vehiclePanelDetails"
               :editable="vehiclePanelEditable"
+              :highlight="vehiclePanelHighlight"
               :loaners-hint-visible="vehiclePanelLoanerHint"
             />
           </div>
@@ -455,6 +463,9 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </Btn>
         <Btn @click="toggleVehiclePanelFlagship">
           Toggle Flagship: {{ vehiclePanelFlagship }}
+        </Btn>
+        <Btn @click="toggleVehiclePanelHighlight">
+          Toggle Group Highlight: {{ vehiclePanelHighlight }}
         </Btn>
         <Btn @click="toggleVehiclePanelLoaner">
           Toggle Loaner: {{ vehiclePanelLoaner }}
