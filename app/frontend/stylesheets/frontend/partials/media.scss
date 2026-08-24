@@ -41,12 +41,35 @@
   }
 }
 
+/*
+ * The markup still carries Bootstrap's embed-responsive class names, but only
+ * this one survived the removal - with its cosmetics and none of its geometry.
+ * So the box had no height and no positioning context, and both the iframe and
+ * the consent placeholder inside it collapsed to nothing: invisible on the ship
+ * videos page and in the hangar guide modal.
+ *
+ * aspect-ratio rather than Bootstrap's padding-bottom hack, which needed the
+ * height:0 the class no longer sets.
+ */
 .embed-responsive {
+  position: relative;
   overflow: hidden;
   background-color: #272b30;
   border: none;
   border-radius: 6px;
   box-shadow: 0 0 5px black;
+}
+
+.embed-responsive-16by9 {
+  aspect-ratio: 16 / 9;
+}
+
+.embed-responsive-item {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .embed-copy {
@@ -70,6 +93,16 @@
   i {
     font-size: 100px;
   }
+}
+
+// The consent prompt offers two buttons and Btn carries no margin of its own,
+// so without this they touch and read as one control. Wrapping, because the
+// player is as narrow as the column it sits in.
+.youtube-placeholder-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
 @-webkit-keyframes fadeIn {

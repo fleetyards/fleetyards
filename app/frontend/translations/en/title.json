@@ -137,7 +137,10 @@
         "states": "States - Visual Tests",
         "notifications": "Notifications - Visual Tests",
         "syncModal": "Sync Modal - Visual Tests",
+        "overlays": "Overlays - Visual Tests",
         "supportHint": "Support Hint - Visual Tests",
+        "media": "Media - Visual Tests",
+        "charts": "Charts - Visual Tests",
         "chips": "Chips - Visual Tests"
       },
       "admin": {

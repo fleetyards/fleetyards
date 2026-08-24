@@ -2,6 +2,34 @@
 export default {
   name: "VisualTestsMetricsPage",
 };
+
+// The shape ModelMetricRows takes, written out rather than derived from a model:
+// the point of the demo is the layout rules, not the data behind them.
+const metricRowGroups = [
+  {
+    split: true,
+    rows: [
+      { label: "Length", value: "242.0 m" },
+      { label: "Beam", value: "136.0 m" },
+      { label: "Height", value: "42.0 m" },
+      { label: "Mass", value: "6,000,000 kg" },
+    ],
+  },
+  {
+    rows: [
+      { label: "Focus", value: "Capital" },
+      { label: "Crew", value: "8 – 12" },
+    ],
+  },
+];
+
+// A group with nothing in it is not a group: rendering it left an empty box with
+// a divider under it, so the component filters those out.
+const metricRowGroupsWithEmpty = [
+  metricRowGroups[0],
+  { rows: [] },
+  metricRowGroups[1],
+];
 </script>
 
 <script lang="ts" setup>
@@ -13,6 +41,7 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import MetricsList from "@/shared/components/MetricsList/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import MissingRolesPanel from "@/shared/components/MissingRolesPanel/index.vue";
+import ModelMetricRows from "@/shared/components/ModelMetricRows/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
@@ -377,6 +406,42 @@ const sampleMetrics = [
         :value="12"
         label="Manufacturers"
       />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">ModelMetricRows</Heading>
+  <p>
+    The row list behind the ship card's expanded details and the embed's card.
+    <code>split</code> sets the two-up groups — dimensions and price — while the
+    summary rows run full width.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <Panel>
+        <PanelBody>
+          <ModelMetricRows :groups="metricRowGroups" />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>
+        With an empty group in the middle — filtered out, not rendered as a gap
+      </BaseText>
+      <Panel>
+        <PanelBody>
+          <ModelMetricRows :groups="metricRowGroupsWithEmpty" />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>Nothing at all</BaseText>
+      <Panel>
+        <PanelBody>
+          <ModelMetricRows :groups="[]" />
+        </PanelBody>
+      </Panel>
     </div>
   </div>
 </template>

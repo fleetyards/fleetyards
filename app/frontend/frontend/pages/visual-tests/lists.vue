@@ -260,21 +260,19 @@ const toggleFilteredListEmpty = () => {
     list in place. Rows are selectable, and the expand toggle opens the
     <code>expanded</code> slot.
   </p>
-  <div class="flex items-center justify-between mb-4">
-    <div>
-      <Btn
-        :disabled="editableList?.creating"
-        data-test="start-create"
-        @click="editableList?.startCreate()"
-      >
-        <i class="fa-duotone fa-plus" />
-        Add
-      </Btn>
-      <Btn data-test="reset-docks" @click="resetDocks">
-        <i class="fa-duotone fa-rotate-left" />
-        Reset
-      </Btn>
-    </div>
+  <div class="vt-row">
+    <Btn
+      :disabled="editableList?.creating"
+      data-test="start-create"
+      @click="editableList?.startCreate()"
+    >
+      <i class="fa-duotone fa-plus" />
+      Add
+    </Btn>
+    <Btn data-test="reset-docks" @click="resetDocks">
+      <i class="fa-duotone fa-rotate-left" />
+      Reset
+    </Btn>
   </div>
 
   <InlineEditableList
@@ -405,7 +403,7 @@ const toggleFilteredListEmpty = () => {
     status.
   </p>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 vt-row">
       <Btn
         :active="filteredListLoading"
         data-test="toggle-filtered-list-loading"

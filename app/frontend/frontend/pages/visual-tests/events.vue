@@ -372,7 +372,7 @@ const CURRENT_USER = "user-ThalosVex";
     are metrics rows, each with its own label now that the icon strip is gone.
     The second has no image, so the placeholder shows.
   </p>
-  <div class="vt-row">
+  <div class="vt-cards">
     <EventShipCard
       :fleet="fleet"
       :event="openEvent"
@@ -435,7 +435,8 @@ const CURRENT_USER = "user-ThalosVex";
 </template>
 
 <style lang="scss" scoped>
-.vt-row {
+// Cards, not buttons: they top-align and want the wider gutter.
+.vt-cards {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;

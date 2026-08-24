@@ -10,6 +10,7 @@ import "highcharts/esm/modules/accessibility";
 import type { PieChartStats, BarChartStats } from "@/services/fyApi";
 import { v4 as uuidv4 } from "uuid";
 import Loader from "@/shared/components/Loader/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import { useChartTheme } from "@/shared/composables/useChartTheme";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -108,6 +109,20 @@ const loading = computed(() => {
 });
 
 const failed = computed(() => !!props.asyncStatus.error?.value);
+
+/*
+ * Settled with nothing to plot. Left to Highcharts this drew a bare pair of
+ * axes, which reads as a chart that failed rather than as one with no data yet -
+ * and the failure case drew nothing at all, so an empty box was the only thing
+ * either state had to say.
+ */
+const empty = computed(
+  () => !loading.value && !failed.value && !props.options.length,
+);
+
+const retry = () => {
+  props.asyncStatus.refetch?.();
+};
 
 onMounted(() => {
   uuid.value = `chart-${uuidv4()}`;
@@ -226,7 +241,23 @@ const setupChart = () => {
     spinner and snaps open when the data lands.
   -->
   <div class="chart-container" :style="{ minHeight: `${height}px` }">
-    <div :id="uuid" ref="chart" class="chart" />
+    <!--
+      v-show, not v-if: setupChart needs the element to exist, and the ref has
+      to survive a state change without being re-acquired.
+    -->
+    <div v-show="!failed && !empty" :id="uuid" ref="chart" class="chart" />
+
+    <div v-if="failed" class="chart-state">
+      <i class="fa-duotone fa-chart-line-down" />
+      <span>{{ t("chart.states.failed") }}</span>
+      <Btn v-if="asyncStatus.refetch" data-test="chart-retry" @click="retry">
+        {{ t("chart.states.retry") }}
+      </Btn>
+    </div>
+    <div v-else-if="empty" class="chart-state" data-test="chart-empty">
+      <i class="fa-duotone fa-chart-simple" />
+      <span>{{ t("chart.states.empty") }}</span>
+    </div>
 
     <Loader :loading="loading" :admin="admin" relative />
   </div>
@@ -235,5 +266,26 @@ const setupChart = () => {
 <style scoped>
 .chart-container {
   position: relative;
+}
+
+/* Centred in the height the container already reserves for the chart. */
+.chart-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.chart-state i {
+  font-size: 48px;
+  opacity: 0.4;
+}
+
+.chart-state span {
+  opacity: 0.7;
 }
 </style>

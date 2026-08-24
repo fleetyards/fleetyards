@@ -38,6 +38,11 @@
             "other": "<b>%{count}</b> supporters"
           }
         }
+      },
+      "states": {
+        "empty": "No data to chart yet",
+        "failed": "This chart could not be loaded",
+        "retry": "Try again"
       }
     }
   }

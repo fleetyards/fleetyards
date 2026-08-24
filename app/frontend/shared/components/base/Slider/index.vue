@@ -205,6 +205,10 @@ onUnmounted(() => {
         v-for="mark in computedMarks"
         :key="mark.value"
         class="base-slider__mark"
+        :class="{
+          'base-slider__mark--first': mark.percent === 0,
+          'base-slider__mark--last': mark.percent === 100,
+        }"
         :style="{ left: `${mark.percent}%` }"
       >
         <div class="base-slider__mark-label">

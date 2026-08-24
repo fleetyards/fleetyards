@@ -121,8 +121,16 @@
         "states": "States",
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
+        "overlays": "Overlays",
         "supportHint": "Support Hint",
-        "chips": "Chips"
+        "media": "Media",
+        "charts": "Charts",
+        "chips": "Chips",
+        "groups": {
+          "foundations": "Foundations",
+          "data": "Data",
+          "feedback": "Feedback"
+        }
       },
       "admin": {
         "index": "Admin",

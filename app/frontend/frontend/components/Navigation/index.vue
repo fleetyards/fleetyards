@@ -14,7 +14,6 @@ import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
-import VisualTestsNav from "./VisualTestsNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
@@ -40,12 +39,19 @@ const { filters } = storeToRefs(filtersStore);
 
 const route = useRoute();
 
-const shouldVisualTestsRouteBeVisible = computed(() => {
-  return process.env.NODE_ENV !== "production";
-});
+/*
+ * Vite mode, not NODE_ENV: a build sets NODE_ENV to "production" whatever the
+ * mode, so the old gate hid these routes on stage too. Mode is Rails.env, so
+ * stage and the e2e build keep them and only live strips them.
+ */
+const visualTestsEnabled = import.meta.env.MODE !== "production";
+
+const VisualTestsNav = visualTestsEnabled
+  ? defineAsyncComponent(() => import("./VisualTestsNav/index.vue"))
+  : undefined;
 
 const isVisualTestsRoute = computed(() => {
-  if (process.env.NODE_ENV === "production") {
+  if (import.meta.env.MODE === "production") {
     return false;
   }
 
@@ -172,7 +178,7 @@ const settingsActive = computed(() => {
           icon="fa-duotone fa-chart-bar"
           prefix="08"
         />
-        <template v-if="shouldVisualTestsRouteBeVisible">
+        <template v-if="visualTestsEnabled">
           <li class="nav-item__divider" />
           <NavItem
             :to="{ name: 'visual-tests' }"

@@ -42,7 +42,13 @@ $panel-border-radius: 10px;
 $panel-content-border-radius: 6px;
 $panelOuterBorderRadius: 24px;
 $panelInnerBorderRadius: 20px;
-$panelContentBorderRadius: 16px;
+/*
+ * Content that meets a panel's frame from the inside, so it is the panel's radius
+ * less its 2px border - not the same 16px. At 16 the corner of a background
+ * image is 2px rounder than the border it sits in, and the two curves visibly
+ * fail to share a centre. Every use of this is that same case.
+ */
+$panelContentBorderRadius: var(--radius-surface-inner, 14px);
 
 $navigation-mobile-height: 60px;
 $navigation-mobile-bottom-offset: 20px;

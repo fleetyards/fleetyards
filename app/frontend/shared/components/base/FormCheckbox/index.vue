@@ -125,12 +125,14 @@ const innerPlaceholder = computed(() => {
       'base-checkbox--expanded': !slim,
       'base-checkbox--inline': inline,
       'base-checkbox--partial': partial,
+      'base-checkbox--with-error': !!errorMessage,
     }"
   >
     <input
       :id="uuid"
       v-model="value"
       v-tooltip.right="errorMessage"
+      :aria-invalid="!!errorMessage || undefined"
       :placeholder="innerPlaceholder"
       :name="name"
       :checked="checked"

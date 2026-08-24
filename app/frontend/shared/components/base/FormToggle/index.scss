@@ -77,3 +77,12 @@
     margin-bottom: 0;
   }
 }
+
+/*
+ * An invalid control was signalled by the hover tooltip alone: nothing to see
+ * without a mouse, and nothing at all for assistive tech. The label carries the
+ * state, matching `base-input--with-error` on the fields that already did.
+ */
+.form-toggle--with-error label {
+  color: $danger;
+}

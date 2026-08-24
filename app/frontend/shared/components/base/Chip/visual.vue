@@ -195,18 +195,4 @@ const longRow = Array.from({ length: 18 }, (_, index) => ({
 
 <style lang="scss" scoped>
 // The page spaces loose chips; Chip ships no margins of its own, as Btn does not.
-.vt-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.vt-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-}
 </style>

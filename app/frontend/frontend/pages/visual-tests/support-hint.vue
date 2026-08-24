@@ -31,7 +31,7 @@ const trigger = (context: SupportPromptContext) => {
 const openSyncModalPreview = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/pages/visual-tests/sync-modal/StatePreview.vue"),
+      import("@/frontend/components/Hangar/SyncBtn/Result/visual/StatePreview.vue"),
     props: {
       title: "Hangar Sync",
       processSteps: [
@@ -58,7 +58,7 @@ const openSyncModalPreview = () => {
     Fires the SupportHint as a persistent notification — bypasses the cooldown.
   </p>
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 vt-row">
       <Btn
         v-for="context in contexts"
         :key="`trigger-${context}`"

@@ -7,7 +7,7 @@ import { routes as toolsRoutes } from "@/frontend/pages/tools/routes";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
 
 const VisualTestsRoutes =
-  process.env.NODE_ENV !== "production"
+  import.meta.env.MODE !== "production"
     ? [
         {
           name: "visual-tests",

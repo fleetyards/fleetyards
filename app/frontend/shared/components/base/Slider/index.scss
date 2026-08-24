@@ -83,6 +83,19 @@
     z-index: 4;
     padding-top: 8px;
 
+    /*
+     * A centred label at the extremes overhangs the track by half its width, and
+     * the label does not wrap - so the last mark pushed the page into horizontal
+     * scroll at narrow widths. The end marks align inside the track instead.
+     */
+    &--first {
+      transform: none;
+    }
+
+    &--last {
+      transform: translateX(-100%);
+    }
+
     &-label {
       font-size: 14px;
       white-space: nowrap;

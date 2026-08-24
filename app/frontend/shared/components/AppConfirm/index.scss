@@ -1,3 +1,14 @@
+/*
+ * The dialog was a copy of a toast - same 325px card, same shadow, and the same
+ * `scaleY(0.01) translate(30px, 0)` entrance, which is written for something
+ * arriving in the top-right corner rather than a centred overlay. That is why it
+ * appeared to jump.
+ *
+ * It keeps the toasts' idea - a neutral surface with an accent that says what
+ * the message means - but expressed the way the app does it now: the accent is
+ * the panel's end-caps rather than a border on one side. Actions sit outside the
+ * panel, as they do in the modal footer.
+ */
 .app-confirm {
   position: fixed;
   top: 0;
@@ -8,48 +19,101 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
   overflow-y: auto;
+  background-color: rgba(black, 0.7);
   transition: opacity $transition-base-speed ease-in-out;
 
-  &__inner {
+  &__dialog {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    position: relative;
-    align-items: flex-start;
-    justify-content: center;
-    width: 325px;
-    padding: 1rem;
-    max-width: 90vw;
+    // Between the toast's 325px and the modal's 600px: a question needs more
+    // room than a notification and less than a form.
+    width: 420px;
+    max-width: 100%;
+    transition: transform $transition-base-speed ease-in-out;
+  }
+
+  /*
+   * Two things a panel needs when it is being a dialog rather than a page
+   * surface. It has to sit above the scrim, so the ground is opaque instead of
+   * sharing a value with the page behind it. And the caps pull in: at their
+   * default 12% inset they span almost the whole width of a short question and
+   * read as a highlighted bar, where the point of them is to be a signature.
+   */
+  :deep(.panel) {
+    --cap-inset: 34%;
+
     background-color: $gray-darker;
-    border-radius: $border-radius-base;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
+  /*
+   * PanelBody is 4px top and 18px bottom - deliberately tight under a heading
+   * that closes flush above it. This panel has no heading, so that asymmetry
+   * became visible as a question sitting high in its own box. Even, and the
+   * question's own padding goes with it.
+   */
+  :deep(.panel-body) {
+    padding: 18px;
+  }
+
+  /*
+   * PanelBody carries only 4px of padding at the top - right for a panel with a
+   * heading above it, wrong for one holding nothing but a question, which then
+   * sat against the top cap in a panel squeezed to a single line. The question
+   * gets the room instead, and a floor so a short one still reads as a dialog
+   * rather than a bar.
+   */
   &__text {
-    margin-bottom: 1rem;
+    display: grid;
+    place-items: center;
+    // A floor, so a one-line question still reads as a dialog rather than a bar.
+    min-height: 3.5rem;
+    // Questions name things - models, groups, ids - with nothing to break on.
+    overflow-wrap: anywhere;
+    text-align: center;
   }
 
+  /*
+   * Centred, following the question. A confirm has no title and no form, so the
+   * two halves are one column - right-aligned actions under centred text read as
+   * two unrelated things, which is exactly how it looked.
+   */
   &__buttons {
+    flex-shrink: 0;
     display: flex;
-    justify-content: flex-end;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 0.5rem;
-    width: 100%;
+    padding-top: 1rem;
+  }
+
+  // Start state, painted before `in` is added. See afterNextPaint in index.vue.
+  &.fade {
+    opacity: 0;
+
+    .app-confirm__dialog {
+      transform: translate(0, -25%);
+    }
+
+    &.in {
+      opacity: 1;
+
+      .app-confirm__dialog {
+        transform: translate(0, 0);
+      }
+    }
   }
 }
 
-/* transitions */
-.app-confirm-fade-move,
-.app-confirm-fade-enter-active,
-.app-confirm-fade-leave-active {
-  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-}
+@media (max-width: $tablet-breakpoint) {
+  .app-confirm__buttons {
+    // Thumb-reachable and full width, like the toasts go full width here.
+    justify-content: stretch;
 
-.app-confirm-fade-enter-from,
-.app-confirm-fade-leave-to {
-  opacity: 0;
-  transform: scaleY(0.01) translate(30px, 0);
-}
-
-.app-confirm-fade-leave-active {
-  position: absolute;
+    :deep(.btn) {
+      flex: 1;
+    }
+  }
 }

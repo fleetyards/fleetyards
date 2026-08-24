@@ -1,3 +1,14 @@
+/*
+ * A demo lives next to the component it documents - `Chip/visual.vue` beside
+ * `Chip/index.vue` - so the two move, get reviewed and rot together. Only where
+ * exactly one component owns the demo: a page covering a whole family (Btn with
+ * BtnGroup and BtnDropdown) or several unrelated components stays here, and so
+ * does one whose demo would drag `shared/` into a dependency on `frontend/`.
+ *
+ * Imports are explicit rather than an `import.meta.glob` sweep, so the route
+ * names the e2e specs rely on stay stable and the gated branch in
+ * `pages/routes.ts` remains one array a live build can drop whole.
+ */
 export const routes = [
   {
     path: "panels/",
@@ -83,7 +94,7 @@ export const routes = [
   {
     path: "notifications/",
     name: "visual-tests-notifications",
-    component: () => import("@/frontend/pages/visual-tests/notifications.vue"),
+    component: () => import("@/shared/components/AppNotifications/visual.vue"),
     meta: {
       title: "visualTests.notifications",
       backgroundImage: "bg-7",
@@ -92,7 +103,8 @@ export const routes = [
   {
     path: "sync-modal/",
     name: "visual-tests-sync-modal",
-    component: () => import("@/frontend/pages/visual-tests/sync-modal.vue"),
+    component: () =>
+      import("@/frontend/components/Hangar/SyncBtn/Result/visual.vue"),
     meta: {
       title: "visualTests.syncModal",
       backgroundImage: "bg-7",
@@ -108,9 +120,36 @@ export const routes = [
     },
   },
   {
+    path: "overlays/",
+    name: "visual-tests-overlays",
+    component: () => import("@/frontend/pages/visual-tests/overlays.vue"),
+    meta: {
+      title: "visualTests.overlays",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "media/",
+    name: "visual-tests-media",
+    component: () => import("@/frontend/pages/visual-tests/media.vue"),
+    meta: {
+      title: "visualTests.media",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "charts/",
+    name: "visual-tests-charts",
+    component: () => import("@/shared/components/Chart/visual.vue"),
+    meta: {
+      title: "visualTests.charts",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "chips/",
     name: "visual-tests-chips",
-    component: () => import("@/frontend/pages/visual-tests/chips.vue"),
+    component: () => import("@/shared/components/base/Chip/visual.vue"),
     meta: {
       title: "visualTests.chips",
       backgroundImage: "bg-7",

@@ -168,6 +168,32 @@ export default defineConfigWithVueTs(
     },
   },
 
+  // A co-located `visual.vue` documents its neighbour and is reached only as a
+  // demo route. Importing one from real code would ship it, and the gate in
+  // pages/routes.ts could no longer drop it from a live build.
+  {
+    files: ["app/frontend/**/*.{js,ts,vue}"],
+    ignores: [
+      "app/frontend/frontend/pages/visual-tests/**",
+      "app/frontend/**/visual.vue",
+      "app/frontend/**/visual/**",
+    ],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["**/visual.vue", "**/visual/*"],
+              message:
+                "Demo pages are for the visual-tests routes only. Importing one from application code ships it to production.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   // TypeScript rule overrides
   [
     {

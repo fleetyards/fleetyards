@@ -77,6 +77,7 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
       -->
       <BtnGroup class="event-signup-cta__actions">
         <Btn
+          mobile-icon-only
           :disabled="signupsLocked"
           :loading="submitting"
           :title="
@@ -88,6 +89,7 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
           {{ t("labels.fleets.events.signupStatuses.confirmed") }}
         </Btn>
         <Btn
+          mobile-icon-only
           :disabled="signupsLocked"
           :loading="submitting"
           @click="signup(FleetEventSignupCreateInputStatus.tentative)"
@@ -96,6 +98,7 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
           {{ t("labels.fleets.events.signupStatuses.tentative") }}
         </Btn>
         <Btn
+          mobile-icon-only
           :disabled="signupsLocked"
           :loading="submitting"
           @click="signup(FleetEventSignupCreateInputStatus.interested)"
