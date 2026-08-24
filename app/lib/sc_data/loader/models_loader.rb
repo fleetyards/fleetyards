@@ -4,8 +4,10 @@ module ScData
       def all
         update_in_game_flags
 
-        Model.where(in_game: true).find_each do |model|
-          load_model(model)
+        Model.coalescing_broadcasts do
+          Model.where(in_game: true).find_each do |model|
+            load_model(model)
+          end
         end
 
         Hardpoint.find_each(&:save) # hack to generate correct group_keys

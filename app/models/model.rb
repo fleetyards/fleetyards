@@ -705,7 +705,53 @@ class Model < ApplicationRecord
     slug&.start_with?(prefix) ? slug.delete_prefix(prefix) : slug
   end
 
+  # A bulk load saves the same model several times over -- the matrix pass, the
+  # store pass, the hidden flag -- and every one of those saves rendered the
+  # whole model through jbuilder and published it. That is 37% of a full RSI
+  # import, measured, and 950 messages for 240 models.
+  #
+  # Inside this block the ids are collected instead, and each model is published
+  # once at the end carrying the state it ended up in rather than the three it
+  # passed through. ModelsChannel is in the public schema, so the updates still
+  # have to go out; what a subscriber loses is the intermediate states, which
+  # were never a coherent view of the model anyway.
+  #
+  # A load that raises partway publishes nothing: the job retries, and the run
+  # that gets through announces the state the models actually ended on.
+  def self.coalescing_broadcasts
+    return yield if broadcast_buffer
+
+    self.broadcast_buffer = Set.new
+
+    begin
+      result = yield
+
+      where(id: broadcast_buffer.to_a).find_each { |model| model.send(:publish_update) }
+
+      result
+    ensure
+      self.broadcast_buffer = nil
+    end
+  end
+
+  def self.broadcast_buffer
+    ActiveSupport::IsolatedExecutionState[:model_broadcast_buffer]
+  end
+
+  def self.broadcast_buffer=(buffer)
+    ActiveSupport::IsolatedExecutionState[:model_broadcast_buffer] = buffer
+  end
+  private_class_method :broadcast_buffer=
+
   private def broadcast_update
+    buffer = self.class.broadcast_buffer
+
+    return buffer << id if buffer
+
+    publish_update
+  end
+
+  private def publish_update
     ActionCable.server.broadcast("models", to_json)
   end
 

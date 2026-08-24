@@ -15,10 +15,12 @@ module Rsi
     def all
       models = load_data
 
-      models.each do |data|
-        next if blocked(data["id"])
+      Model.coalescing_broadcasts do
+        models.each do |data|
+          next if blocked(data["id"])
 
-        sync_model(data)
+          sync_model(data)
+        end
       end
 
       cleanup_variants

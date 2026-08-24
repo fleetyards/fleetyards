@@ -165,4 +165,72 @@ class ModelTest < ActiveSupport::TestCase
 
     assert_nil model.personal_inventory_label
   end
+
+  test ".coalescing_broadcasts holds a model's messages back and sends one at the end" do
+    model = create(:model, name: "Before")
+    published = capture_model_broadcasts
+
+    Model.coalescing_broadcasts do
+      model.update!(name: "During")
+      model.update!(name: "Final")
+
+      assert_empty published, "a load in progress is not a state to publish"
+    end
+
+    assert_equal 1, published.size
+    assert_equal "Final", JSON.parse(published.sole)["name"]
+  end
+
+  test ".coalescing_broadcasts sends one message per model, not one per save" do
+    first = create(:model, name: "First")
+    second = create(:model, name: "Second")
+    published = capture_model_broadcasts
+
+    Model.coalescing_broadcasts do
+      2.times { |run| first.update!(description: "run #{run}") }
+      second.update!(description: "run 0")
+    end
+
+    assert_equal %w[First Second],
+      published.map { |payload| JSON.parse(payload)["name"] }.sort
+  end
+
+  # A run that dies partway is retried by the job that owns it, and the run that
+  # gets through publishes the state the models actually ended on.
+  test ".coalescing_broadcasts publishes nothing when the load raises" do
+    model = create(:model, name: "Half Done")
+    published = capture_model_broadcasts
+
+    assert_raises(RuntimeError) do
+      Model.coalescing_broadcasts do
+        model.update!(name: "Written")
+        raise "the load went bad partway through"
+      end
+    end
+
+    assert_empty published
+    assert_equal "Written", model.reload.name
+  end
+
+  test ".coalescing_broadcasts publishes on every save once the block is over" do
+    model = create(:model, name: "After")
+
+    Model.coalescing_broadcasts { model.touch }
+
+    published = capture_model_broadcasts
+    model.update!(name: "Live")
+
+    assert_equal 1, published.size
+  end
+
+  private def capture_model_broadcasts
+    payloads = []
+
+    ActionCable.server.stubs(:broadcast).with do |channel, payload|
+      payloads << payload if channel == "models"
+      true
+    end
+
+    payloads
+  end
 end
