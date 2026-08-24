@@ -544,16 +544,32 @@ class User < ApplicationRecord
     pref.update!(app: sale_notify?, mail: sale_notify?)
   end
 
+  # One statement for all two dozen types. A `create!` each ran a uniqueness
+  # SELECT before its INSERT -- 48 round trips on a signup -- and the row it
+  # went looking for cannot be there: the user was created a moment ago, and
+  # the (user_id, notification_type) pair is unique in the database.
+  #
+  # insert_all builds one statement from the first row's keys, so every row has
+  # to carry the same ones. The defaults are merged onto a full set rather than
+  # passed through as a type happens to configure them, and the timestamps are
+  # set here because insert_all does not fill them in and the columns are NOT
+  # NULL.
   private def create_default_notification_preferences
-    Notification.notification_types.each_key do |type|
-      defaults = NotificationPreference.defaults_for(type)
+    now = Time.zone.now
 
-      if type == "model_on_sale" && sale_notify?
-        defaults = {app: true, mail: true, push: false}
+    rows = Notification.notification_types.each_key.map do |type|
+      defaults = if type == "model_on_sale" && sale_notify?
+        {app: true, mail: true, push: false}
+      else
+        NotificationPreference.defaults_for(type)
       end
 
-      notification_preferences.create!(notification_type: type, **defaults)
+      {app: true, mail: false, push: false}
+        .merge(defaults)
+        .merge(user_id: id, notification_type: type, created_at: now, updated_at: now)
     end
+
+    NotificationPreference.insert_all(rows)
   end
 
   private def touch_fleet_memberships
