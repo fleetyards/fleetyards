@@ -582,8 +582,9 @@ branch's chart baselines are its only coverage.
 - [x] Phase 0 — Verified: a production build drops the route table and all 13 page chunks
 - [x] Phase 1 — Gated on `import.meta.env.MODE` (3 sites); verified stripped in
       production mode and present in test mode
-- [~] Phase 1b — `Buttons.spec.ts` re-pointed at the gallery, 11/11 green CI-style;
-      `Chips` and `Panels` blocked on demo-page data wiring, see Phase 4
+- [~] Phase 1b — `Buttons.spec.ts` and `Panels.spec.ts` re-pointed at the gallery
+      and off their Rails scenarios; `Chips` still parked, it needs real filter
+      state on the demo page
 - [x] Phase 2 — Co-located the three single-owner demos; auto-scan exclusion and
       lint rule in place, family and composed pages left central
 - [x] Phase 3 — Chart, FormDateTime, FormTabs, media, panel variants, Markdown,
@@ -595,5 +596,24 @@ branch's chart baselines are its only coverage.
 - [x] Confirm surfaces rebuilt: AppConfirm in the current language with its own
       three tones, a new inline BtnConfirm, and five defects fixed along the way
 - [x] PrimaryAction made a real button (it was a div with a click handler)
-- [ ] Phase 4 — State, variant and narrow-viewport coverage
+- [~] Phase 4 — Narrow viewports covered at 390/768/1280 (two real overflow bugs
+      fixed), and every bindable form control now shows its invalid state — which
+      turned up two controls signalling it by tooltip alone. Left: `Chips` needs
+      filter state, plus single-row cases and FilteredList's empty/error states.
+      Corrected on the way: no control in this design system has a `readonly`
+      state, and the lists and tables already covered empty and loading — the
+      plan's expectation there was written before the pages were audited
 - [ ] Phase 5 — Rebase and re-target the pixel baselines
+
+## Loose ends, found and left
+
+- **A Postgres deadlock in the test-data reset.** `POST /__e2e__/command` for
+  `app("clean")` has failed with `PG::TRDeadlockDetected` in two separate full
+  runs, each time passing on retry. Recurring, so not worth calling noise.
+- **The event ship card still overflows below ~380px.** Its `min-width: 350px` is
+  the floor; lowering a card's minimum legible width is a design decision.
+- **`OauthBtn` builds its feature-flag name as a string**,
+  `isFeatureEnabled(`oauth-${provider}`)`, which is the one thing the flag
+  convention says not to do.
+- **The branding group has no demo** — see the Phase 3 note for why it is the
+  least demo-able group rather than the cheapest.
