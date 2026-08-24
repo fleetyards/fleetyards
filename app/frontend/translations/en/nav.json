@@ -245,6 +245,10 @@
             "index": "Base Data",
             "prices": "Prices"
           }
+        },
+        "visualTests": {
+          "index": "Visual Tests",
+          "notifications": "Notifications"
         }
       }
     }
