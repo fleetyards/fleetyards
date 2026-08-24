@@ -113,7 +113,7 @@ gem "pg_query", ">= 0.9.0"
 gem "git"
 gem "rdoc"
 
-gem "psych", "~> 5.2"
+gem "psych", "~> 5.5"
 
 gem "progress_bar"
 
