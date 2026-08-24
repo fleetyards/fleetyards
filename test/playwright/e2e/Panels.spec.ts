@@ -1,16 +1,14 @@
 import type { Locator, Page } from "@playwright/test";
-import { app, appScenario } from "../support/on-rails";
 import { test, expect } from "../support/commands";
 
 /*
  * Guards the invariants of the rebuilt Panel.
  *
- * Asserted against the ships list rather than visual-tests/panels.vue. The gate
- * is on the Vite mode now, so the gallery is reachable from the e2e build, but
- * its ModelPanel draws on a live `useModel("galaxy")` query and these assertions
- * need a card whose whole height comes from a background image - which is what
- * the seeded ships list renders, and what the demo page can only render if the
- * fixture behind it happens to carry a store image.
+ * Asserted against visual-tests/panels.vue. It used to be the seeded ships list,
+ * because the demo page drew its ModelPanel from a live `useModel("galaxy")`
+ * query and rendered nothing without that model in the database. The model is a
+ * written-out fixture now, so the card - and the background image these
+ * assertions turn on - is there unconditionally, and the spec needs no scenario.
  *
  * Computed style rather than pixel snapshots, for the same reasons Buttons.spec.ts
  * gives: each of these was a real defect, and an assertion names the broken
@@ -44,21 +42,9 @@ const box = async (locator: Locator) => {
 const card = (page: Page) => page.locator(".model-panel").first();
 
 test.describe("Panels", () => {
-  // Seeded once for the file rather than per test. Every assertion here is
-  // read-only, and cleaning and reseeding eleven times costs minutes without
-  // buying any isolation.
-  test.beforeAll(async () => {
-    await app("clean");
-    await appScenario("ships");
-  });
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/visual-tests/panels/");
 
-  // Reached through the nav rather than by goto("/ships/"), which is how
-  // Ships.spec.ts does it - a direct load of the list route renders no cards.
-  test.beforeEach(async ({ page, nav }) => {
-    await page.goto("/");
-    await nav.click("ships");
-
-    await expect(page).toHaveURL(/\/ships/);
     await expect(card(page)).toBeVisible();
   });
 
