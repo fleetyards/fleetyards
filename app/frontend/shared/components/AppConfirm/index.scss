@@ -35,16 +35,46 @@
     transition: transform $transition-base-speed ease-in-out;
   }
 
-  &__text {
-    // Questions name things - models, groups, ids - with nothing to break on.
-    overflow-wrap: anywhere;
+  /*
+   * Two things a panel needs when it is being a dialog rather than a page
+   * surface. It has to sit above the scrim, so the ground is opaque instead of
+   * sharing a value with the page behind it. And the caps pull in: at their
+   * default 12% inset they span almost the whole width of a short question and
+   * read as a highlighted bar, where the point of them is to be a signature.
+   */
+  :deep(.panel) {
+    --cap-inset: 34%;
+
+    background-color: $gray-darker;
   }
 
+  /*
+   * PanelBody carries only 4px of padding at the top - right for a panel with a
+   * heading above it, wrong for one holding nothing but a question, which then
+   * sat against the top cap in a panel squeezed to a single line. The question
+   * gets the room instead, and a floor so a short one still reads as a dialog
+   * rather than a bar.
+   */
+  &__text {
+    display: grid;
+    place-items: center;
+    min-height: 4.5rem;
+    padding: 0.75rem 0.25rem;
+    // Questions name things - models, groups, ids - with nothing to break on.
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+
+  /*
+   * Centred, following the question. A confirm has no title and no form, so the
+   * two halves are one column - right-aligned actions under centred text read as
+   * two unrelated things, which is exactly how it looked.
+   */
   &__buttons {
     flex-shrink: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 0.5rem;
     padding-top: 1rem;
   }
