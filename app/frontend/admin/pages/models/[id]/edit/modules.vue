@@ -182,7 +182,7 @@ const onUnlink = (record: ModelModule) => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-4">
     <Heading hero>{{ t("headlines.admin.models.edit.modules") }}</Heading>
     <BtnGroup>
       <Btn
