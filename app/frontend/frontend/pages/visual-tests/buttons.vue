@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   BtnSizesEnum,
@@ -14,6 +15,20 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+
+const ships = ref(["Aegis Idris P", "Anvil Carrack", "Drake Cutlass Black"]);
+
+const removed = ref<string[]>([]);
+
+const removeShip = (name: string) => {
+  ships.value = ships.value.filter((ship) => ship !== name);
+  removed.value = [name, ...removed.value];
+};
+
+const restoreShips = () => {
+  ships.value = ["Aegis Idris P", "Anvil Carrack", "Drake Cutlass Black"];
+  removed.value = [];
+};
 
 const sizes = [
   BtnSizesEnum.XS,
@@ -211,6 +226,58 @@ const toggleLoading = () => {
     </div>
   </div>
 
+  <Heading :level="HeadingLevelEnum.H2">Inline confirm</Heading>
+  <p>
+    Asks where the action is, for the decisions a modal is too heavy for. Armed,
+    the trigger is replaced by a group holding the question and two actions —
+    the same shape as the paginator above, so the three segments read as one
+    control.
+  </p>
+  <p>
+    <code>Escape</code> disarms, a click anywhere outside disarms, and arming a
+    second row disarms the first: two open questions in one list is an
+    invitation to answer the wrong one.
+  </p>
+  <div class="row">
+    <div class="col-12">
+      <div
+        v-for="ship in ships"
+        :key="ship"
+        class="vt-row"
+        :data-test="`ship-row-${ship}`"
+      >
+        <span class="vt-row__name">{{ ship }}</span>
+        <BtnConfirm question="Remove?" @confirm="removeShip(ship)">
+          Remove
+        </BtnConfirm>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <BtnConfirm
+        :size="BtnSizesEnum.SM"
+        question="Delete?"
+        confirm-text="Delete"
+        cancel-text="Keep"
+      >
+        Small, custom labels
+      </BtnConfirm>
+      <BtnConfirm data-test="confirm-narrow" hide-question>
+        Too narrow for a question
+      </BtnConfirm>
+      <BtnConfirm data-test="confirm-disabled" disabled>Disabled</BtnConfirm>
+      <Btn data-test="restore-ships" @click="restoreShips">Restore</Btn>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <p class="text-muted" data-test="removed-log">
+        Removed: {{ removed.length ? removed.join(", ") : "—" }}
+      </p>
+    </div>
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2">Dropdown</Heading>
   <div class="row">
     <div class="col-12 vt-row">
@@ -241,6 +308,10 @@ const toggleLoading = () => {
 </template>
 
 <style lang="scss" scoped>
-// The page is the only place that needs to space loose buttons; Btn ships no
-// margins of its own.
+// Loose buttons are spaced by the shared .vt-row on visual-tests.vue; Btn ships
+// no margins of its own. Only the list rows need anything of their own: a name
+// column wide enough that the confirm does not shift sideways when it arms.
+.vt-row__name {
+  min-width: 12rem;
+}
 </style>
