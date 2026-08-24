@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
+import MissingRolesPanel from "@/shared/components/MissingRolesPanel/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -72,12 +73,7 @@ const uniqueModelsCount = ref(0);
 const manufacturerCount = ref(0);
 
 const missingClassifications = computed(
-  () =>
-    vehicleStats.value?.metrics.missingClassifications
-      ?.map((c: string) =>
-        c.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
-      )
-      .join(", ") || "",
+  () => vehicleStats.value?.metrics.missingClassifications || [],
 );
 
 // use refs and watch for stats to trigger animation on every page visit
@@ -321,16 +317,9 @@ const totalIngameValueCompact = computed(() =>
     </div>
   </div>
 
-  <div v-if="missingClassifications" class="row">
-    <div class="col-12 col-sm-6">
-      <Panel>
-        <PanelHeading :level="HeadingLevelEnum.H2">
-          {{ t("labels.hangarMetrics.missingClassifications") }}
-        </PanelHeading>
-        <PanelBody>
-          <p>{{ missingClassifications }}</p>
-        </PanelBody>
-      </Panel>
+  <div v-if="missingClassifications.length" class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <MissingRolesPanel :roles="missingClassifications" />
     </div>
   </div>
 
