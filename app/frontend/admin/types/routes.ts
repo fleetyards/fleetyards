@@ -10,7 +10,6 @@ import type {
 type AdminSimpleRoutes =
   | "home"
   | "admin-images"
-  | "admin-maintenance"
   | "admin-notifications"
   | "admin-login"
   | "404"

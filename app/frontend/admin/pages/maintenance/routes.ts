@@ -2,9 +2,15 @@ import type { RouteRecordRaw } from "vue-router";
 
 const prefix = window.ON_SUBDOMAIN ? "" : "/admin";
 
+/*
+ * Top-level, not nested. These were children of a `/maintenance` route whose
+ * component was nothing but a `<router-view />` - no shared layout and no tabs -
+ * so the nesting only ever prefixed the URLs. The nav groups them now, and
+ * grouping is presentation, so the paths say what the page is instead.
+ */
 export const routes: RouteRecordRaw[] = [
   {
-    path: "imports/",
+    path: "/imports/",
     name: "imports",
     component: () => import("@/admin/pages/maintenance/imports.vue"),
     meta: {
@@ -15,7 +21,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "imports/:id",
+    path: "/imports/:id",
     name: "import",
     component: () => import("@/admin/pages/maintenance/imports/[id].vue"),
     meta: {
@@ -27,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "features/",
+    path: "/features/",
     name: "admin-features",
     component: () => import("@/admin/pages/maintenance/features.vue"),
     meta: {
@@ -38,7 +44,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "features/:name",
+    path: "/features/:name",
     name: "admin-feature",
     component: () => import("@/admin/pages/features/[name].vue"),
     meta: {
@@ -49,7 +55,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "workers/",
+    path: "/workers/",
     name: "workers",
     component: () => import("@/admin/pages/maintenance/workers.vue"),
     meta: {
@@ -61,7 +67,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "pghero/",
+    path: "/pghero/",
     name: "pghero",
     component: () => import("@/admin/pages/maintenance/pghero.vue"),
     meta: {
@@ -73,7 +79,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "tasks/",
+    path: "/tasks/",
     name: "tasks",
     component: () => import("@/admin/pages/maintenance/tasks.vue"),
     meta: {
@@ -85,7 +91,7 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "rsi-api-status/",
+    path: "/rsi-api-status/",
     name: "rsi-api-status",
     component: () => import("@/admin/pages/maintenance/rsi-api-status.vue"),
     meta: {

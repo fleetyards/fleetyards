@@ -1,3 +1,4 @@
+import { routes as visualTestsRoutes } from "@/admin/pages/visual-tests/routes";
 import { routes as modelsRoutes } from "@/admin/pages/models/routes";
 import { routes as manufacturersRoutes } from "@/admin/pages/manufacturers/routes";
 import { routes as componentsRoutes } from "@/admin/pages/components/routes";
@@ -12,7 +13,33 @@ import { routes as usersRoutes } from "@/admin/pages/users/routes";
 import { routes as supporterContributionsRoutes } from "@/admin/pages/supporter-contributions/routes";
 import { RouteRecordRaw } from "vue-router";
 
+/*
+ * Vite mode, not NODE_ENV: a build sets NODE_ENV to "production" whatever the
+ * mode, so a NODE_ENV gate hides these on stage too. Mode is Rails.env, so
+ * development, stage and the e2e build keep them and only live strips them.
+ */
+const VisualTestsRoutes: RouteRecordRaw[] =
+  import.meta.env.MODE !== "production"
+    ? [
+        {
+          name: "admin-visual-tests",
+          path: "/visual-tests/",
+          component: () => import("@/admin/pages/visual-tests.vue"),
+          children: visualTestsRoutes,
+          redirect: { name: visualTestsRoutes[0].name },
+          meta: {
+            title: "admin.visualTests.index",
+            icon: "fa-duotone fa-pen-swirl",
+            // The nav renders its own entry, last and behind a divider.
+            nav: "hidden",
+            needsAuthentication: true,
+          },
+        },
+      ]
+    : [];
+
 export const routes: RouteRecordRaw[] = [
+  ...VisualTestsRoutes,
   {
     path: "/",
     name: "home",
@@ -171,19 +198,7 @@ export const routes: RouteRecordRaw[] = [
       access: ["oauth_applications"],
     },
   },
-  {
-    path: "/maintenance",
-    name: "admin-maintenance",
-    component: () => import("@/admin/pages/maintenance.vue"),
-    children: maintenanceRoutes,
-    redirect: { name: maintenanceRoutes[0].name },
-    meta: {
-      title: "admin.maintenance.index",
-      needsAuthentication: true,
-      icon: "fa-duotone fa-screwdriver-wrench",
-      access: ["maintenance"],
-    },
-  },
+  ...maintenanceRoutes,
   {
     path: "/notifications",
     name: "admin-notifications",

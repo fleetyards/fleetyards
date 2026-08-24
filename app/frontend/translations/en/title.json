@@ -265,6 +265,10 @@
             "index": "Edit Equipment",
             "prices": "Edit Equipment Prices"
           }
+        },
+        "visualTests": {
+          "index": "Visual Tests",
+          "notifications": "Notifications - Visual Tests"
         }
       }
     }

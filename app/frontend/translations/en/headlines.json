@@ -153,6 +153,10 @@
             "index": "Edit Equipment",
             "itemPrices": "Item Prices"
           }
+        },
+        "visualTests": {
+          "index": "Visual Tests",
+          "notifications": "Notifications"
         }
       },
       "welcome": "Welcome to",

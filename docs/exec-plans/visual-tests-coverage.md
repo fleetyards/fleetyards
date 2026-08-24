@@ -553,6 +553,30 @@ real regression measured 371.
 The admin area has 76 components and no gallery. Out of scope here; the parked
 branch's chart baselines are its only coverage.
 
+### The admin gallery — stacked branch
+
+`test/admin-visual-tests` carries the first admin page, the notification centre:
+`ListItem` at all four severities, read against unread, a repeat count, an
+archived row, a generated identifier with nothing to break on, and `Detail` with
+both a short body and a markdown report — plus the empty pane, which is what the
+page shows most of the time it is open and the state hardest to reach for real.
+Same gate as the frontend, same rhythm, its own nav when you are inside it, and
+its entry last in the admin nav rather than first.
+
+Two things came out of building it that are not about visual tests at all:
+
+- **The admin nav was nineteen sections in one flat list.** It is six rows now:
+  Home, four groups (Catalogue, Community, People, System), and the gallery. The
+  grouping is presentation only — members are matched by **route path**, because
+  a section is mounted as an unnamed parent that carries the title and icon, and
+  matching by name picks up the children instead. That was the first attempt, and
+  it produced a menu of `[[missing "en.nav.undefined"]]`.
+- **The `/maintenance` URLs are flat.** `maintenance.vue` was nothing but a
+  router-view — no tabs, no shared layout — so the nesting only ever prefixed the
+  paths. `/admin/features/`, `/admin/imports/`, `/admin/tasks/` and the rest now
+  say what the page is, and the nav does the grouping. The three server-rendered
+  pages keep their absolute `meta.href`, so those are untouched.
+
 ## Key files
 
 - `app/frontend/frontend/pages/routes.ts:9-20` — the gate to change
