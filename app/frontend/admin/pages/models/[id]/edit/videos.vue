@@ -152,7 +152,7 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
 </script>
 
 <template>
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-4">
     <Heading hero>{{ t("headlines.admin.models.edit.videos") }}</Heading>
     <Btn
       :disabled="editableList?.creating"

@@ -133,7 +133,7 @@ const itemPricesList = ref<{
     />
   </form>
 
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between mb-4">
     <Heading hero>{{ t("headlines.admin.models.edit.itemPrices") }}</Heading>
     <Btn
       :disabled="itemPricesList?.creating"

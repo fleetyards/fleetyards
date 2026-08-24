@@ -483,18 +483,28 @@ const handleClick = (event: MouseEvent) => {
    The group draws one border, one radius and one pair of end-caps for the whole
    control, so members carry no chrome at all. Applied here rather than from
    BtnGroup's stylesheet, so Btn owns its own appearance in every context. */
-/* Same surface as a standalone button, so a group does not read as a different
-   material. The track's fill only shows through the 1px gaps, as dividers. */
+/*
+ * Same surface as a standalone button, so a group does not read as a different
+ * material - and the member draws the hairline that divides it from the member
+ * before it, rather than the track showing through a gap behind it. The fill is
+ * translucent, so a track painting the seam sat *behind* every member and tinted
+ * it: a member's rest read four points lighter than the same token standalone,
+ * and the leading edge of that 1px shadow is clipped by the track's own
+ * overflow, so no member needs to know it is the first.
+ */
 .btn--grouped {
   @apply bg-control rounded-none border-0;
+  box-shadow: -1px 0 0 var(--color-seam, #3a3f44);
 }
 .btn--grouped::before,
 .btn--grouped::after {
   content: none;
 }
+/* The standalone hover fill, not a value of its own. The literal #2b3034 this
+   replaces lifted the member three points off its rest where a standalone button
+   lifts fifteen, so a group answered the pointer about a quarter as loudly. */
 .btn--grouped:hover:not([disabled]) {
-  @apply text-lifted;
-  background-color: #2b3034;
+  @apply bg-control-hover text-lifted;
 }
 /* Same reasoning as the menu item: a group member is a flat fill inside one
    shared surface, so flooding it edge to edge breaks the control it sits in. */
@@ -504,15 +514,18 @@ const handleClick = (event: MouseEvent) => {
 }
 /*
  * Engaged, not hovered. A grouped member has no end-caps to carry state, and a
- * 0.22 tint sat too close to the #2b3034 hover fill to be told apart - so this
+ * 0.22 tint sat too close to the neutral hover fill to be told apart - so this
  * adds a second signal the hover state cannot borrow: an inset rule along the
- * bottom edge, which reads as a pressed key rather than a lit one.
+ * bottom edge, which reads as a pressed key rather than a lit one. The divider
+ * comes along, since this shadow replaces rather than extends the base one.
  */
 .btn--grouped.active,
 .btn--grouped[aria-pressed="true"] {
   @apply text-white;
   background-color: rgb(66 139 202 / 0.26);
-  box-shadow: inset 0 -2px 0 var(--color-primary, #428bca);
+  box-shadow:
+    inset 0 -2px 0 var(--color-primary, #428bca),
+    -1px 0 0 var(--color-seam, #3a3f44);
 }
 
 /* Hovering something already on has to answer too: `.active` outranks the

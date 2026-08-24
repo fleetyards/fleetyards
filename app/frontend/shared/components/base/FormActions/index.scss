@@ -1,4 +1,8 @@
 .form-actions {
+  // The rule above the buttons already sets the section apart; without the same
+  // 20px below them the next block on the page sits flush against the buttons.
+  margin-bottom: 20px;
+
   &__inner {
     display: flex;
     justify-content: flex-end;
