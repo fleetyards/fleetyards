@@ -311,7 +311,13 @@ const subtitle = computed(() => {
   --panel-image-height: 160px;
   width: 380px;
   min-width: 350px;
+  // Cards in a row should not squeeze against each other...
   flex-shrink: 0;
+  // ...but they must give way to the viewport. Without this the fixed 380px and
+  // flex-shrink: 0 together meant the card could not fit a phone at all, and the
+  // page scrolled sideways. The 350px floor still holds below roughly 380px of
+  // available width.
+  max-width: 100%;
 }
 
 /*
