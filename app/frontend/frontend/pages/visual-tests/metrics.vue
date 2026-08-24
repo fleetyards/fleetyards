@@ -11,6 +11,8 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import MetricsList from "@/shared/components/MetricsList/index.vue";
+import StatsPanel from "@/shared/components/StatsPanel/index.vue";
+import MissingRolesPanel from "@/shared/components/MissingRolesPanel/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
@@ -316,6 +318,65 @@ const sampleMetrics = [
     </div>
     <div class="col-12 col-lg-4">
       <ModelHullMetrics />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Stats Panels</Heading>
+  <p>
+    The stats-grid tiles. MissingRolesPanel is the same tile with its detail
+    carried as chips, so it lines up with its neighbours instead of reading as a
+    headed panel of prose.
+  </p>
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fa-duotone fa-rocket fa-4x"
+        :value="62"
+        label="Total Ships"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fa-duotone fa-heart fa-4x"
+        :value="8"
+        label="Wishlist"
+        suffix="(13%)"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <MissingRolesPanel :roles="['competition']" />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fa-duotone fa-coins fa-4x"
+        :value="206.91"
+        label="Hangar aUEC Value"
+        suffix="M aUEC"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-6 col-lg-3">
+      <MissingRolesPanel :roles="['competition', 'ground_vehicle']" />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <MissingRolesPanel
+        :roles="[
+          'competition',
+          'exploration',
+          'ground_vehicle',
+          'multi_role',
+          'support',
+          'transport',
+        ]"
+      />
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fa-duotone fa-industry fa-4x"
+        :value="12"
+        label="Manufacturers"
+      />
     </div>
   </div>
 </template>
