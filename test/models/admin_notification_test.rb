@@ -7,6 +7,7 @@ require "test_helper"
 # Table name: admin_notifications
 #
 #  id                :uuid             not null, primary key
+#  archived_at       :datetime
 #  body              :text
 #  dedupe_key        :string
 #  expires_at        :datetime         not null
@@ -26,12 +27,13 @@ require "test_helper"
 #
 # Indexes
 #
-#  index_admin_notifications_on_admin_user_id_and_created_at  (admin_user_id,created_at DESC)
-#  index_admin_notifications_on_admin_user_id_and_read_at     (admin_user_id,read_at)
-#  index_admin_notifications_on_dedupe                        (admin_user_id,notification_type,dedupe_key) UNIQUE WHERE ((read_at IS NULL) AND (dedupe_key IS NOT NULL))
-#  index_admin_notifications_on_expires_at                    (expires_at)
-#  index_admin_notifications_on_notification_type             (notification_type)
-#  index_admin_notifications_on_record                        (record_type,record_id)
+#  index_admin_notifications_on_admin_user_id_and_archived_at  (admin_user_id,archived_at)
+#  index_admin_notifications_on_admin_user_id_and_created_at   (admin_user_id,created_at DESC)
+#  index_admin_notifications_on_admin_user_id_and_read_at      (admin_user_id,read_at)
+#  index_admin_notifications_on_dedupe                         (admin_user_id,notification_type,dedupe_key) UNIQUE WHERE ((read_at IS NULL) AND (archived_at IS NULL) AND (dedupe_key IS NOT NULL))
+#  index_admin_notifications_on_expires_at                     (expires_at)
+#  index_admin_notifications_on_notification_type              (notification_type)
+#  index_admin_notifications_on_record                         (record_type,record_id)
 #
 # Foreign Keys
 #
@@ -142,6 +144,58 @@ class AdminNotificationTest < ActiveSupport::TestCase
     end
 
     assert_equal 1, AdminNotification.count
+  end
+
+  test "starts a new row once the deduped one has been archived" do
+    create(:admin_user, resource_access: [:models])
+
+    AdminNotification.notify!(type: :paints_import, title: "Paints Import Results", dedupe_key: "same").first.archive!
+    AdminNotification.notify!(type: :paints_import, title: "Paints Import Results", dedupe_key: "same")
+
+    assert_equal 2, AdminNotification.count
+    assert_equal 1, AdminNotification.inbox.count
+  end
+
+  test "archiving leaves the read state alone" do
+    admin_user = create(:admin_user, resource_access: [:models])
+    notification = create(:admin_notification, admin_user:)
+
+    notification.archive!
+
+    assert_predicate notification, :archived?
+    refute_predicate notification, :read?
+  end
+
+  test "inbox and archived split on archived_at" do
+    admin_user = create(:admin_user, resource_access: [:models])
+    inbox = create(:admin_notification, admin_user:)
+    archived = create(:admin_notification, :archived, admin_user:)
+
+    assert_includes AdminNotification.inbox, inbox
+    assert_includes AdminNotification.archived, archived
+  end
+
+  test "marking unread gives up a dedupe key the newer report holds" do
+    admin_user = create(:admin_user, resource_access: [:models])
+    older = create(:admin_notification, :read, admin_user:, dedupe_key: "same")
+    newer = create(:admin_notification, admin_user:, dedupe_key: "same")
+
+    older.mark_as_unread!
+
+    refute_predicate older.reload, :read?
+    assert_nil older.dedupe_key
+    assert_equal "same", newer.reload.dedupe_key
+  end
+
+  test "unarchiving gives up a dedupe key the newer report holds" do
+    admin_user = create(:admin_user, resource_access: [:models])
+    older = create(:admin_notification, :archived, admin_user:, dedupe_key: "same")
+    create(:admin_notification, admin_user:, dedupe_key: "same")
+
+    older.unarchive!
+
+    refute_predicate older.reload, :archived?
+    assert_nil older.dedupe_key
   end
 
   test "active and expired split on expires_at" do

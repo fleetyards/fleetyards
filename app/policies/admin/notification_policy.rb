@@ -4,7 +4,8 @@ module Admin
   # Not a BasePolicy subclass on purpose: notifications are not a gated resource
   # but every admin's own inbox, so access is ownership rather than a privilege.
   class NotificationPolicy < ApplicationPolicy
-    alias_rule :index?, :destroy?, :update?, :read?, :unread_count?, to: :show?
+    alias_rule :index?, :destroy?, :update?, :read?, :unread?, :archive?, :unarchive?,
+      :unread_count?, to: :show?
 
     def show?
       user.present?

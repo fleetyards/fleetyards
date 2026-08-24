@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_23_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_24_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_23_120000) do
 
   create_table "admin_notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "admin_user_id", null: false
+    t.datetime "archived_at"
     t.text "body"
     t.datetime "created_at", null: false
     t.string "dedupe_key"
@@ -62,8 +63,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_23_120000) do
     t.string "severity", default: "info", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.index ["admin_user_id", "archived_at"], name: "index_admin_notifications_on_admin_user_id_and_archived_at"
     t.index ["admin_user_id", "created_at"], name: "index_admin_notifications_on_admin_user_id_and_created_at", order: { created_at: :desc }
-    t.index ["admin_user_id", "notification_type", "dedupe_key"], name: "index_admin_notifications_on_dedupe", unique: true, where: "((read_at IS NULL) AND (dedupe_key IS NOT NULL))"
+    t.index ["admin_user_id", "notification_type", "dedupe_key"], name: "index_admin_notifications_on_dedupe", unique: true, where: "((read_at IS NULL) AND (archived_at IS NULL) AND (dedupe_key IS NOT NULL))"
     t.index ["admin_user_id", "read_at"], name: "index_admin_notifications_on_admin_user_id_and_read_at"
     t.index ["expires_at"], name: "index_admin_notifications_on_expires_at"
     t.index ["notification_type"], name: "index_admin_notifications_on_notification_type"

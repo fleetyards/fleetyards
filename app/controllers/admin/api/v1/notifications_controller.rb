@@ -6,10 +6,12 @@ module Admin
       class NotificationsController < ::Admin::Api::BaseController
         after_action -> { pagination_header(:notifications) }, only: %i[index]
 
-        before_action :set_notification, only: %i[read destroy]
+        before_action :set_notification, only: %i[read unread archive unarchive destroy]
 
         def index
           authorize! with: ::Admin::NotificationPolicy
+
+          notification_query_params["archived_at_null"] = true unless notification_query_params.key?("archived_at_null")
 
           notification_query_params["sorts"] = unread_first(
             sorting_params(AdminNotification, notification_query_params["sorts"])
@@ -26,7 +28,7 @@ module Admin
         def unread_count
           authorize! with: ::Admin::NotificationPolicy
 
-          @unread_count = scope.unread.count
+          @unread_count = scope.inbox.unread.count
         end
 
         def read
@@ -37,10 +39,36 @@ module Admin
           render :show
         end
 
+        def unread
+          authorize! @notification, with: ::Admin::NotificationPolicy
+
+          @notification.mark_as_unread!
+
+          render :show
+        end
+
+        def archive
+          authorize! @notification, with: ::Admin::NotificationPolicy
+
+          @notification.archive!
+
+          render :show
+        end
+
+        def unarchive
+          authorize! @notification, with: ::Admin::NotificationPolicy
+
+          @notification.unarchive!
+
+          render :show
+        end
+
         def read_all
           authorize! with: ::Admin::NotificationPolicy
 
-          scope.unread.update_all(read_at: Time.current, updated_at: Time.current)
+          # The inbox, not the archive: this clears what the unread badge counts,
+          # and an archived notification left unread on purpose stays that way.
+          scope.inbox.unread.update_all(read_at: Time.current, updated_at: Time.current)
 
           head :no_content
         end
@@ -76,7 +104,7 @@ module Admin
 
         private def notification_query_params
           @notification_query_params ||= params.permit(q: [
-            :notification_type_eq, :severity_eq, :read_at_null, :search_cont, :sorts, sorts: []
+            :notification_type_eq, :severity_eq, :read_at_null, :archived_at_null, :search_cont, :sorts, sorts: []
           ]).fetch(:q, {})
         end
       end

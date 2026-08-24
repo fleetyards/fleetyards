@@ -154,6 +154,9 @@ v1_admin_api_routes = lambda do
   resources :notifications, only: %i[index destroy] do
     member do
       put :read
+      put :unread
+      put :archive
+      put :unarchive
     end
     collection do
       get "unread-count", to: "notifications#unread_count"
