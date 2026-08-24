@@ -97,12 +97,14 @@ const innerPlaceholder = computed(() => {
     :class="{
       'form-toggle--expanded': !slim,
       'form-toggle--inline': inline,
+      'form-toggle--with-error': !!errorMessage,
     }"
   >
     <input
       :id="uuid"
       v-model="value"
       v-tooltip.right="errorMessage"
+      :aria-invalid="!!errorMessage || undefined"
       :placeholder="innerPlaceholder"
       :name="name"
       :disabled="disabled"
