@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "support/sc_data_fixture_tree"
 
 module ScData
   module Loader
     class EquipmentLoaderTest < ActiveSupport::TestCase
+      include ScDataFixtureTree
+
       setup do
         Equipment.delete_all
         @loader = ::ScData::Loader::EquipmentLoader.new
@@ -15,6 +18,15 @@ module ScData
       # into the database once per test would cost minutes for no more cover.
       def parsed
         @parsed ||= @loader.load_items("equipment").index_by { |item| item[:key] }
+      end
+
+      # What a load does to a record is the same whether the export carries two
+      # of them or 4,800, and the write is the expensive half: the real tree is
+      # three quarters of a minute per call. So the tests that go through the
+      # table use the curated export in test/fixtures/sc_data, and only "#all
+      # loads the parsed equipment into the table" still writes the real one.
+      def curated
+        @curated ||= fixture_loader(::ScData::Loader::EquipmentLoader)
       end
 
       test "every parsed item carries a family the model knows" do
@@ -169,6 +181,10 @@ module ScData
           "visible duplicates: #{duplicated.keys.sort.join(", ")}"
       end
 
+      # The real tree, and the only test here that writes it: an export that
+      # stopped parsing -- a renamed field, a tree that failed to sync -- reads
+      # as a load that stops producing records, which no curated fixture can
+      # tell you.
       test "#all loads the parsed equipment into the table" do
         @loader.all
 
@@ -179,9 +195,9 @@ module ScData
       end
 
       test "#all resolves the manufacturer from the record" do
-        ::ScData::Loader::ManufacturersLoader.new.all
+        fixture_loader(::ScData::Loader::ManufacturersLoader).all
 
-        @loader.all
+        curated.all
 
         assert_equal "Behring", Equipment.find_by(sc_key: "behr_rifle_ballistic_01").manufacturer&.name
       end
@@ -190,11 +206,11 @@ module ScData
       # filters it out. Re-importing the build we are already on does not: the
       # row keeps claiming it, and the picker keeps offering it.
       test "#all stops a dropped record claiming the build it is no longer in" do
-        @loader.all
+        curated.all
 
         retired = create(:equipment, sc_key: "gone_from_the_export", version: Rails.configuration.sc_data[:version])
 
-        @loader.all
+        curated.all
 
         assert Equipment.exists?(retired.id), "the row has to stay for existing references"
         assert_nil retired.reload.version
@@ -202,22 +218,21 @@ module ScData
       end
 
       test "#all leaves the records still in the export on the current build" do
-        @loader.all
-        @loader.all
+        curated.all
+        curated.all
 
-        assert_operator Equipment.current_version.count, :>=, 4_000
+        assert_predicate Equipment.count, :positive?
+        assert_equal Equipment.pluck(:sc_key).sort, Equipment.current_version.pluck(:sc_key).sort
       end
 
-      # live-preview carries no equipment tree and probe carries nothing at all,
-      # so a loader pointed at one parses no records. Retiring on that would
-      # empty the catalogue the first time a build's files failed to sync.
+      # A tree that carries no equipment at all is what a build whose files
+      # failed to sync looks like. Retiring on that would empty the catalogue
+      # the first time one did.
       test "#all retires nothing when the export parsed no records" do
-        @loader.all
+        curated.all
         current = Equipment.current_version.count
 
-        loader = ::ScData::Loader::EquipmentLoader.new
-        loader.sc_environment = "live-preview"
-        loader.all
+        empty_tree_loader(::ScData::Loader::EquipmentLoader).all
 
         assert_equal current, Equipment.current_version.count
       end
@@ -246,13 +261,14 @@ module ScData
         assert_nil placeholder[:volume]
       end
 
+      # That the export measures its gear is asserted above, on the real tree.
+      # What is left for a load is carrying both halves of the measurement onto
+      # the row.
       test "#all persists the volume onto the record" do
-        @loader.all
+        curated.all
 
-        measured = Equipment.current_version.where.not(volume: nil)
-
-        assert_operator measured.count, :>=, 4_000
-        assert_operator Equipment.current_version.where.not(volume_dimensions: nil).count, :>=, 4_000
+        assert_equal Equipment.count, Equipment.current_version.where.not(volume: nil).count
+        assert_equal Equipment.count, Equipment.current_version.where.not(volume_dimensions: nil).count
 
         helmet = Equipment.find_by(sc_key: "gys_helmet_03_01_01")
 
@@ -261,11 +277,11 @@ module ScData
       end
 
       test "#all is idempotent" do
-        @loader.all
+        curated.all
         count = Equipment.count
 
         assert_no_difference -> { Equipment.count } do
-          @loader.all
+          curated.all
         end
 
         assert_equal count, Equipment.count
