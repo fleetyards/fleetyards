@@ -122,7 +122,7 @@ gem "flipper"
 gem "flipper-active_record"
 
 # openapi
-gem "openapi-ruby", "~> 4.1"
+gem "openapi-ruby", "~> 4.2"
 
 group :development do
   gem "annotaterb"
