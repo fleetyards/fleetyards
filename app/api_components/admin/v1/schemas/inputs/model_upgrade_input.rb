@@ -16,7 +16,7 @@ module Admin
               pledgePrice: {type: [:number, :null]},
               active: {type: :boolean},
               hidden: {type: :boolean},
-              storeImage: {type: :string}
+              storeImage: {type: [:string, :null]}
             },
             additionalProperties: false
           })

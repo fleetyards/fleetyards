@@ -69,9 +69,19 @@ const {
 const columns: BaseTableCol<Manufacturer>[] = [
   {
     name: "logo",
-    label: "",
+    label: "logo?",
     width: "120px",
     alignment: "center",
+  },
+  {
+    // Beside the logo rather than folded into it: a blank logo cell is what
+    // makes the `logoBlank` filter actionable, so the export's art gets its own
+    // column instead of standing in for one that is missing.
+    name: "icon",
+    label: "icon?",
+    width: "120px",
+    alignment: "center",
+    mobile: false,
   },
   {
     name: "name",
@@ -147,6 +157,15 @@ const { t, l } = useI18n();
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
             :src="record.logo?.smallUrl"
             alt="Manufacturer logo"
+            transparent
+          />
+        </template>
+        <template #col-icon="{ record }">
+          <LazyImage
+            v-if="record.icon"
+            :variant="LazyImageVariantsEnum.WIDE_SMALL"
+            :src="record.icon?.smallUrl"
+            alt="Manufacturer icon from the game files"
             transparent
           />
         </template>

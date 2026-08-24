@@ -252,6 +252,22 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Clearing sends a null -- that is what the file input emits -- so the request
+  # schema has to accept one, or the admin UI cannot remove a picture at all.
+  test "PUT /users/:id clears the avatar" do
+    user = create(:user)
+    user.avatar.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      filename: "test.png",
+      content_type: "image/png"
+    )
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {id: user.id}, body: {avatar: nil}
+
+    assert_not_predicate user.reload.avatar, :attached?
+  end
+
   test "PUT /users/:id returns 404 for missing id" do
     sign_in @admin
 

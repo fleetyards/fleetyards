@@ -20,12 +20,12 @@ module Admin
               productionStatus: {type: :string},
               productionNote: {type: :string},
               storeUrl: {type: :string},
-              storeImage: {type: :string},
-              rsiStoreImage: {type: :string},
-              fleetchartImage: {type: :string},
-              topView: {type: :string},
-              sideView: {type: :string},
-              angledView: {type: :string}
+              storeImage: {type: [:string, :null]},
+              rsiStoreImage: {type: [:string, :null]},
+              fleetchartImage: {type: [:string, :null]},
+              topView: {type: [:string, :null]},
+              sideView: {type: [:string, :null]},
+              angledView: {type: [:string, :null]}
             },
             additionalProperties: false
           })

@@ -47,6 +47,22 @@ class Admin::Api::V1::FleetsUpdateTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: fleet.id}, body: {name: "Updated Fleet"}
   end
 
+  # Clearing sends a null -- that is what the file input emits -- so the request
+  # schema has to accept one, or the admin UI cannot remove a picture at all.
+  test "PUT /fleets/:id clears the logo" do
+    fleet = create(:fleet)
+    fleet.logo.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      filename: "test.png",
+      content_type: "image/png"
+    )
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: fleet.id}, body: {logo: nil}
+
+    assert_not_predicate fleet.reload.logo, :attached?
+  end
+
   test "PUT /fleets/:id returns 404 for missing id" do
     sign_in @user
 

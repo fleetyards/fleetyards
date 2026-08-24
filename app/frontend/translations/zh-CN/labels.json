@@ -524,6 +524,8 @@
         "longName": "全名",
         "code": "代码",
         "logo": "标志",
+        "icon": "图标（游戏文件）",
+        "iconOverridden": "图标（已覆盖）",
         "scRef": "SC Ref"
       },
       "itemPrice": {

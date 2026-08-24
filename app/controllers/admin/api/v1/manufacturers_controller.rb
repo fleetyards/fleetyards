@@ -42,7 +42,7 @@ module Admin
         end
 
         def create
-          @manufacturer = Manufacturer.new(manufacturer_params)
+          @manufacturer = Manufacturer.new(manufacturer_params.merge(icon_override))
 
           authorize! @manufacturer, with: ::Admin::ManufacturerPolicy
 
@@ -52,7 +52,7 @@ module Admin
         end
 
         def update
-          return if @manufacturer.update(manufacturer_params)
+          return if @manufacturer.update(manufacturer_params.merge(icon_override))
 
           render json: ValidationError.new("manufacturer.update", errors: @manufacturer.errors), status: :bad_request
         end
@@ -69,9 +69,20 @@ module Admin
           authorize! @manufacturer, with: ::Admin::ManufacturerPolicy
         end
 
+        # Derived from the upload rather than taken from the request: the flag
+        # decides whether the sc_data load may write over this picture, so it
+        # follows what actually happened to the attachment. Sending a file
+        # claims the icon; clearing it hands the icon back to the export, which
+        # refills it on the next load.
+        private def icon_override
+          return {} unless params.key?(:icon)
+
+          {icon_overridden: params[:icon].present?}
+        end
+
         private def manufacturer_params
           @manufacturer_params ||= params.permit(
-            :name, :long_name, :code, :description, :known_for, :logo, :sc_ref
+            :name, :long_name, :code, :description, :known_for, :logo, :icon, :sc_ref
           )
         end
 

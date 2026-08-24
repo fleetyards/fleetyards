@@ -185,7 +185,7 @@ class Admin::Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /manufacturers filters by logoBlank" do
-    create(:manufacturer, :with_logo, name: "Anvil Aerospace")
+    create(:manufacturer, :with_logo, :with_icon, name: "Anvil Aerospace")
     create(:manufacturer, name: "Drake Interplanetary")
     sign_in @user
 
@@ -282,6 +282,51 @@ class Admin::Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The flag is derived from the upload rather than sent: it decides whether the
+  # sc_data load may write over this picture.
+  test "PUT /manufacturers/:id claims the icon when one is uploaded" do
+    manufacturer = create(:manufacturer)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: manufacturer.id}, body: {icon: uploaded_icon.signed_id} do
+      assert parsed_body["iconOverridden"]
+    end
+
+    assert_equal "by-hand.png", manufacturer.reload.icon.filename.to_s
+  end
+
+  test "PUT /manufacturers/:id hands the icon back to the game files when cleared" do
+    manufacturer = create(:manufacturer, icon_overridden: true)
+    manufacturer.icon.attach(uploaded_icon)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: manufacturer.id}, body: {icon: nil} do
+      assert_not parsed_body["iconOverridden"]
+    end
+
+    assert_not_predicate manufacturer.reload.icon, :attached?
+  end
+
+  test "PUT /manufacturers/:id leaves the override alone when the icon is not part of the request" do
+    manufacturer = create(:manufacturer, icon_overridden: true)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: manufacturer.id}, body: {name: "Renamed"} do
+      assert parsed_body["iconOverridden"]
+    end
+  end
+
+  # Clearing sends a null -- that is what the file input emits -- so the request
+  # schema has to accept one, or the admin UI cannot remove a picture at all.
+  test "PUT /manufacturers/:id clears the logo" do
+    manufacturer = create(:manufacturer, :with_logo)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: manufacturer.id}, body: {logo: nil}
+
+    assert_not_predicate manufacturer.reload.logo, :attached?
+  end
+
   test "PUT /manufacturers/:id returns 404 for missing id" do
     sign_in @user
 
@@ -299,5 +344,13 @@ class Admin::Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :put, 403, path_params: {id: manufacturer.id}, body: {name: "x"}
+  end
+
+  private def uploaded_icon
+    ActiveStorage::Blob.create_and_upload!(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+      filename: "by-hand.png",
+      content_type: "image/png"
+    )
   end
 end

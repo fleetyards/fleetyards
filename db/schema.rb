@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_24_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_24_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -786,7 +786,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_24_120000) do
     t.string "code_mapping"
     t.datetime "created_at", precision: nil
     t.text "description"
-    t.string "icon"
+    t.boolean "icon_overridden", default: false, null: false
+    t.string "icon_path"
     t.string "known_for", limit: 255
     t.string "long_name"
     t.string "name", limit: 255

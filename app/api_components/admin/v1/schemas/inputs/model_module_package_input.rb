@@ -16,10 +16,10 @@ module Admin
               pledgePrice: {type: [:number, :null]},
               active: {type: :boolean},
               hidden: {type: :boolean},
-              storeImage: {type: :string},
-              angledView: {type: :string},
-              sideView: {type: :string},
-              topView: {type: :string},
+              storeImage: {type: [:string, :null]},
+              angledView: {type: [:string, :null]},
+              sideView: {type: [:string, :null]},
+              topView: {type: [:string, :null]},
               moduleIds: {type: :array, items: {type: :string, format: :uuid}}
             },
             additionalProperties: false

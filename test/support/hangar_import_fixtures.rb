@@ -24,7 +24,7 @@ module HangarImportFixtures
     now = Time.current
 
     mfr_data = YAML.safe_load_file(LOADER_FIXTURES_DIR.join("manufacturers.yml"))
-    mfr_template = Manufacturer.column_names.index_with { nil }
+    mfr_template = Manufacturer.column_defaults
     mfr_id_by_key = {}
     mfr_rows = mfr_data.map do |key, attrs|
       id = ActiveRecord::FixtureSet.identify(key, :uuid)
@@ -34,7 +34,7 @@ module HangarImportFixtures
     Manufacturer.insert_all(mfr_rows)
 
     model_data = YAML.safe_load_file(LOADER_FIXTURES_DIR.join("models.yml"))
-    model_template = Model.column_names.index_with { nil }
+    model_template = Model.column_defaults
     model_id_by_key = {}
     model_rows = model_data.map do |key, attrs|
       mfr_key = attrs["manufacturer"]
@@ -57,7 +57,7 @@ module HangarImportFixtures
     paint_data = YAML.safe_load_file(paint_path)
     return if paint_data.blank?
 
-    paint_template = ModelPaint.column_names.index_with { nil }
+    paint_template = ModelPaint.column_defaults
     paint_rows = paint_data.map do |key, attrs|
       model_key = attrs["model"]
       paint_template

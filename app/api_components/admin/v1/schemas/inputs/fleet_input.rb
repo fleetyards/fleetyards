@@ -22,8 +22,8 @@ module Admin
               youtube: {type: :string},
               ts: {type: :string},
               rsiSid: {type: :string},
-              logo: {type: :string},
-              backgroundImage: {type: :string}
+              logo: {type: [:string, :null]},
+              backgroundImage: {type: [:string, :null]}
             },
             additionalProperties: false
           })

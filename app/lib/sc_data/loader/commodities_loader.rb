@@ -16,7 +16,10 @@ module ScData
 
         commodity.update!(update_params(commodity_data))
 
-        attach_icon(commodity, :store_image, commodity_data["icon"])
+        # Filled in only while empty, the same way the manufacturer logo is:
+        # `store_image` is curated -- an admin uploads it -- so following the
+        # export unconditionally would replace their picture on every load.
+        attach_icon(commodity, :store_image, commodity_data["icon"]) unless commodity.store_image.attached?
 
         commodity
       end
