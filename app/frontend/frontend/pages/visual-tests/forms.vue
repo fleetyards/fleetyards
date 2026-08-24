@@ -346,6 +346,14 @@ const powerMarks = (value: number) => ({ label: String(value) });
       <FormDatePicker v-model="date" name="date" label="Bought at" />
     </div>
     <div class="col-12 col-md-6 col-lg-3">
+      <FormDatePicker
+        v-model="date"
+        name="disabledDate"
+        label="Disabled"
+        disabled
+      />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
       <p class="text-muted">Value: {{ date || "—" }}</p>
     </div>
   </div>
@@ -421,6 +429,16 @@ const powerMarks = (value: number) => ({ label: String(value) });
         :allowed-types="AllowedFileTypes.IMAGE"
         :allowed-size-mb="5"
         clearable
+      />
+    </div>
+    <div class="col-12 col-md-4">
+      <FormFileInput
+        v-model="file"
+        name="disabledImage"
+        label="Disabled"
+        :allowed-types="AllowedFileTypes.IMAGE"
+        :allowed-size-mb="5"
+        disabled
       />
     </div>
     <div class="col-12 col-md-4">
