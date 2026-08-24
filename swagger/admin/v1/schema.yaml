@@ -5737,6 +5737,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/{id}/archive":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Admin Notification id
+      required: true
+    put:
+      summary: Archive Admin Notification
+      tags:
+      - Notifications
+      operationId: archiveAdminNotification
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotification"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/{id}/read":
     parameters:
     - name: id
@@ -5751,6 +5786,76 @@ paths:
       tags:
       - Notifications
       operationId: readAdminNotification
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotification"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/{id}/unarchive":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Admin Notification id
+      required: true
+    put:
+      summary: Move Admin Notification back to the inbox
+      tags:
+      - Notifications
+      operationId: unarchiveAdminNotification
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotification"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/{id}/unread":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Admin Notification id
+      required: true
+    put:
+      summary: Mark Admin Notification as unread
+      tags:
+      - Notifications
+      operationId: unreadAdminNotification
       responses:
         '200':
           description: successful
@@ -7382,6 +7487,11 @@ components:
         readAt:
           type: string
           format: date-time
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
         expiresAt:
           type: string
           format: date-time
@@ -7400,6 +7510,7 @@ components:
       - occurrences
       - lastOccurredAt
       - read
+      - archived
       - expiresAt
       - createdAt
       - updatedAt
@@ -7412,6 +7523,8 @@ components:
         severityEq:
           "$ref": "#/components/schemas/AdminNotificationSeverityEnum"
         readAtNull:
+          type: boolean
+        archivedAtNull:
           type: boolean
         searchCont:
           type: string

@@ -9,34 +9,36 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import Panel from "@/shared/components/base/Panel/index.vue";
-import {
-  PanelTonesEnum,
-  PanelVariantsEnum,
-} from "@/shared/components/base/Panel/types";
-import BasePill from "@/shared/components/base/Pill/index.vue";
-import Markdown from "@/shared/components/Markdown/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
+import Detail from "@/admin/components/Notifications/Detail/index.vue";
 import FilterForm from "@/admin/components/Notifications/FilterForm/index.vue";
+import ListItem from "@/admin/components/Notifications/ListItem/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useAdminNotificationFilters } from "@/admin/composables/useAdminNotificationFilters";
+import {
+  useAdminNotificationFilters,
+  NOTIFICATION_TAB_QUERY_KEY,
+} from "@/admin/composables/useAdminNotificationFilters";
 import { useAdminNotificationInvalidation } from "@/admin/composables/useAdminNotificationUpdates";
 import {
   useAdminNotifications as useAdminNotificationsQuery,
+  useAdminNotificationsUnreadCount,
   getAdminNotificationsQueryKey,
   readAdminNotification,
+  unreadAdminNotification,
   readAllAdminNotifications,
+  archiveAdminNotification,
+  unarchiveAdminNotification,
   destroyAdminNotification,
   destroyAllAdminNotifications,
   type AdminNotification,
   type AdminNotificationSortEnum,
-  AdminNotificationSeverityEnum,
 } from "@/services/fyAdminApi";
 
-const { t, l } = useI18n();
+const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const route = useRoute();
@@ -46,6 +48,21 @@ const sorts = computed((): AdminNotificationSortEnum[] => {
 });
 
 const oldestFirst = computed(() => route.query.s === "createdAt asc");
+
+// The tab is not a filter: it decides which of the two lists this is, so it
+// stays out of `q` and off the filter form's "a filter is active" indicator.
+const archive = computed(
+  () => route.query[NOTIFICATION_TAB_QUERY_KEY] === "archive",
+);
+
+const tabLink = (archived: boolean) => ({
+  query: {
+    ...route.query,
+    [NOTIFICATION_TAB_QUERY_KEY]: archived ? "archive" : undefined,
+    // Page 4 of the inbox says nothing about the archive.
+    page: undefined,
+  },
+});
 
 const sortLink = computed(() => ({
   query: {
@@ -64,11 +81,23 @@ const { filters, isFilterSelected } = useAdminNotificationFilters(async () => {
   await refetch();
 });
 
+// Everything in the route that `useFilters` did not recognise counts as a
+// filter, so the tab has to be taken back out: left in it reaches the API as
+// `q[t]`, which the query schema rejects.
+const filterParams = computed(() => {
+  const params: Record<string, unknown> = { ...filters.value };
+
+  delete params[NOTIFICATION_TAB_QUERY_KEY];
+
+  return params;
+});
+
 const queryParams = computed(() => ({
   page: page.value,
   perPage: perPage.value,
   q: {
-    ...filters.value,
+    ...filterParams.value,
+    archivedAtNull: !archive.value,
     sorts: sorts.value,
   },
 }));
@@ -79,49 +108,74 @@ const {
   ...asyncStatus
 } = useAdminNotificationsQuery(queryParams);
 
-const { invalidate } = useAdminNotificationInvalidation();
+const { invalidate, invalidateUnreadCount, patchCached } =
+  useAdminNotificationInvalidation();
 
-watch(
-  () => sorts.value,
-  async () => {
-    await refetch();
-  },
+watch([sorts, archive], async () => {
+  await refetch();
+});
+
+const { data: unreadCount } = useAdminNotificationsUnreadCount();
+
+const records = computed(() => notifications.value?.items || []);
+
+const selectedId = ref<string>();
+
+const selected = computed(() =>
+  records.value.find((record) => record.id === selectedId.value),
 );
 
-const expanded = ref<string[]>([]);
+// A deletion, a filter or another page takes the open notification with it.
+watch(records, () => {
+  if (selectedId.value && !selected.value) {
+    selectedId.value = undefined;
+  }
+});
 
-const isExpanded = (notification: AdminNotification) =>
-  expanded.value.includes(notification.id);
+type FocusableRow = { focus: () => void };
 
-const toggle = (notification: AdminNotification) => {
-  if (isExpanded(notification)) {
-    expanded.value = expanded.value.filter((id) => id !== notification.id);
+const rows = new Map<string, FocusableRow>();
+
+const registerRow = (notification: AdminNotification) => (row: unknown) => {
+  if (row) {
+    rows.set(notification.id, row as FocusableRow);
+  } else {
+    rows.delete(notification.id);
+  }
+};
+
+const markRead = async (notification: AdminNotification) => {
+  try {
+    patchCached(await readAdminNotification(notification.id));
+    invalidateUnreadCount();
+  } catch {
+    displayAlert({ text: t("messages.adminNotifications.error") });
+  }
+};
+
+// Opening a notification is what reading it means, so it costs no second click.
+const select = (notification: AdminNotification) => {
+  selectedId.value = notification.id;
+
+  if (!notification.read) {
+    void markRead(notification);
+  }
+};
+
+const move = (offset: number) => {
+  const current = records.value.findIndex(
+    (record) => record.id === selectedId.value,
+  );
+
+  const next = records.value[current + offset];
+
+  if (!next) {
     return;
   }
 
-  expanded.value = [...expanded.value, notification.id];
-};
+  select(next);
 
-const severityVariant = (severity: AdminNotification["severity"]) => {
-  switch (severity) {
-    case AdminNotificationSeverityEnum.ERROR:
-      return "danger";
-    case AdminNotificationSeverityEnum.WARNING:
-      return "warning";
-    default:
-      return "default";
-  }
-};
-
-const severityTone = (severity: AdminNotification["severity"]) => {
-  switch (severity) {
-    case AdminNotificationSeverityEnum.ERROR:
-      return PanelTonesEnum.ERROR;
-    case AdminNotificationSeverityEnum.WARNING:
-      return PanelTonesEnum.HIGHLIGHT;
-    default:
-      return PanelTonesEnum.NEUTRAL;
-  }
+  void nextTick(() => rows.get(next.id)?.focus());
 };
 
 const withFeedback = async (
@@ -137,10 +191,28 @@ const withFeedback = async (
   }
 };
 
-const markRead = (notification: AdminNotification) =>
+// Closes the reading pane: leaving it open on a notification that is now unread
+// invites a click that would only mark it read again, and the point of marking
+// it unread is to come back to it later.
+const markUnread = async (notification: AdminNotification) => {
+  selectedId.value = undefined;
+
+  await withFeedback(
+    () => unreadAdminNotification(notification.id),
+    t("messages.adminNotifications.unread"),
+  );
+};
+
+const archiveNotification = (notification: AdminNotification) =>
   withFeedback(
-    () => readAdminNotification(notification.id),
-    t("messages.adminNotifications.read"),
+    () => archiveAdminNotification(notification.id),
+    t("messages.adminNotifications.archived"),
+  );
+
+const unarchiveNotification = (notification: AdminNotification) =>
+  withFeedback(
+    () => unarchiveAdminNotification(notification.id),
+    t("messages.adminNotifications.unarchived"),
   );
 
 const markAllRead = () =>
@@ -200,7 +272,7 @@ const destroyAll = () =>
 
   <FilteredList
     name="admin-notifications"
-    :records="notifications?.items || []"
+    :records="records"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
   >
@@ -223,114 +295,70 @@ const destroyAll = () =>
         }}
       </Btn>
     </template>
-    <template #default="{ records }">
-      <TransitionGroup tag="ul" name="fade-list" class="admin-notifications">
-        <li
-          v-for="notification in records"
-          :key="notification.id"
-          class="fade-list-item"
+    <template #default="{ records: shown }">
+      <div
+        class="admin-notifications"
+        :class="{ 'admin-notifications--reading': !!selected }"
+      >
+        <TransitionGroup
+          tag="ul"
+          name="fade-list"
+          class="admin-notifications__list"
         >
-          <Panel
-            :variant="PanelVariantsEnum.SLIM"
-            :tone="severityTone(notification.severity)"
-            :outer-spacing="false"
+          <li
+            v-for="notification in shown"
+            :key="notification.id"
+            class="fade-list-item"
           >
-            <div
-              class="admin-notification"
-              :class="{
-                'admin-notification--unread': !notification.read,
-              }"
-            >
-              <i
-                class="admin-notification__icon"
-                :class="notification.icon || 'fa-duotone fa-bell'"
-              />
-              <div class="admin-notification__content">
-                <div class="admin-notification__title">
-                  <span>{{ notification.title }}</span>
-                  <span
-                    v-if="notification.occurrences > 1"
-                    class="admin-notification__count"
-                  >
-                    &times;{{ notification.occurrences }}
-                  </span>
-                </div>
-                <div class="admin-notification__meta">
-                  <BasePill
-                    v-if="
-                      notification.severity !==
-                      AdminNotificationSeverityEnum.INFO
-                    "
-                    :variant="severityVariant(notification.severity)"
-                    uppercase
-                  >
-                    {{
-                      t(
-                        `labels.adminNotifications.severities.${notification.severity}`,
-                      )
-                    }}
-                  </BasePill>
-                  <span>
-                    {{
-                      t(
-                        `labels.adminNotifications.types.${notification.notificationType}`,
-                      )
-                    }}
-                  </span>
-                  <span>{{
-                    l(notification.createdAt, "datetime.formats.short")
-                  }}</span>
-                </div>
-                <Markdown
-                  v-if="isExpanded(notification)"
-                  class="admin-notification__body"
-                  :source="notification.body || ''"
-                />
-              </div>
-              <div class="admin-notification__actions">
-                <Btn
-                  v-if="notification.body"
-                  v-tooltip="
-                    isExpanded(notification)
-                      ? t('actions.hideDetails')
-                      : t('actions.showDetails')
-                  "
-                  @click="toggle(notification)"
-                >
-                  <i
-                    :class="
-                      isExpanded(notification)
-                        ? 'fa-duotone fa-chevron-up'
-                        : 'fa-duotone fa-chevron-down'
-                    "
-                  />
-                </Btn>
-                <Btn
-                  v-if="notification.link"
-                  v-tooltip="t('actions.open')"
-                  :to="notification.link"
-                >
-                  <i class="fa-duotone fa-arrow-up-right-from-square" />
-                </Btn>
-                <Btn
-                  v-if="!notification.read"
-                  v-tooltip="t('actions.adminNotifications.read')"
-                  @click="markRead(notification)"
-                >
-                  <i class="fa-duotone fa-check" />
-                </Btn>
-                <Btn
-                  v-tooltip="t('actions.delete')"
-                  :tone="BtnTonesEnum.DANGER"
-                  @click="destroy(notification)"
-                >
-                  <i class="fa-duotone fa-trash" />
-                </Btn>
-              </div>
-            </div>
-          </Panel>
-        </li>
-      </TransitionGroup>
+            <ListItem
+              :ref="registerRow(notification)"
+              :notification="notification"
+              :selected="notification.id === selectedId"
+              @select="select(notification)"
+              @archive="archiveNotification(notification)"
+              @unarchive="unarchiveNotification(notification)"
+              @destroy="destroy(notification)"
+              @previous="move(-1)"
+              @next="move(1)"
+            />
+          </li>
+        </TransitionGroup>
+
+        <Detail
+          class="admin-notifications__detail"
+          :notification="selected"
+          @close="selectedId = undefined"
+          @unread="selected && markUnread(selected)"
+          @archive="selected && archiveNotification(selected)"
+          @unarchive="selected && unarchiveNotification(selected)"
+          @destroy="selected && destroy(selected)"
+        />
+      </div>
+    </template>
+    <template #actions-right>
+      <BtnGroup segmented>
+        <Btn
+          :to="tabLink(false)"
+          :active="!archive"
+          route-active-class=""
+          data-test="notifications-tab-inbox"
+        >
+          <i class="fa-duotone fa-inbox" />
+          {{ t("labels.adminNotifications.inbox") }}
+          <span v-if="unreadCount?.count" class="admin-notifications__badge">
+            {{ unreadCount.count }}
+          </span>
+        </Btn>
+        <Btn
+          :to="tabLink(true)"
+          :active="archive"
+          route-active-class=""
+          data-test="notifications-tab-archive"
+        >
+          <i class="fa-duotone fa-box-archive" />
+          {{ t("labels.adminNotifications.archive") }}
+        </Btn>
+      </BtnGroup>
     </template>
     <template #pagination-top>
       <Paginator
@@ -352,21 +380,76 @@ const destroyAll = () =>
 </template>
 
 <style lang="scss" scoped>
+.admin-notifications__badge {
+  padding: 0 6px;
+  color: $gray-black;
+  font-size: 0.8em;
+  font-weight: bold;
+  background-color: var(--color-primary, #{$primary});
+  border-radius: 10px;
+}
+
 .admin-notifications {
-  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 20px;
   // Matches the margin a Panel carries by itself, which the list turns off in
   // favour of its own gap - without it the bottom paginator sits flush.
   margin: 0 0 21px;
+}
+
+.admin-notifications__list {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-// Rows change place under you - marking one read sorts it out of the unread
-// group - so the list slides rather than jumping. The shared `fade-list`
-// classes still carry Vue 2 names, hence the local ones.
+.admin-notifications__detail {
+  display: none;
+}
+
+// One pane at a time until there is room for both: opening a notification
+// replaces the list, and the reading pane brings its own way back.
+.admin-notifications--reading {
+  .admin-notifications__list {
+    display: none;
+  }
+
+  .admin-notifications__detail {
+    display: block;
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@media (min-width: $notifications-two-pane-breakpoint) {
+  .admin-notifications,
+  .admin-notifications--reading {
+    .admin-notifications__list {
+      display: flex;
+      flex: 0 0 38%;
+      max-width: 38%;
+    }
+
+    .admin-notifications__detail {
+      display: block;
+      position: sticky;
+      top: 20px;
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+// Rows change place under you - a new notification arrives at the top, a
+// deleted one leaves a gap - so the list slides rather than jumping. The shared
+// `fade-list` classes still carry Vue 2 names, hence the local ones.
 .fade-list-enter-active,
 .fade-list-leave-active,
 .fade-list-move {
@@ -384,70 +467,5 @@ const destroyAll = () =>
 .fade-list-leave-active {
   position: absolute;
   width: 100%;
-}
-
-.admin-notification {
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  padding: 14px 16px;
-}
-
-.admin-notification__icon {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: $gray-lighter;
-  font-size: 1.3em;
-}
-
-.admin-notification--unread .admin-notification__icon {
-  color: var(--color-primary, #{$primary});
-}
-
-.admin-notification__content {
-  flex: 1;
-  min-width: 0;
-}
-
-.admin-notification__title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.admin-notification--unread .admin-notification__title {
-  font-weight: bold;
-}
-
-.admin-notification__count {
-  color: $gray-lighter;
-  font-size: 0.85em;
-}
-
-.admin-notification__meta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 4px;
-  color: $gray-lighter;
-  font-size: 0.85em;
-}
-
-.admin-notification__actions {
-  display: flex;
-  flex-shrink: 0;
-  gap: 5px;
-}
-
-.admin-notification__body {
-  margin: 10px 0 0;
-  padding: 10px 12px;
-  max-height: 320px;
-  overflow: auto;
-  color: $text-color;
-  font-size: 0.9em;
-  background-color: rgba($gray-darker, 0.6);
-  border-radius: $border-radius-base;
 }
 </style>

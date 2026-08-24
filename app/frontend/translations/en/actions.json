@@ -288,7 +288,9 @@
         "clearCargo": "Clear Cargo"
       },
       "adminNotifications": {
-        "read": "Mark as read",
+        "unread": "Mark as unread",
+        "archive": "Archive",
+        "unarchive": "Move back to inbox",
         "readAll": "Mark all as read",
         "destroyAll": "Delete all",
         "sortOldest": "Oldest first",

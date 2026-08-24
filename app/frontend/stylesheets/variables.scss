@@ -28,6 +28,10 @@ $tablet-breakpoint: 768px;
 $desktop-breakpoint: 992px;
 $large-desktop-breakpoint: 1800px;
 
+// Where the notification center splits into a list and a reading pane. Below
+// it the two panes would each be too narrow to read, so one shows at a time.
+$notifications-two-pane-breakpoint: 1200px;
+
 $border-radius-base: 4px;
 
 $panel-bg: rgba($gray-darker, 0.9);

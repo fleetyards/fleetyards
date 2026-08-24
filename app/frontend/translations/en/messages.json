@@ -567,7 +567,9 @@
         }
       },
       "adminNotifications": {
-        "read": "Notification marked as read",
+        "unread": "Notification marked as unread",
+        "archived": "Notification archived",
+        "unarchived": "Notification moved back to the inbox",
         "readAll": "All notifications marked as read",
         "destroyed": "Notification deleted",
         "destroyedAll": "All notifications deleted",

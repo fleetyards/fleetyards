@@ -9,22 +9,51 @@ import {
   getAdminNotificationsQueryKey,
   getAdminNotificationsUnreadCountQueryKey,
   type AdminNotification,
+  type AdminNotifications,
   AdminNotificationSeverityEnum,
 } from "@/services/fyAdminApi";
 
 export const useAdminNotificationInvalidation = () => {
   const queryClient = useQueryClient();
 
-  const invalidate = () => {
-    void queryClient.invalidateQueries({
-      queryKey: getAdminNotificationsQueryKey(),
-    });
+  const invalidateUnreadCount = () => {
     void queryClient.invalidateQueries({
       queryKey: getAdminNotificationsUnreadCountQueryKey(),
     });
   };
 
-  return { invalidate };
+  const invalidate = () => {
+    void queryClient.invalidateQueries({
+      queryKey: getAdminNotificationsQueryKey(),
+    });
+    invalidateUnreadCount();
+  };
+
+  // Swaps one row for the version the server just returned. Refetching would
+  // reorder the list - the query sorts unread first - and pull the notification
+  // the reader has open out from under them, so marking one read patches the
+  // cache it came from instead.
+  const patchCached = (notification: AdminNotification) => {
+    queryClient.setQueriesData<AdminNotifications>(
+      { queryKey: getAdminNotificationsQueryKey() },
+      (data) => {
+        // The list key is also a prefix of the unread-count key, whose payload
+        // carries no items.
+        if (!data?.items) {
+          return data;
+        }
+
+        return {
+          ...data,
+          items: data.items.map((item) =>
+            item.id === notification.id ? notification : item,
+          ),
+        };
+      },
+    );
+  };
+
+  return { invalidate, invalidateUnreadCount, patchCached };
 };
 
 // Subscribe once, from the navigation: the invalidation is global, so a page

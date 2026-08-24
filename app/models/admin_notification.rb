@@ -5,6 +5,7 @@
 # Table name: admin_notifications
 #
 #  id                :uuid             not null, primary key
+#  archived_at       :datetime
 #  body              :text
 #  dedupe_key        :string
 #  expires_at        :datetime         not null
@@ -24,12 +25,13 @@
 #
 # Indexes
 #
-#  index_admin_notifications_on_admin_user_id_and_created_at  (admin_user_id,created_at DESC)
-#  index_admin_notifications_on_admin_user_id_and_read_at     (admin_user_id,read_at)
-#  index_admin_notifications_on_dedupe                        (admin_user_id,notification_type,dedupe_key) UNIQUE WHERE ((read_at IS NULL) AND (dedupe_key IS NOT NULL))
-#  index_admin_notifications_on_expires_at                    (expires_at)
-#  index_admin_notifications_on_notification_type             (notification_type)
-#  index_admin_notifications_on_record                        (record_type,record_id)
+#  index_admin_notifications_on_admin_user_id_and_archived_at  (admin_user_id,archived_at)
+#  index_admin_notifications_on_admin_user_id_and_created_at   (admin_user_id,created_at DESC)
+#  index_admin_notifications_on_admin_user_id_and_read_at      (admin_user_id,read_at)
+#  index_admin_notifications_on_dedupe                         (admin_user_id,notification_type,dedupe_key) UNIQUE WHERE ((read_at IS NULL) AND (archived_at IS NULL) AND (dedupe_key IS NOT NULL))
+#  index_admin_notifications_on_expires_at                     (expires_at)
+#  index_admin_notifications_on_notification_type              (notification_type)
+#  index_admin_notifications_on_record                         (record_type,record_id)
 #
 # Foreign Keys
 #
@@ -110,6 +112,8 @@ class AdminNotification < ApplicationRecord
 
   scope :unread, -> { where(read_at: nil) }
   scope :read, -> { where.not(read_at: nil) }
+  scope :inbox, -> { where(archived_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
   scope :expired, -> { where(expires_at: ...Time.current) }
   scope :active, -> { where(expires_at: Time.current..) }
 
@@ -127,7 +131,7 @@ class AdminNotification < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[notification_type severity read_at created_at title body search unread]
+    %w[notification_type severity read_at archived_at created_at title body search unread]
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -179,7 +183,9 @@ class AdminNotification < ApplicationRecord
     retried = false
 
     begin
-      existing = dedupe_key.presence && unread.find_by(
+      # Matching the partial unique index: an archived notification has been
+      # dealt with, so a repeat report starts a new row in the inbox.
+      existing = dedupe_key.presence && inbox.unread.find_by(
         admin_user:, notification_type: type, dedupe_key:
       )
 
@@ -234,8 +240,38 @@ class AdminNotification < ApplicationRecord
     read_at.present?
   end
 
+  def archived?
+    archived_at.present?
+  end
+
   def mark_as_read!
     update!(read_at: Time.current)
+  end
+
+  def mark_as_unread!
+    without_dedupe_conflict { update!(read_at: nil) }
+  end
+
+  def archive!
+    update!(archived_at: Time.current)
+  end
+
+  def unarchive!
+    without_dedupe_conflict { update!(archived_at: nil) }
+  end
+
+  # The dedupe index only covers what is unread and still in the inbox, so
+  # moving a notification back into that set can collide with the row that
+  # absorbed the repeats in the meantime. This one gives up its claim on the key
+  # rather than the move failing - it is the older report of the two.
+  private def without_dedupe_conflict
+    yield
+  rescue ActiveRecord::RecordNotUnique
+    raise if dedupe_key.nil?
+
+    self.dedupe_key = nil
+
+    yield
   end
 
   private def set_expires_at
