@@ -1854,10 +1854,16 @@
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
+        "inbox": "Inbox",
+        "archive": "Archive",
         "unreadOnly": "Unread only",
         "status": "Status",
         "severity": "Severity",
         "type": "Type",
+        "selectPrompt": "Select a notification to read it",
+        "noBody": "This notification carries no further details.",
+        "lastSeen": "Last seen",
+        "expires": "Expires",
         "severities": {
           "info": "Info",
           "warning": "Warning",
