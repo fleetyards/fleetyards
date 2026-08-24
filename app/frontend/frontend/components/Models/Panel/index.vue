@@ -25,7 +25,7 @@ import {
 type Props = {
   model: Model;
   details?: boolean;
-  highlight?: boolean;
+  tone?: `${PanelTonesEnum}`;
   id?: string;
   storeImage?: string;
   level?: HeadingLevelEnum;
@@ -33,7 +33,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   details: false,
-  highlight: false,
+  tone: PanelTonesEnum.NEUTRAL,
   id: undefined,
   storeImage: undefined,
   level: HeadingLevelEnum.H2,
@@ -74,7 +74,7 @@ const route = useRoute();
     class="model-panel"
     :class="`model-panel-${model.slug}`"
     :data-test="`model-panel-${model.slug}`"
-    :tone="highlight ? PanelTonesEnum.HIGHLIGHT : PanelTonesEnum.NEUTRAL"
+    :tone="tone"
     :bg-image="image"
     :bg-rounded="details ? PanelRoundedEnum.TOP : PanelRoundedEnum.ALL"
   >
