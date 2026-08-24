@@ -200,6 +200,49 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  # Written with the rows going in through insert_all, which skips the
+  # validations and the timestamp defaults a create! would have handled.
+  class DefaultNotificationPreferencesTest < UserTest
+    test "a new user gets one preference per notification type" do
+      user = create(:user)
+
+      assert_equal Notification.notification_types.keys.sort,
+        user.notification_preferences.pluck(:notification_type).sort
+    end
+
+    test "each preference carries the defaults its type declares" do
+      user = create(:user, sale_notify: false)
+
+      expected = Notification.notification_types.each_key.to_h do |type|
+        [type, NotificationPreference.defaults_for(type).values_at(:app, :mail, :push)]
+      end
+
+      actual = user.notification_preferences.to_h do |preference|
+        [preference.notification_type, [preference.app, preference.mail, preference.push]]
+      end
+
+      assert_equal expected, actual
+    end
+
+    # The sale toggle predates the preferences and still seeds this one.
+    test "sale_notify turns the on-sale preference on for both channels" do
+      preference = create(:user, sale_notify: true)
+        .notification_preferences
+        .find_by(notification_type: "model_on_sale")
+
+      assert preference.app
+      assert preference.mail
+      assert_not preference.push
+    end
+
+    test "the rows are timestamped" do
+      preference = create(:user).notification_preferences.first
+
+      assert_not_nil preference.created_at
+      assert_not_nil preference.updated_at
+    end
+  end
+
   class UrlValidationTest < UserTest
     setup do
       @user = create(:user)
