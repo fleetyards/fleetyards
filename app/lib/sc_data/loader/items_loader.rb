@@ -2,7 +2,9 @@ module ScData
   module Loader
     class ItemsLoader < ::ScData::Loader::BaseLoader
       def all
-        items = load_items("items").reject { |item| item["category"] == "inventory" }
+        exported = load_items("items")
+        items = exported.reject { |item| item["category"] == "inventory" }
+        items_by_ref = index_by_ref(exported)
         loaded = []
         carrying_icon = component_ids_carrying_icon
 
@@ -41,7 +43,7 @@ module ScData
           end
 
           if item[:inventory_ref].present?
-            cargo_grid = find_item_by_ref("items", item[:inventory_ref])&.dig(:type_data)
+            cargo_grid = items_by_ref[item[:inventory_ref]]&.dig(:type_data)
             update_params[:type_data] = cargo_grid if cargo_grid.present?
           end
 
@@ -113,6 +115,20 @@ module ScData
           .where(record_type: "Component", name: "icon")
           .pluck(:record_id)
           .to_set
+      end
+
+      # Same reason, for the export side: `find_item_by_ref` reaches for the
+      # tree again on every call and `load_items` globs and parses every one of
+      # the eight thousand item files, so resolving the hundred-odd
+      # inventory_refs one at a time parsed the whole tree a hundred times over.
+      #
+      # Indexed off the unfiltered export: an inventory_ref points at exactly
+      # the inventory items `all` rejects, so an index over the kept ones would
+      # resolve none of them. First match wins, as the scan did.
+      private def index_by_ref(items)
+        items.each_with_object({}) do |item, index|
+          index[item[:ref]] ||= item
+        end
       end
 
       private def add_loadout(item, component)
