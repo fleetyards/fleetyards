@@ -379,15 +379,42 @@ side, and that a crumb without a target is not a link.
 plainly after four slices that each turned one up: the gallery is not a divining
 rod, and these four components were simply in good shape.
 
-Still uncovered in `shared/components/` (12), unchanged from the audit except for
-`Chart`, the media group, the panel variants, `Markdown` and the overlay chrome:
+**The four small ones are covered**, and all four slotted into existing pages, so
+no new route, nav entry or translations. `Forbidden` joined the error blocks on
+`states.vue`, which were three and should have been four — it is the one for a
+resource that exists and is not yours, against `NotAuthorized` for not being
+signed in at all. `UploadProgress` joined the progress states, including the
+failed-part-way case that has to stay on screen rather than resetting.
+`ModelMetricRows` went to `metrics.vue` with its groups written out, since the
+demo is about the layout rules. `PrimaryAction` went to `buttons.vue` behind a
+toggle and a click counter — it renders nothing without an `action` and floats
+fixed, so there is otherwise no way to tell it works.
+
+That last one turned up the worst defect of the run: **`PrimaryAction` was a
+`div` with a click handler**, so the hangar's one obvious next step could not be
+reached from the keyboard, showed no focus ring and reported no role — the very
+defects `Btn` was rebuilt to fix, in the control that matters most on the page.
+It renders a `Btn` now. Its circle stays (`Avatar` is round too, so the design
+has the shape) but the caps go: a cap is a straight bar meant to close a straight
+edge, and rendering all three variants side by side showed that at the default
+inset the bars overhang the curve and at 34% they still cross it.
+
+**The branding group is deferred, and the reason is a correction.** The audit
+called `SocialLogins`, `OauthBtn`, `RsiProfileLink` and `CommunityLogo` the
+cheapest remaining slice. They are the least demo-able: `OauthBtn` only renders
+behind a feature flag per provider, clicking one starts a real OAuth flow and
+leaves the app, and the interesting states of `SocialLogins` need a session.
+Worth a look while there: `OauthBtn` builds its flag name as a string,
+`isFeatureEnabled(`oauth-${provider}`)`, which is the one thing the feature-flag
+convention says not to do.
+
+Still uncovered in `shared/components/` (8):
 
 | Component | Note |
 |---|---|
-| `SocialLogins`, `OauthBtn`, `RsiProfileLink`, `CommunityLogo` | Third-party branding, easy to break unnoticed |
+| `SocialLogins`, `OauthBtn`, `RsiProfileLink`, `CommunityLogo` | Flag-gated, session-gated, and a click leaves the app — see above |
 | `HoloViewer`, `LoadoutMarker` | 3D/canvas — may not suit a static demo |
-| `PrimaryAction`, `UploadProgress`, `Forbidden`, `ModelMetricRows` | Small, cheap |
-| `AppNavigation`, `AppFooter`, `AppEnvironment`, `BackgroundImage` | Always-on in the shell; probably skip |
+| `AppNavigation`, `AppFooter`, `AppEnvironment`, `BackgroundImage` | Always-on in the shell; skip, they are on screen everywhere |
 
 `FetchProgressBar` has a section but no import — it is driven globally, which is
 correct, not a gap.
@@ -449,6 +476,52 @@ page needs four separate edits — route, nav entry, and keys in
 `en/{headlines,nav,title}.json` — and forgetting the nav leaves a page that
 exists but cannot be found. So it asserts every route has exactly one nav link,
 rather than checking the nav against another copy of the same list.
+
+### The confirm surfaces — rebuilt out of band
+
+Reported from using the pages, and it grew into the largest single piece of this
+work. A design concept for it is published as an artifact; the summary:
+
+**`AppConfirm` was a copy of a toast.** The same 325px card, the same shadow, and
+the same `scaleY(0.01) translate(30px, 0)` entrance — a movement written for
+something arriving in the top-right corner, played on a centred dialog. Plus a
+`leave-active { position: absolute }` left over from a list transition, and no
+scrim at all. Four bugs, one cause: the dialog was assembled from another
+component's parts rather than from the design's vocabulary.
+
+It now follows the app modal — a scrim that fades, a dialog travelling from
+`translate(0, -25%)` — with the question in a `Panel` and the actions outside it
+as the modal footer does. The accent is the panel's end-caps, which is how this
+design carries what a toast carries in its coloured edge.
+
+**Its tones are its own three, not the panel's five.** `neutral` is the default,
+so colour is spent only where it means something instead of becoming the
+wallpaper of every confirmation; `warning` for what cannot simply be repeated,
+`danger` for what does not come back. Only `danger` tones the committing button —
+a warning dressed as a danger stops being read.
+
+**`BtnConfirm` is new**: an inline confirm for the decisions a modal is too heavy
+for, composed from `Btn` and `BtnGroup` with no new button and one line of CSS of
+its own. Armed, the trigger becomes the group's label-segment shape the paginator
+already uses, so three segments read as one control.
+
+Five defects surfaced along the way, each of which reads as something else:
+
+- **Both entrances sometimes started mid-screen.** A `setTimeout(50)` that did
+  not guarantee the start state was painted, and — for the off-canvas — the side
+  class flip itself being animated, so the panel travelled between the two
+  off-screen positions and crossed the viewport. Two `requestAnimationFrame`s and
+  a suppressed transition while repositioning; `utils/Transitions.ts` holds the
+  helper.
+- **One `Enter` ran both outcomes**: `autofocus` sat on Cancel while a window
+  listener confirmed.
+- **The inline confirm's arming click disarmed it**: Vue removes the trigger the
+  moment it arms, so the same event reached the document listener with a detached
+  target, which `contains()` reports as outside.
+- **Its `Escape` never fired**, because the handler was bound inside a component
+  whose focused element had just been removed.
+- **The question sat high in its panel**: `PanelBody` is 4px top and 18px bottom,
+  right under a heading and wrong for a panel holding only a question.
 
 ### Phase 4 — State, variant and viewport coverage
 
@@ -513,10 +586,14 @@ branch's chart baselines are its only coverage.
       `Chips` and `Panels` blocked on demo-page data wiring, see Phase 4
 - [x] Phase 2 — Co-located the three single-owner demos; auto-scan exclusion and
       lint rule in place, family and composed pages left central
-- [~] Phase 3 — Chart, FormDateTime, FormTabs, the media group, the panel variants,
-      Markdown and the overlay/nav chrome covered; 12 shared components still
-      uncovered
+- [x] Phase 3 — Chart, FormDateTime, FormTabs, media, panel variants, Markdown,
+      overlay/nav chrome and the four small ones covered. The 8 left are
+      deliberate skips: flag- and session-gated branding, 3D/canvas, and the
+      always-on shell
 - [x] Spacing fixed (three classes of it) and the nav grouped into submenus,
       both guarded by specs
+- [x] Confirm surfaces rebuilt: AppConfirm in the current language with its own
+      three tones, a new inline BtnConfirm, and five defects fixed along the way
+- [x] PrimaryAction made a real button (it was a div with a click handler)
 - [ ] Phase 4 — State, variant and narrow-viewport coverage
 - [ ] Phase 5 — Rebase and re-target the pixel baselines
