@@ -17,14 +17,14 @@ test.describe("Admin Features", () => {
   });
 
   test("Loads the features page", async ({ page }) => {
-    await page.goto("/admin/maintenance/features/");
+    await page.goto("/admin/features/");
 
     await expect(page).toHaveURL(/\/maintenance\/features/);
     await expect(page.locator("h1")).toBeVisible();
   });
 
   test("Shows feature flags list", async ({ page }) => {
-    await page.goto("/admin/maintenance/features/");
+    await page.goto("/admin/features/");
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
@@ -35,7 +35,7 @@ test.describe("Admin Features", () => {
   });
 
   test("Shows feature state pills", async ({ page }) => {
-    await page.goto("/admin/maintenance/features/");
+    await page.goto("/admin/features/");
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
@@ -47,7 +47,7 @@ test.describe("Admin Features", () => {
   });
 
   test("Toggles a feature on", async ({ page, notification }) => {
-    await page.goto("/admin/maintenance/features/");
+    await page.goto("/admin/features/");
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
@@ -65,7 +65,7 @@ test.describe("Admin Features", () => {
   });
 
   test("Opens edit mode for a feature", async ({ page }) => {
-    await page.goto("/admin/maintenance/features/");
+    await page.goto("/admin/features/");
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
@@ -83,7 +83,7 @@ test.describe("Admin Features", () => {
   });
 
   test("Toggles self-service flag", async ({ page, notification }) => {
-    await page.goto("/admin/maintenance/features/");
+    await page.goto("/admin/features/");
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");
@@ -103,7 +103,7 @@ test.describe("Admin Features", () => {
   });
 
   test("Adds a group to a feature", async ({ page, notification }) => {
-    await page.goto("/admin/maintenance/features/");
+    await page.goto("/admin/features/");
 
     // Wait for feature list to load from API
     await page.waitForLoadState("networkidle");

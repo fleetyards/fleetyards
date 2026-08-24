@@ -198,22 +198,7 @@ export const routes: RouteRecordRaw[] = [
       access: ["oauth_applications"],
     },
   },
-  {
-    path: "/maintenance",
-    name: "admin-maintenance",
-    component: () => import("@/admin/pages/maintenance.vue"),
-    children: maintenanceRoutes,
-    redirect: { name: maintenanceRoutes[0].name },
-    meta: {
-      title: "admin.maintenance.index",
-      needsAuthentication: true,
-      // The System group renders these pages directly, so the parent no longer
-      // appears as its own row.
-      nav: "hidden",
-      icon: "fa-duotone fa-screwdriver-wrench",
-      access: ["maintenance"],
-    },
-  },
+  ...maintenanceRoutes,
   {
     path: "/notifications",
     name: "admin-notifications",

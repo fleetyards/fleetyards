@@ -64,13 +64,19 @@ const GROUPS = [
     paths: ["/users", "/admins/", "/supporter-contributions/"],
   },
   {
-    // Was "Maintenance", which stopped covering it once the OAuth apps moved in.
+    // Was "Maintenance", which stopped covering it once the OAuth apps moved in
+    // and the maintenance URLs were flattened to top level.
     key: "system",
     icon: "fa-duotone fa-screwdriver-wrench",
-    paths: ["/oauth-applications/"],
-    // Its pages are children of the maintenance route, so the group shows them
-    // instead of the parent - one level of menu, not two.
-    expand: ["/maintenance"],
+    paths: [
+      "/oauth-applications/",
+      "/imports/",
+      "/features/",
+      "/workers/",
+      "/pghero/",
+      "/tasks/",
+      "/rsi-api-status/",
+    ],
   },
 ];
 
@@ -86,24 +92,8 @@ const mainRoutes = computed(() => {
   );
 });
 
-const groupRoutes = (group: (typeof GROUPS)[number]) => {
-  const own = mainRoutes.value.filter((route) =>
-    group.paths.includes(String(route.path)),
-  );
-
-  /*
-   * `nav: "hidden"` is applied by whoever selects the routes, not by
-   * AppNavigationItems - so expanding a parent has to apply it too, or the
-   * detail routes behind :id and :name turn up in the menu.
-   */
-  const expanded = (group.expand ?? []).flatMap((path) =>
-    (
-      routes.find((route) => String(route.path) === path)?.children ?? []
-    ).filter((child) => child.meta?.nav !== "hidden"),
-  );
-
-  return [...own, ...expanded];
-};
+const groupRoutes = (group: (typeof GROUPS)[number]) =>
+  mainRoutes.value.filter((route) => group.paths.includes(String(route.path)));
 
 const groupedPaths = computed(
   () => new Set(GROUPS.flatMap((group) => group.paths)),
