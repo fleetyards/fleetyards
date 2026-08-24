@@ -16,13 +16,13 @@ import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import TeaserPanel from "@/shared/components/TeaserPanel/index.vue";
 import TeaserPanel2 from "@/shared/components/TeaserPanel2/index.vue";
-import { BoughtViaEnum, type Vehicle } from "@/services/fyApi";
+import { BoughtViaEnum, type Model, type Vehicle } from "@/services/fyApi";
+import storeImage from "@/images/fallback/store_image.webp";
 
 import {
   PanelAlignmentsEnum,
   PanelTonesEnum,
 } from "@/shared/components/base/Panel/types";
-import { useModel as useModelQuery } from "@/services/fyApi";
 
 const modelPanelDetails = ref(false);
 
@@ -47,7 +47,43 @@ const internalModel = computed(() => {
   };
 });
 
-const { data: model } = useModelQuery("galaxy");
+/*
+ * Written out rather than fetched. It used to come from `useModel("galaxy")`,
+ * which meant the ModelPanel and VehiclePanel sections - the two this page
+ * exists for - rendered nothing at all unless the database happened to hold that
+ * model.
+ *
+ * The fields are what the components actually read: eight on the panel itself,
+ * plus everything `useModelMetricRows` touches for the expanded details - crew,
+ * speeds, metrics, price, inGame. A first attempt with only the panel's eight
+ * threw `reading 'min'` from that composable, so the shape is not optional.
+ * Still a cast, because a complete Model would be pages of noise around them.
+ */
+const model = computed(
+  () =>
+    ({
+      id: "galaxy",
+      slug: "galaxy",
+      name: "Galaxy",
+      productionStatus: "flight-ready",
+      onSale: false,
+      inGame: true,
+      focus: "Multi-Role",
+      manufacturer: { name: "Roberts Space Industries" },
+      media: { storeImage: { url: storeImage, mediumUrl: storeImage } },
+      crew: { min: 4, max: 6 },
+      speeds: { scmSpeed: 195, maxSpeed: 1050, groundMaxSpeed: null },
+      price: 6_000_000,
+      metrics: {
+        isGroundVehicle: false,
+        length: 242,
+        beam: 136,
+        height: 42,
+        mass: 6_000_000,
+        cargo: 2016,
+      },
+    }) as unknown as Model,
+);
 
 // TeaserPanel takes a shape, not an API type, so it can be written out here.
 const teaser = computed(() => ({
