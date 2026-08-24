@@ -16,6 +16,16 @@ import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
 
+/*
+ * Vite mode, not NODE_ENV: a build sets NODE_ENV to "production" whatever the
+ * mode, so a NODE_ENV gate would hide this on stage too.
+ */
+const visualTestsEnabled = import.meta.env.MODE !== "production";
+
+const VisualTestsNav = visualTestsEnabled
+  ? defineAsyncComponent(() => import("./VisualTestsNav/index.vue"))
+  : undefined;
+
 const { t } = useI18n();
 
 const currentRoute = useRoute();
@@ -39,6 +49,12 @@ const logout = async () => {
   await sessionStore.logout();
 };
 
+// Inside the gallery its own pages replace the admin sections, so the nav is
+// about where you are rather than about everything there is.
+const isVisualTestsRoute = computed(() =>
+  String(currentRoute.name).startsWith("admin-visual-tests"),
+);
+
 const hasAccessTo = (access?: string[]) => {
   return checkAccess(resourceAccess.value, access) || sessionStore.isSuperAdmin;
 };
@@ -47,12 +63,24 @@ const hasAccessTo = (access?: string[]) => {
 <template>
   <AppNavigation :title="t('title.defaultAdminShort')" :logo="logo">
     <template #main>
-      <AppNavigationItems
-        :routes="mainRoutes"
-        :current-route="currentRoute"
-        :authenticated="isAuthenticated"
-        :has-access-to="hasAccessTo"
-      />
+      <VisualTestsNav v-if="isVisualTestsRoute" />
+      <template v-else>
+        <AppNavigationItems
+          :routes="mainRoutes"
+          :current-route="currentRoute"
+          :authenticated="isAuthenticated"
+          :has-access-to="hasAccessTo"
+        />
+        <!-- Last, behind a divider: a way in, not one of the admin sections. -->
+        <template v-if="visualTestsEnabled && isAuthenticated">
+          <li class="nav-item__divider" />
+          <NavItem
+            :to="{ name: 'admin-visual-tests' }"
+            :label="t('nav.admin.visualTests.index')"
+            icon="fa-duotone fa-pen-swirl"
+          />
+        </template>
+      </template>
     </template>
     <template #footer>
       <AppNavigationItems

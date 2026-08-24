@@ -30,7 +30,8 @@ const VisualTestsRoutes: RouteRecordRaw[] =
           meta: {
             title: "admin.visualTests.index",
             icon: "fa-duotone fa-pen-swirl",
-            nav: "main",
+            // The nav renders its own entry, last and behind a divider.
+            nav: "hidden",
             needsAuthentication: true,
           },
         },
