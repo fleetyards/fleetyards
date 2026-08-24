@@ -15,7 +15,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useComlink } from "@/shared/composables/useComlink";
-import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import { routes as visualTestsRoutes } from "@/frontend/pages/visual-tests/routes";
 
 /*
@@ -74,17 +74,17 @@ const confirmDestructive = () => {
   comlink.emit("show-confirm", {
     text: "Delete all 284 ships from your hangar?",
     confirmText: "Delete everything",
-    tone: PanelTonesEnum.ERROR,
-    onConfirm: () => record("confirmed (error tone)"),
+    tone: AppConfirmTonesEnum.DANGER,
+    onConfirm: () => record("confirmed (danger tone)"),
   });
 };
 
-const confirmNeutral = () => {
+const confirmWarning = () => {
   comlink.emit("show-confirm", {
-    text: "Reload the ship matrix? This runs for a while.",
+    text: "Reload the ship matrix? This runs for a while and cannot be stopped.",
     confirmText: "Reload",
-    tone: PanelTonesEnum.NEUTRAL,
-    onConfirm: () => record("confirmed (neutral)"),
+    tone: AppConfirmTonesEnum.WARNING,
+    onConfirm: () => record("confirmed (warning tone)"),
   });
 };
 
@@ -137,10 +137,12 @@ const activeAnchor = ref("clean");
     the backdrop cancel.
   </p>
   <p class="text-muted">
-    The accent is the panel's end-caps, which is how this design carries what a
-    toast carries in its coloured edge. <code>highlight</code> is the default —
-    a confirm always interrupts — and a caller destroying something passes
-    <code>error</code>, which also turns the confirming button danger-toned.
+    Three tones, and <code>neutral</code> is the default: most confirmations are
+    not emergencies, and colour on every one of them stops meaning anything.
+    <code>warning</code> is for what cannot simply be repeated,
+    <code>danger</code> for what does not come back — and only
+    <code>danger</code> tones the confirming button, because a warning dressed
+    as a danger stops being read.
   </p>
   <div class="row">
     <div class="col-12 vt-row">
@@ -148,11 +150,11 @@ const activeAnchor = ref("clean");
       <Btn data-test="confirm-custom" @click="confirmCustom">Custom texts</Btn>
       <Btn data-test="confirm-slow" @click="confirmSlow">Async handler</Btn>
       <Btn data-test="confirm-long" @click="confirmLong">Long question</Btn>
-      <Btn data-test="confirm-destructive" @click="confirmDestructive">
-        Error tone
+      <Btn data-test="confirm-warning" @click="confirmWarning">
+        Warning tone
       </Btn>
-      <Btn data-test="confirm-neutral" @click="confirmNeutral">
-        Neutral tone
+      <Btn data-test="confirm-destructive" @click="confirmDestructive">
+        Danger tone
       </Btn>
     </div>
   </div>

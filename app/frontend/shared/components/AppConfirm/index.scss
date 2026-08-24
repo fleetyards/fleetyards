@@ -49,6 +49,16 @@
   }
 
   /*
+   * PanelBody is 4px top and 18px bottom - deliberately tight under a heading
+   * that closes flush above it. This panel has no heading, so that asymmetry
+   * became visible as a question sitting high in its own box. Even, and the
+   * question's own padding goes with it.
+   */
+  :deep(.panel-body) {
+    padding: 18px;
+  }
+
+  /*
    * PanelBody carries only 4px of padding at the top - right for a panel with a
    * heading above it, wrong for one holding nothing but a question, which then
    * sat against the top cap in a panel squeezed to a single line. The question
@@ -58,8 +68,8 @@
   &__text {
     display: grid;
     place-items: center;
-    min-height: 4.5rem;
-    padding: 0.75rem 0.25rem;
+    // A floor, so a one-line question still reads as a dialog rather than a bar.
+    min-height: 3.5rem;
     // Questions name things - models, groups, ids - with nothing to break on.
     overflow-wrap: anywhere;
     text-align: center;

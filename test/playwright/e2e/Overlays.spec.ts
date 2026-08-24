@@ -40,22 +40,59 @@ test.describe("Overlays", () => {
     await expect(page.getByText("Delete it")).toHaveCount(0);
   });
 
-  test("the accent says what the decision means", async ({ page }) => {
-    // The toasts signal their kind with a coloured edge; here the panel's tone
-    // carries it, and a destructive confirm also tones its button.
-    await page.getByTestId("confirm-destructive").click();
-
+  test("colour is spent only where it means something", async ({ page }) => {
     const panel = page.locator(".app-confirm .panel");
-    await expect(panel).toHaveClass(/panel--error/);
-    await expect(page.getByTestId("confirm-ok")).toHaveClass(
-      /btn--tone-danger/,
-    );
+    const commit = page.getByTestId("confirm-ok");
 
+    // Neutral by default: most confirmations are not emergencies, and an accent
+    // on every one of them stops carrying meaning.
+    await page.getByTestId("confirm-default").click();
+    await expect(panel).not.toHaveClass(/panel--(error|highlight)/);
+    await expect(commit).not.toHaveClass(/btn--tone-danger/);
     await page.keyboard.press("Escape");
 
-    // The default is an accent too, since a confirm always interrupts.
-    await page.getByTestId("confirm-default").click();
+    // Warning: cannot simply be repeated. Accented, but the button stays
+    // neutral - a warning dressed as a danger stops being read.
+    await page.getByTestId("confirm-warning").click();
     await expect(panel).toHaveClass(/panel--highlight/);
+    await expect(commit).not.toHaveClass(/btn--tone-danger/);
+    await page.keyboard.press("Escape");
+
+    // Danger: it does not come back.
+    await page.getByTestId("confirm-destructive").click();
+    await expect(panel).toHaveClass(/panel--error/);
+    await expect(commit).toHaveClass(/btn--tone-danger/);
+  });
+
+  test("the question sits evenly in its panel", async ({ page }) => {
+    /*
+     * PanelBody is 4px top and 18px bottom, right under a heading that closes
+     * flush above it and wrong for a panel holding only a question - the text
+     * sat visibly high in its own box.
+     */
+    for (const hook of ["confirm-default", "confirm-long"]) {
+      await page.getByTestId(hook).click();
+
+      const gaps = await page.evaluate(() => {
+        const body = document.querySelector<HTMLElement>(
+          ".app-confirm .panel-body",
+        );
+        const text = document.querySelector<HTMLElement>(".app-confirm__text");
+        const b = body!.getBoundingClientRect();
+        const t = text!.getBoundingClientRect();
+        return {
+          above: Math.round(t.top - b.top),
+          below: Math.round(b.bottom - t.bottom),
+        };
+      });
+
+      expect(
+        Math.abs(gaps.above - gaps.below),
+        `${hook}: ${JSON.stringify(gaps)}`,
+      ).toBeLessThan(2);
+
+      await page.keyboard.press("Escape");
+    }
   });
 
   test("enter runs the handler once, not twice", async ({ page }) => {

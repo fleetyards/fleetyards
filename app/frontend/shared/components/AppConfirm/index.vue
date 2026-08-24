@@ -5,7 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { AppConfirmOptions } from "@/shared/components/AppConfirm/types";
+import {
+  AppConfirmTonesEnum,
+  type AppConfirmOptions,
+} from "@/shared/components/AppConfirm/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -22,12 +25,27 @@ const cancelText = ref<string>();
 const onConfirm = ref<() => void | Promise<unknown>>();
 const onClose = ref<() => void | Promise<unknown>>();
 
-// A confirm always interrupts, so it always carries an accent. `highlight` says
-// "this wants your attention"; a caller destroying something passes `error`.
-const tone = ref<`${PanelTonesEnum}`>(PanelTonesEnum.HIGHLIGHT);
+const tone = ref<`${AppConfirmTonesEnum}`>(AppConfirmTonesEnum.NEUTRAL);
 
+/*
+ * Three tones onto what the panel already has: the caps are the accent, and the
+ * panel's `highlight` gold is the caution colour it offers - there is no warning
+ * tone to reach for, and inventing one for this dialog would put a fourth accent
+ * treatment into the design.
+ */
+const panelTone = computed(() => {
+  if (tone.value === AppConfirmTonesEnum.DANGER) return PanelTonesEnum.ERROR;
+  if (tone.value === AppConfirmTonesEnum.WARNING) {
+    return PanelTonesEnum.HIGHLIGHT;
+  }
+
+  return PanelTonesEnum.NEUTRAL;
+});
+
+// Only a destroying confirm tones its committing button. A warning is not a
+// danger, and dressing it as one is how a warning stops being read.
 const confirmButtonTone = computed(() =>
-  tone.value === PanelTonesEnum.ERROR
+  tone.value === AppConfirmTonesEnum.DANGER
     ? BtnTonesEnum.DANGER
     : BtnTonesEnum.NEUTRAL,
 );
@@ -46,7 +64,7 @@ const show = (options: AppConfirmOptions) => {
   cancelText.value = options.cancelText || "Cancel";
   onConfirm.value = options.onConfirm;
   onClose.value = options.onClose;
-  tone.value = options.tone || PanelTonesEnum.HIGHLIGHT;
+  tone.value = options.tone || AppConfirmTonesEnum.NEUTRAL;
 
   visible.value = true;
 
@@ -120,7 +138,7 @@ const handleCancel = async () => {
     @click.self="handleCancel"
   >
     <div class="app-confirm__dialog">
-      <Panel :tone="tone" :outer-spacing="false">
+      <Panel :tone="panelTone" :outer-spacing="false">
         <PanelBody>
           <!-- eslint-disable-next-line vue/no-v-html -->
           <div class="app-confirm__text" v-html="text" />
