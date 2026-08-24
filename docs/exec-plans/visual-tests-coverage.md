@@ -602,7 +602,9 @@ branch's chart baselines are its only coverage.
       filter state, plus single-row cases and FilteredList's empty/error states.
       Corrected on the way: no control in this design system has a `readonly`
       state, and the lists and tables already covered empty and loading — the
-      plan's expectation there was written before the pages were audited
+      plan's expectation there was written before the pages were audited.
+      Form-control coverage stops here by decision: the forms are due a redesign,
+      so a fuller state matrix would be built against a surface about to change
 - [ ] Phase 5 — Rebase and re-target the pixel baselines
 
 ## Loose ends, found and left
