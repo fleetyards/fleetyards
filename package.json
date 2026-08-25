@@ -152,18 +152,6 @@
     "workbox-window": "^7.4.1"
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ],
-    "overrides": {
-      "json5": ">=2.2.2",
-      "semver": ">=7.5.2",
-      "picomatch": ">=4.0.4",
-      "serialize-javascript": ">=7.0.5"
-    },
-    "patchedDependencies": {
-      "@tresjs/core@5.8.1": "patches/@tresjs__core@5.8.1.patch"
-    },
     "peerDependencyRules": {
       "allowedVersions": {
         "vite-plugin-pwa>vite": "8"
