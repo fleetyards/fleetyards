@@ -5,20 +5,10 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  form-data: '>=4.0.4'
-  async: '>=3.2.2'
-  follow-redirects: '>=1.14.8'
   json5: '>=2.2.2'
-  node-fetch: '>=3.2.10'
-  node-forge: '>=1.3.0'
-  qs: '>=6.5.3'
   semver: '>=7.5.2'
-  flatted: '>=3.4.2'
-  js-cookie: '>=3.0.7'
-  lodash: '>=4.18.1'
   picomatch: '>=4.0.4'
   serialize-javascript: '>=7.0.5'
-  vite: '>=7.3.2'
 
 patchedDependencies:
   '@tresjs/core@5.8.1':
@@ -144,7 +134,7 @@ importers:
         specifier: ^1.30.0
         version: 1.30.0
       qs:
-        specifier: '>=6.5.3'
+        specifier: ^6.15.3
         version: 6.15.3
       sortablejs:
         specifier: ^1.15.7
@@ -361,7 +351,7 @@ importers:
         specifier: ^32.1.0
         version: 32.1.0(vue@3.5.41(typescript@6.0.3))
       vite:
-        specifier: '>=7.3.2'
+        specifier: 8.2.2
         version: 8.2.2(@types/node@26.2.0)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.103.1)(terser@5.46.2)(yaml@2.9.0)
       vite-plugin-pwa:
         specifier: 1.3.0
@@ -2254,7 +2244,7 @@ packages:
   '@tailwindcss/vite@4.3.3':
     resolution: {integrity: sha512-yYU8cogLeSh/ms2jh8Fj7jaba/EWa7Ja6GoUqYZaraEuCI5YS6ms6ObZgjjedm+jm6XZjdNRWBpPP6Z86oOxcw==}
     peerDependencies:
-      vite: '>=7.3.2'
+      vite: ^5.2.0 || ^6 || ^7 || ^8
 
   '@tanstack/eslint-plugin-query@5.101.4':
     resolution: {integrity: sha512-jqAZJWXGd5PthJYH9wmC2O5Ry5xAN2/7zxi9qcANQ+Xix8V5JkqNRjZ8Fh+rYzqzVYGiHqbrHekt+uh38OZVpw==}
@@ -2651,7 +2641,7 @@ packages:
     resolution: {integrity: sha512-0ZjgOg7oO6farnNGup7yvoM/YXZV84OZxHAwtflItNa/6zzQyVb5LNxyea3FEKEX2XlagIKzrlH7wwxkKgtiew==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
-      vite: '>=7.3.2'
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
       vue: ^3.2.25
 
   '@vitest/expect@4.1.11':
@@ -2661,7 +2651,7 @@ packages:
     resolution: {integrity: sha512-2XJVD55d1o5AZous5CCGKS74g/riOj9odEt2bQpCVZeblHyHdnMeFl4jl0XjU21stf4mbjUkew2eXQZt65g5CQ==}
     peerDependencies:
       msw: ^2.4.9
-      vite: '>=7.3.2'
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       msw:
         optional: true
@@ -5724,7 +5714,7 @@ packages:
       rolldown: '*'
       rollup: '*'
       unloader: '*'
-      vite: '>=7.3.2'
+      vite: '*'
       webpack: '*'
     peerDependenciesMeta:
       '@farmfe/core':
@@ -5784,7 +5774,7 @@ packages:
   vite-plugin-environment@1.1.3:
     resolution: {integrity: sha512-9LBhB0lx+2lXVBEWxFZC+WO7PKEyE/ykJ7EPWCq95NEcCpblxamTbs5Dm3DLBGzwODpJMEnzQywJU8fw6XGGGA==}
     peerDependencies:
-      vite: '>=7.3.2'
+      vite: '>= 2.7'
 
   vite-plugin-full-reload@1.2.0:
     resolution: {integrity: sha512-kz18NW79x0IHbxRSHm0jttP4zoO9P9gXh+n6UTwlNKnviTTEpOlum6oS9SmecrTtSr+muHEn5TUuC75UovQzcA==}
@@ -5797,7 +5787,7 @@ packages:
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@vite-pwa/assets-generator': ^1.0.0
-      vite: '>=7.3.2'
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
       workbox-build: ^7.4.1
       workbox-window: ^7.4.1
     peerDependenciesMeta:
@@ -5807,12 +5797,12 @@ packages:
   vite-plugin-rails@0.6.0:
     resolution: {integrity: sha512-4Ze5Up+RD0QwF03WauEYtAaJU1SKWDHnojsDbyEQk4GZfp0alRuPWipOphFEla69VKrhw2adz5xmfRzr5wHb+A==}
     peerDependencies:
-      vite: '>=7.3.2'
+      vite: '>=5.0.0'
 
   vite-plugin-ruby@5.1.3:
     resolution: {integrity: sha512-vpTOKbR6AmnupmXvQccRcr/jIY+oobNuCbNJHUzkT8oQ2BBQSlp22Xec3zszBBc7GjwDGn2+E+IQoNRXdEY7Ig==}
     peerDependencies:
-      vite: '>=7.3.2'
+      vite: '>=5.0.0'
 
   vite-plugin-stimulus-hmr@3.0.0:
     resolution: {integrity: sha512-KElOiZOlaG4XilQQHrzK8M1u5UfK4EFfADJKQYbnmsUMifDOnPR6anVYgHAN95QyWJ67Q/rYWe5BB9M5OxocfQ==}
@@ -5876,7 +5866,7 @@ packages:
       '@vitest/ui': 4.1.11
       happy-dom: '*'
       jsdom: '*'
-      vite: '>=7.3.2'
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       '@edge-runtime/vm':
         optional: true
@@ -5953,7 +5943,7 @@ packages:
       '@pinia/colada': '>=0.21.2'
       '@vue/compiler-sfc': ^3.5.34 || ^4.0.0
       pinia: ^3.0.4 || ^4.0.2
-      vite: '>=7.3.2'
+      vite: ^7.3.0 || ^8.0.0
       vue: ^3.5.34 || ^4.0.0
     peerDependenciesMeta:
       '@pinia/colada':
