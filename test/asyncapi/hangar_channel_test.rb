@@ -13,6 +13,7 @@ class HangarChannelTest < AsyncapiTestCase
     broadcast "A vehicle in the user's hangar changed" do
       operationId "receiveHangarUpdate"
       message ::V1::Schemas::Vehicles::Vehicle
+      message ::Cable::V1::Schemas::HangarGroupChangedMessage
     end
   end
 

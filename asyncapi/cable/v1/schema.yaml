@@ -43,6 +43,8 @@ channels:
     messages:
       Vehicle:
         "$ref": "#/components/messages/Vehicle"
+      HangarGroupChangedMessage:
+        "$ref": "#/components/messages/HangarGroupChangedMessage"
   HangarCreate:
     address: hangar_create:{user_gid}
     x-actioncable-channel: HangarCreateChannel
@@ -200,6 +202,7 @@ operations:
       "$ref": "#/channels/Hangar"
     messages:
     - "$ref": "#/channels/Hangar/messages/Vehicle"
+    - "$ref": "#/channels/Hangar/messages/HangarGroupChangedMessage"
     summary: A vehicle in the user's hangar changed
   receiveModelUpdate:
     action: receive
@@ -1865,6 +1868,15 @@ components:
       - public
       - createdAt
       - updatedAt
+    HangarGroupChangedMessage:
+      type: object
+      properties:
+        hangarGroupId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - hangarGroupId
     HangarSyncFailedMessage:
       type: object
       properties:
@@ -3314,6 +3326,9 @@ components:
     FleetMember:
       payload:
         "$ref": "#/components/schemas/FleetMember"
+    HangarGroupChangedMessage:
+      payload:
+        "$ref": "#/components/schemas/HangarGroupChangedMessage"
     HangarSyncFailedMessage:
       payload:
         "$ref": "#/components/schemas/HangarSyncFailedMessage"
