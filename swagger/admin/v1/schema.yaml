@@ -11083,9 +11083,11 @@ components:
         version:
           type: string
         input:
-          type: string
+          type: object
+          additionalProperties: true
         output:
-          type: string
+          type: object
+          additionalProperties: true
         import:
           type: string
         importData:
