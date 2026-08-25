@@ -263,7 +263,7 @@ class Notification < ApplicationRecord
 
   def self.deliver_channels(notification, preference)
     if preference.app?
-      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_json)
+      UserNotificationsChannel.broadcast_to(notification.user, notification.to_jbuilder_hash)
     end
 
     if preference.mail?

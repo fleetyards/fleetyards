@@ -19,7 +19,7 @@ export enum ChannelsEnum {
   ADMIN_NOTIFICATIONS = "AdminNotificationsChannel",
 }
 
-export const useSubscription = ({
+export const useSubscription = <T = unknown>({
   channelName,
   received,
   connected,
@@ -27,7 +27,7 @@ export const useSubscription = ({
   enabled,
 }: {
   channelName: string;
-  received?: (data: string) => void;
+  received?: (data: T) => void;
   connected?: () => void;
   disconnected?: () => void;
   enabled?: ComputedRef<boolean> | Ref<boolean>;

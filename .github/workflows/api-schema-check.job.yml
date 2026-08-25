@@ -55,3 +55,7 @@ jobs:
           ./bin/generate-schema
           git diff --exit-code ./swagger/**/schema.yaml
         shell: bash
+      - run: |
+          ./bin/generate-asyncapi
+          git diff --exit-code ./asyncapi/**/schema.yaml
+        shell: bash

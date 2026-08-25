@@ -1,0 +1,261 @@
+---
+asyncapi: 3.0.0
+info:
+  title: FleetYards.net Command Cable API
+  version: v1
+  license:
+    name: GNU General Public License v3.0
+    url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
+channels:
+  AdminNotifications:
+    address: admin_notifications:{admin_user_gid}
+    x-actioncable-channel: AdminNotificationsChannel
+    parameters:
+      admin_user_gid:
+        description: GlobalID param of the subscribed admin user, derived from the
+          connection
+        x-client-supplied: false
+    messages:
+      AdminNotification:
+        "$ref": "#/components/messages/AdminNotification"
+  Imports:
+    address: imports:{admin_user_gid}
+    x-actioncable-channel: ImportsChannel
+    parameters:
+      admin_user_gid:
+        description: GlobalID param of the subscribed admin user, derived from the
+          connection
+        x-client-supplied: false
+    messages:
+      Import:
+        "$ref": "#/components/messages/Import"
+operations:
+  receiveAdminNotification:
+    action: receive
+    channel:
+      "$ref": "#/channels/AdminNotifications"
+    messages:
+    - "$ref": "#/channels/AdminNotifications/messages/AdminNotification"
+    summary: A notification addressed to one admin user
+  receiveImport:
+    action: receive
+    channel:
+      "$ref": "#/channels/Imports"
+    messages:
+    - "$ref": "#/channels/Imports/messages/Import"
+    summary: An import changed state
+components:
+  schemas:
+    AdminNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        notificationType:
+          "$ref": "#/components/schemas/AdminNotificationTypeEnum"
+        severity:
+          "$ref": "#/components/schemas/AdminNotificationSeverityEnum"
+        title:
+          type: string
+        body:
+          type: string
+        link:
+          type: string
+        icon:
+          type: string
+        occurrences:
+          type: integer
+        lastOccurredAt:
+          type: string
+          format: date-time
+        read:
+          type: boolean
+        readAt:
+          type: string
+          format: date-time
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - notificationType
+      - severity
+      - title
+      - occurrences
+      - lastOccurredAt
+      - read
+      - archived
+      - expiresAt
+      - createdAt
+      - updatedAt
+    AdminNotificationSeverityEnum:
+      type: string
+      enum:
+      - info
+      - warning
+      - error
+      x-enumNames:
+      - INFO
+      - WARNING
+      - ERROR
+    AdminNotificationTypeEnum:
+      type: string
+      enum:
+      - paints_import
+      - modules_import
+      - loaner_sync
+      - uex_prices_import
+      - uex_commodity_prices_import
+      - new_supporter
+      - rsi_api_blocked
+      - rsi_api_unblocked
+      - weekly_stats
+      x-enumNames:
+      - PAINTS_IMPORT
+      - MODULES_IMPORT
+      - LOANER_SYNC
+      - UEX_PRICES_IMPORT
+      - UEX_COMMODITY_PRICES_IMPORT
+      - NEW_SUPPORTER
+      - RSI_API_BLOCKED
+      - RSI_API_UNBLOCKED
+      - WEEKLY_STATS
+    Import:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/ImportTypeEnum"
+        status:
+          "$ref": "#/components/schemas/ImportStatusEnum"
+        info:
+          type: string
+        version:
+          type: string
+        input:
+          type: string
+        output:
+          type: string
+        import:
+          type: string
+        importData:
+          type: string
+        adminUser:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+          required:
+          - id
+          - username
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+          required:
+          - id
+          - username
+        startedAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+        failedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - type
+      - status
+      - createdAt
+      - updatedAt
+    ImportStatusEnum:
+      type: string
+      enum:
+      - created
+      - started
+      - finished
+      - failed
+      x-enumNames:
+      - CREATED
+      - STARTED
+      - FINISHED
+      - FAILED
+    ImportTypeEnum:
+      type: string
+      enum:
+      - Imports::ModelImport
+      - Imports::ModelsImport
+      - Imports::ScData::AllImport
+      - Imports::ScData::ModelsImport
+      - Imports::ScData::ModelImport
+      - Imports::HangarSync
+      - Imports::HangarImport
+      - Imports::ModulesImport
+      - Imports::PaintsImport
+      - Imports::UexPricesImport
+      - Imports::UexCommodityPricesImport
+      x-enumNames:
+      - IMPORTS_MODEL_IMPORT
+      - IMPORTS_MODELS_IMPORT
+      - IMPORTS_SC_DATA_ALL_IMPORT
+      - IMPORTS_SC_DATA_MODELS_IMPORT
+      - IMPORTS_SC_DATA_MODEL_IMPORT
+      - IMPORTS_HANGAR_SYNC
+      - IMPORTS_HANGAR_IMPORT
+      - IMPORTS_MODULES_IMPORT
+      - IMPORTS_PAINTS_IMPORT
+      - IMPORTS_UEX_PRICES_IMPORT
+      - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
+  messages:
+    AdminNotification:
+      payload:
+        "$ref": "#/components/schemas/AdminNotification"
+    Import:
+      payload:
+        "$ref": "#/components/schemas/Import"
+servers:
+  development:
+    host: fleetyards.test
+    pathname: "/cable"
+    protocol: ws
+    description: Dev Server
+  production:
+    host: fleetyards.net
+    pathname: "/cable"
+    protocol: wss
+    description: Production Server
+  staging:
+    host: fleetyards.dev
+    pathname: "/cable"
+    protocol: wss
+    description: Staging Server

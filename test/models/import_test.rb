@@ -35,7 +35,7 @@ require "test_helper"
 class ImportTest < ActiveSupport::TestCase
   # Import subclasses that keep the base #notify_admin broadcast every state
   # transition to admins over ImportsChannel, which serialises them via
-  # #to_jbuilder_json. That renders a per-type jbuilder partial whose path is
+  # #to_jbuilder_hash. That renders a per-type jbuilder partial whose path is
   # derived from the class name, so a missing partial only surfaces at runtime
   # as an ActionView::MissingTemplate in the broadcast processor. Render each
   # broadcasting type here so a new subclass without a partial fails the build.
@@ -73,14 +73,14 @@ class ImportTest < ActiveSupport::TestCase
     record = create(:import, :modules_import)
 
     payload = nil
-    ImportsChannel.expects(:broadcast_to).at_least_once.with do |_admin, json|
-      payload = json
+    ImportsChannel.expects(:broadcast_to).at_least_once.with do |_admin, message|
+      payload = message
       true
     end
 
     record.notify_admin
 
-    assert_equal record.id, JSON.parse(payload)["id"]
-    assert_equal "Imports::ModulesImport", JSON.parse(payload)["type"]
+    assert_equal record.id, payload["id"]
+    assert_equal "Imports::ModulesImport", payload["type"]
   end
 end

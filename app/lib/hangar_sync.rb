@@ -56,7 +56,7 @@ class HangarSync < HangarImporter
     import.finish!
 
     camel_case_output = output.transform_keys { |key| key.to_s.camelize(:lower) }
-    HangarSyncChannel.broadcast_to(import.user, {status: "finished", result: camel_case_output}.to_json)
+    HangarSyncChannel.broadcast_to(import.user, {status: "finished", result: camel_case_output})
     Notification.notify!(
       user: import.user,
       type: :hangar_sync_finished,
@@ -71,7 +71,7 @@ class HangarSync < HangarImporter
     import&.update!(info: e.message)
 
     if import&.user
-      HangarSyncChannel.broadcast_to(import.user, {status: "failed", error: e.message}.to_json)
+      HangarSyncChannel.broadcast_to(import.user, {status: "failed", error: e.message})
       Notification.notify!(
         user: import.user,
         type: :hangar_sync_failed,

@@ -28,9 +28,7 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
   const { t } = useI18n();
   const queryClient = useQueryClient();
 
-  const handleImportUpdate = (data: string) => {
-    const importData: Import = JSON.parse(data);
-
+  const handleImportUpdate = (importData: Import) => {
     const previousImport = importsStore.imports[importData.id];
     const previousStatus = previousImport?.status;
 

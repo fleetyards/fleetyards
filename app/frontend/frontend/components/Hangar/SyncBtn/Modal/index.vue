@@ -296,13 +296,11 @@ watch(syncStatusData, (statusData) => {
   }
 });
 
-const onSyncResult = (data: string) => {
-  const message = JSON.parse(data) as {
-    status: string;
-    result?: HangarSyncResult;
-    error?: string;
-  };
-
+const onSyncResult = (message: {
+  status: string;
+  result?: HangarSyncResult;
+  error?: string;
+}) => {
   if (message.status === "finished" && message.result) {
     result.value = message.result;
     hangarStore.syncRunning = false;

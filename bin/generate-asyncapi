@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Mirrors bin/generate-schema: pin the endpoint inputs so the generated
+# document always carries canonical dev-server URLs, and scope PATTERN to the
+# channel declarations. Loading unrelated test files pulls in helpers that
+# aren't on $LOAD_PATH under the generation subprocess.
+DOMAIN=fleetyards.test \
+  ON_SUBDOMAIN=true \
+  FRAMEWORK=minitest \
+  PATTERN="test/asyncapi/**/*_test.rb" \
+  bundle exec rake asyncapi_cable:generate

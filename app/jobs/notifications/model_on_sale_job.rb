@@ -12,7 +12,7 @@ module Notifications
       user_ids = User.confirmed.where(sale_notify: true).pluck(&:id)
 
       Vehicle.where(model_id:, sale_notify: true, wanted: true, loaner: false, user_id: user_ids, notify: true).find_each do |vehicle|
-        OnSaleHangarChannel.broadcast_to(vehicle.user, vehicle.to_json)
+        OnSaleHangarChannel.broadcast_to(vehicle.user, vehicle.to_jbuilder_hash)
 
         Notification.notify!(
           user: vehicle.user,

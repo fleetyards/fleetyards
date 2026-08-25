@@ -44,6 +44,19 @@ class ApplicationRecord < ActiveRecord::Base
     )
   end
 
+  # Jbuilder builds a Hash and its template handler serializes it on the way
+  # out, so this parses back what `target!` had just encoded. Driving
+  # JbuilderTemplate directly and reading `attributes!` skips both steps, but
+  # it is not worth it: the saving is ~7% (the cost is the nested ActionView
+  # partial renders, not the serialization), and a view context built outside
+  # ApplicationController.renderer carries no request, so `rails_blob_url` in
+  # api/v1/shared/_file raises `undefined method 'host' for nil` as soon as the
+  # record has an attachment. The renderer's fabricated env is what supplies
+  # that host, and this round trip is its price.
+  def to_jbuilder_hash(*_args)
+    JSON.parse(to_jbuilder_json)
+  end
+
   private def update_slugs
     self.slug = generate_slug(name)
   end
