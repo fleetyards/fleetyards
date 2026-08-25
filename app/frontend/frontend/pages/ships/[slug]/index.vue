@@ -24,6 +24,7 @@ import FleetchartImages from "@/frontend/components/Models/FleetchartImages/inde
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -163,7 +164,9 @@ const metaImage = computed(() => {
   return props.model.media.storeImage?.largeUrl;
 });
 
-const crumbs = computed(() => {
+// Undefined rather than empty: the breadcrumb bar stays hidden until the model
+// arrives instead of flashing a lone home crumb.
+const crumbs = computed<Crumb[] | undefined>(() => {
   if (!props.model) {
     return undefined;
   }

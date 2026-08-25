@@ -20,8 +20,7 @@ module Admin
     add_flash_types :error, :warning
 
     rescue_from ActionController::InvalidAuthenticityToken do
-      @action_name = "unprocessable_entity"
-      render "errors/error", status: :unprocessable_entity
+      render "admin/index", status: :unprocessable_entity
     end
 
     private def unauthorized_controllers

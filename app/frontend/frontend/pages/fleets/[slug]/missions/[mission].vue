@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -107,7 +108,7 @@ onUnmounted(() => {
   missionChildrenChangedComlink.value?.();
 });
 
-const crumbs = computed(() => [
+const crumbs = computed<Crumb[]>(() => [
   {
     to: { name: "fleet", params: { slug: props.fleet.slug } },
     label: props.fleet.name,

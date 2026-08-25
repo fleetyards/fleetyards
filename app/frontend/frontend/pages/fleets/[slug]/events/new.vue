@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import EventForm from "@/frontend/components/Fleets/Events/EventForm/index.vue";
 import {
@@ -54,7 +55,7 @@ const cancel = () => {
   });
 };
 
-const crumbs = computed(() => [
+const crumbs = computed<Crumb[]>(() => [
   {
     to: { name: "fleet", params: { slug: props.fleet.slug } },
     label: props.fleet.name,

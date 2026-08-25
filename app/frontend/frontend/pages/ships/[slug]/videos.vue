@@ -8,6 +8,7 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import VideoEmbed from "@/shared/components/Video/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
@@ -52,7 +53,7 @@ const metaImage = computed(() => {
 
 const route = useRoute();
 
-const crumbs = computed(() => {
+const crumbs = computed<Crumb[]>(() => {
   if (!props.model) {
     return [];
   }
@@ -66,7 +67,7 @@ const crumbs = computed(() => {
       label: t("nav.ships.index"),
     },
     {
-      to: { name: "ship", param: { slug: route.params.slug } },
+      to: { name: "ship", params: { slug: route.params.slug } },
       label: props.model.name,
     },
   ];

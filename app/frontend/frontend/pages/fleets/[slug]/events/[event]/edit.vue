@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as editRoutes } from "@/frontend/pages/fleets/[slug]/events/[event]/edit/routes";
@@ -49,7 +50,7 @@ onUnmounted(() => {
   fleetEventChildrenChangedComlink.value?.();
 });
 
-const crumbs = computed(() => [
+const crumbs = computed<Crumb[]>(() => [
   {
     to: { name: "fleet", params: { slug: props.fleet.slug } },
     label: props.fleet.name,
