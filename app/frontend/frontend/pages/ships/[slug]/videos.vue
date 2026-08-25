@@ -66,7 +66,7 @@ const crumbs = computed(() => {
       label: t("nav.ships.index"),
     },
     {
-      to: { name: "ship", param: { slug: route.params.slug } },
+      to: { name: "ship", params: { slug: route.params.slug } },
       label: props.model.name,
     },
   ];
