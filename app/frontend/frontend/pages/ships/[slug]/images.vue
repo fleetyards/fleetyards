@@ -8,6 +8,7 @@ export default {
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { useGallery } from "@/shared/composables/useGallery";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -58,7 +59,7 @@ const metaImage = computed(() => {
 
 const route = useRoute();
 
-const crumbs = computed(() => {
+const crumbs = computed<Crumb[]>(() => {
   if (!props.model) {
     return [];
   }

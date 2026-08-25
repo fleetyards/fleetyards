@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
@@ -34,7 +35,7 @@ const props = defineProps<Props>();
 
 const route = useRoute();
 
-const crumbs = computed(() => {
+const crumbs = computed<Crumb[]>(() => {
   return [
     {
       to: {

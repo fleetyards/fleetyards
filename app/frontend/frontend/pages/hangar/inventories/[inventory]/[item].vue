@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
@@ -160,7 +161,7 @@ const destroyStockItem = () => {
   });
 };
 
-const crumbs = computed(() => [
+const crumbs = computed<Crumb[]>(() => [
   {
     to: { name: "hangar" },
     label: t("nav.hangar.index"),

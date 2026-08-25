@@ -10,6 +10,7 @@ import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -123,7 +124,7 @@ useSubscription({
   received: () => debounce(fetch, 500),
 });
 
-const crumbs = computed(() => {
+const crumbs = computed<Crumb[]>(() => {
   return [
     {
       to: {

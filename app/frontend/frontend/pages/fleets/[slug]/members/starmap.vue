@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
@@ -48,7 +49,7 @@ const membersWithSystem = computed(() =>
   memberItems.value.filter((member) => member.currentSystemCode != null),
 );
 
-const crumbs = computed(() => [
+const crumbs = computed<Crumb[]>(() => [
   {
     to: {
       name: "fleet",

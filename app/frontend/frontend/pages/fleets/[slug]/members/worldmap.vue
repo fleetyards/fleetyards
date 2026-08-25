@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import MembersWorldMap from "@/frontend/components/Fleets/MembersWorldMap/index.vue";
@@ -47,7 +48,7 @@ const membersWithLocation = computed(() =>
   ),
 );
 
-const crumbs = computed(() => [
+const crumbs = computed<Crumb[]>(() => [
   {
     to: {
       name: "fleet",

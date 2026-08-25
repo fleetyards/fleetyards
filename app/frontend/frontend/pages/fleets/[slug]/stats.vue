@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FleetStats from "@/frontend/components/Fleets/FleetStats/index.vue";
 import PublicFleetStats from "@/frontend/components/Fleets/PublicFleetStats/index.vue";
@@ -23,7 +24,7 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const crumbs = computed(() => {
+const crumbs = computed<Crumb[]>(() => {
   if (!props.fleet) {
     return [];
   }

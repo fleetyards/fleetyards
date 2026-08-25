@@ -8,6 +8,7 @@ export default {
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
@@ -30,7 +31,7 @@ import DestroyedFleetActions from "@/admin/components/DestroyedFleets/Actions/in
 
 const { t, l } = useI18n();
 
-const crumbs = computed(() => [
+const crumbs = computed<Crumb[]>(() => [
   {
     to: { name: "admin-fleets" },
     label: t("nav.admin.fleets.index"),
