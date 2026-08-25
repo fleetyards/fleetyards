@@ -58,8 +58,11 @@ const statusVariant = (status: ImportStatusEnum): `${PillVariantsEnum}` => {
   }
 };
 
-const formatPayload = (value: string | undefined | null): string | null => {
+const formatPayload = (value: unknown): string | null => {
   if (value === undefined || value === null || value === "") return null;
+
+  if (typeof value !== "string") return JSON.stringify(value, null, 2);
+
   try {
     return JSON.stringify(JSON.parse(value), null, 2);
   } catch {

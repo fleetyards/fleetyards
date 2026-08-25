@@ -20,3 +20,7 @@ PUT /features/{id}/enable-percentage-of-time removed the required property `self
 PUT /features/{id}/toggle-self-service api path removed without deprecation
 POST /admin_users request property `resourceAccess/items/` was restricted to a list of enum values
 PUT /admin_users/{id} request property `resourceAccess/items/` was restricted to a list of enum values
+GET /imports the `items/items/input` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /imports the `items/items/output` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /imports/{id} the `input` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /imports/{id} the `output` response's property type/format changed from `string`/`` to `object`/`` for status `200`

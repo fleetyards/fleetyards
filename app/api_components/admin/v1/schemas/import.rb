@@ -16,8 +16,8 @@ module Admin
             info: {type: :string},
             version: {type: :string},
 
-            input: {type: :string},
-            output: {type: :string},
+            input: {type: :object, additionalProperties: true},
+            output: {type: :object, additionalProperties: true},
             import: {type: :string},
             importData: {type: :string},
 
