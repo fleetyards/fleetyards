@@ -297,15 +297,15 @@ class Vehicle < ApplicationRecord
   def broadcast_update
     return if loaner? || !notify?
 
-    WishlistChannel.broadcast_to(user, to_json)
-    HangarChannel.broadcast_to(user, to_json)
+    WishlistChannel.broadcast_to(user, to_jbuilder_hash)
+    HangarChannel.broadcast_to(user, to_jbuilder_hash)
   end
 
   def broadcast_create
     return if loaner? || !notify?
 
     if wanted?
-      WishlistCreateChannel.broadcast_to(user, to_json)
+      WishlistCreateChannel.broadcast_to(user, to_jbuilder_hash)
       Notification.notify!(
         user:,
         type: :wishlist_create,
@@ -313,7 +313,7 @@ class Vehicle < ApplicationRecord
         link: Rails.application.routes.url_helpers.frontend_hangar_path
       )
     else
-      HangarCreateChannel.broadcast_to(user, to_json)
+      HangarCreateChannel.broadcast_to(user, to_jbuilder_hash)
       Notification.notify!(
         user:,
         type: :hangar_create,
@@ -327,7 +327,7 @@ class Vehicle < ApplicationRecord
     return if loaner? || !notify?
 
     if wanted?
-      WishlistDestroyChannel.broadcast_to(user, to_json)
+      WishlistDestroyChannel.broadcast_to(user, to_jbuilder_hash)
       Notification.notify!(
         user:,
         type: :wishlist_destroy,
@@ -335,7 +335,7 @@ class Vehicle < ApplicationRecord
         link: Rails.application.routes.url_helpers.frontend_hangar_path
       )
     else
-      HangarDestroyChannel.broadcast_to(user, to_json)
+      HangarDestroyChannel.broadcast_to(user, to_jbuilder_hash)
       Notification.notify!(
         user:,
         type: :hangar_destroy,
@@ -389,14 +389,14 @@ class Vehicle < ApplicationRecord
     end
   end
 
-  def to_json(*_args)
+  def to_jbuilder_hash(*_args)
     ActiveRecord::Associations::Preloader.new(
       records: [self],
       associations: [:model_paint, :model_upgrades, :model_modules, :module_package, :hangar_groups, :task_forces,
         model: [:manufacturer]]
     ).call
 
-    to_jbuilder_json
+    super
   end
 
   protected def normalize_serial

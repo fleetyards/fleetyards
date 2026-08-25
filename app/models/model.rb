@@ -636,7 +636,7 @@ class Model < ApplicationRecord
   end
 
   private def broadcast_update
-    ActionCable.server.broadcast("models", to_json)
+    ActionCable.server.broadcast("models", to_jbuilder_hash)
   end
 
   private def send_new_model_notification
@@ -644,7 +644,7 @@ class Model < ApplicationRecord
 
     Notifications::NewModelJob.perform_async(id)
 
-    ActionCable.server.broadcast("new_model", to_json)
+    ActionCable.server.broadcast("new_model", to_jbuilder_hash)
   end
 
   private def send_on_sale_notification
@@ -653,7 +653,7 @@ class Model < ApplicationRecord
 
     Notifications::ModelOnSaleJob.perform_async(id)
 
-    ActionCable.server.broadcast("on_sale", to_json)
+    ActionCable.server.broadcast("on_sale", to_jbuilder_hash)
   end
 
   private def update_slugs

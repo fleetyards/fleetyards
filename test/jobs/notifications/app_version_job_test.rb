@@ -7,7 +7,7 @@ module Notifications
     test "#perform broadcasts app version via ActionCable" do
       ActionCable.server.expects(:broadcast).with(
         "app_version",
-        {version: Fleetyards::VERSION, codename: Fleetyards::CODENAME}.to_json
+        {version: Fleetyards::VERSION, codename: Fleetyards::CODENAME}
       )
 
       ::Notifications::AppVersionJob.new.perform

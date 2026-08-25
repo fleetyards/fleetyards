@@ -283,7 +283,7 @@ class FleetMembership < ApplicationRecord
     notify_fleet_admins
 
     fleet.fleet_memberships.kept.find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, to_json)
+      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
     end
   end
 
@@ -313,7 +313,7 @@ class FleetMembership < ApplicationRecord
     notify_new_member
 
     fleet.fleet_memberships.kept.find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, to_json)
+      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
     end
   end
 
@@ -334,24 +334,24 @@ class FleetMembership < ApplicationRecord
     return if saved_change_to_discarded_at?
 
     fleet.fleet_memberships.kept.find_each do |member|
-      FleetMembersChannel.broadcast_to(member.user, to_json)
+      FleetMembersChannel.broadcast_to(member.user, to_jbuilder_hash)
 
       next unless ships_filter_changed?
 
-      FleetVehiclesChannel.broadcast_to(member.user, to_json)
+      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
     end
   end
 
   def broadcast_create
     fleet.fleet_memberships.kept.find_each do |member|
-      FleetMembersChannel.broadcast_to(member.user, to_json)
+      FleetMembersChannel.broadcast_to(member.user, to_jbuilder_hash)
     end
   end
 
   def broadcast_destroy
     fleet.fleet_memberships.kept.find_each do |member|
-      FleetMembersChannel.broadcast_to(member.user, to_json)
-      FleetVehiclesChannel.broadcast_to(member.user, to_json)
+      FleetMembersChannel.broadcast_to(member.user, to_jbuilder_hash)
+      FleetVehiclesChannel.broadcast_to(member.user, to_jbuilder_hash)
     end
   end
 
@@ -383,9 +383,5 @@ class FleetMembership < ApplicationRecord
 
     index = fleet.fleet_roles.ranked.index(fleet_role)
     fleet.fleet_roles[index + 1]
-  end
-
-  def to_json(*_args)
-    to_jbuilder_json
   end
 end

@@ -72,11 +72,7 @@ class Import < ApplicationRecord
 
   def notify_admin
     AdminUser.find_each do |admin_user|
-      ::ImportsChannel.broadcast_to(admin_user, to_json)
+      ::ImportsChannel.broadcast_to(admin_user, to_jbuilder_hash)
     end
-  end
-
-  def to_json(*_args)
-    to_jbuilder_json
   end
 end

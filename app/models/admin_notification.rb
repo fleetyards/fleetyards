@@ -220,7 +220,7 @@ class AdminNotification < ApplicationRecord
   private_class_method :upsert_for
 
   def self.broadcast(notification)
-    AdminNotificationsChannel.broadcast_to(notification.admin_user, notification.to_jbuilder_json)
+    AdminNotificationsChannel.broadcast_to(notification.admin_user, notification.to_jbuilder_hash)
   rescue => e
     Rails.logger.error("Admin notification delivery failed for #{notification.id}: #{e.message}")
   end

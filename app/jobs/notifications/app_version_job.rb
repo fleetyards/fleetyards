@@ -6,7 +6,7 @@ module Notifications
       ActionCable.server.broadcast("app_version", {
         version: Fleetyards::VERSION,
         codename: Fleetyards::CODENAME
-      }.to_json)
+      })
     end
   end
 end
