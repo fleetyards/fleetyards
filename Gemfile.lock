@@ -210,7 +210,8 @@ GEM
     domain_name (0.6.20240107)
     doorkeeper (5.9.6)
       railties (>= 5)
-    doorkeeper-jwt (0.4.3)
+    doorkeeper-jwt (0.4.4)
+      doorkeeper (>= 5.4)
       jwt (>= 2.1)
     doorkeeper-openid_connect (1.10.5)
       doorkeeper (>= 5.5, < 6.0)
@@ -1057,7 +1058,7 @@ CHECKSUMS
   discordrb-webhooks (3.8.0) sha256=20bdf1ab54a1f5d9d4774c8facc34353e728601815f6def182e5e86798500ced
   domain_name (0.6.20240107) sha256=5f693b2215708476517479bf2b3802e49068ad82167bcd2286f899536a17d933
   doorkeeper (5.9.6) sha256=19b0d2c1099750762d8ddbf7ef4d79e38d2c80f583d97bbfd122a73c4af20d95
-  doorkeeper-jwt (0.4.3) sha256=d97a752056ff17a1f3a2bb8dd78e8cc1e181c14e17f3d0bb6854cc4f4a245351
+  doorkeeper-jwt (0.4.4) sha256=208851db8aafc506aa565486a81ea1b1d9e475bdeb836fbdce690dd409b1213b
   doorkeeper-openid_connect (1.10.5) sha256=1382e5573e2fdfef2b16ce9969af777e61496b8e9cff0197789d8bf9c12efb02
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
   dotenv-rails (3.2.0) sha256=657e25554ba622ffc95d8c4f1670286510f47f2edda9f68293c3f661b303beab
