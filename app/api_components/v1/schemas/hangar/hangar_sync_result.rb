@@ -6,6 +6,11 @@ module V1
       class HangarSyncResult
         include OpenapiRuby::Components::Base
 
+        # Also carried by the cable document: the HangarSync broadcast message
+        # refs this, and both the AsyncAPI writer and the broadcast assertions
+        # only see components holding the scope they are asked for.
+        component_scopes :v1, :cable
+
         schema({
           type: :object,
           properties: {

@@ -1,0 +1,3204 @@
+---
+asyncapi: 3.0.0
+info:
+  title: FleetYards.net Cable API
+  version: v1
+  license:
+    name: GNU General Public License v3.0
+    url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
+channels:
+  AppVersion:
+    address: app_version
+    x-actioncable-channel: AppVersionChannel
+    messages:
+      AppVersionMessage:
+        "$ref": "#/components/messages/AppVersionMessage"
+  FleetMembers:
+    address: fleet_members:{user_gid}
+    x-actioncable-channel: FleetMembersChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      FleetMember:
+        "$ref": "#/components/messages/FleetMember"
+  FleetVehicles:
+    address: fleet_vehicles:{user_gid}
+    x-actioncable-channel: FleetVehiclesChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      FleetMember:
+        "$ref": "#/components/messages/FleetMember"
+  Hangar:
+    address: hangar:{user_gid}
+    x-actioncable-channel: HangarChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Vehicle:
+        "$ref": "#/components/messages/Vehicle"
+  HangarCreate:
+    address: hangar_create:{user_gid}
+    x-actioncable-channel: HangarCreateChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Vehicle:
+        "$ref": "#/components/messages/Vehicle"
+  HangarDestroy:
+    address: hangar_destroy:{user_gid}
+    x-actioncable-channel: HangarDestroyChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Vehicle:
+        "$ref": "#/components/messages/Vehicle"
+  HangarSync:
+    address: hangar_sync:{user_gid}
+    x-actioncable-channel: HangarSyncChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      HangarSyncFinishedMessage:
+        "$ref": "#/components/messages/HangarSyncFinishedMessage"
+      HangarSyncFailedMessage:
+        "$ref": "#/components/messages/HangarSyncFailedMessage"
+  Models:
+    address: models
+    x-actioncable-channel: ModelsChannel
+    messages:
+      Model:
+        "$ref": "#/components/messages/Model"
+  Notifications:
+    address: notifications
+    x-actioncable-channel: NotificationsChannel
+    messages:
+      AnnouncementMessage:
+        "$ref": "#/components/messages/AnnouncementMessage"
+  OnSale:
+    address: on_sale
+    x-actioncable-channel: OnSaleChannel
+    messages:
+      Model:
+        "$ref": "#/components/messages/Model"
+  OnSaleHangar:
+    address: on_sale_hangar:{user_gid}
+    x-actioncable-channel: OnSaleHangarChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Vehicle:
+        "$ref": "#/components/messages/Vehicle"
+  UserNotifications:
+    address: user_notifications:{user_gid}
+    x-actioncable-channel: UserNotificationsChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Notification:
+        "$ref": "#/components/messages/Notification"
+  Wishlist:
+    address: wishlist:{user_gid}
+    x-actioncable-channel: WishlistChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Vehicle:
+        "$ref": "#/components/messages/Vehicle"
+  WishlistCreate:
+    address: wishlist_create:{user_gid}
+    x-actioncable-channel: WishlistCreateChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Vehicle:
+        "$ref": "#/components/messages/Vehicle"
+  WishlistDestroy:
+    address: wishlist_destroy:{user_gid}
+    x-actioncable-channel: WishlistDestroyChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      Vehicle:
+        "$ref": "#/components/messages/Vehicle"
+operations:
+  receiveAnnouncement:
+    action: receive
+    channel:
+      "$ref": "#/channels/Notifications"
+    messages:
+    - "$ref": "#/channels/Notifications/messages/AnnouncementMessage"
+    summary: An announcement shown to every connected client
+  receiveAppVersion:
+    action: receive
+    channel:
+      "$ref": "#/channels/AppVersion"
+    messages:
+    - "$ref": "#/channels/AppVersion/messages/AppVersionMessage"
+    summary: A new application version was deployed
+  receiveFleetMembers:
+    action: receive
+    channel:
+      "$ref": "#/channels/FleetMembers"
+    messages:
+    - "$ref": "#/channels/FleetMembers/messages/FleetMember"
+    summary: A membership in one of the user's fleets changed
+  receiveFleetVehicles:
+    action: receive
+    channel:
+      "$ref": "#/channels/FleetVehicles"
+    messages:
+    - "$ref": "#/channels/FleetVehicles/messages/FleetMember"
+    summary: A fleet member's vehicles changed
+  receiveHangarCreate:
+    action: receive
+    channel:
+      "$ref": "#/channels/HangarCreate"
+    messages:
+    - "$ref": "#/channels/HangarCreate/messages/Vehicle"
+    summary: A vehicle was added to the user's hangar
+  receiveHangarDestroy:
+    action: receive
+    channel:
+      "$ref": "#/channels/HangarDestroy"
+    messages:
+    - "$ref": "#/channels/HangarDestroy/messages/Vehicle"
+    summary: A vehicle was removed from the user's hangar
+  receiveHangarSyncResult:
+    action: receive
+    channel:
+      "$ref": "#/channels/HangarSync"
+    messages:
+    - "$ref": "#/channels/HangarSync/messages/HangarSyncFinishedMessage"
+    - "$ref": "#/channels/HangarSync/messages/HangarSyncFailedMessage"
+    summary: Outcome of an RSI hangar sync run
+  receiveHangarUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/Hangar"
+    messages:
+    - "$ref": "#/channels/Hangar/messages/Vehicle"
+    summary: A vehicle in the user's hangar changed
+  receiveModelUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/Models"
+    messages:
+    - "$ref": "#/channels/Models/messages/Model"
+    summary: A ship model changed
+  receiveOnSale:
+    action: receive
+    channel:
+      "$ref": "#/channels/OnSale"
+    messages:
+    - "$ref": "#/channels/OnSale/messages/Model"
+    summary: A ship model went on sale
+  receiveOnSaleHangar:
+    action: receive
+    channel:
+      "$ref": "#/channels/OnSaleHangar"
+    messages:
+    - "$ref": "#/channels/OnSaleHangar/messages/Vehicle"
+    summary: A vehicle the user owns went on sale
+  receiveUserNotification:
+    action: receive
+    channel:
+      "$ref": "#/channels/UserNotifications"
+    messages:
+    - "$ref": "#/channels/UserNotifications/messages/Notification"
+    summary: A notification addressed to one user
+  receiveWishlistCreate:
+    action: receive
+    channel:
+      "$ref": "#/channels/WishlistCreate"
+    messages:
+    - "$ref": "#/channels/WishlistCreate/messages/Vehicle"
+    summary: A vehicle was added to the user's wishlist
+  receiveWishlistDestroy:
+    action: receive
+    channel:
+      "$ref": "#/channels/WishlistDestroy"
+    messages:
+    - "$ref": "#/channels/WishlistDestroy/messages/Vehicle"
+    summary: A vehicle was removed from the user's wishlist
+  receiveWishlistUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/Wishlist"
+    messages:
+    - "$ref": "#/channels/Wishlist/messages/Vehicle"
+    summary: A wanted vehicle changed
+components:
+  schemas:
+    AnnouncementMessage:
+      type: object
+      properties:
+        text:
+          type: string
+        type:
+          "$ref": "#/components/schemas/AnnouncementTypeEnum"
+        persist:
+          type: boolean
+        timeout:
+          type: integer
+        background:
+          type: boolean
+      additionalProperties: false
+      required:
+      - text
+    AnnouncementTypeEnum:
+      type: string
+      enum:
+      - success
+      - info
+      - warning
+      - alert
+      x-enumNames:
+      - SUCCESS
+      - INFO
+      - WARNING
+      - ALERT
+    AppVersionMessage:
+      type: object
+      properties:
+        version:
+          type: string
+        codename:
+          type: string
+      additionalProperties: false
+      required:
+      - version
+      - codename
+    BoughtViaEnum:
+      type: string
+      enum:
+      - pledge_store
+      - ingame
+      x-enumNames:
+      - PLEDGE_STORE
+      - INGAME
+    CargoHold:
+      type: object
+      properties:
+        name:
+          type: string
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+        capacity:
+          type: integer
+        maxContainerSize:
+          "$ref": "#/components/schemas/CargoHoldContainerSize"
+        limits:
+          type: object
+          properties:
+            min:
+              "$ref": "#/components/schemas/CargoHoldLimit"
+            max:
+              "$ref": "#/components/schemas/CargoHoldLimit"
+          additionalProperties: false
+          required:
+          - min
+        offset:
+          type: object
+          properties:
+            x:
+              type: number
+            "y":
+              type: number
+            z:
+              type: number
+          additionalProperties: false
+          required:
+          - x
+          - "y"
+          - z
+        rotation:
+          type: integer
+      additionalProperties: false
+      required:
+      - dimensions
+      - capacity
+      - maxContainerSize
+      - limits
+    CargoHoldContainerSize:
+      type: object
+      properties:
+        size:
+          type: integer
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+      additionalProperties: false
+      required:
+      - size
+      - dimensions
+    CargoHoldDimension:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+    CargoHoldLimit:
+      type: object
+      properties:
+        dimensions:
+          "$ref": "#/components/schemas/CargoHoldDimension"
+        capacity:
+          type: integer
+      additionalProperties: false
+      required:
+      - dimensions
+      - capacity
+    Component:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        scKey:
+          type: string
+        scRef:
+          type: string
+        hidden:
+          type: boolean
+        category:
+          type: string
+        type:
+          "$ref": "#/components/schemas/ComponentTypeEnum"
+        subType:
+          type: string
+        inventoryConsumption:
+          type: string
+        grade:
+          type: string
+        gradeLabel:
+          type: string
+        size:
+          type: string
+        class:
+          "$ref": "#/components/schemas/ComponentClassEnum"
+        itemClass:
+          "$ref": "#/components/schemas/ComponentItemClassEnum"
+        itemClassLabel:
+          type: string
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        typeData:
+          anyOf:
+          - "$ref": "#/components/schemas/ComponentQuantumDrive"
+          - "$ref": "#/components/schemas/ComponentJumpDrive"
+          - "$ref": "#/components/schemas/ComponentArmor"
+          - "$ref": "#/components/schemas/CargoHold"
+          - "$ref": "#/components/schemas/FuelTank"
+          - "$ref": "#/components/schemas/ComponentThruster"
+          - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentTractorBeam"
+          - "$ref": "#/components/schemas/ComponentShield"
+          - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentRadar"
+          - "$ref": "#/components/schemas/ComponentController"
+          - "$ref": "#/components/schemas/ComponentPowerPlant"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - hidden
+      - availability
+      - media
+      - createdAt
+      - updatedAt
+    ComponentArmor:
+      type: object
+      properties:
+        health:
+          type: number
+        damagePhysical:
+          type: number
+        damageEnergy:
+          type: number
+        damageDistortion:
+          type: number
+        damageThermal:
+          type: number
+        damageBiochemical:
+          type: number
+        damageStun:
+          type: number
+        deflectionPhysical:
+          type: number
+        deflectionEnergy:
+          type: number
+        deflectionDistortion:
+          type: number
+        deflectionThermal:
+          type: number
+        selfResistancePhysical:
+          type: number
+        selfResistanceEnergy:
+          type: number
+        selfResistanceDistortion:
+          type: number
+        selfResistanceThermal:
+          type: number
+        signalInfrared:
+          type: number
+        signalElectromagnetic:
+          type: number
+        signalCrossSection:
+          type: number
+      additionalProperties: false
+    ComponentClassEnum:
+      type: string
+      enum:
+      - RSIModular
+      - RSIWeapon
+      - RSIAvionic
+      - RSIPropulsion
+      - RSIThruster
+      x-enumNames:
+      - RSI_MODULAR
+      - RSI_WEAPON
+      - RSI_AVIONIC
+      - RSI_PROPULSION
+      - RSI_THRUSTER
+    ComponentController:
+      type: object
+      properties:
+        scmSpeed:
+          type: number
+        scmSpeedBoosted:
+          type: number
+        reverseSpeedBoosted:
+          type: number
+        maxSpeed:
+          type: number
+        angularVelocity:
+          type: object
+          properties:
+            pitch:
+              type: number
+            yaw:
+              type: number
+            roll:
+              type: number
+          additionalProperties: false
+        boostedAngularVelocity:
+          type: object
+          properties:
+            pitch:
+              type: number
+            yaw:
+              type: number
+            roll:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+    ComponentCooler:
+      type: object
+      properties:
+        coolingRate:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      additionalProperties: false
+      required:
+      - coolingRate
+    ComponentItemClassEnum:
+      type: string
+      enum:
+      - stealth
+      - civilian
+      - industrial
+      - military
+      - competition
+      x-enumNames:
+      - STEALTH
+      - CIVILIAN
+      - INDUSTRIAL
+      - MILITARY
+      - COMPETITION
+    ComponentJumpDrive:
+      type: object
+      properties:
+        alignmentRate:
+          type: number
+        alignmentDecayRate:
+          type: number
+        tuningRate:
+          type: number
+        tuningDecayRate:
+          type: number
+        fuelUsageEfficiencyMultiplier:
+          type: number
+      additionalProperties: false
+    ComponentPowerPlant:
+      type: object
+      properties:
+        powerBase:
+          type: number
+        powerDraw:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+    ComponentQuantumDrive:
+      type: object
+      properties:
+        quantumFuelRequirement:
+          type: number
+        quantumFuelConsumption:
+          type: number
+        jumpRange:
+          type: number
+        disconnectRange:
+          type: number
+        driveSpeed:
+          type: number
+        cooldownTime:
+          type: number
+        stageOneAccelRate:
+          type: number
+        stageTwoAccelRate:
+          type: number
+        engageSpeed:
+          type: number
+        calibrationRate:
+          type: number
+        minCalibrationRequirement:
+          type: number
+        maxCalibrationRequirement:
+          type: number
+        calibrationProcessAngleLimit:
+          type: number
+        calibrationWarningAngleLimit:
+          type: number
+        calibrationDelayInSeconds:
+          type: number
+        spoolUpTime:
+          type: number
+        splineJumpParams:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
+        quantumBoostParams:
+          "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+    ComponentQuantumDriveBoost:
+      type: object
+      properties:
+        maxBoostSpeed:
+          type: number
+        timeToMaxBoostSpeed:
+          type: number
+        boostUseTime:
+          type: number
+        boostRechargeTime:
+          type: number
+        stopTime:
+          type: number
+        minJumpDistance:
+          type: number
+        ifcsHandoverDownTime:
+          type: number
+        ifcsHandoverRespoolTime:
+          type: number
+      additionalProperties: false
+    ComponentQuantumDriveJump:
+      type: object
+      properties:
+        driveSpeed:
+          type: number
+        cooldownTime:
+          type: number
+        stageOneAccelRate:
+          type: number
+        stageTwoAccelRate:
+          type: number
+        engageSpeed:
+          type: number
+        calibrationRate:
+          type: number
+        minCalibrationRequirement:
+          type: number
+        maxCalibrationRequirement:
+          type: number
+        calibrationProcessAngleLimit:
+          type: number
+        calibrationWarningAngleLimit:
+          type: number
+        calibrationDelayInSeconds:
+          type: number
+        spoolUpTime:
+          type: number
+      additionalProperties: false
+    ComponentRadar:
+      type: object
+      properties:
+        signatureDetection:
+          type: object
+          properties:
+            ir:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            em:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            cs:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            rs:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        pingProperties:
+          type: object
+          properties:
+            cooldownTime:
+              type: number
+          additionalProperties: false
+        aimAssistRange:
+          type: number
+        aimAssistMin:
+          type: number
+        sensitivityModifiers:
+          type: object
+          properties:
+            sensitivityAddition:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+    ComponentShield:
+      type: object
+      properties:
+        maxHealth:
+          type: number
+        maxRegen:
+          type: number
+        decayRatio:
+          type: number
+        downedRegenDelay:
+          type: number
+        damagedRegenDelay:
+          type: number
+        resistance:
+          type: object
+          properties:
+            physical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            energy:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            distortion:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            thermal:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            biochemical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            stun:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        absorption:
+          type: object
+          properties:
+            physical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            energy:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            distortion:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            thermal:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            biochemical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            stun:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+      required:
+      - maxHealth
+      - maxRegen
+    ComponentThruster:
+      type: object
+      properties:
+        thrustCapacity:
+          type: number
+        thrusterType:
+          type: string
+        thrusterClass:
+          "$ref": "#/components/schemas/ThrusterClassEnum"
+        fuelBurnRatePer10KNewton:
+          type: number
+      additionalProperties: false
+      required:
+      - thrustCapacity
+      - thrusterType
+      - fuelBurnRatePer10KNewton
+    ComponentTractorBeam:
+      type: object
+      properties:
+        tractorBeam:
+          type: boolean
+        minForce:
+          type: number
+        maxForce:
+          type: number
+        minDistance:
+          type: number
+        maxDistance:
+          type: number
+        fullStrengthDistance:
+          type: number
+        maxAngle:
+          type: number
+        maxVolume:
+          type: number
+        volumeForceCoefficient:
+          type: number
+        tetherBreakTime:
+          type: number
+        heatPerSecond:
+          type: number
+        rotation:
+          type: object
+          properties:
+            maxAngularVelocity:
+              type: number
+            degreesPerAction:
+              type: number
+          additionalProperties: false
+        movement:
+          type: object
+          properties:
+            maxSpeed:
+              type: number
+            maxAcceleration:
+              type: number
+          additionalProperties: false
+        cargoMode:
+          type: object
+          properties:
+            maxForce:
+              type: number
+            minDistance:
+              type: number
+            maxDistance:
+              type: number
+            fullStrengthDistance:
+              type: number
+          additionalProperties: false
+        towing:
+          type: object
+          properties:
+            towingForce:
+              type: number
+            towingMaxDistance:
+              type: number
+            towingMaxAcceleration:
+              type: number
+            quantumTowMassLimit:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - tractorBeam
+    ComponentTypeEnum:
+      type: string
+      enum:
+      - Seat
+      - Door
+      - MainThruster
+      - Armor
+      - WeaponDefensive
+      - ManneuverThruster
+      - CargoGrid
+      - Cargo
+      - EMP
+      - Paints
+      - TurretBase
+      - ToolArm
+      - Turret
+      - Misc
+      - Module
+      - ControlPanel
+      - WeaponGun
+      - Container
+      - TractorBeam
+      - UtilityTurret
+      - TowingBeam
+      - MissileController
+      - Lightgroup
+      - Battery
+      - CapacitorAssignmentController
+      - CommsController
+      - CoolerController
+      - DoorController
+      - EnergyController
+      - FlightController
+      - MiningController
+      - BombLauncher
+      - Bomb
+      - FuelController
+      - SalvageController
+      - ShieldController
+      - TargetSelector
+      - WeaponController
+      - WheeledController
+      - Cooler
+      - DockingAnimator
+      - Button
+      - Sensor
+      - Usable
+      - ExternalFuelTank
+      - FuelTank
+      - WeaponMining
+      - SalvageHead
+      - JumpDrive
+      - FuelIntake
+      - MiningModifier
+      - Missile
+      - AttachedPart
+      - LifeSupportGenerator
+      - SpaceMine
+      - MissileLauncher
+      - DockingCollar
+      - PowerPlant
+      - QuantumFuelTank
+      - QuantumInterdictionGenerator
+      - QuantumDrive
+      - Relay
+      - Radar
+      - Scanner
+      - SalvageFillerStation
+      - Shield
+      - SeatDashboard
+      - Display
+      - SelfDestruct
+      - WeaponAttachment
+      - SalvageFieldEmitter
+      - SalvageFieldSupporter
+      - SalvageInternalStorage
+      x-enumNames:
+      - SEAT
+      - DOOR
+      - MAIN_THRUSTER
+      - ARMOR
+      - WEAPON_DEFENSIVE
+      - MANNEUVER_THRUSTER
+      - CARGO_GRID
+      - CARGO
+      - EMP
+      - PAINTS
+      - TURRET_BASE
+      - TOOL_ARM
+      - TURRET
+      - MISC
+      - MODULE
+      - CONTROL_PANEL
+      - WEAPON_GUN
+      - CONTAINER
+      - TRACTOR_BEAM
+      - UTILITY_TURRET
+      - TOWING_BEAM
+      - MISSILE_CONTROLLER
+      - LIGHTGROUP
+      - BATTERY
+      - CAPACITOR_ASSIGNMENT_CONTROLLER
+      - COMMS_CONTROLLER
+      - COOLER_CONTROLLER
+      - DOOR_CONTROLLER
+      - ENERGY_CONTROLLER
+      - FLIGHT_CONTROLLER
+      - MINING_CONTROLLER
+      - BOMB_LAUNCHER
+      - BOMB
+      - FUEL_CONTROLLER
+      - SALVAGE_CONTROLLER
+      - SHIELD_CONTROLLER
+      - TARGET_SELECTOR
+      - WEAPON_CONTROLLER
+      - WHEELED_CONTROLLER
+      - COOLER
+      - DOCKING_ANIMATOR
+      - BUTTON
+      - SENSOR
+      - USABLE
+      - EXTERNAL_FUEL_TANK
+      - FUEL_TANK
+      - WEAPON_MINING
+      - SALVAGE_HEAD
+      - JUMP_DRIVE
+      - FUEL_INTAKE
+      - MINING_MODIFIER
+      - MISSILE
+      - ATTACHED_PART
+      - LIFE_SUPPORT_GENERATOR
+      - SPACE_MINE
+      - MISSILE_LAUNCHER
+      - DOCKING_COLLAR
+      - POWER_PLANT
+      - QUANTUM_FUEL_TANK
+      - QUANTUM_INTERDICTION_GENERATOR
+      - QUANTUM_DRIVE
+      - RELAY
+      - RADAR
+      - SCANNER
+      - SALVAGE_FILLER_STATION
+      - SHIELD
+      - SEAT_DASHBOARD
+      - DISPLAY
+      - SELF_DESTRUCT
+      - WEAPON_ATTACHMENT
+      - SALVAGE_FIELD_EMITTER
+      - SALVAGE_FIELD_SUPPORTER
+      - SALVAGE_INTERNAL_STORAGE
+    ComponentWeapon:
+      type: object
+      properties:
+        beam:
+          type: boolean
+        fireRate:
+          type: number
+        heatPerShot:
+          type: number
+        powerConsumption:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        damagePerSecond:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        heatPerSecond:
+          type: number
+        pelletsPerShot:
+          type: integer
+        speed:
+          type: number
+        range:
+          type: number
+        fullDamageRange:
+          type: number
+        zeroDamageRange:
+          type: number
+        ammoCost:
+          type: integer
+        maxAmmo:
+          type: integer
+        chargeTime:
+          type: number
+        overchargeTime:
+          type: number
+        regen:
+          type: object
+          properties:
+            maxAmmoLoad:
+              type: number
+            maxRegenPerSecond:
+              type: number
+            costPerBullet:
+              type: number
+            regenerationCooldown:
+              type: number
+            requestedRegenPerSecond:
+              type: number
+            requestedAmmoLoad:
+              type: number
+          additionalProperties: false
+        heat:
+          type: object
+          properties:
+            overheatTemperature:
+              type: number
+            coolingPerSecond:
+              type: number
+            timeTillCoolingStarts:
+              type: number
+            overheatFixTime:
+              type: number
+          additionalProperties: false
+        penetration:
+          type: object
+          properties:
+            maxThickness:
+              type: number
+            baseDistance:
+              type: number
+          additionalProperties: false
+      additionalProperties: false
+    ExternalFuelTank:
+      type: object
+      properties:
+        name:
+          type: string
+        componentName:
+          type: string
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+    Fleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        rsiSid:
+          type: string
+        ts:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+        homepage:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        publicFleet:
+          type: boolean
+        publicFleetStats:
+          type: boolean
+        defaultTimezone:
+          type: string
+        calendarFeedToken:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        backgroundImage:
+          "$ref": "#/components/schemas/MediaFile"
+        myFleet:
+          type: boolean
+        features:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
+      - publicFleet
+      - publicFleetStats
+      - features
+      - createdAt
+      - updatedAt
+    FleetMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        username:
+          type: string
+        fleetRole:
+          "$ref": "#/components/schemas/FleetRole"
+        status:
+          "$ref": "#/components/schemas/FleetMembershipStatusEnum"
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+        rsiHandle:
+          type: string
+        homepage:
+          type: string
+        discord:
+          type: string
+        youtube:
+          type: string
+        twitch:
+          type: string
+        guilded:
+          type: string
+        shipsFilter:
+          "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
+        hangarGroupId:
+          type: string
+          format: uuid
+        fleetSlug:
+          type: string
+        fleetName:
+          type: string
+        fleet:
+          "$ref": "#/components/schemas/Fleet"
+        primary:
+          type: boolean
+        verified:
+          type: boolean
+        citizenidProfileUrl:
+          type: string
+        discordProfileUrl:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        currentSystemCode:
+          type: string
+        isDestroyAllowed:
+          type: boolean
+        hangarUpdatedAt:
+          type: string
+          format: date-time
+        lastActiveAt:
+          type: string
+          format: date-time
+        invitedAt:
+          type: string
+          format: date-time
+        invitedAtLabel:
+          type: string
+        requestedAt:
+          type: string
+          format: date-time
+        requestedAtLabel:
+          type: string
+        acceptedAt:
+          type: string
+          format: date-time
+        acceptedAtLabel:
+          type: string
+        declinedAt:
+          type: string
+          format: date-time
+        declinedAtLabel:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - username
+      - fleetRole
+      - shipsFilter
+      - fleetSlug
+      - fleetName
+      - createdAt
+      - updatedAt
+    FleetMembershipShipsFilterEnum:
+      type: string
+      enum:
+      - all
+      - hangar_group
+      - hide
+      x-enumNames:
+      - ALL
+      - HANGAR_GROUP
+      - HIDE
+    FleetMembershipStatusEnum:
+      type: string
+      enum:
+      - created
+      - invited
+      - requested
+      - accepted
+      - declined
+      x-enumNames:
+      - CREATED
+      - INVITED
+      - REQUESTED
+      - ACCEPTED
+      - DECLINED
+    FleetRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        resourceAccess:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+    FuelTank:
+      type: object
+      properties:
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+    HangarGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        color:
+          type: string
+        public:
+          type: boolean
+        sort:
+          type: integer
+        vehiclesCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - color
+      - public
+      - createdAt
+      - updatedAt
+    HangarSyncFailedMessage:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - failed
+        error:
+          type: string
+      additionalProperties: false
+      required:
+      - status
+      - error
+    HangarSyncFinishedMessage:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - finished
+        result:
+          "$ref": "#/components/schemas/HangarSyncResult"
+      additionalProperties: false
+      required:
+      - status
+      - result
+    HangarSyncResult:
+      type: object
+      properties:
+        importedVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        foundVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        movedVehiclesToWanted:
+          type: array
+          items:
+            type: string
+            format: uuid
+        missingModels:
+          type: array
+          items:
+            type: string
+        importedComponents:
+          type: array
+          items:
+            type: string
+            format: uuid
+        foundComponents:
+          type: array
+          items:
+            type: string
+            format: uuid
+        missingComponents:
+          type: array
+          items:
+            type: string
+        missingComponentVehicles:
+          type: array
+          items:
+            type: string
+        importedUpgrades:
+          type: array
+          items:
+            type: string
+            format: uuid
+        foundUpgrades:
+          type: array
+          items:
+            type: string
+            format: uuid
+        missingUpgrades:
+          type: array
+          items:
+            type: string
+        missingUpgradeVehicles:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - importedVehicles
+      - foundVehicles
+      - movedVehiclesToWanted
+      - missingModels
+      - importedComponents
+      - foundComponents
+      - missingComponents
+      - missingComponentVehicles
+      - importedUpgrades
+      - foundUpgrades
+      - missingUpgrades
+      - missingUpgradeVehicles
+    Hardpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        group:
+          "$ref": "#/components/schemas/HardpointGroupEnum"
+        groupKey:
+          type: string
+        matrixKey:
+          type: string
+        category:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
+        name:
+          type: string
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        types:
+          type: array
+          items:
+            type: string
+        details:
+          type: string
+        component:
+          "$ref": "#/components/schemas/Component"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+    HardpointCategoryEnum:
+      type: string
+      enum:
+      - radar
+      - computers
+      - scanners
+      - powerplant
+      - cooler
+      - shieldgenerator
+      - module
+      - salvagefillerstation
+      - fueltanks
+      - fuel_intakes
+      - quantumdrive
+      - jumpdrive
+      - external_fuel_tanks
+      - refuel_boom
+      - main_thrusters
+      - retro_thrusters
+      - vtol_thrusters
+      - maneuvering_thrusters
+      - weapons
+      - weapon_mounts
+      - turret
+      - missile_racks
+      - bombcompartments
+      - quantumenforcementdevice
+      - emp
+      - salvagemunching
+      - armor
+      - countermeasures
+      - selfdestruct
+      - lifesupport
+      - batteries
+      - utility
+      - seat
+      - relay
+      - paints
+      - doors
+      - cargogrid
+      - inventory
+      - controller
+      - unknown
+      x-enumNames:
+      - RADAR
+      - COMPUTERS
+      - SCANNERS
+      - POWERPLANT
+      - COOLER
+      - SHIELDGENERATOR
+      - MODULE
+      - SALVAGEFILLERSTATION
+      - FUELTANKS
+      - FUEL_INTAKES
+      - QUANTUMDRIVE
+      - JUMPDRIVE
+      - EXTERNAL_FUEL_TANKS
+      - REFUEL_BOOM
+      - MAIN_THRUSTERS
+      - RETRO_THRUSTERS
+      - VTOL_THRUSTERS
+      - MANEUVERING_THRUSTERS
+      - WEAPONS
+      - WEAPON_MOUNTS
+      - TURRET
+      - MISSILE_RACKS
+      - BOMBCOMPARTMENTS
+      - QUANTUMENFORCEMENTDEVICE
+      - EMP
+      - SALVAGEMUNCHING
+      - ARMOR
+      - COUNTERMEASURES
+      - SELFDESTRUCT
+      - LIFESUPPORT
+      - BATTERIES
+      - UTILITY
+      - SEAT
+      - RELAY
+      - PAINTS
+      - DOORS
+      - CARGOGRID
+      - INVENTORY
+      - CONTROLLER
+      - UNKNOWN
+    HardpointGroupEnum:
+      type: string
+      enum:
+      - avionic
+      - system
+      - propulsion
+      - thruster
+      - weapon
+      - defense
+      - auxiliary
+      - seat
+      - relay
+      - other
+      - external_fuel_tank
+      - refuel_boom
+      - unknown
+      x-enumNames:
+      - AVIONIC
+      - SYSTEM
+      - PROPULSION
+      - THRUSTER
+      - WEAPON
+      - DEFENSE
+      - AUXILIARY
+      - SEAT
+      - RELAY
+      - OTHER
+      - EXTERNAL_FUEL_TANK
+      - REFUEL_BOOM
+      - UNKNOWN
+    HardpointSourceEnum:
+      type: string
+      enum:
+      - ship_matrix
+      - game_files
+      x-enumNames:
+      - SHIP_MATRIX
+      - GAME_FILES
+    ItemPrice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        price:
+          type: number
+        timeRange:
+          "$ref": "#/components/schemas/ItemPriceTimeRangeEnum"
+        priceType:
+          "$ref": "#/components/schemas/ItemPriceTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/ItemPriceItemTypeEnum"
+        location:
+          type: string
+        locationUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - price
+      - priceType
+      - itemId
+      - itemType
+      - location
+      - createdAt
+      - updatedAt
+    ItemPriceItemTypeEnum:
+      type: string
+      enum:
+      - Model
+      - ModelModule
+      - ModelPaint
+      - Component
+      - Equipment
+      - Commodity
+      x-enumNames:
+      - MODEL
+      - MODEL_MODULE
+      - MODEL_PAINT
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+    ItemPriceTimeRangeEnum:
+      type: string
+      enum:
+      - 1-day
+      - 3-days
+      - 7-days
+      - 30-days
+      x-enumNames:
+      - 1_DAY
+      - 3_DAYS
+      - 7_DAYS
+      - 30_DAYS
+    ItemPriceTypeEnum:
+      type: string
+      enum:
+      - buy
+      - sell
+      - rental
+      x-enumNames:
+      - BUY
+      - SELL
+      - RENTAL
+    Manufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        code:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        longName:
+          type: string
+        scRef:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+    MediaFile:
+      type: object
+      properties:
+        name:
+          type: string
+        contentType:
+          type: string
+        size:
+          type: integer
+        url:
+          type: string
+          format: uri
+        signedId:
+          type: string
+        smallUrl:
+          type: string
+          format: uri
+        mediumUrl:
+          type: string
+          format: uri
+        largeUrl:
+          type: string
+          format: uri
+        xlargeUrl:
+          type: string
+          format: uri
+        previewUrl:
+          type: string
+          format: uri
+        width:
+          type: integer
+        height:
+          type: integer
+        uploadedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - name
+      - contentType
+      - size
+      - url
+    Model:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        scIdentifier:
+          type: string
+        inGame:
+          type: boolean
+        name:
+          type: string
+        slug:
+          type: string
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            rentalAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+          - rentalAt
+        classification:
+          type: string
+        classificationLabel:
+          type: string
+        adiMap:
+          type: boolean
+          default: false
+        crew:
+          type: object
+          properties:
+            max:
+              type: integer
+            maxLabel:
+              type: string
+            min:
+              type: integer
+            minLabel:
+              type: string
+          additionalProperties: false
+        description:
+          type: string
+        erkulIdentifier:
+          type: string
+        focus:
+          type: string
+        hasImages:
+          type: boolean
+        hasModules:
+          type: boolean
+        hasPaints:
+          type: boolean
+        hasUpgrades:
+          type: boolean
+        hasVideos:
+          type: boolean
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        links:
+          type: object
+          properties:
+            salesPageUrl:
+              type: string
+            storeUrl:
+              type: string
+          additionalProperties: false
+        loaners:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoaner"
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/MediaFile"
+            angledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            fleetchartImage:
+              type: string
+            extendedHolo:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            frontView:
+              "$ref": "#/components/schemas/MediaFile"
+            frontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            sideView:
+              "$ref": "#/components/schemas/MediaFile"
+            sideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+            topView:
+              "$ref": "#/components/schemas/MediaFile"
+            topViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            holo:
+              "$ref": "#/components/schemas/MediaFile"
+            brochure:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        metrics:
+          type: object
+          properties:
+            beam:
+              type: number
+            beamLabel:
+              type: string
+            cargo:
+              type: number
+            cargoLabel:
+              type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
+            fleetchartOffsetLength:
+              type: number
+            fleetchartOffsetBeam:
+              type: number
+            extendedLength:
+              type: number
+            extendedLengthLabel:
+              type: string
+            extendedBeam:
+              type: number
+            extendedBeamLabel:
+              type: string
+            extendedHeight:
+              type: number
+            extendedHeightLabel:
+              type: string
+            extendedFleetchartOffsetLength:
+              type: number
+            extendedFleetchartOffsetBeam:
+              type: number
+            height:
+              type: number
+            heightLabel:
+              type: string
+            hydrogenFuelTankSize:
+              type: number
+            isGroundVehicle:
+              type: boolean
+            length:
+              type: number
+            lengthLabel:
+              type: string
+            mass:
+              type: number
+            massLabel:
+              type: string
+            hullHealth:
+              type: number
+            hullParts:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                  category:
+                    type: string
+                    enum:
+                    - vital
+                    - secondary
+                    - breakable
+                    - subpart
+                    - cosmetic
+                required:
+                - name
+                - health
+                - category
+                additionalProperties: false
+            hullDoors:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                required:
+                - name
+                - health
+                additionalProperties: false
+            quantumFuelTankSize:
+              type: number
+            weaponPoolSize:
+              type: number
+            signatureCrossSection:
+              type: object
+              properties:
+                x:
+                  type: number
+                "y":
+                  type: number
+                z:
+                  type: number
+              additionalProperties: false
+            size:
+              type: string
+            sizeLabel:
+              type: string
+            dockSize:
+              type: string
+          additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
+        hydrogenFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
+        quantumFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
+        refuelBoom:
+          "$ref": "#/components/schemas/RefuelBoom"
+        onSale:
+          type: boolean
+        playerOwnable:
+          type: boolean
+        pledgePrice:
+          type: number
+        pledgePriceLabel:
+          type: string
+        price:
+          type: number
+        priceLabel:
+          type: string
+        productionNote:
+          type: string
+        productionStatus:
+          "$ref": "#/components/schemas/ModelProductionStatusEnum"
+        rsiId:
+          type: integer
+        rsiName:
+          type: string
+        rsiSlug:
+          type: string
+        speeds:
+          type: object
+          properties:
+            groundAcceleration:
+              type: number
+            groundDecceleration:
+              type: number
+            groundMaxSpeed:
+              type: number
+            groundReverseSpeed:
+              type: number
+            maxSpeed:
+              type: number
+            pitch:
+              type: number
+            pitchBoosted:
+              type: number
+            roll:
+              type: number
+            rollBoosted:
+              type: number
+            scmSpeed:
+              type: number
+            scmSpeedBoosted:
+              type: number
+            reverseSpeedBoosted:
+              type: number
+            yaw:
+              type: number
+            yawBoosted:
+              type: number
+          additionalProperties: false
+        holo:
+          type: string
+          deprecated: true
+        brochure:
+          type: string
+          deprecated: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - crew
+      - hasImages
+      - hasModules
+      - hasPaints
+      - hasUpgrades
+      - hasVideos
+      - inGame
+      - loaners
+      - manufacturer
+      - media
+      - metrics
+      - onSale
+      - playerOwnable
+      - speeds
+      - adiMap
+      - createdAt
+      - updatedAt
+    ModelLoaner:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+    ModelModule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        hasStoreImage:
+          type: boolean
+        scKey:
+          type: string
+        metrics:
+          type: object
+          properties:
+            cargo:
+              type: number
+          additionalProperties: false
+        cargoHolds:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CargoHold"
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        pledgePrice:
+          type: number
+        productionStatus:
+          type: string
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
+        slot:
+          type: string
+          description: Module slot identifier (hardpoint sc_name). Present when fetched
+            via a model's modules endpoint.
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Hardpoint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - media
+      - createdAt
+      - updatedAt
+    ModelModulePackage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pledgePrice:
+          type: number
+        modules:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelModule"
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/MediaFile"
+            sideView:
+              "$ref": "#/components/schemas/MediaFile"
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+            topView:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        hasStoreImage:
+          type: boolean
+          deprecated: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        angledView:
+          type: string
+          deprecated: true
+        angledViewHeight:
+          type: number
+          deprecated: true
+        angledViewLarge:
+          type: string
+          deprecated: true
+        angledViewMedium:
+          type: string
+          deprecated: true
+        angledViewSmall:
+          type: string
+          deprecated: true
+        angledViewWidth:
+          type: number
+          deprecated: true
+        angledViewXlarge:
+          type: string
+          deprecated: true
+        sideView:
+          type: string
+          deprecated: true
+        sideViewHeight:
+          type: number
+          deprecated: true
+        sideViewLarge:
+          type: string
+          deprecated: true
+        sideViewMedium:
+          type: string
+          deprecated: true
+        sideViewSmall:
+          type: string
+          deprecated: true
+        sideViewWidth:
+          type: number
+          deprecated: true
+        sideViewXlarge:
+          type: string
+          deprecated: true
+        topView:
+          type: string
+          deprecated: true
+        topViewHeight:
+          type: number
+          deprecated: true
+        topViewLarge:
+          type: string
+          deprecated: true
+        topViewMedium:
+          type: string
+          deprecated: true
+        topViewSmall:
+          type: string
+          deprecated: true
+        topViewWidth:
+          type: number
+          deprecated: true
+        topViewXlarge:
+          type: string
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - modules
+      - media
+      - createdAt
+      - updatedAt
+    ModelPaint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        lastUpdatedAt:
+          type: string
+          format: date-time
+        lastUpdatedAtLabel:
+          type: string
+        availability:
+          type: object
+          properties:
+            boughtAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+            soldAt:
+              type: array
+              items:
+                "$ref": "#/components/schemas/ItemPrice"
+          additionalProperties: false
+          required:
+          - boughtAt
+          - soldAt
+        media:
+          type: object
+          properties:
+            angledView:
+              "$ref": "#/components/schemas/MediaFile"
+            fleetchartImage:
+              type: string
+            sideView:
+              "$ref": "#/components/schemas/MediaFile"
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+            topView:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        nameWithModel:
+          type: string
+        rsiId:
+          type: integer
+        rsiName:
+          type: string
+        rsiSlug:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        angledView:
+          type: string
+          format: uri
+          deprecated: true
+        angledViewHeight:
+          type: number
+          deprecated: true
+        angledViewLarge:
+          type: string
+          format: uri
+          deprecated: true
+        angledViewMedium:
+          type: string
+          format: uri
+          deprecated: true
+        angledViewSmall:
+          type: string
+          format: uri
+          deprecated: true
+        angledViewWidth:
+          type: number
+          deprecated: true
+        angledViewXlarge:
+          type: string
+          format: uri
+          deprecated: true
+        fleetchartImage:
+          type: string
+          format: uri
+          deprecated: true
+        hasStoreImage:
+          type: boolean
+        sideView:
+          type: string
+          format: uri
+          deprecated: true
+        sideViewHeight:
+          type: number
+          deprecated: true
+        sideViewLarge:
+          type: string
+          format: uri
+          deprecated: true
+        sideViewMedium:
+          type: string
+          format: uri
+          deprecated: true
+        sideViewSmall:
+          type: string
+          format: uri
+          deprecated: true
+        sideViewWidth:
+          type: number
+          deprecated: true
+        sideViewXlarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+        topView:
+          type: string
+          format: uri
+          deprecated: true
+        topViewHeight:
+          type: number
+          deprecated: true
+        topViewLarge:
+          type: string
+          format: uri
+          deprecated: true
+        topViewMedium:
+          type: string
+          format: uri
+          deprecated: true
+        topViewSmall:
+          type: string
+          format: uri
+          deprecated: true
+        topViewWidth:
+          type: number
+          deprecated: true
+        topViewXlarge:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - availability
+      - media
+      - createdAt
+      - updatedAt
+    ModelProductionStatusEnum:
+      type: string
+      enum:
+      - in-concept
+      - in-production
+      - flight-ready
+      x-enumNames:
+      - IN_CONCEPT
+      - IN_PRODUCTION
+      - FLIGHT_READY
+    ModelUpgrade:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        pledgePrice:
+          type: number
+        media:
+          type: object
+          properties:
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        storeImage:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageLarge:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageMedium:
+          type: string
+          format: uri
+          deprecated: true
+        storeImageSmall:
+          type: string
+          format: uri
+          deprecated: true
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - media
+      - createdAt
+      - updatedAt
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        notificationType:
+          "$ref": "#/components/schemas/NotificationTypeEnum"
+        title:
+          type: string
+        body:
+          type: string
+        link:
+          type: string
+        icon:
+          type: string
+        read:
+          type: boolean
+        readAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - notificationType
+      - title
+      - read
+      - expiresAt
+      - createdAt
+      - updatedAt
+    NotificationTypeEnum:
+      type: string
+      enum:
+      - hangar_create
+      - hangar_destroy
+      - wishlist_create
+      - wishlist_destroy
+      - model_on_sale
+      - new_model
+      - hangar_sync_finished
+      - hangar_sync_failed
+      - fleet_invite
+      - fleet_member_requested
+      - fleet_member_accepted
+      - fleet_request_accepted
+      - fleet_inventory_item_added
+      - fleet_event_published
+      - fleet_event_locked
+      - fleet_event_starting_soon
+      - fleet_event_started
+      - fleet_event_completed
+      - fleet_event_cancelled
+      - fleet_event_signup_added
+      - fleet_event_signup_withdrawn
+      - fleet_event_signup_confirmed
+      - fleet_event_signup_assigned
+      - fleet_event_signup_kicked
+      x-enumNames:
+      - HANGAR_CREATE
+      - HANGAR_DESTROY
+      - WISHLIST_CREATE
+      - WISHLIST_DESTROY
+      - MODEL_ON_SALE
+      - NEW_MODEL
+      - HANGAR_SYNC_FINISHED
+      - HANGAR_SYNC_FAILED
+      - FLEET_INVITE
+      - FLEET_MEMBER_REQUESTED
+      - FLEET_MEMBER_ACCEPTED
+      - FLEET_REQUEST_ACCEPTED
+      - FLEET_INVENTORY_ITEM_ADDED
+      - FLEET_EVENT_PUBLISHED
+      - FLEET_EVENT_LOCKED
+      - FLEET_EVENT_STARTING_SOON
+      - FLEET_EVENT_STARTED
+      - FLEET_EVENT_COMPLETED
+      - FLEET_EVENT_CANCELLED
+      - FLEET_EVENT_SIGNUP_ADDED
+      - FLEET_EVENT_SIGNUP_WITHDRAWN
+      - FLEET_EVENT_SIGNUP_CONFIRMED
+      - FLEET_EVENT_SIGNUP_ASSIGNED
+      - FLEET_EVENT_SIGNUP_KICKED
+    RefuelBoom:
+      type: object
+      properties:
+        armName:
+          type: string
+        armSize:
+          type: string
+        nozzleName:
+          type: string
+        nozzleSize:
+          type: string
+        captureRadius:
+          type: number
+        fuelFlowRate:
+          type: number
+        quantumFuelFlowRate:
+          type: number
+      additionalProperties: false
+    ThrusterClassEnum:
+      type: string
+      enum:
+      - main
+      - retro
+      - vtol
+      - mav
+      x-enumNames:
+      - MAIN
+      - RETRO
+      - VTOL
+      - MAV
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        serial:
+          type: string
+        alternativeNames:
+          type: array
+          items:
+            type: string
+        boughtVia:
+          "$ref": "#/components/schemas/BoughtViaEnum"
+        boughtViaLabel:
+          type: string
+        flagship:
+          type: boolean
+        hangarGroupIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        hangarGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarGroup"
+        loaner:
+          type: boolean
+        bundled:
+          type: boolean
+        bundledParent:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+            customName:
+              type: string
+        model:
+          "$ref": "#/components/schemas/Model"
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modulePackage:
+          "$ref": "#/components/schemas/ModelModulePackage"
+        nameVisible:
+          type: boolean
+        paint:
+          "$ref": "#/components/schemas/ModelPaint"
+        public:
+          type: boolean
+        saleNotify:
+          type: boolean
+        upgrade:
+          "$ref": "#/components/schemas/ModelUpgrade"
+        wanted:
+          type: boolean
+        activeLoadout:
+          "$ref": "#/components/schemas/VehicleLoadoutMinimal"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - model
+      - wanted
+      - loaner
+      - bundled
+      - flagship
+      - public
+      - nameVisible
+      - saleNotify
+      - alternativeNames
+      - modelUpgradeIds
+      - hangarGroupIds
+      - hangarGroups
+      - modelModuleIds
+      - createdAt
+      - updatedAt
+    VehicleLoadoutMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        url:
+          type: string
+        urlSource:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - url
+  messages:
+    AnnouncementMessage:
+      payload:
+        "$ref": "#/components/schemas/AnnouncementMessage"
+    AppVersionMessage:
+      payload:
+        "$ref": "#/components/schemas/AppVersionMessage"
+    FleetMember:
+      payload:
+        "$ref": "#/components/schemas/FleetMember"
+    HangarSyncFailedMessage:
+      payload:
+        "$ref": "#/components/schemas/HangarSyncFailedMessage"
+    HangarSyncFinishedMessage:
+      payload:
+        "$ref": "#/components/schemas/HangarSyncFinishedMessage"
+    Model:
+      payload:
+        "$ref": "#/components/schemas/Model"
+    Notification:
+      payload:
+        "$ref": "#/components/schemas/Notification"
+    Vehicle:
+      payload:
+        "$ref": "#/components/schemas/Vehicle"
+servers:
+  development:
+    host: fleetyards.test
+    pathname: "/cable"
+    protocol: ws
+    description: Dev Server
+  production:
+    host: fleetyards.net
+    pathname: "/cable"
+    protocol: wss
+    description: Production Server
+  staging:
+    host: fleetyards.dev
+    pathname: "/cable"
+    protocol: wss
+    description: Staging Server

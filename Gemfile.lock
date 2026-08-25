@@ -109,6 +109,12 @@ GEM
       logger
       rack (>= 2.0.0)
     ast (2.4.3)
+    asyncapi_cable (0.2.0)
+      actioncable (>= 7.1)
+      activesupport (>= 7.1)
+      json_schemer (>= 2.3)
+      openapi-ruby (>= 4.0.3)
+      railties (>= 7.1)
     atproto_client (0.1.5)
       jwt (>= 2.7)
       openssl (>= 3.0)
@@ -868,6 +874,7 @@ DEPENDENCIES
   ahoy_matey
   annotaterb
   appsignal
+  asyncapi_cable (~> 0.2)
   aws-sdk-s3
   benchmark
   bootsnap (>= 1.1.0)
@@ -1010,6 +1017,7 @@ CHECKSUMS
   ansi (1.5.0) sha256=5408253274e33d9d27d4a98c46d2998266fd51cba58a7eb9d08f50e57ed23592
   appsignal (4.10.1) sha256=66dc74c6923323ac048b28a638c53e442a2c12421a8023db5143538b1545adf4
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
+  asyncapi_cable (0.2.0) sha256=0358c75b8680c907685bf649173847fd86f50812afebeb66cf1fb9e49a1ee57a
   atproto_client (0.1.5) sha256=16a1f4b9576b19c75114732b8ba10b5bb3588401670c21b859e81db6e17fa605
   attr_required (1.0.2) sha256=f0ebfc56b35e874f4d0ae799066dbc1f81efefe2364ca3803dc9ea6a4de6cb99
   auth-sanitizer (0.2.3) sha256=db10aac92cfbe4c64ab637eebcbe1d67395d1694798041362173370f59933e3c

@@ -71,11 +71,17 @@ OpenapiRuby.configure do |config|
   }
 
   config.component_paths = ["app/api_components"]
+  # The REST entries must stay bare symbols. The Loader only sets
+  # _component_scopes_explicitly_set on its array branch, and that omission is
+  # the only thing keeping the deliberate cross-scope name shadowing
+  # (Admin/Shared `Component`, v1/Shared `BarChartStats`) from tripping the
+  # registry's duplicate check.
   config.component_scope_paths = {
     "v1" => :v1,
     "admin/v1" => :admin,
     "oauth/v1" => :oauth,
-    "shared/v1" => [:v1, :admin]
+    "shared/v1" => [:v1, :admin],
+    "cable/v1" => :cable
   }
 
   config.camelize_keys = false
