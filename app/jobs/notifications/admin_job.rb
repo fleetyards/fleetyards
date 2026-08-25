@@ -5,8 +5,10 @@ module Notifications
     def perform
       report = AdminWeeklyReport.build
 
+      # Delivered inline: the report carries Struct values that ActiveJob cannot
+      # serialize, and this job is already running in the background.
       AdminUser.where(super_admin: true).find_each do |admin_user|
-        AdminMailer.weekly(admin_user, report).deliver_later
+        AdminMailer.weekly(admin_user, report).deliver_now
       end
 
       AdminNotification.notify!(
