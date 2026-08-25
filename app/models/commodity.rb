@@ -27,6 +27,7 @@
 class Commodity < ApplicationRecord
   include AttachmentRansackers
   include ItemPriceConcern
+  include ScDataVersioned
 
   paginates_per 60
 
@@ -51,18 +52,6 @@ class Commodity < ApplicationRecord
     medical_supply metal military_supply mineral natural nonmetals plasma_fuel
     processed_goods quantum_fuel rmc scrap vice waste
   ].freeze
-
-  # Commodities of past patches stay in the table -- a ledger entry made last
-  # patch still has to resolve its item -- so anything meant for a picker
-  # narrows to the version the game currently ships. Component and Equipment
-  # keep the same scope.
-  scope :current_version, ->(flag = true) {
-    if ActiveModel::Type::Boolean.new.cast(flag)
-      where(version: Rails.configuration.sc_data[:version])
-    else
-      all
-    end
-  }
 
   DEFAULT_SORTING_PARAMS = ["name asc"]
   ALLOWED_SORTING_PARAMS = [
