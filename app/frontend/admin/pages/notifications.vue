@@ -280,7 +280,32 @@ const destroyAll = () =>
       <FilterForm />
     </template>
     <template #actions-left>
-      <Btn :to="sortLink" route-active-class="">
+      <BtnGroup segmented>
+        <Btn
+          :to="tabLink(false)"
+          :active="!archive"
+          route-active-class=""
+          mobile-icon-only
+          data-test="notifications-tab-inbox"
+        >
+          <i class="fa-duotone fa-inbox" />
+          {{ t("labels.adminNotifications.inbox") }}
+          <span v-if="unreadCount?.count" class="admin-notifications__badge">
+            {{ unreadCount.count }}
+          </span>
+        </Btn>
+        <Btn
+          :to="tabLink(true)"
+          :active="archive"
+          route-active-class=""
+          mobile-icon-only
+          data-test="notifications-tab-archive"
+        >
+          <i class="fa-duotone fa-box-archive" />
+          {{ t("labels.adminNotifications.archive") }}
+        </Btn>
+      </BtnGroup>
+      <Btn :to="sortLink" route-active-class="" mobile-icon-only>
         <i
           :class="
             oldestFirst
@@ -335,31 +360,6 @@ const destroyAll = () =>
         />
       </div>
     </template>
-    <template #actions-right>
-      <BtnGroup segmented>
-        <Btn
-          :to="tabLink(false)"
-          :active="!archive"
-          route-active-class=""
-          data-test="notifications-tab-inbox"
-        >
-          <i class="fa-duotone fa-inbox" />
-          {{ t("labels.adminNotifications.inbox") }}
-          <span v-if="unreadCount?.count" class="admin-notifications__badge">
-            {{ unreadCount.count }}
-          </span>
-        </Btn>
-        <Btn
-          :to="tabLink(true)"
-          :active="archive"
-          route-active-class=""
-          data-test="notifications-tab-archive"
-        >
-          <i class="fa-duotone fa-box-archive" />
-          {{ t("labels.adminNotifications.archive") }}
-        </Btn>
-      </BtnGroup>
-    </template>
     <template #pagination-top>
       <Paginator
         v-if="notifications"
@@ -383,7 +383,9 @@ const destroyAll = () =>
 .admin-notifications__badge {
   padding: 0 6px;
   color: $gray-black;
-  font-size: 0.8em;
+  // Absolute rather than an em: `mobile-icon-only` collapses the label by
+  // setting the button's font-size to 0, and the count would go with it.
+  font-size: 12px;
   font-weight: bold;
   background-color: var(--color-primary, #{$primary});
   border-radius: 10px;
