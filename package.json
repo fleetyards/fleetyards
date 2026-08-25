@@ -24,8 +24,9 @@
     "vue-tsc": "vue-tsc --noEmit --pretty",
     "tsc": "tsc --noEmit --pretty",
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "pnpm generate-api-client",
+    "postinstall": "pnpm generate-api-client && pnpm generate-cable-client",
     "generate-api-client": "orval -c orval.config.ts",
+    "generate-cable-client": "bin/generate-cable-client",
     "validate-schema": "npx @redocly/cli@latest lint ./swagger/v1/schema.yaml",
     "validate-admin-schema": "npx @redocly/cli@latest lint ./swagger/admin/v1/schema.yaml",
     "knip": "knip"
@@ -115,6 +116,7 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/test-utils": "2.4.11",
+    "asyncapi-cable": "^0.2.1",
     "c8": "12.0.0",
     "concurrently": "^10.0.5",
     "eslint": "10.9.0",

@@ -9,20 +9,33 @@ import {
 } from "@/shared/composables/useSubscription";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { type Vehicle, useSyncRsiHangarStatus } from "@/services/fyApi";
+import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
+import { type AnnouncementMessage } from "@/services/fyCable/models/AnnouncementMessage";
+import { AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
+import {
+  type Model,
+  type Notification,
+  type Vehicle,
+  useSyncRsiHangarStatus,
+} from "@/services/fyApi";
+
+const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
+  [AnnouncementTypeEnum.SUCCESS]: MessageTypesEnum.SUCCESS,
+  [AnnouncementTypeEnum.INFO]: MessageTypesEnum.INFO,
+  [AnnouncementTypeEnum.WARNING]: MessageTypesEnum.WARNING,
+  [AnnouncementTypeEnum.RESERVED_ALERT]: MessageTypesEnum.ALERT,
+};
 
 export const useUpdates = () => {
   const appStore = useAppStore();
 
-  const updateAppVersion = (data: string) => {
-    appStore.updateVersion(JSON.parse(data));
+  const updateAppVersion = (data: { version?: string; codename?: string }) => {
+    appStore.updateVersion(data);
   };
 
   const hangarStore = useHangarStore();
 
-  const addShipToHangar = (data: string) => {
-    const vehicle = JSON.parse(data);
-
+  const addShipToHangar = (vehicle: Vehicle) => {
     if (!vehicle.model) {
       return;
     }
@@ -30,9 +43,7 @@ export const useUpdates = () => {
     hangarStore.add(vehicle.model.slug);
   };
 
-  const removeShipFromHangar = (data: string) => {
-    const vehicle = JSON.parse(data);
-
+  const removeShipFromHangar = (vehicle: Vehicle) => {
     if (!vehicle.model) {
       return;
     }
@@ -42,9 +53,7 @@ export const useUpdates = () => {
 
   const wishlistStore = useWishlistStore();
 
-  const addShipToWishlist = (data: string) => {
-    const vehicle = JSON.parse(data);
-
+  const addShipToWishlist = (vehicle: Vehicle) => {
     if (!vehicle.model) {
       return;
     }
@@ -52,9 +61,7 @@ export const useUpdates = () => {
     wishlistStore.add(vehicle.model.slug);
   };
 
-  const removeShipFromWishlist = (data: string) => {
-    const vehicle = JSON.parse(data);
-
+  const removeShipFromWishlist = (vehicle: Vehicle) => {
     if (!vehicle.model) {
       return;
     }
@@ -71,12 +78,10 @@ export const useUpdates = () => {
 
   const { currentUser, isAuthenticated } = storeToRefs(sessionStore);
 
-  const notifyVehicleOnSale = (data: string) => {
+  const notifyVehicleOnSale = (vehicle: Vehicle) => {
     if (!currentUser?.value?.saleNotify) {
       return;
     }
-
-    const vehicle = JSON.parse(data) as Vehicle;
 
     if (!vehicle.saleNotify) {
       return;
@@ -90,12 +95,10 @@ export const useUpdates = () => {
     });
   };
 
-  const notifyOnSale = (data: string) => {
+  const notifyOnSale = (model: Model) => {
     if (!currentUser?.value?.saleNotify) {
       return;
     }
-
-    const model = JSON.parse(data);
 
     displayInfo({
       text: t("messages.model.onSale", { model: model.name }),
@@ -103,15 +106,25 @@ export const useUpdates = () => {
     });
   };
 
-  const handleServerNotification = (data: string) => {
-    const notification = JSON.parse(data);
-
+  // A server-wide announcement is already shaped like the toast it becomes —
+  // it has no counterpart resource in the REST API, so nothing is derived here.
+  // The map is exhaustive over the generated enum, so a severity added to the
+  // cable contract fails to compile here rather than arriving unhandled.
+  const handleAnnouncement = (announcement: AnnouncementMessage) => {
     displayMessage({
-      text: notification.text,
-      type: notification.type,
-      persist: notification.persist,
-      timeout: notification.timeout,
-      background: notification.background,
+      text: announcement.text,
+      type: announcement.type && ANNOUNCEMENT_TYPES[announcement.type],
+      persist: announcement.persist,
+      timeout: announcement.timeout,
+      background: announcement.background,
+    });
+  };
+
+  // A notification is a record, so its fields have to be mapped onto the toast.
+  const handleUserNotification = (notification: Notification) => {
+    displayMessage({
+      text: notification.title,
+      icon: notification.icon,
     });
   };
 
@@ -156,9 +169,7 @@ export const useUpdates = () => {
     enabled: isAuthenticated,
   });
 
-  const handleHangarSyncUpdate = (data: string) => {
-    const message = JSON.parse(data) as { status: string };
-
+  const handleHangarSyncUpdate = (message: { status: string }) => {
     if (message.status === "finished" || message.status === "failed") {
       hangarStore.syncRunning = false;
     }
@@ -198,11 +209,11 @@ export const useUpdates = () => {
 
   useSubscription({
     channelName: ChannelsEnum.NOTIFICATIONS,
-    received: handleServerNotification,
+    received: handleAnnouncement,
   });
 
   useSubscription({
     channelName: ChannelsEnum.USER_NOTIFICATIONS,
-    received: handleServerNotification,
+    received: handleUserNotification,
   });
 };

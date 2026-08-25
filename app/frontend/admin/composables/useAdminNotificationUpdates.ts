@@ -86,10 +86,10 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
     }
   };
 
-  const received = (data: string) => {
+  const received = (notification: AdminNotification) => {
     invalidate();
 
-    announce(JSON.parse(data) as AdminNotification);
+    announce(notification);
   };
 
   useSubscription({
