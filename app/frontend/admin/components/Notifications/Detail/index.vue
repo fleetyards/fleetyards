@@ -190,8 +190,6 @@ watch(
 <style lang="scss" scoped>
 .notification-detail {
   padding: 16px 18px;
-  max-height: calc(100vh - 60px);
-  overflow: auto;
 }
 
 .notification-detail--empty {
@@ -214,9 +212,13 @@ watch(
   }
 }
 
+// Wraps rather than shrinking past the point where the title is readable: the
+// actions drop to a row of their own once the heading would fall below its
+// min-width, which is what the reading pane does on a phone.
 .notification-detail__header {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 14px;
 }
 
@@ -227,9 +229,11 @@ watch(
   font-size: 1.5em;
 }
 
+// The min-width is what the header measures its line break against - at 0 the
+// actions would stay beside a title squeezed to two words a line.
 .notification-detail__heading {
   flex: 1;
-  min-width: 0;
+  min-width: 180px;
 }
 
 .notification-detail__title {
@@ -256,6 +260,7 @@ watch(
 .notification-detail__actions {
   display: flex;
   flex-shrink: 0;
+  flex-wrap: wrap;
   gap: 5px;
 }
 
@@ -305,9 +310,27 @@ watch(
   flex-shrink: 0;
 }
 
+@media (max-width: $tablet-breakpoint) {
+  .notification-detail {
+    padding: 12px 12px 14px;
+  }
+
+  .notification-detail__header {
+    gap: 10px;
+  }
+}
+
 @media (min-width: $notifications-two-pane-breakpoint) {
   .notification-detail__back {
     display: none;
+  }
+
+  // Only the pane that sits beside the list scrolls on its own: it is sticky,
+  // so it has to stay inside the viewport. Alone on the page it is the page
+  // that scrolls, and a second scroll region inside it hid the end of a report.
+  .notification-detail {
+    max-height: calc(100vh - 60px);
+    overflow: auto;
   }
 }
 </style>

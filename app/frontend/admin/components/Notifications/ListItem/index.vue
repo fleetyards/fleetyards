@@ -250,4 +250,22 @@ defineExpose({ focus: () => select.value?.focus() });
     opacity: 1;
   }
 }
+
+// A phone has no hover, so the actions are permanently part of the row and take
+// their width off the title. The row gives back what padding it can.
+@media (max-width: $tablet-breakpoint) {
+  .notification-item {
+    gap: 2px;
+    padding-right: 6px;
+  }
+
+  .notification-item__select {
+    gap: 10px;
+    padding-left: 10px;
+  }
+
+  .notification-item__actions {
+    gap: 2px;
+  }
+}
 </style>
