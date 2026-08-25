@@ -24,3 +24,89 @@ GET /imports the `items/items/input` response's property type/format changed fro
 GET /imports the `items/items/output` response's property type/format changed from `string`/`` to `object`/`` for status `200`
 GET /imports/{id} the `input` response's property type/format changed from `string`/`` to `object`/`` for status `200`
 GET /imports/{id} the `output` response's property type/format changed from `string`/`` to `object`/`` for status `200`
+GET /components the response property `items/items/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /components the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+DELETE /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /components/{id} the response property `typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-hardpoint-loadouts the response property `items/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /model-hardpoint-loadouts the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+GET /model-hardpoint-loadouts/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /model-hardpoint-loadouts/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-hardpoints the response property `items/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-hardpoints the response property `items/items/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /model-hardpoints the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+POST /model-hardpoints the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+GET /model-hardpoints/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-hardpoints/{id} the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /model-hardpoints/{id} the response property `component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /model-hardpoints/{id} the response property `loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-module-packages the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages the response property `items/items/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages the response property `items/items/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-module-packages the response property `items/items/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+POST /model-module-packages the response property `model/cargoHolds/items/name` became nullable for the status `200`
+POST /model-module-packages the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
+POST /model-module-packages the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /model-module-packages the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-module-packages/{id} the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /model-module-packages/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+PUT /model-module-packages/{id} the response property `modules/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /model-module-packages/{id} the response property `modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /model-module-packages/{id} the response property `modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-modules the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-modules the response property `items/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-modules the response property `items/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+POST /model-modules the response property `cargoHolds/items/name` became nullable for the status `201`
+POST /model-modules the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+POST /model-modules the response property `models/items/cargoHolds/items/name` became nullable for the status `201`
+GET /model-modules/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
+GET /model-modules/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /model-modules/{id} the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /model-modules/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
+PUT /model-modules/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /model-modules/{id} the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /model-modules/{id}/link the response property `cargoHolds/items/name` became nullable for the status `200`
+PUT /model-modules/{id}/link the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /model-modules/{id}/link the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /model-modules/{id}/unlink the response property `cargoHolds/items/name` became nullable for the status `200`
+PUT /model-modules/{id}/unlink the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /model-modules/{id}/unlink the response property `models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /model-paints the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+POST /model-paints the response property `model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+PUT /model-paints/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /models the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+POST /models the response property `cargoHolds/items/name` became nullable for the status `200`
+DELETE /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
+GET /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
+PUT /models/{id} the response property `cargoHolds/items/name` became nullable for the status `200`
+PUT /models/{id}/use-rsi-image the response property `cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles the response property `items/items/paint/model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `modulePackage/model/cargoHolds/items/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`

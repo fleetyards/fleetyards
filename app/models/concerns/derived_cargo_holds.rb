@@ -11,15 +11,17 @@ module DerivedCargoHolds
   extend ActiveSupport::Concern
 
   def cargo_holds_with_offsets
+    holds = projected_cargo_holds
+
     db_records = cargo_holds_db.where.not(offset_x: nil)
       .or(cargo_holds_db.where.not(offset_y: nil))
       .or(cargo_holds_db.where.not(offset_z: nil))
       .or(cargo_holds_db.where.not(rotation: nil))
       .index_by(&:position)
 
-    return cargo_holds if db_records.empty?
+    return holds if db_records.empty?
 
-    cargo_holds.each_with_index.map do |hold_data, index|
+    holds.each_with_index.map do |hold_data, index|
       db_record = db_records[index]
 
       next hold_data if db_record.blank?
@@ -42,7 +44,7 @@ module DerivedCargoHolds
   # row landed at the same array index -- so adding, dropping or reordering a
   # hold in the game files moved a curated offset onto a different hold, quietly.
   def update_cargo_holds_db
-    holds = (cargo_holds || []).reject { |hold| hold.blank? || hold["dimensions"].blank? }
+    holds = projected_cargo_holds
     keys = cargo_hold_keys(holds.map { |hold| hold["name"] })
 
     existing = cargo_holds_db.order(:position).to_a
@@ -67,6 +69,16 @@ module DerivedCargoHolds
   # Matched on the name the hardpoint carries, not on `position` -- position is
   # only the index in the array the loader wrote, and it moves with the build.
   #
+  # A hold the loader wrote without dimensions is not projected into a row, so
+  # it has no position an offset could be matched to. Both readers have to skip
+  # the same ones: `cargo_holds_with_offsets` pairs holds to rows by array
+  # index, and filtering in one place but not the other shifts every offset
+  # past a malformed hold onto its neighbour — the bug this concern exists for,
+  # arrived at from the other side.
+  private def projected_cargo_holds
+    (cargo_holds || []).reject { |hold| hold.blank? || hold["dimensions"].blank? }
+  end
+
   # Names are not quite unique in practice (a couple of models repeat one, and a
   # few holds carry none at all), so the ordinal among holds sharing a name is
   # part of the key. An unnamed hold falls back to its ordinal among the unnamed,

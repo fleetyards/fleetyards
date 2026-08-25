@@ -11275,7 +11275,9 @@ components:
       type: object
       properties:
         name:
-          type: string
+          type:
+          - string
+          - 'null'
         dimensions:
           "$ref": "#/components/schemas/CargoHoldDimension"
         capacity:
