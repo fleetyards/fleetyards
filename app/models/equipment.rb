@@ -52,6 +52,11 @@ class Equipment < ApplicationRecord
 
   belongs_to :manufacturer, optional: true
 
+  # What each build of the game says about this item. Written alongside the
+  # columns for now, so reads can move over a catalogue at a time.
+  has_many :builds, class_name: "EquipmentBuild", dependent: :destroy
+  has_one :build, -> { current }, class_name: "EquipmentBuild", inverse_of: :equipment
+
   # Nothing fills this from the game files: the loadout icons the records name
   # are art the export leaves out on purpose. It is here for the same reason
   # every other catalogue has one -- an upload, and the ledger's fallback to

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_24_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -302,6 +302,43 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_24_140000) do
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
     t.index ["sc_key"], name: "index_equipment_on_sc_key", unique: true
     t.index ["slot"], name: "index_equipment_on_slot"
+  end
+
+  create_table "equipment_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "backpack_compatibility"
+    t.integer "core_compatibility"
+    t.datetime "created_at", null: false
+    t.decimal "damage_reduction", precision: 15, scale: 2
+    t.text "description"
+    t.string "environment", null: false
+    t.uuid "equipment_id", null: false
+    t.string "equipment_type"
+    t.decimal "g_force_tolerance", precision: 15, scale: 2
+    t.string "grade"
+    t.boolean "hidden", default: false
+    t.string "item_type"
+    t.uuid "manufacturer_id"
+    t.string "name"
+    t.decimal "radiation_protection", precision: 15, scale: 2
+    t.decimal "radiation_scrub_rate", precision: 15, scale: 2
+    t.decimal "range", precision: 15, scale: 2
+    t.decimal "rate_of_fire", precision: 15, scale: 2
+    t.string "size"
+    t.integer "slot"
+    t.decimal "storage", precision: 15, scale: 2
+    t.string "sub_type"
+    t.string "temperature_rating"
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.decimal "volume", precision: 15, scale: 6
+    t.jsonb "volume_dimensions"
+    t.string "weapon_class"
+    t.index ["environment", "equipment_type"], name: "index_equipment_builds_on_environment_and_equipment_type"
+    t.index ["environment", "item_type"], name: "index_equipment_builds_on_environment_and_item_type"
+    t.index ["environment", "version"], name: "index_equipment_builds_on_environment_and_version"
+    t.index ["equipment_id", "environment", "version"], name: "index_equipment_builds_on_equipment_and_build", unique: true
+    t.index ["equipment_id"], name: "index_equipment_builds_on_equipment_id"
+    t.index ["manufacturer_id"], name: "index_equipment_builds_on_manufacturer_id"
   end
 
   create_table "exchange_rates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1485,6 +1522,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_24_140000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_notifications", "admin_users", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"

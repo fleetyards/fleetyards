@@ -14,7 +14,7 @@ module Manufacturers
     # Tables carrying `manufacturer_id`. Checked against the schema on the way in
     # so a table added later fails loudly here rather than quietly orphaning its
     # rows.
-    ASSOCIATED_MODELS = [Model, Component, Equipment, ModelModule].freeze
+    ASSOCIATED_MODELS = [Model, Component, Equipment, EquipmentBuild, ModelModule].freeze
 
     Result = Struct.new(:renamed, :dropped, :merged)
 

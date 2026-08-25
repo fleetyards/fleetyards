@@ -5,6 +5,8 @@ module ScData
         loaded = load_items("equipment").filter_map { |equipment_data| one(equipment_data)&.id }
 
         retire_absent(Equipment, loaded)
+
+        prune_builds(EquipmentBuild)
       end
 
       def one(equipment_data)
@@ -13,7 +15,13 @@ module ScData
         equipment = Equipment.find_by(sc_key: equipment_data["key"])
         equipment ||= Equipment.new(sc_key: equipment_data["key"])
 
-        apply(equipment, update_params(equipment_data))
+        update_params = update_params(equipment_data)
+
+        apply(equipment, update_params)
+
+        # `sc_key` and `sc_ref` identify the item rather than describing a build,
+        # so they stay on the row and are not repeated here.
+        apply_build(equipment, update_params.except(:sc_key, :sc_ref, :version))
 
         equipment
       end
