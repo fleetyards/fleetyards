@@ -972,3 +972,11 @@ PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoi
 GET /wishlist the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
 GET /wishlist the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
 GET /wishlist the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /fleets/invites the response property `items/fleetRole` became optional for the status `200`
+POST /fleets/use-invite the response property `fleetRole` became optional for the status `201`
+GET /fleets/{fleetSlug}/members the response property `items/items/fleetRole` became optional for the status `200`
+POST /fleets/{fleetSlug}/members the response property `fleetRole` became optional for the status `201`
+PUT /fleets/{fleetSlug}/members/{username}/demote the response property `fleetRole` became optional for the status `200`
+PUT /fleets/{fleetSlug}/members/{username}/promote the response property `fleetRole` became optional for the status `200`
+GET /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`
+PUT /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`

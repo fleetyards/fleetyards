@@ -49,7 +49,10 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id username fleetRole shipsFilter fleetSlug fleetName createdAt updatedAt]
+          # Not fleetRole: FleetRole cascades ahead of the memberships it
+          # nullifies, so a membership torn down with its fleet is broadcast
+          # without one.
+          required: %w[id username shipsFilter fleetSlug fleetName createdAt updatedAt]
         })
       end
     end

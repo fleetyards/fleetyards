@@ -14791,7 +14791,6 @@ components:
       required:
       - id
       - username
-      - fleetRole
       - shipsFilter
       - fleetSlug
       - fleetName
@@ -20978,15 +20977,26 @@ components:
           format: uuid
         name:
           type: string
+        active:
+          type: boolean
         url:
           type: string
         urlSource:
           type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - id
       - name
+      - active
       - url
+      - createdAt
+      - updatedAt
       title: VehicleLoadoutMinimal
     VehiclePublic:
       type: object
