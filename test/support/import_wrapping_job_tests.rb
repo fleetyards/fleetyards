@@ -35,6 +35,9 @@ module ImportWrappingJobTests
   def assert_import_wrapping_job_success(job_class:, import_class:, loader_class:, loader_method:, perform_args: [], loader_args: [], before_perform: nil)
     loader = mock("loader")
     loader_class.stubs(:new).returns(loader)
+    # Loaders that keep counts have them read off afterwards and stored on the
+    # import; the ones that do not never ask.
+    loader.stubs(:stats).returns({})
     if loader_args.empty?
       loader.expects(loader_method)
     else
@@ -53,6 +56,7 @@ module ImportWrappingJobTests
   def assert_import_wrapping_job_failure(job_class:, import_class:, loader_class:, loader_method:, perform_args: [], before_perform: nil)
     loader = mock("loader")
     loader_class.stubs(:new).returns(loader)
+    loader.stubs(:stats).returns({})
     loader.stubs(loader_method).raises(StandardError, "loader error")
 
     instance_exec(&before_perform) if before_perform

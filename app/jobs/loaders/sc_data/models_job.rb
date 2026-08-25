@@ -14,6 +14,8 @@ module Loaders
 
         loader.all
 
+        import.update!(output: {"ModelsLoader" => loader.stats})
+
         import.finish!
       rescue => e
         import.fail!

@@ -5,9 +5,12 @@ module ScData
 
       attr_accessor :sc_version, :sc_environment, :base_folder
 
-      # Listed inside the method rather than in a constant: every one of these
-      # subclasses BaseLoader, so resolving them while this class body is still
-      # being evaluated would be a circular load.
+      # Returns what each loader did, so the job that ran it can keep the counts
+      # on its import rather than leaving them only in the log.
+      #
+      # The classes are listed inside the method rather than in a constant: every
+      # one of them subclasses BaseLoader, so resolving them while this class
+      # body is still being evaluated would be a circular load.
       #
       # Order matters -- items resolve their manufacturer, models resolve the
       # components a loadout names, and modules hang off models.
@@ -19,12 +22,14 @@ module ScData
           ::ScData::Loader::ModelModulesLoader,
           ::ScData::Loader::CommoditiesLoader,
           ::ScData::Loader::EquipmentLoader
-        ].each do |loader_class|
+        ].to_h do |loader_class|
           loader = loader_class.new
 
           loader.all
 
           Rails.logger.info("[sc_data] #{loader_class.name.demodulize}: #{loader.stats_summary}")
+
+          [loader_class.name.demodulize, loader.stats]
         end
       end
 
