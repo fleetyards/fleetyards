@@ -36,7 +36,11 @@ class CompareImage < ApplicationRecord
     slug_set = "#{STYLE_VERSION}-#{models_with_images.map(&:slug).sort.join("-")}"
     record = find_or_initialize_by(slug_set: slug_set)
     record.generate!(models_with_images) unless record.image.attached?
-    record
+    return record if record.persisted?
+
+    # A lost race leaves this instance unsaved with an in-memory attachment that
+    # has no signed_id yet, so hand back the row the winner persisted.
+    find_by(slug_set: slug_set) || record
   end
 
   def self.find_or_create_for_share(slugs)

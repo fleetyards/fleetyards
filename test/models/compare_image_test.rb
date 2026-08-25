@@ -106,6 +106,21 @@ class CompareImageTest < ActiveSupport::TestCase
     assert_not record.image.attached?
   end
 
+  # The unsaved loser keeps its composite in memory, and an in-memory
+  # attachment has no signed_id, so callers raise on rails_blob_url.
+  test "hands back the persisted row when the insert loses the race" do
+    first = create_model_with_store_image("rsi-constellation-andromeda")
+    second = create_model_with_store_image("aegs-gladius")
+    slug_set = "#{CompareImage::STYLE_VERSION}-aegs-gladius-rsi-constellation-andromeda"
+    winner = CompareImage.create!(slug_set: slug_set)
+    CompareImage.stubs(:find_or_initialize_by).returns(CompareImage.new(slug_set: slug_set))
+
+    record = CompareImage.for([first, second])
+
+    assert_equal winner.id, record.id
+    assert record.persisted?
+  end
+
   private
 
   def create_model_with_slug(slug, legacy_slug: nil)
