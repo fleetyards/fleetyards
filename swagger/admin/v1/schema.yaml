@@ -10439,6 +10439,17 @@ components:
       - fleet:inventories:update
       - fleet:inventories:delete
       - fleet:inventories:manage
+      - fleet:missions:read
+      - fleet:missions:create
+      - fleet:missions:update
+      - fleet:missions:delete
+      - fleet:missions:manage
+      - fleet:events:read
+      - fleet:events:create
+      - fleet:events:update
+      - fleet:events:delete
+      - fleet:events:manage
+      - fleet:notifications:manage
       x-enumNames:
       - FLEET_UPDATE
       - FLEET_UPDATE_IMAGES
@@ -10470,6 +10481,17 @@ components:
       - FLEET_INVENTORIES_UPDATE
       - FLEET_INVENTORIES_DELETE
       - FLEET_INVENTORIES_MANAGE
+      - FLEET_MISSIONS_READ
+      - FLEET_MISSIONS_CREATE
+      - FLEET_MISSIONS_UPDATE
+      - FLEET_MISSIONS_DELETE
+      - FLEET_MISSIONS_MANAGE
+      - FLEET_EVENTS_READ
+      - FLEET_EVENTS_CREATE
+      - FLEET_EVENTS_UPDATE
+      - FLEET_EVENTS_DELETE
+      - FLEET_EVENTS_MANAGE
+      - FLEET_NOTIFICATIONS_MANAGE
       title: FleetRoleResourceAccessEnum
     FleetSortEnum:
       type: string
