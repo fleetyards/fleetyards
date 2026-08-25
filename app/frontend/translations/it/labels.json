@@ -355,6 +355,7 @@
             "fleet:memberships:manage": "Gestisci membri",
             "fleet:invites:read": "Visualizza inviti",
             "fleet:invites:create": "Crea inviti",
+            "fleet:invites:update": "Aggiorna inviti",
             "fleet:invites:delete": "Elimina inviti",
             "fleet:invites:manage": "Gestisci inviti",
             "fleet:vehicles:read": "Visualizza veicoli",

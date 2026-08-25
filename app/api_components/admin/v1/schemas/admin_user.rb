@@ -15,7 +15,7 @@ module Admin
             twoFactorRequired: {type: :boolean},
             twoFactorQrCodeUrl: {type: :string},
             twoFactorProvisioningUrl: {type: :string},
-            resourceAccess: {type: :array, items: {type: :string}},
+            resourceAccess: {type: :array, items: {"$ref": "#/components/schemas/AdminUserResourceAccessEnum"}},
             superAdmin: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

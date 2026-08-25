@@ -18,3 +18,5 @@ PUT /features/{id}/enable-group removed the required property `selfService` from
 PUT /features/{id}/enable-percentage-of-actors removed the required property `selfService` from the response with the `200` status
 PUT /features/{id}/enable-percentage-of-time removed the required property `selfService` from the response with the `200` status
 PUT /features/{id}/toggle-self-service api path removed without deprecation
+POST /admin_users request property `resourceAccess/items/` was restricted to a list of enum values
+PUT /admin_users/{id} request property `resourceAccess/items/` was restricted to a list of enum values

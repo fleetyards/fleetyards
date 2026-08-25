@@ -62,7 +62,11 @@ export const useSessionStore = defineStore("session", {
       this.accessConfirmed = undefined;
     },
     hasAccessTo(resource: string) {
-      return this.currentUser?.resourceAccess?.includes(resource) || false;
+      return (
+        (this.currentUser?.resourceAccess as string[] | undefined)?.includes(
+          resource,
+        ) || false
+      );
     },
   },
   persist: {

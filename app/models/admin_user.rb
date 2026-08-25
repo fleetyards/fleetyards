@@ -40,6 +40,20 @@
 class AdminUser < ApplicationRecord
   include ResourceAccessConcern
 
+  RESOURCE_ACCESS = {
+    ship_data: %w[models model_modules components manufacturers vehicles images],
+    community: %w[fleets users supporters],
+    system: %w[admins oauth_applications maintenance imports features workers pghero rsi-api-status stats]
+  }.freeze
+
+  AVAILABLE_PRIVILEGES = RESOURCE_ACCESS.values.flatten.freeze
+
+  def self.privilege_groups
+    RESOURCE_ACCESS.map do |key, privileges|
+      {key: key.to_s, privileges: privileges}
+    end
+  end
+
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :timeoutable, :rememberable,
     authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_admin_otp_secret!,
