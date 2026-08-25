@@ -45,7 +45,7 @@ module ScData
         update_params = update_speeds(hardpoints, update_params)
         update_params = update_ground_speeds(model_data, update_params)
 
-        model.update!(update_params.merge(update_reason: :sc_data_loader))
+        apply(model, update_params.merge(update_reason: :sc_data_loader))
       end
 
       private def update_in_game_flags
@@ -61,9 +61,9 @@ module ScData
         )
 
         if file_exists && !model.in_game?
-          model.update_columns(in_game: true, production_status: "flight-ready")
+          apply_columns(model, {in_game: true, production_status: "flight-ready"})
         elsif !file_exists && model.in_game?
-          model.update_columns(in_game: false)
+          apply_columns(model, {in_game: false})
         end
       end
 

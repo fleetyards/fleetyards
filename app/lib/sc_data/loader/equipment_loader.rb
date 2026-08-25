@@ -13,7 +13,7 @@ module ScData
         equipment = Equipment.find_by(sc_key: equipment_data["key"])
         equipment ||= Equipment.new(sc_key: equipment_data["key"])
 
-        equipment.update!(update_params(equipment_data))
+        apply(equipment, update_params(equipment_data))
 
         equipment
       end

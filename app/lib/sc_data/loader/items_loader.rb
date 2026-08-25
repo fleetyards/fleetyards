@@ -70,7 +70,7 @@ module ScData
           # builds now, so this is what records the build it was last seen in.
           update_params[:version] = sc_version
 
-          component.update!(update_params)
+          apply(component, update_params)
 
           if item["icon"].present?
             attach_icon(component, :icon, item["icon"])
@@ -139,8 +139,10 @@ module ScData
 
           next if loadout_name_blacklisted?(loadout["name"], default_loadout)
 
-          hardpoint = component.hardpoints.find_or_create_by!(sc_name: loadout["name"].downcase)
-          hardpoint_ids << hardpoint.id
+          # Initialized rather than created, so a new hardpoint is one insert
+          # with its attributes rather than an insert followed by an update. The
+          # id is collected after the save for that reason.
+          hardpoint = component.hardpoints.find_or_initialize_by(sc_name: loadout["name"].downcase)
 
           update_params = {
             source: :game_files,
@@ -157,7 +159,9 @@ module ScData
             )
           end
 
-          hardpoint.update!(update_params)
+          apply(hardpoint, update_params)
+
+          hardpoint_ids << hardpoint.id
         end
 
         component.hardpoints.where.not(id: hardpoint_ids).destroy_all
@@ -193,7 +197,7 @@ module ScData
 
         component = find_component(normalized_key, key, ref, name)
 
-        component = Component.create!(sc_key: normalized_key, sc_ref: ref, version: sc_version) if component.blank?
+        component = apply(Component.new, {sc_key: normalized_key, sc_ref: ref, version: sc_version}) if component.blank?
 
         component
       end

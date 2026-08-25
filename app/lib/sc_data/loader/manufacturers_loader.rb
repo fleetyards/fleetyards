@@ -54,7 +54,7 @@ module ScData
               update_params[:code] = manufacturer_data["code"]
             end
 
-            manufacturer.update!(update_params)
+            apply(manufacturer, update_params)
 
             # Onto `icon`, never onto `logo`: the logo is curated -- an admin
             # uploads it, and RSI's own artwork lands there -- and writing the
@@ -71,13 +71,13 @@ module ScData
 
             manufacturer
           elsif name.present?
-            created = Manufacturer.create!(
+            created = apply(Manufacturer.new, {
               sc_ref: manufacturer_data["ref"],
               name:,
               code: manufacturer_data["code"],
               description: manufacturer_data["description"],
               icon_path: manufacturer_data["icon"]
-            )
+            })
 
             attach_icon(created, :icon, manufacturer_data["icon"])
 

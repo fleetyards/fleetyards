@@ -14,7 +14,7 @@ module ScData
         commodity ||= Commodity.find_by(name: commodity_data["name"], sc_key: nil)
         commodity ||= Commodity.new(sc_key: commodity_data["sc_key"])
 
-        commodity.update!(update_params(commodity_data))
+        apply(commodity, update_params(commodity_data))
 
         # Filled in only while empty, the same way the manufacturer logo is:
         # `store_image` is curated -- an admin uploads it -- so following the
