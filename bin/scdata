@@ -7,8 +7,10 @@ require_relative "../lib/cli_helpers"
 EXPORT_FOLDER = "data/sc_data"
 
 COMMANDS = {
-  "sync" => "Sync SC data from Hetzner S3 (optionally specify version)",
+  "sync" => "Sync raw SC data from Hetzner S3 (optionally specify version)",
   "parse" => "Parse SC data for the given environment",
+  "push" => "Upload the parsed tree for the given environment to S3",
+  "pull" => "Download the parsed tree for the given environment from S3",
   "load" => "Load all SC data (manufacturers, items, models, modules)",
   "load:manufacturers" => "Load manufacturers from SC data",
   "load:items" => "Load items from SC data",
@@ -30,6 +32,29 @@ end
 
 def config_info
   "version: #{ScData::Source.current}"
+end
+
+# Under `bin/op` the settings are already in the environment, resolved from
+# `.env.tpl` -- which is also how production supplies them to the loader jobs.
+# Run bare, this falls back to reading 1Password directly, the way `sync` does,
+# so neither invocation needs the wrapper.
+def s3_settings
+  return ScData::ParsedStore.settings if ScData::ParsedStore.configured?
+
+  {
+    endpoint: "https://fsn1.your-objectstorage.com",
+    bucket: "fltyrd-sc",
+    access_key_id: read_secret("access_key_id"),
+    secret_access_key: read_secret("secret_access_key")
+  }
+end
+
+def read_secret(field)
+  value = `op read "op://Fleetyards/HETZNER_S3/#{field}"`.strip
+
+  abort "Could not read #{field} from 1Password. Unlock it and retry." unless $?.success?
+
+  value
 end
 
 def latest_version(export_folder, sc_environment)
@@ -112,6 +137,43 @@ when "parse"
   YAML
 
   puts "  Updated config/app/sc_data.yml to version: #{sc_version}"
+
+  # The parsed tree is not in git, so the commodity keys a test asserts against
+  # are committed here instead. Rewritten on every parse so they cannot drift
+  # from what the parser actually produced.
+  require "json"
+
+  keys = Dir.glob(File.join(Dir.pwd, "data/sc_data/parsed", sc_environment, "commodities/*.json"))
+    .map { |file| JSON.parse(File.read(file))["sc_key"] }
+    .compact
+    .sort
+
+  if keys.any?
+    keys_dir = File.join(Dir.pwd, "test/fixtures/sc_data", sc_environment)
+    FileUtils.mkdir_p(keys_dir)
+    File.write(File.join(keys_dir, "commodity_keys.json"), "#{JSON.pretty_generate(keys)}\n")
+
+    puts "  Updated test/fixtures/sc_data/#{sc_environment}/commodity_keys.json (#{keys.size} keys)"
+  end
+
+when "push", "pull"
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
+
+  sc_environment = args.shift || ScData::Source.environment
+
+  store = ScData::ParsedStore.new(sc_environment, settings: s3_settings)
+  result = nil
+
+  CliHelpers.run_step("#{command.capitalize}ing parsed tree (#{sc_environment})") do
+    result = store.public_send(command)
+    [true, ""]
+  end
+
+  moved = result[:uploaded] || result[:downloaded]
+  puts "  #{(command == "push") ? "Uploaded" : "Downloaded"}: #{moved}, removed: #{result[:removed]}, unchanged: #{result[:unchanged]}"
 
 when "load"
   CliHelpers.run_step("Booting Rails") {

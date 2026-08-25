@@ -75,7 +75,10 @@ swagger/todo
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
+# Build input for the loader jobs, not application data -- fetched from object
+# storage with `bin/scdata sync` / `bin/scdata pull`.
 data/sc_data/raw
+data/sc_data/parsed
 
 # ai agent files
 .cursor/working/

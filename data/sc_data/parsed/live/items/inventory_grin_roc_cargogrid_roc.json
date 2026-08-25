@@ -1,9 +1,0 @@
-{
-  "key": "GRIN_ROC_CargoGrid_ROC",
-  "ref": "e56a8a93-0006-4ffa-aed0-f961bae01c41",
-  "category": "inventory",
-  "type": "PersonalStorage",
-  "type_data": {
-    "storage": 1.2
-  }
-}
