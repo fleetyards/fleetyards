@@ -240,94 +240,154 @@ module ScData
         end.flatten
       end
 
+      # One hardpoint the loadout says should exist: resolved, but unwritten.
+      # This is the handover between working out what a loadout means and making
+      # rows match it -- two jobs that used to be one recursive method that wrote
+      # as it walked, which is why the rules could not be exercised without a
+      # database and why the destructive cleanup sat in the middle of them.
+      Slot = Struct.new(:name, :component, :children, :retain_only)
+
       private def update_loadout(parent, loadout, cleanup: true)
-        hardpoint_ids = []
+        # The module-key derivation below only applies to a ship. A module's own
+        # loadout, and every nested level, resolves without it.
+        slots = resolve_loadout(loadout, model: (parent if parent.is_a?(Model)))
 
-        (loadout["loadout"] || loadout["default_loadout"]).each do |item|
-          default_loadout = loadout["default_loadout"]&.find { |dl| dl["name"] == item["name"] }
+        persist_loadout(parent, slots, cleanup:)
+      end
 
-          next if loadout_name_blacklisted?(item["name"], default_loadout)
+      # Nothing past here writes: the only database access is what it takes to
+      # turn a key or a ref into a component.
+      private def resolve_loadout(loadout, model: nil)
+        entries = loadout["loadout"] || loadout["default_loadout"]
 
-          hardpoint = parent.hardpoints.find_or_initialize_by(sc_name: item["name"].downcase)
+        entries.flat_map { |item| resolve_item(loadout, item, model:) }
+      end
 
-          if item["key"].blank? && default_loadout.present?
-            item["key"] = default_loadout["key"]
-            item["ref"] = default_loadout["ref"]
-            item["default_loadout"] = default_loadout["default_loadout"] if default_loadout["default_loadout"].present?
-          end
+      private def resolve_item(loadout, item, model:)
+        default_loadout = loadout["default_loadout"]&.find { |dl| dl["name"] == item["name"] }
 
-          if item["key"].blank? && item["ref"].blank? && parent.is_a?(Model) && item["name"]&.end_with?("_module")
-            derived_key = "#{parent.sc_data_identifier}_module"
-            item["key"] = derived_key if Component.exists?(sc_key: derived_key)
-          end
+        return [] if loadout_name_blacklisted?(item["name"], default_loadout)
 
-          # Resolved by key alone: a component is one row now, and `version`
-          # says which build it was last seen in rather than which row to use.
-          component = if item["key"].present?
-            Component.find_by(sc_key: item["key"]&.downcase)
-          elsif item["ref"].present?
-            Component.find_by(sc_ref: item["ref"])
-          end
+        item = adopt_default_loadout(item, default_loadout)
+        item = derive_module_key(item, model)
 
-          if component.present?
-            if component.hidden?
-              # Build flattened hardpoints from the component's sub-hardpoints.
-              # Use model loadout data to fill in component references that
-              # the items loader couldn't resolve (e.g. Door → CargoGrid).
-              nested_loadout = item["loadout"] || item["default_loadout"]
-              hardpoint_data = {
-                "loadout" => component.hardpoints.filter_map do |hp|
-                               sub_component = hp.component
+        component = resolve_component(item)
 
-                               if sub_component.blank? && nested_loadout.present?
-                                 nested = nested_loadout.find { |nl| nl["name"]&.downcase == hp.sc_name }
-                                 if nested.present?
-                                   sub_component = if nested["key"].present?
-                                     Component.find_by(sc_key: nested["key"]&.downcase)
-                                   elsif nested["ref"].present?
-                                     Component.find_by(sc_ref: nested["ref"])
-                                   end
-                                 end
-                               end
+        return flatten_hidden(item, component) if component&.hidden?
 
-                               next if sub_component.blank?
-                               next if loadout_name_blacklisted?(sub_component.sc_key)
+        [Slot.new(name: item["name"].downcase, component:, children: nested_slots(item))]
+      end
 
-                               {
-                                 "name" => "#{item["name"]}-#{hp.sc_name}",
-                                 "key" => sub_component.sc_key
-                               }
-                             end
-              }
+      # A hidden component is a container the game files ship as an item -- a
+      # door that holds a cargo grid. It gets no hardpoint of its own; its
+      # sub-hardpoints are promoted onto this level under a compound name.
+      private def flatten_hidden(item, component)
+        nested_loadout = item["loadout"] || item["default_loadout"]
 
-              hardpoint_ids += update_loadout(parent, hardpoint_data, cleanup: false) if hardpoint_data["loadout"].present?
-            else
-              apply(hardpoint, {
-                source: :game_files,
-                component: component,
-                min_size: component.size,
-                max_size: component.size
-              })
+        promoted = component.hardpoints.filter_map do |sub_hardpoint|
+          sub_component = sub_hardpoint.component ||
+            nested_component(nested_loadout, sub_hardpoint)
 
-              hardpoint_ids << hardpoint.id
-            end
-          else
-            apply(hardpoint, {
-              source: :game_files,
-              component: nil
-            })
-          end
+          next if sub_component.blank?
+          next if loadout_name_blacklisted?(sub_component.sc_key)
 
-          if item["loadout"].present? || item["default_loadout"].present?
-            update_loadout(hardpoint, item) if hardpoint.persisted?
-          end
-
-          hardpoint_ids << hardpoint.id if hardpoint.persisted?
+          Slot.new(
+            name: "#{item["name"]}-#{sub_hardpoint.sc_name}".downcase,
+            component: sub_component,
+            children: []
+          )
         end
+
+        # Carried over deliberately: the hardpoint under the hidden component's
+        # own name used to be looked up before the code knew the component was
+        # hidden, and the id that collected protected the row from cleanup. So a
+        # row left from a build where the component was not hidden survives,
+        # still naming the component the flattening was meant to replace.
+        promoted + [Slot.new(name: item["name"].downcase, retain_only: true, children: [])]
+      end
+
+      # The items loader cannot always resolve a hidden component's own
+      # sub-hardpoints, so the loadout being walked is consulted to fill the gap.
+      private def nested_component(nested_loadout, sub_hardpoint)
+        return if nested_loadout.blank?
+
+        nested = nested_loadout.find { |entry| entry["name"]&.downcase == sub_hardpoint.sc_name }
+
+        return if nested.blank?
+
+        resolve_component(nested)
+      end
+
+      # Resolved by key alone when a key is present: a component is one row now,
+      # and `version` says which build it was last seen in rather than which row
+      # to use. A key that fails to resolve does not fall through to the ref.
+      private def resolve_component(item)
+        if item["key"].present?
+          Component.find_by(sc_key: item["key"]&.downcase)
+        elsif item["ref"].present?
+          Component.find_by(sc_ref: item["ref"])
+        end
+      end
+
+      # Matched on the raw name, case-sensitively, while the row is keyed on the
+      # downcased one -- so a default whose capitalisation differs is not
+      # applied. Merged rather than assigned into: the parsed hash belongs to
+      # the caller, and a nested level reads the adopted default off the copy.
+      private def adopt_default_loadout(item, default_loadout)
+        return item if item["key"].present? || default_loadout.blank?
+
+        adopted = item.merge("key" => default_loadout["key"], "ref" => default_loadout["ref"])
+
+        return adopted if default_loadout["default_loadout"].blank?
+
+        adopted.merge("default_loadout" => default_loadout["default_loadout"])
+      end
+
+      # A module hardpoint the export names but does not key, whose component is
+      # named after the ship carrying it.
+      private def derive_module_key(item, model)
+        return item if model.blank?
+        return item if item["key"].present? || item["ref"].present?
+        return item unless item["name"]&.end_with?("_module")
+
+        derived_key = "#{model.sc_data_identifier}_module"
+
+        return item unless Component.exists?(sc_key: derived_key)
+
+        item.merge("key" => derived_key)
+      end
+
+      private def nested_slots(item)
+        return [] if item["loadout"].blank? && item["default_loadout"].blank?
+
+        resolve_loadout(item)
+      end
+
+      private def persist_loadout(parent, slots, cleanup: true)
+        hardpoint_ids = slots.filter_map { |slot| persist_slot(parent, slot) }
 
         parent.hardpoints.where(source: :game_files).where.not(id: hardpoint_ids).destroy_all if cleanup
 
         hardpoint_ids
+      end
+
+      private def persist_slot(parent, slot)
+        hardpoint = parent.hardpoints.find_or_initialize_by(sc_name: slot.name)
+
+        return hardpoint.persisted? ? hardpoint.id : nil if slot.retain_only
+
+        update_params = {source: :game_files, component: slot.component}
+
+        if slot.component.present?
+          update_params[:min_size] = slot.component.size
+          update_params[:max_size] = slot.component.size
+        end
+
+        apply(hardpoint, update_params)
+
+        persist_loadout(hardpoint, slot.children) if slot.children.present?
+
+        hardpoint.id
       end
 
       private def loadout_name_blacklisted?(name, default_loadout = nil)
