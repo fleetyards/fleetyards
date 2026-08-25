@@ -111,13 +111,13 @@ const leave = () => {
   <TabNavView
     :routes="fleetRoutes"
     :authenticated="sessionStore.isAuthenticated"
-    :resource-access="membership?.fleetRole.resourceAccess"
+    :resource-access="membership?.fleetRole?.resourceAccess"
   >
     <template #nav>
       <TabNavViewItems
         :routes="fleetRoutes"
         :authenticated="sessionStore.isAuthenticated"
-        :resource-access="membership?.fleetRole.resourceAccess"
+        :resource-access="membership?.fleetRole?.resourceAccess"
       />
       <li
         v-if="fleet"
