@@ -2,6 +2,7 @@
   "name": "fleetyards",
   "private": true,
   "version": "7.2.0",
+  "packageManager": "pnpm@10.31.0",
   "scripts": {
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
