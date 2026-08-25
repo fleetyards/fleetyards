@@ -3,12 +3,19 @@
 require "test_helper"
 
 class DerivedCargoHoldsTest < ActiveSupport::TestCase
+  # `limits` is required by the CargoHold component and present on every hold in
+  # the live catalogue, so a fixture without it renders a payload the API says
+  # cannot exist — which cable validation now rejects.
   private def hold(name, capacity: 32, size: 2.5)
     {
       "name" => name,
       "capacity" => capacity,
       "dimensions" => {"x" => size, "y" => size, "z" => size},
-      "max_container_size" => {"size" => 2, "dimensions" => {"x" => 2.5, "y" => 1.25, "z" => 1.25}}
+      "max_container_size" => {"size" => 2, "dimensions" => {"x" => 2.5, "y" => 1.25, "z" => 1.25}},
+      "limits" => {
+        "min" => {"dimensions" => {"x" => 1.25, "y" => 1.25, "z" => 1.25}, "capacity" => 1},
+        "max" => {"dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}, "capacity" => 8}
+      }
     }
   end
 
