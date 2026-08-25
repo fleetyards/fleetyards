@@ -79,11 +79,13 @@ module Api
         authorize! @fleet, to: :show?
       end
 
+      # Concurrent requests for the same fleet both miss the association, so the
+      # insert has to tolerate losing the race against the unique index.
       private def set_setting
         @setting = @fleet.fleet_notification_setting ||
-          @fleet.create_fleet_notification_setting!(
-            enabled_in_app_events: FleetNotificationSetting::DEFAULT_IN_APP_EVENTS
-          )
+          FleetNotificationSetting.create_or_find_by!(fleet: @fleet) do |setting|
+            setting.enabled_in_app_events = FleetNotificationSetting::DEFAULT_IN_APP_EVENTS
+          end
       end
     end
   end
