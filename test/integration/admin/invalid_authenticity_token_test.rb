@@ -8,6 +8,10 @@ require "test_helper"
 class Admin::InvalidAuthenticityTokenTest < ActionDispatch::IntegrationTest
   setup do
     ActionController::Base.allow_forgery_protection = true
+    # The admin shell resolves its assets through Vite, and CI has neither a
+    # built manifest nor a dev server. Pretending the dev server is up makes
+    # every lookup resolve to a path instead of raising.
+    ViteRuby.instance.stubs(:dev_server_running?).returns(true)
   end
 
   teardown do
