@@ -126,7 +126,7 @@ module InventoryLedgerEntry
     return true unless referenced_item?
     return true unless item.respond_to?(:version)
 
-    item.version == Rails.configuration.sc_data[:version]
+    item.version == ScData::Source.version
   end
 
   # What one piece costs a cargo grid, in SCU. Bulk cargo is already counted in

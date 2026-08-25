@@ -46,6 +46,7 @@
 class Equipment < ApplicationRecord
   include AttachmentRansackers
   include ItemPriceConcern
+  include ScDataVersioned
 
   paginates_per 50
 
@@ -115,17 +116,6 @@ class Equipment < ApplicationRecord
   def self.ransackable_associations(_auth_object = nil)
     ["manufacturer"]
   end
-
-  # Gear from past patches stays in the table -- a ledger entry made last patch
-  # still has to resolve its item -- so anything meant for a picker narrows to
-  # the version the game currently ships. Component keeps the same scope.
-  scope :current_version, ->(flag = true) {
-    if ActiveModel::Type::Boolean.new.cast(flag)
-      where(version: Rails.configuration.sc_data[:version])
-    else
-      all
-    end
-  }
 
   def self.visible
     where(hidden: false)

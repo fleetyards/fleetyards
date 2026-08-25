@@ -15,7 +15,7 @@ module ScData
     MAX_IMPORTS_PER_VERSION = 2
 
     def perform
-      new_version = Rails.configuration.sc_data[:version]
+      new_version = ::ScData::Source.version
 
       return if new_version.blank?
       return if loaded?(new_version)

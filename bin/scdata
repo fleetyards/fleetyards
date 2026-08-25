@@ -29,8 +29,7 @@ def boot_rails
 end
 
 def config_info
-  config = Rails.configuration.sc_data
-  "version: #{config[:version]} (#{config[:environment]})"
+  "version: #{ScData::Source.current}"
 end
 
 def latest_version(export_folder, sc_environment)
@@ -97,7 +96,7 @@ when "parse"
     [true, ""]
   }
 
-  sc_environment = args.shift || Rails.configuration.sc_data[:environment]
+  sc_environment = args.shift || ScData::Source.environment
   sc_version = latest_version(EXPORT_FOLDER, sc_environment)
 
   CliHelpers.run_step("Parsing SC Data #{sc_version} (#{sc_environment})") do

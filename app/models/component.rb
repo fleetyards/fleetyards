@@ -41,6 +41,7 @@ class Component < ApplicationRecord
   include ActiveStorageVariants
   include AttachmentRansackers
   include ItemPriceConcern
+  include ScDataVersioned
 
   paginates_per 50
   max_paginates_per 240
@@ -87,16 +88,6 @@ class Component < ApplicationRecord
   serialize :heat_connection, coder: YAML
   serialize :ammunition, coder: YAML
   serialize :inventory_consumption, coder: YAML
-
-  # Components of past patches stay in the table, so anything meant for a
-  # picker has to narrow down to the version the game currently ships.
-  scope :current_version, ->(flag = true) {
-    if ActiveModel::Type::Boolean.new.cast(flag)
-      where(version: Rails.configuration.sc_data[:version])
-    else
-      all
-    end
-  }
 
   DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
   ALLOWED_SORTING_PARAMS = [

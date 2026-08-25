@@ -27,7 +27,7 @@ module Api
           .where(
             category: "weapons",
             component_sub_type: "Gun",
-            version: Rails.configuration.sc_data[:version]
+            version: ::ScData::Source.version
           )
           .where.not(type_data: nil)
           .where("sc_key IS NULL OR sc_key !~ ?", WEAPON_VARIANT_KEYS)

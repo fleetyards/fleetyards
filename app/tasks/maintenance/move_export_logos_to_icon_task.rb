@@ -71,7 +71,7 @@ module Maintenance
     end
 
     private def sc_environment
-      Rails.configuration.sc_data[:environment]
+      ::ScData::Source.environment
     end
 
     # The task's log is its output in the UI, which is stdout for this engine.

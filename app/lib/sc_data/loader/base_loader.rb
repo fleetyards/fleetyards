@@ -15,9 +15,11 @@ module ScData
       end
 
       def initialize(base_folder: DEFAULT_BASE_FOLDER)
+        source = ::ScData::Source.current
+
         self.base_folder = base_folder
-        self.sc_version = Rails.configuration.sc_data[:version]
-        self.sc_environment = Rails.configuration.sc_data[:environment]
+        self.sc_version = source.version
+        self.sc_environment = source.environment
       end
 
       # Read on every call rather than built in the constructor: callers set
