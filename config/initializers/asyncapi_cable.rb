@@ -55,7 +55,11 @@ AsyncapiCable.configure do |config|
   config.schema_output_dir = "asyncapi"
   config.schema_output_format = :yaml
 
-  # Not :enabled — broadcasts run from after_save/after_commit callbacks, so a
-  # raise on a payload mismatch would roll back the write that triggered it.
-  config.validation_mode = :warn_only
+  # Raising is what makes the contract enforceable, so tests do. Everywhere
+  # else only warns: broadcasts run from after_save/after_commit callbacks, so a
+  # raise in production would roll back the write that triggered it.
+  #
+  # The hook fires on every broadcast the suite makes, not only where a channel
+  # declaration asserts, so this covers any test that happens to trigger one.
+  config.validation_mode = Rails.env.test? ? :enabled : :warn_only
 end

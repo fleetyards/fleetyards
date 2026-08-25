@@ -902,3 +902,81 @@ GET /fleets/{fleetSlug}/roles added the new `fleet:vehicles:delete` enum value t
 GET /fleets/{fleetSlug}/roles added the new `fleet:vehicles:manage` enum value to the `items/resourceAccess/items/` response property for the response status `200`
 GET /fleets/{fleetSlug}/roles added the new `fleet:vehicles:read` enum value to the `items/resourceAccess/items/` response property for the response status `200`
 GET /fleets/{fleetSlug}/roles added the new `fleet:vehicles:update` enum value to the `items/resourceAccess/items/` response property for the response status `200`
+GET /components the response property `items/items/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #1: Model]/cargoHolds/items/name` became nullable for the status `200`
+GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/model/cargoHolds/items/name` became nullable for the status `200`
+GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /hangar the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /hangar the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /hangar the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /models the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/embed the response property `items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/latest the response property `items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/with-docks the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/{slug} the response property `cargoHolds/items/name` became nullable for the status `200`
+GET /models/{slug}/hardpoints the response property `items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /models/{slug}/loaners the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/{slug}/module-packages the response property `items/items/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/{slug}/module-packages the response property `items/items/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /models/{slug}/modules the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/{slug}/modules the response property `items/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /models/{slug}/snub-crafts the response property `items/cargoHolds/items/name` became nullable for the status `200`
+GET /models/{slug}/variants the response property `items/items/cargoHolds/items/name` became nullable for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #1: Model]/cargoHolds/items/name` became nullable for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/model/cargoHolds/items/name` became nullable for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles the response property `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed the response property `items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed the response property `items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed the response property `items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /public/hangars/embed the response property `items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /public/hangars/embed the response property `items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /public/hangars/embed the response property `items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /public/hangars/{username} the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /public/hangars/{username} the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /public/hangars/{username} the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /public/wishlists/{username} the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /public/wishlists/{username} the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /public/wishlists/{username} the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /vehicles the response property `model/cargoHolds/items/name` became nullable for the status `201`
+POST /vehicles the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `201`
+POST /vehicles the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+DELETE /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+DELETE /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `model/cargoHolds/items/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+PUT /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{vehicle_id}/loadouts the response property `items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{vehicle_id}/loadouts the response property `items/hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{vehicle_id}/loadouts the response property `items/hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+POST /vehicles/{vehicle_id}/loadouts the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+POST /vehicles/{vehicle_id}/loadouts the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+POST /vehicles/{vehicle_id}/loadouts the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `201`
+DELETE /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+DELETE /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+DELETE /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id} the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/hardpoint/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+PUT /vehicles/{vehicle_id}/loadouts/{id}/activate the response property `hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /wishlist the response property `items/items/model/cargoHolds/items/name` became nullable for the status `200`
+GET /wishlist the response property `items/items/modulePackage/modules/items/cargoHolds/items/name` became nullable for the status `200`
+GET /wishlist the response property `items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
+GET /fleets/invites the response property `items/fleetRole` became optional for the status `200`
+POST /fleets/use-invite the response property `fleetRole` became optional for the status `201`
+GET /fleets/{fleetSlug}/members the response property `items/items/fleetRole` became optional for the status `200`
+POST /fleets/{fleetSlug}/members the response property `fleetRole` became optional for the status `201`
+PUT /fleets/{fleetSlug}/members/{username}/demote the response property `fleetRole` became optional for the status `200`
+PUT /fleets/{fleetSlug}/members/{username}/promote the response property `fleetRole` became optional for the status `200`
+GET /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`
+PUT /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`

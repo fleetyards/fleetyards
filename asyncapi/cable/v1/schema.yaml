@@ -43,6 +43,8 @@ channels:
     messages:
       Vehicle:
         "$ref": "#/components/messages/Vehicle"
+      HangarGroupChangedMessage:
+        "$ref": "#/components/messages/HangarGroupChangedMessage"
   HangarCreate:
     address: hangar_create:{user_gid}
     x-actioncable-channel: HangarCreateChannel
@@ -200,6 +202,7 @@ operations:
       "$ref": "#/channels/Hangar"
     messages:
     - "$ref": "#/channels/Hangar/messages/Vehicle"
+    - "$ref": "#/channels/Hangar/messages/HangarGroupChangedMessage"
     summary: A vehicle in the user's hangar changed
   receiveModelUpdate:
     action: receive
@@ -303,7 +306,9 @@ components:
       type: object
       properties:
         name:
-          type: string
+          type:
+          - string
+          - 'null'
         dimensions:
           "$ref": "#/components/schemas/CargoHoldDimension"
         capacity:
@@ -1636,7 +1641,6 @@ components:
       required:
       - id
       - username
-      - fleetRole
       - shipsFilter
       - fleetSlug
       - fleetName
@@ -1865,6 +1869,15 @@ components:
       - public
       - createdAt
       - updatedAt
+    HangarGroupChangedMessage:
+      type: object
+      properties:
+        hangarGroupId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - hangarGroupId
     HangarSyncFailedMessage:
       type: object
       properties:
@@ -3295,15 +3308,26 @@ components:
           format: uuid
         name:
           type: string
+        active:
+          type: boolean
         url:
           type: string
         urlSource:
           type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - id
       - name
+      - active
       - url
+      - createdAt
+      - updatedAt
   messages:
     AnnouncementMessage:
       payload:
@@ -3314,6 +3338,9 @@ components:
     FleetMember:
       payload:
         "$ref": "#/components/schemas/FleetMember"
+    HangarGroupChangedMessage:
+      payload:
+        "$ref": "#/components/schemas/HangarGroupChangedMessage"
     HangarSyncFailedMessage:
       payload:
         "$ref": "#/components/schemas/HangarSyncFailedMessage"

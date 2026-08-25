@@ -60,7 +60,7 @@ class FleetMembershipTest < ActiveSupport::TestCase
   test "#schedule_setup_fleet_vehicles enqueues setup job on accept_request" do
     Sidekiq::Worker.clear_all
     other_user = create(:user)
-    membership = FleetMembership.create(fleet_id: @fleet.id, user_id: other_user.id, aasm_state: :requested)
+    membership = FleetMembership.create(fleet_id: @fleet.id, user_id: other_user.id, fleet_role: @fleet.default_member_role, aasm_state: :requested)
     Sidekiq::Worker.clear_all
 
     membership.accept_request!
@@ -71,7 +71,7 @@ class FleetMembershipTest < ActiveSupport::TestCase
   test "#schedule_setup_fleet_vehicles enqueues setup job on accept_invitation" do
     Sidekiq::Worker.clear_all
     other_user = create(:user)
-    membership = FleetMembership.create(fleet_id: @fleet.id, user_id: other_user.id, aasm_state: :invited)
+    membership = FleetMembership.create(fleet_id: @fleet.id, user_id: other_user.id, fleet_role: @fleet.default_member_role, aasm_state: :invited)
     Sidekiq::Worker.clear_all
 
     membership.accept_invitation!
@@ -94,7 +94,7 @@ class FleetMembershipTest < ActiveSupport::TestCase
   test "#remove_fleet_vehicles removes all relevant fleet_vehicles" do
     other_user = create(:user)
     other_user.vehicles.create(model: create(:model), wanted: false)
-    new_membership = FleetMembership.create!(fleet_id: @fleet.id, user_id: other_user.id, aasm_state: :accepted)
+    new_membership = FleetMembership.create!(fleet_id: @fleet.id, user_id: other_user.id, fleet_role: @fleet.default_member_role, aasm_state: :accepted)
 
     Updater::FleetMembershipVehiclesSetupJob.drain
 

@@ -9,7 +9,9 @@ module Shared
         schema({
           type: :object,
           properties: {
-            name: {type: :string},
+            # The game files leave a hold unnamed often enough that
+            # DerivedCargoHolds keys such holds by position to tell them apart.
+            name: {type: [:string, :null]},
             dimensions: {"$ref": "#/components/schemas/CargoHoldDimension"},
             capacity: {type: :integer},
             maxContainerSize: {"$ref": "#/components/schemas/CargoHoldContainerSize"},

@@ -20,13 +20,21 @@ model.update!(cargo_holds: [
     "name" => "cargo_front",
     "capacity" => 8,
     "dimensions" => {"x" => 5.0, "y" => 2.5, "z" => 2.5},
-    "max_container_size" => {"size" => 8, "dimensions" => {"x" => 2.0, "y" => 2.0, "z" => 2.0}}
+    "max_container_size" => {"size" => 8, "dimensions" => {"x" => 2.0, "y" => 2.0, "z" => 2.0}},
+    "limits" => {
+      "min" => {"dimensions" => {"x" => 1.0, "y" => 1.0, "z" => 1.0}, "capacity" => 1},
+      "max" => {"dimensions" => {"x" => 2.0, "y" => 2.0, "z" => 2.0}, "capacity" => 8}
+    }
   },
   {
     "name" => "cargo_rear",
     "capacity" => 16,
     "dimensions" => {"x" => 10.0, "y" => 2.5, "z" => 2.5},
-    "max_container_size" => {"size" => 16, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}}
+    "max_container_size" => {"size" => 16, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}},
+    "limits" => {
+      "min" => {"dimensions" => {"x" => 1.0, "y" => 1.0, "z" => 1.0}, "capacity" => 1},
+      "max" => {"dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}, "capacity" => 16}
+    }
   }
 ])
 

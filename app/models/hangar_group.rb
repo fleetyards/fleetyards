@@ -36,7 +36,7 @@ class HangarGroup < ApplicationRecord
   end
 
   def broadcast_update
-    HangarChannel.broadcast_to(user, {})
+    HangarChannel.broadcast_to(user, {hangarGroupId: id})
   end
 
   private def touch_vehicles
