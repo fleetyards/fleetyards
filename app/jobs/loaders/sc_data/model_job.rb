@@ -12,6 +12,8 @@ module Loaders
 
         loader.one(Model.find(model_id))
 
+        import.update!(output: {"ModelsLoader" => loader.stats})
+
         import.finish!
       rescue => e
         import.fail!

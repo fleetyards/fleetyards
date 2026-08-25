@@ -8,6 +8,7 @@ module Loaders
       test "#perform creates an import, runs the loader, and finishes the import" do
         model = create(:model)
         loader = mock("ScData::Loader::ModelsLoader")
+        loader.stubs(:stats).returns({})
         loader.expects(:one).with(model)
         ::ScData::Loader::ModelsLoader.stubs(:new).returns(loader)
 
@@ -21,6 +22,7 @@ module Loaders
       test "#perform marks import as failed on error" do
         model = create(:model)
         loader = mock("ScData::Loader::ModelsLoader")
+        loader.stubs(:stats).returns({})
         loader.stubs(:one).raises(StandardError, "sc data error")
         ::ScData::Loader::ModelsLoader.stubs(:new).returns(loader)
 

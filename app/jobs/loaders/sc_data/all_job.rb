@@ -10,7 +10,10 @@ module Loaders
 
         import.start!
 
-        ::ScData::Loader::BaseLoader.all
+        # Kept on the import so the admin view of a load says what it did.
+        # Otherwise the only record of a build that rewrote the catalogue, versus
+        # one that changed nothing, is a log line nobody goes looking for.
+        import.update!(output: ::ScData::Loader::BaseLoader.all)
 
         import.finish!
       rescue => e

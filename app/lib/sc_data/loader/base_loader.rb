@@ -5,13 +5,32 @@ module ScData
 
       attr_accessor :sc_version, :sc_environment, :base_folder
 
+      # Returns what each loader did, so the job that ran it can keep the counts
+      # on its import rather than leaving them only in the log.
+      #
+      # The classes are listed inside the method rather than in a constant: every
+      # one of them subclasses BaseLoader, so resolving them while this class
+      # body is still being evaluated would be a circular load.
+      #
+      # Order matters -- items resolve their manufacturer, models resolve the
+      # components a loadout names, and modules hang off models.
       def self.all
-        ::ScData::Loader::ManufacturersLoader.new.all
-        ::ScData::Loader::ItemsLoader.new.all
-        ::ScData::Loader::ModelsLoader.new.all
-        ::ScData::Loader::ModelModulesLoader.new.all
-        ::ScData::Loader::CommoditiesLoader.new.all
-        ::ScData::Loader::EquipmentLoader.new.all
+        [
+          ::ScData::Loader::ManufacturersLoader,
+          ::ScData::Loader::ItemsLoader,
+          ::ScData::Loader::ModelsLoader,
+          ::ScData::Loader::ModelModulesLoader,
+          ::ScData::Loader::CommoditiesLoader,
+          ::ScData::Loader::EquipmentLoader
+        ].to_h do |loader_class|
+          loader = loader_class.new
+
+          loader.all
+
+          Rails.logger.info("[sc_data] #{loader_class.name.demodulize}: #{loader.stats_summary}")
+
+          [loader_class.name.demodulize, loader.stats]
+        end
       end
 
       def initialize(base_folder: DEFAULT_BASE_FOLDER)
@@ -27,6 +46,59 @@ module ScData
       # preview tree is the same loader pointed somewhere else.
       def export_path
         Pathname(base_folder).join("parsed", sc_environment.to_s)
+      end
+
+      # What this run actually did, per model class. `update!` on its own cannot
+      # tell a row it rewrote from a row it left alone, so a load that changed
+      # nothing and a load that rewrote the catalogue look identical in the logs
+      # -- which is exactly what you want to know when a build lands badly.
+      def stats
+        @stats ||= Hash.new { |all, name| all[name] = {created: 0, updated: 0, unchanged: 0} }
+      end
+
+      def stats_summary
+        return "nothing written" if stats.empty?
+
+        stats.sort.map { |name, counts|
+          "#{name} #{counts.map { |bucket, count| "#{bucket}=#{count}" }.join(" ")}"
+        }.join(", ")
+      end
+
+      # The one write path a load takes. Assigning before saving is what makes
+      # the three outcomes distinguishable; `update!` would collapse them.
+      def apply(record, params)
+        created = record.new_record?
+
+        record.assign_attributes(params)
+        changed = record.changed?
+
+        record.save!
+
+        count(record, outcome(created:, changed:))
+
+        record
+      end
+
+      # Validations and callbacks are skipped on purpose where this is used: it
+      # sweeps every Model on every load, and the in-game flag is not something
+      # a validation or a stored version has an opinion about.
+      def apply_columns(record, params)
+        record.update_columns(params)
+
+        count(record, :updated)
+
+        record
+      end
+
+      private def outcome(created:, changed:)
+        return :created if created
+        return :updated if changed
+
+        :unchanged
+      end
+
+      private def count(record, bucket)
+        stats[record.class.name][bucket] += 1
       end
 
       def load_item(path)
@@ -230,20 +302,20 @@ module ScData
 
               hardpoint_ids += update_loadout(parent, hardpoint_data, cleanup: false) if hardpoint_data["loadout"].present?
             else
-              hardpoint.update!(
+              apply(hardpoint, {
                 source: :game_files,
                 component: component,
                 min_size: component.size,
                 max_size: component.size
-              )
+              })
 
               hardpoint_ids << hardpoint.id
             end
           else
-            hardpoint.update!(
+            apply(hardpoint, {
               source: :game_files,
               component: nil
-            )
+            })
           end
 
           if item["loadout"].present? || item["default_loadout"].present?
