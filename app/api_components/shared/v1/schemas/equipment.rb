@@ -67,11 +67,13 @@ module Shared
 
             storeImage: {"$ref": "#/components/schemas/MediaFile"},
 
+            retired: {type: :boolean},
+
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name slug availability createdAt updatedAt]
+          required: %w[id name slug availability retired createdAt updatedAt]
         })
       end
     end

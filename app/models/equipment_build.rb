@@ -73,6 +73,25 @@ class EquipmentBuild < ApplicationRecord
     backpack_compatibility volume volume_dimensions
   ].freeze
 
+  # The facts Equipment reads through its build. `manufacturer_id` and `hidden`
+  # are held back: the association and the `visible` scope still go through the
+  # columns, and both move with the filters rather than with the readers.
+  READ_THROUGH = (FACTS - %i[manufacturer_id hidden]).freeze
+
+  # The same enums Equipment declares, because a build row holding `0` has to
+  # read as `undersuit` here too. Without them, moving the readers over turns
+  # every enum-backed fact back into a raw integer.
+  enum :slot,
+    {
+      undersuit: 0, arms: 1, helmet: 2, torso: 3, legs: 4, footwear: 5, hat: 6, gloves: 7,
+      pants: 8, shirt: 9, jacket: 10, backpack: 11
+    },
+    suffix: true
+
+  enum :core_compatibility, {all: 0, medium_heavy: 1, heavy: 2}, suffix: true
+
+  enum :backpack_compatibility, {all: 0, light_medium: 1, light: 2}, suffix: true
+
   validates :environment, presence: true
   validates :version, presence: true
   validates :equipment_id, uniqueness: {scope: [:environment, :version]}

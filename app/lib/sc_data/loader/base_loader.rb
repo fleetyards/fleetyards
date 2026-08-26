@@ -93,6 +93,15 @@ module ScData
         )
 
         apply(build, params)
+
+        # Saving the record above ran its validations, and a fact reader consults
+        # the build -- so the association may have cached a nil from before this
+        # row existed. Dropped rather than left to answer for a build there now is.
+        %i[build last_build].each do |association|
+          record.association(association).reset if record.class.reflect_on_association(association)
+        end
+
+        build
       end
 
       # The build this loader is writing, which is not always the configured one:

@@ -9785,6 +9785,8 @@ components:
           - soldAt
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
+        retired:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -9819,6 +9821,7 @@ components:
       - name
       - slug
       - availability
+      - retired
       - createdAt
       - updatedAt
       - hidden

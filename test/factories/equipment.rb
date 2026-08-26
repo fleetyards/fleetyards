@@ -69,6 +69,11 @@ FactoryBot.define do
         version: equipment.version,
         **equipment.attributes.symbolize_keys.slice(*EquipmentBuild::FACTS)
       )
+
+      # Validating the row consulted a fact reader, which cached the build as it
+      # was then -- absent. Dropped so the record behaves like a freshly loaded one.
+      equipment.association(:build).reset
+      equipment.association(:last_build).reset
     end
 
     # For tests that manage builds themselves and would otherwise collide with
