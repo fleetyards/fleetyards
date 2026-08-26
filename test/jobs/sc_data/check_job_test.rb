@@ -5,9 +5,10 @@ require "test_helper"
 module ScData
   class CheckJobTest < ActiveJob::TestCase
     VERSION = "3.24.0"
+    ENVIRONMENT = "live"
 
     setup do
-      Rails.configuration.stubs(:sc_data).returns({version: VERSION})
+      Rails.configuration.stubs(:sc_data).returns({version: VERSION, environment: ENVIRONMENT})
     end
 
     test "#perform enqueues AllJob when version is new" do
@@ -19,7 +20,7 @@ module ScData
     end
 
     test "#perform does not enqueue AllJob when version is blank" do
-      Rails.configuration.stubs(:sc_data).returns({version: nil})
+      Rails.configuration.stubs(:sc_data).returns({version: nil, environment: ENVIRONMENT})
 
       Loaders::ScData::AllJob.expects(:perform_async).never
 

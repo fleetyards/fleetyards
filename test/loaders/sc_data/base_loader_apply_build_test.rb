@@ -10,7 +10,7 @@ module ScData
     class BaseLoaderApplyBuildTest < ActiveSupport::TestCase
       setup do
         @loader = ::ScData::Loader::BaseLoader.new
-        @equipment = create(:equipment)
+        @equipment = create(:equipment, :without_build)
       end
 
       test "#apply_build records the build the current environment is on" do
@@ -49,6 +49,44 @@ module ScData
         assert_equal ::ScData::Source.version, @equipment.build.version
       end
 
+      # Without this, a record the export dropped keeps its row for the build it
+      # is no longer part of -- and asking "is this in the current build?" by row
+      # existence would answer yes.
+      test "#retire_absent_builds drops the current build's row for a record the run did not load" do
+        kept = create(:equipment, :without_build)
+        dropped = create(:equipment, :without_build)
+        @loader.apply_build(kept, {name: "Kept"})
+        @loader.apply_build(dropped, {name: "Dropped"})
+
+        @loader.retire_absent_builds(EquipmentBuild, :equipment_id, [kept.id])
+
+        assert_predicate kept.reload.build, :present?
+        assert_nil dropped.reload.build
+        assert Equipment.exists?(dropped.id), "the row itself has to stay"
+      end
+
+      # An earlier build is history, not something this run reconciles.
+      test "#retire_absent_builds leaves an earlier build alone" do
+        equipment = create(:equipment, :without_build)
+        earlier = create(
+          :equipment_build,
+          equipment:, environment: ::ScData::Source.environment, version: "4.8.0-live.1"
+        )
+
+        @loader.retire_absent_builds(EquipmentBuild, :equipment_id, [create(:equipment, :without_build).id])
+
+        assert EquipmentBuild.exists?(earlier.id)
+      end
+
+      # `where.not(id: [])` is `1=1`, so a run that loaded nothing must not empty
+      # the build it was going to write.
+      test "#retire_absent_builds retires nothing when the run loaded nothing" do
+        @loader.apply_build(@equipment, {name: "Behring P4-AR"})
+
+        assert_equal 0, @loader.retire_absent_builds(EquipmentBuild, :equipment_id, [])
+        assert_predicate @equipment.reload.build, :present?
+      end
+
       # Bounded on purpose: history is worth a couple of patches, not every patch
       # ever shipped.
       test "#prune_builds keeps the retained builds and drops the rest" do
@@ -57,7 +95,7 @@ module ScData
         (keep + 2).times do |index|
           create(
             :equipment_build,
-            equipment: create(:equipment),
+            equipment: create(:equipment, :without_build),
             environment: ::ScData::Source.environment,
             version: "4.#{index}.0-live.#{index}",
             created_at: index.days.from_now

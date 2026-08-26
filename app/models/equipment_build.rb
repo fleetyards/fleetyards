@@ -62,6 +62,17 @@ class EquipmentBuild < ApplicationRecord
   # the table growing with every patch forever.
   BUILDS_RETAINED = 3
 
+  # Everything a build says, as opposed to what identifies the item. The data
+  # migration carries its own copy on purpose: a migration has to keep running
+  # against the schema of its own moment, not this list as it later becomes.
+  FACTS = %i[
+    manufacturer_id name description equipment_type item_type sub_type
+    weapon_class size grade slot hidden rate_of_fire range storage
+    damage_reduction temperature_rating radiation_protection
+    radiation_scrub_rate g_force_tolerance core_compatibility
+    backpack_compatibility volume volume_dimensions
+  ].freeze
+
   validates :environment, presence: true
   validates :version, presence: true
   validates :equipment_id, uniqueness: {scope: [:environment, :version]}

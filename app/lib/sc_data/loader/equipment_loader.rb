@@ -5,6 +5,7 @@ module ScData
         loaded = load_items("equipment").filter_map { |equipment_data| one(equipment_data)&.id }
 
         retire_absent(Equipment, loaded)
+        retire_absent_builds(EquipmentBuild, :equipment_id, loaded)
 
         prune_builds(EquipmentBuild)
       end

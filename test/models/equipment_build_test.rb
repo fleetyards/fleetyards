@@ -54,7 +54,7 @@ require "test_helper"
 #
 class EquipmentBuildTest < ActiveSupport::TestCase
   test "an item carries one row per build, not two" do
-    equipment = create(:equipment)
+    equipment = create(:equipment, :without_build)
     create(:equipment_build, equipment:, environment: "live", version: "4.9.0-live.1")
 
     duplicate = build(:equipment_build, equipment:, environment: "live", version: "4.9.0-live.1")
@@ -66,14 +66,14 @@ class EquipmentBuildTest < ActiveSupport::TestCase
   # The point of keeping history: a later build lands beside its predecessor
   # rather than overwriting it.
   test "a later build of the same environment sits beside the earlier one" do
-    equipment = create(:equipment)
+    equipment = create(:equipment, :without_build)
     create(:equipment_build, equipment:, environment: "live", version: "4.9.0-live.1")
 
     assert_predicate build(:equipment_build, equipment:, environment: "live", version: "4.10.0-live.2"), :valid?
   end
 
   test "the same item can be described by more than one environment" do
-    equipment = create(:equipment)
+    equipment = create(:equipment, :without_build)
     create(:equipment_build, equipment:, environment: "live")
 
     assert_predicate build(:equipment_build, equipment:, environment: "ptu"), :valid?
@@ -87,7 +87,7 @@ class EquipmentBuildTest < ActiveSupport::TestCase
   # `for_source` is what the `build` association narrows by, so an environment
   # only ever sees its own row.
   test ".for_source keeps only the current environment" do
-    equipment = create(:equipment)
+    equipment = create(:equipment, :without_build)
     live = create(:equipment_build, equipment:, environment: ScData::Source.environment)
     other = create(:equipment_build, equipment:, environment: "somewhere-else")
 
@@ -98,16 +98,16 @@ class EquipmentBuildTest < ActiveSupport::TestCase
   # An environment that has moved on leaves its old row behind until the next
   # load rewrites it, so the version is checked as well as the environment.
   test ".current also narrows to the version the environment is on" do
-    equipment = create(:equipment)
+    equipment = create(:equipment, :without_build)
     current = create(:equipment_build, equipment:)
-    stale = create(:equipment_build, equipment: create(:equipment), version: "0.0.1-live.1")
+    stale = create(:equipment_build, equipment: create(:equipment, :without_build), version: "0.0.1-live.1")
 
     assert_includes EquipmentBuild.current, current
     refute_includes EquipmentBuild.current, stale
   end
 
   test "#build returns the row for the current environment" do
-    equipment = create(:equipment)
+    equipment = create(:equipment, :without_build)
     create(:equipment_build, equipment:, environment: "somewhere-else")
     current = create(:equipment_build, equipment:, environment: ScData::Source.environment)
 
@@ -120,7 +120,7 @@ class EquipmentBuildTest < ActiveSupport::TestCase
     %w[4.8.0-live.1 4.9.0-live.2 4.10.0-live.3 4.11.0-live.4].each_with_index do |version, index|
       create(
         :equipment_build,
-        equipment: create(:equipment), environment: "live", version:,
+        equipment: create(:equipment, :without_build), environment: "live", version:,
         created_at: index.days.ago.end_of_day
       )
     end
@@ -139,7 +139,7 @@ class EquipmentBuildTest < ActiveSupport::TestCase
   end
 
   test "builds go when the item does" do
-    equipment = create(:equipment)
+    equipment = create(:equipment, :without_build)
     create(:equipment_build, equipment:)
 
     assert_difference("EquipmentBuild.count", -1) { equipment.destroy }

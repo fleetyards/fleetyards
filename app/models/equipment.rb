@@ -57,6 +57,20 @@ class Equipment < ApplicationRecord
   has_many :builds, class_name: "EquipmentBuild", dependent: :destroy
   has_one :build, -> { current }, class_name: "EquipmentBuild", inverse_of: :equipment
 
+  # Whether the build we are on describes this item, rather than whether the
+  # version string on the row still matches it. An exists check rather than a
+  # join, so nothing fans out and `current_version(false)` stays the plain table.
+  #
+  # Overrides ScDataVersioned for equipment only; the other catalogues still
+  # compare their column until they have builds of their own.
+  scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      where(id: EquipmentBuild.current(source).select(:equipment_id))
+    else
+      all
+    end
+  }
+
   # Nothing fills this from the game files: the loadout icons the records name
   # are art the export leaves out on purpose. It is here for the same reason
   # every other catalogue has one -- an upload, and the ledger's fallback to
