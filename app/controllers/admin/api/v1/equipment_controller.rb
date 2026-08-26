@@ -13,7 +13,16 @@ module Admin
           name_sort = sorts.find { |sort| sort.start_with?("name ") }
           equipment_query_params["sorts"] = sorts - [name_sort].compact
 
-          @q = authorized_scope(Equipment.all).includes(:manufacturer, :item_prices).ransack(equipment_query_params)
+          # `with_facts` because the filters resolve against the joined build.
+          # Without it a fact condition raises rather than quietly matching the
+          # column, which is the failure mode to want.
+          #
+          # The fallback join, not the fast one: the admin list has to show a
+          # retired record, and one an admin created by hand that no load has
+          # described yet.
+          @q = authorized_scope(Equipment.with_facts(false))
+            .includes(:manufacturer, :item_prices)
+            .ransack(equipment_query_params)
 
           result = @q.result
 
@@ -21,7 +30,7 @@ module Admin
           # either, which leaves ransack unable to sort by it -- it drops the
           # term without erroring. Name ordering is applied here instead, which
           # also covers DEFAULT_SORTING_PARAMS.
-          result = result.order(name: name_sort.split.last.to_sym) if name_sort
+          result = result.order(Equipment.fact_sql(:name).public_send(name_sort.split.last)) if name_sort
 
           @equipment = result
             .page(params[:page])
