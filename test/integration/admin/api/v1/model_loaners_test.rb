@@ -44,10 +44,7 @@ class Admin::Api::V1::ModelLoanersTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ModelLoanerQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ModelLoanerQuery"},
         style: :deepObject,
         explode: true,
         required: false

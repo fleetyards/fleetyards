@@ -42,10 +42,7 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
         type: :string, default: Vehicle.default_per_page
       }, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/HangarQuery"
-        },
+        schema: {"$ref": "#/components/schemas/HangarQuery"},
         style: :deepObject,
         explode: true,
         required: false

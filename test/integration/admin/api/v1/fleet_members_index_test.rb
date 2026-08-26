@@ -17,7 +17,7 @@ class Admin::Api::V1::FleetMembersIndexTest < ActionDispatch::IntegrationTest
 
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter "$ref": "#/components/parameters/SortingParameter"
-      parameter name: :q, in: :query, schema: {type: :object, "$ref": "#/components/schemas/AdminFleetMemberQuery"}, required: false
+      parameter name: :q, in: :query, schema: {"$ref": "#/components/schemas/AdminFleetMemberQuery"}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/AdminFleetMembers"

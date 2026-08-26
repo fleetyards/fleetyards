@@ -38,10 +38,7 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ModelQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ModelQuery"},
         style: :deepObject,
         explode: true,
         required: false

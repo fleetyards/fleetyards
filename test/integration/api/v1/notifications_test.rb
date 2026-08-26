@@ -24,10 +24,7 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
         type: :string, default: Notification.default_per_page
       }, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/NotificationQuery"
-        },
+        schema: {"$ref": "#/components/schemas/NotificationQuery"},
         style: :deepObject,
         explode: true,
         required: false

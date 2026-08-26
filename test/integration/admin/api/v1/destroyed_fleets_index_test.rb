@@ -15,7 +15,7 @@ class Admin::Api::V1::DestroyedFleetsIndexTest < ActionDispatch::IntegrationTest
 
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "source", in: :query, description: "discarded (soft-deleted) or purged (hard-deleted)", schema: {"$ref": "#/components/schemas/DestroyedFleetSourceEnum"}, required: false
-      parameter name: "q", in: :query, schema: {type: :object, "$ref": "#/components/schemas/DestroyedFleetQuery"}, required: false
+      parameter name: "q", in: :query, schema: {"$ref": "#/components/schemas/DestroyedFleetQuery"}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/DestroyedFleets"

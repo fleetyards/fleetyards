@@ -18,10 +18,7 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
       parameter name: "perPage", in: :query, schema: {type: :string, default: Vehicle.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/HangarQuery"
-        },
+        schema: {"$ref": "#/components/schemas/HangarQuery"},
         style: :deepObject,
         explode: true,
         required: false

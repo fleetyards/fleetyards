@@ -44,10 +44,7 @@ class Admin::Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: Manufacturer.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ManufacturerQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ManufacturerQuery"},
         style: :deepObject,
         explode: true,
         required: false

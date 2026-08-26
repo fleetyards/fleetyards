@@ -41,10 +41,7 @@ class Admin::Api::V1::VideosTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Video.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/VideoQuery"
-        },
+        schema: {"$ref": "#/components/schemas/VideoQuery"},
         style: :deepObject,
         explode: true,
         required: false

@@ -41,10 +41,7 @@ class Admin::Api::V1::ModelPositionsTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelPosition.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ModelPositionQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ModelPositionQuery"},
         style: :deepObject,
         explode: true,
         required: false

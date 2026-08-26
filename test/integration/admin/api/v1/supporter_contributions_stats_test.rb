@@ -14,10 +14,7 @@ class Admin::Api::V1::SupporterContributionsStatsTest < ActionDispatch::Integrat
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/SupporterContributionQuery"
-        },
+        schema: {"$ref": "#/components/schemas/SupporterContributionQuery"},
         style: :deepObject,
         explode: true,
         required: false

@@ -42,10 +42,7 @@ class Admin::Api::V1::ImagesTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ImageQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ImageQuery"},
         style: :deepObject,
         explode: true,
         required: false

@@ -16,10 +16,7 @@ class Api::V1::ImagesIndexTest < ActionDispatch::IntegrationTest
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
       parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ImageQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ImageQuery"},
         style: :deepObject,
         explode: true,
         required: false

@@ -218,7 +218,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/CargoHoldQuery"
         style: deepObject
         explode: true
@@ -341,7 +340,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/CommodityQuery"
         style: deepObject
         explode: true
@@ -558,7 +556,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ComponentQuery"
         style: deepObject
         explode: true
@@ -767,7 +764,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/DestroyedFleetQuery"
         required: false
       responses:
@@ -898,7 +894,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/DockQuery"
         style: deepObject
         explode: true
@@ -1081,7 +1076,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/EquipmentQuery"
         style: deepObject
         explode: true
@@ -1862,7 +1856,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetQuery"
         required: false
       responses:
@@ -1897,7 +1890,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetQuery"
         required: false
       responses:
@@ -1941,7 +1933,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/AdminFleetMemberQuery"
         required: false
       responses:
@@ -2298,7 +2289,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FundingGoalQuery"
         style: deepObject
         explode: true
@@ -2485,7 +2475,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ImageQuery"
         style: deepObject
         explode: true
@@ -2633,7 +2622,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ImportQuery"
         style: deepObject
         explode: true
@@ -2748,7 +2736,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ItemPriceQuery"
         style: deepObject
         explode: true
@@ -2935,7 +2922,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ManufacturerQuery"
         style: deepObject
         explode: true
@@ -2977,7 +2963,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ManufacturerQuery"
         required: false
       responses:
@@ -3165,7 +3150,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelHardpointLoadoutQuery"
         style: deepObject
         explode: true
@@ -3351,7 +3335,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelHardpointQuery"
         style: deepObject
         explode: true
@@ -3537,7 +3520,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelLoanerQuery"
         style: deepObject
         explode: true
@@ -3720,7 +3702,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelModulePackageQuery"
         style: deepObject
         explode: true
@@ -3902,7 +3883,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelModuleQuery"
         style: deepObject
         explode: true
@@ -4222,7 +4202,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelPaintQuery"
         style: deepObject
         explode: true
@@ -4412,7 +4391,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelPositionQuery"
         style: deepObject
         explode: true
@@ -4632,7 +4610,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelSnubCraftQuery"
         style: deepObject
         explode: true
@@ -4815,7 +4792,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelUpgradeQuery"
         style: deepObject
         explode: true
@@ -5078,7 +5054,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -5832,7 +5807,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/OauthApplicationQuery"
         required: false
       responses:
@@ -6250,7 +6224,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/SupporterContributionQuery"
         style: deepObject
         explode: true
@@ -6286,7 +6259,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/SupporterContributionQuery"
         style: deepObject
         explode: true
@@ -6322,7 +6294,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/SupporterContributionQuery"
         style: deepObject
         explode: true
@@ -6502,7 +6473,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/UserQuery"
         style: deepObject
         explode: true
@@ -6544,7 +6514,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/UserQuery"
         required: false
       responses:
@@ -6863,7 +6832,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/VehicleQuery"
         style: deepObject
         explode: true
@@ -7053,7 +7021,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/VideoQuery"
         style: deepObject
         explode: true

@@ -32,7 +32,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/CommodityQuery"
         style: deepObject
         explode: true
@@ -93,7 +92,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ComponentQuery"
         style: deepObject
         explode: true
@@ -147,7 +145,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/EquipmentQuery"
         style: deepObject
         explode: true
@@ -257,7 +254,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/EquipmentItemTypeFilterQuery"
         style: deepObject
         explode: true
@@ -293,7 +289,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ManufacturerQuery"
         style: deepObject
         explode: true
@@ -390,7 +385,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -2690,7 +2684,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetInventoryItemQuery"
         style: deepObject
         explode: true
@@ -3137,7 +3130,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetInventoryItemQuery"
         style: deepObject
         explode: true
@@ -3441,7 +3433,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetMemberQuery"
         style: deepObject
         explode: true
@@ -4747,7 +4738,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetMemberQuery"
         style: deepObject
         explode: true
@@ -4792,7 +4782,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -5077,7 +5066,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -5138,7 +5126,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -5189,7 +5176,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -5397,7 +5383,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -5439,7 +5424,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -5477,7 +5461,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -5795,7 +5778,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarInventoryQuery"
         style: deepObject
         explode: true
@@ -5896,7 +5878,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarInventoryItemQuery"
         style: deepObject
         explode: true
@@ -6312,7 +6293,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarInventoryItemQuery"
         style: deepObject
         explode: true
@@ -6350,7 +6330,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/InventoryStockQuery"
         style: deepObject
         explode: true
@@ -6438,7 +6417,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -6662,7 +6640,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ImageQuery"
         style: deepObject
         explode: true
@@ -6728,7 +6705,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ManufacturerQuery"
         style: deepObject
         explode: true
@@ -7018,7 +6994,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelPaintQuery"
         style: deepObject
         explode: true
@@ -7202,7 +7177,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -7776,7 +7750,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/NotificationQuery"
         style: deepObject
         explode: true
@@ -8442,7 +8415,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -8659,7 +8631,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -8706,7 +8677,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetVehicleQuery"
         style: deepObject
         explode: true
@@ -8805,7 +8775,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -8864,7 +8833,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -9051,7 +9019,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
@@ -10148,7 +10115,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/InventoryItemQuery"
         style: deepObject
         explode: true
@@ -10745,7 +10711,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarQuery"
         style: deepObject
         explode: true
