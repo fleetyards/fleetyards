@@ -40,12 +40,39 @@ stable to import.
 - Request bodies → `<scope>/v1/schemas/inputs/<name>_input.rb`
 - Response bodies → `<scope>/v1/schemas/<name>.rb`
 - Used by both the public and the admin schema → `shared/v1/`
-- Enums → their own component in `shared/v1/schemas/enums/`, referenced by
-  `$ref`; never inline an `enum:` into a property
+- Enums → `<scope>/v1/schemas/enums/<name>_enum.rb`, referenced by `$ref`;
+  never inline an `enum:` into a property
 
 Scopes come from `config.component_scope_paths` in
 `config/initializers/openapi_ruby.rb` — `v1`, `admin/v1`, `oauth/v1`,
 `cable/v1`, and `shared/v1` (registered into both `v1` and `admin`).
+
+Pick the **narrowest scope that reaches the component**. openapi-ruby emits
+every registered component whether or not it is referenced, so a `shared/v1`
+enum used by only one schema is dead weight in the other. Two things widen the
+reach: a `shared/v1` component's own `$ref`s must resolve in both schemas, and
+the admin components that subclass a v1 one
+(`Admin::V1::Schemas::Models::Model < ::V1::Schemas::Models::Model`) inherit its
+`$ref`s — anything they reach has to be `shared/v1`.
+
+## Enum values
+
+Source them from the Rails model when it has them
+(`::Mission.categories.keys`, `::FleetEvent::VISIBILITIES`,
+`::InventoryLedgerEntry::CATEGORIES.keys`) instead of re-typing the list; a
+schema-local copy drifts from the validation without anything noticing.
+
+Carry `"x-enumNames"` built with `transform_enum_key` — without it Orval keys
+the generated const by raw value, so `Enum.cargo_hauling` rather than
+`Enum.CARGO_HAULING`.
+
+A nullable enum gets its own `Nullable<Name>Enum` component with
+`type: [:string, :null]` and `VALUES + [nil]`, borrowing `VALUES` from the
+non-null sibling. Do **not** write `anyOf: [{$ref}, {type: :null}]` — oasdiff
+does not resolve enum values through `anyOf` and reports every value as removed.
+
+Stays inline: a single-value discriminator (`enum: %w[failed]` picking one
+message variant) is a constant, not an enum.
 
 ## Reuse first
 
