@@ -11,10 +11,18 @@ module ScData
       SOURCE_PATHS = [CANONICAL_PATH, "entities/scitem/carryables"]
 
       # A handful of commodities are named after their own type key. Most are
-      # real products (RMC, HPMC, the two fuels); this one is the generic label
-      # the game puts on unmarked crates — evidence boxes, generic explosives —
-      # so it would list "Processed Goods" alongside the goods themselves.
-      IGNORED_KEYS = ["items_commodities_type_processedgoods"].freeze
+      # real products (RMC, HPMC, the two fuels); these two are the generic
+      # labels the game puts on unmarked crates — evidence boxes, generic
+      # explosives, mission delivery boxes — so they would list "Processed
+      # Goods" and "Consumer Goods" alongside the goods themselves.
+      #
+      # The last one is a single 8 SCU crate that names itself rather than the
+      # material, and would double Atlasium under a size-suffixed name.
+      IGNORED_KEYS = [
+        "items_commodities_type_processedgoods",
+        "items_commodities_consumergoods",
+        "items_commodities_atlasium_8scu"
+      ].freeze
 
       TYPE_SLUGS = {
         "agriculturalSupply" => "agricultural_supply",
@@ -68,6 +76,7 @@ module ScData
       PATH_TYPES = [
         [/trophy/, "natural"],
         [/_ore_/, "metal"],
+        [/_metal_/, "metal"],
         [/mineral/, "mineral"],
         [/_gas_/, "gas"],
         [/nonmetal/, "nonmetals"],
@@ -75,7 +84,7 @@ module ScData
         [/processedgoods/, "processed_goods"],
         [/organic/, "food"],
         [/consumergoods/, "consumer_goods"],
-        [/harvestable|_cy_/, "natural"]
+        [/harvestable|_cy_|_vlk_/, "natural"]
       ].freeze
 
       def all
@@ -101,22 +110,24 @@ module ScData
       end
 
       private def collect_record(records, item)
+        sc_key = commodity_key_for(item[:values])
+
+        return if sc_key.blank?
+        return if IGNORED_KEYS.include?(sc_key)
+
         canonical = item[:path].start_with?(CANONICAL_PATH)
+        record = records[sc_key]
+        record[:paths] << item[:path]
 
-        purchasable_params(item[:values]).each do |params|
-          sc_key = commodity_key(params["displayName"])
+        if canonical
+          record[:canonical_ref] ||= value_or_nil(item[:values].dig("__ref"))
+          record[:canonical_folder] ||= canonical_folder(item[:path])
+        end
 
-          next if sc_key.blank?
-          next if IGNORED_KEYS.include?(sc_key)
-
-          record = records[sc_key]
-          record[:paths] << item[:path]
-
-          if canonical
-            record[:canonical_ref] ||= value_or_nil(item[:values].dig("__ref"))
-            record[:canonical_folder] ||= canonical_folder(item[:path])
-          end
-
+        # Purchase params that name a different commodity than the record they
+        # sit on came with the clone, and so does everything else on them: their
+        # type and their icon describe the crate this one was copied from.
+        typed_params(item[:values], sc_key).each do |params|
           type = type_key(params["displayType"])
 
           if type.present?
@@ -216,12 +227,31 @@ module ScData
         key.delete_prefix(TYPE_PREFIX)
       end
 
+      # Which commodity a crate is carrying. The attach definition is the
+      # record's own, while `SCItemPurchasableParams` is copied from whichever
+      # crate the entity was cloned from and is regularly left naming something
+      # else: the Riccite crate offers Potassium, the Tungsten ore crate offers
+      # Titanium ore, and a good third of the processed goods name nothing but
+      # their own type. It is still the fallback, for the records -- most of
+      # entities/commodities among them -- that carry no attach definition.
+      private def commodity_key_for(values)
+        names = attach_names(values) + purchasable_params(values).map { |entry| entry["displayName"] }
+
+        names.lazy.filter_map { |name| commodity_key(name) }.first
+      end
+
+      private def typed_params(values, sc_key)
+        purchasable_params(values).select { |entry| commodity_key(entry["displayName"]) == sc_key }
+      end
+
       private def purchasable_params(values)
-        params = values.dig("Components", "SCItemPurchasableParams")
+        Array.wrap(values.dig("Components", "SCItemPurchasableParams"))
+      end
 
-        return [] if params.blank?
-
-        params.is_a?(Array) ? params : [params]
+      private def attach_names(values)
+        Array.wrap(values.dig("Components", "SAttachableComponentParams")).flat_map do |params|
+          Array.wrap(params["AttachDef"]).filter_map { |attach| attach.dig("Localization", "Name") }
+        end
       end
 
       private def load_commodity_data
