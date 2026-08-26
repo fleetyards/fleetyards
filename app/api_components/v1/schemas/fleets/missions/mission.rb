@@ -7,17 +7,6 @@ module V1
         class Mission
           include OpenapiRuby::Components::Base
 
-          CATEGORIES = %w[
-            other
-            ship_combat
-            ground_combat
-            combined_combat
-            mining
-            salvage
-            cargo_hauling
-            exploration
-          ].freeze
-
           schema({
             type: :object,
             properties: {
@@ -25,7 +14,7 @@ module V1
               title: {type: :string},
               slug: {type: :string},
               description: {type: :string},
-              category: {type: :string, enum: CATEGORIES},
+              category: {"$ref": "#/components/schemas/MissionCategoryEnum"},
               scenario: {type: :string},
               coverImagePreset: {type: :string},
               coverImage: {"$ref": "#/components/schemas/MediaFile"},

@@ -17,14 +17,8 @@ module V1
             timezone: {type: :string},
             location: {type: [:string, :null]},
             meetupLocation: {type: [:string, :null]},
-            visibility: {
-              type: :string,
-              enum: V1::Schemas::Fleets::Events::FleetEvent::VISIBILITIES
-            },
-            category: {
-              type: :string,
-              enum: V1::Schemas::Fleets::Missions::Mission::CATEGORIES
-            },
+            visibility: {"$ref": "#/components/schemas/FleetEventVisibilityEnum"},
+            category: {"$ref": "#/components/schemas/MissionCategoryEnum"},
             scenario: {type: [:string, :null]},
             coverImagePreset: {type: [:string, :null]},
             coverImage: {type: [:string, :null]},
@@ -32,19 +26,9 @@ module V1
             autoLockEnabled: {type: :boolean},
             autoLockMinutesBefore: {type: [:integer, :null]},
             cancelledReason: {type: [:string, :null]},
-            signupApproval: {
-              type: :string,
-              enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
-            },
+            signupApproval: {"$ref": "#/components/schemas/FleetEventSignupApprovalEnum"},
             recurring: {type: :boolean},
-            recurrenceInterval: {
-              type: [:string, :null],
-              # An enum constrains the value alongside the type rather than
-              # instead of it, so a nullable enum has to list null too. Without
-              # it a one-off event could not be created at all: the model
-              # requires the interval to be absent unless the event recurs.
-              enum: ::FleetEvent::RECURRENCE_INTERVALS + [nil]
-            },
+            recurrenceInterval: {"$ref": "#/components/schemas/NullableFleetEventRecurrenceIntervalEnum"},
             recurrenceUntil: {type: [:string, :null], format: :date},
             recurrenceCount: {type: [:integer, :null]}
           },

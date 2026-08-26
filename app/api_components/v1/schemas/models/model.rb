@@ -141,7 +141,7 @@ module V1
                     properties: {
                       name: {type: :string},
                       health: {type: :number},
-                      category: {type: :string, enum: %w[vital secondary breakable subpart cosmetic]}
+                      category: {"$ref": "#/components/schemas/ModelHullPartCategoryEnum"}
                     },
                     required: %w[name health category],
                     additionalProperties: false

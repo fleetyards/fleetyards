@@ -14,7 +14,7 @@ import {
   type EventCalendarInstance,
 } from "@event-calendar/core";
 import "@event-calendar/core/index.css";
-import { MissionCategory } from "@/services/fyApi";
+import { MissionCategoryEnum } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -76,35 +76,35 @@ type CategoryStyle = { icon: string; color: string };
 // rather than from literals here: the same eight are needed by the event card
 // and the category filter, and five of them alias a token the app already has.
 const categoryStyles: Record<string, CategoryStyle> = {
-  [MissionCategory.other]: {
+  [MissionCategoryEnum.OTHER]: {
     icon: "fa-circle-question",
     color: "var(--color-category-other)",
   },
-  [MissionCategory.ship_combat]: {
+  [MissionCategoryEnum.SHIP_COMBAT]: {
     icon: "fa-rocket",
     color: "var(--color-category-ship-combat)",
   },
-  [MissionCategory.ground_combat]: {
+  [MissionCategoryEnum.GROUND_COMBAT]: {
     icon: "fa-burst",
     color: "var(--color-category-ground-combat)",
   },
-  [MissionCategory.combined_combat]: {
+  [MissionCategoryEnum.COMBINED_COMBAT]: {
     icon: "fa-crosshairs",
     color: "var(--color-category-combined-combat)",
   },
-  [MissionCategory.mining]: {
+  [MissionCategoryEnum.MINING]: {
     icon: "fa-gem",
     color: "var(--color-category-mining)",
   },
-  [MissionCategory.salvage]: {
+  [MissionCategoryEnum.SALVAGE]: {
     icon: "fa-recycle",
     color: "var(--color-category-salvage)",
   },
-  [MissionCategory.cargo_hauling]: {
+  [MissionCategoryEnum.CARGO_HAULING]: {
     icon: "fa-box",
     color: "var(--color-category-cargo-hauling)",
   },
-  [MissionCategory.exploration]: {
+  [MissionCategoryEnum.EXPLORATION]: {
     icon: "fa-compass",
     color: "var(--color-category-exploration)",
   },
@@ -112,7 +112,7 @@ const categoryStyles: Record<string, CategoryStyle> = {
 
 const styleFor = (category?: string | null): CategoryStyle =>
   (category && categoryStyles[category]) ||
-  categoryStyles[MissionCategory.other];
+  categoryStyles[MissionCategoryEnum.OTHER];
 
 // An hour when the event carries no end, which is what Calendars::IcsBuilder
 // assumes too. Handing the library no end at all made it stretch the event

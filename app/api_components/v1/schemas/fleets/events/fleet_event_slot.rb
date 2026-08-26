@@ -11,7 +11,7 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              slottableType: {type: :string, enum: %w[FleetEventTeam FleetEventShip]},
+              slottableType: {"$ref": "#/components/schemas/FleetEventSlottableTypeEnum"},
               slottableId: {type: :string, format: :uuid},
               title: {type: :string},
               description: {type: :string},
@@ -19,14 +19,8 @@ module V1
               derived: {type: :boolean},
               positionType: {type: :string},
               modelPositionId: {type: :string, format: :uuid},
-              signupApproval: {
-                type: :string,
-                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
-              },
-              effectiveSignupApproval: {
-                type: :string,
-                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
-              },
+              signupApproval: {"$ref": "#/components/schemas/FleetEventSignupApprovalEnum"},
+              effectiveSignupApproval: {"$ref": "#/components/schemas/FleetEventSignupApprovalEnum"},
               signups: {
                 type: :array,
                 items: {"$ref": "#/components/schemas/FleetEventSignup"}

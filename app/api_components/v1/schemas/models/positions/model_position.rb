@@ -12,8 +12,8 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
-              positionType: {type: :string, enum: %w[pilot copilot turret_gunner engineer gunner loadmaster passenger operator custom]},
-              source: {type: :string, enum: %w[sc_data curated]},
+              positionType: {"$ref": "#/components/schemas/ModelPositionTypeEnum"},
+              source: {"$ref": "#/components/schemas/ModelPositionSourceEnum"},
               position: {type: :integer},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

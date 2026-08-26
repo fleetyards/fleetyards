@@ -5,8 +5,6 @@ module V1
     class User
       include OpenapiRuby::Components::Base
 
-      DATE_FORMATS = ::User::DATE_FORMATS.keys
-
       schema({
         type: :object,
         properties: {
@@ -27,7 +25,7 @@ module V1
           currentSystem: {type: :string},
           currentSystemCode: {type: :string},
           saleNotify: {type: :boolean},
-          dateFormat: {type: :string, enum: DATE_FORMATS},
+          dateFormat: {"$ref": "#/components/schemas/UserDateFormatEnum"},
           publicHangar: {type: :boolean},
           publicHangarUrl: {type: :string},
           publicHangarLoaners: {type: :boolean},

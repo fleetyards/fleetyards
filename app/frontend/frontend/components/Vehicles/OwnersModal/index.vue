@@ -17,7 +17,7 @@ import type { Owner } from "@/frontend/components/Vehicles/OwnersModal/types";
 import {
   type VehiclePublic,
   type FleetVehiclesParams,
-  type FleetVehicleQueryLoanerEq,
+  type LoanerFilterEnum,
   useFleetVehicles as useFleetVehiclesQuery,
 } from "@/services/fyApi";
 
@@ -35,7 +35,7 @@ const route = useRoute();
 const loanerEq = computed(
   () =>
     (route.query.q as unknown as Record<string, unknown> | undefined)
-      ?.loanerEq as FleetVehicleQueryLoanerEq | undefined,
+      ?.loanerEq as LoanerFilterEnum | undefined,
 );
 
 const params = computed<FleetVehiclesParams>(() => ({

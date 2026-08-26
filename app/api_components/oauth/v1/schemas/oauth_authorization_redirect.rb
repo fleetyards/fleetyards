@@ -9,7 +9,7 @@ module Oauth
         schema({
           type: :object,
           properties: {
-            status: {type: :string, enum: %w[redirect post]},
+            status: {"$ref": "#/components/schemas/OauthAuthorizationStatusEnum"},
             redirect_uri: {type: :string}
           },
           additionalProperties: false,

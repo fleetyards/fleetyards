@@ -34,8 +34,8 @@ import {
   type FleetEventTeam,
   type Mission,
   type MissionExtended,
-  FleetEventVisibility,
-  MissionCategory,
+  FleetEventVisibilityEnum,
+  MissionCategoryEnum,
   useCreateFleetEvent,
   useUpdateFleetEvent,
 } from "@/services/fyApi";
@@ -135,9 +135,11 @@ const { defineField, handleSubmit, setValues, meta } = useForm({
     timezone: props.event?.timezone ?? browserTz,
     location: props.event?.location ?? "",
     meetupLocation: props.event?.meetupLocation ?? "",
-    visibility: props.event?.visibility ?? FleetEventVisibility.members,
+    visibility: props.event?.visibility ?? FleetEventVisibilityEnum.MEMBERS,
     category:
-      props.event?.category ?? props.mission?.category ?? MissionCategory.other,
+      props.event?.category ??
+      props.mission?.category ??
+      MissionCategoryEnum.OTHER,
     scenario:
       props.event?.scenario ??
       (props.mission as { scenario?: string | null } | undefined)?.scenario ??
@@ -220,14 +222,14 @@ const selectPreset = (key: string) => {
 };
 
 const categoryOptions = computed<FilterOption[]>(() =>
-  Object.values(MissionCategory).map((value) => ({
+  Object.values(MissionCategoryEnum).map((value) => ({
     value,
     label: t(`labels.fleets.missions.categories.${value}`),
   })),
 );
 
 const visibilityOptions = computed<FilterOption[]>(() =>
-  Object.values(FleetEventVisibility).map((value) => ({
+  Object.values(FleetEventVisibilityEnum).map((value) => ({
     value,
     label: t(`labels.fleets.events.visibilities.${value}`),
   })),

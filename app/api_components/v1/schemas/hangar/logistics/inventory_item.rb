@@ -18,7 +18,7 @@ module V1
               category: {type: :string},
               quantity: {type: :number},
               unit: {type: :string},
-              entryType: {type: :string, enum: %w[deposit withdrawal]},
+              entryType: {"$ref": "#/components/schemas/InventoryEntryTypeEnum"},
               quality: {type: :integer, minimum: 0, maximum: 1000},
               notes: {type: :string},
               image: {"$ref": "#/components/schemas/MediaFile"},
@@ -26,7 +26,7 @@ module V1
                 type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
-                  type: {type: :string, enum: InventoryLedgerEntry::ITEM_TYPES},
+                  type: {"$ref": "#/components/schemas/InventoryItemTypeEnum"},
                   name: {type: :string},
                   slug: {type: :string},
                   available: {type: :boolean}

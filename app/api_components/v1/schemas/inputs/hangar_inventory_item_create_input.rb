@@ -10,14 +10,14 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            category: {type: :string, enum: %w[commodity component weapon equipment ammunition consumable other]},
+            category: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
             quantity: {type: :number},
-            unit: {type: :string, enum: %w[scu units]},
-            entryType: {type: :string, enum: %w[deposit withdrawal]},
+            unit: {"$ref": "#/components/schemas/InventoryUnitEnum"},
+            entryType: {"$ref": "#/components/schemas/InventoryEntryTypeEnum"},
             quality: {type: [:integer, :null], minimum: 0, maximum: 1000},
             image: {type: [:string, :null]},
             notes: {type: [:string, :null]},
-            itemType: {type: [:string, :null], enum: InventoryLedgerEntry::ITEM_TYPES + [nil]},
+            itemType: {"$ref": "#/components/schemas/NullableInventoryItemTypeEnum"},
             itemId: {type: [:string, :null], format: :uuid}
           },
           required: %w[name quantity],

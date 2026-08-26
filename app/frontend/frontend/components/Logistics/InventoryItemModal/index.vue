@@ -33,8 +33,8 @@ import {
   vehicleInventoryStock,
   useCreateHangarInventoryItem,
   useCreateVehicleInventoryItem,
-  InventoryItemCreateInputCategory,
-  InventoryItemCreateInputUnit,
+  InventoryCategoryEnum,
+  InventoryUnitEnum,
 } from "@/services/fyApi";
 import type { InventoryTarget } from "@/frontend/types/logistics";
 
@@ -85,10 +85,9 @@ const validationSchema = {
 const { defineField, handleSubmit, setFieldValue } = useForm({
   initialValues: {
     name: "",
-    category:
-      InventoryItemCreateInputCategory.commodity as InventoryItemCreateInputCategory,
+    category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
     quantity: 1,
-    unit: InventoryItemCreateInputUnit.scu as InventoryItemCreateInputUnit,
+    unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
     quality: 0,
     image: undefined as string | undefined,
     notes: "",
@@ -104,19 +103,19 @@ const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
 
 const isComponent = computed(
-  () => category.value === InventoryItemCreateInputCategory.component,
+  () => category.value === InventoryCategoryEnum.COMPONENT,
 );
 
 const isCommodity = computed(
-  () => category.value === InventoryItemCreateInputCategory.commodity,
+  () => category.value === InventoryCategoryEnum.COMMODITY,
 );
 
 // One table backs all three: the game files file magazines as weapon
 // attachments, so ammunition is not a catalogue of its own.
-const EQUIPMENT_CATEGORIES: InventoryItemCreateInputCategory[] = [
-  InventoryItemCreateInputCategory.weapon,
-  InventoryItemCreateInputCategory.equipment,
-  InventoryItemCreateInputCategory.ammunition,
+const EQUIPMENT_CATEGORIES: InventoryCategoryEnum[] = [
+  InventoryCategoryEnum.WEAPON,
+  InventoryCategoryEnum.EQUIPMENT,
+  InventoryCategoryEnum.AMMUNITION,
 ];
 
 const isEquipment = computed(() =>
@@ -127,9 +126,9 @@ const isEquipment = computed(() =>
 // offers every type in the table — a hundred of them, mostly armour and
 // clothing — no matter which category is selected.
 const EQUIPMENT_TYPES_FOR_CATEGORY: Record<string, string[]> = {
-  [InventoryItemCreateInputCategory.weapon]: ["weapon"],
-  [InventoryItemCreateInputCategory.ammunition]: ["weapon_attachment"],
-  [InventoryItemCreateInputCategory.equipment]: [
+  [InventoryCategoryEnum.WEAPON]: ["weapon"],
+  [InventoryCategoryEnum.AMMUNITION]: ["weapon_attachment"],
+  [InventoryCategoryEnum.EQUIPMENT]: [
     "armor",
     "clothing",
     "undersuit",
@@ -150,7 +149,7 @@ const unitOptions = unitOptionsFor(category);
 watch(unitOptions, (options) => {
   if (options.some((option) => option.value === unit.value)) return;
 
-  setFieldValue("unit", options[0].value as InventoryItemCreateInputUnit);
+  setFieldValue("unit", options[0].value as InventoryUnitEnum);
 });
 
 const fetchStock = () =>

@@ -26,7 +26,7 @@ module Admin
               modelNameIn: {type: :array, items: {type: :string}},
               modelProductionStatusIn: {type: :array, items: {type: :string}},
               modelSearchCont: {type: :string},
-              loanerEq: {type: :string, enum: %w[true only]},
+              loanerEq: {"$ref": "#/components/schemas/LoanerFilterEnum"},
               wantedEq: {type: :boolean},
               sorts: {anyOf: [{
                 type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}

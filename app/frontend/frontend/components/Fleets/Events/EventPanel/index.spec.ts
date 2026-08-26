@@ -5,10 +5,10 @@ import Component from "./index.vue";
 import {
   type Fleet,
   type FleetEvent,
-  FleetEventCategory,
-  FleetEventSignupApproval,
-  FleetEventStatus,
-  FleetEventVisibility,
+  MissionCategoryEnum,
+  FleetEventSignupApprovalEnum,
+  FleetEventStatusEnum,
+  FleetEventVisibilityEnum,
 } from "@/services/fyApi";
 
 // The card carries a cover image, and jsdom has no IntersectionObserver for
@@ -46,13 +46,13 @@ const event = (overrides: Partial<FleetEvent> = {}): FleetEvent => ({
   fleetId: fleet.id,
   title: "Jumptown Convoy Escort",
   slug: "jumptown",
-  status: FleetEventStatus.open,
+  status: FleetEventStatusEnum.OPEN,
   startsAt: NOW,
   timezone: "UTC",
-  visibility: FleetEventVisibility.fleet,
-  category: FleetEventCategory.cargo_hauling,
+  visibility: FleetEventVisibilityEnum.FLEET,
+  category: MissionCategoryEnum.CARGO_HAULING,
   autoLockEnabled: true,
-  signupApproval: FleetEventSignupApproval.direct,
+  signupApproval: FleetEventSignupApprovalEnum.DIRECT,
   archived: false,
   externalUid: "uid-1",
   signupsCount: 14,
@@ -85,7 +85,7 @@ const mount = (record: FleetEvent) =>
 
 describe("FleetEventsPanel", () => {
   it("carries the lifecycle on the panel's tone, not a badge", async () => {
-    const wrapper = await mount(event({ status: FleetEventStatus.open }));
+    const wrapper = await mount(event({ status: FleetEventStatusEnum.OPEN }));
 
     // D1: the cap carries status, the frame stays neutral. EventStatusBadge,
     // which painted its own fill and pinned itself to `top: 120px`, is gone.
@@ -94,11 +94,11 @@ describe("FleetEventsPanel", () => {
   });
 
   it("gives each lifecycle state its own tone", async () => {
-    const cases: Array<[FleetEventStatus, string]> = [
-      [FleetEventStatus.draft, "panel--neutral"],
-      [FleetEventStatus.locked, "panel--highlight"],
-      [FleetEventStatus.active, "panel--primary"],
-      [FleetEventStatus.cancelled, "panel--error"],
+    const cases: Array<[FleetEventStatusEnum, string]> = [
+      [FleetEventStatusEnum.DRAFT, "panel--neutral"],
+      [FleetEventStatusEnum.LOCKED, "panel--highlight"],
+      [FleetEventStatusEnum.ACTIVE, "panel--primary"],
+      [FleetEventStatusEnum.CANCELLED, "panel--error"],
     ];
 
     for (const [status, expected] of cases) {
@@ -116,7 +116,7 @@ describe("FleetEventsPanel", () => {
 
   it("reads a past event as past rather than as open signups", async () => {
     const wrapper = await mount(
-      event({ status: FleetEventStatus.open, past: true }),
+      event({ status: FleetEventStatusEnum.OPEN, past: true }),
     );
 
     // Still `open` on the record, but nothing should advertise open signups.
@@ -126,7 +126,7 @@ describe("FleetEventsPanel", () => {
   it("names the status as well as colouring it", async () => {
     // WCAG 1.4.1: four of the seven states share the neutral tone, so the cap
     // cannot be the only thing distinguishing them either.
-    const wrapper = await mount(event({ status: FleetEventStatus.locked }));
+    const wrapper = await mount(event({ status: FleetEventStatusEnum.LOCKED }));
     const badge = wrapper.find('[data-test="event-status"]');
 
     expect(badge.exists()).toBe(true);

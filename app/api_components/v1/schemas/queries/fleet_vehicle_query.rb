@@ -32,7 +32,7 @@ module V1
             modelSlugIn: {type: :array, items: {type: :string}},
             modelNameCont: {type: :string},
             modelNameOrModelDescriptionCont: {type: :string},
-            loanerEq: {type: :string, enum: %w[true only]},
+            loanerEq: {"$ref": "#/components/schemas/LoanerFilterEnum"},
             memberIn: {type: :array, items: {type: :string}},
             s: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/FleetVehicleSortEnum"}

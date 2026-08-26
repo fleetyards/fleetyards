@@ -12,7 +12,7 @@ module V1
             name: {type: :string},
             description: {type: [:string, :null]},
             managedBy: {type: [:string, :null], format: :uuid},
-            visibility: {type: :string, enum: %w[members_only officers_only]},
+            visibility: {"$ref": "#/components/schemas/FleetInventoryVisibilityEnum"},
             location: {type: [:string, :null]},
             image: {type: [:string, :null]}
           },

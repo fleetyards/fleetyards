@@ -10,10 +10,7 @@ module V1
           type: :object,
           properties: {
             userId: {type: :string, format: :uuid},
-            role: {
-              type: :string,
-              enum: V1::Schemas::Fleets::Events::FleetEventAdmin::ROLES
-            }
+            role: {"$ref": "#/components/schemas/FleetEventAdminRoleEnum"}
           },
           required: %w[userId],
           additionalProperties: false

@@ -18,10 +18,7 @@ module V1
             guilded: {type: [:string, :null]},
             twitch: {type: [:string, :null]},
             saleNotify: {type: :boolean},
-            dateFormat: {
-              type: :string,
-              enum: ::User::DATE_FORMATS.keys
-            },
+            dateFormat: {"$ref": "#/components/schemas/UserDateFormatEnum"},
             publicHangar: {type: :boolean},
             publicHangarLoaners: {type: :boolean},
             publicHangarStats: {type: :boolean},
