@@ -19,12 +19,9 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
-import {
-  type ModelsParams,
-  useModels as useModelsQuery,
-} from "@/services/fyApi";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
 import { useCompareHardpoints } from "@/frontend/composables/useCompareHardpoints";
+import { useCompareModels } from "@/frontend/composables/useCompareModels";
 
 const { t } = useI18n();
 
@@ -32,15 +29,13 @@ const { filter, filters } = useCompareModelFilters();
 
 const items = computed(() => filters.value.models || []);
 
-const params = computed<ModelsParams>(() => ({
-  q: { slugIn: filters.value.models || ["-1"] },
-}));
-
-const { data, refetch, ...asyncStatus } = useModelsQuery(params);
-
-const models = computed(() =>
-  (data.value?.items || []).filter((model) => items.value.includes(model.slug)),
-);
+// One detail request per ship rather than the models index. Compare wants more
+// of a ship than any list does, and taking it from the index means every list
+// carries those fields for rows nobody compares.
+//
+// No watcher here: the composable tracks the compare set itself and fetches only
+// what it has not seen, so adding a fourth ship leaves the three on screen alone.
+const { models, asyncStatus } = useCompareModels(() => items.value);
 
 const { hardpointsFor, loading: hardpointsLoading } = useCompareHardpoints(
   () => models.value,
@@ -87,16 +82,6 @@ watch(models, () => {
 const remove = (slug: string) => {
   filter({ models: items.value.filter((entry) => entry !== slug) });
 };
-
-watch(
-  () => filters.value.models,
-  async () => {
-    if (filters.value.models) {
-      await refetch();
-    }
-  },
-  { deep: true },
-);
 </script>
 
 <template>

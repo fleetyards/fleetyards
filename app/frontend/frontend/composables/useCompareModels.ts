@@ -1,0 +1,96 @@
+import { computed, ref, toValue, watch, type MaybeRefOrGetter } from "vue";
+import { model as fetchModel, type ModelExtended } from "@/services/fyApi";
+import type { AsyncStatus } from "@/shared/components/AsyncData.types";
+
+// The compared ships, fetched one detail request each rather than through the
+// models index.
+//
+// Compare reads far more of a ship than any list does -- the exotic metrics, and
+// the side and top views -- and asking the index for them means every ships list
+// and every hangar page carries those fields too, for rows nobody compares. The
+// detail endpoint already returns a superset, so this is the same data from the
+// place that is meant to serve it.
+//
+// Cached by slug for the same reason as `useCompareHardpoints`: adding a fourth
+// ship must not refetch the three already on screen.
+export const useCompareModels = (slugs: MaybeRefOrGetter<string[]>) => {
+  const cache = ref<Record<string, ModelExtended>>({});
+  const pendingCount = ref(0);
+  const failure = ref<Error | null>(null);
+
+  const fetchFor = async (slug: string) => {
+    try {
+      cache.value = { ...cache.value, [slug]: await fetchModel(slug) };
+    } catch (error) {
+      // Left uncached on purpose, so changing the compare set retries instead of
+      // leaving the ship missing from the table forever. Reported through
+      // `asyncStatus` so a slug that does not resolve reaches the error slot
+      // rather than showing an empty table.
+      failure.value = error instanceof Error ? error : new Error(String(error));
+    }
+  };
+
+  const load = async () => {
+    const missing = toValue(slugs).filter((slug) => !cache.value[slug]);
+
+    if (!missing.length) {
+      return;
+    }
+
+    failure.value = null;
+    pendingCount.value += missing.length;
+
+    try {
+      await Promise.all(missing.map(fetchFor));
+    } finally {
+      pendingCount.value -= missing.length;
+    }
+  };
+
+  watch(
+    () => toValue(slugs).join(","),
+    () => {
+      void load();
+    },
+    { immediate: true },
+  );
+
+  // In the order the compare set names them, and skipping any whose request
+  // failed, so the table renders what did arrive.
+  const models = computed(() =>
+    toValue(slugs)
+      .map((slug) => cache.value[slug])
+      .filter((model): model is ModelExtended => Boolean(model)),
+  );
+
+  const loading = computed(() => pendingCount.value > 0);
+
+  // Drops the cache, so this is a real reload rather than the incremental fill
+  // the watcher does. Nothing calls it today; it is here because `AsyncStatus`
+  // offers it and an error slot may want to retry.
+  const refetch = async () => {
+    cache.value = {};
+
+    await load();
+  };
+
+  // Shaped for `AsyncData`, which the page already drives with the query's own
+  // status object. Nothing here refetches in the background, so the fetching and
+  // refetching flags collapse onto the one loading state.
+  const asyncStatus: AsyncStatus = {
+    fetchStatus: computed(() => (loading.value ? "fetching" : "idle")),
+    isError: computed(() => Boolean(failure.value)),
+    isPending: loading,
+    isLoading: loading,
+    isFetching: loading,
+    isRefetching: computed(() => false),
+    // Wrapped because the slot expects a void return, and handing it a promise
+    // leaves a rejection with nobody to catch it.
+    refetch: () => {
+      void refetch();
+    },
+    error: failure,
+  };
+
+  return { models, loading, refetch, asyncStatus };
+};
