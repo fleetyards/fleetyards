@@ -14,7 +14,7 @@ class Admin::Api::V1::ResourceAccessCatalogTest < ActionDispatch::IntegrationTes
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/AdminResourceAccessGroup"}
+        schema "$ref": "#/components/schemas/AdminResourceAccessGroupsList"
       end
 
       response(401, "unauthorized") do

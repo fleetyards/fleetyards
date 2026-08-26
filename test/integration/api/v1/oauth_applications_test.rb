@@ -47,7 +47,7 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/OauthApplication"}
+        schema "$ref": "#/components/schemas/OauthApplicationsList"
       end
 
       response(401, "unauthorized") do

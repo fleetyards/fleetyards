@@ -20,7 +20,7 @@ class Api::V1::PublicHangarsEmbedTest < ActionDispatch::IntegrationTest
         required: true
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/VehiclePublic"}
+        schema "$ref": "#/components/schemas/PublicVehiclesList"
       end
     end
   end

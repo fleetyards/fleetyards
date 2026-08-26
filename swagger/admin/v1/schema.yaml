@@ -384,9 +384,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -603,9 +601,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -630,9 +626,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -1130,9 +1124,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -1157,9 +1149,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -1184,9 +1174,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -1211,9 +1199,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -1349,9 +1335,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Feature"
+                "$ref": "#/components/schemas/FeaturesList"
         '403':
           description: forbidden
           content:
@@ -5132,9 +5116,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '403':
           description: forbidden
           content:
@@ -5997,9 +5979,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/AdminResourceAccessGroup"
+                "$ref": "#/components/schemas/AdminResourceAccessGroupsList"
         '401':
           description: unauthorized
           content:
@@ -6133,9 +6113,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -6173,9 +6151,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -6194,9 +6170,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -6215,9 +6189,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -7563,6 +7535,11 @@ components:
       - key
       - privileges
       title: AdminResourceAccessGroup
+    AdminResourceAccessGroupsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/AdminResourceAccessGroup"
+      title: AdminResourceAccessGroupsList
     AdminUser:
       type: object
       properties:
@@ -7753,6 +7730,11 @@ components:
       - count
       - tooltip
       title: BarChartStats
+    BarChartStatsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/BarChartStats"
+      title: BarChartStatsList
     BaseList:
       type: object
       properties:
@@ -10094,6 +10076,11 @@ components:
       required:
       - percentage
       title: FeaturePercentageInput
+    FeaturesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Feature"
+      title: FeaturesList
     FieldError:
       type: object
       properties:
@@ -10133,6 +10120,11 @@ components:
       - label
       - value
       title: FilterOption
+    FilterOptionsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FilterOption"
+      title: FilterOptionsList
     Fleet:
       type: object
       properties:

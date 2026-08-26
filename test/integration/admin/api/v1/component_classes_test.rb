@@ -14,7 +14,7 @@ class Admin::Api::V1::ComponentClassesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+        schema "$ref": "#/components/schemas/FilterOptionsList"
       end
 
       response(403, "forbidden") do

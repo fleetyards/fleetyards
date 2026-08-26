@@ -20,7 +20,7 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/UserFeature"}
+        schema "$ref": "#/components/schemas/UserFeaturesList"
       end
 
       response(401, "unauthorized") do

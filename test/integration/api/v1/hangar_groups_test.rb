@@ -43,7 +43,7 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/HangarGroup"}
+        schema "$ref": "#/components/schemas/HangarGroupsList"
       end
 
       response(401, "unauthorized") do

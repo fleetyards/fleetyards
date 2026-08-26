@@ -22,7 +22,7 @@ class Api::V1::FleetsStatsVehiclesByModelTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref" => "#/components/schemas/BarChartStats"}
+        schema "$ref": "#/components/schemas/BarChartStatsList"
       end
 
       response(401, "unauthorized") do

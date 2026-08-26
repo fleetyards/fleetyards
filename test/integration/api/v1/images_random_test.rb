@@ -22,8 +22,7 @@ class Api::V1::ImagesRandomTest < ActionDispatch::IntegrationTest
       }, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref" => "#/components/schemas/Image"}
+        schema "$ref": "#/components/schemas/ImagesList"
       end
     end
   end

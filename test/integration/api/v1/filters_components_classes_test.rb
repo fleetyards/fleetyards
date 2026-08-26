@@ -14,7 +14,7 @@ class Api::V1::FiltersComponentsClassesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+        schema "$ref": "#/components/schemas/FilterOptionsList"
       end
     end
   end

@@ -186,9 +186,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/components/categories":
     get:
       summary: Components Categories Filters
@@ -201,9 +199,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/components/classes":
     get:
       summary: Components Classes Filters
@@ -216,9 +212,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/components/item-types":
     get:
       summary: Components Item Types Filters
@@ -231,9 +225,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/components/sub-types":
     get:
       summary: Components Sub Type Filters
@@ -252,9 +244,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/filters/equipment/item-types":
@@ -278,9 +268,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/filters/manufacturers/options":
@@ -331,9 +319,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/models/classifications":
     get:
       summary: Model classifications Filters
@@ -346,9 +332,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/models/dock-sizes":
     get:
       summary: Model Dock Sizes Filters
@@ -361,9 +345,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/models/focus":
     get:
       summary: Model focus Filters
@@ -383,9 +365,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/options":
@@ -436,9 +416,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/models/sizes":
     get:
       summary: Model Sizes Filters
@@ -451,9 +429,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/vehicles/bought-via":
     get:
       summary: Vehicles Bought Via Filters
@@ -466,9 +442,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/fleet-event-signups/{id}":
     parameters:
     - name: id
@@ -897,9 +871,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetMember"
+                "$ref": "#/components/schemas/FleetInvitesList"
         '401':
           description: unauthorized
           content:
@@ -926,9 +898,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Fleet"
+                "$ref": "#/components/schemas/FleetsList"
         '401':
           description: unauthorized
           content:
@@ -947,9 +917,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetResourceAccessGroup"
+                "$ref": "#/components/schemas/FleetResourceAccessGroupsList"
   "/fleets/use-invite":
     post:
       summary: Create Fleet Membership by Invite
@@ -2419,9 +2387,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetFeature"
+                "$ref": "#/components/schemas/FleetFeaturesList"
         '401':
           description: unauthorized
           content:
@@ -2875,9 +2841,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetInventoryStockItem"
+                "$ref": "#/components/schemas/FleetInventoryStockItemsList"
         '401':
           description: unauthorized
           content:
@@ -3228,9 +3192,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetInventoryStockItem"
+                "$ref": "#/components/schemas/FleetInventoryStockItemsList"
         '401':
           description: unauthorized
           content:
@@ -3329,9 +3291,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetInviteUrl"
+                "$ref": "#/components/schemas/FleetInviteUrlsList"
         '401':
           description: unauthorized
           content:
@@ -4755,9 +4715,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetRoleExtended"
+                "$ref": "#/components/schemas/ExtendedFleetRolesList"
         '401':
           description: unauthorized
           content:
@@ -4895,9 +4853,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -4933,9 +4889,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -4971,9 +4925,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -5009,9 +4961,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -5089,9 +5039,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -5209,9 +5157,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetVehicleExport"
+                "$ref": "#/components/schemas/FleetVehicleExportsList"
         '401':
           description: unauthorized
           content:
@@ -5262,9 +5208,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetVehicleExport"
+                "$ref": "#/components/schemas/FleetVehicleExportsList"
         '401':
           description: unauthorized
           content:
@@ -5514,9 +5458,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleExport"
+                "$ref": "#/components/schemas/VehicleExportsList"
         '401':
           description: unauthorized
           content:
@@ -5554,9 +5496,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleExport"
+                "$ref": "#/components/schemas/VehicleExportsList"
         '401':
           description: unauthorized
           content:
@@ -5619,9 +5559,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/HangarGroup"
+                "$ref": "#/components/schemas/HangarGroupsList"
         '401':
           description: unauthorized
           content:
@@ -6103,9 +6041,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/HangarInventoryStockItem"
+                "$ref": "#/components/schemas/HangarInventoryStockItemsList"
         '401':
           description: unauthorized
           content:
@@ -6433,9 +6369,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/HangarInventoryStockItem"
+                "$ref": "#/components/schemas/HangarInventoryStockItemsList"
         '401':
           description: unauthorized
           content:
@@ -6552,9 +6486,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -6581,9 +6513,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -6610,9 +6540,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -6639,9 +6567,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '401':
           description: unauthorized
           content:
@@ -6777,9 +6703,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Image"
+                "$ref": "#/components/schemas/ImagesList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers":
@@ -7105,9 +7029,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelPaint"
+                "$ref": "#/components/schemas/ModelPaintsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/models":
@@ -7182,9 +7104,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
+                "$ref": "#/components/schemas/ModelsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/models/fleetchart-views":
@@ -7225,9 +7145,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
+                "$ref": "#/components/schemas/ModelsList"
   "/models/slugs":
     get:
       summary: Available Model-Slugs
@@ -7383,9 +7301,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Hardpoint"
+                "$ref": "#/components/schemas/HardpointsList"
         '404':
           description: not found
           content:
@@ -7577,9 +7493,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelPaint"
+                "$ref": "#/components/schemas/ModelPaintsList"
         '404':
           description: not found
           content:
@@ -7607,9 +7521,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelPosition"
+                "$ref": "#/components/schemas/ModelPositionsList"
         '404':
           description: not found
           content:
@@ -7637,9 +7549,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
+                "$ref": "#/components/schemas/ModelsList"
         '404':
           description: not found
           content:
@@ -7686,9 +7596,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/ModelUpgrade"
+                "$ref": "#/components/schemas/ModelUpgradesList"
         '404':
           description: not found
           content:
@@ -7799,9 +7707,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/NotificationPreference"
+                "$ref": "#/components/schemas/NotificationPreferencesList"
         '401':
           description: unauthorized
           content:
@@ -8062,9 +7968,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/OauthApplication"
+                "$ref": "#/components/schemas/OauthApplicationsList"
         '401':
           description: unauthorized
           content:
@@ -8579,9 +8483,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -8609,9 +8511,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -8639,9 +8539,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -8669,9 +8567,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -8727,9 +8623,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
         '404':
           description: not found
           content:
@@ -8825,9 +8719,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/PublicVehiclesList"
         '404':
           description: not found
           content:
@@ -8884,9 +8776,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehiclePublic"
+                "$ref": "#/components/schemas/PublicVehiclesList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}":
@@ -8956,9 +8846,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/HangarGroupPublic"
+                "$ref": "#/components/schemas/PublicHangarGroupsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats":
@@ -9017,9 +8905,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -9047,9 +8933,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -9077,9 +8961,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -9107,9 +8989,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
         '404':
           description: not found
           content:
@@ -9358,9 +9238,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
   "/stats/models-by-classification":
     get:
       summary: Stats Models by Classification
@@ -9373,9 +9251,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
   "/stats/models-by-manufacturer":
     get:
       summary: Stats Models by Manufacturer
@@ -9388,9 +9264,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
   "/stats/models-by-production-status":
     get:
       summary: Stats Models by Production-Status
@@ -9403,9 +9277,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
   "/stats/models-by-size":
     get:
       summary: Stats Models by Size
@@ -9418,9 +9290,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/PieChartStats"
+                "$ref": "#/components/schemas/PieChartStatsList"
   "/stats/models-per-month":
     get:
       summary: Stats Models per Month
@@ -9433,9 +9303,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/quick-stats":
     get:
       summary: Stats
@@ -9461,9 +9329,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/vehicles-by-model":
     get:
       summary: Stats Vehicles by Model
@@ -9476,9 +9342,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/vehicles-per-month":
     get:
       summary: Stats Vehicles per Month
@@ -9491,9 +9355,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/supporters/progress":
     get:
       summary: Public Supporters Progress
@@ -9525,9 +9387,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/UserFeature"
+                "$ref": "#/components/schemas/UserFeaturesList"
         '401':
           description: unauthorized
           content:
@@ -10439,9 +10299,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/InventoryStockPosition"
+                "$ref": "#/components/schemas/InventoryStockPositionsList"
         '401':
           description: unauthorized
           content:
@@ -10645,9 +10503,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleLoadout"
+                "$ref": "#/components/schemas/VehicleLoadoutsList"
         '401':
           description: unauthorized
           content:
@@ -10939,9 +10795,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/VehicleExport"
+                "$ref": "#/components/schemas/VehicleExportsList"
         '401':
           description: unauthorized
           content:
@@ -11097,6 +10951,11 @@ components:
       - count
       - tooltip
       title: BarChartStats
+    BarChartStatsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/BarChartStats"
+      title: BarChartStatsList
     BaseList:
       type: object
       properties:
@@ -12934,6 +12793,11 @@ components:
       - meta
       - items
       title: Equipments
+    ExtendedFleetRolesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetRoleExtended"
+      title: ExtendedFleetRolesList
     ExternalFuelTank:
       type: object
       properties:
@@ -13026,6 +12890,11 @@ components:
       - label
       - value
       title: FilterOption
+    FilterOptionsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FilterOption"
+      title: FilterOptionsList
     Fleet:
       type: object
       properties:
@@ -14182,6 +14051,11 @@ components:
       - toggleable
       - groups
       title: FleetFeature
+    FleetFeaturesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetFeature"
+      title: FleetFeaturesList
     FleetInventoriesList:
       type: object
       properties:
@@ -14485,6 +14359,11 @@ components:
       - unit
       - netQuantity
       title: FleetInventoryStockItem
+    FleetInventoryStockItemsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetInventoryStockItem"
+      title: FleetInventoryStockItemsList
     FleetInventoryUpdateInput:
       type: object
       properties:
@@ -14568,6 +14447,16 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetInviteUrlCreateInput
+    FleetInviteUrlsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetInviteUrl"
+      title: FleetInviteUrlsList
+    FleetInvitesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetMember"
+      title: FleetInvitesList
     FleetMember:
       type: object
       properties:
@@ -15018,6 +14907,11 @@ components:
       - key
       - privileges
       title: FleetResourceAccessGroup
+    FleetResourceAccessGroupsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetResourceAccessGroup"
+      title: FleetResourceAccessGroupsList
     FleetRole:
       type: object
       properties:
@@ -15295,6 +15189,11 @@ components:
       - modules
       - upgrades
       title: FleetVehicleExport
+    FleetVehicleExportsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetVehicleExport"
+      title: FleetVehicleExportsList
     FleetVehicleQuery:
       type: object
       properties:
@@ -15485,6 +15384,11 @@ components:
           items:
             type: string
       title: FleetchartViewQuery
+    FleetsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Fleet"
+      title: FleetsList
     FuelTank:
       type: object
       properties:
@@ -15705,6 +15609,11 @@ components:
           type: boolean
       additionalProperties: false
       title: HangarGroupUpdateInput
+    HangarGroupsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/HangarGroup"
+      title: HangarGroupsList
     HangarImportResult:
       type: object
       properties:
@@ -15996,6 +15905,11 @@ components:
       - unit
       - netQuantity
       title: HangarInventoryStockItem
+    HangarInventoryStockItemsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/HangarInventoryStockItem"
+      title: HangarInventoryStockItemsList
     HangarInventoryUpdateInput:
       type: object
       properties:
@@ -16568,6 +16482,11 @@ components:
       - SHIP_MATRIX
       - GAME_FILES
       title: HardpointSourceEnum
+    HardpointsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Hardpoint"
+      title: HardpointsList
     Image:
       type: object
       properties:
@@ -16675,6 +16594,11 @@ components:
       - meta
       - items
       title: Images
+    ImagesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Image"
+      title: ImagesList
     ImportInput:
       type: object
       properties:
@@ -17039,6 +16963,11 @@ components:
           "$ref": "#/components/schemas/InventoryUnitEnum"
       additionalProperties: false
       title: InventoryStockPositionInput
+    InventoryStockPositionsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/InventoryStockPosition"
+      title: InventoryStockPositionsList
     InventoryStockQuery:
       type: object
       properties:
@@ -19285,6 +19214,11 @@ components:
       - MODEL_SLUG_ASC
       - MODEL_SLUG_DESC
       title: ModelPaintSortEnum
+    ModelPaintsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ModelPaint"
+      title: ModelPaintsList
     ModelPosition:
       type: object
       properties:
@@ -19347,6 +19281,11 @@ components:
       - OPERATOR
       - CUSTOM
       title: ModelPositionTypeEnum
+    ModelPositionsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ModelPosition"
+      title: ModelPositionsList
     ModelProductionStatusEnum:
       type: string
       enum:
@@ -19584,6 +19523,11 @@ components:
       - createdAt
       - updatedAt
       title: ModelUpgrade
+    ModelUpgradesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ModelUpgrade"
+      title: ModelUpgradesList
     Models:
       type: object
       properties:
@@ -19598,6 +19542,11 @@ components:
       - meta
       - items
       title: Models
+    ModelsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Model"
+      title: ModelsList
     Notification:
       type: object
       properties:
@@ -19672,6 +19621,11 @@ components:
         push:
           type: boolean
       title: NotificationPreferenceUpdateInput
+    NotificationPreferencesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/NotificationPreference"
+      title: NotificationPreferencesList
     NotificationQuery:
       type: object
       properties:
@@ -19917,6 +19871,11 @@ components:
       - createdAt
       - updatedAt
       title: OauthApplicationWithSecret
+    OauthApplicationsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/OauthApplication"
+      title: OauthApplicationsList
     OrderDirectionEnum:
       type: string
       enum:
@@ -20000,6 +19959,21 @@ components:
       - selected
       - sliced
       title: PieChartStats
+    PieChartStatsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/PieChartStats"
+      title: PieChartStatsList
+    PublicHangarGroupsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/HangarGroupPublic"
+      title: PublicHangarGroupsList
+    PublicVehiclesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/VehiclePublic"
+      title: PublicVehiclesList
     RefuelBoom:
       type: object
       properties:
@@ -20499,6 +20473,11 @@ components:
       - USER
       - FLEET
       title: UserFeatureScopeEnum
+    UserFeaturesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/UserFeature"
+      title: UserFeaturesList
     UserPublic:
       type: object
       properties:
@@ -20916,6 +20895,11 @@ components:
       - modules
       - upgrades
       title: VehicleExport
+    VehicleExportsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/VehicleExport"
+      title: VehicleExportsList
     VehicleLoadout:
       type: object
       properties:
@@ -21020,6 +21004,11 @@ components:
       - createdAt
       - updatedAt
       title: VehicleLoadoutMinimal
+    VehicleLoadoutsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/VehicleLoadout"
+      title: VehicleLoadoutsList
     VehiclePublic:
       type: object
       properties:

@@ -20,7 +20,7 @@ class Api::V1::HangarStatsModelsByProductionStatusTest < ActionDispatch::Integra
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref" => "#/components/schemas/PieChartStats"}
+        schema "$ref": "#/components/schemas/PieChartStatsList"
       end
 
       response(401, "unauthorized") do

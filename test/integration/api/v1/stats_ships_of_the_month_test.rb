@@ -14,7 +14,7 @@ class Api::V1::StatsShipsOfTheMonthTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref" => "#/components/schemas/BarChartStats"}
+        schema "$ref": "#/components/schemas/BarChartStatsList"
       end
     end
   end

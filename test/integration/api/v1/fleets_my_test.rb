@@ -20,7 +20,7 @@ class Api::V1::FleetsMyTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/Fleet"}
+        schema "$ref": "#/components/schemas/FleetsList"
       end
 
       response(401, "unauthorized") do

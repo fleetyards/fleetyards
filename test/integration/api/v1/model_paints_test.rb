@@ -25,8 +25,7 @@ class Api::V1::ModelPaintsTest < ActionDispatch::IntegrationTest
         required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/ModelPaint"}
+        schema "$ref": "#/components/schemas/ModelPaintsList"
       end
     end
   end

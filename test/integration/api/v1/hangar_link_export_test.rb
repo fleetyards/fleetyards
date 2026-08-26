@@ -29,7 +29,7 @@ class Api::V1::HangarLinkExportTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/VehicleExport"}
+        schema "$ref": "#/components/schemas/VehicleExportsList"
       end
 
       response(401, "unauthorized") do

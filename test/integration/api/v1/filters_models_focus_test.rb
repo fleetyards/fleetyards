@@ -17,7 +17,7 @@ class Api::V1::FiltersModelsFocusTest < ActionDispatch::IntegrationTest
         description: "Restrict the result to focuses of models with this classification"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+        schema "$ref": "#/components/schemas/FilterOptionsList"
       end
     end
   end

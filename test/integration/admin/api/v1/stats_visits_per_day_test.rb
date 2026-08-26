@@ -14,7 +14,7 @@ class Admin::Api::V1::StatsVisitsPerDayTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref" => "#/components/schemas/BarChartStats"}
+        schema "$ref": "#/components/schemas/BarChartStatsList"
       end
 
       response(401, "unauthorized") do
