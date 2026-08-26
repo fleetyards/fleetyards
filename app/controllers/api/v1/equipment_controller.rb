@@ -12,16 +12,19 @@ module Api
         # not something a player holds, so the list leaves them out. So does
         # gear a later patch stopped shipping, unless currentVersion=false asks
         # for it -- the rows stay so old ledger entries still resolve.
-        @q = Equipment.visible
-          .current_version(current_version)
+        # `visible` takes the flag rather than a separate `current_version`: for
+        # the default it joins the build we are on, and an inner join to it
+        # already leaves out what that build does not describe.
+        @q = Equipment.visible(current_version)
           .includes(:manufacturer)
           .ransack(equipment_query_params)
 
         # Ordered here rather than through ransack: `ransack_alias :name` points
         # name at name_or_slug so that a search matches either, which leaves
-        # ransack unable to sort by it.
+        # ransack unable to sort by it. Through the build, so the list is ordered
+        # by the name it actually serves.
         @equipment = @q.result
-          .order(name: :asc)
+          .order(Equipment.fact_sql(:name).asc)
           .page(params[:page])
           .per(per_page(Equipment))
       end

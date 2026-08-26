@@ -73,10 +73,24 @@ class EquipmentBuild < ApplicationRecord
     backpack_compatibility volume volume_dimensions
   ].freeze
 
-  # The facts Equipment reads through its build. `manufacturer_id` and `hidden`
-  # are held back: the association and the `visible` scope still go through the
-  # columns, and both move with the filters rather than with the readers.
+  # The facts Equipment reads through its build. `hidden` is held back from the
+  # readers because nothing reads it -- `visible` and the `hidden_eq` filter go
+  # through `Equipment.fact_sql`, which resolves it the same way.
+  #
+  # `manufacturer_id` is held back because `belongs_to :manufacturer` reads the
+  # column, and the public filter traverses that association. Splitting the two
+  # would let a filter and a displayed manufacturer disagree, so they move
+  # together, later.
   READ_THROUGH = (FACTS - %i[manufacturer_id hidden]).freeze
+
+  # The facts Equipment filters and sorts by. One list, so a ransacker and the
+  # fallback join's column list cannot drift apart. The free-text and jsonb facts
+  # are left out: nothing filters on them, and each one widens the fallback
+  # subquery for no gain.
+  FILTERABLE = %i[
+    name equipment_type item_type sub_type weapon_class size grade slot hidden
+    rate_of_fire range storage
+  ].freeze
 
   # The same enums Equipment declares, because a build row holding `0` has to
   # read as `undersuit` here too. Without them, moving the readers over turns

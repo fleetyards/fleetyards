@@ -183,4 +183,120 @@ class EquipmentTest < ActiveSupport::TestCase
 
     assert_predicate equipment, :valid?
   end
+
+  # Everything below sets a build value that *disagrees* with the column. While
+  # both are written they are identical, so a filter reading the wrong one still
+  # passes every other test in this file -- disagreement is the only way to show
+  # which side answered.
+  test ".visible hides what the build hides, whatever the column says" do
+    equipment = create(:equipment, :without_build, hidden: false)
+    create(:equipment_build, equipment:, hidden: true)
+
+    assert_empty Equipment.visible.pluck(:id)
+  end
+
+  test ".visible shows what the build shows, whatever the column says" do
+    equipment = create(:equipment, :without_build, hidden: true)
+    create(:equipment_build, equipment:, hidden: false)
+
+    assert_equal [equipment.id], Equipment.visible.pluck(:id)
+  end
+
+  test "a text filter matches the name the build carries" do
+    equipment = create(:equipment, :without_build, name: "Column Name")
+    create(:equipment_build, equipment:, name: "Behring P4-AR")
+
+    result = Equipment.with_facts.ransack(name_cont: "Behring").result
+
+    assert_equal [equipment.id], result.pluck(:id)
+  end
+
+  test "a type filter follows the build, not the column" do
+    equipment = create(:equipment, :without_build, item_type: "old_type")
+    create(:equipment_build, equipment:, item_type: "assault_rifle")
+
+    assert_equal [equipment.id], Equipment.with_facts.ransack(item_type_eq: "assault_rifle").result.pluck(:id)
+    assert_empty Equipment.with_facts.ransack(item_type_eq: "old_type").result.pluck(:id)
+  end
+
+  # The ransacker has to keep its formatter, or the enum name never reaches the
+  # integer the column stores.
+  test "an enum filter follows the build" do
+    equipment = create(:equipment, :without_build, slot: nil)
+    create(:equipment_build, equipment:, slot: :torso)
+
+    assert_equal [equipment.id], Equipment.with_facts.ransack(slot_in: ["torso"]).result.pluck(:id)
+  end
+
+  # Without `type: :decimal` this compares strings, and "900" >= "500" only holds
+  # by accident of the digits.
+  test "a numeric filter compares the build value as a number" do
+    equipment = create(:equipment, :without_build, range: 100)
+    create(:equipment_build, equipment:, range: 900)
+
+    assert_equal [equipment.id], Equipment.with_facts.ransack(range_gteq: 500).result.pluck(:id)
+    assert_empty Equipment.with_facts.ransack(range_lteq: 200).result.pluck(:id)
+  end
+
+  # The reader falls back to the column for a record no load ever described, so
+  # the filter has to as well on the path that shows such a record -- or an admin
+  # cannot find what they just created.
+  test "a filter falls back to the column when there is no build at all" do
+    equipment = create(:equipment, :without_build, item_type: "hand_made")
+
+    assert_equal [equipment.id], Equipment.with_facts(false).ransack(item_type_eq: "hand_made").result.pluck(:id)
+  end
+
+  # And is left out of the catalogue, which is what makes the fallback droppable
+  # on the fast path: nothing the current build does not describe is in it.
+  test "the current catalogue leaves out a record with no build" do
+    create(:equipment, :without_build, item_type: "hand_made")
+
+    assert_empty Equipment.with_facts.ransack(item_type_eq: "hand_made").result.pluck(:id)
+  end
+
+  # An older build's values answer for a retired record, the same order `#facts`
+  # picks, so the two cannot disagree.
+  test "the fallback join resolves a retired record to its last build" do
+    equipment = create(:equipment, :without_build, item_type: "column_type")
+    create(:equipment_build, equipment:, version: "0.0.1-live.1", item_type: "old_type")
+
+    assert_equal [equipment.id], Equipment.with_facts(false).ransack(item_type_eq: "old_type").result.pluck(:id)
+    assert_empty Equipment.with_facts(false).ransack(item_type_eq: "column_type").result.pluck(:id)
+  end
+
+  test "sorting orders by the name the build carries" do
+    first = create(:equipment, :without_build, name: "Zulu Column")
+    second = create(:equipment, :without_build, name: "Alpha Column")
+    create(:equipment_build, equipment: first, name: "Alpha Build")
+    create(:equipment_build, equipment: second, name: "Zulu Build")
+
+    assert_equal [first.id, second.id], Equipment.ordered_by_name.pluck(:id)
+  end
+
+  test "the facet lists come from the build" do
+    equipment = create(:equipment, :without_build, item_type: "old_type", weapon_class: "old_class")
+    create(:equipment_build, equipment:, item_type: "assault_rifle", weapon_class: "ballistic")
+
+    assert_equal ["assault_rifle"], Equipment.item_types
+    assert_equal ["ballistic"], Equipment.weapon_classes
+    assert_equal ["weapon"], Equipment.equipment_types
+  end
+
+  # The admin filter, as opposed to the `visible` scope -- a different path to
+  # the same fact, and the only one that goes through ransack.
+  test "the hidden filter follows the build" do
+    equipment = create(:equipment, :without_build, hidden: false)
+    create(:equipment_build, equipment:, hidden: true)
+
+    assert_equal [equipment.id], Equipment.with_facts.ransack(hidden_eq: true).result.pluck(:id)
+    assert_empty Equipment.with_facts.ransack(hidden_eq: false).result.pluck(:id)
+  end
+
+  test "the facet lists leave out what only a hidden build carries" do
+    equipment = create(:equipment, :without_build)
+    create(:equipment_build, equipment:, item_type: "dev_only", hidden: true)
+
+    assert_empty Equipment.item_types
+  end
 end
