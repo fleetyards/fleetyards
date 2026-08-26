@@ -281,6 +281,30 @@ Naming and placement follow the existing tree:
 - Reused by both the public and the admin schema → `shared/v1/`
 - Enums → `<scope>/v1/schemas/enums/<name>_enum.rb`, referenced by `$ref` —
   don't inline an `enum:` into a property
+- Nested objects → their own component too. A `type: :object` with named
+  properties inside another component is as anonymous as an inline body
+
+### Nested objects
+
+An object nested inside a component is a component as well. `Model.metrics` held
+33 properties inline, and Orval reproduced the whole block once per owner —
+`ComponentControllerPowerRangesHigh`, `ComponentCoolerPowerRangesHigh` and six
+more siblings for a shape that is two numbers.
+
+Two traps:
+
+- **Inheritance cannot merge into a `$ref`.** openapi-ruby deep-merges a
+  subclass's schema into its parent's, so pointing a parent property at a
+  component leaves the subclass emitting a `$ref` *beside* the properties it
+  meant to add. Give the subclass its own component that inherits the shared one
+  (`AdminModelMedia < Shared::V1::Schemas::ModelMedia`).
+- **A subclass in another scope inherits the reference.** An enum or object a v1
+  component points at has to live in `shared/v1/` if any admin component
+  subclasses that v1 component — otherwise the admin document carries a dangling
+  `$ref`. Check with a ref-vs-defined diff over the generated specs.
+
+Free-form maps stay inline: `{type: :object, additionalProperties: …}` has no
+named properties, so there is nothing to name.
 
 ### Enum components
 
