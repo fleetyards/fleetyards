@@ -317,20 +317,19 @@ module ScData
 
       # --- Return value -----------------------------------------------------
 
-      # QUIRK: a resolved, non-hidden entry pushes its id twice -- once in the
-      # resolved branch and once by the unconditional push at the end of the
-      # loop. Harmless for the `where.not(id: ...)` cleanup this feeds, but the
-      # array is not the distinct id list it reads as.
-      test "returns the touched hardpoint ids, with resolved entries duplicated" do
+      # This used to come back with the id twice for a resolved entry -- once
+      # from the branch that wrote it and once from an unconditional push at the
+      # end of the loop. Splitting resolution from persistence left one push per
+      # slot, so the list is now what it always read as. Safe because the only
+      # consumer is the `where.not(id: ...)` cleanup, which does not care.
+      test "returns one id per hardpoint it touched" do
         create(:component, sc_key: "kept_component")
 
         ids = update_loadout(@model, {"loadout" => [{"name" => "kept", "key" => "kept_component"}]})
 
-        hardpoint = game_files_hardpoints(@model).sole
-        assert_equal [hardpoint.id, hardpoint.id], ids
+        assert_equal [game_files_hardpoints(@model).sole.id], ids
       end
 
-      # An entry that resolved to nothing is pushed once, by the tail push only.
       test "returns a single id for an entry that resolved to no component" do
         ids = update_loadout(@model, {"loadout" => [{"name" => "mystery", "key" => "absent"}]})
 
