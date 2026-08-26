@@ -3,16 +3,16 @@
 module Shared
   module V1
     module Schemas
-      class ComponentPowerPlant
+      class ComponentSignatureDetection
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            powerBase: {type: :number},
-            powerDraw: {type: :number},
-            powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            ir: ComponentSignatureSensitivity,
+            em: ComponentSignatureSensitivity,
+            cs: ComponentSignatureSensitivity,
+            rs: ComponentSignatureSensitivity
           },
           additionalProperties: false
         })

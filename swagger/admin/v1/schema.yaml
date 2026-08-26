@@ -8186,6 +8186,17 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentAngularVelocity:
+      type: object
+      properties:
+        pitch:
+          type: number
+        yaw:
+          type: number
+        roll:
+          type: number
+      additionalProperties: false
+      title: ComponentAngularVelocity
     ComponentArmor:
       type: object
       properties:
@@ -8254,57 +8265,15 @@ components:
         maxSpeed:
           type: number
         angularVelocity:
-          type: object
-          properties:
-            pitch:
-              type: number
-            yaw:
-              type: number
-            roll:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentAngularVelocity"
         boostedAngularVelocity:
-          type: object
-          properties:
-            pitch:
-              type: number
-            yaw:
-              type: number
-            roll:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentAngularVelocity"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
@@ -8319,33 +8288,7 @@ components:
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
         signatureIr:
@@ -8354,6 +8297,32 @@ components:
       required:
       - coolingRate
       title: ComponentCooler
+    ComponentDamageRange:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+      additionalProperties: false
+      title: ComponentDamageRange
+    ComponentDamageTypeMap:
+      type: object
+      properties:
+        physical:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        energy:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        distortion:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        thermal:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        biochemical:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        stun:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+      additionalProperties: false
+      title: ComponentDamageTypeMap
     ComponentInput:
       type: object
       properties:
@@ -8422,6 +8391,13 @@ components:
           type: number
       additionalProperties: false
       title: ComponentJumpDrive
+    ComponentPingProperties:
+      type: object
+      properties:
+        cooldownTime:
+          type: number
+      additionalProperties: false
+      title: ComponentPingProperties
     ComponentPowerPlant:
       type: object
       properties:
@@ -8430,37 +8406,31 @@ components:
         powerDraw:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
       title: ComponentPowerPlant
+    ComponentPowerRangeEntry:
+      type: object
+      properties:
+        start:
+          type: number
+        modifier:
+          type: number
+      additionalProperties: false
+      title: ComponentPowerRangeEntry
+    ComponentPowerRanges:
+      type: object
+      properties:
+        low:
+          "$ref": "#/components/schemas/ComponentPowerRangeEntry"
+        medium:
+          "$ref": "#/components/schemas/ComponentPowerRangeEntry"
+        high:
+          "$ref": "#/components/schemas/ComponentPowerRangeEntry"
+      additionalProperties: false
+      title: ComponentPowerRanges
     ComponentQuantumDrive:
       type: object
       properties:
@@ -8505,33 +8475,7 @@ components:
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
@@ -8640,93 +8584,32 @@ components:
       type: object
       properties:
         signatureDetection:
-          type: object
-          properties:
-            ir:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-            em:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-            cs:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-            rs:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentSignatureDetection"
         pingProperties:
-          type: object
-          properties:
-            cooldownTime:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPingProperties"
         aimAssistRange:
           type: number
         aimAssistMin:
           type: number
         sensitivityModifiers:
-          type: object
-          properties:
-            sensitivityAddition:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentSensitivityModifiers"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
       title: ComponentRadar
+    ComponentSensitivityModifiers:
+      type: object
+      properties:
+        sensitivityAddition:
+          type: number
+      additionalProperties: false
+      title: ComponentSensitivityModifiers
     ComponentShield:
       type: object
       properties:
@@ -8741,141 +8624,15 @@ components:
         damagedRegenDelay:
           type: number
         resistance:
-          type: object
-          properties:
-            physical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            energy:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            distortion:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            thermal:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            biochemical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            stun:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentDamageTypeMap"
         absorption:
-          type: object
-          properties:
-            physical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            energy:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            distortion:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            thermal:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            biochemical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            stun:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentDamageTypeMap"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
@@ -8883,6 +8640,28 @@ components:
       - maxHealth
       - maxRegen
       title: ComponentShield
+    ComponentSignatureDetection:
+      type: object
+      properties:
+        ir:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+        em:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+        cs:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+        rs:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+      additionalProperties: false
+      title: ComponentSignatureDetection
+    ComponentSignatureSensitivity:
+      type: object
+      properties:
+        sensitivity:
+          type: number
+        piercing:
+          type: number
+      additionalProperties: false
+      title: ComponentSignatureSensitivity
     ComponentSortEnum:
       type: string
       enum:
@@ -8939,81 +8718,67 @@ components:
         heatPerSecond:
           type: number
         rotation:
-          type: object
-          properties:
-            maxAngularVelocity:
-              type: number
-            degreesPerAction:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamRotation"
         movement:
-          type: object
-          properties:
-            maxSpeed:
-              type: number
-            maxAcceleration:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamMovement"
         cargoMode:
-          type: object
-          properties:
-            maxForce:
-              type: number
-            minDistance:
-              type: number
-            maxDistance:
-              type: number
-            fullStrengthDistance:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamCargoMode"
         towing:
-          type: object
-          properties:
-            towingForce:
-              type: number
-            towingMaxDistance:
-              type: number
-            towingMaxAcceleration:
-              type: number
-            quantumTowMassLimit:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamTowing"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
       additionalProperties: false
       required:
       - tractorBeam
       title: ComponentTractorBeam
+    ComponentTractorBeamCargoMode:
+      type: object
+      properties:
+        maxForce:
+          type: number
+        minDistance:
+          type: number
+        maxDistance:
+          type: number
+        fullStrengthDistance:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamCargoMode
+    ComponentTractorBeamMovement:
+      type: object
+      properties:
+        maxSpeed:
+          type: number
+        maxAcceleration:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamMovement
+    ComponentTractorBeamRotation:
+      type: object
+      properties:
+        maxAngularVelocity:
+          type: number
+        degreesPerAction:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamRotation
+    ComponentTractorBeamTowing:
+      type: object
+      properties:
+        towingForce:
+          type: number
+        towingMaxDistance:
+          type: number
+        towingMaxAcceleration:
+          type: number
+        quantumTowMassLimit:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamTowing
     ComponentTypeEnum:
       type: string
       enum:
@@ -9177,67 +8942,13 @@ components:
         powerConsumption:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
         damagePerShot:
-          type: object
-          properties:
-            physical:
-              type: number
-            energy:
-              type: number
-            distortion:
-              type: number
-            thermal:
-              type: number
-            biochemical:
-              type: number
-            stun:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
         damagePerSecond:
-          type: object
-          properties:
-            physical:
-              type: number
-            energy:
-              type: number
-            distortion:
-              type: number
-            thermal:
-              type: number
-            biochemical:
-              type: number
-            stun:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
         heatPerSecond:
           type: number
         pelletsPerShot:
@@ -9259,43 +8970,69 @@ components:
         overchargeTime:
           type: number
         regen:
-          type: object
-          properties:
-            maxAmmoLoad:
-              type: number
-            maxRegenPerSecond:
-              type: number
-            costPerBullet:
-              type: number
-            regenerationCooldown:
-              type: number
-            requestedRegenPerSecond:
-              type: number
-            requestedAmmoLoad:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponRegen"
         heat:
-          type: object
-          properties:
-            overheatTemperature:
-              type: number
-            coolingPerSecond:
-              type: number
-            timeTillCoolingStarts:
-              type: number
-            overheatFixTime:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponHeat"
         penetration:
-          type: object
-          properties:
-            maxThickness:
-              type: number
-            baseDistance:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponPenetration"
       additionalProperties: false
       title: ComponentWeapon
+    ComponentWeaponDamage:
+      type: object
+      properties:
+        physical:
+          type: number
+        energy:
+          type: number
+        distortion:
+          type: number
+        thermal:
+          type: number
+        biochemical:
+          type: number
+        stun:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponDamage
+    ComponentWeaponHeat:
+      type: object
+      properties:
+        overheatTemperature:
+          type: number
+        coolingPerSecond:
+          type: number
+        timeTillCoolingStarts:
+          type: number
+        overheatFixTime:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponHeat
+    ComponentWeaponPenetration:
+      type: object
+      properties:
+        maxThickness:
+          type: number
+        baseDistance:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponPenetration
+    ComponentWeaponRegen:
+      type: object
+      properties:
+        maxAmmoLoad:
+          type: number
+        maxRegenPerSecond:
+          type: number
+        costPerBullet:
+          type: number
+        regenerationCooldown:
+          type: number
+        requestedRegenPerSecond:
+          type: number
+        requestedAmmoLoad:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponRegen
     Components:
       type: object
       properties:

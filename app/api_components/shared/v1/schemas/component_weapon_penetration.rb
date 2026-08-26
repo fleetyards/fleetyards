@@ -3,16 +3,14 @@
 module Shared
   module V1
     module Schemas
-      class ComponentPowerPlant
+      class ComponentWeaponPenetration
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            powerBase: {type: :number},
-            powerDraw: {type: :number},
-            powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            maxThickness: {type: :number},
+            baseDistance: {type: :number}
           },
           additionalProperties: false
         })

@@ -3,16 +3,14 @@
 module Shared
   module V1
     module Schemas
-      class ComponentPowerPlant
+      class ComponentTractorBeamMovement
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            powerBase: {type: :number},
-            powerDraw: {type: :number},
-            powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            maxSpeed: {type: :number},
+            maxAcceleration: {type: :number}
           },
           additionalProperties: false
         })

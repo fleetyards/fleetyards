@@ -3,16 +3,15 @@
 module Shared
   module V1
     module Schemas
-      class ComponentPowerPlant
+      class ComponentAngularVelocity
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            powerBase: {type: :number},
-            powerDraw: {type: :number},
-            powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            pitch: {type: :number},
+            yaw: {type: :number},
+            roll: {type: :number}
           },
           additionalProperties: false
         })

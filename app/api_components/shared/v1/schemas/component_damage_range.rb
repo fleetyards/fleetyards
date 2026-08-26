@@ -3,16 +3,14 @@
 module Shared
   module V1
     module Schemas
-      class ComponentPowerPlant
+      class ComponentDamageRange
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            powerBase: {type: :number},
-            powerDraw: {type: :number},
-            powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            min: {type: :number},
+            max: {type: :number}
           },
           additionalProperties: false
         })

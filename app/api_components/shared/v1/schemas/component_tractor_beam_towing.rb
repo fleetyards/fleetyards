@@ -3,16 +3,16 @@
 module Shared
   module V1
     module Schemas
-      class ComponentPowerPlant
+      class ComponentTractorBeamTowing
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            powerBase: {type: :number},
-            powerDraw: {type: :number},
-            powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            towingForce: {type: :number},
+            towingMaxDistance: {type: :number},
+            towingMaxAcceleration: {type: :number},
+            quantumTowMassLimit: {type: :number}
           },
           additionalProperties: false
         })

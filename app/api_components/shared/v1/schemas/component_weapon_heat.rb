@@ -3,16 +3,16 @@
 module Shared
   module V1
     module Schemas
-      class ComponentPowerPlant
+      class ComponentWeaponHeat
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            powerBase: {type: :number},
-            powerDraw: {type: :number},
-            powerRanges: ComponentPowerRanges,
-            signatureEm: {type: :number}
+            overheatTemperature: {type: :number},
+            coolingPerSecond: {type: :number},
+            timeTillCoolingStarts: {type: :number},
+            overheatFixTime: {type: :number}
           },
           additionalProperties: false
         })

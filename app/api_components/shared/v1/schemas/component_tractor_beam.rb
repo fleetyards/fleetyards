@@ -6,25 +6,6 @@ module Shared
       class ComponentTractorBeam
         include OpenapiRuby::Components::Base
 
-        POWER_RANGE_ENTRY = {
-          type: :object,
-          properties: {
-            start: {type: :number},
-            modifier: {type: :number}
-          },
-          additionalProperties: false
-        }.freeze
-
-        POWER_RANGES = {
-          type: :object,
-          properties: {
-            low: POWER_RANGE_ENTRY,
-            medium: POWER_RANGE_ENTRY,
-            high: POWER_RANGE_ENTRY
-          },
-          additionalProperties: false
-        }.freeze
-
         schema({
           type: :object,
           properties: {
@@ -39,45 +20,13 @@ module Shared
             volumeForceCoefficient: {type: :number},
             tetherBreakTime: {type: :number},
             heatPerSecond: {type: :number},
-            rotation: {
-              type: :object,
-              properties: {
-                maxAngularVelocity: {type: :number},
-                degreesPerAction: {type: :number}
-              },
-              additionalProperties: false
-            },
-            movement: {
-              type: :object,
-              properties: {
-                maxSpeed: {type: :number},
-                maxAcceleration: {type: :number}
-              },
-              additionalProperties: false
-            },
-            cargoMode: {
-              type: :object,
-              properties: {
-                maxForce: {type: :number},
-                minDistance: {type: :number},
-                maxDistance: {type: :number},
-                fullStrengthDistance: {type: :number}
-              },
-              additionalProperties: false
-            },
-            towing: {
-              type: :object,
-              properties: {
-                towingForce: {type: :number},
-                towingMaxDistance: {type: :number},
-                towingMaxAcceleration: {type: :number},
-                quantumTowMassLimit: {type: :number}
-              },
-              additionalProperties: false
-            },
+            rotation: ComponentTractorBeamRotation,
+            movement: ComponentTractorBeamMovement,
+            cargoMode: ComponentTractorBeamCargoMode,
+            towing: ComponentTractorBeamTowing,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
-            powerRanges: POWER_RANGES
+            powerRanges: ComponentPowerRanges
           },
           additionalProperties: false,
           required: %w[tractorBeam]
