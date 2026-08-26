@@ -8,10 +8,10 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) },
-        only: %i[check_serial fleetchart hangar]
+        only: %i[check_serial fleetchart]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: -> { warden.authenticate?(scope: :user) },
-        except: %i[check_serial fleetchart hangar]
+        except: %i[check_serial fleetchart]
 
       before_action :set_vehicle, only: %i[show update destroy]
 
@@ -142,12 +142,6 @@ module Api
           .includes(:vehicle_loadouts, model: [:manufacturer])
           .joins(model: [:manufacturer])
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
-      end
-
-      # DEPRECATED
-      def hangar
-        authorize! :index, :api_hangar
-        @vehicles = current_resource_owner.vehicles.where(loaner: false).purchased.visible
       end
 
       private def set_vehicle
