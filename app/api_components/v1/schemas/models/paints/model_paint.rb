@@ -19,18 +19,7 @@ module V1
 
               availability: Shared::V1::Schemas::ItemAvailability,
 
-              media: {
-                type: :object,
-                properties: {
-                  angledView: {"$ref": "#/components/schemas/MediaFile"},
-                  fleetchartImage: {type: :string},
-                  # frontView: {"$ref": "#/components/schemas/MediaFile"},
-                  sideView: {"$ref": "#/components/schemas/MediaFile"},
-                  storeImage: {"$ref": "#/components/schemas/MediaFile"},
-                  topView: {"$ref": "#/components/schemas/MediaFile"}
-                },
-                additionalProperties: false
-              },
+              media: ModelPaintMedia,
 
               nameWithModel: {type: :string},
               rsiId: {type: :integer},

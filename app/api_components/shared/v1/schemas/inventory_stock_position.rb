@@ -29,13 +29,7 @@ module Shared
                 available: {type: :boolean}
               }
             },
-            inventory: {
-              type: :object,
-              properties: {
-                name: {type: :string},
-                slug: {type: :string}
-              }
-            }
+            inventory: Shared::V1::Schemas::InventoryRef
           },
           additionalProperties: false,
           required: %w[slug name category unit netQuantity entriesCount]

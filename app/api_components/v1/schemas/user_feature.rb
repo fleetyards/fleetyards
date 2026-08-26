@@ -18,15 +18,7 @@ module V1
           toggleable: {type: :boolean},
           fleets: {
             type: :array,
-            items: {
-              type: :object,
-              properties: {
-                name: {type: :string},
-                slug: {type: :string}
-              },
-              additionalProperties: false,
-              required: %w[name slug]
-            }
+            items: UserFeatureFleet
           },
           groups: {
             type: :array,

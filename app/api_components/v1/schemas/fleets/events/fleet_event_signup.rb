@@ -18,35 +18,8 @@ module V1
               notes: {type: :string},
               confirmedAt: {type: :string, format: "date-time"},
               withdrawnAt: {type: :string, format: "date-time"},
-              user: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  username: {type: :string}
-                }
-              },
-              vehicle: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  name: {type: :string},
-                  model: {
-                    type: :object,
-                    properties: {
-                      id: {type: :string, format: :uuid},
-                      name: {type: :string},
-                      slug: {type: :string},
-                      classification: {type: :string},
-                      focus: {type: :string},
-                      size: {type: :string},
-                      minCrew: {type: :integer},
-                      maxCrew: {type: :integer},
-                      cargo: {type: :integer},
-                      positionCount: {type: :integer}
-                    }
-                  }
-                }
-              }
+              user: Shared::V1::Schemas::UserRef,
+              vehicle: FleetEventSignupVehicle
             },
             required: %w[id fleetEventId status],
             additionalProperties: false

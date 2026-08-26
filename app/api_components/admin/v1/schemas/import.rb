@@ -21,22 +21,8 @@ module Admin
             import: {type: :string},
             importData: {type: :string},
 
-            adminUser: {
-              type: :object,
-              properties: {
-                id: {type: :string, format: :uuid},
-                username: {type: :string}
-              },
-              required: %w[id username]
-            },
-            user: {
-              type: :object,
-              properties: {
-                id: {type: :string, format: :uuid},
-                username: {type: :string}
-              },
-              required: %w[id username]
-            },
+            adminUser: ::Shared::V1::Schemas::UserRefRequired,
+            user: ::Shared::V1::Schemas::UserRefRequired,
 
             startedAt: {type: :string, format: "date-time"},
             finishedAt: {type: :string, format: "date-time"},

@@ -15,25 +15,8 @@ module Shared
             dimensions: {"$ref": "#/components/schemas/CargoHoldDimension"},
             capacity: {type: :integer},
             maxContainerSize: {"$ref": "#/components/schemas/CargoHoldContainerSize"},
-            limits: {
-              type: :object,
-              properties: {
-                min: {"$ref": "#/components/schemas/CargoHoldLimit"},
-                max: {"$ref": "#/components/schemas/CargoHoldLimit"}
-              },
-              additionalProperties: false,
-              required: %w[min]
-            },
-            offset: {
-              type: :object,
-              properties: {
-                x: {type: :number},
-                y: {type: :number},
-                z: {type: :number}
-              },
-              additionalProperties: false,
-              required: %w[x y z]
-            },
+            limits: CargoHoldLimits,
+            offset: CargoHoldOffset,
             rotation: {type: :integer}
           },
           additionalProperties: false,

@@ -11,16 +11,7 @@ module V1
           properties: {
             vehicles: {
               type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  modelId: {type: :string, format: :uuid},
-                  wanted: {type: :boolean},
-                  public: {type: :boolean}
-                },
-                additionalProperties: false,
-                required: %w[modelId]
-              }
+              items: VehicleCreateBulkItemInput
             }
           },
           additionalProperties: false,

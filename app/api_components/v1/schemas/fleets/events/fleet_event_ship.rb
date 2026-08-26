@@ -24,17 +24,7 @@ module V1
                 type: :array,
                 items: {"$ref": "#/components/schemas/ShipModel"}
               },
-              filters: {
-                type: :object,
-                properties: {
-                  classification: {type: :string},
-                  focus: {type: :string},
-                  minSize: {type: :string},
-                  maxSize: {type: :string},
-                  minCrew: {type: :integer},
-                  minCargo: {type: :number}
-                }
-              },
+              filters: ShipSlotFilters,
               slots: {
                 type: :array,
                 items: {"$ref": "#/components/schemas/FleetEventSlot"}

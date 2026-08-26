@@ -17,23 +17,7 @@ module Admin
                 productionStatus: {type: :string},
                 productionNote: {type: :string},
                 model: {"$ref": "#/components/schemas/Model"},
-                media: {
-                  type: :object,
-                  properties: {
-                    angledView: {"$ref": "#/components/schemas/MediaFile"},
-                    angledViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                    fleetchartImage: {type: :string},
-                    frontView: {"$ref": "#/components/schemas/MediaFile"},
-                    frontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                    sideView: {"$ref": "#/components/schemas/MediaFile"},
-                    sideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                    rsiStoreImage: {"$ref": "#/components/schemas/MediaFile"},
-                    storeImage: {"$ref": "#/components/schemas/MediaFile"},
-                    topView: {"$ref": "#/components/schemas/MediaFile"},
-                    topViewColored: {"$ref": "#/components/schemas/MediaFile"}
-                  },
-                  additionalProperties: false
-                }
+                media: AdminModelPaintMedia
               },
               required: %w[hidden active media model]
             })

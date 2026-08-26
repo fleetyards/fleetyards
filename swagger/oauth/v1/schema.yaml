@@ -208,15 +208,7 @@ components:
         scopes:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-              description:
-                type: string
-            required:
-            - name
-            - description
+            "$ref": "#/components/schemas/OauthScope"
       additionalProperties: false
       required:
       - clientId
@@ -226,6 +218,17 @@ components:
       - scope
       - scopes
       title: OauthPreAuthorization
+    OauthScope:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      required:
+      - name
+      - description
+      title: OauthScope
     StandardError:
       type: object
       properties:

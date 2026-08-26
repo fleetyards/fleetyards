@@ -21,15 +21,7 @@ module V1
             hangarGroups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroup"}},
             loaner: {type: :boolean},
             bundled: {type: :boolean},
-            bundledParent: {
-              type: :object,
-              properties: {
-                id: {type: :string, format: :uuid},
-                name: {type: :string},
-                slug: {type: :string},
-                customName: {type: :string}
-              }
-            },
+            bundledParent: VehicleBundledParent,
             model: {"$ref": "#/components/schemas/Model"},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},

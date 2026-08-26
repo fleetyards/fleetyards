@@ -13,7 +13,8 @@ module Admin
           schema({
             properties: {
               fleetchartImage: {type: :string},
-              extendedHolo: {"$ref": "#/components/schemas/MediaFile"}
+              extendedHolo: {"$ref": "#/components/schemas/MediaFile"},
+              rsiStoreImage: {"$ref": "#/components/schemas/MediaFile"}
             }
           })
         end

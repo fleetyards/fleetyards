@@ -8,52 +8,11 @@ module V1
       schema({
         type: :object,
         properties: {
-          goal: {
-            type: :object,
-            properties: {
-              amountCents: {type: :integer},
-              currency: {type: :string},
-              items: {
-                type: :array,
-                items: {
-                  type: :object,
-                  properties: {
-                    title: {type: :string},
-                    description: {type: :string},
-                    amountCents: {type: :integer},
-                    currency: {type: :string}
-                  },
-                  additionalProperties: false,
-                  required: %w[title amountCents currency]
-                }
-              }
-            },
-            additionalProperties: false,
-            required: %w[amountCents currency items]
-          },
-          monthlyTotal: {
-            type: :object,
-            properties: {
-              amountCents: {type: :integer},
-              currency: {type: :string}
-            },
-            additionalProperties: false,
-            required: %w[amountCents currency]
-          },
+          goal: SupportGoal,
+          monthlyTotal: SupportMonthlyTotal,
           contributions: {
             type: :array,
-            items: {
-              type: :object,
-              properties: {
-                displayName: {type: :string},
-                username: {type: :string},
-                amountCents: {type: :integer},
-                currency: {type: :string},
-                recurring: {type: :boolean}
-              },
-              additionalProperties: false,
-              required: %w[displayName amountCents currency recurring]
-            }
+            items: SupportContribution
           }
         },
         additionalProperties: false,

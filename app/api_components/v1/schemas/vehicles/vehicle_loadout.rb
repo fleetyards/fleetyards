@@ -16,15 +16,7 @@ module V1
             urlSource: {type: :string},
             hardpoints: {
               type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  modelHardpointId: {type: :string, format: :uuid},
-                  hardpoint: {"$ref": "#/components/schemas/ModelHardpoint"},
-                  component: {"$ref": "#/components/schemas/Component"}
-                }
-              }
+              items: VehicleLoadoutHardpoint
             },
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

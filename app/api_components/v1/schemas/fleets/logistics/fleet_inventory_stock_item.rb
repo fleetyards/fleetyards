@@ -18,13 +18,7 @@ module V1
               qualityMin: {type: :integer},
               qualityMax: {type: :integer},
               netQuantity: {type: :number},
-              inventory: {
-                type: :object,
-                properties: {
-                  name: {type: :string},
-                  slug: {type: :string}
-                }
-              }
+              inventory: Shared::V1::Schemas::InventoryRef
             },
             required: %w[name category unit netQuantity]
           })

@@ -13,16 +13,7 @@ module V1
               id: {type: :string, format: :uuid},
               name: {type: :string},
               slug: {type: :string},
-              manufacturer: {
-                type: :object,
-                properties: {
-                  name: {type: [:string, :null]},
-                  slug: {type: [:string, :null]},
-                  code: {type: [:string, :null]}
-                },
-                additionalProperties: false,
-                required: %w[name slug code]
-              },
+              manufacturer: ModelOptionManufacturer,
               classification: {type: [:string, :null]},
               classificationLabel: {type: [:string, :null]},
               inHangar: {type: :boolean},

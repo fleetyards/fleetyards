@@ -14,24 +14,8 @@ module Admin
                 id: {type: :string, format: :uuid},
                 modelId: {type: :string, format: :uuid},
                 snubCraftId: {type: :string, format: :uuid},
-                model: {
-                  type: :object,
-                  properties: {
-                    id: {type: :string, format: :uuid},
-                    name: {type: :string},
-                    slug: {type: :string}
-                  },
-                  required: %w[id name slug]
-                },
-                snubCraft: {
-                  type: :object,
-                  properties: {
-                    id: {type: :string, format: :uuid},
-                    name: {type: :string},
-                    slug: {type: :string}
-                  },
-                  required: %w[id name slug]
-                },
+                model: ModelRef,
+                snubCraft: ModelRef,
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"}
               },

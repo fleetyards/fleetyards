@@ -10800,29 +10800,9 @@ components:
         maxContainerSize:
           "$ref": "#/components/schemas/CargoHoldContainerSize"
         limits:
-          type: object
-          properties:
-            min:
-              "$ref": "#/components/schemas/CargoHoldLimit"
-            max:
-              "$ref": "#/components/schemas/CargoHoldLimit"
-          additionalProperties: false
-          required:
-          - min
+          "$ref": "#/components/schemas/CargoHoldLimits"
         offset:
-          type: object
-          properties:
-            x:
-              type: number
-            "y":
-              type: number
-            z:
-              type: number
-          additionalProperties: false
-          required:
-          - x
-          - "y"
-          - z
+          "$ref": "#/components/schemas/CargoHoldOffset"
         rotation:
           type: integer
       additionalProperties: false
@@ -10871,6 +10851,32 @@ components:
       - dimensions
       - capacity
       title: CargoHoldLimit
+    CargoHoldLimits:
+      type: object
+      properties:
+        min:
+          "$ref": "#/components/schemas/CargoHoldLimit"
+        max:
+          "$ref": "#/components/schemas/CargoHoldLimit"
+      additionalProperties: false
+      required:
+      - min
+      title: CargoHoldLimits
+    CargoHoldOffset:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+      title: CargoHoldOffset
     ChannelsEnum:
       type: string
       enum:
@@ -12593,13 +12599,7 @@ components:
           type: string
           format: uuid
         createdBy:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
+          "$ref": "#/components/schemas/UserRef"
         signupsCount:
           type: integer
         teamCount:
@@ -12677,24 +12677,9 @@ components:
           type: string
           format: date-time
         user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
-          required:
-          - id
-          - username
+          "$ref": "#/components/schemas/UserRefRequired"
         grantedBy:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
+          "$ref": "#/components/schemas/UserRef"
       required:
       - id
       - fleetEventId
@@ -12963,20 +12948,7 @@ components:
           items:
             "$ref": "#/components/schemas/ShipModel"
         filters:
-          type: object
-          properties:
-            classification:
-              type: string
-            focus:
-              type: string
-            minSize:
-              type: string
-            maxSize:
-              type: string
-            minCrew:
-              type: integer
-            minCargo:
-              type: number
+          "$ref": "#/components/schemas/ShipSlotFilters"
         slots:
           type: array
           items:
@@ -13133,45 +13105,9 @@ components:
           type: string
           format: date-time
         user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
+          "$ref": "#/components/schemas/UserRef"
         vehicle:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            model:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                name:
-                  type: string
-                slug:
-                  type: string
-                classification:
-                  type: string
-                focus:
-                  type: string
-                size:
-                  type: string
-                minCrew:
-                  type: integer
-                maxCrew:
-                  type: integer
-                cargo:
-                  type: integer
-                positionCount:
-                  type: integer
+          "$ref": "#/components/schemas/FleetEventSignupVehicle"
       required:
       - id
       - fleetEventId
@@ -13260,6 +13196,42 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetEventSignupUpdateInput
+    FleetEventSignupVehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        model:
+          "$ref": "#/components/schemas/FleetEventSignupVehicleModel"
+      title: FleetEventSignupVehicle
+    FleetEventSignupVehicleModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        classification:
+          type: string
+        focus:
+          type: string
+        size:
+          type: string
+        minCrew:
+          type: integer
+        maxCrew:
+          type: integer
+        cargo:
+          type: integer
+        positionCount:
+          type: integer
+      title: FleetEventSignupVehicleModel
     FleetEventSlot:
       type: object
       properties:
@@ -13612,21 +13584,7 @@ components:
         totalUnits:
           type: number
         manager:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
-            rsiHandle:
-              type: string
-            discordProfileUrl:
-              type: string
-              format: uri
-            citizenidProfileUrl:
-              type: string
-              format: uri
+          "$ref": "#/components/schemas/FleetInventoryManager"
         image:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
@@ -13702,42 +13660,13 @@ components:
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            type:
-              "$ref": "#/components/schemas/InventoryItemTypeEnum"
-            name:
-              type: string
-            slug:
-              type: string
-            available:
-              type: boolean
+          "$ref": "#/components/schemas/InventoryItemRef"
         inventory:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
+          "$ref": "#/components/schemas/InventoryRef"
         member:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
+          "$ref": "#/components/schemas/UserRef"
         addedBy:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
+          "$ref": "#/components/schemas/UserRef"
         createdAt:
           type: string
           format: date-time
@@ -13847,6 +13776,23 @@ components:
       - items
       - meta
       title: FleetInventoryItemsList
+    FleetInventoryManager:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        rsiHandle:
+          type: string
+        discordProfileUrl:
+          type: string
+          format: uri
+        citizenidProfileUrl:
+          type: string
+          format: uri
+      title: FleetInventoryManager
     FleetInventoryStockItem:
       type: object
       properties:
@@ -13867,12 +13813,7 @@ components:
         netQuantity:
           type: number
         inventory:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
+          "$ref": "#/components/schemas/InventoryRef"
       required:
       - name
       - category
@@ -14150,21 +14091,24 @@ components:
       - meta
       - items
       title: FleetMembersList
+    FleetMembersMetrics:
+      type: object
+      properties:
+        membersByRole:
+          type: object
+          additionalProperties:
+            type: integer
+      additionalProperties: false
+      required:
+      - membersByRole
+      title: FleetMembersMetrics
     FleetMembersStats:
       type: object
       properties:
         total:
           type: integer
         metrics:
-          type: object
-          properties:
-            membersByRole:
-              type: object
-              additionalProperties:
-                type: integer
-          additionalProperties: false
-          required:
-          - membersByRole
+          "$ref": "#/components/schemas/FleetMembersMetrics"
       additionalProperties: false
       required:
       - total
@@ -15264,26 +15208,9 @@ components:
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            type:
-              "$ref": "#/components/schemas/InventoryItemTypeEnum"
-            name:
-              type: string
-            slug:
-              type: string
-            available:
-              type: boolean
+          "$ref": "#/components/schemas/InventoryItemRef"
         inventory:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
+          "$ref": "#/components/schemas/InventoryRef"
         createdAt:
           type: string
           format: date-time
@@ -15418,12 +15345,7 @@ components:
         netQuantity:
           type: number
         inventory:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
+          "$ref": "#/components/schemas/InventoryRef"
       required:
       - name
       - category
@@ -16285,26 +16207,9 @@ components:
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            type:
-              "$ref": "#/components/schemas/InventoryItemTypeEnum"
-            name:
-              type: string
-            slug:
-              type: string
-            available:
-              type: boolean
+          "$ref": "#/components/schemas/InventoryItemRef"
         inventory:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
+          "$ref": "#/components/schemas/InventoryRef"
         createdAt:
           type: string
           format: date-time
@@ -16381,6 +16286,21 @@ components:
       additionalProperties: false
       example: {}
       title: InventoryItemQuery
+    InventoryItemRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        name:
+          type: string
+        slug:
+          type: string
+        available:
+          type: boolean
+      title: InventoryItemRef
     InventoryItemTypeEnum:
       type: string
       enum:
@@ -16420,6 +16340,14 @@ components:
       - items
       - meta
       title: InventoryItemsList
+    InventoryRef:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      title: InventoryRef
     InventoryStockPosition:
       type: object
       properties:
@@ -16467,12 +16395,7 @@ components:
             available:
               type: boolean
         inventory:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
+          "$ref": "#/components/schemas/InventoryRef"
       additionalProperties: false
       required:
       - slug
@@ -16531,21 +16454,24 @@ components:
           - string
           - 'null'
         model:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
-            cargo:
-              type: number
-            personalInventory:
-              type: number
+          "$ref": "#/components/schemas/InventoryVehicleModel"
       additionalProperties: false
       required:
       - id
       - name
       title: InventoryVehicle
+    InventoryVehicleModel:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        cargo:
+          type: number
+        personalInventory:
+          type: number
+      title: InventoryVehicleModel
     ItemAvailability:
       type: object
       properties:
@@ -16843,13 +16769,7 @@ components:
           type: string
           format: date-time
         createdBy:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
+          "$ref": "#/components/schemas/UserRef"
         teamCount:
           type: integer
         shipCount:
@@ -16957,20 +16877,7 @@ components:
           items:
             "$ref": "#/components/schemas/ShipModel"
         filters:
-          type: object
-          properties:
-            classification:
-              type: string
-            focus:
-              type: string
-            minSize:
-              type: string
-            maxSize:
-              type: string
-            minCrew:
-              type: integer
-            minCargo:
-              type: number
+          "$ref": "#/components/schemas/ShipSlotFilters"
         slots:
           type: array
           items:
@@ -18019,11 +17926,7 @@ components:
         scKey:
           type: string
         metrics:
-          type: object
-          properties:
-            cargo:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelModuleMetrics"
         cargoHolds:
           type: array
           items:
@@ -18062,6 +17965,13 @@ components:
       - createdAt
       - updatedAt
       title: ModelModule
+    ModelModuleMetrics:
+      type: object
+      properties:
+        cargo:
+          type: number
+      additionalProperties: false
+      title: ModelModuleMetrics
     ModelModulePackage:
       type: object
       properties:
@@ -18079,17 +17989,7 @@ components:
           items:
             "$ref": "#/components/schemas/ModelModule"
         media:
-          type: object
-          properties:
-            angledView:
-              "$ref": "#/components/schemas/MediaFile"
-            sideView:
-              "$ref": "#/components/schemas/MediaFile"
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-            topView:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelModulePackageMedia"
         createdAt:
           type: string
           format: date-time
@@ -18187,6 +18087,19 @@ components:
       - createdAt
       - updatedAt
       title: ModelModulePackage
+    ModelModulePackageMedia:
+      type: object
+      properties:
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        sideView:
+          "$ref": "#/components/schemas/MediaFile"
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        topView:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: ModelModulePackageMedia
     ModelModulePackageSortEnum:
       type: string
       enum:
@@ -18243,25 +18156,7 @@ components:
         slug:
           type: string
         manufacturer:
-          type: object
-          properties:
-            name:
-              type:
-              - string
-              - 'null'
-            slug:
-              type:
-              - string
-              - 'null'
-            code:
-              type:
-              - string
-              - 'null'
-          additionalProperties: false
-          required:
-          - name
-          - slug
-          - code
+          "$ref": "#/components/schemas/ModelOptionManufacturer"
         classification:
           type:
           - string
@@ -18288,6 +18183,27 @@ components:
       - onWishlist
       - media
       title: ModelOption
+    ModelOptionManufacturer:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      - code
+      title: ModelOptionManufacturer
     ModelOptions:
       type: object
       properties:
@@ -18322,19 +18238,7 @@ components:
         availability:
           "$ref": "#/components/schemas/ItemAvailability"
         media:
-          type: object
-          properties:
-            angledView:
-              "$ref": "#/components/schemas/MediaFile"
-            fleetchartImage:
-              type: string
-            sideView:
-              "$ref": "#/components/schemas/MediaFile"
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-            topView:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelPaintMedia"
         nameWithModel:
           type: string
         rsiId:
@@ -18459,6 +18363,21 @@ components:
       - createdAt
       - updatedAt
       title: ModelPaint
+    ModelPaintMedia:
+      type: object
+      properties:
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        fleetchartImage:
+          type: string
+        sideView:
+          "$ref": "#/components/schemas/MediaFile"
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        topView:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: ModelPaintMedia
     ModelPaintQuery:
       type: object
       properties:
@@ -19417,6 +19336,22 @@ components:
       - name
       - slug
       title: ShipModel
+    ShipSlotFilters:
+      type: object
+      properties:
+        classification:
+          type: string
+        focus:
+          type: string
+        minSize:
+          type: string
+        maxSize:
+          type: string
+        minCrew:
+          type: integer
+        minCargo:
+          type: number
+      title: ShipSlotFilters
     SortInput:
       type: object
       properties:
@@ -19502,71 +19437,83 @@ components:
         success:
           type: boolean
       title: SuccessResponse
+    SupportContribution:
+      type: object
+      properties:
+        displayName:
+          type: string
+        username:
+          type: string
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        recurring:
+          type: boolean
+      additionalProperties: false
+      required:
+      - displayName
+      - amountCents
+      - currency
+      - recurring
+      title: SupportContribution
+    SupportGoal:
+      type: object
+      properties:
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SupportGoalItem"
+      additionalProperties: false
+      required:
+      - amountCents
+      - currency
+      - items
+      title: SupportGoal
+    SupportGoalItem:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        amountCents:
+          type: integer
+        currency:
+          type: string
+      additionalProperties: false
+      required:
+      - title
+      - amountCents
+      - currency
+      title: SupportGoalItem
+    SupportMonthlyTotal:
+      type: object
+      properties:
+        amountCents:
+          type: integer
+        currency:
+          type: string
+      additionalProperties: false
+      required:
+      - amountCents
+      - currency
+      title: SupportMonthlyTotal
     SupportProgress:
       type: object
       properties:
         goal:
-          type: object
-          properties:
-            amountCents:
-              type: integer
-            currency:
-              type: string
-            items:
-              type: array
-              items:
-                type: object
-                properties:
-                  title:
-                    type: string
-                  description:
-                    type: string
-                  amountCents:
-                    type: integer
-                  currency:
-                    type: string
-                additionalProperties: false
-                required:
-                - title
-                - amountCents
-                - currency
-          additionalProperties: false
-          required:
-          - amountCents
-          - currency
-          - items
+          "$ref": "#/components/schemas/SupportGoal"
         monthlyTotal:
-          type: object
-          properties:
-            amountCents:
-              type: integer
-            currency:
-              type: string
-          additionalProperties: false
-          required:
-          - amountCents
-          - currency
+          "$ref": "#/components/schemas/SupportMonthlyTotal"
         contributions:
           type: array
           items:
-            type: object
-            properties:
-              displayName:
-                type: string
-              username:
-                type: string
-              amountCents:
-                type: integer
-              currency:
-                type: string
-              recurring:
-                type: boolean
-            additionalProperties: false
-            required:
-            - displayName
-            - amountCents
-            - currency
-            - recurring
+            "$ref": "#/components/schemas/SupportContribution"
       additionalProperties: false
       required:
       - monthlyTotal
@@ -19780,16 +19727,7 @@ components:
         fleets:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-              slug:
-                type: string
-            additionalProperties: false
-            required:
-            - name
-            - slug
+            "$ref": "#/components/schemas/UserFeatureFleet"
         groups:
           type: array
           items:
@@ -19804,6 +19742,18 @@ components:
       - fleets
       - groups
       title: UserFeature
+    UserFeatureFleet:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: UserFeatureFleet
     UserFeatureScopeEnum:
       type: string
       enum:
@@ -19857,6 +19807,27 @@ components:
       - publicWishlist
       - supporter
       title: UserPublic
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      title: UserRef
+    UserRefRequired:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      required:
+      - id
+      - username
+      title: UserRefRequired
     UserResourceAccessEnum:
       type: string
       enum: []
@@ -20002,17 +19973,7 @@ components:
         bundled:
           type: boolean
         bundledParent:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-            customName:
-              type: string
+          "$ref": "#/components/schemas/VehicleBundledParent"
         model:
           "$ref": "#/components/schemas/Model"
         modelModuleIds:
@@ -20066,6 +20027,19 @@ components:
       - createdAt
       - updatedAt
       title: Vehicle
+    VehicleBundledParent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        customName:
+          type: string
+      title: VehicleBundledParent
     VehicleCheckSerialInput:
       type: object
       properties:
@@ -20090,22 +20064,25 @@ components:
         vehicles:
           type: array
           items:
-            type: object
-            properties:
-              modelId:
-                type: string
-                format: uuid
-              wanted:
-                type: boolean
-              public:
-                type: boolean
-            additionalProperties: false
-            required:
-            - modelId
+            "$ref": "#/components/schemas/VehicleCreateBulkItemInput"
       additionalProperties: false
       required:
       - vehicles
       title: VehicleCreateBulkInput
+    VehicleCreateBulkItemInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        wanted:
+          type: boolean
+        public:
+          type: boolean
+      additionalProperties: false
+      required:
+      - modelId
+      title: VehicleCreateBulkItemInput
     VehicleCreateInput:
       type: object
       properties:
@@ -20257,18 +20234,7 @@ components:
         hardpoints:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              modelHardpointId:
-                type: string
-                format: uuid
-              hardpoint:
-                "$ref": "#/components/schemas/ModelHardpoint"
-              component:
-                "$ref": "#/components/schemas/Component"
+            "$ref": "#/components/schemas/VehicleLoadoutHardpoint"
         createdAt:
           type: string
           format: date-time
@@ -20284,6 +20250,37 @@ components:
       - createdAt
       - updatedAt
       title: VehicleLoadout
+    VehicleLoadoutHardpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        modelHardpointId:
+          type: string
+          format: uuid
+        hardpoint:
+          "$ref": "#/components/schemas/ModelHardpoint"
+        component:
+          "$ref": "#/components/schemas/Component"
+      title: VehicleLoadoutHardpoint
+    VehicleLoadoutHardpointInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        modelHardpointId:
+          type: string
+          format: uuid
+        componentId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        _destroy:
+          type: boolean
+      title: VehicleLoadoutHardpointInput
     VehicleLoadoutInput:
       type: object
       properties:
@@ -20298,21 +20295,7 @@ components:
         vehicleLoadoutHardpointsAttributes:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              modelHardpointId:
-                type: string
-                format: uuid
-              componentId:
-                type:
-                - string
-                - 'null'
-                format: uuid
-              _destroy:
-                type: boolean
+            "$ref": "#/components/schemas/VehicleLoadoutHardpointInput"
       additionalProperties: false
       title: VehicleLoadoutInput
     VehicleLoadoutMinimal:
@@ -20375,17 +20358,7 @@ components:
         bundled:
           type: boolean
         bundledParent:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-            customName:
-              type: string
+          "$ref": "#/components/schemas/VehicleBundledParent"
         model:
           "$ref": "#/components/schemas/Model"
         username:
@@ -20657,6 +20630,19 @@ components:
       items:
         "$ref": "#/components/schemas/WeaponIndexItem"
       title: WeaponIndex
+    WeaponIndexDamage:
+      type: object
+      properties:
+        physical:
+          type: number
+        energy:
+          type: number
+        distortion:
+          type: number
+        thermal:
+          type: number
+      additionalProperties: false
+      title: WeaponIndexDamage
     WeaponIndexItem:
       type: object
       properties:
@@ -20678,17 +20664,7 @@ components:
         pelletsPerShot:
           type: integer
         damagePerShot:
-          type: object
-          properties:
-            physical:
-              type: number
-            energy:
-              type: number
-            distortion:
-              type: number
-            thermal:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/WeaponIndexDamage"
       additionalProperties: false
       required:
       - id

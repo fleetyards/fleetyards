@@ -20,14 +20,7 @@ module Oauth
             codeChallengeMethod: {type: :string},
             scopes: {
               type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  name: {type: :string},
-                  description: {type: :string}
-                },
-                required: %w[name description]
-              }
+              items: OauthScope
             }
           },
           additionalProperties: false,

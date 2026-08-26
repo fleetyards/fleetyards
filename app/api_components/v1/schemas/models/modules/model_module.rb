@@ -18,13 +18,7 @@ module V1
 
               scKey: {type: :string},
 
-              metrics: {
-                type: :object,
-                properties: {
-                  cargo: {type: :number}
-                },
-                additionalProperties: false
-              },
+              metrics: Shared::V1::Schemas::ModelModuleMetrics,
 
               cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
 
