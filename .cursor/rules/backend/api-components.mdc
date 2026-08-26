@@ -1,0 +1,75 @@
+---
+description:
+globs: app/api_components/**/*.rb,test/integration/**/*_test.rb
+alwaysApply: true
+---
+
+# API Components
+
+The OpenAPI schema is generated from the integration tests, so the tests decide
+what the schema looks like. Keep the shapes out of them.
+
+## Never define request or response types inline
+
+Every request body and every response body is a `$ref` to a component class
+under `app/api_components/`. The test declares the reference, never the shape.
+
+```ruby
+# Good
+request_body required: true, schema: {"$ref": "#/components/schemas/ModelLinkInput"}
+
+response(200, "successful") do
+  schema "$ref": "#/components/schemas/MessageResponse"
+end
+
+# Bad
+request_body required: true, schema: {
+  type: :object,
+  properties: {modelId: {type: :string, format: :uuid}},
+  required: [:modelId]
+}
+```
+
+An inline body has no name, so Orval invents one from the operation
+(`UnlinkModelModuleBody`, `ReloadLoaners200`). Endpoints sharing a payload end
+up with unrelated TypeScript types that drift, and the frontend has nothing
+stable to import.
+
+## Placement
+
+- Request bodies → `<scope>/v1/schemas/inputs/<name>_input.rb`
+- Response bodies → `<scope>/v1/schemas/<name>.rb`
+- Used by both the public and the admin schema → `shared/v1/`
+- Enums → their own component in `shared/v1/schemas/enums/`, referenced by
+  `$ref`; never inline an `enum:` into a property
+
+Scopes come from `config.component_scope_paths` in
+`config/initializers/openapi_ruby.rb` — `v1`, `admin/v1`, `oauth/v1`,
+`cable/v1`, and `shared/v1` (registered into both `v1` and `admin`).
+
+## Reuse first
+
+Check for an existing component before adding one. `SortInput`,
+`StandardError`, `SuccessResponse`, `MessageResponse` and the
+`BaseList` / `Meta` pair cover most small payloads.
+
+## The one inline exception
+
+The `q` deepObject query parameter needs a literal `type: :object` alongside
+`style: :deepObject`, and carries its `$ref` to a `<Name>Query` component:
+
+```ruby
+parameter name: "q", in: :query,
+  schema: {type: :object, "$ref": "#/components/schemas/ModelQuery"},
+  style: :deepObject, explode: true, required: false
+```
+
+## After changing components
+
+```bash
+bundle exec standardrb --fix
+./bin/generate-schema          # regenerates swagger/*.yaml and the Orval clients
+pnpm lint:ts
+```
+
+Never edit `swagger/*.yaml` by hand.
