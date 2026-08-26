@@ -7089,7 +7089,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/FleetchartViewQuery"
         style: deepObject
         explode: true
