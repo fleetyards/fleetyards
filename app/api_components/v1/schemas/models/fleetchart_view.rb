@@ -12,27 +12,7 @@ module V1
           type: :object,
           properties: {
             slug: {type: :string},
-            media: {
-              type: :object,
-              properties: {
-                angledView: {"$ref": "#/components/schemas/MediaFile"},
-                angledViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                frontView: {"$ref": "#/components/schemas/MediaFile"},
-                frontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                sideView: {"$ref": "#/components/schemas/MediaFile"},
-                sideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                topView: {"$ref": "#/components/schemas/MediaFile"},
-                topViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                extendedAngledView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedAngledViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                extendedFrontView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedFrontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                extendedSideView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedSideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                extendedTopView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedTopViewColored: {"$ref": "#/components/schemas/MediaFile"}
-              }
-            }
+            media: FleetchartViewMedia
           },
           required: %w[slug media]
         })
