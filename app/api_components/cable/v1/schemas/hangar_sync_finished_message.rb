@@ -9,7 +9,7 @@ module Cable
         schema({
           type: :object,
           properties: {
-            status: {type: :string, enum: %w[finished]},
+            status: Cable::V1::Schemas::Enums::HangarSyncFinishedStatusEnum,
             result: {"$ref": "#/components/schemas/HangarSyncResult"}
           },
           additionalProperties: false,

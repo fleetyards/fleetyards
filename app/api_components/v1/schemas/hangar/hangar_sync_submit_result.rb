@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             id: {type: :string, format: :uuid},
-            status: {type: :string, enum: %w[pending]}
+            status: V1::Schemas::Enums::HangarSyncSubmitStatusEnum
           },
           additionalProperties: false,
           required: %w[id status]

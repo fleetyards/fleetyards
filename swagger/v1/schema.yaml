@@ -16305,14 +16305,19 @@ components:
           type: string
           format: uuid
         status:
-          type: string
-          enum:
-          - pending
+          "$ref": "#/components/schemas/HangarSyncSubmitStatusEnum"
       additionalProperties: false
       required:
       - id
       - status
       title: HangarSyncSubmitResult
+    HangarSyncSubmitStatusEnum:
+      type: string
+      enum:
+      - pending
+      x-enumNames:
+      - PENDING
+      title: HangarSyncSubmitStatusEnum
     Hardpoint:
       type: object
       properties:
