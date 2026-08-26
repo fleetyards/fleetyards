@@ -17,12 +17,7 @@ paths:
       - Commodities
       operationId: commodities
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -77,12 +72,7 @@ paths:
       - Components
       operationId: components
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -130,12 +120,7 @@ paths:
       - Equipment
       operationId: equipment
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -274,12 +259,7 @@ paths:
       - ManufacturersFilters
       operationId: manufacturerOptions
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -370,12 +350,7 @@ paths:
       - ModelsFilters
       operationId: modelOptions
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -2568,12 +2543,7 @@ paths:
       - FleetInventories
       operationId: fleetInventories
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -2669,12 +2639,7 @@ paths:
       - FleetInventoryItems
       operationId: fleetInventoryItems
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -3115,12 +3080,7 @@ paths:
       - FleetInventoryItems
       operationId: fleetAllInventoryItems
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -3257,12 +3217,7 @@ paths:
       - fleetInviteUrls
       operationId: fleetInviteUrls
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -3418,12 +3373,7 @@ paths:
       - FleetMembers
       operationId: fleetMembers
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -5051,12 +5001,7 @@ paths:
       - Fleets
       operationId: fleetVehicles
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -5368,12 +5313,7 @@ paths:
       - Hangar
       operationId: hangar
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -5763,12 +5703,7 @@ paths:
       - HangarInventories
       operationId: hangarInventories
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -5863,12 +5798,7 @@ paths:
       - HangarInventoryItems
       operationId: hangarInventoryItems
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -6278,12 +6208,7 @@ paths:
       - HangarInventoryItems
       operationId: hangarAllInventoryItems
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -6625,12 +6550,7 @@ paths:
       - Images
       operationId: images
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -6690,12 +6610,7 @@ paths:
       - Manufacturers
       operationId: manufacturers
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -6979,12 +6894,7 @@ paths:
       - ModelPaints
       operationId: paints
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7014,12 +6924,7 @@ paths:
       - Models
       operationId: models
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7158,12 +7063,7 @@ paths:
       - Models
       operationId: modelsWithDocks
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7292,12 +7192,7 @@ paths:
       - Models
       operationId: modelImages
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7333,12 +7228,7 @@ paths:
       - Models
       operationId: modelLoaners
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7374,12 +7264,7 @@ paths:
       - Models
       operationId: modelModulePackages
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7415,12 +7300,7 @@ paths:
       - Models
       operationId: modelModules
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7587,12 +7467,7 @@ paths:
       - Models
       operationId: modelVariants
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7628,12 +7503,7 @@ paths:
       - Models
       operationId: modelVideos
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -7731,12 +7601,7 @@ paths:
       - Notifications
       operationId: notifications
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -8612,12 +8477,7 @@ paths:
       - Fleets
       operationId: publicFleetVehicles
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -8756,12 +8616,7 @@ paths:
       - PublicHangar
       operationId: publicHangar
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -9000,12 +8855,7 @@ paths:
       - PublicWishlist
       operationId: publicWishlist
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -10096,12 +9946,7 @@ paths:
       - VehicleInventoryItems
       operationId: vehicleInventoryItems
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:
@@ -10692,12 +10537,7 @@ paths:
       - Wishlist
       operationId: wishlist
       parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
+      - "$ref": "#/components/parameters/PageParameter"
       - name: perPage
         in: query
         schema:

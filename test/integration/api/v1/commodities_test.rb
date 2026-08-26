@@ -13,7 +13,7 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
       tags "Commodities"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Commodity.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {"$ref": "#/components/schemas/CommodityQuery"},
