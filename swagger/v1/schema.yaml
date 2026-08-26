@@ -7345,12 +7345,13 @@ paths:
       - Models
       operationId: modelsFleetchartViews
       parameters:
-      - name: q[slugIn][]
+      - name: q
         in: query
         schema:
-          type: array
-          items:
-            type: string
+          type: object
+          "$ref": "#/components/schemas/FleetchartViewQuery"
+        style: deepObject
+        explode: true
         required: false
       responses:
         '200':
@@ -15584,6 +15585,14 @@ components:
       - slug
       - media
       title: FleetchartView
+    FleetchartViewQuery:
+      type: object
+      properties:
+        slugIn:
+          type: array
+          items:
+            type: string
+      title: FleetchartViewQuery
     FuelTank:
       type: object
       properties:

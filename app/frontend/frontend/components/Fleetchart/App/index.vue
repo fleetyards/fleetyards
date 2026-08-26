@@ -178,8 +178,13 @@ const withViews = (items: (Vehicle | Model | VehiclePublic)[]) => {
 };
 
 const updateItems = () => {
+  // The comparator takes the full item union now: it used to receive `any` from
+  // `JSON.parse`, and going through `withViews` gives the array a real type.
   innerItems.value = withViews(JSON.parse(JSON.stringify(props.items))).sort(
-    (a: Vehicle | Model, b: Vehicle | Model) => {
+    (
+      a: Vehicle | Model | VehiclePublic,
+      b: Vehicle | Model | VehiclePublic,
+    ) => {
       if (
         (a as Vehicle).model?.metrics?.length &&
         (b as Vehicle).model?.metrics?.length

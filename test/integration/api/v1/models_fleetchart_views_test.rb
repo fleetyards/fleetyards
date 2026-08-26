@@ -13,7 +13,14 @@ class Api::V1::ModelsFleetchartViewsTest < ActionDispatch::IntegrationTest
       tags "Models"
       produces "application/json"
 
-      parameter name: "q[slugIn][]", in: :query, schema: {type: :array, items: {type: :string}}, required: false
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/FleetchartViewQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
 
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/FleetchartView"}
