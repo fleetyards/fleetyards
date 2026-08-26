@@ -369,19 +369,24 @@ class FleetMembership < ApplicationRecord
   end
 
   def next_fleet_role
-    return if fleet_role.nil?
+    ranked_roles, index = ranked_roles_and_index
+    return if index.nil? || index - 1 < 0
 
-    index = fleet.fleet_roles.ranked.index(fleet_role)
-
-    return if index - 1 < 0
-
-    fleet.fleet_roles[index - 1]
+    ranked_roles[index - 1]
   end
 
   def prev_fleet_role
-    return if fleet_role.nil?
+    ranked_roles, index = ranked_roles_and_index
+    return if index.nil?
 
-    index = fleet.fleet_roles.ranked.index(fleet_role)
-    fleet.fleet_roles[index + 1]
+    ranked_roles[index + 1]
+  end
+
+  private def ranked_roles_and_index
+    return [nil, nil] if fleet_role.nil?
+
+    ranked_roles = fleet.fleet_roles.ranked.to_a
+
+    [ranked_roles, ranked_roles.index(fleet_role)]
   end
 end

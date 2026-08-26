@@ -104,4 +104,45 @@ class FleetMembershipTest < ActiveSupport::TestCase
       new_membership.destroy
     end
   end
+
+  test "#next_fleet_role and #prev_fleet_role follow the ranked order after a reorder" do
+    officer_user = create(:user)
+    officer_role = @fleet.fleet_roles.ranked.second
+    officer_membership = @fleet.fleet_memberships.create!(user: officer_user, fleet_role: officer_role, aasm_state: :accepted)
+
+    recruit_role = @fleet.fleet_roles.create!(name: "Recruit", resource_access: FleetRole.preset_privileges[:member])
+    recruit_role.move_to(1)
+    @fleet.reload
+
+    assert_equal recruit_role, officer_membership.next_fleet_role
+    assert_equal @fleet.fleet_roles.ranked.last, officer_membership.prev_fleet_role
+  end
+
+  test "#demote moves the member down the ranked order after a reorder" do
+    officer_user = create(:user)
+    officer_role = @fleet.fleet_roles.ranked.second
+    officer_membership = @fleet.fleet_memberships.create!(user: officer_user, fleet_role: officer_role, aasm_state: :accepted)
+
+    recruit_role = @fleet.fleet_roles.create!(name: "Recruit", resource_access: FleetRole.preset_privileges[:member])
+    recruit_role.move_to(1)
+    @fleet.reload
+
+    member_role = @fleet.fleet_roles.ranked.last
+
+    assert officer_membership.demote
+    assert_equal member_role, officer_membership.reload.fleet_role
+  end
+
+  test "#promote moves the member up the ranked order after a reorder" do
+    officer_user = create(:user)
+    officer_role = @fleet.fleet_roles.ranked.second
+    officer_membership = @fleet.fleet_memberships.create!(user: officer_user, fleet_role: officer_role, aasm_state: :accepted)
+
+    recruit_role = @fleet.fleet_roles.create!(name: "Recruit", resource_access: FleetRole.preset_privileges[:member])
+    recruit_role.move_to(1)
+    @fleet.reload
+
+    assert officer_membership.promote
+    assert_equal recruit_role, officer_membership.reload.fleet_role
+  end
 end
