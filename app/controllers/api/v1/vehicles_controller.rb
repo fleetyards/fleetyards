@@ -3,15 +3,13 @@
 module Api
   module V1
     class VehiclesController < ::Api::BaseController
-      include HangarFiltersConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) },
-        only: %i[check_serial fleetchart]
+        only: %i[check_serial]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: -> { warden.authenticate?(scope: :user) },
-        except: %i[check_serial fleetchart]
+        except: %i[check_serial]
 
       before_action :set_vehicle, only: %i[show update destroy]
 
@@ -125,23 +123,6 @@ module Api
         authorize!
 
         render json: {taken: current_resource_owner.vehicles.visible.purchased.exists?(serial: params[:value]&.upcase)}
-      end
-
-      # DEPRECATED
-      def fleetchart
-        authorize! :show, :api_hangar
-
-        scope = current_resource_owner.vehicles.visible.purchased
-
-        scope = loaner_included?(scope)
-
-        @q = scope.ransack(vehicle_query_params)
-        @vehicles = Vehicle.where(
-          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
-        )
-          .includes(:vehicle_loadouts, model: [:manufacturer])
-          .joins(model: [:manufacturer])
-          .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
 
       private def set_vehicle
