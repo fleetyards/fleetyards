@@ -11,6 +11,16 @@ class ApplicationRecord < ActiveRecord::Base
     I18n.t("activerecord.attributes.#{model_name.i18n_key}.#{enum_name.to_s.pluralize}.#{enum_value}")
   end
 
+  # The preload spec for every attachment this class declares. Unpreloaded, each
+  # one costs two queries per row -- the attachment and then its blob -- so a
+  # list endpoint rendering a record with twenty pictures pays forty.
+  #
+  # Derived rather than listed, so a new attachment is covered by the preload the
+  # moment a partial starts rendering it.
+  def self.attachment_preloads
+    attachment_reflections.keys.map { |name| {"#{name}_attachment": :blob} }
+  end
+
   def self.per_page_steps(val = :none)
     if val == :none
       # getter

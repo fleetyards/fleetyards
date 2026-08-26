@@ -44,11 +44,7 @@ module Api
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .order(@q.result.order_values)
-          .includes(:vehicle_upgrades, :model_upgrades, :module_package,
-            :task_forces, :hangar_groups, :vehicle_modules, :vehicle_loadouts,
-            {parent_vehicle: :model},
-            model_paint: :item_prices,
-            model: [:manufacturer, :item_prices, {model_loaners: :loaner_model}])
+          .includes(Vehicle.rendered_associations)
           .joins(model: [:manufacturer])
 
         @vehicles = result_with_pagination(result, per_page(Vehicle))
