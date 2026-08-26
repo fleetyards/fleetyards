@@ -1,6 +1,7 @@
 resources :models, param: :slug, only: %i[index show] do
   collection do
     get :fleetchart
+    get "fleetchart-views" => "models#fleetchart_views"
     get "with-docks" => "models#with_docks"
     get :latest
     get :slugs

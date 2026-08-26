@@ -18,6 +18,7 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { FleetchartModes } from "@/shared/stores/fleetchart";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useFilters } from "@/shared/composables/useFilters";
+import { useFleetchartViews } from "@/frontend/composables/useFleetchartViews";
 
 type Props = {
   namespace: string;
@@ -58,6 +59,22 @@ const visible = computed(() => {
 const mode = computed(() => {
   return fleetchartStore.fleetchartMode(props.namespace);
 });
+
+// An item is either a ship or something holding one, which is the same shape the
+// item component resolves.
+const modelOf = (item: Vehicle | Model | VehiclePublic) =>
+  ((item as Vehicle).model as Model | undefined) ?? (item as Model);
+
+const slugs = computed(() =>
+  props.items.map((item) => modelOf(item)?.slug).filter(Boolean),
+);
+
+// Fetched only while the chart is open: the lists no longer carry the views, and
+// most visitors never open it.
+const { viewsFor, revision } = useFleetchartViews(
+  () => slugs.value,
+  () => visible.value,
+);
 
 const extended = computed(() => {
   return fleetchartStore.extendedState(props.namespace);
@@ -110,6 +127,12 @@ watch(
   },
 );
 
+// The views arrive after the chart opens, so the copy has to be rebuilt once they
+// land rather than only when the item list changes.
+watch(revision, () => {
+  updateItems();
+});
+
 watch(
   () => visible.value,
   async () => {
@@ -139,9 +162,29 @@ const toggleFilter = () => {
   filtersStore.toggle(props.namespace);
 };
 
+// Merged into this component's own copy of the items, so the item components go
+// on reading `model.media` and need no knowledge of where the views came from.
+const withViews = (items: (Vehicle | Model | VehiclePublic)[]) => {
+  items.forEach((item) => {
+    const model = modelOf(item);
+    const views = model?.slug && viewsFor(model.slug);
+
+    if (views) {
+      model.media = { ...model.media, ...views };
+    }
+  });
+
+  return items;
+};
+
 const updateItems = () => {
-  innerItems.value = JSON.parse(JSON.stringify(props.items)).sort(
-    (a: Vehicle | Model, b: Vehicle | Model) => {
+  // The comparator takes the full item union now: it used to receive `any` from
+  // `JSON.parse`, and going through `withViews` gives the array a real type.
+  innerItems.value = withViews(JSON.parse(JSON.stringify(props.items))).sort(
+    (
+      a: Vehicle | Model | VehiclePublic,
+      b: Vehicle | Model | VehiclePublic,
+    ) => {
       if (
         (a as Vehicle).model?.metrics?.length &&
         (b as Vehicle).model?.metrics?.length

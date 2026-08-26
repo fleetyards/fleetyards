@@ -38,6 +38,21 @@ module Api
           .sort_by { |model| [-model.length, model.name] }
       end
 
+      # Just the ship views, looked up by slug, for a fleetchart to fetch when it
+      # is opened.
+      #
+      # The views are about half the bytes of a model in a list, and every ships
+      # list and hangar page carries them today for a chart most visitors never
+      # open. The layout numbers stay in the list, being scalars.
+      #
+      # Not narrowed to visible and active models: a hangar may hold a ship the
+      # catalogue hides, and the caller already has the row it is asking about.
+      def fleetchart_views
+        slugs = Array(model_views_params).first(Model.max_per_page)
+
+        @models = Model.where(slug: slugs).includes(Model.attachment_preloads)
+      end
+
       def slugs
         render json: Model.order(slug: :asc).all.pluck(:slug)
       end
@@ -452,6 +467,12 @@ module Api
         @updated_params ||= params.permit(
           :from, :to
         )
+      end
+
+      # `slugIn` rather than a bare list, so the parameter reads the same as the
+      # filter the caller just used on the list it is augmenting.
+      private def model_views_params
+        params.permit(q: [slug_in: []]).dig(:q, :slug_in) || []
       end
 
       private def model_query_params
