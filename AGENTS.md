@@ -258,8 +258,31 @@ Naming and placement follow the existing tree:
 - Request bodies → `<scope>/v1/schemas/inputs/<name>_input.rb`
 - Response bodies → `<scope>/v1/schemas/<name>.rb`
 - Reused by both the public and the admin schema → `shared/v1/`
-- Enums get their own component under `shared/v1/schemas/enums/`, referenced by
-  `$ref` — don't inline an `enum:` into a property
+- Enums → `<scope>/v1/schemas/enums/<name>_enum.rb`, referenced by `$ref` —
+  don't inline an `enum:` into a property
+
+### Enum components
+
+Put the enum in the **narrowest scope that reaches it**: `v1/schemas/enums/`,
+`admin/v1/schemas/enums/`, `oauth/v1/schemas/enums/`, and `shared/v1/` only when
+both the public and the admin schema reference it. openapi-ruby emits every
+registered component whether or not it is referenced, so a `shared/v1` enum used
+by one schema is dead weight in the other. Watch for the admin components that
+subclass a v1 one (`Admin::V1::Schemas::Models::Model < ::V1::Schemas::Models::Model`):
+they inherit its `$ref`s, so an enum they reach has to be `shared/v1`.
+
+Source the values from the Rails model whenever it has them
+(`::Mission.categories.keys`, `::FleetEvent::VISIBILITIES`) rather than
+re-typing the list — a schema-local copy silently drifts from the validation.
+
+A **nullable** enum gets its own `Nullable<Name>Enum` component holding
+`type: [:string, :null]` and `VALUES + [nil]`. Do not write
+`anyOf: [{$ref}, {type: :null}]`: oasdiff does not resolve enum values through
+`anyOf`, so the breaking-change check reads every value as removed.
+
+Two things stay inline: a **single-value discriminator** (`enum: %w[failed]` on
+one message variant) is a constant, not an enum, and `FeatureFlagName` is
+deliberately referenced by nothing — see the comment in that file.
 
 Before adding a component, check whether one already fits: `SortInput`,
 `StandardError`, `SuccessResponse`, `MessageResponse` and the `BaseList` /
