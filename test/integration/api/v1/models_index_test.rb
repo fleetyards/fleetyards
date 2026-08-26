@@ -16,15 +16,12 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ModelQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ModelQuery"},
         style: :deepObject,
         explode: true,
         required: false
       parameter name: "containerFit", in: :query,
-        schema: {type: :object, additionalProperties: {type: :integer}},
+        schema: {"$ref": "#/components/schemas/ContainerFitQuery"},
         style: :deepObject,
         explode: true,
         required: false
@@ -50,6 +47,20 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, params: {q: {"nameOrDescriptionCont" => models.first.name}} do
       assert_equal 1, parsed_body["items"].count
     end
+  end
+
+  test "GET /models accepts a containerFit map" do
+    create_list(:model, 2)
+
+    assert_api_response :get, 200, params: {containerFit: {"16" => 2, "32" => 1}}
+  end
+
+  # Plain get rather than the DSL: declaring a 400 here would replace the
+  # auto-injected SchemaValidationError response and move the schema.
+  test "GET /models rejects a containerFit size outside the standard set" do
+    get "/api/v1/models", params: {containerFit: {"7" => 1}}
+
+    assert_response :bad_request
   end
 
   test "GET /models honours perPage" do

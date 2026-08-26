@@ -7029,7 +7029,6 @@ paths:
       - name: q
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/ModelQuery"
         style: deepObject
         explode: true
@@ -7037,9 +7036,7 @@ paths:
       - name: containerFit
         in: query
         schema:
-          type: object
-          additionalProperties:
-            type: integer
+          "$ref": "#/components/schemas/ContainerFitQuery"
         style: deepObject
         explode: true
         required: false
@@ -12446,6 +12443,33 @@ components:
       required:
       - token
       title: ConfirmAccountInput
+    ContainerFitQuery:
+      type: object
+      properties:
+        '1':
+          type: number
+          minimum: 0
+        '2':
+          type: number
+          minimum: 0
+        '4':
+          type: number
+          minimum: 0
+        '8':
+          type: number
+          minimum: 0
+        '16':
+          type: number
+          minimum: 0
+        '24':
+          type: number
+          minimum: 0
+        '32':
+          type: number
+          minimum: 0
+      additionalProperties: false
+      example: {}
+      title: ContainerFitQuery
     Dock:
       type: object
       properties:
