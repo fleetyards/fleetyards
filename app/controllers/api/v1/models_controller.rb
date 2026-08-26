@@ -325,7 +325,7 @@ module Api
       end
 
       private def index_scope
-        scope = Model.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).visible.active
+        scope = Model.includes(Model.rendered_associations).visible.active
 
         if pledge_price_range.present?
           model_query_params["sorts"] = "pledge_price asc"

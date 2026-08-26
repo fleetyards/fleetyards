@@ -83,6 +83,23 @@ class Vehicle < ApplicationRecord
   has_many :vehicle_upgrades, dependent: :destroy
   has_many :model_upgrades, through: :vehicle_upgrades
 
+  # Everything `api/v1/vehicles/_base.jbuilder` reaches for. It renders the whole
+  # model partial per vehicle, so `Model.rendered_associations` comes along
+  # nested -- without it a hangar pays for every ship picture once per vehicle.
+  #
+  # `model_modules` is named rather than `vehicle_modules`, because that is what
+  # `model_module_ids` reads: preloading the join alone still leaves one query
+  # per vehicle, which is invisible until the queries are counted.
+  def self.rendered_associations
+    [
+      :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
+      :task_forces, :hangar_groups, :module_package, :vehicle_loadouts,
+      {model: Model.rendered_associations},
+      {model_paint: [:item_prices] + ModelPaint.attachment_preloads},
+      {parent_vehicle: :model}
+    ]
+  end
+
   validates :serial, uniqueness: {scope: :user_id}, allow_nil: true
   validate :model_must_be_player_ownable
 

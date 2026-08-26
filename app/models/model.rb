@@ -216,6 +216,22 @@ class Model < ApplicationRecord
   has_many :cargo_holds_db, class_name: "CargoHold", as: :parent, dependent: :destroy
   has_many :cargo_hold_container_capacities, through: :cargo_holds_db
 
+  # Everything `api/v1/models/_base.jbuilder` reaches for, in one place, because
+  # a list endpoint that misses a piece pays for it once per row. The hangar
+  # renders that partial for every vehicle, so it wants this nested under
+  # `:model` and is the reason this is shared rather than inlined in a scope.
+  #
+  # `loaners` is named even though `model_loaners` is: they are different
+  # associations, and preloading one leaves the other to query per row. The
+  # manufacturer brings its own pictures, because its partial renders them.
+  def self.rendered_associations
+    [
+      :item_prices, :loaners, :cargo_holds_db,
+      {manufacturer: Manufacturer.attachment_preloads},
+      {model_loaners: :loaner_model}
+    ] + attachment_preloads
+  end
+
   enum :dock_size,
     Dock.ship_sizes.keys.map(&:to_sym)
 

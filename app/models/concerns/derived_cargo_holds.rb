@@ -13,10 +13,12 @@ module DerivedCargoHolds
   def cargo_holds_with_offsets
     holds = projected_cargo_holds
 
-    db_records = cargo_holds_db.where.not(offset_x: nil)
-      .or(cargo_holds_db.where.not(offset_y: nil))
-      .or(cargo_holds_db.where.not(offset_z: nil))
-      .or(cargo_holds_db.where.not(rotation: nil))
+    # Selected in Ruby rather than with `where`, which would issue a query per
+    # record and so ignore a preloaded association -- 50 queries for a page of
+    # 50 ships. There are a handful of holds per parent, so the filtering itself
+    # costs nothing either way.
+    db_records = cargo_holds_db
+      .select { |hold| hold.offset_x || hold.offset_y || hold.offset_z || hold.rotation }
       .index_by(&:position)
 
     return holds if db_records.empty?
