@@ -6,9 +6,20 @@ module ScData
 
       # Commodities are declared twice: once as a bare ResourceContainer under
       # entities/commodities, and once per crate size under scitem/carryables.
-      # Together the two trees cover every purchasable commodity in the build.
+      # Together the two trees cover every crated commodity in the build.
       CANONICAL_PATH = "entities/commodities"
       SOURCE_PATHS = [CANONICAL_PATH, "entities/scitem/carryables"]
+
+      # Refuel and rearm goods — ship ammunition, the two countermeasure
+      # supplies, EVA fuel — are bought by volume and hauled in generic
+      # containers, so they have no crate entity and appear in neither tree.
+      # This database is the only place they are named.
+      RESOURCE_TYPES_PATH = "resourcetypedatabase/resourcetypedatabase.records.xml"
+
+      # It also holds the label for each group of resources, under the same
+      # "items_commodities_type_*" keys the crates use for theirs. The record
+      # type is what separates a good from the name of a category of them.
+      RESOURCE_TYPE = "ResourceType"
 
       # A handful of commodities are named after their own type key. Most are
       # real products (RMC, HPMC, the two fuels); these two are the generic
@@ -102,6 +113,8 @@ module ScData
           collect_record(records, item)
         end
 
+        collect_resource_types(records)
+
         records.filter_map { |sc_key, record| parse_commodity(sc_key, record) }
       end
 
@@ -138,6 +151,39 @@ module ScData
           icon = value_or_nil(params["displayThumbnail"])
           record[:icons] << icon.downcase if icon.present?
         end
+      end
+
+      # Read after the crates and only for what they left out: the database
+      # repeats most of the catalogue, and says less about each entry -- it
+      # declares no type at all, and its thumbnail is the shared logo of a whole
+      # group rather than the commodity's own icon.
+      private def collect_resource_types(records)
+        resource_types.each do |values|
+          sc_key = commodity_key(values["displayName"])
+
+          next if sc_key.blank?
+          next if IGNORED_KEYS.include?(sc_key)
+          next if records.key?(sc_key)
+
+          records[sc_key] = new_record
+        end
+      end
+
+      private def resource_types
+        root = Hash.from_xml(File.read("#{import_path}/#{RESOURCE_TYPES_PATH}")).values.first
+
+        return [] unless root.is_a?(Hash)
+
+        root.each_value.select do |values|
+          next false unless values.is_a?(Hash)
+          next false unless values["__type"] == RESOURCE_TYPE
+
+          # A resource with no containers to put it in is not hauled anywhere --
+          # the power in a grid, the oxygen in a suit -- and is no commodity.
+          values.key?("defaultCargoContainers")
+        end
+      rescue Errno::ENOENT
+        []
       end
 
       private def parse_commodity(sc_key, record)
