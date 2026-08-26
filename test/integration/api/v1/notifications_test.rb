@@ -25,7 +25,8 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       }, required: false
       parameter name: "q", in: :query,
         schema: {
-          type: :object
+          type: :object,
+          "$ref": "#/components/schemas/NotificationQuery"
         },
         style: :deepObject,
         explode: true,
@@ -139,11 +140,11 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /notifications filters by notification_type_eq" do
+  test "GET /notifications filters by notificationTypeEq" do
     create_list(:notification, 3, user: @user)
     sign_in @user
 
-    assert_api_response :get, 200, params: {q: {"notification_type_eq" => "hangar_create"}} do
+    assert_api_response :get, 200, params: {q: {"notificationTypeEq" => "hangar_create"}} do
       assert_equal 3, parsed_body["items"].count
     end
   end

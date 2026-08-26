@@ -14427,6 +14427,15 @@ components:
       - meta
       - items
       title: Models
+    NotificationSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: NotificationSortEnum
     NotificationTypeEnum:
       type: string
       enum:

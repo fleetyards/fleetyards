@@ -268,12 +268,7 @@ paths:
         in: query
         schema:
           type: object
-          properties:
-            equipmentTypeIn:
-              type: array
-              items:
-                type: string
-          additionalProperties: false
+          "$ref": "#/components/schemas/EquipmentItemTypeFilterQuery"
         style: deepObject
         explode: true
         required: false
@@ -7878,6 +7873,7 @@ paths:
         in: query
         schema:
           type: object
+          "$ref": "#/components/schemas/NotificationQuery"
         style: deepObject
         explode: true
         required: false
@@ -12833,6 +12829,16 @@ components:
       - createdAt
       - updatedAt
       title: Equipment
+    EquipmentItemTypeFilterQuery:
+      type: object
+      properties:
+        equipmentTypeIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      example: {}
+      title: EquipmentItemTypeFilterQuery
     EquipmentQuery:
       type: object
       properties:
@@ -19797,6 +19803,31 @@ components:
         push:
           type: boolean
       title: NotificationPreferenceUpdateInput
+    NotificationQuery:
+      type: object
+      properties:
+        notificationTypeEq:
+          "$ref": "#/components/schemas/NotificationTypeEnum"
+        readAtNull:
+          type: boolean
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/NotificationSortEnum"
+          - "$ref": "#/components/schemas/NotificationSortEnum"
+      additionalProperties: false
+      example: {}
+      title: NotificationQuery
+    NotificationSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: NotificationSortEnum
     NotificationTypeEnum:
       type: string
       enum:
