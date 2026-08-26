@@ -16,6 +16,9 @@ module Uex
       137 => "items_commodities_lastaprene",                   # Lastaphrene, spelled with an h
       145 => "items_commodities_spiral",                       # Lunes, ours adds "(Spiral Fruit)"
       161 => "items_commodities_raw_silicon",                  # Silicon (Raw) vs our Raw Silicon
+      210 => "items_commodities_raw_ouratite",                 # Ouratite (Raw) vs our Raw Ouratite
+      125 => "items_commodities_raw_ice",                      # Ice (Raw) vs our Raw Ice
+      162 => "items_commodities_stileron_ore",                 # Stileron (Raw), the game calls it (Ore)
       40 => "items_commodities_hephaestanite_raw"              # Hephaestanite (Raw), ours truncates to (R)
     }.freeze
 
