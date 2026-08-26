@@ -74,6 +74,75 @@ class EquipmentTest < ActiveSupport::TestCase
     assert_equal [shown.id], Equipment.visible.pluck(:id)
   end
 
+  # A record the export dropped keeps the values of the last build that described
+  # it -- an inventory entry pointing at one has to resolve to something -- and
+  # says so, rather than serving them as if they were current.
+  test "a retired record reads the last build that described it, and is marked" do
+    equipment = create(:equipment, :without_build, name: "Column Name")
+    create(
+      :equipment_build,
+      equipment:, environment: ScData::Source.environment,
+      version: "0.0.1-live.1", name: "Behring P4-AR", size: "3"
+    )
+
+    assert_equal "Behring P4-AR", equipment.reload.name
+    assert_equal "3", equipment.size
+    assert_predicate equipment, :retired?
+  end
+
+  test "a record in the current build reads that build, and is not retired" do
+    equipment = create(:equipment, :without_build, name: "Column Name")
+    create(:equipment_build, equipment:, name: "Behring P4-AR")
+
+    assert_equal "Behring P4-AR", equipment.reload.name
+    assert_not_predicate equipment, :retired?
+  end
+
+  test "the current build wins over an earlier one" do
+    equipment = create(:equipment, :without_build)
+    create(:equipment_build, equipment:, version: "0.0.1-live.1", size: "1")
+    create(:equipment_build, equipment:, size: "4")
+
+    assert_equal "4", equipment.reload.size
+  end
+
+  # An admin can create a record by hand, and no load has given it a build yet.
+  test "a record with no build at all falls back to its own columns" do
+    equipment = create(:equipment, :without_build, name: "Hand Made", size: "2")
+
+    assert_equal "Hand Made", equipment.reload.name
+    assert_equal "2", equipment.size
+    assert_predicate equipment, :retired?
+  end
+
+  # An enum-backed fact has to read as its name from the build too, not as the
+  # integer the column stores.
+  test "an enum fact read off the build keeps its name" do
+    equipment = create(:equipment, :without_build)
+    create(:equipment_build, equipment:, slot: :torso)
+
+    assert_equal "torso", equipment.reload.slot
+  end
+
+  # Without this the reader would go on serving the build's old value.
+  test "#update_with_facts writes the correction to the build as well" do
+    equipment = create(:equipment, name: "Typo")
+
+    assert equipment.update_with_facts({name: "Corrected"})
+
+    assert_equal "Corrected", equipment.reload.name
+    assert_equal "Corrected", equipment.build.name
+  end
+
+  test "#update_with_facts leaves a retired record's build alone" do
+    equipment = create(:equipment, :without_build, name: "Typo")
+    old = create(:equipment_build, equipment:, version: "0.0.1-live.1", name: "Old Name")
+
+    assert equipment.update_with_facts({name: "Corrected"})
+
+    assert_equal "Old Name", old.reload.name
+  end
+
   test ".current_version narrows to the patch the game ships, or opts out" do
     current = create(:equipment)
     retired = create(:equipment, version: "0.0.1-live.1")

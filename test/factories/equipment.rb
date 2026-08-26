@@ -55,6 +55,33 @@ FactoryBot.define do
     hidden { false }
     version { Rails.configuration.sc_data[:version] }
 
+    transient { with_build { true } }
+
+    # A build describing the item, mirroring what the backfill did for the rows
+    # already in the table. Keyed on the row's own version, so
+    # `create(:equipment, version: <older>)` is retired here too.
+    after(:create) do |equipment, evaluator|
+      next unless evaluator.with_build
+      next if equipment.version.blank?
+
+      equipment.builds.create!(
+        environment: ScData::Source.environment,
+        version: equipment.version,
+        **equipment.attributes.symbolize_keys.slice(*EquipmentBuild::FACTS)
+      )
+
+      # Validating the row consulted a fact reader, which cached the build as it
+      # was then -- absent. Dropped so the record behaves like a freshly loaded one.
+      equipment.association(:build).reset
+      equipment.association(:last_build).reset
+    end
+
+    # For tests that manage builds themselves and would otherwise collide with
+    # the one above.
+    trait :without_build do
+      with_build { false }
+    end
+
     trait :with_store_image do
       store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end

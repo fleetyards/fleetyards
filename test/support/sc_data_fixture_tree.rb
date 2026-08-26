@@ -13,6 +13,13 @@ module ScDataFixtureTree
     end
   end
 
+  # The build a fixture loader writes: the configured version, but the fixture
+  # environment rather than the configured one. What `current_version` has to be
+  # asked about when the records came from this tree.
+  def fixture_source
+    ::ScData::Source.new(version: ::ScData::Source.version, environment: FIXTURE_ENVIRONMENT)
+  end
+
   # A tree that carries no catalogue at all -- what a build whose files failed
   # to sync looks like from a loader's side.
   def empty_tree_loader(loader_class)

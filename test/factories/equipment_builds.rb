@@ -47,7 +47,7 @@
 #
 FactoryBot.define do
   factory :equipment_build do
-    equipment
+    association :equipment, factory: [:equipment, :without_build]
     environment { ScData::Source.environment }
     version { ScData::Source.version }
     sequence(:name) { |n| "#{Faker::Company.name} Rifle #{n}" }

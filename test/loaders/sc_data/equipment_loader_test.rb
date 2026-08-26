@@ -214,7 +214,7 @@ module ScData
 
         assert Equipment.exists?(retired.id), "the row has to stay for existing references"
         assert_nil retired.reload.version
-        assert_not Equipment.current_version.exists?(retired.id)
+        assert_not Equipment.current_version(true, fixture_source).exists?(retired.id)
       end
 
       test "#all leaves the records still in the export on the current build" do
@@ -222,7 +222,8 @@ module ScData
         curated.all
 
         assert_predicate Equipment.count, :positive?
-        assert_equal Equipment.pluck(:sc_key).sort, Equipment.current_version.pluck(:sc_key).sort
+        assert_equal Equipment.pluck(:sc_key).sort,
+          Equipment.current_version(true, fixture_source).pluck(:sc_key).sort
       end
 
       # A tree that carries no equipment at all is what a build whose files
@@ -267,8 +268,9 @@ module ScData
       test "#all persists the volume onto the record" do
         curated.all
 
-        assert_equal Equipment.count, Equipment.current_version.where.not(volume: nil).count
-        assert_equal Equipment.count, Equipment.current_version.where.not(volume_dimensions: nil).count
+        assert_equal Equipment.count, Equipment.current_version(true, fixture_source).where.not(volume: nil).count
+        assert_equal Equipment.count,
+          Equipment.current_version(true, fixture_source).where.not(volume_dimensions: nil).count
 
         helmet = Equipment.find_by(sc_key: "gys_helmet_03_01_01")
 

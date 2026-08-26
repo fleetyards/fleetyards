@@ -93,6 +93,34 @@ module ScData
         )
 
         apply(build, params)
+
+        # Saving the record above ran its validations, and a fact reader consults
+        # the build -- so the association may have cached a nil from before this
+        # row existed. Dropped rather than left to answer for a build there now is.
+        %i[build last_build].each do |association|
+          record.association(association).reset if record.class.reflect_on_association(association)
+        end
+
+        build
+      end
+
+      # The build this loader is writing, which is not always the configured one:
+      # a caller can point a loader at another environment's tree.
+      def source
+        ::ScData::Source.new(version: sc_version, environment: sc_environment)
+      end
+
+      # The build equivalent of `retire_absent`. A record the export dropped
+      # keeps its row, but it must stop having a row for the build it is no
+      # longer part of -- otherwise asking "is this in the current build?" by
+      # row existence answers yes for something the build does not carry.
+      #
+      # Nothing retires on a run that loaded nothing, for the same reason
+      # `retire_absent` does not: `where.not(id: [])` is `1=1`.
+      def retire_absent_builds(build_class, foreign_key, loaded)
+        return 0 if loaded.blank?
+
+        build_class.current(source).where.not(foreign_key => loaded).delete_all
       end
 
       # Keeps the last few builds of this environment and drops the rest. Run
