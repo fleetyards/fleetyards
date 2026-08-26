@@ -7128,9 +7128,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetchartView"
+                "$ref": "#/components/schemas/FleetchartViewsList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/models/latest":
@@ -15384,6 +15382,11 @@ components:
           items:
             type: string
       title: FleetchartViewQuery
+    FleetchartViewsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetchartView"
+      title: FleetchartViewsList
     FleetsList:
       type: array
       items:

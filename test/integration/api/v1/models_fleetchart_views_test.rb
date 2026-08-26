@@ -23,7 +23,7 @@ class Api::V1::ModelsFleetchartViewsTest < ActionDispatch::IntegrationTest
         required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/FleetchartView"}
+        schema "$ref": "#/components/schemas/FleetchartViewsList"
       end
     end
   end
