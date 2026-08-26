@@ -7,8 +7,6 @@ module V1
         class FleetEventSignup
           include OpenapiRuby::Components::Base
 
-          STATUSES = %w[confirmed tentative interested pending withdrawn].freeze
-
           schema({
             type: :object,
             properties: {
@@ -16,7 +14,7 @@ module V1
               fleetEventId: {type: :string, format: :uuid},
               fleetEventSlotId: {type: :string, format: :uuid},
               occurrenceDate: {type: :string, format: :date},
-              status: {type: :string, enum: STATUSES},
+              status: {"$ref": "#/components/schemas/FleetEventSignupStatusEnum"},
               notes: {type: :string},
               confirmedAt: {type: :string, format: "date-time"},
               withdrawnAt: {type: :string, format: "date-time"},

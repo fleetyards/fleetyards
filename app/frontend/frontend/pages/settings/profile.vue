@@ -20,7 +20,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   type FilterOption,
   type UserUpdateInput,
-  UserUpdateInputDateFormat,
+  UserDateFormatEnum,
 } from "@/services/fyApi";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
@@ -45,8 +45,8 @@ const initialValues = ref<UserUpdateInput>({
   twitch: sessionStore.currentUser?.twitch,
   guilded: sessionStore.currentUser?.guilded,
   dateFormat:
-    (sessionStore.currentUser?.dateFormat as UserUpdateInputDateFormat) ??
-    UserUpdateInputDateFormat.dmy_dots,
+    (sessionStore.currentUser?.dateFormat as UserDateFormatEnum) ??
+    UserDateFormatEnum.DMY_DOTS,
 });
 
 const { defineField, handleSubmit } = useForm({
@@ -65,7 +65,7 @@ const [guilded, guildedProps] = defineField("guilded");
 const [dateFormat, dateFormatProps] = defineField("dateFormat");
 
 const dateFormatOptions = computed<FilterOption[]>(() =>
-  Object.values(UserUpdateInputDateFormat).map((value) => ({
+  Object.values(UserDateFormatEnum).map((value) => ({
     value,
     label: t(`labels.user.dateFormats.${value}`),
   })),
@@ -104,8 +104,8 @@ const setupForm = () => {
   twitch.value = sessionStore.currentUser?.twitch;
   guilded.value = sessionStore.currentUser?.guilded;
   dateFormat.value =
-    (sessionStore.currentUser?.dateFormat as UserUpdateInputDateFormat) ??
-    UserUpdateInputDateFormat.dmy_dots;
+    (sessionStore.currentUser?.dateFormat as UserDateFormatEnum) ??
+    UserDateFormatEnum.DMY_DOTS;
 };
 
 const comlink = useComlink();

@@ -11,10 +11,7 @@ module V1
           properties: {
             title: {type: :string},
             description: {type: [:string, :null]},
-            category: {
-              type: :string,
-              enum: V1::Schemas::Fleets::Missions::Mission::CATEGORIES
-            },
+            category: {"$ref": "#/components/schemas/MissionCategoryEnum"},
             scenario: {type: [:string, :null]},
             coverImagePreset: {type: [:string, :null]},
             coverImage: {type: [:string, :null]}

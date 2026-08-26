@@ -33,8 +33,8 @@ import {
   fleetMembers as fetchFleetMembers,
   fleetInventoryStock as fetchStock,
   useCreateFleetInventoryItem,
-  FleetInventoryItemCreateInputCategory,
-  FleetInventoryItemCreateInputUnit,
+  InventoryCategoryEnum,
+  InventoryUnitEnum,
 } from "@/services/fyApi";
 import { type FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
@@ -83,10 +83,9 @@ const validationSchema = {
 const { defineField, handleSubmit, setFieldValue } = useForm({
   initialValues: {
     name: "",
-    category:
-      FleetInventoryItemCreateInputCategory.commodity as FleetInventoryItemCreateInputCategory,
+    category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
     quantity: 1,
-    unit: FleetInventoryItemCreateInputUnit.scu as FleetInventoryItemCreateInputUnit,
+    unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
     quality: 0,
     memberId: undefined as string | undefined,
     image: undefined as string | undefined,
@@ -104,19 +103,19 @@ const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
 
 const isComponent = computed(
-  () => category.value === FleetInventoryItemCreateInputCategory.component,
+  () => category.value === InventoryCategoryEnum.COMPONENT,
 );
 
 const isCommodity = computed(
-  () => category.value === FleetInventoryItemCreateInputCategory.commodity,
+  () => category.value === InventoryCategoryEnum.COMMODITY,
 );
 
 // One table backs all three: the game files file magazines as weapon
 // attachments, so ammunition is not a catalogue of its own.
-const EQUIPMENT_CATEGORIES: FleetInventoryItemCreateInputCategory[] = [
-  FleetInventoryItemCreateInputCategory.weapon,
-  FleetInventoryItemCreateInputCategory.equipment,
-  FleetInventoryItemCreateInputCategory.ammunition,
+const EQUIPMENT_CATEGORIES: InventoryCategoryEnum[] = [
+  InventoryCategoryEnum.WEAPON,
+  InventoryCategoryEnum.EQUIPMENT,
+  InventoryCategoryEnum.AMMUNITION,
 ];
 
 const isEquipment = computed(() =>
@@ -130,7 +129,7 @@ const unitOptions = unitOptionsFor(category);
 watch(unitOptions, (options) => {
   if (options.some((option) => option.value === unit.value)) return;
 
-  setFieldValue("unit", options[0].value as FleetInventoryItemCreateInputUnit);
+  setFieldValue("unit", options[0].value as InventoryUnitEnum);
 });
 
 // Load stock items for withdrawal picker

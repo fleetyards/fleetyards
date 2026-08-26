@@ -7,14 +7,12 @@ module V1
         class FleetEventAdmin
           include OpenapiRuby::Components::Base
 
-          ROLES = %w[admin moderator].freeze
-
           schema({
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
               fleetEventId: {type: :string, format: :uuid},
-              role: {type: :string, enum: ROLES},
+              role: {"$ref": "#/components/schemas/FleetEventAdminRoleEnum"},
               createdAt: {type: :string, format: "date-time"},
               user: {
                 type: :object,

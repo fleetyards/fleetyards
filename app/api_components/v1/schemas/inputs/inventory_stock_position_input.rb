@@ -10,8 +10,8 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            category: {type: :string, enum: InventoryLedgerEntry::CATEGORIES.keys.map(&:to_s)},
-            unit: {type: :string, enum: InventoryLedgerEntry::UNITS.keys.map(&:to_s)}
+            category: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
+            unit: {"$ref": "#/components/schemas/InventoryUnitEnum"}
           },
           additionalProperties: false
         })

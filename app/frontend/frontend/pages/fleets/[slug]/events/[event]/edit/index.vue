@@ -18,8 +18,8 @@ import {
   type FilterOption,
   type FleetEventExtended,
   type FleetEventUpdateInput,
-  FleetEventVisibility,
-  MissionCategory,
+  FleetEventVisibilityEnum,
+  MissionCategoryEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionScenarios } from "@/frontend/composables/useMissionScenarios";
@@ -112,14 +112,14 @@ const recurrenceIntervalOptions = computed<FilterOption[]>(() => [
 const { suggestions: scenarioSuggestions } = useMissionScenarios();
 
 const categoryOptions = computed<FilterOption[]>(() =>
-  Object.values(MissionCategory).map((value) => ({
+  Object.values(MissionCategoryEnum).map((value) => ({
     value,
     label: t(`labels.fleets.missions.categories.${value}`),
   })),
 );
 
 const visibilityOptions = computed<FilterOption[]>(() =>
-  Object.values(FleetEventVisibility).map((value) => ({
+  Object.values(FleetEventVisibilityEnum).map((value) => ({
     value,
     label: t(`labels.fleets.events.visibilities.${value}`),
   })),

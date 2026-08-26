@@ -25,7 +25,7 @@ import {
   type Mission,
   type MissionExtended,
   type MissionTeam,
-  MissionCategory,
+  MissionCategoryEnum,
   useCreateFleetMission,
   useUpdateFleetMission,
   useSortMissionTeams,
@@ -61,7 +61,7 @@ const { defineField, handleSubmit, meta } = useForm({
   initialValues: {
     title: props.mission?.title ?? "",
     description: props.mission?.description ?? "",
-    category: props.mission?.category ?? MissionCategory.other,
+    category: props.mission?.category ?? MissionCategoryEnum.OTHER,
     scenario:
       (props.mission as { scenario?: string | null } | undefined)?.scenario ??
       "",
@@ -89,7 +89,7 @@ const selectPreset = (key: string) => {
 };
 
 const categoryOptions = computed<FilterOption[]>(() =>
-  Object.values(MissionCategory).map((value) => ({
+  Object.values(MissionCategoryEnum).map((value) => ({
     value,
     label: t(`labels.fleets.missions.categories.${value}`),
   })),

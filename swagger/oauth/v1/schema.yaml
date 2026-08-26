@@ -167,10 +167,7 @@ components:
       type: object
       properties:
         status:
-          type: string
-          enum:
-          - redirect
-          - post
+          "$ref": "#/components/schemas/OauthAuthorizationStatusEnum"
         redirect_uri:
           type: string
       additionalProperties: false
@@ -178,6 +175,15 @@ components:
       - status
       - redirect_uri
       title: OauthAuthorizationRedirect
+    OauthAuthorizationStatusEnum:
+      type: string
+      enum:
+      - redirect
+      - post
+      x-enumNames:
+      - REDIRECT
+      - POST
+      title: OauthAuthorizationStatusEnum
     OauthPreAuthorization:
       type: object
       properties:

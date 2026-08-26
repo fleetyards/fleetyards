@@ -4,16 +4,16 @@ import Component from "./index.vue";
 import {
   type FleetEventSignup,
   type FleetEventSlot,
-  FleetEventSignupStatus,
-  FleetEventSlotEffectiveSignupApproval,
-  FleetEventSlotSlottableType,
+  FleetEventSignupStatusEnum,
+  FleetEventSignupApprovalEnum,
+  FleetEventSlottableTypeEnum,
 } from "@/services/fyApi";
 
 const CURRENT_USER = "user-me";
 
 const signup = (
   userId: string,
-  status = FleetEventSignupStatus.confirmed,
+  status = FleetEventSignupStatusEnum.CONFIRMED,
 ): FleetEventSignup => ({
   id: `signup-${userId}`,
   fleetEventId: "event-1",
@@ -23,12 +23,12 @@ const signup = (
 
 const slot = (overrides: Partial<FleetEventSlot> = {}): FleetEventSlot => ({
   id: "slot-1",
-  slottableType: FleetEventSlotSlottableType.FleetEventShip,
+  slottableType: FleetEventSlottableTypeEnum.FLEET_EVENT_SHIP,
   slottableId: "ship-1",
   title: "Pilot",
   position: 0,
   derived: false,
-  effectiveSignupApproval: FleetEventSlotEffectiveSignupApproval.direct,
+  effectiveSignupApproval: FleetEventSignupApprovalEnum.DIRECT,
   signups: [],
   ...overrides,
 });

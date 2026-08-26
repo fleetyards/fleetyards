@@ -14,7 +14,7 @@ module V1
               name: {type: :string},
               slug: {type: :string},
               description: {type: :string},
-              visibility: {type: :string, enum: %w[members_only officers_only]},
+              visibility: {"$ref": "#/components/schemas/FleetInventoryVisibilityEnum"},
               location: {type: :string},
               entriesCount: {type: :integer},
               totalScu: {type: :number},

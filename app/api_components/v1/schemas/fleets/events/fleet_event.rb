@@ -7,11 +7,6 @@ module V1
         class FleetEvent
           include OpenapiRuby::Components::Base
 
-          STATUSES = %w[draft open locked active completed cancelled].freeze
-          VISIBILITIES = %w[members officers fleet].freeze
-          SIGNUP_APPROVALS = %w[direct confirmation_required].freeze
-          VIEWER_EVENT_ROLES = %w[creator admin moderator].freeze
-
           schema({
             type: :object,
             properties: {
@@ -22,17 +17,14 @@ module V1
               slug: {type: :string},
               description: {type: :string},
               briefing: {type: :string},
-              status: {type: :string, enum: STATUSES},
+              status: {"$ref": "#/components/schemas/FleetEventStatusEnum"},
               startsAt: {type: :string, format: "date-time"},
               endsAt: {type: :string, format: "date-time"},
               timezone: {type: :string},
               location: {type: :string},
               meetupLocation: {type: :string},
-              visibility: {type: :string, enum: VISIBILITIES},
-              category: {
-                type: :string,
-                enum: V1::Schemas::Fleets::Missions::Mission::CATEGORIES
-              },
+              visibility: {"$ref": "#/components/schemas/FleetEventVisibilityEnum"},
+              category: {"$ref": "#/components/schemas/MissionCategoryEnum"},
               scenario: {type: :string},
               coverImagePreset: {type: :string},
               coverImage: {"$ref": "#/components/schemas/MediaFile"},
@@ -40,11 +32,8 @@ module V1
               autoLockEnabled: {type: :boolean},
               autoLockMinutesBefore: {type: :integer},
               cancelledReason: {type: :string},
-              signupApproval: {type: :string, enum: SIGNUP_APPROVALS},
-              viewerEventRole: {
-                type: :string,
-                enum: VIEWER_EVENT_ROLES
-              },
+              signupApproval: {"$ref": "#/components/schemas/FleetEventSignupApprovalEnum"},
+              viewerEventRole: {"$ref": "#/components/schemas/FleetEventViewerRoleEnum"},
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time"},
               externalUid: {type: :string, format: :uuid},
@@ -63,11 +52,7 @@ module V1
               discordSyncedAt: {type: :string, format: "date-time"},
               discordConfigured: {type: :boolean},
               recurring: {type: :boolean},
-              recurrenceInterval: {
-                type: :string,
-                enum: ::FleetEvent::RECURRENCE_INTERVALS
-
-              },
+              recurrenceInterval: {"$ref": "#/components/schemas/FleetEventRecurrenceIntervalEnum"},
               recurrenceUntil: {type: :string, format: :date},
               recurrenceCount: {type: :integer},
               excludedDates: {

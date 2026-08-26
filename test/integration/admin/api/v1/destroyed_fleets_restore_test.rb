@@ -15,7 +15,7 @@ class Admin::Api::V1::DestroyedFleetsRestoreTest < ActionDispatch::IntegrationTe
       tags "Fleets"
       produces "application/json"
 
-      parameter name: "source", in: :query, description: "discarded (soft-deleted) or purged (hard-deleted)", schema: {type: :string, enum: %w[discarded purged]}, required: false
+      parameter name: "source", in: :query, description: "discarded (soft-deleted) or purged (hard-deleted)", schema: {"$ref": "#/components/schemas/DestroyedFleetSourceEnum"}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleet"

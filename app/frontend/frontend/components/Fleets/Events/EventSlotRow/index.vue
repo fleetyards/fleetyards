@@ -21,7 +21,7 @@ import {
   type FleetEventShip,
   type FleetEventSignup,
   type FleetEventSlot,
-  FleetEventSignupStatus,
+  FleetEventSignupStatusEnum,
   useSignupFleetEventSlot,
 } from "@/services/fyApi";
 import { vehicleMatchesShip } from "@/frontend/composables/useShipMatch";
@@ -172,7 +172,7 @@ const submitSignup = async () => {
     await signupMutation.mutateAsync({
       id: props.slotData.id,
       data: {
-        status: FleetEventSignupStatus.confirmed,
+        status: FleetEventSignupStatusEnum.CONFIRMED,
         notes: notes.value.trim() || null,
         vehicleId: vehicleId.value ?? undefined,
       },

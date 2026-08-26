@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             active: {type: :boolean},
-            status: {type: :string, enum: %w[created started finished failed]},
+            status: {"$ref": "#/components/schemas/HangarSyncStatusEnum"},
             result: {"$ref": "#/components/schemas/HangarSyncResult"}
           },
           additionalProperties: false,

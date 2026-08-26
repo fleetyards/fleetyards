@@ -13160,14 +13160,7 @@ components:
         briefing:
           type: string
         status:
-          type: string
-          enum:
-          - draft
-          - open
-          - locked
-          - active
-          - completed
-          - cancelled
+          "$ref": "#/components/schemas/FleetEventStatusEnum"
         startsAt:
           type: string
           format: date-time
@@ -13181,22 +13174,9 @@ components:
         meetupLocation:
           type: string
         visibility:
-          type: string
-          enum:
-          - members
-          - officers
-          - fleet
+          "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         category:
-          type: string
-          enum:
-          - other
-          - ship_combat
-          - ground_combat
-          - combined_combat
-          - mining
-          - salvage
-          - cargo_hauling
-          - exploration
+          "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
           type: string
         coverImagePreset:
@@ -13212,16 +13192,9 @@ components:
         cancelledReason:
           type: string
         signupApproval:
-          type: string
-          enum:
-          - direct
-          - confirmation_required
+          "$ref": "#/components/schemas/FleetEventSignupApprovalEnum"
         viewerEventRole:
-          type: string
-          enum:
-          - creator
-          - admin
-          - moderator
+          "$ref": "#/components/schemas/FleetEventViewerRoleEnum"
         archived:
           type: boolean
         archivedAt:
@@ -13256,12 +13229,7 @@ components:
         recurring:
           type: boolean
         recurrenceInterval:
-          type: string
-          enum:
-          - daily
-          - weekly
-          - biweekly
-          - monthly
+          "$ref": "#/components/schemas/FleetEventRecurrenceIntervalEnum"
         recurrenceUntil:
           type: string
           format: date
@@ -13315,10 +13283,7 @@ components:
           type: string
           format: uuid
         role:
-          type: string
-          enum:
-          - admin
-          - moderator
+          "$ref": "#/components/schemas/FleetEventAdminRoleEnum"
         createdAt:
           type: string
           format: date-time
@@ -13356,14 +13321,20 @@ components:
           type: string
           format: uuid
         role:
-          type: string
-          enum:
-          - admin
-          - moderator
+          "$ref": "#/components/schemas/FleetEventAdminRoleEnum"
       required:
       - userId
       additionalProperties: false
       title: FleetEventAdminCreateInput
+    FleetEventAdminRoleEnum:
+      type: string
+      enum:
+      - admin
+      - moderator
+      x-enumNames:
+      - ADMIN
+      - MODERATOR
+      title: FleetEventAdminRoleEnum
     FleetEventAdminsList:
       type: array
       items:
@@ -13405,22 +13376,9 @@ components:
           - string
           - 'null'
         visibility:
-          type: string
-          enum:
-          - members
-          - officers
-          - fleet
+          "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         category:
-          type: string
-          enum:
-          - other
-          - ship_combat
-          - ground_combat
-          - combined_combat
-          - mining
-          - salvage
-          - cargo_hauling
-          - exploration
+          "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
           type:
           - string
@@ -13444,22 +13402,11 @@ components:
           - integer
           - 'null'
         signupApproval:
-          type: string
-          enum:
-          - direct
-          - confirmation_required
+          "$ref": "#/components/schemas/FleetEventSignupApprovalEnum"
         recurring:
           type: boolean
         recurrenceInterval:
-          type:
-          - string
-          - 'null'
-          enum:
-          - daily
-          - weekly
-          - biweekly
-          - monthly
-          -
+          "$ref": "#/components/schemas/NullableFleetEventRecurrenceIntervalEnum"
         recurrenceUntil:
           type:
           - string
@@ -13588,6 +13535,19 @@ components:
       required:
       - date
       title: FleetEventOccurrenceUpdateInput
+    FleetEventRecurrenceIntervalEnum:
+      type: string
+      enum:
+      - daily
+      - weekly
+      - biweekly
+      - monthly
+      x-enumNames:
+      - DAILY
+      - WEEKLY
+      - BIWEEKLY
+      - MONTHLY
+      title: FleetEventRecurrenceIntervalEnum
     FleetEventShip:
       type: object
       properties:
@@ -13774,13 +13734,7 @@ components:
           type: string
           format: date
         status:
-          type: string
-          enum:
-          - confirmed
-          - tentative
-          - interested
-          - pending
-          - withdrawn
+          "$ref": "#/components/schemas/FleetEventSignupStatusEnum"
         notes:
           type: string
         confirmedAt:
@@ -13835,6 +13789,15 @@ components:
       - status
       additionalProperties: false
       title: FleetEventSignup
+    FleetEventSignupApprovalEnum:
+      type: string
+      enum:
+      - direct
+      - confirmation_required
+      x-enumNames:
+      - DIRECT
+      - CONFIRMATION_REQUIRED
+      title: FleetEventSignupApprovalEnum
     FleetEventSignupAssignInput:
       type: object
       properties:
@@ -13844,13 +13807,7 @@ components:
           - 'null'
           format: uuid
         status:
-          type: string
-          enum:
-          - confirmed
-          - tentative
-          - interested
-          - pending
-          - withdrawn
+          "$ref": "#/components/schemas/FleetEventSignupStatusEnum"
         vehicleId:
           type:
           - string
@@ -13866,13 +13823,7 @@ components:
       type: object
       properties:
         status:
-          type: string
-          enum:
-          - confirmed
-          - tentative
-          - interested
-          - pending
-          - withdrawn
+          "$ref": "#/components/schemas/FleetEventSignupStatusEnum"
         vehicleId:
           type:
           - string
@@ -13889,17 +13840,26 @@ components:
           format: date
       additionalProperties: false
       title: FleetEventSignupCreateInput
+    FleetEventSignupStatusEnum:
+      type: string
+      enum:
+      - confirmed
+      - tentative
+      - interested
+      - pending
+      - withdrawn
+      x-enumNames:
+      - CONFIRMED
+      - TENTATIVE
+      - INTERESTED
+      - PENDING
+      - WITHDRAWN
+      title: FleetEventSignupStatusEnum
     FleetEventSignupUpdateInput:
       type: object
       properties:
         status:
-          type: string
-          enum:
-          - confirmed
-          - tentative
-          - interested
-          - pending
-          - withdrawn
+          "$ref": "#/components/schemas/FleetEventSignupStatusEnum"
         vehicleId:
           type:
           - string
@@ -13918,10 +13878,7 @@ components:
           type: string
           format: uuid
         slottableType:
-          type: string
-          enum:
-          - FleetEventTeam
-          - FleetEventShip
+          "$ref": "#/components/schemas/FleetEventSlottableTypeEnum"
         slottableId:
           type: string
           format: uuid
@@ -13939,15 +13896,9 @@ components:
           type: string
           format: uuid
         signupApproval:
-          type: string
-          enum:
-          - direct
-          - confirmation_required
+          "$ref": "#/components/schemas/FleetEventSignupApprovalEnum"
         effectiveSignupApproval:
-          type: string
-          enum:
-          - direct
-          - confirmation_required
+          "$ref": "#/components/schemas/FleetEventSignupApprovalEnum"
         signups:
           type: array
           items:
@@ -13967,10 +13918,7 @@ components:
       type: object
       properties:
         slottableType:
-          type: string
-          enum:
-          - FleetEventTeam
-          - FleetEventShip
+          "$ref": "#/components/schemas/FleetEventSlottableTypeEnum"
         slottableId:
           type: string
           format: uuid
@@ -13981,13 +13929,7 @@ components:
           - string
           - 'null'
         signupApproval:
-          type:
-          - string
-          - 'null'
-          enum:
-          - direct
-          - confirmation_required
-          -
+          "$ref": "#/components/schemas/NullableFleetEventSignupApprovalEnum"
       required:
       - slottableType
       - slottableId
@@ -13998,10 +13940,7 @@ components:
       type: object
       properties:
         slottableType:
-          type: string
-          enum:
-          - FleetEventTeam
-          - FleetEventShip
+          "$ref": "#/components/schemas/FleetEventSlottableTypeEnum"
         slottableId:
           type: string
           format: uuid
@@ -14025,15 +13964,35 @@ components:
           - string
           - 'null'
         signupApproval:
-          type:
-          - string
-          - 'null'
-          enum:
-          - direct
-          - confirmation_required
-          -
+          "$ref": "#/components/schemas/NullableFleetEventSignupApprovalEnum"
       additionalProperties: false
       title: FleetEventSlotUpdateInput
+    FleetEventSlottableTypeEnum:
+      type: string
+      enum:
+      - FleetEventTeam
+      - FleetEventShip
+      x-enumNames:
+      - FLEET_EVENT_TEAM
+      - FLEET_EVENT_SHIP
+      title: FleetEventSlottableTypeEnum
+    FleetEventStatusEnum:
+      type: string
+      enum:
+      - draft
+      - open
+      - locked
+      - active
+      - completed
+      - cancelled
+      x-enumNames:
+      - DRAFT
+      - OPEN
+      - LOCKED
+      - ACTIVE
+      - COMPLETED
+      - CANCELLED
+      title: FleetEventStatusEnum
     FleetEventTeam:
       type: object
       properties:
@@ -14122,22 +14081,9 @@ components:
           - string
           - 'null'
         visibility:
-          type: string
-          enum:
-          - members
-          - officers
-          - fleet
+          "$ref": "#/components/schemas/FleetEventVisibilityEnum"
         category:
-          type: string
-          enum:
-          - other
-          - ship_combat
-          - ground_combat
-          - combined_combat
-          - mining
-          - salvage
-          - cargo_hauling
-          - exploration
+          "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
           type:
           - string
@@ -14165,22 +14111,11 @@ components:
           - string
           - 'null'
         signupApproval:
-          type: string
-          enum:
-          - direct
-          - confirmation_required
+          "$ref": "#/components/schemas/FleetEventSignupApprovalEnum"
         recurring:
           type: boolean
         recurrenceInterval:
-          type:
-          - string
-          - 'null'
-          enum:
-          - daily
-          - weekly
-          - biweekly
-          - monthly
-          -
+          "$ref": "#/components/schemas/NullableFleetEventRecurrenceIntervalEnum"
         recurrenceUntil:
           type:
           - string
@@ -14192,6 +14127,28 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetEventUpdateInput
+    FleetEventViewerRoleEnum:
+      type: string
+      enum:
+      - creator
+      - admin
+      - moderator
+      x-enumNames:
+      - CREATOR
+      - ADMIN
+      - MODERATOR
+      title: FleetEventViewerRoleEnum
+    FleetEventVisibilityEnum:
+      type: string
+      enum:
+      - members
+      - officers
+      - fleet
+      x-enumNames:
+      - MEMBERS
+      - OFFICERS
+      - FLEET
+      title: FleetEventVisibilityEnum
     FleetEventsList:
       type: object
       properties:
@@ -14251,10 +14208,7 @@ components:
         description:
           type: string
         visibility:
-          type: string
-          enum:
-          - members_only
-          - officers_only
+          "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
         location:
           type: string
         entriesCount:
@@ -14314,10 +14268,7 @@ components:
           - 'null'
           format: uuid
         visibility:
-          type: string
-          enum:
-          - members_only
-          - officers_only
+          "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
         location:
           type:
           - string
@@ -14347,10 +14298,7 @@ components:
         unit:
           type: string
         entryType:
-          type: string
-          enum:
-          - deposit
-          - withdrawal
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
         quality:
           type: integer
           minimum: 0
@@ -14366,11 +14314,7 @@ components:
               type: string
               format: uuid
             type:
-              type: string
-              enum:
-              - Commodity
-              - Component
-              - Equipment
+              "$ref": "#/components/schemas/InventoryItemTypeEnum"
             name:
               type: string
             slug:
@@ -14423,27 +14367,13 @@ components:
         name:
           type: string
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         quantity:
           type: number
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         entryType:
-          type: string
-          enum:
-          - deposit
-          - withdrawal
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
         quality:
           type:
           - integer
@@ -14464,14 +14394,7 @@ components:
           - string
           - 'null'
         itemType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Commodity
-          - Component
-          - Equipment
-          -
+          "$ref": "#/components/schemas/NullableInventoryItemTypeEnum"
         itemId:
           type:
           - string
@@ -14490,20 +14413,9 @@ components:
         nameEq:
           type: string
         unitEq:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         qualityGteq:
           type: integer
         qualityLteq:
@@ -14523,20 +14435,9 @@ components:
           - string
           - 'null'
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
       additionalProperties: false
       title: FleetInventoryItemUpdateInput
     FleetInventoryItemsList:
@@ -14599,10 +14500,7 @@ components:
           - 'null'
           format: uuid
         visibility:
-          type: string
-          enum:
-          - members_only
-          - officers_only
+          "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
         location:
           type:
           - string
@@ -14613,6 +14511,15 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetInventoryUpdateInput
+    FleetInventoryVisibilityEnum:
+      type: string
+      enum:
+      - members_only
+      - officers_only
+      x-enumNames:
+      - MEMBERS_ONLY
+      - OFFICERS_ONLY
+      title: FleetInventoryVisibilityEnum
     FleetInviteUrl:
       type: object
       properties:
@@ -15017,6 +14924,23 @@ components:
         installUrl:
           type: string
       title: FleetNotificationDiscordStatus
+    FleetNotificationInAppEventEnum:
+      type: string
+      enum:
+      - fleet_event.published
+      - fleet_event.locked
+      - fleet_event.starting_soon
+      - fleet_event.cancelled
+      - fleet_event_signup.created
+      - fleet_event_signup.withdrawn
+      x-enumNames:
+      - FLEET_EVENT_PUBLISHED
+      - FLEET_EVENT_LOCKED
+      - FLEET_EVENT_STARTING_SOON
+      - FLEET_EVENT_CANCELLED
+      - FLEET_EVENT_SIGNUP_CREATED
+      - FLEET_EVENT_SIGNUP_WITHDRAWN
+      title: FleetNotificationInAppEventEnum
     FleetNotificationSetting:
       type: object
       properties:
@@ -15029,14 +14953,7 @@ components:
         enabledInAppEvents:
           type: array
           items:
-            type: string
-            enum:
-            - fleet_event.published
-            - fleet_event.locked
-            - fleet_event.starting_soon
-            - fleet_event.cancelled
-            - fleet_event_signup.created
-            - fleet_event_signup.withdrawn
+            "$ref": "#/components/schemas/FleetNotificationInAppEventEnum"
         discordGuildId:
           type: string
         discordChannelId:
@@ -15446,10 +15363,7 @@ components:
         modelNameOrModelDescriptionCont:
           type: string
         loanerEq:
-          type: string
-          enum:
-          - 'true'
-          - only
+          "$ref": "#/components/schemas/LoanerFilterEnum"
         memberIn:
           type: array
           items:
@@ -15906,10 +15820,7 @@ components:
         unit:
           type: string
         entryType:
-          type: string
-          enum:
-          - deposit
-          - withdrawal
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
         quality:
           type: integer
           minimum: 0
@@ -15925,11 +15836,7 @@ components:
               type: string
               format: uuid
             type:
-              type: string
-              enum:
-              - Commodity
-              - Component
-              - Equipment
+              "$ref": "#/components/schemas/InventoryItemTypeEnum"
             name:
               type: string
             slug:
@@ -15966,27 +15873,13 @@ components:
         name:
           type: string
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         quantity:
           type: number
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         entryType:
-          type: string
-          enum:
-          - deposit
-          - withdrawal
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
         quality:
           type:
           - integer
@@ -16002,14 +15895,7 @@ components:
           - string
           - 'null'
         itemType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Commodity
-          - Component
-          - Equipment
-          -
+          "$ref": "#/components/schemas/NullableInventoryItemTypeEnum"
         itemId:
           type:
           - string
@@ -16028,20 +15914,9 @@ components:
         nameEq:
           type: string
         unitEq:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         qualityGteq:
           type: integer
         qualityLteq:
@@ -16061,20 +15936,9 @@ components:
           - string
           - 'null'
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
       additionalProperties: false
       title: HangarInventoryItemUpdateInput
     HangarInventoryItemsList:
@@ -16336,10 +16200,7 @@ components:
         publicEq:
           type: boolean
         loanerEq:
-          type: string
-          enum:
-          - 'true'
-          - only
+          "$ref": "#/components/schemas/LoanerFilterEnum"
         bundledEq:
           type: string
         boughtViaEq:
@@ -16500,18 +16361,26 @@ components:
         active:
           type: boolean
         status:
-          type: string
-          enum:
-          - created
-          - started
-          - finished
-          - failed
+          "$ref": "#/components/schemas/HangarSyncStatusEnum"
         result:
           "$ref": "#/components/schemas/HangarSyncResult"
       additionalProperties: false
       required:
       - active
       title: HangarSyncStatus
+    HangarSyncStatusEnum:
+      type: string
+      enum:
+      - created
+      - started
+      - finished
+      - failed
+      x-enumNames:
+      - CREATED
+      - STARTED
+      - FINISHED
+      - FAILED
+      title: HangarSyncStatusEnum
     HangarSyncSubmitResult:
       type: object
       properties:
@@ -16907,6 +16776,34 @@ components:
       - totalScu
       - totalUnits
       title: Inventory
+    InventoryCategoryEnum:
+      type: string
+      enum:
+      - commodity
+      - component
+      - weapon
+      - equipment
+      - ammunition
+      - consumable
+      - other
+      x-enumNames:
+      - COMMODITY
+      - COMPONENT
+      - WEAPON
+      - EQUIPMENT
+      - AMMUNITION
+      - CONSUMABLE
+      - OTHER
+      title: InventoryCategoryEnum
+    InventoryEntryTypeEnum:
+      type: string
+      enum:
+      - deposit
+      - withdrawal
+      x-enumNames:
+      - DEPOSIT
+      - WITHDRAWAL
+      title: InventoryEntryTypeEnum
     InventoryItem:
       type: object
       properties:
@@ -16924,10 +16821,7 @@ components:
         unit:
           type: string
         entryType:
-          type: string
-          enum:
-          - deposit
-          - withdrawal
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
         quality:
           type: integer
           minimum: 0
@@ -16943,11 +16837,7 @@ components:
               type: string
               format: uuid
             type:
-              type: string
-              enum:
-              - Commodity
-              - Component
-              - Equipment
+              "$ref": "#/components/schemas/InventoryItemTypeEnum"
             name:
               type: string
             slug:
@@ -16984,27 +16874,13 @@ components:
         name:
           type: string
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         quantity:
           type: number
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         entryType:
-          type: string
-          enum:
-          - deposit
-          - withdrawal
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
         quality:
           type:
           - integer
@@ -17020,14 +16896,7 @@ components:
           - string
           - 'null'
         itemType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - Commodity
-          - Component
-          - Equipment
-          -
+          "$ref": "#/components/schemas/NullableInventoryItemTypeEnum"
         itemId:
           type:
           - string
@@ -17046,20 +16915,9 @@ components:
         nameEq:
           type: string
         unitEq:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         qualityGteq:
           type: integer
         qualityLteq:
@@ -17069,6 +16927,17 @@ components:
       additionalProperties: false
       example: {}
       title: InventoryItemQuery
+    InventoryItemTypeEnum:
+      type: string
+      enum:
+      - Commodity
+      - Component
+      - Equipment
+      x-enumNames:
+      - COMMODITY
+      - COMPONENT
+      - EQUIPMENT
+      title: InventoryItemTypeEnum
     InventoryItemUpdateInput:
       type: object
       properties:
@@ -17079,20 +16948,9 @@ components:
           - string
           - 'null'
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
       additionalProperties: false
       title: InventoryItemUpdateInput
     InventoryItemsList:
@@ -17116,20 +16974,9 @@ components:
         name:
           type: string
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         netQuantity:
           type: number
         qualityMin:
@@ -17158,11 +17005,7 @@ components:
               type: string
               format: uuid
             type:
-              type: string
-              enum:
-              - Commodity
-              - Component
-              - Equipment
+              "$ref": "#/components/schemas/InventoryItemTypeEnum"
             name:
               type: string
             slug:
@@ -17191,20 +17034,9 @@ components:
         name:
           type: string
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
       additionalProperties: false
       title: InventoryStockPositionInput
     InventoryStockQuery:
@@ -17216,6 +17048,15 @@ components:
       additionalProperties: false
       example: {}
       title: InventoryStockQuery
+    InventoryUnitEnum:
+      type: string
+      enum:
+      - scu
+      - units
+      x-enumNames:
+      - SCU
+      - UNITS
+      title: InventoryUnitEnum
     InventoryVehicle:
       type:
       - object
@@ -17326,6 +17167,15 @@ components:
       - SELL
       - RENTAL
       title: ItemPriceTypeEnum
+    LoanerFilterEnum:
+      type: string
+      enum:
+      - 'true'
+      - only
+      x-enumNames:
+      - 'TRUE'
+      - ONLY
+      title: LoanerFilterEnum
     Manufacturer:
       type: object
       properties:
@@ -17505,16 +17355,7 @@ components:
         description:
           type: string
         category:
-          type: string
-          enum:
-          - other
-          - ship_combat
-          - ground_combat
-          - combined_combat
-          - mining
-          - salvage
-          - cargo_hauling
-          - exploration
+          "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
           type: string
         coverImagePreset:
@@ -17555,6 +17396,27 @@ components:
       - createdAt
       - updatedAt
       title: Mission
+    MissionCategoryEnum:
+      type: string
+      enum:
+      - other
+      - ship_combat
+      - ground_combat
+      - combined_combat
+      - mining
+      - salvage
+      - cargo_hauling
+      - exploration
+      x-enumNames:
+      - OTHER
+      - SHIP_COMBAT
+      - GROUND_COMBAT
+      - COMBINED_COMBAT
+      - MINING
+      - SALVAGE
+      - CARGO_HAULING
+      - EXPLORATION
+      title: MissionCategoryEnum
     MissionCreateInput:
       type: object
       properties:
@@ -17565,16 +17427,7 @@ components:
           - string
           - 'null'
         category:
-          type: string
-          enum:
-          - other
-          - ship_combat
-          - ground_combat
-          - combined_combat
-          - mining
-          - salvage
-          - cargo_hauling
-          - exploration
+          "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
           type:
           - string
@@ -17768,10 +17621,7 @@ components:
           type: string
           format: uuid
         slottableType:
-          type: string
-          enum:
-          - MissionTeam
-          - MissionShip
+          "$ref": "#/components/schemas/MissionSlottableTypeEnum"
         slottableId:
           type: string
           format: uuid
@@ -17798,10 +17648,7 @@ components:
       type: object
       properties:
         slottableType:
-          type: string
-          enum:
-          - MissionTeam
-          - MissionShip
+          "$ref": "#/components/schemas/MissionSlottableTypeEnum"
         slottableId:
           type: string
           format: uuid
@@ -17821,10 +17668,7 @@ components:
       type: object
       properties:
         slottableType:
-          type: string
-          enum:
-          - MissionTeam
-          - MissionShip
+          "$ref": "#/components/schemas/MissionSlottableTypeEnum"
         slottableId:
           type: string
           format: uuid
@@ -17850,6 +17694,15 @@ components:
           - 'null'
       additionalProperties: false
       title: MissionSlotUpdateInput
+    MissionSlottableTypeEnum:
+      type: string
+      enum:
+      - MissionTeam
+      - MissionShip
+      x-enumNames:
+      - MISSION_TEAM
+      - MISSION_SHIP
+      title: MissionSlottableTypeEnum
     MissionTeam:
       type: object
       properties:
@@ -17916,16 +17769,7 @@ components:
           - string
           - 'null'
         category:
-          type: string
-          enum:
-          - other
-          - ship_combat
-          - ground_combat
-          - combined_combat
-          - mining
-          - salvage
-          - cargo_hauling
-          - exploration
+          "$ref": "#/components/schemas/MissionCategoryEnum"
         scenario:
           type:
           - string
@@ -18152,13 +17996,7 @@ components:
                   health:
                     type: number
                   category:
-                    type: string
-                    enum:
-                    - vital
-                    - secondary
-                    - breakable
-                    - subpart
-                    - cosmetic
+                    "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
                 required:
                 - name
                 - health
@@ -18511,13 +18349,7 @@ components:
                   health:
                     type: number
                   category:
-                    type: string
-                    enum:
-                    - vital
-                    - secondary
-                    - breakable
-                    - subpart
-                    - cosmetic
+                    "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
                 required:
                 - name
                 - health
@@ -18887,6 +18719,21 @@ components:
       - EMP
       - UTILITY_ITEMS
       title: ModelHardpointTypeEnum
+    ModelHullPartCategoryEnum:
+      type: string
+      enum:
+      - vital
+      - secondary
+      - breakable
+      - subpart
+      - cosmetic
+      x-enumNames:
+      - VITAL
+      - SECONDARY
+      - BREAKABLE
+      - SUBPART
+      - COSMETIC
+      title: ModelHullPartCategoryEnum
     ModelLoaner:
       type: object
       properties:
@@ -19447,22 +19294,9 @@ components:
         name:
           type: string
         positionType:
-          type: string
-          enum:
-          - pilot
-          - copilot
-          - turret_gunner
-          - engineer
-          - gunner
-          - loadmaster
-          - passenger
-          - operator
-          - custom
+          "$ref": "#/components/schemas/ModelPositionTypeEnum"
         source:
-          type: string
-          enum:
-          - sc_data
-          - curated
+          "$ref": "#/components/schemas/ModelPositionSourceEnum"
         position:
           type: integer
         createdAt:
@@ -19481,6 +19315,38 @@ components:
       - createdAt
       - updatedAt
       title: ModelPosition
+    ModelPositionSourceEnum:
+      type: string
+      enum:
+      - sc_data
+      - curated
+      x-enumNames:
+      - SC_DATA
+      - CURATED
+      title: ModelPositionSourceEnum
+    ModelPositionTypeEnum:
+      type: string
+      enum:
+      - pilot
+      - copilot
+      - turret_gunner
+      - engineer
+      - gunner
+      - loadmaster
+      - passenger
+      - operator
+      - custom
+      x-enumNames:
+      - PILOT
+      - COPILOT
+      - TURRET_GUNNER
+      - ENGINEER
+      - GUNNER
+      - LOADMASTER
+      - PASSENGER
+      - OPERATOR
+      - CUSTOM
+      title: ModelPositionTypeEnum
     ModelProductionStatusEnum:
       type: string
       enum:
@@ -19898,6 +19764,51 @@ components:
       - meta
       - items
       title: Notifications
+    NullableFleetEventRecurrenceIntervalEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - daily
+      - weekly
+      - biweekly
+      - monthly
+      -
+      x-enumNames:
+      - DAILY
+      - WEEKLY
+      - BIWEEKLY
+      - MONTHLY
+      - 'NULL'
+      title: NullableFleetEventRecurrenceIntervalEnum
+    NullableFleetEventSignupApprovalEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - direct
+      - confirmation_required
+      -
+      x-enumNames:
+      - DIRECT
+      - CONFIRMATION_REQUIRED
+      - 'NULL'
+      title: NullableFleetEventSignupApprovalEnum
+    NullableInventoryItemTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - Commodity
+      - Component
+      - Equipment
+      -
+      x-enumNames:
+      - COMMODITY
+      - COMPONENT
+      - EQUIPMENT
+      - 'NULL'
+      title: NullableInventoryItemTypeEnum
     OauthApplication:
       type: object
       properties:
@@ -20441,12 +20352,7 @@ components:
         saleNotify:
           type: boolean
         dateFormat:
-          type: string
-          enum:
-          - dmy_dots
-          - dmy_slash
-          - mdy_slash
-          - ymd_dash
+          "$ref": "#/components/schemas/UserDateFormatEnum"
         publicHangar:
           type: boolean
         publicHangarUrl:
@@ -20531,6 +20437,19 @@ components:
           type: string
       additionalProperties: false
       title: UserCreateInput
+    UserDateFormatEnum:
+      type: string
+      enum:
+      - dmy_dots
+      - dmy_slash
+      - mdy_slash
+      - ymd_dash
+      x-enumNames:
+      - DMY_DOTS
+      - DMY_SLASH
+      - MDY_SLASH
+      - YMD_DASH
+      title: UserDateFormatEnum
     UserFeature:
       type: object
       properties:
@@ -20541,10 +20460,7 @@ components:
         enabledForSelf:
           type: boolean
         scope:
-          type: string
-          enum:
-          - user
-          - fleet
+          "$ref": "#/components/schemas/UserFeatureScopeEnum"
         toggleable:
           type: boolean
         fleets:
@@ -20574,6 +20490,15 @@ components:
       - fleets
       - groups
       title: UserFeature
+    UserFeatureScopeEnum:
+      type: string
+      enum:
+      - user
+      - fleet
+      x-enumNames:
+      - USER
+      - FLEET
+      title: UserFeatureScopeEnum
     UserPublic:
       type: object
       properties:
@@ -20683,12 +20608,7 @@ components:
         saleNotify:
           type: boolean
         dateFormat:
-          type: string
-          enum:
-          - dmy_dots
-          - dmy_slash
-          - mdy_slash
-          - ymd_dash
+          "$ref": "#/components/schemas/UserDateFormatEnum"
         publicHangar:
           type: boolean
         publicHangarLoaners:

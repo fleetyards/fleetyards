@@ -22,7 +22,7 @@ module Admin
               equipmentTypeIn: {type: :array, items: {type: :string}},
               itemTypeIn: {type: :array, items: {type: :string}},
               weaponClassIn: {type: :array, items: {type: :string}},
-              slotIn: {type: :array, items: {type: :string, enum: ::Equipment.slots.keys}},
+              slotIn: {type: :array, items: {"$ref": "#/components/schemas/EquipmentSlotEnum"}},
               manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}},
 
               # Compared against the same cheapest-of-that-direction figure the

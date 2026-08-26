@@ -6,15 +6,6 @@ module V1
       class FleetNotificationSetting
         include OpenapiRuby::Components::Base
 
-        IN_APP_EVENTS = %w[
-          fleet_event.published
-          fleet_event.locked
-          fleet_event.starting_soon
-          fleet_event.cancelled
-          fleet_event_signup.created
-          fleet_event_signup.withdrawn
-        ].freeze
-
         schema({
           type: :object,
           properties: {
@@ -22,7 +13,7 @@ module V1
             fleetId: {type: :string, format: :uuid},
             enabledInAppEvents: {
               type: :array,
-              items: {type: :string, enum: IN_APP_EVENTS}
+              items: {"$ref": "#/components/schemas/FleetNotificationInAppEventEnum"}
             },
             discordGuildId: {type: :string},
             discordChannelId: {type: :string},

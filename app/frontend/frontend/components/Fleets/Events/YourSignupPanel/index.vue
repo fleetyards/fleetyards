@@ -14,7 +14,7 @@ import {
   type FilterOption,
   type FleetEventShip,
   type FleetEventSignup,
-  FleetEventSignupStatus,
+  FleetEventSignupStatusEnum,
   useUpdateFleetEventSignup,
   useWithdrawFleetEventSignup,
   useDestroyFleetEventSignup,
@@ -61,16 +61,16 @@ const saving = ref(false);
 
 const notes = ref(props.signup.notes ?? "");
 const vehicleId = ref<string | null>(props.signup.vehicle?.id ?? null);
-const status = ref<FleetEventSignupStatus>(
-  (props.signup.status as FleetEventSignupStatus) ??
-    FleetEventSignupStatus.interested,
+const status = ref<FleetEventSignupStatusEnum>(
+  (props.signup.status as FleetEventSignupStatusEnum) ??
+    FleetEventSignupStatusEnum.INTERESTED,
 );
 
 const eventLevelStatusOptions = computed<FilterOption[]>(() =>
   [
-    FleetEventSignupStatus.confirmed,
-    FleetEventSignupStatus.tentative,
-    FleetEventSignupStatus.interested,
+    FleetEventSignupStatusEnum.CONFIRMED,
+    FleetEventSignupStatusEnum.TENTATIVE,
+    FleetEventSignupStatusEnum.INTERESTED,
   ].map((value) => ({
     value,
     label: t(`labels.fleets.events.signupStatuses.${value}`),
@@ -81,8 +81,8 @@ const startEdit = () => {
   notes.value = props.signup.notes ?? "";
   vehicleId.value = props.signup.vehicle?.id ?? null;
   status.value =
-    (props.signup.status as FleetEventSignupStatus) ??
-    FleetEventSignupStatus.interested;
+    (props.signup.status as FleetEventSignupStatusEnum) ??
+    FleetEventSignupStatusEnum.INTERESTED;
   editing.value = true;
 };
 
@@ -97,7 +97,7 @@ const save = async () => {
       await updateMutation.mutateAsync({
         id: slotId.value,
         data: {
-          status: FleetEventSignupStatus.confirmed,
+          status: FleetEventSignupStatusEnum.CONFIRMED,
           notes: notes.value || null,
           vehicleId: vehicleId.value ?? undefined,
         },

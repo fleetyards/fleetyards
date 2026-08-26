@@ -768,10 +768,7 @@ paths:
         in: query
         description: discarded (soft-deleted) or purged (hard-deleted)
         schema:
-          type: string
-          enum:
-          - discarded
-          - purged
+          "$ref": "#/components/schemas/DestroyedFleetSourceEnum"
         required: false
       - name: q
         in: query
@@ -819,10 +816,7 @@ paths:
         in: query
         description: discarded (soft-deleted) or purged (hard-deleted)
         schema:
-          type: string
-          enum:
-          - discarded
-          - purged
+          "$ref": "#/components/schemas/DestroyedFleetSourceEnum"
         required: false
       responses:
         '200':
@@ -9387,10 +9381,7 @@ components:
           type: string
           format: uuid
         source:
-          type: string
-          enum:
-          - discarded
-          - purged
+          "$ref": "#/components/schemas/DestroyedFleetSourceEnum"
         destroyedAt:
           type: string
           format: date-time
@@ -9417,6 +9408,15 @@ components:
       additionalProperties: false
       example: {}
       title: DestroyedFleetQuery
+    DestroyedFleetSourceEnum:
+      type: string
+      enum:
+      - discarded
+      - purged
+      x-enumNames:
+      - DISCARDED
+      - PURGED
+      title: DestroyedFleetSourceEnum
     DestroyedFleets:
       type: object
       properties:
@@ -9783,23 +9783,7 @@ components:
           - string
           - 'null'
         slot:
-          type:
-          - string
-          - 'null'
-          enum:
-          - undersuit
-          - arms
-          - helmet
-          - torso
-          - legs
-          - footwear
-          - hat
-          - gloves
-          - pants
-          - shirt
-          - jacket
-          - backpack
-          -
+          "$ref": "#/components/schemas/NullableEquipmentSlotEnum"
         size:
           type:
           - string
@@ -9845,23 +9829,9 @@ components:
           - number
           - 'null'
         coreCompatibility:
-          type:
-          - string
-          - 'null'
-          enum:
-          - all
-          - medium_heavy
-          - heavy
-          -
+          "$ref": "#/components/schemas/NullableEquipmentCoreCompatibilityEnum"
         backpackCompatibility:
-          type:
-          - string
-          - 'null'
-          enum:
-          - all
-          - light_medium
-          - light
-          -
+          "$ref": "#/components/schemas/NullableEquipmentBackpackCompatibilityEnum"
         manufacturerId:
           type: string
           format: uuid
@@ -9922,20 +9892,7 @@ components:
         slotIn:
           type: array
           items:
-            type: string
-            enum:
-            - undersuit
-            - arms
-            - helmet
-            - torso
-            - legs
-            - footwear
-            - hat
-            - gloves
-            - pants
-            - shirt
-            - jacket
-            - backpack
+            "$ref": "#/components/schemas/EquipmentSlotEnum"
         manufacturerIdIn:
           type: array
           items:
@@ -9958,6 +9915,35 @@ components:
       additionalProperties: false
       example: {}
       title: EquipmentQuery
+    EquipmentSlotEnum:
+      type: string
+      enum:
+      - undersuit
+      - arms
+      - helmet
+      - torso
+      - legs
+      - footwear
+      - hat
+      - gloves
+      - pants
+      - shirt
+      - jacket
+      - backpack
+      x-enumNames:
+      - UNDERSUIT
+      - ARMS
+      - HELMET
+      - TORSO
+      - LEGS
+      - FOOTWEAR
+      - HAT
+      - GLOVES
+      - PANTS
+      - SHIRT
+      - JACKET
+      - BACKPACK
+      title: EquipmentSlotEnum
     EquipmentSortEnum:
       type: string
       enum:
@@ -11158,6 +11144,45 @@ components:
       - meta
       - items
       title: Imports
+    InventoryCategoryEnum:
+      type: string
+      enum:
+      - commodity
+      - component
+      - weapon
+      - equipment
+      - ammunition
+      - consumable
+      - other
+      x-enumNames:
+      - COMMODITY
+      - COMPONENT
+      - WEAPON
+      - EQUIPMENT
+      - AMMUNITION
+      - CONSUMABLE
+      - OTHER
+      title: InventoryCategoryEnum
+    InventoryEntryTypeEnum:
+      type: string
+      enum:
+      - deposit
+      - withdrawal
+      x-enumNames:
+      - DEPOSIT
+      - WITHDRAWAL
+      title: InventoryEntryTypeEnum
+    InventoryItemTypeEnum:
+      type: string
+      enum:
+      - Commodity
+      - Component
+      - Equipment
+      x-enumNames:
+      - COMMODITY
+      - COMPONENT
+      - EQUIPMENT
+      title: InventoryItemTypeEnum
     InventoryStockPosition:
       type: object
       properties:
@@ -11166,20 +11191,9 @@ components:
         name:
           type: string
         category:
-          type: string
-          enum:
-          - commodity
-          - component
-          - weapon
-          - equipment
-          - ammunition
-          - consumable
-          - other
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
         unit:
-          type: string
-          enum:
-          - scu
-          - units
+          "$ref": "#/components/schemas/InventoryUnitEnum"
         netQuantity:
           type: number
         qualityMin:
@@ -11208,11 +11222,7 @@ components:
               type: string
               format: uuid
             type:
-              type: string
-              enum:
-              - Commodity
-              - Component
-              - Equipment
+              "$ref": "#/components/schemas/InventoryItemTypeEnum"
             name:
               type: string
             slug:
@@ -11235,6 +11245,15 @@ components:
       - netQuantity
       - entriesCount
       title: InventoryStockPosition
+    InventoryUnitEnum:
+      type: string
+      enum:
+      - scu
+      - units
+      x-enumNames:
+      - SCU
+      - UNITS
+      title: InventoryUnitEnum
     InventoryVehicle:
       type:
       - object
@@ -11406,6 +11425,15 @@ components:
       - meta
       - items
       title: ItemPrices
+    LoanerFilterEnum:
+      type: string
+      enum:
+      - 'true'
+      - only
+      x-enumNames:
+      - 'TRUE'
+      - ONLY
+      title: LoanerFilterEnum
     Manufacturer:
       type: object
       properties:
@@ -11821,13 +11849,7 @@ components:
                   health:
                     type: number
                   category:
-                    type: string
-                    enum:
-                    - vital
-                    - secondary
-                    - breakable
-                    - subpart
-                    - cosmetic
+                    "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
                 required:
                 - name
                 - health
@@ -12298,13 +12320,7 @@ components:
                   health:
                     type: number
                   category:
-                    type: string
-                    enum:
-                    - vital
-                    - secondary
-                    - breakable
-                    - subpart
-                    - cosmetic
+                    "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
                 required:
                 - name
                 - health
@@ -12847,6 +12863,21 @@ components:
       - meta
       - items
       title: ModelHardpoints
+    ModelHullPartCategoryEnum:
+      type: string
+      enum:
+      - vital
+      - secondary
+      - breakable
+      - subpart
+      - cosmetic
+      x-enumNames:
+      - VITAL
+      - SECONDARY
+      - BREAKABLE
+      - SUBPART
+      - COSMETIC
+      title: ModelHullPartCategoryEnum
     ModelLinkInput:
       type: object
       properties:
@@ -14492,6 +14523,84 @@ components:
       - FLEET_EVENT_SIGNUP_ASSIGNED
       - FLEET_EVENT_SIGNUP_KICKED
       title: NotificationTypeEnum
+    NullableEquipmentBackpackCompatibilityEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - all
+      - light_medium
+      - light
+      -
+      x-enumNames:
+      - ALL
+      - LIGHT_MEDIUM
+      - LIGHT
+      - 'NULL'
+      title: NullableEquipmentBackpackCompatibilityEnum
+    NullableEquipmentCoreCompatibilityEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - all
+      - medium_heavy
+      - heavy
+      -
+      x-enumNames:
+      - ALL
+      - MEDIUM_HEAVY
+      - HEAVY
+      - 'NULL'
+      title: NullableEquipmentCoreCompatibilityEnum
+    NullableEquipmentSlotEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - undersuit
+      - arms
+      - helmet
+      - torso
+      - legs
+      - footwear
+      - hat
+      - gloves
+      - pants
+      - shirt
+      - jacket
+      - backpack
+      -
+      x-enumNames:
+      - UNDERSUIT
+      - ARMS
+      - HELMET
+      - TORSO
+      - LEGS
+      - FOOTWEAR
+      - HAT
+      - GLOVES
+      - PANTS
+      - SHIRT
+      - JACKET
+      - BACKPACK
+      - 'NULL'
+      title: NullableEquipmentSlotEnum
+    NullableInventoryItemTypeEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - Commodity
+      - Component
+      - Equipment
+      -
+      x-enumNames:
+      - COMMODITY
+      - COMPONENT
+      - EQUIPMENT
+      - 'NULL'
+      title: NullableInventoryItemTypeEnum
     OauthApplication:
       type: object
       properties:
@@ -15476,10 +15585,7 @@ components:
         modelSearchCont:
           type: string
         loanerEq:
-          type: string
-          enum:
-          - 'true'
-          - only
+          "$ref": "#/components/schemas/LoanerFilterEnum"
         wantedEq:
           type: boolean
         sorts:
