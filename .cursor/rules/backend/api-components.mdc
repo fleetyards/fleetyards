@@ -97,16 +97,38 @@ Check for an existing component before adding one. `SortInput`,
 `StandardError`, `SuccessResponse`, `MessageResponse` and the
 `BaseList` / `Meta` pair cover most small payloads.
 
-## The one inline exception
+## Query parameters
 
-The `q` deepObject query parameter needs a literal `type: :object` alongside
-`style: :deepObject`, and carries its `$ref` to a `<Name>Query` component:
+A deepObject parameter carries a plain `$ref` and nothing else. The
+`type: :object` that used to sit beside it was redundant — removing it produces
+a byte-identical document.
 
 ```ruby
 parameter name: "q", in: :query,
-  schema: {type: :object, "$ref": "#/components/schemas/ModelQuery"},
+  schema: {"$ref": "#/components/schemas/ModelQuery"},
   style: :deepObject, explode: true, required: false
 ```
+
+**Spell the properties out.** Request validation coerces the strings a query
+string delivers only for declared properties, so a map typed through
+`additionalProperties` rejects every request no matter what the value type says
+— `additionalProperties: {type: :integer}` on `containerFit` 400'd every call
+until it was replaced by `ContainerFitQuery`, which lists its seven keys.
+
+Numeric filters use `type: :number`, never `:integer`: only `:number` coerces.
+
+## Reference components by class
+
+`$ref` strings work, but `schema({})`, `parameter`, `request_body` and
+`response ... schema` all accept the component class and emit the same `$ref`:
+
+```ruby
+status: V1::Schemas::Enums::HangarSyncStatusEnum
+```
+
+A typo becomes a `NameError` while generating instead of a dangling reference
+that only warns. Most of the tree still uses strings; prefer the class form in
+new code.
 
 ## After changing components
 

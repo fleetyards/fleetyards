@@ -309,9 +309,33 @@ Before adding a component, check whether one already fits: `SortInput`,
 `StandardError`, `SuccessResponse`, `MessageResponse` and the `BaseList` /
 `Meta` pair cover most small payloads.
 
-The `q` deepObject query parameter is the one exception to "no inline object":
-it needs a literal `type: :object` next to `style: :deepObject`, and carries its
-`$ref` to a `<Name>Query` component alongside.
+A deepObject query parameter is no exception — it carries a plain `$ref` to a
+`<Name>Query` component and nothing else. The `type: :object` that used to sit
+next to the `$ref` was redundant; dropping it produces an identical document.
+
+```ruby
+parameter name: "q", in: :query,
+  schema: {"$ref": "#/components/schemas/ModelQuery"},
+  style: :deepObject, explode: true, required: false
+```
+
+Query components must spell out their properties. Request validation coerces the
+strings a query string delivers only for **declared properties** — a map typed
+through `additionalProperties` rejects every request, whatever the value type
+says. `ContainerFitQuery` lists its seven keys for exactly that reason.
+
+### Reference components by class, not by string
+
+`$ref` strings work, but the DSL and `schema({})` both accept the component
+class itself and turn it into the same `$ref`:
+
+```ruby
+status: V1::Schemas::Enums::HangarSyncStatusEnum
+```
+
+A typo is then a `NameError` at generate time instead of a dangling reference
+that only `strict_reference_validation` warns about. Most of the tree still uses
+the string form; prefer the class form in new code.
 
 ## Feature Flags
 
