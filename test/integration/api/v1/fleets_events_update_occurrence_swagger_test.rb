@@ -17,20 +17,7 @@ class Api::V1::FleetsEventsUpdateOccurrenceSwaggerTest < ActionDispatch::Integra
       consumes "application/json"
       produces "application/json"
 
-      request_body schema: {
-        type: :object,
-        properties: {
-          date: {type: :string, format: :date},
-          title: {type: [:string, :null]},
-          description: {type: [:string, :null]},
-          briefing: {type: [:string, :null]},
-          location: {type: [:string, :null]},
-          meetupLocation: {type: [:string, :null]},
-          scenario: {type: [:string, :null]},
-          coverImagePreset: {type: [:string, :null]}
-        },
-        required: %w[date]
-      }, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventOccurrenceUpdateInput"}
 
       security [
         {SessionCookie: []},

@@ -19,14 +19,7 @@ class Api::V1::FleetsEventsTeamsShipsExpandFromModelTest < ActionDispatch::Integ
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {
-        type: :object,
-        properties: {
-          modelId: {type: :string, format: :uuid},
-          positionIds: {type: :array, items: {type: :string, format: :uuid}}
-        },
-        required: %w[modelId]
-      }
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventShipExpandInput"}
 
       security [
         {SessionCookie: []},

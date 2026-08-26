@@ -15,13 +15,7 @@ class Admin::Api::V1::ModelUpgradesUnlinkTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: :id, in: :path, required: true, schema: {type: :string, format: :uuid}
-      request_body required: true, schema: {
-        type: :object,
-        properties: {
-          modelId: {type: :string, format: :uuid}
-        },
-        required: [:modelId]
-      }
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelLinkInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelUpgrade"

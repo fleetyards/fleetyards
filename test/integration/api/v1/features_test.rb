@@ -14,7 +14,7 @@ class Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {type: :string}
+        schema "$ref": "#/components/schemas/FeatureNamesList"
       end
     end
   end

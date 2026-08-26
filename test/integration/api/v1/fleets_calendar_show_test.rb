@@ -25,9 +25,7 @@ class Api::V1::FleetsCalendarShowTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :object, properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/FleetEvent"}}
-        }, required: %w[items]
+        schema "$ref": "#/components/schemas/FleetCalendar"
       end
 
       response(401, "unauthorized") do

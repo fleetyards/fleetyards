@@ -14,7 +14,7 @@ class Admin::Api::V1::ModelsReloadPaintsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :object, properties: {message: {type: :string}}, required: [:message]
+        schema "$ref": "#/components/schemas/MessageResponse"
       end
 
       response(403, "forbidden") do

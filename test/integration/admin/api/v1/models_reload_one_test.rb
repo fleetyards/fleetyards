@@ -16,7 +16,7 @@ class Admin::Api::V1::ModelsReloadOneTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :object, properties: {message: {type: :string}}, required: [:message]
+        schema "$ref": "#/components/schemas/MessageResponse"
       end
 
       response(404, "not found") do

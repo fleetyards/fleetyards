@@ -20,7 +20,7 @@ class Api::V1::HangarItemsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {type: :string}
+        schema "$ref": "#/components/schemas/HangarItemsList"
       end
 
       response(401, "unauthorized") do
