@@ -16,10 +16,7 @@ class Api::V1::FiltersEquipmentItemTypesTest < ActionDispatch::IntegrationTest
       parameter name: "q", in: :query,
         schema: {
           type: :object,
-          properties: {
-            equipmentTypeIn: {type: :array, items: {type: :string}}
-          },
-          additionalProperties: false
+          "$ref": "#/components/schemas/EquipmentItemTypeFilterQuery"
         },
         style: :deepObject,
         explode: true,
