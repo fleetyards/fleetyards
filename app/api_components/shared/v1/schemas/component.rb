@@ -30,31 +30,11 @@ module Shared
             itemClass: {"$ref": "#/components/schemas/ComponentItemClassEnum"},
             itemClassLabel: {type: :string},
 
-            availability: {
-              type: :object,
-              properties: {
-                boughtAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ItemPrice"}
-                },
-                soldAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ItemPrice"}
-                }
-              },
-              additionalProperties: false,
-              required: %w[boughtAt soldAt]
-            },
+            availability: Shared::V1::Schemas::ItemAvailability,
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
-            media: {
-              type: :object,
-              properties: {
-                storeImage: {"$ref": "#/components/schemas/MediaFile"}
-              },
-              additionalProperties: false
-            },
+            media: Shared::V1::Schemas::StoreImageMedia,
 
             typeData: {
               anyOf: [

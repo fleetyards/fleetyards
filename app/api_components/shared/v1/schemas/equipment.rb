@@ -49,21 +49,7 @@ module Shared
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
-            availability: {
-              type: :object,
-              properties: {
-                boughtAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ItemPrice"}
-                },
-                soldAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ItemPrice"}
-                }
-              },
-              additionalProperties: false,
-              required: %w[boughtAt soldAt]
-            },
+            availability: Shared::V1::Schemas::ItemAvailability,
 
             storeImage: {"$ref": "#/components/schemas/MediaFile"},
 

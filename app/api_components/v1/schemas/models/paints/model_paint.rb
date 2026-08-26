@@ -17,21 +17,7 @@ module V1
               lastUpdatedAt: {type: :string, format: "date-time"},
               lastUpdatedAtLabel: {type: :string},
 
-              availability: {
-                type: :object,
-                properties: {
-                  boughtAt: {
-                    type: :array,
-                    items: {"$ref": "#/components/schemas/ItemPrice"}
-                  },
-                  soldAt: {
-                    type: :array,
-                    items: {"$ref": "#/components/schemas/ItemPrice"}
-                  }
-                },
-                additionalProperties: false,
-                required: %w[boughtAt soldAt]
-              },
+              availability: Shared::V1::Schemas::ItemAvailability,
 
               media: {
                 type: :object,

@@ -15,41 +15,14 @@ module V1
             name: {type: :string},
             slug: {type: :string},
 
-            availability: {
-              type: :object,
-              properties: {
-                boughtAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ItemPrice"}
-                },
-                soldAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ItemPrice"}
-                },
-                rentalAt: {
-                  type: :array,
-                  items: {"$ref": "#/components/schemas/ItemPrice"}
-                }
-              },
-              additionalProperties: false,
-              required: %w[boughtAt soldAt rentalAt]
-            },
+            availability: Shared::V1::Schemas::ModelAvailability,
 
             classification: {type: :string},
             classificationLabel: {type: :string},
 
             adiMap: {type: :boolean, default: false},
 
-            crew: {
-              type: :object,
-              properties: {
-                max: {type: :integer},
-                maxLabel: {type: :string},
-                min: {type: :integer},
-                minLabel: {type: :string}
-              },
-              additionalProperties: false
-            },
+            crew: Shared::V1::Schemas::ModelCrew,
 
             description: {type: :string},
             erkulIdentifier: {type: :string},
@@ -62,14 +35,7 @@ module V1
             lastUpdatedAt: {type: :string, format: "date-time"},
             lastUpdatedAtLabel: {type: :string},
 
-            links: {
-              type: :object,
-              properties: {
-                salesPageUrl: {type: :string},
-                storeUrl: {type: :string}
-              },
-              additionalProperties: false
-            },
+            links: Shared::V1::Schemas::ModelLinks,
 
             loaners: {
               type: :array,
@@ -78,104 +44,9 @@ module V1
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
-            media: {
-              type: :object,
-              properties: {
-                angledView: {"$ref": "#/components/schemas/MediaFile"},
-                angledViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                fleetchartImage: {type: :string},
-                extendedHolo: {"$ref": "#/components/schemas/MediaFile"},
-                extendedTopView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedTopViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                extendedSideView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedSideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                extendedFrontView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedFrontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                extendedAngledView: {"$ref": "#/components/schemas/MediaFile"},
-                extendedAngledViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                frontView: {"$ref": "#/components/schemas/MediaFile"},
-                frontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                sideView: {"$ref": "#/components/schemas/MediaFile"},
-                sideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                storeImage: {"$ref": "#/components/schemas/MediaFile"},
-                topView: {"$ref": "#/components/schemas/MediaFile"},
-                topViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                holo: {"$ref": "#/components/schemas/MediaFile"},
-                brochure: {"$ref": "#/components/schemas/MediaFile"}
-              },
-              additionalProperties: false
-            },
+            media: Shared::V1::Schemas::ModelMedia,
 
-            metrics: {
-              type: :object,
-              properties: {
-                beam: {type: :number},
-                beamLabel: {type: :string},
-                cargo: {type: :number},
-                cargoLabel: {type: :string},
-                personalInventory: {type: :number},
-                personalInventoryLabel: {type: [:string, :null]},
-                fleetchartOffsetLength: {type: :number},
-                fleetchartOffsetBeam: {type: :number},
-                extendedLength: {type: :number},
-                extendedLengthLabel: {type: :string},
-                extendedBeam: {type: :number},
-                extendedBeamLabel: {type: :string},
-                extendedHeight: {type: :number},
-                extendedHeightLabel: {type: :string},
-                extendedFleetchartOffsetLength: {type: :number},
-                extendedFleetchartOffsetBeam: {type: :number},
-                height: {type: :number},
-                heightLabel: {type: :string},
-                hydrogenFuelTankSize: {type: :number},
-                isGroundVehicle: {type: :boolean},
-                length: {type: :number},
-                lengthLabel: {type: :string},
-                mass: {type: :number},
-                massLabel: {type: :string},
-                hullHealth: {type: :number},
-                hullParts: {
-                  type: :array,
-                  items: {
-                    type: :object,
-                    properties: {
-                      name: {type: :string},
-                      health: {type: :number},
-                      category: {"$ref": "#/components/schemas/ModelHullPartCategoryEnum"}
-                    },
-                    required: %w[name health category],
-                    additionalProperties: false
-                  }
-                },
-                hullDoors: {
-                  type: :array,
-                  items: {
-                    type: :object,
-                    properties: {
-                      name: {type: :string},
-                      health: {type: :number}
-                    },
-                    required: %w[name health],
-                    additionalProperties: false
-                  }
-                },
-                quantumFuelTankSize: {type: :number},
-                weaponPoolSize: {type: :number},
-                signatureCrossSection: {
-                  type: :object,
-                  properties: {
-                    x: {type: :number},
-                    y: {type: :number},
-                    z: {type: :number}
-                  },
-                  additionalProperties: false
-                },
-                size: {type: :string},
-                sizeLabel: {type: :string},
-                dockSize: {type: :string}
-              },
-              additionalProperties: false
-            },
+            metrics: Shared::V1::Schemas::ModelMetrics,
 
             cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
             hydrogenFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/FuelTank"}},
@@ -195,26 +66,7 @@ module V1
             rsiName: {type: :string},
             rsiSlug: {type: :string},
 
-            speeds: {
-              type: :object,
-              properties: {
-                groundAcceleration: {type: :number},
-                groundDecceleration: {type: :number},
-                groundMaxSpeed: {type: :number},
-                groundReverseSpeed: {type: :number},
-                maxSpeed: {type: :number},
-                pitch: {type: :number},
-                pitchBoosted: {type: :number},
-                roll: {type: :number},
-                rollBoosted: {type: :number},
-                scmSpeed: {type: :number},
-                scmSpeedBoosted: {type: :number},
-                reverseSpeedBoosted: {type: :number},
-                yaw: {type: :number},
-                yawBoosted: {type: :number}
-              },
-              additionalProperties: false
-            },
+            speeds: Shared::V1::Schemas::ModelSpeeds,
 
             holo: {type: :string, deprecated: true},
             brochure: {type: :string, deprecated: true},

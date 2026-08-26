@@ -18,21 +18,7 @@ module V1
           # The UEX snapshot prices commodities at every terminal that trades
           # them, which is the whole point of syncing it -- the same shape the
           # component and equipment payloads carry.
-          availability: {
-            type: :object,
-            properties: {
-              boughtAt: {
-                type: :array,
-                items: {"$ref": "#/components/schemas/ItemPrice"}
-              },
-              soldAt: {
-                type: :array,
-                items: {"$ref": "#/components/schemas/ItemPrice"}
-              }
-            },
-            additionalProperties: false,
-            required: %w[boughtAt soldAt]
-          },
+          availability: Shared::V1::Schemas::ItemAvailability,
 
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}

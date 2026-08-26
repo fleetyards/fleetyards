@@ -27,13 +27,7 @@ module V1
               classificationLabel: {type: [:string, :null]},
               inHangar: {type: :boolean},
               onWishlist: {type: :boolean},
-              media: {
-                type: :object,
-                properties: {
-                  storeImage: {"$ref": "#/components/schemas/MediaFile"}
-                },
-                additionalProperties: false
-              }
+              media: Shared::V1::Schemas::StoreImageMedia
             },
             additionalProperties: false,
             required: %w[id name slug manufacturer classification classificationLabel inHangar onWishlist media]
