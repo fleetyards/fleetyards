@@ -71,12 +71,14 @@ module Manufacturers
 
       component = create(:component, manufacturer: drop)
       equipment = create(:equipment, manufacturer: drop)
+      equipment_build = create(:equipment_build, manufacturer: drop)
       model = create(:model, manufacturer: drop)
 
       ::Manufacturers::Deduplicator.new.call
 
       assert_equal keep, component.reload.manufacturer
       assert_equal keep, equipment.reload.manufacturer
+      assert_equal keep, equipment_build.reload.manufacturer
       assert_equal keep, model.reload.manufacturer
     end
 

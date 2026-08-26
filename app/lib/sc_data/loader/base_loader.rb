@@ -79,6 +79,38 @@ module ScData
         record
       end
 
+      # The same values, written to what this build says about the record as well
+      # as onto the record itself. Dual-writing is what lets reads move to the
+      # build one catalogue at a time instead of in one cut.
+      #
+      # Keyed on the build, so re-loading one updates it in place while a new
+      # build lands beside its predecessor. What that leaves behind is bounded by
+      # `prune_builds`.
+      def apply_build(record, params)
+        build = record.builds.find_or_initialize_by(
+          environment: sc_environment,
+          version: sc_version
+        )
+
+        apply(build, params)
+      end
+
+      # Keeps the last few builds of this environment and drops the rest. Run
+      # after a load rather than during it, so a build being written is never a
+      # candidate for pruning.
+      #
+      # Deleted rather than destroyed: these rows describe a build, nothing hangs
+      # off them, and a load writes thousands at a time.
+      def prune_builds(build_class)
+        retained = build_class.retained_versions(sc_environment)
+
+        # `where.not(version: [])` is `1=1`. An environment with nothing retained
+        # has nothing loaded either, and must not have its history swept.
+        return 0 if retained.blank?
+
+        build_class.where(environment: sc_environment).where.not(version: retained).delete_all
+      end
+
       # Validations and callbacks are skipped on purpose where this is used: it
       # sweeps every Model on every load, and the in-game flag is not something
       # a validation or a stored version has an opinion about.
