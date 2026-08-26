@@ -30,7 +30,7 @@ class Api::V1::UserFeaturesDisableTest < ActionDispatch::IntegrationTest
       end
 
       response(403, "forbidden") do
-        schema type: :object, properties: {code: {type: :string}, message: {type: :string}}
+        schema "$ref": "#/components/schemas/StandardError"
       end
     end
   end

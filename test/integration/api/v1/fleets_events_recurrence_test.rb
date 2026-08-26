@@ -17,11 +17,7 @@ class Api::V1::FleetsEventsRecurrenceTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body schema: {
-        type: :object,
-        properties: {date: {type: :string, format: :date}},
-        required: %w[date]
-      }, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventOccurrenceDateInput"}
 
       security [
         {SessionCookie: []},

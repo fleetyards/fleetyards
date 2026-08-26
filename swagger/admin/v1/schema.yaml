@@ -4132,13 +4132,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
+              "$ref": "#/components/schemas/ModelLinkInput"
       responses:
         '200':
           description: successful
@@ -4178,13 +4172,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
+              "$ref": "#/components/schemas/ModelLinkInput"
       responses:
         '200':
           description: successful
@@ -5000,13 +4988,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
+              "$ref": "#/components/schemas/ModelLinkInput"
       responses:
         '200':
           description: successful
@@ -5046,13 +5028,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
+              "$ref": "#/components/schemas/ModelLinkInput"
       responses:
         '200':
           description: successful
@@ -5189,12 +5165,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '403':
           description: forbidden
           content:
@@ -5219,12 +5190,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '403':
           description: forbidden
           content:
@@ -5249,12 +5215,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '403':
           description: forbidden
           content:
@@ -5279,12 +5240,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '403':
           description: forbidden
           content:
@@ -5309,12 +5265,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '403':
           description: forbidden
           content:
@@ -5458,12 +5409,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '404':
           description: not found
           content:
@@ -5504,12 +5450,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '404':
           description: not found
           content:
@@ -5550,12 +5491,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '404':
           description: not found
           content:
@@ -6458,12 +6394,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
+                "$ref": "#/components/schemas/MessageResponse"
         '403':
           description: forbidden
           content:
@@ -11671,6 +11602,14 @@ components:
       - size
       - url
       title: MediaFile
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+      - message
+      title: MessageResponse
     Meta:
       type: object
       properties:
@@ -12905,6 +12844,15 @@ components:
       - meta
       - items
       title: ModelHardpoints
+    ModelLinkInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+      required:
+      - modelId
+      title: ModelLinkInput
     ModelLoaner:
       type: object
       properties:

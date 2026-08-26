@@ -226,6 +226,49 @@ When adding new API endpoints, follow this order:
 8. **Generate schema**: `./bin/generate-schema`
 9. **Run tests**: `bin/rails test`
 
+### Never define request or response types inline
+
+Every request body and every response body must be a `$ref` to an explicit
+component class under `app/api_components/`. The integration test declares the
+reference, never the shape:
+
+```ruby
+# Good
+request_body required: true, schema: {"$ref": "#/components/schemas/ModelLinkInput"}
+
+response(200, "successful") do
+  schema "$ref": "#/components/schemas/MessageResponse"
+end
+
+# Bad — the shape lives in the test
+request_body required: true, schema: {
+  type: :object,
+  properties: {modelId: {type: :string, format: :uuid}},
+  required: [:modelId]
+}
+```
+
+Why: an inline body has no name, so Orval invents one from the operation —
+`UnlinkModelModuleBody`, `ReloadLoaners200`, `FleetCalendar200`. Four endpoints
+sharing one payload get four unrelated TypeScript types that drift
+independently, and the frontend has nothing stable to import.
+
+Naming and placement follow the existing tree:
+
+- Request bodies → `<scope>/v1/schemas/inputs/<name>_input.rb`
+- Response bodies → `<scope>/v1/schemas/<name>.rb`
+- Reused by both the public and the admin schema → `shared/v1/`
+- Enums get their own component under `shared/v1/schemas/enums/`, referenced by
+  `$ref` — don't inline an `enum:` into a property
+
+Before adding a component, check whether one already fits: `SortInput`,
+`StandardError`, `SuccessResponse`, `MessageResponse` and the `BaseList` /
+`Meta` pair cover most small payloads.
+
+The `q` deepObject query parameter is the one exception to "no inline object":
+it needs a literal `type: :object` next to `style: :deepObject`, and carries its
+`$ref` to a `<Name>Query` component alongside.
+
 ## Feature Flags
 
 Flags are declared in **`config/feature_flags.yml`** — the single source of truth.
@@ -298,6 +341,7 @@ For deeper guidance on specific topics, refer to:
 - `.cursor/rules/project-structure.mdc` — Project structure details
 - `.cursor/rules/backend.mdc` — Backend development rules
 - `.cursor/rules/backend/linting-and-formatting.mdc` — Ruby formatting
+- `.cursor/rules/backend/api-components.mdc` — OpenAPI component placement and the no-inline-schema rule
 - `.cursor/rules/frontend.mdc` — Frontend development rules
 - `.cursor/rules/frontend/linting-and-formatting.mdc` — Frontend formatting
 - `.cursor/rules/frontend/styling.mdc` — SCSS/styling rules

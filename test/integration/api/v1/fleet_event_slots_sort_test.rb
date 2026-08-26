@@ -14,15 +14,7 @@ class Api::V1::FleetEventSlotsSortTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body schema: {
-        type: :object,
-        properties: {
-          slottableType: {type: :string, enum: %w[FleetEventTeam FleetEventShip]},
-          slottableId: {type: :string, format: :uuid},
-          sorting: {type: :array, items: {type: :string, format: :uuid}}
-        },
-        required: %w[slottableType slottableId sorting]
-      }, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventSlotSortInput"}
 
       security [
         {SessionCookie: []},

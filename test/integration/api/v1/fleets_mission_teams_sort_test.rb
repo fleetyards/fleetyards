@@ -26,7 +26,7 @@ class Api::V1::FleetsMissionTeamsSortTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :object, properties: {success: {type: :boolean}}
+        schema "$ref": "#/components/schemas/SuccessResponse"
       end
 
       response(401, "unauthorized") do

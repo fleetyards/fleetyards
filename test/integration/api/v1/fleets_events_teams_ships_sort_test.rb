@@ -18,11 +18,7 @@ class Api::V1::FleetsEventsTeamsShipsSortTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {
-        type: :object,
-        properties: {sorting: {type: :array, items: {type: :string, format: :uuid}}},
-        required: %w[sorting]
-      }
+      request_body required: true, schema: {"$ref": "#/components/schemas/SortInput"}
 
       security [
         {SessionCookie: []},

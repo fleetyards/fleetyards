@@ -22,16 +22,7 @@ class Api::V1::FleetsNotificationsDiscordStatusTest < ActionDispatch::Integratio
       ]
 
       response(200, "successful") do
-        schema type: :object,
-          properties: {
-            ok: {type: :boolean},
-            code: {type: :string},
-            message: {type: :string},
-            guildId: {type: :string},
-            guildName: {type: :string},
-            status: {type: :integer},
-            installUrl: {type: :string}
-          }
+        schema "$ref": "#/components/schemas/FleetNotificationDiscordStatus"
       end
 
       response(401, "unauthorized") do

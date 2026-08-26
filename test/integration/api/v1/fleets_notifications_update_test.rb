@@ -16,15 +16,7 @@ class Api::V1::FleetsNotificationsUpdateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body schema: {
-        type: :object,
-        properties: {
-          discordGuildId: {type: [:string, :null]},
-          discordChannelId: {type: [:string, :null]},
-          discordWebhookUrl: {type: [:string, :null]},
-          enabledInAppEvents: {type: :array, items: {type: :string}}
-        }
-      }, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetNotificationSettingUpdateInput"}
 
       security [
         {SessionCookie: []},

@@ -173,9 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                "$ref": "#/components/schemas/FeatureNamesList"
   "/filters/commodities/types":
     get:
       summary: Commodity Types Filters
@@ -602,25 +600,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                slottableType:
-                  type: string
-                  enum:
-                  - FleetEventTeam
-                  - FleetEventShip
-                slottableId:
-                  type: string
-                  format: uuid
-                sorting:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-              required:
-              - slottableType
-              - slottableId
-              - sorting
+              "$ref": "#/components/schemas/FleetEventSlotSortInput"
       responses:
         '200':
           description: successful
@@ -1053,14 +1033,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  items:
-                    type: array
-                    items:
-                      "$ref": "#/components/schemas/FleetEvent"
-                required:
-                - items
+                "$ref": "#/components/schemas/FleetCalendar"
         '401':
           description: unauthorized
           content:
@@ -1358,15 +1331,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                sorting:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-              required:
-              - sorting
+              "$ref": "#/components/schemas/SortInput"
       responses:
         '200':
           description: successful
@@ -1464,15 +1429,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                sorting:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-              required:
-              - sorting
+              "$ref": "#/components/schemas/SortInput"
       responses:
         '200':
           description: successful
@@ -1604,18 +1561,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-                positionIds:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-              required:
-              - modelId
+              "$ref": "#/components/schemas/FleetEventShipExpandInput"
       responses:
         '200':
           description: successful
@@ -2051,13 +1997,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                date:
-                  type: string
-                  format: date
-              required:
-              - date
+              "$ref": "#/components/schemas/FleetEventOccurrenceDateInput"
       responses:
         '200':
           description: successful
@@ -2227,13 +2167,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                date:
-                  type: string
-                  format: date
-              required:
-              - date
+              "$ref": "#/components/schemas/FleetEventOccurrenceDateInput"
       responses:
         '200':
           description: successful
@@ -2453,41 +2387,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                date:
-                  type: string
-                  format: date
-                title:
-                  type:
-                  - string
-                  - 'null'
-                description:
-                  type:
-                  - string
-                  - 'null'
-                briefing:
-                  type:
-                  - string
-                  - 'null'
-                location:
-                  type:
-                  - string
-                  - 'null'
-                meetupLocation:
-                  type:
-                  - string
-                  - 'null'
-                scenario:
-                  type:
-                  - string
-                  - 'null'
-                coverImagePreset:
-                  type:
-                  - string
-                  - 'null'
-              required:
-              - date
+              "$ref": "#/components/schemas/FleetEventOccurrenceUpdateInput"
       responses:
         '200':
           description: successful
@@ -4259,10 +4159,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                "$ref": "#/components/schemas/SuccessResponse"
         '401':
           description: unauthorized
           content:
@@ -4443,10 +4340,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                "$ref": "#/components/schemas/SuccessResponse"
         '401':
           description: unauthorized
           content:
@@ -4788,24 +4682,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                discordGuildId:
-                  type:
-                  - string
-                  - 'null'
-                discordChannelId:
-                  type:
-                  - string
-                  - 'null'
-                discordWebhookUrl:
-                  type:
-                  - string
-                  - 'null'
-                enabledInAppEvents:
-                  type: array
-                  items:
-                    type: string
+              "$ref": "#/components/schemas/FleetNotificationSettingUpdateInput"
       responses:
         '200':
           description: successful
@@ -4847,22 +4724,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  ok:
-                    type: boolean
-                  code:
-                    type: string
-                  message:
-                    type: string
-                  guildId:
-                    type: string
-                  guildName:
-                    type: string
-                  status:
-                    type: integer
-                  installUrl:
-                    type: string
+                "$ref": "#/components/schemas/FleetNotificationDiscordStatus"
         '401':
           description: unauthorized
           content:
@@ -5797,10 +5659,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                "$ref": "#/components/schemas/SuccessResponse"
         '401':
           description: unauthorized
           content:
@@ -6610,9 +6469,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                "$ref": "#/components/schemas/HangarItemsList"
         '401':
           description: unauthorized
           content:
@@ -7146,10 +7003,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
+                "$ref": "#/components/schemas/SuccessResponse"
         '401':
           description: unauthorized
           content:
@@ -7983,14 +7837,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                app:
-                  type: boolean
-                mail:
-                  type: boolean
-                push:
-                  type: boolean
+              "$ref": "#/components/schemas/NotificationPreferenceUpdateInput"
       responses:
         '200':
           description: successful
@@ -9728,12 +9575,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
+                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/user-features/{id}/enable":
@@ -9773,12 +9615,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
+                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/users/account":
@@ -11135,9 +10972,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                "$ref": "#/components/schemas/WishlistItemsList"
         '401':
           description: unauthorized
           content:
@@ -13138,6 +12973,11 @@ components:
       - TOOLS_CARGO_GRIDS
       - TOOLS_TRAVEL_TIMES
       title: FeatureFlagName
+    FeatureNamesList:
+      type: array
+      items:
+        type: string
+      title: FeatureNamesList
     FieldError:
       type: object
       properties:
@@ -13241,6 +13081,16 @@ components:
       - createdAt
       - updatedAt
       title: Fleet
+    FleetCalendar:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetEvent"
+      required:
+      - items
+      title: FleetCalendar
     FleetCheckInput:
       type: object
       properties:
@@ -13634,6 +13484,15 @@ components:
         - teams
         - unassignedSignups
       title: FleetEventExtended
+    FleetEventOccurrenceDateInput:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+      required:
+      - date
+      title: FleetEventOccurrenceDateInput
     FleetEventOccurrenceState:
       type: object
       properties:
@@ -13683,6 +13542,43 @@ components:
       - fleetEventId
       - occurrenceDate
       title: FleetEventOccurrenceState
+    FleetEventOccurrenceUpdateInput:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        title:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        briefing:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        meetupLocation:
+          type:
+          - string
+          - 'null'
+        scenario:
+          type:
+          - string
+          - 'null'
+        coverImagePreset:
+          type:
+          - string
+          - 'null'
+      required:
+      - date
+      title: FleetEventOccurrenceUpdateInput
     FleetEventShip:
       type: object
       properties:
@@ -13790,6 +13686,20 @@ components:
             format: uuid
       additionalProperties: false
       title: FleetEventShipCreateInput
+    FleetEventShipExpandInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        positionIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - modelId
+      title: FleetEventShipExpandInput
     FleetEventShipUpdateInput:
       type: object
       properties:
@@ -14075,6 +13985,27 @@ components:
       - title
       additionalProperties: false
       title: FleetEventSlotCreateInput
+    FleetEventSlotSortInput:
+      type: object
+      properties:
+        slottableType:
+          type: string
+          enum:
+          - FleetEventTeam
+          - FleetEventShip
+        slottableId:
+          type: string
+          format: uuid
+        sorting:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - slottableType
+      - slottableId
+      - sorting
+      title: FleetEventSlotSortInput
     FleetEventSlotUpdateInput:
       type: object
       properties:
@@ -15059,6 +14990,24 @@ components:
       required:
       - modelCounts
       title: FleetModelCountsStats
+    FleetNotificationDiscordStatus:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        code:
+          type: string
+        message:
+          type: string
+        guildId:
+          type: string
+        guildName:
+          type: string
+        status:
+          type: integer
+        installUrl:
+          type: string
+      title: FleetNotificationDiscordStatus
     FleetNotificationSetting:
       type: object
       properties:
@@ -15091,6 +15040,26 @@ components:
       - enabledInAppEvents
       - discordWebhookConfigured
       title: FleetNotificationSetting
+    FleetNotificationSettingUpdateInput:
+      type: object
+      properties:
+        discordGuildId:
+          type:
+          - string
+          - 'null'
+        discordChannelId:
+          type:
+          - string
+          - 'null'
+        discordWebhookUrl:
+          type:
+          - string
+          - 'null'
+        enabledInAppEvents:
+          type: array
+          items:
+            type: string
+      title: FleetNotificationSettingUpdateInput
     FleetPublicVehicles:
       type: object
       properties:
@@ -16173,6 +16142,11 @@ components:
           - 'null'
       additionalProperties: false
       title: HangarInventoryUpdateInput
+    HangarItemsList:
+      type: array
+      items:
+        type: string
+      title: HangarItemsList
     HangarMetrics:
       type: object
       properties:
@@ -19813,6 +19787,16 @@ components:
       - mailAvailable
       - pushAvailable
       title: NotificationPreference
+    NotificationPreferenceUpdateInput:
+      type: object
+      properties:
+        app:
+          type: boolean
+        mail:
+          type: boolean
+        push:
+          type: boolean
+      title: NotificationPreferenceUpdateInput
     NotificationTypeEnum:
       type: string
       enum:
@@ -20253,6 +20237,12 @@ components:
       - wishlistsCount
       - shipOfTheMonthCount
       title: Stats
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+      title: SuccessResponse
     SupportProgress:
       type: object
       properties:
@@ -21422,6 +21412,11 @@ components:
       - name
       - damagePerShot
       title: WeaponIndexItem
+    WishlistItemsList:
+      type: array
+      items:
+        type: string
+      title: WishlistItemsList
   securitySchemes:
     BearerAuth:
       type: http

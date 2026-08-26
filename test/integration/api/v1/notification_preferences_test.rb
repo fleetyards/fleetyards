@@ -44,14 +44,7 @@ class Api::V1::NotificationPreferencesTest < ActionDispatch::IntegrationTest
         {OpenId: ["notifications", "notifications:write"]}
       ]
 
-      request_body schema: {
-        type: :object,
-        properties: {
-          app: {type: :boolean},
-          mail: {type: :boolean},
-          push: {type: :boolean}
-        }
-      }
+      request_body schema: {"$ref": "#/components/schemas/NotificationPreferenceUpdateInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/NotificationPreference"
