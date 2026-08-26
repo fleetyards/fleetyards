@@ -15,7 +15,7 @@ import {
   type FilterOption,
   type MissionExtended,
   type MissionUpdateInput,
-  MissionCategory,
+  MissionCategoryEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionScenarios } from "@/frontend/composables/useMissionScenarios";
@@ -50,7 +50,7 @@ const [scenario, scenarioProps] = defineField("scenario");
 const { suggestions: scenarioSuggestions } = useMissionScenarios();
 
 const categoryOptions = computed<FilterOption[]>(() =>
-  Object.values(MissionCategory).map((value) => ({
+  Object.values(MissionCategoryEnum).map((value) => ({
     value,
     label: t(`labels.fleets.missions.categories.${value}`),
   })),

@@ -11,7 +11,7 @@ import {
   type Fleet,
   type FleetMember,
   type FleetNotificationSetting,
-  FleetNotificationSettingEnabledInAppEventsItem,
+  FleetNotificationInAppEventEnum,
   useFleetNotificationSetting,
   useUpdateFleetNotificationSetting,
 } from "@/services/fyApi";
@@ -37,7 +37,7 @@ const updateMutation = useUpdateFleetNotificationSetting();
 const enabledInApp = ref<Record<string, boolean>>({});
 
 const inAppEvents = computed(() =>
-  Object.values(FleetNotificationSettingEnabledInAppEventsItem),
+  Object.values(FleetNotificationInAppEventEnum),
 );
 
 const hydrate = (s: FleetNotificationSetting) => {

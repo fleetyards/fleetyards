@@ -37,7 +37,7 @@ module V1
             sizeIn: {type: :array, items: {type: :string}},
             modelNameOrModelDescriptionCont: {type: :string},
             publicEq: {type: :boolean},
-            loanerEq: {type: :string, enum: %w[true only]},
+            loanerEq: {"$ref": "#/components/schemas/LoanerFilterEnum"},
             bundledEq: {type: :string},
             boughtViaEq: {"$ref": "#/components/schemas/BoughtViaEnum"},
             hangarGroupsIn: {type: :array, items: {type: :string}},

@@ -20,7 +20,7 @@ import {
   getFeaturesQueryKey,
   enableUserFeature,
   disableUserFeature,
-  UserFeatureScope,
+  UserFeatureScopeEnum,
   type UserFeature,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -50,7 +50,7 @@ const featureItems = computed<FeatureItem[]>(() => {
 // you alone, and a fleet admin's enables it for everyone in that fleet. The pill
 // and its tooltip are what keep the two apart.
 const isFleetFeature = (feature: FeatureItem) =>
-  feature.scope === UserFeatureScope.fleet;
+  feature.scope === UserFeatureScopeEnum.FLEET;
 
 // The fleet already gives every member the feature, so there is nothing for a
 // personal switch to add — and it cannot take it away either.

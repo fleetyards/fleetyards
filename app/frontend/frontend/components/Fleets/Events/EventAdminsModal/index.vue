@@ -15,7 +15,7 @@ import {
   type FleetEventAdmin,
   type FleetMember,
   type FilterOption,
-  FleetEventAdminCreateInputRole,
+  FleetEventAdminRoleEnum,
   useFleetEventAdmins,
   useCreateFleetEventAdmin,
   useDestroyFleetEventAdmin,
@@ -54,12 +54,12 @@ const memberOptions = computed<FilterOption[]>(() => {
 });
 
 const selectedUserId = ref<string | null>(null);
-const selectedRole = ref<FleetEventAdminCreateInputRole>(
-  FleetEventAdminCreateInputRole.admin,
+const selectedRole = ref<FleetEventAdminRoleEnum>(
+  FleetEventAdminRoleEnum.ADMIN,
 );
 
 const roleOptions = computed<FilterOption[]>(() =>
-  Object.values(FleetEventAdminCreateInputRole).map((value) => ({
+  Object.values(FleetEventAdminRoleEnum).map((value) => ({
     value,
     label: t(`labels.fleets.events.eventRoles.${value}`),
   })),

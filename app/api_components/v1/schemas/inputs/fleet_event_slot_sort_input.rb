@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            slottableType: {type: :string, enum: %w[FleetEventTeam FleetEventShip]},
+            slottableType: {"$ref": "#/components/schemas/FleetEventSlottableTypeEnum"},
             slottableId: {type: :string, format: :uuid},
             sorting: {type: :array, items: {type: :string, format: :uuid}}
           },

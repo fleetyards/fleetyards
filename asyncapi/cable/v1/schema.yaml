@@ -2490,13 +2490,7 @@ components:
                   health:
                     type: number
                   category:
-                    type: string
-                    enum:
-                    - vital
-                    - secondary
-                    - breakable
-                    - subpart
-                    - cosmetic
+                    "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
                 required:
                 - name
                 - health
@@ -2643,6 +2637,20 @@ components:
       - adiMap
       - createdAt
       - updatedAt
+    ModelHullPartCategoryEnum:
+      type: string
+      enum:
+      - vital
+      - secondary
+      - breakable
+      - subpart
+      - cosmetic
+      x-enumNames:
+      - VITAL
+      - SECONDARY
+      - BREAKABLE
+      - SUBPART
+      - COSMETIC
     ModelLoaner:
       type: object
       properties:

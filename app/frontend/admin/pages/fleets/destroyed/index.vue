@@ -19,7 +19,7 @@ import FilterForm from "@/admin/components/DestroyedFleets/FilterForm/index.vue"
 import {
   useDestroyedFleets,
   getDestroyedFleetsQueryKey,
-  DestroyedFleetsSource,
+  DestroyedFleetSourceEnum,
   type DestroyedFleet,
   type DestroyedFleetQuery,
 } from "@/services/fyAdminApi";
@@ -41,11 +41,15 @@ const crumbs = computed<Crumb[]>(() => [
   },
 ]);
 
-const source = ref<DestroyedFleetsSource>(DestroyedFleetsSource.discarded);
+const source = ref<DestroyedFleetSourceEnum>(
+  DestroyedFleetSourceEnum.DISCARDED,
+);
 
-const isPurged = computed(() => source.value === DestroyedFleetsSource.purged);
+const isPurged = computed(
+  () => source.value === DestroyedFleetSourceEnum.PURGED,
+);
 
-const setSource = async (value: DestroyedFleetsSource) => {
+const setSource = async (value: DestroyedFleetSourceEnum) => {
   if (source.value === value) return;
 
   source.value = value;
@@ -142,14 +146,14 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
     <template #actions-left>
       <BtnGroup segmented>
         <Btn
-          :active="source === DestroyedFleetsSource.discarded"
-          @click="setSource(DestroyedFleetsSource.discarded)"
+          :active="source === DestroyedFleetSourceEnum.DISCARDED"
+          @click="setSource(DestroyedFleetSourceEnum.DISCARDED)"
         >
           {{ t("labels.destroyedFleets.discarded") }}
         </Btn>
         <Btn
-          :active="source === DestroyedFleetsSource.purged"
-          @click="setSource(DestroyedFleetsSource.purged)"
+          :active="source === DestroyedFleetSourceEnum.PURGED"
+          @click="setSource(DestroyedFleetSourceEnum.PURGED)"
         >
           {{ t("labels.destroyedFleets.purged") }}
         </Btn>

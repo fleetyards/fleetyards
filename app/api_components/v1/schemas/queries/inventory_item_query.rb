@@ -11,8 +11,8 @@ module V1
           properties: {
             nameCont: {type: :string},
             nameEq: {type: :string},
-            unitEq: {type: :string, enum: %w[scu units]},
-            categoryEq: {type: :string, enum: %w[commodity component weapon equipment ammunition consumable other]},
+            unitEq: {"$ref": "#/components/schemas/InventoryUnitEnum"},
+            categoryEq: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
             qualityGteq: {type: :integer},
             qualityLteq: {type: :integer},
             sorts: {type: :string}

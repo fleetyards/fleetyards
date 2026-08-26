@@ -1,4 +1,4 @@
-import type { FleetEventStatus } from "@/services/fyApi";
+import type { FleetEventStatusEnum } from "@/services/fyApi";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 
@@ -6,7 +6,7 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 // viewer rather than misleadingly advertising open signups. Kept here rather
 // than in a component because the tone and the label have to agree, and two
 // surfaces render them.
-type EffectiveStatus = `${FleetEventStatus}` | "past";
+type EffectiveStatus = `${FleetEventStatusEnum}` | "past";
 
 const PRE_FINISHED: string[] = ["draft", "open", "locked"];
 
@@ -44,18 +44,18 @@ const PILL_VARIANT_BY_STATUS: Record<string, `${PillVariantsEnum}`> = {
 
 export const useEventStatus = () => {
   const effectiveStatus = (
-    status: FleetEventStatus,
+    status: FleetEventStatusEnum,
     past?: boolean,
   ): EffectiveStatus =>
     past && PRE_FINISHED.includes(status) ? "past" : status;
 
-  const toneFor = (status: FleetEventStatus, past?: boolean) =>
+  const toneFor = (status: FleetEventStatusEnum, past?: boolean) =>
     TONE_BY_STATUS[effectiveStatus(status, past)] ?? PanelTonesEnum.NEUTRAL;
 
-  const labelKeyFor = (status: FleetEventStatus, past?: boolean) =>
+  const labelKeyFor = (status: FleetEventStatusEnum, past?: boolean) =>
     `labels.fleets.events.statuses.${effectiveStatus(status, past)}`;
 
-  const pillVariantFor = (status: FleetEventStatus, past?: boolean) =>
+  const pillVariantFor = (status: FleetEventStatusEnum, past?: boolean) =>
     PILL_VARIANT_BY_STATUS[effectiveStatus(status, past)] ??
     PillVariantsEnum.NEUTRAL;
 

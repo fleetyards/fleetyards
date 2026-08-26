@@ -15,7 +15,7 @@ import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/ty
 import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
 import {
   type FleetEvent,
-  FleetEventSignupCreateInputStatus,
+  FleetEventSignupStatusEnum,
   signupFleetEvent,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -37,7 +37,7 @@ const comlink = useComlink();
 const submitting = ref(false);
 const vehicleId = ref<string | null>(null);
 
-const signup = async (status: FleetEventSignupCreateInputStatus) => {
+const signup = async (status: FleetEventSignupStatusEnum) => {
   submitting.value = true;
   try {
     await signupFleetEvent(props.fleetSlug, props.event.slug, {
@@ -83,7 +83,7 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
           :title="
             signupsLocked ? t('labels.fleets.events.signupsLockedHint') : ''
           "
-          @click="signup(FleetEventSignupCreateInputStatus.confirmed)"
+          @click="signup(FleetEventSignupStatusEnum.CONFIRMED)"
         >
           <i class="fa-light fa-check" />
           {{ t("labels.fleets.events.signupStatuses.confirmed") }}
@@ -92,7 +92,7 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
           mobile-icon-only
           :disabled="signupsLocked"
           :loading="submitting"
-          @click="signup(FleetEventSignupCreateInputStatus.tentative)"
+          @click="signup(FleetEventSignupStatusEnum.TENTATIVE)"
         >
           <i class="fa-light fa-circle-question" />
           {{ t("labels.fleets.events.signupStatuses.tentative") }}
@@ -101,7 +101,7 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
           mobile-icon-only
           :disabled="signupsLocked"
           :loading="submitting"
-          @click="signup(FleetEventSignupCreateInputStatus.interested)"
+          @click="signup(FleetEventSignupStatusEnum.INTERESTED)"
         >
           <i class="fa-light fa-eye" />
           {{ t("labels.fleets.events.signupStatuses.interested") }}

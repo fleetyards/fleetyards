@@ -22,14 +22,12 @@ import {
   type FleetEventSlot,
   type FleetEventTeam,
   type Mission,
-  FleetEventCategory,
-  FleetEventSignupApproval,
-  FleetEventSignupStatus,
-  FleetEventSlotEffectiveSignupApproval,
-  FleetEventSlotSlottableType,
-  FleetEventStatus,
-  FleetEventVisibility,
-  MissionCategory,
+  FleetEventSignupApprovalEnum,
+  FleetEventSignupStatusEnum,
+  FleetEventSlottableTypeEnum,
+  FleetEventStatusEnum,
+  FleetEventVisibilityEnum,
+  MissionCategoryEnum,
   useModel as useModelQuery,
 } from "@/services/fyApi";
 
@@ -54,7 +52,7 @@ const fleet: Fleet = {
 };
 
 const eventFor = (
-  status: FleetEventStatus,
+  status: FleetEventStatusEnum,
   overrides: Partial<FleetEvent> = {},
 ): FleetEvent => ({
   id: `event-${status}`,
@@ -68,10 +66,10 @@ const eventFor = (
   timezone: "UTC",
   location: "Levski, Delamar",
   meetupLocation: "Port Olisar, Pad 7",
-  visibility: FleetEventVisibility.fleet,
-  category: FleetEventCategory.cargo_hauling,
+  visibility: FleetEventVisibilityEnum.FLEET,
+  category: MissionCategoryEnum.CARGO_HAULING,
   autoLockEnabled: true,
-  signupApproval: FleetEventSignupApproval.direct,
+  signupApproval: FleetEventSignupApprovalEnum.DIRECT,
   archived: false,
   externalUid: "uid-1",
   signupsCount: 14,
@@ -86,20 +84,20 @@ const eventFor = (
 });
 
 // Every lifecycle state, which is what D1 moved onto the panel's end-cap.
-const lifecycle: Array<{ status: FleetEventStatus; past?: boolean }> = [
-  { status: FleetEventStatus.draft },
-  { status: FleetEventStatus.open },
-  { status: FleetEventStatus.locked },
-  { status: FleetEventStatus.active },
-  { status: FleetEventStatus.completed },
-  { status: FleetEventStatus.cancelled },
+const lifecycle: Array<{ status: FleetEventStatusEnum; past?: boolean }> = [
+  { status: FleetEventStatusEnum.DRAFT },
+  { status: FleetEventStatusEnum.OPEN },
+  { status: FleetEventStatusEnum.LOCKED },
+  { status: FleetEventStatusEnum.ACTIVE },
+  { status: FleetEventStatusEnum.COMPLETED },
+  { status: FleetEventStatusEnum.CANCELLED },
   // A past event still sitting in `open` reads as past, not as open signups.
-  { status: FleetEventStatus.open, past: true },
+  { status: FleetEventStatusEnum.OPEN, past: true },
 ];
 
 const signup = (
   username: string,
-  status: FleetEventSignupStatus,
+  status: FleetEventSignupStatusEnum,
   overrides: Partial<FleetEventSignup> = {},
 ): FleetEventSignup => ({
   id: `signup-${username}`,
@@ -114,17 +112,17 @@ const slot = (
   overrides: Partial<FleetEventSlot> = {},
 ): FleetEventSlot => ({
   id: `slot-${title}`,
-  slottableType: FleetEventSlotSlottableType.FleetEventShip,
+  slottableType: FleetEventSlottableTypeEnum.FLEET_EVENT_SHIP,
   slottableId: "ship-1",
   title,
   position: 0,
   derived: false,
-  effectiveSignupApproval: FleetEventSlotEffectiveSignupApproval.direct,
+  effectiveSignupApproval: FleetEventSignupApprovalEnum.DIRECT,
   signups: [],
   ...overrides,
 });
 
-const openEvent = eventFor(FleetEventStatus.open);
+const openEvent = eventFor(FleetEventStatusEnum.OPEN);
 
 // The four row states: free, taken by someone else, taken by you, and a
 // tentative signup whose ship does not match the slot.
@@ -132,11 +130,11 @@ const slots: FleetEventSlot[] = [
   slot("Pilot", { positionType: "Command" }),
   slot("Co-pilot / Scanner", {
     positionType: "Support",
-    signups: [signup("ThalosVex", FleetEventSignupStatus.confirmed)],
+    signups: [signup("ThalosVex", FleetEventSignupStatusEnum.CONFIRMED)],
   }),
   slot("Turret — dorsal", {
     positionType: "Gunner",
-    signups: [signup("Marrow_K", FleetEventSignupStatus.tentative)],
+    signups: [signup("Marrow_K", FleetEventSignupStatusEnum.TENTATIVE)],
   }),
   slot("Engineering", {
     positionType: "Support",
@@ -211,26 +209,26 @@ const forTwoHours = (iso: string) =>
   new Date(new Date(iso).getTime() + 2 * 60 * 60 * 1000).toISOString();
 
 const calendarEvents: FleetEvent[] = [
-  eventFor(FleetEventStatus.open, {
+  eventFor(FleetEventStatusEnum.OPEN, {
     id: "cal-1",
     slug: "cal-open",
     title: "Convoy escort",
     startsAt: at(2),
     endsAt: forTwoHours(at(2)),
   }),
-  eventFor(FleetEventStatus.locked, {
+  eventFor(FleetEventStatusEnum.LOCKED, {
     id: "cal-2",
     slug: "cal-locked",
     title: "Salvage sweep",
-    category: FleetEventCategory.salvage,
+    category: MissionCategoryEnum.SALVAGE,
     startsAt: at(5),
     endsAt: forTwoHours(at(5)),
   }),
-  eventFor(FleetEventStatus.active, {
+  eventFor(FleetEventStatusEnum.ACTIVE, {
     id: "cal-3",
     slug: "cal-live",
     title: "Mining run",
-    category: FleetEventCategory.mining,
+    category: MissionCategoryEnum.MINING,
     startsAt: at(-3),
     endsAt: forTwoHours(at(-3)),
   }),
@@ -270,7 +268,7 @@ const mission: Mission = {
   id: "mission-1",
   title: "Standing Jumptown Run",
   slug: "standing-jumptown-run",
-  category: MissionCategory.cargo_hauling,
+  category: MissionCategoryEnum.CARGO_HAULING,
   archived: false,
   teamCount: 2,
   shipCount: 5,

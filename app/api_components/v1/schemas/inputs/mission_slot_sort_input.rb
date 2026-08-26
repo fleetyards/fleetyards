@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            slottableType: {type: :string, enum: %w[MissionTeam MissionShip]},
+            slottableType: {"$ref": "#/components/schemas/MissionSlottableTypeEnum"},
             slottableId: {type: :string, format: :uuid},
             sorting: {
               type: :array,

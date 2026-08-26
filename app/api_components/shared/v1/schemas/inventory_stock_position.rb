@@ -11,8 +11,8 @@ module Shared
           properties: {
             slug: {type: :string},
             name: {type: :string},
-            category: {type: :string, enum: InventoryLedgerEntry::CATEGORIES.keys.map(&:to_s)},
-            unit: {type: :string, enum: InventoryLedgerEntry::UNITS.keys.map(&:to_s)},
+            category: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
+            unit: {"$ref": "#/components/schemas/InventoryUnitEnum"},
             netQuantity: {type: :number},
             qualityMin: {type: [:integer, :null]},
             qualityMax: {type: [:integer, :null]},
@@ -23,7 +23,7 @@ module Shared
               type: [:object, :null],
               properties: {
                 id: {type: :string, format: :uuid},
-                type: {type: :string, enum: InventoryLedgerEntry::ITEM_TYPES},
+                type: {"$ref": "#/components/schemas/InventoryItemTypeEnum"},
                 name: {type: :string},
                 slug: {type: :string},
                 available: {type: :boolean}
