@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+module Admin
+  module V1
+    module Schemas
+      module Enums
+        class GalleryTypeEnum
+          include OpenapiRuby::Components::Base
+
+          TYPES = %w[Model Album].freeze
+
+          schema({
+            type: :string,
+            enum: TYPES,
+            "x-enumNames": TYPES.map { |v| transform_enum_key(v) }
+          })
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,22 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    class OtpBackupCodes
+      include OpenapiRuby::Components::Base
+
+      schema({
+        type: :object,
+        properties: {
+          codes: {
+            type: :array,
+            items: {type: :string},
+            additionalProperties: false
+          }
+        },
+        additionalProperties: false,
+        required: %w[codes]
+      })
+    end
+  end
+end

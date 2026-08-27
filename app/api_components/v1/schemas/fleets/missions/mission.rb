@@ -20,7 +20,7 @@ module V1
               coverImage: {"$ref": "#/components/schemas/MediaFile"},
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time"},
-              createdBy: Shared::V1::Schemas::UserRef,
+              createdBy: ::V1::Schemas::UserRef,
               teamCount: {type: :integer},
               shipCount: {type: :integer},
               createdAt: {type: :string, format: "date-time"},

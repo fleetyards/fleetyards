@@ -72,6 +72,22 @@ the admin components that subclass a v1 one
 (`Admin::V1::Schemas::Models::Model < ::V1::Schemas::Models::Model`) inherit its
 `$ref`s — anything they reach has to be `shared/v1`.
 
+Two traps when moving something between scopes:
+
+- **A bare constant resolves differently.** `::User::ALLOWED_SORTING_PARAMS` in a
+  `shared/v1` file finds the model, because `Shared::V1::Schemas` has no `User`.
+  The same line under `Admin::V1::Schemas` finds the `User` *component*. Qualify
+  model constants with a leading `::`.
+- **Same-name pairs cannot be resolved by counting references.** `Dock` exists in
+  both `shared/v1` and `admin/v1` on purpose; the admin one shadows the shared
+  one in the admin document, so a reference count makes the shared one look used
+  when it is actually dead. Check `grep -c "class <Name>"` across the tree before
+  moving anything.
+
+And when qualifying constants, do not touch string literals: `ImportTypeEnum`
+holds STI class names in a `%w[]` array, and prefixing those with `::` silently
+changed eleven published enum values.
+
 ## Nested objects
 
 An object nested inside a component gets its own component. Orval names an

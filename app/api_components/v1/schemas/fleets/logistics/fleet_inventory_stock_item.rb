@@ -18,7 +18,7 @@ module V1
               qualityMin: {type: :integer},
               qualityMax: {type: :integer},
               netQuantity: {type: :number},
-              inventory: Shared::V1::Schemas::InventoryRef
+              inventory: ::V1::Schemas::InventoryRef
             },
             required: %w[name category unit netQuantity]
           })

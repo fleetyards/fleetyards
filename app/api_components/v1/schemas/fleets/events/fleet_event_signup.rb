@@ -18,7 +18,7 @@ module V1
               notes: {type: :string},
               confirmedAt: {type: :string, format: "date-time"},
               withdrawnAt: {type: :string, format: "date-time"},
-              user: Shared::V1::Schemas::UserRef,
+              user: ::V1::Schemas::UserRef,
               vehicle: FleetEventSignupVehicle
             },
             required: %w[id fleetEventId status],
