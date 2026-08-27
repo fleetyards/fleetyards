@@ -101,7 +101,25 @@ class PaintsImporter
   end
 
   private def paint_for_target?(paint)
-    Array(models_mapping(paint[:model_name])).include?(@model.name)
+    model_names = Array(models_mapping(paint[:model_name]))
+
+    return true if model_names.include?(@model.name)
+    return false unless resembles_target?(paint[:model_name])
+
+    # A source name that resolves to no model at all belongs in the report as a
+    # missing model -- dropping it here is what hides a gap in the mapping.
+    Model.where(name: model_names).none?
+  end
+
+  private def resembles_target?(source_name)
+    source = comparable_name(source_name)
+    target = comparable_name(@model.name)
+
+    source.present? && (target.include?(source) || source.include?(target))
+  end
+
+  private def comparable_name(name)
+    name.to_s.downcase.gsub(/[^a-z0-9]/, "")
   end
 
   private def extract_paints(import)
