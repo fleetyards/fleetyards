@@ -98,4 +98,40 @@ class HangarSyncTest < ActiveSupport::TestCase
       end
     end
   end
+
+  class NotificationTest < HangarSyncTest
+    test "summarises the sync in the notification body" do
+      result = ::HangarSync.new(@input).run(@user.id)
+
+      body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
+
+      assert_includes body, I18n.t("notifications.hangar_sync_finished.body")
+      assert_includes body, "- Added ships: **#{result[:imported_vehicles].size}**"
+      refute_includes body, "Found ships"
+      refute_includes body, I18n.t("notifications.hangar_sync_finished.warnings")
+    end
+
+    test "lists the items a sync could not match" do
+      input = @input + [{"id" => "1", "type" => "ship", "name" => "Mystery Ship"}]
+
+      ::HangarSync.new(input).run(@user.id)
+
+      body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
+
+      assert_includes body, I18n.t("notifications.hangar_sync_finished.warnings")
+      assert_includes body, "- Ships not found: **1** (Mystery Ship)"
+    end
+
+    test "caps the listed items and counts the rest" do
+      missing = (1..12).map { |index| {"id" => index.to_s, "type" => "ship", "name" => "Mystery Ship #{index}"} }
+
+      ::HangarSync.new(@input + missing).run(@user.id)
+
+      body = Notification.find_by!(user: @user, notification_type: :hangar_sync_finished).body
+
+      assert_includes body, "Mystery Ship 10"
+      refute_includes body, "Mystery Ship 11"
+      assert_includes body, I18n.t("notifications.hangar_sync_finished.more_items", count: 2)
+    end
+  end
 end

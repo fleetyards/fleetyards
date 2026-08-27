@@ -15,6 +15,21 @@ en:
     hangar_sync_finished:
       title: Hangar sync completed
       body: Your RSI hangar has been synced successfully.
+      warnings: Warnings
+      more_items: "and %{count} more"
+      summary:
+        imported_vehicles: Added ships
+        found_vehicles: Found ships
+        moved_vehicles_to_wanted: Ships moved to wishlist
+        imported_components: Added components
+        found_components: Found components
+        imported_upgrades: Added upgrades
+        found_upgrades: Found upgrades
+        missing_models: Ships not found
+        missing_components: Components not found
+        missing_component_vehicles: No matching ship for components
+        missing_upgrades: Upgrades not found
+        missing_upgrade_vehicles: No matching ship for upgrades
     hangar_sync_failed:
       title: Hangar sync failed
       body: "Your RSI hangar sync failed: %{error}"
