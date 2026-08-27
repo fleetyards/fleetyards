@@ -155,13 +155,7 @@ class Model < ApplicationRecord
 
   belongs_to :manufacturer
 
-  # What each build of the game says about this model's mechanics. Written
-  # alongside the columns; nothing reads through them yet.
-  #
-  # Models differ from the other three catalogues in having three sources rather
-  # than one -- the game files, the RSI ship matrix in the `rsi_*` columns, and
-  # whatever an admin has curated -- so which layer wins per field is a decision
-  # the step that moves the readers has to make, not this one.
+  # What each build of the game says about this model's mechanics.
   has_many :builds, class_name: "ModelBuild", dependent: :destroy
   has_one :build, -> { current }, class_name: "ModelBuild", inverse_of: :model
 
@@ -171,6 +165,73 @@ class Model < ApplicationRecord
   has_one :last_build,
     -> { for_source.order(created_at: :desc) },
     class_name: "ModelBuild", inverse_of: :model
+
+  # A mechanics fact resolves the build first, then the column: the build we are
+  # on, else the last build of this environment that described the model, else
+  # what the row itself says.
+  #
+  # **The RSI ship matrix is deliberately not a layer here**, though the design
+  # sketch had it sitting between the two. Measured before writing it: reading
+  # `rsi_mass` and its five siblings above the column changes exactly one value
+  # across 246 models, and that one change is a regression. For 30 of the 31
+  # ships with no build the column already *holds* the matrix value, because
+  # `Rsi::ModelsLoader` writes both. The 31st is the Retaliator Bomber, whose
+  # column carries a game-file mass the sc_data loader wrote in April from a
+  # build that still shipped it -- promoting the matrix there would replace a
+  # real value with a staler one.
+  #
+  # The matrix earns a layer when it stops being copied into the column, which is
+  # the change that moves `rsi_*` out of Model's columns entirely. Until then it
+  # is the same value read twice.
+  #
+  # Build existence also cannot become this catalogue's filter the way it did for
+  # equipment and components: 31 of 246 models are concept ships the matrix
+  # carries and no build ever will, and filtering on a build row would hide every
+  # one of them. `in_game` stays the flag.
+
+  # The build we are on, or the last one that described the model. A hangar entry
+  # pointing at a ship the export dropped still has to resolve to something.
+  def facts
+    build || last_build
+  end
+
+  # An admin correction is a correction to the build we are on, so it has to
+  # reach the build as well as the row.
+  #
+  # Deliberately the same rule the other three catalogues use, rather than the
+  # curated-wins layer the design sketched. Measured over the whole paper_trail
+  # history: an admin has edited **none** of these 27 facts. What they do curate
+  # -- images, `sales_page_url`, dimensions, `pledge_price`, `production_status`,
+  # `size`, `cargo` -- is outside the build entirely, dimensions included and
+  # deliberately so.
+  def update_with_facts(attributes)
+    transaction do
+      return false unless update(attributes)
+
+      # Sliced to `FACTS`, which is also what keeps `author_id` and
+      # `update_reason` off the build: both are `attr_accessor`s for
+      # paper_trail's meta rather than columns, and the admin controller merges
+      # them into the same hash.
+      facts_attributes = attributes.to_h.symbolize_keys.slice(*ModelBuild::FACTS)
+
+      # Reloaded rather than read off the association: validating the row above
+      # consults a fact reader, which caches whatever the build was at that
+      # moment -- a nil, for a row whose build is written afterwards.
+      reload_build&.update!(facts_attributes) if facts_attributes.present?
+
+      true
+    end
+  end
+
+  # The column still answers for a model no build describes -- every concept ship,
+  # and every ship the export dropped before this table existed.
+  ModelBuild::FACTS.each do |fact|
+    define_method(fact) do
+      value = facts&.public_send(fact)
+
+      value.nil? ? super() : value
+    end
+  end
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :components, through: :hardpoints
@@ -243,6 +304,10 @@ class Model < ApplicationRecord
   # manufacturer brings its own pictures, because its partial renders them.
   def self.rendered_associations
     [
+      # Both, because every mechanics reader consults `build || last_build`.
+      # Without them a ship list is two extra queries per row rather than two
+      # for the page -- and the ships and hangar endpoints are the slow ones.
+      :build, :last_build,
       :item_prices, :loaners, :cargo_holds_db,
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
