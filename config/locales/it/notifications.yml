@@ -15,6 +15,21 @@ it:
     hangar_sync_finished:
       title: Sincronizzazione hangar completata
       body: Il tuo hangar RSI è stato sincronizzato con successo.
+      warnings: Avvisi
+      more_items: "e altri %{count}"
+      summary:
+        imported_vehicles: Navi aggiunte
+        found_vehicles: Navi trovate
+        moved_vehicles_to_wanted: Navi spostate nella lista dei desideri
+        imported_components: Componenti aggiunti
+        found_components: Componenti trovati
+        imported_upgrades: Upgrade aggiunti
+        found_upgrades: Upgrade trovati
+        missing_models: Navi non trovate
+        missing_components: Componenti non trovati
+        missing_component_vehicles: Nessuna nave corrispondente per i componenti
+        missing_upgrades: Upgrade non trovati
+        missing_upgrade_vehicles: Nessuna nave corrispondente per gli upgrade
     hangar_sync_failed:
       title: Sincronizzazione hangar fallita
       body: 'La sincronizzazione del tuo hangar RSI è fallita: %{error}'

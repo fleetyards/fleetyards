@@ -12,6 +12,28 @@ class HangarSync < HangarImporter
     "slug = :normalized_name"
   ].freeze
 
+  SUMMARY_KEYS = %i[
+    imported_vehicles
+    found_vehicles
+    moved_vehicles_to_wanted
+    imported_components
+    found_components
+    imported_upgrades
+    found_upgrades
+  ].freeze
+
+  WARNING_KEYS = %i[
+    missing_models
+    missing_components
+    missing_component_vehicles
+    missing_upgrades
+    missing_upgrade_vehicles
+  ].freeze
+
+  # A hangar can miss dozens of items at once, and the notification body is read
+  # in a narrow reading pane.
+  MAX_LISTED_ITEMS = 10
+
   def initialize(data)
     @data = data.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
     @ships = @data.select { |item| item[:type] == "ship" }
@@ -61,7 +83,7 @@ class HangarSync < HangarImporter
       user: import.user,
       type: :hangar_sync_finished,
       title: I18n.t("notifications.hangar_sync_finished.title"),
-      body: I18n.t("notifications.hangar_sync_finished.body"),
+      body: sync_notification_body(output),
       link: Rails.application.routes.url_helpers.frontend_hangar_path
     )
 
@@ -82,6 +104,39 @@ class HangarSync < HangarImporter
     end
 
     raise e
+  end
+
+  # The sync modal is gone as soon as the user closes it, so the notification is
+  # the only lasting record of what a sync actually did.
+  private def sync_notification_body(output)
+    counts = SUMMARY_KEYS.filter_map do |key|
+      count = output[key].size
+      next if count.zero?
+
+      "- #{I18n.t("notifications.hangar_sync_finished.summary.#{key}")}: **#{count}**"
+    end
+
+    warnings = WARNING_KEYS.filter_map do |key|
+      items = output[key]
+      next if items.empty?
+
+      "- #{I18n.t("notifications.hangar_sync_finished.summary.#{key}")}: **#{items.size}** (#{listed_items(items)})"
+    end
+
+    lines = [I18n.t("notifications.hangar_sync_finished.body")]
+    lines += ["", *counts] if counts.present?
+    lines += ["", "#### #{I18n.t("notifications.hangar_sync_finished.warnings")}", "", *warnings] if warnings.present?
+
+    lines.join("\n")
+  end
+
+  private def listed_items(items)
+    listed = items.first(MAX_LISTED_ITEMS)
+    remaining = items.size - listed.size
+
+    return listed.join(", ") if remaining.zero?
+
+    "#{listed.join(", ")}, #{I18n.t("notifications.hangar_sync_finished.more_items", count: remaining)}"
   end
 
   def sync_vehicles(user_id)

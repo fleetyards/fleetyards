@@ -15,6 +15,21 @@ zh-TW:
     hangar_sync_finished:
       title: 機庫同步完成
       body: 您的 RSI 機庫已成功同步。
+      warnings: 警告
+      more_items: "以及另外 %{count} 項"
+      summary:
+        imported_vehicles: 已新增的飛船
+        found_vehicles: 已找到的飛船
+        moved_vehicles_to_wanted: 已移至願望清單的飛船
+        imported_components: 已新增的元件
+        found_components: 已找到的元件
+        imported_upgrades: 已新增的升級
+        found_upgrades: 已找到的升級
+        missing_models: 未找到的飛船
+        missing_components: 未找到的元件
+        missing_component_vehicles: 沒有與元件相符的飛船
+        missing_upgrades: 未找到的升級
+        missing_upgrade_vehicles: 沒有與升級相符的飛船
     hangar_sync_failed:
       title: 機庫同步失敗
       body: '您的 RSI 機庫同步失敗: %{error}'
