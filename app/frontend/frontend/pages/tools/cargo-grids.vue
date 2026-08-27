@@ -24,6 +24,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   models as fetchModels,
   ModelProductionStatusEnum,
+  ContainerSizeEnum,
   type ContainerFitQuery,
   type Model,
   type ModelQuery,
@@ -56,10 +57,10 @@ const hangarOnly = ref(false);
 
 const containerFilterActive = ref(false);
 
-// Must stay in step with CargoHoldContainerCapacity::CONTAINER_SIZES. The
-// generated ContainerFitQuery keys the same set, so annotating containerFit
-// with it turns a size that is not in the schema into a type error.
-const CONTAINER_SIZES = [1, 2, 4, 8, 16, 24, 32] as const;
+// Derived from the schema rather than repeated: ContainerSizeEnum is generated
+// from CargoHoldContainerCapacity::CONTAINER_SIZES, so adding a size on the
+// Ruby side reaches this page without an edit.
+const CONTAINER_SIZES = Object.values(ContainerSizeEnum).map(Number);
 
 const MAX_SHIPS = 4;
 
@@ -189,10 +190,12 @@ const fetchCargoModels = async (params: FilterGroupParams<Model>) => {
 
   const containerFit: ContainerFitQuery = {};
   if (containerFilterActive.value && hasContainerRequests.value) {
-    for (const size of CONTAINER_SIZES) {
-      const qty = Number(containerRequests.value[size]);
+    // Over the enum rather than CONTAINER_SIZES: its values are the literal
+    // keys ContainerFitQuery declares, so this indexes without a cast.
+    for (const size of Object.values(ContainerSizeEnum)) {
+      const qty = Number(containerRequests.value[Number(size)]);
       if (qty > 0) {
-        containerFit[`${size}`] = qty;
+        containerFit[size] = qty;
       }
     }
   }

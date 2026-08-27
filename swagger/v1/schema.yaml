@@ -11901,9 +11901,30 @@ components:
         '32':
           type: number
           minimum: 0
+      propertyNames:
+        "$ref": "#/components/schemas/ContainerSizeEnum"
       additionalProperties: false
       example: {}
       title: ContainerFitQuery
+    ContainerSizeEnum:
+      type: string
+      enum:
+      - '1'
+      - '2'
+      - '4'
+      - '8'
+      - '16'
+      - '24'
+      - '32'
+      x-enumNames:
+      - SCU_1
+      - SCU_2
+      - SCU_4
+      - SCU_8
+      - SCU_16
+      - SCU_24
+      - SCU_32
+      title: ContainerSizeEnum
     Dock:
       type: object
       properties:
