@@ -2,6 +2,68 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.3.0](https://github.com/fleetyards/fleetyards/compare/v7.2.0...v7.3.0) (2026-08-27)
+
+
+### Features
+
+* **api:** serve the fleetchart ship views from their own endpoint ([#4539](https://github.com/fleetyards/fleetyards/issues/4539)) ([9c9441a](https://github.com/fleetyards/fleetyards/commit/9c9441a671c2b10ca75370fd5cea609bb9478a61))
+* **cable:** describe every channel with AsyncAPI and broadcast objects ([#4523](https://github.com/fleetyards/fleetyards/issues/4523)) ([1bb301c](https://github.com/fleetyards/fleetyards/commit/1bb301cf875d24f273e7287774131a476785a3b5))
+* **cable:** raise on a payload mismatch in tests ([#4525](https://github.com/fleetyards/fleetyards/issues/4525)) ([c09bd90](https://github.com/fleetyards/fleetyards/commit/c09bd90da42558e8500c7d6765ad22789c24d03e))
+* **resource-access:** typed enums + grouped-catalog groundwork ([#4213](https://github.com/fleetyards/fleetyards/issues/4213)) ([4487b89](https://github.com/fleetyards/fleetyards/commit/4487b8920e567066327c281436db577f2f719f5f))
+* **sc_data:** filter and sort equipment through the build ([#4532](https://github.com/fleetyards/fleetyards/issues/4532)) ([8a80b2e](https://github.com/fleetyards/fleetyards/commit/8a80b2e7c730e9947cbefb0ca97f64c6c7d9820c))
+* **sc_data:** give equipment a row per build ([#4522](https://github.com/fleetyards/fleetyards/issues/4522)) ([dbdfba1](https://github.com/fleetyards/fleetyards/commit/dbdfba129d2397f261beef6d9537ecf4066866e0))
+* **sc_data:** read commodities from the resource database too ([2712d63](https://github.com/fleetyards/fleetyards/commit/2712d63bc7d1ba5b9a80a8658e5c419c531db00d))
+* **sc_data:** read equipment off the build ([#4530](https://github.com/fleetyards/fleetyards/issues/4530)) ([5905238](https://github.com/fleetyards/fleetyards/commit/5905238f13f41442fe52942493b0b2ee80e5713f))
+* **uex:** map the three raw materials whose names read backwards ([0f38f4f](https://github.com/fleetyards/fleetyards/commit/0f38f4fb52f63585fb1baf5dd686eb6a950e338d))
+
+
+### Bug Fixes
+
+* **admin-api:** type the import payloads as the objects they are ([#4524](https://github.com/fleetyards/fleetyards/issues/4524)) ([a16248d](https://github.com/fleetyards/fleetyards/commit/a16248d081e8b54c7e67666459bac6df02d43e32))
+* **admin:** notification center on a phone, and the archive switch back to the left ([#4509](https://github.com/fleetyards/fleetyards/issues/4509)) ([3b50e86](https://github.com/fleetyards/fleetyards/commit/3b50e8670551533af92576a793d7527b5cb7c953))
+* **api:** containerFit rejected every request, and the last inline enums ([#4537](https://github.com/fleetyards/fleetyards/issues/4537)) ([e3c4441](https://github.com/fleetyards/fleetyards/commit/e3c444147d9f19724040a36366b234b50ac02d23))
+* **cargo-holds:** keep a curated offset on the hold it was set on ([#4517](https://github.com/fleetyards/fleetyards/issues/4517)) ([df31e02](https://github.com/fleetyards/fleetyards/commit/df31e025d2a836b7b59c9208c92ba28defddcb11))
+* **ci:** copy pnpm-workspace.yaml into the build image ([5264cd5](https://github.com/fleetyards/fleetyards/commit/5264cd59c0dca7809b8dcfdf5477ec819e9ead4d))
+* **deps:** pin the pnpm version for Dependabot ([#4519](https://github.com/fleetyards/fleetyards/issues/4519)) ([fef2250](https://github.com/fleetyards/fleetyards/commit/fef2250dddf763673969635145cacfdc541e9f54))
+* **fleets:** rank promote and demote against one ordering ([eaeee04](https://github.com/fleetyards/fleetyards/commit/eaeee04326d15fb22718a968bf6128f5290994d1))
+* **sc_data:** name a commodity crate after itself, not its donor ([7182d16](https://github.com/fleetyards/fleetyards/commit/7182d16c0949b89269c1c1545d545e06d4aa66f9))
+* six errors from AppSignal production triage ([#4510](https://github.com/fleetyards/fleetyards/issues/4510)) ([475da0e](https://github.com/fleetyards/fleetyards/commit/475da0e47487ac36c9e9832a2591ac136143e21a))
+
+
+### Refactorings
+
+* **api:** extract every nested object into a component ([#4540](https://github.com/fleetyards/fleetyards/issues/4540)) ([cdefaad](https://github.com/fleetyards/fleetyards/commit/cdefaad4e43d5fecc18288c0a63cf4f10af07377))
+* **api:** give the last two q parameters a Query component ([#4533](https://github.com/fleetyards/fleetyards/issues/4533)) ([a269bde](https://github.com/fleetyards/fleetyards/commit/a269bde021372e2b0e127e941f5a35d1b3a6ef14))
+* **api:** name every array response ([#4536](https://github.com/fleetyards/fleetyards/issues/4536)) ([1f78fa2](https://github.com/fleetyards/fleetyards/commit/1f78fa22d23b681f741fd3fafa50190d0d314c1c))
+* **api:** name every enum ([#4541](https://github.com/fleetyards/fleetyards/issues/4541)) ([60e5231](https://github.com/fleetyards/fleetyards/commit/60e5231f557db9601ca4d58cee08ae5eb42ab840))
+* **api:** name every request and response body ([#4531](https://github.com/fleetyards/fleetyards/issues/4531)) ([4343faf](https://github.com/fleetyards/fleetyards/commit/4343faff855624076bafa2a0e84ae220c2060e71))
+* **api:** put components in the scope that reaches them ([#4547](https://github.com/fleetyards/fleetyards/issues/4547)) ([430f5e0](https://github.com/fleetyards/fleetyards/commit/430f5e0a3193d49d52bb564dbfeccdac964a3976))
+* **sc_data:** resolve the build through one object ([#4512](https://github.com/fleetyards/fleetyards/issues/4512)) ([755cf29](https://github.com/fleetyards/fleetyards/commit/755cf290a4c220ba401cbe1f1e3f898bb64aa00b))
+* **sc_data:** route every loader write through one seam ([#4514](https://github.com/fleetyards/fleetyards/issues/4514)) ([bd70ec2](https://github.com/fleetyards/fleetyards/commit/bd70ec27d1ac803f0c2f4cb0fd288ed440811206))
+* **sc_data:** separate resolving a loadout from writing it ([#4520](https://github.com/fleetyards/fleetyards/issues/4520)) ([af7737f](https://github.com/fleetyards/fleetyards/commit/af7737fb8e6c5e07562586dbedc2d6452f6b6246))
+
+
+### Chores
+
+* **ci:** install pnpm from packageManager and fix the JS cache ([#4521](https://github.com/fleetyards/fleetyards/issues/4521)) ([8843c13](https://github.com/fleetyards/fleetyards/commit/8843c13210c7c209149d877459f2d5699c9f79a4))
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#4527](https://github.com/fleetyards/fleetyards/issues/4527)) ([b57f867](https://github.com/fleetyards/fleetyards/commit/b57f8679444b101a3158f6fa4ad7ebfcabe6f75e))
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#4544](https://github.com/fleetyards/fleetyards/issues/4544)) ([f0660d9](https://github.com/fleetyards/fleetyards/commit/f0660d9eb8d154324d6b54e8b1bbe8cbdc33931d))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.38 to 6.1.39 ([#4543](https://github.com/fleetyards/fleetyards/issues/4543)) ([28fd569](https://github.com/fleetyards/fleetyards/commit/28fd569084d27d01af857266c8f13030eb8062aa))
+* **deps-dev:** bump eslint from 10.8.1 to 10.9.0 ([#4503](https://github.com/fleetyards/fleetyards/issues/4503)) ([b5e1895](https://github.com/fleetyards/fleetyards/commit/b5e189590c1c011a7b081d1651512851c355f418))
+* **deps-dev:** bump orval from 8.24.0 to 8.25.0 ([#4505](https://github.com/fleetyards/fleetyards/issues/4505)) ([0cb0dd3](https://github.com/fleetyards/fleetyards/commit/0cb0dd3f814d06e2722892fe71379af78c36be1d))
+* **deps-dev:** bump orval from 8.25.0 to 8.26.0 ([#4545](https://github.com/fleetyards/fleetyards/issues/4545)) ([36533a5](https://github.com/fleetyards/fleetyards/commit/36533a5f1db205e3feb6a681eccf4a0dae307723))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.10 to 3.3.11 ([#4504](https://github.com/fleetyards/fleetyards/issues/4504)) ([d9ab586](https://github.com/fleetyards/fleetyards/commit/d9ab586c3d51e39f179cb22493bec887b592ff72))
+* **deps-dev:** bump vue-tsc from 3.3.10 to 3.3.11 ([#4506](https://github.com/fleetyards/fleetyards/issues/4506)) ([4306103](https://github.com/fleetyards/fleetyards/commit/4306103e6e0c258ed4b4235148c1c7884acbe796))
+* **deps-dev:** bump webmock from 3.26.2 to 3.26.3 ([#4501](https://github.com/fleetyards/fleetyards/issues/4501)) ([1effa31](https://github.com/fleetyards/fleetyards/commit/1effa31b01e21aafe08cf0e0cc1db333007bf4cd))
+* **deps:** bump @tanstack/vue-query from 5.101.4 to 5.102.0 ([#4526](https://github.com/fleetyards/fleetyards/issues/4526)) ([38db073](https://github.com/fleetyards/fleetyards/commit/38db073f09ee12be6d2e931cbbc3d374a643b001))
+* **deps:** bump @tanstack/vue-query from 5.102.0 to 5.102.2 ([#4546](https://github.com/fleetyards/fleetyards/issues/4546)) ([7fac084](https://github.com/fleetyards/fleetyards/commit/7fac0842aa3f06ec5c4a36245c2854e074d3cb0d))
+* **deps:** bump doorkeeper-jwt from 0.4.3 to 0.4.4 ([#4502](https://github.com/fleetyards/fleetyards/issues/4502)) ([81c6ca9](https://github.com/fleetyards/fleetyards/commit/81c6ca983703b5a856784f35a402ba7155c4b78a))
+* **deps:** consolidate resolutions into pnpm.overrides ([#4511](https://github.com/fleetyards/fleetyards/issues/4511)) ([fdf6736](https://github.com/fleetyards/fleetyards/commit/fdf6736553eabb6865d885ff05618358e599a51a))
+* **deps:** drop overrides that no longer affect resolution ([#4515](https://github.com/fleetyards/fleetyards/issues/4515)) ([06817a5](https://github.com/fleetyards/fleetyards/commit/06817a570c7d84b1261ac4346f17ee2da816ce2c))
+* **deps:** move pnpm settings to pnpm-workspace.yaml ([#4518](https://github.com/fleetyards/fleetyards/issues/4518)) ([c081370](https://github.com/fleetyards/fleetyards/commit/c0813701094b22adb765a5ff6e59e34de8e455e3))
+* **sc_data:** move the parsed tree out of git into object storage ([#4468](https://github.com/fleetyards/fleetyards/issues/4468)) ([849ebbe](https://github.com/fleetyards/fleetyards/commit/849ebbecf5c843fe0b3cf3ca23b97fbbb54ffab5))
+
 ## [7.2.0](https://github.com/fleetyards/fleetyards/compare/v7.1.0...v7.2.0) (2026-08-24)
 
 
