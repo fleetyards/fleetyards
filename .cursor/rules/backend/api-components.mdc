@@ -176,8 +176,14 @@ status: V1::Schemas::Enums::HangarSyncStatusEnum
 ```
 
 A typo becomes a `NameError` while generating instead of a dangling reference
-that only warns. Most of the tree still uses strings; prefer the class form in
-new code.
+that only warns, and renaming a component updates its references.
+
+**Use the class form**, with one exception: 47 component names exist in two
+scopes (`Model`, `Manufacturer`, `StandardError`, `User`, …), and a string ref is
+late-bound — inside a `shared/v1` component it resolves to the admin copy in the
+admin document and the public copy in the public one. Pinning one of those to a
+class changes one of the two documents, so they stay strings. `grep -c "class
+<Name>"` across `app/api_components` tells you which.
 
 ## After changing components
 

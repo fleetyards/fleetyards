@@ -358,8 +358,11 @@ status: V1::Schemas::Enums::HangarSyncStatusEnum
 ```
 
 A typo is then a `NameError` at generate time instead of a dangling reference
-that only `strict_reference_validation` warns about. Most of the tree still uses
-the string form; prefer the class form in new code.
+that only `strict_reference_validation` warns about.
+
+Use the class form. The exception is a name that exists in two scopes (`Model`,
+`StandardError`, `User`, …): there a string ref is deliberately late-bound, so it
+resolves per document. Those stay strings.
 
 ## Feature Flags
 
