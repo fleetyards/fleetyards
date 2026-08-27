@@ -15,7 +15,7 @@ class Api::V1::FleetsAllInventoryItemsIndexTest < ActionDispatch::IntegrationTes
       tags "FleetInventoryItems"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: FleetInventoryItem.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::FleetInventoryItemQuery,

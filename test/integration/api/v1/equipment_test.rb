@@ -13,7 +13,7 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
       tags "Equipment"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Equipment.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::EquipmentQuery,

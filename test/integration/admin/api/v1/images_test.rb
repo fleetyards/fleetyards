@@ -38,9 +38,9 @@ class Admin::Api::V1::ImagesTest < ActionDispatch::IntegrationTest
       produces "application/json"
       tags "Images"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
-      parameter ::Shared::V1::Parameters::SortingParameter
+      parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: ::Admin::V1::Schemas::Queries::ImageQuery,
         style: :deepObject,

@@ -34,7 +34,7 @@ class Admin::Api::V1::AdminUsersTest < ActionDispatch::IntegrationTest
       tags "AdminUsers"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
 
       response(200, "successful") do
         schema ::Admin::V1::Schemas::AdminUsers

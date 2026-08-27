@@ -34,7 +34,7 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       tags "ModelModules"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModule.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::Admin::V1::Schemas::Queries::ModelModuleQuery,

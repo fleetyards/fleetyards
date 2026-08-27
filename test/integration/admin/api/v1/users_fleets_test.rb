@@ -15,7 +15,7 @@ class Admin::Api::V1::UsersFleetsTest < ActionDispatch::IntegrationTest
       tags "Users"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
 
       response(200, "successful") do
         schema ::Admin::V1::Schemas::AdminUserFleets

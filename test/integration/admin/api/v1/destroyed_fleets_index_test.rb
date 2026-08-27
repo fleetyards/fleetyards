@@ -13,7 +13,7 @@ class Admin::Api::V1::DestroyedFleetsIndexTest < ActionDispatch::IntegrationTest
       tags "Fleets"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "source", in: :query, description: "discarded (soft-deleted) or purged (hard-deleted)", schema: ::Admin::V1::Schemas::Enums::DestroyedFleetSourceEnum, required: false
       parameter name: "q", in: :query, schema: ::Admin::V1::Schemas::Queries::DestroyedFleetQuery, required: false
 

@@ -13,8 +13,8 @@ class Admin::Api::V1::FleetsIndexTest < ActionDispatch::IntegrationTest
       tags "Fleets"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
-      parameter ::Shared::V1::Parameters::SortingParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query, schema: ::Admin::V1::Schemas::Queries::FleetQuery, required: false
 
       response(200, "successful") do

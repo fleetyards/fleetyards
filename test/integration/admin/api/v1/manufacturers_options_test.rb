@@ -13,7 +13,7 @@ class Admin::Api::V1::ManufacturersOptionsTest < ActionDispatch::IntegrationTest
       tags "Manufacturers"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: :q, in: :query, schema: ::Admin::V1::Schemas::Queries::ManufacturerQuery, required: false
 
       response(200, "successful") do

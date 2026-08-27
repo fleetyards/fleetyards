@@ -13,9 +13,9 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       tags "Notifications"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: AdminNotification.default_per_page}, required: false
-      parameter ::Shared::V1::Parameters::SortingParameter
+      parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query, schema: ::Admin::V1::Schemas::Queries::AdminNotificationQuery, required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 

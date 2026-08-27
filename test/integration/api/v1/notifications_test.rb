@@ -19,7 +19,7 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
         {OpenId: ["notifications", "notifications:read"]}
       ]
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {
         type: :string, default: Notification.default_per_page
       }, required: false

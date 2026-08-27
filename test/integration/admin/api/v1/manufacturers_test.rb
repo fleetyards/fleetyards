@@ -40,9 +40,9 @@ class Admin::Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
       tags "Manufacturers"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Manufacturer.default_per_page}, required: false
-      parameter ::Shared::V1::Parameters::SortingParameter
+      parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: ::Admin::V1::Schemas::Queries::ManufacturerQuery,
         style: :deepObject,

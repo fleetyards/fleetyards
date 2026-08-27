@@ -13,7 +13,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       tags "Components"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Component.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::ComponentQuery,

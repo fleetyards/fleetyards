@@ -15,7 +15,7 @@ class Api::V1::ModelsVideosTest < ActionDispatch::IntegrationTest
       tags "Models"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Video.default_per_page}, required: false
 
       response(200, "successful") do

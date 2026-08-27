@@ -41,7 +41,7 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
       tags "ModelHardpoints"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
       parameter name: "q", in: :query,
         schema: ::Admin::V1::Schemas::Queries::ModelHardpointQuery,

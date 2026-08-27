@@ -37,7 +37,7 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
         {OpenId: ["hangar", "hangar:read"]}
       ]
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {
         type: :string, default: Vehicle.default_per_page
       }, required: false

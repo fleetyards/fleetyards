@@ -34,9 +34,9 @@ class Admin::Api::V1::FundingGoalsTest < ActionDispatch::IntegrationTest
       tags "FundingGoals"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: FundingGoal.default_per_page}, required: false
-      parameter ::Shared::V1::Parameters::SortingParameter
+      parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: ::Admin::V1::Schemas::Queries::FundingGoalQuery,
         style: :deepObject,

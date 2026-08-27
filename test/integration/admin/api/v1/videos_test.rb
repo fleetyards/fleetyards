@@ -38,7 +38,7 @@ class Admin::Api::V1::VideosTest < ActionDispatch::IntegrationTest
       tags "Videos"
       produces "application/json"
 
-      parameter ::Shared::V1::Parameters::PageParameter
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Video.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: ::Admin::V1::Schemas::Queries::VideoQuery,
