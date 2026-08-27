@@ -123,6 +123,9 @@ components:
       - rsi_api_blocked
       - rsi_api_unblocked
       - weekly_stats
+      - ship_matrix_import
+      - sc_data_import
+      - import_run
       x-enumNames:
       - PAINTS_IMPORT
       - MODULES_IMPORT
@@ -133,6 +136,9 @@ components:
       - RSI_API_BLOCKED
       - RSI_API_UNBLOCKED
       - WEEKLY_STATS
+      - SHIP_MATRIX_IMPORT
+      - SC_DATA_IMPORT
+      - IMPORT_RUN
     Import:
       type: object
       properties:
