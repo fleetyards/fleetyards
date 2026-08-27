@@ -93,6 +93,63 @@ class Component < ApplicationRecord
     end
   }
 
+  # The build a filter resolves against, joined as `component_facts`. Two shapes
+  # behind one alias, so a ransacker stays a single static expression either way.
+  #
+  # This one is the catalogue we are on, and an inner join to it *is*
+  # `current_version`: a row the build describes has a build row, and a row it
+  # does not describe is not in the catalogue. So no column fallback is needed
+  # here -- and leaving it out is what keeps the filter on an indexed column.
+  #
+  # `COALESCE(build, column)` spans two tables, so no index applies and every row
+  # has to be touched. Measured on equipment when this was first built the wrong
+  # way: 5.18ms against 0.13ms, an index scan turning into a seq scan. Components
+  # are eight thousand rows against equipment's five, so the same mistake costs
+  # more here.
+  def self.current_facts_join(source)
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      INNER JOIN component_builds AS component_facts
+        ON component_facts.component_id = components.id
+       AND component_facts.environment = ?
+       AND component_facts.version = ?
+    SQL
+  end
+
+  # Everything: rows only an older build describes, and rows no load ever did.
+  # The fallback is unavoidable here, so it is folded into the subquery rather
+  # than into each condition -- the ransackers stay identical, and the cost lands
+  # only on this path, which is `currentVersion=false` and the admin list.
+  def self.all_facts_join(source)
+    facts = ComponentBuild::FILTERABLE.map { |fact| "COALESCE(b.#{fact}, c.#{fact}) AS #{fact}" }.join(", ")
+
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      LEFT JOIN (
+        SELECT c.id AS component_id, #{facts}
+        FROM components c
+        LEFT JOIN (
+          SELECT DISTINCT ON (component_id) *
+          FROM component_builds
+          WHERE environment = ?
+          ORDER BY component_id, (version = ?) DESC, created_at DESC
+        ) b ON b.component_id = c.id
+      ) AS component_facts ON component_facts.component_id = components.id
+    SQL
+  end
+
+  scope :with_facts, ->(current_only = true, source = ::ScData::Source.current) {
+    joins(
+      ActiveModel::Type::Boolean.new.cast(current_only) ? current_facts_join(source) : all_facts_join(source)
+    )
+  }
+
+  # One fact, off whichever build the join supplied. Referencing the alias
+  # without `with_facts` raises rather than returning the wrong rows, which is
+  # the failure mode to want here -- ransack drops a condition it cannot place
+  # without saying a word.
+  def self.fact_sql(fact)
+    Arel.sql("component_facts.#{fact}")
+  end
+
   # Not in the build we are on. Said out loud in the API, which until now offered
   # a component the export had dropped as though it were current.
   def retired?
@@ -171,14 +228,29 @@ class Component < ApplicationRecord
 
   enum :item_class,
     {stealth: 0, civilian: 1, industrial: 2, military: 3, competition: 4}
-  ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do |parent|
-    parent.table[:item_class]
-  end
 
   enum :tracking_signal,
     {infrared: 0, cross_section: 1, electromagnetic: 2}
-  ransacker :tracking_signal, formatter: proc { |v| Component.tracking_signals[v] } do |parent|
-    parent.table[:tracking_signal]
+
+  # `type` is what makes a comparison boolean rather than string-wise, the same
+  # reason ItemPriceConcern passes it.
+  FACT_RANSACK_TYPES = {hidden: :boolean}.freeze
+
+  # Filtering and sorting read the build. Each of these shadows a real column of
+  # the same name -- a ransacker wins over a column -- so every query parameter
+  # keeps working untouched, with no API or frontend change.
+  (ComponentBuild::FILTERABLE - %i[item_class tracking_signal]).each do |fact|
+    ransacker(fact, type: FACT_RANSACK_TYPES[fact]) { Component.fact_sql(fact) }
+  end
+
+  # The two enums keep their formatters, which turn the name a client sends into
+  # the integer the column stores.
+  ransacker :item_class, formatter: proc { |v| Component.item_classes[v] } do
+    Component.fact_sql(:item_class)
+  end
+
+  ransacker :tracking_signal, formatter: proc { |v| Component.tracking_signals[v] } do
+    Component.fact_sql(:tracking_signal)
   end
 
   def self.ransackable_attributes(auth_object = nil)
@@ -240,15 +312,24 @@ class Component < ApplicationRecord
     ]
   end
 
+  # Read off the build table rather than through the rows: the builds we are on
+  # *are* the current catalogue, so this needs neither the join nor
+  # `current_version` and stays a single index scan.
+  def self.build_facet(fact, source = ::ScData::Source.current)
+    scope = ComponentBuild.current(source).where.not(fact => nil)
+    scope = yield(scope) if block_given?
+
+    scope.distinct.pluck(fact).compact_blank.sort
+  end
+
   def self.categories
-    current_version.distinct.pluck(:category).compact_blank.sort
+    build_facet(:category)
   end
 
   def self.sub_types(category: nil)
-    scope = current_version
-    scope = scope.where(category: category) if category.present?
-
-    scope.distinct.pluck(:component_sub_type).compact_blank.sort
+    build_facet(:component_sub_type) do |scope|
+      category.present? ? scope.where(category:) : scope
+    end
   end
 
   def self.item_type_filters

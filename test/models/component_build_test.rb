@@ -52,7 +52,7 @@ class ComponentBuildTest < ActiveSupport::TestCase
   end
 
   test "a component carries one row per build, not two" do
-    component = create(:component)
+    component = create(:component, :without_build)
     create(:component_build, component:, environment: @environment, version: @version)
 
     duplicate = build(
@@ -64,7 +64,7 @@ class ComponentBuildTest < ActiveSupport::TestCase
   end
 
   test "a later build of the same environment sits beside the earlier one" do
-    component = create(:component)
+    component = create(:component, :without_build)
     create(:component_build, component:, environment: @environment, version: "0.0.1-live.1")
     create(:component_build, component:, environment: @environment, version: "0.0.2-live.2")
 
@@ -72,7 +72,7 @@ class ComponentBuildTest < ActiveSupport::TestCase
   end
 
   test "the same component can be described by more than one environment" do
-    component = create(:component)
+    component = create(:component, :without_build)
     create(:component_build, component:, environment: "live", version: @version)
     create(:component_build, component:, environment: "ptu", version: @version)
 
@@ -88,7 +88,7 @@ class ComponentBuildTest < ActiveSupport::TestCase
   end
 
   test ".for_source keeps only the current environment" do
-    component = create(:component)
+    component = create(:component, :without_build)
     mine = create(:component_build, component:, environment: @environment, version: @version)
     create(:component_build, component:, environment: "somewhere-else", version: @version)
 
@@ -96,7 +96,7 @@ class ComponentBuildTest < ActiveSupport::TestCase
   end
 
   test ".current also narrows to the version the environment is on" do
-    component = create(:component)
+    component = create(:component, :without_build)
     current = create(:component_build, component:, environment: @environment, version: @version)
     create(:component_build, component:, environment: @environment, version: "0.0.1-live.1")
 
@@ -134,7 +134,7 @@ class ComponentBuildTest < ActiveSupport::TestCase
   end
 
   test ".retained_versions keeps the newest builds of an environment" do
-    component = create(:component)
+    component = create(:component, :without_build)
     %w[0.0.1 0.0.2 0.0.3 0.0.4].each_with_index do |version, index|
       create(
         :component_build,
@@ -149,7 +149,7 @@ class ComponentBuildTest < ActiveSupport::TestCase
   end
 
   test "builds go when the component does" do
-    component = create(:component)
+    component = create(:component, :without_build)
     create(:component_build, component:)
 
     assert_difference("ComponentBuild.count", -1) do

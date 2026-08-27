@@ -146,6 +146,89 @@ class ComponentTest < ActiveSupport::TestCase
     assert_equal "Old Name", old.reload.name
   end
 
+  # Everything below sets a build value that *disagrees* with the column. While
+  # both are written they are identical, so a filter reading the wrong one still
+  # passes every other test in this file -- disagreement is the only way to show
+  # which side answered.
+  test "a text filter matches the name the build carries" do
+    component = create(:component, :without_build, name: "Column Name")
+    create(:component_build, component:, name: "Gorgon Shield")
+
+    result = Component.with_facts.ransack(name_cont: "Gorgon").result
+
+    assert_equal [component.id], result.pluck(:id)
+  end
+
+  test "a type filter follows the build, not the column" do
+    component = create(:component, :without_build, item_type: "old_type")
+    create(:component_build, component:, item_type: "Cooler")
+
+    assert_equal [component.id], Component.with_facts.ransack(item_type_eq: "Cooler").result.pluck(:id)
+    assert_empty Component.with_facts.ransack(item_type_eq: "old_type").result.pluck(:id)
+  end
+
+  # The ransacker has to keep its formatter, or the enum name never reaches the
+  # integer the column stores.
+  test "an enum filter follows the build" do
+    component = create(:component, :without_build, item_class: nil)
+    create(:component_build, component:, item_class: :military)
+
+    assert_equal [component.id], Component.with_facts.ransack(item_class_eq: "military").result.pluck(:id)
+  end
+
+  test "the hidden filter follows the build" do
+    component = create(:component, :without_build, hidden: false)
+    create(:component_build, component:, hidden: true)
+
+    assert_equal [component.id], Component.with_facts.ransack(hidden_eq: true).result.pluck(:id)
+    assert_empty Component.with_facts.ransack(hidden_eq: false).result.pluck(:id)
+  end
+
+  # The reader falls back to the column for a component no load ever described, so
+  # the filter has to as well on the path that shows such a component.
+  test "a filter falls back to the column when there is no build at all" do
+    component = create(:component, :without_build, item_type: "hand_made")
+
+    assert_equal [component.id],
+      Component.with_facts(false).ransack(item_type_eq: "hand_made").result.pluck(:id)
+  end
+
+  # And is left out of the catalogue, which is what makes the fallback droppable
+  # on the fast path: nothing the current build does not describe is in it.
+  test "the current catalogue leaves out a component with no build" do
+    create(:component, :without_build, item_type: "hand_made")
+
+    assert_empty Component.with_facts.ransack(item_type_eq: "hand_made").result.pluck(:id)
+  end
+
+  test "sorting orders by the name the build carries" do
+    first = create(:component, :without_build, name: "Zulu Column")
+    second = create(:component, :without_build, name: "Alpha Column")
+    create(:component_build, component: first, name: "Alpha Build")
+    create(:component_build, component: second, name: "Zulu Build")
+
+    ordered = Component.with_facts.order(Component.fact_sql(:name).asc).pluck(:id)
+
+    assert_equal [first.id, second.id], ordered
+  end
+
+  test "the facet lists come from the build" do
+    component = create(:component, :without_build, category: "old_category")
+    create(:component_build, component:, category: "coolers", component_sub_type: "Military")
+
+    assert_equal ["coolers"], Component.categories
+    assert_equal ["Military"], Component.sub_types
+  end
+
+  test "the facet lists narrow by the build's category" do
+    cooler = create(:component, :without_build)
+    shield = create(:component, :without_build)
+    create(:component_build, component: cooler, category: "coolers", component_sub_type: "Military")
+    create(:component_build, component: shield, category: "shields", component_sub_type: "Civilian")
+
+    assert_equal ["Military"], Component.sub_types(category: "coolers")
+  end
+
   test ".current_version narrows to the patch the game ships, or opts out" do
     current = create(:component, version: ScData::Source.version)
     retired = create(:component, version: "0.0.1-live.1")

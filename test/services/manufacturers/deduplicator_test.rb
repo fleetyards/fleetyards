@@ -264,7 +264,9 @@ module Manufacturers
       plan = ::Manufacturers::Deduplicator.new(dropped_codes: ["TRAS"]).plan
 
       assert_empty plan[:dropped]
-      assert_includes plan[:log].join("\n"), "1 records still point at it"
+      # Two, not one: the component's build carries the manufacturer as well,
+      # which is exactly why ComponentBuild is in ASSOCIATED_MODELS.
+      assert_includes plan[:log].join("\n"), "2 records still point at it"
     end
 
     test "#plan reports no record left without a manufacturer" do

@@ -157,7 +157,7 @@ module ScData
       # so this also pins that the build lands beside the identity row rather than
       # replacing it.
       test "#apply_build works the same for a component" do
-        component = create(:component)
+        component = create(:component, :without_build)
 
         @loader.apply_build(component, {name: "Gorgon", component_class: "Shield"})
 
@@ -169,8 +169,8 @@ module ScData
       end
 
       test "#retire_absent_builds drops a component's current build but keeps the component" do
-        kept = create(:component)
-        dropped = create(:component)
+        kept = create(:component, :without_build)
+        dropped = create(:component, :without_build)
         create(:component_build, component: kept)
         create(:component_build, component: dropped)
 
