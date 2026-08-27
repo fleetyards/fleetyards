@@ -1,16 +1,16 @@
 require "open-uri"
 
 class PaintsImporter
+  # A targeted run narrows down which paints it looks at to the ones the given
+  # model has, not where they land: a paint the source names for a whole series
+  # belongs on every model of that series, whichever one triggered the run.
+  def initialize(model: nil)
+    @model = model
+  end
+
   def run
-    paints = []
-
-    Imports::HangarSync.find_each do |import|
-      paints << extract_paints(import)
-    end
-
-    paints.flatten!
-    paints.uniq!
-    paints.compact!
+    paints = collect_paints
+    paints = paints.select { |paint| paint_for_target?(paint) } if @model.present?
 
     results = paints.map do |paint|
       import_paint(paint)
@@ -79,6 +79,14 @@ class PaintsImporter
   end
 
   def list_paints(filter = nil)
+    collect_paints.select do |paint|
+      return true if filter.blank?
+
+      paint[:model_name].include?(filter) || paint[:name].include?(filter)
+    end
+  end
+
+  private def collect_paints
     paints = []
 
     Imports::HangarSync.find_each do |import|
@@ -89,11 +97,11 @@ class PaintsImporter
     paints.uniq!
     paints.compact!
 
-    paints.select do |paint|
-      return true if filter.blank?
+    paints
+  end
 
-      paint[:model_name].include?(filter) || paint[:name].include?(filter)
-    end
+  private def paint_for_target?(paint)
+    Array(models_mapping(paint[:model_name])).include?(@model.name)
   end
 
   private def extract_paints(import)

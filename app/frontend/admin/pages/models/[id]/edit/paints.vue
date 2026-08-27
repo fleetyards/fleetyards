@@ -18,8 +18,12 @@ import {
   useCreateModelPaint as useCreateModelPaintMutation,
   useUpdateModelPaint as useUpdateModelPaintMutation,
   useDestroyModelPaint as useDestroyModelPaintMutation,
+  useReloadOneModelPaints as useReloadOneModelPaintsMutation,
   getListModelPaintsQueryKey,
+  ImportTypeEnum,
 } from "@/services/fyAdminApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useImportLoading } from "@/admin/composables/useImportLoading";
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -37,6 +41,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const queryClient = useQueryClient();
+const { displayConfirm, displaySuccess } = useAppNotifications();
 
 const editableList = ref<{
   editingId: string | null;
@@ -67,6 +72,47 @@ const invalidatePaints = () =>
   queryClient.invalidateQueries({
     queryKey: getListModelPaintsQueryKey(),
   });
+
+// Import
+const paintsImportInputMatch = computed(() => ({
+  modelId: props.model.id,
+}));
+
+const { isImporting } = useImportLoading(
+  ImportTypeEnum.IMPORTS_PAINTS_IMPORT,
+  paintsImportInputMatch,
+);
+
+const importMutation = useReloadOneModelPaintsMutation({
+  mutation: {
+    onSuccess: () => {
+      displaySuccess({
+        text: t("messages.model.importPaintsStarted"),
+      });
+    },
+  },
+});
+
+const isImportingPaints = computed(
+  () => isImporting.value || importMutation.isPending.value,
+);
+
+// The import runs in the background, so the list only holds what the paints
+// looked like before it started until the import reports back.
+watch(isImporting, (importing, wasImporting) => {
+  if (wasImporting && !importing) void invalidatePaints();
+});
+
+const importPaints = () => {
+  if (!props.model.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.model.importPaints"),
+    onConfirm: async () => {
+      await importMutation.mutateAsync({ id: props.model.id! });
+    },
+  });
+};
 
 // Edit
 const editForm = ref<ModelPaintInput>({});
@@ -175,13 +221,24 @@ const bulkCopy = (selectedIds: string[]) => {
 <template>
   <div class="flex items-center justify-between mb-4">
     <Heading hero>{{ t("headlines.admin.models.edit.paints") }}</Heading>
-    <Btn
-      :disabled="editableList?.creating"
-      @click="editableList?.startCreate()"
-    >
-      <i class="fa-duotone fa-plus" />
-      {{ t("actions.add") }}
-    </Btn>
+    <div class="flex items-center gap-2">
+      <Btn
+        v-tooltip="t('actions.models.importPaints')"
+        :loading="isImportingPaints"
+        spinner
+        @click="importPaints"
+      >
+        <i class="fa-duotone fa-palette" />
+        {{ t("actions.models.importPaints") }}
+      </Btn>
+      <Btn
+        :disabled="editableList?.creating"
+        @click="editableList?.startCreate()"
+      >
+        <i class="fa-duotone fa-plus" />
+        {{ t("actions.add") }}
+      </Btn>
+    </div>
   </div>
 
   <InlineEditableList

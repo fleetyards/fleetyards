@@ -5422,6 +5422,47 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{id}/reload-one-paints":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Reload Single Model Paints
+      tags:
+      - Models
+      operationId: reloadOneModelPaints
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MessageResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{id}/reload-one-scdata":
     parameters:
     - name: id

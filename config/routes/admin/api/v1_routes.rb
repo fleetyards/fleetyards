@@ -41,6 +41,7 @@ v1_admin_api_routes = lambda do
       put "reload-one" => "models#reload_one"
       put "reload-one-matrix" => "models#reload_one_matrix"
       put "reload-one-scdata" => "models#reload_one_scdata"
+      put "reload-one-paints" => "models#reload_one_paints"
     end
   end
 
