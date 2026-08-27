@@ -178,7 +178,15 @@ status: V1::Schemas::Enums::HangarSyncStatusEnum
 A typo becomes a `NameError` while generating instead of a dangling reference
 that only warns, and renaming a component updates its references.
 
-**Use the class form**, with one exception: 47 component names exist in two
+**Use the class form for schemas.** Two exceptions:
+
+`component_type :parameters` components stay `$ref` strings. The class form
+registers a component when it is first *referenced* rather than when its file
+loads, which moves the `parameters:` block inside `components:` — and the
+position then follows Ruby's load order, so the document differs between macOS
+and Linux. `api-schema-check` catches it, but only on CI.
+
+The second exception is 47 component names exist in two
 scopes (`Model`, `Manufacturer`, `StandardError`, `User`, …), and a string ref is
 late-bound — inside a `shared/v1` component it resolves to the admin copy in the
 admin document and the public copy in the public one. Pinning one of those to a

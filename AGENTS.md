@@ -360,7 +360,12 @@ status: V1::Schemas::Enums::HangarSyncStatusEnum
 A typo is then a `NameError` at generate time instead of a dangling reference
 that only `strict_reference_validation` warns about.
 
-Use the class form. The exception is a name that exists in two scopes (`Model`,
+Use the class form for schemas — but not for `component_type :parameters`
+components: registering on first reference rather than on file load moves the
+`parameters:` block, and its position then depends on Ruby's load order, which
+differs per platform.
+
+The other exception is a name that exists in two scopes (`Model`,
 `StandardError`, `User`, …): there a string ref is deliberately late-bound, so it
 resolves per document. Those stay strings.
 
