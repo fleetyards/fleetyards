@@ -97,15 +97,25 @@ module Rsi
         updates[attr.to_sym] = nil_or_decimal(data[attr]) if (model_updated(model, data) && nil_or_decimal(data[attr]) != model.send(:"rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
       end
 
-      updates[:rsi_max_speed] = nil_or_decimal(data["afterburner_speed"])
-      updates[:max_speed] = nil_or_decimal(data["afterburner_speed"]) if model_updated(model, data) && nil_or_decimal(data["afterburner_speed"]) != model.rsi_max_speed || model.rsi_max_speed.blank? || model.rsi_max_speed.zero?
+      # These four asked whether the *matrix* value was missing, where every other
+      # field asks whether the live one is. The matrix supplies none of them for
+      # 244 of 246 ships, so the answer was always yes and the live value was
+      # overwritten on every run -- with `nil`, since the matrix has nothing to
+      # put there. The game-file loader owns these fields and refilled them
+      # afterwards, so the values flapped between correct and empty depending on
+      # which loader ran last, and an admin correction could never survive.
+      #
+      # A source may not overwrite a value with nothing, which is what the
+      # `value.present?` guard says. The shadow column is still written either
+      # way, so the change detector keeps working.
+      {max_speed: "afterburner_speed", pitch: "pitch_max", yaw: "yaw_max", roll: "roll_max"}.each do |attr, key|
+        value = nil_or_decimal(data[key])
+        updates["rsi_#{attr}"] = value
 
-      updates[:rsi_pitch] = nil_or_decimal(data["pitch_max"])
-      updates[:pitch] = nil_or_decimal(data["pitch_max"]) if model_updated(model, data) && nil_or_decimal(data["pitch_max"]) != model.rsi_pitch || model.rsi_pitch.blank? || model.rsi_pitch.zero?
-      updates[:rsi_yaw] = nil_or_decimal(data["yaw_max"])
-      updates[:yaw] = nil_or_decimal(data["yaw_max"]) if model_updated(model, data) && nil_or_decimal(data["yaw_max"]) != model.rsi_yaw || model.rsi_yaw.blank? || model.rsi_yaw.zero?
-      updates[:rsi_roll] = nil_or_decimal(data["roll_max"])
-      updates[:roll] = nil_or_decimal(data["roll_max"]) if model_updated(model, data) && nil_or_decimal(data["roll_max"]) != model.rsi_roll || model.rsi_roll.blank? || model.rsi_roll.zero?
+        next if value.blank?
+
+        updates[attr] = value if (model_updated(model, data) && value != model.send(:"rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
+      end
 
       updates[:ground] = true if data["type"] == "ground" && model_updated(model, data) && data["type"] != model.classification
 

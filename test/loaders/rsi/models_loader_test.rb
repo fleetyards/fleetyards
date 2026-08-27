@@ -106,6 +106,32 @@ module Rsi
       assert_equal "in-concept", model.production_status
     end
 
+    # The matrix carries none of these four for almost every ship, and it used to
+    # write `nil` over whatever the game-file loader had put there -- every run,
+    # because the guard asked whether the *matrix* value was missing rather than
+    # the live one.
+    # The Gladius is one of the ships the matrix carries no manoeuvring figures
+    # for. Today that is nearly every ship: 244 of 246 have `rsi_max_speed` NULL,
+    # the matrix having stopped supplying these fields at some point -- this
+    # fixture is an older snapshot where most ships still had them.
+    test "#leaves a value alone when the matrix has nothing to put there" do
+      @loader.one(60)
+
+      model = Model.find_by(rsi_id: 60)
+      model.update!(max_speed: 1210, pitch: 45, yaw: 40, roll: 120)
+
+      Timecop.travel(1.day)
+
+      @loader.one(60)
+
+      model.reload
+
+      assert_in_delta 1210.0, model.max_speed.to_f
+      assert_in_delta 45.0, model.pitch.to_f
+      assert_in_delta 40.0, model.yaw.to_f
+      assert_in_delta 120.0, model.roll.to_f
+    end
+
     test "#overrides present data" do
       polaris = create(:model, name: "Polaris", length: 20, rsi_id: 116, rsi_chassis_id: 4)
 
