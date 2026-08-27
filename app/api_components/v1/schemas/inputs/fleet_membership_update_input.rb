@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             primary: {type: :boolean},
-            shipsFilter: {"$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"},
+            shipsFilter: ::V1::Schemas::Enums::FleetMembershipShipsFilterEnum,
             hangarGroupId: {type: [:string, :null]}
           },
           additionalProperties: false

@@ -9,7 +9,7 @@ module Admin
 
           schema({
             properties: {
-              items: {type: :array, items: {"$ref": "#/components/schemas/DestroyedFleet"}}
+              items: {type: :array, items: ::Admin::V1::Schemas::DestroyedFleet}
             },
             required: %w[items]
           })

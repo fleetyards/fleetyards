@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            status: {"$ref": "#/components/schemas/FleetEventSignupStatusEnum"},
+            status: ::V1::Schemas::Enums::FleetEventSignupStatusEnum,
             vehicleId: {type: [:string, :null], format: :uuid},
             notes: {type: [:string, :null]},
             occurrenceDate: {type: [:string, :null], format: :date}

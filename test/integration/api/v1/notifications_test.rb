@@ -24,17 +24,17 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
         type: :string, default: Notification.default_per_page
       }, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/NotificationQuery"},
+        schema: ::V1::Schemas::Queries::NotificationQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Notifications"
+        schema ::V1::Schemas::Notifications
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -53,7 +53,7 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -72,7 +72,7 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -93,7 +93,7 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -113,11 +113,11 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Notification"
+        schema ::V1::Schemas::Notification
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

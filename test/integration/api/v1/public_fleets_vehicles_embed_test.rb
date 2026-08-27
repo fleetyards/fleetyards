@@ -16,17 +16,17 @@ class Api::V1::PublicFleetsVehiclesEmbedTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/FleetVehicleQuery"},
+        schema: ::V1::Schemas::Queries::FleetVehicleQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PublicVehiclesList"
+        schema ::V1::Schemas::Vehicles::PublicVehiclesList
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

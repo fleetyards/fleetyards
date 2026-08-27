@@ -14,18 +14,18 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModuleInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelModuleInput
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/ModelModule"
+        schema ::Admin::V1::Schemas::Models::Modules::ModelModule
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -37,21 +37,21 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModule.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelModuleQuery"},
+        schema: ::Admin::V1::Schemas::Queries::ModelModuleQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModules"
+        schema ::Admin::V1::Schemas::Models::Modules::ModelModules
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -63,16 +63,16 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModuleDestroyBulkInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelModuleDestroyBulkInput
 
       response(204, "successful")
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -82,16 +82,16 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModuleUpdateBulkInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelModuleUpdateBulkInput
 
       response(200, "successful")
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -106,15 +106,15 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not_found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -125,19 +125,19 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModule"
+        schema ::Admin::V1::Schemas::Models::Modules::ModelModule
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -147,22 +147,22 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModuleInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelModuleInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModule"
+        schema ::Admin::V1::Schemas::Models::Modules::ModelModule
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

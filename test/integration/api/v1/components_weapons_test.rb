@@ -14,7 +14,7 @@ class Api::V1::ComponentsWeaponsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/WeaponIndex"
+        schema ::V1::Schemas::WeaponIndex
       end
     end
   end

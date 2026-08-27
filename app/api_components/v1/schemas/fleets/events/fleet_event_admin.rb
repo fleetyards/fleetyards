@@ -12,7 +12,7 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               fleetEventId: {type: :string, format: :uuid},
-              role: {"$ref": "#/components/schemas/FleetEventAdminRoleEnum"},
+              role: ::V1::Schemas::Enums::FleetEventAdminRoleEnum,
               createdAt: {type: :string, format: "date-time"},
               user: Shared::V1::Schemas::UserRefRequired,
               grantedBy: ::V1::Schemas::UserRef

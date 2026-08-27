@@ -8,7 +8,7 @@ module V1
 
         schema({
           type: :array,
-          items: {"$ref": "#/components/schemas/FleetchartView"}
+          items: ::V1::Schemas::Models::FleetchartView
         })
       end
     end

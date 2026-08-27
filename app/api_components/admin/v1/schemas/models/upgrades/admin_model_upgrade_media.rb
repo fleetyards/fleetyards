@@ -11,7 +11,7 @@ module Admin
             schema({
               type: :object,
               properties: {
-                storeImage: {"$ref": "#/components/schemas/MediaFile"}
+                storeImage: ::Shared::V1::Schemas::MediaFile
               },
               additionalProperties: false
             })

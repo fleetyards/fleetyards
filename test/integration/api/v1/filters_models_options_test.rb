@@ -16,13 +16,13 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelQuery"},
+        schema: ::V1::Schemas::Queries::ModelQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelOptions"
+        schema ::V1::Schemas::Models::Options::ModelOptions
       end
     end
   end

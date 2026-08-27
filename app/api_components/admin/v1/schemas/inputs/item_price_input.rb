@@ -11,9 +11,9 @@ module Admin
             type: :object,
             properties: {
               itemId: {type: :string, format: :uuid},
-              itemType: {"$ref": "#/components/schemas/ItemPriceItemTypeEnum"},
+              itemType: ::Shared::V1::Schemas::Enums::ItemPriceItemTypeEnum,
               price: {type: :number},
-              priceType: {"$ref": "#/components/schemas/ItemPriceTypeEnum"},
+              priceType: ::Shared::V1::Schemas::Enums::ItemPriceTypeEnum,
               location: {type: :string},
               locationUrl: {type: :string, format: :uri}
             },

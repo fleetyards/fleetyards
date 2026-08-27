@@ -17,7 +17,7 @@ class Api::V1::FleetsInventoryItemsCreateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetInventoryItemCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetInventoryItemCreateInput
 
       security [
         {SessionCookie: []},
@@ -26,15 +26,15 @@ class Api::V1::FleetsInventoryItemsCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/FleetInventoryItem"
+        schema ::V1::Schemas::Fleets::Logistics::FleetInventoryItem
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden - member cannot add items") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

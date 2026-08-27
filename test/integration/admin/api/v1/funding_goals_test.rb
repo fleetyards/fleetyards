@@ -14,18 +14,18 @@ class Admin::Api::V1::FundingGoalsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FundingGoalInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::FundingGoalInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FundingGoal"
+        schema ::Admin::V1::Schemas::FundingGoal
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -38,21 +38,21 @@ class Admin::Api::V1::FundingGoalsTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: FundingGoal.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/FundingGoalQuery"},
+        schema: ::Admin::V1::Schemas::Queries::FundingGoalQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FundingGoals"
+        schema ::Admin::V1::Schemas::FundingGoals
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -66,19 +66,19 @@ class Admin::Api::V1::FundingGoalsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FundingGoal"
+        schema ::Admin::V1::Schemas::FundingGoal
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -88,19 +88,19 @@ class Admin::Api::V1::FundingGoalsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FundingGoal"
+        schema ::Admin::V1::Schemas::FundingGoal
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -110,22 +110,22 @@ class Admin::Api::V1::FundingGoalsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FundingGoalInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::FundingGoalInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FundingGoal"
+        schema ::Admin::V1::Schemas::FundingGoal
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

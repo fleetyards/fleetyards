@@ -19,7 +19,7 @@ class Api::V1::FleetsMissionTeamsShipsUpdateTest < ActionDispatch::IntegrationTe
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/MissionShipUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::MissionShipUpdateInput
 
       security [
         {SessionCookie: []},
@@ -28,11 +28,11 @@ class Api::V1::FleetsMissionTeamsShipsUpdateTest < ActionDispatch::IntegrationTe
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/MissionShip"
+        schema ::V1::Schemas::Fleets::Missions::MissionShip
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

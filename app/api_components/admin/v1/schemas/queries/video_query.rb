@@ -11,7 +11,7 @@ module Admin
             type: :object,
             properties: {
               modelIdEq: {type: :string, format: :uuid},
-              videoTypeEq: {"$ref": "#/components/schemas/VideoTypeEnum"}
+              videoTypeEq: ::Shared::V1::Schemas::Enums::VideoTypeEnum
             },
             additionalProperties: false,
             example: {}

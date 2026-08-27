@@ -21,10 +21,8 @@ module Admin
               emailIn: {type: :array, items: {type: :string}},
               rsihandleIn: {type: :array, items: {type: :string}},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/UserSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/UserSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::UserSortEnum
+              }, ::Admin::V1::Schemas::Sorts::UserSortEnum]}
             },
             additionalProperties: false,
             example: {}

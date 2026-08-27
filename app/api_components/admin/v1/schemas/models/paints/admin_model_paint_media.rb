@@ -11,17 +11,17 @@ module Admin
             schema({
               type: :object,
               properties: {
-                angledView: {"$ref": "#/components/schemas/MediaFile"},
-                angledViewColored: {"$ref": "#/components/schemas/MediaFile"},
+                angledView: ::Shared::V1::Schemas::MediaFile,
+                angledViewColored: ::Shared::V1::Schemas::MediaFile,
                 fleetchartImage: {type: :string},
-                frontView: {"$ref": "#/components/schemas/MediaFile"},
-                frontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                sideView: {"$ref": "#/components/schemas/MediaFile"},
-                sideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-                rsiStoreImage: {"$ref": "#/components/schemas/MediaFile"},
-                storeImage: {"$ref": "#/components/schemas/MediaFile"},
-                topView: {"$ref": "#/components/schemas/MediaFile"},
-                topViewColored: {"$ref": "#/components/schemas/MediaFile"}
+                frontView: ::Shared::V1::Schemas::MediaFile,
+                frontViewColored: ::Shared::V1::Schemas::MediaFile,
+                sideView: ::Shared::V1::Schemas::MediaFile,
+                sideViewColored: ::Shared::V1::Schemas::MediaFile,
+                rsiStoreImage: ::Shared::V1::Schemas::MediaFile,
+                storeImage: ::Shared::V1::Schemas::MediaFile,
+                topView: ::Shared::V1::Schemas::MediaFile,
+                topViewColored: ::Shared::V1::Schemas::MediaFile
               },
               additionalProperties: false
             })

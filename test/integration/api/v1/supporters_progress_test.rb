@@ -14,7 +14,7 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/SupportProgress"
+        schema ::V1::Schemas::SupportProgress
       end
     end
   end

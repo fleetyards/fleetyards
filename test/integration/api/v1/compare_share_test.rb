@@ -14,14 +14,14 @@ class Api::V1::CompareShareTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/CompareShareInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::CompareShareInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/CompareShare"
+        schema ::V1::Schemas::CompareShare
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

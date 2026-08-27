@@ -20,7 +20,7 @@ class Api::V1::PublicFleetsStatsVehiclesTest < ActionDispatch::IntegrationTest
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

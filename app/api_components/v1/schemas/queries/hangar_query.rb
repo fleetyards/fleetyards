@@ -37,23 +37,19 @@ module V1
             sizeIn: {type: :array, items: {type: :string}},
             modelNameOrModelDescriptionCont: {type: :string},
             publicEq: {type: :boolean},
-            loanerEq: {"$ref": "#/components/schemas/LoanerFilterEnum"},
+            loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
             bundledEq: {type: :string},
-            boughtViaEq: {"$ref": "#/components/schemas/BoughtViaEnum"},
+            boughtViaEq: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid},
             withCargo: {type: :boolean},
             s: {anyOf: [{
-              type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}
-            }, {
-              "$ref": "#/components/schemas/VehicleSortEnum"
-            }]},
+              type: :array, items: ::Shared::V1::Schemas::Sorts::VehicleSortEnum
+            }, ::Shared::V1::Schemas::Sorts::VehicleSortEnum]},
             sorts: {anyOf: [{
-              type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}
-            }, {
-              "$ref": "#/components/schemas/VehicleSortEnum"
-            }]}
+              type: :array, items: ::Shared::V1::Schemas::Sorts::VehicleSortEnum
+            }, ::Shared::V1::Schemas::Sorts::VehicleSortEnum]}
           },
           additionalProperties: false,
           example: {}

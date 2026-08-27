@@ -11,7 +11,7 @@ module V1
           properties: {
             title: {type: :string},
             description: {type: [:string, :null]},
-            signupApproval: {"$ref": "#/components/schemas/NullableFleetEventSignupApprovalEnum"}
+            signupApproval: ::V1::Schemas::Enums::NullableFleetEventSignupApprovalEnum
           },
           additionalProperties: false
         })

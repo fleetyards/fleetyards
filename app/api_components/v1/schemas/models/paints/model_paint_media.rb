@@ -10,12 +10,12 @@ module V1
           schema({
             type: :object,
             properties: {
-              angledView: {"$ref": "#/components/schemas/MediaFile"},
+              angledView: ::Shared::V1::Schemas::MediaFile,
               fleetchartImage: {type: :string},
-              # frontView: {"$ref": "#/components/schemas/MediaFile"},
-              sideView: {"$ref": "#/components/schemas/MediaFile"},
-              storeImage: {"$ref": "#/components/schemas/MediaFile"},
-              topView: {"$ref": "#/components/schemas/MediaFile"}
+              # frontView: ::Shared::V1::Schemas::MediaFile,
+              sideView: ::Shared::V1::Schemas::MediaFile,
+              storeImage: ::Shared::V1::Schemas::MediaFile,
+              topView: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false
           })

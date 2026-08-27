@@ -11,7 +11,7 @@ module V1
             items: {type: :array, items: {
               anyOf: [
                 {"$ref": "#/components/schemas/Model"},
-                {"$ref": "#/components/schemas/VehiclePublic"}
+                ::V1::Schemas::Vehicles::VehiclePublic
               ]
             }}
           },

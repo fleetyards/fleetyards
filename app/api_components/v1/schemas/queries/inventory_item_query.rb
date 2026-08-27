@@ -11,8 +11,8 @@ module V1
           properties: {
             nameCont: {type: :string},
             nameEq: {type: :string},
-            unitEq: {"$ref": "#/components/schemas/InventoryUnitEnum"},
-            categoryEq: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
+            unitEq: ::V1::Schemas::Enums::InventoryUnitEnum,
+            categoryEq: ::V1::Schemas::Enums::InventoryCategoryEnum,
             qualityGteq: {type: :integer},
             qualityLteq: {type: :integer},
             sorts: {type: :string}

@@ -16,7 +16,7 @@ module Admin
               serial: {type: :string},
               user: {"$ref": "#/components/schemas/User"},
               alternativeNames: {type: :array, items: {type: :string}},
-              boughtVia: {"$ref": "#/components/schemas/BoughtViaEnum"},
+              boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
               boughtViaLabel: {type: :string},
               flagship: {type: :boolean},
               hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},

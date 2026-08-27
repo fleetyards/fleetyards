@@ -8,7 +8,7 @@ module V1
 
         schema({
           type: :array,
-          items: {"$ref": "#/components/schemas/VehicleLoadout"}
+          items: ::V1::Schemas::Vehicles::VehicleLoadout
         })
       end
     end

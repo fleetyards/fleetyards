@@ -14,7 +14,7 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/HangarInventoryCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::HangarInventoryCreateInput
 
       security [
         {SessionCookie: []},
@@ -23,15 +23,15 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventory"
+        schema ::V1::Schemas::Hangar::Logistics::HangarInventory
       end
 
       response(400, "validation error") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

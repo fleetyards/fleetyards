@@ -17,7 +17,7 @@ class Api::V1::FleetsMissionTeamsCreateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/MissionTeamCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::MissionTeamCreateInput
 
       security [
         {SessionCookie: []},
@@ -26,11 +26,11 @@ class Api::V1::FleetsMissionTeamsCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/MissionTeam"
+        schema ::V1::Schemas::Fleets::Missions::MissionTeam
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -17,7 +17,7 @@ module V1
             saleNotify: {type: :boolean},
             flagship: {type: :boolean},
             modelPaintId: {type: [:string, :null], format: :uuid},
-            boughtVia: {"$ref": "#/components/schemas/BoughtViaEnum"},
+            boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},

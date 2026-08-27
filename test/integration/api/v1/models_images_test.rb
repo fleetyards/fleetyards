@@ -19,11 +19,11 @@ class Api::V1::ModelsImagesTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Images"
+        schema ::V1::Schemas::Images
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

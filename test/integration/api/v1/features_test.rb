@@ -14,7 +14,7 @@ class Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FeatureNamesList"
+        schema ::V1::Schemas::FeatureNamesList
       end
     end
   end

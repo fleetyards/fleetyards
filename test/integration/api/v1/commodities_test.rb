@@ -16,13 +16,13 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Commodity.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/CommodityQuery"},
+        schema: ::V1::Schemas::Queries::CommodityQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Commodities"
+        schema ::V1::Schemas::Commodities::Commodities
       end
     end
   end

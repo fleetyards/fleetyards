@@ -7,7 +7,7 @@ module V1
 
       schema({
         type: :array,
-        items: {"$ref": "#/components/schemas/NotificationPreference"}
+        items: ::V1::Schemas::NotificationPreference
       })
     end
   end

@@ -14,7 +14,7 @@ module V1
             slug: {type: :string},
             serial: {type: :string},
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
-            hangarGroups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupPublic"}},
+            hangarGroups: {type: :array, items: ::V1::Schemas::Hangar::Groups::HangarGroupPublic},
             loaner: {type: :boolean},
             bundled: {type: :boolean},
             bundledParent: VehicleBundledParent,
@@ -31,7 +31,7 @@ module V1
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             paint: {"$ref": "#/components/schemas/ModelPaint"},
-            activeLoadout: {"$ref": "#/components/schemas/VehicleLoadoutMinimal"},
+            activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

@@ -13,7 +13,7 @@ module Admin
             username: {type: :string},
             email: {type: :string},
             unconfirmedEmail: {type: :string},
-            avatar: {"$ref": "#/components/schemas/MediaFile"},
+            avatar: ::Shared::V1::Schemas::MediaFile,
             rsiHandle: {type: :string},
             rsiHandleVerified: {type: :boolean},
             citizenidProfileUrl: {type: :string},

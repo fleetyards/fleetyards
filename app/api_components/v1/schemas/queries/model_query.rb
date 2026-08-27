@@ -44,15 +44,11 @@ module V1
             inHangar: {type: :boolean},
             inGameEq: {type: :boolean},
             s: {anyOf: [{
-              type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
-            }, {
-              "$ref": "#/components/schemas/ModelSortEnum"
-            }]},
+              type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
+            }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]},
             sorts: {anyOf: [{
-              type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
-            }, {
-              "$ref": "#/components/schemas/ModelSortEnum"
-            }]}
+              type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
+            }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]}
           },
           additionalProperties: false,
           example: {}

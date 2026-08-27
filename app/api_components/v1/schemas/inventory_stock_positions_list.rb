@@ -7,7 +7,7 @@ module V1
 
       schema({
         type: :array,
-        items: {"$ref": "#/components/schemas/InventoryStockPosition"}
+        items: ::V1::Schemas::InventoryStockPosition
       })
     end
   end

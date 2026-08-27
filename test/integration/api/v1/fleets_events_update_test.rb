@@ -17,7 +17,7 @@ class Api::V1::FleetsEventsUpdateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body schema: {"$ref": "#/components/schemas/FleetEventUpdateInput"}, required: true
+      request_body schema: ::V1::Schemas::Inputs::FleetEventUpdateInput, required: true
 
       security [
         {SessionCookie: []},
@@ -26,11 +26,11 @@ class Api::V1::FleetsEventsUpdateTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetEventExtended"
+        schema ::V1::Schemas::Fleets::Events::FleetEventExtended
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

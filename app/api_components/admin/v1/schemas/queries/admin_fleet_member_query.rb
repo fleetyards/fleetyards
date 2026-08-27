@@ -14,10 +14,8 @@ module Admin
               stateEq: {type: :string},
               roleCont: {type: :string},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/FleetMembershipSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/FleetMembershipSortEnum"
-              }]}
+                type: :array, items: ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum
+              }, ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum]}
             },
             additionalProperties: false,
             example: {}

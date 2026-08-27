@@ -13,7 +13,7 @@ module Admin
             userId: {type: :string, format: :uuid},
             username: {type: :string},
             email: {type: :string},
-            avatar: {"$ref": "#/components/schemas/MediaFile"},
+            avatar: ::Shared::V1::Schemas::MediaFile,
             rsiHandle: {type: :string},
             role: {type: :string},
             roleId: {type: :string, format: :uuid},

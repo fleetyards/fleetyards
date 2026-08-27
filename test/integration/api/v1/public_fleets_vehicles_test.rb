@@ -18,7 +18,7 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: FleetVehicle.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/FleetVehicleQuery"},
+        schema: ::V1::Schemas::Queries::FleetVehicleQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -26,11 +26,11 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetPublicVehicles"
+        schema ::V1::Schemas::Fleets::FleetPublicVehicles
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

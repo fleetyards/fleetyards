@@ -11,7 +11,7 @@ module Shared
           properties: {
             thrustCapacity: {type: :number},
             thrusterType: {type: :string},
-            thrusterClass: {"$ref": "#/components/schemas/ThrusterClassEnum"},
+            thrusterClass: ::Shared::V1::Schemas::Enums::ThrusterClassEnum,
             fuelBurnRatePer10KNewton: {type: :number}
           },
           additionalProperties: false,

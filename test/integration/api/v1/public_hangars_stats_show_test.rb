@@ -16,17 +16,17 @@ class Api::V1::PublicHangarsStatsShowTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/HangarQuery"},
+        schema: ::V1::Schemas::Queries::HangarQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarStatsPublic"
+        schema ::V1::Schemas::Hangar::HangarStatsPublic
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

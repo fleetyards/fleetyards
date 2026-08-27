@@ -13,7 +13,7 @@ module V1
           slug: {type: :string},
           commodityType: {type: [:string, :null]},
           description: {type: [:string, :null]},
-          storeImage: {"$ref": "#/components/schemas/MediaFile"},
+          storeImage: ::Shared::V1::Schemas::MediaFile,
 
           # The UEX snapshot prices commodities at every terminal that trades
           # them, which is the whole point of syncing it -- the same shape the

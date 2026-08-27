@@ -9,17 +9,17 @@ module V1
 
           schema({
             allOf: [
-              {"$ref": "#/components/schemas/FleetEvent"},
+              ::V1::Schemas::Fleets::Events::FleetEvent,
               {
                 type: :object,
                 properties: {
                   teams: {
                     type: :array,
-                    items: {"$ref": "#/components/schemas/FleetEventTeam"}
+                    items: ::V1::Schemas::Fleets::Events::FleetEventTeam
                   },
                   unassignedSignups: {
                     type: :array,
-                    items: {"$ref": "#/components/schemas/FleetEventSignup"}
+                    items: ::V1::Schemas::Fleets::Events::FleetEventSignup
                   }
                 },
                 required: %w[teams unassignedSignups]

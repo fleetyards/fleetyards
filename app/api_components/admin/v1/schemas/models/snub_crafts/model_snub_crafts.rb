@@ -10,7 +10,7 @@ module Admin
 
             schema({
               properties: {
-                items: {type: :array, items: {"$ref": "#/components/schemas/ModelSnubCraft"}}
+                items: {type: :array, items: ::Admin::V1::Schemas::Models::SnubCrafts::ModelSnubCraft}
               },
               required: %w[items]
             })

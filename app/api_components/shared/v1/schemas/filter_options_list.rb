@@ -8,7 +8,7 @@ module Shared
 
         schema({
           type: :array,
-          items: {"$ref": "#/components/schemas/FilterOption"}
+          items: ::Shared::V1::Schemas::FilterOption
         })
       end
     end

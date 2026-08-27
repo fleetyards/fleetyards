@@ -22,11 +22,11 @@ class Api::V1::FleetsCalendarSubscriptionCreateTest < ActionDispatch::Integratio
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/CalendarSubscription"
+        schema ::V1::Schemas::Fleets::CalendarSubscription
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -45,7 +45,7 @@ class Api::V1::FleetsCalendarSubscriptionCreateTest < ActionDispatch::Integratio
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

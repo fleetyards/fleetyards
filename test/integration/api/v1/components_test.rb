@@ -16,14 +16,14 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Component.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ComponentQuery"},
+        schema: ::V1::Schemas::Queries::ComponentQuery,
         style: :deepObject,
         explode: true,
         required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Components"
+        schema ::Shared::V1::Schemas::Components
       end
     end
   end

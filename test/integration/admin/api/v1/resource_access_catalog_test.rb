@@ -14,11 +14,11 @@ class Admin::Api::V1::ResourceAccessCatalogTest < ActionDispatch::IntegrationTes
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminResourceAccessGroupsList"
+        schema ::Admin::V1::Schemas::AdminResourceAccessGroupsList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -11,9 +11,9 @@ module Shared
           properties: {
             name: {type: :string},
             group: {type: :string},
-            size: {"$ref": "#/components/schemas/DockShipSizeEnum"},
+            size: ::Shared::V1::Schemas::Enums::DockShipSizeEnum,
             sizeLabel: {type: :string},
-            type: {"$ref": "#/components/schemas/DockTypeEnum"},
+            type: ::Shared::V1::Schemas::Enums::DockTypeEnum,
             typeLabel: {type: :string}
           },
           additionalProperties: false,

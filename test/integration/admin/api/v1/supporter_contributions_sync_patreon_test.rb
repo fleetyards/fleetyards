@@ -14,15 +14,15 @@ class Admin::Api::V1::SupporterContributionsSyncPatreonTest < ActionDispatch::In
       produces "application/json"
 
       response(202, "accepted") do
-        schema "$ref": "#/components/schemas/MessageResponse"
+        schema ::Admin::V1::Schemas::MessageResponse
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

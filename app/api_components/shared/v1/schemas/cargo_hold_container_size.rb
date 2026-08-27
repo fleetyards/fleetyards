@@ -10,7 +10,7 @@ module Shared
           type: :object,
           properties: {
             size: {type: :integer},
-            dimensions: {"$ref": "#/components/schemas/CargoHoldDimension"}
+            dimensions: ::Shared::V1::Schemas::CargoHoldDimension
           },
           additionalProperties: false,
           required: %w[size dimensions]

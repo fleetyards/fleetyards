@@ -14,7 +14,7 @@ class Api::V1::UsersAccountTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/AccountUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::AccountUpdateInput
       parameter name: "X-Access-Confirmation", in: :header, schema: {type: :string},
         description: "Access confirmation token obtained from confirm-access endpoint. Required when using OAuth/OpenID authentication.",
         required: false
@@ -34,7 +34,7 @@ class Api::V1::UsersAccountTest < ActionDispatch::IntegrationTest
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

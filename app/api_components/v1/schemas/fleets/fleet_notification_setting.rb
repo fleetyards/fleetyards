@@ -13,7 +13,7 @@ module V1
             fleetId: {type: :string, format: :uuid},
             enabledInAppEvents: {
               type: :array,
-              items: {"$ref": "#/components/schemas/FleetNotificationInAppEventEnum"}
+              items: ::V1::Schemas::Enums::FleetNotificationInAppEventEnum
             },
             discordGuildId: {type: :string},
             discordChannelId: {type: :string},

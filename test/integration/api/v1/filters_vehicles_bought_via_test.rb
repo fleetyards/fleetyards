@@ -14,7 +14,7 @@ class Api::V1::FiltersVehiclesBoughtViaTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FilterOptionsList"
+        schema ::Shared::V1::Schemas::FilterOptionsList
       end
     end
   end

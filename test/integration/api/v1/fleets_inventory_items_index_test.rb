@@ -19,7 +19,7 @@ class Api::V1::FleetsInventoryItemsIndexTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: FleetInventoryItem.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/FleetInventoryItemQuery"},
+        schema: ::V1::Schemas::Queries::FleetInventoryItemQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -31,11 +31,11 @@ class Api::V1::FleetsInventoryItemsIndexTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetInventoryItemsList"
+        schema ::V1::Schemas::Fleets::Logistics::FleetInventoryItemsList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

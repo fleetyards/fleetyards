@@ -14,13 +14,13 @@ class Api::V1::PublicHangarsEmbedTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: :usernames, in: :query,
-        schema: {"$ref": "#/components/schemas/HangarEmbedQuery"},
+        schema: ::V1::Schemas::Queries::HangarEmbedQuery,
         style: :deepObject,
         explode: true,
         required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PublicVehiclesList"
+        schema ::V1::Schemas::Vehicles::PublicVehiclesList
       end
     end
   end

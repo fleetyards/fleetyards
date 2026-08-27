@@ -13,10 +13,10 @@ module Admin
               locationCont: {type: :string},
               itemIdEq: {type: :string, format: :uuid},
               itemIdIn: {type: :array, items: {type: :string, format: :uuid}},
-              itemTypeEq: {"$ref": "#/components/schemas/ItemPriceItemTypeEnum"},
-              itemTypeIn: {type: :array, items: {"$ref": "#/components/schemas/ItemPriceItemTypeEnum"}},
-              priceTypeEq: {"$ref": "#/components/schemas/ItemPriceTypeEnum"},
-              priceTypeIn: {type: :array, items: {"$ref": "#/components/schemas/ItemPriceTypeEnum"}}
+              itemTypeEq: ::Shared::V1::Schemas::Enums::ItemPriceItemTypeEnum,
+              itemTypeIn: {type: :array, items: ::Shared::V1::Schemas::Enums::ItemPriceItemTypeEnum},
+              priceTypeEq: ::Shared::V1::Schemas::Enums::ItemPriceTypeEnum,
+              priceTypeIn: {type: :array, items: ::Shared::V1::Schemas::Enums::ItemPriceTypeEnum}
             },
             additionalProperties: false,
             example: {}

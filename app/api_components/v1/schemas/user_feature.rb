@@ -14,7 +14,7 @@ module V1
           name: {type: :string},
           enabled: {type: :boolean},
           enabledForSelf: {type: :boolean},
-          scope: {"$ref": "#/components/schemas/UserFeatureScopeEnum"},
+          scope: ::V1::Schemas::Enums::UserFeatureScopeEnum,
           toggleable: {type: :boolean},
           fleets: {
             type: :array,

@@ -14,7 +14,7 @@ module Cable
           type: :object,
           properties: {
             text: {type: :string},
-            type: {"$ref": "#/components/schemas/AnnouncementTypeEnum"},
+            type: ::Cable::V1::Schemas::AnnouncementTypeEnum,
             persist: {type: :boolean},
             timeout: {type: :integer},
             background: {type: :boolean}

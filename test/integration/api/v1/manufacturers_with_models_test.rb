@@ -13,7 +13,7 @@ class Api::V1::ManufacturersWithModelsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Manufacturers"
+        schema ::V1::Schemas::Manufacturers::Manufacturers
       end
     end
   end

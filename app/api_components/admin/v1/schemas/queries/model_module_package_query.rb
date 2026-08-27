@@ -15,10 +15,8 @@ module Admin
               nameEq: {type: :string},
               modelIdEq: {type: :string, format: :uuid},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/ModelModulePackageSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/ModelModulePackageSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ModelModulePackageSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ModelModulePackageSortEnum]}
             },
             additionalProperties: false,
             example: {}

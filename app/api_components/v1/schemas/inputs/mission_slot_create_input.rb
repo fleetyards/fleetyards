@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            slottableType: {"$ref": "#/components/schemas/MissionSlottableTypeEnum"},
+            slottableType: ::V1::Schemas::Enums::MissionSlottableTypeEnum,
             slottableId: {type: :string, format: :uuid},
             title: {type: :string},
             description: {type: [:string, :null]}

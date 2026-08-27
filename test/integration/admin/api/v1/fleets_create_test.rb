@@ -14,18 +14,18 @@ class Admin::Api::V1::FleetsCreateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::FleetInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Fleet"
+        schema ::Admin::V1::Schemas::Fleet
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -18,15 +18,15 @@ class Api::V1::OmniauthConnectionsTest < ActionDispatch::IntegrationTest
       security [{SessionCookie: []}]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/User"
+        schema ::V1::Schemas::User
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden - last connection for oauth-only user") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

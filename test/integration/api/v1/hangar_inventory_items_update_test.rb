@@ -17,7 +17,7 @@ class Api::V1::HangarInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/HangarInventoryItemUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::HangarInventoryItemUpdateInput
 
       security [
         {SessionCookie: []},
@@ -26,15 +26,15 @@ class Api::V1::HangarInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventoryItem"
+        schema ::V1::Schemas::Hangar::Logistics::HangarInventoryItem
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

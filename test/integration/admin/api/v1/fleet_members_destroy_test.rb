@@ -19,19 +19,19 @@ class Admin::Api::V1::FleetMembersDestroyTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

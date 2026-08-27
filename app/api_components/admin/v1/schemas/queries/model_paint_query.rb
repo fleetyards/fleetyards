@@ -20,10 +20,8 @@ module Admin
               modelSlugIn: {type: :array, items: {type: :string}},
               modelSlugEq: {type: :string},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/ModelPaintSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/ModelPaintSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ModelPaintSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ModelPaintSortEnum]}
             },
             additionalProperties: false,
             example: {}

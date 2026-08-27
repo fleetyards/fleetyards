@@ -15,7 +15,7 @@ module Admin
               global: {type: :boolean},
               background: {type: :boolean},
               galleryId: {type: :string, format: :uuid},
-              galleryType: {"$ref": "#/components/schemas/GalleryTypeEnum"}
+              galleryType: ::Admin::V1::Schemas::Enums::GalleryTypeEnum
             },
             additionalProperties: false
           })

@@ -12,9 +12,9 @@ module Shared
             # The game files leave a hold unnamed often enough that
             # DerivedCargoHolds keys such holds by position to tell them apart.
             name: {type: [:string, :null]},
-            dimensions: {"$ref": "#/components/schemas/CargoHoldDimension"},
+            dimensions: ::Shared::V1::Schemas::CargoHoldDimension,
             capacity: {type: :integer},
-            maxContainerSize: {"$ref": "#/components/schemas/CargoHoldContainerSize"},
+            maxContainerSize: ::Shared::V1::Schemas::CargoHoldContainerSize,
             limits: CargoHoldLimits,
             offset: CargoHoldOffset,
             rotation: {type: :integer}

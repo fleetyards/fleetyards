@@ -14,7 +14,7 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/HangarGroupCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::HangarGroupCreateInput
 
       security [
         {SessionCookie: []},
@@ -23,11 +23,11 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroup"
+        schema ::V1::Schemas::Hangar::Groups::HangarGroup
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -43,11 +43,11 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroupsList"
+        schema ::V1::Schemas::Hangar::Groups::HangarGroupsList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -59,7 +59,7 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/HangarGroupSortInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::HangarGroupSortInput
 
       security [
         {SessionCookie: []},
@@ -68,11 +68,11 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/SuccessResponse"
+        schema ::V1::Schemas::SuccessResponse
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -92,19 +92,19 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroup"
+        schema ::V1::Schemas::Hangar::Groups::HangarGroup
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -114,7 +114,7 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::HangarGroupUpdateInput
 
       security [
         {SessionCookie: []},
@@ -123,19 +123,19 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarGroup"
+        schema ::V1::Schemas::Hangar::Groups::HangarGroup
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

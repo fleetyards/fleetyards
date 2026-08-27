@@ -18,17 +18,17 @@ class Admin::Api::V1::ImportsTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: Import.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ImportQuery"},
+        schema: ::Admin::V1::Schemas::Queries::ImportQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Imports"
+        schema ::Admin::V1::Schemas::Imports
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -42,19 +42,19 @@ class Admin::Api::V1::ImportsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Import"
+        schema ::Admin::V1::Schemas::Import
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -16,11 +16,11 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelExtended"
+        schema ::V1::Schemas::Models::ModelExtended
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -14,7 +14,7 @@ class Api::V1::SessionsConfirmAccessTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ConfirmAccessInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::ConfirmAccessInput
 
       security [
         {SessionCookie: []},
@@ -23,15 +23,15 @@ class Api::V1::SessionsConfirmAccessTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/StandardMessage"
+        schema ::V1::Schemas::StandardMessage
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

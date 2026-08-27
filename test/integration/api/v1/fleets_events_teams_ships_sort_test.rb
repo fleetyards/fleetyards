@@ -18,7 +18,7 @@ class Api::V1::FleetsEventsTeamsShipsSortTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/SortInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::SortInput
 
       security [
         {SessionCookie: []},
@@ -30,7 +30,7 @@ class Api::V1::FleetsEventsTeamsShipsSortTest < ActionDispatch::IntegrationTest
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

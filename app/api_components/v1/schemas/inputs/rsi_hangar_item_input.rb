@@ -12,7 +12,7 @@ module V1
             id: {type: :string},
             name: {type: :string},
             customName: {type: :string},
-            type: {"$ref": "#/components/schemas/RsiHangarItemKindEnum"},
+            type: ::V1::Schemas::Enums::RsiHangarItemKindEnum,
             image: {type: :string, format: :uri}
           },
           additionalProperties: false,

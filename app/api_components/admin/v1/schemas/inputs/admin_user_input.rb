@@ -15,7 +15,7 @@ module Admin
               password: {type: :string},
               passwordConfirmation: {type: :string},
               superAdmin: {type: :boolean},
-              resourceAccess: {type: :array, items: {"$ref": "#/components/schemas/AdminUserResourceAccessEnum"}}
+              resourceAccess: {type: :array, items: ::Admin::V1::Schemas::Enums::AdminUserResourceAccessEnum}
             },
             additionalProperties: false
           })

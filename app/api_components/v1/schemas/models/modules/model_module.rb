@@ -20,7 +20,7 @@ module V1
 
               metrics: Shared::V1::Schemas::ModelModuleMetrics,
 
-              cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
+              cargoHolds: {type: :array, items: ::Shared::V1::Schemas::CargoHold},
 
               availability: Shared::V1::Schemas::ItemAvailability,
 
@@ -32,7 +32,7 @@ module V1
 
               slot: {type: :string, description: "Module slot identifier (hardpoint sc_name). Present when fetched via a model's modules endpoint."},
 
-              hardpoints: {type: :array, items: {"$ref": "#/components/schemas/Hardpoint"}},
+              hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},
 
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

@@ -10,16 +10,14 @@ module Admin
           schema({
             type: :object,
             properties: {
-              notificationTypeEq: {"$ref": "#/components/schemas/AdminNotificationTypeEnum"},
-              severityEq: {"$ref": "#/components/schemas/AdminNotificationSeverityEnum"},
+              notificationTypeEq: ::Admin::V1::Schemas::Enums::AdminNotificationTypeEnum,
+              severityEq: ::Admin::V1::Schemas::Enums::AdminNotificationSeverityEnum,
               readAtNull: {type: :boolean},
               archivedAtNull: {type: :boolean},
               searchCont: {type: :string},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/AdminNotificationSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/AdminNotificationSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::AdminNotificationSortEnum
+              }, ::Admin::V1::Schemas::Sorts::AdminNotificationSortEnum]}
             },
             additionalProperties: false,
             example: {}

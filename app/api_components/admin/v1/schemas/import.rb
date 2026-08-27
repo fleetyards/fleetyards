@@ -11,8 +11,8 @@ module Admin
           properties: {
             id: {type: :string, format: :uuid},
 
-            type: {"$ref": "#/components/schemas/ImportTypeEnum"},
-            status: {"$ref": "#/components/schemas/ImportStatusEnum"},
+            type: ::Admin::V1::Schemas::Enums::ImportTypeEnum,
+            status: ::Admin::V1::Schemas::Enums::ImportStatusEnum,
             info: {type: :string},
             version: {type: :string},
 

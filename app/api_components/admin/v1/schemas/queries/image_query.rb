@@ -13,10 +13,8 @@ module Admin
               galleryIdEq: {type: :string, format: :uuid},
               galleryTypeEq: {type: :string},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/ImageSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/ImageSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ImageSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ImageSortEnum]}
             },
             additionalProperties: false,
             example: {}

@@ -23,15 +23,15 @@ class Api::V1::FleetsEventsPublishTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetEventExtended"
+        schema ::V1::Schemas::Fleets::Events::FleetEventExtended
       end
 
       response(400, "invalid state transition") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

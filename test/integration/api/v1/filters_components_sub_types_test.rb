@@ -16,7 +16,7 @@ class Api::V1::FiltersComponentsSubTypesTest < ActionDispatch::IntegrationTest
       parameter name: "category", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FilterOptionsList"
+        schema ::Shared::V1::Schemas::FilterOptionsList
       end
     end
   end

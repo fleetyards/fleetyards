@@ -19,7 +19,7 @@ class Api::V1::FleetsEventsTeamsShipsExpandFromModelTest < ActionDispatch::Integ
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventShipExpandInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetEventShipExpandInput
 
       security [
         {SessionCookie: []},
@@ -28,14 +28,14 @@ class Api::V1::FleetsEventsTeamsShipsExpandFromModelTest < ActionDispatch::Integ
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetEventShip"
+        schema ::V1::Schemas::Fleets::Events::FleetEventShip
       end
 
       response(422, "no new positions to add") do
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

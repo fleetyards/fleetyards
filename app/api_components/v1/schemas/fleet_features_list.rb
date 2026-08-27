@@ -7,7 +7,7 @@ module V1
 
       schema({
         type: :array,
-        items: {"$ref": "#/components/schemas/FleetFeature"}
+        items: ::V1::Schemas::FleetFeature
       })
     end
   end

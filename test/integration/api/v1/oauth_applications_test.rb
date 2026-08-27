@@ -14,7 +14,7 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/OauthApplicationInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::OauthApplicationInput
 
       security [
         {SessionCookie: []},
@@ -23,15 +23,15 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplicationWithSecret"
+        schema ::V1::Schemas::OauthApplicationWithSecret
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -47,11 +47,11 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplicationsList"
+        schema ::V1::Schemas::OauthApplicationsList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -73,11 +73,11 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -93,15 +93,15 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplication"
+        schema ::V1::Schemas::OauthApplication
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -111,7 +111,7 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::OauthApplicationUpdateInput
 
       security [
         {SessionCookie: []},
@@ -120,15 +120,15 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplication"
+        schema ::V1::Schemas::OauthApplication
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

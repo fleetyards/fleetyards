@@ -14,13 +14,13 @@ class Api::V1::ModelsFleetchartViewsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/FleetchartViewQuery"},
+        schema: ::V1::Schemas::Queries::FleetchartViewQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetchartViewsList"
+        schema ::V1::Schemas::Models::FleetchartViewsList
       end
     end
   end

@@ -12,7 +12,7 @@ module V1
             properties: {
               items: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/FleetEvent"}
+                items: ::V1::Schemas::Fleets::Events::FleetEvent
               }
             },
             required: %w[items]

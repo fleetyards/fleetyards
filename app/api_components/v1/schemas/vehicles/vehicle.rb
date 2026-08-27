@@ -14,7 +14,7 @@ module V1
             slug: {type: :string},
             serial: {type: :string},
             alternativeNames: {type: :array, items: {type: :string}},
-            boughtVia: {"$ref": "#/components/schemas/BoughtViaEnum"},
+            boughtVia: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             boughtViaLabel: {type: :string},
             flagship: {type: :boolean},
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
@@ -32,7 +32,7 @@ module V1
             saleNotify: {type: :boolean},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
-            activeLoadout: {"$ref": "#/components/schemas/VehicleLoadoutMinimal"},
+            activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

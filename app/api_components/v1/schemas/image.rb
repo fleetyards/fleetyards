@@ -11,7 +11,7 @@ module V1
           id: {type: :string, format: :uuid},
           background: {type: :boolean},
           caption: {type: :string},
-          gallery: {"$ref": "#/components/schemas/Gallery"},
+          gallery: ::Shared::V1::Schemas::Gallery,
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },

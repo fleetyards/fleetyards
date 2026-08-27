@@ -25,7 +25,7 @@ class Api::V1::MissionSlotsDestroyTest < ActionDispatch::IntegrationTest
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

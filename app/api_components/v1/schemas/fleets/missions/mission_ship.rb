@@ -17,17 +17,17 @@ module V1
               description: {type: :string},
               position: {type: :integer},
               strict: {type: :boolean},
-              model: {"$ref": "#/components/schemas/ShipModel"},
+              model: ::V1::Schemas::Fleets::ShipModel,
               # The models a spot will take when it names several rather than
               # one; empty for the other two kinds of spot.
               allowedModels: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/ShipModel"}
+                items: ::V1::Schemas::Fleets::ShipModel
               },
               filters: ::V1::Schemas::Fleets::ShipSlotFilters,
               slots: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/MissionSlot"}
+                items: ::V1::Schemas::Fleets::Missions::MissionSlot
               }
             },
             required: %w[id missionTeamId position strict allowedModels slots],

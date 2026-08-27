@@ -14,7 +14,7 @@ module Admin
               nameEq: {type: :string},
               recurringEq: {type: :boolean},
               anonymousEq: {type: :boolean},
-              sourceEq: {"$ref": "#/components/schemas/SupporterContributionSourceEnum"},
+              sourceEq: ::Admin::V1::Schemas::Enums::SupporterContributionSourceEnum,
               startedAtGteq: {type: :string, format: :date},
               startedAtLteq: {type: :string, format: :date},
               endedAtGteq: {type: :string, format: :date},
@@ -23,10 +23,8 @@ module Admin
               userIdNull: {type: :boolean},
               userUsernameCont: {type: :string},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/SupporterContributionSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/SupporterContributionSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::SupporterContributionSortEnum
+              }, ::Admin::V1::Schemas::Sorts::SupporterContributionSortEnum]}
             },
             additionalProperties: false,
             example: {}

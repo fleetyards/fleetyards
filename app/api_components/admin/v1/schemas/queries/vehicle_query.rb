@@ -26,13 +26,11 @@ module Admin
               modelNameIn: {type: :array, items: {type: :string}},
               modelProductionStatusIn: {type: :array, items: {type: :string}},
               modelSearchCont: {type: :string},
-              loanerEq: {"$ref": "#/components/schemas/LoanerFilterEnum"},
+              loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
               wantedEq: {type: :boolean},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/VehicleSortEnum"
-              }]}
+                type: :array, items: ::Shared::V1::Schemas::Sorts::VehicleSortEnum
+              }, ::Shared::V1::Schemas::Sorts::VehicleSortEnum]}
             },
             additionalProperties: false,
             example: {}

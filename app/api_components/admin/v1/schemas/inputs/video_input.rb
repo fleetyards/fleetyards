@@ -12,7 +12,7 @@ module Admin
             properties: {
               modelId: {type: :string, format: :uuid},
               url: {type: :string},
-              videoType: {"$ref": "#/components/schemas/VideoTypeEnum"}
+              videoType: ::Shared::V1::Schemas::Enums::VideoTypeEnum
             },
             additionalProperties: false
           })

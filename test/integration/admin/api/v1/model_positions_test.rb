@@ -14,22 +14,22 @@ class Admin::Api::V1::ModelPositionsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelPositionInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelPositionInput
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/ModelPosition"
+        schema ::Admin::V1::Schemas::ModelPosition
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -41,21 +41,21 @@ class Admin::Api::V1::ModelPositionsTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelPosition.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelPositionQuery"},
+        schema: ::Admin::V1::Schemas::Queries::ModelPositionQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelPositions"
+        schema ::Admin::V1::Schemas::ModelPositions
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -70,15 +70,15 @@ class Admin::Api::V1::ModelPositionsTest < ActionDispatch::IntegrationTest
       parameter name: :model_id, in: :query, schema: {type: :string, format: :uuid}, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelPositions"
+        schema ::Admin::V1::Schemas::ModelPositions
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -93,15 +93,15 @@ class Admin::Api::V1::ModelPositionsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not_found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -112,19 +112,19 @@ class Admin::Api::V1::ModelPositionsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelPosition"
+        schema ::Admin::V1::Schemas::ModelPosition
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -134,22 +134,22 @@ class Admin::Api::V1::ModelPositionsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelPositionInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelPositionInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelPosition"
+        schema ::Admin::V1::Schemas::ModelPosition
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

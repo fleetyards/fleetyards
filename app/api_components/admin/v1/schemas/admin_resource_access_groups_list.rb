@@ -8,7 +8,7 @@ module Admin
 
         schema({
           type: :array,
-          items: {"$ref": "#/components/schemas/AdminResourceAccessGroup"}
+          items: ::Admin::V1::Schemas::AdminResourceAccessGroup
         })
       end
     end

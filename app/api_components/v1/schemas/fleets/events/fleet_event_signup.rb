@@ -14,7 +14,7 @@ module V1
               fleetEventId: {type: :string, format: :uuid},
               fleetEventSlotId: {type: :string, format: :uuid},
               occurrenceDate: {type: :string, format: :date},
-              status: {"$ref": "#/components/schemas/FleetEventSignupStatusEnum"},
+              status: ::V1::Schemas::Enums::FleetEventSignupStatusEnum,
               notes: {type: :string},
               confirmedAt: {type: :string, format: "date-time"},
               withdrawnAt: {type: :string, format: "date-time"},

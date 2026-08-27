@@ -11,7 +11,7 @@ module V1
 
         schema({
           type: :array,
-          items: {"$ref": "#/components/schemas/FleetMember"}
+          items: ::V1::Schemas::Fleets::FleetMember
         })
       end
     end

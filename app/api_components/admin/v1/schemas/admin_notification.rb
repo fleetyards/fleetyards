@@ -10,8 +10,8 @@ module Admin
           type: :object,
           properties: {
             id: {type: :string, format: :uuid},
-            notificationType: {"$ref": "#/components/schemas/AdminNotificationTypeEnum"},
-            severity: {"$ref": "#/components/schemas/AdminNotificationSeverityEnum"},
+            notificationType: ::Admin::V1::Schemas::Enums::AdminNotificationTypeEnum,
+            severity: ::Admin::V1::Schemas::Enums::AdminNotificationSeverityEnum,
             title: {type: :string},
             body: {type: :string},
             link: {type: :string},

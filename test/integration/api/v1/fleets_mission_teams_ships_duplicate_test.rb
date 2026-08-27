@@ -25,11 +25,11 @@ class Api::V1::FleetsMissionTeamsShipsDuplicateTest < ActionDispatch::Integratio
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/MissionShip"
+        schema ::V1::Schemas::Fleets::Missions::MissionShip
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

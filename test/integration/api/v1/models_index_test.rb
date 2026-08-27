@@ -16,19 +16,19 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelQuery"},
+        schema: ::V1::Schemas::Queries::ModelQuery,
         style: :deepObject,
         explode: true,
         required: false
       parameter name: "containerFit", in: :query,
-        schema: {"$ref": "#/components/schemas/ContainerFitQuery"},
+        schema: ::V1::Schemas::Queries::ContainerFitQuery,
         style: :deepObject,
         explode: true,
         required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Models"
+        schema ::V1::Schemas::Models::Models
       end
     end
   end

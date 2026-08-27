@@ -18,7 +18,7 @@ class Api::V1::ModelsDeprecatedFleetchartImageTest < ActionDispatch::Integration
       response(302, "successful")
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
         produces "application/json"
       end
     end

@@ -9,11 +9,11 @@ module V1
         schema({
           type: :object,
           properties: {
-            slottableType: {"$ref": "#/components/schemas/FleetEventSlottableTypeEnum"},
+            slottableType: ::V1::Schemas::Enums::FleetEventSlottableTypeEnum,
             slottableId: {type: :string, format: :uuid},
             title: {type: :string},
             description: {type: [:string, :null]},
-            signupApproval: {"$ref": "#/components/schemas/NullableFleetEventSignupApprovalEnum"}
+            signupApproval: ::V1::Schemas::Enums::NullableFleetEventSignupApprovalEnum
           },
           required: %w[slottableType slottableId title],
           additionalProperties: false

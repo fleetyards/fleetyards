@@ -16,11 +16,11 @@ class Api::V1::PublicFleetsStatsModelsBySizeTest < ActionDispatch::IntegrationTe
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PieChartStatsList"
+        schema ::V1::Schemas::PieChartStatsList
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

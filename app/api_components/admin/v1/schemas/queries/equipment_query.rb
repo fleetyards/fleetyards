@@ -22,7 +22,7 @@ module Admin
               equipmentTypeIn: {type: :array, items: {type: :string}},
               itemTypeIn: {type: :array, items: {type: :string}},
               weaponClassIn: {type: :array, items: {type: :string}},
-              slotIn: {type: :array, items: {"$ref": "#/components/schemas/EquipmentSlotEnum"}},
+              slotIn: {type: :array, items: ::Admin::V1::Schemas::Enums::EquipmentSlotEnum},
               manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}},
 
               # Compared against the same cheapest-of-that-direction figure the
@@ -33,10 +33,8 @@ module Admin
               sellPriceLteq: {type: :number},
 
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/EquipmentSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/EquipmentSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::EquipmentSortEnum
+              }, ::Admin::V1::Schemas::Sorts::EquipmentSortEnum]}
             },
             additionalProperties: false,
             example: {}

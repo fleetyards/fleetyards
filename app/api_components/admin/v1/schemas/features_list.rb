@@ -8,7 +8,7 @@ module Admin
 
         schema({
           type: :array,
-          items: {"$ref": "#/components/schemas/Feature"}
+          items: ::Admin::V1::Schemas::Feature
         })
       end
     end

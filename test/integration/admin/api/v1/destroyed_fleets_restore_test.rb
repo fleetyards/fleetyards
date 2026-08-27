@@ -15,26 +15,26 @@ class Admin::Api::V1::DestroyedFleetsRestoreTest < ActionDispatch::IntegrationTe
       tags "Fleets"
       produces "application/json"
 
-      parameter name: "source", in: :query, description: "discarded (soft-deleted) or purged (hard-deleted)", schema: {"$ref": "#/components/schemas/DestroyedFleetSourceEnum"}, required: false
+      parameter name: "source", in: :query, description: "discarded (soft-deleted) or purged (hard-deleted)", schema: ::Admin::V1::Schemas::Enums::DestroyedFleetSourceEnum, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Fleet"
+        schema ::Admin::V1::Schemas::Fleet
       end
 
       response(422, "unprocessable entity") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

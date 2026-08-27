@@ -24,11 +24,11 @@ class Oauth::AuthorizeTest < ActionDispatch::IntegrationTest
       security [{SessionCookie: []}]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthPreAuthorization"
+        schema ::Oauth::V1::Schemas::OauthPreAuthorization
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Oauth::V1::Schemas::StandardError
       end
     end
 
@@ -38,16 +38,16 @@ class Oauth::AuthorizeTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"}
+      request_body required: true, schema: ::Oauth::V1::Schemas::Inputs::OauthAuthorizationInput
 
       security [{SessionCookie: []}]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthAuthorizationRedirect"
+        schema ::Oauth::V1::Schemas::OauthAuthorizationRedirect
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Oauth::V1::Schemas::StandardError
       end
     end
 
@@ -57,16 +57,16 @@ class Oauth::AuthorizeTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"}
+      request_body required: true, schema: ::Oauth::V1::Schemas::Inputs::OauthAuthorizationInput
 
       security [{SessionCookie: []}]
 
       response(400, "denied") do
-        schema "$ref": "#/components/schemas/OauthAuthorizationRedirect"
+        schema ::Oauth::V1::Schemas::OauthAuthorizationRedirect
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Oauth::V1::Schemas::StandardError
       end
     end
   end

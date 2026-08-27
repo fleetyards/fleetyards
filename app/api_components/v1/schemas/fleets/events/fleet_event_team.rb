@@ -17,11 +17,11 @@ module V1
               position: {type: :integer},
               slots: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/FleetEventSlot"}
+                items: ::V1::Schemas::Fleets::Events::FleetEventSlot
               },
               ships: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/FleetEventShip"}
+                items: ::V1::Schemas::Fleets::Events::FleetEventShip
               }
             },
             required: %w[id fleetEventId title position slots ships],

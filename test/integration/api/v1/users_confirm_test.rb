@@ -14,14 +14,14 @@ class Api::V1::UsersConfirmTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ConfirmAccountInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::ConfirmAccountInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/StandardMessage"
+        schema ::V1::Schemas::StandardMessage
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
     end
   end

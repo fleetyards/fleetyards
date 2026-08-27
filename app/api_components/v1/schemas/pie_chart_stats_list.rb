@@ -7,7 +7,7 @@ module V1
 
       schema({
         type: :array,
-        items: {"$ref": "#/components/schemas/PieChartStats"}
+        items: ::V1::Schemas::PieChartStats
       })
     end
   end

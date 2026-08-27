@@ -16,7 +16,7 @@ class Api::V1::FleetsStatsMembersTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/FleetMemberQuery"},
+        schema: ::V1::Schemas::Queries::FleetMemberQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -28,11 +28,11 @@ class Api::V1::FleetsStatsMembersTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetMembersStats"
+        schema ::V1::Schemas::Fleets::FleetMembersStats
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -9,13 +9,11 @@ module V1
         schema({
           type: :object,
           properties: {
-            notificationTypeEq: {"$ref": "#/components/schemas/NotificationTypeEnum"},
+            notificationTypeEq: ::V1::Schemas::Enums::NotificationTypeEnum,
             readAtNull: {type: :boolean},
             sorts: {anyOf: [{
-              type: :array, items: {"$ref": "#/components/schemas/NotificationSortEnum"}
-            }, {
-              "$ref": "#/components/schemas/NotificationSortEnum"
-            }]}
+              type: :array, items: ::V1::Schemas::Sorts::NotificationSortEnum
+            }, ::V1::Schemas::Sorts::NotificationSortEnum]}
           },
           additionalProperties: false,
           example: {}

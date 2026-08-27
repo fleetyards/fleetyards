@@ -9,7 +9,7 @@ module V1
 
           schema({
             type: :array,
-            items: {"$ref": "#/components/schemas/FleetEventAdmin"}
+            items: ::V1::Schemas::Fleets::Events::FleetEventAdmin
           })
         end
       end

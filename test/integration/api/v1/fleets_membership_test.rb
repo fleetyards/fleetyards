@@ -27,11 +27,11 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -47,15 +47,15 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetMember"
+        schema ::V1::Schemas::Fleets::FleetMember
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -65,7 +65,7 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetMembershipUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetMembershipUpdateInput
 
       security [
         {SessionCookie: []},
@@ -74,19 +74,19 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetMember"
+        schema ::V1::Schemas::Fleets::FleetMember
       end
 
       response(404, "Fleet for this slug and user does not exist") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -26,10 +26,8 @@ module Admin
               sellPriceLteq: {type: :number},
 
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/CommoditySortEnum"}
-              }, {
-                "$ref": "#/components/schemas/CommoditySortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::CommoditySortEnum
+              }, ::Admin::V1::Schemas::Sorts::CommoditySortEnum]}
             },
             additionalProperties: false,
             example: {}

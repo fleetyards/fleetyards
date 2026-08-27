@@ -10,11 +10,11 @@ module Admin
           schema({
             type: :object,
             properties: {
-              typeEq: {"$ref": "#/components/schemas/ImportTypeEnum"},
-              typeIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}},
-              typeNotIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}},
-              aasmStateEq: {"$ref": "#/components/schemas/ImportStatusEnum"},
-              aasmStateIn: {type: :array, items: {"$ref": "#/components/schemas/ImportStatusEnum"}},
+              typeEq: ::Admin::V1::Schemas::Enums::ImportTypeEnum,
+              typeIn: {type: :array, items: ::Admin::V1::Schemas::Enums::ImportTypeEnum},
+              typeNotIn: {type: :array, items: ::Admin::V1::Schemas::Enums::ImportTypeEnum},
+              aasmStateEq: ::Admin::V1::Schemas::Enums::ImportStatusEnum,
+              aasmStateIn: {type: :array, items: ::Admin::V1::Schemas::Enums::ImportStatusEnum},
               adminUserUsernameIn: {type: :array, items: {type: :string}},
               userUsernameIn: {type: :array, items: {type: :string}},
               includeSystem: {type: :boolean}

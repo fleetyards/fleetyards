@@ -14,7 +14,7 @@ class Api::V1::OtpEnableTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/SetupOtpInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::SetupOtpInput
       parameter name: "X-Access-Confirmation", in: :header, schema: {type: :string},
         description: "Access confirmation token obtained from confirm-access endpoint. Required when using OAuth/OpenID authentication.",
         required: false
@@ -26,15 +26,15 @@ class Api::V1::OtpEnableTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OtpBackupCodes"
+        schema ::V1::Schemas::OtpBackupCodes
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

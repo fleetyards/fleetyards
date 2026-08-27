@@ -15,18 +15,18 @@ class Admin::Api::V1::FleetsIndexTest < ActionDispatch::IntegrationTest
 
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter "$ref": "#/components/parameters/SortingParameter"
-      parameter name: "q", in: :query, schema: {"$ref": "#/components/schemas/FleetQuery"}, required: false
+      parameter name: "q", in: :query, schema: ::Admin::V1::Schemas::Queries::FleetQuery, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Fleets"
+        schema ::Admin::V1::Schemas::Fleets::Fleets
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

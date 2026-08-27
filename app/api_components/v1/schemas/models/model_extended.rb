@@ -10,7 +10,7 @@ module V1
           properties: {
             dockCounts: {
               type: :array,
-              items: {"$ref": "#/components/schemas/DockCount"}
+              items: ::Shared::V1::Schemas::DockCount
             },
             links: Shared::V1::Schemas::ModelExtendedLinks
           },

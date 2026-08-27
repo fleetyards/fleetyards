@@ -19,7 +19,7 @@ module Admin
               # Enumerated rather than free strings: these three are Rails enums,
               # and an unknown value raises ArgumentError on assign instead of
               # failing validation. The controller catches that too.
-              slot: {"$ref": "#/components/schemas/NullableEquipmentSlotEnum"},
+              slot: ::Admin::V1::Schemas::Enums::NullableEquipmentSlotEnum,
               size: {type: [:string, :null]},
               grade: {type: [:string, :null]},
               rateOfFire: {type: [:number, :null]},
@@ -31,8 +31,8 @@ module Admin
               radiationProtection: {type: [:number, :null]},
               radiationScrubRate: {type: [:number, :null]},
               gForceTolerance: {type: [:number, :null]},
-              coreCompatibility: {"$ref": "#/components/schemas/NullableEquipmentCoreCompatibilityEnum"},
-              backpackCompatibility: {"$ref": "#/components/schemas/NullableEquipmentBackpackCompatibilityEnum"},
+              coreCompatibility: ::Admin::V1::Schemas::Enums::NullableEquipmentCoreCompatibilityEnum,
+              backpackCompatibility: ::Admin::V1::Schemas::Enums::NullableEquipmentBackpackCompatibilityEnum,
               manufacturerId: {type: :string, format: :uuid},
               hidden: {type: :boolean},
               storeImage: {type: [:string, :null]},

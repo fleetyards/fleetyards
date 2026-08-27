@@ -23,14 +23,14 @@ class Api::V1::FleetsMissionsDestroyTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful - archived") do
-        schema "$ref": "#/components/schemas/MissionExtended"
+        schema ::V1::Schemas::Fleets::Missions::MissionExtended
       end
 
       response(204, "successful - permanent delete on already-archived mission") do
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

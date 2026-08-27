@@ -8,7 +8,7 @@ module V1
       schema({
         type: :object,
         properties: {
-          notificationType: {"$ref": "#/components/schemas/NotificationTypeEnum"},
+          notificationType: ::V1::Schemas::Enums::NotificationTypeEnum,
           app: {type: :boolean},
           mail: {type: :boolean},
           push: {type: :boolean},

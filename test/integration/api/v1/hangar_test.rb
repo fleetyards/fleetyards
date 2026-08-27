@@ -22,7 +22,7 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -42,21 +42,21 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
         type: :string, default: Vehicle.default_per_page
       }, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/HangarQuery"},
+        schema: ::V1::Schemas::Queries::HangarQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Hangar"
+        schema ::V1::Schemas::Hangar::Hangar
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

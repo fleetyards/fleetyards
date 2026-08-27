@@ -9,7 +9,7 @@ module Shared
         schema({
           type: :object,
           properties: {
-            dimensions: {"$ref": "#/components/schemas/CargoHoldDimension"},
+            dimensions: ::Shared::V1::Schemas::CargoHoldDimension,
             capacity: {type: :integer}
           },
           additionalProperties: false,

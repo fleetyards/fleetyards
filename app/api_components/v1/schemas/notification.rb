@@ -9,7 +9,7 @@ module V1
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
-          notificationType: {"$ref": "#/components/schemas/NotificationTypeEnum"},
+          notificationType: ::V1::Schemas::Enums::NotificationTypeEnum,
           title: {type: :string},
           body: {type: :string},
           link: {type: :string},
