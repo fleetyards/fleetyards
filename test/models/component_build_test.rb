@@ -2,6 +2,49 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: component_builds
+#
+#  id                    :uuid             not null, primary key
+#  ammunition            :string
+#  category              :string
+#  component_class       :string
+#  component_sub_type    :string
+#  component_type        :string
+#  description           :text
+#  durability            :string
+#  environment           :string           not null
+#  grade                 :string
+#  heat_connection       :string
+#  hidden                :boolean          default(FALSE)
+#  inventory_consumption :string
+#  item_class            :integer
+#  item_type             :string
+#  name                  :string
+#  power_connection      :string
+#  size                  :string
+#  tracking_signal       :integer
+#  type_data             :string
+#  version               :string           not null
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  component_id          :uuid             not null
+#  manufacturer_id       :uuid
+#
+# Indexes
+#
+#  index_component_builds_on_component_and_build              (component_id,environment,version) UNIQUE
+#  index_component_builds_on_component_id                     (component_id)
+#  index_component_builds_on_environment_and_component_class  (environment,component_class)
+#  index_component_builds_on_environment_and_item_type        (environment,item_type)
+#  index_component_builds_on_environment_and_version          (environment,version)
+#  index_component_builds_on_manufacturer_id                  (manufacturer_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (component_id => components.id) ON DELETE => cascade
+#
 class ComponentBuildTest < ActiveSupport::TestCase
   setup do
     @environment = ScData::Source.environment
@@ -69,13 +112,25 @@ class ComponentBuildTest < ActiveSupport::TestCase
     assert_equal "infrared", build_row.tracking_signal
   end
 
-  # Component serializes this column as YAML, so the build has to as well --
-  # otherwise the structure comes back as the string it was encoded into.
-  test "durability comes back as the structure it went in as" do
-    durability = {"health" => 1200, "parts" => ["front", "rear"]}
-    build_row = create(:component_build, durability:)
+  # Component serializes six columns as YAML, so the build has to serialize the
+  # same six -- otherwise a structure comes back as the string it was encoded
+  # into, and the reader passes it straight through because a string is not nil.
+  # Missing `type_data` alone had the weapons endpoint calling `dig` on a string.
+  test "every serialized fact comes back as the structure it went in as" do
+    values = {
+      type_data: {"beam" => true, "weapon_class" => "laser"},
+      durability: {"health" => 1200, "parts" => ["front", "rear"]},
+      power_connection: {"draw" => 120},
+      heat_connection: {"output" => 45},
+      ammunition: {"count" => 300},
+      inventory_consumption: {"rate" => 2}
+    }
 
-    assert_equal durability, build_row.reload.durability
+    build_row = create(:component_build, **values)
+
+    values.each do |fact, value|
+      assert_equal value, build_row.reload.public_send(fact), "#{fact} did not round-trip"
+    end
   end
 
   test ".retained_versions keeps the newest builds of an environment" do

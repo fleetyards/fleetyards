@@ -30,6 +30,10 @@ json.type_data component.type_data
 
 json.hidden component.hidden
 
+# Not in the build we are on. Until now the API offered a component the
+# export had dropped as though it were current.
+json.retired component.retired?
+
 json.hardpoints do
   json.array! component.hardpoints, partial: "api/v1/hardpoints/base", as: :hardpoint
 end

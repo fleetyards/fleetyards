@@ -80,9 +80,18 @@ class ComponentBuild < ApplicationRecord
 
   # The same serialization and enums Component declares, because a build row
   # holding `0` has to read as `stealth` here too, and a YAML string has to come
-  # back as the structure it encodes. Without them, moving the readers over turns
-  # every enum-backed fact into a raw integer and durability into a blob.
+  # back as the structure it encodes.
+  #
+  # All six of Component's serialized columns, not the one that caught the eye:
+  # missing `type_data` alone made the weapons endpoint call `dig` on a raw YAML
+  # string, because the reader falls through to the column only on nil and a
+  # string is not nil.
+  serialize :type_data, coder: YAML
   serialize :durability, coder: YAML
+  serialize :power_connection, coder: YAML
+  serialize :heat_connection, coder: YAML
+  serialize :ammunition, coder: YAML
+  serialize :inventory_consumption, coder: YAML
 
   enum :item_class,
     {stealth: 0, civilian: 1, industrial: 2, military: 3, competition: 4}

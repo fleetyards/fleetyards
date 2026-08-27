@@ -10973,6 +10973,8 @@ components:
           type: string
         hidden:
           type: boolean
+        retired:
+          type: boolean
         category:
           type: string
         type:
@@ -11030,6 +11032,7 @@ components:
       - name
       - slug
       - hidden
+      - retired
       - availability
       - media
       - createdAt
