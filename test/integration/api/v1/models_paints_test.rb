@@ -16,7 +16,7 @@ class Api::V1::ModelsPaintsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ModelPaint"}
+        schema "$ref": "#/components/schemas/ModelPaintsList"
       end
 
       response(404, "not found") do

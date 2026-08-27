@@ -20,7 +20,7 @@ class Api::V1::NotificationPreferencesTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/NotificationPreference"}
+        schema "$ref": "#/components/schemas/NotificationPreferencesList"
       end
 
       response(401, "unauthorized") do

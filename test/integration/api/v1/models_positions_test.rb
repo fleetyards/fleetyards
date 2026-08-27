@@ -16,7 +16,7 @@ class Api::V1::ModelsPositionsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ModelPosition"}
+        schema "$ref": "#/components/schemas/ModelPositionsList"
       end
 
       response(404, "not found") do

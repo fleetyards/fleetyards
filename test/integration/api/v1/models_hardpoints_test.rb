@@ -19,8 +19,7 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
         schema: {"$ref": "#/components/schemas/HardpointSourceEnum"}, required: false
 
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/Hardpoint"}
+        schema "$ref": "#/components/schemas/HardpointsList"
       end
 
       response(404, "not found") do

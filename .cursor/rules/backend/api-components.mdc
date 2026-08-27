@@ -35,6 +35,23 @@ An inline body has no name, so Orval invents one from the operation
 up with unrelated TypeScript types that drift, and the frontend has nothing
 stable to import.
 
+An array-only response counts too — it gets a `<Plural>List` component instead
+of an inline `type: :array` around the item `$ref`:
+
+```ruby
+# Good
+schema "$ref": "#/components/schemas/FilterOptionsList"
+
+# Bad
+schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+```
+
+One list component per item type, reused by every endpoint returning it. When
+the plural already names the paginated collection (`Models`, `Images`,
+`FleetMembersList`), the bare array takes the `List` suffix or a name from the
+endpoint — `ModelsList`, `ImagesList`, `FleetInvitesList` — and says so in a
+comment.
+
 ## Placement
 
 - Request bodies → `<scope>/v1/schemas/inputs/<name>_input.rb`

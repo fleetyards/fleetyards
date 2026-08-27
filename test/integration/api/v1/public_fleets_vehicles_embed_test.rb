@@ -25,7 +25,7 @@ class Api::V1::PublicFleetsVehiclesEmbedTest < ActionDispatch::IntegrationTest
         required: false
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/VehiclePublic"}
+        schema "$ref": "#/components/schemas/PublicVehiclesList"
       end
 
       response(404, "not found") do

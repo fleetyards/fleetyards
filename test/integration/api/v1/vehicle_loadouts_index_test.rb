@@ -22,7 +22,7 @@ class Api::V1::VehicleLoadoutsIndexTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/VehicleLoadout"}
+        schema "$ref": "#/components/schemas/VehicleLoadoutsList"
       end
 
       response(401, "unauthorized") do

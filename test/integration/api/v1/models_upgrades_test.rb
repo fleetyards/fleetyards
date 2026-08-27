@@ -16,7 +16,7 @@ class Api::V1::ModelsUpgradesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/ModelUpgrade"}
+        schema "$ref": "#/components/schemas/ModelUpgradesList"
       end
 
       response(404, "not found") do

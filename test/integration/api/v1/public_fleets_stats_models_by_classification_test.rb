@@ -16,7 +16,7 @@ class Api::V1::PublicFleetsStatsModelsByClassificationTest < ActionDispatch::Int
       produces "application/json"
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref" => "#/components/schemas/PieChartStats"}
+        schema "$ref": "#/components/schemas/PieChartStatsList"
       end
 
       response(404, "not found") do

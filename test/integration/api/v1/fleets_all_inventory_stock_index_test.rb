@@ -22,7 +22,7 @@ class Api::V1::FleetsAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
       ]
 
       response(200, "successful") do
-        schema type: :array, items: {"$ref": "#/components/schemas/FleetInventoryStockItem"}
+        schema "$ref": "#/components/schemas/FleetInventoryStockItemsList"
       end
 
       response(401, "unauthorized") do

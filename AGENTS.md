@@ -253,10 +253,31 @@ Why: an inline body has no name, so Orval invents one from the operation —
 sharing one payload get four unrelated TypeScript types that drift
 independently, and the frontend has nothing stable to import.
 
+That includes a response that is only an array. Give it a `<Plural>List`
+component rather than wrapping the item `$ref` in the test:
+
+```ruby
+# Good
+response(200, "successful") do
+  schema "$ref": "#/components/schemas/FilterOptionsList"
+end
+
+# Bad — the cardinality lives in the test
+response(200, "successful") do
+  schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
+end
+```
+
+One component per item type, shared by every endpoint returning that array.
+Where the plural is already taken by the paginated collection (`Models`,
+`Images`, `FleetMembersList`), the bare array gets the `List` suffix or a name
+from what it returns — `ModelsList`, `ImagesList`, `FleetInvitesList`.
+
 Naming and placement follow the existing tree:
 
 - Request bodies → `<scope>/v1/schemas/inputs/<name>_input.rb`
 - Response bodies → `<scope>/v1/schemas/<name>.rb`
+- Array-only responses → `<scope>/v1/schemas/<name>_list.rb`
 - Reused by both the public and the admin schema → `shared/v1/`
 - Enums → `<scope>/v1/schemas/enums/<name>_enum.rb`, referenced by `$ref` —
   don't inline an `enum:` into a property
