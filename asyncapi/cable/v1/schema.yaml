@@ -2832,6 +2832,14 @@ components:
         readAt:
           type: string
           format: date-time
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        deletesAt:
+          type: string
+          format: date-time
         expiresAt:
           type: string
           format: date-time
@@ -2847,6 +2855,7 @@ components:
       - notificationType
       - title
       - read
+      - archived
       - expiresAt
       - createdAt
       - updatedAt

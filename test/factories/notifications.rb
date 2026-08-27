@@ -5,6 +5,7 @@
 # Table name: notifications
 #
 #  id                :uuid             not null, primary key
+#  archived_at       :datetime
 #  body              :text
 #  expires_at        :datetime         not null
 #  icon              :string
@@ -20,11 +21,12 @@
 #
 # Indexes
 #
-#  index_notifications_on_expires_at              (expires_at)
-#  index_notifications_on_notification_type       (notification_type)
-#  index_notifications_on_record                  (record_type,record_id)
-#  index_notifications_on_user_id_and_created_at  (user_id,created_at DESC)
-#  index_notifications_on_user_id_and_read_at     (user_id,read_at)
+#  index_notifications_on_expires_at               (expires_at)
+#  index_notifications_on_notification_type        (notification_type)
+#  index_notifications_on_record                   (record_type,record_id)
+#  index_notifications_on_user_id_and_archived_at  (user_id,archived_at)
+#  index_notifications_on_user_id_and_created_at   (user_id,created_at DESC)
+#  index_notifications_on_user_id_and_read_at      (user_id,read_at)
 #
 # Foreign Keys
 #
@@ -45,6 +47,10 @@ FactoryBot.define do
 
     trait :unread do
       read_at { nil }
+    end
+
+    trait :archived do
+      archived_at { Time.current }
     end
 
     trait :expired do

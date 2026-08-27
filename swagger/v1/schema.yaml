@@ -7684,6 +7684,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/notifications/unread-count":
+    get:
+      summary: Unread notification count
+      tags:
+      - Notifications
+      operationId: notificationsUnreadCount
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:read
+      - OpenId:
+        - notifications
+        - notifications:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationUnreadCount"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/notifications/{id}":
     parameters:
     - name: id
@@ -7715,6 +7742,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/{id}/archive":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Archive a notification
+      tags:
+      - Notifications
+      operationId: archiveNotification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Notification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/{id}/read":
     parameters:
     - name: id
@@ -7727,6 +7789,76 @@ paths:
       tags:
       - Notifications
       operationId: readNotification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Notification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/{id}/unarchive":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Move a notification back to the inbox
+      tags:
+      - Notifications
+      operationId: unarchiveNotification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Notification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/{id}/unread":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Mark notification as unread
+      tags:
+      - Notifications
+      operationId: unreadNotification
       security:
       - SessionCookie: []
       - Oauth2:
@@ -18493,6 +18625,14 @@ components:
         readAt:
           type: string
           format: date-time
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        deletesAt:
+          type: string
+          format: date-time
         expiresAt:
           type: string
           format: date-time
@@ -18508,6 +18648,7 @@ components:
       - notificationType
       - title
       - read
+      - archived
       - expiresAt
       - createdAt
       - updatedAt
@@ -18558,6 +18699,10 @@ components:
           "$ref": "#/components/schemas/NotificationTypeEnum"
         readAtNull:
           type: boolean
+        archivedAtNull:
+          type: boolean
+        searchCont:
+          type: string
         sorts:
           anyOf:
           - type: array
@@ -18629,6 +18774,15 @@ components:
       - FLEET_EVENT_SIGNUP_ASSIGNED
       - FLEET_EVENT_SIGNUP_KICKED
       title: NotificationTypeEnum
+    NotificationUnreadCount:
+      type: object
+      properties:
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - count
+      title: NotificationUnreadCount
     Notifications:
       type: object
       properties:

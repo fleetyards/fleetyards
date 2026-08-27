@@ -11,6 +11,8 @@ module V1
           properties: {
             notificationTypeEq: ::V1::Schemas::Enums::NotificationTypeEnum,
             readAtNull: {type: :boolean},
+            archivedAtNull: {type: :boolean},
+            searchCont: {type: :string},
             sorts: {anyOf: [{
               type: :array, items: ::V1::Schemas::Sorts::NotificationSortEnum
             }, ::V1::Schemas::Sorts::NotificationSortEnum]}

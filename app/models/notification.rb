@@ -5,6 +5,7 @@
 # Table name: notifications
 #
 #  id                :uuid             not null, primary key
+#  archived_at       :datetime
 #  body              :text
 #  expires_at        :datetime         not null
 #  icon              :string
@@ -20,11 +21,12 @@
 #
 # Indexes
 #
-#  index_notifications_on_expires_at              (expires_at)
-#  index_notifications_on_notification_type       (notification_type)
-#  index_notifications_on_record                  (record_type,record_id)
-#  index_notifications_on_user_id_and_created_at  (user_id,created_at DESC)
-#  index_notifications_on_user_id_and_read_at     (user_id,read_at)
+#  index_notifications_on_expires_at               (expires_at)
+#  index_notifications_on_notification_type        (notification_type)
+#  index_notifications_on_record                   (record_type,record_id)
+#  index_notifications_on_user_id_and_archived_at  (user_id,archived_at)
+#  index_notifications_on_user_id_and_created_at   (user_id,created_at DESC)
+#  index_notifications_on_user_id_and_read_at      (user_id,read_at)
 #
 # Foreign Keys
 #
@@ -208,18 +210,43 @@ class Notification < ApplicationRecord
 
   before_validation :set_expires_at, on: :create
 
+  # How long an archived notification is kept before it is deleted for good.
+  # `expires_at` no longer ends a notification - it files it away, and this is
+  # the term that ends it.
+  ARCHIVE_RETENTION = 90.days
+
   scope :unread, -> { where(read_at: nil) }
   scope :read, -> { where.not(read_at: nil) }
+  scope :inbox, -> { where(archived_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
   scope :expired, -> { where(expires_at: ...Time.current) }
   scope :active, -> { where(expires_at: Time.current..) }
+  scope :purgeable, -> { where(archived_at: ...ARCHIVE_RETENTION.ago) }
+  # What each tab shows. Expiry files a notification into the archive, and the
+  # cleanup job only writes that down once a day - so the tabs apply the same
+  # rule themselves and a notification moves the moment its date passes.
+  scope :pending, -> { inbox.active }
+  scope :filed, -> { where(archived_at: ..Time.current).or(expired) }
 
   DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = ["createdAt asc", "createdAt desc"].freeze
 
   paginates_per 25
 
+  ransack_alias :search, :title_or_body
+
+  # Sortable rather than filterable: the inbox keeps what has not been read on
+  # top, whichever way the client sorts underneath.
+  ransacker :unread, type: :boolean do
+    Arel.sql("notifications.read_at IS NULL")
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
-    %w[notification_type read_at created_at]
+    %w[notification_type read_at archived_at created_at title body search unread]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
   end
 
   def self.type_config(type)
@@ -240,6 +267,16 @@ class Notification < ApplicationRecord
 
   def self.preference_defaults_for(type)
     type_config(type).fetch(:preference_defaults, {app: true, mail: false, push: false})
+  end
+
+  # Retention files a notification into the archive rather than making it
+  # vanish: the reader keeps a way to find it, and `purgeable` is what
+  # eventually removes it. Runs daily, so a notification can sit in the inbox
+  # for up to a day past its date - immaterial against retentions of a week and
+  # up, and the alternative is a scope that hides rows the archive tab then has
+  # to un-hide.
+  def self.archive_expired!
+    expired.inbox.in_batches(of: 1000).update_all(archived_at: Time.current, updated_at: Time.current)
   end
 
   def self.notify!(user:, type:, title:, body: nil, link: nil, icon: nil, record: nil)
@@ -279,8 +316,30 @@ class Notification < ApplicationRecord
     read_at.present?
   end
 
+  def archived?
+    archived_at.present?
+  end
+
+  # What the reading pane counts down to once a notification is archived. Nil
+  # while it is still in the inbox, where `expires_at` is the next date.
+  def deletes_at
+    archived_at && archived_at + ARCHIVE_RETENTION
+  end
+
   def mark_as_read!
     update!(read_at: Time.current)
+  end
+
+  def mark_as_unread!
+    update!(read_at: nil)
+  end
+
+  def archive!
+    update!(archived_at: Time.current)
+  end
+
+  def unarchive!
+    update!(archived_at: nil)
   end
 
   private def set_expires_at

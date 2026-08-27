@@ -5,6 +5,7 @@
 # Table name: notifications
 #
 #  id                :uuid             not null, primary key
+#  archived_at       :datetime
 #  body              :text
 #  expires_at        :datetime         not null
 #  icon              :string
@@ -20,11 +21,12 @@
 #
 # Indexes
 #
-#  index_notifications_on_expires_at              (expires_at)
-#  index_notifications_on_notification_type       (notification_type)
-#  index_notifications_on_record                  (record_type,record_id)
-#  index_notifications_on_user_id_and_created_at  (user_id,created_at DESC)
-#  index_notifications_on_user_id_and_read_at     (user_id,read_at)
+#  index_notifications_on_expires_at               (expires_at)
+#  index_notifications_on_notification_type        (notification_type)
+#  index_notifications_on_record                   (record_type,record_id)
+#  index_notifications_on_user_id_and_archived_at  (user_id,archived_at)
+#  index_notifications_on_user_id_and_created_at   (user_id,created_at DESC)
+#  index_notifications_on_user_id_and_read_at      (user_id,read_at)
 #
 # Foreign Keys
 #
@@ -224,6 +226,95 @@ class NotificationTest < ActiveSupport::TestCase
   test "sets 90-day retention for sync types" do
     notification = Notification.notify!(user: @user, type: :hangar_sync_finished, title: "Test")
     assert_in_delta (Time.current + 90.days).to_f, notification.expires_at.to_f, 1.0
+  end
+
+  test "archiving takes a notification out of the inbox and back" do
+    notification = create(:notification, user: @user)
+
+    notification.archive!
+
+    assert notification.archived?
+    assert_includes Notification.archived, notification
+    assert_not_includes Notification.inbox, notification
+
+    notification.unarchive!
+
+    assert_not notification.archived?
+    assert_includes Notification.inbox, notification
+  end
+
+  test ".archive_expired! files expired inbox notifications into the archive" do
+    expired = create(:notification, :expired, user: @user)
+    current = create(:notification, user: @user)
+
+    Notification.archive_expired!
+
+    assert expired.reload.archived?
+    assert_not current.reload.archived?
+  end
+
+  test ".archive_expired! leaves an already archived notification alone" do
+    archived = create(:notification, :expired, :archived, user: @user)
+    archived_at = archived.archived_at
+
+    Notification.archive_expired!
+
+    assert_equal archived_at.to_i, archived.reload.archived_at.to_i
+  end
+
+  test "purgeable only covers what has served its term in the archive" do
+    fresh = create(:notification, :archived, user: @user)
+    old = create(:notification, user: @user, archived_at: (Notification::ARCHIVE_RETENTION + 1.day).ago)
+
+    assert_includes Notification.purgeable, old
+    assert_not_includes Notification.purgeable, fresh
+  end
+
+  test "#deletes_at counts from the archive, not from expiry" do
+    notification = create(:notification, user: @user)
+
+    assert_nil notification.deletes_at
+
+    notification.archive!
+
+    assert_in_delta (Time.current + Notification::ARCHIVE_RETENTION).to_f, notification.deletes_at.to_f, 1.0
+  end
+
+  test "the tab scopes move a notification on its expiry date, not on the job" do
+    expired = create(:notification, :expired, user: @user)
+    current = create(:notification, user: @user)
+
+    assert_includes Notification.filed, expired
+    assert_not_includes Notification.pending, expired
+    assert_includes Notification.pending, current
+  end
+
+  test "marking a notification unread clears read_at" do
+    notification = create(:notification, :read, user: @user)
+
+    notification.mark_as_unread!
+
+    assert_not notification.read?
+    assert_nil notification.read_at
+  end
+
+  test "the unread ransacker sorts unread notifications first" do
+    read = create(:notification, :read, user: @user, title: "read")
+    unread = travel_to(1.hour.ago) { create(:notification, user: @user, title: "unread") }
+
+    result = Notification.ransack(sorts: ["unread desc", "created_at desc"]).result
+
+    assert_equal [unread, read], result.to_a
+  end
+
+  test "the search alias matches title and body" do
+    titled = create(:notification, user: @user, title: "Aurora MR added")
+    bodied = create(:notification, user: @user, title: "On sale", body: "The **Aurora MR** is on sale")
+    create(:notification, user: @user, title: "Hangar sync finished")
+
+    result = Notification.ransack(search_cont: "aurora").result
+
+    assert_equal [titled, bodied].map(&:id).sort, result.map(&:id).sort
   end
 
   test ".preference_defaults_for returns opt-in defaults for model_on_sale" do
