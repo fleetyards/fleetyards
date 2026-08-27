@@ -65,4 +65,49 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal 0, results[:new][:count]
     assert_equal ["Twilight"], arrow.paints.pluck(:name)
   end
+
+  test "#run imports a series paint into the models that are still missing it" do
+    aurora_cl = create(:model, name: "Aurora Mk I CL")
+    aurora_es = create(:model, name: "Aurora Mk I ES")
+    create(:model_paint, model: aurora_cl, name: "Dread Pirate")
+    hangar_sync("Aurora Mk I - Dread Pirate Paint")
+
+    results = PaintsImporter.new.run
+
+    assert_equal ["Dread Pirate"], aurora_es.paints.pluck(:name)
+    assert_equal 1, results[:new][:count]
+    assert_equal 1, results[:existing][:count]
+  end
+
+  test "#run for a single model reports an unmapped source name as a missing model" do
+    nova = create(:model, name: "Nova Tank")
+    hangar_sync("Nova - Sandstorm Paint")
+
+    results = PaintsImporter.new(model: nova).run
+
+    assert_equal 1, results[:model_not_found][:count]
+    assert_empty nova.paints
+  end
+
+  test "#run for a single model ignores unmapped source names of other models" do
+    nova = create(:model, name: "Nova Tank")
+    hangar_sync("Sunburst - Sandstorm Paint")
+
+    results = PaintsImporter.new(model: nova).run
+
+    assert_equal 0, results[:model_not_found][:count]
+    assert_empty nova.paints
+  end
+
+  test "#run for a single model ignores a source name that resolves to another model" do
+    nova_tank = create(:model, name: "Nova Tank")
+    nova = create(:model, name: "Nova")
+    hangar_sync("Nova - Sandstorm Paint")
+
+    results = PaintsImporter.new(model: nova_tank).run
+
+    assert_equal 0, results[:model_not_found][:count]
+    assert_empty nova_tank.paints
+    assert_empty nova.paints
+  end
 end
