@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.5.0](https://github.com/fleetyards/fleetyards/compare/v7.4.0...v7.5.0) (2026-08-27)
+
+
+### Features
+
+* **admin:** report import runs in the notification center ([#4564](https://github.com/fleetyards/fleetyards/issues/4564)) ([53d84cd](https://github.com/fleetyards/fleetyards/commit/53d84cdcf46e5625e679157f4e9887d356f81c0d))
+* notification center for the frontend ([#4562](https://github.com/fleetyards/fleetyards/issues/4562)) ([3dba960](https://github.com/fleetyards/fleetyards/commit/3dba960cd1992c980e3c234d5f2f9a2bcaf8752f))
+* **sc_data:** filter and sort components through the build ([#4560](https://github.com/fleetyards/fleetyards/issues/4560)) ([8259274](https://github.com/fleetyards/fleetyards/commit/8259274fd97c7f6dd7eec33737e178f6cc577b34))
+* **sc_data:** read commodity facts off the build ([#4563](https://github.com/fleetyards/fleetyards/issues/4563)) ([9b48de7](https://github.com/fleetyards/fleetyards/commit/9b48de7fdd7f98f5c7de06188db011ef1d7fc7ca))
+
+
+### Bug Fixes
+
+* **paints:** stop targeted paint imports from hiding missing mappings ([#4565](https://github.com/fleetyards/fleetyards/issues/4565)) ([93a27de](https://github.com/fleetyards/fleetyards/commit/93a27de6fc8561f4d3e8b63228b02997fc322bd2))
+
 ## [7.4.0](https://github.com/fleetyards/fleetyards/compare/v7.3.0...v7.4.0) (2026-08-27)
 
 
