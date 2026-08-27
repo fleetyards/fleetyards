@@ -143,9 +143,13 @@ json.metrics do
   json.height_label model.height_label
 
   # What the game files measure, alongside what the matrix publishes, rather than
-  # instead of it. The two disagree for 76 of 211 ships, by anything from -88% to
-  # +266%, and no rule resolves them -- the metric orientation varies per ship, so
-  # neither source is reliably the right one. Nobody could see the disagreement
+  # instead of it. They differ for 91 of 211 ships, and the difference usually has
+  # a cause rather than being an error: a ship has up to three size sets -- landed,
+  # in flight, and with a cargo grid or wings deployed -- and *neither source
+  # records which one it measured*. Flight is normally the default.
+  #
+  # So this cannot be resolved automatically, only labelled by a person. Serving
+  # both is the honest shape until then; nobody could see the difference at all
   # while these columns were written and read by nothing.
   #
   # Omitted rather than sent as zero when the export has no measurement, which is

@@ -64,7 +64,7 @@
       "poweredByUex": "Bereitgestellt von UEX",
       "lastUpdatedAt": "Zuletzt aktualisiert am?",
       "gameFiles": "Im Spiel:",
-      "gameFilesMeasurementHint": "Was die Spieldateien für dieses Schiff messen. Der Wert kann von der RSI-Angabe abweichen; keiner von beiden ist verlässlich der genauere."
+      "gameFilesMeasurementHint": "Was die Spieldateien für dieses Schiff messen. Keine der beiden Quellen gibt an, welche Konfiguration gemessen wurde -- gelandet, im Flug oder mit ausgefahrenem Cargo-Grid beziehungsweise Flügeln -- die Werte können also abweichen, ohne dass einer falsch ist. In der Regel ist Flug der Standard."
     },
     "component": {
       "manufacturer": "Hersteller",

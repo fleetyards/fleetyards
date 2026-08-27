@@ -26,19 +26,21 @@ const props = withDefaults(defineProps<Props>(), {
 const soldAt = computed(() => props.model.availability.soldAt);
 const rentalAt = computed(() => props.model.availability.rentalAt);
 
-// The game files measure a ship themselves, and for about a third of ships their
-// figure disagrees with the one the matrix publishes -- by anything from a third
-// under to nearly triple. Neither source is reliably right, so the second figure
-// is shown rather than resolved away, and only where it actually differs: for the
-// other two thirds it would just repeat the number above it.
+// The game files measure a ship themselves, and for 91 of 211 ships their figure
+// differs from the one the matrix publishes. Often that is not an error: a ship
+// has up to three size sets -- landed, in flight, and with a cargo grid or wings
+// deployed -- and neither source records which one it measured. So the second
+// figure is shown rather than resolved away, and only where it differs, since for
+// the other 120 it would just repeat the number above it.
 const GAME_FILE_TOLERANCE = 0.01;
 
 const gameFileFigure = (
   key: "length" | "beam" | "height",
   shown: number | undefined,
 ) => {
-  // Only against the retracted figure. The extended one measures a different
-  // shape, so the game files have nothing to say about it.
+  // Not against the extended figure, which names a specific configuration. The
+  // game-file measurement names none, so pairing the two would assert something
+  // neither source says.
   if (props.extended) {
     return undefined;
   }
