@@ -12,6 +12,7 @@ import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 
 import FleetNav from "./FleetNav/index.vue";
+import NotificationsNav from "./NotificationsNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -191,6 +192,7 @@ const settingsActive = computed(() => {
     </template>
     <template #footer>
       <template v-if="isAuthenticated && currentUser">
+        <NotificationsNav />
         <NavItem
           :to="{ name: 'settings' }"
           :active="settingsActive"

@@ -1555,6 +1555,9 @@
           "sellPriceGt": "Sell Price >=",
           "sellPriceLt": "Sell Price <=",
           "storeImageBlank": "Without Store Image?"
+        },
+        "notifications": {
+          "search": "Search"
         }
       },
       "station": {
@@ -2164,6 +2167,17 @@
         "scKey": "SC Key",
         "scRef": "SC Ref",
         "storeImage": "Store Image"
+      },
+      "notifications": {
+        "inbox": "Inbox",
+        "archive": "Archive",
+        "unreadOnly": "Unread only",
+        "status": "Status",
+        "type": "Type",
+        "selectPrompt": "Select a notification to read it",
+        "noBody": "This notification carries no further details.",
+        "archivesOn": "Moves to the archive",
+        "deletesOn": "Deleted"
       }
     }
   }

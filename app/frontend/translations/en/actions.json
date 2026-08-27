@@ -350,6 +350,16 @@
           "doneEditing": "Done editing",
           "addTeam": "Add team"
         }
+      },
+      "notifications": {
+        "unread": "Mark as unread",
+        "archive": "Archive",
+        "unarchive": "Move back to inbox",
+        "readAll": "Mark all as read",
+        "destroyAll": "Delete all",
+        "settings": "Notification settings",
+        "sortOldest": "Oldest first",
+        "sortNewest": "Newest first"
       }
     }
   }

@@ -112,6 +112,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/notifications/",
+    name: "notifications",
+    component: () => import("@/frontend/pages/notifications.vue"),
+    meta: {
+      title: "notifications",
+      needsAuthentication: true,
+      nav: "sub",
+    },
+  },
+  {
     path: "/settings/",
     name: "settings",
     component: () => import("@/frontend/pages/settings.vue"),

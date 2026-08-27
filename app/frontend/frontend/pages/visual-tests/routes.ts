@@ -101,6 +101,16 @@ export const routes = [
     },
   },
   {
+    path: "notification-center/",
+    name: "visual-tests-notification-center",
+    component: () =>
+      import("@/frontend/pages/visual-tests/notification-center.vue"),
+    meta: {
+      title: "visualTests.notificationCenter",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "sync-modal/",
     name: "visual-tests-sync-modal",
     component: () =>

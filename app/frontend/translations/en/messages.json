@@ -454,6 +454,9 @@
         },
         "equipment": {
           "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
+        },
+        "notifications": {
+          "destroyAll": "Are you sure you want to delete all notifications? This action can't be reverted."
         }
       },
       "oauthAuthorize": {
@@ -785,6 +788,15 @@
             "failure": "Could not remove slot."
           }
         }
+      },
+      "notifications": {
+        "unread": "Notification marked as unread",
+        "archived": "Notification archived",
+        "unarchived": "Notification moved back to the inbox",
+        "readAll": "All notifications marked as read",
+        "destroyed": "Notification deleted",
+        "destroyedAll": "All notifications deleted",
+        "error": "Something went wrong"
       }
     }
   }
