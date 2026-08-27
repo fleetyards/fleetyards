@@ -5,7 +5,9 @@ module ScData
 
       FOUNDRY_PATH = "Data/Libs/Foundry/Records"
 
-      DRAWABLE_FORMATS = %w[png svg].freeze
+      # In precedence order: a vector is served as it is and drawn at whatever
+      # size a panel asks for, so it wins over the raster of the same icon.
+      DRAWABLE_FORMATS = %w[svg png].freeze
 
       SCU_DIMENSIONS = 1.25
 
@@ -181,9 +183,17 @@ module ScData
       # textures each of these was made from -- leftovers from the first run of
       # it -- and copying one of those into the parsed tree would leave a
       # record pointing at a file nothing can render.
+      #
+      # The export ships a raster of every vector beside it under the same name,
+      # so an entry is claimed in DRAWABLE_FORMATS order and never overwritten.
+      # Globbing both formats at once left the pick to the case of the filename --
+      # `**` sorts a directory at a time, so Inv_Icon_Gold.svg lost to
+      # inv_icon_gold.png while icon_brand_aegis.svg won.
       private def raw_assets
-        @raw_assets ||= Dir.glob("#{base_path}/Data/**/*.{#{DRAWABLE_FORMATS.join(",")}}").to_h do |file|
-          [file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, ""), file]
+        @raw_assets ||= DRAWABLE_FORMATS.each_with_object({}) do |format, assets|
+          Dir.glob("#{base_path}/Data/**/*.#{format}").each do |file|
+            assets[file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, "")] ||= file
+          end
         end
       end
 
