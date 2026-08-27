@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -978,6 +978,44 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_180000) do
     t.index ["fleet_id", "slug"], name: "index_missions_on_fleet_id_and_slug", unique: true
   end
 
+  create_table "model_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "cargo_holds"
+    t.datetime "created_at", null: false
+    t.string "environment", null: false
+    t.string "external_fuel_tanks"
+    t.boolean "ground", default: false
+    t.decimal "ground_acceleration", precision: 15, scale: 2
+    t.decimal "ground_decceleration", precision: 15, scale: 2
+    t.decimal "ground_max_speed", precision: 15, scale: 2
+    t.decimal "ground_reverse_speed", precision: 15, scale: 2
+    t.jsonb "hull_doors"
+    t.decimal "hull_health", precision: 15, scale: 2
+    t.jsonb "hull_parts"
+    t.string "hydrogen_fuel_tanks"
+    t.decimal "mass", precision: 15, scale: 2
+    t.decimal "max_speed", precision: 15, scale: 2
+    t.uuid "model_id", null: false
+    t.decimal "personal_inventory", precision: 15, scale: 2
+    t.decimal "pitch", precision: 15, scale: 2
+    t.decimal "pitch_boosted", precision: 15, scale: 2
+    t.string "quantum_fuel_tanks"
+    t.string "refuel_boom"
+    t.decimal "reverse_speed_boosted", precision: 15, scale: 2
+    t.decimal "roll", precision: 15, scale: 2
+    t.decimal "roll_boosted", precision: 15, scale: 2
+    t.decimal "scm_speed", precision: 15, scale: 2
+    t.decimal "scm_speed_boosted", precision: 15, scale: 2
+    t.jsonb "signature_cross_section"
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.integer "weapon_pool_size"
+    t.decimal "yaw", precision: 15, scale: 2
+    t.decimal "yaw_boosted", precision: 15, scale: 2
+    t.index ["environment", "version"], name: "index_model_builds_on_environment_and_version"
+    t.index ["model_id", "environment", "version"], name: "index_model_builds_on_model_and_build", unique: true
+    t.index ["model_id"], name: "index_model_builds_on_model_id"
+  end
+
   create_table "model_hardpoint_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "component_id"
     t.datetime "created_at", null: false
@@ -1614,6 +1652,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_180000) do
   add_foreign_key "mission_teams", "missions"
   add_foreign_key "missions", "fleets"
   add_foreign_key "missions", "users", column: "created_by_id"
+  add_foreign_key "model_builds", "models", on_delete: :cascade
   add_foreign_key "model_paints", "components", on_delete: :nullify
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"
