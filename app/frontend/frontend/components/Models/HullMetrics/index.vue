@@ -7,18 +7,15 @@ export default {
 <script lang="ts" setup>
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import type {
-  ModelMetricsHullPartsItem,
-  ModelMetricsHullDoorsItem,
-} from "@/services/fyApi";
+import type { ModelHullPart, ModelHullDoor } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useHullParts } from "@/frontend/composables/useHullParts";
 
 type Props = {
   hullHealth?: number;
-  hullParts?: ModelMetricsHullPartsItem[];
-  hullDoors?: ModelMetricsHullDoorsItem[];
+  hullParts?: ModelHullPart[];
+  hullDoors?: ModelHullDoor[];
 };
 
 const props = withDefaults(defineProps<Props>(), {

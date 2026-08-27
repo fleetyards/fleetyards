@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
-import type {
-  ModelMetricsHullPartsItem,
-  ModelMetricsHullDoorsItem,
-} from "@/services/fyApi";
+import type { ModelHullPart, ModelHullDoor } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useHullParts,
@@ -20,8 +17,8 @@ import {
 
 type Props = {
   hullHealth?: number;
-  hullParts?: ModelMetricsHullPartsItem[];
-  hullDoors?: ModelMetricsHullDoorsItem[];
+  hullParts?: ModelHullPart[];
+  hullDoors?: ModelHullDoor[];
 };
 
 const props = withDefaults(defineProps<Props>(), {

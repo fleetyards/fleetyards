@@ -18,13 +18,7 @@ module Admin
                 hidden: {type: :boolean},
                 pledgePrice: {type: :number},
 
-                media: {
-                  type: :object,
-                  properties: {
-                    storeImage: {"$ref": "#/components/schemas/MediaFile"}
-                  },
-                  additionalProperties: false
-                },
+                media: AdminModelUpgradeMedia,
 
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"},

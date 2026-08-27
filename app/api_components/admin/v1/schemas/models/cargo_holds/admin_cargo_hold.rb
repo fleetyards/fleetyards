@@ -24,15 +24,7 @@ module Admin
                 offsetY: {type: :number},
                 offsetZ: {type: :number},
                 rotation: {type: :integer},
-                parent: {
-                  type: :object,
-                  properties: {
-                    id: {type: :string, format: :uuid},
-                    name: {type: :string},
-                    slug: {type: :string}
-                  },
-                  required: %w[id name]
-                },
+                parent: AdminCargoHoldParent,
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"}
               },

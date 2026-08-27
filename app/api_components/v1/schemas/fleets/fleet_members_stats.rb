@@ -10,17 +10,7 @@ module V1
           type: :object,
           properties: {
             total: {type: :integer},
-            metrics: {
-              type: :object,
-              properties: {
-                membersByRole: {
-                  type: :object,
-                  additionalProperties: {type: :integer}
-                }
-              },
-              additionalProperties: false,
-              required: %w[membersByRole]
-            }
+            metrics: FleetMembersMetrics
           },
           additionalProperties: false,
           required: %w[total metrics]

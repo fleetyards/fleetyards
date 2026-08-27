@@ -19,16 +19,7 @@ module V1
               entriesCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},
-              manager: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  username: {type: :string},
-                  rsiHandle: {type: :string},
-                  discordProfileUrl: {type: :string, format: :uri},
-                  citizenidProfileUrl: {type: :string, format: :uri}
-                }
-              },
+              manager: FleetInventoryManager,
               image: {"$ref": "#/components/schemas/MediaFile"},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

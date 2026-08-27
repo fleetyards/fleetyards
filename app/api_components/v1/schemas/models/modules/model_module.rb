@@ -18,39 +18,13 @@ module V1
 
               scKey: {type: :string},
 
-              metrics: {
-                type: :object,
-                properties: {
-                  cargo: {type: :number}
-                },
-                additionalProperties: false
-              },
+              metrics: Shared::V1::Schemas::ModelModuleMetrics,
 
               cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
 
-              availability: {
-                type: :object,
-                properties: {
-                  boughtAt: {
-                    type: :array,
-                    items: {"$ref": "#/components/schemas/ItemPrice"}
-                  },
-                  soldAt: {
-                    type: :array,
-                    items: {"$ref": "#/components/schemas/ItemPrice"}
-                  }
-                },
-                additionalProperties: false,
-                required: %w[boughtAt soldAt]
-              },
+              availability: Shared::V1::Schemas::ItemAvailability,
 
-              media: {
-                type: :object,
-                properties: {
-                  storeImage: {"$ref": "#/components/schemas/MediaFile"}
-                },
-                additionalProperties: false
-              },
+              media: Shared::V1::Schemas::StoreImageMedia,
               pledgePrice: {type: :number},
               productionStatus: {type: :string},
 

@@ -12,13 +12,7 @@ module V1
               type: :array,
               items: {"$ref": "#/components/schemas/DockCount"}
             },
-            links: {
-              type: :object,
-              properties: {
-                self: {type: :string, format: :uri},
-                frontend: {type: :string, format: :uri}
-              }
-            }
+            links: Shared::V1::Schemas::ModelExtendedLinks
           },
           required: %w[dockCounts links]
         })

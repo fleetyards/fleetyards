@@ -15,24 +15,8 @@ module Admin
                 modelId: {type: :string, format: :uuid},
                 loanerModelId: {type: :string, format: :uuid},
                 hidden: {type: :boolean},
-                model: {
-                  type: :object,
-                  properties: {
-                    id: {type: :string, format: :uuid},
-                    name: {type: :string},
-                    slug: {type: :string}
-                  },
-                  required: %w[id name slug]
-                },
-                loanerModel: {
-                  type: :object,
-                  properties: {
-                    id: {type: :string, format: :uuid},
-                    name: {type: :string},
-                    slug: {type: :string}
-                  },
-                  required: %w[id name slug]
-                },
+                model: ModelRef,
+                loanerModel: ModelRef,
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"}
               },

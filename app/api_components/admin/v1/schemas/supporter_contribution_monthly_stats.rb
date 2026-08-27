@@ -12,18 +12,7 @@ module Admin
             currency: {type: :string},
             items: {
               type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  label: {type: :string},
-                  tooltip: {type: :string},
-                  amountCents: {type: :integer},
-                  goalAmountCents: {type: :integer},
-                  count: {type: :integer}
-                },
-                additionalProperties: false,
-                required: %w[label tooltip amountCents goalAmountCents count]
-              }
+              items: SupporterContributionMonthlyStatsItem
             }
           },
           additionalProperties: false,

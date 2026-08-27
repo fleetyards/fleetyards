@@ -17,16 +17,7 @@ module Shared
             beam: {type: :boolean},
             weaponClass: {type: :string},
             pelletsPerShot: {type: :integer},
-            damagePerShot: {
-              type: :object,
-              properties: {
-                physical: {type: :number},
-                energy: {type: :number},
-                distortion: {type: :number},
-                thermal: {type: :number}
-              },
-              additionalProperties: false
-            }
+            damagePerShot: WeaponIndexDamage
           },
           additionalProperties: false,
           required: %w[id name damagePerShot]

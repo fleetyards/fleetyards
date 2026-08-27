@@ -20,37 +20,10 @@ module V1
               quality: {type: :integer, minimum: 0, maximum: 1000},
               notes: {type: :string},
               image: {"$ref": "#/components/schemas/MediaFile"},
-              item: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  type: {"$ref": "#/components/schemas/InventoryItemTypeEnum"},
-                  name: {type: :string},
-                  slug: {type: :string},
-                  available: {type: :boolean}
-                }
-              },
-              inventory: {
-                type: :object,
-                properties: {
-                  name: {type: :string},
-                  slug: {type: :string}
-                }
-              },
-              member: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  username: {type: :string}
-                }
-              },
-              addedBy: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  username: {type: :string}
-                }
-              },
+              item: Shared::V1::Schemas::InventoryItemRef,
+              inventory: Shared::V1::Schemas::InventoryRef,
+              member: Shared::V1::Schemas::UserRef,
+              addedBy: Shared::V1::Schemas::UserRef,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },

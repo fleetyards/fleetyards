@@ -1,5 +1,6 @@
 import { computed, inject, toValue, type MaybeRefOrGetter } from "vue";
 import {
+  type ComponentWeaponDamage,
   HardpointCategoryEnum,
   type Hardpoint,
   type ComponentWeapon,
@@ -88,9 +89,9 @@ export const useHardpointStats = (
 
   const addDamageBreakdown = (
     result: HardpointStat[],
-    damage: Record<string, unknown>,
+    damage: ComponentWeaponDamage,
   ) => {
-    const types: [string, string][] = [
+    const types: [keyof ComponentWeaponDamage, string][] = [
       ["physical", "weapons.damagePhysical"],
       ["energy", "weapons.damageEnergy"],
       ["distortion", "weapons.damageDistortion"],

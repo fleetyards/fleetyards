@@ -14,15 +14,7 @@ module Shared
             id: {type: :string, format: :uuid},
             name: {type: :string},
             serial: {type: [:string, :null]},
-            model: {
-              type: :object,
-              properties: {
-                name: {type: :string},
-                slug: {type: :string},
-                cargo: {type: :number},
-                personalInventory: {type: :number}
-              }
-            }
+            model: InventoryVehicleModel
           },
           additionalProperties: false,
           required: %w[id name]

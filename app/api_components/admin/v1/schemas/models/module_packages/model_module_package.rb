@@ -21,16 +21,7 @@ module Admin
                 modules: {type: :array, items: {"$ref": "#/components/schemas/ModelModule"}},
                 model: {"$ref": "#/components/schemas/Model"},
 
-                media: {
-                  type: :object,
-                  properties: {
-                    angledView: {"$ref": "#/components/schemas/MediaFile"},
-                    sideView: {"$ref": "#/components/schemas/MediaFile"},
-                    storeImage: {"$ref": "#/components/schemas/MediaFile"},
-                    topView: {"$ref": "#/components/schemas/MediaFile"}
-                  },
-                  additionalProperties: false
-                },
+                media: ::Shared::V1::Schemas::ModelModulePackageMedia,
 
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"},

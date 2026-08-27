@@ -37,13 +37,7 @@ module V1
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time"},
               externalUid: {type: :string, format: :uuid},
-              createdBy: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  username: {type: :string}
-                }
-              },
+              createdBy: Shared::V1::Schemas::UserRef,
               signupsCount: {type: :integer},
               teamCount: {type: :integer},
               past: {type: :boolean},

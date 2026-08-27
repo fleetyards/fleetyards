@@ -1,5 +1,6 @@
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
 import {
+  type ComponentWeaponDamage,
   HardpointCategoryEnum,
   type Hardpoint,
   type ComponentWeapon,
@@ -49,7 +50,7 @@ function emptyBreakdown(): DamageBreakdown {
 
 function addBreakdown(
   target: DamageBreakdown,
-  damage: Partial<Record<string, number>> | undefined,
+  damage: ComponentWeaponDamage | undefined,
   multiplier: number,
 ) {
   if (!damage) return;

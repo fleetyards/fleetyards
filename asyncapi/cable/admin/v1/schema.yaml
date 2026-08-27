@@ -158,27 +158,9 @@ components:
         importData:
           type: string
         adminUser:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
-          required:
-          - id
-          - username
+          "$ref": "#/components/schemas/UserRefRequired"
         user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
-          required:
-          - id
-          - username
+          "$ref": "#/components/schemas/UserRefRequired"
         startedAt:
           type: string
           format: date-time
@@ -238,6 +220,17 @@ components:
       - IMPORTS_PAINTS_IMPORT
       - IMPORTS_UEX_PRICES_IMPORT
       - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
+    UserRefRequired:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      required:
+      - id
+      - username
   messages:
     AdminNotification:
       payload:

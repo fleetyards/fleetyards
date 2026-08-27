@@ -13,27 +13,12 @@ module V1
               id: {type: :string, format: :uuid},
               name: {type: :string},
               slug: {type: :string},
-              manufacturer: {
-                type: :object,
-                properties: {
-                  name: {type: [:string, :null]},
-                  slug: {type: [:string, :null]},
-                  code: {type: [:string, :null]}
-                },
-                additionalProperties: false,
-                required: %w[name slug code]
-              },
+              manufacturer: ModelOptionManufacturer,
               classification: {type: [:string, :null]},
               classificationLabel: {type: [:string, :null]},
               inHangar: {type: :boolean},
               onWishlist: {type: :boolean},
-              media: {
-                type: :object,
-                properties: {
-                  storeImage: {"$ref": "#/components/schemas/MediaFile"}
-                },
-                additionalProperties: false
-              }
+              media: Shared::V1::Schemas::StoreImageMedia
             },
             additionalProperties: false,
             required: %w[id name slug manufacturer classification classificationLabel inHangar onWishlist media]

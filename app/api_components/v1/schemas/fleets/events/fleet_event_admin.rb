@@ -14,21 +14,8 @@ module V1
               fleetEventId: {type: :string, format: :uuid},
               role: {"$ref": "#/components/schemas/FleetEventAdminRoleEnum"},
               createdAt: {type: :string, format: "date-time"},
-              user: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  username: {type: :string}
-                },
-                required: %w[id username]
-              },
-              grantedBy: {
-                type: :object,
-                properties: {
-                  id: {type: :string, format: :uuid},
-                  username: {type: :string}
-                }
-              }
+              user: Shared::V1::Schemas::UserRefRequired,
+              grantedBy: Shared::V1::Schemas::UserRef
             },
             required: %w[id fleetEventId role user createdAt],
             additionalProperties: false

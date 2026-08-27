@@ -72,6 +72,39 @@ the admin components that subclass a v1 one
 (`Admin::V1::Schemas::Models::Model < ::V1::Schemas::Models::Model`) inherit its
 `$ref`s — anything they reach has to be `shared/v1`.
 
+## Nested objects
+
+An object nested inside a component gets its own component. Orval names an
+anonymous one after its owner and path, so the same shape under three owners
+becomes three unrelated types.
+
+```ruby
+# Good
+metrics: Shared::V1::Schemas::ModelMetrics,
+
+# Bad
+metrics: {type: :object, properties: {...}},
+```
+
+Free-form maps (`additionalProperties`, no named properties) stay inline.
+
+Two traps, both learned the hard way:
+
+- openapi-ruby deep-merges a subclass's schema into its parent's, and **a `$ref`
+  cannot be merged into**. Pointing `Model.links` at a component made
+  `ModelExtended` emit a `$ref` next to the properties it wanted to add. The fix
+  is a component that inherits the shared one —
+  `AdminModelMedia < ::Shared::V1::Schemas::ModelMedia`.
+- A cross-scope subclass **inherits the reference**, so anything a v1 component
+  points at must be in `shared/v1/` when an admin component subclasses it. After
+  extracting, diff refs against definitions in each generated spec; a dangling
+  `$ref` only warns.
+
+Also worth knowing: Orval emits an `interface` for a named component and a type
+alias for an anonymous one, and TypeScript gives interfaces no implicit index
+signature. A helper typed `Record<string, unknown>` stops accepting the value —
+type the helper against the component instead.
+
 ## Enum values
 
 Source them from the Rails model when it has them

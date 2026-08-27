@@ -1,5 +1,5 @@
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
-import type { ModelMetricsHullPartsItem } from "@/services/fyApi";
+import type { ModelHullPart } from "@/services/fyApi";
 
 export const HULL_CATEGORY_ORDER = [
   "vital",
@@ -20,7 +20,7 @@ export const HULL_CATEGORY_COLORS: Record<string, string> = {
 export type HullPartGroup = {
   category: string;
   label: string;
-  parts: ModelMetricsHullPartsItem[];
+  parts: ModelHullPart[];
   total: number;
 };
 
@@ -32,7 +32,7 @@ export function humanizeHullPart(name: string) {
 }
 
 export function computeHullPartGroups(
-  parts: ModelMetricsHullPartsItem[] | undefined,
+  parts: ModelHullPart[] | undefined,
 ): HullPartGroup[] {
   return HULL_CATEGORY_ORDER.map((category) => {
     const grouped = (parts || [])
@@ -49,7 +49,7 @@ export function computeHullPartGroups(
 }
 
 export function useHullParts(
-  parts: MaybeRefOrGetter<ModelMetricsHullPartsItem[] | undefined>,
+  parts: MaybeRefOrGetter<ModelHullPart[] | undefined>,
 ) {
   const groups = computed(() => computeHullPartGroups(toValue(parts)));
 

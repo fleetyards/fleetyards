@@ -15,13 +15,7 @@ module V1
               description: {type: :string},
               pledgePrice: {type: :number},
 
-              media: {
-                type: :object,
-                properties: {
-                  storeImage: {"$ref": "#/components/schemas/MediaFile"}
-                },
-                additionalProperties: false
-              },
+              media: Shared::V1::Schemas::StoreImageMedia,
 
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"},

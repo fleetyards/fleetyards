@@ -7194,18 +7194,7 @@ components:
         rotation:
           type: integer
         parent:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-          required:
-          - id
-          - name
+          "$ref": "#/components/schemas/AdminCargoHoldParent"
         createdAt:
           type: string
           format: date-time
@@ -7224,6 +7213,20 @@ components:
       - createdAt
       - updatedAt
       title: AdminCargoHold
+    AdminCargoHoldParent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+      - id
+      - name
+      title: AdminCargoHoldParent
     AdminCargoHolds:
       type: object
       properties:
@@ -7344,6 +7347,102 @@ components:
       - name
       - permanent
       title: AdminFleetRole
+    AdminModelMedia:
+      type: object
+      properties:
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        fleetchartImage:
+          type: string
+        extendedHolo:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedTopView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedTopViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedSideView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedSideViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedFrontView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedFrontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        frontView:
+          "$ref": "#/components/schemas/MediaFile"
+        frontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        sideView:
+          "$ref": "#/components/schemas/MediaFile"
+        sideViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        topView:
+          "$ref": "#/components/schemas/MediaFile"
+        topViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        holo:
+          "$ref": "#/components/schemas/MediaFile"
+        brochure:
+          "$ref": "#/components/schemas/MediaFile"
+        rsiStoreImage:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: AdminModelMedia
+    AdminModelModuleHardpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        modelId:
+          type: string
+          format: uuid
+        slot:
+          type: string
+      additionalProperties: false
+      title: AdminModelModuleHardpoint
+    AdminModelPaintMedia:
+      type: object
+      properties:
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        fleetchartImage:
+          type: string
+        frontView:
+          "$ref": "#/components/schemas/MediaFile"
+        frontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        sideView:
+          "$ref": "#/components/schemas/MediaFile"
+        sideViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        rsiStoreImage:
+          "$ref": "#/components/schemas/MediaFile"
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        topView:
+          "$ref": "#/components/schemas/MediaFile"
+        topViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: AdminModelPaintMedia
+    AdminModelUpgradeMedia:
+      type: object
+      properties:
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: AdminModelUpgradeMedia
     AdminNotification:
       type: object
       properties:
@@ -7734,29 +7833,9 @@ components:
         maxContainerSize:
           "$ref": "#/components/schemas/CargoHoldContainerSize"
         limits:
-          type: object
-          properties:
-            min:
-              "$ref": "#/components/schemas/CargoHoldLimit"
-            max:
-              "$ref": "#/components/schemas/CargoHoldLimit"
-          additionalProperties: false
-          required:
-          - min
+          "$ref": "#/components/schemas/CargoHoldLimits"
         offset:
-          type: object
-          properties:
-            x:
-              type: number
-            "y":
-              type: number
-            z:
-              type: number
-          additionalProperties: false
-          required:
-          - x
-          - "y"
-          - z
+          "$ref": "#/components/schemas/CargoHoldOffset"
         rotation:
           type: integer
       additionalProperties: false
@@ -7826,6 +7905,32 @@ components:
       - dimensions
       - capacity
       title: CargoHoldLimit
+    CargoHoldLimits:
+      type: object
+      properties:
+        min:
+          "$ref": "#/components/schemas/CargoHoldLimit"
+        max:
+          "$ref": "#/components/schemas/CargoHoldLimit"
+      additionalProperties: false
+      required:
+      - min
+      title: CargoHoldLimits
+    CargoHoldOffset:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      required:
+      - x
+      - "y"
+      - z
+      title: CargoHoldOffset
     CargoHoldQuery:
       type: object
       properties:
@@ -7929,20 +8034,7 @@ components:
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
         availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
+          "$ref": "#/components/schemas/ItemAvailability"
         createdAt:
           type: string
           format: date-time
@@ -8120,28 +8212,11 @@ components:
         itemClassLabel:
           type: string
         availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
+          "$ref": "#/components/schemas/ItemAvailability"
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
         media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/StoreImageMedia"
         typeData:
           anyOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
@@ -8186,6 +8261,17 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentAngularVelocity:
+      type: object
+      properties:
+        pitch:
+          type: number
+        yaw:
+          type: number
+        roll:
+          type: number
+      additionalProperties: false
+      title: ComponentAngularVelocity
     ComponentArmor:
       type: object
       properties:
@@ -8254,57 +8340,15 @@ components:
         maxSpeed:
           type: number
         angularVelocity:
-          type: object
-          properties:
-            pitch:
-              type: number
-            yaw:
-              type: number
-            roll:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentAngularVelocity"
         boostedAngularVelocity:
-          type: object
-          properties:
-            pitch:
-              type: number
-            yaw:
-              type: number
-            roll:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentAngularVelocity"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
@@ -8319,33 +8363,7 @@ components:
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
         signatureIr:
@@ -8354,6 +8372,32 @@ components:
       required:
       - coolingRate
       title: ComponentCooler
+    ComponentDamageRange:
+      type: object
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+      additionalProperties: false
+      title: ComponentDamageRange
+    ComponentDamageTypeMap:
+      type: object
+      properties:
+        physical:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        energy:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        distortion:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        thermal:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        biochemical:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+        stun:
+          "$ref": "#/components/schemas/ComponentDamageRange"
+      additionalProperties: false
+      title: ComponentDamageTypeMap
     ComponentInput:
       type: object
       properties:
@@ -8422,6 +8466,13 @@ components:
           type: number
       additionalProperties: false
       title: ComponentJumpDrive
+    ComponentPingProperties:
+      type: object
+      properties:
+        cooldownTime:
+          type: number
+      additionalProperties: false
+      title: ComponentPingProperties
     ComponentPowerPlant:
       type: object
       properties:
@@ -8430,37 +8481,31 @@ components:
         powerDraw:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
       title: ComponentPowerPlant
+    ComponentPowerRangeEntry:
+      type: object
+      properties:
+        start:
+          type: number
+        modifier:
+          type: number
+      additionalProperties: false
+      title: ComponentPowerRangeEntry
+    ComponentPowerRanges:
+      type: object
+      properties:
+        low:
+          "$ref": "#/components/schemas/ComponentPowerRangeEntry"
+        medium:
+          "$ref": "#/components/schemas/ComponentPowerRangeEntry"
+        high:
+          "$ref": "#/components/schemas/ComponentPowerRangeEntry"
+      additionalProperties: false
+      title: ComponentPowerRanges
     ComponentQuantumDrive:
       type: object
       properties:
@@ -8505,33 +8550,7 @@ components:
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
@@ -8640,93 +8659,32 @@ components:
       type: object
       properties:
         signatureDetection:
-          type: object
-          properties:
-            ir:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-            em:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-            cs:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-            rs:
-              type: object
-              properties:
-                sensitivity:
-                  type: number
-                piercing:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentSignatureDetection"
         pingProperties:
-          type: object
-          properties:
-            cooldownTime:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPingProperties"
         aimAssistRange:
           type: number
         aimAssistMin:
           type: number
         sensitivityModifiers:
-          type: object
-          properties:
-            sensitivityAddition:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentSensitivityModifiers"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
       title: ComponentRadar
+    ComponentSensitivityModifiers:
+      type: object
+      properties:
+        sensitivityAddition:
+          type: number
+      additionalProperties: false
+      title: ComponentSensitivityModifiers
     ComponentShield:
       type: object
       properties:
@@ -8741,141 +8699,15 @@ components:
         damagedRegenDelay:
           type: number
         resistance:
-          type: object
-          properties:
-            physical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            energy:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            distortion:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            thermal:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            biochemical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            stun:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentDamageTypeMap"
         absorption:
-          type: object
-          properties:
-            physical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            energy:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            distortion:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            thermal:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            biochemical:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-            stun:
-              type: object
-              properties:
-                min:
-                  type: number
-                max:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentDamageTypeMap"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
       additionalProperties: false
@@ -8883,6 +8715,28 @@ components:
       - maxHealth
       - maxRegen
       title: ComponentShield
+    ComponentSignatureDetection:
+      type: object
+      properties:
+        ir:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+        em:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+        cs:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+        rs:
+          "$ref": "#/components/schemas/ComponentSignatureSensitivity"
+      additionalProperties: false
+      title: ComponentSignatureDetection
+    ComponentSignatureSensitivity:
+      type: object
+      properties:
+        sensitivity:
+          type: number
+        piercing:
+          type: number
+      additionalProperties: false
+      title: ComponentSignatureSensitivity
     ComponentSortEnum:
       type: string
       enum:
@@ -8939,81 +8793,67 @@ components:
         heatPerSecond:
           type: number
         rotation:
-          type: object
-          properties:
-            maxAngularVelocity:
-              type: number
-            degreesPerAction:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamRotation"
         movement:
-          type: object
-          properties:
-            maxSpeed:
-              type: number
-            maxAcceleration:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamMovement"
         cargoMode:
-          type: object
-          properties:
-            maxForce:
-              type: number
-            minDistance:
-              type: number
-            maxDistance:
-              type: number
-            fullStrengthDistance:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamCargoMode"
         towing:
-          type: object
-          properties:
-            towingForce:
-              type: number
-            towingMaxDistance:
-              type: number
-            towingMaxAcceleration:
-              type: number
-            quantumTowMassLimit:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentTractorBeamTowing"
         powerConsumption:
           type: number
         powerMinimumFraction:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
       additionalProperties: false
       required:
       - tractorBeam
       title: ComponentTractorBeam
+    ComponentTractorBeamCargoMode:
+      type: object
+      properties:
+        maxForce:
+          type: number
+        minDistance:
+          type: number
+        maxDistance:
+          type: number
+        fullStrengthDistance:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamCargoMode
+    ComponentTractorBeamMovement:
+      type: object
+      properties:
+        maxSpeed:
+          type: number
+        maxAcceleration:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamMovement
+    ComponentTractorBeamRotation:
+      type: object
+      properties:
+        maxAngularVelocity:
+          type: number
+        degreesPerAction:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamRotation
+    ComponentTractorBeamTowing:
+      type: object
+      properties:
+        towingForce:
+          type: number
+        towingMaxDistance:
+          type: number
+        towingMaxAcceleration:
+          type: number
+        quantumTowMassLimit:
+          type: number
+      additionalProperties: false
+      title: ComponentTractorBeamTowing
     ComponentTypeEnum:
       type: string
       enum:
@@ -9177,67 +9017,13 @@ components:
         powerConsumption:
           type: number
         powerRanges:
-          type: object
-          properties:
-            low:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            medium:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-            high:
-              type: object
-              properties:
-                start:
-                  type: number
-                modifier:
-                  type: number
-              additionalProperties: false
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentPowerRanges"
         signatureEm:
           type: number
         damagePerShot:
-          type: object
-          properties:
-            physical:
-              type: number
-            energy:
-              type: number
-            distortion:
-              type: number
-            thermal:
-              type: number
-            biochemical:
-              type: number
-            stun:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
         damagePerSecond:
-          type: object
-          properties:
-            physical:
-              type: number
-            energy:
-              type: number
-            distortion:
-              type: number
-            thermal:
-              type: number
-            biochemical:
-              type: number
-            stun:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
         heatPerSecond:
           type: number
         pelletsPerShot:
@@ -9259,43 +9045,69 @@ components:
         overchargeTime:
           type: number
         regen:
-          type: object
-          properties:
-            maxAmmoLoad:
-              type: number
-            maxRegenPerSecond:
-              type: number
-            costPerBullet:
-              type: number
-            regenerationCooldown:
-              type: number
-            requestedRegenPerSecond:
-              type: number
-            requestedAmmoLoad:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponRegen"
         heat:
-          type: object
-          properties:
-            overheatTemperature:
-              type: number
-            coolingPerSecond:
-              type: number
-            timeTillCoolingStarts:
-              type: number
-            overheatFixTime:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponHeat"
         penetration:
-          type: object
-          properties:
-            maxThickness:
-              type: number
-            baseDistance:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ComponentWeaponPenetration"
       additionalProperties: false
       title: ComponentWeapon
+    ComponentWeaponDamage:
+      type: object
+      properties:
+        physical:
+          type: number
+        energy:
+          type: number
+        distortion:
+          type: number
+        thermal:
+          type: number
+        biochemical:
+          type: number
+        stun:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponDamage
+    ComponentWeaponHeat:
+      type: object
+      properties:
+        overheatTemperature:
+          type: number
+        coolingPerSecond:
+          type: number
+        timeTillCoolingStarts:
+          type: number
+        overheatFixTime:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponHeat
+    ComponentWeaponPenetration:
+      type: object
+      properties:
+        maxThickness:
+          type: number
+        baseDistance:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponPenetration
+    ComponentWeaponRegen:
+      type: object
+      properties:
+        maxAmmoLoad:
+          type: number
+        maxRegenPerSecond:
+          type: number
+        costPerBullet:
+          type: number
+        regenerationCooldown:
+          type: number
+        requestedRegenPerSecond:
+          type: number
+        requestedAmmoLoad:
+          type: number
+      additionalProperties: false
+      title: ComponentWeaponRegen
     Components:
       type: object
       properties:
@@ -9649,20 +9461,7 @@ components:
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
         availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
+          "$ref": "#/components/schemas/ItemAvailability"
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
         retired:
@@ -10974,27 +10773,9 @@ components:
         importData:
           type: string
         adminUser:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
-          required:
-          - id
-          - username
+          "$ref": "#/components/schemas/UserRefRequired"
         user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            username:
-              type: string
-          required:
-          - id
-          - username
+          "$ref": "#/components/schemas/UserRefRequired"
         startedAt:
           type: string
           format: date-time
@@ -11131,6 +10912,21 @@ components:
       - DEPOSIT
       - WITHDRAWAL
       title: InventoryEntryTypeEnum
+    InventoryItemRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        name:
+          type: string
+        slug:
+          type: string
+        available:
+          type: boolean
+      title: InventoryItemRef
     InventoryItemTypeEnum:
       type: string
       enum:
@@ -11142,6 +10938,14 @@ components:
       - COMPONENT
       - EQUIPMENT
       title: InventoryItemTypeEnum
+    InventoryRef:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+      title: InventoryRef
     InventoryStockPosition:
       type: object
       properties:
@@ -11189,12 +10993,7 @@ components:
             available:
               type: boolean
         inventory:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
+          "$ref": "#/components/schemas/InventoryRef"
       additionalProperties: false
       required:
       - slug
@@ -11228,21 +11027,40 @@ components:
           - string
           - 'null'
         model:
-          type: object
-          properties:
-            name:
-              type: string
-            slug:
-              type: string
-            cargo:
-              type: number
-            personalInventory:
-              type: number
+          "$ref": "#/components/schemas/InventoryVehicleModel"
       additionalProperties: false
       required:
       - id
       - name
       title: InventoryVehicle
+    InventoryVehicleModel:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        cargo:
+          type: number
+        personalInventory:
+          type: number
+      title: InventoryVehicleModel
+    ItemAvailability:
+      type: object
+      properties:
+        boughtAt:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+        soldAt:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+      additionalProperties: false
+      required:
+      - boughtAt
+      - soldAt
+      title: ItemAvailability
     ItemPrice:
       type: object
       properties:
@@ -11622,25 +11440,7 @@ components:
         slug:
           type: string
         availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            rentalAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
-          - rentalAt
+          "$ref": "#/components/schemas/ModelAvailability"
         classification:
           type: string
         classificationLabel:
@@ -11649,17 +11449,7 @@ components:
           type: boolean
           default: false
         crew:
-          type: object
-          properties:
-            max:
-              type: integer
-            maxLabel:
-              type: string
-            min:
-              type: integer
-            minLabel:
-              type: string
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelCrew"
         description:
           type: string
         erkulIdentifier:
@@ -11682,13 +11472,7 @@ components:
         lastUpdatedAtLabel:
           type: string
         links:
-          type: object
-          properties:
-            salesPageUrl:
-              type: string
-            storeUrl:
-              type: string
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelLinks"
         loaners:
           type: array
           items:
@@ -11696,158 +11480,9 @@ components:
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
         media:
-          type: object
-          properties:
-            angledView:
-              "$ref": "#/components/schemas/MediaFile"
-            angledViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            fleetchartImage:
-              type: string
-            extendedHolo:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedTopView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedTopViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedSideView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedSideViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedFrontView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedFrontViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedAngledView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedAngledViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            frontView:
-              "$ref": "#/components/schemas/MediaFile"
-            frontViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            sideView:
-              "$ref": "#/components/schemas/MediaFile"
-            sideViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-            topView:
-              "$ref": "#/components/schemas/MediaFile"
-            topViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            holo:
-              "$ref": "#/components/schemas/MediaFile"
-            brochure:
-              "$ref": "#/components/schemas/MediaFile"
-            rsiStoreImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/AdminModelMedia"
         metrics:
-          type: object
-          properties:
-            beam:
-              type: number
-            beamLabel:
-              type: string
-            cargo:
-              type: number
-            cargoLabel:
-              type: string
-            personalInventory:
-              type: number
-            personalInventoryLabel:
-              type:
-              - string
-              - 'null'
-            fleetchartOffsetLength:
-              type: number
-            fleetchartOffsetBeam:
-              type: number
-            extendedLength:
-              type: number
-            extendedLengthLabel:
-              type: string
-            extendedBeam:
-              type: number
-            extendedBeamLabel:
-              type: string
-            extendedHeight:
-              type: number
-            extendedHeightLabel:
-              type: string
-            extendedFleetchartOffsetLength:
-              type: number
-            extendedFleetchartOffsetBeam:
-              type: number
-            height:
-              type: number
-            heightLabel:
-              type: string
-            hydrogenFuelTankSize:
-              type: number
-            isGroundVehicle:
-              type: boolean
-            length:
-              type: number
-            lengthLabel:
-              type: string
-            mass:
-              type: number
-            massLabel:
-              type: string
-            hullHealth:
-              type: number
-            hullParts:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  health:
-                    type: number
-                  category:
-                    "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
-                required:
-                - name
-                - health
-                - category
-                additionalProperties: false
-            hullDoors:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  health:
-                    type: number
-                required:
-                - name
-                - health
-                additionalProperties: false
-            quantumFuelTankSize:
-              type: number
-            weaponPoolSize:
-              type: number
-            signatureCrossSection:
-              type: object
-              properties:
-                x:
-                  type: number
-                "y":
-                  type: number
-                z:
-                  type: number
-              additionalProperties: false
-            size:
-              type: string
-            sizeLabel:
-              type: string
-            dockSize:
-              type: string
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelMetrics"
         cargoHolds:
           type: array
           items:
@@ -11889,37 +11524,7 @@ components:
         rsiSlug:
           type: string
         speeds:
-          type: object
-          properties:
-            groundAcceleration:
-              type: number
-            groundDecceleration:
-              type: number
-            groundMaxSpeed:
-              type: number
-            groundReverseSpeed:
-              type: number
-            maxSpeed:
-              type: number
-            pitch:
-              type: number
-            pitchBoosted:
-              type: number
-            roll:
-              type: number
-            rollBoosted:
-              type: number
-            scmSpeed:
-              type: number
-            scmSpeedBoosted:
-              type: number
-            reverseSpeedBoosted:
-              type: number
-            yaw:
-              type: number
-            yawBoosted:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelSpeeds"
         holo:
           type: string
           deprecated: true
@@ -11972,6 +11577,27 @@ components:
       - hidden
       - active
       title: Model
+    ModelAvailability:
+      type: object
+      properties:
+        boughtAt:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+        soldAt:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+        rentalAt:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+      additionalProperties: false
+      required:
+      - boughtAt
+      - soldAt
+      - rentalAt
+      title: ModelAvailability
     ModelCreateInput:
       type: object
       properties:
@@ -12072,6 +11698,19 @@ components:
       - name
       - manufacturerId
       title: ModelCreateInput
+    ModelCrew:
+      type: object
+      properties:
+        max:
+          type: integer
+        maxLabel:
+          type: string
+        min:
+          type: integer
+        minLabel:
+          type: string
+      additionalProperties: false
+      title: ModelCrew
     ModelExtended:
       type: object
       properties:
@@ -12087,25 +11726,7 @@ components:
         slug:
           type: string
         availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            rentalAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
-          - rentalAt
+          "$ref": "#/components/schemas/ModelAvailability"
         classification:
           type: string
         classificationLabel:
@@ -12114,17 +11735,7 @@ components:
           type: boolean
           default: false
         crew:
-          type: object
-          properties:
-            max:
-              type: integer
-            maxLabel:
-              type: string
-            min:
-              type: integer
-            minLabel:
-              type: string
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelCrew"
         description:
           type: string
         erkulIdentifier:
@@ -12147,19 +11758,7 @@ components:
         lastUpdatedAtLabel:
           type: string
         links:
-          type: object
-          properties:
-            salesPageUrl:
-              type: string
-            storeUrl:
-              type: string
-            self:
-              type: string
-              format: uri
-            frontend:
-              type: string
-              format: uri
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelExtendedLinks"
         loaners:
           type: array
           items:
@@ -12167,158 +11766,9 @@ components:
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
         media:
-          type: object
-          properties:
-            angledView:
-              "$ref": "#/components/schemas/MediaFile"
-            angledViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            fleetchartImage:
-              type: string
-            extendedHolo:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedTopView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedTopViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedSideView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedSideViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedFrontView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedFrontViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedAngledView:
-              "$ref": "#/components/schemas/MediaFile"
-            extendedAngledViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            frontView:
-              "$ref": "#/components/schemas/MediaFile"
-            frontViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            sideView:
-              "$ref": "#/components/schemas/MediaFile"
-            sideViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-            topView:
-              "$ref": "#/components/schemas/MediaFile"
-            topViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            holo:
-              "$ref": "#/components/schemas/MediaFile"
-            brochure:
-              "$ref": "#/components/schemas/MediaFile"
-            rsiStoreImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/AdminModelMedia"
         metrics:
-          type: object
-          properties:
-            beam:
-              type: number
-            beamLabel:
-              type: string
-            cargo:
-              type: number
-            cargoLabel:
-              type: string
-            personalInventory:
-              type: number
-            personalInventoryLabel:
-              type:
-              - string
-              - 'null'
-            fleetchartOffsetLength:
-              type: number
-            fleetchartOffsetBeam:
-              type: number
-            extendedLength:
-              type: number
-            extendedLengthLabel:
-              type: string
-            extendedBeam:
-              type: number
-            extendedBeamLabel:
-              type: string
-            extendedHeight:
-              type: number
-            extendedHeightLabel:
-              type: string
-            extendedFleetchartOffsetLength:
-              type: number
-            extendedFleetchartOffsetBeam:
-              type: number
-            height:
-              type: number
-            heightLabel:
-              type: string
-            hydrogenFuelTankSize:
-              type: number
-            isGroundVehicle:
-              type: boolean
-            length:
-              type: number
-            lengthLabel:
-              type: string
-            mass:
-              type: number
-            massLabel:
-              type: string
-            hullHealth:
-              type: number
-            hullParts:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  health:
-                    type: number
-                  category:
-                    "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
-                required:
-                - name
-                - health
-                - category
-                additionalProperties: false
-            hullDoors:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  health:
-                    type: number
-                required:
-                - name
-                - health
-                additionalProperties: false
-            quantumFuelTankSize:
-              type: number
-            weaponPoolSize:
-              type: number
-            signatureCrossSection:
-              type: object
-              properties:
-                x:
-                  type: number
-                "y":
-                  type: number
-                z:
-                  type: number
-              additionalProperties: false
-            size:
-              type: string
-            sizeLabel:
-              type: string
-            dockSize:
-              type: string
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelMetrics"
         cargoHolds:
           type: array
           items:
@@ -12360,37 +11810,7 @@ components:
         rsiSlug:
           type: string
         speeds:
-          type: object
-          properties:
-            groundAcceleration:
-              type: number
-            groundDecceleration:
-              type: number
-            groundMaxSpeed:
-              type: number
-            groundReverseSpeed:
-              type: number
-            maxSpeed:
-              type: number
-            pitch:
-              type: number
-            pitchBoosted:
-              type: number
-            roll:
-              type: number
-            rollBoosted:
-              type: number
-            scmSpeed:
-              type: number
-            scmSpeedBoosted:
-              type: number
-            reverseSpeedBoosted:
-              type: number
-            yaw:
-              type: number
-            yawBoosted:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelSpeeds"
         holo:
           type: string
           deprecated: true
@@ -12452,6 +11872,21 @@ components:
       - dockCounts
       - links
       title: ModelExtended
+    ModelExtendedLinks:
+      type: object
+      properties:
+        salesPageUrl:
+          type: string
+        storeUrl:
+          type: string
+        self:
+          type: string
+          format: uri
+        frontend:
+          type: string
+          format: uri
+      additionalProperties: false
+      title: ModelExtendedLinks
     ModelHardpoint:
       type: object
       properties:
@@ -12822,6 +12257,33 @@ components:
       - meta
       - items
       title: ModelHardpoints
+    ModelHullDoor:
+      type: object
+      properties:
+        name:
+          type: string
+        health:
+          type: number
+      required:
+      - name
+      - health
+      additionalProperties: false
+      title: ModelHullDoor
+    ModelHullPart:
+      type: object
+      properties:
+        name:
+          type: string
+        health:
+          type: number
+        category:
+          "$ref": "#/components/schemas/ModelHullPartCategoryEnum"
+      required:
+      - name
+      - health
+      - category
+      additionalProperties: false
+      title: ModelHullPart
     ModelHullPartCategoryEnum:
       type: string
       enum:
@@ -12846,6 +12308,15 @@ components:
       required:
       - modelId
       title: ModelLinkInput
+    ModelLinks:
+      type: object
+      properties:
+        salesPageUrl:
+          type: string
+        storeUrl:
+          type: string
+      additionalProperties: false
+      title: ModelLinks
     ModelLoaner:
       type: object
       properties:
@@ -12861,33 +12332,9 @@ components:
         hidden:
           type: boolean
         model:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-          required:
-          - id
-          - name
-          - slug
+          "$ref": "#/components/schemas/ModelRef"
         loanerModel:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-          required:
-          - id
-          - name
-          - slug
+          "$ref": "#/components/schemas/ModelRef"
         createdAt:
           type: string
           format: date-time
@@ -12946,6 +12393,130 @@ components:
       - meta
       - items
       title: ModelLoaners
+    ModelMedia:
+      type: object
+      properties:
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        fleetchartImage:
+          type: string
+        extendedHolo:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedTopView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedTopViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedSideView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedSideViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedFrontView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedFrontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledView:
+          "$ref": "#/components/schemas/MediaFile"
+        extendedAngledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        frontView:
+          "$ref": "#/components/schemas/MediaFile"
+        frontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        sideView:
+          "$ref": "#/components/schemas/MediaFile"
+        sideViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        topView:
+          "$ref": "#/components/schemas/MediaFile"
+        topViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        holo:
+          "$ref": "#/components/schemas/MediaFile"
+        brochure:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: ModelMedia
+    ModelMetrics:
+      type: object
+      properties:
+        beam:
+          type: number
+        beamLabel:
+          type: string
+        cargo:
+          type: number
+        cargoLabel:
+          type: string
+        personalInventory:
+          type: number
+        personalInventoryLabel:
+          type:
+          - string
+          - 'null'
+        fleetchartOffsetLength:
+          type: number
+        fleetchartOffsetBeam:
+          type: number
+        extendedLength:
+          type: number
+        extendedLengthLabel:
+          type: string
+        extendedBeam:
+          type: number
+        extendedBeamLabel:
+          type: string
+        extendedHeight:
+          type: number
+        extendedHeightLabel:
+          type: string
+        extendedFleetchartOffsetLength:
+          type: number
+        extendedFleetchartOffsetBeam:
+          type: number
+        height:
+          type: number
+        heightLabel:
+          type: string
+        hydrogenFuelTankSize:
+          type: number
+        isGroundVehicle:
+          type: boolean
+        length:
+          type: number
+        lengthLabel:
+          type: string
+        mass:
+          type: number
+        massLabel:
+          type: string
+        hullHealth:
+          type: number
+        hullParts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelHullPart"
+        hullDoors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelHullDoor"
+        quantumFuelTankSize:
+          type: number
+        weaponPoolSize:
+          type: number
+        signatureCrossSection:
+          "$ref": "#/components/schemas/ModelSignatureCrossSection"
+        size:
+          type: string
+        sizeLabel:
+          type: string
+        dockSize:
+          type: string
+      additionalProperties: false
+      title: ModelMetrics
     ModelModule:
       type: object
       properties:
@@ -12963,36 +12534,15 @@ components:
         scKey:
           type: string
         metrics:
-          type: object
-          properties:
-            cargo:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelModuleMetrics"
         cargoHolds:
           type: array
           items:
             "$ref": "#/components/schemas/CargoHold"
         availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
+          "$ref": "#/components/schemas/ItemAvailability"
         media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/StoreImageMedia"
         pledgePrice:
           type: number
         productionStatus:
@@ -13026,17 +12576,7 @@ components:
         moduleHardpoints:
           type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              modelId:
-                type: string
-                format: uuid
-              slot:
-                type: string
-            additionalProperties: false
+            "$ref": "#/components/schemas/AdminModelModuleHardpoint"
       additionalProperties: false
       required:
       - id
@@ -13100,6 +12640,13 @@ components:
           - 'null'
       additionalProperties: false
       title: ModelModuleInput
+    ModelModuleMetrics:
+      type: object
+      properties:
+        cargo:
+          type: number
+      additionalProperties: false
+      title: ModelModuleMetrics
     ModelModulePackage:
       type: object
       properties:
@@ -13123,17 +12670,7 @@ components:
         model:
           "$ref": "#/components/schemas/Model"
         media:
-          type: object
-          properties:
-            angledView:
-              "$ref": "#/components/schemas/MediaFile"
-            sideView:
-              "$ref": "#/components/schemas/MediaFile"
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-            topView:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/ModelModulePackageMedia"
         createdAt:
           type: string
           format: date-time
@@ -13276,6 +12813,19 @@ components:
             format: uuid
       additionalProperties: false
       title: ModelModulePackageInput
+    ModelModulePackageMedia:
+      type: object
+      properties:
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        sideView:
+          "$ref": "#/components/schemas/MediaFile"
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        topView:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: ModelModulePackageMedia
     ModelModulePackageQuery:
       type: object
       properties:
@@ -13398,46 +12948,9 @@ components:
         lastUpdatedAtLabel:
           type: string
         availability:
-          type: object
-          properties:
-            boughtAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-            soldAt:
-              type: array
-              items:
-                "$ref": "#/components/schemas/ItemPrice"
-          additionalProperties: false
-          required:
-          - boughtAt
-          - soldAt
+          "$ref": "#/components/schemas/ItemAvailability"
         media:
-          type: object
-          properties:
-            angledView:
-              "$ref": "#/components/schemas/MediaFile"
-            fleetchartImage:
-              type: string
-            sideView:
-              "$ref": "#/components/schemas/MediaFile"
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-            topView:
-              "$ref": "#/components/schemas/MediaFile"
-            angledViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            frontView:
-              "$ref": "#/components/schemas/MediaFile"
-            frontViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            sideViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-            rsiStoreImage:
-              "$ref": "#/components/schemas/MediaFile"
-            topViewColored:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/AdminModelPaintMedia"
         nameWithModel:
           type: string
         rsiId:
@@ -13851,6 +13364,32 @@ components:
       additionalProperties: false
       example: {}
       title: ModelQuery
+    ModelRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+      - id
+      - name
+      - slug
+      title: ModelRef
+    ModelSignatureCrossSection:
+      type: object
+      properties:
+        x:
+          type: number
+        "y":
+          type: number
+        z:
+          type: number
+      additionalProperties: false
+      title: ModelSignatureCrossSection
     ModelSnubCraft:
       type: object
       properties:
@@ -13864,33 +13403,9 @@ components:
           type: string
           format: uuid
         model:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-          required:
-          - id
-          - name
-          - slug
+          "$ref": "#/components/schemas/ModelRef"
         snubCraft:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-          required:
-          - id
-          - name
-          - slug
+          "$ref": "#/components/schemas/ModelRef"
         createdAt:
           type: string
           format: date-time
@@ -14011,6 +13526,39 @@ components:
       - RSI_ID_ASC
       - RSI_ID_DESC
       title: ModelSortEnum
+    ModelSpeeds:
+      type: object
+      properties:
+        groundAcceleration:
+          type: number
+        groundDecceleration:
+          type: number
+        groundMaxSpeed:
+          type: number
+        groundReverseSpeed:
+          type: number
+        maxSpeed:
+          type: number
+        pitch:
+          type: number
+        pitchBoosted:
+          type: number
+        roll:
+          type: number
+        rollBoosted:
+          type: number
+        scmSpeed:
+          type: number
+        scmSpeedBoosted:
+          type: number
+        reverseSpeedBoosted:
+          type: number
+        yaw:
+          type: number
+        yawBoosted:
+          type: number
+      additionalProperties: false
+      title: ModelSpeeds
     ModelUpdateInput:
       type: object
       properties:
@@ -14311,11 +13859,7 @@ components:
         pledgePrice:
           type: number
         media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
+          "$ref": "#/components/schemas/AdminModelUpgradeMedia"
         createdAt:
           type: string
           format: date-time
@@ -14883,6 +14427,13 @@ components:
       - usersCountTotal
       - fleetsCountTotal
       title: Stats
+    StoreImageMedia:
+      type: object
+      properties:
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: StoreImageMedia
     SupporterContribution:
       type: object
       properties:
@@ -14973,30 +14524,33 @@ components:
         items:
           type: array
           items:
-            type: object
-            properties:
-              label:
-                type: string
-              tooltip:
-                type: string
-              amountCents:
-                type: integer
-              goalAmountCents:
-                type: integer
-              count:
-                type: integer
-            additionalProperties: false
-            required:
-            - label
-            - tooltip
-            - amountCents
-            - goalAmountCents
-            - count
+            "$ref": "#/components/schemas/SupporterContributionMonthlyStatsItem"
       additionalProperties: false
       required:
       - currency
       - items
       title: SupporterContributionMonthlyStats
+    SupporterContributionMonthlyStatsItem:
+      type: object
+      properties:
+        label:
+          type: string
+        tooltip:
+          type: string
+        amountCents:
+          type: integer
+        goalAmountCents:
+          type: integer
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - label
+      - tooltip
+      - amountCents
+      - goalAmountCents
+      - count
+      title: SupporterContributionMonthlyStatsItem
     SupporterContributionQuery:
       type: object
       properties:
@@ -15303,6 +14857,27 @@ components:
       additionalProperties: false
       example: {}
       title: UserQuery
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      title: UserRef
+    UserRefRequired:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      required:
+      - id
+      - username
+      title: UserRefRequired
     UserResourceAccessEnum:
       type: string
       enum: []
@@ -15736,6 +15311,19 @@ components:
       items:
         "$ref": "#/components/schemas/WeaponIndexItem"
       title: WeaponIndex
+    WeaponIndexDamage:
+      type: object
+      properties:
+        physical:
+          type: number
+        energy:
+          type: number
+        distortion:
+          type: number
+        thermal:
+          type: number
+      additionalProperties: false
+      title: WeaponIndexDamage
     WeaponIndexItem:
       type: object
       properties:
@@ -15757,17 +15345,7 @@ components:
         pelletsPerShot:
           type: integer
         damagePerShot:
-          type: object
-          properties:
-            physical:
-              type: number
-            energy:
-              type: number
-            distortion:
-              type: number
-            thermal:
-              type: number
-          additionalProperties: false
+          "$ref": "#/components/schemas/WeaponIndexDamage"
       additionalProperties: false
       required:
       - id
