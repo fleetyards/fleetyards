@@ -20,6 +20,7 @@ module ScData
       # "items_commodities_type_*" keys the crates use for theirs. The record
       # type is what separates a good from the name of a category of them.
       RESOURCE_TYPE = "ResourceType"
+      RESOURCE_TYPE_GROUP = "ResourceTypeGroup"
 
       # A handful of commodities are named after their own type key. Most are
       # real products (RMC, HPMC, the two fuels); these two are the generic
@@ -119,7 +120,7 @@ module ScData
       end
 
       private def new_record
-        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, icons: [], paths: []}
+        {types: Hash.new(0), canonical_type: nil, canonical_ref: nil, canonical_folder: nil, group_type: nil, icons: [], paths: []}
       end
 
       private def collect_record(records, item)
@@ -154,9 +155,9 @@ module ScData
       end
 
       # Read after the crates and only for what they left out: the database
-      # repeats most of the catalogue, and says less about each entry -- it
-      # declares no type at all, and its thumbnail is the shared logo of a whole
-      # group rather than the commodity's own icon.
+      # repeats most of the catalogue, and says less about each entry -- it names
+      # a whole group's type rather than the record's own, and its thumbnail is
+      # that group's shared logo rather than the commodity's icon.
       private def collect_resource_types(records)
         resource_types.each do |values|
           sc_key = commodity_key(values["displayName"])
@@ -165,25 +166,56 @@ module ScData
           next if IGNORED_KEYS.include?(sc_key)
           next if records.key?(sc_key)
 
-          records[sc_key] = new_record
+          records[sc_key] = new_record.merge(group_type: resource_group_type(values))
         end
       end
 
       private def resource_types
-        root = Hash.from_xml(File.read("#{import_path}/#{RESOURCE_TYPES_PATH}")).values.first
-
-        return [] unless root.is_a?(Hash)
-
-        root.each_value.select do |values|
-          next false unless values.is_a?(Hash)
+        resource_database.select do |values|
           next false unless values["__type"] == RESOURCE_TYPE
 
           # A resource with no containers to put it in is not hauled anywhere --
           # the power in a grid, the oxygen in a suit -- and is no commodity.
           values.key?("defaultCargoContainers")
         end
-      rescue Errno::ENOENT
-        []
+      end
+
+      # A resource declares no type of its own; the group it is filed under is
+      # what says what it is, and a named group carries its label under the same
+      # key a crate declares on its own record.
+      #
+      # The ore groups are unlabelled, so an unrefined ore falls back to the group
+      # of the material it refines into -- which is where the crated ores land as
+      # well, tin ore reading as metal rather than as an ore of its own.
+      private def resource_group_type(values)
+        resource_group_types[value_or_nil(values["__ref"])] ||
+          resource_group_types[value_or_nil(values["refinedVersion"])]
+      end
+
+      private def resource_group_types
+        @resource_group_types ||= resource_database.each_with_object({}) do |values, index|
+          next unless values["__type"] == RESOURCE_TYPE_GROUP
+
+          type = TYPE_SLUGS[type_key(values["displayName"])]
+
+          next if type.blank?
+
+          resource_references(values).each { |ref| index[ref] ||= type }
+        end
+      end
+
+      private def resource_references(values)
+        Array.wrap(values.dig("resources", "Reference")).filter_map { |reference| value_or_nil(reference["value"]) }
+      end
+
+      private def resource_database
+        @resource_database ||= begin
+          root = Hash.from_xml(File.read("#{import_path}/#{RESOURCE_TYPES_PATH}")).values.first
+
+          root.is_a?(Hash) ? root.each_value.flat_map { |values| Array.wrap(values) }.select { |values| values.is_a?(Hash) } : []
+        rescue Errno::ENOENT
+          []
+        end
       end
 
       private def parse_commodity(sc_key, record)
@@ -214,7 +246,7 @@ module ScData
 
         return TYPE_SLUGS[declared] if declared.present?
 
-        CANONICAL_FOLDER_TYPES[record[:canonical_folder]] || type_from_paths(record[:paths])
+        CANONICAL_FOLDER_TYPES[record[:canonical_folder]] || record[:group_type] || type_from_paths(record[:paths])
       end
 
       private def canonical_folder(path)

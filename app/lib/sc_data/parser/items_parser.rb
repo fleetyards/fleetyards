@@ -32,11 +32,13 @@ module ScData
           save_items(items, folder: "items")
         end
 
-        # Refuel booms: nozzles live at entities/ root, arms under scitem/ships/dockingport.
-        # Both are referenced by ships' refuel hardpoint chains but aren't captured by the
-        # ships/<category> scan above.
+        # Refuel booms: arms live under scitem/ships/dockingport, nozzles under
+        # scitem/ships/fuelnozzle -- and at entities/ root up to 4.9.0, which is still
+        # where a PTU branch behind that move keeps them. Both are referenced by ships'
+        # refuel hardpoint chains but aren't captured by the ships/<category> scan above.
         refuel_files = Dir.glob([
           "#{import_path}/entities/fuel_nozzle_*.xml",
+          "#{import_path}/entities/scitem/ships/fuelnozzle/fuel_nozzle_*.xml",
           "#{import_path}/entities/scitem/ships/dockingport/dockingtube_refuelnozzle*.xml"
         ])
         refuel_items = refuel_files.filter_map do |file|

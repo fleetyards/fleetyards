@@ -57,12 +57,13 @@ module ScData
           consumables.filter_map { |item| item[:item_type] }.uniq.sort
       end
 
-      # The ASD drives share SystemAccess with the keycards, so only the key
+      # The drives share SystemAccess with the keycards -- the three ASD ones from
+      # the Onyx facility and the generic mission drive alike -- so only the key
       # keeps them out of a filter for the cards that open a door.
-      test "the delving drives are not filed with the keycards" do
+      test "the data drives are not filed with the keycards" do
         drives = parsed.values.select { |item| item[:key].include?("_harddrive_") }
 
-        assert_equal ["ASD Data Drive", "ASD Memory Drive", "ASD Secure Drive"],
+        assert_equal ["ASD Data Drive", "ASD Memory Drive", "ASD Secure Drive", "Data Drive"],
           drives.map { |item| item[:name] }.sort
         assert_equal ["data_drive"], drives.map { |item| item[:item_type] }.uniq
         assert_equal ["hacking_tool"], drives.map { |item| item[:equipment_type] }.uniq

@@ -121,6 +121,17 @@ module ScData
         assert_not File.directory?("#{@export_path}/icons")
       end
 
+      # The export ships a raster of every vector beside it under the same name,
+      # so which of the two a record resolves to used to come down to the case of
+      # the filename: Inv_Icon_Gold.svg sorts before inv_icon_gold.png and lost
+      # to it, while icon_brand_aegis.svg won.
+      test "#save_icon prefers the vector over the raster the export ships beside it" do
+        write_asset("ui/logos/Acme.svg", VECTOR)
+        FileUtils.cp(Rails.root.join("test/fixtures/files/test.png"), "#{@base_folder}/raw/1.0.0/Data/ui/logos/acme.png")
+
+        assert_equal "#{@export_path}/icons/ui/logos/acme.svg", @parser.send(:save_icon, "ui/logos/acme.tif")
+      end
+
       # The export still carries the textures its pictures were made from.
       # Copying one would leave a record pointing at a file nothing can draw,
       # so a texture on its own counts as no asset at all.
