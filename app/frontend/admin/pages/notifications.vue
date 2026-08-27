@@ -381,12 +381,20 @@ const destroyAll = () =>
 
 <style lang="scss" scoped>
 .admin-notifications__badge {
+  // Round on a single digit rather than a squashed oval: the width floor and
+  // the height are the same number, so it only stretches from two digits on.
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
   padding: 0 6px;
   color: $gray-black;
   // Absolute rather than an em: `mobile-icon-only` collapses the label by
   // setting the button's font-size to 0, and the count would go with it.
   font-size: 12px;
   font-weight: bold;
+  line-height: 1;
   background-color: var(--color-primary, #{$primary});
   border-radius: 10px;
 }
