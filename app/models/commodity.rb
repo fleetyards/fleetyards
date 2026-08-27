@@ -34,6 +34,19 @@ class Commodity < ApplicationRecord
   has_many :fleet_inventory_items, as: :item, dependent: :nullify
   has_many :inventory_items, as: :item, dependent: :nullify
 
+  # What each build of the game says about this commodity. Written alongside the
+  # columns, and read through in preference to them.
+  has_many :builds, class_name: "CommodityBuild", dependent: :destroy
+  has_one :build, -> { current }, class_name: "CommodityBuild", inverse_of: :commodity
+
+  # The newest build of this environment that still describes the commodity,
+  # which is what a record the export dropped falls back to. Without it a retired
+  # commodity would read as nameless, and an inventory item pointing at one has
+  # to resolve to something.
+  has_one :last_build,
+    -> { for_source.order(created_at: :desc) },
+    class_name: "CommodityBuild", inverse_of: :commodity
+
   # Named as every other catalogue names its picture, so a ledger entry
   # pointing at a commodity draws it through the same fallback that already
   # gives a component its artwork.
