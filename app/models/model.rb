@@ -347,6 +347,13 @@ class Model < ApplicationRecord
     sc_key.presence || slug&.tr("-", "_")
   end
 
+  # Whether the game files measured this ship at all. Zero counts as unmeasured:
+  # the export writes 0 for a handful of ships rather than leaving the field out,
+  # and a zero dimension is never a real one.
+  def game_file_metrics?
+    [sc_length, sc_beam, sc_height].compact.any? { |value| !value.zero? }
+  end
+
   def self.production_status_filters
     PRODUCTION_STATUSES.map do |item|
       Filter.new(

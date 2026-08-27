@@ -62,7 +62,9 @@
       "soldAt": "Sold at?",
       "rentalAt": "Rental at?",
       "poweredByUex": "Powered by UEX",
-      "lastUpdatedAt": "Last updated at?"
+      "lastUpdatedAt": "Last updated at?",
+      "gameFiles": "In game:",
+      "gameFilesMeasurementHint": "What the game files measure for this ship. It can differ from the figure RSI publishes; neither is reliably the more accurate one."
     },
     "component": {
       "manufacturer": "Manufacturer",

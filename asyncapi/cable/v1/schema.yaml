@@ -2333,6 +2333,16 @@ components:
           type: number
         heightLabel:
           type: string
+        gameFiles:
+          type: object
+          properties:
+            length:
+              type: number
+            beam:
+              type: number
+            height:
+              type: number
+          additionalProperties: false
         hydrogenFuelTankSize:
           type: number
         isGroundVehicle:

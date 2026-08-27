@@ -253,6 +253,20 @@
       color: #fff;
     }
 
+    // A second figure for the same stat from another source, shown only where it
+    // disagrees with the one above. Deliberately quiet: it is a discrepancy worth
+    // seeing, not a value competing for the eye.
+    &__note {
+      margin-top: 5px;
+      font-size: 11px;
+      line-height: 1.3;
+      color: $gray-light;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     &__unit {
       font-family: "Open Sans", sans-serif;
       font-weight: 600;

@@ -27,6 +27,18 @@ module Shared
             extendedFleetchartOffsetBeam: {type: :number},
             height: {type: :number},
             heightLabel: {type: :string},
+            # What the game files measure, where the fields above are what the
+            # matrix publishes. Absent when the export has no measurement, and
+            # the two disagree often enough that neither replaces the other.
+            gameFiles: {
+              type: :object,
+              properties: {
+                length: {type: :number},
+                beam: {type: :number},
+                height: {type: :number}
+              },
+              additionalProperties: false
+            },
             hydrogenFuelTankSize: {type: :number},
             isGroundVehicle: {type: :boolean},
             length: {type: :number},

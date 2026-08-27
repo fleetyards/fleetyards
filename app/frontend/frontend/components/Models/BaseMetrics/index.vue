@@ -26,6 +26,44 @@ const props = withDefaults(defineProps<Props>(), {
 const soldAt = computed(() => props.model.availability.soldAt);
 const rentalAt = computed(() => props.model.availability.rentalAt);
 
+// The game files measure a ship themselves, and for about a third of ships their
+// figure disagrees with the one the matrix publishes -- by anything from a third
+// under to nearly triple. Neither source is reliably right, so the second figure
+// is shown rather than resolved away, and only where it actually differs: for the
+// other two thirds it would just repeat the number above it.
+const GAME_FILE_TOLERANCE = 0.01;
+
+const gameFileFigure = (
+  key: "length" | "beam" | "height",
+  shown: number | undefined,
+) => {
+  // Only against the retracted figure. The extended one measures a different
+  // shape, so the game files have nothing to say about it.
+  if (props.extended) {
+    return undefined;
+  }
+
+  const measured = props.model.metrics.gameFiles?.[key];
+
+  if (!measured || !shown) {
+    return undefined;
+  }
+
+  return Math.abs(measured - shown) / shown > GAME_FILE_TOLERANCE
+    ? measured
+    : undefined;
+};
+
+const gameFileLength = computed(() =>
+  gameFileFigure("length", props.model.metrics.length),
+);
+const gameFileBeam = computed(() =>
+  gameFileFigure("beam", props.model.metrics.beam),
+);
+const gameFileHeight = computed(() =>
+  gameFileFigure("height", props.model.metrics.height),
+);
+
 const displayLength = computed(() => {
   if (props.extended && props.model.metrics.extendedLength) {
     return props.model.metrics.extendedLength;
@@ -80,17 +118,44 @@ const openAvailability = () => {
         <div class="metrics-card__tile__value">
           {{ toNumber(displayLength || "", "distance") }}
         </div>
+        <div
+          v-if="gameFileLength"
+          v-tooltip="t('model.gameFilesMeasurementHint')"
+          class="metrics-card__tile__note"
+          data-test="game-file-length"
+        >
+          {{ t("model.gameFiles") }}
+          {{ toNumber(gameFileLength, "distance") }}
+        </div>
       </div>
       <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.beam") }}</div>
         <div class="metrics-card__tile__value">
           {{ toNumber(displayBeam || "", "distance") }}
         </div>
+        <div
+          v-if="gameFileBeam"
+          v-tooltip="t('model.gameFilesMeasurementHint')"
+          class="metrics-card__tile__note"
+          data-test="game-file-beam"
+        >
+          {{ t("model.gameFiles") }}
+          {{ toNumber(gameFileBeam, "distance") }}
+        </div>
       </div>
       <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.height") }}</div>
         <div class="metrics-card__tile__value">
           {{ toNumber(displayHeight || "", "distance") }}
+        </div>
+        <div
+          v-if="gameFileHeight"
+          v-tooltip="t('model.gameFilesMeasurementHint')"
+          class="metrics-card__tile__note"
+          data-test="game-file-height"
+        >
+          {{ t("model.gameFiles") }}
+          {{ toNumber(gameFileHeight, "distance") }}
         </div>
       </div>
       <div class="metrics-card__tile">

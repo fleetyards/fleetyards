@@ -62,7 +62,9 @@
       "soldAt": "Verkauft bei?",
       "rentalAt": "Vermietung bei?",
       "poweredByUex": "Bereitgestellt von UEX",
-      "lastUpdatedAt": "Zuletzt aktualisiert am?"
+      "lastUpdatedAt": "Zuletzt aktualisiert am?",
+      "gameFiles": "Im Spiel:",
+      "gameFilesMeasurementHint": "Was die Spieldateien für dieses Schiff messen. Der Wert kann von der RSI-Angabe abweichen; keiner von beiden ist verlässlich der genauere."
     },
     "component": {
       "manufacturer": "Hersteller",

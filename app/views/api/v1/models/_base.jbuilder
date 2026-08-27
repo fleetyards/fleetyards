@@ -141,6 +141,23 @@ json.metrics do
   json.extended_fleetchart_offset_beam model.extended_fleetchart_offset_beam&.to_f
   json.height model.height.to_f
   json.height_label model.height_label
+
+  # What the game files measure, alongside what the matrix publishes, rather than
+  # instead of it. The two disagree for 76 of 211 ships, by anything from -88% to
+  # +266%, and no rule resolves them -- the metric orientation varies per ship, so
+  # neither source is reliably the right one. Nobody could see the disagreement
+  # while these columns were written and read by nothing.
+  #
+  # Omitted rather than sent as zero when the export has no measurement, which is
+  # the one case that *is* recognisable (5 ships).
+  if model.game_file_metrics?
+    json.game_files do
+      json.length model.sc_length&.to_f
+      json.beam model.sc_beam&.to_f
+      json.height model.sc_height&.to_f
+    end
+  end
+
   json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size&.to_f
   json.is_ground_vehicle model.ground
   json.length model.length.to_f
