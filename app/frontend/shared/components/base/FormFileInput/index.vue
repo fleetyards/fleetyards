@@ -278,6 +278,13 @@ const holoModel = computed(() => {
   return undefined;
 });
 
+// The dropzone is only pinned open while there is nothing to look at. A
+// previewSrc counts: the folder upload fills the whole form that way, and
+// forcing the overlay on top of it hid every picture it just set.
+const hasPreview = computed(() => {
+  return uploadedHere.value || !!props.previewSrc || !!internalSrc.value;
+});
+
 const clearLabel = computed(() => {
   if (inputValue.value) {
     return t("actions.reset");
@@ -343,7 +350,7 @@ defineExpose({
         :allowed-types="fileTypeMap[props.allowedTypes as AllowedFileTypes]"
         :allowed-size-mb="props.allowedSizeMb"
         :transparent="transparent || avatar"
-        :active="!internalSrc"
+        :active="!hasPreview"
         @upload:done="onUploadDone"
         @clear="onUploadClear"
       />
