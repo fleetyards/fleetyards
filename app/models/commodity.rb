@@ -47,6 +47,112 @@ class Commodity < ApplicationRecord
     -> { for_source.order(created_at: :desc) },
     class_name: "CommodityBuild", inverse_of: :commodity
 
+  # Whether the build we are on describes this commodity, rather than whether the
+  # version string on the row still matches it. An exists check rather than a
+  # join, so nothing fans out and `currentVersion=false` stays the plain table.
+  scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      where(id: CommodityBuild.current(source).select(:commodity_id))
+    else
+      all
+    end
+  }
+
+  # The build a filter resolves against, joined as `commodity_facts`. Two shapes
+  # behind one alias, so a ransacker stays a single static expression either way.
+  #
+  # An inner join to the build we are on *is* `current_version`, so no column
+  # fallback is needed on this path -- and leaving it out is what keeps the
+  # filter on an indexed column. `COALESCE(build, column)` spans two tables, so
+  # no index applies and every row has to be touched: measured on equipment when
+  # this was first built the wrong way, 5.18ms against 0.13ms.
+  def self.current_facts_join(source)
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      INNER JOIN commodity_builds AS commodity_facts
+        ON commodity_facts.commodity_id = commodities.id
+       AND commodity_facts.environment = ?
+       AND commodity_facts.version = ?
+    SQL
+  end
+
+  # Everything: rows only an older build describes, and rows no load ever did.
+  # The fallback is unavoidable here, so it is folded into the subquery rather
+  # than into each condition -- the ransackers stay identical, and the cost lands
+  # only on this path, which is `currentVersion=false` and the admin list.
+  def self.all_facts_join(source)
+    facts = CommodityBuild::FILTERABLE.map { |fact| "COALESCE(b.#{fact}, c.#{fact}) AS #{fact}" }.join(", ")
+
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      LEFT JOIN (
+        SELECT c.id AS commodity_id, #{facts}
+        FROM commodities c
+        LEFT JOIN (
+          SELECT DISTINCT ON (commodity_id) *
+          FROM commodity_builds
+          WHERE environment = ?
+          ORDER BY commodity_id, (version = ?) DESC, created_at DESC
+        ) b ON b.commodity_id = c.id
+      ) AS commodity_facts ON commodity_facts.commodity_id = commodities.id
+    SQL
+  end
+
+  scope :with_facts, ->(current_only = true, source = ::ScData::Source.current) {
+    joins(
+      ActiveModel::Type::Boolean.new.cast(current_only) ? current_facts_join(source) : all_facts_join(source)
+    )
+  }
+
+  # One fact, off whichever build the join supplied. Referencing the alias
+  # without `with_facts` raises rather than returning the wrong rows, which is
+  # the failure mode to want here -- ransack drops a condition it cannot place
+  # without saying a word.
+  def self.fact_sql(fact)
+    Arel.sql("commodity_facts.#{fact}")
+  end
+
+  # Not in the build we are on. Said out loud in the API, which until now offered
+  # a commodity the export had dropped as though it were current.
+  def retired?
+    build.blank?
+  end
+
+  # The build we are on, or the last one that described the commodity.
+  def facts
+    build || last_build
+  end
+
+  # An admin correction is a correction to the build we are on, so it has to
+  # reach the build as well as the row.
+  #
+  # The next load overwrites it, and that is the point: the game files hold what
+  # is actually in the game, so a wrong value here is a parser bug and the fix
+  # belongs in the parser.
+  def update_with_facts(attributes)
+    transaction do
+      return false unless update(attributes)
+
+      facts_attributes = attributes.to_h.symbolize_keys.slice(*CommodityBuild::FACTS)
+
+      # Reloaded rather than read off the association: validating the row above
+      # consults a fact reader, which caches whatever the build was at that
+      # moment -- a nil, for a row whose build is written afterwards.
+      reload_build&.update!(facts_attributes) if facts_attributes.present?
+
+      true
+    end
+  end
+
+  # Read through the build, falling back to the column. The column still answers
+  # for a commodity no load has given a build -- an admin can create one by hand,
+  # and the UEX importer creates them too.
+  CommodityBuild::READ_THROUGH.each do |fact|
+    define_method(fact) do
+      value = facts&.public_send(fact)
+
+      value.nil? ? super() : value
+    end
+  end
+
   # Named as every other catalogue names its picture, so a ledger entry
   # pointing at a commodity draws it through the same fallback that already
   # gives a component its artwork.
@@ -83,8 +189,22 @@ class Commodity < ApplicationRecord
     []
   end
 
-  def self.commodity_types
-    current_version.where.not(commodity_type: nil).distinct.order(:commodity_type).pluck(:commodity_type)
+  # Filtering and sorting read the build. Each of these shadows a real column of
+  # the same name -- a ransacker wins over a column -- so every query parameter
+  # keeps working untouched, with no API and no frontend change.
+  CommodityBuild::FILTERABLE.each do |fact|
+    ransacker(fact) { Commodity.fact_sql(fact) }
+  end
+
+  # Read off the build table rather than through the rows: the builds we are on
+  # *are* the current catalogue, so this needs neither the join nor
+  # `current_version` and stays a single index scan.
+  def self.commodity_types(source = ::ScData::Source.current)
+    CommodityBuild.current(source)
+      .where.not(commodity_type: nil)
+      .distinct
+      .order(:commodity_type)
+      .pluck(:commodity_type)
   end
 
   def self.type_filters

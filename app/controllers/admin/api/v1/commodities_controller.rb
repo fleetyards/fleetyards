@@ -11,7 +11,11 @@ module Admin
 
           commodity_query_params["sorts"] = sorting_params(Commodity, commodity_query_params[:sorts])
 
-          @q = authorized_scope(Commodity.all).includes(:item_prices).ransack(commodity_query_params)
+          # The fallback join, not the current one: an admin list has to show a
+          # commodity the export dropped, and one no load has ever described.
+          @q = authorized_scope(Commodity.with_facts(false))
+            .includes(:item_prices)
+            .ransack(commodity_query_params)
 
           @commodities = @q.result
             .page(params[:page])
@@ -32,7 +36,7 @@ module Admin
         end
 
         def update
-          return if @commodity.update(commodity_params)
+          return if @commodity.update_with_facts(commodity_params)
 
           render json: ValidationError.new("commodity.update", errors: @commodity.errors), status: :bad_request
         end

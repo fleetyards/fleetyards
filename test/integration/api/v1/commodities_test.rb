@@ -73,6 +73,30 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Said out loud rather than left to be inferred from an absence: the list used
+  # to serve a dropped commodity as though it were current.
+  test "GET /commodities marks a commodity the current build no longer ships" do
+    create(:commodity, name: "Astatine", version: "0.0.1-live.1")
+
+    assert_api_response :get, 200, params: {q: {"currentVersion" => false}} do
+      items = parsed_body["items"].index_by { |item| item["name"] }
+
+      assert items["Astatine"]["retired"]
+      assert_not items["Gold"]["retired"]
+    end
+  end
+
+  # A retired commodity still has to read: an inventory ledger entry can point at
+  # one, so the last build that described it answers rather than nothing.
+  test "GET /commodities names a retired commodity off the last build describing it" do
+    dropped = create(:commodity, :without_build, name: "Column Name", version: "0.0.1-live.1")
+    create(:commodity_build, commodity: dropped, version: "0.0.1-live.1", name: "Astatine")
+
+    assert_api_response :get, 200, params: {q: {"currentVersion" => false}} do
+      assert_includes parsed_body["items"].map { |item| item["name"] }, "Astatine"
+    end
+  end
+
   test "GET /commodities exposes the fields the picker needs" do
     assert_api_response :get, 200 do
       gold = parsed_body["items"].find { |item| item["name"] == "Gold" }
