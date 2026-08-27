@@ -65,4 +65,18 @@ class PaintsImporterTest < ActiveSupport::TestCase
     assert_equal 0, results[:new][:count]
     assert_equal ["Twilight"], arrow.paints.pluck(:name)
   end
+
+  test "#run imports a series paint into the models that are still missing it" do
+    aurora_cl = create(:model, name: "Aurora Mk I CL")
+    aurora_es = create(:model, name: "Aurora Mk I ES")
+    create(:model_paint, model: aurora_cl, name: "Dread Pirate")
+    hangar_sync("Aurora Mk I - Dread Pirate Paint")
+
+    results = PaintsImporter.new.run
+
+    assert_equal ["Dread Pirate"], aurora_es.paints.pluck(:name)
+    assert_equal 1, results[:new][:count]
+    assert_equal 1, results[:existing][:count]
+  end
+
 end

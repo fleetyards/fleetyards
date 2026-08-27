@@ -144,7 +144,7 @@ class PaintsImporter
       existing_paint = ModelPaint.find_by(model_id: model.id, name: paint_name)
 
       if existing_paint.present?
-        return {
+        next {
           new: false,
           paint_id: existing_paint.id,
           model_id: model.id,
