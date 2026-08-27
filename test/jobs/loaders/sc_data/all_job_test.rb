@@ -7,6 +7,12 @@ module Loaders
     class AllJobTest < ActiveJob::TestCase
       setup do
         Rails.configuration.stubs(:sc_data).returns({version: "3.24.0"})
+        @admin_user = create(:admin_user, resource_access: [:models])
+        AdminNotificationsChannel.stubs(:broadcast_to)
+      end
+
+      def notification
+        AdminNotification.find_by(admin_user: @admin_user, notification_type: "sc_data_import")
       end
 
       test "#perform creates an import, runs the loader, and finishes the import" do
@@ -34,6 +40,35 @@ module Loaders
 
         assert_equal({"created" => 2, "updated" => 1, "unchanged" => 4818},
           output.dig("EquipmentLoader", "Equipment"))
+      end
+
+      test "#perform reports the counts each loader produced" do
+        ::ScData::Loader::BaseLoader.expects(:all).returns({
+          "EquipmentLoader" => {"Equipment" => {created: 2, updated: 1, unchanged: 4818}}
+        })
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        assert_not_nil notification
+        assert_equal "info", notification.severity
+        assert_includes notification.title, "3.24.0"
+        assert_includes notification.body, "created 2"
+      end
+
+      # The failure that left Commodity and Equipment empty for a week: the
+      # loader ran, wrote nothing, and left nothing unchanged either.
+      test "#perform asks for a human when a catalogue came back empty" do
+        ::ScData::Loader::BaseLoader.expects(:all).returns({
+          "EquipmentLoader" => {"Equipment" => {created: 0, updated: 0, unchanged: 0}}
+        })
+
+        creator = mock("GithubIssueCreator")
+        creator.expects(:run)
+        GithubIssueCreator.expects(:new).returns(creator)
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        assert_equal "warning", notification.severity
       end
 
       test "#perform marks import as failed on error" do

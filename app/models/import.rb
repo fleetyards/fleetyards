@@ -70,9 +70,46 @@ class Import < ApplicationRecord
     end
   end
 
+  # Imports whose job files its own report, with the detail a status line
+  # cannot carry. Reporting both would put every paints run into the center
+  # twice - once with the missing models, once saying it finished.
+  SELF_REPORTED_TYPES = %w[
+    Imports::ModelsImport
+    Imports::ModulesImport
+    Imports::PaintsImport
+    Imports::UexPricesImport
+    Imports::UexCommodityPricesImport
+    Imports::ScData::AllImport
+  ].freeze
+
   def notify_admin
     AdminUser.find_each do |admin_user|
       ::ImportsChannel.broadcast_to(admin_user, to_jbuilder_hash)
     end
+
+    report_run
+  end
+
+  def label
+    type.to_s.demodulize.underscore.humanize
+  end
+
+  # The cable broadcast reaches whoever has the imports page open; this is for
+  # everyone who does not, which is the point of the notification center.
+  private def report_run
+    # A user's import belongs to that user - they ran it, they get told in
+    # their own center, and thousands of syncs a week are not admin news.
+    return if user_id.present?
+    return unless finished? || failed?
+    return if finished? && SELF_REPORTED_TYPES.include?(type.to_s)
+
+    AdminNotification.notify!(
+      type: :import_run,
+      title: "#{label} #{aasm_state}",
+      body: info.presence,
+      severity: failed? ? :error : :info,
+      link: "/maintenance/imports",
+      record: self
+    )
   end
 end

@@ -50,7 +50,10 @@ class AdminNotification < ApplicationRecord
     new_supporter: "new_supporter",
     rsi_api_blocked: "rsi_api_blocked",
     rsi_api_unblocked: "rsi_api_unblocked",
-    weekly_stats: "weekly_stats"
+    weekly_stats: "weekly_stats",
+    ship_matrix_import: "ship_matrix_import",
+    sc_data_import: "sc_data_import",
+    import_run: "import_run"
   }
 
   enum :severity, {
@@ -104,6 +107,23 @@ class AdminNotification < ApplicationRecord
       retention: 30.days,
       access: [:stats],
       icon: "fa-duotone fa-chart-line"
+    },
+    ship_matrix_import: {
+      retention: 30.days,
+      access: [:models],
+      icon: "fa-duotone fa-list-tree"
+    },
+    sc_data_import: {
+      retention: 30.days,
+      access: [:models],
+      icon: "fa-duotone fa-database"
+    },
+    # The status line every other import leaves behind, at info when it
+    # finished and at error when it did not.
+    import_run: {
+      retention: 30.days,
+      access: [:imports],
+      icon: "fa-duotone fa-file-import"
     }
   }.freeze
 
