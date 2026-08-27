@@ -8,6 +8,10 @@ module ScData
     class CommoditiesParserTest < ActiveSupport::TestCase
       RECORDS_PATH = "Data/Libs/Foundry/Records"
 
+      AMMUNITION_REF = "1fdb2e84-1622-4685-8194-2d108498d90f"
+      ORE_REF = "551cf88d-c09f-46e3-99b3-66c60bb65af1"
+      METAL_REF = "1b4c4042-5fdc-4b52-bec4-07085cb3520a"
+
       setup do
         @base_folder = Dir.mktmpdir
         @raw_path = "#{@base_folder}/raw/1.0.0"
@@ -123,10 +127,50 @@ module ScData
       test "#commodities keeps the name of a group of resources out of the catalogue" do
         translate("items_commodities_type_metal" => "Metal")
         resource_types(
-          resource_type("Metal", display_name: "@items_commodities_type_metal", type: "ResourceTypeGroup")
+          resource_group("Metal", display_name: "@items_commodities_type_metal")
         )
 
         assert_empty @parser.commodities
+      end
+
+      # A resource says nothing about its own type. The group it is filed under
+      # is what says what it is, under the same key a crate declares.
+      test "#commodities types a resource by the group it is filed under" do
+        translate(
+          "items_commodities_shipammo_size_1" => "Ship Ammunition - Size 1",
+          "items_commodities_type_manmade" => "Man-made"
+        )
+        resource_types(
+          resource_type("ShipAmmoSize1", display_name: "@items_commodities_shipammo_size_1", ref: AMMUNITION_REF),
+          resource_group("Bulk_Supplies", display_name: "@items_commodities_type_manmade", members: [AMMUNITION_REF])
+        )
+
+        commodity = @parser.commodities.first
+
+        assert_equal "manmade", commodity[:commodity_type]
+        assert_equal "Man-made", commodity[:commodity_type_name]
+      end
+
+      # Both ore groups carry a placeholder where their label belongs, so an ore
+      # read from the database alone would be the only untyped commodity in the
+      # catalogue. The material it refines into is filed under a group that is
+      # named, and is where the crated ores land too.
+      test "#commodities types an unrefined ore after the material it refines into" do
+        translate(
+          "items_commodities_tin_ore" => "Tin (Ore)",
+          "items_commodities_tin" => "Tin",
+          "items_commodities_type_metal" => "Metal"
+        )
+        resource_types(
+          resource_type("Ore_Tin", display_name: "@items_commodities_tin_ore", ref: ORE_REF, refined_version: METAL_REF),
+          resource_type("Tin", display_name: "@items_commodities_tin", ref: METAL_REF),
+          resource_group("UnrefinedOres", display_name: "@LOC_PLACEHOLDER", members: [ORE_REF]),
+          resource_group("Metal", display_name: "@items_commodities_type_metal", members: [METAL_REF])
+        )
+
+        ore = @parser.commodities.find { |commodity| commodity[:sc_key] == "items_commodities_tin_ore" }
+
+        assert_equal "metal", ore[:commodity_type]
       end
 
       test "#commodities skips a resource that declares no container to haul it in" do
@@ -138,8 +182,9 @@ module ScData
         assert_empty @parser.commodities
       end
 
-      # The database declares no type, so reading it over a crate would cost the
-      # commodity the one thing the crate does say about it.
+      # The database types a resource by the group it belongs to, which is broader
+      # than what the crate declares, so reading it over the crate would cost the
+      # commodity the more precise of the two.
       test "#commodities leaves a commodity the crates already declared alone" do
         translate(
           "items_commodities_tin" => "Tin",
@@ -160,16 +205,40 @@ module ScData
         assert_equal "metal", result.first[:commodity_type]
       end
 
-      private def resource_type(name, display_name:, type: "ResourceType", containers: true)
+      private def resource_type(name, display_name:, ref: nil, refined_version: nil, containers: true)
+        record(
+          "ResourceType.#{name}",
+          {displayName: display_name, __ref: ref, refinedVersion: refined_version, __type: "ResourceType"},
+          (containers_xml if containers)
+        )
+      end
+
+      private def resource_group(name, display_name:, members: [])
+        record(
+          "ResourceTypeGroup.#{name}",
+          {displayName: display_name, __type: "ResourceTypeGroup"},
+          references_xml(members)
+        )
+      end
+
+      private def record(tag, attributes, children)
+        listed = attributes.compact.map { |name, value| %(#{name}="#{value}") }.join(" ")
+
         <<~XML
-          <#{type}.#{name} displayName="#{display_name}" __type="#{type}">
-            #{containers_xml if containers}
-          </#{type}.#{name}>
+          <#{tag} #{listed}>
+            #{children}
+          </#{tag}>
         XML
       end
 
       private def containers_xml
         %(<defaultCargoContainers><SResourceTypeDefaultCargoContainers oneSCU="beef" /></defaultCargoContainers>)
+      end
+
+      private def references_xml(refs)
+        return if refs.empty?
+
+        "<resources>#{refs.map { |ref| %(<Reference value="#{ref}" />) }.join}</resources>"
       end
 
       private def resource_types(*records)
