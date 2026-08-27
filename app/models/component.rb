@@ -68,6 +68,73 @@ class Component < ApplicationRecord
   # What each build of the game says about this component. Written alongside the
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "ComponentBuild", dependent: :destroy
+  has_one :build, -> { current }, class_name: "ComponentBuild", inverse_of: :component
+
+  # The newest build of this environment that still describes the component,
+  # which is what a record the export dropped falls back to. Without it a retired
+  # component would read as nameless, and a hardpoint or a paint pointing at one
+  # has to resolve to something.
+  has_one :last_build,
+    -> { for_source.order(created_at: :desc) },
+    class_name: "ComponentBuild", inverse_of: :component
+
+  # Whether the build we are on describes this component, rather than whether the
+  # version string on the row still matches it. An exists check rather than a
+  # join, so nothing fans out and `currentVersion=false` stays the plain table.
+  #
+  # Overrides ScDataVersioned for components only. Unlike equipment this scope is
+  # reachable through ransack -- see `ransackable_scopes` -- which passes the flag
+  # as its single argument, so the source stays a defaulted second parameter.
+  scope :current_version, ->(flag = true, source = ::ScData::Source.current) {
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      where(id: ComponentBuild.current(source).select(:component_id))
+    else
+      all
+    end
+  }
+
+  # Not in the build we are on. Said out loud in the API, which until now offered
+  # a component the export had dropped as though it were current.
+  def retired?
+    build.blank?
+  end
+
+  # The build we are on, or the last one that described the component.
+  def facts
+    build || last_build
+  end
+
+  # An admin correction is a correction to the build we are on, so it has to
+  # reach the build as well as the row.
+  #
+  # The next load overwrites it, and that is the point: the game files hold what
+  # is actually in the game, so a wrong value here is a parser bug and the fix
+  # belongs in the parser. Nothing is curated on components the way Model splits
+  # its `rsi_*` columns from the ones a person maintains.
+  def update_with_facts(attributes)
+    transaction do
+      return false unless update(attributes)
+
+      facts_attributes = attributes.to_h.symbolize_keys.slice(*ComponentBuild::FACTS)
+
+      # Reloaded rather than read off the association: validating the row above
+      # consults a fact reader, which caches whatever the build was at that
+      # moment -- a nil, for a row whose build is written afterwards.
+      reload_build&.update!(facts_attributes) if facts_attributes.present?
+
+      true
+    end
+  end
+
+  # Read through the build, falling back to the column. The column still answers
+  # for a component no load has given a build -- an admin can create one by hand.
+  ComponentBuild::READ_THROUGH.each do |fact|
+    define_method(fact) do
+      value = facts&.public_send(fact)
+
+      value.nil? ? super() : value
+    end
+  end
 
   has_many :model_paints, dependent: :nullify
 

@@ -32,7 +32,7 @@ module Admin
         end
 
         def update
-          return if @component.update(component_params)
+          return if @component.update_with_facts(component_params)
 
           render json: ValidationError.new("component.update", errors: @component.errors), status: :bad_request
         end
