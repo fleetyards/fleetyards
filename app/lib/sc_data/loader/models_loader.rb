@@ -42,9 +42,19 @@ module ScData
       def all
         update_in_game_flags
 
+        loaded = []
+
         Model.where(in_game: true).find_each do |model|
-          load_model(model)
+          loaded << model.id if load_model(model)
         end
+
+        # A model the export dropped loses its current build and keeps the row.
+        # `in_game` already went false above, but a build row is the thing that
+        # says which patch last described the ship, and a hangar entry pointing
+        # at a retired ship still has to resolve.
+        retire_absent_builds(ModelBuild, :model_id, loaded)
+
+        prune_builds(ModelBuild)
 
         Hardpoint.find_each(&:save) # hack to generate correct group_keys
       end
@@ -84,6 +94,11 @@ module ScData
         update_params = update_ground_speeds(model_data, update_params)
 
         apply(model, update_params.merge(update_reason: :sc_data_loader))
+
+        # Dual-write. Built from `update_params` before the reason is merged in:
+        # `update_reason` is an `attr_accessor` on Model for paper_trail's meta,
+        # not a column, so it has nowhere to land here.
+        apply_build(model, update_params.slice(*ModelBuild::FACTS))
       end
 
       private def update_in_game_flags

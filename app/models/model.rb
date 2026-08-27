@@ -155,6 +155,23 @@ class Model < ApplicationRecord
 
   belongs_to :manufacturer
 
+  # What each build of the game says about this model's mechanics. Written
+  # alongside the columns; nothing reads through them yet.
+  #
+  # Models differ from the other three catalogues in having three sources rather
+  # than one -- the game files, the RSI ship matrix in the `rsi_*` columns, and
+  # whatever an admin has curated -- so which layer wins per field is a decision
+  # the step that moves the readers has to make, not this one.
+  has_many :builds, class_name: "ModelBuild", dependent: :destroy
+  has_one :build, -> { current }, class_name: "ModelBuild", inverse_of: :model
+
+  # The newest build of this environment that still describes the model, which is
+  # what a model the export dropped falls back to. A hangar entry pointing at a
+  # retired ship has to resolve to something.
+  has_one :last_build,
+    -> { for_source.order(created_at: :desc) },
+    class_name: "ModelBuild", inverse_of: :model
+
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :components, through: :hardpoints
 

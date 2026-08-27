@@ -215,6 +215,60 @@ module ScData
         assert Commodity.exists?(dropped.id), "the row itself has to stay"
         assert_empty dropped.builds.current
       end
+
+      # The same helper, the fourth catalogue and the awkward one. Models carry
+      # three sources rather than one -- the game files, the RSI ship matrix in
+      # the `rsi_*` columns, and whatever an admin curated -- so what this pins is
+      # the boundary: a build holds the mechanics the game files describe, and
+      # nothing from the other two.
+      test "#apply_build works the same for a model" do
+        model = create(:model)
+
+        @loader.apply_build(model, {mass: 1_234.5, scm_speed: 210.0, ground: true})
+
+        build = model.builds.sole
+        assert_equal 1_234.5, build.mass
+        assert_equal 210.0, build.scm_speed
+        assert_predicate build, :ground
+        assert_equal ::ScData::Source.environment, build.environment
+        assert_equal ::ScData::Source.version, build.version
+      end
+
+      # The five YAML columns through the helper rather than the factory, because
+      # the loader hands it real structures and a coder missing on either side
+      # turns one into a string somewhere in between.
+      test "#apply_build round-trips a model's serialized facts" do
+        model = create(:model)
+        cargo_holds = [{"capacity" => 6, "dimensions" => {"x" => 1.25}}]
+        refuel_boom = {"name" => "refuel_boom", "rate" => 5.0}
+
+        @loader.apply_build(model, {cargo_holds:, refuel_boom:})
+
+        build = model.builds.sole.reload
+        assert_equal cargo_holds, build.cargo_holds
+        assert_equal refuel_boom, build.refuel_boom
+      end
+
+      # `update_reason` is an `attr_accessor` for paper_trail's meta rather than a
+      # column, so the loader has to keep it off the build -- and `FACTS` is what
+      # does that.
+      test "a model build has nowhere to put the loader's update reason" do
+        refute_includes ModelBuild.column_names, "update_reason"
+        refute_includes ModelBuild::FACTS, :update_reason
+      end
+
+      test "#retire_absent_builds drops a model's current build but keeps the model" do
+        kept = create(:model)
+        dropped = create(:model)
+        create(:model_build, model: kept)
+        create(:model_build, model: dropped)
+
+        @loader.retire_absent_builds(ModelBuild, :model_id, [kept.id])
+
+        assert_equal 1, ModelBuild.current.count
+        assert Model.exists?(dropped.id), "the row itself has to stay"
+        assert_empty dropped.builds.current
+      end
     end
   end
 end
