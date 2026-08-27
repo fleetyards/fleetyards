@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.4.0](https://github.com/fleetyards/fleetyards/compare/v7.3.0...v7.4.0) (2026-08-27)
+
+
+### Features
+
+* **paints:** import the paints of a single model from the admin UI ([#4558](https://github.com/fleetyards/fleetyards/issues/4558)) ([98ecd0d](https://github.com/fleetyards/fleetyards/commit/98ecd0d47856853f6066fdf11162b70e42065743))
+* **sc_data:** give components a row per build ([#4557](https://github.com/fleetyards/fleetyards/issues/4557)) ([3bf683f](https://github.com/fleetyards/fleetyards/commit/3bf683f3e6ce5da40af0c694559b769f7bf14b5d))
+* **sc_data:** read component facts off the build ([#4559](https://github.com/fleetyards/fleetyards/issues/4559)) ([ed660b6](https://github.com/fleetyards/fleetyards/commit/ed660b6001a0f313ffd6d20b884736cd67397aa5))
+
+
+### Bug Fixes
+
+* **admin:** stop the dropzone covering a file input's preview ([#4555](https://github.com/fleetyards/fleetyards/issues/4555)) ([256d89c](https://github.com/fleetyards/fleetyards/commit/256d89ce85d2ab373bc87e1a960c3f9f7042ac20))
+* **navigation:** right-align the nav item badge ([#4554](https://github.com/fleetyards/fleetyards/issues/4554)) ([104bfa4](https://github.com/fleetyards/fleetyards/commit/104bfa47d7bb212070ad7d5ab2a39b0314b4a671))
+* **rsi:** stop the matrix nilling four fields it has no values for ([#4549](https://github.com/fleetyards/fleetyards/issues/4549)) ([c4fa321](https://github.com/fleetyards/fleetyards/commit/c4fa32114feceb1e0d209cde4ff3516c3b6aafa9))
+* **sc_data:** read each ship's dimensions off the right axis ([#4556](https://github.com/fleetyards/fleetyards/issues/4556)) ([e5bb9c9](https://github.com/fleetyards/fleetyards/commit/e5bb9c937f9606d2f8e4ebbd1631d59e6dd57269))
+
+
+### Refactorings
+
+* **api:** reference components by class, not by $ref string ([#4548](https://github.com/fleetyards/fleetyards/issues/4548)) ([410327e](https://github.com/fleetyards/fleetyards/commit/410327e8763f376a64d98090144ef01204bb83a3))
+* **api:** resolve the components nothing referenced ([#4550](https://github.com/fleetyards/fleetyards/issues/4550)) ([46b9bd9](https://github.com/fleetyards/fleetyards/commit/46b9bd9c73f395ef430defe9e8a48c53c941e0d5))
+
+
+### Chores
+
+* **sc_data:** bump to 4.10.0-live.12519617 ([#4553](https://github.com/fleetyards/fleetyards/issues/4553)) ([5a5fb42](https://github.com/fleetyards/fleetyards/commit/5a5fb42991151a51ee8cdf13745dfedd012e576f))
+
 ## [7.3.0](https://github.com/fleetyards/fleetyards/compare/v7.2.0...v7.3.0) (2026-08-27)
 
 
