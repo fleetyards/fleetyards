@@ -493,6 +493,7 @@ class PaintsImporter
       "Zeus" => zeus,
       "Zeus Mk II" => zeus,
       "Starlancer" => ["Starlancer MAX", "Starlancer TAC", "Starlancer BLD"],
+      "Stingray" => ["S-65 Stingray"],
       "Gladius Series" => gladius,
       "Gladius" => gladius,
       "Aegis Gladius" => gladius,
