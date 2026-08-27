@@ -9,10 +9,10 @@ module Loaders
       AdminNotificationsChannel.stubs(:broadcast_to)
     end
 
-    def stub_importer(results)
+    def stub_importer(results, model: nil)
       importer = mock("PaintsImporter")
       importer.expects(:run).returns(results)
-      PaintsImporter.stubs(:new).returns(importer)
+      PaintsImporter.stubs(:new).with(model:).returns(importer)
     end
 
     def results(new: [], new_with_error: [], model_not_found: [])
@@ -59,6 +59,35 @@ module Loaders
       GithubIssueCreator.expects(:new).returns(creator)
 
       ::Loaders::PaintsImportJob.new.perform
+    end
+
+    test "#perform for a single model runs the importer for that model only" do
+      model = create(:model)
+      stub_importer(results(new: [{model_name: model.name, name: "Red Alert"}]), model:)
+
+      ::Loaders::PaintsImportJob.new.perform(nil, model.id)
+
+      import = Imports::PaintsImport.sole
+      assert_equal({"model_id" => model.id}, import.input)
+      assert import.finished?
+      notification = AdminNotification.find_by(notification_type: "paints_import")
+      assert_equal "Paints Import Results for #{model.name}", notification.title
+    end
+
+    test "#perform for a single model keeps its issue dedupe separate from the full run" do
+      model = create(:model)
+      stub_importer(results(new_with_error: [{model_name: model.name, name: "Red Alert"}]), model:)
+
+      creator = mock("GithubIssueCreator")
+      creator.expects(:run).returns(true)
+      GithubIssueCreator.expects(:new).with(
+        task_type: "paints_import",
+        report_key: "paints_import_#{model.id}",
+        title: "Paints Import Results for #{model.name}",
+        body: anything
+      ).returns(creator)
+
+      ::Loaders::PaintsImportJob.new.perform(nil, model.id)
     end
 
     test "#perform folds an unchanged empty report into one notification" do
