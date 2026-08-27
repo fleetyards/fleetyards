@@ -113,12 +113,12 @@ RUN rm -rf \
       test \
       tmp/cache \
       vendor/assets \
-    && mkdir -p tmp/pids tmp/cache log storage db
+    && mkdir -p tmp/pids tmp/cache log storage db data/sc_data/parsed
 
 # Run as non-root user for security
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+    chown -R rails:rails db log storage tmp data
 USER 1000:1000
 
 # Entrypoint prepares the database
