@@ -7981,24 +7981,6 @@ components:
       - WISHLIST_CREATE_CHANNEL
       - WISHLIST_DESTROY_CHANNEL
       title: ChannelsEnum
-    Check:
-      type: object
-      properties:
-        taken:
-          type: boolean
-      additionalProperties: false
-      required:
-      - taken
-      title: Check
-    CheckInput:
-      type: object
-      properties:
-        value:
-          type: string
-      additionalProperties: false
-      required:
-      - value
-      title: CheckInput
     Commodities:
       type: object
       properties:
@@ -9986,17 +9968,6 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetInput
-    FleetMembershipShipsFilterEnum:
-      type: string
-      enum:
-      - all
-      - hangar_group
-      - hide
-      x-enumNames:
-      - ALL
-      - HANGAR_GROUP
-      - HIDE
-      title: FleetMembershipShipsFilterEnum
     FleetMembershipSortEnum:
       type: string
       enum:
@@ -10022,21 +9993,6 @@ components:
       - LAST_ACTIVE_AT_ASC
       - LAST_ACTIVE_AT_DESC
       title: FleetMembershipSortEnum
-    FleetMembershipStatusEnum:
-      type: string
-      enum:
-      - created
-      - invited
-      - requested
-      - accepted
-      - declined
-      x-enumNames:
-      - CREATED
-      - INVITED
-      - REQUESTED
-      - ACCEPTED
-      - DECLINED
-      title: FleetMembershipStatusEnum
     FleetOption:
       type: object
       properties:
@@ -10086,93 +10042,6 @@ components:
       additionalProperties: false
       example: {}
       title: FleetQuery
-    FleetRoleResourceAccessEnum:
-      type: string
-      enum:
-      - fleet:update
-      - fleet:update:images
-      - fleet:update:description
-      - fleet:delete
-      - fleet:manage
-      - fleet:memberships:read
-      - fleet:memberships:create
-      - fleet:memberships:update
-      - fleet:memberships:delete
-      - fleet:memberships:manage
-      - fleet:invites:read
-      - fleet:invites:create
-      - fleet:invites:update
-      - fleet:invites:delete
-      - fleet:invites:manage
-      - fleet:vehicles:read
-      - fleet:vehicles:create
-      - fleet:vehicles:update
-      - fleet:vehicles:delete
-      - fleet:vehicles:manage
-      - fleet:roles:read
-      - fleet:roles:create
-      - fleet:roles:update
-      - fleet:roles:delete
-      - fleet:roles:manage
-      - fleet:inventories:read
-      - fleet:inventories:create
-      - fleet:inventories:update
-      - fleet:inventories:delete
-      - fleet:inventories:manage
-      - fleet:missions:read
-      - fleet:missions:create
-      - fleet:missions:update
-      - fleet:missions:delete
-      - fleet:missions:manage
-      - fleet:events:read
-      - fleet:events:create
-      - fleet:events:update
-      - fleet:events:delete
-      - fleet:events:manage
-      - fleet:notifications:manage
-      x-enumNames:
-      - FLEET_UPDATE
-      - FLEET_UPDATE_IMAGES
-      - FLEET_UPDATE_DESCRIPTION
-      - FLEET_DELETE
-      - FLEET_MANAGE
-      - FLEET_MEMBERSHIPS_READ
-      - FLEET_MEMBERSHIPS_CREATE
-      - FLEET_MEMBERSHIPS_UPDATE
-      - FLEET_MEMBERSHIPS_DELETE
-      - FLEET_MEMBERSHIPS_MANAGE
-      - FLEET_INVITES_READ
-      - FLEET_INVITES_CREATE
-      - FLEET_INVITES_UPDATE
-      - FLEET_INVITES_DELETE
-      - FLEET_INVITES_MANAGE
-      - FLEET_VEHICLES_READ
-      - FLEET_VEHICLES_CREATE
-      - FLEET_VEHICLES_UPDATE
-      - FLEET_VEHICLES_DELETE
-      - FLEET_VEHICLES_MANAGE
-      - FLEET_ROLES_READ
-      - FLEET_ROLES_CREATE
-      - FLEET_ROLES_UPDATE
-      - FLEET_ROLES_DELETE
-      - FLEET_ROLES_MANAGE
-      - FLEET_INVENTORIES_READ
-      - FLEET_INVENTORIES_CREATE
-      - FLEET_INVENTORIES_UPDATE
-      - FLEET_INVENTORIES_DELETE
-      - FLEET_INVENTORIES_MANAGE
-      - FLEET_MISSIONS_READ
-      - FLEET_MISSIONS_CREATE
-      - FLEET_MISSIONS_UPDATE
-      - FLEET_MISSIONS_DELETE
-      - FLEET_MISSIONS_MANAGE
-      - FLEET_EVENTS_READ
-      - FLEET_EVENTS_CREATE
-      - FLEET_EVENTS_UPDATE
-      - FLEET_EVENTS_DELETE
-      - FLEET_EVENTS_MANAGE
-      - FLEET_NOTIFICATIONS_MANAGE
-      title: FleetRoleResourceAccessEnum
     FleetSortEnum:
       type: string
       enum:
@@ -10186,23 +10055,6 @@ components:
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: FleetSortEnum
-    FleetVehicleSortEnum:
-      type: string
-      enum:
-      - modelName asc
-      - modelName desc
-      - createdAt asc
-      - createdAt desc
-      - updatedAt asc
-      - updatedAt desc
-      x-enumNames:
-      - MODEL_NAME_ASC
-      - MODEL_NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - UPDATED_AT_ASC
-      - UPDATED_AT_DESC
-      title: FleetVehicleSortEnum
     Fleets:
       type: object
       properties:
@@ -10884,167 +10736,6 @@ components:
       - meta
       - items
       title: Imports
-    InventoryCategoryEnum:
-      type: string
-      enum:
-      - commodity
-      - component
-      - weapon
-      - equipment
-      - ammunition
-      - consumable
-      - other
-      x-enumNames:
-      - COMMODITY
-      - COMPONENT
-      - WEAPON
-      - EQUIPMENT
-      - AMMUNITION
-      - CONSUMABLE
-      - OTHER
-      title: InventoryCategoryEnum
-    InventoryEntryTypeEnum:
-      type: string
-      enum:
-      - deposit
-      - withdrawal
-      x-enumNames:
-      - DEPOSIT
-      - WITHDRAWAL
-      title: InventoryEntryTypeEnum
-    InventoryItemRef:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        type:
-          "$ref": "#/components/schemas/InventoryItemTypeEnum"
-        name:
-          type: string
-        slug:
-          type: string
-        available:
-          type: boolean
-      title: InventoryItemRef
-    InventoryItemTypeEnum:
-      type: string
-      enum:
-      - Commodity
-      - Component
-      - Equipment
-      x-enumNames:
-      - COMMODITY
-      - COMPONENT
-      - EQUIPMENT
-      title: InventoryItemTypeEnum
-    InventoryRef:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-      title: InventoryRef
-    InventoryStockPosition:
-      type: object
-      properties:
-        slug:
-          type: string
-        name:
-          type: string
-        category:
-          "$ref": "#/components/schemas/InventoryCategoryEnum"
-        unit:
-          "$ref": "#/components/schemas/InventoryUnitEnum"
-        netQuantity:
-          type: number
-        qualityMin:
-          type:
-          - integer
-          - 'null'
-        qualityMax:
-          type:
-          - integer
-          - 'null'
-        entriesCount:
-          type: integer
-        lastEntryAt:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        image:
-          "$ref": "#/components/schemas/MediaFile"
-        item:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-            type:
-              "$ref": "#/components/schemas/InventoryItemTypeEnum"
-            name:
-              type: string
-            slug:
-              type: string
-            available:
-              type: boolean
-        inventory:
-          "$ref": "#/components/schemas/InventoryRef"
-      additionalProperties: false
-      required:
-      - slug
-      - name
-      - category
-      - unit
-      - netQuantity
-      - entriesCount
-      title: InventoryStockPosition
-    InventoryUnitEnum:
-      type: string
-      enum:
-      - scu
-      - units
-      x-enumNames:
-      - SCU
-      - UNITS
-      title: InventoryUnitEnum
-    InventoryVehicle:
-      type:
-      - object
-      - 'null'
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        serial:
-          type:
-          - string
-          - 'null'
-        model:
-          "$ref": "#/components/schemas/InventoryVehicleModel"
-      additionalProperties: false
-      required:
-      - id
-      - name
-      title: InventoryVehicle
-    InventoryVehicleModel:
-      type: object
-      properties:
-        name:
-          type: string
-        slug:
-          type: string
-        cargo:
-          type: number
-        personalInventory:
-          type: number
-      title: InventoryVehicleModel
     ItemAvailability:
       type: object
       properties:
@@ -12393,53 +12084,6 @@ components:
       - meta
       - items
       title: ModelLoaners
-    ModelMedia:
-      type: object
-      properties:
-        angledView:
-          "$ref": "#/components/schemas/MediaFile"
-        angledViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        fleetchartImage:
-          type: string
-        extendedHolo:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedTopView:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedTopViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedSideView:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedSideViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedFrontView:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedFrontViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedAngledView:
-          "$ref": "#/components/schemas/MediaFile"
-        extendedAngledViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        frontView:
-          "$ref": "#/components/schemas/MediaFile"
-        frontViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        sideView:
-          "$ref": "#/components/schemas/MediaFile"
-        sideViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        storeImage:
-          "$ref": "#/components/schemas/MediaFile"
-        topView:
-          "$ref": "#/components/schemas/MediaFile"
-        topViewColored:
-          "$ref": "#/components/schemas/MediaFile"
-        holo:
-          "$ref": "#/components/schemas/MediaFile"
-        brochure:
-          "$ref": "#/components/schemas/MediaFile"
-      additionalProperties: false
-      title: ModelMedia
     ModelMetrics:
       type: object
       properties:
@@ -13964,68 +13608,6 @@ components:
       - meta
       - items
       title: Models
-    NotificationSortEnum:
-      type: string
-      enum:
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: NotificationSortEnum
-    NotificationTypeEnum:
-      type: string
-      enum:
-      - hangar_create
-      - hangar_destroy
-      - wishlist_create
-      - wishlist_destroy
-      - model_on_sale
-      - new_model
-      - hangar_sync_finished
-      - hangar_sync_failed
-      - fleet_invite
-      - fleet_member_requested
-      - fleet_member_accepted
-      - fleet_request_accepted
-      - fleet_inventory_item_added
-      - fleet_event_published
-      - fleet_event_locked
-      - fleet_event_starting_soon
-      - fleet_event_started
-      - fleet_event_completed
-      - fleet_event_cancelled
-      - fleet_event_signup_added
-      - fleet_event_signup_withdrawn
-      - fleet_event_signup_confirmed
-      - fleet_event_signup_assigned
-      - fleet_event_signup_kicked
-      x-enumNames:
-      - HANGAR_CREATE
-      - HANGAR_DESTROY
-      - WISHLIST_CREATE
-      - WISHLIST_DESTROY
-      - MODEL_ON_SALE
-      - NEW_MODEL
-      - HANGAR_SYNC_FINISHED
-      - HANGAR_SYNC_FAILED
-      - FLEET_INVITE
-      - FLEET_MEMBER_REQUESTED
-      - FLEET_MEMBER_ACCEPTED
-      - FLEET_REQUEST_ACCEPTED
-      - FLEET_INVENTORY_ITEM_ADDED
-      - FLEET_EVENT_PUBLISHED
-      - FLEET_EVENT_LOCKED
-      - FLEET_EVENT_STARTING_SOON
-      - FLEET_EVENT_STARTED
-      - FLEET_EVENT_COMPLETED
-      - FLEET_EVENT_CANCELLED
-      - FLEET_EVENT_SIGNUP_ADDED
-      - FLEET_EVENT_SIGNUP_WITHDRAWN
-      - FLEET_EVENT_SIGNUP_CONFIRMED
-      - FLEET_EVENT_SIGNUP_ASSIGNED
-      - FLEET_EVENT_SIGNUP_KICKED
-      title: NotificationTypeEnum
     NullableEquipmentBackpackCompatibilityEnum:
       type:
       - string
@@ -14089,21 +13671,6 @@ components:
       - BACKPACK
       - 'NULL'
       title: NullableEquipmentSlotEnum
-    NullableInventoryItemTypeEnum:
-      type:
-      - string
-      - 'null'
-      enum:
-      - Commodity
-      - Component
-      - Equipment
-      -
-      x-enumNames:
-      - COMMODITY
-      - COMPONENT
-      - EQUIPMENT
-      - 'NULL'
-      title: NullableInventoryItemTypeEnum
     OauthApplication:
       type: object
       properties:
@@ -14218,18 +13785,6 @@ components:
       - ASC
       - DESC
       title: OrderDirectionEnum
-    OtpBackupCodes:
-      type: object
-      properties:
-        codes:
-          type: array
-          items:
-            type: string
-          additionalProperties: false
-      additionalProperties: false
-      required:
-      - codes
-      title: OtpBackupCodes
     Pagination:
       type: object
       properties:
@@ -14258,24 +13813,6 @@ components:
       - totalCount
       - perPage
       title: Pagination
-    PieChartStats:
-      type: object
-      properties:
-        name:
-          type: string
-        "y":
-          type: integer
-        selected:
-          type: boolean
-        sliced:
-          type: boolean
-      additionalProperties: false
-      required:
-      - name
-      - "y"
-      - selected
-      - sliced
-      title: PieChartStats
     RefuelBoom:
       type: object
       properties:
@@ -14295,19 +13832,6 @@ components:
           type: number
       additionalProperties: false
       title: RefuelBoom
-    RsiHangarItemKindEnum:
-      type: string
-      enum:
-      - ship
-      - component
-      - upgrade
-      - skin
-      x-enumNames:
-      - SHIP
-      - COMPONENT
-      - UPGRADE
-      - SKIN
-      title: RsiHangarItemKindEnum
     RsiRequestLog:
       type: object
       properties:
@@ -14346,15 +13870,6 @@ components:
       - meta
       - items
       title: RsiRequestLogs
-    ScDataVersion:
-      type: object
-      properties:
-        version:
-          type: string
-      additionalProperties: false
-      required:
-      - version
-      title: ScDataVersion
     Session:
       type: object
       properties:
@@ -14375,13 +13890,6 @@ components:
           type: string
       additionalProperties: false
       title: SessionInput
-    SetupOtpInput:
-      type: object
-      properties:
-        otpCode:
-          type: string
-      additionalProperties: false
-      title: SetupOtpInput
     StandardError:
       type: object
       properties:
@@ -14394,18 +13902,6 @@ components:
       - code
       - message
       title: StandardError
-    StandardMessage:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-      additionalProperties: false
-      required:
-      - code
-      - message
-      title: StandardMessage
     Stats:
       type: object
       properties:
@@ -14857,15 +14353,6 @@ components:
       additionalProperties: false
       example: {}
       title: UserQuery
-    UserRef:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        username:
-          type: string
-      title: UserRef
     UserRefRequired:
       type: object
       properties:
@@ -14878,11 +14365,6 @@ components:
       - id
       - username
       title: UserRefRequired
-    UserResourceAccessEnum:
-      type: string
-      enum: []
-      x-enumNames: []
-      title: UserResourceAccessEnum
     UserSortEnum:
       type: string
       enum:
@@ -15222,18 +14704,6 @@ components:
       - meta
       - items
       title: Vehicles
-    Version:
-      type: object
-      properties:
-        version:
-          type: string
-        codename:
-          type: string
-      additionalProperties: false
-      required:
-      - version
-      - codename
-      title: Version
     Video:
       type: object
       properties:
@@ -15306,52 +14776,6 @@ components:
       - meta
       - items
       title: Videos
-    WeaponIndex:
-      type: array
-      items:
-        "$ref": "#/components/schemas/WeaponIndexItem"
-      title: WeaponIndex
-    WeaponIndexDamage:
-      type: object
-      properties:
-        physical:
-          type: number
-        energy:
-          type: number
-        distortion:
-          type: number
-        thermal:
-          type: number
-      additionalProperties: false
-      title: WeaponIndexDamage
-    WeaponIndexItem:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        size:
-          type: string
-        manufacturerCode:
-          type: string
-        beam:
-          type: boolean
-        weaponClass:
-          type: string
-        pelletsPerShot:
-          type: integer
-        damagePerShot:
-          "$ref": "#/components/schemas/WeaponIndexDamage"
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - damagePerShot
-      title: WeaponIndexItem
   securitySchemes:
     BearerAuth:
       type: http

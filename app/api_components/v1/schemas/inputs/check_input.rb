@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    module Inputs
+      class CheckInput
+        include OpenapiRuby::Components::Base
+
+        schema({
+          type: :object,
+          properties: {
+            value: {type: :string}
+          },
+          additionalProperties: false,
+          required: %w[value]
+        })
+      end
+    end
+  end
+end

@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    module Sorts
+      class NotificationSortEnum
+        include OpenapiRuby::Components::Base
+
+        schema({
+          type: :string,
+          enum: ::Notification::ALLOWED_SORTING_PARAMS,
+          "x-enumNames": ::Notification::ALLOWED_SORTING_PARAMS.map { |v| transform_enum_key(v) }
+        })
+      end
+    end
+  end
+end

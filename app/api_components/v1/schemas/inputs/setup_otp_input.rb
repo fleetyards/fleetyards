@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    module Inputs
+      class SetupOtpInput
+        include OpenapiRuby::Components::Base
+
+        schema({
+          type: :object,
+          properties: {
+            otpCode: {type: :string}
+          },
+          additionalProperties: false
+        })
+      end
+    end
+  end
+end

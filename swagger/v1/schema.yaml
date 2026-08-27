@@ -10651,90 +10651,6 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
-    AdminNotificationSeverityEnum:
-      type: string
-      enum:
-      - info
-      - warning
-      - error
-      x-enumNames:
-      - INFO
-      - WARNING
-      - ERROR
-      title: AdminNotificationSeverityEnum
-    AdminNotificationSortEnum:
-      type: string
-      enum:
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: AdminNotificationSortEnum
-    AdminNotificationTypeEnum:
-      type: string
-      enum:
-      - paints_import
-      - modules_import
-      - loaner_sync
-      - uex_prices_import
-      - uex_commodity_prices_import
-      - new_supporter
-      - rsi_api_blocked
-      - rsi_api_unblocked
-      - weekly_stats
-      x-enumNames:
-      - PAINTS_IMPORT
-      - MODULES_IMPORT
-      - LOANER_SYNC
-      - UEX_PRICES_IMPORT
-      - UEX_COMMODITY_PRICES_IMPORT
-      - NEW_SUPPORTER
-      - RSI_API_BLOCKED
-      - RSI_API_UNBLOCKED
-      - WEEKLY_STATS
-      title: AdminNotificationTypeEnum
-    AdminUserResourceAccessEnum:
-      type: string
-      enum:
-      - models
-      - model_modules
-      - components
-      - manufacturers
-      - vehicles
-      - images
-      - fleets
-      - users
-      - supporters
-      - admins
-      - oauth_applications
-      - maintenance
-      - imports
-      - features
-      - workers
-      - pghero
-      - rsi-api-status
-      - stats
-      x-enumNames:
-      - MODELS
-      - MODEL_MODULES
-      - COMPONENTS
-      - MANUFACTURERS
-      - VEHICLES
-      - IMAGES
-      - FLEETS
-      - USERS
-      - SUPPORTERS
-      - ADMINS
-      - OAUTH_APPLICATIONS
-      - MAINTENANCE
-      - IMPORTS
-      - FEATURES
-      - WORKERS
-      - PGHERO
-      - RSI_API_STATUS
-      - STATS
-      title: AdminUserResourceAccessEnum
     BarChartStats:
       type: object
       properties:
@@ -11012,27 +10928,6 @@ components:
       additionalProperties: false
       example: {}
       title: CommodityQuery
-    CommoditySortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - commodityType asc
-      - commodityType desc
-      - createdAt asc
-      - createdAt desc
-      - updatedAt asc
-      - updatedAt desc
-      x-enumNames:
-      - NAME_ASC
-      - NAME_DESC
-      - COMMODITY_TYPE_ASC
-      - COMMODITY_TYPE_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - UPDATED_AT_ASC
-      - UPDATED_AT_DESC
-      title: CommoditySortEnum
     CompareShare:
       type: object
       required:
@@ -11565,19 +11460,6 @@ components:
           type: number
       additionalProperties: false
       title: ComponentSignatureSensitivity
-    ComponentSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - NAME_ASC
-      - NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: ComponentSortEnum
     ComponentThruster:
       type: object
       properties:
@@ -12263,27 +12145,6 @@ components:
       additionalProperties: false
       example: {}
       title: EquipmentQuery
-    EquipmentSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - itemType asc
-      - itemType desc
-      - createdAt asc
-      - createdAt desc
-      - updatedAt asc
-      - updatedAt desc
-      x-enumNames:
-      - NAME_ASC
-      - NAME_DESC
-      - ITEM_TYPE_ASC
-      - ITEM_TYPE_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - UPDATED_AT_ASC
-      - UPDATED_AT_DESC
-      title: EquipmentSortEnum
     EquipmentTypeEnum:
       type: string
       enum:
@@ -14516,19 +14377,6 @@ components:
       - FLEET_EVENTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
       title: FleetRoleResourceAccessEnum
-    FleetSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - NAME_ASC
-      - NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: FleetSortEnum
     FleetUpdateInput:
       type: object
       properties:
@@ -14870,27 +14718,6 @@ components:
       required:
       - capacity
       title: FuelTank
-    FundingGoalSortEnum:
-      type: string
-      enum:
-      - title asc
-      - title desc
-      - effectiveFrom asc
-      - effectiveFrom desc
-      - amountCents asc
-      - amountCents desc
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - TITLE_ASC
-      - TITLE_DESC
-      - EFFECTIVE_FROM_ASC
-      - EFFECTIVE_FROM_DESC
-      - AMOUNT_CENTS_ASC
-      - AMOUNT_CENTS_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: FundingGoalSortEnum
     Gallery:
       type: object
       properties:
@@ -14910,15 +14737,6 @@ components:
       - name
       - slug
       title: Gallery
-    GalleryTypeEnum:
-      type: string
-      enum:
-      - Model
-      - Album
-      x-enumNames:
-      - MODEL
-      - ALBUM
-      title: GalleryTypeEnum
     Hangar:
       type: object
       properties:
@@ -16018,23 +15836,6 @@ components:
       additionalProperties: false
       example: {}
       title: ImageQuery
-    ImageSortEnum:
-      type: string
-      enum:
-      - createdAt asc
-      - createdAt desc
-      - updatedAt asc
-      - updatedAt desc
-      - enabled asc
-      - enabled desc
-      x-enumNames:
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - UPDATED_AT_ASC
-      - UPDATED_AT_DESC
-      - ENABLED_ASC
-      - ENABLED_DESC
-      title: ImageSortEnum
     Images:
       type: object
       properties:
@@ -16061,46 +15862,6 @@ components:
           type: string
       additionalProperties: false
       title: ImportInput
-    ImportStatusEnum:
-      type: string
-      enum:
-      - created
-      - started
-      - finished
-      - failed
-      x-enumNames:
-      - CREATED
-      - STARTED
-      - FINISHED
-      - FAILED
-      title: ImportStatusEnum
-    ImportTypeEnum:
-      type: string
-      enum:
-      - Imports::ModelImport
-      - Imports::ModelsImport
-      - Imports::ScData::AllImport
-      - Imports::ScData::ModelsImport
-      - Imports::ScData::ModelImport
-      - Imports::HangarSync
-      - Imports::HangarImport
-      - Imports::ModulesImport
-      - Imports::PaintsImport
-      - Imports::UexPricesImport
-      - Imports::UexCommodityPricesImport
-      x-enumNames:
-      - IMPORTS_MODEL_IMPORT
-      - IMPORTS_MODELS_IMPORT
-      - IMPORTS_SC_DATA_ALL_IMPORT
-      - IMPORTS_SC_DATA_MODELS_IMPORT
-      - IMPORTS_SC_DATA_MODEL_IMPORT
-      - IMPORTS_HANGAR_SYNC
-      - IMPORTS_HANGAR_IMPORT
-      - IMPORTS_MODULES_IMPORT
-      - IMPORTS_PAINTS_IMPORT
-      - IMPORTS_UEX_PRICES_IMPORT
-      - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
-      title: ImportTypeEnum
     Inventory:
       type: object
       properties:
@@ -16669,19 +16430,6 @@ components:
       additionalProperties: false
       example: {}
       title: ManufacturerQuery
-    ManufacturerSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - NAME_ASC
-      - NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: ManufacturerSortEnum
     Manufacturers:
       type: object
       properties:
@@ -18103,23 +17851,6 @@ components:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ModelModulePackageMedia
-    ModelModulePackageSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - createdAt asc
-      - createdAt desc
-      - updatedAt asc
-      - updatedAt desc
-      x-enumNames:
-      - NAME_ASC
-      - NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - UPDATED_AT_ASC
-      - UPDATED_AT_DESC
-      title: ModelModulePackageSortEnum
     ModelModulePackages:
       type: object
       properties:
@@ -18408,27 +18139,6 @@ components:
       additionalProperties: false
       example: {}
       title: ModelPaintQuery
-    ModelPaintSortEnum:
-      type: string
-      enum:
-      - name asc
-      - name desc
-      - createdAt asc
-      - createdAt desc
-      - updatedAt asc
-      - updatedAt desc
-      - model_slug asc
-      - model_slug desc
-      x-enumNames:
-      - NAME_ASC
-      - NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - UPDATED_AT_ASC
-      - UPDATED_AT_DESC
-      - MODEL_SLUG_ASC
-      - MODEL_SLUG_DESC
-      title: ModelPaintSortEnum
     ModelPaintsList:
       type: array
       items:
@@ -19522,40 +19232,6 @@ components:
       - monthlyTotal
       - contributions
       title: SupportProgress
-    SupporterContributionSortEnum:
-      type: string
-      enum:
-      - startedAt asc
-      - startedAt desc
-      - endedAt asc
-      - endedAt desc
-      - amountCents asc
-      - amountCents desc
-      - name asc
-      - name desc
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - STARTED_AT_ASC
-      - STARTED_AT_DESC
-      - ENDED_AT_ASC
-      - ENDED_AT_DESC
-      - AMOUNT_CENTS_ASC
-      - AMOUNT_CENTS_DESC
-      - NAME_ASC
-      - NAME_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: SupporterContributionSortEnum
-    SupporterContributionSourceEnum:
-      type: string
-      enum:
-      - manual
-      - patreon
-      x-enumNames:
-      - MANUAL
-      - PATREON
-      title: SupporterContributionSourceEnum
     SyncRsiHangarInput:
       type: object
       properties:
@@ -19836,35 +19512,6 @@ components:
       enum: []
       x-enumNames: []
       title: UserResourceAccessEnum
-    UserSortEnum:
-      type: string
-      enum:
-      - username asc
-      - username desc
-      - email asc
-      - email desc
-      - createdAt asc
-      - createdAt desc
-      - confirmedAt asc
-      - confirmedAt desc
-      - lastActiveAt asc
-      - lastActiveAt desc
-      - lastSignInAt asc
-      - lastSignInAt desc
-      x-enumNames:
-      - USERNAME_ASC
-      - USERNAME_DESC
-      - EMAIL_ASC
-      - EMAIL_DESC
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      - CONFIRMED_AT_ASC
-      - CONFIRMED_AT_DESC
-      - LAST_ACTIVE_AT_ASC
-      - LAST_ACTIVE_AT_DESC
-      - LAST_SIGN_IN_AT_ASC
-      - LAST_SIGN_IN_AT_DESC
-      title: UserSortEnum
     UserUpdateInput:
       type: object
       properties:

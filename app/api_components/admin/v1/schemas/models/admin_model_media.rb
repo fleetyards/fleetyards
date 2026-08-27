@@ -7,7 +7,7 @@ module Admin
         # The admin payload adds a few internal images to the public set. A $ref
         # cannot be merged into, so the extra properties inherit the shared
         # component rather than being merged into the property that points at it.
-        class AdminModelMedia < ::Shared::V1::Schemas::ModelMedia
+        class AdminModelMedia < ::V1::Schemas::ModelMedia
           include OpenapiRuby::Components::Base
 
           schema({

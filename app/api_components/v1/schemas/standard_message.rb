@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    class StandardMessage
+      include OpenapiRuby::Components::Base
+
+      schema({
+        type: :object,
+        properties: {
+          code: {type: :string},
+          message: {type: :string}
+        },
+        additionalProperties: false,
+        required: %w[code message]
+      })
+    end
+  end
+end

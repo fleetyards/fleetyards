@@ -44,7 +44,7 @@ module V1
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
-            media: Shared::V1::Schemas::ModelMedia,
+            media: ::V1::Schemas::ModelMedia,
 
             metrics: Shared::V1::Schemas::ModelMetrics,
 
