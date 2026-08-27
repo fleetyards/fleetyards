@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -210,6 +210,39 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
     t.index ["share_key"], name: "index_compare_images_on_share_key", unique: true, where: "(share_key IS NOT NULL)"
     t.index ["short_code"], name: "index_compare_images_on_short_code", unique: true, where: "(short_code IS NOT NULL)"
     t.index ["slug_set"], name: "index_compare_images_on_slug_set", unique: true
+  end
+
+  create_table "component_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "ammunition"
+    t.string "category"
+    t.string "component_class"
+    t.uuid "component_id", null: false
+    t.string "component_sub_type"
+    t.string "component_type"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "durability"
+    t.string "environment", null: false
+    t.string "grade"
+    t.string "heat_connection"
+    t.boolean "hidden", default: false
+    t.string "inventory_consumption"
+    t.integer "item_class"
+    t.string "item_type"
+    t.uuid "manufacturer_id"
+    t.string "name"
+    t.string "power_connection"
+    t.string "size"
+    t.integer "tracking_signal"
+    t.string "type_data"
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.index ["component_id", "environment", "version"], name: "index_component_builds_on_component_and_build", unique: true
+    t.index ["component_id"], name: "index_component_builds_on_component_id"
+    t.index ["environment", "component_class"], name: "index_component_builds_on_environment_and_component_class"
+    t.index ["environment", "item_type"], name: "index_component_builds_on_environment_and_item_type"
+    t.index ["environment", "version"], name: "index_component_builds_on_environment_and_version"
+    t.index ["manufacturer_id"], name: "index_component_builds_on_manufacturer_id"
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1522,6 +1555,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_120000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_notifications", "admin_users", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"

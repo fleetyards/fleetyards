@@ -71,6 +71,7 @@ module ScData
           update_params[:version] = sc_version
 
           apply(component, update_params)
+          apply_build(component, update_params.except(:sc_key, :sc_ref, :version))
 
           if item["icon"].present?
             attach_icon(component, :icon, item["icon"])
@@ -91,6 +92,9 @@ module ScData
         end
 
         retire_absent(Component, loaded)
+        retire_absent_builds(ComponentBuild, :component_id, loaded)
+
+        prune_builds(ComponentBuild)
       end
 
       # A build that stops shipping a paint's swatch has to take the picture

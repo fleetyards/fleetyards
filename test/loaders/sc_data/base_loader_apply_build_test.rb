@@ -151,6 +151,35 @@ module ScData
         assert_equal "behr_rifle_ballistic_01", equipment.sc_key
         refute EquipmentBuild.column_names.include?("sc_key")
       end
+
+      # The same helper, the second catalogue. Components differ from equipment in
+      # being referenced -- hardpoints, paints and modules carry a component_id --
+      # so this also pins that the build lands beside the identity row rather than
+      # replacing it.
+      test "#apply_build works the same for a component" do
+        component = create(:component)
+
+        @loader.apply_build(component, {name: "Gorgon", component_class: "Shield"})
+
+        build = component.builds.sole
+        assert_equal "Gorgon", build.name
+        assert_equal "Shield", build.component_class
+        assert_equal ::ScData::Source.environment, build.environment
+        assert_equal ::ScData::Source.version, build.version
+      end
+
+      test "#retire_absent_builds drops a component's current build but keeps the component" do
+        kept = create(:component)
+        dropped = create(:component)
+        create(:component_build, component: kept)
+        create(:component_build, component: dropped)
+
+        @loader.retire_absent_builds(ComponentBuild, :component_id, [kept.id])
+
+        assert_equal 1, ComponentBuild.current.count
+        assert Component.exists?(dropped.id), "the row itself has to stay"
+        assert_empty dropped.builds.current
+      end
     end
   end
 end

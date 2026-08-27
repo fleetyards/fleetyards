@@ -65,6 +65,10 @@ class Component < ApplicationRecord
 
   belongs_to :manufacturer, optional: true
 
+  # What each build of the game says about this component. Written alongside the
+  # columns for now, so reads can move over a catalogue at a time.
+  has_many :builds, class_name: "ComponentBuild", dependent: :destroy
+
   has_many :model_paints, dependent: :nullify
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
