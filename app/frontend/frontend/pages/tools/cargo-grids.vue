@@ -24,6 +24,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   models as fetchModels,
   ModelProductionStatusEnum,
+  type ContainerFitQuery,
   type Model,
   type ModelQuery,
   type Models,
@@ -55,6 +56,9 @@ const hangarOnly = ref(false);
 
 const containerFilterActive = ref(false);
 
+// Must stay in step with CargoHoldContainerCapacity::CONTAINER_SIZES. The
+// generated ContainerFitQuery keys the same set, so annotating containerFit
+// with it turns a size that is not in the schema into a type error.
 const CONTAINER_SIZES = [1, 2, 4, 8, 16, 24, 32] as const;
 
 const MAX_SHIPS = 4;
@@ -183,12 +187,12 @@ const fetchCargoModels = async (params: FilterGroupParams<Model>) => {
     q.inHangar = true;
   }
 
-  const containerFit: Record<string, number> = {};
+  const containerFit: ContainerFitQuery = {};
   if (containerFilterActive.value && hasContainerRequests.value) {
     for (const size of CONTAINER_SIZES) {
       const qty = Number(containerRequests.value[size]);
       if (qty > 0) {
-        containerFit[String(size)] = qty;
+        containerFit[`${size}`] = qty;
       }
     }
   }

@@ -38,10 +38,7 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: Commodity.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/CommodityQuery"
-        },
+        schema: {"$ref": "#/components/schemas/CommodityQuery"},
         style: :deepObject,
         explode: true,
         required: false

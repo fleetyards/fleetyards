@@ -15,7 +15,7 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModule.default_per_page}, required: false
 
       response(200, "successful") do

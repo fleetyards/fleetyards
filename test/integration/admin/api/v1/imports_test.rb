@@ -18,10 +18,7 @@ class Admin::Api::V1::ImportsTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: Import.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ImportQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ImportQuery"},
         style: :deepObject,
         explode: true,
         required: false

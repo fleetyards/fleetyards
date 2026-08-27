@@ -15,7 +15,7 @@ class Admin::Api::V1::FleetsIndexTest < ActionDispatch::IntegrationTest
 
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter "$ref": "#/components/parameters/SortingParameter"
-      parameter name: "q", in: :query, schema: {type: :object, "$ref": "#/components/schemas/FleetQuery"}, required: false
+      parameter name: "q", in: :query, schema: {"$ref": "#/components/schemas/FleetQuery"}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleets"

@@ -9,7 +9,7 @@ module Cable
         schema({
           type: :object,
           properties: {
-            status: {type: :string, enum: %w[failed]},
+            status: Cable::V1::Schemas::Enums::HangarSyncFailedStatusEnum,
             error: {type: :string}
           },
           additionalProperties: false,

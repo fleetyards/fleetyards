@@ -1882,28 +1882,36 @@ components:
       type: object
       properties:
         status:
-          type: string
-          enum:
-          - failed
+          "$ref": "#/components/schemas/HangarSyncFailedStatusEnum"
         error:
           type: string
       additionalProperties: false
       required:
       - status
       - error
+    HangarSyncFailedStatusEnum:
+      type: string
+      enum:
+      - failed
+      x-enumNames:
+      - FAILED
     HangarSyncFinishedMessage:
       type: object
       properties:
         status:
-          type: string
-          enum:
-          - finished
+          "$ref": "#/components/schemas/HangarSyncFinishedStatusEnum"
         result:
           "$ref": "#/components/schemas/HangarSyncResult"
       additionalProperties: false
       required:
       - status
       - result
+    HangarSyncFinishedStatusEnum:
+      type: string
+      enum:
+      - finished
+      x-enumNames:
+      - FINISHED
     HangarSyncResult:
       type: object
       properties:

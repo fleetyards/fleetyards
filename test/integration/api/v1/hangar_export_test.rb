@@ -14,10 +14,7 @@ class Api::V1::HangarExportTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/HangarQuery"
-        },
+        schema: {"$ref": "#/components/schemas/HangarQuery"},
         style: :deepObject,
         explode: true,
         required: false

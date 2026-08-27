@@ -15,7 +15,7 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
       tags "FleetInventories"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
 
       security [

@@ -15,7 +15,7 @@ class Api::V1::FleetsInviteUrlsIndexTest < ActionDispatch::IntegrationTest
       tags "fleetInviteUrls"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: FleetVehicle.default_per_page}, required: false
 
       security [

@@ -44,10 +44,7 @@ class Admin::Api::V1::ModelHardpointLoadoutsTest < ActionDispatch::IntegrationTe
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ModelHardpointLoadoutQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ModelHardpointLoadoutQuery"},
         style: :deepObject,
         explode: true,
         required: false

@@ -41,10 +41,7 @@ class Admin::Api::V1::ModelModulePackagesTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModulePackage.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/ModelModulePackageQuery"
-        },
+        schema: {"$ref": "#/components/schemas/ModelModulePackageQuery"},
         style: :deepObject,
         explode: true,
         required: false

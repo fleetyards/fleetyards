@@ -16,10 +16,7 @@ class Api::V1::FleetsStatsMembersTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/FleetMemberQuery"
-        },
+        schema: {"$ref": "#/components/schemas/FleetMemberQuery"},
         style: :deepObject,
         explode: true,
         required: false

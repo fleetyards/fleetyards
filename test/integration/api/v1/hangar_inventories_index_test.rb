@@ -13,13 +13,10 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
       tags "HangarInventories"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: Inventory.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/HangarInventoryQuery"
-        },
+        schema: {"$ref": "#/components/schemas/HangarInventoryQuery"},
         style: :deepObject,
         explode: true,
         required: false

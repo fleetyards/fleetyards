@@ -17,10 +17,7 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: User.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/UserQuery"
-        },
+        schema: {"$ref": "#/components/schemas/UserQuery"},
         style: :deepObject,
         explode: true,
         required: false

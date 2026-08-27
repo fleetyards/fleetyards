@@ -42,10 +42,7 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
       parameter name: "perPage", in: :query, schema: {type: :string, default: SupporterContribution.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/SupporterContributionQuery"
-        },
+        schema: {"$ref": "#/components/schemas/SupporterContributionQuery"},
         style: :deepObject,
         explode: true,
         required: false

@@ -14,10 +14,7 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/InventoryStockQuery"
-        },
+        schema: {"$ref": "#/components/schemas/InventoryStockQuery"},
         style: :deepObject,
         explode: true,
         required: false

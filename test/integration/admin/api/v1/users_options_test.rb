@@ -14,7 +14,7 @@ class Admin::Api::V1::UsersOptionsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: :q, in: :query, schema: {type: :object, "$ref": "#/components/schemas/UserQuery"}, required: false
+      parameter name: :q, in: :query, schema: {"$ref": "#/components/schemas/UserQuery"}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/UserOptions"
