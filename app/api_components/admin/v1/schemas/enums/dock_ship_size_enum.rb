@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-module Shared
+module Admin
   module V1
     module Schemas
       module Enums
+        # Only the admin Dock carries these raw values; the public payload
+        # humanizes the size and cannot put an enum on the type.
         class DockShipSizeEnum
           include OpenapiRuby::Components::Base
 

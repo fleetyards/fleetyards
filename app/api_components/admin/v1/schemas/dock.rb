@@ -11,9 +11,9 @@ module Admin
           properties: {
             id: {type: :string, format: :uuid},
             name: {type: :string},
-            dockType: {type: :string},
+            dockType: Enums::DockTypeEnum,
             dockTypeLabel: {type: :string},
-            shipSize: {type: :string},
+            shipSize: Enums::DockShipSizeEnum,
             shipSizeLabel: {type: :string},
             group: {type: :string},
             length: {type: :number},
