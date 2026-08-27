@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import NotificationsNav from "@/frontend/components/Navigation/NotificationsNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
@@ -162,6 +163,7 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         :image="primaryFleet.logo?.smallUrl"
         icon="fa-duotone fa-users"
       />
+      <NotificationsNav v-if="isAuthenticated" icon-only />
     </template>
   </AppNavigationMobile>
 </template>

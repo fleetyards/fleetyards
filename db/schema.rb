@@ -1236,6 +1236,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_150000) do
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "archived_at"
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "expires_at", null: false
@@ -1251,6 +1252,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_150000) do
     t.index ["expires_at"], name: "index_notifications_on_expires_at"
     t.index ["notification_type"], name: "index_notifications_on_notification_type"
     t.index ["record_type", "record_id"], name: "index_notifications_on_record"
+    t.index ["user_id", "archived_at"], name: "index_notifications_on_user_id_and_archived_at"
     t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at", order: { created_at: :desc }
     t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
   end

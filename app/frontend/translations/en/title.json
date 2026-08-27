@@ -141,7 +141,8 @@
         "supportHint": "Support Hint - Visual Tests",
         "media": "Media - Visual Tests",
         "charts": "Charts - Visual Tests",
-        "chips": "Chips - Visual Tests"
+        "chips": "Chips - Visual Tests",
+        "notificationCenter": "Notification Center - Visual Tests"
       },
       "admin": {
         "models": {
@@ -270,7 +271,8 @@
           "index": "Visual Tests",
           "notifications": "Notifications - Visual Tests"
         }
-      }
+      },
+      "notifications": "Notifications"
     }
   }
 }

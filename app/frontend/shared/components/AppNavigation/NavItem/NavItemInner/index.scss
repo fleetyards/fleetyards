@@ -17,22 +17,31 @@
     margin-inline-end: 10px;
   }
 
+  // A single digit has to come out round: `min-width` and `height` are the same
+  // number, so the pill only stretches once there is a second digit in it.
   .nav-item-badge {
-    min-width: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 18px;
+    height: 18px;
     margin-inline-start: auto;
-    padding: 0 6px;
+    padding: 0 5px;
     font-size: 11px;
     font-weight: bold;
-    line-height: 18px;
+    line-height: 1;
     text-align: center;
     color: #fff;
     background-color: $danger;
-    border-radius: 10px;
+    border-radius: 9px;
 
+    // The icon box is 30px wide, so anything left of ~18px sits across the
+    // glyph rather than on its corner.
     &--dot {
       position: absolute;
-      top: -4px;
-      inset-inline-start: 10px;
+      top: -6px;
+      inset-inline-start: 18px;
       margin-inline-start: 0;
     }
   }

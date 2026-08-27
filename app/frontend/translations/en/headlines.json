@@ -361,7 +361,8 @@
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
         "overlays": "Overlays",
-        "supportHint": "Support Hint"
+        "supportHint": "Support Hint",
+        "notificationCenter": "Notification Center"
       },
       "logistics": {
         "index": "Logistics",
@@ -380,6 +381,9 @@
         "hangarInventories": "Hangar Inventories",
         "editItem": "Edit Entry",
         "editStockItem": "Edit Item"
+      },
+      "notifications": {
+        "index": "Notifications"
       }
     }
   }

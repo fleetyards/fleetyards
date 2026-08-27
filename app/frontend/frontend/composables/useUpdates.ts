@@ -3,6 +3,7 @@ import { useAppStore } from "@/frontend/stores/app";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
 import {
   useSubscription,
   ChannelsEnum,
@@ -120,11 +121,19 @@ export const useUpdates = () => {
     });
   };
 
+  const { invalidate: invalidateNotifications } = useNotificationInvalidation();
+
   // A notification is a record, so its fields have to be mapped onto the toast.
+  // The toast is also the way into the center it was just filed in — unlike the
+  // admin's it keeps its timeout, because it interrupts browsing rather than
+  // reporting an operational failure that must not be missed.
   const handleUserNotification = (notification: Notification) => {
+    invalidateNotifications();
+
     displayMessage({
       text: notification.title,
       icon: notification.icon,
+      to: { name: "notifications" },
     });
   };
 

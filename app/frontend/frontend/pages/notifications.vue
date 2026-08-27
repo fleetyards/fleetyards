@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "AdminNotificationsPage",
+  name: "NotificationsPage",
 };
 </script>
 
@@ -12,39 +12,39 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import Detail from "@/admin/components/Notifications/Detail/index.vue";
-import FilterForm from "@/admin/components/Notifications/FilterForm/index.vue";
-import ListItem from "@/admin/components/Notifications/ListItem/index.vue";
+import Detail from "@/frontend/components/Notifications/Detail/index.vue";
+import FilterForm from "@/frontend/components/Notifications/FilterForm/index.vue";
+import ListItem from "@/frontend/components/Notifications/ListItem/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
-  useAdminNotificationFilters,
+  useNotificationFilters,
   NOTIFICATION_TAB_QUERY_KEY,
-} from "@/admin/composables/useAdminNotificationFilters";
-import { useAdminNotificationInvalidation } from "@/admin/composables/useAdminNotificationUpdates";
+} from "@/frontend/composables/useNotificationFilters";
+import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
 import {
-  useAdminNotifications as useAdminNotificationsQuery,
-  useAdminNotificationsUnreadCount,
-  getAdminNotificationsQueryKey,
-  readAdminNotification,
-  unreadAdminNotification,
-  readAllAdminNotifications,
-  archiveAdminNotification,
-  unarchiveAdminNotification,
-  destroyAdminNotification,
-  destroyAllAdminNotifications,
-  type AdminNotification,
-  type AdminNotificationSortEnum,
-} from "@/services/fyAdminApi";
+  useNotifications as useNotificationsQuery,
+  useNotificationsUnreadCount,
+  getNotificationsQueryKey,
+  readNotification,
+  unreadNotification,
+  readAllNotifications,
+  archiveNotification,
+  unarchiveNotification,
+  destroyNotification,
+  destroyAllNotifications,
+  type Notification,
+  type NotificationSortEnum,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const route = useRoute();
 
-const sorts = computed((): AdminNotificationSortEnum[] => {
-  return route.query.s ? [route.query.s as AdminNotificationSortEnum] : [];
+const sorts = computed((): NotificationSortEnum[] => {
+  return route.query.s ? [route.query.s as NotificationSortEnum] : [];
 });
 
 const oldestFirst = computed(() => route.query.s === "createdAt asc");
@@ -71,13 +71,11 @@ const sortLink = computed(() => ({
   },
 }));
 
-const queryKey = computed(() =>
-  getAdminNotificationsQueryKey(queryParams.value),
-);
+const queryKey = computed(() => getNotificationsQueryKey(queryParams.value));
 
 const { perPage, page, updatePerPage } = usePagination(queryKey);
 
-const { filters, isFilterSelected } = useAdminNotificationFilters(async () => {
+const { filters, isFilterSelected } = useNotificationFilters(async () => {
   await refetch();
 });
 
@@ -106,16 +104,16 @@ const {
   data: notifications,
   refetch,
   ...asyncStatus
-} = useAdminNotificationsQuery(queryParams);
+} = useNotificationsQuery(queryParams);
 
 const { invalidate, invalidateUnreadCount, patchCached } =
-  useAdminNotificationInvalidation();
+  useNotificationInvalidation();
 
 watch([sorts, archive], async () => {
   await refetch();
 });
 
-const { data: unreadCount } = useAdminNotificationsUnreadCount();
+const { data: unreadCount } = useNotificationsUnreadCount();
 
 const records = computed(() => notifications.value?.items || []);
 
@@ -136,7 +134,7 @@ type FocusableRow = { focus: () => void };
 
 const rows = new Map<string, FocusableRow>();
 
-const registerRow = (notification: AdminNotification) => (row: unknown) => {
+const registerRow = (notification: Notification) => (row: unknown) => {
   if (row) {
     rows.set(notification.id, row as FocusableRow);
   } else {
@@ -144,17 +142,17 @@ const registerRow = (notification: AdminNotification) => (row: unknown) => {
   }
 };
 
-const markRead = async (notification: AdminNotification) => {
+const markRead = async (notification: Notification) => {
   try {
-    patchCached(await readAdminNotification(notification.id));
+    patchCached(await readNotification(notification.id));
     invalidateUnreadCount();
   } catch {
-    displayAlert({ text: t("messages.adminNotifications.error") });
+    displayAlert({ text: t("messages.notifications.error") });
   }
 };
 
 // Opening a notification is what reading it means, so it costs no second click.
-const select = (notification: AdminNotification) => {
+const select = (notification: Notification) => {
   selectedId.value = notification.id;
 
   if (!notification.read) {
@@ -187,56 +185,56 @@ const withFeedback = async (
     invalidate();
     displaySuccess({ text: message });
   } catch {
-    displayAlert({ text: t("messages.adminNotifications.error") });
+    displayAlert({ text: t("messages.notifications.error") });
   }
 };
 
 // Closes the reading pane: leaving it open on a notification that is now unread
 // invites a click that would only mark it read again, and the point of marking
 // it unread is to come back to it later.
-const markUnread = async (notification: AdminNotification) => {
+const markUnread = async (notification: Notification) => {
   selectedId.value = undefined;
 
   await withFeedback(
-    () => unreadAdminNotification(notification.id),
-    t("messages.adminNotifications.unread"),
+    () => unreadNotification(notification.id),
+    t("messages.notifications.unread"),
   );
 };
 
-const archiveNotification = (notification: AdminNotification) =>
+const archiveOne = (notification: Notification) =>
   withFeedback(
-    () => archiveAdminNotification(notification.id),
-    t("messages.adminNotifications.archived"),
+    () => archiveNotification(notification.id),
+    t("messages.notifications.archived"),
   );
 
-const unarchiveNotification = (notification: AdminNotification) =>
+const unarchiveOne = (notification: Notification) =>
   withFeedback(
-    () => unarchiveAdminNotification(notification.id),
-    t("messages.adminNotifications.unarchived"),
+    () => unarchiveNotification(notification.id),
+    t("messages.notifications.unarchived"),
   );
 
 const markAllRead = () =>
   withFeedback(
-    () => readAllAdminNotifications(),
-    t("messages.adminNotifications.readAll"),
+    () => readAllNotifications(),
+    t("messages.notifications.readAll"),
   );
 
-const destroy = (notification: AdminNotification) =>
+const destroy = (notification: Notification) =>
   withFeedback(
-    () => destroyAdminNotification(notification.id),
-    t("messages.adminNotifications.destroyed"),
+    () => destroyNotification(notification.id),
+    t("messages.notifications.destroyed"),
   );
 
 const destroyAll = () =>
   withFeedback(
-    () => destroyAllAdminNotifications(),
-    t("messages.adminNotifications.destroyedAll"),
+    () => destroyAllNotifications(),
+    t("messages.notifications.destroyedAll"),
   );
 </script>
 
 <template>
   <Heading hero>
-    {{ t("headlines.admin.notifications.index") }}
+    {{ t("headlines.notifications.index") }}
     <HeadingSmall v-if="notifications">
       {{
         t("headlines.pagination.count", {
@@ -250,28 +248,37 @@ const destroyAll = () =>
   <Teleport to="#header-right">
     <Btn
       :size="BtnSizesEnum.MD"
-      :aria-label="t('actions.adminNotifications.readAll')"
+      :aria-label="t('actions.notifications.settings')"
+      :to="{ name: 'settings-notifications' }"
+      mobile-icon-only
+    >
+      <i class="fa-duotone fa-sliders" />
+      {{ t("actions.notifications.settings") }}
+    </Btn>
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('actions.notifications.readAll')"
       mobile-icon-only
       @click="markAllRead"
     >
       <i class="fa-duotone fa-check-double" />
-      {{ t("actions.adminNotifications.readAll") }}
+      {{ t("actions.notifications.readAll") }}
     </Btn>
     <Btn
       :size="BtnSizesEnum.MD"
-      :aria-label="t('actions.adminNotifications.destroyAll')"
+      :aria-label="t('actions.notifications.destroyAll')"
       :tone="BtnTonesEnum.DANGER"
-      :confirm="t('messages.confirm.adminNotifications.destroyAll')"
+      :confirm="t('messages.confirm.notifications.destroyAll')"
       mobile-icon-only
       @click="destroyAll"
     >
       <i class="fa-duotone fa-trash" />
-      {{ t("actions.adminNotifications.destroyAll") }}
+      {{ t("actions.notifications.destroyAll") }}
     </Btn>
   </Teleport>
 
   <FilteredList
-    name="admin-notifications"
+    name="notifications"
     :records="records"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
@@ -289,8 +296,8 @@ const destroyAll = () =>
           data-test="notifications-tab-inbox"
         >
           <i class="fa-duotone fa-inbox" />
-          {{ t("labels.adminNotifications.inbox") }}
-          <span v-if="unreadCount?.count" class="admin-notifications__badge">
+          {{ t("labels.notifications.inbox") }}
+          <span v-if="unreadCount?.count" class="notifications__badge">
             {{ unreadCount.count }}
           </span>
         </Btn>
@@ -302,7 +309,7 @@ const destroyAll = () =>
           data-test="notifications-tab-archive"
         >
           <i class="fa-duotone fa-box-archive" />
-          {{ t("labels.adminNotifications.archive") }}
+          {{ t("labels.notifications.archive") }}
         </Btn>
       </BtnGroup>
       <Btn :to="sortLink" route-active-class="" mobile-icon-only>
@@ -315,21 +322,17 @@ const destroyAll = () =>
         />
         {{
           oldestFirst
-            ? t("actions.adminNotifications.sortNewest")
-            : t("actions.adminNotifications.sortOldest")
+            ? t("actions.notifications.sortNewest")
+            : t("actions.notifications.sortOldest")
         }}
       </Btn>
     </template>
     <template #default="{ records: shown }">
       <div
-        class="admin-notifications"
-        :class="{ 'admin-notifications--reading': !!selected }"
+        class="notifications"
+        :class="{ 'notifications--reading': !!selected }"
       >
-        <TransitionGroup
-          tag="ul"
-          name="fade-list"
-          class="admin-notifications__list"
-        >
+        <TransitionGroup tag="ul" name="fade-list" class="notifications__list">
           <li
             v-for="notification in shown"
             :key="notification.id"
@@ -340,8 +343,8 @@ const destroyAll = () =>
               :notification="notification"
               :selected="notification.id === selectedId"
               @select="select(notification)"
-              @archive="archiveNotification(notification)"
-              @unarchive="unarchiveNotification(notification)"
+              @archive="archiveOne(notification)"
+              @unarchive="unarchiveOne(notification)"
               @destroy="destroy(notification)"
               @previous="move(-1)"
               @next="move(1)"
@@ -350,12 +353,12 @@ const destroyAll = () =>
         </TransitionGroup>
 
         <Detail
-          class="admin-notifications__detail"
+          class="notifications__detail"
           :notification="selected"
           @close="selectedId = undefined"
           @unread="selected && markUnread(selected)"
-          @archive="selected && archiveNotification(selected)"
-          @unarchive="selected && unarchiveNotification(selected)"
+          @archive="selected && archiveOne(selected)"
+          @unarchive="selected && unarchiveOne(selected)"
           @destroy="selected && destroy(selected)"
         />
       </div>
@@ -380,7 +383,7 @@ const destroyAll = () =>
 </template>
 
 <style lang="scss" scoped>
-.admin-notifications__badge {
+.notifications__badge {
   // Round on a single digit rather than a squashed oval: the width floor and
   // the height are the same number, so it only stretches from two digits on.
   display: inline-flex;
@@ -399,7 +402,7 @@ const destroyAll = () =>
   border-radius: 10px;
 }
 
-.admin-notifications {
+.notifications {
   display: flex;
   align-items: flex-start;
   gap: 20px;
@@ -408,7 +411,7 @@ const destroyAll = () =>
   margin: 0 0 21px;
 }
 
-.admin-notifications__list {
+.notifications__list {
   position: relative;
   display: flex;
   flex: 1;
@@ -420,18 +423,18 @@ const destroyAll = () =>
   list-style: none;
 }
 
-.admin-notifications__detail {
+.notifications__detail {
   display: none;
 }
 
 // One pane at a time until there is room for both: opening a notification
 // replaces the list, and the reading pane brings its own way back.
-.admin-notifications--reading {
-  .admin-notifications__list {
+.notifications--reading {
+  .notifications__list {
     display: none;
   }
 
-  .admin-notifications__detail {
+  .notifications__detail {
     display: block;
     flex: 1;
     min-width: 0;
@@ -439,15 +442,15 @@ const destroyAll = () =>
 }
 
 @media (min-width: $notifications-two-pane-breakpoint) {
-  .admin-notifications,
-  .admin-notifications--reading {
-    .admin-notifications__list {
+  .notifications,
+  .notifications--reading {
+    .notifications__list {
       display: flex;
       flex: 0 0 38%;
       max-width: 38%;
     }
 
-    .admin-notifications__detail {
+    .notifications__detail {
       display: block;
       position: sticky;
       top: 20px;

@@ -283,6 +283,9 @@
         },
         "equipment": {
           "name": "Name"
+        },
+        "notifications": {
+          "search": "Title or content..."
         }
       },
       "commodity": {

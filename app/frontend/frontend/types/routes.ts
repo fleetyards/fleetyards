@@ -18,6 +18,7 @@ type FrontendSimpleRoutes =
   | "fleets"
   | "images"
   | "settings"
+  | "notifications"
   | "signup"
   | "signup-auth-callback"
   | "login"

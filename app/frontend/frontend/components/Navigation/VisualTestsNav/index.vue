@@ -35,6 +35,7 @@ const GROUPS = [
     members: [
       "states",
       "notifications",
+      "notification-center",
       "support-hint",
       "sync-modal",
       "overlays",
@@ -93,6 +94,11 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-notifications",
     label: "notifications",
     icon: "fadt fa-bell",
+  },
+  "notification-center": {
+    route: "visual-tests-notification-center",
+    label: "notificationCenter",
+    icon: "fadt fa-inbox",
   },
   "support-hint": {
     route: "visual-tests-support-hint",

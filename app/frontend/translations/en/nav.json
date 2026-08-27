@@ -130,7 +130,8 @@
           "foundations": "Foundations",
           "data": "Data",
           "feedback": "Feedback"
-        }
+        },
+        "notificationCenter": "Notification Center"
       },
       "admin": {
         "index": "Admin",
@@ -256,7 +257,8 @@
           "people": "People",
           "system": "System"
         }
-      }
+      },
+      "notifications": "Notifications"
     }
   }
 }
