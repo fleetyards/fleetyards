@@ -36,6 +36,77 @@ module ScData
         assert_equal cross_section, model.reload.signature_cross_section
       end
 
+      # The export's bounding box carries three correct magnitudes but no
+      # consistent convention for which axis is which, so a handful of ships need
+      # their own order. Read off the orthographic renders rather than the ship
+      # matrix, which is itself wrong for several of them.
+      test "#load_model reads the dimensions off y, x, z by default" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Default Order", sc_key: "test_default_order")
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "metrics" => {"x" => 39.5, "y" => 111.5, "z" => 13.4}}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_in_delta 111.5, model.sc_length.to_f
+        assert_in_delta 39.5, model.sc_beam.to_f
+        assert_in_delta 13.4, model.sc_height.to_f
+      end
+
+      # Its length sits on z: 111.5 m, which the default order would have read as
+      # its height.
+      test "#load_model uses the curated order for the Caterpillar" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Caterpillar", sc_key: "drak_caterpillar")
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "metrics" => {"x" => 39.5, "y" => 13.4, "z" => 111.5}}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_in_delta 111.5, model.sc_length.to_f
+        assert_in_delta 39.5, model.sc_beam.to_f
+        assert_in_delta 13.4, model.sc_height.to_f
+      end
+
+      # The Cyclone is the case that shows why the renders decide this and not the
+      # matrix: the matrix has it 6.0 m long and 8.8 m wide, and the render says
+      # the opposite. So the curated order deliberately disagrees with the matrix.
+      test "#load_model uses the curated order for the Cyclone, against the matrix" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Cyclone", sc_key: "tmbl_cyclone", length: 6.0, beam: 8.8, height: 3.5)
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "metrics" => {"x" => 8.8, "y" => 6.0, "z" => 3.5}}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_in_delta 8.8, model.sc_length.to_f
+        assert_in_delta 6.0, model.sc_beam.to_f
+        assert_in_delta 3.5, model.sc_height.to_f
+      end
+
+      test "#load_model survives an export with no metrics at all" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "No Metrics", sc_key: "test_no_metrics")
+
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        loader.load_model(model)
+        model.reload
+
+        assert_nil model.sc_length
+        assert_nil model.sc_beam
+        assert_nil model.sc_height
+      end
+
       test "#load_model persists the parsed ground speeds" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, name: "Ground Speed Test", in_game: true)
