@@ -359,7 +359,8 @@
         "destroyAll": "Delete all",
         "settings": "Notification settings",
         "sortOldest": "Oldest first",
-        "sortNewest": "Newest first"
+        "sortNewest": "Newest first",
+        "openCenter": "Notifications"
       }
     }
   }

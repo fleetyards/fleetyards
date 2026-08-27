@@ -133,6 +133,9 @@
       "settings": {
         "privacy": {
           "tracking": "When this is enabled we count the pages you visit to see which parts of the site are used. IP addresses are anonymised, nothing is stored on your device, and individual visits are deleted after one month. Turning it off stops the recording entirely."
+        },
+        "notifications": {
+          "hint": "Pick how each event reaches you. App notifications are collected in your notification center, mail goes to your account's address."
         }
       },
       "signup": {

@@ -75,7 +75,8 @@
         "error": "Could not update request log."
       },
       "updateNotifications": {
-        "success": "Notification Settings updated."
+        "success": "Notification Settings updated.",
+        "failure": "Could not save your notification settings."
       },
       "updateAccount": {
         "success": "Account updated."

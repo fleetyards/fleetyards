@@ -1950,7 +1950,8 @@
         "fleet_event_signup_withdrawn": "Signup withdrawn",
         "fleet_event_signup_confirmed": "Signup confirmed",
         "fleet_event_signup_assigned": "Assigned to a slot",
-        "fleet_event_signup_kicked": "Removed from a slot"
+        "fleet_event_signup_kicked": "Removed from a slot",
+        "allInGroup": "Everything in this group"
       },
       "fleets": {
         "missions": {
