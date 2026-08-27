@@ -11,9 +11,9 @@ module V1
           properties: {
             total: {type: :integer},
             wishlistTotal: {type: :integer},
-            classifications: {type: :array, items: {"$ref": "#/components/schemas/HangarClassificationMetric"}},
-            groups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupMetric"}},
-            metrics: {"$ref": "#/components/schemas/HangarMetricsPublic"}
+            classifications: {type: :array, items: ::V1::Schemas::Hangar::HangarClassificationMetric},
+            groups: {type: :array, items: ::V1::Schemas::Hangar::Groups::HangarGroupMetric},
+            metrics: ::V1::Schemas::Hangar::HangarMetricsPublic
           },
           additionalProperties: false,
           required: %w[total classifications groups metrics]

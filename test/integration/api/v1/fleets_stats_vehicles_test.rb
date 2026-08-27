@@ -26,13 +26,13 @@ class Api::V1::FleetsStatsVehiclesTest < ActionDispatch::IntegrationTest
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       # Description preserved verbatim from the original RSpec spec
       # (which used the unusual "successful" text for a 404).
       response(404, "successful") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -13,18 +13,18 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       tags "Notifications"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: AdminNotification.default_per_page}, required: false
-      parameter "$ref": "#/components/parameters/SortingParameter"
-      parameter name: "q", in: :query, schema: {"$ref": "#/components/schemas/AdminNotificationQuery"}, required: false
+      parameter ::Shared::V1::Parameters::SortingParameter
+      parameter name: "q", in: :query, schema: ::Admin::V1::Schemas::Queries::AdminNotificationQuery, required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminNotifications"
+        schema ::Admin::V1::Schemas::AdminNotifications
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -36,11 +36,11 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminNotificationUnreadCount"
+        schema ::Admin::V1::Schemas::AdminNotificationUnreadCount
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -54,15 +54,15 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminNotification"
+        schema ::Admin::V1::Schemas::AdminNotification
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -76,15 +76,15 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminNotification"
+        schema ::Admin::V1::Schemas::AdminNotification
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -98,15 +98,15 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminNotification"
+        schema ::Admin::V1::Schemas::AdminNotification
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -120,15 +120,15 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminNotification"
+        schema ::Admin::V1::Schemas::AdminNotification
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -142,7 +142,7 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -158,11 +158,11 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -176,7 +176,7 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

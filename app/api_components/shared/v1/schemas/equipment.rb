@@ -14,7 +14,7 @@ module Shared
             slug: {type: :string},
             description: {type: [:string, :null]},
 
-            equipmentType: {"$ref": "#/components/schemas/EquipmentTypeEnum"},
+            equipmentType: ::Shared::V1::Schemas::Enums::EquipmentTypeEnum,
             itemType: {type: [:string, :null]},
             subType: {type: [:string, :null]},
             weaponClass: {type: [:string, :null]},
@@ -51,7 +51,7 @@ module Shared
 
             availability: Shared::V1::Schemas::ItemAvailability,
 
-            storeImage: {"$ref": "#/components/schemas/MediaFile"},
+            storeImage: ::Shared::V1::Schemas::MediaFile,
 
             retired: {type: :boolean},
 

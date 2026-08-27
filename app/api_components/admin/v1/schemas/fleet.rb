@@ -23,11 +23,11 @@ module Admin
             homepage: {type: :string},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
-            logo: {"$ref": "#/components/schemas/MediaFile"},
-            backgroundImage: {"$ref": "#/components/schemas/MediaFile"},
+            logo: ::Shared::V1::Schemas::MediaFile,
+            backgroundImage: ::Shared::V1::Schemas::MediaFile,
             fleetRoles: {
               type: :array,
-              items: {"$ref": "#/components/schemas/AdminFleetRole"}
+              items: ::Admin::V1::Schemas::AdminFleetRole
             },
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

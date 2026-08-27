@@ -28,10 +28,8 @@ module Admin
               sellPriceLteq: {type: :number},
 
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/ComponentSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/ComponentSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ComponentSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ComponentSortEnum]}
             },
             additionalProperties: false,
             example: {}

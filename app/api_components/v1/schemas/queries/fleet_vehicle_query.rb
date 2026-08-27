@@ -32,18 +32,14 @@ module V1
             modelSlugIn: {type: :array, items: {type: :string}},
             modelNameCont: {type: :string},
             modelNameOrModelDescriptionCont: {type: :string},
-            loanerEq: {"$ref": "#/components/schemas/LoanerFilterEnum"},
+            loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
             memberIn: {type: :array, items: {type: :string}},
             s: {anyOf: [{
-              type: :array, items: {"$ref": "#/components/schemas/FleetVehicleSortEnum"}
-            }, {
-              "$ref": "#/components/schemas/FleetVehicleSortEnum"
-            }]},
+              type: :array, items: ::V1::Schemas::Sorts::FleetVehicleSortEnum
+            }, ::V1::Schemas::Sorts::FleetVehicleSortEnum]},
             sorts: {anyOf: [{
-              type: :array, items: {"$ref": "#/components/schemas/FleetVehicleSortEnum"}
-            }, {
-              "$ref": "#/components/schemas/FleetVehicleSortEnum"
-            }]}
+              type: :array, items: ::V1::Schemas::Sorts::FleetVehicleSortEnum
+            }, ::V1::Schemas::Sorts::FleetVehicleSortEnum]}
           },
           additionalProperties: false,
           example: {}

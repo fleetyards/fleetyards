@@ -12,9 +12,9 @@ module V1
             properties: {
               items: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/FleetInventoryItem"}
+                items: ::V1::Schemas::Fleets::Logistics::FleetInventoryItem
               },
-              meta: {"$ref": "#/components/schemas/Meta"}
+              meta: ::Shared::V1::Schemas::Meta
             },
             required: %w[items meta]
           })

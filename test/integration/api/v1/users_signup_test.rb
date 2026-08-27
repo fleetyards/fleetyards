@@ -14,18 +14,18 @@ class Api::V1::UsersSignupTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/UserCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::UserCreateInput
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/User"
+        schema ::V1::Schemas::User
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(422, "unprocessable entity") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

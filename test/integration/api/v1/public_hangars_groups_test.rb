@@ -16,7 +16,7 @@ class Api::V1::PublicHangarsGroupsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PublicHangarGroupsList"
+        schema ::V1::Schemas::Hangar::Groups::PublicHangarGroupsList
       end
     end
   end

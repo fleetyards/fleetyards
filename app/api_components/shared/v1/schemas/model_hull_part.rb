@@ -11,7 +11,7 @@ module Shared
           properties: {
             name: {type: :string},
             health: {type: :number},
-            category: {"$ref": "#/components/schemas/ModelHullPartCategoryEnum"}
+            category: ::Shared::V1::Schemas::Enums::ModelHullPartCategoryEnum
           },
           required: %w[name health category],
           additionalProperties: false

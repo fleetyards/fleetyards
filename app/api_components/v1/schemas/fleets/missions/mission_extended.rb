@@ -9,13 +9,13 @@ module V1
 
           schema({
             allOf: [
-              {"$ref": "#/components/schemas/Mission"},
+              ::V1::Schemas::Fleets::Missions::Mission,
               {
                 type: :object,
                 properties: {
                   teams: {
                     type: :array,
-                    items: {"$ref": "#/components/schemas/MissionTeam"}
+                    items: ::V1::Schemas::Fleets::Missions::MissionTeam
                   }
                 },
                 required: %w[teams]

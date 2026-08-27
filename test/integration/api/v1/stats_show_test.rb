@@ -14,7 +14,7 @@ class Api::V1::StatsShowTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Stats"
+        schema ::V1::Schemas::Stats
       end
     end
   end

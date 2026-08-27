@@ -14,13 +14,13 @@ class Api::V1::FiltersEquipmentItemTypesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/EquipmentItemTypeFilterQuery"},
+        schema: ::V1::Schemas::Queries::EquipmentItemTypeFilterQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FilterOptionsList"
+        schema ::Shared::V1::Schemas::FilterOptionsList
       end
     end
   end

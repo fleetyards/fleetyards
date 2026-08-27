@@ -16,7 +16,7 @@ class Api::V1::ModelsEmbedTest < ActionDispatch::IntegrationTest
       parameter name: :models, in: :query, schema: {type: :array, items: {type: :string}}, style: :form, explode: true, required: true
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelsList"
+        schema ::V1::Schemas::Models::ModelsList
       end
     end
   end

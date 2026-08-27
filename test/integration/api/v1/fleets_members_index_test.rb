@@ -15,10 +15,10 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
       tags "FleetMembers"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/FleetMemberQuery"},
+        schema: ::V1::Schemas::Queries::FleetMemberQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -31,15 +31,15 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetMembersList"
+        schema ::V1::Schemas::Fleets::FleetMembersList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

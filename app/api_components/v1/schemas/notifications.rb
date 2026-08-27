@@ -7,7 +7,7 @@ module V1
 
       schema({
         properties: {
-          items: {type: :array, items: {"$ref": "#/components/schemas/Notification"}}
+          items: {type: :array, items: ::V1::Schemas::Notification}
         },
         required: %w[items]
       })

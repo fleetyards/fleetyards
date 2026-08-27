@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             fleetEventSlotId: {type: [:string, :null], format: :uuid},
-            status: {"$ref": "#/components/schemas/FleetEventSignupStatusEnum"},
+            status: ::V1::Schemas::Enums::FleetEventSignupStatusEnum,
             vehicleId: {type: [:string, :null], format: :uuid},
             notes: {type: [:string, :null]}
           },

@@ -22,7 +22,7 @@ class Api::V1::ImagesRandomTest < ActionDispatch::IntegrationTest
       }, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ImagesList"
+        schema ::V1::Schemas::ImagesList
       end
     end
   end

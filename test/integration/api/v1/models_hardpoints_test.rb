@@ -16,14 +16,14 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "source", in: :query,
-        schema: {"$ref": "#/components/schemas/HardpointSourceEnum"}, required: false
+        schema: ::Shared::V1::Schemas::Enums::HardpointSourceEnum, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HardpointsList"
+        schema ::V1::Schemas::Models::Hardpoints::HardpointsList
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

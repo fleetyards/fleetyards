@@ -17,22 +17,22 @@ class Admin::Api::V1::ItemPricesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ItemPriceInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ItemPriceInput
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/ItemPrice"
+        schema ::Admin::V1::Schemas::ItemPrice
       end
 
       response(400, "unauthorized") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -41,25 +41,25 @@ class Admin::Api::V1::ItemPricesTest < ActionDispatch::IntegrationTest
       tags "ItemPrices"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: ItemPrice.default_per_page}, required: false
-      parameter "$ref": "#/components/parameters/SortingParameter"
+      parameter ::Shared::V1::Parameters::SortingParameter
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ItemPriceQuery"},
+        schema: ::Admin::V1::Schemas::Queries::ItemPriceQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ItemPrices"
+        schema ::Admin::V1::Schemas::ItemPrices
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -74,15 +74,15 @@ class Admin::Api::V1::ItemPricesTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not_found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -93,19 +93,19 @@ class Admin::Api::V1::ItemPricesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ItemPrice"
+        schema ::Admin::V1::Schemas::ItemPrice
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -115,26 +115,26 @@ class Admin::Api::V1::ItemPricesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ItemPriceInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ItemPriceInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ItemPrice"
+        schema ::Admin::V1::Schemas::ItemPrice
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

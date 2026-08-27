@@ -15,7 +15,7 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
       tags "FleetInventories"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
 
       security [
@@ -25,15 +25,15 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetInventoriesList"
+        schema ::V1::Schemas::Fleets::Logistics::FleetInventoriesList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

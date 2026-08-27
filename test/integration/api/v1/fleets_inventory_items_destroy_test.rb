@@ -25,11 +25,11 @@ class Api::V1::FleetsInventoryItemsDestroyTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden - member cannot delete items") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

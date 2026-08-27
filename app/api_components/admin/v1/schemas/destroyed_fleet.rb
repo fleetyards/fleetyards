@@ -16,7 +16,7 @@ module Admin
             description: {type: :string},
             publicFleet: {type: :boolean},
             createdBy: {type: :string, format: :uuid},
-            source: {"$ref": "#/components/schemas/DestroyedFleetSourceEnum"},
+            source: ::Admin::V1::Schemas::Enums::DestroyedFleetSourceEnum,
             destroyedAt: {type: :string, format: "date-time"},
             destroyedBy: {type: :string},
             restorable: {type: :boolean}

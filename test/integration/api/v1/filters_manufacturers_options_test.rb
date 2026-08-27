@@ -13,16 +13,16 @@ class Api::V1::FiltersManufacturersOptionsTest < ActionDispatch::IntegrationTest
       tags "ManufacturersFilters"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: Manufacturer.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ManufacturerQuery"},
+        schema: ::V1::Schemas::Queries::ManufacturerQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ManufacturerOptions"
+        schema ::V1::Schemas::Manufacturers::Options::ManufacturerOptions
       end
     end
   end

@@ -22,11 +22,11 @@ class Api::V1::FleetsNotificationsShowTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetNotificationSetting"
+        schema ::V1::Schemas::Fleets::FleetNotificationSetting
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

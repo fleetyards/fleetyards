@@ -14,18 +14,18 @@ class Admin::Api::V1::ModelUpgradesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelUpgradeInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelUpgradeInput
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/ModelUpgrade"
+        schema ::Admin::V1::Schemas::Models::Upgrades::ModelUpgrade
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -34,25 +34,25 @@ class Admin::Api::V1::ModelUpgradesTest < ActionDispatch::IntegrationTest
       tags "ModelUpgrades"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelUpgrade.default_per_page}, required: false
-      parameter "$ref": "#/components/parameters/SortingParameter"
+      parameter ::Shared::V1::Parameters::SortingParameter
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelUpgradeQuery"},
+        schema: ::Admin::V1::Schemas::Queries::ModelUpgradeQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelUpgrades"
+        schema ::Admin::V1::Schemas::Models::Upgrades::ModelUpgrades
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -67,15 +67,15 @@ class Admin::Api::V1::ModelUpgradesTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -85,19 +85,19 @@ class Admin::Api::V1::ModelUpgradesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelUpgrade"
+        schema ::Admin::V1::Schemas::Models::Upgrades::ModelUpgrade
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -107,22 +107,22 @@ class Admin::Api::V1::ModelUpgradesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelUpgradeInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelUpgradeInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelUpgrade"
+        schema ::Admin::V1::Schemas::Models::Upgrades::ModelUpgrade
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

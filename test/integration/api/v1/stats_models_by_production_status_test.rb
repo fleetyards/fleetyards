@@ -14,7 +14,7 @@ class Api::V1::StatsModelsByProductionStatusTest < ActionDispatch::IntegrationTe
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PieChartStatsList"
+        schema ::V1::Schemas::PieChartStatsList
       end
     end
   end

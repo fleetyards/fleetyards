@@ -11,7 +11,7 @@ module V1
           properties: {
             items: {
               type: :array,
-              items: {"$ref": "#/components/schemas/RsiHangarItemInput"}
+              items: ::V1::Schemas::Inputs::RsiHangarItemInput
             }
           }
         })

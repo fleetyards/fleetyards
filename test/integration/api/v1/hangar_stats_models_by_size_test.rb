@@ -20,11 +20,11 @@ class Api::V1::HangarStatsModelsBySizeTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/PieChartStatsList"
+        schema ::V1::Schemas::PieChartStatsList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

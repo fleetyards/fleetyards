@@ -9,7 +9,7 @@ module Shared
         schema({
           type: :object,
           properties: {
-            meta: {"$ref": "#/components/schemas/Meta"}
+            meta: ::Shared::V1::Schemas::Meta
           },
           additionalProperties: false,
           required: %w[meta]

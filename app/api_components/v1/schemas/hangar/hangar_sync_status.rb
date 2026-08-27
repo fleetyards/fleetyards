@@ -10,8 +10,8 @@ module V1
           type: :object,
           properties: {
             active: {type: :boolean},
-            status: {"$ref": "#/components/schemas/HangarSyncStatusEnum"},
-            result: {"$ref": "#/components/schemas/HangarSyncResult"}
+            status: ::V1::Schemas::Enums::HangarSyncStatusEnum,
+            result: ::V1::Schemas::Hangar::HangarSyncResult
           },
           additionalProperties: false,
           required: %w[active]

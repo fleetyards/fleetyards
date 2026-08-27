@@ -11,8 +11,8 @@ module V1
           properties: {
             name: {type: :string},
             notes: {type: [:string, :null]},
-            category: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
-            unit: {"$ref": "#/components/schemas/InventoryUnitEnum"}
+            category: ::V1::Schemas::Enums::InventoryCategoryEnum,
+            unit: ::V1::Schemas::Enums::InventoryUnitEnum
           },
           additionalProperties: false
         })

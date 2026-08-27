@@ -13,10 +13,10 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
       tags "HangarInventories"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: Inventory.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/HangarInventoryQuery"},
+        schema: ::V1::Schemas::Queries::HangarInventoryQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -28,11 +28,11 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventoriesList"
+        schema ::V1::Schemas::Hangar::Logistics::HangarInventoriesList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

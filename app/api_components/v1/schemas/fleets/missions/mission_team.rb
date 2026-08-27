@@ -17,11 +17,11 @@ module V1
               position: {type: :integer},
               slots: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/MissionSlot"}
+                items: ::V1::Schemas::Fleets::Missions::MissionSlot
               },
               ships: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/MissionShip"}
+                items: ::V1::Schemas::Fleets::Missions::MissionShip
               }
             },
             required: %w[id missionId title position slots ships],

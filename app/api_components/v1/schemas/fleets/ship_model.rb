@@ -17,7 +17,7 @@ module V1
             slug: {type: :string},
             minCrew: {type: :integer},
             maxCrew: {type: :integer},
-            image: {"$ref": "#/components/schemas/MediaFile"}
+            image: ::Shared::V1::Schemas::MediaFile
           },
           required: %w[id name slug]
         })

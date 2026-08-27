@@ -14,14 +14,14 @@ class Admin::Api::V1::SessionsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/SessionInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::SessionInput
 
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/AdminUser"
       end
 
       response(400, "bad request") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -33,7 +33,7 @@ class Admin::Api::V1::SessionsTest < ActionDispatch::IntegrationTest
       response(200, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

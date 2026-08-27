@@ -16,11 +16,11 @@ class Api::V1::PublicFleetsShowTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Fleet"
+        schema ::V1::Schemas::Fleets::Fleet
       end
 
       response(404, "not found if fleet is not public") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

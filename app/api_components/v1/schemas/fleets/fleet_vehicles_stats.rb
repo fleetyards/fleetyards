@@ -10,8 +10,8 @@ module V1
           type: :object,
           properties: {
             total: {type: :integer},
-            classifications: {type: :array, items: {"$ref": "#/components/schemas/HangarClassificationMetric"}},
-            metrics: {"$ref": "#/components/schemas/HangarMetrics"}
+            classifications: {type: :array, items: ::V1::Schemas::Hangar::HangarClassificationMetric},
+            metrics: ::V1::Schemas::Hangar::HangarMetrics
           },
           additionalProperties: false,
           required: %w[total classifications metrics]

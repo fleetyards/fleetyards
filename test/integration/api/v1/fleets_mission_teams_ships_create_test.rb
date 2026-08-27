@@ -18,7 +18,7 @@ class Api::V1::FleetsMissionTeamsShipsCreateTest < ActionDispatch::IntegrationTe
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/MissionShipCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::MissionShipCreateInput
 
       security [
         {SessionCookie: []},
@@ -27,15 +27,15 @@ class Api::V1::FleetsMissionTeamsShipsCreateTest < ActionDispatch::IntegrationTe
       ]
 
       response(201, "successful - range filter") do
-        schema "$ref": "#/components/schemas/MissionShip"
+        schema ::V1::Schemas::Fleets::Missions::MissionShip
       end
 
       response(400, "bad request - non-in-game model") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

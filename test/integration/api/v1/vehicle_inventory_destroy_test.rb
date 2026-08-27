@@ -23,11 +23,11 @@ class Api::V1::VehicleInventoryDestroyTest < ActionDispatch::IntegrationTest
       response(204, "no content")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

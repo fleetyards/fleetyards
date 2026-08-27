@@ -8,9 +8,7 @@ module V1
 
         schema({
           properties: {
-            items: {type: :array, items: {
-              "$ref": "#/components/schemas/FleetMember"
-            }}
+            items: {type: :array, items: ::V1::Schemas::Fleets::FleetMember}
           },
           required: %w[items]
         })

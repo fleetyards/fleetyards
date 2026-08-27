@@ -13,17 +13,17 @@ class Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
       tags "Manufacturers"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: Manufacturer.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ManufacturerQuery"},
+        schema: ::V1::Schemas::Queries::ManufacturerQuery,
         style: :deepObject,
         explode: true,
         required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Manufacturers"
+        schema ::V1::Schemas::Manufacturers::Manufacturers
       end
     end
   end

@@ -10,7 +10,7 @@ module V1
         type: :object,
         properties: {
           id: {type: :string, format: :uuid},
-          type: {"$ref": "#/components/schemas/InventoryItemTypeEnum"},
+          type: ::V1::Schemas::Enums::InventoryItemTypeEnum,
           name: {type: :string},
           slug: {type: :string},
           available: {type: :boolean}

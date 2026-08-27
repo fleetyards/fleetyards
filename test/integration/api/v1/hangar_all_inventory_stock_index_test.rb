@@ -14,7 +14,7 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/InventoryStockQuery"},
+        schema: ::V1::Schemas::Queries::InventoryStockQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -26,11 +26,11 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventoryStockItemsList"
+        schema ::V1::Schemas::Hangar::Logistics::HangarInventoryStockItemsList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

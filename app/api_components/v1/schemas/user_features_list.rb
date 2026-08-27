@@ -7,7 +7,7 @@ module V1
 
       schema({
         type: :array,
-        items: {"$ref": "#/components/schemas/UserFeature"}
+        items: ::V1::Schemas::UserFeature
       })
     end
   end

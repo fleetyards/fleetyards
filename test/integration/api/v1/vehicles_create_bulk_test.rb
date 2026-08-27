@@ -20,12 +20,12 @@ class Api::V1::VehiclesCreateBulkTest < ActionDispatch::IntegrationTest
         OpenId: ["hangar", "hangar:write"]
       }]
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleCreateBulkInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::VehicleCreateBulkInput
 
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

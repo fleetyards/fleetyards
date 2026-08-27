@@ -17,7 +17,7 @@ class Api::V1::FleetsEventsEndSeriesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventOccurrenceDateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetEventOccurrenceDateInput
 
       security [
         {SessionCookie: []},
@@ -26,7 +26,7 @@ class Api::V1::FleetsEventsEndSeriesTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetEventExtended"
+        schema ::V1::Schemas::Fleets::Events::FleetEventExtended
       end
     end
   end

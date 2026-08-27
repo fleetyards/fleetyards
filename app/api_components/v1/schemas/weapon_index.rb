@@ -7,7 +7,7 @@ module V1
 
       schema({
         type: :array,
-        items: {"$ref": "#/components/schemas/WeaponIndexItem"}
+        items: ::V1::Schemas::WeaponIndexItem
       })
     end
   end

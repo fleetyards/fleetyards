@@ -9,7 +9,7 @@ module V1
 
           schema({
             type: :array,
-            items: {"$ref": "#/components/schemas/FleetInventoryStockItem"}
+            items: ::V1::Schemas::Fleets::Logistics::FleetInventoryStockItem
           })
         end
       end

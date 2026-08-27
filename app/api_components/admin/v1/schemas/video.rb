@@ -10,7 +10,7 @@ module Admin
           type: :object,
           properties: {
             id: {type: :string, format: :uuid},
-            type: {"$ref": "#/components/schemas/VideoTypeEnum"},
+            type: ::Shared::V1::Schemas::Enums::VideoTypeEnum,
             url: {type: :string, format: :uri},
             videoId: {type: :string},
             createdAt: {type: :string, format: "date-time"},

@@ -14,7 +14,7 @@ module Admin
             name: {type: :string},
             slug: {type: :string},
             fid: {type: :string},
-            logo: {"$ref": "#/components/schemas/MediaFile"},
+            logo: ::Shared::V1::Schemas::MediaFile,
             role: {type: :string},
             permanent: {type: :boolean},
             primary: {type: :boolean},

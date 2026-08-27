@@ -10,7 +10,7 @@ module Cable
           type: :object,
           properties: {
             status: Cable::V1::Schemas::Enums::HangarSyncFinishedStatusEnum,
-            result: {"$ref": "#/components/schemas/HangarSyncResult"}
+            result: ::V1::Schemas::Hangar::HangarSyncResult
           },
           additionalProperties: false,
           required: %w[status result]

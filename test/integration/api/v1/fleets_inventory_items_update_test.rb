@@ -18,7 +18,7 @@ class Api::V1::FleetsInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetInventoryItemUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetInventoryItemUpdateInput
 
       security [
         {SessionCookie: []},
@@ -27,15 +27,15 @@ class Api::V1::FleetsInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetInventoryItem"
+        schema ::V1::Schemas::Fleets::Logistics::FleetInventoryItem
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden - member cannot update items") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

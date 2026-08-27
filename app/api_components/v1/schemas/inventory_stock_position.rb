@@ -10,19 +10,19 @@ module V1
         properties: {
           slug: {type: :string},
           name: {type: :string},
-          category: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
-          unit: {"$ref": "#/components/schemas/InventoryUnitEnum"},
+          category: ::V1::Schemas::Enums::InventoryCategoryEnum,
+          unit: ::V1::Schemas::Enums::InventoryUnitEnum,
           netQuantity: {type: :number},
           qualityMin: {type: [:integer, :null]},
           qualityMax: {type: [:integer, :null]},
           entriesCount: {type: :integer},
           lastEntryAt: {type: [:string, :null], format: "date-time"},
-          image: {"$ref": "#/components/schemas/MediaFile"},
+          image: ::Shared::V1::Schemas::MediaFile,
           item: {
             type: [:object, :null],
             properties: {
               id: {type: :string, format: :uuid},
-              type: {"$ref": "#/components/schemas/InventoryItemTypeEnum"},
+              type: ::V1::Schemas::Enums::InventoryItemTypeEnum,
               name: {type: :string},
               slug: {type: :string},
               available: {type: :boolean}

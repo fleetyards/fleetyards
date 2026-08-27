@@ -17,7 +17,7 @@ class Api::V1::FleetsEventsRecurrenceTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventOccurrenceDateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetEventOccurrenceDateInput
 
       security [
         {SessionCookie: []},
@@ -26,11 +26,11 @@ class Api::V1::FleetsEventsRecurrenceTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetEventExtended"
+        schema ::V1::Schemas::Fleets::Events::FleetEventExtended
       end
 
       response(422, "not recurring") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

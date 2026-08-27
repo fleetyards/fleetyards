@@ -16,11 +16,11 @@ class Api::V1::PublicFleetsStatsVehiclesByModelTest < ActionDispatch::Integratio
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/BarChartStatsList"
+        schema ::Shared::V1::Schemas::BarChartStatsList
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

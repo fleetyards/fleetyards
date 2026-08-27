@@ -48,11 +48,11 @@ module V1
 
             metrics: Shared::V1::Schemas::ModelMetrics,
 
-            cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
-            hydrogenFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/FuelTank"}},
-            quantumFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/FuelTank"}},
-            externalFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/ExternalFuelTank"}},
-            refuelBoom: {"$ref": "#/components/schemas/RefuelBoom"},
+            cargoHolds: {type: :array, items: ::Shared::V1::Schemas::CargoHold},
+            hydrogenFuelTanks: {type: :array, items: ::Shared::V1::Schemas::FuelTank},
+            quantumFuelTanks: {type: :array, items: ::Shared::V1::Schemas::FuelTank},
+            externalFuelTanks: {type: :array, items: ::Shared::V1::Schemas::ExternalFuelTank},
+            refuelBoom: ::Shared::V1::Schemas::RefuelBoom,
 
             onSale: {type: :boolean},
             playerOwnable: {type: :boolean},
@@ -61,7 +61,7 @@ module V1
             price: {type: :number},
             priceLabel: {type: :string},
             productionNote: {type: :string},
-            productionStatus: {"$ref": "#/components/schemas/ModelProductionStatusEnum"},
+            productionStatus: ::Shared::V1::Schemas::Enums::ModelProductionStatusEnum,
             rsiId: {type: :integer},
             rsiName: {type: :string},
             rsiSlug: {type: :string},

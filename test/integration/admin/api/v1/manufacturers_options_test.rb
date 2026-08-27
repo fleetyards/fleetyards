@@ -13,19 +13,19 @@ class Admin::Api::V1::ManufacturersOptionsTest < ActionDispatch::IntegrationTest
       tags "Manufacturers"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: :q, in: :query, schema: {"$ref": "#/components/schemas/ManufacturerQuery"}, required: false
+      parameter ::Shared::V1::Parameters::PageParameter
+      parameter name: :q, in: :query, schema: ::Admin::V1::Schemas::Queries::ManufacturerQuery, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ManufacturerOptions"
+        schema ::Admin::V1::Schemas::Manufacturers::Options::ManufacturerOptions
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

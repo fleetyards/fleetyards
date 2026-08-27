@@ -17,18 +17,18 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/OauthApplicationInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::OauthApplicationInput
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplication"
+        schema ::Admin::V1::Schemas::OauthApplication
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -37,19 +37,19 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       tags "OauthApplications"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: :q, in: :query, schema: {"$ref": "#/components/schemas/OauthApplicationQuery"}, required: false
+      parameter ::Shared::V1::Parameters::PageParameter
+      parameter name: :q, in: :query, schema: ::Admin::V1::Schemas::Queries::OauthApplicationQuery, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplications"
+        schema ::Admin::V1::Schemas::OauthApplications
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -63,19 +63,19 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplication"
+        schema ::Admin::V1::Schemas::OauthApplication
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -85,19 +85,19 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplication"
+        schema ::Admin::V1::Schemas::OauthApplication
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -107,22 +107,22 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::OauthApplicationUpdateInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/OauthApplication"
+        schema ::Admin::V1::Schemas::OauthApplication
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

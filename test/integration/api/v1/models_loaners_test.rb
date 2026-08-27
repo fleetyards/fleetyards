@@ -15,15 +15,15 @@ class Api::V1::ModelsLoanersTest < ActionDispatch::IntegrationTest
       tags "Models"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Models"
+        schema ::V1::Schemas::Models::Models
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

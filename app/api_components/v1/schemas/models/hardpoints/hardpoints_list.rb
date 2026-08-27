@@ -9,7 +9,7 @@ module V1
 
           schema({
             type: :array,
-            items: {"$ref": "#/components/schemas/Hardpoint"}
+            items: ::Shared::V1::Schemas::Hardpoint
           })
         end
       end

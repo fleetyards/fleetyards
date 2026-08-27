@@ -12,8 +12,8 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
-              positionType: {"$ref": "#/components/schemas/ModelPositionTypeEnum"},
-              source: {"$ref": "#/components/schemas/ModelPositionSourceEnum"},
+              positionType: ::V1::Schemas::Enums::ModelPositionTypeEnum,
+              source: ::V1::Schemas::Enums::ModelPositionSourceEnum,
               position: {type: :integer},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

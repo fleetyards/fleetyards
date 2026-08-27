@@ -14,7 +14,7 @@ class Api::V1::FleetResourceAccessCatalogTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/FleetResourceAccessGroupsList"
+        schema ::V1::Schemas::Fleets::FleetResourceAccessGroupsList
       end
     end
   end

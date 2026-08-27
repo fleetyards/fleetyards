@@ -23,8 +23,8 @@ module V1
               totalUnits: {type: :number},
               totalVolumeScu: {type: :number},
               unmeasuredCount: {type: :integer},
-              image: {"$ref": "#/components/schemas/MediaFile"},
-              vehicle: {"$ref": "#/components/schemas/InventoryVehicle"},
+              image: ::Shared::V1::Schemas::MediaFile,
+              vehicle: ::V1::Schemas::InventoryVehicle,
               createdAt: {type: [:string, :null], format: "date-time"},
               updatedAt: {type: [:string, :null], format: "date-time"}
             },

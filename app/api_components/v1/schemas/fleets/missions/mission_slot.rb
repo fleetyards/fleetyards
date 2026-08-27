@@ -11,7 +11,7 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              slottableType: {"$ref": "#/components/schemas/MissionSlottableTypeEnum"},
+              slottableType: ::V1::Schemas::Enums::MissionSlottableTypeEnum,
               slottableId: {type: :string, format: :uuid},
               title: {type: :string},
               description: {type: :string},

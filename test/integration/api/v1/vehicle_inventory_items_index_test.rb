@@ -15,10 +15,10 @@ class Api::V1::VehicleInventoryItemsIndexTest < ActionDispatch::IntegrationTest
       tags "VehicleInventoryItems"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: InventoryItem.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/InventoryItemQuery"},
+        schema: ::V1::Schemas::Queries::InventoryItemQuery,
         style: :deepObject,
         explode: true,
         required: false
@@ -30,15 +30,15 @@ class Api::V1::VehicleInventoryItemsIndexTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/InventoryItemsList"
+        schema ::V1::Schemas::Hangar::Logistics::InventoryItemsList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

@@ -10,8 +10,8 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            category: {"$ref": "#/components/schemas/InventoryCategoryEnum"},
-            unit: {"$ref": "#/components/schemas/InventoryUnitEnum"}
+            category: ::V1::Schemas::Enums::InventoryCategoryEnum,
+            unit: ::V1::Schemas::Enums::InventoryUnitEnum
           },
           additionalProperties: false
         })

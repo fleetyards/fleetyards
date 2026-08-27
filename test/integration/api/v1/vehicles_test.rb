@@ -20,14 +20,14 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
         {OpenId: ["hangar", "hangar:write"]}
       ]
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::VehicleCreateInput
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/Vehicle"
+        schema ::V1::Schemas::Vehicles::Vehicle
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -45,12 +45,12 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
         {OpenId: ["hangar", "hangar:write"]}
       ]
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleUpdateBulkInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::VehicleUpdateBulkInput
 
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -69,7 +69,7 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -90,15 +90,15 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Vehicle"
+        schema ::V1::Schemas::Vehicles::Vehicle
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -114,15 +114,15 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Vehicle"
+        schema ::V1::Schemas::Vehicles::Vehicle
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -138,18 +138,18 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
         {OpenId: ["hangar", "hangar:write"]}
       ]
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::VehicleUpdateInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Vehicle"
+        schema ::V1::Schemas::Vehicles::Vehicle
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

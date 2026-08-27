@@ -8,7 +8,7 @@ module Admin
 
         schema({
           properties: {
-            items: {type: :array, items: {"$ref": "#/components/schemas/FundingGoal"}}
+            items: {type: :array, items: ::Admin::V1::Schemas::FundingGoal}
           },
           required: %w[items]
         })

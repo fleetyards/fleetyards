@@ -10,7 +10,7 @@ module Admin
 
             schema({
               properties: {
-                items: {type: :array, items: {"$ref": "#/components/schemas/FleetOption"}}
+                items: {type: :array, items: ::Admin::V1::Schemas::Fleets::Options::FleetOption}
               },
               required: %w[items]
             })

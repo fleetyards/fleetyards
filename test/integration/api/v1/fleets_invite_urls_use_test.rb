@@ -14,7 +14,7 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetMembershipCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetMembershipCreateInput
 
       security [
         {SessionCookie: []},
@@ -23,19 +23,19 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/FleetMember"
+        schema ::V1::Schemas::Fleets::FleetMember
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(400, "User is already a member of this fleet") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

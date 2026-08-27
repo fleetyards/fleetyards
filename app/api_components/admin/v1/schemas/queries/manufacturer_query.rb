@@ -19,10 +19,8 @@ module Admin
               slugCont: {type: :string},
               slugIn: {type: :array, items: {type: :string}},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/ManufacturerSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/ManufacturerSortEnum"
-              }]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum]}
             },
             additionalProperties: false,
             example: {}

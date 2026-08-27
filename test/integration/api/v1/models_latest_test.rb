@@ -14,7 +14,7 @@ class Api::V1::ModelsLatestTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelsList"
+        schema ::V1::Schemas::Models::ModelsList
       end
     end
   end

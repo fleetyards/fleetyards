@@ -10,22 +10,22 @@ module V1
         schema({
           type: :object,
           properties: {
-            angledView: {"$ref": "#/components/schemas/MediaFile"},
-            angledViewColored: {"$ref": "#/components/schemas/MediaFile"},
-            frontView: {"$ref": "#/components/schemas/MediaFile"},
-            frontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-            sideView: {"$ref": "#/components/schemas/MediaFile"},
-            sideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-            topView: {"$ref": "#/components/schemas/MediaFile"},
-            topViewColored: {"$ref": "#/components/schemas/MediaFile"},
-            extendedAngledView: {"$ref": "#/components/schemas/MediaFile"},
-            extendedAngledViewColored: {"$ref": "#/components/schemas/MediaFile"},
-            extendedFrontView: {"$ref": "#/components/schemas/MediaFile"},
-            extendedFrontViewColored: {"$ref": "#/components/schemas/MediaFile"},
-            extendedSideView: {"$ref": "#/components/schemas/MediaFile"},
-            extendedSideViewColored: {"$ref": "#/components/schemas/MediaFile"},
-            extendedTopView: {"$ref": "#/components/schemas/MediaFile"},
-            extendedTopViewColored: {"$ref": "#/components/schemas/MediaFile"}
+            angledView: ::Shared::V1::Schemas::MediaFile,
+            angledViewColored: ::Shared::V1::Schemas::MediaFile,
+            frontView: ::Shared::V1::Schemas::MediaFile,
+            frontViewColored: ::Shared::V1::Schemas::MediaFile,
+            sideView: ::Shared::V1::Schemas::MediaFile,
+            sideViewColored: ::Shared::V1::Schemas::MediaFile,
+            topView: ::Shared::V1::Schemas::MediaFile,
+            topViewColored: ::Shared::V1::Schemas::MediaFile,
+            extendedAngledView: ::Shared::V1::Schemas::MediaFile,
+            extendedAngledViewColored: ::Shared::V1::Schemas::MediaFile,
+            extendedFrontView: ::Shared::V1::Schemas::MediaFile,
+            extendedFrontViewColored: ::Shared::V1::Schemas::MediaFile,
+            extendedSideView: ::Shared::V1::Schemas::MediaFile,
+            extendedSideViewColored: ::Shared::V1::Schemas::MediaFile,
+            extendedTopView: ::Shared::V1::Schemas::MediaFile,
+            extendedTopViewColored: ::Shared::V1::Schemas::MediaFile
           }
         })
       end

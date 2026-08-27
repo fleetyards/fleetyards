@@ -10,10 +10,10 @@ module V1
         properties: {
           id: {type: :string, format: :uuid},
           price: {type: :number},
-          timeRange: {"$ref": "#/components/schemas/ItemPriceTimeRangeEnum"},
-          priceType: {"$ref": "#/components/schemas/ItemPriceTypeEnum"},
+          timeRange: ::Shared::V1::Schemas::Enums::ItemPriceTimeRangeEnum,
+          priceType: ::Shared::V1::Schemas::Enums::ItemPriceTypeEnum,
           itemId: {type: :string, format: :uuid},
-          itemType: {"$ref": "#/components/schemas/ItemPriceItemTypeEnum"},
+          itemType: ::Shared::V1::Schemas::Enums::ItemPriceItemTypeEnum,
           location: {type: :string},
           locationUrl: {type: :string, format: :uri},
           createdAt: {type: :string, format: "date-time"},

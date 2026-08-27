@@ -18,7 +18,7 @@ module Shared
             hidden: {type: :boolean},
 
             category: {type: :string},
-            type: {"$ref": "#/components/schemas/ComponentTypeEnum"},
+            type: ::Shared::V1::Schemas::Enums::ComponentTypeEnum,
             subType: {type: :string},
 
             inventoryConsumption: {type: :string},
@@ -26,8 +26,8 @@ module Shared
             grade: {type: :string},
             gradeLabel: {type: :string},
             size: {type: :string},
-            class: {"$ref": "#/components/schemas/ComponentClassEnum"},
-            itemClass: {"$ref": "#/components/schemas/ComponentItemClassEnum"},
+            class: ::Shared::V1::Schemas::Enums::ComponentClassEnum,
+            itemClass: ::Shared::V1::Schemas::Enums::ComponentItemClassEnum,
             itemClassLabel: {type: :string},
 
             availability: Shared::V1::Schemas::ItemAvailability,
@@ -38,23 +38,23 @@ module Shared
 
             typeData: {
               anyOf: [
-                {"$ref": "#/components/schemas/ComponentQuantumDrive"},
-                {"$ref": "#/components/schemas/ComponentJumpDrive"},
-                {"$ref": "#/components/schemas/ComponentArmor"},
-                {"$ref": "#/components/schemas/CargoHold"},
-                {"$ref": "#/components/schemas/FuelTank"},
-                {"$ref": "#/components/schemas/ComponentThruster"},
-                {"$ref": "#/components/schemas/ComponentWeapon"},
-                {"$ref": "#/components/schemas/ComponentTractorBeam"},
-                {"$ref": "#/components/schemas/ComponentShield"},
-                {"$ref": "#/components/schemas/ComponentCooler"},
-                {"$ref": "#/components/schemas/ComponentRadar"},
-                {"$ref": "#/components/schemas/ComponentController"},
-                {"$ref": "#/components/schemas/ComponentPowerPlant"}
+                ::Shared::V1::Schemas::ComponentQuantumDrive,
+                ::Shared::V1::Schemas::ComponentJumpDrive,
+                ::Shared::V1::Schemas::ComponentArmor,
+                ::Shared::V1::Schemas::CargoHold,
+                ::Shared::V1::Schemas::FuelTank,
+                ::Shared::V1::Schemas::ComponentThruster,
+                ::Shared::V1::Schemas::ComponentWeapon,
+                ::Shared::V1::Schemas::ComponentTractorBeam,
+                ::Shared::V1::Schemas::ComponentShield,
+                ::Shared::V1::Schemas::ComponentCooler,
+                ::Shared::V1::Schemas::ComponentRadar,
+                ::Shared::V1::Schemas::ComponentController,
+                ::Shared::V1::Schemas::ComponentPowerPlant
               ]
             },
 
-            hardpoints: {type: :array, items: {"$ref": "#/components/schemas/Hardpoint"}},
+            hardpoints: {type: :array, items: ::Shared::V1::Schemas::Hardpoint},
 
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

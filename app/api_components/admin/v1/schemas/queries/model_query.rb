@@ -25,10 +25,8 @@ module Admin
               frontViewBlank: {type: :boolean},
               positionsNeedCurationEq: {type: :boolean},
               sorts: {anyOf: [{
-                type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
-              }, {
-                "$ref": "#/components/schemas/ModelSortEnum"
-              }]}
+                type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
+              }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]}
             },
             additionalProperties: false,
             example: {}

@@ -16,7 +16,7 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/FleetEventCreateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::FleetEventCreateInput
 
       security [
         {SessionCookie: []},
@@ -25,15 +25,15 @@ class Api::V1::FleetsEventsCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/FleetEventExtended"
+        schema ::V1::Schemas::Fleets::Events::FleetEventExtended
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

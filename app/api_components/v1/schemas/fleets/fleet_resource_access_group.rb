@@ -10,8 +10,8 @@ module V1
           type: :object,
           properties: {
             key: {type: :string},
-            privileges: {type: :array, items: {"$ref": "#/components/schemas/FleetRoleResourceAccessEnum"}},
-            managePrivilege: {"$ref": "#/components/schemas/FleetRoleResourceAccessEnum"}
+            privileges: {type: :array, items: ::V1::Schemas::Enums::FleetRoleResourceAccessEnum},
+            managePrivilege: ::V1::Schemas::Enums::FleetRoleResourceAccessEnum
           },
           additionalProperties: false,
           required: %w[key privileges]

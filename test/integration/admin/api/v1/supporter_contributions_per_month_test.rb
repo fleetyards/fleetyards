@@ -14,21 +14,21 @@ class Admin::Api::V1::SupporterContributionsPerMonthTest < ActionDispatch::Integ
       produces "application/json"
 
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/SupporterContributionQuery"},
+        schema: ::Admin::V1::Schemas::Queries::SupporterContributionQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/SupporterContributionMonthlyStats"
+        schema ::Admin::V1::Schemas::SupporterContributionMonthlyStats
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

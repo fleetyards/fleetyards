@@ -20,11 +20,11 @@ class Api::V1::NotificationPreferencesTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/NotificationPreferencesList"
+        schema ::V1::Schemas::NotificationPreferencesList
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -44,16 +44,16 @@ class Api::V1::NotificationPreferencesTest < ActionDispatch::IntegrationTest
         {OpenId: ["notifications", "notifications:write"]}
       ]
 
-      request_body schema: {"$ref": "#/components/schemas/NotificationPreferenceUpdateInput"}
+      request_body schema: ::V1::Schemas::Inputs::NotificationPreferenceUpdateInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/NotificationPreference"
+        schema ::V1::Schemas::NotificationPreference
       end
 
       response(404, "not found for invalid type")
 
       response(401, "unauthorized with wrong scope token") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

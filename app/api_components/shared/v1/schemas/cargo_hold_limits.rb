@@ -9,8 +9,8 @@ module Shared
         schema({
           type: :object,
           properties: {
-            min: {"$ref": "#/components/schemas/CargoHoldLimit"},
-            max: {"$ref": "#/components/schemas/CargoHoldLimit"}
+            min: ::Shared::V1::Schemas::CargoHoldLimit,
+            max: ::Shared::V1::Schemas::CargoHoldLimit
           },
           additionalProperties: false,
           required: %w[min]

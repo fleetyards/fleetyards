@@ -23,15 +23,15 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
         description: "Also destroy fleets where the user is the sole admin but other members exist"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/StandardMessage"
+        schema ::V1::Schemas::StandardMessage
       end
 
       response(400, "blocked by permanent fleet role") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(401, "bad request") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -51,7 +51,7 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -61,7 +61,7 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/UserUpdateInput"}
+      request_body required: true, schema: ::V1::Schemas::Inputs::UserUpdateInput
 
       security [
         {SessionCookie: []},
@@ -70,11 +70,11 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/User"
+        schema ::V1::Schemas::User
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

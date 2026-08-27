@@ -16,22 +16,22 @@ class Admin::Api::V1::FeaturesEnablePercentageOfTimeTest < ActionDispatch::Integ
       consumes "application/json"
       produces "application/json"
 
-      request_body schema: {"$ref": "#/components/schemas/FeaturePercentageInput"}
+      request_body schema: ::Admin::V1::Schemas::Inputs::FeaturePercentageInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Feature"
+        schema ::Admin::V1::Schemas::Feature
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

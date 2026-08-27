@@ -13,17 +13,17 @@ class Api::V1::ImagesIndexTest < ActionDispatch::IntegrationTest
       tags "Images"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: Image.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ImageQuery"},
+        schema: ::V1::Schemas::Queries::ImageQuery,
         style: :deepObject,
         explode: true,
         required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Images"
+        schema ::V1::Schemas::Images
       end
     end
   end

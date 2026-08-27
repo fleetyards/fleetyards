@@ -13,26 +13,26 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
       tags "Users"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: User.default_per_page}, required: false
-      parameter "$ref": "#/components/parameters/SortingParameter"
+      parameter ::Shared::V1::Parameters::SortingParameter
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/UserQuery"},
+        schema: ::Admin::V1::Schemas::Queries::UserQuery,
         style: :deepObject,
         explode: true,
         required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Users"
+        schema ::Admin::V1::Schemas::Users::Users
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -49,23 +49,23 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
         description: "Also destroy fleets where the user is the sole admin but other members exist"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/User"
+        schema ::Admin::V1::Schemas::User
       end
 
       response(400, "blocked by permanent fleet role") do
-        schema "$ref": "#/components/schemas/ValidationError"
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -75,19 +75,19 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/User"
+        schema ::Admin::V1::Schemas::User
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -97,22 +97,22 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/UserInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::UserInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/User"
+        schema ::Admin::V1::Schemas::User
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

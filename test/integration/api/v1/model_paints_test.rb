@@ -13,16 +13,16 @@ class Api::V1::ModelPaintsTest < ActionDispatch::IntegrationTest
       tags "ModelPaints"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelPaint.default_per_page}, required: false
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelPaintQuery"},
+        schema: ::V1::Schemas::Queries::ModelPaintQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelPaintsList"
+        schema ::V1::Schemas::Models::Paints::ModelPaintsList
       end
     end
   end

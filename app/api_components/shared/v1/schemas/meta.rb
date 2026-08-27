@@ -9,7 +9,7 @@ module Shared
         schema({
           type: :object,
           properties: {
-            pagination: {"$ref": "#/components/schemas/Pagination"}
+            pagination: ::Shared::V1::Schemas::Pagination
           },
           additionalProperties: false
         })

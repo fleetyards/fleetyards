@@ -25,12 +25,8 @@ module Shared
             calibrationWarningAngleLimit: {type: :number},
             calibrationDelayInSeconds: {type: :number},
             spoolUpTime: {type: :number},
-            splineJumpParams: {
-              "$ref": "#/components/schemas/ComponentQuantumDriveJump"
-            },
-            quantumBoostParams: {
-              "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
-            },
+            splineJumpParams: ::Shared::V1::Schemas::ComponentQuantumDriveJump,
+            quantumBoostParams: ::Shared::V1::Schemas::ComponentQuantumDriveBoost,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

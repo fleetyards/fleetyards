@@ -8,7 +8,7 @@ module V1
 
         schema({
           type: :array,
-          items: {"$ref": "#/components/schemas/FleetVehicleExport"}
+          items: ::V1::Schemas::Fleets::FleetVehicleExport
         })
       end
     end

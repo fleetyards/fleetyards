@@ -17,18 +17,18 @@ class Admin::Api::V1::ModelModulePackagesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModulePackageInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelModulePackageInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModulePackage"
+        schema ::Admin::V1::Schemas::Models::ModulePackages::ModelModulePackage
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -37,25 +37,25 @@ class Admin::Api::V1::ModelModulePackagesTest < ActionDispatch::IntegrationTest
       tags "ModelModulePackages"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
       parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModulePackage.default_per_page}, required: false
-      parameter "$ref": "#/components/parameters/SortingParameter"
+      parameter ::Shared::V1::Parameters::SortingParameter
       parameter name: "q", in: :query,
-        schema: {"$ref": "#/components/schemas/ModelModulePackageQuery"},
+        schema: ::Admin::V1::Schemas::Queries::ModelModulePackageQuery,
         style: :deepObject,
         explode: true,
         required: false
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModulePackages"
+        schema ::Admin::V1::Schemas::Models::ModulePackages::ModelModulePackages
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end
@@ -71,15 +71,15 @@ class Admin::Api::V1::ModelModulePackagesTest < ActionDispatch::IntegrationTest
       response(204, "successful")
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -89,19 +89,19 @@ class Admin::Api::V1::ModelModulePackagesTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModulePackage"
+        schema ::Admin::V1::Schemas::Models::ModulePackages::ModelModulePackage
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
 
@@ -111,22 +111,22 @@ class Admin::Api::V1::ModelModulePackagesTest < ActionDispatch::IntegrationTest
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModulePackageInput"}
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ModelModulePackageInput
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/ModelModulePackage"
+        schema ::Admin::V1::Schemas::Models::ModulePackages::ModelModulePackage
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

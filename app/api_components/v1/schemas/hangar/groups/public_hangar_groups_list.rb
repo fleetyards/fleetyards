@@ -9,7 +9,7 @@ module V1
 
           schema({
             type: :array,
-            items: {"$ref": "#/components/schemas/HangarGroupPublic"}
+            items: ::V1::Schemas::Hangar::Groups::HangarGroupPublic
           })
         end
       end

@@ -8,7 +8,7 @@ module V1
 
         schema({
           properties: {
-            items: {type: :array, items: {"$ref": "#/components/schemas/VehiclePublic"}}
+            items: {type: :array, items: ::V1::Schemas::Vehicles::VehiclePublic}
           },
           additionalProperties: false,
           required: %w[items]

@@ -15,22 +15,22 @@ class Admin::Api::V1::UsersFleetsTest < ActionDispatch::IntegrationTest
       tags "Users"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter ::Shared::V1::Parameters::PageParameter
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/AdminUserFleets"
+        schema ::Admin::V1::Schemas::AdminUserFleets
       end
 
       response(404, "not found") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
 
       response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
+        schema ::Shared::V1::Schemas::StandardError
       end
     end
   end

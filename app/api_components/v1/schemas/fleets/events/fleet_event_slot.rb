@@ -11,7 +11,7 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              slottableType: {"$ref": "#/components/schemas/FleetEventSlottableTypeEnum"},
+              slottableType: ::V1::Schemas::Enums::FleetEventSlottableTypeEnum,
               slottableId: {type: :string, format: :uuid},
               title: {type: :string},
               description: {type: :string},
@@ -19,11 +19,11 @@ module V1
               derived: {type: :boolean},
               positionType: {type: :string},
               modelPositionId: {type: :string, format: :uuid},
-              signupApproval: {"$ref": "#/components/schemas/FleetEventSignupApprovalEnum"},
-              effectiveSignupApproval: {"$ref": "#/components/schemas/FleetEventSignupApprovalEnum"},
+              signupApproval: ::V1::Schemas::Enums::FleetEventSignupApprovalEnum,
+              effectiveSignupApproval: ::V1::Schemas::Enums::FleetEventSignupApprovalEnum,
               signups: {
                 type: :array,
-                items: {"$ref": "#/components/schemas/FleetEventSignup"}
+                items: ::V1::Schemas::Fleets::Events::FleetEventSignup
               }
             },
             required: %w[id slottableType slottableId title position derived effectiveSignupApproval signups],
