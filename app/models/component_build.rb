@@ -78,6 +78,17 @@ class ComponentBuild < ApplicationRecord
   # column, and `visible` moves with the filters rather than with the readers.
   READ_THROUGH = (FACTS - %i[manufacturer_id hidden]).freeze
 
+  # The facts Component filters and sorts by. One list, so a ransacker and the
+  # fallback join's column list cannot drift apart.
+  #
+  # The six YAML columns are left out on purpose: nothing filters on a serialized
+  # structure, and folding each into the fallback subquery would widen it for no
+  # gain. `description` too -- no filter reaches it.
+  FILTERABLE = %i[
+    name size grade item_type item_class component_class component_type
+    component_sub_type category tracking_signal hidden
+  ].freeze
+
   # The same serialization and enums Component declares, because a build row
   # holding `0` has to read as `stealth` here too, and a YAML string has to come
   # back as the structure it encodes.

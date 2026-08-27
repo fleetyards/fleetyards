@@ -11,7 +11,12 @@ module Admin
 
           component_query_params["sorts"] = sorting_params(Component, component_query_params[:sorts])
 
-          @q = authorized_scope(Component.all).includes(:manufacturer, :item_prices).ransack(component_query_params)
+          # The fallback join, not the fast one: the admin list has to show a
+          # retired component, and one an admin created by hand that no load has
+          # described yet.
+          @q = authorized_scope(Component.with_facts(false))
+            .includes(:manufacturer, :item_prices)
+            .ransack(component_query_params)
 
           @components = @q.result
             .page(params[:page])

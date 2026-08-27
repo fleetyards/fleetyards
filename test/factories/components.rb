@@ -40,6 +40,11 @@ FactoryBot.define do
     name { Faker::Name.name }
     component_class { "RSIModular" }
 
+    # Needed now that the catalogue filter is an inner join to the build: without
+    # a version there is no build, and a component without a build is not in the
+    # catalogue at all. The same reason the equipment factory carries one.
+    version { Rails.configuration.sc_data[:version] }
+
     transient { with_build { true } }
 
     # A build describing the component, mirroring what the backfill did for the

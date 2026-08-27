@@ -37,11 +37,29 @@ module Api
       def index
         components_query_params["sorts"] = "name asc"
 
-        @q = Component.includes(:manufacturer).ransack(components_query_params)
+        # `with_facts` because the filters resolve against the joined build.
+        # Without it a fact condition raises rather than quietly matching the
+        # column, which is the failure mode to want.
+        #
+        # The same flag ransack gets decides the join: for the default it is an
+        # inner join to the build we are on, which already leaves out everything
+        # that build does not describe. `currentVersion=false` needs the fallback
+        # join, or a retired component would be filtered out by the join before
+        # ransack ever sees it.
+        @q = Component.with_facts(current_version)
+          .includes(:manufacturer)
+          .ransack(components_query_params)
 
         @components = @q.result
           .page(params[:page])
           .per(per_page(Component))
+      end
+
+      # Read rather than removed from the query: `current_version` stays a
+      # ransackable scope, so ransack applies it as well. The exists check it adds
+      # is redundant beside the inner join and free beside the fallback one.
+      private def current_version
+        components_query_params.fetch(:current_version, true)
       end
 
       private def components_query_params

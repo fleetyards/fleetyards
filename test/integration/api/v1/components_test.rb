@@ -85,14 +85,29 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Asserted by membership rather than by count: the factory gives every
+  # component the current version now -- it has to, since the catalogue filter is
+  # an inner join to the build -- so the two from `setup` are current as well and
+  # a count would be measuring them too.
   test "GET /components filters out older game versions via currentVersion" do
     current = create(:component, category: "coolers", version: Rails.configuration.sc_data[:version])
-    create(:component, category: "coolers", version: "0.0.1-live.1")
+    older = create(:component, category: "coolers", version: "0.0.1-live.1")
 
     assert_api_response :get, 200, params: {q: {"currentVersion" => true}} do
-      items = parsed_body["items"]
-      assert_equal 1, items.count
-      assert_equal current.name, items.first["name"]
+      names = parsed_body["items"].map { |item| item["name"] }
+
+      assert_includes names, current.name
+      assert_not_includes names, older.name
+    end
+  end
+
+  test "GET /components keeps older game versions when currentVersion is off" do
+    older = create(:component, category: "coolers", version: "0.0.1-live.1")
+
+    assert_api_response :get, 200, params: {q: {"currentVersion" => false}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+
+      assert_includes names, older.name
     end
   end
 end
