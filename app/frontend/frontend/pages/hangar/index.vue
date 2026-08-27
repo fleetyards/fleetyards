@@ -207,7 +207,7 @@ const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
 };
 
 useSubscription({
-  channelName: ChannelsEnum.HANGAR,
+  channelName: ChannelsEnum.HANGAR_CHANNEL,
   received: () => debounce(fetch, 500),
 });
 

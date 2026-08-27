@@ -1,23 +1,10 @@
 import { useCable } from "@/shared/composables/useCable";
 import { Subscription } from "@rails/actioncable";
 
-export enum ChannelsEnum {
-  APP_VERSION = "AppVersionChannel",
-  HANGAR = "HangarChannel",
-  HANGAR_CREATE = "HangarCreateChannel",
-  HANGAR_DESTROY = "HangarDestroyChannel",
-  HANGAR_SYNC = "HangarSyncChannel",
-  WISHLIST_CREATE = "WishlistCreateChannel",
-  WISHLIST_DESTROY = "WishlistDestroyChannel",
-  ON_SALE_HANGAR = "OnSaleHangarChannel",
-  ON_SALE = "OnSaleChannel",
-  IMPORTS = "ImportsChannel",
-  FLEET_MEMBERS = "FleetMembersChannel",
-  FLEET_VEHICLES = "FleetVehiclesChannel",
-  NOTIFICATIONS = "NotificationsChannel",
-  USER_NOTIFICATIONS = "UserNotificationsChannel",
-  ADMIN_NOTIFICATIONS = "AdminNotificationsChannel",
-}
+// Re-exported rather than hand-listed: the Ruby component derives the set from
+// app/channels, so a new channel shows up here without anyone maintaining a
+// second copy. The hand-written list had gone two channels stale.
+export { ChannelsEnum } from "@/services/fyApi";
 
 export const useSubscription = <T = unknown>({
   channelName,

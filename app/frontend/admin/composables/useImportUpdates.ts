@@ -65,7 +65,7 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
   };
 
   useSubscription({
-    channelName: ChannelsEnum.IMPORTS,
+    channelName: ChannelsEnum.IMPORTS_CHANNEL,
     received: handleImportUpdate,
   });
 
