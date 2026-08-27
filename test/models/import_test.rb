@@ -68,6 +68,76 @@ class ImportTest < ActiveSupport::TestCase
     end
   end
 
+  test "a finished import tells the notification center" do
+    admin_user = create(:admin_user, resource_access: [:imports])
+    AdminNotificationsChannel.stubs(:broadcast_to)
+    ImportsChannel.stubs(:broadcast_to)
+
+    record = create(:import, type: "Imports::ModelImport")
+    record.start!
+    record.finish!
+
+    notification = AdminNotification.find_by(admin_user:, notification_type: "import_run")
+
+    assert_not_nil notification
+    assert_equal "info", notification.severity
+    assert_includes notification.title, "finished"
+  end
+
+  test "a failed import carries its error at error severity" do
+    admin_user = create(:admin_user, resource_access: [:imports])
+    AdminNotificationsChannel.stubs(:broadcast_to)
+    ImportsChannel.stubs(:broadcast_to)
+
+    record = create(:import, type: "Imports::ModelImport")
+    record.start!
+    record.update!(info: "RSI returned 502")
+    record.fail!
+
+    notification = AdminNotification.find_by(admin_user:, notification_type: "import_run")
+
+    assert_equal "error", notification.severity
+    assert_equal "RSI returned 502", notification.body
+  end
+
+  # Otherwise every paints run lands twice: once as the report with the missing
+  # models in it, once as a line saying it finished.
+  test "an import whose job files its own report stays quiet on success" do
+    create(:admin_user, resource_access: [:imports])
+    AdminNotificationsChannel.stubs(:broadcast_to)
+    ImportsChannel.stubs(:broadcast_to)
+
+    record = create(:import, type: "Imports::PaintsImport")
+    record.start!
+    record.finish!
+
+    assert_equal 0, AdminNotification.where(notification_type: "import_run").count
+  end
+
+  test "an import whose job files its own report still reports a failure" do
+    create(:admin_user, resource_access: [:imports])
+    AdminNotificationsChannel.stubs(:broadcast_to)
+    ImportsChannel.stubs(:broadcast_to)
+
+    record = create(:import, type: "Imports::PaintsImport")
+    record.start!
+    record.fail!
+
+    assert_equal 1, AdminNotification.where(notification_type: "import_run").count
+  end
+
+  test "an import a user owns is not admin news" do
+    create(:admin_user, resource_access: [:imports])
+    AdminNotificationsChannel.stubs(:broadcast_to)
+    ImportsChannel.stubs(:broadcast_to)
+
+    record = create(:import, type: "Imports::ModelImport", user: create(:user))
+    record.start!
+    record.finish!
+
+    assert_equal 0, AdminNotification.where(notification_type: "import_run").count
+  end
+
   test "notify_admin broadcasts a renderable payload to admins" do
     create(:admin_user)
     record = create(:import, :modules_import)
