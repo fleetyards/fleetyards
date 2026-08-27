@@ -1,6 +1,44 @@
 module ScData
   module Loader
     class ModelsLoader < ::ScData::Loader::BaseLoader
+      # Which axis of the export's bounding box is the length, the beam and the
+      # height. `maxBoundingBoxSize` in the entity record carries three correct
+      # magnitudes but no consistent convention for which is which -- it depends on
+      # how the model was authored -- so the default below is wrong for a handful
+      # of ships. Measured over 1031 ship entities, its largest value sits on `y`
+      # for 829, on `x` for 174 and on `z` for 28.
+      #
+      # It cannot be derived from the export: item-port positions give a reliable
+      # forward axis but do not share the bounding box's frame, the signature
+      # cross-section correlates with nothing, and the meshes that would settle it
+      # are assembled from dozens of parts and are not exported at all.
+      #
+      # So it is curated, and read off the orthographic renders instead. Those
+      # share their edges -- from above a ship is length x beam, from the side
+      # length x height -- which both validates the crop and gives the true
+      # proportions. Each entry below is the permutation whose proportions match
+      # the render; the ship matrix plays no part, which matters because it is
+      # itself wrong for several of them.
+      #
+      # A permutation reflects how the model was authored, so it holds across
+      # patches while the measurements keep coming from the game files. Ships not
+      # listed use the default.
+      AXIS_ORDER = {
+        "drak_caterpillar" => %i[z x y],
+        "crus_starlifter_m2" => %i[x y z],
+        "crus_starlifter_a2" => %i[x y z],
+        "crus_starlifter_c2" => %i[x y z],
+        "crus_star_runner" => %i[x y z],
+        "gama_tyilui" => %i[x y z],
+        "rsi_scorpius" => %i[x y z],
+        "rsi_scorpius_antares" => %i[x y z],
+        "rsi_hermes" => %i[x y z],
+        "tmbl_cyclone" => %i[x y z],
+        "tmbl_storm_aa" => %i[x y z]
+      }.freeze
+
+      DEFAULT_AXIS_ORDER = %i[y x z].freeze
+
       def all
         update_in_game_flags
 
@@ -34,7 +72,7 @@ module ScData
 
         update_params = {}
 
-        update_params = update_metrics(model_data, update_params)
+        update_params = update_metrics(model, model_data, update_params)
         update_params = update_personal_inventory(model_data, update_params)
         hardpoints = model.hardpoints.game_files
         update_params = update_cargo_holds(hardpoints, update_params)
@@ -71,19 +109,28 @@ module ScData
         load_item("models/#{sc_data_identifier}")
       end
 
-      private def update_metrics(model_data, update_params)
+      private def update_metrics(model, model_data, update_params)
         update_params[:mass] = model_data.dig("mass")&.to_f
         update_params[:hull_health] = model_data.dig("hull_health")&.to_f
         update_params[:hull_parts] = model_data.dig("hull_parts")
         update_params[:hull_doors] = extract_hull_doors(model_data)
         update_params[:weapon_pool_size] = model_data.dig("weapon_pool_size")
         update_params[:signature_cross_section] = model_data.dig("signature_cross_section")
-        update_params[:sc_length] = model_data.dig("metrics", "y")&.to_f
-        update_params[:sc_beam] = model_data.dig("metrics", "x")&.to_f
-        update_params[:sc_height] = model_data.dig("metrics", "z")&.to_f
+        update_params.merge!(dimensions(model, model_data))
         update_params[:ground] = model_data.dig("ground") || false
 
         update_params
+      end
+
+      private def dimensions(model, model_data)
+        order = AXIS_ORDER.fetch(model.sc_data_identifier, DEFAULT_AXIS_ORDER)
+        metrics = model_data["metrics"] || {}
+
+        {
+          sc_length: metrics[order[0].to_s]&.to_f,
+          sc_beam: metrics[order[1].to_s]&.to_f,
+          sc_height: metrics[order[2].to_s]&.to_f
+        }
       end
 
       # The ship's own storage container, which the vehicle entity points at
