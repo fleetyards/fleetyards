@@ -93,7 +93,7 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
   };
 
   useSubscription({
-    channelName: ChannelsEnum.ADMIN_NOTIFICATIONS,
+    channelName: ChannelsEnum.ADMIN_NOTIFICATIONS_CHANNEL,
     received,
     enabled,
   });

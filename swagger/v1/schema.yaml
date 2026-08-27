@@ -11901,32 +11901,30 @@ components:
         '32':
           type: number
           minimum: 0
+      propertyNames:
+        "$ref": "#/components/schemas/ContainerSizeEnum"
       additionalProperties: false
       example: {}
       title: ContainerFitQuery
-    Dock:
-      type: object
-      properties:
-        name:
-          type: string
-        group:
-          type: string
-        size:
-          "$ref": "#/components/schemas/DockShipSizeEnum"
-        sizeLabel:
-          type: string
-        type:
-          "$ref": "#/components/schemas/DockTypeEnum"
-        typeLabel:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      - size
-      - sizeLabel
-      - type
-      - typeLabel
-      title: Dock
+    ContainerSizeEnum:
+      type: string
+      enum:
+      - '1'
+      - '2'
+      - '4'
+      - '8'
+      - '16'
+      - '24'
+      - '32'
+      x-enumNames:
+      - SCU_1
+      - SCU_2
+      - SCU_4
+      - SCU_8
+      - SCU_16
+      - SCU_24
+      - SCU_32
+      title: ContainerSizeEnum
     DockCount:
       type: object
       properties:
@@ -11945,40 +11943,6 @@ components:
       - type
       - typeLabel
       title: DockCount
-    DockShipSizeEnum:
-      type: string
-      enum:
-      - extra_extra_small
-      - extra_small
-      - small
-      - medium
-      - large
-      - extra_large
-      - capital
-      x-enumNames:
-      - EXTRA_EXTRA_SMALL
-      - EXTRA_SMALL
-      - SMALL
-      - MEDIUM
-      - LARGE
-      - EXTRA_LARGE
-      - CAPITAL
-      title: DockShipSizeEnum
-    DockTypeEnum:
-      type: string
-      enum:
-      - vehiclepad
-      - garage
-      - landingpad
-      - dockingport
-      - hangar
-      x-enumNames:
-      - VEHICLEPAD
-      - GARAGE
-      - LANDINGPAD
-      - DOCKINGPORT
-      - HANGAR
-      title: DockTypeEnum
     Equipment:
       type: object
       properties:
@@ -12356,13 +12320,6 @@ components:
       required:
       - items
       title: FleetCalendar
-    FleetCheckInput:
-      type: object
-      properties:
-        fid:
-          type: string
-      additionalProperties: false
-      title: FleetCheckInput
     FleetCreateInput:
       type: object
       properties:
@@ -18841,15 +18798,6 @@ components:
       items:
         "$ref": "#/components/schemas/OauthApplication"
       title: OauthApplicationsList
-    OrderDirectionEnum:
-      type: string
-      enum:
-      - asc
-      - desc
-      x-enumNames:
-      - ASC
-      - DESC
-      title: OrderDirectionEnum
     OtpBackupCodes:
       type: object
       properties:
@@ -19000,13 +18948,6 @@ components:
       required:
       - version
       title: ScDataVersion
-    Session:
-      type: object
-      properties:
-        pagination:
-          "$ref": "#/components/schemas/Pagination"
-      additionalProperties: false
-      title: Session
     SessionInput:
       type: object
       properties:
@@ -19690,24 +19631,6 @@ components:
         customName:
           type: string
       title: VehicleBundledParent
-    VehicleCheckSerialInput:
-      type: object
-      properties:
-        serial:
-          type: string
-      additionalProperties: false
-      required:
-      - serial
-      title: VehicleCheckSerialInput
-    VehicleCheckSerialResponse:
-      type: object
-      properties:
-        serialTaken:
-          type: boolean
-      additionalProperties: false
-      required:
-      - serialTaken
-      title: VehicleCheckSerialResponse
     VehicleCreateBulkInput:
       type: object
       properties:

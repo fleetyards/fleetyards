@@ -114,7 +114,7 @@ onUnmounted(() => {
 });
 
 useSubscription({
-  channelName: ChannelsEnum.FLEET_MEMBERS,
+  channelName: ChannelsEnum.FLEET_MEMBERS_CHANNEL,
   received: () => debounce(fetch, 500),
 });
 

@@ -9183,11 +9183,11 @@ components:
         name:
           type: string
         dockType:
-          type: string
+          "$ref": "#/components/schemas/DockTypeEnum"
         dockTypeLabel:
           type: string
         shipSize:
-          type: string
+          "$ref": "#/components/schemas/DockShipSizeEnum"
         shipSizeLabel:
           type: string
         group:
@@ -13776,15 +13776,6 @@ components:
       - meta
       - items
       title: OauthApplications
-    OrderDirectionEnum:
-      type: string
-      enum:
-      - asc
-      - desc
-      x-enumNames:
-      - ASC
-      - DESC
-      title: OrderDirectionEnum
     Pagination:
       type: object
       properties:
@@ -13870,13 +13861,6 @@ components:
       - meta
       - items
       title: RsiRequestLogs
-    Session:
-      type: object
-      properties:
-        pagination:
-          "$ref": "#/components/schemas/Pagination"
-      additionalProperties: false
-      title: Session
     SessionInput:
       type: object
       properties:

@@ -20,6 +20,7 @@ module V1
         schema({
           type: :object,
           properties: SIZES.to_h { |size| [size.to_s, {type: :number, minimum: 0}] },
+          propertyNames: Enums::ContainerSizeEnum,
           additionalProperties: false,
           example: {}
         })

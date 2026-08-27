@@ -4,6 +4,8 @@ module Shared
   module V1
     module Schemas
       module Enums
+        # No request or response carries a channel name — this exists so the
+        # generated client gets the list, which useSubscription re-exports.
         class ChannelsEnum
           include OpenapiRuby::Components::Base
 

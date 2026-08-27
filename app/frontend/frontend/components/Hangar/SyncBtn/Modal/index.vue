@@ -320,7 +320,7 @@ const onSyncDisconnected = () => {
 };
 
 useSubscription({
-  channelName: ChannelsEnum.HANGAR_SYNC,
+  channelName: ChannelsEnum.HANGAR_SYNC_CHANNEL,
   received: onSyncResult,
   disconnected: onSyncDisconnected,
 });

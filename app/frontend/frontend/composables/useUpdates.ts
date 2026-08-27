@@ -129,42 +129,42 @@ export const useUpdates = () => {
   };
 
   useSubscription({
-    channelName: ChannelsEnum.APP_VERSION,
+    channelName: ChannelsEnum.APP_VERSION_CHANNEL,
     received: updateAppVersion,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.ON_SALE_HANGAR,
+    channelName: ChannelsEnum.ON_SALE_HANGAR_CHANNEL,
     received: notifyVehicleOnSale,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.ON_SALE,
+    channelName: ChannelsEnum.ON_SALE_CHANNEL,
     received: notifyOnSale,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.HANGAR_CREATE,
+    channelName: ChannelsEnum.HANGAR_CREATE_CHANNEL,
     received: addShipToHangar,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.HANGAR_DESTROY,
+    channelName: ChannelsEnum.HANGAR_DESTROY_CHANNEL,
     received: removeShipFromHangar,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.WISHLIST_CREATE,
+    channelName: ChannelsEnum.WISHLIST_CREATE_CHANNEL,
     received: addShipToWishlist,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.WISHLIST_DESTROY,
+    channelName: ChannelsEnum.WISHLIST_DESTROY_CHANNEL,
     received: removeShipFromWishlist,
     enabled: isAuthenticated,
   });
@@ -186,7 +186,7 @@ export const useUpdates = () => {
   };
 
   useSubscription({
-    channelName: ChannelsEnum.HANGAR_SYNC,
+    channelName: ChannelsEnum.HANGAR_SYNC_CHANNEL,
     received: handleHangarSyncUpdate,
     enabled: isAuthenticated,
   });
@@ -208,12 +208,12 @@ export const useUpdates = () => {
   );
 
   useSubscription({
-    channelName: ChannelsEnum.NOTIFICATIONS,
+    channelName: ChannelsEnum.NOTIFICATIONS_CHANNEL,
     received: handleAnnouncement,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.USER_NOTIFICATIONS,
+    channelName: ChannelsEnum.USER_NOTIFICATIONS_CHANNEL,
     received: handleUserNotification,
   });
 };
