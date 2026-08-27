@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_27_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -199,6 +199,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_150000) do
     t.index ["sc_key"], name: "index_commodities_on_sc_key", unique: true
     t.index ["slug"], name: "index_commodities_on_slug", unique: true
     t.index ["uex_code"], name: "index_commodities_on_uex_code"
+  end
+
+  create_table "commodity_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "commodity_id", null: false
+    t.string "commodity_type"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "environment", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.index ["commodity_id", "environment", "version"], name: "index_commodity_builds_on_commodity_and_build", unique: true
+    t.index ["commodity_id"], name: "index_commodity_builds_on_commodity_id"
+    t.index ["environment", "commodity_type"], name: "index_commodity_builds_on_environment_and_commodity_type"
+    t.index ["environment", "version"], name: "index_commodity_builds_on_environment_and_version"
   end
 
   create_table "compare_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1557,6 +1572,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_150000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "admin_notifications", "admin_users", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "fleet_event_admins", "fleet_events"

@@ -11014,6 +11014,8 @@ components:
           type:
           - string
           - 'null'
+        retired:
+          type: boolean
         storeImage:
           "$ref": "#/components/schemas/MediaFile"
         availability:
@@ -11029,6 +11031,7 @@ components:
       - id
       - name
       - slug
+      - retired
       - availability
       - createdAt
       - updatedAt

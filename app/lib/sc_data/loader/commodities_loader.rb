@@ -5,6 +5,9 @@ module ScData
         loaded = load_items("commodities").filter_map { |commodity_data| one(commodity_data)&.id }
 
         retire_absent(Commodity, loaded)
+        retire_absent_builds(CommodityBuild, :commodity_id, loaded)
+
+        prune_builds(CommodityBuild)
       end
 
       def one(commodity_data)
@@ -15,6 +18,7 @@ module ScData
         commodity ||= Commodity.new(sc_key: commodity_data["sc_key"])
 
         apply(commodity, update_params(commodity_data))
+        apply_build(commodity, update_params(commodity_data).except(:sc_key, :sc_ref, :version))
 
         # Filled in only while empty, the same way the manufacturer logo is:
         # `store_image` is curated -- an admin uploads it -- so following the

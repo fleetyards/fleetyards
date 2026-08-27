@@ -13,6 +13,10 @@ module V1
           slug: {type: :string},
           commodityType: {type: [:string, :null]},
           description: {type: [:string, :null]},
+
+          # Whether the build we are on still describes this commodity. Until now
+          # the API served one the export had dropped as though it were current.
+          retired: {type: :boolean},
           storeImage: ::Shared::V1::Schemas::MediaFile,
 
           # The UEX snapshot prices commodities at every terminal that trades
@@ -24,7 +28,7 @@ module V1
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
-        required: %w[id name slug availability createdAt updatedAt]
+        required: %w[id name slug retired availability createdAt updatedAt]
       })
     end
   end

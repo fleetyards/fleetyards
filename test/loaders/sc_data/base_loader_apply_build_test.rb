@@ -180,6 +180,41 @@ module ScData
         assert Component.exists?(dropped.id), "the row itself has to stay"
         assert_empty dropped.builds.current
       end
+
+      # The same helper, the third catalogue. Commodities are the simplest of the
+      # three -- three facts, no enums, no serialized columns, no manufacturer --
+      # so what this pins is that the loader writes only what a build says: the
+      # identity keys and the UEX mapping stay on the row.
+      test "#apply_build works the same for a commodity" do
+        commodity = create(:commodity, :without_build)
+
+        @loader.apply_build(commodity, {name: "Quantanium", commodity_type: "mineral"})
+
+        build = commodity.builds.sole
+        assert_equal "Quantanium", build.name
+        assert_equal "mineral", build.commodity_type
+        assert_equal ::ScData::Source.environment, build.environment
+        assert_equal ::ScData::Source.version, build.version
+      end
+
+      test "a commodity build carries no identity or UEX columns to write to" do
+        %w[sc_key sc_ref slug uex_id uex_code].each do |column|
+          refute_includes CommodityBuild.column_names, column
+        end
+      end
+
+      test "#retire_absent_builds drops a commodity's current build but keeps the commodity" do
+        kept = create(:commodity, :without_build)
+        dropped = create(:commodity, :without_build)
+        create(:commodity_build, commodity: kept)
+        create(:commodity_build, commodity: dropped)
+
+        @loader.retire_absent_builds(CommodityBuild, :commodity_id, [kept.id])
+
+        assert_equal 1, CommodityBuild.current.count
+        assert Commodity.exists?(dropped.id), "the row itself has to stay"
+        assert_empty dropped.builds.current
+      end
     end
   end
 end

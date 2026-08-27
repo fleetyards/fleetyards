@@ -21,8 +21,13 @@ module ScData
         assert_equal({created: 1, updated: 0, unchanged: 0}, @loader.stats["Commodity"])
       end
 
+      # `:without_build` here and below: `apply` writes the column, and a commodity
+      # reads its build in preference to it, so a commodity with a build would
+      # read as "Old" however the column moved. What is under test is the counting
+      # seam, not the fact layering -- the loader always calls `apply_build`
+      # alongside `apply`.
       test "#apply counts a record whose attributes moved as updated" do
-        commodity = create(:commodity, name: "Old")
+        commodity = create(:commodity, :without_build, name: "Old")
 
         @loader.apply(commodity, {name: "New"})
 
@@ -33,7 +38,7 @@ module ScData
       # The distinction the seam exists for: assigning the values a row already
       # holds is not a write, and a run of those should not read as one.
       test "#apply counts a record assigned its own values as unchanged" do
-        commodity = create(:commodity, name: "Same")
+        commodity = create(:commodity, :without_build, name: "Same")
 
         @loader.apply(commodity, {name: "Same"})
 
