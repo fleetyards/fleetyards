@@ -1,6 +1,8 @@
 ---
 es:
   validation_error:
+    sc_data_unlisted_model:
+      create_model: No se pudo crear la nave a partir de los archivos del juego.
     change_pasword: Cambio de contraseña fallido.
     confirmation: Confirmación fallida.
     vehicle:

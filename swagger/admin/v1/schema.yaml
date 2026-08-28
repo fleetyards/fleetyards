@@ -6496,6 +6496,229 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/unlisted-models":
+    get:
+      summary: Unlisted models list
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModels
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ScDataUnlistedModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataUnlistedModels"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/unlisted-models/{id}/create-model":
+    parameters:
+    - name: id
+      in: path
+      description: Unlisted model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Create Model
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelCreateModel
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataUnlistedModel"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/unlisted-models/{id}/ignore":
+    parameters:
+    - name: id
+      in: path
+      description: Unlisted model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Ignore
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelIgnore
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataUnlistedModel"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/unlisted-models/{id}/mark-as-paint":
+    parameters:
+    - name: id
+      in: path
+      description: Unlisted model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Mark As Paint
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelMarkAsPaint
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataUnlistedModel"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/unlisted-models/{id}/reset":
+    parameters:
+    - name: id
+      in: path
+      description: Unlisted model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Reset
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelReset
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataUnlistedModel"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/users":
     get:
       summary: Users list
@@ -7596,6 +7819,7 @@ components:
       - weekly_stats
       - ship_matrix_import
       - sc_data_import
+      - sc_data_unlisted_models
       - import_run
       x-enumNames:
       - PAINTS_IMPORT
@@ -7609,6 +7833,7 @@ components:
       - WEEKLY_STATS
       - SHIP_MATRIX_IMPORT
       - SC_DATA_IMPORT
+      - SC_DATA_UNLISTED_MODELS
       - IMPORT_RUN
       title: AdminNotificationTypeEnum
     AdminNotificationUnreadCount:
@@ -11084,6 +11309,28 @@ components:
       additionalProperties: false
       example: {}
       title: ManufacturerQuery
+    ManufacturerRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        code:
+          type:
+          - string
+          - 'null'
+        slug:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      title: ManufacturerRef
     ManufacturerSortEnum:
       type: string
       enum:
@@ -13914,6 +14161,128 @@ components:
       - meta
       - items
       title: RsiRequestLogs
+    ScDataUnlistedModel:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        identifier:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        comparison:
+          "$ref": "#/components/schemas/UnlistedModelComparisonEnum"
+        decision:
+          "$ref": "#/components/schemas/UnlistedModelDecisionEnum"
+        decidedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        firstSeenVersion:
+          type: string
+        lastSeenVersion:
+          type: string
+        environment:
+          type: string
+        manufacturerCode:
+          type:
+          - string
+          - 'null'
+        manufacturer:
+          oneOf:
+          - "$ref": "#/components/schemas/ManufacturerRef"
+          - type: 'null'
+        baseModel:
+          oneOf:
+          - "$ref": "#/components/schemas/ModelRef"
+          - type: 'null'
+        model:
+          oneOf:
+          - "$ref": "#/components/schemas/ModelRef"
+          - type: 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - identifier
+      - firstSeenVersion
+      - lastSeenVersion
+      - environment
+      - createdAt
+      - updatedAt
+      title: ScDataUnlistedModel
+    ScDataUnlistedModelQuery:
+      type: object
+      properties:
+        identifierCont:
+          type: string
+        nameCont:
+          type: string
+        comparisonEq:
+          "$ref": "#/components/schemas/UnlistedModelComparisonEnum"
+        manufacturerCodeEq:
+          type: string
+        decisionEq:
+          "$ref": "#/components/schemas/UnlistedModelDecisionEnum"
+        decisionNull:
+          type: boolean
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ScDataUnlistedModelSortEnum"
+          - "$ref": "#/components/schemas/ScDataUnlistedModelSortEnum"
+      additionalProperties: false
+      example: {}
+      title: ScDataUnlistedModelQuery
+    ScDataUnlistedModelSortEnum:
+      type: string
+      enum:
+      - identifier asc
+      - identifier desc
+      - name asc
+      - name desc
+      - comparison asc
+      - comparison desc
+      - firstSeenVersion asc
+      - firstSeenVersion desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - IDENTIFIER_ASC
+      - IDENTIFIER_DESC
+      - NAME_ASC
+      - NAME_DESC
+      - COMPARISON_ASC
+      - COMPARISON_DESC
+      - FIRST_SEEN_VERSION_ASC
+      - FIRST_SEEN_VERSION_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ScDataUnlistedModelSortEnum
+    ScDataUnlistedModels:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ScDataUnlistedModel"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ScDataUnlistedModels
     SessionInput:
       type: object
       properties:
@@ -14216,6 +14585,27 @@ components:
       - VTOL
       - MAV
       title: ThrusterClassEnum
+    UnlistedModelComparisonEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - identical
+      - refitted
+      - structural
+      - unrelated
+      -
+      title: UnlistedModelComparisonEnum
+    UnlistedModelDecisionEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - ignored
+      - model
+      - paint
+      -
+      title: UnlistedModelDecisionEnum
     User:
       type: object
       properties:

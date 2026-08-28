@@ -1,6 +1,8 @@
 ---
 en:
   validation_error:
+    sc_data_unlisted_model:
+      create_model: Ship could not be created from the game files.
     change_pasword: Password Change failed.
     confirmation: Confirmation failed.
     vehicle:

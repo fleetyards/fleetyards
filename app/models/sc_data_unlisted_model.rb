@@ -48,4 +48,58 @@ class ScDataUnlistedModel < ApplicationRecord
   def manufacturer
     Manufacturer.find_by(code: manufacturer_code) if manufacturer_code.present?
   end
+
+  # Turns the entry into a real model. The export gives a name; the identifier
+  # gives a manufacturer, which `belongs_to :manufacturer` requires. Nothing else
+  # is guessed -- the next sc_data load fills in the mechanics and flips
+  # `in_game`, because a parsed file exists for it by definition.
+  #
+  # Created hidden, which is the column default: an admin still has to give it
+  # images, a classification and a production status before it belongs in the
+  # public catalogue.
+  def create_model!
+    raise ArgumentError, "already decided" if decision.present?
+    raise ArgumentError, "no manufacturer for #{identifier}" if manufacturer.blank?
+
+    transaction do
+      created = Model.create!(name: name.presence || identifier, manufacturer:, sc_key: identifier)
+
+      update!(decision: "model", model: created, decided_at: Time.current)
+
+      created
+    end
+  end
+
+  def decide!(decision)
+    update!(decision:, decided_at: Time.current)
+  end
+
+  def mark_as_paint!
+    decide!("paint")
+  end
+
+  # Back to undecided, for a decision made in error. The model a `create_model`
+  # left behind is not deleted here -- deleting a ship is its own action, and a
+  # hangar entry may already point at it.
+  def reset!
+    update!(decision: nil, model: nil, decided_at: nil)
+  end
+
+  DEFAULT_SORTING_PARAMS = ["identifier asc"]
+  ALLOWED_SORTING_PARAMS = [
+    "identifier asc", "identifier desc",
+    "name asc", "name desc",
+    "comparison asc", "comparison desc",
+    "firstSeenVersion asc", "firstSeenVersion desc",
+    "createdAt asc", "createdAt desc"
+  ]
+
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[id identifier name comparison decision manufacturer_code first_seen_version
+      last_seen_version created_at updated_at]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[base_model model]
+  end
 end
