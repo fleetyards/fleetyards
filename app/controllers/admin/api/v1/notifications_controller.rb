@@ -89,6 +89,68 @@ module Admin
           head :no_content
         end
 
+        def read_bulk
+          authorize! with: ::Admin::NotificationPolicy
+
+          bulk(:unread, read_at: Time.current)
+        end
+
+        def unread_bulk
+          authorize! with: ::Admin::NotificationPolicy
+
+          bulk(:read, read_at: nil)
+        end
+
+        def archive_bulk
+          authorize! with: ::Admin::NotificationPolicy
+
+          bulk(:inbox, archived_at: Time.current)
+        end
+
+        def unarchive_bulk
+          authorize! with: ::Admin::NotificationPolicy
+
+          bulk(:archived, archived_at: nil)
+        end
+
+        def destroy_bulk
+          authorize! with: ::Admin::NotificationPolicy
+
+          @count = bulk_selection.delete_all
+
+          render :bulk
+        end
+
+        # Only the rows the action has something to do to: marking an already read
+        # notification read again would move its `read_at` to now for nothing,
+        # and the count that comes back is then what actually changed.
+        private def bulk(narrow, attributes)
+          @count = bulk_selection.public_send(narrow)
+            .update_all(**attributes, updated_at: Time.current)
+
+          render :bulk
+        end
+
+        # The reader either ticked rows or asked for everything the current
+        # filter matches, and `all` has to say so out loud. A body naming
+        # neither selects nothing rather than everything: the other reading of
+        # it is `destroy_all` by accident.
+        private def bulk_selection
+          return filtered_scope if ActiveModel::Type::Boolean.new.cast(params[:all])
+
+          scope.where(id: Array(params[:ids]))
+        end
+
+        # The list the index would return, without the paging and without the
+        # ordering - PostgreSQL refuses an ORDER BY in an UPDATE, and it means
+        # nothing there anyway.
+        private def filtered_scope
+          query = notification_query_params.except("sorts")
+          query["archived_at_null"] = true unless query.key?("archived_at_null")
+
+          scope.ransack(query).result.reorder(nil)
+        end
+
         private def scope
           authorized_scope(AdminNotification.all, with: ::Admin::NotificationPolicy).active
         end

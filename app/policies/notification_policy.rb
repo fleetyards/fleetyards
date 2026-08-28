@@ -2,7 +2,8 @@
 
 class NotificationPolicy < ApplicationPolicy
   alias_rule :index?, :destroy?, :update?, :read?, :unread?, :archive?, :unarchive?,
-    :unread_count?, to: :show?
+    :unread_count?, :read_bulk?, :unread_bulk?, :archive_bulk?, :unarchive_bulk?,
+    :destroy_bulk?, to: :show?
 
   def show?
     user.present?

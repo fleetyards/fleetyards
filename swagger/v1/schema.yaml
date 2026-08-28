@@ -7638,6 +7638,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/archive-bulk":
+    put:
+      summary: Archive the selected notifications
+      tags:
+      - Notifications
+      operationId: archiveBulkNotifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/NotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/destroy-all":
     delete:
       summary: Delete all notifications
@@ -7661,6 +7696,41 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/notifications/destroy-bulk":
+    put:
+      summary: Delete the selected notifications
+      tags:
+      - Notifications
+      operationId: destroyBulkNotifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/NotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/read-all":
     put:
       summary: Mark all notifications as read
@@ -7684,6 +7754,111 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/notifications/read-bulk":
+    put:
+      summary: Mark the selected notifications as read
+      tags:
+      - Notifications
+      operationId: readBulkNotifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/NotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/unarchive-bulk":
+    put:
+      summary: Move the selected notifications back to the inbox
+      tags:
+      - Notifications
+      operationId: unarchiveBulkNotifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/NotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/unread-bulk":
+    put:
+      summary: Mark the selected notifications as unread
+      tags:
+      - Notifications
+      operationId: unreadBulkNotifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/NotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/unread-count":
     get:
       summary: Unread notification count
@@ -18656,6 +18831,32 @@ components:
       - createdAt
       - updatedAt
       title: Notification
+    NotificationBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        all:
+          type: boolean
+          default: false
+          description: Apply to every notification matching `q` instead of `ids`.
+        q:
+          "$ref": "#/components/schemas/NotificationQuery"
+      additionalProperties: false
+      description: Naming neither `ids` nor `all` selects nothing.
+      title: NotificationBulkInput
+    NotificationBulkResult:
+      type: object
+      properties:
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - count
+      title: NotificationBulkResult
     NotificationPreference:
       type: object
       properties:
