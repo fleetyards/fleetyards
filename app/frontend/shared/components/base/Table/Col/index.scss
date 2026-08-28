@@ -1,7 +1,33 @@
+/*
+ * The hovered row is signed with the end-cap motif turned on its side:
+ * --cap-h-row wide, rounded on the inward edge only so the outward edge stays
+ * flush with the frame. It steps down from the panel's own --cap-h, because a
+ * row is a smaller unit than the frame and should not sign itself as heavily.
+ *
+ * It stays --color-primary rather than the neutral --color-endcap, because the
+ * rail only exists while the row is hovered. Btn draws the same distinction:
+ * its cap rests at --color-endcap and turns --color-primary on hover, active
+ * and focus-visible. A rail in the frame's own grey would state the row's
+ * structure, not that you are pointing at it.
+ *
+ * What goes is the bloom - three 10px shadows at 0.9 alpha, which was the
+ * loudest thing on a surface whose whole premise is restraint. Btn signals the
+ * same state with the flat colour alone.
+ *
+ * The var() fallbacks are load-bearing, not decorative - the embed bundle never
+ * registers :root. Same call Panel makes for its own caps.
+ */
 .base-table-col {
   padding: 10px;
   position: relative;
   transition: background-color 0.3s ease;
+
+  /*
+   * Both rails read as one cue on the same row, so the height is named once
+   * rather than written twice - the two had already drifted to 65% and 70%,
+   * which the bloom used to cover and a flat 3px rail does not.
+   */
+  --rail-h: 70%;
 
   &:first-child {
     padding-left: 20px;
@@ -9,20 +35,16 @@
     &::before {
       position: absolute;
       top: 50%;
-      width: 4px;
-      height: 65%;
+      width: var(--cap-h-row, 3px);
+      height: var(--rail-h, 70%);
       transform: translate(0, -50%);
       transition: opacity 0.3s ease;
-      background-color: $primary;
+      background-color: var(--color-primary, #428bca);
       opacity: 0;
       content: "";
       left: 0;
-      border-top-right-radius: 2px;
-      border-bottom-right-radius: 2px;
-      box-shadow:
-        3px 0 10px rgba(darken($primary, 20%), 0.9),
-        0 3px 10px rgba(darken($primary, 20%), 0.9),
-        0 -3px 10px rgba(darken($primary, 20%), 0.9);
+      border-top-right-radius: var(--cap-r-row, 1.5px);
+      border-bottom-right-radius: var(--cap-r-row, 1.5px);
     }
   }
 
@@ -32,20 +54,16 @@
     &::after {
       position: absolute;
       top: 50%;
-      width: 4px;
-      height: 70%;
+      width: var(--cap-h-row, 3px);
+      height: var(--rail-h, 70%);
       transition: opacity 0.3s ease;
       transform: translate(0, -50%);
-      background-color: $primary;
+      background-color: var(--color-primary, #428bca);
       opacity: 0;
       content: "";
       right: 0;
-      border-top-left-radius: 2px;
-      border-bottom-left-radius: 2px;
-      box-shadow:
-        -3px 0 10px rgba(darken($primary, 20%), 0.9),
-        0 3px 10px rgba(darken($primary, 20%), 0.9),
-        0 -3px 10px rgba(darken($primary, 20%), 0.9);
+      border-top-left-radius: var(--cap-r-row, 1.5px);
+      border-bottom-left-radius: var(--cap-r-row, 1.5px);
     }
   }
 
@@ -92,6 +110,6 @@
 
 th.base-table-col {
   color: darken($text-color, 20%);
-  border-bottom: 1px solid $gray;
+  border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   white-space: nowrap;
 }
