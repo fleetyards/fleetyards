@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useNotificationActions } from "@/frontend/composables/useNotificationActions";
 import { type Notification } from "@/services/fyApi";
 
 type Props = {
@@ -35,6 +36,10 @@ const emit = defineEmits<{
 }>();
 
 const { t, l } = useI18n();
+
+const { primaryLink } = useNotificationActions();
+
+const primary = computed(() => primaryLink(props.notification));
 
 const select = ref<HTMLButtonElement>();
 
@@ -94,6 +99,18 @@ defineExpose({ focus: () => select.value?.focus() });
       </span>
     </button>
     <div class="notification-item__actions">
+      <!-- Only the way on, and only as an icon: the row has to survive on a
+           phone, and anything the reader has to weigh up belongs in the
+           reading pane, which is the surface that knows the current state. -->
+      <Btn
+        v-if="primary"
+        v-tooltip="t(`labels.notificationActions.${primary.key}`)"
+        :aria-label="t(`labels.notificationActions.${primary.key}`)"
+        :to="primary.to"
+        data-test="notification-item-open"
+      >
+        <i :class="primary.icon" />
+      </Btn>
       <Btn
         v-if="notification.archived"
         v-tooltip="t('actions.notifications.unarchive')"

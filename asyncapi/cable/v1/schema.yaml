@@ -2843,6 +2843,8 @@ components:
           type: string
         icon:
           type: string
+        record:
+          "$ref": "#/components/schemas/NotificationRecord"
         read:
           type: boolean
         readAt:
@@ -2875,6 +2877,40 @@ components:
       - expiresAt
       - createdAt
       - updatedAt
+    NotificationRecord:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/NotificationRecordTypeEnum"
+        id:
+          type: string
+          format: uuid
+        fleetSlug:
+          type: string
+        username:
+          type: string
+        eventSlug:
+          type: string
+        inventorySlug:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - id
+    NotificationRecordTypeEnum:
+      type: string
+      enum:
+      - fleet_membership
+      - fleet_event
+      - fleet_inventory
+      - vehicle
+      - hangar_sync
+      x-enumNames:
+      - FLEET_MEMBERSHIP
+      - FLEET_EVENT
+      - FLEET_INVENTORY
+      - VEHICLE
+      - HANGAR_SYNC
     NotificationTypeEnum:
       type: string
       enum:

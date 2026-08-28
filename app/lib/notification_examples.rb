@@ -7,7 +7,13 @@
 module NotificationExamples
   module_function
 
-  def create_for(user)
+  # `records` attaches a real record to the examples that name one. Without it
+  # the fixtures show the links and nothing else: the actions that answer an
+  # invite or sign up for an event are decided by the record's current state,
+  # so a notification pointing at nothing has none of them. The caller builds
+  # the records - this module is loaded in production and does not know
+  # FactoryBot.
+  def create_for(user, records: {})
     examples.each do |example|
       occurred_at = example[:age].ago
 
@@ -18,6 +24,7 @@ module NotificationExamples
         body: example[:body],
         link: example[:link],
         icon: example[:icon],
+        record: records[example[:type]],
         read_at: example[:read] ? occurred_at + 1.minute : nil,
         archived_at: example[:archived] ? occurred_at + 2.minutes : nil,
         created_at: occurred_at,
@@ -32,7 +39,7 @@ module NotificationExamples
         type: :fleet_invite,
         title: "You were invited to Test Fleet",
         body: "Accept the invite to see the fleet's hangar and events.",
-        link: "/fleets",
+        link: "/fleets/invites",
         icon: "fa-duotone fa-users",
         age: 6.minutes
       },
@@ -54,6 +61,7 @@ module NotificationExamples
       {
         type: :hangar_create,
         title: "Aurora MR added to your hangar",
+        link: "/hangar",
         icon: "fa-duotone fa-warehouse",
         age: 3.hours
       },
@@ -77,6 +85,7 @@ module NotificationExamples
       {
         type: :wishlist_create,
         title: "Carrack added to your wishlist",
+        link: "/hangar",
         icon: "fa-duotone fa-heart",
         read: true,
         age: 2.days

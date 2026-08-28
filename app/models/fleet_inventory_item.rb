@@ -69,7 +69,7 @@ class FleetInventoryItem < ApplicationRecord
         user: recipient,
         type: :fleet_inventory_item_added,
         title: I18n.t("notifications.fleet_inventory_item_added.title", item_name: name, fleet: fleet.name),
-        link: Rails.application.routes.url_helpers.frontend_fleet_path(fleet.slug),
+        link: "/fleets/#{fleet.slug}/logistics/inventories/#{fleet_inventory.slug}",
         record: fleet_inventory
       )
     end

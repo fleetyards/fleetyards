@@ -14,6 +14,7 @@ module V1
           body: {type: :string},
           link: {type: :string},
           icon: {type: :string},
+          record: ::V1::Schemas::NotificationRecord,
           read: {type: :boolean},
           readAt: {type: :string, format: "date-time"},
           archived: {type: :boolean},

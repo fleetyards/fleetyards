@@ -15,7 +15,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
-  resources :fleet_members, path: "members", param: :username, only: %i[index create destroy] do
+  resources :fleet_members, path: "members", param: :username, only: %i[index show create destroy] do
     member do
       put :demote
       put :promote

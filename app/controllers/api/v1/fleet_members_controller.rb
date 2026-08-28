@@ -14,13 +14,13 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
-        only: %i[index]
+        only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
         only: %i[create accept_request decline_request promote demote destroy]
 
-      before_action :set_fleet, only: %i[index create accept_request decline_request promote demote destroy]
-      before_action :set_member, only: %i[accept_request decline_request promote demote destroy]
+      before_action :set_fleet, only: %i[index show create accept_request decline_request promote demote destroy]
+      before_action :set_member, only: %i[show accept_request decline_request promote demote destroy]
 
       def index
         authorize! with: FleetMembershipPolicy, context: {fleet: @fleet}
@@ -38,6 +38,13 @@ module Api
           .joins(:user)
 
         @members = result_with_pagination(result, per_page(FleetMembership))
+      end
+
+      # `set_member` has already found and authorized it. Reading one member on
+      # its own is what a notification about a membership needs: it links to a
+      # request that may long since have been answered, and the answer is the
+      # member's state.
+      def show
       end
 
       def create
