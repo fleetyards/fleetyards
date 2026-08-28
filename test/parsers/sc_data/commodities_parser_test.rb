@@ -122,6 +122,41 @@ module ScData
         assert_equal ["Ship Ammunition - Size 1"], @parser.commodities.pluck(:name)
       end
 
+      # Ship Ammunition is the one good the game names from outside the
+      # commodity namespace: its record borrows the ammo crate item's keys, so
+      # it went missing altogether and its prices had nothing to attach to.
+      test "#commodities names the good that borrows the ammo crate's keys" do
+        translate(
+          "item_NameAmmoCrate" => "Ship Ammunition",
+          "item_DescAmmoCrate" => "Refill your ship's ballistic ammunition.",
+          "items_commodities_type_processedGoods" => "Processed Goods"
+        )
+        commodity_record(
+          "processedgoods/shipammunition",
+          display_name: "@item_NameAmmoCrate",
+          display_type: "@items_commodities_type_processedGoods"
+        )
+
+        commodity = @parser.commodities.first
+
+        assert_equal "items_commodities_shipammunition", commodity[:sc_key]
+        assert_equal "Ship Ammunition", commodity[:name]
+        assert_equal "Refill your ship's ballistic ammunition.", commodity[:description]
+        assert_equal "processed_goods", commodity[:commodity_type]
+      end
+
+      # Only that one is aliased. The rest of what the database names from
+      # outside the namespace is a helmet and two unnamed mission props, and
+      # a rule reading any key at all would carry them in.
+      test "#commodities keeps a resource named from outside the namespace out of the catalogue" do
+        translate("item_Name_basl_combat_light_helmet_02_01_01" => "Ace Interceptor Helmet")
+        resource_types(
+          resource_type("AceInterceptorHelmet", display_name: "@item_Name_basl_combat_light_helmet_02_01_01")
+        )
+
+        assert_empty @parser.commodities
+      end
+
       # The database names each group of resources under the same form of key
       # the crates use for their own type labels.
       test "#commodities keeps the name of a group of resources out of the catalogue" do
