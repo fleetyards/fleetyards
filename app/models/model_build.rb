@@ -87,6 +87,15 @@ class ModelBuild < ApplicationRecord
   serialize :external_fuel_tanks, coder: YAML
   serialize :refuel_boom, coder: YAML
 
+  # The facts Model filters and sorts by, which is every one of them that
+  # `Model.ransackable_attributes` lists. The other twelve nothing queries.
+  FILTERABLE = %i[
+    mass scm_speed max_speed personal_inventory ground
+    pitch yaw roll
+    ground_max_speed ground_reverse_speed ground_acceleration ground_decceleration
+    cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks
+  ].freeze
+
   validates :environment, presence: true
   validates :version, presence: true
   validates :model_id, uniqueness: {scope: [:environment, :version]}

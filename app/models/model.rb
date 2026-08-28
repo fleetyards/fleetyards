@@ -223,6 +223,44 @@ class Model < ApplicationRecord
     end
   end
 
+  # One fact, for a query rather than a reader.
+  #
+  # A correlated subquery rather than the joined alias the other three catalogues
+  # use, because Model is the one whose facts are reached **without** a join:
+  # `Vehicle` sorts by `modelMass`, `modelScmSpeed`, `modelMaxSpeed` and
+  # `modelGroundMaxSpeed` through its `model` association, and ransack builds
+  # that join itself. An expression naming an alias nobody joined raises
+  # `PG::UndefinedTable` -- measured, on the hangar.
+  #
+  # The `COALESCE` the other catalogues avoid is unavoidable here for the same
+  # reason build existence cannot be this catalogue's filter: 31 of 246 models
+  # are concept ships no build describes, and a filter that dropped them would
+  # empty the catalogue of everything not yet flying.
+  #
+  # It is affordable because the subquery resolves at most one row per *model*,
+  # not per result row -- Postgres memoizes on `vehicles.model_id`. Measured
+  # against the columns on the largest sets in the database: the biggest hangar
+  # (5,992 vehicles) 0.69ms against 1.09ms, the biggest fleet (9,598) 1.32ms
+  # against 0.56ms, the models list 0.48ms against 0.30ms.
+  def self.fact_sql(fact, source = ::ScData::Source.current)
+    sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+      COALESCE(
+        (SELECT model_facts.#{fact} FROM model_builds model_facts
+          WHERE model_facts.model_id = models.id
+            AND model_facts.environment = ?
+            AND model_facts.version = ?),
+        models.#{fact}
+      )
+    SQL
+  end
+
+  # Filtering and sorting read the build. Each shadows a real column of the same
+  # name -- a ransacker wins over a column -- so every query parameter keeps
+  # working untouched, with no API and no frontend change.
+  ModelBuild::FILTERABLE.each do |fact|
+    ransacker(fact) { Arel.sql(Model.fact_sql(fact)) }
+  end
+
   # The column still answers for a model no build describes -- every concept ship,
   # and every ship the export dropped before this table existed.
   ModelBuild::FACTS.each do |fact|

@@ -273,4 +273,65 @@ class ModelTest < ActiveSupport::TestCase
 
     assert_equal 777.0, old.reload.mass
   end
+
+  # Filtering and sorting, made to disagree with the column -- while the loader
+  # writes both they are identical, so a passing test would prove nothing.
+  test "filters on the mass the build carries, not the column" do
+    model = create(:model, mass: 100.0)
+    create(:model_build, model:, mass: 999_999.0)
+
+    assert_includes Model.ransack(mass_gteq: 500_000).result, model
+    assert_not_includes Model.ransack(mass_lteq: 500).result, model
+  end
+
+  test "sorts by the speed the build carries, not the column" do
+    slow = create(:model, name: "Zzz", scm_speed: 900.0)
+    fast = create(:model, name: "Aaa", scm_speed: 10.0)
+    create(:model_build, model: slow, scm_speed: 10.0)
+    create(:model_build, model: fast, scm_speed: 900.0)
+
+    assert_equal [fast, slow], Model.where(id: [slow.id, fast.id]).ransack(sorts: "scm_speed desc").result.to_a
+  end
+
+  # 31 of 246 models in a full dataset are concept ships no build describes. A
+  # filter that dropped them would empty the catalogue of everything not flying.
+  test "a model with no build is still found by what its column says" do
+    model = create(:model, mass: 4_242.0)
+
+    assert_nil model.build
+    assert_includes Model.ransack(mass_gteq: 4_000).result, model
+  end
+
+  test "an older build does not answer a filter" do
+    model = create(:model, mass: 100.0)
+    create(:model_build, model:, version: "0.0.1-live.1", mass: 999_999.0)
+
+    assert_not_includes Model.ransack(mass_gteq: 500_000).result, model,
+      "only the build we are on decides a filter"
+    assert_includes Model.ransack(mass_lteq: 500).result, model
+  end
+
+  # The reason this uses a subquery rather than the joined alias the other three
+  # catalogues use: ransack builds the association join itself, so an expression
+  # naming an alias nobody joined raises PG::UndefinedTable.
+  test "a vehicle sorts by a model fact through its association" do
+    slow = create(:model, name: "Zzz", mass: 900.0)
+    fast = create(:model, name: "Aaa", mass: 10.0)
+    create(:model_build, model: slow, mass: 10.0)
+    create(:model_build, model: fast, mass: 900.0)
+    user = create(:user)
+    a = create(:vehicle, model: slow, user:)
+    b = create(:vehicle, model: fast, user:)
+
+    assert_equal [b, a], user.vehicles.ransack(sorts: "model_mass desc").result.to_a
+  end
+
+  test "a vehicle filters on a model fact through its association" do
+    model = create(:model, mass: 100.0)
+    create(:model_build, model:, mass: 999_999.0)
+    user = create(:user)
+    vehicle = create(:vehicle, model:, user:)
+
+    assert_includes user.vehicles.ransack(model_mass_gteq: 500_000).result, vehicle
+  end
 end
