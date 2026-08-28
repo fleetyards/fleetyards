@@ -81,13 +81,19 @@ jobs:
           unzip -o /tmp/op.zip -d /usr/local/bin op
           chmod +x /usr/local/bin/op
 
-      - name: Read the sc_data version
+      # Every configured source, not just one: the cached tree holds all of them,
+      # so the key has to move when any version does.
+      - name: Read the sc_data sources
         id: sc-data
         run: |
-          version=$(ruby -ryaml -e 'puts YAML.load_file("config/app/sc_data.yml").fetch("shared").fetch("version")')
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          ruby -ryaml -e '
+            shared = YAML.load_file("config/app/sc_data.yml").fetch("shared")
+            sources = shared.fetch("sources")
+            puts "key=#{sources.map { |environment, version| "#{environment}-#{version}" }.join("_")}"
+            puts "default=#{shared.fetch("default", sources.keys.first)}"
+          ' >> "$GITHUB_OUTPUT"
 
-      # Keyed on the build, so the download happens once per version bump rather
+      # Keyed on the builds, so the download happens once per version bump rather
       # than once per run. Bump the `v1` prefix to force a refetch -- re-parsing
       # the same dump can change the tree without moving the version.
       - name: Cache the parsed sc_data tree
@@ -95,7 +101,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: data/sc_data/parsed
-          key: ${{ runner.os }}-sc-data-parsed-v1-${{ steps.sc-data.outputs.version }}
+          key: ${{ runner.os }}-sc-data-parsed-v1-${{ steps.sc-data.outputs.key }}
 
       - name: Fetch the parsed sc_data tree
         if: steps.parsed-tree.outputs.cache-hit != 'true'
@@ -108,7 +114,9 @@ jobs:
           echo "::add-mask::$SC_DATA_S3__ACCESS_KEY_ID"
           echo "::add-mask::$SC_DATA_S3__SECRET_ACCESS_KEY"
           export SC_DATA_S3__ACCESS_KEY_ID SC_DATA_S3__SECRET_ACCESS_KEY
-          bin/scdata pull live
+          # The default source, read off the config rather than named here, so
+          # renaming or adding an environment does not leave this behind.
+          bin/scdata pull ${{ steps.sc-data.outputs.default }}
 
       - name: Run Minitest
         run: bin/rails test
