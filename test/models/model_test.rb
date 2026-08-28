@@ -165,4 +165,112 @@ class ModelTest < ActiveSupport::TestCase
 
     assert_nil model.personal_inventory_label
   end
+
+  # Every test here makes the build **disagree** with the column. While the
+  # loader writes both they are identical, so a passing test would otherwise
+  # prove nothing about which side answered.
+  test "a model in the current build reads that build's mechanics" do
+    model = create(:model, mass: 100.0, scm_speed: 50.0)
+    create(:model_build, model:, mass: 999.0, scm_speed: 111.0)
+
+    assert_equal 999.0, model.reload.mass
+    assert_equal 111.0, model.scm_speed
+  end
+
+  # A hangar entry pointing at a ship the export dropped still has to resolve, so
+  # the last build of this environment answers rather than nothing.
+  test "a model the current build dropped reads the last build that described it" do
+    model = create(:model, mass: 100.0)
+    create(:model_build, model:, version: "0.0.1-live.1", mass: 777.0)
+
+    assert_nil model.reload.build
+    assert_equal 777.0, model.mass
+  end
+
+  test "the current build wins over an earlier one" do
+    model = create(:model, mass: 100.0)
+    create(:model_build, model:, version: "0.0.1-live.1", mass: 777.0)
+    create(:model_build, model:, mass: 999.0)
+
+    assert_equal 999.0, model.reload.mass
+  end
+
+  # Every concept ship, and every ship the export dropped before the build table
+  # existed. 31 of 246 models in a full dataset have no build at all.
+  test "a model with no build at all falls back to its own columns" do
+    model = create(:model, mass: 100.0, scm_speed: 50.0)
+
+    assert_nil model.build
+    assert_equal 100.0, model.mass
+    assert_equal 50.0, model.scm_speed
+  end
+
+  # The build carries no `rsi_*` column, and the matrix is deliberately not a
+  # read layer: for a ship with no build the column already holds the matrix
+  # value, and for one the export dropped it holds a real game-file value.
+  test "the ship matrix does not override what a build says" do
+    model = create(:model, mass: 100.0, rsi_mass: 555.0)
+    create(:model_build, model:, mass: 999.0)
+
+    assert_equal 999.0, model.reload.mass
+  end
+
+  test "the ship matrix does not override the column when there is no build" do
+    model = create(:model, mass: 100.0, rsi_mass: 555.0)
+
+    assert_equal 100.0, model.mass
+  end
+
+  # All five, because the reader falls through to the column only on nil and a
+  # raw YAML string is not nil -- the shape that broke the components loader.
+  test "a serialized fact read off the build keeps its structure" do
+    cargo_holds = [{"capacity" => 6, "dimensions" => {"x" => 1.25}}]
+    refuel_boom = {"name" => "refuel_boom", "rate" => 5.0}
+    model = create(:model, cargo_holds: [{"capacity" => 1}])
+    create(:model_build, model:, cargo_holds:, refuel_boom:)
+
+    model.reload
+
+    assert_equal cargo_holds, model.cargo_holds
+    assert_equal refuel_boom, model.refuel_boom
+  end
+
+  test "a jsonb fact read off the build keeps its structure" do
+    hull_parts = [{"name" => "hull_front", "health" => 12_000.0}]
+    model = create(:model)
+    create(:model_build, model:, hull_parts:)
+
+    assert_equal hull_parts, model.reload.hull_parts
+  end
+
+  test "#update_with_facts writes the correction to the build as well" do
+    model = create(:model, mass: 100.0)
+    create(:model_build, model:, mass: 999.0)
+
+    assert model.reload.update_with_facts(mass: 250.0)
+
+    assert_equal 250.0, model.build.reload.mass
+    assert_equal 250.0, model.reload.mass
+  end
+
+  # `author_id` and `update_reason` are `attr_accessor`s for paper_trail's meta,
+  # and the admin controller merges them into the same hash the build is sliced
+  # from.
+  test "#update_with_facts keeps paper_trail's meta off the build" do
+    model = create(:model, mass: 100.0)
+    create(:model_build, model:, mass: 999.0)
+
+    assert model.reload.update_with_facts(mass: 250.0, update_reason: :custom, author_id: nil)
+
+    assert_equal 250.0, model.build.reload.mass
+  end
+
+  test "#update_with_facts leaves a dropped model's build alone" do
+    model = create(:model, mass: 100.0)
+    old = create(:model_build, model:, version: "0.0.1-live.1", mass: 777.0)
+
+    assert model.reload.update_with_facts(mass: 250.0)
+
+    assert_equal 777.0, old.reload.mass
+  end
 end

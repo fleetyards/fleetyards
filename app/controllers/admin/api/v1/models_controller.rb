@@ -63,7 +63,7 @@ module Admin
         end
 
         def update
-          return if @model.update(model_params.merge(author_id: current_user.id, update_reason: :custom))
+          return if @model.update_with_facts(model_params.merge(author_id: current_user.id, update_reason: :custom))
 
           render json: ValidationError.new("model.update", errors: @model.errors), status: :bad_request
         end
