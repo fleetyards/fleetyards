@@ -262,9 +262,10 @@
       "unlistedModel": {
         "createModel": "Crear nave",
         "markAsPaint": "Es una pintura",
-        "ignore": "No es una nave",
+        "ignore": "Ignorar",
         "noManufacturer": "Este identificador no resuelve ningún fabricante",
-        "alreadyExists": "%{name} ya está en el catálogo"
+        "alreadyExists": "%{name} ya está en el catálogo",
+        "link": "Ya está en el catálogo"
       }
     }
   }

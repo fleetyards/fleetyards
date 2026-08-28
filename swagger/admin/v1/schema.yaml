@@ -6629,6 +6629,57 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/unlisted-models/{id}/link":
+    parameters:
+    - name: id
+      in: path
+      description: Unlisted model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Link to a model already in the catalogue
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ScDataUnlistedModelLinkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataUnlistedModel"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/unlisted-models/{id}/mark-as-paint":
     parameters:
     - name: id
@@ -14231,6 +14282,16 @@ components:
       - createdAt
       - updatedAt
       title: ScDataUnlistedModel
+    ScDataUnlistedModelLinkInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - modelId
+      title: ScDataUnlistedModelLinkInput
     ScDataUnlistedModelQuery:
       type: object
       properties:

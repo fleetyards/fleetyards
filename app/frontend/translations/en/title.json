@@ -249,6 +249,9 @@
             "cargoHolds": "Edit %{name} Cargo Holds"
           }
         },
+        "unlistedModels": {
+          "index": "Unlisted Ships"
+        },
         "modelModulePackages": {
           "index": "Model Module Packages"
         },

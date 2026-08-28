@@ -2,6 +2,7 @@
 es:
   validation_error:
     sc_data_unlisted_model:
+      link: No se pudo vincular la nave con el catálogo.
       create_model: No se pudo crear la nave a partir de los archivos del juego.
     change_pasword: Cambio de contraseña fallido.
     confirmation: Confirmación fallida.

@@ -272,9 +272,10 @@
       "unlistedModel": {
         "createModel": "Schiff anlegen",
         "markAsPaint": "Ist eine Lackierung",
-        "ignore": "Kein Schiff",
+        "ignore": "Ignorieren",
         "noManufacturer": "Zu diesem Identifier lässt sich kein Hersteller auflösen",
-        "alreadyExists": "%{name} ist bereits im Katalog"
+        "alreadyExists": "%{name} ist bereits im Katalog",
+        "link": "Schon im Katalog"
       }
     }
   }

@@ -67,7 +67,8 @@
           "prices": "Precios"
         },
         "unlistedModels": {
-          "index": "Naves en los archivos del juego sin modelo"
+          "index": "Naves en los archivos del juego sin modelo",
+          "link": "Vincular con una nave del catálogo"
         },
         "manufacturers": {
           "index": "Fabricantes",

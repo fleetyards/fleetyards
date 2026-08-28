@@ -211,6 +211,9 @@
             "prices": "%{name} Preise bearbeiten"
           }
         },
+        "unlistedModels": {
+          "index": "Nicht gelistete Schiffe"
+        },
         "modelModulePackages": {
           "index": "Modell Modul Pakete"
         },

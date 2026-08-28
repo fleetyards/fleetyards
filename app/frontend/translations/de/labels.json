@@ -1429,6 +1429,9 @@
         "scKey": "SC Key",
         "scRef": "SC Ref",
         "storeImage": "Store Image"
+      },
+      "unlistedModel": {
+        "linkHint": "Welches Schiff im Katalog ist %{identifier}? Der Vorschlag stammt aus dem Export und kann falsch sein."
       }
     }
   }

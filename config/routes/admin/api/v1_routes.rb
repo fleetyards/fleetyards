@@ -105,6 +105,7 @@ v1_admin_api_routes = lambda do
       post :ignore
       post "create-model", to: "sc_data_unlisted_models#create_model"
       post "mark-as-paint", to: "sc_data_unlisted_models#mark_as_paint"
+      post :link
       post :reset
     end
   end

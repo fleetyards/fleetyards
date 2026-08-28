@@ -37,6 +37,40 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/unlisted-models/{id}/link" do
+    parameter name: "id", in: :path, description: "Unlisted model id",
+      schema: {type: :string, format: :uuid}, required: true
+
+    post("Link to a model already in the catalogue") do
+      operationId "scDataUnlistedModelLink"
+      tags "ScDataUnlistedModels"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ScDataUnlistedModelLinkInput
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::ScDataUnlistedModel
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   %w[ignore mark-as-paint create-model reset].each do |action|
     api_path "/unlisted-models/{id}/#{action}" do
       parameter name: "id", in: :path, description: "Unlisted model id",
@@ -252,5 +286,58 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :post, 404, path_params: {id: SecureRandom.uuid}, api_path: "/unlisted-models/{id}/ignore"
+  end
+
+  # The answer to "it is already in the catalogue, under a name the game files
+  # spell differently". Without it the entry comes back every patch.
+  test "POST link records which ship in the catalogue it already is" do
+    existing = create(:model, name: "S-65 Stingray")
+
+    sign_in @user
+
+    assert_no_difference("Model.count") do
+      assert_api_response :post, 200,
+        path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/link",
+        body: {modelId: existing.id} do
+        assert_equal "model", parsed_body["decision"]
+        assert_equal "S-65 Stingray", parsed_body.dig("model", "name")
+      end
+    end
+
+    assert_equal existing, @entry.reload.model
+    assert_empty ScDataUnlistedModel.undecided
+  end
+
+  # Repointing a ship's identifier at a variant's file would make the loader read
+  # the wrong one, so linking records the answer and leaves `sc_key` alone.
+  test "POST link leaves the linked ship's own identifier alone" do
+    existing = create(:model, name: "S-65 Stingray", sc_key: nil)
+
+    sign_in @user
+
+    assert_api_response :post, 200,
+      path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/link",
+      body: {modelId: existing.id}
+
+    assert_nil existing.reload.sc_key
+  end
+
+  test "POST link refuses a second decision" do
+    existing = create(:model, name: "S-65 Stingray")
+    @entry.decide!("ignored")
+
+    sign_in @user
+
+    assert_api_response :post, 400,
+      path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/link",
+      body: {modelId: existing.id}
+  end
+
+  test "POST link reports a model that is not there" do
+    sign_in @user
+
+    assert_api_response :post, 404,
+      path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/link",
+      body: {modelId: SecureRandom.uuid}
   end
 end

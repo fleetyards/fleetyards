@@ -51,9 +51,10 @@ class ScDataUnlistedModel < ApplicationRecord
   # collector version and a mission prop can be mechanically identical.
   COMPARISONS = %w[identical refitted structural unrelated].freeze
 
-  # `ignored` covers everything that is not a ship somebody owns -- NPC copies
-  # the marker filter missed, props, templates. `paint` means it belongs on an
-  # existing model as a livery instead.
+  # `ignored` is for anything the catalogue should not carry, whatever the
+  # reason -- an NPC copy the marker filter missed, a prop, a template, or a ship
+  # that simply does not belong in it. `paint` means it belongs on an existing
+  # model as a livery instead.
   DECISIONS = %w[ignored model paint].freeze
 
   validates :identifier, presence: true, uniqueness: true
@@ -153,6 +154,21 @@ class ScDataUnlistedModel < ApplicationRecord
 
       created
     end
+  end
+
+  # The catalogue already has this ship, under an identifier the game files spell
+  # differently. Records which one, so the entry stops being reported and the
+  # answer is kept rather than being worked out again next patch.
+  #
+  # The model's `sc_key` is deliberately not claimed here. Only a fifth of the
+  # entries that match an existing ship *are* that ship -- the rest are variants
+  # whose export name is simply the base ship's -- and repointing a ship's
+  # identifier at a variant's file would make the loader read the wrong one.
+  def link_to_model!(target)
+    raise ArgumentError, "already decided" if decision.present?
+    raise ArgumentError, "no model given" if target.blank?
+
+    update!(decision: "model", model: target, decided_at: Time.current)
   end
 
   def decide!(decision)

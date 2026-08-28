@@ -8,7 +8,7 @@ module Admin
       # The rows are written by the sc_data load, never by hand, so there is no
       # create, update or destroy here -- only listing them and deciding.
       class ScDataUnlistedModelsController < ::Admin::Api::BaseController
-        before_action :set_entry, only: %i[ignore create_model mark_as_paint reset]
+        before_action :set_entry, only: %i[ignore create_model mark_as_paint link reset]
 
         def index
           authorize! with: ::Admin::ScDataUnlistedModelPolicy
@@ -27,9 +27,10 @@ module Admin
             .per(per_page(ScDataUnlistedModel))
         end
 
-        # Not a ship somebody owns: an NPC copy the marker filter missed, a prop,
-        # a template. It stops being reported and stays recorded, so the next
-        # load does not raise it again.
+        # Nothing the catalogue should carry, for whatever reason -- an NPC copy
+        # the marker filter missed, a prop, a template, or a ship that simply
+        # does not belong in it. The reason is the admin's; this only records
+        # that one was reached, so the next load does not raise the entry again.
         def ignore
           @sc_data_unlisted_model.decide!("ignored")
         end
@@ -39,6 +40,19 @@ module Admin
         # an admin supplies, which is what the paints import already handles.
         def mark_as_paint
           @sc_data_unlisted_model.mark_as_paint!
+        end
+
+        # Already in the catalogue, under an identifier the game files spell
+        # differently. The detected match is only a suggestion -- the admin says
+        # which ship it is, because the export never gives enough to be sure.
+        def link
+          @sc_data_unlisted_model.link_to_model!(Model.find(params[:model_id]))
+        rescue ArgumentError => e
+          @sc_data_unlisted_model.errors.add(:base, e.message)
+
+          render json: ValidationError.new(
+            "sc_data_unlisted_model.link", errors: @sc_data_unlisted_model.errors
+          ), status: :bad_request
         end
 
         def create_model

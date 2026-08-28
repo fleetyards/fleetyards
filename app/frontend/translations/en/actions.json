@@ -365,9 +365,10 @@
       "unlistedModel": {
         "createModel": "Create ship",
         "markAsPaint": "It is a paint",
-        "ignore": "Not a ship",
+        "ignore": "Ignore",
         "noManufacturer": "No manufacturer resolves from this identifier",
-        "alreadyExists": "%{name} is already in the catalogue"
+        "alreadyExists": "%{name} is already in the catalogue",
+        "link": "Already in the catalogue"
       }
     }
   }

@@ -262,9 +262,10 @@
       "unlistedModel": {
         "createModel": "Crea nave",
         "markAsPaint": "È una livrea",
-        "ignore": "Non è una nave",
+        "ignore": "Ignora",
         "noManufacturer": "Nessun produttore corrisponde a questo identificatore",
-        "alreadyExists": "%{name} è già nel catalogo"
+        "alreadyExists": "%{name} è già nel catalogo",
+        "link": "Già nel catalogo"
       }
     }
   }

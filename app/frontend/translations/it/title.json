@@ -197,6 +197,9 @@
             "prices": "Modifica %{name} Prezzi"
           }
         },
+        "unlistedModels": {
+          "index": "Navi non elencate"
+        },
         "modelModulePackages": {
           "index": "Pacchetti Moduli Modelli"
         },

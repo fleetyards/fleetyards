@@ -16,6 +16,7 @@ import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
+import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   unlistedModel: ScDataUnlistedModel;
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 const { displayConfirm } = useAppNotifications();
+const comlink = useComlink();
 const queryClient = useQueryClient();
 
 const invalidate = () =>
@@ -79,6 +81,17 @@ const markAsPaint = async () => {
   await paintMutation.mutateAsync({ id: props.unlistedModel.id });
 };
 
+// The other answer to "why is this still here": the catalogue already has it,
+// under an identifier the game files spell differently. Prefilled with what was
+// detected, confirmed by a person, because the export never says enough.
+const openLinkModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/UnlistedModels/LinkModal/index.vue"),
+    props: { unlistedModel: props.unlistedModel },
+  });
+};
+
 const ignore = async () => {
   await ignoreMutation.mutateAsync({ id: props.unlistedModel.id });
 };
@@ -95,6 +108,13 @@ const ignore = async () => {
   >
     <i class="fa-duotone fa-starship" />
     <span v-if="withLabels">{{ t("actions.unlistedModel.createModel") }}</span>
+  </Btn>
+  <Btn
+    v-tooltip="!withLabels && t('actions.unlistedModel.link')"
+    @click="openLinkModal"
+  >
+    <i class="fa-duotone fa-link" />
+    <span v-if="withLabels">{{ t("actions.unlistedModel.link") }}</span>
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.unlistedModel.markAsPaint')"

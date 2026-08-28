@@ -73,7 +73,8 @@
           "cargoHolds": "Cargo Holds"
         },
         "unlistedModels": {
-          "index": "Ships in the game files with no model"
+          "index": "Ships in the game files with no model",
+          "link": "Link to a ship in the catalogue"
         },
         "manufacturers": {
           "index": "Manufacturers",

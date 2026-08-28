@@ -2,6 +2,7 @@
 de:
   validation_error:
     sc_data_unlisted_model:
+      link: Schiff konnte nicht mit dem Katalog verknüpft werden.
       create_model: Schiff konnte nicht aus den Spieldateien angelegt werden.
     change_pasword: Passwortänderung fehlgeschlagen.
     confirmation: Bestätigung fehlgeschlagen.

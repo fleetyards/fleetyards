@@ -1315,6 +1315,9 @@
         "scKey": "SC Key",
         "scRef": "SC Ref",
         "storeImage": "Store Image"
+      },
+      "unlistedModel": {
+        "linkHint": "Quale nave del catalogo è %{identifier}? Il suggerimento viene dall'export e può essere sbagliato."
       }
     }
   }

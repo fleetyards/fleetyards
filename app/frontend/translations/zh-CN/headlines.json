@@ -67,7 +67,8 @@
           "prices": "价格"
         },
         "unlistedModels": {
-          "index": "游戏文件中没有对应条目的飞船"
+          "index": "游戏文件中没有对应条目的飞船",
+          "link": "关联到目录中的飞船"
         },
         "manufacturers": {
           "index": "制造商",
