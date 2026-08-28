@@ -53,6 +53,7 @@ class AdminNotification < ApplicationRecord
     weekly_stats: "weekly_stats",
     ship_matrix_import: "ship_matrix_import",
     sc_data_import: "sc_data_import",
+    sc_data_unlisted_models: "sc_data_unlisted_models",
     import_run: "import_run"
   }
 
@@ -117,6 +118,14 @@ class AdminNotification < ApplicationRecord
       retention: 30.days,
       access: [:models],
       icon: "fa-duotone fa-database"
+    },
+    # Ships the game files describe that we have no model for. Kept longer than
+    # the import reports around it: an undecided entry is a to-do, not a status
+    # line, and it stays true until somebody acts on it.
+    sc_data_unlisted_models: {
+      retention: 90.days,
+      access: [:models],
+      icon: "fa-duotone fa-rocket"
     },
     # The status line every other import leaves behind, at info when it
     # finished and at error when it did not.

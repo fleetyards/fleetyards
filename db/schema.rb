@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_27_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1389,6 +1389,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_200000) do
     t.string "url"
   end
 
+  create_table "sc_data_unlisted_models", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "base_model_id"
+    t.string "comparison"
+    t.datetime "created_at", null: false
+    t.datetime "decided_at"
+    t.string "decision"
+    t.string "first_seen_environment", null: false
+    t.string "first_seen_version", null: false
+    t.string "identifier", null: false
+    t.string "last_seen_environment", null: false
+    t.string "last_seen_version", null: false
+    t.string "manufacturer_code"
+    t.uuid "model_id"
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["base_model_id"], name: "index_sc_data_unlisted_models_on_base_model_id"
+    t.index ["decision"], name: "index_sc_data_unlisted_models_on_decision"
+    t.index ["identifier"], name: "index_sc_data_unlisted_models_on_identifier", unique: true
+    t.index ["model_id"], name: "index_sc_data_unlisted_models_on_model_id"
+  end
+
   create_table "star_citizen_updates", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "news_sub_type"
@@ -1664,6 +1685,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_27_200000) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
   add_foreign_key "omniauth_connections", "users"
+  add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
+  add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
   add_foreign_key "vehicle_loadout_hardpoints", "components"
   add_foreign_key "vehicle_loadout_hardpoints", "model_hardpoints"
