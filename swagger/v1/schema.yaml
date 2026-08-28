@@ -3433,7 +3433,7 @@ paths:
       in: path
       schema:
         type: string
-      description: username
+      description: Username
       required: true
     delete:
       summary: Remove Fleet Member
@@ -3453,6 +3453,48 @@ paths:
           description: successful
         '401':
           description: Without authentication
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show Member
+      tags:
+      - FleetMembers
+      operationId: fleetMember
+      description: A single membership, so a notification about it can show what state
+        it is in now
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -18798,6 +18840,8 @@ components:
           type: string
         icon:
           type: string
+        record:
+          "$ref": "#/components/schemas/NotificationRecord"
         read:
           type: boolean
         readAt:
@@ -18916,6 +18960,42 @@ components:
       additionalProperties: false
       example: {}
       title: NotificationQuery
+    NotificationRecord:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/NotificationRecordTypeEnum"
+        id:
+          type: string
+          format: uuid
+        fleetSlug:
+          type: string
+        username:
+          type: string
+        eventSlug:
+          type: string
+        inventorySlug:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - id
+      title: NotificationRecord
+    NotificationRecordTypeEnum:
+      type: string
+      enum:
+      - fleet_membership
+      - fleet_event
+      - fleet_inventory
+      - vehicle
+      - hangar_sync
+      x-enumNames:
+      - FLEET_MEMBERSHIP
+      - FLEET_EVENT
+      - FLEET_INVENTORY
+      - VEHICLE
+      - HANGAR_SYNC
+      title: NotificationRecordTypeEnum
     NotificationSortEnum:
       type: string
       enum:
