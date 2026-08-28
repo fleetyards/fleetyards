@@ -1931,7 +1931,15 @@
         "openInventory": "Open inventory",
         "openEvent": "Open event",
         "openRoster": "Show sign-ups",
-        "addToCalendar": "Add to calendar"
+        "addToCalendar": "Add to calendar",
+        "openStore": "Pledge store",
+        "accept": "Accept",
+        "decline": "Decline",
+        "signUp": "Sign up",
+        "withdraw": "Withdraw",
+        "syncAgain": "Sync again",
+        "markAsBought": "Mark as bought",
+        "unavailable": "This is no longer available."
       },
       "notificationTypes": {
         "channels": {

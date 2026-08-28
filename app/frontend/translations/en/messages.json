@@ -830,6 +830,8 @@
         "readAll": "All notifications marked as read",
         "destroyed": "Notification deleted",
         "destroyedAll": "All notifications deleted",
+        "actionDone": "Done",
+        "actionFailed": "That did not work - the notification may be out of date",
         "error": "Something went wrong",
         "bulk": {
           "read": {

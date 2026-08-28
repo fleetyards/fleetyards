@@ -506,6 +506,7 @@ const destroySelected = () =>
           @archive="selected && archiveOne(selected)"
           @unarchive="selected && unarchiveOne(selected)"
           @destroy="selected && destroy(selected)"
+          @refresh="invalidate()"
         />
       </div>
     </template>

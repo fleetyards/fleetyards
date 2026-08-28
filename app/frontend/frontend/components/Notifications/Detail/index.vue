@@ -17,6 +17,7 @@ import {
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Markdown from "@/shared/components/Markdown/index.vue";
+import RecordActions from "@/frontend/components/Notifications/RecordActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Notification } from "@/services/fyApi";
 
@@ -34,6 +35,7 @@ const emit = defineEmits<{
   archive: [];
   unarchive: [];
   destroy: [];
+  refresh: [];
 }>();
 
 const { t, l } = useI18n();
@@ -151,10 +153,15 @@ watch(
            and delete: what the notification is asking for should not have to
            compete with the housekeeping. -->
       <div
-        v-if="links.length"
+        v-if="links.length || notification.record"
         class="notification-detail__cta"
         data-test="notification-detail-actions"
       >
+        <RecordActions
+          v-if="notification.record"
+          :notification="notification"
+          @done="emit('refresh')"
+        />
         <Btn
           v-for="action in links"
           :key="action.key"
