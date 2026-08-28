@@ -10,6 +10,7 @@ require "test_helper"
 #  cargo_holds             :string
 #  environment             :string           not null
 #  external_fuel_tanks     :string
+#  fuel_consumption        :decimal(15, 2)
 #  ground                  :boolean          default(FALSE)
 #  ground_acceleration     :decimal(15, 2)
 #  ground_decceleration    :decimal(15, 2)
@@ -164,6 +165,11 @@ class ModelBuildTest < ActiveSupport::TestCase
 
   test "a build carries nothing the ship matrix supplies" do
     assert_empty ModelBuild.column_names.grep(/\Arsi_/)
+  end
+
+  test "carries every fact the loader writes, fuel consumption included" do
+    assert_includes ModelBuild::FACTS, :fuel_consumption
+    assert_includes ModelBuild.column_names, "fuel_consumption"
   end
 
   test ".retained_versions keeps the newest builds of an environment" do

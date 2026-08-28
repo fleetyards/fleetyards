@@ -334,4 +334,44 @@ class ModelTest < ActiveSupport::TestCase
 
     assert_includes user.vehicles.ransack(model_mass_gteq: 500_000).result, vehicle
   end
+
+  # `fuel_consumption` is a game-file fact like the rest -- summed from every
+  # thruster the loadout fits. It was missed when the build table was created
+  # because the loader assigned it to the record instead of putting it through
+  # `update_params`, so a grep for what the loader writes did not find it.
+  test "reads fuel consumption off the build" do
+    model = create(:model, fuel_consumption: 1.0)
+    create(:model_build, model:, fuel_consumption: 42.5)
+
+    assert_equal 42.5, model.reload.fuel_consumption
+  end
+
+  test "falls back to the column for a model with no build" do
+    model = create(:model, fuel_consumption: 1.0)
+
+    assert_nil model.build
+    assert_equal 1.0, model.fuel_consumption
+  end
+
+  # Returning rather than assigning is the point, and the column is the only place
+  # it shows: an assignment here is shadowed by the reader, which answers from the
+  # build, so it would never be noticed.
+  test "#fuel_consumption_from_hardpoints returns the sum without assigning it" do
+    model = create(:model, fuel_consumption: 1.0)
+    create(:model_build, model:, fuel_consumption: 42.5)
+    model.reload
+
+    assert_equal 0.0, model.fuel_consumption_from_hardpoints, "no thrusters fitted"
+    assert_equal 1.0, model.read_attribute(:fuel_consumption), "the column was not touched"
+    assert_not model.changed?, "nothing was assigned"
+  end
+
+  test "#update_with_facts carries a fuel consumption correction to the build" do
+    model = create(:model, fuel_consumption: 1.0)
+    create(:model_build, model:, fuel_consumption: 42.5)
+
+    assert model.reload.update_with_facts(fuel_consumption: 7.5)
+
+    assert_equal 7.5, model.build.reload.fuel_consumption
+  end
 end

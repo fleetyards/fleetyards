@@ -14,6 +14,7 @@
 #  cargo_holds             :string
 #  environment             :string           not null
 #  external_fuel_tanks     :string
+#  fuel_consumption        :decimal(15, 2)
 #  ground                  :boolean          default(FALSE)
 #  ground_acceleration     :decimal(15, 2)
 #  ground_decceleration    :decimal(15, 2)
@@ -69,7 +70,7 @@ class ModelBuild < ApplicationRecord
   # becomes.
   FACTS = %i[
     mass hull_health hull_parts hull_doors weapon_pool_size signature_cross_section ground
-    personal_inventory
+    personal_inventory fuel_consumption
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom
     scm_speed scm_speed_boosted reverse_speed_boosted max_speed
     pitch pitch_boosted yaw yaw_boosted roll roll_boosted
