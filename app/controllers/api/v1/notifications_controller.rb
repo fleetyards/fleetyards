@@ -27,8 +27,13 @@ module Api
         # No distinct: nothing here joins, and SELECT DISTINCT cannot order by
         # the computed `unread` expression.
         @notifications = @q.result
+          .includes(:record)
           .page(params[:page])
           .per(per_page(Notification))
+
+        # `includes` stops at the polymorphic record; the reference reads a slug
+        # or two off it, which without this is a query per row.
+        NotificationRecordReference.preload(@notifications)
       end
 
       def unread_count
