@@ -258,6 +258,12 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "Svuota carico"
+      },
+      "unlistedModel": {
+        "createModel": "Crea nave",
+        "markAsPaint": "È una livrea",
+        "ignore": "Non è una nave",
+        "noManufacturer": "Nessun produttore corrisponde a questo identificatore"
       }
     }
   }

@@ -173,6 +173,9 @@
             "cargoHolds": "Cargo Holds"
           }
         },
+        "unlistedModels": {
+          "index": "Unlisted Ships"
+        },
         "modelModulePackages": {
           "index": "Module Packages",
           "create": "Create Module Package"

@@ -66,6 +66,9 @@
           "models": "关联型号",
           "prices": "价格"
         },
+        "unlistedModels": {
+          "index": "游戏文件中没有对应条目的飞船"
+        },
         "manufacturers": {
           "index": "制造商",
           "new": "新制造商",

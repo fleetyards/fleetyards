@@ -72,6 +72,9 @@
           "hardpoints": "Hardpoints",
           "cargoHolds": "Cargo Holds"
         },
+        "unlistedModels": {
+          "index": "Ships in the game files with no model"
+        },
         "manufacturers": {
           "index": "Manufacturers",
           "new": "New Manufacturer",

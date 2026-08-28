@@ -66,6 +66,9 @@
           "models": "Modelos vinculados",
           "prices": "Precios"
         },
+        "unlistedModels": {
+          "index": "Naves en los archivos del juego sin modelo"
+        },
         "manufacturers": {
           "index": "Fabricantes",
           "new": "Nuevo fabricante",

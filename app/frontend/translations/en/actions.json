@@ -361,6 +361,12 @@
         "sortOldest": "Oldest first",
         "sortNewest": "Newest first",
         "openCenter": "Notifications"
+      },
+      "unlistedModel": {
+        "createModel": "Create ship",
+        "markAsPaint": "It is a paint",
+        "ignore": "Not a ship",
+        "noManufacturer": "No manufacturer resolves from this identifier"
       }
     }
   }

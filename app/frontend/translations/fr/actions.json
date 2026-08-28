@@ -258,6 +258,12 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "Vider la cargaison"
+      },
+      "unlistedModel": {
+        "createModel": "Créer le vaisseau",
+        "markAsPaint": "C'est une peinture",
+        "ignore": "Pas un vaisseau",
+        "noManufacturer": "Aucun constructeur ne correspond à cet identifiant"
       }
     }
   }

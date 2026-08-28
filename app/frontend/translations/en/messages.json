@@ -458,6 +458,9 @@
         },
         "notifications": {
           "destroyAll": "Are you sure you want to delete all notifications? This action can't be reverted."
+        },
+        "unlistedModel": {
+          "createModel": "Create a ship from %{name}? The next sc_data load fills in its mechanics."
         }
       },
       "oauthAuthorize": {

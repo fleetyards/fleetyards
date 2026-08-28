@@ -66,6 +66,9 @@
           "models": "Verknüpfte Modelle",
           "prices": "Preise"
         },
+        "unlistedModels": {
+          "index": "Schiffe in den Spieldateien ohne Model"
+        },
         "manufacturers": {
           "index": "Hersteller",
           "new": "Neuer Hersteller",

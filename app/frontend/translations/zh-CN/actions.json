@@ -258,6 +258,12 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "清空货物"
+      },
+      "unlistedModel": {
+        "createModel": "创建飞船",
+        "markAsPaint": "这是涂装",
+        "ignore": "不是飞船",
+        "noManufacturer": "此标识符无法解析出制造商"
       }
     }
   }

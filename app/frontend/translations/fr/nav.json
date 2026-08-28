@@ -137,6 +137,9 @@
             "prices": "Prix"
           }
         },
+        "unlistedModels": {
+          "index": "Vaisseaux non listés"
+        },
         "modelModulePackages": {
           "index": "Paquets de Modules",
           "create": "Créer un Paquet de Modules"

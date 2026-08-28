@@ -66,6 +66,9 @@
           "models": "Modèles liés",
           "prices": "Prix"
         },
+        "unlistedModels": {
+          "index": "Vaisseaux des fichiers de jeu sans modèle"
+        },
         "manufacturers": {
           "index": "Fabricants",
           "new": "Nouveau fabricant",
