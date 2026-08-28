@@ -10,10 +10,10 @@ module ScData
       CANONICAL_PATH = "entities/commodities"
       SOURCE_PATHS = [CANONICAL_PATH, "entities/scitem/carryables"]
 
-      # Refuel and rearm goods — ship ammunition, the two countermeasure
-      # supplies, EVA fuel — are bought by volume and hauled in generic
-      # containers, so they have no crate entity and appear in neither tree.
-      # This database is the only place they are named.
+      # Refuel and rearm goods — the nine sized ship ammunition supplies, the
+      # two countermeasures, EVA fuel — are bought by volume and hauled in
+      # generic containers, so they have no crate entity and appear in neither
+      # tree. This database is the only place they are named.
       RESOURCE_TYPES_PATH = "resourcetypedatabase/resourcetypedatabase.records.xml"
 
       # It also holds the label for each group of resources, under the same
@@ -35,6 +35,20 @@ module ScData
         "items_commodities_consumergoods",
         "items_commodities_atlasium_8scu"
       ].freeze
+
+      # Ship Ammunition — the bulk rearm supply, hauled in its own crates and
+      # priced at every trade terminal — names itself with the ammo crate
+      # item's keys rather than a commodity one, so nothing here can see it.
+      # Aliasing the pair into the commodity namespace is enough to give it a
+      # key of its own.
+      #
+      # Spelled out rather than inferred: of the five resources that name
+      # themselves from outside the namespace this is the only good, the rest
+      # being a helmet and two unnamed mission props.
+      KEY_ALIASES = {
+        "item_nameammocrate" => "#{NAME_PREFIX}shipammunition",
+        "item_descammocrate" => "#{NAME_PREFIX}shipammunition_desc"
+      }.freeze
 
       TYPE_SLUGS = {
         "agriculturalSupply" => "agricultural_supply",
@@ -270,6 +284,7 @@ module ScData
       # commodity doesn't end up named after a paragraph of flavour text.
       private def commodity_key(display_name)
         key = display_name.to_s.delete("@").sub(/,P\z/, "").downcase
+        key = KEY_ALIASES.fetch(key, key)
 
         return unless key.start_with?(NAME_PREFIX)
 
@@ -283,6 +298,8 @@ module ScData
       private def commodity_translations
         @commodity_translations ||= translations.each_with_object({}) do |(key, value), index|
           index[key.sub(/,P\z/, "").downcase] = value
+        end.tap do |index|
+          KEY_ALIASES.each { |from, to| index[to] = index[from] if index.key?(from) }
         end
       end
 
