@@ -61,6 +61,7 @@ module NotificationExamples
       {
         type: :hangar_create,
         title: "Aurora MR added to your hangar",
+        link: "/hangar",
         icon: "fa-duotone fa-warehouse",
         age: 3.hours
       },
@@ -84,6 +85,7 @@ module NotificationExamples
       {
         type: :wishlist_create,
         title: "Carrack added to your wishlist",
+        link: "/hangar",
         icon: "fa-duotone fa-heart",
         read: true,
         age: 2.days
