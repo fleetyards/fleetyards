@@ -43,11 +43,10 @@
 #  legacy_slug                       :string
 #  length                            :decimal(15, 2)   default(0.0), not null
 #  loaners_count                     :integer          default(0), not null
+#  main_acceleration                 :decimal(15, 2)
 #  mass                              :decimal(15, 2)   default(0.0), not null
 #  max_crew                          :integer
 #  max_speed                         :decimal(15, 2)
-#  max_speed_acceleration            :decimal(15, 2)
-#  max_speed_decceleration           :decimal(15, 2)
 #  min_crew                          :integer
 #  model_paints_count                :integer          default(0)
 #  module_hardpoints_count           :integer          default(0)
@@ -66,6 +65,7 @@
 #  quantum_fuel_tank_size            :decimal(15, 2)
 #  quantum_fuel_tanks                :string
 #  refuel_boom                       :string
+#  retro_acceleration                :decimal(15, 2)
 #  reverse_speed_boosted             :decimal(15, 2)
 #  roll                              :decimal(15, 2)
 #  roll_boosted                      :decimal(15, 2)
@@ -97,9 +97,7 @@
 #  sc_key                            :string
 #  sc_length                         :decimal(15, 2)
 #  scm_speed                         :decimal(15, 2)
-#  scm_speed_acceleration            :decimal(15, 2)
 #  scm_speed_boosted                 :decimal(15, 2)
-#  scm_speed_decceleration           :decimal(15, 2)
 #  signature_cross_section           :jsonb
 #  size                              :string
 #  slug                              :string(255)
@@ -139,8 +137,7 @@ class Model < ApplicationRecord
   has_paper_trail on: %i[update], only: %i[
     classification production_status production_note focus pledge_price length beam height mass
     cargo personal_inventory size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
-    ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
-    max_speed_acceleration max_speed_decceleration pitch yaw roll price
+    ground_acceleration ground_decceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom sales_page_url
   ], meta: {
@@ -433,16 +430,14 @@ class Model < ApplicationRecord
       "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game",
       "images_count", "last_updated_at", "length", "loaners_count",
-      "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
-      "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
+      "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "min_crew", "model_paints_count", "module_hardpoints_count",
       "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "price", "production_note",
       "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
       "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
       "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
-      "sc_length", "scm_speed", "scm_speed_acceleration",
-      "scm_speed_decceleration", "search",
+      "sc_length", "scm_speed", "search",
       "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",
       "updated_at", "upgrade_kits_count", "videos_count", "yaw"
     ]
@@ -571,15 +566,89 @@ class Model < ApplicationRecord
     end
   end
 
+  # What the ship can do with its thrusters, in m/s^2. Main thrusters push it
+  # forward, retro thrusters stop it, and the export gives every thruster a
+  # `thrust_capacity` in newtons -- so with a mass this is Newton's second law and
+  # nothing more.
+  #
+  # This replaces four columns that claimed to be accelerations and held
+  # **seconds**: the Razor's old `scm_speed_acceleration` of 1.41 is the time it
+  # takes to reach SCM speed, which is `scm_speed / main_acceleration`. Every
+  # figure those columns expressed still follows from these two and a speed the
+  # model already carries, and these say what they hold.
+  def accelerations_from_hardpoints
+    thrust = {"Main" => 0.0, "Retro" => 0.0}
+
+    thruster_components.each do |data|
+      next unless thrust.key?(data["thruster_type"])
+
+      thrust[data["thruster_type"]] += data["thrust_capacity"].to_f
+    end
+
+    weight = read_attribute(:mass).to_f
+
+    # Nothing to say rather than zero. A stored 0 claims the ship cannot move; a
+    # nil says we do not know -- which is the truth for a catalogue loaded before
+    # the export named `thruster_type`, and for a ship with no thrusters fitted.
+    return {} if weight.zero? || thrust.values.sum.zero?
+
+    {
+      main_acceleration: (thrust["Main"] / weight).round(2),
+      retro_acceleration: (thrust["Retro"] / weight).round(2)
+    }
+  end
+
+  # Every thruster the loadout fits, as the export described it.
+  #
+  # A component whose `type_data` cannot be deserialized is skipped rather than
+  # raised on. Those exist: a loader version wrote them as
+  # `HashWithIndifferentAccess`, which the YAML coder's safe load refuses to read
+  # back, and a single one of them would otherwise take down a whole load. Every
+  # load rewrites the column, so they heal rather than accumulate.
+  private def thruster_components
+    hardpoints.includes(:component).where(group: :thruster).filter_map do |hardpoint|
+      next if hardpoint.component.blank?
+
+      begin
+        data = hardpoint.component.type_data
+      rescue Psych::Exception
+        next
+      end
+
+      data if data.is_a?(Hash)
+    end
+  end
+
+  public
+
+  # Seconds from a standstill to SCM speed, and from SCM speed back to one. Not
+  # stored: they are the two facts above against a speed already on the record,
+  # and storing them would be the same number written twice.
+  def seconds_to_scm_speed
+    seconds_for(scm_speed, main_acceleration)
+  end
+
+  def seconds_to_stop_from_scm_speed
+    seconds_for(scm_speed, retro_acceleration)
+  end
+
+  def seconds_to_max_speed
+    seconds_for(max_speed, main_acceleration)
+  end
+
+  private def seconds_for(speed, acceleration)
+    return if speed.blank? || acceleration.blank? || acceleration.to_f.zero?
+
+    (speed.to_f / acceleration.to_f).round(2)
+  end
+
+  public
+
   # Returns rather than assigns, so the loader can put it through `update_params`
   # like every other game-file fact and it reaches the build as well as the row.
   # Assigning it here is what kept it out of both.
   def fuel_consumption_from_hardpoints
-    thrusters = hardpoints.includes(:component).where(group: :thruster).filter_map do |hardpoint|
-      next if hardpoint.component.blank?
-
-      hardpoint.component.type_data
-    end
+    thrusters = thruster_components
 
     thrusters.sum do |thruster|
       thruster.dig("fuel_burn_rate_per10_k_newton").to_f

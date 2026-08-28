@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_28_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_28_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -993,6 +993,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_140000) do
     t.decimal "hull_health", precision: 15, scale: 2
     t.jsonb "hull_parts"
     t.string "hydrogen_fuel_tanks"
+    t.decimal "main_acceleration", precision: 15, scale: 2
     t.decimal "mass", precision: 15, scale: 2
     t.decimal "max_speed", precision: 15, scale: 2
     t.uuid "model_id", null: false
@@ -1001,6 +1002,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_140000) do
     t.decimal "pitch_boosted", precision: 15, scale: 2
     t.string "quantum_fuel_tanks"
     t.string "refuel_boom"
+    t.decimal "retro_acceleration", precision: 15, scale: 2
     t.decimal "reverse_speed_boosted", precision: 15, scale: 2
     t.decimal "roll", precision: 15, scale: 2
     t.decimal "roll_boosted", precision: 15, scale: 2
@@ -1189,12 +1191,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_140000) do
     t.string "legacy_slug"
     t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "loaners_count", default: 0, null: false
+    t.decimal "main_acceleration", precision: 15, scale: 2
     t.uuid "manufacturer_id"
     t.decimal "mass", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "max_crew"
     t.decimal "max_speed", precision: 15, scale: 2
-    t.decimal "max_speed_acceleration", precision: 15, scale: 2
-    t.decimal "max_speed_decceleration", precision: 15, scale: 2
     t.integer "min_crew"
     t.integer "model_paints_count", default: 0
     t.integer "module_hardpoints_count", default: 0
@@ -1213,6 +1214,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_140000) do
     t.decimal "quantum_fuel_tank_size", precision: 15, scale: 2
     t.string "quantum_fuel_tanks"
     t.string "refuel_boom"
+    t.decimal "retro_acceleration", precision: 15, scale: 2
     t.decimal "reverse_speed_boosted", precision: 15, scale: 2
     t.decimal "roll", precision: 15, scale: 2
     t.decimal "roll_boosted", precision: 15, scale: 2
@@ -1246,9 +1248,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_28_140000) do
     t.string "sc_key"
     t.decimal "sc_length", precision: 15, scale: 2
     t.decimal "scm_speed", precision: 15, scale: 2
-    t.decimal "scm_speed_acceleration", precision: 15, scale: 2
     t.decimal "scm_speed_boosted", precision: 15, scale: 2
-    t.decimal "scm_speed_decceleration", precision: 15, scale: 2
     t.jsonb "signature_cross_section"
     t.string "size"
     t.string "slug", limit: 255

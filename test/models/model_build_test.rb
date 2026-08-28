@@ -20,6 +20,7 @@ require "test_helper"
 #  hull_health             :decimal(15, 2)
 #  hull_parts              :jsonb
 #  hydrogen_fuel_tanks     :string
+#  main_acceleration       :decimal(15, 2)
 #  mass                    :decimal(15, 2)
 #  max_speed               :decimal(15, 2)
 #  personal_inventory      :decimal(15, 2)
@@ -27,6 +28,7 @@ require "test_helper"
 #  pitch_boosted           :decimal(15, 2)
 #  quantum_fuel_tanks      :string
 #  refuel_boom             :string
+#  retro_acceleration      :decimal(15, 2)
 #  reverse_speed_boosted   :decimal(15, 2)
 #  roll                    :decimal(15, 2)
 #  roll_boosted            :decimal(15, 2)

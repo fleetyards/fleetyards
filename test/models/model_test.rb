@@ -45,11 +45,10 @@ require "test_helper"
 #  legacy_slug                       :string
 #  length                            :decimal(15, 2)   default(0.0), not null
 #  loaners_count                     :integer          default(0), not null
+#  main_acceleration                 :decimal(15, 2)
 #  mass                              :decimal(15, 2)   default(0.0), not null
 #  max_crew                          :integer
 #  max_speed                         :decimal(15, 2)
-#  max_speed_acceleration            :decimal(15, 2)
-#  max_speed_decceleration           :decimal(15, 2)
 #  min_crew                          :integer
 #  model_paints_count                :integer          default(0)
 #  module_hardpoints_count           :integer          default(0)
@@ -68,6 +67,7 @@ require "test_helper"
 #  quantum_fuel_tank_size            :decimal(15, 2)
 #  quantum_fuel_tanks                :string
 #  refuel_boom                       :string
+#  retro_acceleration                :decimal(15, 2)
 #  reverse_speed_boosted             :decimal(15, 2)
 #  roll                              :decimal(15, 2)
 #  roll_boosted                      :decimal(15, 2)
@@ -99,9 +99,7 @@ require "test_helper"
 #  sc_key                            :string
 #  sc_length                         :decimal(15, 2)
 #  scm_speed                         :decimal(15, 2)
-#  scm_speed_acceleration            :decimal(15, 2)
 #  scm_speed_boosted                 :decimal(15, 2)
-#  scm_speed_decceleration           :decimal(15, 2)
 #  signature_cross_section           :jsonb
 #  size                              :string
 #  slug                              :string(255)
@@ -373,5 +371,83 @@ class ModelTest < ActiveSupport::TestCase
     assert model.reload.update_with_facts(fuel_consumption: 7.5)
 
     assert_equal 7.5, model.build.reload.fuel_consumption
+  end
+
+  # Newton's second law over what the export gives: every thruster's
+  # `thrust_capacity` in newtons, and the ship's mass.
+  test "derives its accelerations from the thrusters it carries" do
+    model = create(:model, mass: 1_000.0)
+    main = create(:component, category: "thrusters", type_data: {"thruster_type" => "Main", "thrust_capacity" => 50_000.0})
+    retro = create(:component, category: "thrusters", type_data: {"thruster_type" => "Retro", "thrust_capacity" => 20_000.0})
+    create(:hardpoint, parent: model, component: main)
+    create(:hardpoint, parent: model, component: retro)
+
+    assert_equal({main_acceleration: 50.0, retro_acceleration: 20.0}, model.reload.accelerations_from_hardpoints)
+  end
+
+  test "sums every thruster of the same kind" do
+    model = create(:model, mass: 1_000.0)
+    main = create(:component, category: "thrusters", type_data: {"thruster_type" => "Main", "thrust_capacity" => 25_000.0})
+    2.times { create(:hardpoint, parent: model, component: main) }
+
+    assert_equal 50.0, model.reload.accelerations_from_hardpoints[:main_acceleration]
+  end
+
+  # Manoeuvring thrusters turn the ship rather than move it along, so neither
+  # figure counts them -- and a ship with nothing but those has nothing to say,
+  # not a zero. A stored zero would claim it cannot move.
+  test "leaves manoeuvring thrusters out, and says nothing rather than zero" do
+    model = create(:model, mass: 1_000.0)
+    mav = create(:component, category: "thrusters", type_data: {"thruster_type" => "Maneuver", "thrust_capacity" => 90_000.0})
+    create(:hardpoint, parent: model, component: mav)
+
+    assert_empty model.reload.accelerations_from_hardpoints
+  end
+
+  # The catalogue predates the export naming `thruster_type`, so a load older than
+  # that produces nothing rather than zeros.
+  test "says nothing for a thruster the export gave no type" do
+    model = create(:model, mass: 1_000.0)
+    untyped = create(:component, category: "thrusters", type_data: {"thrust_capacity" => 90_000.0})
+    create(:hardpoint, parent: model, component: untyped)
+
+    assert_empty model.reload.accelerations_from_hardpoints
+  end
+
+  test "gives no figures for a model with no mass" do
+    model = create(:model, mass: 0)
+
+    assert_empty model.accelerations_from_hardpoints
+  end
+
+  test "reads its accelerations off the build" do
+    model = create(:model, main_acceleration: 1.0, retro_acceleration: 1.0)
+    create(:model_build, model:, main_acceleration: 61.5, retro_acceleration: 30.25)
+
+    assert_equal 61.5, model.reload.main_acceleration
+    assert_equal 30.25, model.retro_acceleration
+  end
+
+  # What the four dropped columns were really holding, now derived rather than
+  # stored -- the same number written twice is what made them go stale.
+  test "expresses the times the dropped columns used to hold" do
+    model = create(:model)
+    create(
+      :model_build,
+      model:, scm_speed: 200.0, max_speed: 1_000.0,
+      main_acceleration: 50.0, retro_acceleration: 20.0
+    )
+    model.reload
+
+    assert_equal 4.0, model.seconds_to_scm_speed
+    assert_equal 10.0, model.seconds_to_stop_from_scm_speed
+    assert_equal 20.0, model.seconds_to_max_speed
+  end
+
+  test "gives no time when an acceleration is missing" do
+    model = create(:model, scm_speed: 200.0, main_acceleration: nil, retro_acceleration: nil)
+
+    assert_nil model.seconds_to_scm_speed
+    assert_nil model.seconds_to_stop_from_scm_speed
   end
 end
