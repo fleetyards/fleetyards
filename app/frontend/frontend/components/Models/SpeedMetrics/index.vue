@@ -17,6 +17,14 @@ const props = defineProps<Props>();
 const { t, toNumber } = useI18n();
 
 const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
+
+// Null for a concept ship, and for a catalogue loaded before the export named a
+// thruster's type -- in both cases there is nothing to say rather than a zero.
+const hasAcceleration = computed(
+  () =>
+    !!props.model.speeds.mainAcceleration ||
+    !!props.model.speeds.retroAcceleration,
+);
 </script>
 
 <template>
@@ -75,6 +83,45 @@ const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
         </div>
       </div>
       <template v-else>
+        <!-- Ships had no acceleration figure until now: the four columns that
+             claimed to hold one held seconds and had not been written since 2024.
+             These come from the thrusters the loadout fits, so a ship the export
+             has not described shows nothing rather than a zero. -->
+        <div v-if="hasAcceleration" class="row">
+          <div class="col-6 col-lg-3">
+            <div class="metrics-label">{{ t("model.mainAcceleration") }}:</div>
+            <div class="metrics-value">
+              {{ toNumber(model.speeds.mainAcceleration, "acceleration") }}
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="metrics-label">{{ t("model.retroAcceleration") }}:</div>
+            <div class="metrics-value">
+              {{ toNumber(model.speeds.retroAcceleration, "acceleration") }}
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="metrics-label">
+              {{ t("model.scmSpeedAcceleration") }}:
+            </div>
+            <div class="metrics-value">
+              {{ toNumber(model.speeds.secondsToScmSpeed, "seconds") }}
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="metrics-label">
+              {{ t("model.scmSpeedDecceleration") }}:
+            </div>
+            <div class="metrics-value">
+              {{ toNumber(model.speeds.secondsToStopFromScmSpeed, "seconds") }}
+            </div>
+          </div>
+        </div>
+        <div v-if="hasAcceleration" class="row">
+          <div class="col-12">
+            <div class="seperator" />
+          </div>
+        </div>
         <div class="row">
           <div class="col-6 col-lg-4">
             <div class="metrics-label">{{ t("model.pitch") }}:</div>

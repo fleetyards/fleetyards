@@ -13707,6 +13707,22 @@ components:
           type: number
         scmSpeedBoosted:
           type: number
+        mainAcceleration:
+          type:
+          - number
+          - 'null'
+        retroAcceleration:
+          type:
+          - number
+          - 'null'
+        secondsToScmSpeed:
+          type:
+          - number
+          - 'null'
+        secondsToStopFromScmSpeed:
+          type:
+          - number
+          - 'null'
         reverseSpeedBoosted:
           type: number
         yaw:

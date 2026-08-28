@@ -17,6 +17,8 @@
       "minCrew": "min. Crew",
       "maxCrew": "max. Crew",
       "scmSpeed": "SCM Speed",
+      "mainAcceleration": "Acceleration",
+      "retroAcceleration": "Deceleration",
       "scmSpeedBoosted": "SCM Speed Boosted",
       "reverseSpeedBoosted": "Reverse Speed Boosted",
       "maxSpeed": "Max Speed",
