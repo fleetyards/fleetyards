@@ -8,6 +8,7 @@ module Api
     include ActionPolicy::Controller
     include RansackHelper
     include Pagination
+    include ScDataSource
 
     helper_method :combined_fragment_cache_key
     helper_method :view_cache_dependencies

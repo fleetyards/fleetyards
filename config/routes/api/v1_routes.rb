@@ -3,6 +3,7 @@
 v1_api_routes = lambda do
   get "version", to: "base#version"
   get "sc-data/version", to: "sc_data#current_version"
+  get "sc-data/sources", to: "sc_data#sources"
 
   resource :features, only: %i[show]
 

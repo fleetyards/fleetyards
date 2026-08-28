@@ -20,7 +20,7 @@ class Api::V1::ComponentsWeaponsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @version = Rails.configuration.sc_data[:version]
+    @version = ScData::Source.version
 
     @gun = create(
       :component,

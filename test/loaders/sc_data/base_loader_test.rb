@@ -8,7 +8,7 @@ module ScData
       setup do
         Commodity.delete_all
         @loader = ::ScData::Loader::BaseLoader.new
-        @version = Rails.configuration.sc_data[:version]
+        @version = ScData::Source.version
       end
 
       # The row has to stay: a ledger entry made against it still has to

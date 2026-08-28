@@ -61,7 +61,7 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
 
   test "GET /hangar/inventories/:slug/items says which referenced items the build still ships" do
     create(:inventory_item, inventory: @inventory, name: "Current",
-      item: create(:component, version: Rails.configuration.sc_data[:version]))
+      item: create(:component, version: ScData::Source.version))
     create(:inventory_item, inventory: @inventory, name: "Dropped",
       item: create(:component, version: "0.0.1-live.1"))
     sign_in @user

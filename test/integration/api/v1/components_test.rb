@@ -90,7 +90,7 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
   # an inner join to the build -- so the two from `setup` are current as well and
   # a count would be measuring them too.
   test "GET /components filters out older game versions via currentVersion" do
-    current = create(:component, category: "coolers", version: Rails.configuration.sc_data[:version])
+    current = create(:component, category: "coolers", version: ScData::Source.version)
     older = create(:component, category: "coolers", version: "0.0.1-live.1")
 
     assert_api_response :get, 200, params: {q: {"currentVersion" => true}} do

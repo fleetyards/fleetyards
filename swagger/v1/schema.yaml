@@ -9233,6 +9233,19 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/sc-data/sources":
+    get:
+      summary: SC Data Sources
+      tags:
+      - Versions
+      operationId: scDataSources
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataSources"
   "/sc-data/version":
     get:
       summary: SC Data Version
@@ -19396,6 +19409,29 @@ components:
       - UPGRADE
       - SKIN
       title: RsiHangarItemKindEnum
+    ScDataSources:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              environment:
+                type: string
+              version:
+                type: string
+              default:
+                type: boolean
+            additionalProperties: false
+            required:
+            - environment
+            - version
+            - default
+      additionalProperties: false
+      required:
+      - items
+      title: ScDataSources
     ScDataVersion:
       type: object
       properties:

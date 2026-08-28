@@ -1,3 +1,9 @@
 shared:
-  version: "4.10.0-live.12519617"
-  environment: "live"
+  # The build each environment is on. `bin/scdata parse <environment>` rewrites
+  # its own entry and leaves the others alone, so live and ptu can be parsed
+  # independently.
+  sources:
+    live: "4.10.0-live.12519617"
+
+  # What a request that does not name a source gets.
+  default: live

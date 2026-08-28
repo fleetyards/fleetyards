@@ -20,7 +20,7 @@ class Api::V1::FiltersComponentsCategoriesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @version = Rails.configuration.sc_data[:version]
+    @version = ScData::Source.version
 
     create(:component, category: "shieldgenerator", version: @version)
     create(:component, category: "weapons", version: @version)

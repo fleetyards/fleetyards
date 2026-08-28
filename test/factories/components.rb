@@ -43,7 +43,7 @@ FactoryBot.define do
     # Needed now that the catalogue filter is an inner join to the build: without
     # a version there is no build, and a component without a build is not in the
     # catalogue at all. The same reason the equipment factory carries one.
-    version { Rails.configuration.sc_data[:version] }
+    version { ScData::Source.version }
 
     transient { with_build { true } }
 
