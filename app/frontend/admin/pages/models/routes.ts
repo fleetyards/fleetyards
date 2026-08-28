@@ -17,6 +17,19 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "unlisted/",
+    name: "admin-unlisted-models",
+    component: () => import("@/admin/pages/models/unlisted.vue"),
+    strict: true,
+    meta: {
+      needsAuthentication: true,
+      title: "admin.unlistedModels.index",
+      icon: "fa-duotone fa-magnifying-glass-plus",
+      activeRoute: "admin-models",
+      access: ["models"],
+    },
+  },
+  {
     path: "modules/",
     component: () => import("@/admin/pages/models.vue"),
     children: modelModulesRoutes,

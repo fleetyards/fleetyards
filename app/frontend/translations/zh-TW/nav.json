@@ -137,6 +137,9 @@
             "prices": "價格"
           }
         },
+        "unlistedModels": {
+          "index": "未收錄的飛船"
+        },
         "modelModulePackages": {
           "index": "模組包",
           "create": "建立模組包"

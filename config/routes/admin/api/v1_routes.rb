@@ -98,6 +98,18 @@ v1_admin_api_routes = lambda do
     get :type_filters, on: :collection
   end
 
+  # Ships the game files describe that we have no model for. Only listed and
+  # decided on -- the rows are written by the sc_data load, never by hand.
+  resources :sc_data_unlisted_models, path: "unlisted-models", only: %i[index] do
+    member do
+      post :ignore
+      post "create-model", to: "sc_data_unlisted_models#create_model"
+      post "mark-as-paint", to: "sc_data_unlisted_models#mark_as_paint"
+      post :link
+      post :reset
+    end
+  end
+
   resources :fleets, only: %i[index show create update destroy] do
     collection do
       get :options

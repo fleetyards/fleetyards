@@ -66,6 +66,10 @@
           "models": "關聯型號",
           "prices": "價格"
         },
+        "unlistedModels": {
+          "index": "遊戲檔案中沒有對應條目的飛船",
+          "link": "關聯到目錄中的飛船"
+        },
         "manufacturers": {
           "index": "製造商",
           "new": "新製造商",

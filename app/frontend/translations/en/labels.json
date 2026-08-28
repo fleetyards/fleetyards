@@ -2182,6 +2182,9 @@
         "noBody": "This notification carries no further details.",
         "archivesOn": "Moves to the archive",
         "deletesOn": "Deleted"
+      },
+      "unlistedModel": {
+        "linkHint": "Which ship in the catalogue is %{identifier}? The suggestion comes from the export and may be wrong."
       }
     }
   }

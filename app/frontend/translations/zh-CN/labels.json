@@ -1310,6 +1310,9 @@
         "scKey": "SC Key",
         "scRef": "SC Ref",
         "storeImage": "Store Image"
+      },
+      "unlistedModel": {
+        "linkHint": "%{identifier} 对应目录中的哪艘飞船？建议来自导出数据，可能有误。"
       }
     }
   }

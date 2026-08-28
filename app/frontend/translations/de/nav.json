@@ -138,6 +138,9 @@
             "prices": "Preise"
           }
         },
+        "unlistedModels": {
+          "index": "Nicht gelistete Schiffe"
+        },
         "modelModulePackages": {
           "index": "Modulpakete",
           "create": "Modulpaket erstellen"

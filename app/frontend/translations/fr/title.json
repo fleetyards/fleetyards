@@ -197,6 +197,9 @@
             "prices": "Éditer %{name} Prix"
           }
         },
+        "unlistedModels": {
+          "index": "Vaisseaux non listés"
+        },
         "modelModulePackages": {
           "index": "Paquets de Modules de Modèles"
         },

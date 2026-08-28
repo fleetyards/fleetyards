@@ -1319,6 +1319,9 @@
         "scKey": "SC Key",
         "scRef": "SC Ref",
         "storeImage": "Store Image"
+      },
+      "unlistedModel": {
+        "linkHint": "Quel vaisseau du catalogue est %{identifier} ? La suggestion vient de l'export et peut être fausse."
       }
     }
   }

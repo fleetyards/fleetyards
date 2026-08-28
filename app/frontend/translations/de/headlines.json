@@ -66,6 +66,10 @@
           "models": "Verknüpfte Modelle",
           "prices": "Preise"
         },
+        "unlistedModels": {
+          "index": "Schiffe in den Spieldateien ohne Model",
+          "link": "Mit einem Schiff im Katalog verknüpfen"
+        },
         "manufacturers": {
           "index": "Hersteller",
           "new": "Neuer Hersteller",

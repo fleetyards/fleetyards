@@ -368,6 +368,9 @@
         },
         "equipment": {
           "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
+        },
+        "unlistedModel": {
+          "createModel": "Creare una nave da %{name}? Il prossimo caricamento sc_data completerà le sue meccaniche."
         }
       },
       "oauthAuthorize": {

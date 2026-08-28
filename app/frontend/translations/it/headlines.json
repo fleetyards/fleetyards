@@ -66,6 +66,10 @@
           "models": "Modelli collegati",
           "prices": "Prezzi"
         },
+        "unlistedModels": {
+          "index": "Navi nei file di gioco senza modello",
+          "link": "Collega a una nave del catalogo"
+        },
         "manufacturers": {
           "index": "Produttori",
           "new": "Nuovo produttore",

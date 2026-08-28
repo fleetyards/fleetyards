@@ -66,6 +66,10 @@
           "models": "Modèles liés",
           "prices": "Prix"
         },
+        "unlistedModels": {
+          "index": "Vaisseaux des fichiers de jeu sans modèle",
+          "link": "Lier à un vaisseau du catalogue"
+        },
         "manufacturers": {
           "index": "Fabricants",
           "new": "Nouveau fabricant",

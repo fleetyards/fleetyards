@@ -137,6 +137,9 @@
             "prices": "Precios"
           }
         },
+        "unlistedModels": {
+          "index": "Naves no listadas"
+        },
         "modelModulePackages": {
           "index": "Paquetes de Módulos",
           "create": "Crear Paquete de Módulos"
