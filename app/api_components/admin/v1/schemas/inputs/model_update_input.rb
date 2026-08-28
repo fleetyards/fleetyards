@@ -14,7 +14,6 @@ module Admin
               description: {type: [:string, :null]},
               hidden: {type: :boolean},
               active: {type: :boolean},
-              inGame: {type: :boolean},
               adiMap: {type: :boolean},
               ground: {type: :boolean},
               mass: {type: [:number, :null]},

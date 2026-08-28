@@ -450,4 +450,84 @@ class ModelTest < ActiveSupport::TestCase
     assert_nil model.seconds_to_scm_speed
     assert_nil model.seconds_to_stop_from_scm_speed
   end
+
+  # `in_game` used to be one boolean set from whichever environment loaded last,
+  # so a ptu load overwrote what live had said. A build row carries its
+  # environment, so the same question now has a different answer per source.
+  test "is in game when the build we are on describes it" do
+    model = create(:model)
+
+    assert_not_predicate model, :in_game?
+
+    create(:model_build, model:)
+
+    assert_predicate model.reload, :in_game?
+  end
+
+  test "is not in game when only an older build describes it" do
+    model = create(:model)
+    create(:model_build, model:, version: "0.0.1-live.1")
+
+    assert_not_predicate model.reload, :in_game?
+  end
+
+  test "answers differently per source" do
+    Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0", ptu: "1.1.0"}, default: "live"})
+    model = create(:model)
+    create(:model_build, model:, environment: "ptu", version: "1.1.0")
+
+    assert_not_predicate model.reload, :in_game?, "live does not ship it"
+
+    ScData::Source.with(ScData::Source.find("ptu")) do
+      assert_predicate model.reload, :in_game?, "ptu does"
+    end
+  end
+
+  test "the filter keeps its name and follows the source" do
+    Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0", ptu: "1.1.0"}, default: "live"})
+    shipped = create(:model)
+    create(:model_build, model: shipped, environment: "ptu", version: "1.1.0")
+    concept = create(:model)
+
+    assert_empty Model.ransack(in_game_eq: true).result
+
+    ScData::Source.with(ScData::Source.find("ptu")) do
+      assert_equal [shipped], Model.ransack(in_game_eq: true).result.to_a
+      assert_equal [concept], Model.ransack(in_game_eq: false).result.to_a
+    end
+  end
+
+  # A build of the same environment at another version must not answer, or every
+  # ship that ever shipped would read as current.
+  test "the filter ignores a build of another version" do
+    Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0"}, default: "live"})
+    model = create(:model)
+    create(:model_build, model:, environment: "live", version: "0.9.0")
+
+    assert_empty Model.ransack(in_game_eq: true).result
+    assert_equal [model], Model.ransack(in_game_eq: false).result.to_a
+  end
+
+  # Same version, other environment: ptu and live carry the same version string
+  # while shipping different data, so the environment has to be part of it.
+  test "the filter ignores a build of another environment at the same version" do
+    Rails.configuration.stubs(:sc_data).returns({sources: {live: "1.0.0", ptu: "1.0.0"}, default: "live"})
+    model = create(:model)
+    create(:model_build, model:, environment: "ptu", version: "1.0.0")
+
+    assert_empty Model.ransack(in_game_eq: true).result
+
+    ScData::Source.with(ScData::Source.find("ptu")) do
+      assert_equal [model], Model.ransack(in_game_eq: true).result.to_a
+    end
+  end
+
+  # 31 of 246 models are concept ships no build will ever describe. `in_game` is
+  # not what decides whether they are in the catalogue.
+  test "a concept ship stays in the catalogue while not being in game" do
+    concept = create(:model, hidden: false, active: true)
+
+    assert_not_predicate concept, :in_game?
+    assert_includes Model.visible.active, concept
+  end
 end

@@ -57,19 +57,22 @@ module ScData
 
       # Counted separately from `apply` because it deliberately skips
       # validations and callbacks, so `changed?` is never consulted.
+      # `hidden` rather than `in_game`: what is under test is the counting, and
+      # `in_game?` reads a build row now rather than a column, so writing it
+      # through `apply_columns` would prove nothing.
       test "#apply_columns writes the columns and counts an update" do
-        model = create(:model, in_game: false)
+        model = create(:model, hidden: false)
 
-        @loader.apply_columns(model, {in_game: true})
+        @loader.apply_columns(model, {hidden: true})
 
-        assert_predicate model.reload, :in_game?
+        assert_predicate model.reload, :hidden?
         assert_equal({created: 0, updated: 1, unchanged: 0}, @loader.stats["Model"])
       end
 
       test "counts are kept per model class" do
         @loader.apply(Commodity.new, {name: "Agricium", sc_key: "agricium"})
         @loader.apply(Commodity.new, {name: "Aluminium", sc_key: "aluminium"})
-        @loader.apply_columns(create(:model), {in_game: true})
+        @loader.apply_columns(create(:model), {hidden: true})
 
         assert_equal 2, @loader.stats["Commodity"][:created]
         assert_equal 1, @loader.stats["Model"][:updated]

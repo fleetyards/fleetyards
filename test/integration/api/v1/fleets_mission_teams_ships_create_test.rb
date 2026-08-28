@@ -60,7 +60,7 @@ class Api::V1::FleetsMissionTeamsShipsCreateTest < ActionDispatch::IntegrationTe
   end
 
   test "POST /fleets/:slug/missions/:slug/teams/:id/ships creates a specific model with materialized seats" do
-    model = create(:model, in_game: true)
+    model = create(:model, :in_game)
     positions = [
       create(:model_position, model: model, name: "Pilot", position_type: :pilot, position: 0),
       create(:model_position, model: model, name: "Co-Pilot", position_type: :copilot, position: 1)
@@ -79,7 +79,7 @@ class Api::V1::FleetsMissionTeamsShipsCreateTest < ActionDispatch::IntegrationTe
   end
 
   test "POST /fleets/:slug/missions/:slug/teams/:id/ships returns 400 for non-in-game model" do
-    model = create(:model, in_game: false)
+    model = create(:model)
     sign_in @admin
 
     assert_api_response :post, 400,
