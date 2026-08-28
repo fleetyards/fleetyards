@@ -11,11 +11,13 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import Detail from "@/frontend/components/Notifications/Detail/index.vue";
 import FilterForm from "@/frontend/components/Notifications/FilterForm/index.vue";
 import ListItem from "@/frontend/components/Notifications/ListItem/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
+import { useBulkSelection } from "@/shared/composables/useBulkSelection";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -34,7 +36,14 @@ import {
   unarchiveNotification,
   destroyNotification,
   destroyAllNotifications,
+  readBulkNotifications,
+  unreadBulkNotifications,
+  archiveBulkNotifications,
+  unarchiveBulkNotifications,
+  destroyBulkNotifications,
   type Notification,
+  type NotificationBulkInput,
+  type NotificationBulkResult,
   type NotificationSortEnum,
 } from "@/services/fyApi";
 
@@ -116,6 +125,25 @@ watch([sorts, archive], async () => {
 const { data: unreadCount } = useNotificationsUnreadCount();
 
 const records = computed(() => notifications.value?.items || []);
+
+const totalCount = computed(
+  () => notifications.value?.meta.pagination?.totalCount,
+);
+
+const {
+  selectedIds,
+  allMatchingSelected,
+  selectedCount,
+  matchingCount,
+  pageSelected,
+  pagePartiallySelected,
+  canSelectAllMatching,
+  toggle: toggleSelection,
+  togglePage,
+  selectAllMatching,
+  clear: clearSelection,
+  payload: bulkPayload,
+} = useBulkSelection(records, () => queryParams.value.q, totalCount);
 
 const selectedId = ref<string>();
 
@@ -230,6 +258,56 @@ const destroyAll = () =>
     () => destroyAllNotifications(),
     t("messages.notifications.destroyedAll"),
   );
+
+// The selection is spent once the action lands: leaving it ticked invites a
+// second run over rows that have already moved on, and after "all matching"
+// it would no longer mean the same set.
+const withBulkFeedback = async (
+  action: (input: NotificationBulkInput) => Promise<NotificationBulkResult>,
+  key: string,
+) => {
+  try {
+    const { count } = await action(bulkPayload.value);
+
+    clearSelection();
+    invalidate();
+    displaySuccess({ text: t(key, { count }) });
+  } catch {
+    displayAlert({ text: t("messages.notifications.error") });
+  }
+};
+
+const readSelected = () =>
+  withBulkFeedback(readBulkNotifications, "messages.notifications.bulk.read");
+
+// Same reason the single-record one closes the pane: an unread notification
+// left open only invites the click that marks it read again.
+const unreadSelected = () => {
+  selectedId.value = undefined;
+
+  return withBulkFeedback(
+    unreadBulkNotifications,
+    "messages.notifications.bulk.unread",
+  );
+};
+
+const archiveSelected = () =>
+  withBulkFeedback(
+    archiveBulkNotifications,
+    "messages.notifications.bulk.archived",
+  );
+
+const unarchiveSelected = () =>
+  withBulkFeedback(
+    unarchiveBulkNotifications,
+    "messages.notifications.bulk.unarchived",
+  );
+
+const destroySelected = () =>
+  withBulkFeedback(
+    destroyBulkNotifications,
+    "messages.notifications.bulk.destroyed",
+  );
 </script>
 
 <template>
@@ -328,6 +406,69 @@ const destroyAll = () =>
       </Btn>
     </template>
     <template #default="{ records: shown }">
+      <BulkSelectionBar
+        class="notifications__bulk"
+        :class="{ 'notifications__bulk--hidden': !!selected }"
+        :selected-count="selectedCount"
+        :matching-count="matchingCount"
+        :page-selected="pageSelected"
+        :page-partially-selected="pagePartiallySelected"
+        :can-select-all-matching="canSelectAllMatching"
+        :all-matching-selected="allMatchingSelected"
+        @toggle-page="togglePage"
+        @select-all-matching="selectAllMatching"
+        @clear="clearSelection"
+      >
+        <Btn
+          v-tooltip="t('actions.notifications.readSelected')"
+          :aria-label="t('actions.notifications.readSelected')"
+          data-test="bulk-read"
+          @click="readSelected"
+        >
+          <i class="fa-duotone fa-envelope-open" />
+        </Btn>
+        <Btn
+          v-tooltip="t('actions.notifications.unreadSelected')"
+          :aria-label="t('actions.notifications.unreadSelected')"
+          data-test="bulk-unread"
+          @click="unreadSelected"
+        >
+          <i class="fa-duotone fa-envelope-dot" />
+        </Btn>
+        <Btn
+          v-if="archive"
+          v-tooltip="t('actions.notifications.unarchiveSelected')"
+          :aria-label="t('actions.notifications.unarchiveSelected')"
+          data-test="bulk-unarchive"
+          @click="unarchiveSelected"
+        >
+          <i class="fa-duotone fa-inbox-in" />
+        </Btn>
+        <Btn
+          v-else
+          v-tooltip="t('actions.notifications.archiveSelected')"
+          :aria-label="t('actions.notifications.archiveSelected')"
+          data-test="bulk-archive"
+          @click="archiveSelected"
+        >
+          <i class="fa-duotone fa-box-archive" />
+        </Btn>
+        <Btn
+          v-tooltip="t('actions.notifications.destroySelected')"
+          :aria-label="t('actions.notifications.destroySelected')"
+          :tone="BtnTonesEnum.DANGER"
+          :confirm="
+            t('messages.confirm.notifications.destroySelected', {
+              count: selectedCount,
+            })
+          "
+          data-test="bulk-destroy"
+          @click="destroySelected"
+        >
+          <i class="fa-duotone fa-trash" />
+        </Btn>
+      </BulkSelectionBar>
+
       <div
         class="notifications"
         :class="{ 'notifications--reading': !!selected }"
@@ -342,6 +483,11 @@ const destroyAll = () =>
               :ref="registerRow(notification)"
               :notification="notification"
               :selected="notification.id === selectedId"
+              :checked="
+                allMatchingSelected || selectedIds.includes(notification.id)
+              "
+              selectable
+              @toggle="toggleSelection(notification.id)"
               @select="select(notification)"
               @archive="archiveOne(notification)"
               @unarchive="unarchiveOne(notification)"
@@ -400,6 +546,22 @@ const destroyAll = () =>
   line-height: 1;
   background-color: var(--color-primary, #{$primary});
   border-radius: 10px;
+}
+
+.notifications__bulk {
+  margin-bottom: 10px;
+}
+
+// Below the two-pane breakpoint the reading pane replaces the list, and a
+// selection toolbar over a hidden list has nothing to act on.
+.notifications__bulk--hidden {
+  display: none;
+}
+
+@media (min-width: $notifications-two-pane-breakpoint) {
+  .notifications__bulk--hidden {
+    display: flex;
+  }
 }
 
 .notifications {

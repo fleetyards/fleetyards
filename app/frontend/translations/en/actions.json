@@ -295,7 +295,13 @@
         "readAll": "Mark all as read",
         "destroyAll": "Delete all",
         "sortOldest": "Oldest first",
-        "sortNewest": "Newest first"
+        "sortNewest": "Newest first",
+        "select": "Select notification",
+        "readSelected": "Mark selected as read",
+        "unreadSelected": "Mark selected as unread",
+        "archiveSelected": "Archive selected",
+        "unarchiveSelected": "Move selected back to inbox",
+        "destroySelected": "Delete selected"
       },
       "account": {
         "calendarSubscription": {
@@ -360,7 +366,13 @@
         "settings": "Notification settings",
         "sortOldest": "Oldest first",
         "sortNewest": "Newest first",
-        "openCenter": "Notifications"
+        "openCenter": "Notifications",
+        "select": "Select notification",
+        "readSelected": "Mark selected as read",
+        "unreadSelected": "Mark selected as unread",
+        "archiveSelected": "Archive selected",
+        "unarchiveSelected": "Move selected back to inbox",
+        "destroySelected": "Delete selected"
       },
       "unlistedModel": {
         "createModel": "Create ship",
