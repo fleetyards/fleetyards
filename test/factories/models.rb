@@ -41,11 +41,10 @@
 #  legacy_slug                       :string
 #  length                            :decimal(15, 2)   default(0.0), not null
 #  loaners_count                     :integer          default(0), not null
+#  main_acceleration                 :decimal(15, 2)
 #  mass                              :decimal(15, 2)   default(0.0), not null
 #  max_crew                          :integer
 #  max_speed                         :decimal(15, 2)
-#  max_speed_acceleration            :decimal(15, 2)
-#  max_speed_decceleration           :decimal(15, 2)
 #  min_crew                          :integer
 #  model_paints_count                :integer          default(0)
 #  module_hardpoints_count           :integer          default(0)
@@ -64,6 +63,7 @@
 #  quantum_fuel_tank_size            :decimal(15, 2)
 #  quantum_fuel_tanks                :string
 #  refuel_boom                       :string
+#  retro_acceleration                :decimal(15, 2)
 #  reverse_speed_boosted             :decimal(15, 2)
 #  roll                              :decimal(15, 2)
 #  roll_boosted                      :decimal(15, 2)
@@ -95,9 +95,7 @@
 #  sc_key                            :string
 #  sc_length                         :decimal(15, 2)
 #  scm_speed                         :decimal(15, 2)
-#  scm_speed_acceleration            :decimal(15, 2)
 #  scm_speed_boosted                 :decimal(15, 2)
-#  scm_speed_decceleration           :decimal(15, 2)
 #  signature_cross_section           :jsonb
 #  size                              :string
 #  slug                              :string(255)
@@ -154,10 +152,8 @@ FactoryBot.define do
     quantum_fuel_tank_size { 3000.0 }
     scm_speed { 144.0 }
     max_speed { 911.0 }
-    scm_speed_acceleration { 3.11 }
-    scm_speed_decceleration { 6.22 }
-    max_speed_acceleration { 19.66 }
-    max_speed_decceleration { 39.35 }
+    main_acceleration { 61.09 }
+    retro_acceleration { 30.55 }
     pitch { 25.0 }
     yaw { 25.0 }
     roll { 65.0 }

@@ -24,6 +24,7 @@
 #  hull_health             :decimal(15, 2)
 #  hull_parts              :jsonb
 #  hydrogen_fuel_tanks     :string
+#  main_acceleration       :decimal(15, 2)
 #  mass                    :decimal(15, 2)
 #  max_speed               :decimal(15, 2)
 #  personal_inventory      :decimal(15, 2)
@@ -31,6 +32,7 @@
 #  pitch_boosted           :decimal(15, 2)
 #  quantum_fuel_tanks      :string
 #  refuel_boom             :string
+#  retro_acceleration      :decimal(15, 2)
 #  reverse_speed_boosted   :decimal(15, 2)
 #  roll                    :decimal(15, 2)
 #  roll_boosted            :decimal(15, 2)
@@ -70,7 +72,7 @@ class ModelBuild < ApplicationRecord
   # becomes.
   FACTS = %i[
     mass hull_health hull_parts hull_doors weapon_pool_size signature_cross_section ground
-    personal_inventory fuel_consumption
+    personal_inventory fuel_consumption main_acceleration retro_acceleration
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom
     scm_speed scm_speed_boosted reverse_speed_boosted max_speed
     pitch pitch_boosted yaw yaw_boosted roll roll_boosted
