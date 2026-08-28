@@ -22,6 +22,21 @@ module ScData
       _pu_ai_ _ai_ _unmanned _template _derelict _wreck _dead _swarm _test _modifiers
     ].freeze
 
+    # The in-game vendors that sell a loadout rather than a hull. What you earn
+    # from Wikelo's Emporium or PYAM is the base ship carrying that fitting --
+    # measured across the live tree, every one of these has the same mass, crew,
+    # hull health and port list as the ship it extends, and changes only which
+    # off-the-shelf component sits in each port. Nobody owns one either: across
+    # 400 hangar syncs not a single vendor name appears.
+    #
+    # Matched on the export's display name rather than the identifier, because
+    # that is where the vendor is written -- `mrai_guardian_military` ships as
+    # "Mirai Guardian Wikelo War Special".
+    #
+    # **Only when a base ship resolves.** A vendor selling a hull the catalogue
+    # does not have would have none, and has to stay reported.
+    VENDOR_VARIANTS = /\b(wikelo|pyam)\b/i
+
     def initialize(source = ::ScData::Source.current, base_folder: nil)
       @source = source
       @base_folder = base_folder || Rails.root.join("data/sc_data")
@@ -33,9 +48,13 @@ module ScData
     # to look at. Seeing an identifier again only moves `last_seen_*`, so a
     # decision survives every later load.
     def run
-      identifiers = unlisted_identifiers
+      identifiers = unlisted_identifiers.reject { |identifier| vendor_variant?(identifier) }
 
       identifiers.each { |identifier| record(identifier) }
+
+      # A row the rule now covers stops being reported. Only undecided ones go:
+      # a decision that was already made is the record of it.
+      ScDataUnlistedModel.undecided.where.not(identifier: identifiers).delete_all
 
       {
         seen: identifiers.size,
@@ -113,6 +132,15 @@ module ScData
       parsed_identifiers.reject do |identifier|
         known.include?(identifier) || MARKERS.any? { |marker| identifier.include?(marker) }
       end
+    end
+
+    # A loadout an in-game vendor sells, on a hull the catalogue already has.
+    def vendor_variant?(identifier)
+      data = load(identifier)
+      return false if data.nil?
+      return false unless data["name"].to_s.match?(VENDOR_VARIANTS)
+
+      base_model_for(identifier).present?
     end
 
     def record(identifier)

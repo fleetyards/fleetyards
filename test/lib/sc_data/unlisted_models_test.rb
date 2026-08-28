@@ -110,6 +110,61 @@ class ScData::UnlistedModelsTest < ActiveSupport::TestCase
     assert_equal "structural", ScDataUnlistedModel.find_by(identifier: "argo_atls_ikti").comparison
   end
 
+  # What you earn from Wikelo's Emporium or PYAM is the base ship carrying that
+  # fitting, not a second ship. The vendor is written in the display name rather
+  # than the identifier.
+  test "leaves out a loadout an in-game vendor sells on a hull we already have" do
+    create(:model, sc_key: "mrai_guardian", name: "Guardian")
+    write_ship("mrai_guardian")
+    write_ship("mrai_guardian_military", name: "Mirai Guardian Wikelo War Special")
+    write_ship("drak_corsair_exec_military", name: "Corsair PYAM Exec")
+    create(:model, sc_key: "drak_corsair", name: "Corsair")
+    write_ship("drak_corsair")
+
+    result = run_detector
+
+    assert_equal 0, result[:seen]
+    assert_empty ScDataUnlistedModel.all
+  end
+
+  # The safety valve: a vendor selling a hull the catalogue does not have has no
+  # base ship, and has to stay reported.
+  test "still reports a vendor ship with no base ship in the catalogue" do
+    write_ship("krig_newhull_collector_mod", name: "Kruger Newhull Wikelo Special")
+
+    assert_equal 1, run_detector[:seen]
+    assert_equal "krig_newhull_collector_mod", ScDataUnlistedModel.sole.identifier
+  end
+
+  test "a row the vendor rule now covers stops being reported" do
+    create(:model, sc_key: "mrai_guardian", name: "Guardian")
+    write_ship("mrai_guardian")
+    write_ship("mrai_guardian_military", name: "Mirai Guardian")
+    run_detector
+
+    assert_equal 1, ScDataUnlistedModel.count
+
+    write_ship("mrai_guardian_military", name: "Mirai Guardian Wikelo War Special")
+
+    assert_empty run_detector[:undecided]
+    assert_empty ScDataUnlistedModel.all
+  end
+
+  # A decision already made is the record of it, whatever a later rule says.
+  test "a decided row survives a rule that would now exclude it" do
+    create(:model, sc_key: "mrai_guardian", name: "Guardian")
+    write_ship("mrai_guardian")
+    write_ship("mrai_guardian_military", name: "Mirai Guardian")
+    run_detector
+    ScDataUnlistedModel.sole.decide!("ignored")
+
+    write_ship("mrai_guardian_military", name: "Mirai Guardian Wikelo War Special")
+    run_detector
+
+    assert_equal 1, ScDataUnlistedModel.count
+    assert_equal "ignored", ScDataUnlistedModel.sole.decision
+  end
+
   # Every unresolved identifier in the live tree today is a world object -- an
   # orbital sentry, a comm probe, a satellite.
   test "records no manufacturer for a prefix no ship in the catalogue uses" do
