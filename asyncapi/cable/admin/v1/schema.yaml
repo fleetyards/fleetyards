@@ -125,6 +125,7 @@ components:
       - weekly_stats
       - ship_matrix_import
       - sc_data_import
+      - sc_data_unlisted_models
       - import_run
       x-enumNames:
       - PAINTS_IMPORT
@@ -138,6 +139,7 @@ components:
       - WEEKLY_STATS
       - SHIP_MATRIX_IMPORT
       - SC_DATA_IMPORT
+      - SC_DATA_UNLISTED_MODELS
       - IMPORT_RUN
     Import:
       type: object
