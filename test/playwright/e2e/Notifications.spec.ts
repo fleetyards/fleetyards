@@ -164,6 +164,40 @@ test.describe("Notifications", () => {
     await expect(page.getByTestId("notification-detail-no-body")).toBeVisible();
   });
 
+  test("Names what the link leads to instead of a bare 'Open'", async ({
+    page,
+  }) => {
+    await row(page, "Aurora MR added to your hangar")
+      .getByTestId("notification-select")
+      .click();
+
+    await expect(
+      page.getByTestId("notification-action-open-hangar"),
+    ).toBeVisible();
+  });
+
+  test("Answers a fleet invite from the reading pane", async ({
+    page,
+    notification,
+  }) => {
+    await row(page, "You were invited to Test Fleet")
+      .getByTestId("notification-select")
+      .click();
+
+    const accept = page.getByTestId("notification-action-accept");
+
+    await expect(accept).toBeVisible();
+    await expect(page.getByTestId("notification-action-decline")).toBeVisible();
+
+    await accept.click();
+
+    await notification.success("Done");
+
+    // The membership is no longer an open invite, so re-reading it leaves
+    // nothing to answer.
+    await expect(page.getByTestId("notification-action-accept")).toHaveCount(0);
+  });
+
   test("Counts the unread notifications in the navigation", async ({
     page,
   }) => {
