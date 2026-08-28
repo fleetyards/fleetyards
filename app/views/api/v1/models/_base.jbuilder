@@ -199,6 +199,14 @@ json.speeds do
   json.roll_boosted model.roll_boosted&.to_f
   json.scm_speed model.scm_speed&.to_f
   json.scm_speed_boosted model.scm_speed_boosted&.to_f
+
+  # What the thrusters give, and what that means in seconds. Ships had no
+  # acceleration figure at all before -- the four columns that claimed to hold one
+  # held seconds and had not been written since 2024.
+  json.main_acceleration model.main_acceleration&.to_f
+  json.retro_acceleration model.retro_acceleration&.to_f
+  json.seconds_to_scm_speed model.seconds_to_scm_speed
+  json.seconds_to_stop_from_scm_speed model.seconds_to_stop_from_scm_speed
   json.yaw model.yaw&.to_f
   json.yaw_boosted model.yaw_boosted&.to_f
 end

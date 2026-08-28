@@ -29,6 +29,7 @@
       "newton": "%{count} KN",
       "weight": "%{count} t",
       "speed": "%{count} m/s",
+      "acceleration": "%{count} m/s²",
       "seconds": "%{count} s",
       "rateOfFire": "%{count} shots/min",
       "rotation": "%{count} deg/s",

@@ -17,6 +17,8 @@
       "minCrew": "最少船员",
       "maxCrew": "最多船员",
       "scmSpeed": "SCM速度",
+      "mainAcceleration": "加速",
+      "retroAcceleration": "减速",
       "scmSpeedBoosted": "SCM增强速度",
       "reverseSpeedBoosted": "倒车增强速度",
       "maxSpeed": "最大速度",
