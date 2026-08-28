@@ -435,7 +435,11 @@
           "destroy": "Are you sure you want to delete this fleet? This action can't be reverted."
         },
         "adminNotifications": {
-          "destroyAll": "Are you sure you want to delete all notifications? This action can't be reverted."
+          "destroyAll": "Are you sure you want to delete all notifications? This action can't be reverted.",
+          "destroySelected": {
+            "one": "Are you sure you want to delete the selected notification? This action can't be reverted.",
+            "other": "Are you sure you want to delete the %{count} selected notifications? This action can't be reverted."
+          }
         },
         "adminDestroyedFleet": {
           "restore": "Are you sure you want to restore this fleet?",
@@ -457,7 +461,11 @@
           "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
         },
         "notifications": {
-          "destroyAll": "Are you sure you want to delete all notifications? This action can't be reverted."
+          "destroyAll": "Are you sure you want to delete all notifications? This action can't be reverted.",
+          "destroySelected": {
+            "one": "Are you sure you want to delete the selected notification? This action can't be reverted.",
+            "other": "Are you sure you want to delete the %{count} selected notifications? This action can't be reverted."
+          }
         },
         "unlistedModel": {
           "createModel": "Create a ship from %{name}? The next sc_data load fills in its mechanics."
@@ -582,7 +590,29 @@
         "readAll": "All notifications marked as read",
         "destroyed": "Notification deleted",
         "destroyedAll": "All notifications deleted",
-        "error": "Something went wrong"
+        "error": "Something went wrong",
+        "bulk": {
+          "read": {
+            "one": "%{count} notification marked as read",
+            "other": "%{count} notifications marked as read"
+          },
+          "unread": {
+            "one": "%{count} notification marked as unread",
+            "other": "%{count} notifications marked as unread"
+          },
+          "archived": {
+            "one": "%{count} notification archived",
+            "other": "%{count} notifications archived"
+          },
+          "unarchived": {
+            "one": "%{count} notification moved back to the inbox",
+            "other": "%{count} notifications moved back to the inbox"
+          },
+          "destroyed": {
+            "one": "%{count} notification deleted",
+            "other": "%{count} notifications deleted"
+          }
+        }
       },
       "fleets": {
         "notifications": {
@@ -800,7 +830,29 @@
         "readAll": "All notifications marked as read",
         "destroyed": "Notification deleted",
         "destroyedAll": "All notifications deleted",
-        "error": "Something went wrong"
+        "error": "Something went wrong",
+        "bulk": {
+          "read": {
+            "one": "%{count} notification marked as read",
+            "other": "%{count} notifications marked as read"
+          },
+          "unread": {
+            "one": "%{count} notification marked as unread",
+            "other": "%{count} notifications marked as unread"
+          },
+          "archived": {
+            "one": "%{count} notification archived",
+            "other": "%{count} notifications archived"
+          },
+          "unarchived": {
+            "one": "%{count} notification moved back to the inbox",
+            "other": "%{count} notifications moved back to the inbox"
+          },
+          "destroyed": {
+            "one": "%{count} notification deleted",
+            "other": "%{count} notifications deleted"
+          }
+        }
       }
     }
   }

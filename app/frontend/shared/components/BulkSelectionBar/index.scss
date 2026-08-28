@@ -1,0 +1,56 @@
+// No surface of its own: it is a header over the list, not another row in it,
+// and a filled bar above filled rows reads as a record that lost its title.
+// The left inset matches a row's checkbox so the two line up in one column.
+.bulk-selection-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-height: 34px;
+  padding: 4px 8px 4px 10px;
+
+  // The checkbox ships with a form field's bottom margin, which a toolbar row
+  // has no use for.
+  :deep(.base-checkbox) {
+    margin-bottom: 0;
+  }
+}
+
+// Kept in place rather than removed while nothing is ticked: the bar sits
+// directly above the list, and a row that grows the moment a checkbox is
+// clicked pushes the list out from under the pointer. `visibility` also takes
+// it off the tab order and out of the accessibility tree, so there is nothing
+// to reach while it is empty.
+.bulk-selection-bar__body {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+}
+
+.bulk-selection-bar__body--empty {
+  visibility: hidden;
+}
+
+.bulk-selection-bar__count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-primary, #{$primary});
+  white-space: nowrap;
+
+  :deep(.btn__content) {
+    color: inherit;
+  }
+}
+
+.bulk-selection-bar__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  // Pushed to the far end so the actions sit where a row's own buttons do.
+  margin-left: auto;
+}

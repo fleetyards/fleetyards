@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -18,14 +19,19 @@ import { type AdminNotification } from "@/services/fyAdminApi";
 type Props = {
   notification: AdminNotification;
   selected?: boolean;
+  selectable?: boolean;
+  checked?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
+  selectable: false,
+  checked: false,
 });
 
 const emit = defineEmits<{
   select: [];
+  toggle: [checked: boolean];
   archive: [];
   unarchive: [];
   destroy: [];
@@ -49,8 +55,21 @@ defineExpose({ focus: () => select.value?.focus() });
     :class="{
       'notification-item--unread': !notification.read,
       'notification-item--selected': props.selected,
+      'notification-item--selectable': props.selectable,
     }"
   >
+    <FormCheckbox
+      v-if="props.selectable"
+      v-tooltip="t('actions.adminNotifications.select')"
+      :model-value="props.checked"
+      :aria-label="t('actions.adminNotifications.select')"
+      class="notification-item__checkbox"
+      name="notification-selection"
+      data-test="notification-checkbox"
+      no-label
+      inline
+      @update:model-value="emit('toggle', $event)"
+    />
     <button
       ref="select"
       type="button"
@@ -184,6 +203,21 @@ defineExpose({ focus: () => select.value?.focus() });
   cursor: pointer;
 }
 
+// The checkbox brings a form field's bottom margin, which a row has no use
+// for, and it lines up with the first line of the title rather than the
+// middle of a row that may run to two.
+.notification-item__checkbox {
+  flex-shrink: 0;
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding-left: 10px;
+}
+
+// The checkbox takes over the left inset, so the title stops carrying it.
+.notification-item--selectable .notification-item__select {
+  padding-left: 4px;
+}
+
 .notification-item__icon {
   flex-shrink: 0;
   margin-top: 2px;
@@ -262,6 +296,10 @@ defineExpose({ focus: () => select.value?.focus() });
   .notification-item__select {
     gap: 10px;
     padding-left: 10px;
+  }
+
+  .notification-item__checkbox {
+    padding-left: 6px;
   }
 
   .notification-item__actions {

@@ -5585,6 +5585,33 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/archive-bulk":
+    put:
+      summary: Archive the selected Admin Notifications
+      tags:
+      - Notifications
+      operationId: archiveBulkAdminNotifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminNotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/destroy-all":
     delete:
       summary: Delete all Admin Notifications
@@ -5600,6 +5627,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/notifications/destroy-bulk":
+    put:
+      summary: Delete the selected Admin Notifications
+      tags:
+      - Notifications
+      operationId: destroyBulkAdminNotifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminNotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/read-all":
     put:
       summary: Mark all Admin Notifications as read
@@ -5615,6 +5669,87 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/notifications/read-bulk":
+    put:
+      summary: Mark the selected Admin Notifications as read
+      tags:
+      - Notifications
+      operationId: readBulkAdminNotifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminNotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/unarchive-bulk":
+    put:
+      summary: Move the selected Admin Notifications back to the inbox
+      tags:
+      - Notifications
+      operationId: unarchiveBulkAdminNotifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminNotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/unread-bulk":
+    put:
+      summary: Mark the selected Admin Notifications as unread
+      tags:
+      - Notifications
+      operationId: unreadBulkAdminNotifications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminNotificationBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotificationBulkResult"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/unread-count":
     get:
       summary: Unread Admin Notification count
@@ -7814,6 +7949,32 @@ components:
       - createdAt
       - updatedAt
       title: AdminNotification
+    AdminNotificationBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        all:
+          type: boolean
+          default: false
+          description: Apply to every notification matching `q` instead of `ids`.
+        q:
+          "$ref": "#/components/schemas/AdminNotificationQuery"
+      additionalProperties: false
+      description: Naming neither `ids` nor `all` selects nothing.
+      title: AdminNotificationBulkInput
+    AdminNotificationBulkResult:
+      type: object
+      properties:
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - count
+      title: AdminNotificationBulkResult
     AdminNotificationQuery:
       type: object
       properties:

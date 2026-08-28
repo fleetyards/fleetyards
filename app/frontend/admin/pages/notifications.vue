@@ -11,11 +11,13 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import Detail from "@/admin/components/Notifications/Detail/index.vue";
 import FilterForm from "@/admin/components/Notifications/FilterForm/index.vue";
 import ListItem from "@/admin/components/Notifications/ListItem/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
+import { useBulkSelection } from "@/shared/composables/useBulkSelection";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -34,7 +36,14 @@ import {
   unarchiveAdminNotification,
   destroyAdminNotification,
   destroyAllAdminNotifications,
+  readBulkAdminNotifications,
+  unreadBulkAdminNotifications,
+  archiveBulkAdminNotifications,
+  unarchiveBulkAdminNotifications,
+  destroyBulkAdminNotifications,
   type AdminNotification,
+  type AdminNotificationBulkInput,
+  type AdminNotificationBulkResult,
   type AdminNotificationSortEnum,
 } from "@/services/fyAdminApi";
 
@@ -118,6 +127,25 @@ watch([sorts, archive], async () => {
 const { data: unreadCount } = useAdminNotificationsUnreadCount();
 
 const records = computed(() => notifications.value?.items || []);
+
+const totalCount = computed(
+  () => notifications.value?.meta.pagination?.totalCount,
+);
+
+const {
+  selectedIds,
+  allMatchingSelected,
+  selectedCount,
+  matchingCount,
+  pageSelected,
+  pagePartiallySelected,
+  canSelectAllMatching,
+  toggle: toggleSelection,
+  togglePage,
+  selectAllMatching,
+  clear: clearSelection,
+  payload: bulkPayload,
+} = useBulkSelection(records, () => queryParams.value.q, totalCount);
 
 const selectedId = ref<string>();
 
@@ -232,6 +260,61 @@ const destroyAll = () =>
     () => destroyAllAdminNotifications(),
     t("messages.adminNotifications.destroyedAll"),
   );
+
+// The selection is spent once the action lands: leaving it ticked invites a
+// second run over rows that have already moved on, and after "all matching"
+// it would no longer mean the same set.
+const withBulkFeedback = async (
+  action: (
+    input: AdminNotificationBulkInput,
+  ) => Promise<AdminNotificationBulkResult>,
+  key: string,
+) => {
+  try {
+    const { count } = await action(bulkPayload.value);
+
+    clearSelection();
+    invalidate();
+    displaySuccess({ text: t(key, { count }) });
+  } catch {
+    displayAlert({ text: t("messages.adminNotifications.error") });
+  }
+};
+
+const readSelected = () =>
+  withBulkFeedback(
+    readBulkAdminNotifications,
+    "messages.adminNotifications.bulk.read",
+  );
+
+// Same reason the single-record one closes the pane: an unread notification
+// left open only invites the click that marks it read again.
+const unreadSelected = () => {
+  selectedId.value = undefined;
+
+  return withBulkFeedback(
+    unreadBulkAdminNotifications,
+    "messages.adminNotifications.bulk.unread",
+  );
+};
+
+const archiveSelected = () =>
+  withBulkFeedback(
+    archiveBulkAdminNotifications,
+    "messages.adminNotifications.bulk.archived",
+  );
+
+const unarchiveSelected = () =>
+  withBulkFeedback(
+    unarchiveBulkAdminNotifications,
+    "messages.adminNotifications.bulk.unarchived",
+  );
+
+const destroySelected = () =>
+  withBulkFeedback(
+    destroyBulkAdminNotifications,
+    "messages.adminNotifications.bulk.destroyed",
+  );
 </script>
 
 <template>
@@ -321,6 +404,69 @@ const destroyAll = () =>
       </Btn>
     </template>
     <template #default="{ records: shown }">
+      <BulkSelectionBar
+        class="admin-notifications__bulk"
+        :class="{ 'admin-notifications__bulk--hidden': !!selected }"
+        :selected-count="selectedCount"
+        :matching-count="matchingCount"
+        :page-selected="pageSelected"
+        :page-partially-selected="pagePartiallySelected"
+        :can-select-all-matching="canSelectAllMatching"
+        :all-matching-selected="allMatchingSelected"
+        @toggle-page="togglePage"
+        @select-all-matching="selectAllMatching"
+        @clear="clearSelection"
+      >
+        <Btn
+          v-tooltip="t('actions.adminNotifications.readSelected')"
+          :aria-label="t('actions.adminNotifications.readSelected')"
+          data-test="bulk-read"
+          @click="readSelected"
+        >
+          <i class="fa-duotone fa-envelope-open" />
+        </Btn>
+        <Btn
+          v-tooltip="t('actions.adminNotifications.unreadSelected')"
+          :aria-label="t('actions.adminNotifications.unreadSelected')"
+          data-test="bulk-unread"
+          @click="unreadSelected"
+        >
+          <i class="fa-duotone fa-envelope-dot" />
+        </Btn>
+        <Btn
+          v-if="archive"
+          v-tooltip="t('actions.adminNotifications.unarchiveSelected')"
+          :aria-label="t('actions.adminNotifications.unarchiveSelected')"
+          data-test="bulk-unarchive"
+          @click="unarchiveSelected"
+        >
+          <i class="fa-duotone fa-inbox-in" />
+        </Btn>
+        <Btn
+          v-else
+          v-tooltip="t('actions.adminNotifications.archiveSelected')"
+          :aria-label="t('actions.adminNotifications.archiveSelected')"
+          data-test="bulk-archive"
+          @click="archiveSelected"
+        >
+          <i class="fa-duotone fa-box-archive" />
+        </Btn>
+        <Btn
+          v-tooltip="t('actions.adminNotifications.destroySelected')"
+          :aria-label="t('actions.adminNotifications.destroySelected')"
+          :tone="BtnTonesEnum.DANGER"
+          :confirm="
+            t('messages.confirm.adminNotifications.destroySelected', {
+              count: selectedCount,
+            })
+          "
+          data-test="bulk-destroy"
+          @click="destroySelected"
+        >
+          <i class="fa-duotone fa-trash" />
+        </Btn>
+      </BulkSelectionBar>
+
       <div
         class="admin-notifications"
         :class="{ 'admin-notifications--reading': !!selected }"
@@ -339,6 +485,11 @@ const destroyAll = () =>
               :ref="registerRow(notification)"
               :notification="notification"
               :selected="notification.id === selectedId"
+              :checked="
+                allMatchingSelected || selectedIds.includes(notification.id)
+              "
+              selectable
+              @toggle="toggleSelection(notification.id)"
               @select="select(notification)"
               @archive="archiveNotification(notification)"
               @unarchive="unarchiveNotification(notification)"
@@ -397,6 +548,22 @@ const destroyAll = () =>
   line-height: 1;
   background-color: var(--color-primary, #{$primary});
   border-radius: 10px;
+}
+
+.admin-notifications__bulk {
+  margin-bottom: 10px;
+}
+
+// Below the two-pane breakpoint the reading pane replaces the list, and a
+// selection toolbar over a hidden list has nothing to act on.
+.admin-notifications__bulk--hidden {
+  display: none;
+}
+
+@media (min-width: $notifications-two-pane-breakpoint) {
+  .admin-notifications__bulk--hidden {
+    display: flex;
+  }
 }
 
 .admin-notifications {

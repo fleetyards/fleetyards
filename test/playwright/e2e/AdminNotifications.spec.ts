@@ -164,4 +164,43 @@ test.describe("Admin Notifications", () => {
     );
     await expect(page.getByTestId("notification-detail-no-body")).toBeVisible();
   });
+
+  test("Archives the ticked notifications in one go", async ({
+    page,
+    notification,
+  }) => {
+    await row(page, "Modules Import Results")
+      .getByTestId("notification-checkbox")
+      .click();
+    await row(page, "Loaner Sync finished")
+      .getByTestId("notification-checkbox")
+      .click();
+
+    await expect(page.getByTestId("bulk-selection-count")).toContainText(
+      "2 selected",
+    );
+
+    await page.getByTestId("bulk-archive").click();
+
+    await notification.success("2 notifications archived");
+
+    await expect(row(page, "Modules Import Results")).toHaveCount(0);
+
+    await page.getByTestId("notifications-tab-archive").click();
+
+    await expect(row(page, "Modules Import Results")).toHaveCount(1);
+  });
+
+  test("Marks the whole page as read from the header checkbox", async ({
+    page,
+    notification,
+  }) => {
+    await page.getByTestId("bulk-select-page").click();
+
+    await page.getByTestId("bulk-read").click();
+
+    await notification.success("notifications marked as read");
+
+    await expect(page.locator(".notification-item--unread")).toHaveCount(0);
+  });
 });
