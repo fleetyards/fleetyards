@@ -12,6 +12,7 @@ import AppNavigationItems from "@/shared/components/AppNavigation/Items/index.vu
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import AdminNotificationsNav from "@/admin/components/Notifications/index.vue";
 import { routes } from "@/admin/pages/routes";
+import { type RouteRecordRaw } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
@@ -31,6 +32,13 @@ const { t } = useI18n();
 const currentRoute = useRoute();
 
 const sessionStore = useSessionStore();
+
+const { isAuthenticated, currentUser, resourceAccess } =
+  storeToRefs(sessionStore);
+
+const hasAccessTo = (access?: string[]) => {
+  return checkAccess(resourceAccess.value, access) || sessionStore.isSuperAdmin;
+};
 
 /*
  * Nineteen sections stood side by side, with Maintenance the only group. Grouped
@@ -115,6 +123,27 @@ const homeRoute = computed(() =>
   mainRoutes.value.filter((route) => String(route.path) === "/"),
 );
 
+/*
+ * Mirrors the filtering AppNavigationItems applies to the members: without it a
+ * group header renders even when every member of it is hidden, which is how the
+ * whole grouped nav stayed visible while logged out.
+ */
+const isRouteVisible = (route: RouteRecordRaw) => {
+  if (isAuthenticated.value) {
+    if (route.meta?.hideWhenAuthenticated) {
+      return false;
+    }
+  } else if (route.meta?.needsAuthentication) {
+    return false;
+  }
+
+  return hasAccessTo(route.meta?.access);
+};
+
+const visibleGroups = computed(() =>
+  GROUPS.filter((group) => groupRoutes(group).some(isRouteVisible)),
+);
+
 const groupActive = (group: (typeof GROUPS)[number]) =>
   groupRoutes(group).some(
     (route) =>
@@ -126,9 +155,6 @@ const footerRoutes = computed(() => {
   return routes.filter((route) => route.meta?.nav === "footer");
 });
 
-const { isAuthenticated, currentUser, resourceAccess } =
-  storeToRefs(sessionStore);
-
 const logout = async () => {
   await sessionStore.logout();
 };
@@ -138,10 +164,6 @@ const logout = async () => {
 const isVisualTestsRoute = computed(() =>
   String(currentRoute.name).startsWith("admin-visual-tests"),
 );
-
-const hasAccessTo = (access?: string[]) => {
-  return checkAccess(resourceAccess.value, access) || sessionStore.isSuperAdmin;
-};
 </script>
 
 <template>
@@ -156,7 +178,7 @@ const hasAccessTo = (access?: string[]) => {
           :has-access-to="hasAccessTo"
         />
         <NavItem
-          v-for="group in GROUPS"
+          v-for="group in visibleGroups"
           :key="group.key"
           :label="t(`nav.admin.groups.${group.key}`)"
           :menu-key="`admin-${group.key}`"
