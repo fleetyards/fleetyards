@@ -17,13 +17,70 @@ S3_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
 S3_SECRET_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
 DUMP_DIR="./dumps"
 DUMP_FILE="$DUMP_DIR/latest.dump"
+LOCK_DIR="$DUMP_DIR/.download-db.lock"
 DB_PORT="${DB_PORT:-8271}"
 DB_NAME="${DB_NAME:-fleetyards_dev${WORKTREE_SUFFIX:-}}"
 DB_USER="${DB_USER:-root}"
 
 S3CMD="s3cmd --host=$S3_ENDPOINT --host-bucket=%(bucket)s.$S3_ENDPOINT --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY"
 
+PG_RESTORE="pg_restore"
+if [ -x "/opt/homebrew/opt/postgresql@16/bin/pg_restore" ]; then
+  PG_RESTORE="/opt/homebrew/opt/postgresql@16/bin/pg_restore"
+fi
+
 mkdir -p "$DUMP_DIR"
+
+# Worktrees share one dumps/ through a symlink, so without a lock two runs write
+# the same file at the same time and leave an archive neither of them can read.
+LOCK_HELD=0
+
+release_lock() {
+  if [ "$LOCK_HELD" = "1" ]; then
+    LOCK_HELD=0
+    rm -rf "$LOCK_DIR"
+  fi
+}
+
+trap release_lock EXIT INT TERM
+
+acquire_lock() {
+  local waited=0
+  local holder=""
+
+  while ! mkdir "$LOCK_DIR" 2> /dev/null; do
+    holder=$(cat "$LOCK_DIR/pid" 2> /dev/null || true)
+
+    if [ -n "$holder" ] && ! kill -0 "$holder" 2> /dev/null; then
+      echo "Clearing stale lock from PID $holder..."
+      rm -rf "$LOCK_DIR"
+      continue
+    fi
+
+    if [ "$waited" = "0" ]; then
+      echo "Another download-db run (PID ${holder:-unknown}) is using $DUMP_FILE — waiting..."
+    elif [ $((waited % 60)) = "0" ]; then
+      echo "  still waiting (${waited}s)..."
+    fi
+
+    sleep 5
+    waited=$((waited + 5))
+  done
+
+  LOCK_HELD=1
+  echo $$ > "$LOCK_DIR/pid"
+}
+
+download_dump() {
+  echo "Downloading $LATEST..."
+  $S3CMD get --force "$LATEST" "$DUMP_FILE"
+}
+
+dump_is_readable() {
+  $PG_RESTORE --list "$DUMP_FILE" > /dev/null 2>&1
+}
+
+acquire_lock
 
 echo "Fetching latest backup from s3://$S3_BUCKET/$S3_PREFIX/..."
 LATEST=$($S3CMD ls "s3://$S3_BUCKET/$S3_PREFIX/" | sort | tail -1 | awk '{print $4}')
@@ -35,17 +92,23 @@ fi
 
 REMOTE_SIZE=$($S3CMD info "$LATEST" | grep 'File size' | awk '{print $3}')
 
-if [ -f "$DUMP_FILE" ] && [ -n "$REMOTE_SIZE" ]; then
-  LOCAL_SIZE=$(wc -c < "$DUMP_FILE" | tr -d ' ')
-  if [ "$LOCAL_SIZE" = "$REMOTE_SIZE" ]; then
-    echo "Local dump is already up to date, skipping download."
-  else
-    echo "Downloading $LATEST..."
-    $S3CMD get --force "$LATEST" "$DUMP_FILE"
-  fi
+if [ -f "$DUMP_FILE" ] && [ -n "$REMOTE_SIZE" ] && [ "$(wc -c < "$DUMP_FILE" | tr -d ' ')" = "$REMOTE_SIZE" ]; then
+  echo "Local dump is already up to date, skipping download."
 else
-  echo "Downloading $LATEST..."
-  $S3CMD get --force "$LATEST" "$DUMP_FILE"
+  download_dump
+fi
+
+# A damaged archive otherwise only surfaces once pg_restore is halfway through,
+# and by then the database it was going to replace is already gone.
+if ! dump_is_readable; then
+  echo "Local dump is not a readable pg_dump archive — downloading it again..."
+  download_dump
+
+  if ! dump_is_readable; then
+    echo "ERROR: $DUMP_FILE is still unreadable after a fresh download."
+    echo "       Run $PG_RESTORE --list \"$DUMP_FILE\" to see why."
+    exit 1
+  fi
 fi
 
 echo "Dropping and recreating $DB_NAME..."
@@ -53,13 +116,27 @@ PGPASSWORD=password dropdb --if-exists -h localhost -U "$DB_USER" -p "$DB_PORT" 
 PGPASSWORD=password createdb -h localhost -U "$DB_USER" -p "$DB_PORT" "$DB_NAME"
 
 echo "Restoring to $DB_NAME on localhost:$DB_PORT..."
-PG_RESTORE="pg_restore"
-if [ -x "/opt/homebrew/opt/postgresql@16/bin/pg_restore" ]; then
-  PG_RESTORE="/opt/homebrew/opt/postgresql@16/bin/pg_restore"
+set +e
+PGPASSWORD=password $PG_RESTORE --verbose --no-acl --no-owner \
+  -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" "$DUMP_FILE"
+RESTORE_STATUS=$?
+set -e
+
+release_lock
+
+# pg_restore also exits non-zero for per-object noise it recovers from, so the
+# restored schema, not the exit code, decides whether this run may continue.
+TABLE_COUNT=$(PGPASSWORD=password psql -qtAX -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" \
+  -c "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public'" | tr -dc '0-9')
+
+if [ "${TABLE_COUNT:-0}" -lt 50 ]; then
+  echo "ERROR: restore left only $TABLE_COUNT tables in $DB_NAME (pg_restore exited $RESTORE_STATUS)."
+  exit 1
 fi
 
-PGPASSWORD=password $PG_RESTORE --verbose --no-acl --no-owner \
-  -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" "$DUMP_FILE" || true
+if [ "$RESTORE_STATUS" != "0" ]; then
+  echo "WARNING: pg_restore exited $RESTORE_STATUS, but $TABLE_COUNT tables were restored — continuing."
+fi
 
 echo "Switching Active Storage blobs to local service..."
 PGPASSWORD=password psql -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" \
