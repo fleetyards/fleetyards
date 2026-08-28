@@ -22,7 +22,7 @@ class Api::V1::FiltersComponentsSubTypesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @version = Rails.configuration.sc_data[:version]
+    @version = ScData::Source.version
 
     create(:component, category: "weapons", component_sub_type: "Gun", version: @version)
     create(:component, category: "weapons", component_sub_type: "Missile", version: @version)

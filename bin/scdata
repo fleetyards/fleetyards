@@ -129,14 +129,30 @@ when "parse"
     [true, ""]
   end
 
+  # Rewrites this environment's entry and leaves the others alone: parsing ptu
+  # must not drop the version live is on, or every reader of live would follow
+  # the wrong build.
   config_path = File.join(Dir.pwd, "config/app/sc_data.yml")
-  File.write(config_path, <<~YAML)
-    shared:
-      version: "#{sc_version}"
-      environment: "#{sc_environment}"
-  YAML
+  config = YAML.safe_load_file(config_path).fetch("shared", {})
+  sources = config.fetch("sources", {}).merge(sc_environment => sc_version)
+  default = config["default"] || sources.keys.first
 
-  puts "  Updated config/app/sc_data.yml to version: #{sc_version}"
+  # Built line by line rather than interpolated into a squiggly heredoc: that
+  # strips the indentation off the first interpolated line and leaves it on the
+  # rest, which is invalid YAML and only shows up on the next boot.
+  lines = [
+    "shared:",
+    "  # The build each environment is on. `bin/scdata parse <environment>`",
+    "  # rewrites its own entry and leaves the others alone, so live and ptu can",
+    "  # be parsed independently.",
+    "  sources:"
+  ]
+  sources.each { |environment, version| lines << %(    #{environment}: "#{version}") }
+  lines += ["", "  # What a request that does not name a source gets.", "  default: #{default}"]
+
+  File.write(config_path, "#{lines.join("\n")}\n")
+
+  puts "  Updated config/app/sc_data.yml: #{sc_environment} -> #{sc_version}"
 
   # The parsed tree is not in git, so the commodity keys a test asserts against
   # are committed here instead. Rewritten on every parse so they cannot drift

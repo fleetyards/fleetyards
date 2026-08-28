@@ -209,7 +209,7 @@ module ScData
       test "#all stops a dropped record claiming the build it is no longer in" do
         curated.all
 
-        retired = create(:equipment, sc_key: "gone_from_the_export", version: Rails.configuration.sc_data[:version])
+        retired = create(:equipment, sc_key: "gone_from_the_export", version: ScData::Source.version)
 
         curated.all
 

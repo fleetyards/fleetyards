@@ -6,7 +6,7 @@ module Loaders
   module ScData
     class AllJobTest < ActiveJob::TestCase
       setup do
-        Rails.configuration.stubs(:sc_data).returns({version: "3.24.0"})
+        Rails.configuration.stubs(:sc_data).returns({sources: {live: "3.24.0"}, default: "live"})
         @admin_user = create(:admin_user, resource_access: [:models])
         AdminNotificationsChannel.stubs(:broadcast_to)
       end

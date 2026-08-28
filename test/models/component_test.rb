@@ -57,7 +57,7 @@ class ComponentTest < ActiveSupport::TestCase
   # the changes worth reading.
   test "keeps no version when only the build it was last seen in moves" do
     assert_no_difference -> { @component.paper_trail_versions.count } do
-      @component.update!(version: Rails.configuration.sc_data[:version])
+      @component.update!(version: ScData::Source.version)
     end
   end
 

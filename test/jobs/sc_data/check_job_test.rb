@@ -8,7 +8,7 @@ module ScData
     ENVIRONMENT = "live"
 
     setup do
-      Rails.configuration.stubs(:sc_data).returns({version: VERSION, environment: ENVIRONMENT})
+      Rails.configuration.stubs(:sc_data).returns({sources: {ENVIRONMENT.to_sym => VERSION}, default: ENVIRONMENT})
     end
 
     test "#perform enqueues AllJob when version is new" do
@@ -20,7 +20,7 @@ module ScData
     end
 
     test "#perform does not enqueue AllJob when version is blank" do
-      Rails.configuration.stubs(:sc_data).returns({version: nil, environment: ENVIRONMENT})
+      Rails.configuration.stubs(:sc_data).returns({sources: {ENVIRONMENT.to_sym => nil}, default: ENVIRONMENT})
 
       Loaders::ScData::AllJob.expects(:perform_async).never
 

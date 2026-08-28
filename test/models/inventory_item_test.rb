@@ -145,7 +145,7 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
   end
 
   test "leaves an entry pointing at an item of the current build alone" do
-    current = create(:component, version: Rails.configuration.sc_data[:version])
+    current = create(:component, version: ScData::Source.version)
 
     item = create(:inventory_item, inventory: @inventory, item: current)
 

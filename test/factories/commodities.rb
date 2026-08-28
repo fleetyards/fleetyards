@@ -30,7 +30,7 @@ FactoryBot.define do
     sequence(:sc_key) { |n| "items_commodities_test_#{n}" }
     commodity_type { "metal" }
     description { Faker::Lorem.sentence }
-    version { Rails.configuration.sc_data[:version] }
+    version { ScData::Source.version }
 
     transient { with_build { true } }
 

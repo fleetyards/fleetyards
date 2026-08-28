@@ -8,7 +8,7 @@ module Loaders
     class ModelsJobTest < ActiveJob::TestCase
       include ImportWrappingJobTests
 
-      SC_DATA_STUB = -> { Rails.configuration.stubs(:sc_data).returns({version: "3.24.0", environment: "live"}) }
+      SC_DATA_STUB = -> { Rails.configuration.stubs(:sc_data).returns({sources: {live: "3.24.0"}, default: "live"}) }
 
       test "#perform creates an import, runs the loader, and finishes the import" do
         assert_import_wrapping_job_success(

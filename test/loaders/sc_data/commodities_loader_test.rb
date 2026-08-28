@@ -69,7 +69,7 @@ module ScData
       test "#all stops a dropped commodity claiming the build it is no longer in" do
         @loader.all
 
-        retired = create(:commodity, sc_key: "items_commodities_gone", version: Rails.configuration.sc_data[:version])
+        retired = create(:commodity, sc_key: "items_commodities_gone", version: ScData::Source.version)
 
         @loader.all
 
