@@ -69,6 +69,9 @@ const openAvailability = () => {
 <template>
   <MetricsCard :title="t('labels.metrics.base')" class="base-panel">
     <template #head>
+      <span v-if="model.metrics.sizeLabel" class="base-panel__chip">
+        {{ model.metrics.sizeLabel }}
+      </span>
       <span v-if="model.classificationLabel" class="base-panel__chip">
         {{ model.classificationLabel }}
       </span>
@@ -113,12 +116,6 @@ const openAvailability = () => {
         <div class="metrics-card__tile__value">
           {{ toNumber(model.metrics.personalInventory) }}
           <span class="metrics-card__tile__unit">SCU</span>
-        </div>
-      </div>
-      <div class="metrics-card__tile">
-        <div class="metrics-card__tile__label">{{ t("model.size") }}</div>
-        <div class="metrics-card__tile__value">
-          {{ model.metrics.sizeLabel }}
         </div>
       </div>
     </div>
