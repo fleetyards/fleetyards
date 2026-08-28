@@ -79,8 +79,6 @@ const select = async (environment: string) => {
 </template>
 
 <style lang="scss" scoped>
-@use "@/stylesheets/variables" as *;
-
 .sc-data-source {
   display: flex;
   align-items: center;
