@@ -2207,6 +2207,10 @@
       },
       "unlistedModel": {
         "linkHint": "Which ship in the catalogue is %{identifier}? The suggestion comes from the export and may be wrong."
+      },
+      "scDataSource": {
+        "reading": "Reading",
+        "notLive": "Not the live build"
       }
     }
   }

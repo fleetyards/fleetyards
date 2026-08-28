@@ -1317,6 +1317,10 @@
       },
       "unlistedModel": {
         "linkHint": "¿Qué nave del catálogo es %{identifier}? La sugerencia viene del export y puede estar equivocada."
+      },
+      "scDataSource": {
+        "reading": "Datos de",
+        "notLive": "No es la compilación live"
       }
     }
   }

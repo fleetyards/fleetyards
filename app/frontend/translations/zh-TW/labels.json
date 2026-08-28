@@ -1313,6 +1313,10 @@
       },
       "unlistedModel": {
         "linkHint": "%{identifier} 對應目錄中的哪艘飛船？建議來自匯出資料，可能有誤。"
+      },
+      "scDataSource": {
+        "reading": "資料來源",
+        "notLive": "不是 live 版本"
       }
     }
   }

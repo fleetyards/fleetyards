@@ -249,6 +249,8 @@ const setLocale = (locale: string) => {
         <div class="main-inner">
           <AppNavigationHeader />
 
+          <ScDataSourceBar />
+
           <router-view v-slot="{ Component, route: viewRoute }">
             <transition name="fade" mode="out-in">
               <SecurePage
