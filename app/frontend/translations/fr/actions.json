@@ -263,7 +263,8 @@
         "createModel": "Créer le vaisseau",
         "markAsPaint": "C'est une peinture",
         "ignore": "Pas un vaisseau",
-        "noManufacturer": "Aucun constructeur ne correspond à cet identifiant"
+        "noManufacturer": "Aucun constructeur ne correspond à cet identifiant",
+        "alreadyExists": "%{name} est déjà dans le catalogue"
       }
     }
   }

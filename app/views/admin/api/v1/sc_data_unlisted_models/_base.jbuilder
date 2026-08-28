@@ -6,6 +6,10 @@ json.id entry.id
 json.identifier entry.identifier
 json.name entry.name
 
+# The export prefixes the manufacturer and Fleetyards does not, so this is what
+# a model made from the entry would actually be called.
+json.suggested_name entry.suggested_name
+
 # How the export's version compares to the ship it extends. Descriptive rather
 # than a verdict: the game files never say whether a player can own something.
 json.comparison entry.comparison
@@ -40,6 +44,32 @@ if entry.base_model.present?
   end
 else
   json.base_model nil
+end
+
+# A ship of that name already in the catalogue. Only a quarter of models carry an
+# `sc_key`, so one whose identifier comes from its slug lands in this list even
+# though it exists -- this is what stops a second being made from it.
+existing_model = entry.existing_model
+if existing_model.present?
+  json.existing_model do
+    json.id existing_model.id
+    json.name existing_model.name
+    json.slug existing_model.slug
+  end
+else
+  json.existing_model nil
+end
+
+# The livery is already on the ship this extends, so the entry only needs marking.
+existing_paint = entry.existing_paint
+if existing_paint.present?
+  json.existing_paint do
+    json.id existing_paint.id
+    json.name existing_paint.name
+    json.slug existing_paint.slug
+  end
+else
+  json.existing_paint nil
 end
 
 if entry.model.present?

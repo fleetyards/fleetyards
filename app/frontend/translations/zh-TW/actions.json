@@ -263,7 +263,8 @@
         "createModel": "建立飛船",
         "markAsPaint": "這是塗裝",
         "ignore": "不是飛船",
-        "noManufacturer": "此識別碼無法解析出製造商"
+        "noManufacturer": "此識別碼無法解析出製造商",
+        "alreadyExists": "%{name} 已在目錄中"
       }
     }
   }

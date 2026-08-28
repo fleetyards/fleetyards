@@ -137,7 +137,7 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     assert_difference("Model.count", 1) do
       assert_api_response :post, 200, path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/create-model" do
         assert_equal "model", parsed_body["decision"]
-        assert_equal "Kruger S-65 Stingray", parsed_body.dig("model", "name")
+        assert_equal "S-65 Stingray", parsed_body.dig("model", "name")
       end
     end
 
@@ -145,6 +145,60 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     assert_equal "krig_s65_stingray", model.sc_key
     assert_equal "KRIG", model.manufacturer.code
     assert_predicate model, :hidden?, "a new ship stays out of the catalogue until an admin fills it in"
+  end
+
+  # The export writes "Kruger S-65 Stingray" where the catalogue says
+  # "S-65 Stingray". Taking the export name as-is would break the convention and
+  # slip past Model's name uniqueness, which is scoped to the manufacturer.
+  test "the suggested name drops the manufacturer the export prefixes" do
+    create(:manufacturer, code: "KRIG", name: "Kruger Intergalactic")
+
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      entry = parsed_body["items"].find { |item| item["identifier"] == "krig_s65_stingray" }
+
+      assert_equal "S-65 Stingray", entry["suggestedName"]
+    end
+  end
+
+  # Only a quarter of models carry an `sc_key`, so a ship whose identifier comes
+  # from its slug lands in this list even though the catalogue has it.
+  test "POST create-model refuses when a ship of that name already exists" do
+    manufacturer = create(:manufacturer, code: "KRIG", name: "Kruger Intergalactic")
+    existing = create(:model, manufacturer:, name: "S-65 Stingray")
+
+    assert_no_difference("Model.count") do
+      sign_in @user
+
+      assert_api_response :post, 400,
+        path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/create-model"
+    end
+
+    assert_predicate @entry.reload.decision, :blank?
+    assert_equal existing, @entry.existing_model
+  end
+
+  test "the list names the ship and the paint already in the catalogue" do
+    manufacturer = create(:manufacturer, code: "KRIG", name: "Kruger Intergalactic")
+    create(:model, manufacturer:, name: "S-65 Stingray")
+
+    base = create(:model, name: "Gladius", sc_key: "aegs_gladius")
+    paint = create(:model_paint, model: base, name: "Dunlevy")
+    create(
+      :sc_data_unlisted_model,
+      identifier: "aegs_gladius_dunlevy", name: "Aegis Gladius Dunlevy",
+      manufacturer_code: "AEGS", base_model: base, comparison: "refitted"
+    )
+
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      items = parsed_body["items"].index_by { |item| item["identifier"] }
+
+      assert_equal "S-65 Stingray", items["krig_s65_stingray"].dig("existingModel", "name")
+      assert_equal paint.name, items["aegs_gladius_dunlevy"].dig("existingPaint", "name")
+    end
   end
 
   # `belongs_to :manufacturer` is required, and an unresolved prefix means either

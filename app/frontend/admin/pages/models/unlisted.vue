@@ -88,6 +88,11 @@ const columns: BaseTableCol<ScDataUnlistedModel>[] = [
     mobile: false,
   },
   {
+    name: "alreadyThere",
+    label: "Already in the catalogue",
+    mobile: false,
+  },
+  {
     name: "manufacturer",
     label: "Manufacturer",
     mobile: false,
@@ -136,7 +141,7 @@ const { t } = useI18n();
           <code>{{ record.identifier }}</code>
         </template>
         <template #col-name="{ record }">
-          {{ record.name }}
+          {{ record.suggestedName }}
         </template>
         <template #col-comparison="{ record }">
           {{ record.comparison ? comparisonLabels[record.comparison] : "" }}
@@ -151,6 +156,20 @@ const { t } = useI18n();
           >
             {{ record.baseModel.name }}
           </router-link>
+        </template>
+        <template #col-alreadyThere="{ record }">
+          <router-link
+            v-if="record.existingModel"
+            :to="{
+              name: 'admin-models',
+              query: { q: record.existingModel.name },
+            }"
+          >
+            {{ record.existingModel.name }}
+          </router-link>
+          <span v-else-if="record.existingPaint">
+            {{ record.existingPaint.name }}
+          </span>
         </template>
         <template #col-manufacturer="{ record }">
           {{ record.manufacturer?.name ?? record.manufacturerCode }}

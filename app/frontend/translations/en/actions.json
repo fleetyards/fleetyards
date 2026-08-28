@@ -366,7 +366,8 @@
         "createModel": "Create ship",
         "markAsPaint": "It is a paint",
         "ignore": "Not a ship",
-        "noManufacturer": "No manufacturer resolves from this identifier"
+        "noManufacturer": "No manufacturer resolves from this identifier",
+        "alreadyExists": "%{name} is already in the catalogue"
       }
     }
   }

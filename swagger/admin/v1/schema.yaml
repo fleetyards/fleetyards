@@ -14173,6 +14173,8 @@ components:
           type:
           - string
           - 'null'
+        suggestedName:
+          type: string
         comparison:
           "$ref": "#/components/schemas/UnlistedModelComparisonEnum"
         decision:
@@ -14200,6 +14202,14 @@ components:
           oneOf:
           - "$ref": "#/components/schemas/ModelRef"
           - type: 'null'
+        existingModel:
+          oneOf:
+          - "$ref": "#/components/schemas/ModelRef"
+          - type: 'null'
+        existingPaint:
+          oneOf:
+          - "$ref": "#/components/schemas/ModelRef"
+          - type: 'null'
         model:
           oneOf:
           - "$ref": "#/components/schemas/ModelRef"
@@ -14214,6 +14224,7 @@ components:
       required:
       - id
       - identifier
+      - suggestedName
       - firstSeenVersion
       - lastSeenVersion
       - environment

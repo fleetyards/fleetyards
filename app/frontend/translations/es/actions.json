@@ -263,7 +263,8 @@
         "createModel": "Crear nave",
         "markAsPaint": "Es una pintura",
         "ignore": "No es una nave",
-        "noManufacturer": "Este identificador no resuelve ningún fabricante"
+        "noManufacturer": "Este identificador no resuelve ningún fabricante",
+        "alreadyExists": "%{name} ya está en el catálogo"
       }
     }
   }

@@ -45,14 +45,29 @@ const createMutation = useScDataUnlistedModelCreateModel({
   mutation: { onSettled: invalidate },
 });
 
-// `belongs_to :manufacturer` is required on a model, and an identifier whose
-// prefix resolves to nothing is either a new company or not a ship at all.
-const canCreate = computed(() => !!props.unlistedModel.manufacturer);
+// A model needs a manufacturer, and an identifier whose prefix resolves to
+// nothing is either a new company or not a ship. A ship of that name already in
+// the catalogue is the other half: only a quarter of models carry an `sc_key`,
+// so an existing one lands in this list anyway, and creating would duplicate it.
+const canCreate = computed(
+  () =>
+    !!props.unlistedModel.manufacturer && !props.unlistedModel.existingModel,
+);
+
+const createBlockedReason = computed(() => {
+  if (props.unlistedModel.existingModel) {
+    return t("actions.unlistedModel.alreadyExists", {
+      name: props.unlistedModel.existingModel.name ?? "",
+    });
+  }
+
+  return t("actions.unlistedModel.noManufacturer");
+});
 
 const createModel = () => {
   displayConfirm({
     text: t("messages.confirm.unlistedModel.createModel", {
-      name: props.unlistedModel.name ?? props.unlistedModel.identifier,
+      name: props.unlistedModel.suggestedName,
     }),
     onConfirm: async () => {
       await createMutation.mutateAsync({ id: props.unlistedModel.id });
@@ -73,9 +88,7 @@ const ignore = async () => {
   <Btn
     v-tooltip="
       !withLabels &&
-      (canCreate
-        ? t('actions.unlistedModel.createModel')
-        : t('actions.unlistedModel.noManufacturer'))
+      (canCreate ? t('actions.unlistedModel.createModel') : createBlockedReason)
     "
     :disabled="!canCreate"
     @click="createModel"

@@ -17,7 +17,7 @@ module Admin
 
           # Undecided by default, because that is the working list. An explicit
           # `decision` filter is what reaches the ones already dealt with.
-          scope = ScDataUnlistedModel.includes(:base_model, :model)
+          scope = ScDataUnlistedModel.includes(:model, base_model: :paints)
           scope = scope.undecided if query_params[:decision_eq].blank? && query_params[:decision_null].blank?
 
           @q = authorized_scope(scope).ransack(query_params)

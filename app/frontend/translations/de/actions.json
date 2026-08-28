@@ -273,7 +273,8 @@
         "createModel": "Schiff anlegen",
         "markAsPaint": "Ist eine Lackierung",
         "ignore": "Kein Schiff",
-        "noManufacturer": "Zu diesem Identifier lässt sich kein Hersteller auflösen"
+        "noManufacturer": "Zu diesem Identifier lässt sich kein Hersteller auflösen",
+        "alreadyExists": "%{name} ist bereits im Katalog"
       }
     }
   }
