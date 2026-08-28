@@ -1919,6 +1919,20 @@
         }
       },
       "optional": "optional",
+      "notificationActions": {
+        "open": "Open",
+        "openHangar": "Open hangar",
+        "openWishlist": "Open wishlist",
+        "openModel": "Show ship",
+        "openInvite": "View invite",
+        "reviewRequest": "Review request",
+        "openMembers": "Show members",
+        "openFleet": "Open fleet",
+        "openInventory": "Open inventory",
+        "openEvent": "Open event",
+        "openRoster": "Show sign-ups",
+        "addToCalendar": "Add to calendar"
+      },
       "notificationTypes": {
         "channels": {
           "app": "App",

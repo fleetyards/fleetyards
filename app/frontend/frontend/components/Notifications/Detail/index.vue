@@ -6,7 +6,14 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnTonesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
+import {
+  actionTestId,
+  useNotificationActions,
+} from "@/frontend/composables/useNotificationActions";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Markdown from "@/shared/components/Markdown/index.vue";
@@ -30,6 +37,12 @@ const emit = defineEmits<{
 }>();
 
 const { t, l } = useI18n();
+
+const { linksFor } = useNotificationActions();
+
+const links = computed(() =>
+  props.notification ? linksFor(props.notification) : [],
+);
 
 const body = ref<HTMLElement>();
 
@@ -83,14 +96,6 @@ watch(
         </div>
         <div class="notification-detail__actions">
           <Btn
-            v-if="notification.link"
-            :to="notification.link"
-            data-test="notification-detail-open"
-          >
-            <i class="fa-duotone fa-arrow-up-right-from-square" />
-            {{ t("actions.open") }}
-          </Btn>
-          <Btn
             v-if="notification.read"
             v-tooltip="t('actions.notifications.unread')"
             :aria-label="t('actions.notifications.unread')"
@@ -141,6 +146,27 @@ watch(
       >
         {{ t("labels.notifications.noBody") }}
       </p>
+
+      <!-- The way on. A row of its own rather than another icon beside archive
+           and delete: what the notification is asking for should not have to
+           compete with the housekeeping. -->
+      <div
+        v-if="links.length"
+        class="notification-detail__cta"
+        data-test="notification-detail-actions"
+      >
+        <Btn
+          v-for="action in links"
+          :key="action.key"
+          :to="action.to"
+          :href="action.href"
+          :variant="action.primary ? undefined : BtnVariantsEnum.GHOST"
+          :data-test="actionTestId(action.key)"
+        >
+          <i :class="action.icon" />
+          {{ t(`labels.notificationActions.${action.key}`) }}
+        </Btn>
+      </div>
 
       <!-- Retention files a notification into the archive; the archive is what
            eventually deletes it. Each state names the date it is heading for. -->
@@ -259,6 +285,13 @@ watch(
 .notification-detail__body--empty {
   color: $gray-lighter;
   font-style: italic;
+}
+
+.notification-detail__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .notification-detail__facts {
