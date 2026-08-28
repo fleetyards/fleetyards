@@ -571,14 +571,17 @@ class Model < ApplicationRecord
     end
   end
 
-  def set_fuel_consumption_from_hardpoints
+  # Returns rather than assigns, so the loader can put it through `update_params`
+  # like every other game-file fact and it reaches the build as well as the row.
+  # Assigning it here is what kept it out of both.
+  def fuel_consumption_from_hardpoints
     thrusters = hardpoints.includes(:component).where(group: :thruster).filter_map do |hardpoint|
       next if hardpoint.component.blank?
 
       hardpoint.component.type_data
     end
 
-    self.fuel_consumption = thrusters.sum do |thruster|
+    thrusters.sum do |thruster|
       thruster.dig("fuel_burn_rate_per10_k_newton").to_f
     end
   end

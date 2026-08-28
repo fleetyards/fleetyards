@@ -78,9 +78,10 @@ module ScData
 
         ModelPosition.generate_for_model!(model)
 
-        model.set_fuel_consumption_from_hardpoints
-
         update_params = {}
+
+        # Computed here because it reads the loadout `update_loadout` just wrote.
+        update_params[:fuel_consumption] = model.fuel_consumption_from_hardpoints
 
         update_params = update_metrics(model, model_data, update_params)
         update_params = update_personal_inventory(model_data, update_params)
