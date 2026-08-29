@@ -74,7 +74,10 @@ const isSegment = computed(
 // every group member, not just segmented ones, because `segmented` can flip at
 // runtime and a member that never registered would leave a gap in the order.
 if (container?.register) {
-  const entry = container.register(() => props.active);
+  const entry = container.register(
+    () => props.active,
+    () => props.tone,
+  );
   onUnmounted(entry.unregister);
 }
 
@@ -441,6 +444,31 @@ const handleClick = (event: MouseEvent) => {
   background-color: rgb(220 53 69 / 0.18);
 }
 
+/*
+ * Warning says "this is not the usual choice" rather than "this destroys
+ * something", so it follows danger's shape exactly and only changes the colour.
+ * Same consequence as danger: grouped and bare members drop their cap, so a
+ * warning member of a BtnGroup is marked by the group's thumb rather than here,
+ * and both tones need the grouped and menu hover tints further down - without
+ * them the flood below applies inside a container that cannot take it.
+ */
+.btn--tone-warning {
+  --btn-cap: var(--color-warning, #fa6800);
+}
+.btn--tone-warning.btn--solid:hover:not([disabled]),
+.btn--tone-warning.btn--ghost:hover:not([disabled]) {
+  @apply bg-warning border-warning text-white;
+  --btn-cap: rgb(255 255 255 / 0.65);
+}
+.btn--tone-warning.btn--solid:focus-visible,
+.btn--tone-warning.btn--ghost:focus-visible {
+  --btn-cap: rgb(255 255 255 / 0.65);
+}
+.btn--tone-warning.btn--bare:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(250 104 0 / 0.18);
+}
+
 /* ---------- states ---------- */
 .btn[disabled] {
   @apply cursor-default;
@@ -512,6 +540,13 @@ const handleClick = (event: MouseEvent) => {
   @apply text-white;
   background-color: rgb(220 53 69 / 0.35);
 }
+/* Warning needs its own, or the standalone rule above floods the segment solid
+   orange to its square edges - which is the exact failure the danger rule
+   exists to avoid. */
+.btn--grouped.btn--tone-warning:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(250 104 0 / 0.35);
+}
 /*
  * Engaged, not hovered. A grouped member has no end-caps to carry state, and a
  * 0.22 tint sat too close to the neutral hover fill to be told apart - so this
@@ -569,6 +604,17 @@ const handleClick = (event: MouseEvent) => {
   @apply text-lifted;
 }
 
+/* A tone must not bring a fill back. The grouped tints below are written for a
+   plain group, where a member is its own surface; in a switch the thumb is the
+   only fill there is, and a toned segment that floods on hover reads as a
+   second, differently shaped thumb. Four selectors deep to match those rules,
+   and after them so it wins on order. The tone still shows: it colours the
+   thumb once the segment is chosen. */
+.btn--segment.btn--tone-danger:hover:not([disabled]),
+.btn--segment.btn--tone-warning:hover:not([disabled]) {
+  @apply bg-transparent;
+}
+
 /* ---------- inside a BtnDropdown list ---------- */
 .btn--menu-item {
   @apply w-full justify-start rounded-none border-0 bg-transparent;
@@ -593,6 +639,10 @@ const handleClick = (event: MouseEvent) => {
 .btn--menu-item.btn--tone-danger:hover:not([disabled]) {
   @apply text-white;
   background-color: rgb(220 53 69 / 0.18);
+}
+.btn--menu-item.btn--tone-warning:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(250 104 0 / 0.18);
 }
 
 /* ---------- loading ---------- */

@@ -51,12 +51,28 @@ const variants = [
   BtnVariantsEnum.GHOST,
   BtnVariantsEnum.BARE,
 ];
-const tones = [BtnTonesEnum.NEUTRAL, BtnTonesEnum.DANGER];
+const tones = [BtnTonesEnum.NEUTRAL, BtnTonesEnum.DANGER, BtnTonesEnum.WARNING];
 
 const loading = ref(false);
 const active = ref<string | null>("grid");
 const source = ref("game");
 const view = ref("exterior");
+// One switch per size and per tone, so each row is live rather than a set of
+// frozen screenshots - a thumb that cannot move hides half of what it does.
+const segmentedBySize = ref<Record<string, string>>({
+  xs: "on",
+  sm: "on",
+  md: "on",
+  lg: "on",
+});
+const segmentedByTone = ref<Record<string, string>>({
+  neutral: "live",
+  warning: "ptu",
+  danger: "live",
+});
+const build = ref("live");
+const density = ref("comfortable");
+const scope = ref("all");
 const autoRotate = ref(true);
 const zoom = ref(false);
 const colour = ref(true);
@@ -200,6 +216,148 @@ const toggleLoading = () => {
         <Btn :active="active === 'list'" @click="active = 'list'">List</Btn>
         <Btn :active="active === 'table'" @click="active = 'table'">Table</Btn>
       </BtnGroup>
+    </div>
+  </div>
+  <Heading :level="HeadingLevelEnum.H2"
+    >Segmented — every size, beside a button of the same size</Heading
+  >
+  <p>
+    A switch is normally placed in a toolbar next to ordinary buttons, so the
+    pairing is the test: the group and the button next to it must share a top
+    and a bottom edge. The recess is inset from the group, not added to it.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <template v-for="size in sizes" :key="`segmented-${size}`">
+        <BtnGroup segmented :size="size">
+          <Btn
+            :active="segmentedBySize[size] === 'on'"
+            @click="segmentedBySize[size] = 'on'"
+          >
+            On
+          </Btn>
+          <Btn
+            :active="segmentedBySize[size] === 'off'"
+            @click="segmentedBySize[size] = 'off'"
+          >
+            Off
+          </Btn>
+        </BtnGroup>
+        <Btn :size="size">{{ size }}</Btn>
+      </template>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Segmented — tone</Heading>
+  <p>
+    The thumb wears the tone, because a member drops its own cap inside a group.
+    A tone on the group colours the thumb wherever it stands; a tone on a member
+    colours it only once it is parked there, which is the usual case — it is one
+    particular choice that is worth flagging, not the act of choosing. Warning
+    is the source switch's: a pre-release build is worth noticing, not an error.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <template v-for="tone in tones" :key="`segmented-tone-${tone}`">
+        <BtnGroup
+          segmented
+          :tone="tone === BtnTonesEnum.NEUTRAL ? undefined : tone"
+        >
+          <Btn
+            :active="segmentedByTone[tone] === 'live'"
+            @click="segmentedByTone[tone] = 'live'"
+          >
+            live
+          </Btn>
+          <Btn
+            :active="segmentedByTone[tone] === 'ptu'"
+            @click="segmentedByTone[tone] = 'ptu'"
+          >
+            ptu
+          </Btn>
+        </BtnGroup>
+      </template>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 vt-row">
+      <!-- Per member, the source switch's own shape: neutral is Btn's default
+           and reads as no opinion, so only the flagged segments colour. -->
+      <BtnGroup segmented>
+        <Btn :active="build === 'live'" @click="build = 'live'">live</Btn>
+        <Btn
+          :tone="BtnTonesEnum.WARNING"
+          :active="build === 'ptu'"
+          @click="build = 'ptu'"
+        >
+          ptu
+        </Btn>
+        <Btn
+          :tone="BtnTonesEnum.DANGER"
+          :active="build === 'evocati'"
+          @click="build = 'evocati'"
+        >
+          evocati
+        </Btn>
+      </BtnGroup>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2"
+    >Segmented — content that fights the columns</Heading
+  >
+  <p>
+    Segments are equal columns that may not size below their widest label, which
+    only shows up when the labels are uneven or when there is no label at all.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <BtnGroup segmented>
+        <Btn :active="scope === 'all'" @click="scope = 'all'">All</Btn>
+        <Btn :active="scope === 'mine'" @click="scope = 'mine'">
+          Only the ones I own and have flown
+        </Btn>
+      </BtnGroup>
+      <BtnGroup segmented>
+        <Btn
+          aria-label="Grid"
+          :active="active === 'grid'"
+          @click="active = 'grid'"
+        >
+          <i class="fa-solid fa-table-cells" />
+        </Btn>
+        <Btn
+          aria-label="List"
+          :active="active === 'list'"
+          @click="active = 'list'"
+        >
+          <i class="fa-solid fa-list" />
+        </Btn>
+      </BtnGroup>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <BtnGroup segmented block>
+        <Btn
+          :active="density === 'comfortable'"
+          @click="density = 'comfortable'"
+        >
+          Comfortable
+        </Btn>
+        <Btn :active="density === 'compact'" @click="density = 'compact'">
+          Compact
+        </Btn>
+      </BtnGroup>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2"
+    >Group — container owns the chrome</Heading
+  >
+  <div class="row">
+    <div class="col-12 vt-row">
       <BtnGroup :size="BtnSizesEnum.LG">
         <Btn>Large</Btn>
         <Btn>Group</Btn>
@@ -210,9 +368,6 @@ const toggleLoading = () => {
       </BtnGroup>
     </div>
   </div>
-  <Heading :level="HeadingLevelEnum.H2"
-    >Group — container owns the chrome</Heading
-  >
   <div class="row">
     <div class="col-12 vt-row" data-test="group-with-label">
       <!-- A group holding a plain label segment as well as buttons, the shape
