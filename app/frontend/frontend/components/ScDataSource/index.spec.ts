@@ -14,10 +14,9 @@ vi.mock("@/services/fyApi", () => ({
   useScDataSources: () => ({ data: sources }),
 }));
 
-const clear = vi.fn();
-const refetchQueries = vi.fn();
+const invalidateQueries = vi.fn();
 vi.mock("@tanstack/vue-query", () => ({
-  useQueryClient: () => ({ clear, refetchQueries }),
+  useQueryClient: () => ({ invalidateQueries }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -52,8 +51,7 @@ describe("ScDataSourceBar", () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     sources.value = undefined;
-    clear.mockClear();
-    refetchQueries.mockClear();
+    invalidateQueries.mockClear();
   });
 
   it("stays out of the way when there is only one build", async () => {
@@ -76,15 +74,17 @@ describe("ScDataSourceBar", () => {
   // Everything cached was fetched against another build, so it all goes --
   // otherwise the old build's data shows under the new label until each query
   // happens to refetch.
-  it("throws the cache away when the build changes", async () => {
+  // `clear()` was the first attempt and it made the switch do nothing: it
+  // removes the queries, so the mounted observers have none left to refetch and
+  // no request goes out. Invalidating is what reloads the page.
+  it("invalidates every query when the build changes", async () => {
     sources.value = { items: [live, ptu] };
     const wrapper = await mountBar();
 
     await wrapper.findAll("button")[1].trigger("click");
 
     expect(useScDataSourceStore().requestParam).toBe("ptu");
-    expect(clear).toHaveBeenCalledOnce();
-    expect(refetchQueries).toHaveBeenCalledOnce();
+    expect(invalidateQueries).toHaveBeenCalledOnce();
   });
 
   it("does nothing when the build already selected is picked again", async () => {
@@ -93,7 +93,7 @@ describe("ScDataSourceBar", () => {
 
     await wrapper.findAll("button")[0].trigger("click");
 
-    expect(clear).not.toHaveBeenCalled();
+    expect(invalidateQueries).not.toHaveBeenCalled();
   });
 
   // A grouped button drops its cap, so a member's own tone would show nothing at

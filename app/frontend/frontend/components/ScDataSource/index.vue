@@ -59,8 +59,11 @@ const select = async (environment: string) => {
 
   store.select(option?.default ? undefined : environment);
 
-  queryClient.clear();
-  await queryClient.refetchQueries({ type: "active" });
+  // Invalidated rather than cleared. `clear()` removes every query, so the
+  // mounted observers have nothing left to refetch and the page keeps showing
+  // what it already had -- no request goes out at all. Invalidating marks them
+  // stale and refetches the active ones, which is what makes the switch visible.
+  await queryClient.invalidateQueries();
 };
 </script>
 
