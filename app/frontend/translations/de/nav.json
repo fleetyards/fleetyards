@@ -122,7 +122,8 @@
             "hardpoints": "Aufhängungspunkte",
             "loaners": "Leihschiffe",
             "upgrades": "Upgrades",
-            "packages": "Pakete"
+            "packages": "Pakete",
+            "history": "Verlauf"
           }
         },
         "modelPaints": {
@@ -135,7 +136,8 @@
           "edit": {
             "index": "Basisdaten",
             "models": "Modelle",
-            "prices": "Preise"
+            "prices": "Preise",
+            "history": "Verlauf"
           }
         },
         "unlistedModels": {
@@ -149,7 +151,8 @@
           "index": "Komponenten",
           "edit": {
             "index": "Basisdaten",
-            "prices": "Preise"
+            "prices": "Preise",
+            "history": "Verlauf"
           }
         },
         "manufacturers": {
@@ -164,7 +167,8 @@
           "fleets": "Flotten"
         },
         "fleets": {
-          "index": "Flotten"
+          "index": "Flotten",
+          "history": "Verlauf"
         },
         "vehicles": {
           "index": "Fahrzeuge"

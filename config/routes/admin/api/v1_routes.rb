@@ -132,6 +132,12 @@ v1_admin_api_routes = lambda do
 
   resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
 
+  resources :versions, only: %i[index] do
+    member do
+      put "revert" => "versions#revert"
+    end
+  end
+
   resource :stats, only: [] do
     get "quick-stats" => "stats#quick_stats"
     get "most-viewed-pages" => "stats#most_viewed_pages"

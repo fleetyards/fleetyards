@@ -276,7 +276,8 @@
         "noManufacturer": "Zu diesem Identifier lässt sich kein Hersteller auflösen",
         "alreadyExists": "%{name} ist bereits im Katalog",
         "link": "Schon im Katalog"
-      }
+      },
+      "revert": "Zurücksetzen"
     }
   }
 }

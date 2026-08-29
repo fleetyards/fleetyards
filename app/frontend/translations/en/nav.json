@@ -155,7 +155,8 @@
             "loaners": "Loaners",
             "snubCrafts": "Snub Crafts",
             "upgrades": "Upgrades",
-            "packages": "Packages"
+            "packages": "Packages",
+            "history": "History"
           }
         },
         "modelPaints": {
@@ -170,7 +171,8 @@
             "models": "Models",
             "prices": "Prices",
             "hardpoints": "Hardpoints",
-            "cargoHolds": "Cargo Holds"
+            "cargoHolds": "Cargo Holds",
+            "history": "History"
           }
         },
         "unlistedModels": {
@@ -184,7 +186,8 @@
           "index": "Components",
           "edit": {
             "index": "Base Data",
-            "prices": "Prices"
+            "prices": "Prices",
+            "history": "History"
           }
         },
         "manufacturers": {
@@ -201,7 +204,8 @@
         "fleets": {
           "index": "Fleets",
           "edit": "Edit",
-          "members": "Members"
+          "members": "Members",
+          "history": "History"
         },
         "destroyedFleets": {
           "index": "Destroyed Fleets"

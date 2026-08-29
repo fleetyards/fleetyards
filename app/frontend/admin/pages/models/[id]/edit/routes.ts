@@ -206,4 +206,16 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
     },
   },
+  {
+    path: "history/",
+    name: "admin-model-edit-history",
+    component: () => import("@/admin/pages/models/[id]/edit/history.vue"),
+    meta: {
+      title: "admin.models.edit.history",
+      customTitle: true,
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
 ];

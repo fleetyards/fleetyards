@@ -1240,6 +1240,17 @@
             "rsi-api-status": "RSI-API-Status",
             "stats": "Statistiken"
           }
+        },
+        "versions": {
+          "blank": "leer",
+          "revertQuestion": "Zurücksetzen?",
+          "sources": {
+            "custom": "Admin",
+            "rsi_loader": "Ship Matrix",
+            "sc_data_loader": "Spieldateien",
+            "sc_loader": "Spieldateien",
+            "unknown": "Unbekannt"
+          }
         }
       },
       "hangarTable": {

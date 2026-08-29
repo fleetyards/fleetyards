@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import VersionHistory from "@/admin/components/VersionHistory/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -136,6 +137,11 @@ const handleCancel = async () => {
           @cancel="handleCancel"
         />
       </form>
+
+      <Heading class="mt-8 mb-4">{{
+        t("headlines.admin.fleets.history")
+      }}</Heading>
+      <VersionHistory :item-id="memberId" item-type="FleetMembership" />
     </template>
   </AsyncData>
 </template>
