@@ -76,13 +76,13 @@ const select = async (environment: string) => {
       v-if="hasChoice"
       v-tooltip="hint"
       segmented
+      :size="BtnSizesEnum.MD"
       :tone="offDefault ? BtnTonesEnum.WARNING : undefined"
       data-test="sc-data-source-switch"
     >
       <Btn
         v-for="source in available"
         :key="source.environment"
-        :size="BtnSizesEnum.SM"
         :active="source.environment === selected?.environment"
         @click="select(source.environment)"
       >
