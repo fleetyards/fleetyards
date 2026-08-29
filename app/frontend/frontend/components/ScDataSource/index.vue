@@ -31,6 +31,20 @@ watch(
 
 const selected = computed(() => store.selected);
 
+// The header is a sibling in this same tree, so its target is not in the
+// document while this mounts -- Vue would fail to locate it and render nothing.
+// Route components teleport into it fine because they mount after the layout.
+const mounted = ref(false);
+onMounted(() => {
+  mounted.value = true;
+});
+
+const hint = computed(() =>
+  selected.value && !selected.value.default
+    ? t("labels.scDataSource.notLive")
+    : t("labels.scDataSource.reading"),
+);
+
 // Everything cached was fetched against another build, so it all goes. Sending
 // the new source without this would show the old build's data under the new
 // label until each query happened to refetch.
@@ -49,58 +63,50 @@ const select = async (environment: string) => {
 </script>
 
 <template>
-  <div
-    v-if="hasChoice"
-    class="sc-data-source"
-    :class="{ 'sc-data-source-off-default': selected && !selected.default }"
-  >
-    <span class="sc-data-source-label">
-      <i class="fa-duotone fa-database" />
-      {{ t("labels.scDataSource.reading") }}
-    </span>
+  <!-- Into the header rather than a row of its own: this is a global control
+       like Compare and Fleetchart beside it, and a full-width bar of its own
+       pushed every page's toolbar down and lined up with nothing. -->
+  <Teleport v-if="mounted" to="#header-right">
+    <div
+      v-if="hasChoice"
+      class="sc-data-source"
+      :class="{ 'sc-data-source-off-default': selected && !selected.default }"
+    >
+      <span v-tooltip="hint" class="sc-data-source-label">
+        <i class="fa-duotone fa-database" />
+      </span>
 
-    <BtnGroup>
-      <Btn
-        v-for="source in available"
-        :key="source.environment"
-        v-tooltip="source.version"
-        :size="BtnSizesEnum.SM"
-        :active="source.environment === selected?.environment"
-        @click="select(source.environment)"
-      >
-        {{ source.environment }}
-      </Btn>
-    </BtnGroup>
-
-    <span v-if="selected && !selected.default" class="sc-data-source-warning">
-      {{ t("labels.scDataSource.notLive") }}
-    </span>
-  </div>
+      <BtnGroup>
+        <Btn
+          v-for="source in available"
+          :key="source.environment"
+          v-tooltip="source.version"
+          :size="BtnSizesEnum.SM"
+          :active="source.environment === selected?.environment"
+          @click="select(source.environment)"
+        >
+          {{ source.environment }}
+        </Btn>
+      </BtnGroup>
+    </div>
+  </Teleport>
 </template>
 
 <style lang="scss" scoped>
 .sc-data-source {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
+  gap: 0.5rem;
 }
 
 .sc-data-source-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-.sc-data-source-off-default {
-  border-left: 3px solid $warning;
-  background: rgba($warning, 0.08);
-}
-
-.sc-data-source-warning {
+// Off the default build, the icon says so rather than a bar of its own -- the
+// active button already names which build is being read.
+.sc-data-source-off-default .sc-data-source-label {
   color: $warning;
+  opacity: 1;
 }
 </style>
