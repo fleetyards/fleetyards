@@ -74,7 +74,10 @@ const isSegment = computed(
 // every group member, not just segmented ones, because `segmented` can flip at
 // runtime and a member that never registered would leave a gap in the order.
 if (container?.register) {
-  const entry = container.register(() => props.active);
+  const entry = container.register(
+    () => props.active,
+    () => props.tone,
+  );
   onUnmounted(entry.unregister);
 }
 

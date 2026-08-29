@@ -7,20 +7,20 @@ export default {
 <script lang="ts" setup>
 import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
 // A value, not just a type: the segmented size class falls back to it.
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import type { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   /** Set once here instead of on every member. */
   size?: `${BtnSizesEnum}`;
   block?: boolean;
   /**
-   * Colours the thumb, for a segmented group whose current choice is worth
-   * flagging -- reading a pre-release build rather than the live one.
+   * Colours the thumb, for a segmented group where being on any segment at all
+   * is worth flagging.
    *
-   * On the group rather than on the member because a grouped button drops its
-   * cap, so a member's own tone shows nothing at rest. The thumb is what marks
-   * the choice, so it is what says the choice is unusual.
+   * A member may carry its own tone instead, and usually should: it is normally
+   * one particular choice that is unusual -- reading a pre-release build rather
+   * than the live one -- and then only that segment should colour the thumb.
+   * The member's tone wins where it has one; this is the fallback for the rest.
    */
   tone?: `${BtnTonesEnum}`;
   /**
@@ -45,16 +45,23 @@ const sizeClass = computed(() => `btn-group--${props.size ?? BtnSizesEnum.SM}`);
 
 // Members report themselves in mount order, which is DOM order, so the thumb can
 // be placed without this component reading a member's index or state out of the
-// DOM. Shallow refs of getters rather than values: a member's `active` changes
-// after registration and the thumb has to follow.
-const members = ref<Array<() => boolean>>([]);
+// DOM. Getters rather than values: a member's `active` changes after
+// registration and the thumb has to follow.
+type Member = {
+  active: () => boolean;
+  tone: () => `${BtnTonesEnum}`;
+};
 
-const register = (active: () => boolean) => {
-  members.value = [...members.value, active];
+const members = ref<Member[]>([]);
+
+const register = (active: Member["active"], tone: Member["tone"]) => {
+  const member: Member = { active, tone };
+
+  members.value = [...members.value, member];
 
   return {
     unregister: () => {
-      members.value = members.value.filter((entry) => entry !== active);
+      members.value = members.value.filter((entry) => entry !== member);
     },
   };
 };
@@ -73,7 +80,7 @@ if (import.meta.env.DEV) {
       return;
     }
 
-    const active = members.value.filter((isActive) => isActive()).length;
+    const active = members.value.filter((member) => member.active()).length;
 
     if (active > 1) {
       console.warn(
@@ -87,8 +94,17 @@ if (import.meta.env.DEV) {
 // -1 while nothing is chosen, which parks the thumb off the first segment rather
 // than under it - a switch with no selection should not claim one.
 const activeIndex = computed(() =>
-  members.value.findIndex((isActive) => isActive()),
+  members.value.findIndex((member) => member.active()),
 );
+
+// The chosen member's tone, since the thumb is the only chrome left to show it
+// in. `neutral` is Btn's default and so cannot mean anything but "unset" here,
+// which is what lets the group's own tone stand as the fallback.
+const thumbTone = computed(() => {
+  const chosen = members.value[activeIndex.value]?.tone();
+
+  return chosen && chosen !== BtnTonesEnum.NEUTRAL ? chosen : props.tone;
+});
 
 // Members read this and drop their own border, radius and end-caps, so this
 // component never needs descendant selectors into Btn's internals. The previous
@@ -123,7 +139,7 @@ provide(BTN_CONTAINER, {
       <span
         v-if="segmented && activeIndex >= 0"
         class="btn-group__thumb"
-        :class="tone ? `btn-group__thumb--tone-${tone}` : undefined"
+        :class="thumbTone ? `btn-group__thumb--tone-${thumbTone}` : undefined"
         aria-hidden="true"
       />
       <slot />
