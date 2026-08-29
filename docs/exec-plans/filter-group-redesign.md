@@ -149,7 +149,8 @@ by a test:
 - Search is debounced at 500ms and resets pagination to page 1.
 - `paginated` tracks `currentPage < totalPages` off the response meta and
   renders a fetch-more button inside the popover.
-- Options are sorted client-side, alphabetically by label.
+- Options are sorted client-side, alphabetically by label — **except they are
+  not**, see F12.
 - `keepPreviousData` keeps the list stable while refetching.
 - With `multiple` and not `hideSelected`, the selected rows render in a second
   `Collapsed` _outside_ the popover while it is closed.
@@ -181,6 +182,23 @@ listbox filter or a native control for the combobox.
 
 It is also the only automated coverage the component has anywhere: there is no
 unit spec, no colocated test, and nothing else asserts on a `filter-group` id.
+
+### F12 — The sort never reaches the list — found in Phase 0
+
+`sort()` exists and `availableOptions` applies it, but the popover renders
+`filteredOptions` (`index.vue:266-276`), which returns `internalOptions`
+untouched.
+
+The consequence is split: `selectedOptions` derives from `availableOptions`, so
+the **selected** rows come out alphabetical, while the **options** a user picks
+from are in whatever order the API returned them. Two lists in the same popover,
+ordered differently, from one sort function that only half-runs.
+
+The rebuild should sort the rendered list. The Phase 0 spec pins the current
+behaviour with that noted, so flipping the assertion is a deliberate act rather
+than a surprise.
+
+Found by writing the Phase 0 tests, which is the argument for the gate.
 
 ## Decisions
 
