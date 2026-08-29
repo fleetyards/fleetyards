@@ -32,10 +32,13 @@ const { isAuthenticated } = storeToRefs(sessionStore);
 
 <template>
   <AppNavigationMobile>
+    <!-- A tab bar has no room to expand a submenu into: it would push the
+         children out over the page. Each tab links to its first child. -->
     <AppNavigationItems
       :routes="mobileRoutes"
       :current-route="route"
       :authenticated="isAuthenticated"
+      hide-submenus
     />
   </AppNavigationMobile>
 </template>
