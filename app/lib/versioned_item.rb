@@ -13,6 +13,16 @@
 # holder is polymorphic, which is why the policy is looked up from the record
 # the walk lands on rather than from the item type it started at.
 class VersionedItem
+  # paper_trail 17 defaults `on` to %i[create update destroy touch], and a touch
+  # can never record `object_changes` -- rails' `touch` skips dirty-tracking, so
+  # `Events::Update#record_object_changes?` returns false for one. It files the
+  # version anyway, which leaves a row whose changeset is empty.
+  #
+  # Fleet has seven `belongs_to :fleet, touch: true` children, so an event, a
+  # membership or a role write files a fleet version that says nothing: 572,735
+  # of its 573,199 update versions are that, against 464 real edits.
+  RECORDED_EVENTS = %i[create update destroy].freeze
+
   ROOTS = {
     "Component" => [],
     "Fleet" => [],

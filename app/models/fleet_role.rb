@@ -25,7 +25,7 @@ require "lexorank/rankable"
 class FleetRole < ApplicationRecord
   include ResourceAccessConcern
 
-  has_paper_trail
+  has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
   belongs_to :fleet, touch: true
   has_many :fleet_memberships,

@@ -92,6 +92,21 @@ class Admin::Api::V1::VersionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The touch versions paper_trail already filed have no `object_changes` at all,
+  # so there is nothing to show for one -- it rendered as a heading with an empty
+  # body. Fixing the recording does not remove the 572,735 already on disk.
+  test "GET /versions skips a version that recorded no changes" do
+    fleet = create(:fleet, created_by: create(:user).id)
+    fleet.update!(description: "A crew")
+    PaperTrail::Version.create!(item_type: "Fleet", item_id: fleet.id, event: "update", object_changes: nil)
+    sign_in create(:admin_user, resource_access: [:fleets])
+
+    assert_api_response :get, 200, params: list_params(fleet) do
+      assert_equal 2, parsed_body["items"].count
+      assert_empty parsed_body["items"].select { |version| version["changes"].empty? }
+    end
+  end
+
   test "GET /versions returns 404 for a missing id" do
     sign_in @user
 

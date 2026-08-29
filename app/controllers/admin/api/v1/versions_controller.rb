@@ -11,8 +11,13 @@ module Admin
 
           authorize_item!(item)
 
+          # The touch versions already on disk outnumber the real edits 1,200 to
+          # one on a fleet, and each renders as a heading with nothing under it.
+          # `object_changes` is null on exactly those: every create, update and
+          # destroy paper_trail records from a save carries one.
           @versions = PaperTrail::Version
             .where(item_type: item.class.name, item_id: item.id)
+            .where.not(object_changes: nil)
             .order(created_at: :desc)
             .page(params[:page])
             .per(params[:per_page] || params[:perPage])
