@@ -55,7 +55,7 @@ FactoryBot.define do
 
     trait :strict do
       classification { nil }
-      association :model, in_game: true
+      association :model, factory: %i[model in_game]
     end
 
     trait :ranged do
