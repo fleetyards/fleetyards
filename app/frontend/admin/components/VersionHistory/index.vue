@@ -80,7 +80,12 @@ const displayValue = (value?: string | null) =>
   <Empty v-else-if="versions.length === 0" />
 
   <div v-else class="flex flex-col gap-4">
-    <Panel v-for="version in versions" :key="version.id">
+    <Panel
+      v-for="version in versions"
+      :key="version.id"
+      inset
+      :outer-spacing="false"
+    >
       <div class="flex flex-wrap items-center gap-2 mb-3">
         <span class="text-white">{{ l(version.createdAt ?? "") }}</span>
         <BasePill
@@ -95,7 +100,7 @@ const displayValue = (value?: string | null) =>
         </span>
       </div>
 
-      <ul class="flex flex-col gap-2">
+      <ul class="flex flex-col gap-2 pb-5">
         <li
           v-for="change in version.changes"
           :key="`${version.id}-${change.field}`"
