@@ -7,7 +7,7 @@
  * against rather than being verified by eye.
  */
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 
 const options = [
@@ -16,17 +16,40 @@ const options = [
   { value: "b", label: "Banu Merchantman" },
 ];
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const mount = (props: Record<string, any> = {}) =>
-  mountWithDefaults<typeof Component>(Component, {
+/*
+ * FilterGroup is declared `<script setup generic="T">`, so its type is a
+ * generic function component rather than a constructor, and mountWithDefaults
+ * constrains to `new (...args: any) => any`. Casting to the shape the helper
+ * asks for is contained to this file; widening the helper would reach the 40-odd
+ * other specs that rely on its inference.
+ *
+ * The exposed methods are spelled out because four call sites reach them through
+ * template refs -- see the plan's F5.
+ */
+const FilterGroup = Component as unknown as new (...args: never[]) => {
+  $props: Record<string, unknown>;
+  reset: () => void;
+  clear: () => void;
+  clearSearch: () => void;
+};
+
+const mount = (props: Record<string, unknown> = {}) =>
+  mountWithDefaults<typeof FilterGroup>(FilterGroup, {
     props: { name: "ships", options, ...props },
   });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const labelsIn = (wrapper: any, root = "") =>
+type Wrapper = Awaited<ReturnType<typeof mount>>;
+
+const labelsIn = (wrapper: Wrapper, root = "") =>
   wrapper
     .findAll(`${root} .filter-group-item-label`)
     .map((node: { text: () => string }) => node.text());
+
+// jsdom has no layout, so it does not implement scrollIntoView. Stubbed here
+// rather than guarded in the component: it exists in every browser.
+beforeAll(() => {
+  Element.prototype.scrollIntoView = vi.fn();
+});
 
 afterEach(() => {
   vi.useRealTimers();
@@ -198,6 +221,168 @@ describe("FilterGroup", () => {
       });
 
       expect(wrapper.find(".filter-group-fetch-more").exists()).toBe(false);
+    });
+  });
+  describe("combobox semantics", () => {
+    it("makes the trigger a button that announces itself as a combobox", async () => {
+      const wrapper = await mount();
+      const trigger = wrapper.find('[data-test="filter-group-title"]');
+
+      expect(trigger.element.tagName).toBe("BUTTON");
+      expect(trigger.attributes("role")).toBe("combobox");
+      expect(trigger.attributes("aria-haspopup")).toBe("listbox");
+      expect(trigger.attributes("aria-expanded")).toBe("false");
+    });
+
+    it("flips aria-expanded when it opens", async () => {
+      const wrapper = await mount();
+
+      await wrapper.find('[data-test="filter-group-title"]').trigger("click");
+
+      expect(
+        wrapper
+          .find('[data-test="filter-group-title"]')
+          .attributes("aria-expanded"),
+      ).toBe("true");
+    });
+
+    it("points the label at the trigger when there is no search box", async () => {
+      const wrapper = await mount();
+
+      expect(wrapper.find("label").attributes("for")).toBe(
+        wrapper.find('[data-test="filter-group-title"]').attributes("id"),
+      );
+    });
+
+    it("still points the label at the search box when there is one", async () => {
+      const wrapper = await mount({ searchable: true, label: "Ships" });
+
+      expect(wrapper.find("label").attributes("for")).toContain("searchInput");
+    });
+
+    it("gives every row an option role and its selected state", async () => {
+      const wrapper = await mount({ modelValue: "a" });
+      const rows = wrapper.findAll('[role="option"]');
+
+      expect(rows).toHaveLength(3);
+      expect(rows.map((r) => r.attributes("aria-selected"))).toEqual([
+        "false",
+        "true",
+        "false",
+      ]);
+    });
+
+    it("marks the listbox multi-selectable only when it is", async () => {
+      const single = await mount();
+      const many = await mount({ multiple: true });
+
+      expect(
+        single.find('[role="listbox"]').attributes("aria-multiselectable"),
+      ).toBe("false");
+      expect(
+        many.find('[role="listbox"]').attributes("aria-multiselectable"),
+      ).toBe("true");
+    });
+  });
+
+  describe("keyboard", () => {
+    const open = async () => {
+      const wrapper = await mount();
+      await wrapper.trigger("keydown", { key: "ArrowDown" });
+      return wrapper;
+    };
+
+    const activeLabel = (wrapper: {
+      find: (s: string) => { exists: () => boolean; text: () => string };
+    }) => wrapper.find(".filter-group-item--focused").text();
+
+    it("opens on ArrowDown and points at the first row", async () => {
+      const wrapper = await open();
+
+      expect(
+        wrapper
+          .find('[data-test="filter-group-title"]')
+          .attributes("aria-expanded"),
+      ).toBe("true");
+      expect(activeLabel(wrapper)).toContain("Caterpillar");
+    });
+
+    it("opens on ArrowUp and points at the last row", async () => {
+      const wrapper = await mount();
+
+      await wrapper.trigger("keydown", { key: "ArrowUp" });
+
+      expect(activeLabel(wrapper)).toContain("Banu Merchantman");
+    });
+
+    it("wraps around both ends", async () => {
+      const wrapper = await open();
+
+      await wrapper.trigger("keydown", { key: "ArrowUp" });
+      expect(activeLabel(wrapper)).toContain("Banu Merchantman");
+
+      await wrapper.trigger("keydown", { key: "ArrowDown" });
+      expect(activeLabel(wrapper)).toContain("Caterpillar");
+    });
+
+    it("jumps to the ends with Home and End", async () => {
+      const wrapper = await open();
+
+      await wrapper.trigger("keydown", { key: "End" });
+      expect(activeLabel(wrapper)).toContain("Banu Merchantman");
+
+      await wrapper.trigger("keydown", { key: "Home" });
+      expect(activeLabel(wrapper)).toContain("Caterpillar");
+    });
+
+    it("publishes the pointed-at row through aria-activedescendant", async () => {
+      const wrapper = await open();
+
+      expect(
+        wrapper
+          .find('[data-test="filter-group-title"]')
+          .attributes("aria-activedescendant"),
+      ).toBe(wrapper.find(".filter-group-item--focused").attributes("id"));
+    });
+
+    it("selects the pointed-at row on Enter", async () => {
+      const wrapper = await open();
+
+      await wrapper.trigger("keydown", { key: "ArrowDown" });
+      await wrapper.trigger("keydown", { key: "Enter" });
+
+      expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual(["a"]);
+    });
+
+    it("closes on Escape without selecting", async () => {
+      const wrapper = await open();
+
+      await wrapper.trigger("keydown", { key: "Escape" });
+
+      expect(
+        wrapper
+          .find('[data-test="filter-group-title"]')
+          .attributes("aria-expanded"),
+      ).toBe("false");
+      expect(wrapper.emitted("update:modelValue")).toBeUndefined();
+    });
+
+    it("jumps to a row by typing its first letters", async () => {
+      const wrapper = await mount();
+
+      await wrapper.trigger("keydown", { key: "b" });
+      await wrapper.trigger("keydown", { key: "a" });
+
+      expect(activeLabel(wrapper)).toContain("Banu Merchantman");
+    });
+
+    it("leaves typing to the search box when the group is searchable", async () => {
+      const wrapper = await mount({ searchable: true });
+
+      await wrapper.find('[data-test="filter-group-title"]').trigger("click");
+      await wrapper.trigger("keydown", { key: "b" });
+
+      expect(wrapper.find(".filter-group-item--focused").exists()).toBe(false);
     });
   });
 });

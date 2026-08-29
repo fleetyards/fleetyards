@@ -231,12 +231,24 @@ const innerLabel = computed(() => {
   return t(`filterGroup.${props.name}.label`);
 });
 
+const triggerId = computed(() => `${props.name}-trigger-${id.value}`);
+
+const listboxId = computed(() => `${props.name}-listbox-${id.value}`);
+
+const optionId = (index: number) => `${listboxId.value}-option-${index}`;
+
+/*
+ * The label points at a real control now. It used to point at the collapsed
+ * container's id -- a div -- for every group that is not searchable, which is
+ * 68 of the component's 135 call sites: clicking the label did nothing and a
+ * screen reader announced nothing.
+ */
 const labelFor = computed(() => {
   if (props.searchable) {
     return `${props.name}-searchInput-${id.value}`;
   }
 
-  return `${props.name}-options-${id.value}`;
+  return triggerId.value;
 });
 
 const searchPlaceholder = computed(() => {
@@ -283,6 +295,205 @@ const cssClasses = computed(() => ({
   "filter-group--medium": props.size === FilterGroupSizesEnum.MEDIUM,
 }));
 
+/*
+ * The visually pointed-at row. Focus itself never leaves the trigger (or the
+ * search box), so this is carried as an index and published through
+ * aria-activedescendant rather than by moving focus into the list.
+ */
+const activeIndex = ref(-1);
+
+const activeOption = computed(() => filteredOptions.value[activeIndex.value]);
+
+const activeDescendant = computed(() =>
+  visible.value && activeIndex.value >= 0
+    ? optionId(activeIndex.value)
+    : undefined,
+);
+
+// A list that shrank under the cursor -- by a search, or a page of results
+// arriving -- must not leave the pointer past its end.
+watch(filteredOptions, () => {
+  if (activeIndex.value >= filteredOptions.value.length) {
+    activeIndex.value = filteredOptions.value.length - 1;
+  }
+});
+
+const moveActive = (delta: number) => {
+  const count = filteredOptions.value.length;
+
+  if (count === 0) {
+    activeIndex.value = -1;
+    return;
+  }
+
+  activeIndex.value =
+    activeIndex.value < 0
+      ? delta > 0
+        ? 0
+        : count - 1
+      : (activeIndex.value + delta + count) % count;
+
+  void scrollActiveIntoView();
+};
+
+const scrollActiveIntoView = async () => {
+  await nextTick();
+
+  if (activeIndex.value < 0 || !filterGroup.value) {
+    return;
+  }
+
+  filterGroup.value
+    .querySelector(`#${CSS.escape(optionId(activeIndex.value))}`)
+    ?.scrollIntoView({ block: "nearest" });
+};
+
+/*
+ * Type-ahead, for the groups that are not searchable. A native select gives
+ * this for free; a custom combobox has to pay it back, and without it the only
+ * way through the longer lists -- manufacturers, star systems -- is fifty
+ * arrow presses.
+ */
+const typeAheadBuffer = ref("");
+
+let typeAheadTimer: ReturnType<typeof setTimeout> | undefined;
+
+const typeAhead = (character: string) => {
+  clearTimeout(typeAheadTimer);
+  typeAheadBuffer.value += character.toLowerCase();
+  typeAheadTimer = setTimeout(() => {
+    typeAheadBuffer.value = "";
+  }, 500);
+
+  const match = filteredOptions.value.findIndex((option) =>
+    option.label.toLowerCase().startsWith(typeAheadBuffer.value),
+  );
+
+  if (match >= 0) {
+    activeIndex.value = match;
+    void scrollActiveIntoView();
+  }
+};
+
+const focusTrigger = async () => {
+  await nextTick();
+  trigger.value?.focus();
+};
+
+const close = (returnFocus = false) => {
+  visible.value = false;
+  activeIndex.value = -1;
+
+  if (returnFocus) {
+    void focusTrigger();
+  }
+};
+
+const onKeydown = async (event: KeyboardEvent) => {
+  if (props.disabled) {
+    return;
+  }
+
+  switch (event.key) {
+    case "ArrowDown":
+    case "ArrowUp": {
+      event.preventDefault();
+
+      if (!visible.value) {
+        await toggle();
+        activeIndex.value = event.key === "ArrowDown" ? 0 : -1;
+        if (event.key === "ArrowUp") moveActive(-1);
+        return;
+      }
+
+      moveActive(event.key === "ArrowDown" ? 1 : -1);
+      return;
+    }
+    case "Home":
+    case "End": {
+      if (!visible.value) {
+        return;
+      }
+
+      event.preventDefault();
+      activeIndex.value =
+        event.key === "Home" ? 0 : filteredOptions.value.length - 1;
+      void scrollActiveIntoView();
+      return;
+    }
+    case "Enter": {
+      event.preventDefault();
+
+      if (!visible.value) {
+        await toggle();
+        return;
+      }
+
+      if (activeOption.value) {
+        await select(activeOption.value.value);
+      }
+      return;
+    }
+    case " ": {
+      // In a searchable group a space is a character, not a command.
+      if (props.searchable) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (!visible.value) {
+        await toggle();
+        return;
+      }
+
+      if (activeOption.value) {
+        await select(activeOption.value.value);
+      }
+      return;
+    }
+    case "Escape": {
+      if (!visible.value) {
+        return;
+      }
+
+      event.preventDefault();
+      close(true);
+      return;
+    }
+    case "Tab": {
+      close();
+      return;
+    }
+    default: {
+      if (
+        !props.searchable &&
+        event.key.length === 1 &&
+        !event.metaKey &&
+        !event.ctrlKey &&
+        !event.altKey
+      ) {
+        if (!visible.value) {
+          await toggle();
+        }
+        typeAhead(event.key);
+      }
+    }
+  }
+};
+
+// A pointer click outside already closes the group; this is the same rule for
+// focus, so tabbing out of an open group does not leave the popover hanging.
+const onFocusout = (event: FocusEvent) => {
+  const next = event.relatedTarget as Node | null;
+
+  if (next && filterGroup.value?.contains(next)) {
+    return;
+  }
+
+  close();
+};
+
 onMounted(() => {
   document.addEventListener("click", documentClick);
 
@@ -298,6 +509,8 @@ onUnmounted(() => {
 });
 
 const filterGroup = ref<HTMLElement | null>(null);
+
+const trigger = ref<HTMLButtonElement | null>(null);
 
 const documentClick = (event: Event) => {
   if (!filterGroup.value) {
@@ -456,6 +669,8 @@ defineExpose({
     class="filter-group"
     :class="cssClasses"
     :data-test="`filter-group-${name}`"
+    @keydown="onKeydown"
+    @focusout="onFocusout"
   >
     <transition name="fade">
       <label
@@ -466,8 +681,17 @@ defineExpose({
         {{ innerLabel }}
       </label>
     </transition>
-    <div
+    <button
+      :id="triggerId"
+      ref="trigger"
       v-tooltip.right="error"
+      type="button"
+      role="combobox"
+      aria-haspopup="listbox"
+      :aria-expanded="visible"
+      :aria-controls="listboxId"
+      :aria-activedescendant="activeDescendant"
+      :disabled="disabled"
       :class="{
         active: visible,
         disabled,
@@ -483,7 +707,7 @@ defineExpose({
       </span>
       <SmallLoader v-if="props.queryFn" :loading="loading" />
       <i class="fa fa-chevron-right" />
-    </div>
+    </button>
     <Collapsed
       v-if="multiple && !hideSelected"
       :id="`${name}-selected-${id}`"
@@ -521,16 +745,26 @@ defineExpose({
         @input="onSearch"
       />
       <div class="filter-group-items">
-        <Option
-          v-for="(option, index) in filteredOptions"
-          :key="`${name}-options-${id}-${option.value}-${index}`"
-          :option="option"
-          :selected="selected(option.value)"
-          :big-icon="bigIcon"
-          :multiple="multiple"
-          :nullable="nullable"
-          @select="select(option.value)"
-        />
+        <div
+          :id="listboxId"
+          role="listbox"
+          :aria-multiselectable="multiple"
+          :aria-labelledby="triggerId"
+        >
+          <Option
+            v-for="(option, index) in filteredOptions"
+            :key="`${name}-options-${id}-${option.value}-${index}`"
+            :option="option"
+            :option-id="optionId(index)"
+            :in-listbox="true"
+            :active="index === activeIndex"
+            :selected="selected(option.value)"
+            :big-icon="bigIcon"
+            :multiple="multiple"
+            :nullable="nullable"
+            @select="select(option.value)"
+          />
+        </div>
 
         <Btn
           v-if="fetchMoreVisible && paginated"

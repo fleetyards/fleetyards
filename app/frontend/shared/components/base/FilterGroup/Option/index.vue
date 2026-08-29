@@ -14,6 +14,16 @@ type Props = {
   multiple?: boolean;
   bigIcon?: boolean;
   nullable?: boolean;
+  /*
+   * A row inside the popover is an `option` in the listbox sense: it is not
+   * focusable itself, the trigger keeps focus and points at it with
+   * aria-activedescendant. The same component also renders the selected rows
+   * that sit *outside* the popover, and those are not options of anything --
+   * they are remove buttons, so they get to be real buttons.
+   */
+  inListbox?: boolean;
+  optionId?: string;
+  active?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
@@ -21,6 +31,9 @@ withDefaults(defineProps<Props>(), {
   multiple: false,
   bigIcon: false,
   nullable: false,
+  inListbox: false,
+  optionId: undefined,
+  active: false,
 });
 
 const { t } = useI18n();
@@ -33,10 +46,17 @@ const select = (option: FilterOption) => {
 </script>
 
 <template>
-  <a
+  <component
+    :is="inListbox ? 'div' : 'button'"
+    :id="inListbox ? optionId : undefined"
+    :role="inListbox ? 'option' : undefined"
+    :aria-selected="inListbox ? selected : undefined"
+    :tabindex="inListbox ? -1 : undefined"
+    :type="inListbox ? undefined : 'button'"
     :class="{
       active: selected,
       bigIcon,
+      'filter-group-item--focused': active,
     }"
     class="filter-group-item fade-list-item"
     @click="select(option)"
@@ -53,7 +73,7 @@ const select = (option: FilterOption) => {
     >
       <i class="fa-light fa-plus" />
     </span>
-  </a>
+  </component>
 </template>
 
 <style lang="scss" scoped>

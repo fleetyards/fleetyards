@@ -31,6 +31,19 @@
   }
 
   .filter-group-title {
+    /*
+     * This is a <button> now, not a div, so the browser's own control styling
+     * has to be undone: a button does not inherit the page's font or colour --
+     * it renders in the platform UI font at ~13px in `buttontext`, which on this
+     * surface is near-black on near-black -- and it centres its own text.
+     *
+     * `font: inherit` resets weight too, so the `font-weight: bold` below has to
+     * stay after it.
+     */
+    appearance: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
     position: relative;
     display: flex;
     align-items: center;

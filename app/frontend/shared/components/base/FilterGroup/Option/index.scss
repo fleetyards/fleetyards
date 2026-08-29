@@ -59,7 +59,10 @@
     right: -4px;
   }
 
-  &:hover {
+  /* Keyboard and pointer mark the same thing -- "this row" -- so they draw the
+     same cue. Phase 3 changes both at once when the glow rail goes. */
+  &:hover,
+  &--focused {
     &::before,
     &::after {
       background: $primary;
