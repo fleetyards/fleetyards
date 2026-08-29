@@ -51,12 +51,27 @@ const variants = [
   BtnVariantsEnum.GHOST,
   BtnVariantsEnum.BARE,
 ];
-const tones = [BtnTonesEnum.NEUTRAL, BtnTonesEnum.DANGER];
+const tones = [BtnTonesEnum.NEUTRAL, BtnTonesEnum.DANGER, BtnTonesEnum.WARNING];
 
 const loading = ref(false);
 const active = ref<string | null>("grid");
 const source = ref("game");
 const view = ref("exterior");
+// One switch per size and per tone, so each row is live rather than a set of
+// frozen screenshots - a thumb that cannot move hides half of what it does.
+const segmentedBySize = ref<Record<string, string>>({
+  xs: "on",
+  sm: "on",
+  md: "on",
+  lg: "on",
+});
+const segmentedByTone = ref<Record<string, string>>({
+  neutral: "live",
+  warning: "ptu",
+  danger: "live",
+});
+const density = ref("comfortable");
+const scope = ref("all");
 const autoRotate = ref(true);
 const zoom = ref(false);
 const colour = ref(true);
@@ -210,6 +225,115 @@ const toggleLoading = () => {
       </BtnGroup>
     </div>
   </div>
+  <Heading :level="HeadingLevelEnum.H2"
+    >Segmented — every size, beside a button of the same size</Heading
+  >
+  <p>
+    A switch is normally placed in a toolbar next to ordinary buttons, so the
+    pairing is the test: the group and the button next to it must share a top
+    and a bottom edge. The recess is inset from the group, not added to it.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <template v-for="size in sizes" :key="`segmented-${size}`">
+        <BtnGroup segmented :size="size">
+          <Btn
+            :active="segmentedBySize[size] === 'on'"
+            @click="segmentedBySize[size] = 'on'"
+          >
+            On
+          </Btn>
+          <Btn
+            :active="segmentedBySize[size] === 'off'"
+            @click="segmentedBySize[size] = 'off'"
+          >
+            Off
+          </Btn>
+        </BtnGroup>
+        <Btn :size="size">{{ size }}</Btn>
+      </template>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Segmented — tone</Heading>
+  <p>
+    The thumb wears the tone, because a member drops its own cap inside a group.
+    Warning is the source switch's case: off the default build is a state worth
+    noticing, not an error.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <template v-for="tone in tones" :key="`segmented-tone-${tone}`">
+        <BtnGroup
+          segmented
+          :tone="tone === BtnTonesEnum.NEUTRAL ? undefined : tone"
+        >
+          <Btn
+            :active="segmentedByTone[tone] === 'live'"
+            @click="segmentedByTone[tone] = 'live'"
+          >
+            live
+          </Btn>
+          <Btn
+            :active="segmentedByTone[tone] === 'ptu'"
+            @click="segmentedByTone[tone] = 'ptu'"
+          >
+            ptu
+          </Btn>
+        </BtnGroup>
+      </template>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2"
+    >Segmented — content that fights the columns</Heading
+  >
+  <p>
+    Segments are equal columns that may not size below their widest label, which
+    only shows up when the labels are uneven or when there is no label at all.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row">
+      <BtnGroup segmented>
+        <Btn :active="scope === 'all'" @click="scope = 'all'">All</Btn>
+        <Btn :active="scope === 'mine'" @click="scope = 'mine'">
+          Only the ones I own and have flown
+        </Btn>
+      </BtnGroup>
+      <BtnGroup segmented>
+        <Btn
+          aria-label="Grid"
+          :active="active === 'grid'"
+          @click="active = 'grid'"
+        >
+          <i class="fa-solid fa-table-cells" />
+        </Btn>
+        <Btn
+          aria-label="List"
+          :active="active === 'list'"
+          @click="active = 'list'"
+        >
+          <i class="fa-solid fa-list" />
+        </Btn>
+      </BtnGroup>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <BtnGroup segmented block>
+        <Btn
+          :active="density === 'comfortable'"
+          @click="density = 'comfortable'"
+        >
+          Comfortable
+        </Btn>
+        <Btn :active="density === 'compact'" @click="density = 'compact'">
+          Compact
+        </Btn>
+      </BtnGroup>
+    </div>
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2"
     >Group — container owns the chrome</Heading
   >
