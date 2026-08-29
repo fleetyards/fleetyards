@@ -116,6 +116,19 @@
     calc(var(--cap-r, 3px) * 0.75),
     calc(var(--cap-h-btn-lg, 3px) / 2)
   );
+
+  /*
+   * A table row is a smaller unit than a panel, so its rail steps down from the
+   * panel cap rather than matching it - at the full 4px the hover cue weighs as
+   * much as the frame around it. The radius is held to half the rail's own
+   * width for the same reason the button cap is: past that ceiling it stops
+   * reading as a seam and starts reading as a lozenge.
+   */
+  --cap-h-row: max(2px, calc(var(--cap-h, 4px) - 1px));
+  --cap-r-row: min(
+    calc(var(--cap-r, 3px) * 0.75),
+    calc(var(--cap-h-row, 3px) / 2)
+  );
 }
 
 /*
