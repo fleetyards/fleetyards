@@ -19,12 +19,14 @@ type Props = {
   authenticated?: boolean;
   hasAccessTo?: (access?: string[]) => boolean;
   isFeatureEnabled?: (feature: string) => boolean;
+  hideSubmenus?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   authenticated: false,
   hasAccessTo: undefined,
   isFeatureEnabled: undefined,
+  hideSubmenus: false,
 });
 
 const { t } = useI18n();
@@ -117,6 +119,10 @@ const isSubmenuActive = (route: RouteRecordRaw): boolean => {
 };
 
 const hasSubmenu = (route: RouteRecordRaw) => {
+  if (props.hideSubmenus) {
+    return false;
+  }
+
   const childRoutes = filteredChildRoutes(route.children || []);
 
   return childRoutes.length > 1;
