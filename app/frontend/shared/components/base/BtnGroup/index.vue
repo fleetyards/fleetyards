@@ -6,10 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
-import type {
-  BtnSizesEnum,
-  BtnTonesEnum,
-} from "@/shared/components/base/Btn/types";
+// A value, not just a type: the segmented size class falls back to it.
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import type { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   /** Set once here instead of on every member. */
@@ -38,6 +37,11 @@ const props = withDefaults(defineProps<Props>(), {
   segmented: false,
   tone: undefined,
 });
+
+// A segmented group claims the height its members would have had on their own,
+// so the track's inset comes out of them rather than adding to the control. Btn
+// falls back to `sm` when nothing sets a size, so this does too.
+const sizeClass = computed(() => `btn-group--${props.size ?? BtnSizesEnum.SM}`);
 
 // Members report themselves in mount order, which is DOM order, so the thumb can
 // be placed without this component reading a member's index or state out of the
@@ -104,6 +108,7 @@ provide(BTN_CONTAINER, {
     :class="{
       'btn-group--block': block,
       'btn-group--segmented': segmented,
+      [sizeClass]: segmented,
     }"
     :role="segmented ? 'radiogroup' : 'group'"
     :style="
@@ -216,6 +221,53 @@ provide(BTN_CONTAINER, {
   gap: 0;
 }
 
+/* ---------- segmented sizing ----------
+ * A segmented group is a recessed track: 3px of inset and a 1px border around
+ * its members. Left to grow, that made the control eight pixels taller than a
+ * bare button of the same size, so a switch standing next to one sat visibly
+ * proud of it.
+ *
+ * So the group claims the height its members would have had on their own, and
+ * the inset comes out of them instead of adding to it - `box-sizing: border-box`
+ * is what folds the padding and border into the declared height.
+ *
+ * The heights mirror Btn's own size rules and have to be restated rather than
+ * inherited, because size is a per-member prop the group cannot read - the same
+ * reason the label segment below restates .btn--sm. If Btn's scale moves, this
+ * moves with it. The sm fallback is Btn's default too, so a group that names no
+ * size matches a button that names none.
+ *
+ * Only segmented: a plain group is a row of ordinary buttons, which already
+ * carry their own heights.
+ */
+.btn-group--segmented.btn-group--xs {
+  height: 29px;
+}
+.btn-group--segmented.btn-group--sm {
+  height: 43px;
+}
+.btn-group--segmented.btn-group--md {
+  height: 48px;
+}
+.btn-group--segmented.btn-group--lg {
+  height: 55px;
+}
+
+/* The members fill what the inset leaves rather than carrying their own height,
+ * which needs the track to have a height for them to be a percentage of.
+ *
+ * :deep, because a member is a slotted component's root and so wears the calling
+ * component's scope id, not this one's - without it the rule silently matches
+ * nothing and the member keeps its own size. */
+.btn-group--segmented .btn-group__track {
+  height: 100%;
+}
+
+.btn-group--segmented :deep(.btn--segment) {
+  height: 100%;
+  min-height: 0;
+}
+
 .btn-group__thumb {
   @apply bg-control border-edge absolute border;
   top: 0;
@@ -260,8 +312,13 @@ provide(BTN_CONTAINER, {
  * otherwise the track's fill shows straight through and the label reads as a
  * highlighted panel. Direct children only, so .btn__content inside a member is
  * untouched.
+ *
+ * The thumb is excluded by name because it is a span in the track too: it was
+ * picking up the min-height, which held it at 43px inside a shorter track and
+ * pushed it out of the recess, and the divider shadow, which drew a seam down
+ * its leading edge.
  */
-.btn-group__track > :deep(span) {
+.btn-group__track > :deep(span:not(.btn-group__thumb)) {
   @apply bg-control text-text flex items-center justify-center px-3.5;
   /* And the divider a member would draw, for the same reason. */
   box-shadow: -1px 0 0 var(--color-seam, #3a3f44);
