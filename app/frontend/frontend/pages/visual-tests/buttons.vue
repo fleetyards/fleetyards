@@ -70,6 +70,7 @@ const segmentedByTone = ref<Record<string, string>>({
   warning: "ptu",
   danger: "live",
 });
+const build = ref("live");
 const density = ref("comfortable");
 const scope = ref("all");
 const autoRotate = ref(true);
@@ -215,14 +216,6 @@ const toggleLoading = () => {
         <Btn :active="active === 'list'" @click="active = 'list'">List</Btn>
         <Btn :active="active === 'table'" @click="active = 'table'">Table</Btn>
       </BtnGroup>
-      <BtnGroup :size="BtnSizesEnum.LG">
-        <Btn>Large</Btn>
-        <Btn>Group</Btn>
-      </BtnGroup>
-      <BtnGroup>
-        <Btn aria-label="Grid"><i class="fa-solid fa-table-cells" /></Btn>
-        <Btn aria-label="List"><i class="fa-solid fa-list" /></Btn>
-      </BtnGroup>
     </div>
   </div>
   <Heading :level="HeadingLevelEnum.H2"
@@ -258,8 +251,10 @@ const toggleLoading = () => {
   <Heading :level="HeadingLevelEnum.H2">Segmented — tone</Heading>
   <p>
     The thumb wears the tone, because a member drops its own cap inside a group.
-    Warning is the source switch's case: off the default build is a state worth
-    noticing, not an error.
+    A tone on the group colours the thumb wherever it stands; a tone on a member
+    colours it only once it is parked there, which is the usual case — it is one
+    particular choice that is worth flagging, not the act of choosing. Warning
+    is the source switch's: a pre-release build is worth noticing, not an error.
   </p>
   <div class="row">
     <div class="col-12 vt-row">
@@ -282,6 +277,30 @@ const toggleLoading = () => {
           </Btn>
         </BtnGroup>
       </template>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 vt-row">
+      <!-- Per member, the source switch's own shape: neutral is Btn's default
+           and reads as no opinion, so only the flagged segments colour. -->
+      <BtnGroup segmented>
+        <Btn :active="build === 'live'" @click="build = 'live'">live</Btn>
+        <Btn
+          :tone="BtnTonesEnum.WARNING"
+          :active="build === 'ptu'"
+          @click="build = 'ptu'"
+        >
+          ptu
+        </Btn>
+        <Btn
+          :tone="BtnTonesEnum.DANGER"
+          :active="build === 'evocati'"
+          @click="build = 'evocati'"
+        >
+          evocati
+        </Btn>
+      </BtnGroup>
     </div>
   </div>
 
@@ -337,6 +356,18 @@ const toggleLoading = () => {
   <Heading :level="HeadingLevelEnum.H2"
     >Group — container owns the chrome</Heading
   >
+  <div class="row">
+    <div class="col-12 vt-row">
+      <BtnGroup :size="BtnSizesEnum.LG">
+        <Btn>Large</Btn>
+        <Btn>Group</Btn>
+      </BtnGroup>
+      <BtnGroup>
+        <Btn aria-label="Grid"><i class="fa-solid fa-table-cells" /></Btn>
+        <Btn aria-label="List"><i class="fa-solid fa-list" /></Btn>
+      </BtnGroup>
+    </div>
+  </div>
   <div class="row">
     <div class="col-12 vt-row" data-test="group-with-label">
       <!-- A group holding a plain label segment as well as buttons, the shape
