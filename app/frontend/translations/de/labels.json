@@ -1249,6 +1249,7 @@
             "rsi_loader": "Ship Matrix",
             "sc_data_loader": "Spieldateien",
             "sc_loader": "Spieldateien",
+            "uex_price_sync": "UEX-Preisabgleich",
             "unknown": "Unbekannt"
           }
         }
