@@ -200,6 +200,25 @@ than a surprise.
 
 Found by writing the Phase 0 tests, which is the argument for the gate.
 
+### F13 — The popover is attached, and the shared surface would detach it
+
+Not drift, and not obviously wrong: FilterGroup's popover is drawn as a
+continuation of its trigger. `.filter-group-items` carries `border-top: none`
+and only bottom radii, and the trigger's `.active` and `.selected` states drop
+their own bottom radii to meet it (`index.scss:69-72`, `:88-95`). The two read
+as one object.
+
+`BtnDropdown/Menu` is the opposite: a detached surface floating over the page,
+fully bordered, `rounded-control` all round, with end-caps top and bottom.
+
+Moving FilterGroup onto that surface is therefore not a like-for-like swap —
+it changes what the control _is_ on screen. It also strands the search box,
+which today sits **outside** the bordered area as a sibling of
+`.filter-group-items`, above it.
+
+This is a design decision, not a refactor, and it belongs to whoever owns the
+look rather than to the phase that happens to touch the CSS.
+
 ## Decisions
 
 ### D1 — A custom combobox, not a native `<select>`
@@ -291,14 +310,31 @@ arrow keys, Home/End, Enter/Space, Escape, focus-out, type-ahead (D5);
 `aria-activedescendant`.
 No visual change in this phase beyond what the element swap forces.
 
-### Phase 2 — The shared popover surface
+### Phase 2 — Move the component off SCSS
+
+**Corrected after Phase 1; the original split of this phase from the next one
+was wrong.** See F13.
+
+`btn-redesign`'s D3 verified empirically that `@reference` and `@apply` inside
+`<style lang="scss">` pass through sass untouched, reach the minifier as
+unknown at-rules and are **silently dropped**. `BtnDropdown/Menu`'s surface is
+authored with `@apply`, and FilterGroup is SCSS, so the surface cannot be
+shared until the component moves to a plain `<style scoped>` block with
+`@reference`.
+
+That migration also has to replace every injected SCSS variable the component
+reads — `$input-bg`, `$input-border`, `$primary`, `$gray-darker`,
+`$border-radius-base`, `$input-color` — with theme tokens, which is the same
+work the restyle was going to do. So the two are one phase, not two.
+
+The failure mode is silent, which is the reason to write this down: a popover
+that lost its styling renders as unstyled content over the page rather than as
+an error.
+
+### Phase 3 — The shared surface, the trigger and the rows
 
 Extract the surface primitive from `BtnDropdown/Menu` (D3) and move both onto
-it.
-
-### Phase 3 — Restyle trigger and rows
-
-Trigger onto `--color-control` / `--color-edge` / `--radius-control` with
+it; trigger onto `--color-control` / `--color-edge` / `--radius-control` with
 end-caps; rows onto `--color-edge-soft` divisions; drop the glow rail and the
 `flash` keyframe (F8); real chevron and × glyphs (F10).
 
