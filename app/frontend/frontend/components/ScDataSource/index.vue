@@ -76,7 +76,7 @@ const select = async (environment: string) => {
         <i class="fa-duotone fa-database" />
       </span>
 
-      <BtnGroup>
+      <BtnGroup segmented data-test="sc-data-source-switch">
         <Btn
           v-for="source in available"
           :key="source.environment"
