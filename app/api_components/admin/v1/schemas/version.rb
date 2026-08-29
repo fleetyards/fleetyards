@@ -13,11 +13,11 @@ module Admin
             itemId: {type: :string, format: :uuid},
             itemType: ::Admin::V1::Schemas::Enums::VersionItemTypeEnum,
             event: {type: :string},
-            reason: {type: :string, nullable: true},
-            reasonDescription: {type: :string, nullable: true},
+            reason: {type: [:string, :null]},
+            reasonDescription: {type: [:string, :null]},
             author: ::Admin::V1::Schemas::VersionAuthor,
             changes: {type: :array, items: ::Admin::V1::Schemas::VersionChange},
-            createdAt: {type: :string, format: :"date-time", nullable: true}
+            createdAt: {type: [:string, :null], format: :"date-time"}
           },
           required: %w[id itemId itemType event changes]
         })

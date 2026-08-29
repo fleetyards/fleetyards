@@ -15492,11 +15492,13 @@ components:
         event:
           type: string
         reason:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         reasonDescription:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         author:
           "$ref": "#/components/schemas/VersionAuthor"
         changes:
@@ -15504,9 +15506,10 @@ components:
           items:
             "$ref": "#/components/schemas/VersionChange"
         createdAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
       required:
       - id
       - itemId
@@ -15532,11 +15535,13 @@ components:
         field:
           type: string
         from:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         to:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       required:
       - field
       title: VersionChange

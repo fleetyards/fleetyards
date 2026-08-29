@@ -10,8 +10,8 @@ module Admin
           type: :object,
           properties: {
             field: {type: :string},
-            from: {type: :string, nullable: true},
-            to: {type: :string, nullable: true}
+            from: {type: [:string, :null]},
+            to: {type: [:string, :null]}
           },
           required: %w[field]
         })
