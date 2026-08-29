@@ -1434,7 +1434,7 @@
         "linkHint": "Welches Schiff im Katalog ist %{identifier}? Der Vorschlag stammt aus dem Export und kann falsch sein."
       },
       "scDataSource": {
-        "reading": "Datenstand",
+        "dataSource": "Datenquelle",
         "notLive": "Nicht der Live-Build"
       }
     }

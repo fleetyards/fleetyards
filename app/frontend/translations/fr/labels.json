@@ -1324,7 +1324,7 @@
         "linkHint": "Quel vaisseau du catalogue est %{identifier} ? La suggestion vient de l'export et peut être fausse."
       },
       "scDataSource": {
-        "reading": "Données de",
+        "dataSource": "Source des données",
         "notLive": "Pas la version live"
       }
     }

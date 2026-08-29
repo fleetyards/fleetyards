@@ -3,6 +3,9 @@ import { mount } from "@vue/test-utils";
 import { setActivePinia, createPinia } from "pinia";
 import { ref, nextTick } from "vue";
 
+const SWITCH = '[data-test="sc-data-source-switch"]';
+const WARNING_THUMB = ".btn-group__thumb--tone-warning";
+
 const live = { environment: "live", version: "1.0.0", default: true };
 const ptu = { environment: "ptu", version: "1.1.0", default: false };
 
@@ -28,12 +31,14 @@ import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 const mountBar = async () => {
   const wrapper = mount(ScDataSourceBar, {
     global: {
+      directives: {
+        // The app registers this globally; without it every mount warns.
+        tooltip: {},
+      },
       stubs: {
         // Rendered in place: the bar teleports into the header, which does not
         // exist in a mounted component's own tree.
         Teleport: true,
-        Btn: { template: "<button><slot /></button>" },
-        BtnGroup: { template: "<div><slot /></div>" },
       },
     },
   });
@@ -55,16 +60,17 @@ describe("ScDataSourceBar", () => {
     sources.value = { items: [live] };
     const wrapper = await mountBar();
 
-    expect(wrapper.find(".sc-data-source").exists()).toBe(false);
+    expect(wrapper.find(SWITCH).exists()).toBe(false);
   });
 
   it("offers every build the server named", async () => {
     sources.value = { items: [live, ptu] };
     const wrapper = await mountBar();
 
-    expect(wrapper.find(".sc-data-source").exists()).toBe(true);
-    expect(wrapper.text()).toContain("live");
-    expect(wrapper.text()).toContain("ptu");
+    expect(wrapper.findAll("button").map((btn) => btn.text())).toEqual([
+      "live",
+      "ptu",
+    ]);
   });
 
   // Everything cached was fetched against another build, so it all goes --
@@ -90,14 +96,18 @@ describe("ScDataSourceBar", () => {
     expect(clear).not.toHaveBeenCalled();
   });
 
-  it("says so when the build is not the default one", async () => {
+  // A grouped button drops its cap, so a member's own tone would show nothing at
+  // rest. The group's thumb is what marks the choice, so it carries the warning.
+  it("warns through the group when the build is not the default one", async () => {
     sources.value = { items: [live, ptu] };
     const wrapper = await mountBar();
 
-    expect(wrapper.find(".sc-data-source-off-default").exists()).toBe(false);
+    expect(wrapper.find(WARNING_THUMB).exists()).toBe(false);
 
     await wrapper.findAll("button")[1].trigger("click");
+    // The handler awaits the query client before the group re-renders.
+    await nextTick();
 
-    expect(wrapper.find(".sc-data-source-off-default").exists()).toBe(true);
+    expect(wrapper.find(WARNING_THUMB).exists()).toBe(true);
   });
 });

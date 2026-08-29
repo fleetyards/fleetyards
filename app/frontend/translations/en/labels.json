@@ -2209,7 +2209,7 @@
         "linkHint": "Which ship in the catalogue is %{identifier}? The suggestion comes from the export and may be wrong."
       },
       "scDataSource": {
-        "reading": "Reading",
+        "dataSource": "Data source",
         "notLive": "Not the live build"
       }
     }

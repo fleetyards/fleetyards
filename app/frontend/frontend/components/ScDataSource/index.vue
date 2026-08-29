@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 import { useScDataSources } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 const queryClient = useQueryClient();
@@ -39,10 +39,12 @@ onMounted(() => {
   mounted.value = true;
 });
 
+const offDefault = computed(() => !!selected.value && !selected.value.default);
+
 const hint = computed(() =>
   selected.value && !selected.value.default
     ? t("labels.scDataSource.notLive")
-    : t("labels.scDataSource.reading"),
+    : t("labels.scDataSource.dataSource"),
 );
 
 // Everything cached was fetched against another build, so it all goes. Sending
@@ -67,46 +69,22 @@ const select = async (environment: string) => {
        like Compare and Fleetchart beside it, and a full-width bar of its own
        pushed every page's toolbar down and lined up with nothing. -->
   <Teleport v-if="mounted" to="#header-right">
-    <div
+    <BtnGroup
       v-if="hasChoice"
-      class="sc-data-source"
-      :class="{ 'sc-data-source-off-default': selected && !selected.default }"
+      v-tooltip="hint"
+      segmented
+      :tone="offDefault ? BtnTonesEnum.WARNING : undefined"
+      data-test="sc-data-source-switch"
     >
-      <span v-tooltip="hint" class="sc-data-source-label">
-        <i class="fa-duotone fa-database" />
-      </span>
-
-      <BtnGroup segmented data-test="sc-data-source-switch">
-        <Btn
-          v-for="source in available"
-          :key="source.environment"
-          v-tooltip="source.version"
-          :size="BtnSizesEnum.SM"
-          :active="source.environment === selected?.environment"
-          @click="select(source.environment)"
-        >
-          {{ source.environment }}
-        </Btn>
-      </BtnGroup>
-    </div>
+      <Btn
+        v-for="source in available"
+        :key="source.environment"
+        :size="BtnSizesEnum.SM"
+        :active="source.environment === selected?.environment"
+        @click="select(source.environment)"
+      >
+        {{ source.environment }}
+      </Btn>
+    </BtnGroup>
   </Teleport>
 </template>
-
-<style lang="scss" scoped>
-.sc-data-source {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.sc-data-source-label {
-  opacity: 0.6;
-}
-
-// Off the default build, the icon says so rather than a bar of its own -- the
-// active button already names which build is being read.
-.sc-data-source-off-default .sc-data-source-label {
-  color: $warning;
-  opacity: 1;
-}
-</style>

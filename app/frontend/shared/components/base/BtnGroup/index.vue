@@ -6,12 +6,24 @@ export default {
 
 <script lang="ts" setup>
 import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
-import type { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import type {
+  BtnSizesEnum,
+  BtnTonesEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   /** Set once here instead of on every member. */
   size?: `${BtnSizesEnum}`;
   block?: boolean;
+  /**
+   * Colours the thumb, for a segmented group whose current choice is worth
+   * flagging -- reading a pre-release build rather than the live one.
+   *
+   * On the group rather than on the member because a grouped button drops its
+   * cap, so a member's own tone shows nothing at rest. The thumb is what marks
+   * the choice, so it is what says the choice is unusual.
+   */
+  tone?: `${BtnTonesEnum}`;
   /**
    * A switch rather than a row of actions: the track recesses, one thumb slides
    * to the chosen segment, and members take radio semantics. Use it wherever a
@@ -24,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: undefined,
   block: false,
   segmented: false,
+  tone: undefined,
 });
 
 // Members report themselves in mount order, which is DOM order, so the thumb can
@@ -105,6 +118,7 @@ provide(BTN_CONTAINER, {
       <span
         v-if="segmented && activeIndex >= 0"
         class="btn-group__thumb"
+        :class="tone ? `btn-group__thumb--tone-${tone}` : undefined"
         aria-hidden="true"
       />
       <slot />
@@ -211,6 +225,17 @@ provide(BTN_CONTAINER, {
   border-radius: var(--radius-control-inner, 7px);
   transform: translateX(calc(var(--seg-index, 0) * 100%));
   transition: transform 150ms ease;
+}
+
+/* The thumb carries the group's tone, since a member's own cap is dropped in a
+   group. Border and a wash rather than a flood: the label still has to read. */
+.btn-group__thumb--tone-danger {
+  border-color: var(--color-danger, #dc3545);
+  background-color: rgb(220 53 69 / 0.18);
+}
+.btn-group__thumb--tone-warning {
+  border-color: var(--color-warning, #fa6800);
+  background-color: rgb(250 104 0 / 0.18);
 }
 
 /* The grid sizes the segments; the member only drops its fill, since the thumb is

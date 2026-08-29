@@ -441,6 +441,29 @@ const handleClick = (event: MouseEvent) => {
   background-color: rgb(220 53 69 / 0.18);
 }
 
+/*
+ * Warning says "this is not the usual choice" rather than "this destroys
+ * something", so it follows danger's shape exactly and only changes the colour.
+ * Same consequence as danger: grouped and bare members drop their cap, so a
+ * warning member of a BtnGroup is marked by the group's thumb rather than here.
+ */
+.btn--tone-warning {
+  --btn-cap: var(--color-warning, #fa6800);
+}
+.btn--tone-warning.btn--solid:hover:not([disabled]),
+.btn--tone-warning.btn--ghost:hover:not([disabled]) {
+  @apply bg-warning border-warning text-white;
+  --btn-cap: rgb(255 255 255 / 0.65);
+}
+.btn--tone-warning.btn--solid:focus-visible,
+.btn--tone-warning.btn--ghost:focus-visible {
+  --btn-cap: rgb(255 255 255 / 0.65);
+}
+.btn--tone-warning.btn--bare:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(250 104 0 / 0.18);
+}
+
 /* ---------- states ---------- */
 .btn[disabled] {
   @apply cursor-default;
