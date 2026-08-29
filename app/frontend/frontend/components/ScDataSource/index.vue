@@ -39,8 +39,6 @@ onMounted(() => {
   mounted.value = true;
 });
 
-const offDefault = computed(() => !!selected.value && !selected.value.default);
-
 const hint = computed(() =>
   selected.value && !selected.value.default
     ? t("labels.scDataSource.notLive")
@@ -77,12 +75,15 @@ const select = async (environment: string) => {
       v-tooltip="hint"
       segmented
       :size="BtnSizesEnum.MD"
-      :tone="offDefault ? BtnTonesEnum.WARNING : undefined"
       data-test="sc-data-source-switch"
     >
+      <!-- The tone sits on the source rather than on the group: it is this
+           particular choice that is worth flagging, so the thumb only colours
+           once it is parked on one. -->
       <Btn
         v-for="source in available"
         :key="source.environment"
+        :tone="source.default ? undefined : BtnTonesEnum.WARNING"
         :active="source.environment === selected?.environment"
         @click="select(source.environment)"
       >
