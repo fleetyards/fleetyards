@@ -76,21 +76,18 @@ describe("FilterGroup", () => {
 
   describe("options", () => {
     /*
-     * Pins a defect, not an intention. `sort()` exists and `availableOptions`
-     * applies it, but the popover renders `filteredOptions`, which returns
-     * `internalOptions` untouched -- so the list a user reads is in arrival
-     * order and only the selected rows come out sorted (see the test below).
-     *
-     * The rebuild should make this list sorted and flip this assertion. Until
-     * it does, the current behaviour is written down rather than assumed.
+     * The flip side of the defect this spec used to pin: `sort()` ran in
+     * `availableOptions` while the popover rendered `filteredOptions`, so the
+     * selected rows came out alphabetical and the options a user picks from
+     * stayed in whatever order the API returned them.
      */
-    it("renders the popover list in arrival order, because the sort never reaches it", async () => {
+    it("sorts the popover list by label, whatever order the options arrive in", async () => {
       const wrapper = await mount();
 
       expect(labelsIn(wrapper, '[id^="ships-options-"]')).toEqual([
-        "Caterpillar",
         "Aurora",
         "Banu Merchantman",
+        "Caterpillar",
       ]);
     });
 
@@ -131,10 +128,9 @@ describe("FilterGroup", () => {
       const wrapper = await mount({ multiple: true, modelValue: ["a"] });
 
       await wrapper
-        .find('[id^="ships-options-"] .filter-group-item')
+        .findAll('[id^="ships-options-"] .filter-group-item')[2]
         .trigger("click");
 
-      // The first row is Caterpillar, not Aurora -- arrival order, per above.
       expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([
         ["a", "c"],
       ]);
@@ -266,8 +262,8 @@ describe("FilterGroup", () => {
 
       expect(rows).toHaveLength(3);
       expect(rows.map((r) => r.attributes("aria-selected"))).toEqual([
-        "false",
         "true",
+        "false",
         "false",
       ]);
     });
@@ -304,7 +300,7 @@ describe("FilterGroup", () => {
           .find('[data-test="filter-group-title"]')
           .attributes("aria-expanded"),
       ).toBe("true");
-      expect(activeLabel(wrapper)).toContain("Caterpillar");
+      expect(activeLabel(wrapper)).toContain("Aurora");
     });
 
     it("opens on ArrowUp and points at the last row", async () => {
@@ -312,27 +308,27 @@ describe("FilterGroup", () => {
 
       await wrapper.trigger("keydown", { key: "ArrowUp" });
 
-      expect(activeLabel(wrapper)).toContain("Banu Merchantman");
+      expect(activeLabel(wrapper)).toContain("Caterpillar");
     });
 
     it("wraps around both ends", async () => {
       const wrapper = await open();
 
       await wrapper.trigger("keydown", { key: "ArrowUp" });
-      expect(activeLabel(wrapper)).toContain("Banu Merchantman");
+      expect(activeLabel(wrapper)).toContain("Caterpillar");
 
       await wrapper.trigger("keydown", { key: "ArrowDown" });
-      expect(activeLabel(wrapper)).toContain("Caterpillar");
+      expect(activeLabel(wrapper)).toContain("Aurora");
     });
 
     it("jumps to the ends with Home and End", async () => {
       const wrapper = await open();
 
       await wrapper.trigger("keydown", { key: "End" });
-      expect(activeLabel(wrapper)).toContain("Banu Merchantman");
+      expect(activeLabel(wrapper)).toContain("Caterpillar");
 
       await wrapper.trigger("keydown", { key: "Home" });
-      expect(activeLabel(wrapper)).toContain("Caterpillar");
+      expect(activeLabel(wrapper)).toContain("Aurora");
     });
 
     it("publishes the pointed-at row through aria-activedescendant", async () => {
@@ -351,7 +347,7 @@ describe("FilterGroup", () => {
       await wrapper.trigger("keydown", { key: "ArrowDown" });
       await wrapper.trigger("keydown", { key: "Enter" });
 
-      expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual(["a"]);
+      expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual(["b"]);
     });
 
     it("closes on Escape without selecting", async () => {

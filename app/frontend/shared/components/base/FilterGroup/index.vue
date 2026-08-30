@@ -271,6 +271,25 @@ const searchLabelFallback = computed(() => {
   return t("filterGroup.labels.search");
 });
 
+/*
+ * Declared above availableOptions on purpose: a const is in its temporal dead
+ * zone until the line that defines it runs, and the watcher on filteredOptions
+ * evaluates that chain during setup. Defined below, this threw
+ * "Cannot access 'sort' before initialization" and nothing mounted.
+ */
+const sort = (options: FilterOption[]) => {
+  const sortedOptions = JSON.parse(JSON.stringify(options));
+  return sortedOptions.sort((a: FilterOption, b: FilterOption) => {
+    if (a.label < b.label) {
+      return -1;
+    }
+    if (a.label > b.label) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
 const availableOptions = computed<FilterOption[]>(() =>
   sort(internalOptions.value),
 );
@@ -291,14 +310,20 @@ const selectedOptions = computed(() => {
   return selectedOption ? [selectedOption] : [];
 });
 
+/*
+ * Sorted, which it was not. `sort()` ran in availableOptions, but the popover
+ * renders this -- so the selected rows came out alphabetical and the options a
+ * user picks from stayed in whatever order the API returned them. Two lists in
+ * one popover, ordered differently, from one sort that only half-ran.
+ */
 const filteredOptions = computed(() => {
   if (search.value) {
-    return internalOptions.value.filter((item) =>
+    return availableOptions.value.filter((item) =>
       item.label.toLowerCase().includes(String(search.value?.toLowerCase())),
     );
   }
 
-  return internalOptions.value;
+  return availableOptions.value;
 });
 
 const cssClasses = computed(() => ({
@@ -567,19 +592,6 @@ const fetchMore = async () => {
   page.value += 1;
 
   await refetch();
-};
-
-const sort = (options: FilterOption[]) => {
-  const sortedOptions = JSON.parse(JSON.stringify(options));
-  return sortedOptions.sort((a: FilterOption, b: FilterOption) => {
-    if (a.label < b.label) {
-      return -1;
-    }
-    if (a.label > b.label) {
-      return 1;
-    }
-    return 0;
-  });
 };
 
 const addOptions = (newOptions: FilterOption[]) => {
