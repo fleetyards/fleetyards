@@ -39,6 +39,8 @@ const { value, errorMessage } = useField(props.name);
 
 const uuid = ref(`${props.name}-${uuidv4()}`);
 
+const errorId = computed(() => `${uuid.value}-error`);
+
 watch(
   () => props.modelValue,
   () => {
@@ -105,6 +107,7 @@ const innerPlaceholder = computed(() => {
       v-model="value"
       v-tooltip.right="errorMessage"
       :aria-invalid="!!errorMessage || undefined"
+      :aria-describedby="errorMessage ? errorId : undefined"
       :placeholder="innerPlaceholder"
       :name="name"
       :disabled="disabled"
@@ -118,7 +121,8 @@ const innerPlaceholder = computed(() => {
         {{ innerLabel }}
       </span>
     </label>
-    {{ errorMessage }}
+    <!-- See the note in FormCheckbox: below the control, and always present. -->
+    <p :id="errorId" class="form-toggle__error">{{ errorMessage }}</p>
   </div>
 </template>
 

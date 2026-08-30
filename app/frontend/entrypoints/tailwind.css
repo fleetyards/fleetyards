@@ -138,6 +138,14 @@
    * --field-h-md is 48px to match Btn's md, where a page header puts the two
    * side by side.
    */
+  /*
+   * One line, for the error message under a control. It is a single token
+   * because the reserved height has to equal the line-height exactly -- reserved
+   * at 20px against an inherited 21px, the field below still moved by a pixel,
+   * which is the whole thing reserving it prevents. Four components read it.
+   */
+  --field-message-line: 1.25rem;
+
   --field-h: 43px;
   --field-h-md: 48px;
   --field-h-lg: 55px;

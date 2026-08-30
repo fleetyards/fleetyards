@@ -86,6 +86,15 @@ const inputElement = ref<HTMLInputElement | undefined>();
 
 const internalId = ref(`${props.name}-${uuidv4()}`);
 
+/*
+ * internalId was written to give the input an id when a call site does not pass
+ * one, and the template used the raw `id` prop instead -- which no call site
+ * passes at all. So every input in the app had no id and every label no `for`:
+ * clicking a label did nothing, and nothing tied the two together for assistive
+ * tech.
+ */
+const errorId = computed(() => `${internalId.value}-error`);
+
 const innerStep = computed(() => {
   if (props.type === "number") {
     return props.step;
@@ -205,7 +214,7 @@ defineExpose({
 
 <template>
   <div
-    :key="id"
+    :key="internalId"
     class="base-input"
     :class="cssClasses"
     :data-test="`input-wrapper-${name}`"
@@ -214,7 +223,7 @@ defineExpose({
       <label
         v-show="!hideLabelOnEmpty || inputValue"
         v-if="innerLabel && !noLabel"
-        :for="id"
+        :for="internalId"
       >
         <i v-if="icon" :class="icon" />
         {{ innerLabel }}
@@ -233,7 +242,8 @@ defineExpose({
         </div>
       </slot>
       <input
-        :id="id"
+        :id="internalId"
+        :aria-describedby="errorMessage ? errorId : undefined"
         ref="inputElement"
         v-tooltip.right="hasErrors && errorMessage"
         :value="inputValue"
@@ -272,6 +282,12 @@ defineExpose({
         />
       </div>
     </div>
+    <!--
+      The message was in a tooltip and nowhere else: invisible until hover, and
+      worth nothing to a screen reader. Its line is reserved whether or not it
+      has anything to say, so validating cannot move what is below the field.
+    -->
+    <p :id="errorId" class="base-input__error">{{ errorMessage }}</p>
     <div v-if="slots.subline" class="base-input__subline">
       <slot name="subline"></slot>
     </div>

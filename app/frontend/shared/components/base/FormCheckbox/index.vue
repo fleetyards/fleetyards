@@ -50,6 +50,8 @@ const { value, errorMessage } = useField<
 
 const uuid = ref(`${props.name}-${uuidv4()}`);
 
+const errorId = computed(() => `${uuid.value}-error`);
+
 const checked = computed(() => {
   if (props.checkboxValue === undefined) {
     return value.value as boolean;
@@ -133,6 +135,7 @@ const innerPlaceholder = computed(() => {
       v-model="value"
       v-tooltip.right="errorMessage"
       :aria-invalid="!!errorMessage || undefined"
+      :aria-describedby="errorMessage ? errorId : undefined"
       :placeholder="innerPlaceholder"
       :name="name"
       :checked="checked"
@@ -145,7 +148,12 @@ const innerPlaceholder = computed(() => {
     <label :for="uuid">
       {{ innerLabel }}
     </label>
-    {{ errorMessage }}
+    <!--
+      Below the control rather than trailing the label as a bare text node, and
+      present whether or not it has anything to say: the line is reserved so that
+      showing a message cannot move what is under it.
+    -->
+    <p :id="errorId" class="base-checkbox__error">{{ errorMessage }}</p>
   </div>
 </template>
 

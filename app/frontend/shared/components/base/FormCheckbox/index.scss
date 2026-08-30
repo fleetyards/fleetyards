@@ -1,4 +1,22 @@
 .base-checkbox {
+  /* The control and its message are a row and a line under it, not two things
+     side by side. */
+  flex-wrap: wrap;
+
+  /*
+   * The message, below the control. Its line is reserved whether or not there is
+   * anything to say -- the height comes from --field-message-line, which is also
+   * its line-height, so the two cannot drift apart and start moving the page by
+   * a pixel.
+   */
+  &__error {
+    width: 100%;
+    min-height: var(--field-message-line, 1.25rem);
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
+  }
   margin-bottom: 1rem;
   display: flex;
 

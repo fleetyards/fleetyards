@@ -686,10 +686,9 @@ const powerMarks = (value: number) => ({ label: String(value) });
       produce, because CSS cannot show content that does not exist.
     </p>
     <p class="text-muted">
-      Flip the switch. The message's line is reserved whether or not there is
-      anything to say, so the field below it never moves — chosen over letting
-      it appear or animate open, both of which shift what is under them at the
-      moment a user is reading or typing.
+      Flip the switch. The message is rendered by the component now, below the
+      control, with its line reserved whether or not there is anything to say —
+      so the field under it never moves.
     </p>
     <FormToggle
       v-model="rdShowError"
@@ -704,9 +703,6 @@ const powerMarks = (value: number) => ({ label: String(value) });
           label="Ship name"
           :error-messages="rdShowError ? ['Not a known ship'] : []"
         />
-        <p class="field-message field-message--reserved">
-          {{ rdShowError ? "Not a known ship" : "" }}
-        </p>
         <FormInput v-model="rdText" name="rd-msg-next" label="Next field" />
       </div>
     </div>
@@ -814,56 +810,13 @@ const powerMarks = (value: number) => ({ label: String(value) });
 </template>
 
 <!--
-  What is left of the preview: the message line, which needs an element the
-  components do not emit yet, and the label slot, which needs a prop they do not
-  have. Everything else has moved into the components — which is why the controls
-  above this section look like this too.
+  All that is left: aligning a checkbox beside a field needs a label the two
+  controls do not have. Everything else has moved into the components.
 
   Deliberately unscoped and deliberately in this page; it reaches nothing else.
-  The wrapper class is doubled to win specificity against the components' own
-  scoped rules, which carry a [data-v-*] attribute.
 -->
 <style lang="scss">
 .form-redesign.form-redesign {
-  /*
-   * A checkbox or toggle renders its message as a bare text node right after the
-   * label, with no element and nothing between them -- which is why it reads as
-   * "Accept termsThe terms field is required". Only the gap and the colours are
-   * reachable from here, so the container is coloured and the label put back.
-   *
-   * Giving it a real element, and tying it to the input with aria-describedby,
-   * is phase 3.
-   */
-  .base-checkbox--with-error,
-  .form-toggle--with-error {
-    gap: 8px;
-    color: var(--color-danger, #dc3545);
-  }
-
-  .base-checkbox--with-error label,
-  .form-toggle--with-error label {
-    color: var(--color-text, #c8c8c8);
-  }
-
-  /*
-   * What a message would look like, on markup the components do not yet emit.
-   * line-height is set so the reserved height below can equal it: inherited it
-   * was 21px against a reserved 20px, so the field underneath still moved by a
-   * pixel -- which is exactly what reserving the line prevents.
-   */
-  .field-message {
-    margin: -12px 0 15px;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--color-danger, #dc3545);
-  }
-
-  /* The line is always there and merely empties, so nothing below it moves.
-     Exactly one line-height -- a rounder number would move the page again. */
-  .field-message--reserved {
-    min-height: 1.25rem;
-  }
-
   /*
    * A field starts below its label; a checkbox starts at the top of the row,
    * because it has no label above it. FormInput, FormTextarea and RadioList all

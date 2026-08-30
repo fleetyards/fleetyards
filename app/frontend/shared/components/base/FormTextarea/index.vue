@@ -73,6 +73,8 @@ const inputElement = ref<HTMLTextAreaElement | undefined>();
 
 const id = ref(`${props.name}-${uuidv4()}`);
 
+const errorId = computed(() => `${id.value}-error`);
+
 const innerLabel = computed(() => {
   if (props.label) {
     return props.label;
@@ -176,6 +178,7 @@ defineExpose({
     <div class="base-textarea__wrapper">
       <textarea
         :id="id"
+        :aria-describedby="errorMessage ? errorId : undefined"
         ref="inputElement"
         v-tooltip.right="hasErrors && errorMessage"
         :value="inputValue"
@@ -193,6 +196,8 @@ defineExpose({
         @blur="handleBlur"
       />
     </div>
+    <!-- See the note in FormInput: below the control, and always present. -->
+    <p :id="errorId" class="base-textarea__error">{{ errorMessage }}</p>
   </div>
 </template>
 
