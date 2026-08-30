@@ -677,6 +677,27 @@ const powerMarks = (value: number) => ({ label: String(value) });
       </div>
     </div>
     <p class="text-muted">
+      D8, mocked. A field renders no message element at all today — the text
+      below is hand-written markup standing in for what the component would
+      produce, because CSS cannot show content that does not exist. The pair is
+      there to price it: the same field with and without a message, so the
+      height it adds when validation fails is visible rather than argued about.
+    </p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput
+          v-model="rdError"
+          name="rd-msg-with"
+          label="Ship name"
+          :error-messages="['Not a known ship']"
+        />
+        <p class="field-message">Not a known ship</p>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput v-model="rdText" name="rd-msg-without" label="Ship name" />
+      </div>
+    </div>
+    <p class="text-muted">
       Alignment in a mixed row. The first pair is what happens today; the second
       reserves the label's line for the control that has none.
     </p>
@@ -1047,6 +1068,17 @@ const powerMarks = (value: number) => ({ label: String(value) });
      */
     min-height: 43px;
     align-items: center;
+  }
+
+  /*
+   * What a message would look like, on markup the components do not yet emit.
+   * Sized down and pulled up into the field's own bottom margin so it reads as
+   * belonging to the control rather than as the next paragraph.
+   */
+  .field-message {
+    margin: -12px 0 15px;
+    font-size: 0.875rem;
+    color: var(--color-danger, #dc3545);
   }
 
   /*
