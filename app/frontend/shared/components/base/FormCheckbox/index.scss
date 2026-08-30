@@ -1,33 +1,4 @@
 .base-checkbox {
-  /*
-   * Lines this control up with the fields beside it. A field starts below its
-   * block label and this control has none -- its text sits beside it -- so in a
-   * mixed row it starts a label's height too high.
-   *
-   * Both halves are needed: the label's line, and then the field's own height
-   * with the control centred in it. Reserving only the line aligns the tops and
-   * leaves a 24px box at the top of a 43px band. Centring rather than offsetting
-   * by the difference keeps working when a field's height changes.
-   */
-  &--align-with-fields {
-    margin-top: calc(
-      var(--field-label-line, 1.5rem) + var(--field-label-gap, 5px)
-    );
-
-    /*
-     * The height goes on the control row, not on the component. The component
-     * holds two rows now -- the control and its message -- so a min-height there
-     * covered both, and the message ended up higher than the one beside it
-     * instead of on the same line.
-     *
-     * The label is already a centring flex row, so giving it the field's height
-     * puts the box in the middle of the same band the input next to it occupies,
-     * and drops the message to the same place.
-     */
-    label {
-      min-height: var(--field-h, 43px);
-    }
-  }
   /* The control and its message are a row and a line under it, not two things
      side by side. */
   flex-wrap: wrap;
@@ -153,6 +124,47 @@
 
   &--inline {
     margin-bottom: 0;
+  }
+  /*
+   * Lines this control up with the fields beside it. A field starts below its
+   * block label and this control has none -- its text sits beside it -- so in a
+   * mixed row it starts a label's height too high.
+   *
+   * Both halves are needed: the label's line, and then the field's own height
+   * with the control centred in it. Reserving only the line aligns the tops and
+   * leaves a 24px box at the top of a 43px band. Centring rather than offsetting
+   * by the difference keeps working when a field's height changes.
+   */
+  &--align-with-fields {
+    margin-top: calc(
+      var(--field-label-line, 1.5rem) + var(--field-label-gap, 5px)
+    );
+
+    /*
+     * The height goes on the control row, not on the component. The component
+     * holds two rows now -- the control and its message -- so a min-height there
+     * covered both, and the message ended up higher than the one beside it
+     * instead of on the same line.
+     *
+     * The label is already a centring flex row, so giving it the field's height
+     * puts the box in the middle of the same band the input next to it occupies,
+     * and drops the message to the same place.
+     *
+     * `input + label`, not a plain `label`, and this block sits last in the file
+     * on purpose: the base rule is `input + label` too, so the two are equally
+     * specific and only order separates them. Written earlier and as `label`, it
+     * lost twice over and the control simply did not move.
+     */
+
+    input + label {
+      /*
+       * Plus the border. --field-h is the input's height, and a field's control
+       * is that inside a wrapper with a 1px edge top and bottom -- so the band
+       * to match is two pixels taller than the token. Measured: without this
+       * both controls sat exactly 2px high against the field beside them.
+       */
+      min-height: calc(var(--field-h, 43px) + 2px);
+    }
   }
 }
 
