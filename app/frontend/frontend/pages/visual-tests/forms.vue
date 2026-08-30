@@ -1085,6 +1085,27 @@ const powerMarks = (value: number) => ({ label: String(value) });
     border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
   }
 
+  /*
+   * RadioList only sets `cursor: not-allowed` when it is disabled -- no dimming
+   * at all -- so a disabled group looks live. FormCheckbox and FormToggle both
+   * dim to 0.5; this is the third one agreeing with them.
+   */
+  .radio-list__item input[type="radio"]:disabled + label {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /*
+   * And it swaps the chosen dot's fill for a lightened $input-bg when disabled,
+   * which in the new palette turns the dot into a grey smudge. The dot stays
+   * what it is and the opacity above does the dimming, the way it does for a
+   * disabled checkbox's tick.
+   */
+  .radio-list__item input[type="radio"]:disabled:checked + label::before {
+    background-color: var(--color-primary, #428bca);
+    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
+  }
+
   /* ---------- the toggle ---------- */
 
   /*
