@@ -192,9 +192,20 @@ Mechanically this inverts today's arrangement: the components stop tooltipping b
 default and gain an opt-in the four auth pages set, rather than every one of the
 700-odd call sites inheriting it.
 
-Worth pricing before implementing: an inline message changes a control's height
-when it appears, so a form reflows as it validates. That is the reason to decide
-it here rather than per-component.
+**The layout question, decided by looking at it:** the message's line is
+**reserved whether or not there is anything to say**. Three treatments were built
+behind a switch and stacked, each with a field under it so the movement had
+somewhere to show — the message appearing, the message animating open on a grid
+row, and the line simply always being there.
+
+Reserving it won because the other two move what is below at the moment a user is
+reading or typing, and animating the movement makes it legible without making it
+stop.
+
+The price is real and should be stated: every field is permanently taller, so a
+twelve-field form carries twelve empty lines, which is felt most on a phone. If
+that turns out to be too much on a long form, the fallback is the animated slot,
+not the instant one.
 
 ## Phases
 
