@@ -118,7 +118,6 @@ const innerPlaceholder = computed(() => {
         {{ innerLabel }}
       </span>
     </label>
-    {{ errorMessage }}
   </div>
 </template>
 

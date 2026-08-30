@@ -145,7 +145,6 @@ const innerPlaceholder = computed(() => {
     <label :for="uuid">
       {{ innerLabel }}
     </label>
-    {{ errorMessage }}
   </div>
 </template>
 
