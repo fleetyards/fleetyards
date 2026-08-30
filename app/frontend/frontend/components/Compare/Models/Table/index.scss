@@ -12,7 +12,9 @@
   --compare-col-max: 400px;
 
   position: relative;
-  max-height: min(76vh, 900px);
+  // Whatever the viewport has left below the pane, measured by the component — see
+  // `--compare-pane-max` there. The fraction is only the pre-measurement fallback.
+  max-height: var(--compare-pane-max, 76dvh);
   overflow: auto;
   // No `overscroll-behavior` here: `stylesheets/shared/scroll.scss` owns that for every
   // inner scroll pane in the app, this one included.
