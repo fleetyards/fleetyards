@@ -13,6 +13,10 @@ import {
 export const useCompareHardpoints = (models: MaybeRefOrGetter<Model[]>) => {
   const cache = ref<Record<string, Hardpoint[]>>({});
   const pendingCount = ref(0);
+  // A request only reaches the cache once it resolves, and the watcher below re-runs
+  // every time a ship arrives from `useCompareModels` -- so without this, each pass
+  // asks again for everything still in flight: four ships cost ten requests.
+  const inFlight = new Set<string>();
 
   const from = async (model: Model, source: HardpointSourceEnum) =>
     (await fetchModelHardpoints(model.slug, { source })) as Hardpoint[];
@@ -38,16 +42,21 @@ export const useCompareHardpoints = (models: MaybeRefOrGetter<Model[]>) => {
       // Left uncached on purpose, so the next change to the compare set retries
       // instead of locking the ship into an empty loadout forever.
       console.info("compare hardpoints failed", model.slug, error);
+    } finally {
+      inFlight.delete(model.slug);
     }
   };
 
   const load = async () => {
-    const missing = toValue(models).filter((model) => !cache.value[model.slug]);
+    const missing = toValue(models).filter(
+      (model) => !cache.value[model.slug] && !inFlight.has(model.slug),
+    );
 
     if (!missing.length) {
       return;
     }
 
+    missing.forEach((model) => inFlight.add(model.slug));
     pendingCount.value += missing.length;
 
     try {
