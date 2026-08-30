@@ -1,4 +1,19 @@
 .form-toggle {
+  /*
+   * Lines this control up with the fields beside it. A field starts below its
+   * block label and this control has none -- its text sits beside it -- so in a
+   * mixed row it starts a label's height too high.
+   *
+   * Both halves are needed: the label's line, and then the field's own height
+   * with the control centred in it. Reserving only the line aligns the tops and
+   * leaves a 24px box at the top of a 43px band. Centring rather than offsetting
+   * by the difference keeps working when a field's height changes.
+   */
+  &--align-with-fields {
+    margin-top: calc(1.42857em + 5px);
+    min-height: var(--field-h, 43px);
+    align-items: center;
+  }
   /* The control and its message are a row and a line under it, not two things
      side by side. */
   flex-wrap: wrap;

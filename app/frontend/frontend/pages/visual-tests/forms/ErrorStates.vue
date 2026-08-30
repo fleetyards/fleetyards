@@ -14,6 +14,10 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useForm } from "vee-validate";
 
+// The checkbox and the toggle reserve a field label's line so they line up with
+// the fields beside them in these rows -- see D7. Off by default, because on its
+// own a standalone checkbox has no field to line up with.
+//
 // Only FormInput takes a `rules` prop, so the schema lives on the form — that
 // covers every control that calls `useField` without one, which is all of these.
 // Validated up front so the invalid styling is visible without interaction.
@@ -62,7 +66,7 @@ onMounted(async () => {
         <FormInput name="quantity" label="Quantity (min 1)" type="number" />
       </div>
       <div class="col-12 col-md-6 col-lg-3">
-        <FormCheckbox name="terms" label="Accept terms" />
+        <FormCheckbox name="terms" label="Accept terms" align-with-fields />
       </div>
     </div>
     <div class="row">
@@ -75,7 +79,11 @@ onMounted(async () => {
         <FormDatePicker name="boughtAt" label="Bought at (required)" />
       </div>
       <div class="col-12 col-md-6 col-lg-3">
-        <FormToggle name="newsletter" label="Newsletter (required)" />
+        <FormToggle
+          name="newsletter"
+          label="Newsletter (required)"
+          align-with-fields
+        />
       </div>
       <div class="col-12 col-md-6 col-lg-3">
         <FormFileInput

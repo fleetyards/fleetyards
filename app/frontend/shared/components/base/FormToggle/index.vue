@@ -14,6 +14,12 @@ type Props = {
   label?: string;
   modelValue?: boolean | null;
   disabled?: boolean;
+  /*
+   * Reserves the line a field's label occupies, so this control lines up with
+   * the fields beside it in a row. Off by default: on its own it would add a
+   * phantom label line to every standalone checkbox in the app.
+   */
+  alignWithFields?: boolean;
   translationKey?: string;
   noPlaceholder?: boolean;
   placeholder?: string;
@@ -27,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: undefined,
   modelValue: undefined,
   disabled: false,
+  alignWithFields: false,
   translationKey: undefined,
   slim: true,
   inline: false,
@@ -100,6 +107,7 @@ const innerPlaceholder = computed(() => {
       'form-toggle--expanded': !slim,
       'form-toggle--inline': inline,
       'form-toggle--with-error': !!errorMessage,
+      'form-toggle--align-with-fields': alignWithFields,
     }"
   >
     <input
