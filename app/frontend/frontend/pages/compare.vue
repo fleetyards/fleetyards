@@ -35,7 +35,11 @@ const items = computed(() => filters.value.models || []);
 //
 // No watcher here: the composable tracks the compare set itself and fetches only
 // what it has not seen, so adding a fourth ship leaves the three on screen alone.
-const { models, asyncStatus } = useCompareModels(() => items.value);
+const {
+  models,
+  loading: modelsLoading,
+  asyncStatus,
+} = useCompareModels(() => items.value);
 
 const { hardpointsFor, loading: hardpointsLoading } = useCompareHardpoints(
   () => models.value,
@@ -174,7 +178,12 @@ const remove = (slug: string) => {
         </template>
       </AsyncData>
 
-      <Loader :loading="hardpointsLoading" fixed />
+      <!-- The one piece of feedback an incremental fetch gets: the table it is
+           filling in stays on screen, so the spinner cannot live in its place. -->
+      <Loader
+        :loading="hardpointsLoading || (modelsLoading && !!models.length)"
+        fixed
+      />
     </div>
   </div>
 </template>

@@ -79,16 +79,22 @@ export const useCompareModels = (slugs: MaybeRefOrGetter<string[]>) => {
     await load();
   };
 
-  // Shaped for `AsyncData`, which the page already drives with the query's own
-  // status object. Nothing here refetches in the background, so the fetching and
-  // refetching flags collapse onto the one loading state.
+  // Filling in a ship beside ones already on screen, rather than the first load
+  // with nothing to show yet.
+  const incremental = computed(() => loading.value && models.value.length > 0);
+
+  // Shaped for `AsyncData`, which reads a fetch as a refetch — and so keeps its
+  // resolved slot mounted — only when `isRefetching` says so. Reporting the
+  // incremental fill as a plain load swapped the whole table for a spinner and
+  // remounted it, so adding a fourth ship threw away the scroll position, the
+  // pinned header and every collapsed section.
   const asyncStatus: AsyncStatus = {
     fetchStatus: computed(() => (loading.value ? "fetching" : "idle")),
     isError: computed(() => Boolean(failure.value)),
-    isPending: loading,
-    isLoading: loading,
+    isPending: computed(() => loading.value && !incremental.value),
+    isLoading: computed(() => loading.value && !incremental.value),
     isFetching: loading,
-    isRefetching: computed(() => false),
+    isRefetching: incremental,
     // Wrapped because the slot expects a void return, and handing it a promise
     // leaves a rejection with nobody to catch it.
     refetch: () => {
