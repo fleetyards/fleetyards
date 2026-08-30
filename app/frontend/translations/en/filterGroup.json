@@ -8,7 +8,11 @@
         "search": "Type to search",
         "nullablePrompt": "No Option selected",
         "prompt": "Please select an Option",
-        "removeTooltip": "Click to remove Option"
+        "removeTooltip": "Click to remove Option",
+        "selectedCount": {
+          "one": "%{count} selected",
+          "other": "%{count} selected"
+        }
       },
       "model": {
         "baseModel": {

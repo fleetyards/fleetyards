@@ -126,6 +126,18 @@ const prompt = computed(() => {
     return selectedOptions.value[0].label;
   }
 
+  /*
+   * A multi-select used to fall straight through to the generic prompt, so a
+   * group with two things chosen still read "No Option selected" and the only
+   * place the selection appeared was the list below. That is wrong in any
+   * layout and plainly wrong once the popover detaches.
+   */
+  if (props.multiple && selectedOptions.value.length > 0) {
+    return t("filterGroup.labels.selectedCount", {
+      count: selectedOptions.value.length,
+    });
+  }
+
   if (props.translationKey) {
     if (props.nullable) {
       if (tExists(`filterGroup.${props.translationKey}.nullablePrompt`)) {
