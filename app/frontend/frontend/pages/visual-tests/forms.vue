@@ -677,6 +677,24 @@ const powerMarks = (value: number) => ({ label: String(value) });
       </div>
     </div>
     <p class="text-muted">
+      Alignment in a mixed row. The first pair is what happens today; the second
+      reserves the label's line for the control that has none.
+    </p>
+    <div class="row">
+      <div class="col-6 col-lg-3">
+        <FormInput v-model="rdText" name="rd-align-a" label="Ship name" />
+      </div>
+      <div class="col-6 col-lg-3">
+        <FormCheckbox v-model="rdCheck" name="rd-align-b" label="Purchased" />
+      </div>
+      <div class="col-6 col-lg-3">
+        <FormInput v-model="rdText" name="rd-align-c" label="Ship name" />
+      </div>
+      <div class="col-6 col-lg-3 label-slot">
+        <FormCheckbox v-model="rdCheck" name="rd-align-d" label="Purchased" />
+      </div>
+    </div>
+    <p class="text-muted">
       Invalid, using the same component the Error States section below renders
       in today's treatment — so the two are the same controls, failing the same
       rules, side by side.
@@ -999,6 +1017,64 @@ const powerMarks = (value: number) => ({ label: String(value) });
 
   .form-toggle--with-error input + label .form-toggle-switch {
     border-color: var(--color-danger, #dc3545);
+  }
+
+  /*
+   * A field starts below its label; a checkbox starts at the top of the row,
+   * because it has no label above it -- only text beside it. Put the two in one
+   * row and the checkbox reads as shifted up.
+   *
+   * It is not arbitrary: FormInput, FormTextarea and RadioList all have a block
+   * label, and RadioList's per-option text is separate from it. FormCheckbox and
+   * FormToggle are the two that never got one, so their inline text is doing
+   * both jobs.
+   *
+   * Reserving the line is the demonstration, not the fix. The fix is that they
+   * gain the label every other control has, and their inline text becomes what
+   * it already is -- the option's text, not the field's.
+   */
+  .label-slot .base-checkbox,
+  .label-slot .form-toggle {
+    /* the label's line, which these two do not have */
+    margin-top: calc(1.42857em + 5px);
+
+    /*
+     * ...and then the field's own height, centred within it. Reserving the line
+     * alone only lines up the tops, which leaves a 24px box sitting at the top
+     * of a 43px band. Both are already flex containers, so centring is the whole
+     * of it -- and it keeps working if the field's height changes, which an
+     * offset computed from the difference would not.
+     */
+    min-height: 43px;
+    align-items: center;
+  }
+
+  /*
+   * The error message. There is no treatment for one anywhere in the system: a
+   * field puts it in a tooltip, so it is invisible until you hover, and a
+   * checkbox or toggle renders it as a bare text node right after the label,
+   * with no element and nothing between them -- which is why it reads as
+   * "Accept termsThe terms field is required".
+   *
+   * And the colour is on the wrong half: the *label* turns danger while the
+   * message stays default. The signature already says invalid, so the label has
+   * no reason to shout -- it just has to stay readable. The message carries the
+   * colour.
+   *
+   * Only the gap and the colours are reachable from here: the message has no
+   * element to select, so it is the container that is coloured and the label
+   * that is put back. Giving it a real element, and tying it to the input with
+   * aria-describedby, is component work.
+   */
+  .base-checkbox--with-error,
+  .form-toggle--with-error {
+    gap: 8px;
+    color: var(--color-danger, #dc3545);
+  }
+
+  .base-checkbox--with-error label,
+  .form-toggle--with-error label {
+    color: var(--color-text, #c8c8c8);
   }
 
   /* Disabled says nothing at all: the signature goes quiet rather than neutral,
