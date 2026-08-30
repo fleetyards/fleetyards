@@ -1913,6 +1913,202 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_id}/inventories":
+    parameters:
+    - name: fleet_id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Fleet Inventories list
+      tags:
+      - FleetInventories
+      operationId: fleetInventories
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventories"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_id}/inventories/{fleet_inventory_id}/items":
+    parameters:
+    - name: fleet_id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: fleet_inventory_id
+      in: path
+      description: Fleet inventory id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Fleet Inventory Items list
+      tags:
+      - FleetInventories
+      operationId: fleetInventoryItems
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItems"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_id}/inventories/{fleet_inventory_id}/items/{id}":
+    parameters:
+    - name: fleet_id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: fleet_inventory_id
+      in: path
+      description: Fleet inventory id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      description: Fleet inventory item id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: One fleet inventory item
+      tags:
+      - FleetInventories
+      operationId: fleetInventoryItem
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItem"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_id}/inventories/{id}":
+    parameters:
+    - name: fleet_id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      description: Fleet inventory id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: One fleet inventory
+      tags:
+      - FleetInventories
+      operationId: fleetInventory
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleet_id}/members":
     parameters:
     - name: fleet_id
@@ -7264,6 +7460,202 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/users/{user_id}/inventories":
+    parameters:
+    - name: user_id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: User Inventories list
+      tags:
+      - Inventories
+      operationId: userInventories
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Inventories"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/users/{user_id}/inventories/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      description: Inventory id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: One user inventory
+      tags:
+      - Inventories
+      operationId: userInventory
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Inventory"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/users/{user_id}/inventories/{inventory_id}/items":
+    parameters:
+    - name: user_id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: inventory_id
+      in: path
+      description: Inventory id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Inventory Items list
+      tags:
+      - Inventories
+      operationId: userInventoryItems
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryItems"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/users/{user_id}/inventories/{inventory_id}/items/{id}":
+    parameters:
+    - name: user_id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: inventory_id
+      in: path
+      description: Inventory id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      description: Inventory item id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: One inventory item
+      tags:
+      - Inventories
+      operationId: userInventoryItem
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryItem"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles":
     get:
       summary: Vehicles list
@@ -10556,6 +10948,148 @@ components:
           - 'null'
       additionalProperties: false
       title: FleetInput
+    FleetInventories:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventory"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetInventories
+    FleetInventory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        visibility:
+          "$ref": "#/components/schemas/FleetInventoryVisibilityEnum"
+        managerId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        managerUsername:
+          type:
+          - string
+          - 'null'
+        itemsCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fleetId
+      - name
+      - slug
+      - visibility
+      - itemsCount
+      - createdAt
+      - updatedAt
+      title: FleetInventory
+    FleetInventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetInventoryId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
+        entryType:
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
+        unit:
+          "$ref": "#/components/schemas/InventoryUnitEnum"
+        quantity:
+          type: string
+        quality:
+          type:
+          - integer
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        itemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        itemType:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fleetInventoryId
+      - name
+      - category
+      - entryType
+      - unit
+      - quantity
+      - createdAt
+      - updatedAt
+      title: FleetInventoryItem
+    FleetInventoryItems:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventoryItem"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetInventoryItems
+    FleetInventoryVisibilityEnum:
+      type: string
+      enum:
+      - members_only
+      - officers_only
+      x-enumNames:
+      - MEMBERS_ONLY
+      - OFFICERS_ONLY
+      title: FleetInventoryVisibilityEnum
     FleetMembershipSortEnum:
       type: string
       enum:
@@ -11324,6 +11858,172 @@ components:
       - meta
       - items
       title: Imports
+    Inventories:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Inventory"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Inventories
+    Inventory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        holderId:
+          type: string
+          format: uuid
+        holderType:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        location:
+          type:
+          - string
+          - 'null'
+        vehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        itemsCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - holderId
+      - holderType
+      - name
+      - slug
+      - itemsCount
+      - createdAt
+      - updatedAt
+      title: Inventory
+    InventoryCategoryEnum:
+      type: string
+      enum:
+      - commodity
+      - component
+      - weapon
+      - equipment
+      - ammunition
+      - consumable
+      - other
+      x-enumNames:
+      - COMMODITY
+      - COMPONENT
+      - WEAPON
+      - EQUIPMENT
+      - AMMUNITION
+      - CONSUMABLE
+      - OTHER
+      title: InventoryCategoryEnum
+    InventoryEntryTypeEnum:
+      type: string
+      enum:
+      - deposit
+      - withdrawal
+      x-enumNames:
+      - DEPOSIT
+      - WITHDRAWAL
+      title: InventoryEntryTypeEnum
+    InventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        inventoryId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
+        entryType:
+          "$ref": "#/components/schemas/InventoryEntryTypeEnum"
+        unit:
+          "$ref": "#/components/schemas/InventoryUnitEnum"
+        quantity:
+          type: string
+        quality:
+          type:
+          - integer
+          - 'null'
+        notes:
+          type:
+          - string
+          - 'null'
+        itemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        itemType:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - inventoryId
+      - name
+      - category
+      - entryType
+      - unit
+      - quantity
+      - createdAt
+      - updatedAt
+      title: InventoryItem
+    InventoryItems:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InventoryItem"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: InventoryItems
+    InventoryUnitEnum:
+      type: string
+      enum:
+      - scu
+      - units
+      x-enumNames:
+      - SCU
+      - UNITS
+      title: InventoryUnitEnum
     ItemAvailability:
       type: object
       properties:

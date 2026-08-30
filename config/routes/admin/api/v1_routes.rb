@@ -23,6 +23,10 @@ v1_admin_api_routes = lambda do
     end
 
     resources :fleets, only: %i[index], controller: "user_fleets"
+
+    resources :inventories, only: %i[index show] do
+      resources :inventory_items, path: "items", only: %i[index show]
+    end
   end
 
   resources :models, only: %i[index show create update destroy] do
@@ -119,6 +123,10 @@ v1_admin_api_routes = lambda do
       member do
         get "login-as", to: "fleet_members#login_as"
       end
+    end
+
+    resources :fleet_inventories, path: "inventories", only: %i[index show] do
+      resources :fleet_inventory_items, path: "items", only: %i[index show]
     end
   end
 
