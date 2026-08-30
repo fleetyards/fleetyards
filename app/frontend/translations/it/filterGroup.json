@@ -20,6 +20,22 @@
           "label": "Modello in prestito"
         }
       },
+      "modelSnubCraft": {
+        "snubCraft": {
+          "label": "Snub Craft",
+          "prompt": "Seleziona uno Snub Craft"
+        }
+      },
+      "modelPosition": {
+        "positionType": {
+          "label": "Tipo di posizione",
+          "prompt": "Seleziona il tipo di posizione"
+        },
+        "source": {
+          "label": "Fonte",
+          "prompt": "Seleziona la fonte"
+        }
+      },
       "modelHardpoint": {
         "source": {
           "label": "Fonte",

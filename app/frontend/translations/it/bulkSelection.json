@@ -1,0 +1,16 @@
+{
+  "it": {
+    "bulkSelection": {
+      "actions": {
+        "selectPage": "Seleziona tutto in questa pagina",
+        "unselectPage": "Deseleziona tutto in questa pagina",
+        "selectAllMatching": "Seleziona tutti i %{count}",
+        "clear": "Annulla la selezione"
+      },
+      "labels": {
+        "selected": "%{count} selezionati",
+        "allMatchingSelected": "Tutti i %{count} selezionati"
+      }
+    }
+  }
+}

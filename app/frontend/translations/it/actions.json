@@ -4,9 +4,16 @@
       "admin": {
         "dashboard": {
           "reloadModels": "Ricarica modelli",
-          "reloadScData": "Ricarica dati SC"
+          "reloadScData": "Ricarica dati SC",
+          "reloadPaints": "Ricarica verniciature",
+          "reloadModules": "Ricarica moduli",
+          "reloadLoaners": "Ricarica navi in comodato"
+        },
+        "supporterContributions": {
+          "syncFromPatreon": "Sincronizza da Patreon"
         }
       },
+      "duplicate": "Duplica",
       "showReleased": "Mostra vecchi rilasci",
       "hideReleased": "Nascondi vecchi rilasci",
       "upgrade": "Aggiornamento disponibile!",
@@ -32,6 +39,8 @@
       "here": "qui",
       "backToList": "Torna alla lista",
       "backToTop": "Torna all'inizio",
+      "previous": "Precedente",
+      "next": "Successivo",
       "cancel": "Annulla",
       "ok": "Ok",
       "reset": "Reset",
@@ -45,6 +54,10 @@
       "hideGuide": "Nascondi guida",
       "showFleetchart": "Grafico flotta",
       "hideFleetchart": "Vista di default",
+      "fleetchartApp": {
+        "useExtendedState": "Mostra le navi in configurazione estesa",
+        "useRetractedState": "Mostra le navi in configurazione retratta"
+      },
       "showLabels": "Mostra etichette",
       "hideLabels": "Nascondi etichette",
       "resetZoom": "Resetta lo zoom",
@@ -74,6 +87,7 @@
       "addGroup": "Aggiungi gruppo",
       "editGroup": "Modifica gruppo",
       "remove": "Rimuovi",
+      "reorder": "Riordina",
       "delete": "Elimina",
       "deleteSelected": "Elimina selezionati",
       "enableSelected": "Attiva selezionati",
@@ -89,6 +103,7 @@
       "changePassword": "Cambia la password",
       "updatePassword": "Aggiorna la password",
       "copyBackupCodes": "Copia i codici di backup",
+      "regenerate": "Rigenera",
       "add": "Aggiungi",
       "create": "Crea",
       "addToWishlist": "Aggiungi alla lista dei desideri",
@@ -110,6 +125,7 @@
         "authorize": "Autorizza",
         "deny": "Rifiuta"
       },
+      "verifyWithCitizenId": "Verifica con Citizen iD",
       "oauth": {
         "signInWith": "Accedi con",
         "google": "Google",
@@ -141,6 +157,9 @@
       "hangar": {
         "editGroups": "Aggiungi o rimuovi gruppo",
         "editName": "Rinomina la nave",
+        "manageLoadouts": "Gestisci configurazioni",
+        "manageCargo": "Gestisci carico",
+        "backToHangar": "Torna all'hangar",
         "useName": "Usa il nome",
         "destroyAll": "Rimuovi tutte le navi",
         "showOnPublicHangar": "Rendi pubblico",
@@ -150,8 +169,7 @@
           "openModal": "Resetta navi in-game dopo il wipe",
           "moveToWishlist": "Sposta nella lista dei desideri",
           "removeAll": "Rimuovi tutto"
-        },
-        "manageCargo": "Gestisci carico"
+        }
       },
       "syncExtension": {
         "cancel": "Annulla",
@@ -165,6 +183,7 @@
         "reset": "Cancella filtri"
       },
       "destroyFleet": "Distruggi flotta",
+      "restore": "Ripristina",
       "fleet": {
         "join": "Unisciti a %{fleet}!",
         "leave": "Abbandona %{fleet}",
@@ -190,6 +209,15 @@
         },
         "inviteUrls": {
           "create": "Crea nuovo URL per invito"
+        },
+        "discord": {
+          "test": "Prova la connessione Discord",
+          "installBot": "Installa il bot Fleetyards nel tuo server Discord"
+        },
+        "calendarSubscription": {
+          "enable": "Genera link di sottoscrizione",
+          "rotate": "Rigenera il link",
+          "disable": "Disattiva la sottoscrizione"
         }
       },
       "model": {
@@ -201,6 +229,7 @@
         "sync": "Sincronizza da RSI",
         "syncMatrix": "Sincronizza matrice",
         "syncScData": "Sincronizza dati SC",
+        "importPaints": "Importa verniciature",
         "exchangeStoreImage": "Usa immagine RSI",
         "images": "Immagini",
         "openTableConfiguration": "Apri configurazione tabella"
@@ -258,6 +287,92 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "Svuota carico"
+      },
+      "adminNotifications": {
+        "unread": "Segna come non letta",
+        "archive": "Archivia",
+        "unarchive": "Riporta in arrivo",
+        "readAll": "Segna tutte come lette",
+        "destroyAll": "Elimina tutte",
+        "sortOldest": "Prima le più vecchie",
+        "sortNewest": "Prima le più recenti",
+        "select": "Seleziona notifica",
+        "readSelected": "Segna le selezionate come lette",
+        "unreadSelected": "Segna le selezionate come non lette",
+        "archiveSelected": "Archivia le selezionate",
+        "unarchiveSelected": "Riporta in arrivo le selezionate",
+        "destroySelected": "Elimina le selezionate"
+      },
+      "account": {
+        "calendarSubscription": {
+          "enable": "Genera link calendario personale",
+          "rotate": "Rigenera il link",
+          "disable": "Disattiva la sottoscrizione"
+        }
+      },
+      "today": "Oggi",
+      "fleets": {
+        "missions": {
+          "create": "Crea missione",
+          "edit": "Modifica missione",
+          "archive": "Archivia missione",
+          "unarchive": "Ripristina",
+          "destroy": "Elimina definitivamente",
+          "addTeam": "Aggiungi team",
+          "addShip": "Aggiungi nave",
+          "addSlot": "Aggiungi slot",
+          "viewMissions": "Vedi le missioni"
+        },
+        "events": {
+          "create": "Crea evento",
+          "edit": "Modifica evento",
+          "spawn": "Genera da questa missione",
+          "archive": "Archivia evento",
+          "unarchive": "Ripristina dall'archivio",
+          "syncToDiscord": "Sincronizza su Discord",
+          "destroy": "Elimina definitivamente",
+          "publish": "Pubblica",
+          "lockSignups": "Blocca le iscrizioni",
+          "unlockSignups": "Sblocca le iscrizioni",
+          "start": "Avvia",
+          "complete": "Completa",
+          "cancel": "Annulla",
+          "signup": "Iscriviti",
+          "withdraw": "Ritirati",
+          "kick": "Rimuovi iscrizione",
+          "viewEvents": "Vedi gli eventi",
+          "viewCalendar": "Vedi il calendario",
+          "exportIcs": "Esporta iCal",
+          "addToCalendar": "Aggiungi al calendario",
+          "subscribe": "Sottoscrivi",
+          "setUpCalendar": "Configura le sottoscrizioni al calendario",
+          "assignSlot": "Assegna a uno slot",
+          "reassignSlot": "Sposta in un altro slot",
+          "addSeats": "Aggiungi posti",
+          "manageEventTeam": "Gestisci il team dell'evento",
+          "grantRole": "Assegna ruolo",
+          "revokeRole": "Revoca",
+          "editSchedule": "Modifica team e navi",
+          "doneEditing": "Fine modifiche",
+          "addTeam": "Aggiungi team"
+        }
+      },
+      "notifications": {
+        "unread": "Segna come non letta",
+        "archive": "Archivia",
+        "unarchive": "Riporta in arrivo",
+        "readAll": "Segna tutte come lette",
+        "destroyAll": "Elimina tutte",
+        "settings": "Impostazioni notifiche",
+        "sortOldest": "Prima le più vecchie",
+        "sortNewest": "Prima le più recenti",
+        "openCenter": "Notifiche",
+        "select": "Seleziona notifica",
+        "readSelected": "Segna le selezionate come lette",
+        "unreadSelected": "Segna le selezionate come non lette",
+        "archiveSelected": "Archivia le selezionate",
+        "unarchiveSelected": "Riporta in arrivo le selezionate",
+        "destroySelected": "Elimina le selezionate"
       },
       "unlistedModel": {
         "createModel": "Crea nave",
