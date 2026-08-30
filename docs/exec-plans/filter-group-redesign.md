@@ -396,12 +396,22 @@ The failure mode is silent, which is the reason to write this down: a popover
 that lost its styling renders as unstyled content over the page rather than as
 an error.
 
-### Phase 3 — The shared surface, the trigger and the rows
+### Phase 3 — The surface and the rows — **DONE**
 
-Extract the surface primitive from `BtnDropdown/Menu` (D3) and move both onto
-it; trigger onto `--color-control` / `--color-edge` / `--radius-control` with
-end-caps; rows onto `--color-edge-soft` divisions; drop the glow rail and the
-`flash` keyframe (F8); real chevron and × glyphs (F10).
+Not what this phase was originally written as, because D7 changed what it is
+for. No surface primitive is extracted -- D3 no longer binds -- and the trigger
+is deliberately untouched, which is the whole point of the chosen shape.
+
+Landed: the capped surface becomes the treatment and the preview modifier goes;
+the trigger stops squaring its bottom corners, which was right only while
+something met them; the frame moves onto `.filter-group-surface` inside the
+element `Collapsed` animates; the glow rail is flat and on the table's own
+`--cap-h-row` / `--cap-r-row`; the last `@keyframes flash` in the frontend is
+gone; rows divide with `--color-edge-soft`; the chosen rows outside the popover
+stop being primary blue; chevron and × are the glyphs they meant rather than
+rotations of other ones; `FormInput`'s clean variant drops its fill so a field
+can sit inside a surface without reading as a slab inset into it; and F12's
+half-run sort now reaches the list it was written for.
 
 ### Phase 4 — Verify
 
@@ -410,7 +420,22 @@ imperative call sites from F5 exercised by hand.
 
 ## Open questions
 
-1. **`size`** — `types.ts` documents the separate per-control enum as
+1. **The trigger still speaks the old language, by decision.** #4371's first
+   complaint is that the trigger borrows the form-input treatment: a lighter
+   `$input-bg` fill inside a _darker_ `$input-border` edge, where the redesign's
+   controls are a dark fill inside a lighter one, at `$border-radius-base`'s 4px
+   against `--radius-control`'s 8px, with no end-caps.
+
+   D7 keeps the trigger exactly as it is, so that complaint is **not addressed
+   by this work**. It was the right call for the shape -- the alternatives that
+   restyled the trigger were the ones that fell apart on a multi-select -- but it
+   leaves the control itself in the old vocabulary while everything hanging off
+   it speaks the new one. Worth deciding deliberately rather than discovering
+   later: either #4371 stays open for it, or it moves to the forms redesign
+   (#4372), which owns `$input-bg` and `$input-border` for every other control
+   that shares them.
+
+2. **`size`** — `types.ts` documents the separate per-control enum as
    deliberate: `MEDIUM` is already 48px, matching `Btn`'s `md` and
    `FormInput`'s `medium`, and each control keeps its own copy so one can gain
    a size without dragging the others in. There is no drift to fix, so the
