@@ -56,6 +56,9 @@
       "updateHangar": {
         "success": "機庫設定已更新。"
       },
+      "updatePrivacy": {
+        "success": "隱私設定已更新。"
+      },
       "features": {
         "updated": "功能已更新。",
         "error": "無法更新功能。",
@@ -72,7 +75,8 @@
         "error": "無法更新請求日誌。"
       },
       "updateNotifications": {
-        "success": "通知設定已更新。"
+        "success": "通知設定已更新。",
+        "failure": "無法儲存您的通知設定。"
       },
       "updateAccount": {
         "success": "帳戶已更新。"
@@ -147,7 +151,22 @@
         "onSale": "%{model}現在特價中！",
         "syncStarted": "Model sync started. You will be notified when it completes.",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
-        "syncScDataStarted": "Model SC data sync started. You will be notified when it completes."
+        "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
+        "importPaintsStarted": "塗裝匯入已開始。完成後會通知您。"
+      },
+      "fundingGoal": {
+        "created": "募資目標已建立。",
+        "updated": "募資目標已更新。",
+        "destroyed": "募資目標已刪除。",
+        "createFailed": "無法建立募資目標。",
+        "updateFailed": "無法更新募資目標。"
+      },
+      "supporterContribution": {
+        "created": "支持者捐助已建立。",
+        "updated": "支持者捐助已更新。",
+        "destroyed": "支持者捐助已刪除。",
+        "createFailed": "無法建立支持者捐助。",
+        "updateFailed": "無法更新支持者捐助。"
       },
       "notification": {
         "granted": "歡迎使用FleetYards.net通知！"
@@ -188,6 +207,28 @@
         "destroy": {
           "success": "<b>您的帳戶已刪除。</b><br>很遺憾看到您離開 :'(",
           "failure": "我們無法刪除您的帳戶！請稍後再試。"
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "個人行事曆訂閱已啟用。",
+            "failure": "無法啟用行事曆訂閱。"
+          },
+          "rotate": {
+            "success": "個人行事曆連結已更換。現有訂閱者在重新訂閱前將不會再收到更新。",
+            "failure": "無法更換個人行事曆連結。",
+            "confirm": "更換連結會讓訂閱目前網址的行事曆應用程式在沒有任何提示的情況下失效。您需要用新連結重新訂閱。"
+          },
+          "disable": {
+            "success": "個人行事曆訂閱已停用。",
+            "failure": "無法停用個人行事曆訂閱。",
+            "confirm": "停用訂閱會中斷目前所有已訂閱的行事曆應用程式的資料來源。"
+          }
+        }
+      },
+      "user": {
+        "destroy": {
+          "success": "使用者已刪除。",
+          "failure": "無法刪除使用者。"
         }
       },
       "fleet": {
@@ -245,6 +286,26 @@
             "success": "成員已拒絕。",
             "failure": "成員無法拒絕。"
           }
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "行事曆訂閱已啟用。",
+            "failure": "無法啟用行事曆訂閱。"
+          },
+          "rotate": {
+            "success": "訂閱連結已更換。現有訂閱者在重新訂閱前將不會再收到更新。",
+            "failure": "無法更換訂閱連結。",
+            "confirm": "更換連結會讓訂閱目前網址的行事曆應用程式在沒有任何提示的情況下失效。他們需要用新連結重新訂閱。"
+          },
+          "disable": {
+            "success": "行事曆訂閱已停用。",
+            "failure": "無法停用行事曆訂閱。",
+            "confirm": "停用訂閱會中斷目前所有已訂閱的行事曆應用程式的資料來源。"
+          },
+          "copy": {
+            "success": "行事曆連結已複製。請將它貼到您的行事曆應用程式的\"訂閱行事曆\"或\"以網址新增\"中。",
+            "failure": "無法複製行事曆連結。"
+          }
         }
       },
       "fleetInvite": {
@@ -256,7 +317,8 @@
       "holoViewer": {
         "modelLoader": {
           "failure": "我們無法載入請求的3D模型！請稍後再試。"
-        }
+        },
+        "webglNotSupported": "此裝置無法使用 3D 檢視器。"
       },
       "cargoGridViewer": {
         "noCargoHolds": "此飛船沒有貨艙。",
@@ -278,7 +340,8 @@
           "destroyAll": "您確定要從願望清單移除所有飛船嗎？此操作無法復原。"
         },
         "account": {
-          "destroy": "您確定要刪除您的帳戶嗎？此操作無法復原。"
+          "destroy": "您確定要刪除您的帳戶嗎？此操作無法復原。",
+          "destroyWithFleets": "您是以下艦隊的管理員：%{fleets}。刪除帳戶也會一併解散這些艦隊並移除其所有成員。此操作無法復原。要繼續嗎？"
         },
         "itemPrice": {
           "destroy": "Are you sure you want to destroy this Item Price? This Action can't be reverted."
@@ -305,28 +368,45 @@
           "loginAs": "Are you sure you want to login as this user?",
           "resendConfirmation": "Are you sure you want to resend the confirmation email for this user?",
           "sendPasswordReset": "Are you sure you want to send a password reset email for this user?",
-          "destroy": "Are you sure you want to delete this user? This action can't be reverted."
+          "destroy": "Are you sure you want to delete this user? This action can't be reverted.",
+          "destroyWithFleets": "此使用者是以下艦隊的管理員：%{fleets}。刪除該使用者也會一併解散這些艦隊並移除其所有成員。此操作無法復原。要繼續嗎？"
         },
         "model": {
           "destroy": "Are you sure you want to delete this model? This action can't be reverted.",
           "sync": "Are you sure you want to sync this model from RSI?",
           "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
           "syncScData": "Are you sure you want to sync the SC data for this model?",
+          "importPaints": "確定要從機庫資料匯入此型號的塗裝嗎？來源若將某個塗裝標示為整個系列共用，該系列的每個型號都會匯入這個塗裝。",
           "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
           "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
-          "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs."
+          "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs.",
+          "reloadPaints": "確定要重新載入塗裝嗎？這會排入背景工作。",
+          "reloadModules": "確定要重新載入模組嗎？這會排入背景工作。",
+          "reloadLoaners": "確定要重新載入借用船嗎？這會排入背景工作。"
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
         },
+        "fundingGoal": {
+          "destroy": "確定要刪除此募資目標嗎？此操作無法復原。"
+        },
+        "supporterContribution": {
+          "destroy": "確定要刪除此支持者捐助嗎？此操作無法復原。"
+        },
         "modelHardpoint": {
           "destroy": "確定要刪除此掛載點嗎? 此操作無法撤銷。"
+        },
+        "modelPosition": {
+          "destroy": "確定要刪除此職位嗎？此操作無法復原。"
         },
         "modelHardpointLoadout": {
           "destroy": "確定要刪除此配置嗎? 此操作無法撤銷。"
         },
         "modelLoaner": {
           "destroy": "確定要刪除此借用船嗎? 此操作無法撤銷。"
+        },
+        "modelSnubCraft": {
+          "destroy": "確定要刪除此 Snub Craft 嗎？此操作無法復原。"
         },
         "modelPaint": {
           "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
@@ -354,6 +434,17 @@
         "adminFleet": {
           "destroy": "Are you sure you want to delete this fleet? This action can't be reverted."
         },
+        "adminNotifications": {
+          "destroyAll": "確定要刪除所有通知嗎？此操作無法復原。",
+          "destroySelected": {
+            "one": "確定要刪除選取的通知嗎？此操作無法復原。",
+            "other": "確定要刪除選取的 %{count} 則通知嗎？此操作無法復原。"
+          }
+        },
+        "adminDestroyedFleet": {
+          "restore": "確定要還原此艦隊嗎？",
+          "restorePurged": "確定要還原這個已清除的艦隊嗎？還原只能盡力而為：角色、圖片、邀請連結與艦隊載具不會被還原。"
+        },
         "adminUser": {
           "destroy": "Are you sure you want to delete this admin user? This action can't be reverted."
         },
@@ -368,6 +459,13 @@
         },
         "equipment": {
           "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
+        },
+        "notifications": {
+          "destroyAll": "確定要刪除所有通知嗎？此操作無法復原。",
+          "destroySelected": {
+            "one": "確定要刪除選取的通知嗎？此操作無法復原。",
+            "other": "確定要刪除選取的 %{count} 則通知嗎？此操作無法復原。"
+          }
         },
         "unlistedModel": {
           "createModel": "根據 %{name} 建立飛船？下次 sc_data 載入會補齊其資料。"
@@ -409,6 +507,11 @@
         "success": "您的機庫已同步。",
         "failure": "您的機庫無法同步。",
         "notLoggedIn": "您需要在<a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a>登入以同步您的機庫。"
+      },
+      "admin": {
+        "supporterContributions": {
+          "patreonSyncStarted": "Patreon 同步已開始。請在一分鐘後重新整理以查看匯入的支持者。"
+        }
       },
       "logistics": {
         "request": {
@@ -477,6 +580,279 @@
             "confirm": "清空這艘飛船的貨物？所有記錄都會被刪除。",
             "success": "貨物已清空。",
             "failure": "無法清空貨物。"
+          }
+        }
+      },
+      "adminNotifications": {
+        "unread": "通知已標示為未讀",
+        "archived": "通知已封存",
+        "unarchived": "通知已移回收件匣",
+        "readAll": "所有通知已標示為已讀",
+        "destroyed": "通知已刪除",
+        "destroyedAll": "所有通知已刪除",
+        "error": "發生錯誤",
+        "bulk": {
+          "read": {
+            "one": "%{count} 則通知已標示為已讀",
+            "other": "%{count} 則通知已標示為已讀"
+          },
+          "unread": {
+            "one": "%{count} 則通知已標示為未讀",
+            "other": "%{count} 則通知已標示為未讀"
+          },
+          "archived": {
+            "one": "%{count} 則通知已封存",
+            "other": "%{count} 則通知已封存"
+          },
+          "unarchived": {
+            "one": "%{count} 則通知已移回收件匣",
+            "other": "%{count} 則通知已移回收件匣"
+          },
+          "destroyed": {
+            "one": "%{count} 則通知已刪除",
+            "other": "%{count} 則通知已刪除"
+          }
+        }
+      },
+      "fleets": {
+        "notifications": {
+          "update": {
+            "success": "通知設定已儲存。",
+            "failure": "無法儲存通知設定。"
+          }
+        },
+        "mission": {
+          "create": {
+            "success": "任務已建立。",
+            "failure": "無法建立任務。"
+          },
+          "update": {
+            "success": "任務已更新。",
+            "failure": "無法更新任務。"
+          },
+          "archive": {
+            "success": "任務已封存。",
+            "failure": "無法封存任務。"
+          },
+          "unarchive": {
+            "success": "任務已還原。",
+            "failure": "無法還原任務。"
+          },
+          "destroy": {
+            "success": "任務已刪除。",
+            "failure": "無法刪除任務。",
+            "confirm": "這會永久刪除該任務及其所有隊伍、飛船與席位。此操作無法復原。"
+          }
+        },
+        "missionTeam": {
+          "create": {
+            "success": "隊伍已新增。",
+            "failure": "無法新增隊伍。"
+          },
+          "update": {
+            "success": "隊伍已更新。",
+            "failure": "無法更新隊伍。"
+          },
+          "destroy": {
+            "success": "隊伍已移除。",
+            "failure": "無法移除隊伍。"
+          }
+        },
+        "missionShip": {
+          "create": {
+            "success": "飛船已新增。",
+            "failure": "無法新增飛船。"
+          },
+          "update": {
+            "success": "飛船已更新。",
+            "failure": "無法更新飛船。"
+          },
+          "destroy": {
+            "success": "飛船已移除。",
+            "failure": "無法移除飛船。"
+          },
+          "duplicate": {
+            "success": "飛船已複製。",
+            "failure": "無法複製此飛船。"
+          }
+        },
+        "missionSlot": {
+          "create": {
+            "success": "席位已新增。",
+            "failure": "無法新增席位。"
+          },
+          "update": {
+            "success": "席位已更新。",
+            "failure": "無法更新席位。"
+          },
+          "destroy": {
+            "success": "席位已移除。",
+            "failure": "無法移除席位。"
+          }
+        },
+        "event": {
+          "create": {
+            "success": "活動已建立。",
+            "failure": "無法建立活動。"
+          },
+          "update": {
+            "success": "活動已更新。",
+            "failure": "無法更新活動。"
+          },
+          "archive": {
+            "success": "活動已封存。",
+            "failure": "無法封存活動。",
+            "confirm": "要封存此活動嗎？成員將不會再於即將舉行的清單中看到它。"
+          },
+          "unarchive": {
+            "success": "活動已從封存還原。",
+            "failure": "無法還原活動。"
+          },
+          "syncToDiscord": {
+            "success": "活動已推送到 Discord。",
+            "failure": "無法將活動推送到 Discord。"
+          },
+          "destroy": {
+            "success": "活動已刪除。",
+            "failure": "無法刪除活動。",
+            "confirm": "這會永久刪除該活動。此操作無法復原。"
+          },
+          "publish": {
+            "success": "活動已發布 — 報名現已開放。",
+            "failure": "無法發布活動。"
+          },
+          "lockSignups": {
+            "success": "報名已鎖定。",
+            "failure": "無法鎖定報名。"
+          },
+          "unlockSignups": {
+            "success": "報名已重新開放。",
+            "failure": "無法重新開放報名。"
+          },
+          "start": {
+            "success": "活動已開始。",
+            "failure": "無法開始活動。"
+          },
+          "complete": {
+            "success": "活動已標示為完成。",
+            "failure": "無法完成活動。"
+          },
+          "cancel": {
+            "success": "活動已取消。",
+            "failure": "無法取消活動。",
+            "confirm": "要取消此活動嗎？參加者將會收到通知。"
+          }
+        },
+        "eventSignup": {
+          "create": {
+            "success": "您已報名。",
+            "failure": "無法報名。"
+          },
+          "update": {
+            "success": "報名已更新。",
+            "failure": "無法更新報名。"
+          },
+          "withdraw": {
+            "success": "您已退出此活動。",
+            "failure": "無法取消報名。",
+            "confirm": "要退出此活動嗎？"
+          },
+          "kick": {
+            "success": "報名已移除。",
+            "failure": "無法移除報名。",
+            "confirm": "要移除這位成員的報名嗎？"
+          }
+        },
+        "eventAdmin": {
+          "create": {
+            "success": "角色已授予。",
+            "failure": "無法授予角色。"
+          },
+          "destroy": {
+            "success": "角色已撤銷。",
+            "failure": "無法撤銷角色。",
+            "confirm": "要撤銷 %{username} 在此活動的角色嗎？"
+          }
+        },
+        "eventTeam": {
+          "create": {
+            "success": "隊伍已新增。",
+            "failure": "無法新增隊伍。"
+          },
+          "update": {
+            "success": "隊伍已更新。",
+            "failure": "無法更新隊伍。"
+          },
+          "destroy": {
+            "success": "隊伍已移除。",
+            "failure": "無法移除隊伍。",
+            "confirm": "要移除此隊伍及其所有飛船與席位嗎？"
+          }
+        },
+        "eventShip": {
+          "create": {
+            "success": "飛船已新增。",
+            "failure": "無法新增飛船。"
+          },
+          "update": {
+            "success": "飛船已更新。",
+            "failure": "無法更新飛船。"
+          },
+          "destroy": {
+            "success": "飛船已移除。",
+            "failure": "無法移除飛船。",
+            "confirm": "要移除此飛船及其席位嗎？"
+          },
+          "expand": {
+            "success": "席位已新增。",
+            "failure": "無法新增席位。"
+          }
+        },
+        "eventSlot": {
+          "create": {
+            "success": "席位已新增。",
+            "failure": "無法新增席位。"
+          },
+          "update": {
+            "success": "席位已更新。",
+            "failure": "無法更新席位。"
+          },
+          "destroy": {
+            "success": "席位已移除。",
+            "failure": "無法移除席位。"
+          }
+        }
+      },
+      "notifications": {
+        "unread": "通知已標示為未讀",
+        "archived": "通知已封存",
+        "unarchived": "通知已移回收件匣",
+        "readAll": "所有通知已標示為已讀",
+        "destroyed": "通知已刪除",
+        "destroyedAll": "所有通知已刪除",
+        "actionDone": "完成",
+        "actionFailed": "操作沒有成功 - 這則通知可能已經過期",
+        "error": "發生錯誤",
+        "bulk": {
+          "read": {
+            "one": "%{count} 則通知已標示為已讀",
+            "other": "%{count} 則通知已標示為已讀"
+          },
+          "unread": {
+            "one": "%{count} 則通知已標示為未讀",
+            "other": "%{count} 則通知已標示為未讀"
+          },
+          "archived": {
+            "one": "%{count} 則通知已封存",
+            "other": "%{count} 則通知已封存"
+          },
+          "unarchived": {
+            "one": "%{count} 則通知已移回收件匣",
+            "other": "%{count} 則通知已移回收件匣"
+          },
+          "destroyed": {
+            "one": "%{count} 則通知已刪除",
+            "other": "%{count} 則通知已刪除"
           }
         }
       }

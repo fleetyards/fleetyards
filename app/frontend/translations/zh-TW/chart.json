@@ -29,7 +29,20 @@
         "visit": {
           "one": "%{label}:<br><b>%{count}</b> 訪問",
           "other": "%{label}:<br><b>%{count}</b> 訪問"
+        },
+        "supporterContribution": {
+          "amount": "捐助：<b>%{amount}</b>",
+          "goal": "目標：<b>%{amount}</b>",
+          "count": {
+            "one": "<b>%{count}</b> 位支持者",
+            "other": "<b>%{count}</b> 位支持者"
+          }
         }
+      },
+      "states": {
+        "empty": "尚無可繪製的資料",
+        "failed": "無法載入此圖表",
+        "retry": "重試"
       }
     }
   }

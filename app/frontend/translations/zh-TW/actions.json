@@ -4,9 +4,16 @@
       "admin": {
         "dashboard": {
           "reloadModels": "重新載入模型",
-          "reloadScData": "重新載入 SC 資料"
+          "reloadScData": "重新載入 SC 資料",
+          "reloadPaints": "重新載入塗裝",
+          "reloadModules": "重新載入模組",
+          "reloadLoaners": "重新載入借用船"
+        },
+        "supporterContributions": {
+          "syncFromPatreon": "從 Patreon 同步"
         }
       },
+      "duplicate": "複製",
       "showReleased": "顯示舊版本",
       "hideReleased": "隱藏舊版本",
       "upgrade": "更新可用！",
@@ -32,6 +39,8 @@
       "here": "這裡",
       "backToList": "返回列表",
       "backToTop": "返回頂部",
+      "previous": "上一個",
+      "next": "下一個",
       "cancel": "取消",
       "ok": "確定",
       "reset": "重置",
@@ -45,6 +54,10 @@
       "hideGuide": "隱藏指南",
       "showFleetchart": "艦隊圖表",
       "hideFleetchart": "預設檢視",
+      "fleetchartApp": {
+        "useExtendedState": "顯示展開狀態的飛船",
+        "useRetractedState": "顯示收合狀態的飛船"
+      },
       "showLabels": "顯示標籤",
       "hideLabels": "隱藏標籤",
       "resetZoom": "重置縮放",
@@ -74,6 +87,7 @@
       "addGroup": "新增群組",
       "editGroup": "編輯群組",
       "remove": "移除",
+      "reorder": "重新排序",
       "delete": "刪除",
       "deleteSelected": "刪除選中項",
       "enableSelected": "啟用選中項",
@@ -89,6 +103,7 @@
       "changePassword": "更改密碼",
       "updatePassword": "更新密碼",
       "copyBackupCodes": "複製備份代碼",
+      "regenerate": "重新產生",
       "add": "新增",
       "create": "建立",
       "addToWishlist": "新增至願望清單",
@@ -110,6 +125,7 @@
         "authorize": "授權",
         "deny": "拒絕"
       },
+      "verifyWithCitizenId": "使用 Citizen iD 驗證",
       "oauth": {
         "signInWith": "透過以下方式登入",
         "google": "Google",
@@ -141,6 +157,9 @@
       "hangar": {
         "editGroups": "Add or remove Groups",
         "editName": "Name your Ship",
+        "manageLoadouts": "管理配置",
+        "manageCargo": "管理貨物",
+        "backToHangar": "返回機庫",
         "useName": "Use Name",
         "destroyAll": "Remove all Ships",
         "showOnPublicHangar": "Make Public",
@@ -150,8 +169,7 @@
           "openModal": "資料重置後重設遊戲內飛船",
           "moveToWishlist": "Move to Wishlist",
           "removeAll": "Remove all"
-        },
-        "manageCargo": "管理貨物"
+        }
       },
       "syncExtension": {
         "cancel": "取消",
@@ -165,6 +183,7 @@
         "reset": "清除篩選"
       },
       "destroyFleet": "解散艦隊",
+      "restore": "還原",
       "fleet": {
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
@@ -190,6 +209,15 @@
         },
         "inviteUrls": {
           "create": "Create new Invite Url"
+        },
+        "discord": {
+          "test": "測試 Discord 連線",
+          "installBot": "在你的 Discord 伺服器安裝 Fleetyards 機器人"
+        },
+        "calendarSubscription": {
+          "enable": "產生訂閱連結",
+          "rotate": "更換連結",
+          "disable": "停用訂閱"
         }
       },
       "model": {
@@ -201,6 +229,7 @@
         "sync": "從 RSI 同步",
         "syncMatrix": "同步矩陣",
         "syncScData": "同步 SC 資料",
+        "importPaints": "匯入塗裝",
         "exchangeStoreImage": "使用 RSI 圖片",
         "images": "圖片",
         "openTableConfiguration": "開啟表格設定"
@@ -258,6 +287,92 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "清空貨物"
+      },
+      "adminNotifications": {
+        "unread": "標示為未讀",
+        "archive": "封存",
+        "unarchive": "移回收件匣",
+        "readAll": "全部標示為已讀",
+        "destroyAll": "全部刪除",
+        "sortOldest": "最舊的優先",
+        "sortNewest": "最新的優先",
+        "select": "選取通知",
+        "readSelected": "將選取項目標示為已讀",
+        "unreadSelected": "將選取項目標示為未讀",
+        "archiveSelected": "封存選取項目",
+        "unarchiveSelected": "將選取項目移回收件匣",
+        "destroySelected": "刪除選取項目"
+      },
+      "account": {
+        "calendarSubscription": {
+          "enable": "產生個人行事曆連結",
+          "rotate": "更換連結",
+          "disable": "停用訂閱"
+        }
+      },
+      "today": "今天",
+      "fleets": {
+        "missions": {
+          "create": "建立任務",
+          "edit": "編輯任務",
+          "archive": "封存任務",
+          "unarchive": "取消封存",
+          "destroy": "永久刪除",
+          "addTeam": "新增隊伍",
+          "addShip": "新增飛船",
+          "addSlot": "新增席位",
+          "viewMissions": "檢視任務"
+        },
+        "events": {
+          "create": "建立活動",
+          "edit": "編輯活動",
+          "spawn": "從此任務建立活動",
+          "archive": "封存活動",
+          "unarchive": "從封存還原",
+          "syncToDiscord": "同步至 Discord",
+          "destroy": "永久刪除",
+          "publish": "發布",
+          "lockSignups": "鎖定報名",
+          "unlockSignups": "解除報名鎖定",
+          "start": "開始",
+          "complete": "完成",
+          "cancel": "取消",
+          "signup": "報名",
+          "withdraw": "取消報名",
+          "kick": "移除報名",
+          "viewEvents": "檢視活動",
+          "viewCalendar": "檢視行事曆",
+          "exportIcs": "匯出 iCal",
+          "addToCalendar": "加入行事曆",
+          "subscribe": "訂閱",
+          "setUpCalendar": "設定行事曆訂閱",
+          "assignSlot": "指派席位",
+          "reassignSlot": "移至其他席位",
+          "addSeats": "新增座位",
+          "manageEventTeam": "管理活動團隊",
+          "grantRole": "授予角色",
+          "revokeRole": "撤銷",
+          "editSchedule": "編輯隊伍與飛船",
+          "doneEditing": "完成編輯",
+          "addTeam": "新增隊伍"
+        }
+      },
+      "notifications": {
+        "unread": "標示為未讀",
+        "archive": "封存",
+        "unarchive": "移回收件匣",
+        "readAll": "全部標示為已讀",
+        "destroyAll": "全部刪除",
+        "settings": "通知設定",
+        "sortOldest": "最舊的優先",
+        "sortNewest": "最新的優先",
+        "openCenter": "通知",
+        "select": "選取通知",
+        "readSelected": "將選取項目標示為已讀",
+        "unreadSelected": "將選取項目標示為未讀",
+        "archiveSelected": "封存選取項目",
+        "unarchiveSelected": "將選取項目移回收件匣",
+        "destroySelected": "刪除選取項目"
       },
       "unlistedModel": {
         "createModel": "建立飛船",

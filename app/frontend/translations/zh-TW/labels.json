@@ -4,6 +4,14 @@
       "true": "是",
       "false": "否",
       "null": "-",
+      "supporter": {
+        "badge": "支持者",
+        "tooltip": "本月支持 FleetYards.net"
+      },
+      "destroyedFleets": {
+        "discarded": "已捨棄",
+        "purged": "已清除"
+      },
       "and": "和",
       "hide": "隱藏",
       "show": "顯示",
@@ -12,6 +20,7 @@
       "unavailable": "不可用",
       "selected": "已選擇",
       "actions": "操作",
+      "status": "狀態",
       "enabled": "已啟用",
       "disabled": "已禁用",
       "collapse": "摺疊",
@@ -52,6 +61,7 @@
           "tools_cargo_grids": "顯示飛船的互動式貨物網格檢視器。",
           "fleet_starmap": "在艦隊成員頁面顯示 Star Citizen 星圖。"
         },
+        "registryHint": "功能旗標宣告於 config/feature_flags.yml，並在部署時建立。你可以在這裡控制它們的開放範圍。",
         "fleetSettingsIntro": "為整個艦隊啟用或停用功能。您在此啟用的內容對所有成員可見。",
         "fleetFeature": "艦隊功能",
         "fleetFeatureInfo": "在此啟用僅對您生效。您艦隊的管理員可為整個艦隊啟用。",
@@ -80,6 +90,30 @@
       "rsiRequestLogs": {
         "resolved": "已解決",
         "unresolved": "未解決"
+      },
+      "imports": {
+        "type": "類型",
+        "status": "狀態",
+        "version": "版本",
+        "startedAt": "開始於",
+        "finishedAt": "完成於",
+        "failedAt": "失敗於",
+        "info": "資訊",
+        "input": "輸入",
+        "output": "輸出",
+        "importData": "匯入資料",
+        "file": "匯入的檔案",
+        "requestedBy": "要求者",
+        "adminUser": "管理員使用者",
+        "user": "使用者",
+        "includeSystem": "包含系統",
+        "systemRequester": "系統",
+        "statuses": {
+          "created": "排隊中",
+          "started": "執行中",
+          "finished": "已完成",
+          "failed": "失敗"
+        }
       },
       "oauthApplications": {
         "settingsIntro": "管理您的 OAuth 應用程式。這些應用程式可以代表使用者存取 FleetYards API。",
@@ -259,6 +293,7 @@
       "find": "輸入以搜尋",
       "selectUser": "選擇使用者",
       "findUser": "輸入以搜尋使用者",
+      "selectAdminUser": "選擇管理員使用者",
       "selectFleet": "選擇艦隊",
       "findFleet": "輸入以搜尋艦隊",
       "compare": {
@@ -266,7 +301,45 @@
         "addModel": {
           "nullablePrompt": "新增飛船"
         },
-        "enough": "Don't you think 8 Ships are enough? ;)"
+        "enough": "Don't you think 8 Ships are enough? ;)",
+        "toggleSection": "切換 %{section}",
+        "shipCount": {
+          "one": "%{count} 艘飛船",
+          "other": "%{count} 艘飛船"
+        },
+        "containersOfSize": "%{size} SCU 貨櫃",
+        "shieldGenerators": "護盾產生器",
+        "armorHp": "裝甲 HP",
+        "fuelAndQuantum": "燃料與量子",
+        "weaponPoolSize": "武器能量池",
+        "crossSection": {
+          "x": "截面 X",
+          "y": "截面 Y",
+          "z": "截面 Z"
+        },
+        "useAsBaseline": "設為基準",
+        "baseline": "基準",
+        "differencesOnly": "僅顯示差異",
+        "compareToBaseline": "與基準比較",
+        "loadoutBySlot": "依掛載槽顯示配置",
+        "slots": {
+          "guns": "主武器",
+          "turrets": "砲塔",
+          "missiles": "飛彈",
+          "shields": "護盾產生器",
+          "powerPlants": "發電機",
+          "coolers": "冷卻器",
+          "quantumDrives": "量子引擎",
+          "thrusters": "主推進器",
+          "countermeasures": "反制措施"
+        },
+        "legend": {
+          "best": "本列最佳",
+          "worst": "最差",
+          "share": "佔本列最佳值的比例",
+          "better": "優於基準",
+          "worse": "落後基準"
+        }
       },
       "cargoRoutes": "貨物路線",
       "uecPerUnit": "aUEC / Unit",
@@ -288,7 +361,24 @@
         "publicFleet": "公開艦隊",
         "publicStats": "公開統計",
         "publicFleetStats": "公開艦隊統計",
-        "discord": "Discord 伺服器",
+        "discord": {
+          "url": "Discord 伺服器",
+          "hint": "連接 Discord 伺服器，即可把活動同步成 Discord 原生的排程活動。成員可以直接在 Discord 上回覆出席，報名資料會同步回 Fleetyards。",
+          "guildId": "Discord 伺服器 ID",
+          "channelId": "語音頻道 ID（選填）",
+          "webhookUrl": "公告 Webhook 網址（選填）",
+          "installBotHint": "會在新分頁開啟 Discord 安裝頁面 — 請選擇你要同步活動的伺服器。",
+          "statusOk": "已連線至 %{name}",
+          "statusCodes": {
+            "missing_token": "伺服器端尚未設定 Fleetyards 機器人。請聯絡管理員。",
+            "missing_guild": "請先輸入 Discord 伺服器 ID。",
+            "invalid_token": "機器人權杖無效。請聯絡管理員。",
+            "bot_not_in_guild": "機器人不在這個伺服器裡。請使用安裝連結把它加進去。",
+            "guild_not_found": "Discord 無法辨識這個伺服器 ID。請再次確認輸入的值。",
+            "discord_error": "Discord 回傳了非預期的錯誤。",
+            "request_failed": "無法連線到 Fleetyards。請再試一次。"
+          }
+        },
         "guilded": "Guilded 伺服器",
         "homepage": "首頁",
         "twitch": "Twitch 頻道",
@@ -340,7 +430,11 @@
             "memberships": "成員",
             "invites": "邀請",
             "vehicles": "載具",
-            "roles": "角色"
+            "roles": "角色",
+            "inventories": "庫存",
+            "missions": "任務",
+            "events": "活動",
+            "notifications": "通知"
           },
           "privileges": {
             "fleet:update": "更新艦隊",
@@ -355,6 +449,7 @@
             "fleet:memberships:manage": "管理成員",
             "fleet:invites:read": "檢視邀請",
             "fleet:invites:create": "建立邀請",
+            "fleet:invites:update": "更新邀請",
             "fleet:invites:delete": "刪除邀請",
             "fleet:invites:manage": "管理邀請",
             "fleet:vehicles:read": "檢視載具",
@@ -366,7 +461,23 @@
             "fleet:roles:create": "建立角色",
             "fleet:roles:update": "更新角色",
             "fleet:roles:delete": "刪除角色",
-            "fleet:roles:manage": "管理角色"
+            "fleet:roles:manage": "管理角色",
+            "fleet:inventories:read": "檢視庫存",
+            "fleet:inventories:create": "建立庫存",
+            "fleet:inventories:update": "更新庫存",
+            "fleet:inventories:delete": "刪除庫存",
+            "fleet:inventories:manage": "管理庫存",
+            "fleet:missions:read": "檢視任務",
+            "fleet:missions:create": "建立任務",
+            "fleet:missions:update": "更新任務",
+            "fleet:missions:delete": "刪除任務",
+            "fleet:missions:manage": "管理任務",
+            "fleet:events:read": "檢視活動",
+            "fleet:events:create": "建立活動",
+            "fleet:events:update": "更新活動",
+            "fleet:events:delete": "刪除活動",
+            "fleet:events:manage": "管理活動",
+            "fleet:notifications:manage": "管理通知設定"
           }
         },
         "inviteUrls": {
@@ -387,13 +498,38 @@
             "7_days": "7 days"
           },
           "limitOptions": {
-            "infinite": "No limit",
             "1": "1 use",
             "5": "5 uses",
             "10": "10 uses",
             "25": "25 uses",
             "50": "50 uses",
-            "100": "100 uses"
+            "100": "100 uses",
+            "infinite": "No limit"
+          }
+        },
+        "calendarSubscription": {
+          "intro": "產生一個私人連結，讓成員可以在自己的行事曆應用程式（Apple Calendar、Google Calendar、Outlook）中訂閱這個艦隊的活動。",
+          "howTo": "把上面的連結分享給你的成員。他們只要把它貼進行事曆應用程式（\"訂閱行事曆\"或\"以網址新增\"）即可。這個連結是私人的 — 任何拿到連結的人都能看到這個艦隊的活動。"
+        },
+        "notifications": {
+          "inAppHeading": "應用程式內通知",
+          "inAppHint": "選擇哪些活動狀態變化要以應用程式內通知的形式顯示給艦隊成員。",
+          "events": {
+            "fleet_event": {
+              "published": "活動已發布",
+              "locked": "報名已鎖定",
+              "unlocked": "報名已重新開放",
+              "starting_soon": "活動即將開始",
+              "started": "活動已開始",
+              "completed": "活動已完成",
+              "cancelled": "活動已取消",
+              "archived": "活動已封存",
+              "destroyed": "活動已刪除"
+            },
+            "fleet_event_signup": {
+              "created": "新增報名",
+              "withdrawn": "報名已取消"
+            }
           }
         }
       },
@@ -404,6 +540,14 @@
         "public": "在公開機庫顯示?"
       },
       "source": "來源",
+      "loadout": {
+        "namePlaceholder": "配置名稱...",
+        "urlPlaceholder": "貼上 erkul.games 或 spviewer.eu 的配置網址...",
+        "empty": "尚無配置。建立一個開始使用。",
+        "active": "使用中",
+        "activate": "設為使用中",
+        "planOn": "規劃你的配置於"
+      },
       "model": {
         "hidden": "隱藏?",
         "active": "活躍?",
@@ -415,7 +559,7 @@
         "length": "長度",
         "beam": "寬度",
         "height": "高度",
-        "scIdentifier": "SC Identifier",
+        "scKey": "SC Key",
         "price": "價格",
         "pledgePrice": "質押價格",
         "erkulIdentifier": "Erkul Identifier",
@@ -434,6 +578,12 @@
         "hydrogenFuelTanks": "氫燃料箱",
         "quantumFuelTankSize": "量子燃料箱大小",
         "quantumFuelTanks": "量子燃料箱",
+        "externalFuelTanks": "外掛燃料箱",
+        "externalFuelTanksTotal": "總容量",
+        "externalFuelTanksCount": "燃料艙",
+        "refuelBoom": "加油臂",
+        "refuelBoomArm": "支臂",
+        "refuelBoomNozzle": "噴嘴",
         "yaw": "Yaw",
         "pitch": "Pitch",
         "roll": "Roll",
@@ -458,20 +608,44 @@
         "topView": "俯視圖",
         "topViewColored": "俯視圖（彩色）",
         "onSale": "販售中",
+        "playerOwnable": "玩家可擁有?",
         "salesPage": "銷售頁面",
         "addons": "模組與升級套件",
         "storeImage": "商店圖片",
         "wiki": "Star Citizen Wiki",
+        "crewPositions": "船員職位",
+        "needsCuration": "需要人工校訂",
+        "curatedPosition": "手動校訂的位置",
         "baseModel": "基礎型號",
         "fleetchartOffsetLength": "艦隊圖表長度偏移",
         "fleetchartOffsetBeam": "艦隊圖表寬度偏移",
+        "extendedLength": "展開長度",
+        "extendedBeam": "展開寬度",
+        "extendedHeight": "展開高度",
+        "extendedFleetchartOffsetLength": "展開艦隊圖表長度偏移",
+        "extendedFleetchartOffsetBeam": "展開艦隊圖表寬度偏移",
+        "defaultHolo": "預設 Holo",
+        "extendedHolo": "展開 Holo",
+        "extendedTopView": "展開俯視圖",
+        "extendedTopViewColored": "展開俯視圖（彩色）",
+        "extendedSideView": "展開側視圖",
+        "extendedSideViewColored": "展開側視圖（彩色）",
+        "extendedFrontView": "展開前視圖",
+        "extendedFrontViewColored": "展開前視圖（彩色）",
+        "extendedAngledView": "展開斜視圖",
+        "extendedAngledViewColored": "展開斜視圖（彩色）",
+        "state": {
+          "retracted": "收合",
+          "extended": "展開"
+        },
         "productionStatus": {
           "in-production": "生產中",
           "in-concept": "概念階段",
           "ready": "機庫就緒",
           "flight-ready": "可飛行",
           "announced": "已公佈"
-        }
+        },
+        "scIdentifier": "SC Identifier"
       },
       "models": {
         "extraColumns": "欄",
@@ -516,9 +690,199 @@
         "crew": "船員",
         "speed": "速度",
         "cargo": "貨物",
+        "combat": "戰鬥",
         "hardpoints": "掛載點",
         "missileOptions": "飛彈選項（如果可用）",
         "topView": "Top View"
+      },
+      "flight": {
+        "title": "飛行",
+        "scm": "戰鬥巡航",
+        "nav": "巡航",
+        "boost": "加速",
+        "boostSub": "後燃器",
+        "reverse": "倒車",
+        "maneuverability": "機動性",
+        "fuel": "燃料",
+        "fuelHydrogen": "氫",
+        "fuelQuantum": "量子",
+        "hint": "加速後的操控性會隨引擎的電力格提升；引擎沒有供電時全部為零。"
+      },
+      "base": {
+        "price": "價格",
+        "priceInGame": "遊戲內",
+        "pricePledge": "質押",
+        "availability": "供應狀況"
+      },
+      "availability": {
+        "title": "供應狀況",
+        "buy": "買入",
+        "rent": "租借",
+        "cheapest": {
+          "buy": "最便宜的購買地點",
+          "rent": "最便宜的租借地點"
+        },
+        "locations": {
+          "one": "%{count} 個地點",
+          "other": "%{count} 個地點"
+        },
+        "empty": "沒有已知的購買或租借地點。",
+        "timeRange": {
+          "1-day": "1 天",
+          "3-days": "3 天",
+          "7-days": "7 天",
+          "30-days": "30 天"
+        }
+      },
+      "cargo": {
+        "title": "貨物",
+        "holdsSub": "分佈於 %{count} 個貨艙",
+        "maxContainerSub": "可容納的最大貨櫃",
+        "containers": "貨櫃容量",
+        "hint": "各種尺寸的貨櫃在貨物網格上最多可放置的數量；長條顯示它佔總容量的比例。"
+      },
+      "fuelTanks": {
+        "capacitySub": "分佈於 %{count} 個燃料艙",
+        "podsSub": "外部掛點",
+        "components": "燃料艙類型",
+        "perPod": "每個燃料艙",
+        "hint": "掛在外部掛載點的燃料艙所攜帶的燃料；長條顯示每種類型佔總容量的比例。"
+      },
+      "refuelBoom": {
+        "fuelFlowSub": "氫燃料輸送",
+        "quantumFlowSub": "量子燃料輸送",
+        "captureRadiusSub": "對接容許範圍",
+        "equipment": "裝備",
+        "hint": "加油臂的輸送速率，以及噴嘴的對接容許範圍。"
+      },
+      "combat": {
+        "title": "戰鬥",
+        "dps": "爆發 DPS",
+        "dpsSub": "%{count} 件武器",
+        "sustained": "持續 DPS",
+        "sustainedSub": "計入能量回復與熱量",
+        "alpha": "Alpha",
+        "alphaSub": "每次齊射",
+        "weapons": "武器",
+        "missileDamage": "飛彈傷害",
+        "composition": "傷害組成",
+        "damagePhysical": "物理",
+        "damageEnergy": "能量",
+        "damageDistortion": "扭曲",
+        "damageThermal": "熱能",
+        "hint": "以預設配置計算的 DPS。持續值會計入每件武器的能量池回復與過熱循環。不含飛彈。"
+      },
+      "power": {
+        "title": "能量分配",
+        "scm": "SCM",
+        "nav": "NAV",
+        "reset": "重設",
+        "auto": "自動",
+        "aimAssist": "瞄準輔助",
+        "cooling": "冷卻",
+        "ir": "IR",
+        "em": "EM",
+        "cs": "CS",
+        "csAxisHint": "點擊以切換軸向（x / y / z）",
+        "segmentsUsed": "%{used} / %{total} 段",
+        "hint": "在各系統之間分配能量。武器的持續 DPS 會隨分配到的能量提升；其餘部分會自動平衡。",
+        "families": {
+          "weapon": "武器",
+          "shield": "護盾",
+          "engine": "引擎",
+          "radar": "雷達",
+          "coolers": "冷卻器",
+          "qdrive": "量子引擎",
+          "qed": "QED",
+          "emp": "EMP",
+          "lifeSupport": "維生系統",
+          "miningLaser": "採礦雷射",
+          "salvage": "打撈",
+          "tractorBeam": "牽引光束",
+          "towingbeam": "拖曳光束"
+        }
+      },
+      "defense": {
+        "title": "防禦",
+        "shieldHp": "護盾 HP",
+        "shieldHpSub": "%{count} 具產生器",
+        "shieldRegen": "回復",
+        "shieldResistances": "抗性",
+        "shieldAbsorption": "吸收",
+        "armor": "裝甲",
+        "deflection": "偏轉",
+        "armorReduction": "傷害減免",
+        "armorSelfResistance": "自身抗性",
+        "armorSignature": "訊號特徵",
+        "damageType": {
+          "physical": "物理",
+          "energy": "能量",
+          "distortion": "扭曲",
+          "thermal": "熱能"
+        },
+        "signature": {
+          "electromagnetic": "EM",
+          "infrared": "IR",
+          "crossSection": "CS"
+        },
+        "hint": "以預設配置計算的護盾與裝甲數值。吸收率低於 100% 表示該傷害類型在護盾還撐著的時候就會打到船體。",
+        "openDeflectionCheck": "偏轉檢測"
+      },
+      "deflectionCheck": {
+        "title": "偏轉檢測",
+        "intro": "— 哪些武器能貫穿它的防禦？",
+        "noArmor": "這艘飛船沒有裝甲，因此不會偏轉任何攻擊。",
+        "allSizes": "全部",
+        "deflected": "被偏轉",
+        "pierce": "貫穿",
+        "weapon": "武器",
+        "boundary": "偏轉門檻",
+        "alpha": "Alpha",
+        "threshold": "已跨過門檻",
+        "absorbed": "被吸收",
+        "versus": "vs",
+        "hoverHint": "把滑鼠移到武器上可查看各傷害類型的細項。",
+        "note": "Alpha 以每顆彈丸為單位、在護盾吸收之後比較 — 只要在任一種傷害類型上勝過偏轉值，該武器就能貫穿。護盾完全吸收的傷害類型永遠到不了裝甲，因此列為被吸收而非被偏轉：擋下它的是護盾，不是船體。護盾吸收率會依護盾血量在公布的最小至最大範圍之間內插，裝甲偏轉值則隨裝甲血量線性變化。雷射光束不列入計算 — 它造成的是持續傷害，沒有可供比較的單發 Alpha。",
+        "margin": "差額",
+        "reachesArmor": "打到裝甲",
+        "stoppedByShields": "護盾吸收",
+        "verdict": {
+          "absorbed": "已吸收",
+          "deflected": "已偏轉",
+          "pierces": "已貫穿"
+        },
+        "shieldHealth": "護盾血量",
+        "armorHealth": "裝甲血量",
+        "absorb": "吸收",
+        "defl": "偏轉",
+        "type": "類型",
+        "size": "尺寸"
+      },
+      "hull": {
+        "category": {
+          "vital": "要害",
+          "secondary": "次要",
+          "breakable": "可破壞",
+          "subpart": "子部件",
+          "cosmetic": "外觀"
+        },
+        "composition": "船體組成",
+        "door": "門",
+        "doors": "門",
+        "doorsNote": "可破壞的內部艙門屬於獨立區域 — 它們有自己的血量，不計入船體 HP。",
+        "doorsSub": "%{count} 個可破壞",
+        "hint": "船體 HP 是所有部件血量的總和。",
+        "hullHp": "船體 HP",
+        "hullHpSub": "所有部件的總和",
+        "integrity": "船體完整度",
+        "noHp": "無 HP",
+        "parts": "船體部件",
+        "partsNote": "部件依血量排序；外觀部件（門、梯子、擋板）本身沒有血量。遊戲檔案沒有提供父子關係，因此這是一份平面清單，而不是結構樹。",
+        "partsSub": "分佈於 %{count} 個類別",
+        "partsTree": "部件 · damageMax",
+        "showParts": "顯示船體部件",
+        "title": "船體",
+        "totalHp": "船體總 HP"
       },
       "manufacturer": {
         "longName": "全名",
@@ -527,6 +891,37 @@
         "icon": "圖示（遊戲檔案）",
         "iconOverridden": "圖示（已覆寫）",
         "scRef": "SC Ref"
+      },
+      "fundingGoal": {
+        "title": "標題",
+        "description": "描述",
+        "amount": "金額",
+        "currency": "幣別",
+        "effectiveFrom": "生效日",
+        "endedAt": "結束於"
+      },
+      "supporterContribution": {
+        "name": "支持者名稱",
+        "user": "已連結帳戶",
+        "amount": "金額",
+        "currency": "幣別",
+        "anonymous": "匿名",
+        "recurring": "定期",
+        "startedAt": "開始於",
+        "endedAt": "結束於",
+        "note": "內部備註",
+        "stats": {
+          "total": "總計",
+          "count": "捐助筆數",
+          "currentMonth": "本月",
+          "currentMonthCount": "%{count} 筆捐助",
+          "recurringCount": "定期",
+          "anonymousCount": "匿名"
+        },
+        "chart": {
+          "contributions": "捐助",
+          "goal": "目標"
+        }
       },
       "itemPrice": {
         "price": "價格",
@@ -552,6 +947,23 @@
         "name": "名稱",
         "dockType": "停靠類型",
         "shipSize": "飛船尺寸"
+      },
+      "modelPosition": {
+        "name": "名稱",
+        "positionType": "職位類型",
+        "source": "來源",
+        "position": "排序",
+        "types": {
+          "pilot": "駕駛",
+          "copilot": "副駕駛",
+          "turret_gunner": "砲塔射手",
+          "engineer": "工程師",
+          "gunner": "射手",
+          "loadmaster": "裝載長",
+          "passenger": "乘客",
+          "operator": "操作員",
+          "custom": "自訂"
+        }
       },
       "modelHardpoint": {
         "name": "名稱",
@@ -595,13 +1007,19 @@
         "hidden": "隱藏?",
         "loanerModel": "借用型號"
       },
+      "modelSnubCraft": {
+        "snubCraft": "Snub Craft"
+      },
       "modelPaint": {
         "hidden": "隱藏?",
         "active": "活躍?",
         "onSale": "販售中",
         "pledgePrice": "質押價格",
         "productionStatus": "生產狀態",
-        "productionNote": "生產備註"
+        "productionNote": "生產備註",
+        "copyHint": "選擇要把這個塗裝複製過去的目標飛船。複製過程不會修改塗裝資料。",
+        "bulkCopyHint": "選擇要把這 %{count} 個塗裝複製過去的目標飛船。複製過程不會修改塗裝資料。",
+        "copySameModel": "目標飛船必須與來源飛船不同。"
       },
       "component": {
         "size": "Size: %{size}",
@@ -634,9 +1052,120 @@
             "Retro": "Fix"
           }
         },
+        "refuelBoom": {
+          "captureRadius": "捕捉半徑",
+          "fuelFlowRate": "燃料輸送速率",
+          "quantumFuelFlowRate": "量子燃料輸送速率"
+        },
+        "weapons": {
+          "dps": "DPS",
+          "burstDps": "爆發 DPS",
+          "sustainedDps": "持續 DPS",
+          "efficiency": "效率",
+          "penetration": "穿透",
+          "fireRate": "射速",
+          "speed": "速度",
+          "range": "射程",
+          "ammo": "彈藥",
+          "ammoCost": "彈藥成本",
+          "pool": "能量池",
+          "maxRegen": "最大回復/秒",
+          "costPerShot": "能量/發",
+          "heatPerShot": "熱量/發",
+          "heatPerSecond": "熱量/秒",
+          "chargeTime": "充能時間",
+          "fullDamageRange": "全 DMG 距離",
+          "zeroDamageRange": "零 DMG 距離",
+          "damagePhysical": "物理",
+          "damageEnergy": "能量",
+          "damageDistortion": "扭曲",
+          "damageThermal": "熱能"
+        },
+        "missiles": {
+          "damage": "傷害",
+          "speed": "速度",
+          "range": "射程",
+          "lockRange": "鎖定距離",
+          "lockTime": "鎖定時間",
+          "trackingSignal": "追蹤"
+        },
+        "tractorBeams": {
+          "maxForce": "最大牽引力",
+          "minForce": "最小牽引力",
+          "range": "距離",
+          "cone": "錐角",
+          "tetherBreak": "繫留斷裂",
+          "cargoForce": "貨物牽引力",
+          "cargoRange": "貨物距離",
+          "towForce": "拖曳力",
+          "towDistance": "拖曳距離",
+          "quantumTowMass": "QT 質量上限",
+          "rotationSpeed": "旋轉",
+          "moveSpeed": "移動速度"
+        },
+        "shields": {
+          "hp": "HP",
+          "regen": "回復",
+          "regenTime": "回復時間",
+          "downedRegenDelay": "擊潰延遲",
+          "damagedRegenDelay": "受損延遲",
+          "resistancePhysical": "物理抗性",
+          "resistanceEnergy": "能量抗性",
+          "resistanceDistortion": "扭曲抗性"
+        },
+        "coolers": {
+          "coolingRate": "冷卻速率"
+        },
+        "powerPlants": {
+          "output": "輸出",
+          "pips": "電力格"
+        },
+        "quantumDrives": {
+          "speed": "速度",
+          "range": "距離",
+          "fuelConsumption": "消耗",
+          "spoolUpTime": "預熱",
+          "cooldownTime": "冷卻",
+          "splineSpeed": "軌道",
+          "accel": "加速度"
+        },
+        "jumpDrives": {
+          "fuelEfficiency": "燃料效率",
+          "alignRate": "校準速率",
+          "tuneRate": "調諧速率",
+          "alignDecay": "校準衰減",
+          "tuneDecay": "調諧衰減"
+        },
+        "radar": {
+          "aimAssistRange": "輔助範圍",
+          "ir": "IR",
+          "em": "EM",
+          "cs": "CS",
+          "rs": "RS"
+        },
+        "armor": {
+          "hp": "HP",
+          "physical": "物理",
+          "energy": "能量",
+          "distortion": "扭曲",
+          "thermal": "熱能",
+          "deflectPhysical": "物理偏轉",
+          "deflectEnergy": "能量偏轉",
+          "selfPhysical": "自身物理抗性",
+          "selfEnergy": "自身能量抗性"
+        },
+        "fuelIntakes": {
+          "pushRate": "輸送速率",
+          "minRate": "最低速率"
+        },
         "sources": {
           "game_files": "遊戲檔案",
           "ship_matrix": "Ship Matrix"
+        },
+        "density": {
+          "title": "檢視",
+          "compact": "精簡",
+          "expanded": "展開"
         },
         "fuelTanks": {
           "hydrogen": "氫燃料箱",
@@ -650,9 +1179,12 @@
           "propulsion": "推進",
           "thruster": "推進器",
           "weapon": "武器",
+          "defense": "防禦",
           "other": "其他",
           "auxiliary": "輔助",
-          "seat": "座位"
+          "seat": "座位",
+          "external_fuel_tank": "外掛燃料箱",
+          "refuel_boom": "加油臂"
         },
         "types": {
           "radar": "雷達",
@@ -694,6 +1226,8 @@
           "shieldgenerator": "護盾產生器",
           "fuel_intakes": "燃料進氣口",
           "fueltanks": "燃料箱",
+          "external_fuel_tanks": "外掛燃料箱",
+          "refuel_boom": "加油臂",
           "quantumdrive": "量子引擎與跳躍模組",
           "jump_modules": "跳躍模組",
           "jumpdrive": "跳躍模組",
@@ -727,6 +1261,7 @@
       },
       "user": {
         "rsiHandle": "使用者名",
+        "rsiHandleVerified": "已透過 Citizen iD 驗證",
         "location": "位置",
         "currentSystem": "目前星系",
         "tester": "測試者?",
@@ -738,8 +1273,16 @@
         "publicHangarStats": "公開機庫統計已啟用",
         "publicWishlist": "公開願望清單已啟用",
         "hideOwner": "為艦隊隱藏擁有權",
+        "tracking": "允許匿名使用分析",
         "lastActiveAt": "最後活躍",
-        "confirmedAt": "確認於"
+        "confirmedAt": "確認於",
+        "dateFormat": "日期格式",
+        "dateFormats": {
+          "dmy_dots": "31.12.2026",
+          "dmy_slash": "31/12/2026",
+          "mdy_slash": "12/31/2026",
+          "ymd_dash": "2026-12-31"
+        }
       },
       "adminUser": {
         "superAdmin": "超級管理員",
@@ -753,6 +1296,8 @@
         "flagship": "旗艦",
         "wanted": "想要",
         "loaner": "借用",
+        "bundled": "隨附",
+        "bundledWith": "隨附於 %{parent}",
         "public": "公開可見",
         "fullPublic": "公開可見（包括名稱）",
         "publicShort": "公開",
@@ -812,7 +1357,11 @@
       "all": "全部",
       "supportUs": "Support FleetYards.net",
       "account": {
-        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
+        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
+        "calendarSubscription": {
+          "intro": "產生一個私人連結，把你報名的活動加入你個人的行事曆應用程式（Apple Calendar、Google Calendar、Outlook）。",
+          "howTo": "把連結貼進你的行事曆應用程式的\"訂閱行事曆\"或\"以網址新增\"中。任何拿到這個連結的人都能看到你報名的活動 — 請妥善保管。"
+        }
       },
       "filters": {
         "components": {
@@ -883,6 +1432,7 @@
           "public": "公開",
           "group": "群組",
           "loaner": "借用船",
+          "bundled": "隨附的 Snub Craft",
           "boughtVia": "購買方式?"
         },
         "tradeRoutes": {
@@ -924,11 +1474,13 @@
           "priceGt": "價格 >=",
           "willItFit": "Will it Fit?",
           "withCargo": "有貨物?",
-          "scIdentifierBlank": "沒有 SC 標識?",
+          "scKeyBlank": "沒有 SC Key?",
+          "positionsNeedCuration": "職位需要人工校訂?",
           "fleetchartImageBlank": "沒有艦隊圖表圖片?",
           "holoBlank": "沒有 Holo?",
           "frontViewBlank": "沒有前視圖圖片?",
-          "topViewColoredBlank": "沒有彩色俯視圖圖片?"
+          "topViewColoredBlank": "沒有彩色俯視圖圖片?",
+          "scIdentifierBlank": "沒有 SC 標識?"
         },
         "modelModules": {
           "name": "名稱"
@@ -937,6 +1489,20 @@
           "name": "名稱",
           "withModels": "有型號的",
           "logoBlank": "無標誌"
+        },
+        "supporterContributions": {
+          "name": "依名稱搜尋",
+          "recurring": "定期",
+          "anonymous": "匿名",
+          "startedAtGteq": "開始日期從",
+          "startedAtLteq": "開始日期至",
+          "user": "已連結帳戶",
+          "linked": "帳戶連結",
+          "linkedOnly": "已連結",
+          "unlinkedOnly": "未連結"
+        },
+        "adminNotifications": {
+          "search": "搜尋"
         },
         "images": {
           "station": "太空站",
@@ -967,6 +1533,9 @@
           "inviteUrls": {
             "expiresAfter": "Expire after",
             "limit": "Max number of uses"
+          },
+          "logistics": {
+            "search": "搜尋物品..."
           }
         },
         "manufacturer": "製造商",
@@ -991,6 +1560,9 @@
           "sellPriceGt": "出售價格 >=",
           "sellPriceLt": "出售價格 <=",
           "storeImageBlank": "沒有商店圖片?"
+        },
+        "notifications": {
+          "search": "搜尋"
         }
       },
       "station": {
@@ -1121,6 +1693,40 @@
         },
         "modelHardpoint": {
           "loadouts": "配置"
+        },
+        "supporterContributions": {
+          "source": {
+            "patreon": "Patreon",
+            "manual": "手動"
+          }
+        },
+        "resourceAccess": {
+          "title": "資源存取權",
+          "groups": {
+            "ship_data": "飛船資料",
+            "community": "社群",
+            "system": "系統"
+          },
+          "privileges": {
+            "models": "型號",
+            "model_modules": "型號模組",
+            "components": "組件",
+            "manufacturers": "製造商",
+            "vehicles": "載具",
+            "images": "圖片",
+            "fleets": "艦隊",
+            "users": "使用者",
+            "supporters": "支持者",
+            "admins": "管理員",
+            "oauth_applications": "OAuth 應用程式",
+            "maintenance": "維護",
+            "imports": "匯入",
+            "features": "功能",
+            "workers": "背景工作",
+            "pghero": "PgHero",
+            "rsi-api-status": "RSI API 狀態",
+            "stats": "統計"
+          }
         }
       },
       "hangarTable": {
@@ -1170,10 +1776,6 @@
           "modelPledgePrice": "質押價格",
           "owner": "擁有者"
         }
-      },
-      "erkul": {
-        "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
       },
       "logistics": {
         "inventoryCount": "inventories",
@@ -1290,6 +1892,292 @@
         "unmeasured": "%{count} 項尚未測量"
       },
       "hangarInventories": "Inventories",
+      "adminNotifications": {
+        "inbox": "收件匣",
+        "archive": "封存",
+        "unreadOnly": "僅未讀",
+        "status": "狀態",
+        "severity": "嚴重程度",
+        "type": "類型",
+        "selectPrompt": "選擇一則通知來閱讀",
+        "noBody": "這則通知沒有更多細節。",
+        "lastSeen": "最後出現",
+        "expires": "到期",
+        "severities": {
+          "info": "資訊",
+          "warning": "警告",
+          "error": "錯誤"
+        },
+        "types": {
+          "paints_import": "塗裝匯入",
+          "modules_import": "模組匯入",
+          "loaner_sync": "借用船同步",
+          "uex_prices_import": "UEX 價格同步",
+          "uex_commodity_prices_import": "UEX 商品同步",
+          "new_supporter": "新支持者",
+          "rsi_api_blocked": "RSI API 已封鎖",
+          "rsi_api_unblocked": "RSI API 已恢復",
+          "weekly_stats": "每週報告",
+          "ship_matrix_import": "Ship Matrix 匯入",
+          "sc_data_import": "sc_data 匯入",
+          "import_run": "匯入"
+        }
+      },
+      "optional": "選填",
+      "notificationActions": {
+        "open": "開啟",
+        "openHangar": "開啟機庫",
+        "openWishlist": "開啟願望清單",
+        "openModel": "顯示飛船",
+        "openInvite": "檢視邀請",
+        "reviewRequest": "審核申請",
+        "openMembers": "顯示成員",
+        "openFleet": "開啟艦隊",
+        "openInventory": "開啟庫存",
+        "openEvent": "開啟活動",
+        "openRoster": "顯示報名名單",
+        "addToCalendar": "加入行事曆",
+        "openStore": "質押商店",
+        "accept": "接受",
+        "decline": "拒絕",
+        "signUp": "報名",
+        "withdraw": "取消報名",
+        "syncAgain": "再次同步",
+        "markAsBought": "標示為已購買",
+        "unavailable": "這項內容已無法使用。"
+      },
+      "notificationTypes": {
+        "channels": {
+          "app": "App",
+          "mail": "郵件",
+          "push": "推播"
+        },
+        "groups": {
+          "account": "帳戶與機庫",
+          "fleetMembership": "艦隊成員資格",
+          "fleetEvents": "艦隊活動"
+        },
+        "hangar_create": "機庫已建立",
+        "hangar_destroy": "機庫已移除",
+        "hangar_sync_finished": "機庫同步完成",
+        "hangar_sync_failed": "機庫同步失敗",
+        "wishlist_create": "已加入願望清單",
+        "wishlist_destroy": "已從願望清單移除",
+        "model_on_sale": "型號特價中",
+        "new_model": "新型號發布",
+        "fleet_invite": "收到艦隊邀請",
+        "fleet_member_requested": "已申請加入",
+        "fleet_member_accepted": "會員資格已接受",
+        "fleet_request_accepted": "加入申請已通過",
+        "fleet_inventory_item_added": "艦隊庫存已新增物品",
+        "fleet_event_published": "活動已發布",
+        "fleet_event_locked": "活動報名已鎖定",
+        "fleet_event_starting_soon": "活動即將開始",
+        "fleet_event_started": "活動已開始",
+        "fleet_event_completed": "活動已完成",
+        "fleet_event_cancelled": "活動已取消",
+        "fleet_event_signup_added": "新報名",
+        "fleet_event_signup_withdrawn": "報名已取消",
+        "fleet_event_signup_confirmed": "報名已確認",
+        "fleet_event_signup_assigned": "已指派席位",
+        "fleet_event_signup_kicked": "已從席位移除",
+        "allInGroup": "這個群組的全部項目"
+      },
+      "fleets": {
+        "missions": {
+          "title": "標題",
+          "description": "描述",
+          "team": "隊伍",
+          "teams": "隊伍",
+          "ship": "飛船",
+          "ships": "飛船",
+          "slot": "席位",
+          "slots": "席位",
+          "noMissions": "尚無任務。",
+          "noTeams": "尚未新增任何隊伍。",
+          "noShips": "尚未新增任何飛船。",
+          "noSlots": "尚未新增任何席位。",
+          "archivedTab": "已封存",
+          "activeTab": "進行中",
+          "archived": "已封存",
+          "modelSpecific": "指定飛船",
+          "modelList": "任選其一",
+          "modelListHint": "這個位置由你挑選的任一艘飛船擔任皆可。",
+          "allowedShips": "符合條件的飛船",
+          "anyOf": "任一",
+          "filterRange": "篩選範圍",
+          "classification": "分類",
+          "focus": "定位",
+          "minSize": "最小尺寸",
+          "maxSize": "最大尺寸",
+          "minCrew": "最少船員",
+          "minCrewOverride": "覆寫",
+          "minCrewOverrideLabel": "最少船員覆寫",
+          "minCrewOverrideHint": "留空即使用飛船預設的最少船員數。",
+          "minCargo": "最少貨物（SCU）",
+          "shipFilters": "飛船篩選",
+          "createdBy": "建立者",
+          "seats": "座位",
+          "category": "分類",
+          "coverImage": "封面圖片",
+          "coverPresets": "從範例中挑選",
+          "scenario": "情境",
+          "categories": {
+            "other": "其他",
+            "ship_combat": "艦船戰鬥",
+            "ground_combat": "地面戰鬥",
+            "combined_combat": "聯合作戰",
+            "mining": "採礦",
+            "salvage": "打撈",
+            "cargo_hauling": "貨運",
+            "exploration": "探索"
+          }
+        },
+        "events": {
+          "title": "標題",
+          "description": "描述",
+          "briefing": "簡報",
+          "startsAt": "開始時間",
+          "endsAt": "結束時間",
+          "timezone": "時區",
+          "location": "活動地點",
+          "meetupLocation": "集合地點",
+          "visibility": "可見範圍",
+          "maxAttendees": "人數上限",
+          "maxAttendeesValue": "最多 %{count} 位參加者",
+          "autoLockEnabled": "自動鎖定報名",
+          "autoLockMinutesBefore": "開始前幾分鐘鎖定",
+          "recurring": "重複",
+          "recurringHint": "依重複排程自動產生這個活動。成員需要針對每一場分別報名。",
+          "recurringSummary": "重複頻率：%{interval}",
+          "recurringUntil": "重複頻率：%{interval}，直到 %{date}",
+          "recurringForCount": "重複頻率：%{interval}（共 %{count} 場）",
+          "viewSeries": "檢視系列",
+          "recurrenceInterval": "重複間隔",
+          "recurrenceEnd": "結束",
+          "recurrenceEndNever": "永不",
+          "recurrenceEndOn": "在指定日期",
+          "recurrenceEndAfter": "經過",
+          "recurrenceEndOccurrences": "場",
+          "recurrence": {
+            "daily": "每天",
+            "weekly": "每週",
+            "biweekly": "每兩週",
+            "monthly": "每月"
+          },
+          "occurrencesSection": "即將到來的場次",
+          "skipOccurrence": "略過這一場",
+          "overrideOccurrence": "覆寫 %{date} 的場次",
+          "overrideOccurrenceShort": "編輯這一場",
+          "overrideOccurrenceHint": "只為這一場覆寫欄位。留空則沿用重複活動的設定。",
+          "endSeriesHere": "從這裡起停止",
+          "excludedBadge": "已略過",
+          "noUpcomingOccurrences": "未來 12 週內沒有即將到來的場次。",
+          "endSeriesConfirm": "要在這個日期之後停止重複嗎？之後的場次將不會再產生。",
+          "skipOccurrenceSuccess": "已略過這一場。",
+          "endSeriesSuccess": "系列已從這個日期起結束。",
+          "cancelledReason": "取消原因",
+          "noEvents": "尚無活動。",
+          "noUpcoming": "沒有即將舉行的活動。",
+          "noPast": "沒有過去的活動。",
+          "createdBy": "建立者",
+          "signups": "報名",
+          "signupsCount": "%{count} 筆報名",
+          "signupYou": "你",
+          "youAreHere": "你在這裡",
+          "attendance": "出席",
+          "signupsLockedHint": "這個活動的報名已鎖定。",
+          "noOverview": "尚無描述或簡報。",
+          "alreadySignedUpHint": "你已經報名了另一個席位。要更換的話請先取消報名。",
+          "slotTakenHint": "這個席位已經有人了。",
+          "currentSlot": "目前席位",
+          "currentSlotHint": "這是該筆報名目前所在的席位。",
+          "takenBy": "已由 %{username} 佔用",
+          "slotPickerHint": "為這筆報名挑選一個席位。已被佔用或無法使用的席位會停用。",
+          "signupCtaHint": "報名參加這個活動 — 你可以現在挑選特定席位，或稍後讓管理員為你指派。",
+          "noSlotYet": "尚未指派席位",
+          "signupApproval": "報名審核",
+          "signupApprovalInherit": "沿用活動設定",
+          "signupStatuses": {
+            "confirmed": "已確認",
+            "tentative": "暫定",
+            "interested": "有興趣",
+            "pending": "等待審核",
+            "withdrawn": "已取消報名"
+          },
+          "signupApprovals": {
+            "direct": "直接加入",
+            "confirmation_required": "需要確認"
+          },
+          "unassignedSignupsHint": "這些成員已經報名活動，但還沒有席位。請在下方為他們指派，或移除該筆報名。",
+          "taken": "已佔用",
+          "grantedRoles": "已授予的角色",
+          "noEventAdminsYet": "尚無其他管理員或版主。",
+          "creator": "活動建立者",
+          "eventTeamHint": "授予其他成員這個活動的管理員或版主權限。管理員可以編輯活動，版主可以管理報名。",
+          "eventRole": "角色",
+          "eventRoles": {
+            "admin": "管理員",
+            "moderator": "版主"
+          },
+          "memberPicker": "成員",
+          "spawnedFromMission": "由任務產生",
+          "spawnedEvents": "已產生的活動",
+          "fromMission": "來自任務",
+          "pickTemplate": "挑選範本",
+          "pickTemplateHint": "可以選擇以任務範本為起點 — 欄位會預先填好，活動也會連結回該任務。",
+          "noTemplate": "不使用範本",
+          "noTemplateHint": "從空白開始建立活動。",
+          "changeTemplate": "更換範本",
+          "clearTemplate": "清除範本",
+          "freeSlot": "空缺席位",
+          "myVehicle": "我的載具",
+          "selectVehicle": "選擇載具（選填）",
+          "vehicleMismatchHint": "所選載具不符合這個席位的需求。",
+          "noFittingInHangar": "你的機庫裡沒有符合這個席位的載具。你仍然可以不選載具直接報名。",
+          "vehicleFitsHint": "會帶一艘符合這艘飛船的載具。",
+          "noMatchingVehicle": "沒有任何報名帶來符合的載具。",
+          "shipNotCrewedYet": "尚無符合的報名。",
+          "expandHint": "%{model} 還有 %{count} 個座位。要新增席位讓其他人填補嗎？",
+          "notes": "備註",
+          "upcomingTab": "即將舉行",
+          "pastTab": "過去",
+          "archivedTab": "已封存",
+          "listTab": "清單",
+          "calendarTab": "行事曆",
+          "openInCalendar": "訂閱（.ics）",
+          "openInCalendarHint": "把這個網址加入你的行事曆應用程式，就能讓活動保持同步。",
+          "rotateFeedToken": "更換訂閱連結",
+          "subscribeHint": "把行事曆訂閱網址複製到剪貼簿，方便你貼進行事曆應用程式。",
+          "visibilities": {
+            "members": "成員",
+            "officers": "幹部",
+            "fleet": "公開"
+          },
+          "statuses": {
+            "draft": "草稿",
+            "open": "開放報名",
+            "locked": "報名已鎖定",
+            "active": "進行中",
+            "completed": "已完成",
+            "cancelled": "已取消",
+            "past": "已結束"
+          },
+          "tabs": {
+            "basic": "基本資訊",
+            "description": "描述與封面",
+            "teams": "隊伍與飛船",
+            "overview": "總覽",
+            "settings": "設定"
+          },
+          "calendar": {
+            "month": "月",
+            "week": "週",
+            "weekTitle": "%{date} 當週"
+          },
+          "repeats": "重複"
+        }
+      },
       "commodity": {
         "commodityType": "Commodity Type",
         "uexId": "UEX ID",
@@ -1311,12 +2199,27 @@
         "scRef": "SC Ref",
         "storeImage": "Store Image"
       },
+      "notifications": {
+        "inbox": "收件匣",
+        "archive": "封存",
+        "unreadOnly": "僅未讀",
+        "status": "狀態",
+        "type": "類型",
+        "selectPrompt": "選擇一則通知來閱讀",
+        "noBody": "這則通知沒有更多細節。",
+        "archivesOn": "移至封存",
+        "deletesOn": "刪除於"
+      },
       "unlistedModel": {
         "linkHint": "%{identifier} 對應目錄中的哪艘飛船？建議來自匯出資料，可能有誤。"
       },
       "scDataSource": {
         "dataSource": "資料來源",
         "notLive": "不是 live 版本"
+      },
+      "erkul": {
+        "prefix": "Tryout Loadouts with",
+        "link": "Erkul's DPS Calculator"
       }
     }
   }

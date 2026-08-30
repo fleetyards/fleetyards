@@ -3,6 +3,11 @@
     "baseBtn": {
       "labels": {
         "loading": "Please wait..."
+      },
+      "confirm": {
+        "question": "確定嗎？",
+        "yes": "是",
+        "no": "否"
       }
     }
   }

@@ -5,9 +5,11 @@
       "chooseFiles": "選擇檔案",
       "dropzone": {
         "textMultiple": "將檔案拖拽到這裡上傳",
+        "textDirectory": "將資料夾拖曳至此",
         "text": "將檔案拖拽到這裡上傳",
         "or": "或",
-        "browse": "瀏覽"
+        "browse": "瀏覽",
+        "browseDirectory": "選擇資料夾"
       },
       "previewImage": {
         "remove": "移除"

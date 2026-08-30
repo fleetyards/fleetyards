@@ -1,0 +1,16 @@
+{
+  "zh-TW": {
+    "bulkSelection": {
+      "actions": {
+        "selectPage": "選取本頁全部項目",
+        "unselectPage": "取消選取本頁全部項目",
+        "selectAllMatching": "選取全部 %{count} 項",
+        "clear": "清除選取"
+      },
+      "labels": {
+        "selected": "已選取 %{count} 項",
+        "allMatchingSelected": "已選取全部 %{count} 項"
+      }
+    }
+  }
+}
