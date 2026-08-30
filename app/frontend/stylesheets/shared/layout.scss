@@ -112,6 +112,23 @@ body {
     min-height: 100vh;
   }
 
+  // A sticky element can only be pulled up, never pushed down, so
+  // PrimaryAction - the last thing in `.main` - parks wherever the page content
+  // happens to end. On a short page that is hundreds of pixels above the footer,
+  // with the min-height above as dead space beneath it. Stretching `.main` over
+  // that space and sending the button to the end of it puts its resting place
+  // just above the footer, which is where it also lands on a long page.
+  .main-inner--with-primary-action {
+    display: flex;
+    flex-direction: column;
+
+    .main {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+  }
+
   .main {
     position: relative;
     left: 0;
