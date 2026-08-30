@@ -113,11 +113,15 @@ body {
   }
 
   // A sticky element can only be pulled up, never pushed down, so
-  // PrimaryAction - the last thing in `.main` - parks wherever the page content
-  // happens to end. On a short page that is hundreds of pixels above the footer,
-  // with the min-height above as dead space beneath it. Stretching `.main` over
-  // that space and sending the button to the end of it puts its resting place
-  // just above the footer, which is where it also lands on a long page.
+  // PrimaryAction - the last thing in `.main` - rests wherever the page content
+  // happens to end, and everything below it is space it cannot reach. That is
+  // the section's bottom margin on a full page, and the min-height above as
+  // dead space too on a short one: the button ends up flush against the
+  // paginator with the whole gap underneath it.
+  //
+  // So the section stretches over the dead space, and hands its bottom margin
+  // to the button, which carries the same distance as padding on the side it
+  // can use - above itself. See PrimaryAction/index.scss.
   .main-inner--with-primary-action {
     display: flex;
     flex-direction: column;
@@ -126,6 +130,7 @@ body {
       display: flex;
       flex: 1;
       flex-direction: column;
+      margin-bottom: 0;
     }
   }
 
@@ -134,7 +139,7 @@ body {
     left: 0;
     width: 100%;
     max-width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: $main-bottom-spacing;
     padding-inline: 15px;
     margin-inline: auto;
   }

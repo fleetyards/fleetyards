@@ -53,6 +53,10 @@ $panelContentBorderRadius: var(--radius-surface-inner, 14px);
 $navigation-mobile-height: 60px;
 $navigation-mobile-bottom-offset: 20px;
 
+// The gap `.main` keeps between a page and the footer. Named because
+// PrimaryAction takes it over: see shared/layout.scss.
+$main-bottom-spacing: 50px;
+
 $transition-base-speed: 0.5s;
 
 // bootstrap overrides
