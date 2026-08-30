@@ -25,9 +25,10 @@
       width: 24px;
       height: 24px;
       vertical-align: text-top;
-      background: $input-bg;
-      border: 1px solid $input-border;
-      border-radius: 2px;
+      background-color: var(--color-control, rgb(39 43 48 / 0.9));
+      background-clip: padding-box;
+      border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+      border-radius: var(--radius-control-bare, 6px);
       transition: all 250ms ease;
       content: "";
     }
@@ -46,8 +47,8 @@
       content: "";
     }
 
-    &:hover + label::before {
-      background: $input-bg;
+    &:not(:disabled):hover + label::before {
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
     }
 
     &:checked + label::after {
@@ -59,15 +60,22 @@
       opacity: 0.5;
 
       &::before {
-        box-shadow: 0 0 0 1px $gray inset;
+        border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
       }
     }
 
-    &:checked {
-      &:focus + label::before {
-        outline: none;
-        box-shadow: 0 0 0 1px $primary inset;
-      }
+    /*
+     * :focus-visible, not :focus -- a pointer click leaves the control focused,
+     * so answering :focus kept the edge lit when nothing looked focused any
+     * more.
+     *
+     * The edge, and nothing else. This used to add an inset ring on top of it,
+     * which stacked with the border below and read as a 2px focus. And checked
+     * deliberately does not touch the edge: primary on an edge means one thing
+     * in a form, and the tick already says the rest.
+     */
+    &:focus-visible + label::before {
+      border-color: var(--color-primary, #428bca);
     }
   }
 
@@ -91,9 +99,13 @@
 
 /*
  * An invalid control was signalled by the hover tooltip alone: nothing to see
- * without a mouse, and nothing at all for assistive tech. The label carries the
- * state, matching `base-input--with-error` on the fields that already did.
+ * without a mouse, and nothing at all for assistive tech.
+ *
+ * The edge carries it, the same signature that carries focus and loses to it
+ * while focused. The label stays readable rather than turning danger itself --
+ * it was the wrong half to colour, since the signature already says invalid and
+ * the message beside it is what needs reading.
  */
-.base-checkbox--with-error label {
-  color: $danger;
+.base-checkbox--with-error input + label::before {
+  border-color: var(--color-danger, #dc3545);
 }

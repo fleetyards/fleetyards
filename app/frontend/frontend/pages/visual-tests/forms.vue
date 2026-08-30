@@ -557,14 +557,14 @@ const powerMarks = (value: number) => ({ label: String(value) });
   </div>
 
   <Heading :level="HeadingLevelEnum.H2">
-    Form controls — the language, part landed
+    Form controls — what the language still owes
   </Heading>
   <p>
-    <code>FormInput</code> and <code>FormTextarea</code> carry this themselves
-    now, which is why every field above this heading looks like it too — there
-    is no "before" left to scroll up to for those. The boxes you tick and the
-    message line are still page-local CSS, reaching nothing outside this page,
-    until they follow.
+    Every control now carries the language itself, which is why everything above
+    this heading looks like it too — there is no "before" left to scroll up to.
+    What remains here is page-local CSS for the two things the components cannot
+    express yet: an error message needs an element they do not emit, and
+    aligning a checkbox beside a field needs a label they do not have.
   </p>
   <p>
     The one idea: <strong>the cap carries the state</strong>. That is not new —
@@ -814,165 +814,25 @@ const powerMarks = (value: number) => ({ label: String(value) });
 </template>
 
 <!--
-  Preview scaffolding for the parts of the proposed form language that have not
-  moved into their components yet — the boxes you tick, and the message line.
-  Deliberately unscoped and deliberately in this page: it applies while this page
-  is open and reaches nothing else.
+  What is left of the preview: the message line, which needs an element the
+  components do not emit yet, and the label slot, which needs a prop they do not
+  have. Everything else has moved into the components — which is why the controls
+  above this section look like this too.
 
-  The fields are gone from here: FormInput and FormTextarea carry the language
-  themselves now, which is why everything above looks like this too.
-
+  Deliberately unscoped and deliberately in this page; it reaches nothing else.
   The wrapper class is doubled to win specificity against the components' own
   scoped rules, which carry a [data-v-*] attribute.
 -->
 <style lang="scss">
 .form-redesign.form-redesign {
-  /* ---------- boxes you tick ---------- */
-
   /*
-   * background-clip matters here, and it is not cosmetic. --color-edge is
-   * translucent and a background is painted under the border by default, so the
-   * edge composites over whatever fills the box. The radio's dot is made by
-   * filling the box primary and punching a ring back out of it with an inset
-   * shadow -- and an inset shadow stops at the padding box, so the blue stayed
-   * under the border and read as a primary edge on the chosen radio.
-   */
-  .base-checkbox input + label::before,
-  .radio-list__item input[type="radio"] + label::before {
-    background-color: var(--color-control, rgb(39 43 48 / 0.9));
-    background-clip: padding-box;
-    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
-    border-radius: var(--radius-control-bare, 6px);
-  }
-
-  .radio-list__item input[type="radio"] + label::before {
-    border-radius: 50%;
-  }
-
-  /*
-   * The whole fix for a radio nobody could reach: `display: none` takes it out
-   * of the tab order, which is why the :focus rule three lines below it in the
-   * component has never once fired. FormCheckbox already does it this way.
-   */
-  .radio-list__item input[type="radio"] {
-    display: inline-block;
-    position: absolute;
-    opacity: 0;
-  }
-
-  /*
-   * Checked is the dot, and only the dot -- the edge stays neutral, so that
-   * primary on an edge means one thing anywhere in a form: this is focused.
-   */
-  .radio-list__item input[type="radio"]:checked + label::before {
-    background-color: var(--color-primary, #428bca);
-    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
-  }
-
-  /*
-   * The components answer :focus; this language answers :focus-visible. A mouse
-   * click leaves the control focused, so their rules kept firing when nothing
-   * looked focused any more.
-   */
-  .base-checkbox input:focus:not(:focus-visible) + label::before,
-  .radio-list__item
-    input[type="radio"]:focus:not(:focus-visible)
-    + label::before,
-  .form-toggle input:focus:not(:focus-visible) + label .form-toggle-switch {
-    border-color: var(--color-edge, rgb(122 130 136 / 0.5));
-    box-shadow: none;
-  }
-
-  .radio-list__item
-    input[type="radio"]:checked:focus:not(:focus-visible)
-    + label::before {
-    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
-  }
-
-  .base-checkbox input:focus-visible + label::before,
-  .base-checkbox input:checked:focus-visible + label::before,
-  .radio-list__item input[type="radio"]:focus-visible + label::before,
-  .form-toggle input:focus-visible + label .form-toggle-switch {
-    border-color: var(--color-primary, #428bca);
-    box-shadow: none;
-  }
-
-  .radio-list__item input[type="radio"]:checked:focus-visible + label::before {
-    border-color: var(--color-primary, #428bca);
-    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
-  }
-
-  /* Hover lifts the fill, not on one whose fill is its state. */
-  .base-checkbox input:not(:disabled):hover + label::before,
-  .radio-list__item
-    input[type="radio"]:not(:disabled):not(:checked):hover
-    + label::before,
-  .form-toggle
-    input:not(:disabled):not(:checked):hover
-    + label
-    .form-toggle-switch {
-    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
-  }
-
-  /* Invalid rides the same signature as focus and loses to it while focused.
-     RadioList is absent because it has none -- it never calls useField. */
-  .base-checkbox--with-error input + label::before {
-    border-color: var(--color-danger, #dc3545);
-  }
-
-  .form-toggle--with-error input + label .form-toggle-switch {
-    border-color: var(--color-danger, #dc3545);
-  }
-
-  /* Disabled goes quiet rather than neutral. */
-  .base-checkbox input:disabled + label::before,
-  .radio-list__item input[type="radio"]:disabled + label::before,
-  .form-toggle input:disabled + label .form-toggle-switch {
-    border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
-  }
-
-  /*
-   * RadioList only sets `cursor: not-allowed` when disabled -- no dimming at all
-   * -- so a disabled group looks live, where the other two drop to 0.5.
-   */
-  .radio-list__item input[type="radio"]:disabled + label {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  /* And it swaps the chosen dot's fill for a lightened $input-bg, which in this
-     palette turns the dot into a grey smudge. */
-  .radio-list__item input[type="radio"]:disabled:checked + label::before {
-    background-color: var(--color-primary, #428bca);
-    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
-  }
-
-  /* ---------- the toggle ---------- */
-
-  /*
-   * Only the resting colours and the focus edge. A toggle's filled track is the
-   * conventional "on", and unlike a checkbox it has nothing inside it that a
-   * fill could hide.
-   */
-  .form-toggle input + label .form-toggle-switch {
-    background: var(--color-control, rgb(39 43 48 / 0.9));
-    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
-  }
-
-  .form-toggle input:checked + label .form-toggle-switch {
-    background: var(--color-primary, #428bca);
-  }
-
-  /* ---------- the error message ---------- */
-
-  /*
-   * There is no treatment for one anywhere in the system: a field puts it in a
-   * tooltip, and a checkbox or toggle renders it as a bare text node right after
-   * the label, with nothing between them -- which is why it reads as
-   * "Accept termsThe terms field is required".
+   * A checkbox or toggle renders its message as a bare text node right after the
+   * label, with no element and nothing between them -- which is why it reads as
+   * "Accept termsThe terms field is required". Only the gap and the colours are
+   * reachable from here, so the container is coloured and the label put back.
    *
-   * The colour is also on the wrong half: the *label* turns danger while the
-   * message stays default.
+   * Giving it a real element, and tying it to the input with aria-describedby,
+   * is phase 3.
    */
   .base-checkbox--with-error,
   .form-toggle--with-error {
@@ -986,9 +846,10 @@ const powerMarks = (value: number) => ({ label: String(value) });
   }
 
   /*
-   * line-height is set here so the reserved height below can equal it.
-   * Inherited it was 21px against a reserved 20px, so the field underneath still
-   * moved -- by one pixel, which is exactly what reserving the line prevents.
+   * What a message would look like, on markup the components do not yet emit.
+   * line-height is set so the reserved height below can equal it: inherited it
+   * was 21px against a reserved 20px, so the field underneath still moved by a
+   * pixel -- which is exactly what reserving the line prevents.
    */
   .field-message {
     margin: -12px 0 15px;
@@ -1002,8 +863,6 @@ const powerMarks = (value: number) => ({ label: String(value) });
   .field-message--reserved {
     min-height: 1.25rem;
   }
-
-  /* ---------- alignment ---------- */
 
   /*
    * A field starts below its label; a checkbox starts at the top of the row,

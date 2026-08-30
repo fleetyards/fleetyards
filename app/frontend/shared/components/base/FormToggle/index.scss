@@ -20,8 +20,8 @@
       position: relative;
       width: 44px;
       height: 24px;
-      background: $input-bg;
-      border: 1px solid $input-border;
+      background: var(--color-control, rgb(39 43 48 / 0.9));
+      border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
       border-radius: 12px;
       transition: all 250ms ease;
       flex-shrink: 0;
@@ -40,9 +40,13 @@
       }
     }
 
+    /*
+     * On is the flooded track -- the conventional signal, and safe here in a way
+     * it is not on a checkbox, which has a tick inside that a fill would hide.
+     * The edge stays neutral so primary on an edge means one thing in a form.
+     */
     &:checked + label .form-toggle-switch {
-      background: $primary;
-      border-color: $primary;
+      background: var(--color-primary, #428bca);
 
       &::after {
         left: 22px;
@@ -50,22 +54,27 @@
       }
     }
 
-    &:hover:not(:disabled) + label .form-toggle-switch {
-      border-color: $gray;
+    &:not(:disabled):not(:checked):hover + label .form-toggle-switch {
+      background: var(--color-control-hover, rgb(52 58 64 / 0.95));
     }
 
-    &:checked:hover:not(:disabled) + label .form-toggle-switch {
-      border-color: darken($primary, 10%);
-    }
-
-    &:focus + label .form-toggle-switch {
-      outline: none;
-      box-shadow: 0 0 0 1px $primary;
+    /*
+     * :focus-visible, not :focus. A pointer click leaves the control focused, so
+     * answering :focus kept it lit when nothing looked focused any more -- and
+     * the ring it drew was a box-shadow, which collided with everything else
+     * drawn the same way. The edge carries focus now, as everywhere else.
+     */
+    &:focus-visible + label .form-toggle-switch {
+      border-color: var(--color-primary, #428bca);
     }
 
     &:disabled + label {
       cursor: not-allowed;
       opacity: 0.5;
+
+      .form-toggle-switch {
+        border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
+      }
     }
   }
 
@@ -83,6 +92,6 @@
  * without a mouse, and nothing at all for assistive tech. The label carries the
  * state, matching `base-input--with-error` on the fields that already did.
  */
-.form-toggle--with-error label {
-  color: $danger;
+.form-toggle--with-error input + label .form-toggle-switch {
+  border-color: var(--color-danger, #dc3545);
 }
