@@ -75,7 +75,8 @@
         "error": "Anfrage-Log konnte nicht aktualisiert werden."
       },
       "updateNotifications": {
-        "success": "Benachrichtigungs-Einstellungen aktualisiert."
+        "success": "Benachrichtigungs-Einstellungen aktualisiert.",
+        "failure": "Deine Benachrichtigungseinstellungen konnten nicht gespeichert werden."
       },
       "updateAccount": {
         "success": "Konto aktualisiert."
@@ -151,7 +152,8 @@
         "onSale": "%{model} jetzt im Verkauf!",
         "syncStarted": "Model-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
-        "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist."
+        "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
+        "importPaintsStarted": "Lackierungs-Import gestartet. Du wirst benachrichtigt, sobald er abgeschlossen ist."
       },
       "fundingGoal": {
         "created": "Finanzierungsziel angelegt.",
@@ -206,6 +208,22 @@
         "destroy": {
           "success": "<b>Dein Konto wurde gelöscht.</b> <br>Schade, dass du gehst :'(",
           "failure": "Wir konnten dein Konto nicht löschen! Bitte versuche es später erneut."
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Persönliches Kalender-Abo aktiviert.",
+            "failure": "Kalender-Abo konnte nicht aktiviert werden."
+          },
+          "rotate": {
+            "success": "Persönlicher Kalenderlink erneuert. Bestehende Abonnenten erhalten keine Updates mehr, bis sie das Abo neu einrichten.",
+            "failure": "Persönlicher Kalenderlink konnte nicht erneuert werden.",
+            "confirm": "Beim Erneuern des Links verliert jede Kalender-App, die die aktuelle URL abonniert hat, stillschweigend den Zugriff. Du musst das Abo mit dem neuen Link neu einrichten."
+          },
+          "disable": {
+            "success": "Persönliches Kalender-Abo deaktiviert.",
+            "failure": "Persönliches Kalender-Abo konnte nicht deaktiviert werden.",
+            "confirm": "Beim Deaktivieren des Abos wird der Feed für jede aktuell abonnierte Kalender-App abgeschaltet."
+          }
         }
       },
       "user": {
@@ -269,6 +287,26 @@
             "success": "Mitglied abgelehnt.",
             "failure": "Mitglied konnte nicht abgelehnt werden."
           }
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Kalender-Abo aktiviert.",
+            "failure": "Kalender-Abo konnte nicht aktiviert werden."
+          },
+          "rotate": {
+            "success": "Abo-Link erneuert. Bestehende Abonnenten erhalten keine Updates mehr, bis sie das Abo neu einrichten.",
+            "failure": "Abo-Link konnte nicht erneuert werden.",
+            "confirm": "Beim Erneuern des Links verliert jede Kalender-App, die die aktuelle URL abonniert hat, stillschweigend den Zugriff. Sie müssen das Abo mit dem neuen Link neu einrichten."
+          },
+          "disable": {
+            "success": "Kalender-Abo deaktiviert.",
+            "failure": "Kalender-Abo konnte nicht deaktiviert werden.",
+            "confirm": "Beim Deaktivieren des Abos wird der Feed für jede aktuell abonnierte Kalender-App abgeschaltet."
+          },
+          "copy": {
+            "success": "Kalenderlink kopiert. Füge ihn in deiner Kalender-App unter „Kalender abonnieren“ oder „Per URL hinzufügen“ ein.",
+            "failure": "Kalenderlink konnte nicht kopiert werden."
+          }
         }
       },
       "fleetInvite": {
@@ -280,7 +318,8 @@
       "holoViewer": {
         "modelLoader": {
           "failure": "Wir konnten das angeforderte 3D-Modell nicht laden! Bitte versuche es später erneut."
-        }
+        },
+        "webglNotSupported": "Der 3D-Viewer ist auf diesem Gerät nicht verfügbar."
       },
       "cargoGridViewer": {
         "noCargoHolds": "Dieses Schiff hat keine Frachträume.",
@@ -338,6 +377,7 @@
           "sync": "Bist du sicher, dass du dieses Modell von RSI synchronisieren möchtest?",
           "syncMatrix": "Bist du sicher, dass du die Matrix-Daten für dieses Modell synchronisieren möchtest?",
           "syncScData": "Bist du sicher, dass du die SC-Daten für dieses Modell synchronisieren möchtest?",
+          "importPaints": "Bist du sicher, dass du die Lackierungen dieses Modells aus den Hangar-Daten importieren möchtest? Eine Lackierung, die die Quelle für eine ganze Serie angibt, wird für jedes Modell dieser Serie importiert.",
           "exchangeStoreImage": "Bist du sicher, dass du das Store-Bild durch das RSI-Bild ersetzen möchtest?",
           "reloadMatrix": "Bist du sicher, dass du die Modell-Matrix neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
           "reloadScData": "Bist du sicher, dass du die SC-Daten neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
@@ -357,11 +397,17 @@
         "modelHardpoint": {
           "destroy": "Sind Sie sicher, dass Sie diesen Aufhängungspunkt löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
         },
+        "modelPosition": {
+          "destroy": "Bist du sicher, dass du diese Position löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
         "modelHardpointLoadout": {
           "destroy": "Sind Sie sicher, dass Sie diese Konfiguration löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         "modelLoaner": {
           "destroy": "Sind Sie sicher, dass Sie dieses Leihschiff löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "modelSnubCraft": {
+          "destroy": "Bist du sicher, dass du dieses Snub Craft löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         "modelPaint": {
           "destroy": "Bist du sicher, dass du diese Lackierung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
@@ -389,6 +435,17 @@
         "adminFleet": {
           "destroy": "Bist du sicher, dass du diese Flotte löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
+        "adminNotifications": {
+          "destroyAll": "Bist du sicher, dass du alle Benachrichtigungen löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "destroySelected": {
+            "one": "Bist du sicher, dass du die ausgewählte Benachrichtigung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+            "other": "Bist du sicher, dass du die %{count} ausgewählten Benachrichtigungen löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+          }
+        },
+        "adminDestroyedFleet": {
+          "restore": "Bist du sicher, dass du diese Flotte wiederherstellen möchtest?",
+          "restorePurged": "Bist du sicher, dass du diese endgültig gelöschte Flotte wiederherstellen möchtest? Die Wiederherstellung erfolgt nach bestem Bemühen: Rollen, Bilder, Einladungslinks und Flottenfahrzeuge werden nicht wiederhergestellt."
+        },
         "adminUser": {
           "destroy": "Bist du sicher, dass du diesen Admin-Benutzer löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
@@ -403,6 +460,13 @@
         },
         "equipment": {
           "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
+        },
+        "notifications": {
+          "destroyAll": "Bist du sicher, dass du alle Benachrichtigungen löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "destroySelected": {
+            "one": "Bist du sicher, dass du die ausgewählte Benachrichtigung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+            "other": "Bist du sicher, dass du die %{count} ausgewählten Benachrichtigungen löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+          }
         },
         "unlistedModel": {
           "createModel": "Ein Schiff aus %{name} anlegen? Der nächste sc_data-Load ergänzt die Mechanik."
@@ -517,6 +581,279 @@
             "confirm": "Fracht dieses Schiffs leeren? Alle Buchungen werden gelöscht.",
             "success": "Fracht geleert.",
             "failure": "Fracht konnte nicht geleert werden."
+          }
+        }
+      },
+      "adminNotifications": {
+        "unread": "Benachrichtigung als ungelesen markiert",
+        "archived": "Benachrichtigung archiviert",
+        "unarchived": "Benachrichtigung zurück in den Posteingang verschoben",
+        "readAll": "Alle Benachrichtigungen als gelesen markiert",
+        "destroyed": "Benachrichtigung gelöscht",
+        "destroyedAll": "Alle Benachrichtigungen gelöscht",
+        "error": "Etwas ist schiefgelaufen",
+        "bulk": {
+          "read": {
+            "one": "%{count} Benachrichtigung als gelesen markiert",
+            "other": "%{count} Benachrichtigungen als gelesen markiert"
+          },
+          "unread": {
+            "one": "%{count} Benachrichtigung als ungelesen markiert",
+            "other": "%{count} Benachrichtigungen als ungelesen markiert"
+          },
+          "archived": {
+            "one": "%{count} Benachrichtigung archiviert",
+            "other": "%{count} Benachrichtigungen archiviert"
+          },
+          "unarchived": {
+            "one": "%{count} Benachrichtigung zurück in den Posteingang verschoben",
+            "other": "%{count} Benachrichtigungen zurück in den Posteingang verschoben"
+          },
+          "destroyed": {
+            "one": "%{count} Benachrichtigung gelöscht",
+            "other": "%{count} Benachrichtigungen gelöscht"
+          }
+        }
+      },
+      "fleets": {
+        "notifications": {
+          "update": {
+            "success": "Benachrichtigungseinstellungen gespeichert.",
+            "failure": "Benachrichtigungseinstellungen konnten nicht gespeichert werden."
+          }
+        },
+        "mission": {
+          "create": {
+            "success": "Mission erstellt.",
+            "failure": "Mission konnte nicht erstellt werden."
+          },
+          "update": {
+            "success": "Mission aktualisiert.",
+            "failure": "Mission konnte nicht aktualisiert werden."
+          },
+          "archive": {
+            "success": "Mission archiviert.",
+            "failure": "Mission konnte nicht archiviert werden."
+          },
+          "unarchive": {
+            "success": "Mission wiederhergestellt.",
+            "failure": "Mission konnte nicht wiederhergestellt werden."
+          },
+          "destroy": {
+            "success": "Mission gelöscht.",
+            "failure": "Mission konnte nicht gelöscht werden.",
+            "confirm": "Dadurch werden die Mission und alle ihre Teams, Schiffe und Slots endgültig gelöscht. Diese Aktion kann nicht rückgängig gemacht werden."
+          }
+        },
+        "missionTeam": {
+          "create": {
+            "success": "Team hinzugefügt.",
+            "failure": "Team konnte nicht hinzugefügt werden."
+          },
+          "update": {
+            "success": "Team aktualisiert.",
+            "failure": "Team konnte nicht aktualisiert werden."
+          },
+          "destroy": {
+            "success": "Team entfernt.",
+            "failure": "Team konnte nicht entfernt werden."
+          }
+        },
+        "missionShip": {
+          "create": {
+            "success": "Schiff hinzugefügt.",
+            "failure": "Schiff konnte nicht hinzugefügt werden."
+          },
+          "update": {
+            "success": "Schiff aktualisiert.",
+            "failure": "Schiff konnte nicht aktualisiert werden."
+          },
+          "destroy": {
+            "success": "Schiff entfernt.",
+            "failure": "Schiff konnte nicht entfernt werden."
+          },
+          "duplicate": {
+            "success": "Schiff dupliziert.",
+            "failure": "Schiff konnte nicht dupliziert werden."
+          }
+        },
+        "missionSlot": {
+          "create": {
+            "success": "Slot hinzugefügt.",
+            "failure": "Slot konnte nicht hinzugefügt werden."
+          },
+          "update": {
+            "success": "Slot aktualisiert.",
+            "failure": "Slot konnte nicht aktualisiert werden."
+          },
+          "destroy": {
+            "success": "Slot entfernt.",
+            "failure": "Slot konnte nicht entfernt werden."
+          }
+        },
+        "event": {
+          "create": {
+            "success": "Event erstellt.",
+            "failure": "Event konnte nicht erstellt werden."
+          },
+          "update": {
+            "success": "Event aktualisiert.",
+            "failure": "Event konnte nicht aktualisiert werden."
+          },
+          "archive": {
+            "success": "Event archiviert.",
+            "failure": "Event konnte nicht archiviert werden.",
+            "confirm": "Dieses Event archivieren? Mitglieder sehen es dann nicht mehr in der Liste der anstehenden Events."
+          },
+          "unarchive": {
+            "success": "Event aus dem Archiv wiederhergestellt.",
+            "failure": "Event konnte nicht wiederhergestellt werden."
+          },
+          "syncToDiscord": {
+            "success": "Event an Discord übertragen.",
+            "failure": "Event konnte nicht an Discord übertragen werden."
+          },
+          "destroy": {
+            "success": "Event gelöscht.",
+            "failure": "Event konnte nicht gelöscht werden.",
+            "confirm": "Dadurch wird das Event endgültig gelöscht. Diese Aktion kann nicht rückgängig gemacht werden."
+          },
+          "publish": {
+            "success": "Event veröffentlicht — die Anmeldung ist jetzt offen.",
+            "failure": "Event konnte nicht veröffentlicht werden."
+          },
+          "lockSignups": {
+            "success": "Anmeldungen gesperrt.",
+            "failure": "Anmeldungen konnten nicht gesperrt werden."
+          },
+          "unlockSignups": {
+            "success": "Anmeldungen wieder freigegeben.",
+            "failure": "Anmeldungen konnten nicht freigegeben werden."
+          },
+          "start": {
+            "success": "Event gestartet.",
+            "failure": "Event konnte nicht gestartet werden."
+          },
+          "complete": {
+            "success": "Event als abgeschlossen markiert.",
+            "failure": "Event konnte nicht abgeschlossen werden."
+          },
+          "cancel": {
+            "success": "Event abgesagt.",
+            "failure": "Event konnte nicht abgesagt werden.",
+            "confirm": "Dieses Event absagen? Die Teilnehmer werden benachrichtigt."
+          }
+        },
+        "eventSignup": {
+          "create": {
+            "success": "Du bist angemeldet.",
+            "failure": "Anmeldung fehlgeschlagen."
+          },
+          "update": {
+            "success": "Anmeldung aktualisiert.",
+            "failure": "Anmeldung konnte nicht aktualisiert werden."
+          },
+          "withdraw": {
+            "success": "Du hast dich vom Event abgemeldet.",
+            "failure": "Abmeldung fehlgeschlagen.",
+            "confirm": "Vom Event abmelden?"
+          },
+          "kick": {
+            "success": "Anmeldung entfernt.",
+            "failure": "Anmeldung konnte nicht entfernt werden.",
+            "confirm": "Anmeldung dieses Mitglieds entfernen?"
+          }
+        },
+        "eventAdmin": {
+          "create": {
+            "success": "Rolle vergeben.",
+            "failure": "Rolle konnte nicht vergeben werden."
+          },
+          "destroy": {
+            "success": "Rolle entzogen.",
+            "failure": "Rolle konnte nicht entzogen werden.",
+            "confirm": "%{username} die Rolle für dieses Event entziehen?"
+          }
+        },
+        "eventTeam": {
+          "create": {
+            "success": "Team hinzugefügt.",
+            "failure": "Team konnte nicht hinzugefügt werden."
+          },
+          "update": {
+            "success": "Team aktualisiert.",
+            "failure": "Team konnte nicht aktualisiert werden."
+          },
+          "destroy": {
+            "success": "Team entfernt.",
+            "failure": "Team konnte nicht entfernt werden.",
+            "confirm": "Dieses Team mit allen seinen Schiffen und Slots entfernen?"
+          }
+        },
+        "eventShip": {
+          "create": {
+            "success": "Schiff hinzugefügt.",
+            "failure": "Schiff konnte nicht hinzugefügt werden."
+          },
+          "update": {
+            "success": "Schiff aktualisiert.",
+            "failure": "Schiff konnte nicht aktualisiert werden."
+          },
+          "destroy": {
+            "success": "Schiff entfernt.",
+            "failure": "Schiff konnte nicht entfernt werden.",
+            "confirm": "Dieses Schiff und seine Slots entfernen?"
+          },
+          "expand": {
+            "success": "Slots hinzugefügt.",
+            "failure": "Slots konnten nicht hinzugefügt werden."
+          }
+        },
+        "eventSlot": {
+          "create": {
+            "success": "Slot hinzugefügt.",
+            "failure": "Slot konnte nicht hinzugefügt werden."
+          },
+          "update": {
+            "success": "Slot aktualisiert.",
+            "failure": "Slot konnte nicht aktualisiert werden."
+          },
+          "destroy": {
+            "success": "Slot entfernt.",
+            "failure": "Slot konnte nicht entfernt werden."
+          }
+        }
+      },
+      "notifications": {
+        "unread": "Benachrichtigung als ungelesen markiert",
+        "archived": "Benachrichtigung archiviert",
+        "unarchived": "Benachrichtigung zurück in den Posteingang verschoben",
+        "readAll": "Alle Benachrichtigungen als gelesen markiert",
+        "destroyed": "Benachrichtigung gelöscht",
+        "destroyedAll": "Alle Benachrichtigungen gelöscht",
+        "actionDone": "Fertig",
+        "actionFailed": "Das hat nicht funktioniert - die Benachrichtigung ist möglicherweise nicht mehr aktuell",
+        "error": "Etwas ist schiefgelaufen",
+        "bulk": {
+          "read": {
+            "one": "%{count} Benachrichtigung als gelesen markiert",
+            "other": "%{count} Benachrichtigungen als gelesen markiert"
+          },
+          "unread": {
+            "one": "%{count} Benachrichtigung als ungelesen markiert",
+            "other": "%{count} Benachrichtigungen als ungelesen markiert"
+          },
+          "archived": {
+            "one": "%{count} Benachrichtigung archiviert",
+            "other": "%{count} Benachrichtigungen archiviert"
+          },
+          "unarchived": {
+            "one": "%{count} Benachrichtigung zurück in den Posteingang verschoben",
+            "other": "%{count} Benachrichtigungen zurück in den Posteingang verschoben"
+          },
+          "destroyed": {
+            "one": "%{count} Benachrichtigung gelöscht",
+            "other": "%{count} Benachrichtigungen gelöscht"
           }
         }
       }

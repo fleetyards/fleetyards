@@ -8,6 +8,10 @@
         "badge": "Unterstützer",
         "tooltip": "Unterstützt FleetYards.net diesen Monat"
       },
+      "destroyedFleets": {
+        "discarded": "Verworfen",
+        "purged": "Endgültig gelöscht"
+      },
       "and": "und",
       "hide": "Verbergen",
       "show": "Anzeigen",
@@ -16,6 +20,7 @@
       "unavailable": "nicht verfügbar",
       "selected": "Ausgewählt",
       "actions": "Aktionen",
+      "status": "Status",
       "enabled": "Aktiviert",
       "disabled": "Deaktiviert",
       "collapse": "Einklappen",
@@ -296,7 +301,45 @@
         "addModel": {
           "nullablePrompt": "Schiff hinzufügen"
         },
-        "enough": "Don't you think 8 Ships are enough? ;)"
+        "enough": "Don't you think 8 Ships are enough? ;)",
+        "toggleSection": "%{section} ein-/ausblenden",
+        "shipCount": {
+          "one": "%{count} Schiff",
+          "other": "%{count} Schiffe"
+        },
+        "containersOfSize": "%{size} SCU Container",
+        "shieldGenerators": "Schildgeneratoren",
+        "armorHp": "Panzerungs-HP",
+        "fuelAndQuantum": "Treibstoff & Quantum",
+        "weaponPoolSize": "Waffen-Energiepool",
+        "crossSection": {
+          "x": "Querschnitt X",
+          "y": "Querschnitt Y",
+          "z": "Querschnitt Z"
+        },
+        "useAsBaseline": "Als Referenz verwenden",
+        "baseline": "Referenz",
+        "differencesOnly": "Nur Unterschiede",
+        "compareToBaseline": "Mit Referenz vergleichen",
+        "loadoutBySlot": "Loadout nach Slot",
+        "slots": {
+          "guns": "Hauptwaffen",
+          "turrets": "Geschütztürme",
+          "missiles": "Raketen",
+          "shields": "Schildgeneratoren",
+          "powerPlants": "Kraftwerke",
+          "coolers": "Kühler",
+          "quantumDrives": "Quantum-Antriebe",
+          "thrusters": "Haupttriebwerke",
+          "countermeasures": "Gegenmaßnahmen"
+        },
+        "legend": {
+          "best": "bester Wert der Zeile",
+          "worst": "schlechtester",
+          "share": "Anteil am besten Wert der Zeile",
+          "better": "besser als die Referenz",
+          "worse": "schlechter"
+        }
       },
       "cargoRoutes": "Frachtrouten",
       "uecPerUnit": "aUEC / Unit",
@@ -318,7 +361,24 @@
         "publicFleet": "Öffentliche Flotte",
         "publicStats": "Öffentliche Statistiken",
         "publicFleetStats": "Öffentliche Flottenstatistiken",
-        "discord": "Discord-Server",
+        "discord": {
+          "url": "Discord-Server",
+          "hint": "Verbinde einen Discord-Server, um Events als native geplante Events zu spiegeln. Mitglieder können direkt in Discord zusagen, und die Anmeldung wird zurück zu Fleetyards synchronisiert.",
+          "guildId": "Discord-Server-ID",
+          "channelId": "Voice-Channel-ID (optional)",
+          "webhookUrl": "Ankündigungs-Webhook-URL (optional)",
+          "installBotHint": "Öffnet die Discord-Installationsseite in einem neuen Tab — wähle dort den Server, auf den Events gespiegelt werden sollen.",
+          "statusOk": "Verbunden mit %{name}",
+          "statusCodes": {
+            "missing_token": "Der Fleetyards-Bot ist serverseitig nicht konfiguriert. Wende dich an einen Administrator.",
+            "missing_guild": "Gib zuerst eine Discord-Server-ID ein.",
+            "invalid_token": "Das Bot-Token ist ungültig. Wende dich an einen Administrator.",
+            "bot_not_in_guild": "Der Bot ist nicht auf diesem Server. Nutze den Installationslink, um ihn hinzuzufügen.",
+            "guild_not_found": "Discord kennt diese Server-ID nicht. Überprüfe den Wert.",
+            "discord_error": "Discord hat einen unerwarteten Fehler zurückgegeben.",
+            "request_failed": "Fleetyards konnte nicht erreicht werden. Versuche es erneut."
+          }
+        },
         "guilded": "Guilded-Server",
         "homepage": "Homepage",
         "twitch": "Twitch-Kanal",
@@ -370,7 +430,11 @@
             "memberships": "Mitglieder",
             "invites": "Einladungen",
             "vehicles": "Fahrzeuge",
-            "roles": "Rollen"
+            "roles": "Rollen",
+            "inventories": "Inventare",
+            "missions": "Missionen",
+            "events": "Events",
+            "notifications": "Benachrichtigungen"
           },
           "privileges": {
             "fleet:update": "Flotte bearbeiten",
@@ -397,7 +461,23 @@
             "fleet:roles:create": "Rollen erstellen",
             "fleet:roles:update": "Rollen bearbeiten",
             "fleet:roles:delete": "Rollen löschen",
-            "fleet:roles:manage": "Rollen verwalten"
+            "fleet:roles:manage": "Rollen verwalten",
+            "fleet:inventories:read": "Inventare anzeigen",
+            "fleet:inventories:create": "Inventare erstellen",
+            "fleet:inventories:update": "Inventare aktualisieren",
+            "fleet:inventories:delete": "Inventare löschen",
+            "fleet:inventories:manage": "Inventare verwalten",
+            "fleet:missions:read": "Missionen anzeigen",
+            "fleet:missions:create": "Missionen erstellen",
+            "fleet:missions:update": "Missionen aktualisieren",
+            "fleet:missions:delete": "Missionen löschen",
+            "fleet:missions:manage": "Missionen verwalten",
+            "fleet:events:read": "Events anzeigen",
+            "fleet:events:create": "Events erstellen",
+            "fleet:events:update": "Events aktualisieren",
+            "fleet:events:delete": "Events löschen",
+            "fleet:events:manage": "Events verwalten",
+            "fleet:notifications:manage": "Benachrichtigungseinstellungen verwalten"
           },
           "name": "Name",
           "rank": "Rang"
@@ -420,13 +500,38 @@
             "7_days": "7 days"
           },
           "limitOptions": {
-            "infinite": "No limit",
             "1": "1 use",
             "5": "5 uses",
             "10": "10 uses",
             "25": "25 uses",
             "50": "50 uses",
-            "100": "100 uses"
+            "100": "100 uses",
+            "infinite": "No limit"
+          }
+        },
+        "calendarSubscription": {
+          "intro": "Erzeuge einen privaten Link, mit dem Mitglieder die Events dieser Flotte in ihrer Kalender-App abonnieren können (Apple Kalender, Google Kalender, Outlook).",
+          "howTo": "Teile den Link oben mit deinen Mitgliedern. Sie fügen ihn in ihrer Kalender-App ein („Kalender abonnieren“ oder „Per URL hinzufügen“). Der Link ist privat — wer ihn hat, kann die Events dieser Flotte sehen."
+        },
+        "notifications": {
+          "inAppHeading": "In-App-Benachrichtigungen",
+          "inAppHint": "Lege fest, welche Änderungen im Event-Ablauf als In-App-Benachrichtigungen für Flottenmitglieder erscheinen.",
+          "events": {
+            "fleet_event": {
+              "published": "Event veröffentlicht",
+              "locked": "Anmeldungen gesperrt",
+              "unlocked": "Anmeldungen wieder freigegeben",
+              "starting_soon": "Event beginnt bald",
+              "started": "Event gestartet",
+              "completed": "Event abgeschlossen",
+              "cancelled": "Event abgesagt",
+              "archived": "Event archiviert",
+              "destroyed": "Event gelöscht"
+            },
+            "fleet_event_signup": {
+              "created": "Anmeldung hinzugefügt",
+              "withdrawn": "Anmeldung zurückgezogen"
+            }
           }
         },
         "inventories": {
@@ -449,6 +554,14 @@
         "public": "Im öffentlichen Hangar anzeigen?"
       },
       "source": "Quelle",
+      "loadout": {
+        "namePlaceholder": "Loadout-Name...",
+        "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
+        "empty": "Noch keine Loadouts. Erstelle eines, um loszulegen.",
+        "active": "Aktiv",
+        "activate": "Als aktiv setzen",
+        "planOn": "Plane dein Loadout auf"
+      },
       "model": {
         "hidden": "Versteckt?",
         "active": "Aktiv?",
@@ -460,7 +573,7 @@
         "length": "Länge",
         "beam": "Breite",
         "height": "Höhe",
-        "scIdentifier": "SC Identifier",
+        "scKey": "SC-Key",
         "price": "Preis",
         "pledgePrice": "Pledge-Preis",
         "erkulIdentifier": "Erkul Identifier",
@@ -479,6 +592,12 @@
         "hydrogenFuelTanks": "Hydrogen-Treibstofftanks",
         "quantumFuelTankSize": "Quantum-Tankgröße",
         "quantumFuelTanks": "Quantum-Treibstofftanks",
+        "externalFuelTanks": "Externe Treibstofftanks",
+        "externalFuelTanksTotal": "Gesamtkapazität",
+        "externalFuelTanksCount": "Pods",
+        "refuelBoom": "Betankungsausleger",
+        "refuelBoomArm": "Arm",
+        "refuelBoomNozzle": "Düse",
         "yaw": "Yaw",
         "pitch": "Pitch",
         "roll": "Roll",
@@ -503,13 +622,32 @@
         "topView": "Draufsicht",
         "topViewColored": "Draufsicht Farbig",
         "onSale": "Im Angebot",
+        "playerOwnable": "Für Spieler erwerbbar?",
         "salesPage": "Verkaufsseite",
         "addons": "Module & Upgrade-Kits",
         "storeImage": "Shop-Bild",
         "wiki": "Star Citizen Wiki",
+        "crewPositions": "Besatzungspositionen",
+        "needsCuration": "Kuratierung erforderlich",
+        "curatedPosition": "Manuell kuratierte Position",
         "baseModel": "Basismodell",
         "fleetchartOffsetLength": "Flottenübersicht Versatz Länge",
         "fleetchartOffsetBeam": "Flottenübersicht Versatz Breite",
+        "extendedLength": "Ausgefahrene Länge",
+        "extendedBeam": "Ausgefahrene Breite",
+        "extendedHeight": "Ausgefahrene Höhe",
+        "extendedFleetchartOffsetLength": "Ausgefahrener Flottenkarten-Versatz Länge",
+        "extendedFleetchartOffsetBeam": "Ausgefahrener Flottenkarten-Versatz Breite",
+        "defaultHolo": "Standard-Holo",
+        "extendedHolo": "Ausgefahrenes Holo",
+        "extendedTopView": "Ausgefahrene Draufsicht",
+        "extendedTopViewColored": "Ausgefahrene Draufsicht Farbig",
+        "extendedSideView": "Ausgefahrene Seitenansicht",
+        "extendedSideViewColored": "Ausgefahrene Seitenansicht Farbig",
+        "extendedFrontView": "Ausgefahrene Frontansicht",
+        "extendedFrontViewColored": "Ausgefahrene Frontansicht Farbig",
+        "extendedAngledView": "Ausgefahrene Schrägansicht",
+        "extendedAngledViewColored": "Ausgefahrene Schrägansicht Farbig",
         "state": {
           "retracted": "Eingefahren",
           "extended": "Ausgefahren"
@@ -520,7 +658,8 @@
           "ready": "Hangar-bereit",
           "flight-ready": "Flugbereit",
           "announced": "Angekündigt"
-        }
+        },
+        "scIdentifier": "SC Identifier"
       },
       "models": {
         "extraColumns": "Spalten",
@@ -565,9 +704,199 @@
         "crew": "Besatzung",
         "speed": "Geschwindigkeit",
         "cargo": "Fracht",
+        "combat": "Kampf",
         "hardpoints": "Aufhängungspunkte",
         "missileOptions": "Raketenoptionen (falls verfügbar)",
         "topView": "Top View"
+      },
+      "flight": {
+        "title": "Flug",
+        "scm": "Kampfgeschwindigkeit",
+        "nav": "Reisegeschwindigkeit",
+        "boost": "Boost",
+        "boostSub": "Nachbrenner",
+        "reverse": "Rückwärts",
+        "maneuverability": "Manövrierfähigkeit",
+        "fuel": "Treibstoff",
+        "fuelHydrogen": "Hydrogen",
+        "fuelQuantum": "Quantum",
+        "hint": "Das geboostete Handling skaliert mit den Triebwerks-Pips; alles ist null, wenn das Triebwerk keine Energie hat."
+      },
+      "base": {
+        "price": "Preis",
+        "priceInGame": "Im Spiel",
+        "pricePledge": "Pledge",
+        "availability": "Verfügbarkeit"
+      },
+      "availability": {
+        "title": "Verfügbarkeit",
+        "buy": "Kaufen",
+        "rent": "Mieten",
+        "cheapest": {
+          "buy": "Günstigster Kauf",
+          "rent": "Günstigste Miete"
+        },
+        "locations": {
+          "one": "%{count} Standort",
+          "other": "%{count} Standorte"
+        },
+        "empty": "Keine bekannten Kauf- oder Mietstandorte.",
+        "timeRange": {
+          "1-day": "1 Tag",
+          "3-days": "3 Tage",
+          "7-days": "7 Tage",
+          "30-days": "30 Tage"
+        }
+      },
+      "cargo": {
+        "title": "Fracht",
+        "holdsSub": "in %{count} Frachträumen",
+        "maxContainerSub": "größte passende Box",
+        "containers": "Containerkapazität",
+        "hint": "Maximale Anzahl an Containern jeder Größe, die auf die Frachtraster passen; der Balken zeigt, welchen Anteil der Gesamtkapazität das ausfüllt."
+      },
+      "fuelTanks": {
+        "capacitySub": "in %{count} Pods",
+        "podsSub": "externe Aufhängungen",
+        "components": "Pod-Typen",
+        "perPod": "pro Pod",
+        "hint": "Treibstoff in Pods an externen Aufhängungspunkten; der Balken zeigt den Anteil jedes Typs an der Gesamtkapazität."
+      },
+      "refuelBoom": {
+        "fuelFlowSub": "Hydrogen-Transfer",
+        "quantumFlowSub": "Quantum-Transfer",
+        "captureRadiusSub": "Andocktoleranz",
+        "equipment": "Ausrüstung",
+        "hint": "Transferraten des Betankungsauslegers und die Andocktoleranz seiner Düse."
+      },
+      "combat": {
+        "title": "Kampf",
+        "dps": "Burst DPS",
+        "dpsSub": "%{count} Waffen",
+        "sustained": "Dauer-DPS",
+        "sustainedSub": "mit Regen & Hitze",
+        "alpha": "Alpha",
+        "alphaSub": "pro Salve",
+        "weapons": "Waffen",
+        "missileDamage": "Raketenschaden",
+        "composition": "Schadensverteilung",
+        "damagePhysical": "Physisch",
+        "damageEnergy": "Energie",
+        "damageDistortion": "Distortion",
+        "damageThermal": "Thermisch",
+        "hint": "DPS aus dem Standard-Loadout. Der Dauerwert berücksichtigt die Energiepool-Regeneration und den Überhitzungszyklus jeder Waffe. Raketen sind ausgenommen."
+      },
+      "power": {
+        "title": "Energieverteilung",
+        "scm": "SCM",
+        "nav": "NAV",
+        "reset": "Zurücksetzen",
+        "auto": "Auto",
+        "aimAssist": "Zielhilfe",
+        "cooling": "Kühlung",
+        "ir": "IR",
+        "em": "EM",
+        "cs": "CS",
+        "csAxisHint": "Klicke, um die Achse zu wechseln (x / y / z)",
+        "segmentsUsed": "%{used} / %{total} Segmente",
+        "hint": "Verteile Energie zwischen den Systemen. Der Dauer-DPS der Waffen skaliert mit der Energie, die sie erhalten; der Rest wird automatisch ausbalanciert.",
+        "families": {
+          "weapon": "Waffen",
+          "shield": "Schilde",
+          "engine": "Triebwerk",
+          "radar": "Radar",
+          "coolers": "Kühler",
+          "qdrive": "Quantum-Antrieb",
+          "qed": "QED",
+          "emp": "EMP",
+          "lifeSupport": "Lebenserhaltung",
+          "miningLaser": "Bergbaulaser",
+          "salvage": "Bergung",
+          "tractorBeam": "Traktorstrahl",
+          "towingbeam": "Abschleppstrahl"
+        }
+      },
+      "defense": {
+        "title": "Verteidigung",
+        "shieldHp": "Schild-HP",
+        "shieldHpSub": "%{count} Generatoren",
+        "shieldRegen": "Regeneration",
+        "shieldResistances": "Resistenz",
+        "shieldAbsorption": "Absorption",
+        "armor": "Panzerung",
+        "deflection": "Ablenkung",
+        "armorReduction": "Schadensreduzierung",
+        "armorSelfResistance": "Eigenresistenz",
+        "armorSignature": "Signatur",
+        "damageType": {
+          "physical": "Phys",
+          "energy": "Energie",
+          "distortion": "Dist.",
+          "thermal": "Thermisch"
+        },
+        "signature": {
+          "electromagnetic": "EM",
+          "infrared": "IR",
+          "crossSection": "CS"
+        },
+        "hint": "Schild- und Panzerungswerte aus dem Standard-Loadout. Eine Absorption unter 100 % bedeutet, dass dieser Schadenstyp den Rumpf erreicht, während die Schilde noch stehen.",
+        "openDeflectionCheck": "Ablenkungsprüfung"
+      },
+      "deflectionCheck": {
+        "title": "Ablenkungsprüfung",
+        "intro": "— welche Waffen durchdringen die Verteidigung?",
+        "noArmor": "Dieses Schiff hat keine Panzerung, es wird also nichts abgelenkt.",
+        "allSizes": "Alle",
+        "deflected": "abgelenkt",
+        "pierce": "durchdringen",
+        "weapon": "Waffe",
+        "boundary": "Ablenkungsgrenze",
+        "alpha": "Alpha",
+        "threshold": "Schwelle überschritten",
+        "absorbed": "absorbiert",
+        "versus": "vs",
+        "hoverHint": "Fahre über eine Waffe, um die Aufschlüsselung nach Schadenstyp zu sehen.",
+        "note": "Alpha wird pro Projektil verglichen, nachdem der Schild seinen Teil geschluckt hat — eine Waffe durchdringt, wenn sie die Ablenkung bei mindestens einem Schadenstyp übertrifft. Typen, die die Schilde vollständig absorbieren, erreichen die Panzerung nie und werden daher als absorbiert statt als abgelenkt aufgeführt: vom Schild gestoppt, nicht vom Rumpf. Die Schildabsorption wird über den veröffentlichten Min–Max-Bereich anhand der Schildgesundheit interpoliert, und die Panzerungsablenkung skaliert linear mit der Panzerungsgesundheit. Laserstrahlen sind ausgenommen — sie verursachen kontinuierlichen Schaden, es gibt also kein Alpha pro Schuss zum Prüfen.",
+        "margin": "Abstand",
+        "reachesArmor": "Erreicht die Panzerung",
+        "stoppedByShields": "Schild absorbiert",
+        "verdict": {
+          "absorbed": "Absorbiert",
+          "deflected": "Abgelenkt",
+          "pierces": "Durchdrungen"
+        },
+        "shieldHealth": "Schildgesundheit",
+        "armorHealth": "Panzerungsgesundheit",
+        "absorb": "Absorb.",
+        "defl": "Abl.",
+        "type": "Typ",
+        "size": "Größe"
+      },
+      "hull": {
+        "category": {
+          "vital": "Lebenswichtig",
+          "secondary": "Sekundär",
+          "breakable": "Zerstörbar",
+          "subpart": "Unterteile",
+          "cosmetic": "Kosmetisch"
+        },
+        "composition": "Rumpfzusammensetzung",
+        "door": "Tür",
+        "doors": "Türen",
+        "doorsNote": "Zerstörbare Innentüren sind ein eigener Bereich — sie haben ihre eigene Gesundheit und zählen nicht zu den Rumpf-HP.",
+        "doorsSub": "%{count} zerstörbar",
+        "hint": "Die Rumpf-HP sind die Summe der Gesundheit aller Teile.",
+        "hullHp": "Rumpf-HP",
+        "hullHpSub": "gesamt über alle Teile",
+        "integrity": "Rumpfintegrität",
+        "noHp": "keine HP",
+        "parts": "Rumpfteile",
+        "partsNote": "Die Teile sind nach Gesundheit sortiert; kosmetische Teile (Türen, Leitern, Klappen) haben keine eigene Gesundheit. Die Spieldateien enthalten keine Eltern-Kind-Verknüpfungen, daher ist dies eine flache Liste und kein Strukturbaum.",
+        "partsSub": "über %{count} Kategorien",
+        "partsTree": "Teile · damageMax",
+        "showParts": "Rumpfteile anzeigen",
+        "title": "Rumpf",
+        "totalHp": "Gesamte Rumpf-HP"
       },
       "manufacturer": {
         "longName": "Vollständiger Name",
@@ -633,6 +962,23 @@
         "dockType": "Dock-Typ",
         "shipSize": "Schiffsgröße"
       },
+      "modelPosition": {
+        "name": "Name",
+        "positionType": "Positionstyp",
+        "source": "Quelle",
+        "position": "Sortierreihenfolge",
+        "types": {
+          "pilot": "Pilot",
+          "copilot": "Co-Pilot",
+          "turret_gunner": "Geschützturm-Schütze",
+          "engineer": "Ingenieur",
+          "gunner": "Schütze",
+          "loadmaster": "Ladungsmeister",
+          "passenger": "Passagier",
+          "operator": "Operator",
+          "custom": "Benutzerdefiniert"
+        }
+      },
       "modelHardpoint": {
         "name": "Name",
         "key": "Schlüssel",
@@ -675,13 +1021,19 @@
         "hidden": "Versteckt?",
         "loanerModel": "Leihmodell"
       },
+      "modelSnubCraft": {
+        "snubCraft": "Snub Craft"
+      },
       "modelPaint": {
         "hidden": "Versteckt?",
         "active": "Aktiv?",
         "onSale": "Im Angebot",
         "pledgePrice": "Pledge-Preis",
         "productionStatus": "Produktionsstatus",
-        "productionNote": "Produktionshinweis"
+        "productionNote": "Produktionshinweis",
+        "copyHint": "Wähle das Zielschiff, auf das diese Lackierung kopiert werden soll. Die Lackierungsdaten werden beim Kopieren nicht verändert.",
+        "bulkCopyHint": "Wähle das Zielschiff, auf das diese %{count} Lackierungen kopiert werden sollen. Die Lackierungsdaten werden beim Kopieren nicht verändert.",
+        "copySameModel": "Das Zielschiff muss sich vom Ausgangsschiff unterscheiden."
       },
       "component": {
         "size": "Size: %{size}",
@@ -714,9 +1066,120 @@
             "Retro": "Fix"
           }
         },
+        "refuelBoom": {
+          "captureRadius": "Fangradius",
+          "fuelFlowRate": "Treibstoff-Durchflussrate",
+          "quantumFuelFlowRate": "Quantum-Durchflussrate"
+        },
+        "weapons": {
+          "dps": "DPS",
+          "burstDps": "Burst DPS",
+          "sustainedDps": "Dauer-DPS",
+          "efficiency": "Effizienz",
+          "penetration": "Durchschlag",
+          "fireRate": "Feuerrate",
+          "speed": "Geschwindigkeit",
+          "range": "Reichweite",
+          "ammo": "Munition",
+          "ammoCost": "Munitionskosten",
+          "pool": "Energiepool",
+          "maxRegen": "Max. Regen/s",
+          "costPerShot": "Energie/Schuss",
+          "heatPerShot": "Hitze/Schuss",
+          "heatPerSecond": "Hitze/s",
+          "chargeTime": "Ladezeit",
+          "fullDamageRange": "Volle DMG-Reichweite",
+          "zeroDamageRange": "Null-DMG-Reichweite",
+          "damagePhysical": "Physisch",
+          "damageEnergy": "Energie",
+          "damageDistortion": "Distortion",
+          "damageThermal": "Thermisch"
+        },
+        "missiles": {
+          "damage": "Schaden",
+          "speed": "Geschwindigkeit",
+          "range": "Reichweite",
+          "lockRange": "Erfassungsreichweite",
+          "lockTime": "Erfassungszeit",
+          "trackingSignal": "Tracking"
+        },
+        "tractorBeams": {
+          "maxForce": "Max. Kraft",
+          "minForce": "Min. Kraft",
+          "range": "Reichweite",
+          "cone": "Kegel",
+          "tetherBreak": "Abrissgrenze",
+          "cargoForce": "Frachtkraft",
+          "cargoRange": "Frachtreichweite",
+          "towForce": "Schleppkraft",
+          "towDistance": "Schleppreichweite",
+          "quantumTowMass": "QT-Massenlimit",
+          "rotationSpeed": "Rotation",
+          "moveSpeed": "Bewegungstempo"
+        },
+        "shields": {
+          "hp": "HP",
+          "regen": "Regen",
+          "regenTime": "Regen-Zeit",
+          "downedRegenDelay": "Ausfall-Verzögerung",
+          "damagedRegenDelay": "Schadens-Verzögerung",
+          "resistancePhysical": "Phys. Res.",
+          "resistanceEnergy": "Energie-Res.",
+          "resistanceDistortion": "Dist.-Res."
+        },
+        "coolers": {
+          "coolingRate": "Kühlrate"
+        },
+        "powerPlants": {
+          "output": "Leistung",
+          "pips": "Pips"
+        },
+        "quantumDrives": {
+          "speed": "Geschwindigkeit",
+          "range": "Reichweite",
+          "fuelConsumption": "Verbrauch",
+          "spoolUpTime": "Spool-Up",
+          "cooldownTime": "Abklingzeit",
+          "splineSpeed": "Orbit",
+          "accel": "Beschl."
+        },
+        "jumpDrives": {
+          "fuelEfficiency": "Treibstoffeffizienz",
+          "alignRate": "Ausrichtungsrate",
+          "tuneRate": "Abstimmungsrate",
+          "alignDecay": "Ausrichtungsverfall",
+          "tuneDecay": "Abstimmungsverfall"
+        },
+        "radar": {
+          "aimAssistRange": "Zielhilfe-Reichweite",
+          "ir": "IR",
+          "em": "EM",
+          "cs": "CS",
+          "rs": "RS"
+        },
+        "armor": {
+          "hp": "HP",
+          "physical": "Physisch",
+          "energy": "Energie",
+          "distortion": "Distortion",
+          "thermal": "Thermisch",
+          "deflectPhysical": "Phys. Abl.",
+          "deflectEnergy": "Energie-Abl.",
+          "selfPhysical": "Eigen-Res. Phys.",
+          "selfEnergy": "Eigen-Res. Energie"
+        },
+        "fuelIntakes": {
+          "pushRate": "Förderrate",
+          "minRate": "Min. Rate"
+        },
         "sources": {
           "game_files": "Spieldateien",
           "ship_matrix": "Ship Matrix"
+        },
+        "density": {
+          "title": "Ansicht",
+          "compact": "Kompakt",
+          "expanded": "Erweitert"
         },
         "fuelTanks": {
           "hydrogen": "Hydrogen-Treibstofftank",
@@ -730,9 +1193,12 @@
           "propulsion": "Antrieb",
           "thruster": "Triebwerk",
           "weapon": "Waffen",
+          "defense": "Verteidigung",
           "other": "Sonstige",
           "auxiliary": "Hilfssysteme",
-          "seat": "Sitze"
+          "seat": "Sitze",
+          "external_fuel_tank": "Externe Treibstofftanks",
+          "refuel_boom": "Betankungsausleger"
         },
         "types": {
           "radar": "Radar",
@@ -774,6 +1240,8 @@
           "shieldgenerator": "Schildgeneratoren",
           "fuel_intakes": "Treibstoffeinlässe",
           "fueltanks": "Treibstofftanks",
+          "external_fuel_tanks": "Externe Treibstofftanks",
+          "refuel_boom": "Betankungsausleger",
           "quantumdrive": "Quantum-Antriebe & Sprungmodule",
           "jump_modules": "Sprungmodule",
           "jumpdrive": "Sprungmodule",
@@ -807,6 +1275,7 @@
       },
       "user": {
         "rsiHandle": "Handle",
+        "rsiHandleVerified": "Über Citizen iD verifiziert",
         "location": "Standort",
         "currentSystem": "Aktuelles Sternensystem",
         "tester": "Tester?",
@@ -820,7 +1289,14 @@
         "hideOwner": "Besitz für Flotten verbergen",
         "tracking": "Anonyme Nutzungsstatistik erlauben",
         "lastActiveAt": "Zuletzt aktiv",
-        "confirmedAt": "Bestätigt am"
+        "confirmedAt": "Bestätigt am",
+        "dateFormat": "Datumsformat",
+        "dateFormats": {
+          "dmy_dots": "31.12.2026",
+          "dmy_slash": "31/12/2026",
+          "mdy_slash": "12/31/2026",
+          "ymd_dash": "2026-12-31"
+        }
       },
       "adminUser": {
         "superAdmin": "Super-Admin",
@@ -895,7 +1371,11 @@
       "all": "Alle",
       "supportUs": "Support FleetYards.net",
       "account": {
-        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
+        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
+        "calendarSubscription": {
+          "intro": "Erzeuge einen privaten Link, um die Events, für die du angemeldet bist, in deiner persönlichen Kalender-App zu sehen (Apple Kalender, Google Kalender, Outlook).",
+          "howTo": "Füge den Link in deiner Kalender-App unter „Kalender abonnieren“ oder „Per URL hinzufügen“ ein. Wer diesen Link hat, sieht die Events, für die du angemeldet bist — halte ihn privat."
+        }
       },
       "filters": {
         "components": {
@@ -1008,11 +1488,13 @@
           "priceGt": "Preis >=",
           "willItFit": "Will it Fit?",
           "withCargo": "Mit Fracht?",
-          "scIdentifierBlank": "Ohne SC-Kennung?",
+          "scKeyBlank": "Ohne SC-Key?",
+          "positionsNeedCuration": "Positionen kuratierungsbedürftig?",
           "fleetchartImageBlank": "Ohne Flottenübersicht-Bild?",
           "holoBlank": "Ohne Holo?",
           "frontViewBlank": "Ohne Frontansicht-Bild?",
-          "topViewColoredBlank": "Ohne farbige Draufsicht?"
+          "topViewColoredBlank": "Ohne farbige Draufsicht?",
+          "scIdentifierBlank": "Ohne SC-Kennung?"
         },
         "modelModules": {
           "name": "Name"
@@ -1032,6 +1514,9 @@
           "linked": "Konto-Verknüpfung",
           "linkedOnly": "Verknüpft",
           "unlinkedOnly": "Nicht verknüpft"
+        },
+        "adminNotifications": {
+          "search": "Suchen"
         },
         "images": {
           "station": "Station",
@@ -1062,6 +1547,9 @@
           "inviteUrls": {
             "expiresAfter": "Expire after",
             "limit": "Max number of uses"
+          },
+          "logistics": {
+            "search": "Artikel suchen..."
           }
         },
         "manufacturer": "Hersteller",
@@ -1086,6 +1574,9 @@
           "sellPriceGt": "Verkaufspreis >=",
           "sellPriceLt": "Verkaufspreis <=",
           "storeImageBlank": "Ohne Shop-Bild?"
+        },
+        "notifications": {
+          "search": "Suchen"
         }
       },
       "station": {
@@ -1316,10 +1807,6 @@
           "owner": "Besitzer"
         }
       },
-      "erkul": {
-        "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
-      },
       "logistics": {
         "inventoryCount": "inventories",
         "pending": "pending",
@@ -1435,6 +1922,292 @@
         "unmeasured": "%{count} noch nicht vermessen"
       },
       "hangarInventories": "Inventare",
+      "adminNotifications": {
+        "inbox": "Posteingang",
+        "archive": "Archiv",
+        "unreadOnly": "Nur ungelesene",
+        "status": "Status",
+        "severity": "Schweregrad",
+        "type": "Typ",
+        "selectPrompt": "Wähle eine Benachrichtigung, um sie zu lesen",
+        "noBody": "Diese Benachrichtigung enthält keine weiteren Details.",
+        "lastSeen": "Zuletzt gesehen",
+        "expires": "Läuft ab",
+        "severities": {
+          "info": "Info",
+          "warning": "Warnung",
+          "error": "Fehler"
+        },
+        "types": {
+          "paints_import": "Lackierungs-Import",
+          "modules_import": "Modul-Import",
+          "loaner_sync": "Leihschiff-Sync",
+          "uex_prices_import": "UEX Preis-Sync",
+          "uex_commodity_prices_import": "UEX Waren-Sync",
+          "new_supporter": "Neuer Unterstützer",
+          "rsi_api_blocked": "RSI-API blockiert",
+          "rsi_api_unblocked": "RSI-API wiederhergestellt",
+          "weekly_stats": "Wochenbericht",
+          "ship_matrix_import": "Ship-Matrix-Import",
+          "sc_data_import": "sc_data-Import",
+          "import_run": "Importieren"
+        }
+      },
+      "optional": "optional",
+      "notificationActions": {
+        "open": "Öffnen",
+        "openHangar": "Hangar öffnen",
+        "openWishlist": "Wunschliste öffnen",
+        "openModel": "Schiff anzeigen",
+        "openInvite": "Einladung ansehen",
+        "reviewRequest": "Anfrage prüfen",
+        "openMembers": "Mitglieder anzeigen",
+        "openFleet": "Flotte öffnen",
+        "openInventory": "Inventar öffnen",
+        "openEvent": "Event öffnen",
+        "openRoster": "Anmeldungen anzeigen",
+        "addToCalendar": "Zum Kalender hinzufügen",
+        "openStore": "Pledge Store",
+        "accept": "Akzeptieren",
+        "decline": "Ablehnen",
+        "signUp": "Anmelden",
+        "withdraw": "Abmelden",
+        "syncAgain": "Erneut synchronisieren",
+        "markAsBought": "Als gekauft markieren",
+        "unavailable": "Das ist nicht mehr verfügbar."
+      },
+      "notificationTypes": {
+        "channels": {
+          "app": "App",
+          "mail": "Mail",
+          "push": "Push"
+        },
+        "groups": {
+          "account": "Konto & Hangar",
+          "fleetMembership": "Flottenmitgliedschaft",
+          "fleetEvents": "Flotten-Events"
+        },
+        "hangar_create": "Hangar erstellt",
+        "hangar_destroy": "Hangar entfernt",
+        "hangar_sync_finished": "Hangar-Sync abgeschlossen",
+        "hangar_sync_failed": "Hangar-Sync fehlgeschlagen",
+        "wishlist_create": "Zur Wunschliste hinzugefügt",
+        "wishlist_destroy": "Von der Wunschliste entfernt",
+        "model_on_sale": "Modell im Angebot",
+        "new_model": "Neues Modell veröffentlicht",
+        "fleet_invite": "Flotteneinladung erhalten",
+        "fleet_member_requested": "Mitgliedschaft angefragt",
+        "fleet_member_accepted": "Mitgliedschaft akzeptiert",
+        "fleet_request_accepted": "Beitrittsanfrage akzeptiert",
+        "fleet_inventory_item_added": "Flotteninventar-Eintrag hinzugefügt",
+        "fleet_event_published": "Event veröffentlicht",
+        "fleet_event_locked": "Event-Anmeldungen gesperrt",
+        "fleet_event_starting_soon": "Event beginnt bald",
+        "fleet_event_started": "Event gestartet",
+        "fleet_event_completed": "Event abgeschlossen",
+        "fleet_event_cancelled": "Event abgesagt",
+        "fleet_event_signup_added": "Neue Anmeldung",
+        "fleet_event_signup_withdrawn": "Anmeldung zurückgezogen",
+        "fleet_event_signup_confirmed": "Anmeldung bestätigt",
+        "fleet_event_signup_assigned": "Einem Slot zugewiesen",
+        "fleet_event_signup_kicked": "Aus einem Slot entfernt",
+        "allInGroup": "Alles in dieser Gruppe"
+      },
+      "fleets": {
+        "missions": {
+          "title": "Titel",
+          "description": "Beschreibung",
+          "team": "Team",
+          "teams": "Teams",
+          "ship": "Schiff",
+          "ships": "Schiffe",
+          "slot": "Slot",
+          "slots": "Slots",
+          "noMissions": "Noch keine Missionen.",
+          "noTeams": "Noch keine Teams hinzugefügt.",
+          "noShips": "Noch keine Schiffe hinzugefügt.",
+          "noSlots": "Noch keine Slots hinzugefügt.",
+          "archivedTab": "Archiviert",
+          "activeTab": "Aktiv",
+          "archived": "Archiviert",
+          "modelSpecific": "Bestimmtes Schiff",
+          "modelList": "Eines von diesen",
+          "modelListHint": "Der Platz nimmt eines der Schiffe, die du auswählst.",
+          "allowedShips": "Passende Schiffe",
+          "anyOf": "Eines von",
+          "filterRange": "Filterbereich",
+          "classification": "Klassifizierung",
+          "focus": "Fokus",
+          "minSize": "Min. Größe",
+          "maxSize": "Max. Größe",
+          "minCrew": "Min. Besatzung",
+          "minCrewOverride": "Überschreiben",
+          "minCrewOverrideLabel": "Min. Besatzung überschreiben",
+          "minCrewOverrideHint": "Leer lassen, um die Standard-Mindestbesatzung des Schiffs zu verwenden.",
+          "minCargo": "Min. Fracht (SCU)",
+          "shipFilters": "Schiffsfilter",
+          "createdBy": "Erstellt von",
+          "seats": "Sitze",
+          "category": "Kategorie",
+          "coverImage": "Titelbild",
+          "coverPresets": "Aus Beispielen wählen",
+          "scenario": "Szenario",
+          "categories": {
+            "other": "Sonstige",
+            "ship_combat": "Schiffskampf",
+            "ground_combat": "Bodenkampf",
+            "combined_combat": "Kombinierter Kampf",
+            "mining": "Bergbau",
+            "salvage": "Bergung",
+            "cargo_hauling": "Frachttransport",
+            "exploration": "Erkundung"
+          }
+        },
+        "events": {
+          "title": "Titel",
+          "description": "Beschreibung",
+          "briefing": "Briefing",
+          "startsAt": "Beginnt am",
+          "endsAt": "Endet am",
+          "timezone": "Zeitzone",
+          "location": "Event-Ort",
+          "meetupLocation": "Treffpunkt",
+          "visibility": "Sichtbarkeit",
+          "maxAttendees": "Max. Teilnehmer",
+          "maxAttendeesValue": "Max. %{count} Teilnehmer",
+          "autoLockEnabled": "Anmeldungen automatisch sperren",
+          "autoLockMinutesBefore": "Minuten vor Start sperren",
+          "recurring": "Wiederholung",
+          "recurringHint": "Erzeuge dieses Event automatisch nach einem wiederkehrenden Zeitplan. Mitglieder melden sich pro Termin an.",
+          "recurringSummary": "Wiederholt sich %{interval}",
+          "recurringUntil": "Wiederholt sich %{interval} bis %{date}",
+          "recurringForCount": "Wiederholt sich %{interval} (%{count} Termine)",
+          "viewSeries": "Serie anzeigen",
+          "recurrenceInterval": "Wiederholen alle",
+          "recurrenceEnd": "Endet",
+          "recurrenceEndNever": "Nie",
+          "recurrenceEndOn": "Am Datum",
+          "recurrenceEndAfter": "Nach",
+          "recurrenceEndOccurrences": "Terminen",
+          "recurrence": {
+            "daily": "täglich",
+            "weekly": "wöchentlich",
+            "biweekly": "alle zwei Wochen",
+            "monthly": "monatlich"
+          },
+          "occurrencesSection": "Anstehende Termine",
+          "skipOccurrence": "Diesen Termin überspringen",
+          "overrideOccurrence": "Termin am %{date} überschreiben",
+          "overrideOccurrenceShort": "Diesen einen bearbeiten",
+          "overrideOccurrenceHint": "Überschreibe Felder für diesen einzelnen Termin. Leer lassen, um sie vom wiederkehrenden Event zu übernehmen.",
+          "endSeriesHere": "Hier und ab jetzt beenden",
+          "excludedBadge": "Übersprungen",
+          "noUpcomingOccurrences": "Keine anstehenden Termine in den nächsten 12 Wochen.",
+          "endSeriesConfirm": "Die Wiederholung nach diesem Datum beenden? Zukünftige Termine werden nicht mehr erzeugt.",
+          "skipOccurrenceSuccess": "Termin übersprungen.",
+          "endSeriesSuccess": "Serie ab diesem Datum beendet.",
+          "cancelledReason": "Absagegrund",
+          "noEvents": "Noch keine Events.",
+          "noUpcoming": "Keine anstehenden Events.",
+          "noPast": "Keine vergangenen Events.",
+          "createdBy": "Erstellt von",
+          "signups": "Anmeldungen",
+          "signupsCount": "%{count} Anmeldungen",
+          "signupYou": "Du",
+          "youAreHere": "Du bist hier",
+          "attendance": "Teilnahme",
+          "signupsLockedHint": "Die Anmeldungen für dieses Event sind gesperrt.",
+          "noOverview": "Noch keine Beschreibung und kein Briefing.",
+          "alreadySignedUpHint": "Du bist bereits für einen anderen Slot angemeldet. Melde dich zuerst ab, um zu wechseln.",
+          "slotTakenHint": "Dieser Slot ist bereits belegt.",
+          "currentSlot": "Aktueller Slot",
+          "currentSlotHint": "Das ist der Slot, in dem sich die Anmeldung aktuell befindet.",
+          "takenBy": "Belegt von %{username}",
+          "slotPickerHint": "Wähle einen Slot für diese Anmeldung. Bereits belegte oder nicht verfügbare Slots sind deaktiviert.",
+          "signupCtaHint": "Melde dich für das Event an — du kannst jetzt einen bestimmten Slot wählen oder dich später von einem Admin zuweisen lassen.",
+          "noSlotYet": "Noch kein Slot",
+          "signupApproval": "Anmeldebestätigung",
+          "signupApprovalInherit": "Vom Event übernehmen",
+          "signupStatuses": {
+            "confirmed": "Bestätigt",
+            "tentative": "Vorläufig",
+            "interested": "Interessiert",
+            "pending": "Bestätigung ausstehend",
+            "withdrawn": "Zurückgezogen"
+          },
+          "signupApprovals": {
+            "direct": "Direkt",
+            "confirmation_required": "Bestätigung erforderlich"
+          },
+          "unassignedSignupsHint": "Diese Mitglieder haben sich für das Event angemeldet, haben aber noch keinen Slot. Weise sie unten zu oder entferne die Anmeldung.",
+          "taken": "Belegt",
+          "grantedRoles": "Vergebene Rollen",
+          "noEventAdminsYet": "Noch keine weiteren Admins oder Moderatoren.",
+          "creator": "Event-Ersteller",
+          "eventTeamHint": "Gib anderen Mitgliedern Admin- oder Moderatorenrechte für dieses Event. Admins können es bearbeiten, Moderatoren können Anmeldungen verwalten.",
+          "eventRole": "Rolle",
+          "eventRoles": {
+            "admin": "Admin",
+            "moderator": "Moderator"
+          },
+          "memberPicker": "Mitglied",
+          "spawnedFromMission": "Aus Mission erstellt",
+          "spawnedEvents": "Erstellte Events",
+          "fromMission": "Aus Mission",
+          "pickTemplate": "Vorlage wählen",
+          "pickTemplateHint": "Optional mit einer Missionsvorlage starten — die Felder werden vorausgefüllt und das Event wird damit verknüpft.",
+          "noTemplate": "Keine Vorlage",
+          "noTemplateHint": "Das Event von Grund auf erstellen.",
+          "changeTemplate": "Vorlage wechseln",
+          "clearTemplate": "Vorlage entfernen",
+          "freeSlot": "Freier Slot",
+          "myVehicle": "Mein Fahrzeug",
+          "selectVehicle": "Fahrzeug auswählen (optional)",
+          "vehicleMismatchHint": "Das ausgewählte Fahrzeug passt nicht zu den Anforderungen dieses Slots.",
+          "noFittingInHangar": "In deinem Hangar passt nichts zu diesem Slot. Du kannst dich trotzdem anmelden und das Fahrzeug leer lassen.",
+          "vehicleFitsHint": "Bringt ein passendes Fahrzeug mit.",
+          "noMatchingVehicle": "Keine Anmeldung bringt ein passendes Fahrzeug mit.",
+          "shipNotCrewedYet": "Noch keine passende Anmeldung.",
+          "expandHint": "%{model} hat %{count} weitere Sitze. Slots hinzufügen, damit andere sie besetzen können?",
+          "notes": "Notizen",
+          "upcomingTab": "Anstehend",
+          "pastTab": "Vergangen",
+          "archivedTab": "Archiviert",
+          "listTab": "Liste",
+          "calendarTab": "Kalender",
+          "openInCalendar": "Abonnieren (.ics)",
+          "openInCalendarHint": "Füge diese URL in deiner Kalender-App hinzu, um die Events synchron zu halten.",
+          "rotateFeedToken": "Feed-Link erneuern",
+          "subscribeHint": "Kopiert die URL des Kalender-Feeds in deine Zwischenablage, damit du sie in deiner Kalender-App einfügen kannst.",
+          "visibilities": {
+            "members": "Mitglieder",
+            "officers": "Offiziere",
+            "fleet": "Öffentlich"
+          },
+          "statuses": {
+            "draft": "Entwurf",
+            "open": "Offen für Anmeldungen",
+            "locked": "Anmeldungen gesperrt",
+            "active": "Live",
+            "completed": "Abgeschlossen",
+            "cancelled": "Abgesagt",
+            "past": "Vergangen"
+          },
+          "tabs": {
+            "basic": "Basisdaten",
+            "description": "Beschreibung & Titelbild",
+            "teams": "Teams & Schiffe",
+            "overview": "Übersicht",
+            "settings": "Einstellungen"
+          },
+          "calendar": {
+            "month": "Monat",
+            "week": "Woche",
+            "weekTitle": "Woche vom %{date}"
+          },
+          "repeats": "Wiederholung"
+        }
+      },
       "commodity": {
         "commodityType": "Commodity Type",
         "uexId": "UEX ID",
@@ -1455,6 +2228,17 @@
         "scKey": "SC Key",
         "scRef": "SC Ref",
         "storeImage": "Store Image"
+      },
+      "notifications": {
+        "inbox": "Posteingang",
+        "archive": "Archiv",
+        "unreadOnly": "Nur ungelesene",
+        "status": "Status",
+        "type": "Typ",
+        "selectPrompt": "Wähle eine Benachrichtigung, um sie zu lesen",
+        "noBody": "Diese Benachrichtigung enthält keine weiteren Details.",
+        "archivesOn": "Wandert ins Archiv",
+        "deletesOn": "Gelöscht"
       },
       "unlistedModel": {
         "linkHint": "Welches Schiff im Katalog ist %{identifier}? Der Vorschlag stammt aus dem Export und kann falsch sein."
@@ -1496,6 +2280,10 @@
       "scDataSource": {
         "dataSource": "Datenquelle",
         "notLive": "Nicht der Live-Build"
+      },
+      "erkul": {
+        "prefix": "Tryout Loadouts with",
+        "link": "Erkul's DPS Calculator"
       }
     }
   }

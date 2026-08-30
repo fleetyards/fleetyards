@@ -26,6 +26,16 @@
           "prompt": "Snub Craft auswählen"
         }
       },
+      "modelPosition": {
+        "positionType": {
+          "label": "Positionstyp",
+          "prompt": "Positionstyp auswählen"
+        },
+        "source": {
+          "label": "Quelle",
+          "prompt": "Quelle auswählen"
+        }
+      },
       "modelHardpoint": {
         "source": {
           "label": "Quelle",
