@@ -3,6 +3,11 @@
     "baseBtn": {
       "labels": {
         "loading": "Veuillez patienter..."
+      },
+      "confirm": {
+        "question": "Sûr ?",
+        "yes": "Oui",
+        "no": "Non"
       }
     }
   }

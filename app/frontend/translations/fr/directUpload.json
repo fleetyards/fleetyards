@@ -5,9 +5,11 @@
       "chooseFiles": "Choisir des fichiers",
       "dropzone": {
         "textMultiple": "Déposez les fichiers ici pour télécharger",
+        "textDirectory": "Déposez un dossier ici",
         "text": "Déposez le fichier ici pour télécharger",
         "or": "ou",
-        "browse": "parcourir"
+        "browse": "parcourir",
+        "browseDirectory": "choisir un dossier"
       },
       "previewImage": {
         "remove": "Supprimer"
