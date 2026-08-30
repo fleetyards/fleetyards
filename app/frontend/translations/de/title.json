@@ -36,9 +36,10 @@
         "publicStats": "%{user} Hangar Statistiken",
         "wishlist": "Wunschliste",
         "publicWishlist": "%{user} Wunschliste",
-        "vehicleCargo": "Schiffsfracht",
+        "vehicleLoadouts": "Schiffs-Loadouts",
         "inventories": "Meine Hangar Inventare",
-        "inventory": "%{inventory}"
+        "inventory": "%{inventory}",
+        "vehicleCargo": "Schiffsfracht"
       },
       "requestPassword": "Passwort anfordern",
       "changePassword": "Passwort ändern",
@@ -57,11 +58,36 @@
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories"
         },
+        "missions": {
+          "index": "%{fleet} Missionen",
+          "create": "Mission erstellen - %{fleet}",
+          "edit": {
+            "basic": "Mission bearbeiten - %{fleet}",
+            "description": "Beschreibung bearbeiten - %{fleet}",
+            "teams": "Teams & Slots bearbeiten - %{fleet}"
+          },
+          "show": "%{fleet} Mission"
+        },
+        "events": {
+          "index": "%{fleet} Events",
+          "calendar": "%{fleet} Kalender",
+          "create": "Event erstellen - %{fleet}",
+          "edit": {
+            "basic": "Event bearbeiten - %{fleet}",
+            "description": "Beschreibung bearbeiten - %{fleet}",
+            "teams": "Teams & Slots bearbeiten - %{fleet}"
+          },
+          "show": "%{fleet} Event"
+        },
         "settings": {
           "index": "%{fleet} Einstellungen",
           "fleet": "%{fleet} Einstellungen",
           "membership": "%{fleet} Mitgliedschaft",
-          "roles": "%{fleet} Rollen"
+          "roles": "%{fleet} Rollen",
+          "notifications": "%{fleet} Benachrichtigungseinstellungen",
+          "discord": "%{fleet} Discord-Einstellungen",
+          "calendar": "%{fleet} Kalendereinstellungen",
+          "features": "%{fleet} Funktionen"
         }
       },
       "roadmap": {
@@ -79,6 +105,7 @@
         "connections": "Verbindungen",
         "oauthApplications": "OAuth-Anwendungen",
         "notifications": "Benachrichtigungseinstellungen",
+        "calendar": "Kalender-Abonnement",
         "security": "Konto Sicherheit",
         "twoFactor": {
           "enable": "Zwei-Faktor-Authentifizierung aktivieren",
@@ -102,6 +129,7 @@
         "index": "Visuelle Tests",
         "panels": "Panels - Visuelle Tests",
         "buttons": "Buttons - Visuelle Tests",
+        "events": "Events",
         "typography": "Typografie - Visuelle Tests",
         "forms": "Formulare - Visuelle Tests",
         "tables": "Tabellen - Visuelle Tests",
@@ -110,8 +138,12 @@
         "states": "Zustände - Visuelle Tests",
         "notifications": "Benachrichtigungen - Visuelle Tests",
         "syncModal": "Sync-Modal - Visuelle Tests",
+        "overlays": "Overlays - Visuelle Tests",
         "supportHint": "Support-Hinweis - Visuelle Tests",
-        "chips": "Chips - Visuelle Tests"
+        "media": "Medien - Visuelle Tests",
+        "charts": "Diagramme - Visuelle Tests",
+        "chips": "Chips - Visuelle Tests",
+        "notificationCenter": "Benachrichtigungszentrale - Visuelle Tests"
       },
       "admin": {
         "models": {
@@ -122,6 +154,7 @@
             "metrics": "Modell Metriken bearbeiten",
             "prices": "Modell Preise bearbeiten",
             "fleetchart": "Modell Flottendiagramm-Bilder bearbeiten",
+            "positions": "%{manufacturer} %{model} Positionen bearbeiten",
             "hardpoints": "Modell Hardpoints bearbeiten",
             "cargoAndFuel": "Fracht und Treibstoff",
             "cargoHolds": "%{manufacturer} %{model} Frachträume bearbeiten",
@@ -180,6 +213,7 @@
         "fleets": {
           "index": "Flotten",
           "edit": "Flotte bearbeiten",
+          "members": "Flottenmitglieder",
           "memberEdit": "Flottenmitglied bearbeiten",
           "history": "Flotten-Verlauf",
           "roles": "Flotten-Rollen",
@@ -199,6 +233,9 @@
         },
         "images": {
           "index": "Bilder"
+        },
+        "notifications": {
+          "index": "Benachrichtigungen"
         },
         "maintenance": {
           "index": "Wartung",
@@ -221,6 +258,8 @@
             "index": "%{name} Basisdaten bearbeiten",
             "models": "%{name} Modelle bearbeiten",
             "prices": "%{name} Preise bearbeiten",
+            "hardpoints": "%{name} Hardpoints bearbeiten",
+            "cargoHolds": "%{name} Frachträume bearbeiten",
             "history": "Modul-Verlauf"
           }
         },
@@ -244,8 +283,13 @@
             "index": "Edit Equipment",
             "prices": "Edit Equipment Prices"
           }
+        },
+        "visualTests": {
+          "index": "Visuelle Tests",
+          "notifications": "Benachrichtigungen - Visuelle Tests"
         }
-      }
+      },
+      "notifications": "Benachrichtigungen"
     }
   }
 }
