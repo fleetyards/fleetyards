@@ -226,6 +226,14 @@ const activeLocale = (locale: string) => {
   );
 };
 
+// `/compare` and `/compare/` are one page but not one key: route records are
+// declared with a trailing slash, so a link without one lands on `/compare` and the
+// first `router.replace` a filter makes canonicalises the path. Keyed on the raw
+// path, that one navigation threw the page away and rebuilt it — on compare, taking
+// the table's scroll position and its collapsed sections with it.
+const pageKey = (viewRoute: { path: string }) =>
+  `${locale.value}-${viewRoute.path.replace(/\/$/, "")}`;
+
 const setLocale = (locale: string) => {
   i18nStore.locale = locale;
 };
@@ -272,10 +280,7 @@ const setLocale = (locale: string) => {
                   [route.name || '']: true,
                 }"
               >
-                <component
-                  :is="Component"
-                  :key="`${locale}-${viewRoute.path}`"
-                />
+                <component :is="Component" :key="pageKey(viewRoute)" />
               </section>
             </transition>
           </router-view>

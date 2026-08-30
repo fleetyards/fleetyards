@@ -50,6 +50,39 @@ provide("hardpointStatLimit", 2);
 
 const pane = ref<HTMLElement>();
 
+// Breathing room between the pane's last row and the bottom of the screen, and the
+// height below which filling the viewport stops being worth it.
+const PANE_GUTTER = 24;
+const PANE_MIN = 320;
+
+// A share of the viewport cannot reach the bottom of it: the pane starts a couple of
+// hundred pixels down the page, so `76vh` left that same gap unused at the bottom and
+// the taller the screen the more it wasted. Measured instead, from the document top so
+// that scrolling the page does not resize the table under the cursor.
+const paneMax = ref<string>();
+
+const measurePane = () => {
+  if (!pane.value) {
+    return;
+  }
+
+  const top = Math.round(
+    pane.value.getBoundingClientRect().top + window.scrollY,
+  );
+
+  paneMax.value = `max(${PANE_MIN}px, calc(100dvh - ${top + PANE_GUTTER}px))`;
+};
+
+onMounted(() => {
+  void nextTick(measurePane);
+
+  window.addEventListener("resize", measurePane);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", measurePane);
+});
+
 // Tall store art at rest, collapsing to name and manufacturer once scrolled: the
 // silhouette is half of what identifies a column, but a permanently tall header would
 // cost a third of the pane.
@@ -137,6 +170,7 @@ const deltaLabel = (delta?: CompareDelta) =>
     ref="pane"
     class="compare-table"
     :class="{ 'compare-table--pinned': pinned }"
+    :style="{ '--compare-pane-max': paneMax }"
     @scroll="onScroll"
   >
     <table>

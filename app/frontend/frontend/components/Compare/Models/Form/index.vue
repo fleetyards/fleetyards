@@ -39,9 +39,10 @@ const modelFilterGroup = ref<ComponentExposed<typeof ModelFilterGroup>>();
 
 const handleChange = (model: string) => {
   if (model) {
-    form.value.models = [...(form.value.models || []), model]
-      .filter(uniqArray)
-      .sort();
+    // Appended, not sorted: the query carries slugs and the table orders its
+    // columns by ship name, so sorting here only decided which slug order the URL
+    // happened to carry.
+    form.value.models = [...(form.value.models || []), model].filter(uniqArray);
 
     filter(form.value);
   }

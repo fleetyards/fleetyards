@@ -55,6 +55,13 @@ const i18nStore = useI18nStore();
 
 const { locale } = storeToRefs(i18nStore);
 
+// `/models` and `/models/` are one page but not one key: route records are declared
+// with a trailing slash, so a link without one lands on the unslashed path and the
+// first `router.replace` a filter makes canonicalises it. Keyed on the raw path, that
+// one navigation throws the page away and rebuilds it mid-session.
+const pageKey = (viewRoute: { path: string }) =>
+  `${locale.value}-${viewRoute.path.replace(/\/$/, "")}`;
+
 const appStore = useAppStore();
 
 const mobile = useMobile();
@@ -193,10 +200,7 @@ const setNoScroll = () => {
                       [route.name || '']: true,
                     }"
                   >
-                    <component
-                      :is="Component"
-                      :key="`${locale}-${viewRoute.path}`"
-                    />
+                    <component :is="Component" :key="pageKey(viewRoute)" />
                   </section>
                 </transition>
               </template>

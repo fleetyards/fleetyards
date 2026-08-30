@@ -20,7 +20,12 @@ export const useCompareModels = (slugs: MaybeRefOrGetter<string[]>) => {
 
   const fetchFor = async (slug: string) => {
     try {
-      cache.value = { ...cache.value, [slug]: await fetchModel(slug) };
+      // Awaited into a local first: spreading the cache in the same expression
+      // reads it before the request resolves, so parallel fetches each write back
+      // a snapshot taken before any of them landed and only the last ship survives.
+      const model = await fetchModel(slug);
+
+      cache.value = { ...cache.value, [slug]: model };
     } catch (error) {
       // Left uncached on purpose, so changing the compare set retries instead of
       // leaving the ship missing from the table forever. Reported through
@@ -55,12 +60,18 @@ export const useCompareModels = (slugs: MaybeRefOrGetter<string[]>) => {
     { immediate: true },
   );
 
-  // In the order the compare set names them, and skipping any whose request
-  // failed, so the table renders what did arrive.
+  // By name, and skipping any whose request failed so the table renders what did
+  // arrive. Not in the order the compare set names them: that is an order of slugs,
+  // which begin with a manufacturer code, so the columns came out grouped by a
+  // prefix that is nowhere on screen and read as no order at all.
   const models = computed(() =>
     toValue(slugs)
       .map((slug) => cache.value[slug])
-      .filter((model): model is ModelExtended => Boolean(model)),
+      .filter((model): model is ModelExtended => Boolean(model))
+      // Numeric so the 100i sorts before the 125a rather than between them.
+      .sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { numeric: true }),
+      ),
   );
 
   const loading = computed(() => pendingCount.value > 0);
@@ -74,16 +85,22 @@ export const useCompareModels = (slugs: MaybeRefOrGetter<string[]>) => {
     await load();
   };
 
-  // Shaped for `AsyncData`, which the page already drives with the query's own
-  // status object. Nothing here refetches in the background, so the fetching and
-  // refetching flags collapse onto the one loading state.
+  // Filling in a ship beside ones already on screen, rather than the first load
+  // with nothing to show yet.
+  const incremental = computed(() => loading.value && models.value.length > 0);
+
+  // Shaped for `AsyncData`, which reads a fetch as a refetch — and so keeps its
+  // resolved slot mounted — only when `isRefetching` says so. Reporting the
+  // incremental fill as a plain load swapped the whole table for a spinner and
+  // remounted it, so adding a fourth ship threw away the scroll position, the
+  // pinned header and every collapsed section.
   const asyncStatus: AsyncStatus = {
     fetchStatus: computed(() => (loading.value ? "fetching" : "idle")),
     isError: computed(() => Boolean(failure.value)),
-    isPending: loading,
-    isLoading: loading,
+    isPending: computed(() => loading.value && !incremental.value),
+    isLoading: computed(() => loading.value && !incremental.value),
     isFetching: loading,
-    isRefetching: computed(() => false),
+    isRefetching: incremental,
     // Wrapped because the slot expects a void return, and handing it a promise
     // leaves a rejection with nobody to catch it.
     refetch: () => {
