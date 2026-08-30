@@ -729,7 +729,7 @@ defineExpose({
         {{ prompt }}
       </span>
       <SmallLoader v-if="props.queryFn" :loading="loading" />
-      <i class="fa fa-chevron-right" />
+      <i class="fa fa-chevron-down" />
     </button>
     <Collapsed
       v-if="multiple && !hideSelected"

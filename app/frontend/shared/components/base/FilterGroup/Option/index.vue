@@ -71,7 +71,8 @@ const select = (option: FilterOption) => {
       v-if="multiple || (selected && nullable)"
       v-tooltip="t('filterGroup.labels.removeTooltip')"
     >
-      <i class="fa-light fa-plus" />
+      <!-- The glyph it means, rather than a plus rotated 45 degrees into one. -->
+      <i :class="selected ? 'fa-light fa-xmark' : 'fa-light fa-plus'" />
     </span>
   </component>
 </template>
