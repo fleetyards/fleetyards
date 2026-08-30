@@ -122,7 +122,9 @@ const innerPlaceholder = computed(() => {
       </span>
     </label>
     <!-- See the note in FormCheckbox: below the control, and always present. -->
-    <p :id="errorId" class="form-toggle__error">{{ errorMessage }}</p>
+    <p :id="errorId" class="form-toggle__error" role="alert">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 

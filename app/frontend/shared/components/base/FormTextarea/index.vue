@@ -197,7 +197,9 @@ defineExpose({
       />
     </div>
     <!-- See the note in FormInput: below the control, and always present. -->
-    <p :id="errorId" class="base-textarea__error">{{ errorMessage }}</p>
+    <p :id="errorId" class="base-textarea__error" role="alert">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 

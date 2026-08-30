@@ -286,8 +286,15 @@ defineExpose({
       The message was in a tooltip and nowhere else: invisible until hover, and
       worth nothing to a screen reader. Its line is reserved whether or not it
       has anything to say, so validating cannot move what is below the field.
+
+      role="alert" follows FormDateTime, which is the one control that already
+      rendered a message properly -- and which borrows this same class name for
+      its own element, an overlap to resolve when it moves onto the shared
+      treatment.
     -->
-    <p :id="errorId" class="base-input__error">{{ errorMessage }}</p>
+    <p :id="errorId" class="base-input__error" role="alert">
+      {{ errorMessage }}
+    </p>
     <div v-if="slots.subline" class="base-input__subline">
       <slot name="subline"></slot>
     </div>

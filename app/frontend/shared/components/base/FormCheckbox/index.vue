@@ -153,7 +153,9 @@ const innerPlaceholder = computed(() => {
       present whether or not it has anything to say: the line is reserved so that
       showing a message cannot move what is under it.
     -->
-    <p :id="errorId" class="base-checkbox__error">{{ errorMessage }}</p>
+    <p :id="errorId" class="base-checkbox__error" role="alert">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
