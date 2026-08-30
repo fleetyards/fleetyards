@@ -4,6 +4,14 @@
       "true": "是",
       "false": "否",
       "null": "-",
+      "supporter": {
+        "badge": "支持者",
+        "tooltip": "本月正在支持 FleetYards.net"
+      },
+      "destroyedFleets": {
+        "discarded": "已丢弃",
+        "purged": "已清除"
+      },
       "and": "和",
       "hide": "隐藏",
       "show": "显示",
@@ -12,6 +20,7 @@
       "unavailable": "不可用",
       "selected": "已选择",
       "actions": "操作",
+      "status": "状态",
       "enabled": "已启用",
       "disabled": "已禁用",
       "collapse": "折叠",
@@ -52,6 +61,7 @@
           "tools_cargo_grids": "显示飞船的交互式货物网格查看器。",
           "fleet_starmap": "在舰队成员页面显示 Star Citizen 星图。"
         },
+        "registryHint": "功能标志在 config/feature_flags.yml 中声明，并在部署时创建。您可以在此控制它们的开放范围。",
         "fleetSettingsIntro": "为整个舰队启用或禁用功能。您在此启用的内容对所有成员可见。",
         "fleetFeature": "舰队功能",
         "fleetFeatureInfo": "在此启用仅对您生效。您舰队的管理员可为整个舰队启用。",
@@ -80,6 +90,30 @@
       "rsiRequestLogs": {
         "resolved": "已解决",
         "unresolved": "未解决"
+      },
+      "imports": {
+        "type": "类型",
+        "status": "状态",
+        "version": "版本",
+        "startedAt": "开始于",
+        "finishedAt": "完成于",
+        "failedAt": "失败于",
+        "info": "信息",
+        "input": "输入",
+        "output": "输出",
+        "importData": "导入数据",
+        "file": "已导入文件",
+        "requestedBy": "请求者",
+        "adminUser": "管理员用户",
+        "user": "用户",
+        "includeSystem": "包含系统",
+        "systemRequester": "系统",
+        "statuses": {
+          "created": "排队中",
+          "started": "运行中",
+          "finished": "已完成",
+          "failed": "已失败"
+        }
       },
       "oauthApplications": {
         "settingsIntro": "管理您的 OAuth 应用。这些应用可以代表用户访问 FleetYards API。",
@@ -259,6 +293,7 @@
       "find": "输入以搜索",
       "selectUser": "选择用户",
       "findUser": "输入以搜索用户",
+      "selectAdminUser": "选择管理员用户",
       "selectFleet": "选择舰队",
       "findFleet": "输入以搜索舰队",
       "compare": {
@@ -266,7 +301,45 @@
         "addModel": {
           "nullablePrompt": "添加飞船"
         },
-        "enough": "Don't you think 8 Ships are enough? ;)"
+        "enough": "Don't you think 8 Ships are enough? ;)",
+        "toggleSection": "切换 %{section}",
+        "shipCount": {
+          "one": "%{count} 飞船",
+          "other": "%{count} 飞船"
+        },
+        "containersOfSize": "%{size} SCU 集装箱",
+        "shieldGenerators": "护盾发生器",
+        "armorHp": "装甲 HP",
+        "fuelAndQuantum": "燃料与量子",
+        "weaponPoolSize": "武器能量池",
+        "crossSection": {
+          "x": "横截面 X",
+          "y": "横截面 Y",
+          "z": "横截面 Z"
+        },
+        "useAsBaseline": "用作基准",
+        "baseline": "基准",
+        "differencesOnly": "仅显示差异",
+        "compareToBaseline": "与基准比较",
+        "loadoutBySlot": "按挂点分组的配置",
+        "slots": {
+          "guns": "主炮",
+          "turrets": "炮塔",
+          "missiles": "导弹",
+          "shields": "护盾发生器",
+          "powerPlants": "发电机",
+          "coolers": "散热器",
+          "quantumDrives": "量子引擎",
+          "thrusters": "主推进器",
+          "countermeasures": "干扰弹"
+        },
+        "legend": {
+          "best": "本行最佳",
+          "worst": "最差",
+          "share": "占本行最佳的比例",
+          "better": "优于基准",
+          "worse": "落后于基准"
+        }
       },
       "cargoRoutes": "货物路线",
       "uecPerUnit": "aUEC / Unit",
@@ -288,7 +361,24 @@
         "publicFleet": "公开舰队",
         "publicStats": "公开统计",
         "publicFleetStats": "公开舰队统计",
-        "discord": "Discord 服务器",
+        "discord": {
+          "url": "Discord 服务器",
+          "hint": "连接一个 Discord 服务器，将活动同步为原生的预定活动。成员可以在 Discord 中回复出席，报名会同步回 Fleetyards。",
+          "guildId": "Discord 服务器 ID",
+          "channelId": "语音频道 ID（可选）",
+          "webhookUrl": "公告 Webhook URL（可选）",
+          "installBotHint": "在新标签页中打开 Discord 安装页面 — 选择您希望同步活动的服务器。",
+          "statusOk": "已连接到 %{name}",
+          "statusCodes": {
+            "missing_token": "服务器端未配置 Fleetyards 机器人。请联系管理员。",
+            "missing_guild": "请先输入 Discord 服务器 ID。",
+            "invalid_token": "机器人令牌无效。请联系管理员。",
+            "bot_not_in_guild": "机器人不在该服务器中。请使用安装链接将其添加进去。",
+            "guild_not_found": "Discord 无法识别此服务器 ID。请仔细核对该值。",
+            "discord_error": "Discord 返回了意外的错误。",
+            "request_failed": "无法连接到 Fleetyards。请重试。"
+          }
+        },
         "guilded": "Guilded 服务器",
         "homepage": "主页",
         "twitch": "Twitch 频道",
@@ -340,7 +430,11 @@
             "memberships": "成员",
             "invites": "邀请",
             "vehicles": "载具",
-            "roles": "角色"
+            "roles": "角色",
+            "inventories": "库存",
+            "missions": "任务",
+            "events": "活动",
+            "notifications": "通知"
           },
           "privileges": {
             "fleet:update": "更新舰队",
@@ -355,6 +449,7 @@
             "fleet:memberships:manage": "管理成员",
             "fleet:invites:read": "查看邀请",
             "fleet:invites:create": "创建邀请",
+            "fleet:invites:update": "更新邀请",
             "fleet:invites:delete": "删除邀请",
             "fleet:invites:manage": "管理邀请",
             "fleet:vehicles:read": "查看载具",
@@ -366,7 +461,23 @@
             "fleet:roles:create": "创建角色",
             "fleet:roles:update": "更新角色",
             "fleet:roles:delete": "删除角色",
-            "fleet:roles:manage": "管理角色"
+            "fleet:roles:manage": "管理角色",
+            "fleet:inventories:read": "查看库存",
+            "fleet:inventories:create": "创建库存",
+            "fleet:inventories:update": "更新库存",
+            "fleet:inventories:delete": "删除库存",
+            "fleet:inventories:manage": "管理库存",
+            "fleet:missions:read": "查看任务",
+            "fleet:missions:create": "创建任务",
+            "fleet:missions:update": "更新任务",
+            "fleet:missions:delete": "删除任务",
+            "fleet:missions:manage": "管理任务",
+            "fleet:events:read": "查看活动",
+            "fleet:events:create": "创建活动",
+            "fleet:events:update": "更新活动",
+            "fleet:events:delete": "删除活动",
+            "fleet:events:manage": "管理活动",
+            "fleet:notifications:manage": "管理通知设置"
           }
         },
         "inviteUrls": {
@@ -387,13 +498,38 @@
             "7_days": "7 days"
           },
           "limitOptions": {
-            "infinite": "No limit",
             "1": "1 use",
             "5": "5 uses",
             "10": "10 uses",
             "25": "25 uses",
             "50": "50 uses",
-            "100": "100 uses"
+            "100": "100 uses",
+            "infinite": "No limit"
+          }
+        },
+        "calendarSubscription": {
+          "intro": "生成一个私有链接，成员可以用它在日历应用（Apple 日历、Google 日历、Outlook）中订阅本舰队的活动。",
+          "howTo": "将上面的链接分享给您的成员。他们把它粘贴到日历应用中（“订阅日历”或“通过 URL 添加”）。该链接是私有的 — 任何拿到它的人都能看到本舰队的活动。"
+        },
+        "notifications": {
+          "inAppHeading": "应用内通知",
+          "inAppHint": "选择哪些活动状态变更会以应用内通知的形式推送给舰队成员。",
+          "events": {
+            "fleet_event": {
+              "published": "活动已发布",
+              "locked": "报名已锁定",
+              "unlocked": "报名已重新开放",
+              "starting_soon": "活动即将开始",
+              "started": "活动已开始",
+              "completed": "活动已完成",
+              "cancelled": "活动已取消",
+              "archived": "活动已归档",
+              "destroyed": "活动已删除"
+            },
+            "fleet_event_signup": {
+              "created": "新增报名",
+              "withdrawn": "报名已取消"
+            }
           }
         }
       },
@@ -404,6 +540,14 @@
         "public": "在公开机库显示?"
       },
       "source": "来源",
+      "loadout": {
+        "namePlaceholder": "配置名称...",
+        "urlPlaceholder": "粘贴 erkul.games 或 spviewer.eu 的配置链接...",
+        "empty": "暂无配置。创建一个以开始使用。",
+        "active": "使用中",
+        "activate": "设为使用中",
+        "planOn": "在此规划您的配置"
+      },
       "model": {
         "hidden": "隐藏?",
         "active": "活跃?",
@@ -415,7 +559,7 @@
         "length": "长度",
         "beam": "宽度",
         "height": "高度",
-        "scIdentifier": "SC Identifier",
+        "scKey": "SC Key",
         "price": "价格",
         "pledgePrice": "质押价格",
         "erkulIdentifier": "Erkul Identifier",
@@ -434,6 +578,12 @@
         "hydrogenFuelTanks": "氢燃料箱",
         "quantumFuelTankSize": "量子燃料箱大小",
         "quantumFuelTanks": "量子燃料箱",
+        "externalFuelTanks": "外挂燃料箱",
+        "externalFuelTanksTotal": "总容量",
+        "externalFuelTanksCount": "挂舱",
+        "refuelBoom": "加油臂",
+        "refuelBoomArm": "臂",
+        "refuelBoomNozzle": "喷嘴",
         "yaw": "Yaw",
         "pitch": "Pitch",
         "roll": "Roll",
@@ -458,20 +608,44 @@
         "topView": "俯视图",
         "topViewColored": "俯视图（彩色）",
         "onSale": "在售",
+        "playerOwnable": "玩家可拥有?",
         "salesPage": "销售页面",
         "addons": "模块与升级套件",
         "storeImage": "商店图片",
         "wiki": "Star Citizen Wiki",
+        "crewPositions": "船员岗位",
+        "needsCuration": "需人工校订",
+        "curatedPosition": "人工校订的岗位",
         "baseModel": "基础型号",
         "fleetchartOffsetLength": "舰队图表长度偏移",
         "fleetchartOffsetBeam": "舰队图表宽度偏移",
+        "extendedLength": "展开长度",
+        "extendedBeam": "展开宽度",
+        "extendedHeight": "展开高度",
+        "extendedFleetchartOffsetLength": "展开舰队图偏移长度",
+        "extendedFleetchartOffsetBeam": "展开舰队图偏移宽度",
+        "defaultHolo": "默认全息图",
+        "extendedHolo": "展开全息图",
+        "extendedTopView": "展开俯视图",
+        "extendedTopViewColored": "展开俯视图（涂装）",
+        "extendedSideView": "展开侧视图",
+        "extendedSideViewColored": "展开侧视图（涂装）",
+        "extendedFrontView": "展开正视图",
+        "extendedFrontViewColored": "展开正视图（涂装）",
+        "extendedAngledView": "展开斜视图",
+        "extendedAngledViewColored": "展开斜视图（涂装）",
+        "state": {
+          "retracted": "收起",
+          "extended": "展开"
+        },
         "productionStatus": {
           "in-production": "生产中",
           "in-concept": "概念阶段",
           "ready": "机库就绪",
           "flight-ready": "可飞行",
           "announced": "已公布"
-        }
+        },
+        "scIdentifier": "SC Identifier"
       },
       "models": {
         "extraColumns": "列",
@@ -516,9 +690,199 @@
         "crew": "船员",
         "speed": "速度",
         "cargo": "货物",
+        "combat": "战斗",
         "hardpoints": "挂载点",
         "missileOptions": "导弹选项（如果可用）",
         "topView": "Top View"
+      },
+      "flight": {
+        "title": "飞行",
+        "scm": "战斗巡航",
+        "nav": "巡航",
+        "boost": "加速",
+        "boostSub": "加力燃烧",
+        "reverse": "倒车",
+        "maneuverability": "机动性",
+        "fuel": "燃料",
+        "fuelHydrogen": "氢",
+        "fuelQuantum": "量子",
+        "hint": "加速后的操控表现随引擎能量档位变化；引擎未通电时全部为零。"
+      },
+      "base": {
+        "price": "价格",
+        "priceInGame": "游戏内",
+        "pricePledge": "质押",
+        "availability": "供应情况"
+      },
+      "availability": {
+        "title": "供应情况",
+        "buy": "购买",
+        "rent": "租赁",
+        "cheapest": {
+          "buy": "最低售价",
+          "rent": "最低租金"
+        },
+        "locations": {
+          "one": "%{count} 个地点",
+          "other": "%{count} 个地点"
+        },
+        "empty": "没有已知的购买或租赁地点。",
+        "timeRange": {
+          "1-day": "1 天",
+          "3-days": "3 天",
+          "7-days": "7 天",
+          "30-days": "30 天"
+        }
+      },
+      "cargo": {
+        "title": "货物",
+        "holdsSub": "分布于 %{count} 个货舱",
+        "maxContainerSub": "可容纳的最大箱体",
+        "containers": "集装箱容量",
+        "hint": "每种尺寸的集装箱在货物网格中可容纳的最大数量；进度条显示其占总容量的比例。"
+      },
+      "fuelTanks": {
+        "capacitySub": "分布于 %{count} 个挂舱",
+        "podsSub": "外部挂点",
+        "components": "挂舱类型",
+        "perPod": "每个挂舱",
+        "hint": "挂载在外部挂点上的燃料舱所携带的燃料；进度条显示每种类型占总容量的比例。"
+      },
+      "refuelBoom": {
+        "fuelFlowSub": "氢燃料传输",
+        "quantumFlowSub": "量子燃料传输",
+        "captureRadiusSub": "对接容差",
+        "equipment": "装备",
+        "hint": "加油臂的传输速率及其喷嘴的对接容差。"
+      },
+      "combat": {
+        "title": "战斗",
+        "dps": "爆发 DPS",
+        "dpsSub": "%{count} 件武器",
+        "sustained": "持续 DPS",
+        "sustainedSub": "计入能量回复与过热",
+        "alpha": "齐射伤害",
+        "alphaSub": "每次齐射",
+        "weapons": "武器",
+        "missileDamage": "导弹伤害",
+        "composition": "伤害构成",
+        "damagePhysical": "物理",
+        "damageEnergy": "能量",
+        "damageDistortion": "扭曲",
+        "damageThermal": "热能",
+        "hint": "数据来自默认配置的 DPS。持续 DPS 计入每件武器的能量池回复和过热循环。不含导弹。"
+      },
+      "power": {
+        "title": "能量分配",
+        "scm": "SCM",
+        "nav": "NAV",
+        "reset": "重置",
+        "auto": "自动",
+        "aimAssist": "瞄准辅助",
+        "cooling": "散热",
+        "ir": "IR",
+        "em": "EM",
+        "cs": "CS",
+        "csAxisHint": "点击切换轴（x / y / z）",
+        "segmentsUsed": "%{used} / %{total} 格",
+        "hint": "在各系统间分配能量。武器的持续 DPS 随其获得的能量变化；其余部分会自动平衡。",
+        "families": {
+          "weapon": "武器",
+          "shield": "护盾",
+          "engine": "引擎",
+          "radar": "雷达",
+          "coolers": "散热器",
+          "qdrive": "量子引擎",
+          "qed": "QED",
+          "emp": "EMP",
+          "lifeSupport": "生命维持",
+          "miningLaser": "采矿激光",
+          "salvage": "回收",
+          "tractorBeam": "牵引光束",
+          "towingbeam": "拖曳光束"
+        }
+      },
+      "defense": {
+        "title": "防御",
+        "shieldHp": "护盾 HP",
+        "shieldHpSub": "%{count} 台发生器",
+        "shieldRegen": "回复",
+        "shieldResistances": "抗性",
+        "shieldAbsorption": "吸收",
+        "armor": "装甲",
+        "deflection": "偏转",
+        "armorReduction": "伤害减免",
+        "armorSelfResistance": "自身抗性",
+        "armorSignature": "信号特征",
+        "damageType": {
+          "physical": "物理",
+          "energy": "能量",
+          "distortion": "扭曲",
+          "thermal": "热能"
+        },
+        "signature": {
+          "electromagnetic": "EM",
+          "infrared": "IR",
+          "crossSection": "CS"
+        },
+        "hint": "护盾与装甲数值来自默认配置。吸收率低于 100% 表示该伤害类型在护盾仍在时就能打到船体。",
+        "openDeflectionCheck": "偏转检测"
+      },
+      "deflectionCheck": {
+        "title": "偏转检测",
+        "intro": "— 哪些武器能击穿它的防御?",
+        "noArmor": "这艘飞船没有装甲，因此不会发生偏转。",
+        "allSizes": "全部",
+        "deflected": "被偏转",
+        "pierce": "可击穿",
+        "weapon": "武器",
+        "boundary": "偏转界限",
+        "alpha": "单发伤害",
+        "threshold": "已越过阈值",
+        "absorbed": "被吸收",
+        "versus": "对比",
+        "hoverHint": "将鼠标悬停在武器上可查看按伤害类型的细分。",
+        "note": "单发伤害按每颗弹丸计算，且在护盾吸收之后比较 — 只要某一伤害类型超过偏转值，该武器即可击穿。被护盾完全吸收的类型永远到不了装甲，因此列为被吸收而非被偏转: 挡下它的是护盾，不是船体。护盾吸收率会根据护盾耐久在其公布的最小-最大区间内插值，装甲偏转值则随装甲耐久线性变化。激光束不在统计之内 — 它造成持续伤害，没有可供比较的单发伤害。",
+        "margin": "余量",
+        "reachesArmor": "可达装甲",
+        "stoppedByShields": "护盾吸收",
+        "verdict": {
+          "absorbed": "已吸收",
+          "deflected": "已偏转",
+          "pierces": "已击穿"
+        },
+        "shieldHealth": "护盾耐久",
+        "armorHealth": "装甲耐久",
+        "absorb": "吸收",
+        "defl": "偏转",
+        "type": "类型",
+        "size": "尺寸"
+      },
+      "hull": {
+        "category": {
+          "vital": "关键",
+          "secondary": "次要",
+          "breakable": "可破坏",
+          "subpart": "子部件",
+          "cosmetic": "装饰"
+        },
+        "composition": "船体构成",
+        "door": "舱门",
+        "doors": "舱门",
+        "doorsNote": "可破坏的内部舱门属于独立区域 — 它们有各自的耐久度，不计入船体 HP。",
+        "doorsSub": "%{count} 个可破坏",
+        "hint": "船体 HP 是所有部件耐久度的总和。",
+        "hullHp": "船体 HP",
+        "hullHpSub": "所有部件合计",
+        "integrity": "船体完整度",
+        "noHp": "无 HP",
+        "parts": "船体部件",
+        "partsNote": "部件按耐久度排序；装饰性部件（舱门、梯子、襟翼）本身没有耐久度。游戏文件未提供父子层级关系，因此这里是平铺列表而非结构树。",
+        "partsSub": "分布于 %{count} 个类别",
+        "partsTree": "部件 · damageMax",
+        "showParts": "显示船体部件",
+        "title": "船体",
+        "totalHp": "船体总 HP"
       },
       "manufacturer": {
         "longName": "全名",
@@ -527,6 +891,37 @@
         "icon": "图标（游戏文件）",
         "iconOverridden": "图标（已覆盖）",
         "scRef": "SC Ref"
+      },
+      "fundingGoal": {
+        "title": "标题",
+        "description": "描述",
+        "amount": "金额",
+        "currency": "货币",
+        "effectiveFrom": "生效日期",
+        "endedAt": "结束于"
+      },
+      "supporterContribution": {
+        "name": "支持者名称",
+        "user": "关联账户",
+        "amount": "金额",
+        "currency": "货币",
+        "anonymous": "匿名",
+        "recurring": "周期性",
+        "startedAt": "开始于",
+        "endedAt": "结束于",
+        "note": "内部备注",
+        "stats": {
+          "total": "总计",
+          "count": "捐助数",
+          "currentMonth": "本月",
+          "currentMonthCount": "%{count} 笔捐助",
+          "recurringCount": "周期性",
+          "anonymousCount": "匿名"
+        },
+        "chart": {
+          "contributions": "捐助",
+          "goal": "目标"
+        }
       },
       "itemPrice": {
         "price": "价格",
@@ -552,6 +947,23 @@
         "name": "名称",
         "dockType": "停靠类型",
         "shipSize": "飞船尺寸"
+      },
+      "modelPosition": {
+        "name": "名称",
+        "positionType": "岗位类型",
+        "source": "来源",
+        "position": "排序",
+        "types": {
+          "pilot": "飞行员",
+          "copilot": "副驾驶",
+          "turret_gunner": "炮塔射手",
+          "engineer": "工程师",
+          "gunner": "射手",
+          "loadmaster": "装载员",
+          "passenger": "乘客",
+          "operator": "操作员",
+          "custom": "自定义"
+        }
       },
       "modelHardpoint": {
         "name": "名称",
@@ -595,13 +1007,19 @@
         "hidden": "隐藏?",
         "loanerModel": "借用型号"
       },
+      "modelSnubCraft": {
+        "snubCraft": "舰载小艇"
+      },
       "modelPaint": {
         "hidden": "隐藏?",
         "active": "活跃?",
         "onSale": "在售",
         "pledgePrice": "质押价格",
         "productionStatus": "生产状态",
-        "productionNote": "生产备注"
+        "productionNote": "生产备注",
+        "copyHint": "选择要将此涂装复制到的目标飞船。复制过程中不会修改涂装数据。",
+        "bulkCopyHint": "选择要将这 %{count} 个涂装复制到的目标飞船。复制过程中不会修改涂装数据。",
+        "copySameModel": "目标飞船必须与源飞船不同。"
       },
       "component": {
         "size": "Size: %{size}",
@@ -634,9 +1052,120 @@
             "Retro": "Fix"
           }
         },
+        "refuelBoom": {
+          "captureRadius": "捕获半径",
+          "fuelFlowRate": "燃料流速",
+          "quantumFuelFlowRate": "量子燃料流速"
+        },
+        "weapons": {
+          "dps": "DPS",
+          "burstDps": "爆发 DPS",
+          "sustainedDps": "持续 DPS",
+          "efficiency": "效率",
+          "penetration": "穿透",
+          "fireRate": "射速",
+          "speed": "速度",
+          "range": "射程",
+          "ammo": "弹药",
+          "ammoCost": "弹药成本",
+          "pool": "能量池",
+          "maxRegen": "最大回复/秒",
+          "costPerShot": "能量/发",
+          "heatPerShot": "热量/发",
+          "heatPerSecond": "热量/秒",
+          "chargeTime": "充能时间",
+          "fullDamageRange": "满伤射程",
+          "zeroDamageRange": "零伤射程",
+          "damagePhysical": "物理",
+          "damageEnergy": "能量",
+          "damageDistortion": "扭曲",
+          "damageThermal": "热能"
+        },
+        "missiles": {
+          "damage": "伤害",
+          "speed": "速度",
+          "range": "射程",
+          "lockRange": "锁定距离",
+          "lockTime": "锁定时间",
+          "trackingSignal": "追踪"
+        },
+        "tractorBeams": {
+          "maxForce": "最大牵引力",
+          "minForce": "最小牵引力",
+          "range": "射程",
+          "cone": "锥角",
+          "tetherBreak": "牵引断开",
+          "cargoForce": "货物牵引力",
+          "cargoRange": "货物距离",
+          "towForce": "拖曳力",
+          "towDistance": "拖曳距离",
+          "quantumTowMass": "QT 质量上限",
+          "rotationSpeed": "旋转",
+          "moveSpeed": "移动速度"
+        },
+        "shields": {
+          "hp": "HP",
+          "regen": "回复",
+          "regenTime": "回复时间",
+          "downedRegenDelay": "击穿延迟",
+          "damagedRegenDelay": "受损延迟",
+          "resistancePhysical": "物理抗性",
+          "resistanceEnergy": "能量抗性",
+          "resistanceDistortion": "扭曲抗性"
+        },
+        "coolers": {
+          "coolingRate": "冷却速率"
+        },
+        "powerPlants": {
+          "output": "输出",
+          "pips": "能量档"
+        },
+        "quantumDrives": {
+          "speed": "速度",
+          "range": "航程",
+          "fuelConsumption": "消耗",
+          "spoolUpTime": "蓄能",
+          "cooldownTime": "冷却",
+          "splineSpeed": "轨道",
+          "accel": "加速度"
+        },
+        "jumpDrives": {
+          "fuelEfficiency": "燃料效率",
+          "alignRate": "校准速率",
+          "tuneRate": "调谐速率",
+          "alignDecay": "校准衰减",
+          "tuneDecay": "调谐衰减"
+        },
+        "radar": {
+          "aimAssistRange": "辅助距离",
+          "ir": "IR",
+          "em": "EM",
+          "cs": "CS",
+          "rs": "RS"
+        },
+        "armor": {
+          "hp": "HP",
+          "physical": "物理",
+          "energy": "能量",
+          "distortion": "扭曲",
+          "thermal": "热能",
+          "deflectPhysical": "物理偏转",
+          "deflectEnergy": "能量偏转",
+          "selfPhysical": "自身物理抗性",
+          "selfEnergy": "自身能量抗性"
+        },
+        "fuelIntakes": {
+          "pushRate": "输送速率",
+          "minRate": "最小速率"
+        },
         "sources": {
           "game_files": "游戏文件",
           "ship_matrix": "Ship Matrix"
+        },
+        "density": {
+          "title": "视图",
+          "compact": "紧凑",
+          "expanded": "展开"
         },
         "fuelTanks": {
           "hydrogen": "氢燃料箱",
@@ -650,9 +1179,12 @@
           "propulsion": "推进",
           "thruster": "推进器",
           "weapon": "武器",
+          "defense": "防御",
           "other": "其他",
           "auxiliary": "辅助",
-          "seat": "座位"
+          "seat": "座位",
+          "external_fuel_tank": "外挂燃料箱",
+          "refuel_boom": "加油臂"
         },
         "types": {
           "radar": "雷达",
@@ -694,6 +1226,8 @@
           "shieldgenerator": "护盾发生器",
           "fuel_intakes": "燃料进气口",
           "fueltanks": "燃料箱",
+          "external_fuel_tanks": "外挂燃料箱",
+          "refuel_boom": "加油臂",
           "quantumdrive": "量子引擎与跳跃模块",
           "jump_modules": "跳跃模块",
           "jumpdrive": "跳跃模块",
@@ -727,6 +1261,7 @@
       },
       "user": {
         "rsiHandle": "用户名",
+        "rsiHandleVerified": "已通过 Citizen iD 验证",
         "location": "位置",
         "currentSystem": "当前星系",
         "tester": "测试者?",
@@ -738,8 +1273,16 @@
         "publicHangarStats": "公开机库统计已启用",
         "publicWishlist": "公开愿望清单已启用",
         "hideOwner": "为舰队隐藏所有权",
+        "tracking": "允许匿名使用情况分析",
         "lastActiveAt": "最后活跃",
-        "confirmedAt": "确认于"
+        "confirmedAt": "确认于",
+        "dateFormat": "日期格式",
+        "dateFormats": {
+          "dmy_dots": "31.12.2026",
+          "dmy_slash": "31/12/2026",
+          "mdy_slash": "12/31/2026",
+          "ymd_dash": "2026-12-31"
+        }
       },
       "adminUser": {
         "superAdmin": "超级管理员",
@@ -753,6 +1296,8 @@
         "flagship": "旗舰",
         "wanted": "想要",
         "loaner": "借用",
+        "bundled": "捆绑",
+        "bundledWith": "与 %{parent} 捆绑",
         "public": "公开可见",
         "fullPublic": "公开可见（包括名称）",
         "publicShort": "公开",
@@ -812,7 +1357,11 @@
       "all": "全部",
       "supportUs": "Support FleetYards.net",
       "account": {
-        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
+        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
+        "calendarSubscription": {
+          "intro": "生成一个私有链接，将您已报名的活动添加到个人日历应用（Apple 日历、Google 日历、Outlook）。",
+          "howTo": "将该链接粘贴到日历应用的“订阅日历”或“通过 URL 添加”中。任何拿到此链接的人都能看到您已报名的活动 — 请妥善保管。"
+        }
       },
       "filters": {
         "components": {
@@ -883,6 +1432,7 @@
           "public": "公开",
           "group": "群组",
           "loaner": "借用船",
+          "bundled": "捆绑的舰载小艇",
           "boughtVia": "购买方式?"
         },
         "tradeRoutes": {
@@ -924,11 +1474,13 @@
           "priceGt": "价格 >=",
           "willItFit": "Will it Fit?",
           "withCargo": "有货物?",
-          "scIdentifierBlank": "没有 SC 标识?",
+          "scKeyBlank": "没有 SC Key?",
+          "positionsNeedCuration": "岗位需人工校订?",
           "fleetchartImageBlank": "没有舰队图表图片?",
           "holoBlank": "没有 Holo?",
           "frontViewBlank": "没有前视图图片?",
-          "topViewColoredBlank": "没有彩色俯视图图片?"
+          "topViewColoredBlank": "没有彩色俯视图图片?",
+          "scIdentifierBlank": "没有 SC 标识?"
         },
         "modelModules": {
           "name": "名称"
@@ -937,6 +1489,20 @@
           "name": "名称",
           "withModels": "有型号的",
           "logoBlank": "无标志"
+        },
+        "supporterContributions": {
+          "name": "按名称搜索",
+          "recurring": "周期性",
+          "anonymous": "匿名",
+          "startedAtGteq": "开始日期不早于",
+          "startedAtLteq": "开始日期不晚于",
+          "user": "关联账户",
+          "linked": "账户关联",
+          "linkedOnly": "已关联",
+          "unlinkedOnly": "未关联"
+        },
+        "adminNotifications": {
+          "search": "搜索"
         },
         "images": {
           "station": "空间站",
@@ -967,6 +1533,9 @@
           "inviteUrls": {
             "expiresAfter": "Expire after",
             "limit": "Max number of uses"
+          },
+          "logistics": {
+            "search": "搜索物品..."
           }
         },
         "manufacturer": "制造商",
@@ -991,6 +1560,9 @@
           "sellPriceGt": "卖出价格 >=",
           "sellPriceLt": "卖出价格 <=",
           "storeImageBlank": "没有商店图片?"
+        },
+        "notifications": {
+          "search": "搜索"
         }
       },
       "station": {
@@ -1121,6 +1693,40 @@
         },
         "modelHardpoint": {
           "loadouts": "配置"
+        },
+        "supporterContributions": {
+          "source": {
+            "patreon": "Patreon",
+            "manual": "手动"
+          }
+        },
+        "resourceAccess": {
+          "title": "资源权限",
+          "groups": {
+            "ship_data": "飞船数据",
+            "community": "社区",
+            "system": "系统"
+          },
+          "privileges": {
+            "models": "型号",
+            "model_modules": "型号模块",
+            "components": "组件",
+            "manufacturers": "制造商",
+            "vehicles": "载具",
+            "images": "图片",
+            "fleets": "舰队",
+            "users": "用户",
+            "supporters": "支持者",
+            "admins": "管理员",
+            "oauth_applications": "OAuth 应用",
+            "maintenance": "维护",
+            "imports": "导入",
+            "features": "功能",
+            "workers": "工作进程",
+            "pghero": "PgHero",
+            "rsi-api-status": "RSI API 状态",
+            "stats": "统计"
+          }
         }
       },
       "hangarTable": {
@@ -1170,10 +1776,6 @@
           "modelPledgePrice": "质押价格",
           "owner": "所有者"
         }
-      },
-      "erkul": {
-        "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
       },
       "logistics": {
         "inventoryCount": "inventories",
@@ -1290,6 +1892,292 @@
         "unmeasured": "%{count} 项尚未测量"
       },
       "hangarInventories": "Inventories",
+      "adminNotifications": {
+        "inbox": "收件箱",
+        "archive": "归档",
+        "unreadOnly": "仅未读",
+        "status": "状态",
+        "severity": "严重程度",
+        "type": "类型",
+        "selectPrompt": "选择一条通知以阅读",
+        "noBody": "此通知没有更多详情。",
+        "lastSeen": "最后出现",
+        "expires": "过期时间",
+        "severities": {
+          "info": "信息",
+          "warning": "警告",
+          "error": "错误"
+        },
+        "types": {
+          "paints_import": "涂装导入",
+          "modules_import": "模块导入",
+          "loaner_sync": "借用船同步",
+          "uex_prices_import": "UEX 价格同步",
+          "uex_commodity_prices_import": "UEX 商品同步",
+          "new_supporter": "新支持者",
+          "rsi_api_blocked": "RSI API 被封锁",
+          "rsi_api_unblocked": "RSI API 已恢复",
+          "weekly_stats": "每周报告",
+          "ship_matrix_import": "Ship Matrix 导入",
+          "sc_data_import": "sc_data 导入",
+          "import_run": "导入"
+        }
+      },
+      "optional": "可选",
+      "notificationActions": {
+        "open": "打开",
+        "openHangar": "打开机库",
+        "openWishlist": "打开愿望清单",
+        "openModel": "查看飞船",
+        "openInvite": "查看邀请",
+        "reviewRequest": "审核申请",
+        "openMembers": "查看成员",
+        "openFleet": "打开舰队",
+        "openInventory": "打开库存",
+        "openEvent": "打开活动",
+        "openRoster": "查看报名",
+        "addToCalendar": "添加到日历",
+        "openStore": "质押商店",
+        "accept": "接受",
+        "decline": "拒绝",
+        "signUp": "报名",
+        "withdraw": "取消报名",
+        "syncAgain": "再次同步",
+        "markAsBought": "标记为已购买",
+        "unavailable": "此内容已不再可用。"
+      },
+      "notificationTypes": {
+        "channels": {
+          "app": "应用",
+          "mail": "邮件",
+          "push": "推送"
+        },
+        "groups": {
+          "account": "账户与机库",
+          "fleetMembership": "舰队成员资格",
+          "fleetEvents": "舰队活动"
+        },
+        "hangar_create": "添加到机库",
+        "hangar_destroy": "从机库移除",
+        "hangar_sync_finished": "机库同步完成",
+        "hangar_sync_failed": "机库同步失败",
+        "wishlist_create": "添加到愿望清单",
+        "wishlist_destroy": "从愿望清单移除",
+        "model_on_sale": "型号特价销售",
+        "new_model": "新型号发布",
+        "fleet_invite": "收到舰队邀请",
+        "fleet_member_requested": "收到加入申请",
+        "fleet_member_accepted": "成员申请已通过",
+        "fleet_request_accepted": "加入申请已通过",
+        "fleet_inventory_item_added": "舰队库存新增物品",
+        "fleet_event_published": "活动已发布",
+        "fleet_event_locked": "活动报名已锁定",
+        "fleet_event_starting_soon": "活动即将开始",
+        "fleet_event_started": "活动已开始",
+        "fleet_event_completed": "活动已完成",
+        "fleet_event_cancelled": "活动已取消",
+        "fleet_event_signup_added": "新增报名",
+        "fleet_event_signup_withdrawn": "报名已取消",
+        "fleet_event_signup_confirmed": "报名已确认",
+        "fleet_event_signup_assigned": "已分配席位",
+        "fleet_event_signup_kicked": "已被移出席位",
+        "allInGroup": "此分组中的全部"
+      },
+      "fleets": {
+        "missions": {
+          "title": "标题",
+          "description": "描述",
+          "team": "小队",
+          "teams": "小队",
+          "ship": "飞船",
+          "ships": "飞船",
+          "slot": "席位",
+          "slots": "席位",
+          "noMissions": "暂无任务。",
+          "noTeams": "尚未添加小队。",
+          "noShips": "尚未添加飞船。",
+          "noSlots": "尚未添加席位。",
+          "archivedTab": "已归档",
+          "activeTab": "进行中",
+          "archived": "已归档",
+          "modelSpecific": "指定飞船",
+          "modelList": "以下任意一种",
+          "modelListHint": "该席位接受您所选飞船中的任意一种。",
+          "allowedShips": "符合条件的飞船",
+          "anyOf": "任意一种",
+          "filterRange": "筛选范围",
+          "classification": "分类",
+          "focus": "定位",
+          "minSize": "最小尺寸",
+          "maxSize": "最大尺寸",
+          "minCrew": "最少船员",
+          "minCrewOverride": "覆盖",
+          "minCrewOverrideLabel": "最少船员覆盖值",
+          "minCrewOverrideHint": "留空则使用该飞船的默认最少船员数。",
+          "minCargo": "最小货舱（SCU）",
+          "shipFilters": "飞船筛选",
+          "createdBy": "创建者",
+          "seats": "座位",
+          "category": "分类",
+          "coverImage": "封面图片",
+          "coverPresets": "从示例中选择",
+          "scenario": "场景",
+          "categories": {
+            "other": "其他",
+            "ship_combat": "飞船战斗",
+            "ground_combat": "地面战斗",
+            "combined_combat": "联合作战",
+            "mining": "采矿",
+            "salvage": "回收",
+            "cargo_hauling": "货运",
+            "exploration": "探索"
+          }
+        },
+        "events": {
+          "title": "标题",
+          "description": "描述",
+          "briefing": "简报",
+          "startsAt": "开始时间",
+          "endsAt": "结束时间",
+          "timezone": "时区",
+          "location": "活动地点",
+          "meetupLocation": "集合地点",
+          "visibility": "可见性",
+          "maxAttendees": "最多参与人数",
+          "maxAttendeesValue": "最多 %{count} 人参与",
+          "autoLockEnabled": "自动锁定报名",
+          "autoLockMinutesBefore": "开始前多少分钟锁定",
+          "recurring": "重复",
+          "recurringHint": "按周期自动生成此活动。成员需为每一场次单独报名。",
+          "recurringSummary": "重复：%{interval}",
+          "recurringUntil": "重复：%{interval}，截止 %{date}",
+          "recurringForCount": "重复：%{interval}（共 %{count} 场）",
+          "viewSeries": "查看系列",
+          "recurrenceInterval": "重复周期",
+          "recurrenceEnd": "结束",
+          "recurrenceEndNever": "永不",
+          "recurrenceEndOn": "指定日期",
+          "recurrenceEndAfter": "指定场次后",
+          "recurrenceEndOccurrences": "场次",
+          "recurrence": {
+            "daily": "每日",
+            "weekly": "每周",
+            "biweekly": "每两周",
+            "monthly": "每月"
+          },
+          "occurrencesSection": "即将到来的场次",
+          "skipOccurrence": "跳过此场次",
+          "overrideOccurrence": "覆盖 %{date} 的场次",
+          "overrideOccurrenceShort": "仅编辑此场",
+          "overrideOccurrenceHint": "为这一场次单独覆盖字段。留空则沿用重复活动的设置。",
+          "endSeriesHere": "从此场起停止",
+          "excludedBadge": "已跳过",
+          "noUpcomingOccurrences": "未来 12 周内没有即将到来的场次。",
+          "endSeriesConfirm": "要在此日期之后停止重复吗? 将不再生成后续场次。",
+          "skipOccurrenceSuccess": "场次已跳过。",
+          "endSeriesSuccess": "系列已从该日期起结束。",
+          "cancelledReason": "取消原因",
+          "noEvents": "暂无活动。",
+          "noUpcoming": "没有即将到来的活动。",
+          "noPast": "没有过往活动。",
+          "createdBy": "创建者",
+          "signups": "报名",
+          "signupsCount": "%{count} 人报名",
+          "signupYou": "您",
+          "youAreHere": "您在这里",
+          "attendance": "出席",
+          "signupsLockedHint": "此活动的报名已锁定。",
+          "noOverview": "暂无描述或简报。",
+          "alreadySignedUpHint": "您已报名了另一个席位。请先取消报名再切换。",
+          "slotTakenHint": "此席位已被占用。",
+          "currentSlot": "当前席位",
+          "currentSlotHint": "这是该报名当前所在的席位。",
+          "takenBy": "已由 %{username} 占用",
+          "slotPickerHint": "为此报名选择一个席位。已被占用或不可用的席位无法选择。",
+          "signupCtaHint": "报名参加此活动 — 您可以现在就选择具体席位，或稍后由管理员为您分配。",
+          "noSlotYet": "尚无席位",
+          "signupApproval": "报名审批",
+          "signupApprovalInherit": "沿用活动设置",
+          "signupStatuses": {
+            "confirmed": "已确认",
+            "tentative": "待定",
+            "interested": "感兴趣",
+            "pending": "待审批",
+            "withdrawn": "已取消"
+          },
+          "signupApprovals": {
+            "direct": "直接通过",
+            "confirmation_required": "需要确认"
+          },
+          "unassignedSignupsHint": "这些成员已报名活动，但尚未分配席位。请在下方为他们分配席位或移除报名。",
+          "taken": "已占用",
+          "grantedRoles": "已授予的角色",
+          "noEventAdminsYet": "尚无其他管理员或协管员。",
+          "creator": "活动创建者",
+          "eventTeamHint": "为其他成员授予此活动的管理员或协管员权限。管理员可以编辑活动，协管员可以管理报名。",
+          "eventRole": "角色",
+          "eventRoles": {
+            "admin": "管理员",
+            "moderator": "协管员"
+          },
+          "memberPicker": "成员",
+          "spawnedFromMission": "由任务生成",
+          "spawnedEvents": "已生成的活动",
+          "fromMission": "来自任务",
+          "pickTemplate": "选择模板",
+          "pickTemplateHint": "可选择以任务模板为起点 — 字段会预先填好，活动也会关联回该任务。",
+          "noTemplate": "不使用模板",
+          "noTemplateHint": "从零开始创建活动。",
+          "changeTemplate": "更换模板",
+          "clearTemplate": "清除模板",
+          "freeSlot": "空缺席位",
+          "myVehicle": "我的载具",
+          "selectVehicle": "选择载具（可选）",
+          "vehicleMismatchHint": "所选载具不符合此席位的要求。",
+          "noFittingInHangar": "您的机库中没有符合此席位的载具。您仍然可以不选择载具直接报名。",
+          "vehicleFitsHint": "将带来一艘符合此飞船要求的载具。",
+          "noMatchingVehicle": "没有报名者带来符合条件的载具。",
+          "shipNotCrewedYet": "尚无符合条件的报名。",
+          "expandHint": "%{model} 还有 %{count} 个座位。要添加席位让其他人来填补吗?",
+          "notes": "备注",
+          "upcomingTab": "即将到来",
+          "pastTab": "已过去",
+          "archivedTab": "已归档",
+          "listTab": "列表",
+          "calendarTab": "日历",
+          "openInCalendar": "订阅 (.ics)",
+          "openInCalendarHint": "将此 URL 添加到您的日历应用，以保持活动同步。",
+          "rotateFeedToken": "更换订阅源链接",
+          "subscribeHint": "将日历订阅源 URL 复制到剪贴板，以便粘贴到您的日历应用中。",
+          "visibilities": {
+            "members": "成员",
+            "officers": "军官",
+            "fleet": "公开"
+          },
+          "statuses": {
+            "draft": "草稿",
+            "open": "报名开放中",
+            "locked": "报名已锁定",
+            "active": "进行中",
+            "completed": "已完成",
+            "cancelled": "已取消",
+            "past": "已过去"
+          },
+          "tabs": {
+            "basic": "基本信息",
+            "description": "描述与封面",
+            "teams": "小队与飞船",
+            "overview": "概览",
+            "settings": "设置"
+          },
+          "calendar": {
+            "month": "月",
+            "week": "周",
+            "weekTitle": "%{date} 所在周"
+          },
+          "repeats": "重复"
+        }
+      },
       "commodity": {
         "commodityType": "Commodity Type",
         "uexId": "UEX ID",
@@ -1311,12 +2199,27 @@
         "scRef": "SC Ref",
         "storeImage": "Store Image"
       },
+      "notifications": {
+        "inbox": "收件箱",
+        "archive": "归档",
+        "unreadOnly": "仅未读",
+        "status": "状态",
+        "type": "类型",
+        "selectPrompt": "选择一条通知以阅读",
+        "noBody": "此通知没有更多详情。",
+        "archivesOn": "移至归档",
+        "deletesOn": "删除"
+      },
       "unlistedModel": {
         "linkHint": "%{identifier} 对应目录中的哪艘飞船？建议来自导出数据，可能有误。"
       },
       "scDataSource": {
         "dataSource": "数据来源",
         "notLive": "不是 live 版本"
+      },
+      "erkul": {
+        "prefix": "Tryout Loadouts with",
+        "link": "Erkul's DPS Calculator"
       }
     }
   }

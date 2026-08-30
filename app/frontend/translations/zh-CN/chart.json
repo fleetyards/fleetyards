@@ -29,7 +29,20 @@
         "visit": {
           "one": "%{label}:<br><b>%{count}</b> 访问",
           "other": "%{label}:<br><b>%{count}</b> 访问"
+        },
+        "supporterContribution": {
+          "amount": "捐助: <b>%{amount}</b>",
+          "goal": "目标: <b>%{amount}</b>",
+          "count": {
+            "one": "<b>%{count}</b> 位支持者",
+            "other": "<b>%{count}</b> 位支持者"
+          }
         }
+      },
+      "states": {
+        "empty": "暂无可绘制的数据",
+        "failed": "无法加载此图表",
+        "retry": "重试"
       }
     }
   }

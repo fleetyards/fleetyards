@@ -20,6 +20,22 @@
           "label": "借用型号"
         }
       },
+      "modelSnubCraft": {
+        "snubCraft": {
+          "label": "舰载小艇",
+          "prompt": "选择舰载小艇"
+        }
+      },
+      "modelPosition": {
+        "positionType": {
+          "label": "岗位类型",
+          "prompt": "选择岗位类型"
+        },
+        "source": {
+          "label": "来源",
+          "prompt": "选择来源"
+        }
+      },
       "modelHardpoint": {
         "source": {
           "label": "来源",

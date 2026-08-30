@@ -1,0 +1,16 @@
+{
+  "zh-CN": {
+    "bulkSelection": {
+      "actions": {
+        "selectPage": "选择本页全部",
+        "unselectPage": "取消选择本页全部",
+        "selectAllMatching": "选择全部 %{count} 项",
+        "clear": "清除选择"
+      },
+      "labels": {
+        "selected": "已选择 %{count} 项",
+        "allMatchingSelected": "已选择全部 %{count} 项"
+      }
+    }
+  }
+}

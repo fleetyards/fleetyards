@@ -4,9 +4,16 @@
       "admin": {
         "dashboard": {
           "reloadModels": "重新加载模型",
-          "reloadScData": "重新加载 SC 数据"
+          "reloadScData": "重新加载 SC 数据",
+          "reloadPaints": "重新加载涂装",
+          "reloadModules": "重新加载模块",
+          "reloadLoaners": "重新加载借用船"
+        },
+        "supporterContributions": {
+          "syncFromPatreon": "从 Patreon 同步"
         }
       },
+      "duplicate": "复制",
       "showReleased": "显示旧版本",
       "hideReleased": "隐藏旧版本",
       "upgrade": "更新可用！",
@@ -32,6 +39,8 @@
       "here": "这里",
       "backToList": "返回列表",
       "backToTop": "返回顶部",
+      "previous": "上一个",
+      "next": "下一个",
       "cancel": "取消",
       "ok": "确定",
       "reset": "重置",
@@ -45,6 +54,10 @@
       "hideGuide": "隐藏指南",
       "showFleetchart": "舰队图表",
       "hideFleetchart": "默认视图",
+      "fleetchartApp": {
+        "useExtendedState": "以展开状态显示飞船",
+        "useRetractedState": "以收起状态显示飞船"
+      },
       "showLabels": "显示标签",
       "hideLabels": "隐藏标签",
       "resetZoom": "重置缩放",
@@ -74,6 +87,7 @@
       "addGroup": "添加组",
       "editGroup": "编辑组",
       "remove": "移除",
+      "reorder": "重新排序",
       "delete": "删除",
       "deleteSelected": "删除选中项",
       "enableSelected": "启用选中项",
@@ -89,6 +103,7 @@
       "changePassword": "更改密码",
       "updatePassword": "更新密码",
       "copyBackupCodes": "复制备份代码",
+      "regenerate": "重新生成",
       "add": "添加",
       "create": "创建",
       "addToWishlist": "添加到愿望清单",
@@ -110,6 +125,7 @@
         "authorize": "授权",
         "deny": "拒绝"
       },
+      "verifyWithCitizenId": "使用 Citizen iD 验证",
       "oauth": {
         "signInWith": "通过以下方式登录",
         "google": "Google",
@@ -141,6 +157,9 @@
       "hangar": {
         "editGroups": "Add or remove Groups",
         "editName": "Name your Ship",
+        "manageLoadouts": "管理配置",
+        "manageCargo": "管理货物",
+        "backToHangar": "返回机库",
         "useName": "Use Name",
         "destroyAll": "Remove all Ships",
         "showOnPublicHangar": "Make Public",
@@ -150,8 +169,7 @@
           "openModal": "数据重置后重置游戏内飞船",
           "moveToWishlist": "Move to Wishlist",
           "removeAll": "Remove all"
-        },
-        "manageCargo": "管理货物"
+        }
       },
       "syncExtension": {
         "cancel": "取消",
@@ -165,6 +183,7 @@
         "reset": "清除筛选"
       },
       "destroyFleet": "解散舰队",
+      "restore": "恢复",
       "fleet": {
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
@@ -190,6 +209,15 @@
         },
         "inviteUrls": {
           "create": "Create new Invite Url"
+        },
+        "discord": {
+          "test": "测试 Discord 连接",
+          "installBot": "在您的 Discord 服务器中安装 Fleetyards 机器人"
+        },
+        "calendarSubscription": {
+          "enable": "生成订阅链接",
+          "rotate": "更换链接",
+          "disable": "停用订阅"
         }
       },
       "model": {
@@ -201,6 +229,7 @@
         "sync": "从 RSI 同步",
         "syncMatrix": "同步矩阵",
         "syncScData": "同步 SC 数据",
+        "importPaints": "导入涂装",
         "exchangeStoreImage": "使用 RSI 图片",
         "images": "图片",
         "openTableConfiguration": "打开表格配置"
@@ -258,6 +287,92 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "清空货物"
+      },
+      "adminNotifications": {
+        "unread": "标记为未读",
+        "archive": "归档",
+        "unarchive": "移回收件箱",
+        "readAll": "全部标记为已读",
+        "destroyAll": "全部删除",
+        "sortOldest": "最早优先",
+        "sortNewest": "最新优先",
+        "select": "选择通知",
+        "readSelected": "将所选标记为已读",
+        "unreadSelected": "将所选标记为未读",
+        "archiveSelected": "归档所选",
+        "unarchiveSelected": "将所选移回收件箱",
+        "destroySelected": "删除所选"
+      },
+      "account": {
+        "calendarSubscription": {
+          "enable": "生成个人日历链接",
+          "rotate": "更换链接",
+          "disable": "停用订阅"
+        }
+      },
+      "today": "今天",
+      "fleets": {
+        "missions": {
+          "create": "创建任务",
+          "edit": "编辑任务",
+          "archive": "归档任务",
+          "unarchive": "取消归档",
+          "destroy": "永久删除",
+          "addTeam": "添加小队",
+          "addShip": "添加飞船",
+          "addSlot": "添加席位",
+          "viewMissions": "查看任务"
+        },
+        "events": {
+          "create": "创建活动",
+          "edit": "编辑活动",
+          "spawn": "从此任务创建",
+          "archive": "归档活动",
+          "unarchive": "从归档中恢复",
+          "syncToDiscord": "同步到 Discord",
+          "destroy": "永久删除",
+          "publish": "发布",
+          "lockSignups": "锁定报名",
+          "unlockSignups": "解锁报名",
+          "start": "开始",
+          "complete": "完成",
+          "cancel": "取消",
+          "signup": "报名",
+          "withdraw": "取消报名",
+          "kick": "移除报名",
+          "viewEvents": "查看活动",
+          "viewCalendar": "查看日历",
+          "exportIcs": "导出 iCal",
+          "addToCalendar": "添加到日历",
+          "subscribe": "订阅",
+          "setUpCalendar": "设置日历订阅",
+          "assignSlot": "分配到席位",
+          "reassignSlot": "移动到其他席位",
+          "addSeats": "添加座位",
+          "manageEventTeam": "管理活动团队",
+          "grantRole": "授予角色",
+          "revokeRole": "撤销",
+          "editSchedule": "编辑小队与飞船",
+          "doneEditing": "完成编辑",
+          "addTeam": "添加小队"
+        }
+      },
+      "notifications": {
+        "unread": "标记为未读",
+        "archive": "归档",
+        "unarchive": "移回收件箱",
+        "readAll": "全部标记为已读",
+        "destroyAll": "全部删除",
+        "settings": "通知设置",
+        "sortOldest": "最早优先",
+        "sortNewest": "最新优先",
+        "openCenter": "通知",
+        "select": "选择通知",
+        "readSelected": "将所选标记为已读",
+        "unreadSelected": "将所选标记为未读",
+        "archiveSelected": "归档所选",
+        "unarchiveSelected": "将所选移回收件箱",
+        "destroySelected": "删除所选"
       },
       "unlistedModel": {
         "createModel": "创建飞船",
