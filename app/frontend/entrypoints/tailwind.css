@@ -129,6 +129,18 @@
     calc(var(--cap-r, 3px) * 0.75),
     calc(var(--cap-h-row, 3px) / 2)
   );
+
+  /*
+   * Field heights. Named because anything standing beside a field has to line up
+   * with it -- a checkbox centred next to one needs the number, and computing it
+   * from a literal is how it quietly stops being right.
+   *
+   * --field-h-md is 48px to match Btn's md, where a page header puts the two
+   * side by side.
+   */
+  --field-h: 43px;
+  --field-h-md: 48px;
+  --field-h-lg: 55px;
 }
 
 /*

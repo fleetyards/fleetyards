@@ -9,9 +9,42 @@
     white-space: nowrap;
   }
 
+  /*
+   * The control is this element, not the textarea inside it -- same reason as
+   * FormInput: a textarea renders no pseudo-elements, so it cannot carry a cap.
+   */
   &__wrapper {
     position: relative;
     display: flex;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+    transition: background-color ease-in-out 0.15s;
+
+    &:hover {
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h-btn, 2px);
+      background-color: var(--field-cap, var(--color-endcap, #7a8288));
+      border-radius: var(--cap-r-btn, 1px);
+      transition: background-color 0.15s ease;
+      content: "";
+      z-index: 1;
+    }
+
+    &::before {
+      top: -1px;
+    }
+
+    &::after {
+      bottom: -1px;
+    }
 
     textarea {
       display: block;
@@ -22,14 +55,14 @@
       font-size: 16px;
       line-height: 1.42857;
       text-overflow: ellipsis;
-      background-color: $input-bg;
+      background-color: transparent;
       background-image: none;
-      border: 1px solid $input-border;
-      border-radius: 3px;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      transition:
-        border-color ease-in-out 0.15s,
-        box-shadow ease-in-out 0.15s;
+      border: none;
+      border-radius: 0;
+
+      &::placeholder {
+        color: var(--color-endcap, #7a8288);
+      }
 
       &[type="number"]::-webkit-inner-spin-button,
       &[type="number"]::-webkit-outer-spin-button {
@@ -79,12 +112,27 @@
     }
   }
 
+  /* The cap is the focus signal, as on FormInput. */
+  &:focus-within {
+    --field-cap: var(--color-primary, #428bca);
+  }
+
   &--clean {
     margin-bottom: 0;
 
-    textarea {
+    .base-textarea__wrapper {
+      background-color: transparent;
       border: none;
       border-radius: 0;
+
+      &:hover {
+        background-color: transparent;
+      }
+
+      &::before,
+      &::after {
+        content: none;
+      }
     }
   }
 
@@ -112,10 +160,8 @@
     }
   }
 
+  /* The frame stays neutral; the signature says what is wrong. */
   &--with-error {
-    textarea {
-      border-color: darken($danger, 15%);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    }
+    --field-cap: var(--color-danger, #dc3545);
   }
 }
