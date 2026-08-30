@@ -92,7 +92,8 @@
         "users": {
           "index": "Benutzer",
           "edit": "Benutzer bearbeiten",
-          "fleets": "Flotten"
+          "fleets": "Flotten",
+          "inventories": "Inventare"
         },
         "vehicles": {
           "index": "Fahrzeuge",
@@ -102,7 +103,10 @@
           "index": "Flotten",
           "edit": "Flotte bearbeiten",
           "memberEdit": "Mitglied bearbeiten",
-          "history": "Verlauf"
+          "history": "Verlauf",
+          "roles": "Rollen",
+          "inventories": "Inventare",
+          "inventoryItems": "Einträge"
         },
         "admins": {
           "index": "Administratoren",

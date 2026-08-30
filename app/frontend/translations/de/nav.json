@@ -164,11 +164,14 @@
         "users": {
           "index": "Benutzer",
           "edit": "Bearbeiten",
-          "fleets": "Flotten"
+          "fleets": "Flotten",
+          "inventories": "Inventare"
         },
         "fleets": {
           "index": "Flotten",
-          "history": "Verlauf"
+          "history": "Verlauf",
+          "roles": "Rollen",
+          "inventories": "Inventare"
         },
         "vehicles": {
           "index": "Fahrzeuge"

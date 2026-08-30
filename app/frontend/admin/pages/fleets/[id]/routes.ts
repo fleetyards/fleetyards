@@ -22,6 +22,26 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "roles",
+    name: "admin-fleet-roles",
+    component: () => import("@/admin/pages/fleets/[id]/roles.vue"),
+    meta: {
+      title: "admin.fleets.roles",
+      activeRoute: "admin-fleets",
+      needsAuthentication: true,
+    },
+  },
+  {
+    path: "inventories",
+    name: "admin-fleet-inventories",
+    component: () => import("@/admin/pages/fleets/[id]/inventories.vue"),
+    meta: {
+      title: "admin.fleets.inventories",
+      activeRoute: "admin-fleets",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "history",
     name: "admin-fleet-history",
     component: () => import("@/admin/pages/fleets/[id]/history.vue"),

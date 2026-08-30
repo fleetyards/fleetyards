@@ -98,7 +98,8 @@
         "users": {
           "index": "Users",
           "edit": "Edit User",
-          "fleets": "Fleets"
+          "fleets": "Fleets",
+          "inventories": "Inventories"
         },
         "vehicles": {
           "index": "Vehicles",
@@ -109,7 +110,10 @@
           "edit": "Edit Fleet",
           "members": "Members",
           "memberEdit": "Edit Member",
-          "history": "History"
+          "history": "History",
+          "roles": "Roles",
+          "inventories": "Inventories",
+          "inventoryItems": "Entries"
         },
         "destroyedFleets": {
           "index": "Destroyed Fleets"

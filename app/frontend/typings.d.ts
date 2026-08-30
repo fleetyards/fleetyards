@@ -11,6 +11,12 @@ declare module "vue-router" {
     icon?: string;
     exact?: boolean;
     activeRoute?: string;
+    /*
+     * The tab this route belongs under, for a page that is reached from a tab
+     * but is not one itself -- a record's detail. Without it the tab strip goes
+     * blank as soon as you open one.
+     */
+    activeTab?: string;
     access?: string[];
     nav?: "main" | "sub" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;

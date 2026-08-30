@@ -476,7 +476,9 @@
             "fleet:events:delete": "Delete Events",
             "fleet:events:manage": "Manage Events",
             "fleet:notifications:manage": "Manage Notification Settings"
-          }
+          },
+          "name": "Name",
+          "rank": "Rank"
         },
         "inviteUrls": {
           "noLimit": "No limit",
@@ -528,6 +530,18 @@
               "created": "Signup added",
               "withdrawn": "Signup withdrawn"
             }
+          }
+        },
+        "inventories": {
+          "name": "Name",
+          "description": "Description",
+          "location": "Location",
+          "visibility": "Visibility",
+          "manager": "Manager",
+          "itemsCount": "Entries",
+          "visibilities": {
+            "members_only": "Members only",
+            "officers_only": "Officers only"
           }
         }
       },
@@ -2219,6 +2233,40 @@
       },
       "unlistedModel": {
         "linkHint": "Which ship in the catalogue is %{identifier}? The suggestion comes from the export and may be wrong."
+      },
+      "slug": "Slug",
+      "inventories": {
+        "source": "Source",
+        "sources": {
+          "vehicle": "Ship",
+          "handMade": "Made by hand"
+        }
+      },
+      "inventoryItems": {
+        "name": "Name",
+        "category": "Category",
+        "entryType": "Entry",
+        "quantity": "Quantity",
+        "quality": "Quality",
+        "notes": "Notes",
+        "itemType": "Catalogue",
+        "categories": {
+          "commodity": "Commodity",
+          "component": "Component",
+          "weapon": "Weapon",
+          "equipment": "Equipment",
+          "ammunition": "Ammunition",
+          "consumable": "Consumable",
+          "other": "Other"
+        },
+        "entryTypes": {
+          "deposit": "Deposit",
+          "withdrawal": "Withdrawal"
+        },
+        "units": {
+          "scu": "SCU",
+          "units": "units"
+        }
       },
       "scDataSource": {
         "dataSource": "Data source",

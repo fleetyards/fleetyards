@@ -12,6 +12,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "inventories",
+    name: "admin-user-inventories",
+    component: () => import("@/admin/pages/users/[id]/inventories.vue"),
+    meta: {
+      title: "admin.users.inventories",
+      activeRoute: "users",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "fleets",
     name: "admin-user-fleets",
     component: () => import("@/admin/pages/users/[id]/fleets.vue"),

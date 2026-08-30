@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as userRoutes } from "@/admin/pages/users/[id]/routes";
+import { routes as userInventoryRoutes } from "@/admin/pages/users/[id]/inventories/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -15,7 +16,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: ":id/",
     component: () => import("@/admin/pages/users/[id].vue"),
-    children: userRoutes,
+    children: [...userRoutes, ...userInventoryRoutes],
     redirect: { name: userRoutes[0].name },
     meta: {
       needsAuthentication: true,

@@ -14,16 +14,13 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { BaseTableCol } from "@/shared/components/base/Table/types";
 import { usePagination } from "@/shared/composables/usePagination";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import FleetMemberActions from "@/admin/components/Fleets/Members/Actions/index.vue";
 import {
   type Fleet,
   type AdminFleetMember,
   type FleetMembershipSortEnum,
   useFleetMembers as useFleetMembersQuery,
   getFleetMembersQueryKey,
-  loginAsFleetMember,
-  removeFleetMember,
 } from "@/services/fyAdminApi";
 
 type Props = {
@@ -33,22 +30,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, lUtc: l, timeDistance } = useI18n();
-const { displayConfirm, displayAlert } = useAppNotifications();
 
 const route = useRoute();
-const router = useRouter();
-
-const permanentRoleIds = computed(
-  () =>
-    new Set(
-      (props.fleet.fleetRoles || [])
-        .filter((role) => role.permanent)
-        .map((role) => role.id),
-    ),
-);
-
-const isPermanentMember = (member: AdminFleetMember) =>
-  member.roleId ? permanentRoleIds.value.has(member.roleId) : false;
 
 const sorts = computed((): FleetMembershipSortEnum[] => {
   return route.query.s ? [route.query.s as FleetMembershipSortEnum] : [];
@@ -124,36 +107,6 @@ const columns: BaseTableCol<AdminFleetMember>[] = [
     sortable: true,
   },
 ];
-
-const loginAs = (member: AdminFleetMember) => {
-  displayConfirm({
-    text: t("messages.confirm.user.loginAs"),
-    onConfirm: async () => {
-      await loginAsFleetMember(props.fleet.id, member.id);
-      window.open(window.FRONTEND_ENDPOINT, "_blank");
-    },
-  });
-};
-
-const editRole = (member: AdminFleetMember) => {
-  void router.push({
-    name: "admin-fleet-member-edit",
-    params: { id: props.fleet.id, memberId: member.id },
-  });
-};
-
-const removeMember = (member: AdminFleetMember) => {
-  displayConfirm({
-    text: t("messages.confirm.fleet.members.remove"),
-    onConfirm: async () => {
-      await removeFleetMember(props.fleet.id, member.id)
-        .then(() => refetch())
-        .catch((error) => {
-          displayAlert({ text: error.response?.data?.message });
-        });
-    },
-  });
-};
 </script>
 
 <template>
@@ -204,23 +157,7 @@ const removeMember = (member: AdminFleetMember) => {
           {{ l(record.createdAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">
-          <Btn v-tooltip="t('actions.users.loginAs')" @click="loginAs(record)">
-            <i class="fa-duotone fa-right-to-bracket" />
-          </Btn>
-          <Btn
-            v-tooltip="t('actions.fleet.members.editRole')"
-            @click="editRole(record)"
-          >
-            <i class="fa-duotone fa-user-pen" />
-          </Btn>
-          <Btn
-            v-if="!isPermanentMember(record)"
-            v-tooltip="t('actions.fleet.members.remove')"
-            @click="removeMember(record)"
-            :tone="BtnTonesEnum.DANGER"
-          >
-            <i class="fa-duotone fa-trash" />
-          </Btn>
+          <FleetMemberActions :fleet="props.fleet" :member="record" />
         </template>
       </BaseTable>
     </template>

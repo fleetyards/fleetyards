@@ -6,8 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type RouteRecordName, type RouteRecordRaw } from "vue-router";
+import { type RouteRecordRaw } from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
+import {
+  routeName,
+  useActiveTab,
+} from "@/shared/components/TabNavView/useActiveTab";
 
 type Props = {
   routes: RouteRecordRaw[];
@@ -36,26 +40,7 @@ const filteredRoutes = computed(() => {
     .filter((r) => checkAccess(props.resourceAccess, r.meta?.access));
 });
 
-const routeName = (r: RouteRecordRaw) => {
-  return r.name || (r.redirect as RouteRecordRaw)?.name;
-};
-
-const isActive = (tabRouteName?: RouteRecordName) => {
-  if (tabRouteName === route.name) return true;
-
-  const tabRoute = filteredRoutes.value.find(
-    (r) => routeName(r) === tabRouteName,
-  );
-  if (!tabRoute?.children?.length) return false;
-
-  return route.matched.some(
-    (matched) => (matched.redirect as RouteRecordRaw)?.name === tabRouteName,
-  );
-};
-
-const activeRoute = computed(() =>
-  filteredRoutes.value.find((r) => isActive(routeName(r))),
-);
+const { isActive, activeRoute } = useActiveTab(filteredRoutes);
 
 const activeLabel = computed(() => {
   if (!activeRoute.value) return "";
