@@ -478,7 +478,9 @@
             "fleet:events:delete": "删除活动",
             "fleet:events:manage": "管理活动",
             "fleet:notifications:manage": "管理通知设置"
-          }
+          },
+          "name": "名称",
+          "rank": "等级"
         },
         "inviteUrls": {
           "noLimit": "No limit",
@@ -530,6 +532,18 @@
               "created": "新增报名",
               "withdrawn": "报名已取消"
             }
+          }
+        },
+        "inventories": {
+          "name": "名称",
+          "description": "描述",
+          "location": "位置",
+          "visibility": "可见性",
+          "manager": "管理者",
+          "itemsCount": "条目数",
+          "visibilities": {
+            "members_only": "仅成员",
+            "officers_only": "仅军官"
           }
         }
       },
@@ -1727,6 +1741,18 @@
             "rsi-api-status": "RSI API 状态",
             "stats": "统计"
           }
+        },
+        "versions": {
+          "blank": "空",
+          "revertQuestion": "要还原吗?",
+          "sources": {
+            "custom": "管理员",
+            "rsi_loader": "Ship Matrix",
+            "sc_data_loader": "游戏文件",
+            "sc_loader": "游戏文件",
+            "uex_price_sync": "UEX 价格同步",
+            "unknown": "未知"
+          }
         }
       },
       "hangarTable": {
@@ -2212,6 +2238,40 @@
       },
       "unlistedModel": {
         "linkHint": "%{identifier} 对应目录中的哪艘飞船？建议来自导出数据，可能有误。"
+      },
+      "slug": "Slug",
+      "inventories": {
+        "source": "来源",
+        "sources": {
+          "vehicle": "飞船",
+          "handMade": "手动创建"
+        }
+      },
+      "inventoryItems": {
+        "name": "名称",
+        "category": "分类",
+        "entryType": "记录类型",
+        "quantity": "数量",
+        "quality": "品质",
+        "notes": "备注",
+        "itemType": "目录",
+        "categories": {
+          "commodity": "商品",
+          "component": "组件",
+          "weapon": "武器",
+          "equipment": "装备",
+          "ammunition": "弹药",
+          "consumable": "消耗品",
+          "other": "其他"
+        },
+        "entryTypes": {
+          "deposit": "入库",
+          "withdrawal": "出库"
+        },
+        "units": {
+          "scu": "SCU",
+          "units": "件"
+        }
       },
       "scDataSource": {
         "dataSource": "数据来源",

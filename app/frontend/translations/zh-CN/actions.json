@@ -381,7 +381,8 @@
         "noManufacturer": "此标识符无法解析出制造商",
         "alreadyExists": "%{name} 已在目录中",
         "link": "已在目录中"
-      }
+      },
+      "revert": "还原"
     }
   }
 }

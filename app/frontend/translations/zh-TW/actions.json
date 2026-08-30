@@ -381,7 +381,8 @@
         "noManufacturer": "此識別碼無法解析出製造商",
         "alreadyExists": "%{name} 已在目錄中",
         "link": "已在目錄中"
-      }
+      },
+      "revert": "還原"
     }
   }
 }

@@ -381,7 +381,8 @@
         "noManufacturer": "Aucun constructeur ne correspond à cet identifiant",
         "alreadyExists": "%{name} est déjà dans le catalogue",
         "link": "Déjà dans le catalogue"
-      }
+      },
+      "revert": "Rétablir"
     }
   }
 }

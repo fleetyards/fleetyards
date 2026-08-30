@@ -478,7 +478,9 @@
             "fleet:events:delete": "刪除活動",
             "fleet:events:manage": "管理活動",
             "fleet:notifications:manage": "管理通知設定"
-          }
+          },
+          "name": "名稱",
+          "rank": "階級"
         },
         "inviteUrls": {
           "noLimit": "No limit",
@@ -530,6 +532,18 @@
               "created": "新增報名",
               "withdrawn": "報名已取消"
             }
+          }
+        },
+        "inventories": {
+          "name": "名稱",
+          "description": "描述",
+          "location": "位置",
+          "visibility": "可見範圍",
+          "manager": "管理人",
+          "itemsCount": "記錄數",
+          "visibilities": {
+            "members_only": "僅限成員",
+            "officers_only": "僅限軍官"
           }
         }
       },
@@ -1727,6 +1741,18 @@
             "rsi-api-status": "RSI API 狀態",
             "stats": "統計"
           }
+        },
+        "versions": {
+          "blank": "空白",
+          "revertQuestion": "要還原嗎？",
+          "sources": {
+            "custom": "管理員",
+            "rsi_loader": "Ship Matrix",
+            "sc_data_loader": "遊戲檔案",
+            "sc_loader": "遊戲檔案",
+            "uex_price_sync": "UEX 價格同步",
+            "unknown": "未知"
+          }
         }
       },
       "hangarTable": {
@@ -2212,6 +2238,40 @@
       },
       "unlistedModel": {
         "linkHint": "%{identifier} 對應目錄中的哪艘飛船？建議來自匯出資料，可能有誤。"
+      },
+      "slug": "Slug",
+      "inventories": {
+        "source": "來源",
+        "sources": {
+          "vehicle": "飛船",
+          "handMade": "手動建立"
+        }
+      },
+      "inventoryItems": {
+        "name": "名稱",
+        "category": "分類",
+        "entryType": "異動",
+        "quantity": "數量",
+        "quality": "品質",
+        "notes": "備註",
+        "itemType": "目錄",
+        "categories": {
+          "commodity": "商品",
+          "component": "組件",
+          "weapon": "武器",
+          "equipment": "裝備",
+          "ammunition": "彈藥",
+          "consumable": "消耗品",
+          "other": "其他"
+        },
+        "entryTypes": {
+          "deposit": "存入",
+          "withdrawal": "取出"
+        },
+        "units": {
+          "scu": "SCU",
+          "units": "個"
+        }
       },
       "scDataSource": {
         "dataSource": "資料來源",

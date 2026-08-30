@@ -381,7 +381,8 @@
         "noManufacturer": "Este identificador no resuelve ningún fabricante",
         "alreadyExists": "%{name} ya está en el catálogo",
         "link": "Ya está en el catálogo"
-      }
+      },
+      "revert": "Revertir"
     }
   }
 }

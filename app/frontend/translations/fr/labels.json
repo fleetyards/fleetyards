@@ -478,7 +478,9 @@
             "fleet:events:delete": "Supprimer des événements",
             "fleet:events:manage": "Gérer les événements",
             "fleet:notifications:manage": "Gérer les paramètres de notification"
-          }
+          },
+          "name": "Nom",
+          "rank": "Rang"
         },
         "inviteUrls": {
           "noLimit": "Pas de limite",
@@ -530,6 +532,18 @@
               "created": "Inscription ajoutée",
               "withdrawn": "Inscription retirée"
             }
+          }
+        },
+        "inventories": {
+          "name": "Nom",
+          "description": "Description",
+          "location": "Emplacement",
+          "visibility": "Visibilité",
+          "manager": "Gestionnaire",
+          "itemsCount": "Entrées",
+          "visibilities": {
+            "members_only": "Membres uniquement",
+            "officers_only": "Officiers uniquement"
           }
         }
       },
@@ -1731,6 +1745,18 @@
             "rsi-api-status": "État de l'API RSI",
             "stats": "Statistiques"
           }
+        },
+        "versions": {
+          "blank": "vide",
+          "revertQuestion": "Rétablir ?",
+          "sources": {
+            "custom": "Admin",
+            "rsi_loader": "Ship Matrix",
+            "sc_data_loader": "Fichiers du jeu",
+            "sc_loader": "Fichiers du jeu",
+            "uex_price_sync": "Synchronisation des prix UEX",
+            "unknown": "Inconnu"
+          }
         }
       },
       "hangarTable": {
@@ -2216,6 +2242,40 @@
       },
       "unlistedModel": {
         "linkHint": "Quel vaisseau du catalogue est %{identifier} ? La suggestion vient de l'export et peut être fausse."
+      },
+      "slug": "Slug",
+      "inventories": {
+        "source": "Source",
+        "sources": {
+          "vehicle": "Vaisseau",
+          "handMade": "Créé manuellement"
+        }
+      },
+      "inventoryItems": {
+        "name": "Nom",
+        "category": "Catégorie",
+        "entryType": "Mouvement",
+        "quantity": "Quantité",
+        "quality": "Qualité",
+        "notes": "Notes",
+        "itemType": "Catalogue",
+        "categories": {
+          "commodity": "Marchandise",
+          "component": "Composant",
+          "weapon": "Arme",
+          "equipment": "Équipement",
+          "ammunition": "Munitions",
+          "consumable": "Consommable",
+          "other": "Autre"
+        },
+        "entryTypes": {
+          "deposit": "Dépôt",
+          "withdrawal": "Retrait"
+        },
+        "units": {
+          "scu": "SCU",
+          "units": "unités"
+        }
       },
       "scDataSource": {
         "dataSource": "Source des données",
