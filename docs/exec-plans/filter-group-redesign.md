@@ -200,7 +200,10 @@ than a surprise.
 
 Found by writing the Phase 0 tests, which is the argument for the gate.
 
-### F13 — The popover is attached, and the shared surface would detach it
+### F13 — The popover is attached, and the shared surface would detach it — **RESOLVED, see D7**
+
+> Resolved against the shared surface: detaching every piece turns a multi-select
+> into three stacked framed boxes. D7 records what was chosen instead.
 
 Not drift, and not obviously wrong: FilterGroup's popover is drawn as a
 continuation of its trigger. `.filter-group-items` carries `border-top: none`
@@ -218,6 +221,26 @@ which today sits **outside** the bordered area as a sibling of
 
 This is a design decision, not a refactor, and it belongs to whoever owns the
 look rather than to the phase that happens to touch the CSS.
+
+### F14 — Collapsed animates the element the frame wants to live on
+
+`Collapsed.getElementStyle` reads **inline** styles, which a stylesheet never
+sets, so the enter keyframes resolve `border`, `padding` and `margin` to `0` for
+the whole 500ms and let them snap to their real values at the end. Anything
+framing a segment -- including the gap that stands it off the trigger -- has to
+sit on an element _inside_ the animated one.
+
+Both segments now do: the popover through `.filter-group-surface`, and the
+selected list through the same element after it was restructured to match. The
+element `Collapsed` animates carries no rules at all.
+
+A second trap in the same component: focusing into a still-collapsed one scrolls
+its content out of sight, because an `overflow: hidden` box is still
+programmatically scrollable. Fixed with `focus({ preventScroll: true })`, passed
+through a `setFocus` that now takes `FocusOptions` — not fixed inside
+`FormInput`, where scrolling a focused field into view is usually right.
+
+Measured: `scrollTop 21`, content at `-21px`, against `0` and `0`.
 
 ## Decisions
 
@@ -273,6 +296,48 @@ entries — manufacturers, star systems, model classifications. Without
 type-ahead the only way through them is fifty arrow presses. A native `<select>`
 does this for free, which is exactly the expectation D1 opts out of and has to
 pay back by hand.
+
+### D7 — The trigger stays; what hangs off it becomes a capped surface — **DECIDED**
+
+Reached by building the alternatives on the visual-tests page and looking at
+them, single and multiple, rather than from descriptions. Three rounds, and the
+first two answers were wrong in ways only the pictures showed.
+
+**The decision.** The trigger keeps exactly the look it has today. The popover
+and the selected list each become their own surface in the new language:
+`--color-gray-darker`, a `--color-edge` border, `--radius-control` all round, an
+end-cap top and bottom, standing off the trigger by 6px. The selected items stay
+a list of full-width rows.
+
+**Why not the shared `BtnDropdown/Menu` surface, which is what #4371 asked for.**
+It was tried and chosen first. It works for single select and fails for
+multiple: the selected list renders _outside_ the popover, so the control
+becomes three separately framed boxes stacked down the page. That is a property
+of "every piece is its own detached surface", not a defect of the styling.
+
+The capped form keeps the surfaces distinct but subordinates them to a trigger
+that never changes, so the control still reads as one thing with something
+attached to it.
+
+**Consequences.**
+
+- D3 no longer binds. The surface is not shared with `BtnDropdown/Menu`, so
+  extracting a common primitive is no longer a prerequisite, and the SCSS
+  migration loses its blocking reason. It stays worth doing to get rid of
+  `$input-bg` and friends, but it does not gate anything.
+- The trigger's `.active` / `.selected` rules that square its bottom corners
+  become wrong -- nothing meets it any more -- and have to be undone.
+- `FormInput` needs a treatment for sitting inside a surface; its clean variant
+  keeps `$input-bg` and reads as a lighter slab inset into one. The preview
+  faked this with `:deep()`; the real version styles the control for the context.
+- Both segments must carry their frame on an inner element, never on the one
+  `Collapsed` animates. See F14.
+
+**Rejected along the way:** chips inside the trigger (the trigger is a
+`<button>`, so a chip cannot carry its own remove control); the whole control as
+a single Panel with caps outside and soft seams within (a misreading of the
+brief); and the flap, which docks the surface to the trigger with square top
+corners.
 
 ### D6 — One PR
 

@@ -735,52 +735,21 @@ defineExpose({
       v-if="multiple && !hideSelected"
       :id="`${name}-selected-${id}`"
       :visible="selectedOptions.length > 0 && !visible"
-      class="filter-group-items"
+      class="filter-group-selected"
     >
-      <Option
-        v-for="(option, index) in selectedOptions"
-        :key="`${name}-selected-${id}-${option.value}-${index}`"
-        :option="option"
-        :selected="selected(option.value)"
-        :big-icon="bigIcon"
-        :multiple="multiple"
-        :nullable="nullable"
-        @select="select(option.value)"
-      />
-    </Collapsed>
-    <Collapsed
-      :id="`${name}-options-${id}`"
-      :visible="visible"
-      class="filter-group-items-wrapper"
-    >
-      <FormInput
-        v-if="searchable"
-        ref="searchInput"
-        :id="labelFor"
-        v-model="search"
-        :name="`${name}-searchInput-${id}`"
-        :placeholder="searchPlaceholder"
-        :label="searchLabelFallback"
-        class="filter-group-search"
-        :variant="InputVariantsEnum.CLEAN"
-        :no-label="true"
-        :clearable="true"
-        @input="onSearch"
-      />
-      <div class="filter-group-items">
-        <div
-          :id="listboxId"
-          role="listbox"
-          :aria-multiselectable="multiple"
-          :aria-labelledby="triggerId"
-        >
+      <!--
+        Same shape as the popover below, and for the same reason: Collapsed
+        animates this element's height and drives its margin, padding and border
+        to zero for the duration, so anything framing the segment -- including
+        the gap that stands it off the trigger -- has to sit inside it or it
+        snaps in at the end.
+      -->
+      <div class="filter-group-surface">
+        <div class="filter-group-items">
           <Option
-            v-for="(option, index) in filteredOptions"
-            :key="`${name}-options-${id}-${option.value}-${index}`"
+            v-for="(option, index) in selectedOptions"
+            :key="`${name}-selected-${id}-${option.value}-${index}`"
             :option="option"
-            :option-id="optionId(index)"
-            :in-listbox="true"
-            :active="index === activeIndex"
             :selected="selected(option.value)"
             :big-icon="bigIcon"
             :multiple="multiple"
@@ -788,15 +757,67 @@ defineExpose({
             @select="select(option.value)"
           />
         </div>
+      </div>
+    </Collapsed>
+    <Collapsed
+      :id="`${name}-options-${id}`"
+      :visible="visible"
+      class="filter-group-items-wrapper"
+    >
+      <!--
+        Collapsed animates this wrapper's height, and its keyframes drive
+        padding, border and margin to zero for the duration (it reads inline
+        styles, which a stylesheet never sets, so the end keyframe resolves to
+        0). Anything framing the popover therefore has to sit *inside* the
+        animated element, or it stays collapsed for 500ms and snaps in at the
+        end.
+      -->
+      <div class="filter-group-surface">
+        <FormInput
+          v-if="searchable"
+          ref="searchInput"
+          :id="labelFor"
+          v-model="search"
+          :name="`${name}-searchInput-${id}`"
+          :placeholder="searchPlaceholder"
+          :label="searchLabelFallback"
+          class="filter-group-search"
+          :variant="InputVariantsEnum.CLEAN"
+          :no-label="true"
+          :clearable="true"
+          @input="onSearch"
+        />
+        <div class="filter-group-items">
+          <div
+            :id="listboxId"
+            role="listbox"
+            :aria-multiselectable="multiple"
+            :aria-labelledby="triggerId"
+          >
+            <Option
+              v-for="(option, index) in filteredOptions"
+              :key="`${name}-options-${id}-${option.value}-${index}`"
+              :option="option"
+              :option-id="optionId(index)"
+              :in-listbox="true"
+              :active="index === activeIndex"
+              :selected="selected(option.value)"
+              :big-icon="bigIcon"
+              :multiple="multiple"
+              :nullable="nullable"
+              @select="select(option.value)"
+            />
+          </div>
 
-        <Btn
-          v-if="fetchMoreVisible && paginated"
-          :disabled="loading"
-          class="fade-list-item filter-group-fetch-more"
-          @click="fetchMore"
-          :variant="BtnVariantsEnum.BARE"
-          >{{ t("filterGroup.actions.fetchMore") }}</Btn
-        >
+          <Btn
+            v-if="fetchMoreVisible && paginated"
+            :disabled="loading"
+            class="fade-list-item filter-group-fetch-more"
+            @click="fetchMore"
+            :variant="BtnVariantsEnum.BARE"
+            >{{ t("filterGroup.actions.fetchMore") }}</Btn
+          >
+        </div>
       </div>
     </Collapsed>
   </div>
