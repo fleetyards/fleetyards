@@ -170,30 +170,29 @@ From F10. Their inline text becomes what it already is — the option's text, no
 the field's. The alignment then follows on its own, and the preview's
 `.label-slot` scaffolding has nothing left to do.
 
-### D8 — The error message is inline; the tooltip is an addition, never the message — **PROPOSED**
+### D8 — The message is inline everywhere; the tooltip survives only on the auth pages — **DECIDED**
 
 All six form components show errors through `v-tooltip` and nothing else. A
 tooltip cannot be triggered by touch at all, so on a phone the message today is
 simply invisible — and on a desktop a sighted user has to hover a field to find
 out why the form refused them.
 
-So the floor is not a presentation choice: **the message is always in the DOM
-and always tied to its input with `aria-describedby`**, whatever is done with it
-visually.
+**The floor, which is not a presentation choice:** the message is always in the
+DOM and always tied to its input with `aria-describedby`.
 
-On top of that floor:
+**The default:** inline, below the control, on every viewport and every page.
 
-- **Inline, below the control, by default** — every viewport, every page.
-- **The tooltip stays only where the layout genuinely cannot give the message a
-  line**, and even there it repeats what is already in the DOM rather than being
-  the only copy.
+**The exception:** the tooltip stays on login, signup, request-password and
+change-password as a visual flourish, and nowhere else. Those four are the
+`hideLabelOnEmpty` forms — the compact treatment where the label folds away, which
+is why a tooltip was reached for there in the first place. Even on them it is an
+addition that repeats what is already in the DOM, never the only copy.
 
-That is a step past "inline on mobile, tooltip on desktop login": the split by
-viewport fixes the touch case and leaves the desktop one, where discovering an
-error still requires hovering the field that caused it. `useMobile` exists if a
-viewport split is wanted anyway.
+Mechanically this inverts today's arrangement: the components stop tooltipping by
+default and gain an opt-in the four auth pages set, rather than every one of the
+700-odd call sites inheriting it.
 
-Worth pricing before committing: an inline message changes a control's height
+Worth pricing before implementing: an inline message changes a control's height
 when it appears, so a form reflows as it validates. That is the reason to decide
 it here rather than per-component.
 
