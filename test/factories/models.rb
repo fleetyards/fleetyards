@@ -148,6 +148,21 @@ FactoryBot.define do
     upgrade_kits_count { 0 }
     videos_count { 0 }
     ground { false }
+
+    # `in_game?` reads a build row rather than a column, so this is what puts a
+    # ship in the game. No hook by default: 31 of 246 models in a real catalogue
+    # are concept ships with no build, and that is the more common case.
+    trait :in_game do
+      after(:create) do |model|
+        model.builds.create!(
+          environment: ScData::Source.environment,
+          version: ScData::Source.version
+        )
+
+        model.association(:build).reset
+        model.association(:last_build).reset
+      end
+    end
     hydrogen_fuel_tank_size { 660000.0 }
     quantum_fuel_tank_size { 3000.0 }
     scm_speed { 144.0 }

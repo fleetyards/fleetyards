@@ -1318,6 +1318,10 @@
       },
       "unlistedModel": {
         "linkHint": "Quale nave del catalogo è %{identifier}? Il suggerimento viene dall'export e può essere sbagliato."
+      },
+      "scDataSource": {
+        "dataSource": "Fonte dati",
+        "notLive": "Non è la build live"
       }
     }
   }

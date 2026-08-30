@@ -1444,6 +1444,10 @@
       },
       "unlistedModel": {
         "linkHint": "Welches Schiff im Katalog ist %{identifier}? Der Vorschlag stammt aus dem Export und kann falsch sein."
+      },
+      "scDataSource": {
+        "dataSource": "Datenquelle",
+        "notLive": "Nicht der Live-Build"
       }
     }
   }

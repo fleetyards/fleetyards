@@ -12,8 +12,8 @@ class FleetMissionShipAllowedModelsTest < ActionDispatch::IntegrationTest
     Flipper.enable_actor("fleet_mission_builder", @fleet)
     @mission = create(:mission, fleet: @fleet, created_by: @admin)
     @team = create(:mission_team, mission: @mission)
-    @connie = create(:model, name: "Constellation Andromeda", in_game: true)
-    @freelancer = create(:model, name: "Freelancer MAX", in_game: true)
+    @connie = create(:model, :in_game, name: "Constellation Andromeda")
+    @freelancer = create(:model, :in_game, name: "Freelancer MAX")
     sign_in @admin
   end
 
@@ -51,7 +51,7 @@ class FleetMissionShipAllowedModelsTest < ActionDispatch::IntegrationTest
   end
 
   test "a list cannot name a ship that is not in the game" do
-    concept = create(:model, in_game: false)
+    concept = create(:model)
 
     post ships_path,
       params: {title: "Escort", allowedModelIds: [concept.id]},

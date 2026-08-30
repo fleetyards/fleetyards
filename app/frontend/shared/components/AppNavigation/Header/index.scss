@@ -38,19 +38,27 @@
     transition: right ease $transition-base-speed;
 
     &__left {
-      flex: 1 1 auto;
+      // Outbids the actions for the free space on a shared row, so they stay at
+      // their natural size there and only grow once they have wrapped.
+      flex: 1000 1 auto;
       min-width: 0;
       max-width: 100%;
     }
 
     &__right {
-      flex: 0 0 auto;
+      flex: 1 1 auto;
       justify-content: flex-end;
 
       // an empty teleport target would still claim the flex gap and pull the
       // quicksearch away from the right edge the rows below align to
       &:not(:has(*)) {
         display: none;
+      }
+
+      // Once wrapped, the actions have a whole row to themselves - they share
+      // it rather than huddling against one edge of it.
+      > :deep(*) {
+        flex: 1 1 auto;
       }
     }
   }
