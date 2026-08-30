@@ -164,11 +164,28 @@ checked radio or toggle, whose fill _is_ the state.
 The signature drops to `--color-edge-faint`, so a disabled control cannot be
 read as a resting one.
 
-### D7 — `FormCheckbox` and `FormToggle` gain a block label — **DECIDED**
+### D7 — `FormCheckbox` and `FormToggle` gain an alignment prop, not a label — **DECIDED, revised**
 
-From F10. Their inline text becomes what it already is — the option's text, not
-the field's. The alignment then follows on its own, and the preview's
-`.label-slot` scaffolding has nothing left to do.
+From F10. The first answer was that they gain the block label every other
+control has, and that alignment would follow from it. Building it says
+otherwise.
+
+A block label over a checkbox is a duplicate: the text beside it already names
+it, so a second label above would say the same thing twice for the sole purpose
+of taking up room. `RadioList` is not the same case — there the block label
+names the _group_ and the option texts name the choices, which are two different
+things. A single checkbox has no such second level.
+
+So it is `alignWithFields`, a boolean, off by default. It says what is actually
+meant — line up with the fields beside you — rather than obtaining it by way of
+an empty label.
+
+Two details that only appeared once it existed. It has to reserve the label's
+line **and** the field's height, with the control centred in the second:
+reserving the line alone aligns the tops and leaves a 24px box at the top of a
+43px band. And the height belongs on the control row, not on the component,
+which since phase 3 holds two rows -- put it on the component and the error
+message lands higher than the one in the field beside it.
 
 ### D8 — The message is inline everywhere; the tooltip survives only on the auth pages — **DECIDED**
 

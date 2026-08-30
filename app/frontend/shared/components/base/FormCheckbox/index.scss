@@ -11,8 +11,20 @@
    */
   &--align-with-fields {
     margin-top: calc(1.42857em + 5px);
-    min-height: var(--field-h, 43px);
-    align-items: center;
+
+    /*
+     * The height goes on the control row, not on the component. The component
+     * holds two rows now -- the control and its message -- so a min-height there
+     * covered both, and the message ended up higher than the one beside it
+     * instead of on the same line.
+     *
+     * The label is already a centring flex row, so giving it the field's height
+     * puts the box in the middle of the same band the input next to it occupies,
+     * and drops the message to the same place.
+     */
+    label {
+      min-height: var(--field-h, 43px);
+    }
   }
   /* The control and its message are a row and a line under it, not two things
      side by side. */
