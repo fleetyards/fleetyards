@@ -20,7 +20,12 @@ export const useCompareModels = (slugs: MaybeRefOrGetter<string[]>) => {
 
   const fetchFor = async (slug: string) => {
     try {
-      cache.value = { ...cache.value, [slug]: await fetchModel(slug) };
+      // Awaited into a local first: spreading the cache in the same expression
+      // reads it before the request resolves, so parallel fetches each write back
+      // a snapshot taken before any of them landed and only the last ship survives.
+      const model = await fetchModel(slug);
+
+      cache.value = { ...cache.value, [slug]: model };
     } catch (error) {
       // Left uncached on purpose, so changing the compare set retries instead of
       // leaving the ship missing from the table forever. Reported through
