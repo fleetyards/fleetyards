@@ -247,7 +247,12 @@ const setLocale = (locale: string) => {
         <FrontendNavigation />
       </transition>
       <div class="main-wrapper">
-        <div class="main-inner">
+        <div
+          class="main-inner"
+          :class="{
+            'main-inner--with-primary-action': route.meta.primaryAction,
+          }"
+        >
           <AppNavigationHeader />
 
           <ScDataSourceBar />
