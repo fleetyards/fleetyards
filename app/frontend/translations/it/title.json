@@ -36,9 +36,10 @@
         "publicStats": "Statistiche dell'Hangar di %{user}",
         "wishlist": "Lista dei desideri",
         "publicWishlist": "Lista dei desideri di %{user}",
-        "vehicleCargo": "Carico della nave",
+        "vehicleLoadouts": "Loadouts della nave",
         "inventories": "My Hangar Inventories",
-        "inventory": "%{inventory}"
+        "inventory": "%{inventory}",
+        "vehicleCargo": "Carico della nave"
       },
       "requestPassword": "Richiedi la password",
       "changePassword": "Cambia la password",
@@ -57,11 +58,36 @@
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories"
         },
+        "missions": {
+          "index": "Missioni di %{fleet}",
+          "create": "Crea Missione - %{fleet}",
+          "edit": {
+            "basic": "Modifica Missione - %{fleet}",
+            "description": "Modifica Descrizione - %{fleet}",
+            "teams": "Modifica Team e Slot - %{fleet}"
+          },
+          "show": "Missione di %{fleet}"
+        },
+        "events": {
+          "index": "Eventi di %{fleet}",
+          "calendar": "Calendario di %{fleet}",
+          "create": "Crea Evento - %{fleet}",
+          "edit": {
+            "basic": "Modifica Evento - %{fleet}",
+            "description": "Modifica Descrizione - %{fleet}",
+            "teams": "Modifica Team e Slot - %{fleet}"
+          },
+          "show": "Evento di %{fleet}"
+        },
         "settings": {
           "index": "Impostazioni di %{fleet}",
           "fleet": "Impostazioni di %{fleet}",
           "membership": "Appartenenza a %{fleet}",
-          "roles": "Ruoli di %{fleet}"
+          "roles": "Ruoli di %{fleet}",
+          "notifications": "Impostazioni Notifiche di %{fleet}",
+          "discord": "Impostazioni Discord di %{fleet}",
+          "calendar": "Impostazioni Calendario di %{fleet}",
+          "features": "Funzionalità di %{fleet}"
         }
       },
       "roadmap": {
@@ -74,10 +100,12 @@
         "profile": "Impostazioni profilo",
         "account": "Account",
         "hangar": "Impostazioni dell'Hangar",
+        "privacy": "Impostazioni Privacy",
         "features": "Flag funzionalità",
         "connections": "Connessioni",
         "oauthApplications": "Applicazioni OAuth",
         "notifications": "Impostazioni Notifiche",
+        "calendar": "Abbonamento al calendario",
         "security": "Sicurezza dell'account",
         "twoFactor": {
           "enable": "Attiva Autenticazione A Due Fattori",
@@ -101,6 +129,7 @@
         "index": "Test Visivi",
         "panels": "Pannelli - Test Visivi",
         "buttons": "Pulsanti - Test Visivi",
+        "events": "Eventi",
         "typography": "Tipografia - Test visivi",
         "forms": "Moduli - Test visivi",
         "tables": "Tabelle - Test Visivi",
@@ -109,29 +138,36 @@
         "states": "Stati - Test visivi",
         "notifications": "Notifiche - Test Visivi",
         "syncModal": "Modal sincronizzazione - Test Visivi",
+        "overlays": "Overlay - Test Visivi",
         "supportHint": "Suggerimento supporto - Test Visivi",
-        "chips": "Chips - Test Visivi"
+        "media": "Media - Test Visivi",
+        "charts": "Grafici - Test Visivi",
+        "chips": "Chips - Test Visivi",
+        "notificationCenter": "Centro notifiche - Test Visivi"
       },
       "admin": {
         "models": {
           "index": "Modelli",
           "new": "Nuovo Modello",
           "edit": {
-            "index": "Modifica Modello",
-            "metrics": "Modifica Metriche Modello",
-            "prices": "Modifica Prezzi Modello",
-            "fleetchart": "Modifica Immagini Modello",
-            "hardpoints": "Modifica Hardpoint Modello",
-            "cargoAndFuel": "Carico e Carburante",
+            "index": "Modifica %{manufacturer} %{model}",
+            "metrics": "Modifica metriche di %{manufacturer} %{model}",
+            "prices": "Modifica prezzi di %{manufacturer} %{model}",
+            "fleetchart": "Modifica immagini del grafico flotta di %{manufacturer} %{model}",
+            "positions": "Modifica posizioni di %{manufacturer} %{model}",
+            "hardpoints": "Modifica hardpoint di %{manufacturer} %{model}",
+            "cargoAndFuel": "Modifica carburante di %{manufacturer} %{model}",
             "cargoHolds": "Modifica stive di carico di %{manufacturer} %{model}",
-            "docks": "Modifica Docks Modello",
-            "modules": "Modifica Moduli Modello",
-            "paints": "Modifica Verniciature Modello",
-            "images": "Modifica Immagini Modello",
-            "videos": "Modifica Video Modello",
-            "loaners": "Modifica Prestiti Modello",
-            "upgrades": "Modifica Miglioramenti Modello",
-            "packages": "Modifica Pacchetti Modello"
+            "docks": "Modifica dock di %{manufacturer} %{model}",
+            "modules": "Modifica moduli di %{manufacturer} %{model}",
+            "paints": "Modifica verniciature di %{manufacturer} %{model}",
+            "images": "Modifica immagini di %{manufacturer} %{model}",
+            "videos": "Modifica video di %{manufacturer} %{model}",
+            "loaners": "Modifica prestiti di %{manufacturer} %{model}",
+            "snubCrafts": "Modifica Snub Craft di %{manufacturer} %{model}",
+            "upgrades": "Modifica miglioramenti di %{manufacturer} %{model}",
+            "packages": "Modifica pacchetti di %{manufacturer} %{model}",
+            "history": "Modifica cronologia di %{manufacturer} %{model}"
           }
         },
         "components": {
@@ -139,7 +175,8 @@
           "new": "Nuovo Componente",
           "edit": {
             "index": "Modifica componente",
-            "prices": "Edit Component Prices"
+            "prices": "Edit Component Prices",
+            "history": "Modifica cronologia del componente"
           }
         },
         "manufacturers": {
@@ -147,9 +184,23 @@
           "new": "Nuovo Produttore",
           "edit": "Modifica Produttore"
         },
+        "supporterContributions": {
+          "index": "Contributi dei sostenitori",
+          "new": "Nuovo contributo",
+          "edit": "Modifica contributo"
+        },
+        "fundingGoals": {
+          "index": "Obiettivi di finanziamento",
+          "new": "Nuovo obiettivo di finanziamento",
+          "edit": "Modifica obiettivo di finanziamento"
+        },
         "users": {
           "index": "Utenti",
-          "edit": "Modifica Utente"
+          "edit": "Modifica Utente",
+          "inventories": "Inventari dell'utente",
+          "inventory": "Inventario dell'utente",
+          "inventoryItem": "Voce di inventario",
+          "fleets": "Flotte dell'utente"
         },
         "vehicles": {
           "index": "Veicoli",
@@ -162,7 +213,14 @@
         "fleets": {
           "index": "Flotte",
           "edit": "Modifica Flotta",
-          "memberEdit": "Modifica membro della flotta"
+          "members": "Membri della flotta",
+          "memberEdit": "Modifica membro della flotta",
+          "history": "Cronologia della flotta",
+          "roles": "Ruoli della flotta",
+          "role": "Ruolo della flotta",
+          "inventories": "Inventari della flotta",
+          "inventory": "Inventario della flotta",
+          "inventoryItem": "Voce di inventario"
         },
         "oauthApplications": {
           "index": "Applicazioni OAuth",
@@ -176,6 +234,9 @@
         "images": {
           "index": "Immagini"
         },
+        "notifications": {
+          "index": "Notifiche"
+        },
         "maintenance": {
           "index": "Manutenzione",
           "pghero": "PgHero",
@@ -183,6 +244,8 @@
           "flipper": "Flipper UI",
           "workers": "Workers",
           "tasks": "Attività",
+          "imports": "Importazioni",
+          "importDetail": "Dettaglio importazione",
           "rsiApiStatus": "Stato API RSI"
         },
         "modelPaints": {
@@ -194,7 +257,10 @@
           "edit": {
             "index": "Modifica %{name} Dati Base",
             "models": "Modifica %{name} Modelli",
-            "prices": "Modifica %{name} Prezzi"
+            "prices": "Modifica %{name} Prezzi",
+            "hardpoints": "Modifica Hardpoint di %{name}",
+            "cargoHolds": "Modifica stive di carico di %{name}",
+            "history": "Modifica cronologia del modulo"
           }
         },
         "unlistedModels": {
@@ -217,8 +283,13 @@
             "index": "Edit Equipment",
             "prices": "Edit Equipment Prices"
           }
+        },
+        "visualTests": {
+          "index": "Test Visivi",
+          "notifications": "Notifiche - Test Visivi"
         }
-      }
+      },
+      "notifications": "Notifiche"
     }
   }
 }

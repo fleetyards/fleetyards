@@ -47,11 +47,31 @@
         "logistics": {
           "index": "Logistics"
         },
+        "missions": {
+          "index": "Missioni",
+          "edit": {
+            "basic": "Base",
+            "description": "Descrizione",
+            "teams": "Team e slot"
+          }
+        },
+        "events": {
+          "index": "Eventi",
+          "calendar": "Calendario",
+          "edit": {
+            "basic": "Base",
+            "description": "Descrizione",
+            "teams": "Team e slot"
+          }
+        },
         "settings": {
           "index": "Impostazioni",
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
           "roles": "Ruoli",
+          "notifications": "Notifiche",
+          "discord": "Discord",
+          "calendar": "Calendario",
           "features": "Funzionalità"
         }
       },
@@ -79,7 +99,9 @@
         "account": "Account",
         "security": "Sicurezza",
         "notifications": "Notifiche",
+        "calendar": "Calendario",
         "hangar": "Hangar",
+        "privacy": "Privacy",
         "features": "Funzionalità",
         "connections": "Connessioni",
         "oauthApplications": "App OAuth",
@@ -90,6 +112,7 @@
         "index": "Test Visivi",
         "panels": "Pannelli",
         "buttons": "Pulsanti",
+        "events": "Eventi",
         "typography": "Tipografia",
         "forms": "Moduli",
         "tables": "Tabelle",
@@ -98,8 +121,17 @@
         "states": "Stati",
         "notifications": "Notifiche",
         "syncModal": "Modal sincronizzazione",
+        "overlays": "Overlay",
         "supportHint": "Suggerimento supporto",
-        "chips": "Chips"
+        "media": "Media",
+        "charts": "Grafici",
+        "chips": "Chips",
+        "groups": {
+          "foundations": "Fondamenti",
+          "data": "Dati",
+          "feedback": "Feedback"
+        },
+        "notificationCenter": "Centro notifiche"
       },
       "admin": {
         "index": "Admin",
@@ -118,10 +150,13 @@
             "cargoAndFuel": "Carico e Carburante",
             "cargoHolds": "Stive di carico",
             "fleetchart": "Immagini Fleetchart",
+            "positions": "Posizioni",
             "hardpoints": "Punti di Attacco",
             "loaners": "Prestiti",
+            "snubCrafts": "Snub Craft",
             "upgrades": "Upgrade",
-            "packages": "Pacchetti"
+            "packages": "Pacchetti",
+            "history": "Cronologia"
           }
         },
         "modelPaints": {
@@ -134,7 +169,10 @@
           "edit": {
             "index": "Dati Base",
             "models": "Modelli",
-            "prices": "Prezzi"
+            "prices": "Prezzi",
+            "hardpoints": "Punti di Attacco",
+            "cargoHolds": "Stive di carico",
+            "history": "Cronologia"
           }
         },
         "unlistedModels": {
@@ -148,7 +186,8 @@
           "index": "Componenti",
           "edit": {
             "index": "Dati base",
-            "prices": "Prezzi"
+            "prices": "Prezzi",
+            "history": "Cronologia"
           }
         },
         "manufacturers": {
@@ -158,10 +197,21 @@
           "index": "Immagini"
         },
         "users": {
-          "index": "Utenti"
+          "index": "Utenti",
+          "edit": "Modifica",
+          "fleets": "Flotte",
+          "inventories": "Inventari"
         },
         "fleets": {
-          "index": "Flotte"
+          "index": "Flotte",
+          "edit": "Modifica",
+          "members": "Membri",
+          "history": "Cronologia",
+          "roles": "Ruoli",
+          "inventories": "Inventari"
+        },
+        "destroyedFleets": {
+          "index": "Flotte eliminate"
         },
         "vehicles": {
           "index": "Veicoli"
@@ -178,6 +228,7 @@
           "features": "Funzionalità",
           "workers": "Worker",
           "tasks": "Attività",
+          "imports": "Importazioni",
           "rsiApiStatus": "Stato API RSI"
         },
         "supporterContributions": {
@@ -189,6 +240,9 @@
           "index": "Obiettivi di finanziamento",
           "new": "Nuovo obiettivo di finanziamento",
           "edit": "Modifica obiettivo di finanziamento"
+        },
+        "notifications": {
+          "index": "Notifiche"
         },
         "commodities": {
           "index": "Commodities",
@@ -202,8 +256,19 @@
             "index": "Base Data",
             "prices": "Prices"
           }
+        },
+        "visualTests": {
+          "index": "Test Visivi",
+          "notifications": "Notifiche"
+        },
+        "groups": {
+          "catalogue": "Catalogo",
+          "community": "Community",
+          "people": "Persone",
+          "system": "Sistema"
         }
-      }
+      },
+      "notifications": "Notifiche"
     }
   }
 }

@@ -47,11 +47,31 @@
         "logistics": {
           "index": "Logistics"
         },
+        "missions": {
+          "index": "Missionen",
+          "edit": {
+            "basic": "Basis",
+            "description": "Beschreibung",
+            "teams": "Teams & Slots"
+          }
+        },
+        "events": {
+          "index": "Events",
+          "calendar": "Kalender",
+          "edit": {
+            "basic": "Basis",
+            "description": "Beschreibung",
+            "teams": "Teams & Slots"
+          }
+        },
         "settings": {
           "index": "Einstellungen",
           "fleet": "Flotteneinstellungen",
           "membership": "Mitgliedschaftseinstellungen",
           "roles": "Rollen",
+          "notifications": "Benachrichtigungen",
+          "discord": "Discord",
+          "calendar": "Kalender",
           "features": "Funktionen"
         }
       },
@@ -79,6 +99,7 @@
         "account": "Konto",
         "security": "Sicherheit",
         "notifications": "Benachrichtigungen",
+        "calendar": "Kalender",
         "hangar": "Hangar",
         "privacy": "Datenschutz",
         "features": "Funktionen",
@@ -91,6 +112,7 @@
         "index": "Visuelle Tests",
         "panels": "Bereiche",
         "buttons": "Schaltflächen",
+        "events": "Events",
         "typography": "Typografie",
         "forms": "Formulare",
         "tables": "Tabellen",
@@ -99,8 +121,17 @@
         "states": "Zustände",
         "notifications": "Benachrichtigungen",
         "syncModal": "Sync-Modal",
+        "overlays": "Overlays",
         "supportHint": "Support-Hinweis",
-        "chips": "Chips"
+        "media": "Medien",
+        "charts": "Diagramme",
+        "chips": "Chips",
+        "groups": {
+          "foundations": "Grundlagen",
+          "data": "Daten",
+          "feedback": "Feedback"
+        },
+        "notificationCenter": "Benachrichtigungszentrale"
       },
       "admin": {
         "index": "Admin",
@@ -119,8 +150,10 @@
             "cargoAndFuel": "Fracht und Treibstoff",
             "cargoHolds": "Frachträume",
             "fleetchart": "Flottenkarten-Bilder",
+            "positions": "Positionen",
             "hardpoints": "Aufhängungspunkte",
             "loaners": "Leihschiffe",
+            "snubCrafts": "Snub Crafts",
             "upgrades": "Upgrades",
             "packages": "Pakete",
             "history": "Verlauf"
@@ -137,6 +170,8 @@
             "index": "Basisdaten",
             "models": "Modelle",
             "prices": "Preise",
+            "hardpoints": "Aufhängungspunkte",
+            "cargoHolds": "Frachträume",
             "history": "Verlauf"
           }
         },
@@ -169,9 +204,14 @@
         },
         "fleets": {
           "index": "Flotten",
+          "edit": "Bearbeiten",
+          "members": "Mitglieder",
           "history": "Verlauf",
           "roles": "Rollen",
           "inventories": "Inventare"
+        },
+        "destroyedFleets": {
+          "index": "Gelöschte Flotten"
         },
         "vehicles": {
           "index": "Fahrzeuge"
@@ -201,6 +241,9 @@
           "new": "Neues Finanzierungsziel",
           "edit": "Finanzierungsziel bearbeiten"
         },
+        "notifications": {
+          "index": "Benachrichtigungen"
+        },
         "commodities": {
           "index": "Commodities",
           "edit": {
@@ -213,8 +256,19 @@
             "index": "Base Data",
             "prices": "Prices"
           }
+        },
+        "visualTests": {
+          "index": "Visuelle Tests",
+          "notifications": "Benachrichtigungen"
+        },
+        "groups": {
+          "catalogue": "Katalog",
+          "community": "Community",
+          "people": "Personen",
+          "system": "System"
         }
-      }
+      },
+      "notifications": "Benachrichtigungen"
     }
   }
 }

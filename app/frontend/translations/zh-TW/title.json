@@ -36,9 +36,10 @@
         "publicStats": "%{user} 機庫統計",
         "wishlist": "心願清單",
         "publicWishlist": "%{user} 心願清單",
-        "vehicleCargo": "飛船貨物",
+        "vehicleLoadouts": "飛船裝配",
         "inventories": "My Hangar Inventories",
-        "inventory": "%{inventory}"
+        "inventory": "%{inventory}",
+        "vehicleCargo": "飛船貨物"
       },
       "requestPassword": "請求密碼",
       "changePassword": "更改密碼",
@@ -57,11 +58,36 @@
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories"
         },
+        "missions": {
+          "index": "%{fleet} 任務",
+          "create": "建立任務 - %{fleet}",
+          "edit": {
+            "basic": "編輯任務 - %{fleet}",
+            "description": "編輯描述 - %{fleet}",
+            "teams": "編輯小隊與席位 - %{fleet}"
+          },
+          "show": "%{fleet} 任務"
+        },
+        "events": {
+          "index": "%{fleet} 活動",
+          "calendar": "%{fleet} 行事曆",
+          "create": "建立活動 - %{fleet}",
+          "edit": {
+            "basic": "編輯活動 - %{fleet}",
+            "description": "編輯描述 - %{fleet}",
+            "teams": "編輯小隊與席位 - %{fleet}"
+          },
+          "show": "%{fleet} 活動"
+        },
         "settings": {
           "index": "%{fleet} 設定",
           "fleet": "%{fleet} 設定",
           "membership": "%{fleet} 成員資格",
-          "roles": "%{fleet} 角色"
+          "roles": "%{fleet} 角色",
+          "notifications": "%{fleet} 通知設定",
+          "discord": "%{fleet} Discord 設定",
+          "calendar": "%{fleet} 行事曆設定",
+          "features": "%{fleet} 功能"
         }
       },
       "roadmap": {
@@ -74,10 +100,12 @@
         "profile": "個人資料設定",
         "account": "帳戶",
         "hangar": "機庫設定",
+        "privacy": "隱私設定",
         "features": "功能標誌",
         "connections": "連線",
         "oauthApplications": "OAuth 應用程式",
         "notifications": "通知設定",
+        "calendar": "行事曆訂閱",
         "security": "帳戶安全",
         "twoFactor": {
           "enable": "啟用雙因素認證",
@@ -101,6 +129,7 @@
         "index": "視覺測試",
         "panels": "面板 - 視覺測試",
         "buttons": "按鈕 - 視覺測試",
+        "events": "活動",
         "typography": "排版 - 視覺測試",
         "forms": "表單 - 視覺測試",
         "tables": "表格 - 視覺測試",
@@ -109,29 +138,36 @@
         "states": "狀態 - 視覺測試",
         "notifications": "通知 - 視覺測試",
         "syncModal": "同步彈窗 - 視覺測試",
+        "overlays": "覆蓋層 - 視覺測試",
         "supportHint": "支援提示 - 視覺測試",
-        "chips": "Chips - 視覺測試"
+        "media": "媒體 - 視覺測試",
+        "charts": "圖表 - 視覺測試",
+        "chips": "Chips - 視覺測試",
+        "notificationCenter": "通知中心 - 視覺測試"
       },
       "admin": {
         "models": {
           "index": "模型",
           "new": "新模型",
           "edit": {
-            "index": "編輯模型",
-            "metrics": "編輯模型指標",
-            "prices": "編輯模型價格",
-            "fleetchart": "編輯模型艦隊圖",
-            "hardpoints": "編輯模型硬點",
-            "cargoAndFuel": "貨物和燃料",
+            "index": "編輯 %{manufacturer} %{model}",
+            "metrics": "編輯 %{manufacturer} %{model} 指標",
+            "prices": "編輯 %{manufacturer} %{model} 價格",
+            "fleetchart": "編輯 %{manufacturer} %{model} 艦隊圖表圖片",
+            "positions": "編輯 %{manufacturer} %{model} 乘員位置",
+            "hardpoints": "編輯 %{manufacturer} %{model} 掛載點",
+            "cargoAndFuel": "編輯 %{manufacturer} %{model} 燃料",
             "cargoHolds": "編輯 %{manufacturer} %{model} 貨艙",
-            "docks": "編輯模型停靠點",
-            "modules": "編輯模型模組",
-            "paints": "編輯模型塗裝",
-            "images": "編輯模型圖片",
-            "videos": "編輯模型影片",
-            "loaners": "編輯模型借用",
-            "upgrades": "編輯模型升級",
-            "packages": "編輯模型套件"
+            "docks": "編輯 %{manufacturer} %{model} 停靠點",
+            "modules": "編輯 %{manufacturer} %{model} 模組",
+            "paints": "編輯 %{manufacturer} %{model} 塗裝",
+            "images": "編輯 %{manufacturer} %{model} 圖片",
+            "videos": "編輯 %{manufacturer} %{model} 影片",
+            "loaners": "編輯 %{manufacturer} %{model} 借用",
+            "snubCrafts": "編輯 %{manufacturer} %{model} 艦載小艇",
+            "upgrades": "編輯 %{manufacturer} %{model} 升級",
+            "packages": "編輯 %{manufacturer} %{model} 套件",
+            "history": "編輯 %{manufacturer} %{model} 歷史記錄"
           }
         },
         "components": {
@@ -139,7 +175,8 @@
           "new": "新組件",
           "edit": {
             "index": "編輯組件",
-            "prices": "Edit Component Prices"
+            "prices": "Edit Component Prices",
+            "history": "編輯組件歷史記錄"
           }
         },
         "manufacturers": {
@@ -147,9 +184,23 @@
           "new": "新製造商",
           "edit": "編輯製造商"
         },
+        "supporterContributions": {
+          "index": "支持者貢獻",
+          "new": "新增支持者貢獻",
+          "edit": "編輯支持者貢獻"
+        },
+        "fundingGoals": {
+          "index": "資金目標",
+          "new": "新增資金目標",
+          "edit": "編輯資金目標"
+        },
         "users": {
           "index": "用戶",
-          "edit": "編輯用戶"
+          "edit": "編輯用戶",
+          "inventories": "使用者庫存",
+          "inventory": "使用者庫存",
+          "inventoryItem": "庫存記錄",
+          "fleets": "使用者艦隊"
         },
         "vehicles": {
           "index": "載具",
@@ -162,7 +213,14 @@
         "fleets": {
           "index": "艦隊",
           "edit": "編輯艦隊",
-          "memberEdit": "編輯艦隊成員"
+          "members": "艦隊成員",
+          "memberEdit": "編輯艦隊成員",
+          "history": "艦隊歷史記錄",
+          "roles": "艦隊角色",
+          "role": "艦隊角色",
+          "inventories": "艦隊庫存",
+          "inventory": "艦隊庫存",
+          "inventoryItem": "庫存記錄"
         },
         "oauthApplications": {
           "index": "OAuth 應用程式",
@@ -176,6 +234,9 @@
         "images": {
           "index": "圖片"
         },
+        "notifications": {
+          "index": "通知"
+        },
         "maintenance": {
           "index": "維護",
           "pghero": "PgHero",
@@ -183,6 +244,8 @@
           "flipper": "Flipper UI",
           "workers": "工作程序",
           "tasks": "任務",
+          "imports": "匯入",
+          "importDetail": "匯入詳情",
           "rsiApiStatus": "RSI API 狀態"
         },
         "modelPaints": {
@@ -194,7 +257,10 @@
           "edit": {
             "index": "編輯 %{name} 基本資料",
             "models": "編輯 %{name} 模型",
-            "prices": "編輯 %{name} 價格"
+            "prices": "編輯 %{name} 價格",
+            "hardpoints": "編輯 %{name} 掛載點",
+            "cargoHolds": "編輯 %{name} 貨艙",
+            "history": "編輯模組歷史記錄"
           }
         },
         "unlistedModels": {
@@ -217,8 +283,13 @@
             "index": "Edit Equipment",
             "prices": "Edit Equipment Prices"
           }
+        },
+        "visualTests": {
+          "index": "視覺測試",
+          "notifications": "通知 - 視覺測試"
         }
-      }
+      },
+      "notifications": "通知"
     }
   }
 }

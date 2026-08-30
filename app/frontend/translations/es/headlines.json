@@ -24,6 +24,7 @@
           "edit": {
             "index": "Editar modelo",
             "fleetchart": "Imágenes de gráfico de flota",
+            "positions": "Posiciones de tripulación",
             "hardpoints": "Puntos de montaje",
             "cargoAndFuel": "Combustible",
             "cargoHolds": "Bodegas de carga",
@@ -37,9 +38,11 @@
             "itemPrices": "Precios de artículos",
             "linkModule": "Vincular módulo existente",
             "loaners": "Prestados",
+            "snubCrafts": "Snub Crafts",
             "upgrades": "Mejoras",
             "packages": "Paquetes",
-            "linkUpgrade": "Vincular mejora existente"
+            "linkUpgrade": "Vincular mejora existente",
+            "history": "Historial de cambios"
           },
           "new": "Nuevo modelo",
           "show": "Modelo",
@@ -51,20 +54,26 @@
           "new": "Nuevo componente",
           "edit": {
             "index": "Editar componente",
-            "itemPrices": "Precios de artículos"
+            "itemPrices": "Precios de artículos",
+            "history": "Historial de cambios"
           }
         },
         "modelPaints": {
           "index": "Pinturas",
           "new": "Nueva pintura",
-          "edit": "Editar pintura"
+          "edit": "Editar pintura",
+          "copy": "Copiar pintura a la nave",
+          "bulkCopy": "Copiar %{count} pinturas a la nave"
         },
         "modelModules": {
           "index": "Módulos",
           "new": "Nuevo módulo",
           "edit": "Editar módulo",
           "models": "Modelos vinculados",
-          "prices": "Precios"
+          "prices": "Precios",
+          "hardpoints": "Puntos de montaje",
+          "cargoHolds": "Bodegas de carga",
+          "history": "Historial de cambios"
         },
         "unlistedModels": {
           "index": "Naves en los archivos del juego sin modelo",
@@ -75,9 +84,22 @@
           "new": "Nuevo fabricante",
           "edit": "Editar fabricante"
         },
+        "supporterContributions": {
+          "index": "Contribuciones de patrocinadores",
+          "new": "Nueva contribución de patrocinador",
+          "edit": "Editar contribución de patrocinador",
+          "perMonth": "Contribuciones por mes"
+        },
+        "fundingGoals": {
+          "index": "Objetivos de financiación",
+          "new": "Nuevo objetivo de financiación",
+          "edit": "Editar objetivo de financiación"
+        },
         "users": {
           "index": "Usuarios",
-          "edit": "Editar usuario"
+          "edit": "Editar usuario",
+          "fleets": "Flotas",
+          "inventories": "Inventarios"
         },
         "vehicles": {
           "index": "Vehículos",
@@ -86,7 +108,15 @@
         "fleets": {
           "index": "Flotas",
           "edit": "Editar flota",
-          "memberEdit": "Editar miembro"
+          "members": "Miembros",
+          "memberEdit": "Editar miembro",
+          "history": "Historial de cambios",
+          "roles": "Roles",
+          "inventories": "Inventarios",
+          "inventoryItems": "Entradas"
+        },
+        "destroyedFleets": {
+          "index": "Flotas eliminadas"
         },
         "admins": {
           "index": "Administradores",
@@ -115,6 +145,12 @@
         "images": {
           "index": "Imágenes"
         },
+        "imports": {
+          "index": "Importaciones"
+        },
+        "notifications": {
+          "index": "Notificaciones"
+        },
         "commodities": {
           "index": "Commodities",
           "new": "New Commodity",
@@ -129,6 +165,10 @@
             "index": "Edit Equipment",
             "itemPrices": "Item Prices"
           }
+        },
+        "visualTests": {
+          "index": "Pruebas Visuales",
+          "notifications": "Notificaciones"
         }
       },
       "welcome": "Welcome to",
@@ -169,6 +209,7 @@
       "editGroups": "Edit Groups",
       "newVehicles": "Add Ships",
       "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
+      "myVehicleLoadouts": "Loadouts para %{vehicle}",
       "addToHangar": "Add \"%{model}\" to your Hangar",
       "impressum": "Aviso legal",
       "privacy": "Política de privacidad",
@@ -200,9 +241,56 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Roles de flota",
+          "notifications": "Configuración de notificaciones",
+          "inAppNotifications": "Notificaciones en la app",
+          "discord": "Discord",
+          "calendar": "Calendario",
           "features": "Funciones de flota"
         },
-        "inviteMember": "Invite new Member"
+        "inviteMember": "Invite new Member",
+        "calendarSubscription": "Suscripción al calendario",
+        "missions": {
+          "index": "Misiones",
+          "create": "Crear misión",
+          "edit": "Editar misión",
+          "editBasic": "Datos básicos",
+          "editDescription": "Descripción y portada",
+          "editTeams": "Equipos y plazas",
+          "teams": "Equipos",
+          "ships": "Naves",
+          "slots": "Plazas",
+          "addTeam": "Agregar equipo",
+          "editTeam": "Editar equipo",
+          "addShip": "Agregar nave",
+          "editShip": "Editar nave"
+        },
+        "events": {
+          "index": "Eventos",
+          "calendar": "Calendario",
+          "create": "Crear evento",
+          "edit": "Editar evento",
+          "editBasic": "Datos básicos",
+          "editDescription": "Descripción y portada",
+          "editTeams": "Equipos y plazas",
+          "spawn": "Generar evento",
+          "details": "Detalles del evento",
+          "schedule": "Programación",
+          "settings": "Configuración",
+          "lifecycle": "Ciclo de vida",
+          "signupTitle": "Apúntame",
+          "yourSignup": "Tu inscripción",
+          "spawnedFrom": "Generado a partir de esta misión",
+          "pickTemplate": "Elige una plantilla de misión",
+          "unassignedSignups": "Inscripciones sin asignar",
+          "eventTeam": "Equipo del evento",
+          "grantRole": "Otorgar un rol",
+          "editTeam": "Editar equipo",
+          "addTeam": "Agregar equipo",
+          "editShip": "Editar nave",
+          "addShip": "Agregar nave",
+          "assignSlotFor": "Asignar plaza para %{username}",
+          "reassignSlotFor": "Reasignar plaza para %{username}"
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -215,6 +303,7 @@
         "account": "Cuenta",
         "profile": "Configuración del perfil",
         "hangar": "Configuración del hangar",
+        "privacy": "Configuración de privacidad",
         "features": "Indicadores de características",
         "connections": "Conexiones",
         "oauthApplications": "Aplicaciones OAuth",
@@ -228,7 +317,8 @@
           "enable": "Enable Two-factor Authentiation",
           "disable": "Disable Two-factor Authentiation",
           "backupCodes": "Generate Two-Factor Backup Codes"
-        }
+        },
+        "calendar": "Suscripción al calendario"
       },
       "oauthApplications": {
         "new": "Nueva aplicación OAuth",
@@ -251,6 +341,7 @@
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
+      "supporters": "Gracias a nuestros patrocinadores",
       "supportHint": {
         "hangarSync": "Nos alegra haber ayudado con tu sincronización",
         "vehicleAdded": "Tu hangar está creciendo",
@@ -286,6 +377,10 @@
         "overview": "Resumen",
         "panels": "Paneles",
         "buttons": "Botones",
+        "media": "Multimedia",
+        "charts": "Gráficos",
+        "chips": "Chips de pruebas visuales",
+        "events": "Eventos",
         "typography": "Tipografía",
         "forms": "Formularios",
         "tables": "Tablas",
@@ -294,21 +389,10 @@
         "states": "Estados",
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
-        "supportHint": "Aviso de apoyo"
+        "overlays": "Superposiciones",
+        "supportHint": "Aviso de apoyo",
+        "notificationCenter": "Centro de notificaciones"
       },
-      "filterCargoRoutes": "Filter Cargo routes",
-      "filterCommodities": "Filter Commodities",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObjects": "Celestial Objects",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "moons": "Moons",
-      "stations": "Stations",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shops": "Shops",
-      "shop": "%{shop} on %{station}",
-      "commodities": "Commodities",
       "logistics": {
         "index": "Logistics",
         "inventories": "Inventories",
@@ -326,7 +410,23 @@
         "hangarInventories": "Hangar Inventories",
         "editItem": "Edit Entry",
         "editStockItem": "Edit Item"
-      }
+      },
+      "notifications": {
+        "index": "Notificaciones"
+      },
+      "filterCargoRoutes": "Filter Cargo routes",
+      "filterCommodities": "Filter Commodities",
+      "starsystems": "Starsystems",
+      "starsystem": "%{starsystem} Starsystem",
+      "celestialObjects": "Celestial Objects",
+      "celestialObject": "%{celestialObject} in the %{starsystem} System",
+      "moons": "Moons",
+      "stations": "Stations",
+      "station": "%{station} near %{celestialObject}",
+      "stationImages": "Images of %{station} near %{celestialObject}",
+      "shops": "Shops",
+      "shop": "%{shop} on %{station}",
+      "commodities": "Commodities"
     }
   }
 }

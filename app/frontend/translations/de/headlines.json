@@ -24,6 +24,7 @@
           "edit": {
             "index": "Modell bearbeiten",
             "fleetchart": "Flottenkarten-Bilder",
+            "positions": "Besatzungspositionen",
             "hardpoints": "Aufhängungspunkte",
             "cargoAndFuel": "Fracht & Treibstoff",
             "cargoHolds": "Frachträume",
@@ -37,6 +38,7 @@
             "itemPrices": "Artikelpreise",
             "linkModule": "Vorhandenes Modul verknüpfen",
             "loaners": "Leihschiffe",
+            "snubCrafts": "Snub Crafts",
             "upgrades": "Upgrades",
             "packages": "Pakete",
             "linkUpgrade": "Vorhandenes Upgrade verknüpfen",
@@ -59,7 +61,9 @@
         "modelPaints": {
           "index": "Lackierungen",
           "new": "Neue Lackierung",
-          "edit": "Lackierung bearbeiten"
+          "edit": "Lackierung bearbeiten",
+          "copy": "Lackierung auf Schiff kopieren",
+          "bulkCopy": "%{count} Lackierungen auf Schiff kopieren"
         },
         "modelModules": {
           "index": "Module",
@@ -67,6 +71,8 @@
           "edit": "Modul bearbeiten",
           "models": "Verknüpfte Modelle",
           "prices": "Preise",
+          "hardpoints": "Aufhängungspunkte",
+          "cargoHolds": "Frachträume",
           "history": "Verlauf"
         },
         "unlistedModels": {
@@ -102,11 +108,15 @@
         "fleets": {
           "index": "Flotten",
           "edit": "Flotte bearbeiten",
+          "members": "Mitglieder",
           "memberEdit": "Mitglied bearbeiten",
           "history": "Verlauf",
           "roles": "Rollen",
           "inventories": "Inventare",
           "inventoryItems": "Einträge"
+        },
+        "destroyedFleets": {
+          "index": "Gelöschte Flotten"
         },
         "admins": {
           "index": "Administratoren",
@@ -138,6 +148,9 @@
         "imports": {
           "index": "Importe"
         },
+        "notifications": {
+          "index": "Benachrichtigungen"
+        },
         "commodities": {
           "index": "Commodities",
           "new": "New Commodity",
@@ -152,6 +165,10 @@
             "index": "Edit Equipment",
             "itemPrices": "Item Prices"
           }
+        },
+        "visualTests": {
+          "index": "Visuelle Tests",
+          "notifications": "Benachrichtigungen"
         }
       },
       "welcome": "Willkommen auf",
@@ -192,6 +209,7 @@
       "editGroups": "Edit Groups",
       "newVehicles": "Add Ships",
       "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
+      "myVehicleLoadouts": "Loadouts für %{vehicle}",
       "addToHangar": "Add \"%{model}\" to your Hangar",
       "impressum": "Impressum",
       "privacy": "Datenschutzerklärung",
@@ -223,9 +241,56 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Flottenrollen",
+          "notifications": "Benachrichtigungseinstellungen",
+          "inAppNotifications": "In-App-Benachrichtigungen",
+          "discord": "Discord",
+          "calendar": "Kalender",
           "features": "Flottenfunktionen"
         },
-        "inviteMember": "Invite new Member"
+        "inviteMember": "Invite new Member",
+        "calendarSubscription": "Kalender-Abonnement",
+        "missions": {
+          "index": "Missionen",
+          "create": "Mission erstellen",
+          "edit": "Mission bearbeiten",
+          "editBasic": "Basisdaten",
+          "editDescription": "Beschreibung & Titelbild",
+          "editTeams": "Teams & Slots",
+          "teams": "Teams",
+          "ships": "Schiffe",
+          "slots": "Slots",
+          "addTeam": "Team hinzufügen",
+          "editTeam": "Team bearbeiten",
+          "addShip": "Schiff hinzufügen",
+          "editShip": "Schiff bearbeiten"
+        },
+        "events": {
+          "index": "Events",
+          "calendar": "Kalender",
+          "create": "Event erstellen",
+          "edit": "Event bearbeiten",
+          "editBasic": "Basisdaten",
+          "editDescription": "Beschreibung & Titelbild",
+          "editTeams": "Teams & Slots",
+          "spawn": "Event aus Mission erstellen",
+          "details": "Event-Details",
+          "schedule": "Zeitplan",
+          "settings": "Einstellungen",
+          "lifecycle": "Lebenszyklus",
+          "signupTitle": "Ich bin dabei",
+          "yourSignup": "Deine Anmeldung",
+          "spawnedFrom": "Aus dieser Mission erstellt",
+          "pickTemplate": "Missionsvorlage auswählen",
+          "unassignedSignups": "Nicht zugewiesene Anmeldungen",
+          "eventTeam": "Event-Team",
+          "grantRole": "Rolle vergeben",
+          "editTeam": "Team bearbeiten",
+          "addTeam": "Team hinzufügen",
+          "editShip": "Schiff bearbeiten",
+          "addShip": "Schiff hinzufügen",
+          "assignSlotFor": "Slot für %{username} zuweisen",
+          "reassignSlotFor": "Slot für %{username} neu zuweisen"
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -252,7 +317,8 @@
           "enable": "Enable Two-factor Authentiation",
           "disable": "Disable Two-factor Authentiation",
           "backupCodes": "Generate Two-Factor Backup Codes"
-        }
+        },
+        "calendar": "Kalender-Abonnement"
       },
       "oauthApplications": {
         "new": "Neue OAuth-Anwendung",
@@ -311,6 +377,10 @@
         "overview": "Übersicht",
         "panels": "Bereiche",
         "buttons": "Schaltflächen",
+        "media": "Medien",
+        "charts": "Diagramme",
+        "chips": "Visuelle Tests Chips",
+        "events": "Events",
         "typography": "Typografie",
         "forms": "Formulare",
         "tables": "Tabellen",
@@ -319,21 +389,10 @@
         "states": "Zustände",
         "notifications": "Benachrichtigungen",
         "syncModal": "Sync-Modal",
-        "supportHint": "Support-Hinweis"
+        "overlays": "Overlays",
+        "supportHint": "Support-Hinweis",
+        "notificationCenter": "Benachrichtigungszentrale"
       },
-      "filterCargoRoutes": "Filter Cargo routes",
-      "filterCommodities": "Filter Commodities",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObjects": "Celestial Objects",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "moons": "Moons",
-      "stations": "Stations",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shops": "Shops",
-      "shop": "%{shop} on %{station}",
-      "commodities": "Commodities",
       "logistics": {
         "index": "Logistics",
         "inventories": "Inventories",
@@ -351,7 +410,23 @@
         "hangarInventories": "Hangar Inventare",
         "editItem": "Eintrag bearbeiten",
         "editStockItem": "Edit Item"
-      }
+      },
+      "notifications": {
+        "index": "Benachrichtigungen"
+      },
+      "filterCargoRoutes": "Filter Cargo routes",
+      "filterCommodities": "Filter Commodities",
+      "starsystems": "Starsystems",
+      "starsystem": "%{starsystem} Starsystem",
+      "celestialObjects": "Celestial Objects",
+      "celestialObject": "%{celestialObject} in the %{starsystem} System",
+      "moons": "Moons",
+      "stations": "Stations",
+      "station": "%{station} near %{celestialObject}",
+      "stationImages": "Images of %{station} near %{celestialObject}",
+      "shops": "Shops",
+      "shop": "%{shop} on %{station}",
+      "commodities": "Commodities"
     }
   }
 }
