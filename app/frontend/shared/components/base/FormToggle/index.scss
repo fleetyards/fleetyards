@@ -10,7 +10,9 @@
    * by the difference keeps working when a field's height changes.
    */
   &--align-with-fields {
-    margin-top: calc(1.42857em + 5px);
+    margin-top: calc(
+      var(--field-label-line, 1.5rem) + var(--field-label-gap, 5px)
+    );
 
     /*
      * The height goes on the control row, not on the component. The component

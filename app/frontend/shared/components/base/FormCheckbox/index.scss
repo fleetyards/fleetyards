@@ -10,7 +10,9 @@
    * by the difference keeps working when a field's height changes.
    */
   &--align-with-fields {
-    margin-top: calc(1.42857em + 5px);
+    margin-top: calc(
+      var(--field-label-line, 1.5rem) + var(--field-label-gap, 5px)
+    );
 
     /*
      * The height goes on the control row, not on the component. The component
@@ -63,9 +65,19 @@
       align-items: center;
     }
 
+    /*
+     * Centred vertically, not pinned to the top. The box is an absolutely
+     * positioned pseudo-element, so it sits at the label's content top and stays
+     * there however tall the label becomes -- which is why the toggle followed
+     * `alignWithFields` and this did not: its switch is a real flex item.
+     *
+     * A no-op at the default height, where a 24px box fills a 24px label.
+     */
     & + label::before {
       position: absolute;
+      top: 50%;
       left: 0;
+      transform: translateY(-50%);
       display: inline-block;
       width: 24px;
       height: 24px;
@@ -80,7 +92,9 @@
 
     & + label::after {
       position: absolute;
+      top: 50%;
       left: 3px;
+      transform: translateY(-50%);
       width: 18px;
       height: 18px;
       background: transparent;

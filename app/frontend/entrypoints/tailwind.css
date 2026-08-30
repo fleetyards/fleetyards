@@ -146,6 +146,19 @@
    */
   --field-message-line: 1.25rem;
 
+  /*
+   * A field's label block: its own line, and the gap under it. Anything that
+   * has to start where a field's control starts reserves the sum -- so the two
+   * are read from here rather than each guessing.
+   *
+   * The line is pinned rather than inherited. It was inherited at body's 1.5 and
+   * guessed at 1.42857 in the one place that had to match it, which is the kind
+   * of mistake that survives review and shows up as a control sitting a
+   * millimetre low.
+   */
+  --field-label-line: 1.5rem;
+  --field-label-gap: 5px;
+
   --field-h: 43px;
   --field-h-md: 48px;
   --field-h-lg: 55px;

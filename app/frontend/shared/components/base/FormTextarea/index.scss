@@ -18,7 +18,8 @@
 
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--field-label-gap, 5px);
+    line-height: var(--field-label-line, 1.5rem);
     white-space: nowrap;
   }
 
