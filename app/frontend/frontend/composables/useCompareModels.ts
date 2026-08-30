@@ -60,12 +60,18 @@ export const useCompareModels = (slugs: MaybeRefOrGetter<string[]>) => {
     { immediate: true },
   );
 
-  // In the order the compare set names them, and skipping any whose request
-  // failed, so the table renders what did arrive.
+  // By name, and skipping any whose request failed so the table renders what did
+  // arrive. Not in the order the compare set names them: that is an order of slugs,
+  // which begin with a manufacturer code, so the columns came out grouped by a
+  // prefix that is nowhere on screen and read as no order at all.
   const models = computed(() =>
     toValue(slugs)
       .map((slug) => cache.value[slug])
-      .filter((model): model is ModelExtended => Boolean(model)),
+      .filter((model): model is ModelExtended => Boolean(model))
+      // Numeric so the 100i sorts before the 125a rather than between them.
+      .sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { numeric: true }),
+      ),
   );
 
   const loading = computed(() => pendingCount.value > 0);
