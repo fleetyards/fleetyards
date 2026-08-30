@@ -87,6 +87,20 @@ const sizes = [
 const radioOptions = sizes;
 const sizeOptions: FilterOption[] = sizes;
 
+const rdText = ref<string>("Caterpillar");
+
+const rdPrefixed = ref<string>("1200");
+
+const rdError = ref<string>("Zeus");
+
+const rdArea = ref<string>("");
+
+const rdCheck = ref<boolean>(true);
+
+const rdToggle = ref<boolean>(false);
+
+const rdRadio = ref<string>("medium");
+
 const submitting = ref(false);
 
 // Tracked so a pending fake round-trip cannot resolve after the page is gone and
@@ -540,6 +554,85 @@ const powerMarks = (value: number) => ({ label: String(value) });
     </div>
   </div>
 
+  <Heading :level="HeadingLevelEnum.H2">
+    Form controls — proposed language
+  </Heading>
+  <p>
+    A proposal to look at, not a component change: the CSS below lives in this
+    page and reaches nothing else. Everything above this heading is what ships
+    today, so scroll up to compare.
+  </p>
+  <p>
+    The one idea: <strong>the cap carries the state</strong>. That is not new —
+    <code>Panel</code> already says “the cap carries the tone; the frame stays
+    neutral”, and <code>Btn</code> rests its cap at
+    <code>--color-endcap</code> and turns it <code>--color-primary</code> on
+    hover, active and focus-visible. Applied to a form: grey at rest, primary on
+    focus, danger on error, and the frame never shouts.
+  </p>
+  <p class="text-muted">
+    Two consequences worth seeing. An <code>&lt;input&gt;</code> is a replaced
+    element and renders no pseudo-elements, so the frame and the caps move to
+    <code>.base-input__wrapper</code> — which makes prefix, field and suffix one
+    control instead of three boxes. And the radio's
+    <code>display: none</code> becomes <code>opacity: 0</code>, which is the
+    whole fix for it being unreachable by keyboard: tab into the row below and
+    the focus is visible for the first time.
+  </p>
+  <div class="form-redesign">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput v-model="rdText" name="rd-text" label="Ship name" />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput
+          v-model="rdPrefixed"
+          name="rd-prefixed"
+          label="Price"
+          prefix="¤"
+          suffix="UEC"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput
+          v-model="rdError"
+          name="rd-error"
+          label="With an error"
+          :error-messages="['Not a known ship']"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput
+          v-model="rdText"
+          name="rd-disabled"
+          label="Disabled"
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormTextarea
+          v-model="rdArea"
+          name="rd-area"
+          label="Notes"
+          placeholder="Anything worth remembering"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormCheckbox v-model="rdCheck" name="rd-check" label="Purchased" />
+        <FormToggle v-model="rdToggle" name="rd-toggle" label="Public hangar" />
+        <RadioList
+          v-model="rdRadio"
+          name="rd-radio"
+          label="Size"
+          :options="radioOptions"
+          :inline="true"
+        />
+      </div>
+    </div>
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2">Slider</Heading>
   <p>
     With a percentage tooltip and quarter marks, and a stepped variant with a
@@ -616,3 +709,222 @@ const powerMarks = (value: number) => ({ label: String(value) });
     />
   </form>
 </template>
+
+<!--
+  Preview scaffolding for the proposed form language, deliberately unscoped and
+  deliberately in this page: it applies while this page is open and reaches
+  nothing else in the app. If the language is adopted it moves into the
+  components and this block goes.
+
+  The wrapper class is doubled to win specificity against the components' own
+  scoped rules, which carry a [data-v-*] attribute.
+-->
+<style lang="scss">
+.form-redesign.form-redesign {
+  /* ---------- the box ---------- */
+
+  /*
+   * The frame lives on the wrapper, not the field. An <input> is a replaced
+   * element and renders no pseudo-elements, so a cap cannot sit on it -- and
+   * moving the frame out here makes prefix, field and suffix one control rather
+   * than three boxes that have to pretend to be one.
+   */
+  .base-input__wrapper,
+  .base-textarea__wrapper {
+    position: relative;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+    box-shadow: none;
+  }
+
+  /* The field itself carries nothing now. */
+  .base-input input,
+  .base-textarea textarea,
+  .base-input__prefix,
+  .base-input__suffix {
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .base-input__prefix,
+  .base-input__suffix {
+    color: var(--color-endcap, #7a8288);
+  }
+
+  /* ---------- the cap carries the state ---------- */
+
+  .base-input__wrapper::before,
+  .base-input__wrapper::after,
+  .base-textarea__wrapper::before,
+  .base-textarea__wrapper::after {
+    position: absolute;
+    right: max(10px, var(--cap-inset, 12%));
+    left: max(10px, var(--cap-inset, 12%));
+    height: var(--cap-h-btn, 2px);
+    background-color: var(--field-cap, var(--color-endcap, #7a8288));
+    border-radius: var(--cap-r-btn, 1px);
+    content: "";
+    transition: background-color 0.15s ease;
+  }
+
+  .base-input__wrapper::before,
+  .base-textarea__wrapper::before {
+    top: -1px;
+  }
+
+  .base-input__wrapper::after,
+  .base-textarea__wrapper::after {
+    bottom: -1px;
+  }
+
+  /*
+   * A field's cap carries what its edge carries elsewhere: neutral at rest,
+   * primary on focus. Same rule as the boxes you tick, different carrier --
+   * an <input> is a replaced element and cannot draw one, so the wrapper does.
+   *
+   * Focus was invisible on every input in the app before this: `outline: none`
+   * with nothing put in its place, at 374 call sites, both password fields
+   * included.
+   */
+  .base-input--with-error,
+  .base-textarea--with-error {
+    --field-cap: var(--color-danger, #dc3545);
+  }
+
+  /* Declared after the error tone on purpose: while a field is focused, focus is
+     the more useful thing to show. The error is still there when you leave. */
+  .base-input:focus-within,
+  .base-textarea:focus-within {
+    --field-cap: var(--color-primary, #428bca);
+  }
+
+  .base-input--disabled {
+    --field-cap: transparent;
+
+    opacity: 0.5;
+  }
+
+  /* ---------- boxes you tick ---------- */
+
+  /*
+   * background-clip matters here, and it is not cosmetic. --color-edge is
+   * translucent and a background is painted under the border by default, so the
+   * edge composites over whatever fills the box. The radio's dot is made by
+   * filling the box primary and punching a ring back out of it with an inset
+   * shadow -- and an inset shadow stops at the padding box, so the blue stayed
+   * under the border and read as a primary edge on the chosen radio.
+   *
+   * Clipping the fill to the padding box keeps the edge composited over the page
+   * in every state, so it looks the same whatever is inside.
+   */
+  .base-checkbox input + label::before,
+  .radio-list__item input[type="radio"] + label::before {
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    background-clip: padding-box;
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control-bare, 6px);
+  }
+
+  .radio-list__item input[type="radio"] + label::before {
+    border-radius: 50%;
+  }
+
+  /*
+   * The whole fix for a radio nobody could reach: `display: none` takes it out
+   * of the tab order, which is why the :focus rule three lines below it in the
+   * component has never once fired. FormCheckbox already does it this way.
+   */
+  .radio-list__item input[type="radio"] {
+    display: inline-block;
+    position: absolute;
+    opacity: 0;
+  }
+
+  /*
+   * The control's own edge carries focus, at the width it already has -- no ring
+   * around it and no thickening.
+   *
+   * This only works because checked stopped touching the edge. While both used
+   * primary, focus on an already-checked control was invisible, and tabbing into
+   * a radio group lands on exactly that one.
+   */
+  /*
+   * Checked is the dot, and only the dot -- the edge stays neutral, so that
+   * primary on an edge means one thing anywhere in a form: this is focused.
+   *
+   * The dot is a primary fill with a ring punched back out of it by an inset
+   * shadow in the surrounding colour. That colour was $input-bg, so it has to
+   * follow the new fill or the ring is drawn in the old one.
+   */
+  .radio-list__item input[type="radio"]:checked + label::before {
+    background-color: var(--color-primary, #428bca);
+    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
+  }
+
+  /*
+   * The components answer :focus; this language answers :focus-visible. That gap
+   * is the whole bug behind three reports in a row: a mouse click leaves the
+   * control focused, so their rules kept firing when nothing looked focused any
+   * more -- a primary edge that stayed on the radio you had just clicked, and an
+   * inset primary ring that stacked on the edge below and read as a 2px focus.
+   *
+   * Expressed as `:focus:not(:focus-visible)` rather than as a reset on :focus
+   * with the highlight re-applied after it. The first attempt did the latter and
+   * put out the focus entirely: the reset had to name :checked to keep the
+   * radio's dot, which made it one pseudo-class more specific than the
+   * :focus-visible rule meant to override it -- so the checked control, the one
+   * a keyboard actually lands on, lost its highlight.
+   */
+  .base-checkbox input:focus:not(:focus-visible) + label::before,
+  .radio-list__item
+    input[type="radio"]:focus:not(:focus-visible)
+    + label::before,
+  .form-toggle input:focus:not(:focus-visible) + label .form-toggle-switch {
+    border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+    box-shadow: none;
+  }
+
+  /* The dot is an inset shadow, so it has to survive that reset. */
+  .radio-list__item
+    input[type="radio"]:checked:focus:not(:focus-visible)
+    + label::before {
+    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
+  }
+
+  /* Keyboard focus: the edge lights up, and nothing else moves. */
+  .base-checkbox input:focus-visible + label::before,
+  .base-checkbox input:checked:focus-visible + label::before,
+  .radio-list__item input[type="radio"]:focus-visible + label::before,
+  .form-toggle input:focus-visible + label .form-toggle-switch {
+    border-color: var(--color-primary, #428bca);
+    box-shadow: none;
+  }
+
+  .radio-list__item input[type="radio"]:checked:focus-visible + label::before {
+    border-color: var(--color-primary, #428bca);
+    box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
+  }
+
+  /* ---------- the toggle ---------- */
+
+  /*
+   * Only the resting colours and the focus edge. A toggle's filled track is the
+   * conventional "on", and unlike a checkbox it has nothing inside it that a
+   * fill could hide -- so it keeps flooding primary when it is on, where the
+   * checkbox marks state on its edge to keep the tick legible.
+   */
+  .form-toggle input + label .form-toggle-switch {
+    background: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  }
+
+  /* On is the flooded track. Its edge stays neutral too. */
+  .form-toggle input:checked + label .form-toggle-switch {
+    background: var(--color-primary, #428bca);
+  }
+}
+</style>
