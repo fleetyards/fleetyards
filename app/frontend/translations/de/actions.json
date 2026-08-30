@@ -13,6 +13,7 @@
           "syncFromPatreon": "Von Patreon synchronisieren"
         }
       },
+      "duplicate": "Duplizieren",
       "showReleased": "Alte Versionen anzeigen",
       "hideReleased": "Alte Versionen verbergen",
       "upgrade": "Update verfügbar!",
@@ -38,6 +39,8 @@
       "here": "hier",
       "backToList": "Zurück zur Liste",
       "backToTop": "Zurück zum Anfang",
+      "previous": "Zurück",
+      "next": "Weiter",
       "cancel": "Abbrechen",
       "ok": "Ok",
       "reset": "Reset",
@@ -84,6 +87,7 @@
       "addGroup": "Gruppe hinzufügen",
       "editGroup": "Gruppe bearbeiten",
       "remove": "Entfernen",
+      "reorder": "Neu anordnen",
       "delete": "Löschen",
       "deleteSelected": "Ausgewählte löschen",
       "enableSelected": "Ausgewählte aktivieren",
@@ -99,6 +103,7 @@
       "changePassword": "Passwort ändern",
       "updatePassword": "Passwort aktualisieren",
       "copyBackupCodes": "Backup-Codes kopieren",
+      "regenerate": "Neu generieren",
       "add": "Hinzufügen",
       "create": "Erstellen",
       "addToWishlist": "Zur Wunschliste hinzufügen",
@@ -120,6 +125,7 @@
         "authorize": "Autorisieren",
         "deny": "Ablehnen"
       },
+      "verifyWithCitizenId": "Mit Citizen iD verifizieren",
       "oauth": {
         "signInWith": "Anmelden mit",
         "google": "Google",
@@ -151,6 +157,9 @@
       "hangar": {
         "editGroups": "Gruppen hinzufügen oder löschen",
         "editName": "Benenne dein Schiff",
+        "manageLoadouts": "Loadouts verwalten",
+        "manageCargo": "Fracht verwalten",
+        "backToHangar": "Zurück zum Hangar",
         "useName": "Name verwenden",
         "destroyAll": "Alle Schiffe entfernen",
         "showOnPublicHangar": "Veröffentlichen",
@@ -160,8 +169,7 @@
           "openModal": "Ingame-Schiffe nach Wipe zurücksetzen",
           "moveToWishlist": "Zur Wunschliste verschieben",
           "removeAll": "Alle entfernen"
-        },
-        "manageCargo": "Fracht verwalten"
+        }
       },
       "syncExtension": {
         "cancel": "Abbrechen",
@@ -175,6 +183,7 @@
         "reset": "Filter zurücksetzen"
       },
       "destroyFleet": "Flotte auflösen",
+      "restore": "Wiederherstellen",
       "fleet": {
         "join": "%{fleet} beitreten!",
         "leave": "%{fleet} verlassen",
@@ -200,6 +209,15 @@
         },
         "inviteUrls": {
           "create": "Neue Einladungs-URL erstellen"
+        },
+        "discord": {
+          "test": "Discord-Verbindung testen",
+          "installBot": "Fleetyards-Bot auf deinem Discord-Server installieren"
+        },
+        "calendarSubscription": {
+          "enable": "Abo-Link erzeugen",
+          "rotate": "Link erneuern",
+          "disable": "Abo deaktivieren"
         }
       },
       "model": {
@@ -211,6 +229,7 @@
         "sync": "Von RSI synchronisieren",
         "syncMatrix": "Matrix synchronisieren",
         "syncScData": "SC-Daten synchronisieren",
+        "importPaints": "Lackierungen importieren",
         "exchangeStoreImage": "RSI-Bild verwenden",
         "images": "Bilder",
         "openTableConfiguration": "Tabellenkonfiguration öffnen"
@@ -268,6 +287,92 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "Fracht leeren"
+      },
+      "adminNotifications": {
+        "unread": "Als ungelesen markieren",
+        "archive": "Archivieren",
+        "unarchive": "Zurück in den Posteingang",
+        "readAll": "Alle als gelesen markieren",
+        "destroyAll": "Alle löschen",
+        "sortOldest": "Älteste zuerst",
+        "sortNewest": "Neueste zuerst",
+        "select": "Benachrichtigung auswählen",
+        "readSelected": "Auswahl als gelesen markieren",
+        "unreadSelected": "Auswahl als ungelesen markieren",
+        "archiveSelected": "Auswahl archivieren",
+        "unarchiveSelected": "Auswahl zurück in den Posteingang",
+        "destroySelected": "Auswahl löschen"
+      },
+      "account": {
+        "calendarSubscription": {
+          "enable": "Persönlichen Kalenderlink erzeugen",
+          "rotate": "Link erneuern",
+          "disable": "Abo deaktivieren"
+        }
+      },
+      "today": "Heute",
+      "fleets": {
+        "missions": {
+          "create": "Mission erstellen",
+          "edit": "Mission bearbeiten",
+          "archive": "Mission archivieren",
+          "unarchive": "Wiederherstellen",
+          "destroy": "Endgültig löschen",
+          "addTeam": "Team hinzufügen",
+          "addShip": "Schiff hinzufügen",
+          "addSlot": "Slot hinzufügen",
+          "viewMissions": "Missionen anzeigen"
+        },
+        "events": {
+          "create": "Event erstellen",
+          "edit": "Event bearbeiten",
+          "spawn": "Aus dieser Mission erstellen",
+          "archive": "Event archivieren",
+          "unarchive": "Aus dem Archiv wiederherstellen",
+          "syncToDiscord": "Mit Discord synchronisieren",
+          "destroy": "Endgültig löschen",
+          "publish": "Veröffentlichen",
+          "lockSignups": "Anmeldungen sperren",
+          "unlockSignups": "Anmeldungen freigeben",
+          "start": "Starten",
+          "complete": "Abschließen",
+          "cancel": "Absagen",
+          "signup": "Anmelden",
+          "withdraw": "Abmelden",
+          "kick": "Anmeldung entfernen",
+          "viewEvents": "Events anzeigen",
+          "viewCalendar": "Kalender anzeigen",
+          "exportIcs": "iCal exportieren",
+          "addToCalendar": "Zum Kalender hinzufügen",
+          "subscribe": "Abonnieren",
+          "setUpCalendar": "Kalender-Abos einrichten",
+          "assignSlot": "Slot zuweisen",
+          "reassignSlot": "In anderen Slot verschieben",
+          "addSeats": "Sitze hinzufügen",
+          "manageEventTeam": "Event-Team verwalten",
+          "grantRole": "Rolle vergeben",
+          "revokeRole": "Entziehen",
+          "editSchedule": "Teams & Schiffe bearbeiten",
+          "doneEditing": "Bearbeitung beenden",
+          "addTeam": "Team hinzufügen"
+        }
+      },
+      "notifications": {
+        "unread": "Als ungelesen markieren",
+        "archive": "Archivieren",
+        "unarchive": "Zurück in den Posteingang",
+        "readAll": "Alle als gelesen markieren",
+        "destroyAll": "Alle löschen",
+        "settings": "Benachrichtigungseinstellungen",
+        "sortOldest": "Älteste zuerst",
+        "sortNewest": "Neueste zuerst",
+        "openCenter": "Benachrichtigungen",
+        "select": "Benachrichtigung auswählen",
+        "readSelected": "Auswahl als gelesen markieren",
+        "unreadSelected": "Auswahl als ungelesen markieren",
+        "archiveSelected": "Auswahl archivieren",
+        "unarchiveSelected": "Auswahl zurück in den Posteingang",
+        "destroySelected": "Auswahl löschen"
       },
       "unlistedModel": {
         "createModel": "Schiff anlegen",

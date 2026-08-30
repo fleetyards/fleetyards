@@ -5,9 +5,11 @@
       "chooseFiles": "Dateien auswählen",
       "dropzone": {
         "textMultiple": "Dateien hier ablegen zum Hochladen",
+        "textDirectory": "Ordner hier ablegen",
         "text": "Datei hier ablegen zum Hochladen",
         "or": "oder",
-        "browse": "durchsuchen"
+        "browse": "durchsuchen",
+        "browseDirectory": "Ordner auswählen"
       },
       "previewImage": {
         "remove": "Entfernen"

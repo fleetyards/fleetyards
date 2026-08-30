@@ -8,7 +8,8 @@
         "info": "喜歡 FleetYards.net 嗎？為我們的 <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum 貼文</b></a> 按讚來幫助我們成長 — 這是免費的，還能提升我們在社群中的曝光度。",
         "goal": "每月目標用於幫助支付 FleetYards 的營運成本，例如伺服器託管和資料服務。每一份支持都有助於讓網站保持在線、快速且及時更新。",
         "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code when you buy Star Citizen:",
-        "subline": "或者您可以直接透過以下方式支持我們："
+        "subline": "或者您可以直接透過以下方式支持我們：",
+        "thisMonth": "本月已募得"
       },
       "supportHint": {
         "hangarSync": "背景同步是我們託管帳單中最大的一項支出。FleetYards 仰賴捐款運作 — 任何支持都很重要。",
@@ -29,6 +30,25 @@
       },
       "fleets": {
         "leaveInfo": "You can not leave a Fleet as an Admin."
+      },
+      "admin": {
+        "destroyedFleets": {
+          "purgedWarning": "還原已清除的艦隊只能盡力而為。角色、圖片、邀請連結與艦隊載具不會被還原。"
+        },
+        "models": {
+          "viewsFolder": {
+            "hint": "拖入一個資料夾，內含名為 top.png、side.png、front.png 與 angled.png 的檢視圖。彩繪版本加上 _colored 後綴，展開版本加上 extended_ 前綴。holo.gltf 與 extended_holo.gltf 也會一併處理。",
+            "uploading": {
+              "one": "正在上傳一個檔案…",
+              "other": "正在上傳 %{count} 個檔案…"
+            },
+            "matched": {
+              "one": "一個檔案已就緒 — 儲存即可套用。",
+              "other": "%{count} 個檔案已就緒 — 儲存即可套用。"
+            },
+            "ignored": "已忽略：%{files}"
+          }
+        }
       },
       "hangarGuide": {
         "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
@@ -97,6 +117,25 @@
         "p3": {
           "headline": "作為訪客",
           "text": "作為 %{app} 的訪客，我們收集以下資料："
+        },
+        "analytics": {
+          "headline": "使用分析",
+          "basis": "%{app} 會統計頁面瀏覽次數，以了解網站的哪些部分實際被使用。這是基於我們經營與改善網站的正當利益，而非基於同意：資料僅由我們第一方收集，IP 位址在儲存前已匿名化，不會在您的裝置上放置 Cookie 或其他識別碼，也不會與任何廣告聯播網分享。",
+          "retention": "個別的造訪與頁面瀏覽紀錄會在一個月後刪除。之後僅保留無法追溯到個人的彙總數據。刪除您的帳戶時，也會一併刪除為其記錄的造訪資料。",
+          "objection": {
+            "headline": "如何表示反對",
+            "text": "您可以隨時反對使用分析，我們會停止記錄，而不只是將資料隱藏起來。",
+            "user": "您在設定中的帳戶選項會套用到您登入的每一台裝置。",
+            "guest": "沒有帳戶時，您可以在此表示反對。若您的瀏覽器傳送 Global Privacy Control 訊號，我們也會予以尊重。"
+          }
+        }
+      },
+      "settings": {
+        "privacy": {
+          "tracking": "啟用後，我們會統計您造訪的頁面，以了解網站的哪些部分被使用。IP 位址會匿名化，不會在您的裝置上儲存任何資料，個別造訪紀錄會在一個月後刪除。關閉後將完全停止記錄。"
+        },
+        "notifications": {
+          "hint": "選擇每種事件要如何通知您。App 通知會收集在您的通知中心，郵件則寄到您帳戶的電子郵件地址。"
         }
       },
       "signup": {
@@ -119,6 +158,7 @@
         "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
         "alreadyRunning": "機庫同步已在進行中。請等待完成。"
       },
+      "setEmail": "要設定密碼、啟用雙重認證或接收郵件通知，您需要為帳戶添加電子郵件地址。您將收到一封確認郵件來驗證該地址。",
       "empty": {
         "hangar": {
           "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
@@ -127,8 +167,7 @@
         "wishlist": {
           "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
         }
-      },
-      "setEmail": "要設定密碼、啟用雙重認證或接收郵件通知，您需要為帳戶添加電子郵件地址。您將收到一封確認郵件來驗證該地址。"
+      }
     }
   }
 }

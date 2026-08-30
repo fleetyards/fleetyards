@@ -4,9 +4,16 @@
       "admin": {
         "dashboard": {
           "reloadModels": "Recharger les modèles",
-          "reloadScData": "Recharger les données SC"
+          "reloadScData": "Recharger les données SC",
+          "reloadPaints": "Recharger les peintures",
+          "reloadModules": "Recharger les modules",
+          "reloadLoaners": "Recharger les prêts"
+        },
+        "supporterContributions": {
+          "syncFromPatreon": "Synchroniser depuis Patreon"
         }
       },
+      "duplicate": "Dupliquer",
       "showReleased": "Afficher les versions précédentes",
       "hideReleased": "Masquer les anciennes versions",
       "upgrade": "Une mise à jour est disponible !",
@@ -32,6 +39,8 @@
       "here": "ici",
       "backToList": "Retour à la liste",
       "backToTop": "Revenir en haut",
+      "previous": "Précédent",
+      "next": "Suivant",
       "cancel": "Annuler",
       "ok": "Ok",
       "reset": "Réinitialiser",
@@ -45,6 +54,10 @@
       "hideGuide": "Masquer le guide",
       "showFleetchart": "Diagramme de flotte",
       "hideFleetchart": "Affichage par défaut",
+      "fleetchartApp": {
+        "useExtendedState": "Afficher les vaisseaux déployés",
+        "useRetractedState": "Afficher les vaisseaux repliés"
+      },
       "showLabels": "Afficher les labels",
       "hideLabels": "Masquer les labels",
       "resetZoom": "Réinitialiser le zoom",
@@ -74,6 +87,7 @@
       "addGroup": "Ajouter un groupe",
       "editGroup": "Modifier le groupe",
       "remove": "Retirer",
+      "reorder": "Réordonner",
       "delete": "Supprimer",
       "deleteSelected": "Supprimer la sélection",
       "enableSelected": "Activer la sélection",
@@ -89,6 +103,7 @@
       "changePassword": "Modifier le mot de passe",
       "updatePassword": "Changer le mot de passe",
       "copyBackupCodes": "Copier les codes de sauvegarde",
+      "regenerate": "Régénérer",
       "add": "Ajouter",
       "create": "Créer",
       "addToWishlist": "Ajouter à la liste de souhaits",
@@ -110,6 +125,7 @@
         "authorize": "Autoriser",
         "deny": "Refuser"
       },
+      "verifyWithCitizenId": "Vérifier avec Citizen iD",
       "oauth": {
         "signInWith": "Se connecter avec",
         "google": "Google",
@@ -141,6 +157,9 @@
       "hangar": {
         "editGroups": "Ajouter ou supprimer des groupes",
         "editName": "Nommez votre vaisseau",
+        "manageLoadouts": "Gérer les configurations",
+        "manageCargo": "Gérer la cargaison",
+        "backToHangar": "Retour au Hangar",
         "useName": "Utiliser ce nom",
         "destroyAll": "Supprimer tous les vaisseaux",
         "showOnPublicHangar": "Rendre publique",
@@ -150,8 +169,7 @@
           "openModal": "Réinitialiser les vaisseaux obtenus dans le jeu",
           "moveToWishlist": "Déplacer dans la liste de souhaits",
           "removeAll": "Tout supprimer"
-        },
-        "manageCargo": "Gérer la cargaison"
+        }
       },
       "syncExtension": {
         "cancel": "Annuler",
@@ -165,6 +183,7 @@
         "reset": "Effacer les filtres"
       },
       "destroyFleet": "Détruire la flotte",
+      "restore": "Restaurer",
       "fleet": {
         "join": "Rejoignez la flotte %{fleet}!",
         "leave": "Quitter la flotte %{fleet}",
@@ -190,6 +209,15 @@
         },
         "inviteUrls": {
           "create": "Créer le nouveau lien d'invitation"
+        },
+        "discord": {
+          "test": "Tester la connexion Discord",
+          "installBot": "Installer le bot Fleetyards sur votre serveur Discord"
+        },
+        "calendarSubscription": {
+          "enable": "Générer un lien d'abonnement",
+          "rotate": "Renouveler le lien",
+          "disable": "Désactiver l'abonnement"
         }
       },
       "model": {
@@ -201,6 +229,7 @@
         "sync": "Synchroniser depuis RSI",
         "syncMatrix": "Synchroniser la matrice",
         "syncScData": "Synchroniser les données SC",
+        "importPaints": "Importer les peintures",
         "exchangeStoreImage": "Utiliser l'image RSI",
         "images": "Images",
         "openTableConfiguration": "Ouvrir la configuration du tableau"
@@ -259,6 +288,92 @@
         "editInventory": "Edit Inventory",
         "clearCargo": "Vider la cargaison"
       },
+      "adminNotifications": {
+        "unread": "Marquer comme non lu",
+        "archive": "Archiver",
+        "unarchive": "Remettre dans la boîte de réception",
+        "readAll": "Tout marquer comme lu",
+        "destroyAll": "Tout supprimer",
+        "sortOldest": "Les plus anciennes d'abord",
+        "sortNewest": "Les plus récentes d'abord",
+        "select": "Sélectionner la notification",
+        "readSelected": "Marquer la sélection comme lue",
+        "unreadSelected": "Marquer la sélection comme non lue",
+        "archiveSelected": "Archiver la sélection",
+        "unarchiveSelected": "Remettre la sélection dans la boîte de réception",
+        "destroySelected": "Supprimer la sélection"
+      },
+      "account": {
+        "calendarSubscription": {
+          "enable": "Générer un lien de calendrier personnel",
+          "rotate": "Renouveler le lien",
+          "disable": "Désactiver l'abonnement"
+        }
+      },
+      "today": "Aujourd'hui",
+      "fleets": {
+        "missions": {
+          "create": "Créer une mission",
+          "edit": "Modifier la mission",
+          "archive": "Archiver la mission",
+          "unarchive": "Désarchiver",
+          "destroy": "Supprimer définitivement",
+          "addTeam": "Ajouter une équipe",
+          "addShip": "Ajouter un vaisseau",
+          "addSlot": "Ajouter un poste",
+          "viewMissions": "Voir les missions"
+        },
+        "events": {
+          "create": "Créer un événement",
+          "edit": "Modifier l'événement",
+          "spawn": "Créer depuis cette mission",
+          "archive": "Archiver l'événement",
+          "unarchive": "Restaurer depuis les archives",
+          "syncToDiscord": "Synchroniser vers Discord",
+          "destroy": "Supprimer définitivement",
+          "publish": "Publier",
+          "lockSignups": "Verrouiller les inscriptions",
+          "unlockSignups": "Déverrouiller les inscriptions",
+          "start": "Démarrer",
+          "complete": "Terminer",
+          "cancel": "Annuler",
+          "signup": "S'inscrire",
+          "withdraw": "Se désinscrire",
+          "kick": "Retirer l'inscription",
+          "viewEvents": "Voir les événements",
+          "viewCalendar": "Voir le calendrier",
+          "exportIcs": "Exporter iCal",
+          "addToCalendar": "Ajouter au calendrier",
+          "subscribe": "S'abonner",
+          "setUpCalendar": "Configurer les abonnements calendrier",
+          "assignSlot": "Assigner à un poste",
+          "reassignSlot": "Déplacer vers un autre poste",
+          "addSeats": "Ajouter des sièges",
+          "manageEventTeam": "Gérer l'équipe de l'événement",
+          "grantRole": "Attribuer un rôle",
+          "revokeRole": "Révoquer",
+          "editSchedule": "Modifier les équipes et vaisseaux",
+          "doneEditing": "Terminer l'édition",
+          "addTeam": "Ajouter une équipe"
+        }
+      },
+      "notifications": {
+        "unread": "Marquer comme non lu",
+        "archive": "Archiver",
+        "unarchive": "Remettre dans la boîte de réception",
+        "readAll": "Tout marquer comme lu",
+        "destroyAll": "Tout supprimer",
+        "settings": "Paramètres de notification",
+        "sortOldest": "Les plus anciennes d'abord",
+        "sortNewest": "Les plus récentes d'abord",
+        "openCenter": "Notifications",
+        "select": "Sélectionner la notification",
+        "readSelected": "Marquer la sélection comme lue",
+        "unreadSelected": "Marquer la sélection comme non lue",
+        "archiveSelected": "Archiver la sélection",
+        "unarchiveSelected": "Remettre la sélection dans la boîte de réception",
+        "destroySelected": "Supprimer la sélection"
+      },
       "unlistedModel": {
         "createModel": "Créer le vaisseau",
         "markAsPaint": "C'est une peinture",
@@ -266,7 +381,8 @@
         "noManufacturer": "Aucun constructeur ne correspond à cet identifiant",
         "alreadyExists": "%{name} est déjà dans le catalogue",
         "link": "Déjà dans le catalogue"
-      }
+      },
+      "revert": "Rétablir"
     }
   }
 }

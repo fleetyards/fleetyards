@@ -1,0 +1,16 @@
+{
+  "fr": {
+    "bulkSelection": {
+      "actions": {
+        "selectPage": "Tout sélectionner sur cette page",
+        "unselectPage": "Tout désélectionner sur cette page",
+        "selectAllMatching": "Sélectionner les %{count}",
+        "clear": "Effacer la sélection"
+      },
+      "labels": {
+        "selected": "%{count} sélectionné(s)",
+        "allMatchingSelected": "Les %{count} sélectionnés"
+      }
+    }
+  }
+}

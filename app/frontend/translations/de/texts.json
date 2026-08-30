@@ -7,7 +7,7 @@
       "support": {
         "info": "Dir gefällt FleetYards.net? Hilf uns zu wachsen, indem du unseren <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> hochvotest — das ist kostenlos und erhöht unsere Sichtbarkeit in der Community.",
         "goal": "Das monatliche Ziel hilft, die laufenden Kosten von FleetYards zu decken, etwa Server-Hosting und Datendienste. Jede Unterstützung hilft, die Seite online, schnell und aktuell zu halten.",
-        "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> when you buy Star Citizen or you can:",
+        "code": "Zusätzlich bekommst du 5000 UEC Startguthaben, wenn du beim Kauf von Star Citizen den folgenden Werbecode verwendest:",
         "subline": "oder Sie können uns direkt unterstützen über:",
         "thisMonth": "Diesen Monat eingegangen"
       },
@@ -30,6 +30,25 @@
       },
       "fleets": {
         "leaveInfo": "You can not leave a Fleet as an Admin."
+      },
+      "admin": {
+        "destroyedFleets": {
+          "purgedWarning": "Die Wiederherstellung einer endgültig gelöschten Flotte erfolgt nach bestem Bemühen. Rollen, Bilder, Einladungslinks und Flottenfahrzeuge werden nicht wiederhergestellt."
+        },
+        "models": {
+          "viewsFolder": {
+            "hint": "Lege hier einen Ordner mit Ansichten namens top.png, side.png, front.png und angled.png ab. Suffix _colored für den lackierten Satz, Präfix extended_ für die ausgefahrene Variante. holo.gltf und extended_holo.gltf werden ebenfalls übernommen.",
+            "uploading": {
+              "one": "Eine Datei wird hochgeladen…",
+              "other": "%{count} Dateien werden hochgeladen…"
+            },
+            "matched": {
+              "one": "Eine Datei bereit — zum Anwenden speichern.",
+              "other": "%{count} Dateien bereit — zum Anwenden speichern."
+            },
+            "ignored": "Ignoriert: %{files}"
+          }
+        }
       },
       "hangarGuide": {
         "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
@@ -114,6 +133,9 @@
       "settings": {
         "privacy": {
           "tracking": "Wenn dies aktiviert ist, zählen wir die von dir besuchten Seiten, um zu sehen, welche Bereiche genutzt werden. IP-Adressen werden anonymisiert, auf deinem Gerät wird nichts gespeichert und einzelne Besuche werden nach einem Monat gelöscht. Beim Ausschalten wird die Erfassung vollständig gestoppt."
+        },
+        "notifications": {
+          "hint": "Lege fest, wie dich jedes Ereignis erreicht. App-Benachrichtigungen sammeln sich in deinem Benachrichtigungscenter, E-Mails gehen an die Adresse deines Kontos."
         }
       },
       "signup": {
@@ -136,13 +158,13 @@
         "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
         "alreadyRunning": "Eine Hangar-Synchronisierung läuft bereits. Bitte warten Sie, bis sie abgeschlossen ist."
       },
+      "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung.",
       "empty": {
         "hangar": {
           "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
           "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
         }
-      },
-      "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung."
+      }
     }
   }
 }

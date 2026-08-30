@@ -20,6 +20,22 @@
           "label": "借用型號"
         }
       },
+      "modelSnubCraft": {
+        "snubCraft": {
+          "label": "Snub Craft",
+          "prompt": "選擇 Snub Craft"
+        }
+      },
+      "modelPosition": {
+        "positionType": {
+          "label": "職位類型",
+          "prompt": "選擇職位類型"
+        },
+        "source": {
+          "label": "來源",
+          "prompt": "選擇來源"
+        }
+      },
       "modelHardpoint": {
         "source": {
           "label": "來源",

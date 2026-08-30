@@ -18,6 +18,25 @@
       "distance": "距離",
       "guilded": "Guilded 伺服器",
       "color": "顏色",
+      "title": "標題",
+      "classification": "戰鬥、工業、多用途...",
+      "focus": "輕型戰鬥機、採礦、貨運...",
+      "minSize": "小艇、小型、中型...",
+      "maxSize": "中型、大型、主力艦...",
+      "minCrew": "最少船員",
+      "minCargo": "SCU",
+      "modelId": "搜尋飛船",
+      "scenario": "Xenothreat、Pirate Swarm、賞金任務…",
+      "briefing": "詳細簡報 — 通訊頻道、呼號、交戰規則…",
+      "location": "Stanton、Pyro、ARC-L1…",
+      "meetupLocation": "Daymar、太空港 — 4 號機庫…",
+      "maxAttendees": "選填上限",
+      "autoLockMinutesBefore": "60",
+      "timezone": "UTC",
+      "startsAt": "選擇開始日期與時間",
+      "endsAt": "選擇結束日期與時間（選填）",
+      "notes": "會多帶彈藥、可以擔任支援、10 分鐘後抵達…",
+      "signup-status": "確定參加還是暫定？",
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
@@ -61,7 +80,7 @@
         "storeUrl": "Store URL",
         "salesPageUrl": "Sales Page URL",
         "rsiId": "RSI ID",
-        "scIdentifier": "SC Identifier",
+        "scKey": "SC Key",
         "erkulIdentifier": "Erkul Identifier",
         "productionNote": "生產備註",
         "scmSpeed": "SCM Speed",
@@ -78,8 +97,14 @@
         "rollBoosted": "翻滾（增強）",
         "fleetchartOffsetLength": "艦隊圖表長度偏移",
         "fleetchartOffsetBeam": "艦隊圖表寬度偏移",
+        "extendedLength": "展開長度",
+        "extendedBeam": "展開寬度",
+        "extendedHeight": "展開高度",
+        "extendedFleetchartOffsetLength": "展開艦隊圖表長度偏移",
+        "extendedFleetchartOffsetBeam": "展開艦隊圖表寬度偏移",
         "cargo": "貨物",
-        "baseModel": "基礎型號"
+        "baseModel": "基礎型號",
+        "scIdentifier": "SC Identifier"
       },
       "cargoHold": {
         "offsetX": "偏移 X",
@@ -91,6 +116,22 @@
         "longName": "全名",
         "code": "代碼",
         "scRef": "SC Ref"
+      },
+      "fundingGoal": {
+        "title": "伺服器費用、網域、Discord...",
+        "description": "選填，會公開顯示的說明",
+        "amount": "100.00",
+        "currency": "EUR",
+        "effectiveFrom": "2026-01-01",
+        "endedAt": "持續進行請留空"
+      },
+      "supporterContribution": {
+        "name": "公開顯示的支持者名稱",
+        "amount": "5.00",
+        "currency": "EUR",
+        "startedAt": "2026-01-01",
+        "endedAt": "2026-12-31",
+        "note": "選填的內部備註"
       },
       "component": {
         "componentClass": "組件類別",
@@ -112,7 +153,12 @@
         "rsiSid": "RSI SID",
         "ts": "Teamspeak 伺服器",
         "description": "描述",
-        "discord": "Discord 伺服器",
+        "discord": {
+          "guildId": "例如 123456789012345678",
+          "channelId": "活動使用的語音頻道 ID",
+          "webhookUrl": "https://discord.com/api/webhooks/…",
+          "webhookConfigured": "已儲存 — 留空即保留現有設定"
+        },
         "guilded": "Guilded 伺服器",
         "homepage": "首頁",
         "twitch": "Twitch 頻道",
@@ -163,6 +209,10 @@
       "dock": {
         "name": "停靠口名稱"
       },
+      "modelPosition": {
+        "name": "職位名稱",
+        "position": "0"
+      },
       "modelHardpoint": {
         "name": "掛載點名稱",
         "key": "hardpoint_key",
@@ -173,6 +223,12 @@
       },
       "modelHardpointLoadout": {
         "name": "配置名稱"
+      },
+      "logistics": {
+        "inventoryName": "Main Depot, Cargo Bay...",
+        "description": "Optional details about this inventory",
+        "location": "e.g. Port Olisar, Area18",
+        "itemName": "Titanium, Medical Supplies..."
       },
       "filters": {
         "vehicles": {
@@ -194,6 +250,14 @@
         "manufacturers": {
           "name": "Origin, Robert Space Industries, Aegis..."
         },
+        "supporterContributions": {
+          "name": "Alice、Bob...",
+          "startedAtGteq": "2026-01-01",
+          "startedAtLteq": "2026-12-31"
+        },
+        "adminNotifications": {
+          "search": "標題或內容..."
+        },
         "users": {
           "search": "使用者名稱或電子郵件",
           "username": "使用者名稱",
@@ -210,19 +274,19 @@
             "username": "使用者名稱"
           }
         },
+        "destroyedFleets": {
+          "nameOrFid": "名稱或 FID"
+        },
         "commodities": {
           "name": "Name",
           "uexCode": "UEX Code"
         },
         "equipment": {
           "name": "Name"
+        },
+        "notifications": {
+          "search": "標題或內容..."
         }
-      },
-      "logistics": {
-        "inventoryName": "Main Depot, Cargo Bay...",
-        "description": "Optional details about this inventory",
-        "location": "e.g. Port Olisar, Area18",
-        "itemName": "Titanium, Medical Supplies..."
       },
       "commodity": {
         "commodityType": "Commodity Type",

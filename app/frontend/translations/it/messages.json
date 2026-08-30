@@ -56,6 +56,9 @@
       "updateHangar": {
         "success": "Impostazioni Hangar aggiornate."
       },
+      "updatePrivacy": {
+        "success": "Impostazioni sulla privacy aggiornate."
+      },
       "features": {
         "updated": "Funzione aggiornata.",
         "error": "Impossibile aggiornare la funzione.",
@@ -72,7 +75,8 @@
         "error": "Impossibile aggiornare il log delle richieste."
       },
       "updateNotifications": {
-        "success": "Impostazioni notifiche aggiornate."
+        "success": "Impostazioni notifiche aggiornate.",
+        "failure": "Non è stato possibile salvare le tue impostazioni di notifica."
       },
       "updateAccount": {
         "success": "Account aggiornato."
@@ -147,7 +151,22 @@
         "onSale": "%{model} è ora in vendita!",
         "syncStarted": "Model sync started. You will be notified when it completes.",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
-        "syncScDataStarted": "Model SC data sync started. You will be notified when it completes."
+        "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
+        "importPaintsStarted": "Importazione delle verniciature avviata. Riceverai una notifica al termine."
+      },
+      "fundingGoal": {
+        "created": "Obiettivo di finanziamento creato.",
+        "updated": "Obiettivo di finanziamento aggiornato.",
+        "destroyed": "Obiettivo di finanziamento eliminato.",
+        "createFailed": "Non è stato possibile creare l'obiettivo di finanziamento.",
+        "updateFailed": "Non è stato possibile aggiornare l'obiettivo di finanziamento."
+      },
+      "supporterContribution": {
+        "created": "Contributo del sostenitore creato.",
+        "updated": "Contributo del sostenitore aggiornato.",
+        "destroyed": "Contributo del sostenitore eliminato.",
+        "createFailed": "Non è stato possibile creare il contributo del sostenitore.",
+        "updateFailed": "Non è stato possibile aggiornare il contributo del sostenitore."
       },
       "notification": {
         "granted": "Benvenuto nelle notifiche FleetYards.net!"
@@ -188,6 +207,28 @@
         "destroy": {
           "success": "<b>Il tuo account è stato distrutto.</b> <br>É un peccato vederti andare :'(",
           "failure": "Impossibile eliminare il tuo account. Riprova più tardi."
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Sottoscrizione al calendario personale attivata.",
+            "failure": "Non è stato possibile attivare la sottoscrizione al calendario."
+          },
+          "rotate": {
+            "success": "Link del calendario personale rigenerato. Chi era già iscritto smetterà di ricevere aggiornamenti finché non si iscriverà di nuovo.",
+            "failure": "Non è stato possibile rigenerare il link del calendario personale.",
+            "confirm": "Rigenerando il link, qualsiasi app calendario iscritta all'URL attuale smetterà di funzionare senza preavviso. Dovrai iscriverti di nuovo con il nuovo link."
+          },
+          "disable": {
+            "success": "Sottoscrizione al calendario personale disattivata.",
+            "failure": "Non è stato possibile disattivare la sottoscrizione al calendario personale.",
+            "confirm": "Disattivando la sottoscrizione interromperai il feed per tutte le app calendario attualmente iscritte."
+          }
+        }
+      },
+      "user": {
+        "destroy": {
+          "success": "Utente eliminato.",
+          "failure": "Non è stato possibile eliminare l'utente."
         }
       },
       "fleet": {
@@ -245,6 +286,26 @@
             "success": "Membro respinto.",
             "failure": "Il membro non può essere respinto."
           }
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Sottoscrizione al calendario attivata.",
+            "failure": "Non è stato possibile attivare la sottoscrizione al calendario."
+          },
+          "rotate": {
+            "success": "Link di sottoscrizione rigenerato. Chi era già iscritto smetterà di ricevere aggiornamenti finché non si iscriverà di nuovo.",
+            "failure": "Non è stato possibile rigenerare il link di sottoscrizione.",
+            "confirm": "Rigenerando il link, qualsiasi app calendario iscritta all'URL attuale smetterà di funzionare senza preavviso. Dovranno iscriversi di nuovo con il nuovo link."
+          },
+          "disable": {
+            "success": "Sottoscrizione al calendario disattivata.",
+            "failure": "Non è stato possibile disattivare la sottoscrizione al calendario.",
+            "confirm": "Disattivando la sottoscrizione interromperai il feed per tutte le app calendario attualmente iscritte."
+          },
+          "copy": {
+            "success": "Link del calendario copiato. Incollalo nella tua app calendario sotto \"Iscriviti a un calendario\" o \"Aggiungi tramite URL\".",
+            "failure": "Non è stato possibile copiare il link del calendario."
+          }
         }
       },
       "fleetInvite": {
@@ -256,7 +317,8 @@
       "holoViewer": {
         "modelLoader": {
           "failure": "Non è stato possibile caricare il modello 3D richiesto! Riprova più tardi."
-        }
+        },
+        "webglNotSupported": "Il visualizzatore 3D non è disponibile su questo dispositivo."
       },
       "cargoGridViewer": {
         "noCargoHolds": "Questa nave non ha stive di carico.",
@@ -278,7 +340,8 @@
           "destroyAll": "Sei sicuro di voler rimuovere tutte le navi dalla tua Lista dei Desideri? Questa azione non può essere annullata."
         },
         "account": {
-          "destroy": "Sei sicuro di voler eliminare il tuo account? Questa azione non potrà essere annullata."
+          "destroy": "Sei sicuro di voler eliminare il tuo account? Questa azione non potrà essere annullata.",
+          "destroyWithFleets": "Sei l'amministratore della/e seguente/i Flotta/e: %{fleets}. Eliminando il tuo account verranno eliminate anche queste Flotte e rimossi tutti i loro membri. Questa azione non può essere annullata. Vuoi continuare?"
         },
         "itemPrice": {
           "destroy": "Are you sure you want to destroy this Item Price? This Action can't be reverted."
@@ -305,28 +368,45 @@
           "loginAs": "Are you sure you want to login as this user?",
           "resendConfirmation": "Are you sure you want to resend the confirmation email for this user?",
           "sendPasswordReset": "Are you sure you want to send a password reset email for this user?",
-          "destroy": "Are you sure you want to delete this user? This action can't be reverted."
+          "destroy": "Are you sure you want to delete this user? This action can't be reverted.",
+          "destroyWithFleets": "Questo utente è l'amministratore della/e seguente/i Flotta/e: %{fleets}. Eliminando l'utente verranno eliminate anche queste Flotte e rimossi tutti i loro membri. Questa azione non può essere annullata. Vuoi continuare?"
         },
         "model": {
           "destroy": "Are you sure you want to delete this model? This action can't be reverted.",
           "sync": "Are you sure you want to sync this model from RSI?",
           "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
           "syncScData": "Are you sure you want to sync the SC data for this model?",
+          "importPaints": "Sei sicuro di voler importare le verniciature di questo modello dai dati dell'hangar? Una verniciatura che la fonte indica per un'intera serie viene importata per ogni modello di quella serie.",
           "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
           "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
-          "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs."
+          "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs.",
+          "reloadPaints": "Sei sicuro di voler ricaricare le verniciature? Questo metterà in coda dei processi in background.",
+          "reloadModules": "Sei sicuro di voler ricaricare i moduli? Questo metterà in coda dei processi in background.",
+          "reloadLoaners": "Sei sicuro di voler ricaricare le navi in comodato? Questo metterà in coda dei processi in background."
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
         },
+        "fundingGoal": {
+          "destroy": "Sei sicuro di voler eliminare questo obiettivo di finanziamento? Questa azione non può essere annullata."
+        },
+        "supporterContribution": {
+          "destroy": "Sei sicuro di voler eliminare questo contributo del sostenitore? Questa azione non può essere annullata."
+        },
         "modelHardpoint": {
           "destroy": "Sei sicuro di voler eliminare questo punto di montaggio? Questa azione non può essere annullata."
+        },
+        "modelPosition": {
+          "destroy": "Sei sicuro di voler eliminare questa posizione? Questa azione non può essere annullata."
         },
         "modelHardpointLoadout": {
           "destroy": "Sei sicuro di voler eliminare questa configurazione? Questa azione non può essere annullata."
         },
         "modelLoaner": {
           "destroy": "Sei sicuro di voler eliminare questo prestito? Questa azione non può essere annullata."
+        },
+        "modelSnubCraft": {
+          "destroy": "Sei sicuro di voler eliminare questo snub craft? Questa azione non può essere annullata."
         },
         "modelPaint": {
           "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
@@ -354,6 +434,17 @@
         "adminFleet": {
           "destroy": "Are you sure you want to delete this fleet? This action can't be reverted."
         },
+        "adminNotifications": {
+          "destroyAll": "Sei sicuro di voler eliminare tutte le notifiche? Questa azione non può essere annullata.",
+          "destroySelected": {
+            "one": "Sei sicuro di voler eliminare la notifica selezionata? Questa azione non può essere annullata.",
+            "other": "Sei sicuro di voler eliminare le %{count} notifiche selezionate? Questa azione non può essere annullata."
+          }
+        },
+        "adminDestroyedFleet": {
+          "restore": "Sei sicuro di voler ripristinare questa flotta?",
+          "restorePurged": "Sei sicuro di voler ripristinare questa flotta eliminata definitivamente? Il ripristino è parziale: ruoli, immagini, link di invito e veicoli della flotta non vengono ripristinati."
+        },
         "adminUser": {
           "destroy": "Are you sure you want to delete this admin user? This action can't be reverted."
         },
@@ -368,6 +459,13 @@
         },
         "equipment": {
           "destroy": "Are you sure you want to delete this equipment? This action can't be reverted."
+        },
+        "notifications": {
+          "destroyAll": "Sei sicuro di voler eliminare tutte le notifiche? Questa azione non può essere annullata.",
+          "destroySelected": {
+            "one": "Sei sicuro di voler eliminare la notifica selezionata? Questa azione non può essere annullata.",
+            "other": "Sei sicuro di voler eliminare le %{count} notifiche selezionate? Questa azione non può essere annullata."
+          }
         },
         "unlistedModel": {
           "createModel": "Creare una nave da %{name}? Il prossimo caricamento sc_data completerà le sue meccaniche."
@@ -409,6 +507,11 @@
         "success": "Il tuo Hangar è stato sincronizzato.",
         "failure": "Il tuo Hangar non può essere sincronizzato.",
         "notLoggedIn": "Devi essere connesso su <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> per sincronizzare il tuo Hangar."
+      },
+      "admin": {
+        "supporterContributions": {
+          "patreonSyncStarted": "Sincronizzazione con Patreon avviata. Aggiorna la pagina tra un minuto per vedere i sostenitori importati."
+        }
       },
       "logistics": {
         "request": {
@@ -477,6 +580,279 @@
             "confirm": "Svuotare il carico di questa nave? Tutte le voci verranno eliminate.",
             "success": "Carico svuotato.",
             "failure": "Impossibile svuotare il carico."
+          }
+        }
+      },
+      "adminNotifications": {
+        "unread": "Notifica segnata come non letta",
+        "archived": "Notifica archiviata",
+        "unarchived": "Notifica riportata in arrivo",
+        "readAll": "Tutte le notifiche segnate come lette",
+        "destroyed": "Notifica eliminata",
+        "destroyedAll": "Tutte le notifiche eliminate",
+        "error": "Qualcosa è andato storto",
+        "bulk": {
+          "read": {
+            "one": "%{count} notifica segnata come letta",
+            "other": "%{count} notifiche segnate come lette"
+          },
+          "unread": {
+            "one": "%{count} notifica segnata come non letta",
+            "other": "%{count} notifiche segnate come non lette"
+          },
+          "archived": {
+            "one": "%{count} notifica archiviata",
+            "other": "%{count} notifiche archiviate"
+          },
+          "unarchived": {
+            "one": "%{count} notifica riportata in arrivo",
+            "other": "%{count} notifiche riportate in arrivo"
+          },
+          "destroyed": {
+            "one": "%{count} notifica eliminata",
+            "other": "%{count} notifiche eliminate"
+          }
+        }
+      },
+      "fleets": {
+        "notifications": {
+          "update": {
+            "success": "Impostazioni di notifica salvate.",
+            "failure": "Non è stato possibile salvare le impostazioni di notifica."
+          }
+        },
+        "mission": {
+          "create": {
+            "success": "Missione creata.",
+            "failure": "Non è stato possibile creare la missione."
+          },
+          "update": {
+            "success": "Missione aggiornata.",
+            "failure": "Non è stato possibile aggiornare la missione."
+          },
+          "archive": {
+            "success": "Missione archiviata.",
+            "failure": "Non è stato possibile archiviare la missione."
+          },
+          "unarchive": {
+            "success": "Missione ripristinata.",
+            "failure": "Non è stato possibile ripristinare la missione."
+          },
+          "destroy": {
+            "success": "Missione eliminata.",
+            "failure": "Non è stato possibile eliminare la missione.",
+            "confirm": "Questo eliminerà definitivamente la missione e tutti i suoi team, navi e slot. Questa azione non può essere annullata."
+          }
+        },
+        "missionTeam": {
+          "create": {
+            "success": "Team aggiunto.",
+            "failure": "Non è stato possibile aggiungere il team."
+          },
+          "update": {
+            "success": "Team aggiornato.",
+            "failure": "Non è stato possibile aggiornare il team."
+          },
+          "destroy": {
+            "success": "Team rimosso.",
+            "failure": "Non è stato possibile rimuovere il team."
+          }
+        },
+        "missionShip": {
+          "create": {
+            "success": "Nave aggiunta.",
+            "failure": "Non è stato possibile aggiungere la nave."
+          },
+          "update": {
+            "success": "Nave aggiornata.",
+            "failure": "Non è stato possibile aggiornare la nave."
+          },
+          "destroy": {
+            "success": "Nave rimossa.",
+            "failure": "Non è stato possibile rimuovere la nave."
+          },
+          "duplicate": {
+            "success": "Nave duplicata.",
+            "failure": "Non è stato possibile duplicare la nave."
+          }
+        },
+        "missionSlot": {
+          "create": {
+            "success": "Slot aggiunto.",
+            "failure": "Non è stato possibile aggiungere lo slot."
+          },
+          "update": {
+            "success": "Slot aggiornato.",
+            "failure": "Non è stato possibile aggiornare lo slot."
+          },
+          "destroy": {
+            "success": "Slot rimosso.",
+            "failure": "Non è stato possibile rimuovere lo slot."
+          }
+        },
+        "event": {
+          "create": {
+            "success": "Evento creato.",
+            "failure": "Non è stato possibile creare l'evento."
+          },
+          "update": {
+            "success": "Evento aggiornato.",
+            "failure": "Non è stato possibile aggiornare l'evento."
+          },
+          "archive": {
+            "success": "Evento archiviato.",
+            "failure": "Non è stato possibile archiviare l'evento.",
+            "confirm": "Vuoi archiviare questo evento? I membri non lo vedranno più nell'elenco dei prossimi eventi."
+          },
+          "unarchive": {
+            "success": "Evento ripristinato dall'archivio.",
+            "failure": "Non è stato possibile ripristinare l'evento."
+          },
+          "syncToDiscord": {
+            "success": "Evento inviato a Discord.",
+            "failure": "Non è stato possibile inviare l'evento a Discord."
+          },
+          "destroy": {
+            "success": "Evento eliminato.",
+            "failure": "Non è stato possibile eliminare l'evento.",
+            "confirm": "Questo eliminerà definitivamente l'evento. Questa azione non può essere annullata."
+          },
+          "publish": {
+            "success": "Evento pubblicato — le iscrizioni sono ora aperte.",
+            "failure": "Non è stato possibile pubblicare l'evento."
+          },
+          "lockSignups": {
+            "success": "Iscrizioni bloccate.",
+            "failure": "Non è stato possibile bloccare le iscrizioni."
+          },
+          "unlockSignups": {
+            "success": "Iscrizioni riaperte.",
+            "failure": "Non è stato possibile riaprire le iscrizioni."
+          },
+          "start": {
+            "success": "Evento avviato.",
+            "failure": "Non è stato possibile avviare l'evento."
+          },
+          "complete": {
+            "success": "Evento segnato come completato.",
+            "failure": "Non è stato possibile completare l'evento."
+          },
+          "cancel": {
+            "success": "Evento annullato.",
+            "failure": "Non è stato possibile annullare l'evento.",
+            "confirm": "Vuoi annullare questo evento? I partecipanti riceveranno una notifica."
+          }
+        },
+        "eventSignup": {
+          "create": {
+            "success": "Iscrizione effettuata.",
+            "failure": "Non è stato possibile completare l'iscrizione."
+          },
+          "update": {
+            "success": "Iscrizione aggiornata.",
+            "failure": "Non è stato possibile aggiornare l'iscrizione."
+          },
+          "withdraw": {
+            "success": "Ti sei ritirato dall'evento.",
+            "failure": "Non è stato possibile ritirarsi.",
+            "confirm": "Vuoi ritirarti da questo evento?"
+          },
+          "kick": {
+            "success": "Iscrizione rimossa.",
+            "failure": "Non è stato possibile rimuovere l'iscrizione.",
+            "confirm": "Vuoi rimuovere l'iscrizione di questo membro?"
+          }
+        },
+        "eventAdmin": {
+          "create": {
+            "success": "Ruolo assegnato.",
+            "failure": "Non è stato possibile assegnare il ruolo."
+          },
+          "destroy": {
+            "success": "Ruolo revocato.",
+            "failure": "Non è stato possibile revocare il ruolo.",
+            "confirm": "Vuoi revocare il ruolo di %{username} per questo evento?"
+          }
+        },
+        "eventTeam": {
+          "create": {
+            "success": "Team aggiunto.",
+            "failure": "Non è stato possibile aggiungere il team."
+          },
+          "update": {
+            "success": "Team aggiornato.",
+            "failure": "Non è stato possibile aggiornare il team."
+          },
+          "destroy": {
+            "success": "Team rimosso.",
+            "failure": "Non è stato possibile rimuovere il team.",
+            "confirm": "Vuoi rimuovere questo team con tutte le sue navi e slot?"
+          }
+        },
+        "eventShip": {
+          "create": {
+            "success": "Nave aggiunta.",
+            "failure": "Non è stato possibile aggiungere la nave."
+          },
+          "update": {
+            "success": "Nave aggiornata.",
+            "failure": "Non è stato possibile aggiornare la nave."
+          },
+          "destroy": {
+            "success": "Nave rimossa.",
+            "failure": "Non è stato possibile rimuovere la nave.",
+            "confirm": "Vuoi rimuovere questa nave e i suoi slot?"
+          },
+          "expand": {
+            "success": "Slot aggiunti.",
+            "failure": "Non è stato possibile aggiungere gli slot."
+          }
+        },
+        "eventSlot": {
+          "create": {
+            "success": "Slot aggiunto.",
+            "failure": "Non è stato possibile aggiungere lo slot."
+          },
+          "update": {
+            "success": "Slot aggiornato.",
+            "failure": "Non è stato possibile aggiornare lo slot."
+          },
+          "destroy": {
+            "success": "Slot rimosso.",
+            "failure": "Non è stato possibile rimuovere lo slot."
+          }
+        }
+      },
+      "notifications": {
+        "unread": "Notifica segnata come non letta",
+        "archived": "Notifica archiviata",
+        "unarchived": "Notifica riportata in arrivo",
+        "readAll": "Tutte le notifiche segnate come lette",
+        "destroyed": "Notifica eliminata",
+        "destroyedAll": "Tutte le notifiche eliminate",
+        "actionDone": "Fatto",
+        "actionFailed": "Non ha funzionato - la notifica potrebbe non essere più aggiornata",
+        "error": "Qualcosa è andato storto",
+        "bulk": {
+          "read": {
+            "one": "%{count} notifica segnata come letta",
+            "other": "%{count} notifiche segnate come lette"
+          },
+          "unread": {
+            "one": "%{count} notifica segnata come non letta",
+            "other": "%{count} notifiche segnate come non lette"
+          },
+          "archived": {
+            "one": "%{count} notifica archiviata",
+            "other": "%{count} notifiche archiviate"
+          },
+          "unarchived": {
+            "one": "%{count} notifica riportata in arrivo",
+            "other": "%{count} notifiche riportate in arrivo"
+          },
+          "destroyed": {
+            "one": "%{count} notifica eliminata",
+            "other": "%{count} notifiche eliminate"
           }
         }
       }

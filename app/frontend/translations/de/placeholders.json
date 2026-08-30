@@ -18,6 +18,25 @@
       "distance": "Entfernung",
       "guilded": "Guilded-Server",
       "color": "Farbe",
+      "title": "Titel",
+      "classification": "Kampf, Industrie, Multi-Role...",
+      "focus": "Leichter Jäger, Bergbau, Fracht...",
+      "minSize": "Snub, klein, mittel...",
+      "maxSize": "mittel, groß, capital...",
+      "minCrew": "Min. Besatzung",
+      "minCargo": "SCU",
+      "modelId": "Nach einem Schiff suchen",
+      "scenario": "Xenothreat, Pirate Swarm, Bounty…",
+      "briefing": "Ausführliches Briefing — Comms, Rufzeichen, Einsatzregeln…",
+      "location": "Stanton, Pyro, ARC-L1…",
+      "meetupLocation": "Daymar, Raumhafen — Hangar 4…",
+      "maxAttendees": "Optionales Limit",
+      "autoLockMinutesBefore": "60",
+      "timezone": "UTC",
+      "startsAt": "Startdatum & -zeit wählen",
+      "endsAt": "Enddatum & -zeit wählen (optional)",
+      "notes": "Bringe extra Munition mit, kann Support fliegen, ETA in 10…",
+      "signup-status": "Bestätigt oder vorläufig?",
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
@@ -133,7 +152,12 @@
         "rsiSid": "RSI SID",
         "ts": "Teamspeak-Server",
         "description": "Beschreibung",
-        "discord": "Discord-Server",
+        "discord": {
+          "guildId": "z. B. 123456789012345678",
+          "channelId": "Voice-Channel-ID für das Event",
+          "webhookUrl": "https://discord.com/api/webhooks/…",
+          "webhookConfigured": "Gespeichert — leer lassen, um die bestehende zu behalten"
+        },
         "guilded": "Guilded-Server",
         "homepage": "Homepage",
         "twitch": "Twitch-Kanal",
@@ -184,6 +208,10 @@
       "dock": {
         "name": "Dock-Name"
       },
+      "modelPosition": {
+        "name": "Positionsname",
+        "position": "0"
+      },
       "modelHardpoint": {
         "name": "Aufhängungspunkt-Name",
         "key": "hardpoint_key",
@@ -194,6 +222,12 @@
       },
       "modelHardpointLoadout": {
         "name": "Konfigurationsname"
+      },
+      "logistics": {
+        "inventoryName": "Main Depot, Cargo Bay...",
+        "description": "Optional details about this inventory",
+        "location": "e.g. Port Olisar, Area18",
+        "itemName": "Titanium, Medical Supplies..."
       },
       "filters": {
         "vehicles": {
@@ -220,6 +254,9 @@
           "startedAtGteq": "2026-01-01",
           "startedAtLteq": "2026-12-31"
         },
+        "adminNotifications": {
+          "search": "Titel oder Inhalt..."
+        },
         "users": {
           "search": "Benutzername oder E-Mail",
           "username": "Benutzername",
@@ -236,19 +273,19 @@
             "username": "Benutzername"
           }
         },
+        "destroyedFleets": {
+          "nameOrFid": "Name oder FID"
+        },
         "commodities": {
           "name": "Name",
           "uexCode": "UEX Code"
         },
         "equipment": {
           "name": "Name"
+        },
+        "notifications": {
+          "search": "Titel oder Inhalt..."
         }
-      },
-      "logistics": {
-        "inventoryName": "Main Depot, Cargo Bay...",
-        "description": "Optional details about this inventory",
-        "location": "e.g. Port Olisar, Area18",
-        "itemName": "Titanium, Medical Supplies..."
       },
       "commodity": {
         "commodityType": "Commodity Type",

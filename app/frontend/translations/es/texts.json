@@ -7,8 +7,9 @@
       "support": {
         "info": "¿Te gusta FleetYards.net? Ayúdanos a crecer votando nuestro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> — es gratis y aumenta nuestra visibilidad en la comunidad.",
         "goal": "El objetivo mensual ayuda a cubrir los costes de funcionamiento de FleetYards, como el alojamiento de servidores y los servicios de datos. Cualquier apoyo ayuda a mantener el sitio en línea, rápido y actualizado.",
-        "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> when you buy Star Citizen or you can:",
-        "subline": "o puede apoyarnos directamente a través de:"
+        "code": "Además puedes conseguir 5000 UEC de dinero inicial usando el siguiente código de reclutamiento al comprar Star Citizen:",
+        "subline": "o puede apoyarnos directamente a través de:",
+        "thisMonth": "Recaudado este mes"
       },
       "supportHint": {
         "hangarSync": "Las sincronizaciones en segundo plano son el mayor gasto de hosting. FleetYards funciona gracias a las donaciones — cualquier aporte ayuda.",
@@ -29,6 +30,25 @@
       },
       "fleets": {
         "leaveInfo": "You can not leave a Fleet as an Admin."
+      },
+      "admin": {
+        "destroyedFleets": {
+          "purgedWarning": "La restauración de una flota purgada se hace en la medida de lo posible. Los roles, las imágenes, los enlaces de invitación y los vehículos de la flota no se restauran."
+        },
+        "models": {
+          "viewsFolder": {
+            "hint": "Suelta una carpeta de vistas con los nombres top.png, side.png, front.png y angled.png. Añade el sufijo _colored para el juego pintado y el prefijo extended_ para el extendido. holo.gltf y extended_holo.gltf también se incluyen.",
+            "uploading": {
+              "one": "Subiendo un archivo…",
+              "other": "Subiendo %{count} archivos…"
+            },
+            "matched": {
+              "one": "Un archivo listo — guarda para aplicarlo.",
+              "other": "%{count} archivos listos — guarda para aplicarlos."
+            },
+            "ignored": "Ignorados: %{files}"
+          }
+        }
       },
       "hangarGuide": {
         "add": "To add a new ship to your hangar visit the ships page and click on the bookmark icon in the top right corner of the ship you want to add.<br>Alternatively you can add a ship on its detail page, the button is located on the right side below the stats boxes.<br>You can click multiple times on the icon if you want more than one ship of the same type.",
@@ -97,6 +117,25 @@
         "p3": {
           "headline": "Como invitado",
           "text": "Como invitado en %{app} recopilamos los siguientes datos:"
+        },
+        "analytics": {
+          "headline": "Analíticas de uso",
+          "basis": "%{app} cuenta las visitas a las páginas para saber qué partes del sitio se usan realmente. Esto se basa en nuestro interés legítimo en operar y mejorar el sitio, no en el consentimiento: los datos se recogen únicamente de forma propia, las direcciones IP se anonimizan antes de almacenarse, no se colocan cookies ni otros identificadores en tu dispositivo y no se comparte nada con redes publicitarias.",
+          "retention": "Las visitas individuales y las páginas vistas se eliminan al cabo de un mes. Más allá de ese plazo solo se conservan recuentos agregados, que no pueden vincularse a una persona. Eliminar tu cuenta también elimina las visitas registradas para ella.",
+          "objection": {
+            "headline": "Cómo oponerse",
+            "text": "Puedes oponerte a las analíticas de uso en cualquier momento, y dejaremos de registrarlas en lugar de limitarnos a ocultarlas.",
+            "user": "El ajuste de tu cuenta en Configuración se aplica a todos los dispositivos en los que inicies sesión.",
+            "guest": "Sin una cuenta puedes oponerte aquí. También respetamos la señal Global Privacy Control si tu navegador la envía."
+          }
+        }
+      },
+      "settings": {
+        "privacy": {
+          "tracking": "Cuando esto está activado contamos las páginas que visitas para ver qué partes del sitio se usan. Las direcciones IP se anonimizan, no se almacena nada en tu dispositivo y las visitas individuales se eliminan al cabo de un mes. Desactivarlo detiene el registro por completo."
+        },
+        "notifications": {
+          "hint": "Elige cómo te llega cada evento. Las notificaciones de la app se recogen en tu centro de notificaciones; el correo se envía a la dirección de tu cuenta."
         }
       },
       "signup": {
@@ -119,13 +158,13 @@
         "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
         "alreadyRunning": "Ya hay una sincronización de hangar en progreso. Espere a que termine."
       },
+      "setEmail": "Para establecer una contraseña, activar la autenticación de dos factores o recibir notificaciones por correo, necesitas añadir una dirección de correo a tu cuenta. Recibirás un correo de confirmación para verificar la dirección.",
       "empty": {
         "hangar": {
           "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
           "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
         }
-      },
-      "setEmail": "Para establecer una contraseña, activar la autenticación de dos factores o recibir notificaciones por correo, necesitas añadir una dirección de correo a tu cuenta. Recibirás un correo de confirmación para verificar la dirección."
+      }
     }
   }
 }

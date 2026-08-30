@@ -5,9 +5,11 @@
       "chooseFiles": "Scegli file",
       "dropzone": {
         "textMultiple": "Trascina i file qui per caricare",
+        "textDirectory": "Trascina qui una cartella",
         "text": "Trascina il file qui per caricare",
         "or": "o",
-        "browse": "sfoglia"
+        "browse": "sfoglia",
+        "browseDirectory": "scegli una cartella"
       },
       "previewImage": {
         "remove": "Rimuovi"

@@ -38,6 +38,11 @@
             "other": "<b>%{count}</b> Unterstützer"
           }
         }
+      },
+      "states": {
+        "empty": "Noch keine Daten für dieses Diagramm",
+        "failed": "Dieses Diagramm konnte nicht geladen werden",
+        "retry": "Erneut versuchen"
       }
     }
   }

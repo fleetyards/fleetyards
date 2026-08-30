@@ -7,8 +7,9 @@
       "support": {
         "info": "Ti piace FleetYards.net? Aiutaci a crescere votando il nostro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> — è gratis e aumenta la nostra visibilità nella community.",
         "goal": "L'obiettivo mensile aiuta a coprire i costi di gestione di FleetYards, come l'hosting dei server e i servizi dati. Ogni supporto aiuta a mantenere il sito online, veloce e aggiornato.",
-        "code": "Inoltre puoi ottenere 5000 UEC come denaro iniziale usando il seguente codice di reclutamento <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> quando acquisti Star Citizen o puoi:",
-        "subline": "o puoi supportarci direttamente tramite:"
+        "code": "Inoltre puoi ottenere 5000 UEC come denaro iniziale usando il seguente codice di reclutamento quando acquisti Star Citizen:",
+        "subline": "o puoi supportarci direttamente tramite:",
+        "thisMonth": "Raccolti questo mese"
       },
       "supportHint": {
         "hangarSync": "Le sincronizzazioni in background sono la voce più grande della nostra bolletta di hosting. FleetYards va avanti grazie alle donazioni — ogni contributo aiuta.",
@@ -29,6 +30,25 @@
       },
       "fleets": {
         "leaveInfo": "Non puoi lasciare una flotta come amministratore."
+      },
+      "admin": {
+        "destroyedFleets": {
+          "purgedWarning": "Il ripristino di una flotta eliminata definitivamente è parziale. Ruoli, immagini, link di invito e veicoli della flotta non vengono ripristinati."
+        },
+        "models": {
+          "viewsFolder": {
+            "hint": "Trascina una cartella di viste chiamate top.png, side.png, front.png e angled.png. Suffisso _colored per il set verniciato, prefisso extended_ per quello esteso. Anche holo.gltf e extended_holo.gltf vengono inclusi.",
+            "uploading": {
+              "one": "Caricamento di un file…",
+              "other": "Caricamento di %{count} file…"
+            },
+            "matched": {
+              "one": "Un file pronto — salva per applicarlo.",
+              "other": "%{count} file pronti — salva per applicarli."
+            },
+            "ignored": "Ignorati: %{files}"
+          }
+        }
       },
       "hangarGuide": {
         "add": "Per aggiungere una nuova nave all'hangar visitare la pagina delle navi e fare clic sull'icona del segnalibro nell'angolo in alto a destra della nave che si desidera aggiungere.<br>In alternativa è possibile aggiungere una nave nella sua pagina di dettaglio, il pulsante si trova sul lato destro sotto le caselle delle statistiche.<br>Puoi cliccare più volte sull'icona se vuoi più di una nave dello stesso tipo.",
@@ -97,6 +117,25 @@
         "p3": {
           "headline": "Come ospite",
           "text": "Come ospite su %{app} raccogliamo i seguenti dati:"
+        },
+        "analytics": {
+          "headline": "Analisi di utilizzo",
+          "basis": "%{app} conta le visualizzazioni di pagina per capire quali parti del sito vengono effettivamente usate. Lo facciamo sulla base del nostro legittimo interesse a gestire e migliorare il sito, non del consenso: i dati sono raccolti solo in prima persona, gli indirizzi IP vengono resi anonimi prima di essere memorizzati, nessun cookie o altro identificatore viene installato sul tuo dispositivo e nulla viene condiviso con reti pubblicitarie.",
+          "retention": "Le singole visite e visualizzazioni di pagina vengono eliminate dopo un mese. Oltre quel termine restano solo conteggi aggregati, che non possono essere ricondotti a una persona. Anche l'eliminazione del tuo account elimina le visite registrate per esso.",
+          "objection": {
+            "headline": "Come opporsi",
+            "text": "Puoi opporti in qualsiasi momento alle analisi di utilizzo: smetteremo di registrarle, non ci limiteremo a nasconderle.",
+            "user": "L'impostazione del tuo account, in Impostazioni, si applica a ogni dispositivo da cui accedi.",
+            "guest": "Senza un account puoi opporti qui. Rispettiamo anche il segnale Global Privacy Control, se il tuo browser lo invia."
+          }
+        }
+      },
+      "settings": {
+        "privacy": {
+          "tracking": "Quando questa opzione è attiva contiamo le pagine che visiti per capire quali parti del sito vengono usate. Gli indirizzi IP vengono resi anonimi, nulla viene memorizzato sul tuo dispositivo e le singole visite vengono eliminate dopo un mese. Disattivandola la registrazione si interrompe del tutto."
+        },
+        "notifications": {
+          "hint": "Scegli come ricevere ogni evento. Le notifiche dell'app vengono raccolte nel tuo centro notifiche, le email vanno all'indirizzo del tuo account."
         }
       },
       "signup": {
@@ -119,13 +158,13 @@
         "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
         "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento."
       },
+      "setEmail": "Per impostare una password, abilitare l'autenticazione a due fattori o ricevere notifiche via email, devi aggiungere un indirizzo email al tuo account. Riceverai un'email di conferma per verificare l'indirizzo.",
       "empty": {
         "hangar": {
           "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
           "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
         }
-      },
-      "setEmail": "Per impostare una password, abilitare l'autenticazione a due fattori o ricevere notifiche via email, devi aggiungere un indirizzo email al tuo account. Riceverai un'email di conferma per verificare l'indirizzo."
+      }
     }
   }
 }

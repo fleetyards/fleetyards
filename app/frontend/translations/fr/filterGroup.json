@@ -20,6 +20,22 @@
           "label": "Modèle de prêt"
         }
       },
+      "modelSnubCraft": {
+        "snubCraft": {
+          "label": "Snub Craft",
+          "prompt": "Sélectionner un Snub Craft"
+        }
+      },
+      "modelPosition": {
+        "positionType": {
+          "label": "Type de poste",
+          "prompt": "Sélectionner le type de poste"
+        },
+        "source": {
+          "label": "Source",
+          "prompt": "Sélectionner la source"
+        }
+      },
       "modelHardpoint": {
         "source": {
           "label": "Source",

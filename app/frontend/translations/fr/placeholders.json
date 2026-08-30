@@ -18,6 +18,25 @@
       "distance": "Distance",
       "guilded": "Serveur Guilded",
       "color": "Couleur",
+      "title": "Titre",
+      "classification": "Combat, Industriel, Polyvalent...",
+      "focus": "Chasseur léger, Minage, Cargo...",
+      "minSize": "snub, small, medium...",
+      "maxSize": "medium, large, capital...",
+      "minCrew": "Équipage min.",
+      "minCargo": "SCU",
+      "modelId": "Rechercher un vaisseau",
+      "scenario": "Xenothreat, Pirate Swarm, Bounty…",
+      "briefing": "Briefing détaillé — comms, indicatifs, règles d'engagement…",
+      "location": "Stanton, Pyro, ARC-L1…",
+      "meetupLocation": "Daymar, Spaceport — Hangar 4…",
+      "maxAttendees": "Limite facultative",
+      "autoLockMinutesBefore": "60",
+      "timezone": "UTC",
+      "startsAt": "Choisir la date et l'heure de début",
+      "endsAt": "Choisir la date et l'heure de fin (facultatif)",
+      "notes": "J'apporte des munitions, je peux faire du soutien, ETA dans 10…",
+      "signup-status": "Confirmé ou provisoire ?",
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
@@ -61,7 +80,7 @@
         "storeUrl": "Store URL",
         "salesPageUrl": "Sales Page URL",
         "rsiId": "RSI ID",
-        "scIdentifier": "SC Identifier",
+        "scKey": "SC Key",
         "erkulIdentifier": "Erkul Identifier",
         "productionNote": "Note de production",
         "scmSpeed": "SCM Speed",
@@ -78,8 +97,14 @@
         "rollBoosted": "Roulis boosté",
         "fleetchartOffsetLength": "Décalage longueur du diagramme de flotte",
         "fleetchartOffsetBeam": "Décalage largeur du diagramme de flotte",
+        "extendedLength": "Longueur étendue",
+        "extendedBeam": "Largeur étendue",
+        "extendedHeight": "Hauteur étendue",
+        "extendedFleetchartOffsetLength": "Décalage longueur étendue du diagramme de flotte",
+        "extendedFleetchartOffsetBeam": "Décalage largeur étendue du diagramme de flotte",
         "cargo": "Cargaison",
-        "baseModel": "Modèle de base"
+        "baseModel": "Modèle de base",
+        "scIdentifier": "SC Identifier"
       },
       "cargoHold": {
         "offsetX": "Décalage X",
@@ -91,6 +116,22 @@
         "longName": "Nom complet",
         "code": "Code",
         "scRef": "SC Ref"
+      },
+      "fundingGoal": {
+        "title": "Coûts serveur, Domaine, Discord...",
+        "description": "Contexte facultatif affiché publiquement",
+        "amount": "100.00",
+        "currency": "EUR",
+        "effectiveFrom": "2026-01-01",
+        "endedAt": "laisser vide si toujours en cours"
+      },
+      "supporterContribution": {
+        "name": "Nom du soutien affiché publiquement",
+        "amount": "5.00",
+        "currency": "EUR",
+        "startedAt": "2026-01-01",
+        "endedAt": "2026-12-31",
+        "note": "Note interne facultative"
       },
       "component": {
         "componentClass": "Classe de composant",
@@ -112,7 +153,12 @@
         "rsiSid": "RSI SID",
         "ts": "Serveur Teamspeak",
         "description": "Description",
-        "discord": "Serveur Discord",
+        "discord": {
+          "guildId": "ex. 123456789012345678",
+          "channelId": "ID du salon vocal pour l'événement",
+          "webhookUrl": "https://discord.com/api/webhooks/…",
+          "webhookConfigured": "Enregistré — laisser vide pour conserver l'existant"
+        },
         "guilded": "Serveur Guilded",
         "homepage": "Page d'accueil",
         "twitch": "Chaîne Twitch",
@@ -163,6 +209,10 @@
       "dock": {
         "name": "Nom du quai"
       },
+      "modelPosition": {
+        "name": "Nom du poste",
+        "position": "0"
+      },
       "modelHardpoint": {
         "name": "Nom du point d'attache",
         "key": "hardpoint_key",
@@ -173,6 +223,12 @@
       },
       "modelHardpointLoadout": {
         "name": "Nom de configuration"
+      },
+      "logistics": {
+        "inventoryName": "Main Depot, Cargo Bay...",
+        "description": "Optional details about this inventory",
+        "location": "e.g. Port Olisar, Area18",
+        "itemName": "Titanium, Medical Supplies..."
       },
       "filters": {
         "vehicles": {
@@ -194,6 +250,14 @@
         "manufacturers": {
           "name": "Origin, Robert Space Industries, Aegis..."
         },
+        "supporterContributions": {
+          "name": "Alice, Bob...",
+          "startedAtGteq": "2026-01-01",
+          "startedAtLteq": "2026-12-31"
+        },
+        "adminNotifications": {
+          "search": "Titre ou contenu..."
+        },
         "users": {
           "search": "Nom d'utilisateur ou e-mail",
           "username": "Nom d'utilisateur",
@@ -210,19 +274,19 @@
             "username": "Nom d'utilisateur"
           }
         },
+        "destroyedFleets": {
+          "nameOrFid": "Nom ou FID"
+        },
         "commodities": {
           "name": "Name",
           "uexCode": "UEX Code"
         },
         "equipment": {
           "name": "Name"
+        },
+        "notifications": {
+          "search": "Titre ou contenu..."
         }
-      },
-      "logistics": {
-        "inventoryName": "Main Depot, Cargo Bay...",
-        "description": "Optional details about this inventory",
-        "location": "e.g. Port Olisar, Area18",
-        "itemName": "Titanium, Medical Supplies..."
       },
       "commodity": {
         "commodityType": "Commodity Type",
