@@ -163,7 +163,10 @@
         },
         "users": {
           "index": "Benutzer",
-          "edit": "Benutzer bearbeiten"
+          "edit": "Benutzer bearbeiten",
+          "inventories": "Nutzer-Inventare",
+          "inventory": "Nutzer-Inventar",
+          "inventoryItem": "Inventar-Eintrag"
         },
         "vehicles": {
           "index": "Fahrzeuge",
@@ -177,7 +180,12 @@
           "index": "Flotten",
           "edit": "Flotte bearbeiten",
           "memberEdit": "Flottenmitglied bearbeiten",
-          "history": "Flotten-Verlauf"
+          "history": "Flotten-Verlauf",
+          "roles": "Flotten-Rollen",
+          "role": "Flotten-Rolle",
+          "inventories": "Flotten-Inventare",
+          "inventory": "Flotten-Inventar",
+          "inventoryItem": "Inventar-Eintrag"
         },
         "oauthApplications": {
           "index": "OAuth-Anwendungen",

@@ -398,7 +398,9 @@
             "fleet:roles:update": "Rollen bearbeiten",
             "fleet:roles:delete": "Rollen löschen",
             "fleet:roles:manage": "Rollen verwalten"
-          }
+          },
+          "name": "Name",
+          "rank": "Rang"
         },
         "inviteUrls": {
           "noLimit": "Kein Limit",
@@ -425,6 +427,18 @@
             "25": "25 uses",
             "50": "50 uses",
             "100": "100 uses"
+          }
+        },
+        "inventories": {
+          "name": "Name",
+          "description": "Beschreibung",
+          "location": "Ort",
+          "visibility": "Sichtbarkeit",
+          "manager": "Verwalter",
+          "itemsCount": "Einträge",
+          "visibilities": {
+            "members_only": "Nur Mitglieder",
+            "officers_only": "Nur Offiziere"
           }
         }
       },
@@ -1444,6 +1458,40 @@
       },
       "unlistedModel": {
         "linkHint": "Welches Schiff im Katalog ist %{identifier}? Der Vorschlag stammt aus dem Export und kann falsch sein."
+      },
+      "slug": "Slug",
+      "inventories": {
+        "source": "Herkunft",
+        "sources": {
+          "vehicle": "Schiff",
+          "handMade": "Selbst angelegt"
+        }
+      },
+      "inventoryItems": {
+        "name": "Name",
+        "category": "Kategorie",
+        "entryType": "Buchung",
+        "quantity": "Menge",
+        "quality": "Qualität",
+        "notes": "Notizen",
+        "itemType": "Katalog",
+        "categories": {
+          "commodity": "Ware",
+          "component": "Komponente",
+          "weapon": "Waffe",
+          "equipment": "Ausrüstung",
+          "ammunition": "Munition",
+          "consumable": "Verbrauchsgut",
+          "other": "Sonstiges"
+        },
+        "entryTypes": {
+          "deposit": "Einlagerung",
+          "withdrawal": "Entnahme"
+        },
+        "units": {
+          "scu": "SCU",
+          "units": "Stück"
+        }
       }
     }
   }
