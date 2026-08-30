@@ -36,9 +36,10 @@
         "publicStats": "%{user} 机库统计",
         "wishlist": "心愿单",
         "publicWishlist": "%{user} 心愿单",
-        "vehicleCargo": "飞船货物",
+        "vehicleLoadouts": "飞船配装",
         "inventories": "My Hangar Inventories",
-        "inventory": "%{inventory}"
+        "inventory": "%{inventory}",
+        "vehicleCargo": "飞船货物"
       },
       "requestPassword": "请求密码",
       "changePassword": "更改密码",
@@ -57,11 +58,36 @@
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories"
         },
+        "missions": {
+          "index": "%{fleet} 任务",
+          "create": "创建任务 - %{fleet}",
+          "edit": {
+            "basic": "编辑任务 - %{fleet}",
+            "description": "编辑描述 - %{fleet}",
+            "teams": "编辑小队与席位 - %{fleet}"
+          },
+          "show": "%{fleet} 任务"
+        },
+        "events": {
+          "index": "%{fleet} 活动",
+          "calendar": "%{fleet} 日历",
+          "create": "创建活动 - %{fleet}",
+          "edit": {
+            "basic": "编辑活动 - %{fleet}",
+            "description": "编辑描述 - %{fleet}",
+            "teams": "编辑小队与席位 - %{fleet}"
+          },
+          "show": "%{fleet} 活动"
+        },
         "settings": {
           "index": "%{fleet} 设置",
           "fleet": "%{fleet} 设置",
           "membership": "%{fleet} 成员资格",
-          "roles": "%{fleet} 角色"
+          "roles": "%{fleet} 角色",
+          "notifications": "%{fleet} 通知设置",
+          "discord": "%{fleet} Discord 设置",
+          "calendar": "%{fleet} 日历设置",
+          "features": "%{fleet} 功能"
         }
       },
       "roadmap": {
@@ -74,10 +100,12 @@
         "profile": "个人资料设置",
         "account": "账户",
         "hangar": "机库设置",
+        "privacy": "隐私设置",
         "features": "功能标志",
         "connections": "连接",
         "oauthApplications": "OAuth 应用",
         "notifications": "通知设置",
+        "calendar": "日历订阅",
         "security": "账户安全",
         "twoFactor": {
           "enable": "启用双因素认证",
@@ -101,6 +129,7 @@
         "index": "视觉测试",
         "panels": "面板 - 视觉测试",
         "buttons": "按钮 - 视觉测试",
+        "events": "活动",
         "typography": "排版 - 视觉测试",
         "forms": "表单 - 视觉测试",
         "tables": "表格 - 视觉测试",
@@ -109,8 +138,12 @@
         "states": "状态 - 视觉测试",
         "notifications": "通知 - 视觉测试",
         "syncModal": "同步弹窗 - 视觉测试",
+        "overlays": "浮层 - 视觉测试",
         "supportHint": "支持提示 - 视觉测试",
-        "chips": "Chips - 视觉测试"
+        "media": "媒体 - 视觉测试",
+        "charts": "图表 - 视觉测试",
+        "chips": "Chips - 视觉测试",
+        "notificationCenter": "通知中心 - 视觉测试"
       },
       "admin": {
         "models": {
@@ -121,6 +154,7 @@
             "metrics": "编辑模型指标",
             "prices": "编辑模型价格",
             "fleetchart": "编辑模型舰队图",
+            "positions": "编辑 %{manufacturer} %{model} 乘员岗位",
             "hardpoints": "编辑模型硬点",
             "cargoAndFuel": "货物和燃料",
             "cargoHolds": "编辑 %{manufacturer} %{model} 货舱",
@@ -130,8 +164,10 @@
             "images": "编辑模型图片",
             "videos": "编辑模型视频",
             "loaners": "编辑模型借用",
+            "snubCrafts": "编辑 %{manufacturer} %{model} 微型舰载机",
             "upgrades": "编辑模型升级",
-            "packages": "编辑模型包"
+            "packages": "编辑模型包",
+            "history": "编辑 %{manufacturer} %{model} 修改历史"
           }
         },
         "components": {
@@ -139,7 +175,8 @@
           "new": "新组件",
           "edit": {
             "index": "编辑组件",
-            "prices": "Edit Component Prices"
+            "prices": "Edit Component Prices",
+            "history": "编辑组件修改历史"
           }
         },
         "manufacturers": {
@@ -147,9 +184,23 @@
           "new": "新制造商",
           "edit": "编辑制造商"
         },
+        "supporterContributions": {
+          "index": "支持者贡献",
+          "new": "新建支持者贡献",
+          "edit": "编辑支持者贡献"
+        },
+        "fundingGoals": {
+          "index": "资金目标",
+          "new": "新建资金目标",
+          "edit": "编辑资金目标"
+        },
         "users": {
           "index": "用户",
-          "edit": "编辑用户"
+          "edit": "编辑用户",
+          "inventories": "用户库存列表",
+          "inventory": "用户库存",
+          "inventoryItem": "库存条目",
+          "fleets": "用户舰队"
         },
         "vehicles": {
           "index": "载具",
@@ -162,7 +213,14 @@
         "fleets": {
           "index": "舰队",
           "edit": "编辑舰队",
-          "memberEdit": "编辑舰队成员"
+          "members": "舰队成员",
+          "memberEdit": "编辑舰队成员",
+          "history": "舰队修改历史",
+          "roles": "舰队角色列表",
+          "role": "舰队角色",
+          "inventories": "舰队库存列表",
+          "inventory": "舰队库存",
+          "inventoryItem": "库存条目"
         },
         "oauthApplications": {
           "index": "OAuth 应用",
@@ -176,6 +234,9 @@
         "images": {
           "index": "图片"
         },
+        "notifications": {
+          "index": "通知"
+        },
         "maintenance": {
           "index": "维护",
           "pghero": "PgHero",
@@ -183,6 +244,8 @@
           "flipper": "Flipper UI",
           "workers": "工作进程",
           "tasks": "任务",
+          "imports": "导入",
+          "importDetail": "导入详情",
           "rsiApiStatus": "RSI API 状态"
         },
         "modelPaints": {
@@ -194,7 +257,10 @@
           "edit": {
             "index": "编辑 %{name} 基本数据",
             "models": "编辑 %{name} 模型",
-            "prices": "编辑 %{name} 价格"
+            "prices": "编辑 %{name} 价格",
+            "hardpoints": "编辑 %{name} 挂载点",
+            "cargoHolds": "编辑 %{name} 货舱",
+            "history": "编辑模块修改历史"
           }
         },
         "unlistedModels": {
@@ -217,8 +283,13 @@
             "index": "Edit Equipment",
             "prices": "Edit Equipment Prices"
           }
+        },
+        "visualTests": {
+          "index": "视觉测试",
+          "notifications": "通知 - 视觉测试"
         }
-      }
+      },
+      "notifications": "通知"
     }
   }
 }

@@ -24,6 +24,7 @@
           "edit": {
             "index": "编辑型号",
             "fleetchart": "舰队图表图片",
+            "positions": "乘员岗位",
             "hardpoints": "挂载点",
             "cargoAndFuel": "燃料",
             "cargoHolds": "货舱",
@@ -37,9 +38,11 @@
             "itemPrices": "物品价格",
             "linkModule": "链接现有模块",
             "loaners": "借用船",
+            "snubCrafts": "微型舰载机",
             "upgrades": "升级",
             "packages": "套餐",
-            "linkUpgrade": "链接现有升级"
+            "linkUpgrade": "链接现有升级",
+            "history": "修改历史"
           },
           "new": "新型号",
           "show": "型号",
@@ -51,20 +54,26 @@
           "new": "新组件",
           "edit": {
             "index": "编辑组件",
-            "itemPrices": "物品价格"
+            "itemPrices": "物品价格",
+            "history": "修改历史"
           }
         },
         "modelPaints": {
           "index": "涂装",
           "new": "新涂装",
-          "edit": "编辑涂装"
+          "edit": "编辑涂装",
+          "copy": "复制涂装到飞船",
+          "bulkCopy": "复制 %{count} 个涂装到飞船"
         },
         "modelModules": {
           "index": "模块",
           "new": "新模块",
           "edit": "编辑模块",
           "models": "关联型号",
-          "prices": "价格"
+          "prices": "价格",
+          "hardpoints": "挂载点",
+          "cargoHolds": "货舱",
+          "history": "修改历史"
         },
         "unlistedModels": {
           "index": "游戏文件中没有对应条目的飞船",
@@ -75,9 +84,22 @@
           "new": "新制造商",
           "edit": "编辑制造商"
         },
+        "supporterContributions": {
+          "index": "支持者贡献",
+          "new": "新建支持者贡献",
+          "edit": "编辑支持者贡献",
+          "perMonth": "每月贡献"
+        },
+        "fundingGoals": {
+          "index": "资金目标",
+          "new": "新建资金目标",
+          "edit": "编辑资金目标"
+        },
         "users": {
           "index": "用户",
-          "edit": "编辑用户"
+          "edit": "编辑用户",
+          "fleets": "舰队",
+          "inventories": "用户库存"
         },
         "vehicles": {
           "index": "载具",
@@ -86,7 +108,15 @@
         "fleets": {
           "index": "舰队",
           "edit": "编辑舰队",
-          "memberEdit": "编辑成员"
+          "members": "成员",
+          "memberEdit": "编辑成员",
+          "history": "修改历史",
+          "roles": "舰队角色",
+          "inventories": "舰队库存",
+          "inventoryItems": "库存条目"
+        },
+        "destroyedFleets": {
+          "index": "已删除舰队"
         },
         "admins": {
           "index": "管理员",
@@ -115,6 +145,12 @@
         "images": {
           "index": "图片"
         },
+        "imports": {
+          "index": "导入"
+        },
+        "notifications": {
+          "index": "通知"
+        },
         "commodities": {
           "index": "Commodities",
           "new": "New Commodity",
@@ -129,6 +165,10 @@
             "index": "Edit Equipment",
             "itemPrices": "Item Prices"
           }
+        },
+        "visualTests": {
+          "index": "视觉测试",
+          "notifications": "通知"
         }
       },
       "welcome": "Welcome to",
@@ -169,6 +209,7 @@
       "editGroups": "Edit Groups",
       "newVehicles": "Add Ships",
       "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
+      "myVehicleLoadouts": "%{vehicle} 的配装",
       "addToHangar": "Add \"%{model}\" to your Hangar",
       "impressum": "法律声明",
       "privacy": "隐私政策",
@@ -200,9 +241,56 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "舰队角色",
+          "notifications": "通知设置",
+          "inAppNotifications": "应用内通知",
+          "discord": "Discord",
+          "calendar": "日历",
           "features": "舰队功能"
         },
-        "inviteMember": "Invite new Member"
+        "inviteMember": "Invite new Member",
+        "calendarSubscription": "日历订阅",
+        "missions": {
+          "index": "任务",
+          "create": "创建任务",
+          "edit": "编辑任务",
+          "editBasic": "基本信息",
+          "editDescription": "描述与封面",
+          "editTeams": "小队与席位",
+          "teams": "小队",
+          "ships": "飞船",
+          "slots": "席位",
+          "addTeam": "添加小队",
+          "editTeam": "编辑小队",
+          "addShip": "添加飞船",
+          "editShip": "编辑飞船"
+        },
+        "events": {
+          "index": "活动",
+          "calendar": "日历",
+          "create": "创建活动",
+          "edit": "编辑活动",
+          "editBasic": "基本信息",
+          "editDescription": "描述与封面",
+          "editTeams": "小队与席位",
+          "spawn": "生成活动",
+          "details": "活动详情",
+          "schedule": "日程",
+          "settings": "设置",
+          "lifecycle": "生命周期",
+          "signupTitle": "报名参加",
+          "yourSignup": "你的报名",
+          "spawnedFrom": "由此任务生成",
+          "pickTemplate": "选择任务模板",
+          "unassignedSignups": "未分配的报名",
+          "eventTeam": "活动小队",
+          "grantRole": "授予角色",
+          "editTeam": "编辑小队",
+          "addTeam": "添加小队",
+          "editShip": "编辑飞船",
+          "addShip": "添加飞船",
+          "assignSlotFor": "为 %{username} 分配席位",
+          "reassignSlotFor": "为 %{username} 重新分配席位"
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -215,6 +303,7 @@
         "account": "账户",
         "profile": "个人资料设置",
         "hangar": "机库设置",
+        "privacy": "隐私设置",
         "features": "功能标志",
         "connections": "连接",
         "oauthApplications": "OAuth 应用",
@@ -228,7 +317,8 @@
           "enable": "Enable Two-factor Authentiation",
           "disable": "Disable Two-factor Authentiation",
           "backupCodes": "Generate Two-Factor Backup Codes"
-        }
+        },
+        "calendar": "日历订阅"
       },
       "oauthApplications": {
         "new": "新建 OAuth 应用",
@@ -251,6 +341,7 @@
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
+      "supporters": "感谢我们的支持者",
       "supportHint": {
         "hangarSync": "很高兴帮你完成了同步",
         "vehicleAdded": "你的机库在不断壮大",
@@ -286,6 +377,10 @@
         "overview": "概览",
         "panels": "面板",
         "buttons": "按钮",
+        "media": "媒体",
+        "charts": "图表",
+        "chips": "视觉测试 Chips",
+        "events": "活动",
         "typography": "排版",
         "forms": "表单",
         "tables": "表格",
@@ -294,21 +389,10 @@
         "states": "状态",
         "notifications": "通知",
         "syncModal": "同步弹窗",
-        "supportHint": "支持提示"
+        "overlays": "浮层",
+        "supportHint": "支持提示",
+        "notificationCenter": "通知中心"
       },
-      "filterCargoRoutes": "Filter Cargo routes",
-      "filterCommodities": "Filter Commodities",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObjects": "Celestial Objects",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "moons": "Moons",
-      "stations": "Stations",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shops": "Shops",
-      "shop": "%{shop} on %{station}",
-      "commodities": "Commodities",
       "logistics": {
         "index": "Logistics",
         "inventories": "Inventories",
@@ -326,7 +410,23 @@
         "hangarInventories": "Hangar Inventories",
         "editItem": "Edit Entry",
         "editStockItem": "Edit Item"
-      }
+      },
+      "notifications": {
+        "index": "通知"
+      },
+      "filterCargoRoutes": "Filter Cargo routes",
+      "filterCommodities": "Filter Commodities",
+      "starsystems": "Starsystems",
+      "starsystem": "%{starsystem} Starsystem",
+      "celestialObjects": "Celestial Objects",
+      "celestialObject": "%{celestialObject} in the %{starsystem} System",
+      "moons": "Moons",
+      "stations": "Stations",
+      "station": "%{station} near %{celestialObject}",
+      "stationImages": "Images of %{station} near %{celestialObject}",
+      "shops": "Shops",
+      "shop": "%{shop} on %{station}",
+      "commodities": "Commodities"
     }
   }
 }

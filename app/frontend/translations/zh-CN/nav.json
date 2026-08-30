@@ -47,11 +47,31 @@
         "logistics": {
           "index": "Logistics"
         },
+        "missions": {
+          "index": "任务",
+          "edit": {
+            "basic": "基本",
+            "description": "描述",
+            "teams": "小队与席位"
+          }
+        },
+        "events": {
+          "index": "活动",
+          "calendar": "日历",
+          "edit": {
+            "basic": "基本",
+            "description": "描述",
+            "teams": "小队与席位"
+          }
+        },
         "settings": {
           "index": "设置",
           "fleet": "舰队设置",
           "membership": "成员设置",
           "roles": "角色",
+          "notifications": "通知",
+          "discord": "Discord",
+          "calendar": "日历",
           "features": "功能"
         }
       },
@@ -79,7 +99,9 @@
         "account": "账户",
         "security": "安全",
         "notifications": "通知",
+        "calendar": "日历",
         "hangar": "机库",
+        "privacy": "隐私",
         "features": "功能",
         "connections": "连接",
         "oauthApplications": "OAuth 应用",
@@ -90,6 +112,7 @@
         "index": "视觉测试",
         "panels": "面板",
         "buttons": "按钮",
+        "events": "活动",
         "typography": "排版",
         "forms": "表单",
         "tables": "表格",
@@ -98,8 +121,17 @@
         "states": "状态",
         "notifications": "通知",
         "syncModal": "同步弹窗",
+        "overlays": "浮层",
         "supportHint": "支持提示",
-        "chips": "Chips"
+        "media": "媒体",
+        "charts": "图表",
+        "chips": "Chips",
+        "groups": {
+          "foundations": "基础",
+          "data": "数据",
+          "feedback": "反馈"
+        },
+        "notificationCenter": "通知中心"
       },
       "admin": {
         "index": "管理员",
@@ -118,10 +150,13 @@
             "cargoAndFuel": "货物和燃料",
             "cargoHolds": "货舱",
             "fleetchart": "舰队图表图片",
+            "positions": "岗位",
             "hardpoints": "武器挂点",
             "loaners": "借用船",
+            "snubCrafts": "微型舰载机",
             "upgrades": "升级",
-            "packages": "套餐"
+            "packages": "套餐",
+            "history": "历史"
           }
         },
         "modelPaints": {
@@ -134,7 +169,10 @@
           "edit": {
             "index": "基本数据",
             "models": "模型",
-            "prices": "价格"
+            "prices": "价格",
+            "hardpoints": "武器挂点",
+            "cargoHolds": "货舱",
+            "history": "历史"
           }
         },
         "unlistedModels": {
@@ -148,7 +186,8 @@
           "index": "组件",
           "edit": {
             "index": "基础数据",
-            "prices": "价格"
+            "prices": "价格",
+            "history": "历史"
           }
         },
         "manufacturers": {
@@ -158,10 +197,21 @@
           "index": "图片"
         },
         "users": {
-          "index": "用户"
+          "index": "用户",
+          "edit": "编辑",
+          "fleets": "舰队",
+          "inventories": "库存"
         },
         "fleets": {
-          "index": "舰队"
+          "index": "舰队",
+          "edit": "编辑",
+          "members": "成员",
+          "history": "历史",
+          "roles": "角色",
+          "inventories": "库存"
+        },
+        "destroyedFleets": {
+          "index": "已删除舰队"
         },
         "vehicles": {
           "index": "载具"
@@ -178,6 +228,7 @@
           "features": "功能",
           "workers": "工作进程",
           "tasks": "任务",
+          "imports": "导入",
           "rsiApiStatus": "RSI API 状态"
         },
         "supporterContributions": {
@@ -189,6 +240,9 @@
           "index": "资金目标",
           "new": "新建资金目标",
           "edit": "编辑资金目标"
+        },
+        "notifications": {
+          "index": "通知"
         },
         "commodities": {
           "index": "Commodities",
@@ -202,8 +256,19 @@
             "index": "Base Data",
             "prices": "Prices"
           }
+        },
+        "visualTests": {
+          "index": "视觉测试",
+          "notifications": "通知"
+        },
+        "groups": {
+          "catalogue": "目录",
+          "community": "社区",
+          "people": "人员",
+          "system": "系统"
         }
-      }
+      },
+      "notifications": "通知"
     }
   }
 }
