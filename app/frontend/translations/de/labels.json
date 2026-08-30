@@ -1492,6 +1492,10 @@
           "scu": "SCU",
           "units": "Stück"
         }
+      },
+      "scDataSource": {
+        "dataSource": "Datenquelle",
+        "notLive": "Nicht der Live-Build"
       }
     }
   }

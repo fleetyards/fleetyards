@@ -71,8 +71,24 @@
         padding: 0;
       }
 
+      // The inner wrap grows to fill the item so the badge can sit at its far
+      // end. Here there is no label to sit beside, so growing would leave the
+      // icon at the item's leading edge instead of on the tab's centre line.
+      .nav-item-inner {
+        flex-grow: 0;
+      }
+
       .nav-item-icon {
         margin-right: 0;
+      }
+
+      // Same reason: with no label to sit beside, an inline count would drag
+      // the icon off centre, so it rides the icon's corner instead.
+      .nav-item-badge {
+        position: absolute;
+        top: -6px;
+        inset-inline-start: 18px;
+        margin-inline-start: 0;
       }
     }
 

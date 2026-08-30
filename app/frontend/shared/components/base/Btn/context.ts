@@ -1,5 +1,8 @@
 import type { ComputedRef, InjectionKey } from "vue";
-import type { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import type {
+  BtnSizesEnum,
+  BtnTonesEnum,
+} from "@/shared/components/base/Btn/types";
 
 /**
  * Provided by containers that change how a Btn should look inside them, and
@@ -34,8 +37,16 @@ export type BtnContainerContext = {
    * rather than measured: the group would otherwise have to reach into the DOM
    * for a member's index and active state, which is the coupling this context
    * exists to avoid. Registration order is mount order, which is DOM order.
+   *
+   * The tone comes along because a member has no cap of its own to show it in,
+   * so the thumb shows it instead - which means the container has to know the
+   * tone of the member it is currently parked on. `neutral` reads as no
+   * opinion, leaving whatever the container itself was given.
    */
-  register?: (active: () => boolean) => {
+  register?: (
+    active: () => boolean,
+    tone: () => `${BtnTonesEnum}`,
+  ) => {
     unregister: () => void;
   };
 };

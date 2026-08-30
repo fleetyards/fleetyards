@@ -200,6 +200,44 @@ class Model < ApplicationRecord
   # carries and no build ever will, and filtering on a build row would hide every
   # one of them. `in_game` stays the flag.
 
+  # Whether the build we are on describes this ship.
+  #
+  # Derived rather than stored. The column it replaces was a single boolean set
+  # from whichever environment loaded last, so a ptu load overwrote what live had
+  # said and a ship added in ptu appeared in the live view. A build row carries
+  # its environment, so the same question has a different answer per source --
+  # which is the whole point.
+  #
+  # This is not the catalogue filter: 31 of 246 models are concept ships no build
+  # will ever describe, and hiding them would empty the catalogue of everything
+  # not yet flying. `visible` and `active` stay what decides that.
+  #
+  # `build` is preloaded by `rendered_associations`, so a list costs no queries
+  # for this.
+  def in_game?
+    build.present?
+  end
+  alias_method :in_game, :in_game?
+
+  # The filter keeps its name -- a ransacker wins over a same-named column -- so
+  # `inGameEq` needs no API change. An `EXISTS` rather than the correlated
+  # subquery the fact filters use, because this asks whether a row is there
+  # rather than what it says, and the unique index answers it directly.
+  ransacker(:in_game) do
+    source = ::ScData::Source.current
+
+    Arel.sql(
+      sanitize_sql_array([<<~SQL.squish, source.environment, source.version])
+        EXISTS (
+          SELECT 1 FROM model_builds
+          WHERE model_builds.model_id = models.id
+            AND model_builds.environment = ?
+            AND model_builds.version = ?
+        )
+      SQL
+    )
+  end
+
   # The build we are on, or the last one that described the model. A hangar entry
   # pointing at a ship the export dropped still has to resolve to something.
   def facts

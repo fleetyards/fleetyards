@@ -23,4 +23,5 @@ export enum BtnVariantsEnum {
 export enum BtnTonesEnum {
   NEUTRAL = "neutral",
   DANGER = "danger",
+  WARNING = "warning",
 }

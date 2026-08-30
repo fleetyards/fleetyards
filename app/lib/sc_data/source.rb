@@ -34,11 +34,23 @@ module ScData
         configured.find { |source| source.environment == environment.to_s }
       end
 
-      # The sources a reader may actually be pointed at: configured, and carrying
-      # builds. An environment that has never been loaded would answer every
-      # question with nothing, so it is not offered rather than served empty.
+      # The sources a reader may actually be pointed at: configured, carrying
+      # builds, and not behind the default. An environment that has never been
+      # loaded would answer every question with nothing, so it is not offered
+      # rather than served empty.
+      #
+      # Behind the default means stale rather than alternative. A ptu cycle ends
+      # with live catching up and passing it, and from that moment the ptu tree
+      # still sitting there describes an *older* build -- offering it would put
+      # last month's data behind a label that promises next month's. So a source
+      # is offered while it is ahead, and stops being offered the moment live
+      # overtakes it, without anyone having to edit the config.
       def available
-        configured.select(&:loaded?)
+        chosen = default
+
+        configured.select do |source|
+          source.loaded? && (source == chosen || source.ahead_of?(chosen))
+        end
       end
 
       # Runs a block with a source in force, and puts back whatever was there.
@@ -76,6 +88,27 @@ module ScData
 
     def default?
       self == self.class.default
+    end
+
+    # Ordered the way the game names a build: `4.10.0-live.12519617` is the
+    # version, then the id of the build that carries it.
+    #
+    # The id is the tiebreak rather than the key, because the case this exists
+    # to catch is a live build that has caught up with a finished ptu cycle: same
+    # version on both sides, and live's id the higher one. Comparing versions
+    # alone would call that a draw and keep offering the ptu tree.
+    #
+    # A version with no build id -- which is every version a test writes -- sorts
+    # as id zero, so the two forms still compare.
+    def ahead_of?(other)
+      (precedence <=> other.precedence) == 1
+    end
+
+    protected def precedence
+      release, build = version.to_s.split("-", 2)
+      id = build.to_s[/\d+\z/].to_i
+
+      [Gem::Version.correct?(release) ? Gem::Version.new(release) : Gem::Version.new(0), id]
     end
 
     def ==(other)

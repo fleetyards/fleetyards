@@ -40,18 +40,20 @@ module ScData
       DEFAULT_AXIS_ORDER = %i[y x z].freeze
 
       def all
-        update_in_game_flags
-
         loaded = []
 
-        Model.where(in_game: true).find_each do |model|
+        # Every model whose file this build ships, asked of the tree rather than
+        # of a stored flag: writing that flag is what made "is it in the game"
+        # answerable only for whichever environment loaded last.
+        Model.find_each do |model|
+          next unless parsed?(model)
+
           loaded << model.id if load_model(model)
         end
 
-        # A model the export dropped loses its current build and keeps the row.
-        # `in_game` already went false above, but a build row is the thing that
-        # says which patch last described the ship, and a hangar entry pointing
-        # at a retired ship still has to resolve.
+        # A model the export dropped loses its current build and keeps the row --
+        # which is now also what makes `in_game?` false for it. A hangar entry
+        # pointing at a retired ship still has to resolve, so the row stays.
         retire_absent_builds(ModelBuild, :model_id, loaded)
 
         prune_builds(ModelBuild)
@@ -60,8 +62,6 @@ module ScData
       end
 
       def one(model)
-        update_in_game_flag(model)
-
         load_model(model.reload)
 
         model.hardpoints.find_each(&:save) # hack to generate correct group_keys
@@ -95,6 +95,12 @@ module ScData
         update_params = update_speeds(hardpoints, update_params)
         update_params = update_ground_speeds(model_data, update_params)
 
+        # A ship the build ships is flying, and this is where that used to be
+        # recorded -- alongside the flag, on the transition into the game. The
+        # transition is now "it had no build for this source before this load",
+        # which is the same moment said in terms of what is actually true.
+        update_params[:production_status] = "flight-ready" if model.build.blank?
+
         apply(model, update_params.merge(update_reason: :sc_data_loader))
 
         # Dual-write. Built from `update_params` before the reason is merged in:
@@ -103,23 +109,13 @@ module ScData
         apply_build(model, update_params.slice(*ModelBuild::FACTS))
       end
 
-      private def update_in_game_flags
-        Model.find_each { |model| update_in_game_flag(model) }
-      end
-
-      private def update_in_game_flag(model)
+      # Whether this build ships a file for the model, which is what a build row
+      # comes to express once one is written.
+      private def parsed?(model)
         identifier = model.sc_data_identifier
-        return if identifier.blank?
+        return false if identifier.blank?
 
-        file_exists = File.exist?(
-          Rails.root.join("data/sc_data/parsed/#{sc_environment}/models/#{identifier}.json")
-        )
-
-        if file_exists && !model.in_game?
-          apply_columns(model, {in_game: true, production_status: "flight-ready"})
-        elsif !file_exists && model.in_game?
-          apply_columns(model, {in_game: false})
-        end
+        export_path.join("models", "#{identifier}.json").exist?
       end
 
       private def load_model_data(sc_data_identifier)

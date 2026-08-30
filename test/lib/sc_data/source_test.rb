@@ -107,6 +107,44 @@ class ScData::SourceTest < ActiveSupport::TestCase
     assert_empty ScData::Source.available
   end
 
+  # A finished ptu cycle leaves its tree in place while live moves past it, so
+  # the config still names a ptu build long after it stopped being the newer one.
+  test "a source behind the default is not offered" do
+    stub_config(sources: {live: "4.10.0-live.12519617", ptu: "4.10.0-ptu.12490000"}, default: "live")
+    create(:model_build, model: create(:model), environment: "live", version: "4.10.0-live.12519617")
+    create(:model_build, model: create(:model), environment: "ptu", version: "4.10.0-ptu.12490000")
+
+    assert_equal ["live"], ScData::Source.available.map(&:environment)
+  end
+
+  test "a source ahead of the default is offered" do
+    stub_config(sources: {live: "4.9.0-live.12344265", ptu: "4.10.0-ptu.12600000"}, default: "live")
+    create(:model_build, model: create(:model), environment: "live", version: "4.9.0-live.12344265")
+    create(:model_build, model: create(:model), environment: "ptu", version: "4.10.0-ptu.12600000")
+
+    assert_equal ["live", "ptu"], ScData::Source.available.map(&:environment)
+  end
+
+  # Same version on both sides is the moment live catches up: only the build id
+  # separates them, and it has to be what decides.
+  test "the build id decides when the versions match" do
+    stub_config(sources: {live: "4.10.0-live.12519617", ptu: "4.10.0-ptu.12600000"}, default: "live")
+    create(:model_build, model: create(:model), environment: "live", version: "4.10.0-live.12519617")
+    create(:model_build, model: create(:model), environment: "ptu", version: "4.10.0-ptu.12600000")
+
+    assert_equal ["live", "ptu"], ScData::Source.available.map(&:environment)
+  end
+
+  # The default is what everything else is measured against, so it is offered on
+  # its own terms -- otherwise a config whose default is the older build would
+  # offer nothing at all.
+  test "the default is offered even when another source is ahead of it" do
+    stub_config(sources: {live: "4.9.0-live.12344265", ptu: "4.10.0-ptu.12600000"}, default: "live")
+    create(:model_build, model: create(:model), environment: "live", version: "4.9.0-live.12344265")
+
+    assert_equal ["live"], ScData::Source.available.map(&:environment)
+  end
+
   test "knows whether it is the default" do
     stub_config(sources: {live: "1.0.0", ptu: "1.1.0"}, default: "live")
 
