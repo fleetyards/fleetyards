@@ -5,8 +5,18 @@
 
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--field-label-gap, 5px);
+    line-height: var(--field-label-line, 1.5rem);
     white-space: nowrap;
+  }
+
+  /* Shared with every other control -- see the note in FormInput. */
+  &__error {
+    min-height: var(--field-message-line, 1.25rem);
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
   }
 
   &__subline {
@@ -25,42 +35,13 @@
     justify-content: center;
     align-items: center;
 
-    input {
-      display: block;
-      width: 100%;
-      height: 43px;
-      padding: 6px 12px 6px 12px;
-      color: $input-color;
-      font-size: 16px;
-      line-height: 1.42857;
-      text-overflow: ellipsis;
-      background-color: $input-bg;
-      background-image: none;
-      border: 1px solid $input-border;
-      border-radius: 3px;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      transition:
-        border-color ease-in-out 0.15s,
-        box-shadow ease-in-out 0.15s;
-
-      &[type="number"]::-webkit-inner-spin-button,
-      &[type="number"]::-webkit-outer-spin-button {
-        margin: 0;
-        -webkit-appearance: none;
-      }
-
-      &[type="number"] {
-        -moz-appearance: textfield;
-      }
-
-      &:focus {
-        outline: none;
-      }
-
-      &.clearable {
-        padding-right: 50px;
-      }
-    }
+    /*
+     * There is no input rule here any more. A full copy of FormInput's field
+     * styling used to sit at this spot -- 43px, a fill, a border, a focus reset
+     * -- and the only <input> in the template is `hidden`, so none of it has
+     * ever drawn a pixel. It was copied along with the markup and then aged in
+     * place.
+     */
   }
 
   &__clear {
@@ -91,17 +72,14 @@
   }
 
   &--disabled {
-    input {
-      color: darken($input-color, 10%);
-      cursor: not-allowed;
-      opacity: 0.9;
-    }
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 
+  /* The signature says what is wrong; the frame stays neutral. */
   &--with-error {
-    input {
-      border-color: darken($danger, 15%);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    .base-image-input__wrapper {
+      border-color: var(--color-danger, #dc3545);
     }
   }
 

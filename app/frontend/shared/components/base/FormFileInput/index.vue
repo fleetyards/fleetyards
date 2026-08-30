@@ -93,6 +93,8 @@ const inputElement = ref<HTMLInputElement | undefined>();
 
 const id = ref(`${props.name}-${uuidv4()}`);
 
+const errorId = computed(() => `${id.value}-error`);
+
 const innerLabel = computed(() => {
   if (props.label) {
     return props.label;
@@ -374,6 +376,10 @@ defineExpose({
         <i class="fa fa-times" />
       </Btn>
     </div>
+    <!-- See the note in FormInput: below the control, and always present. -->
+    <p :id="errorId" class="base-image-input__error" role="alert">
+      {{ errorMessage }}
+    </p>
     <div v-if="slots.subline" class="base-image-input__subline">
       <slot name="subline"></slot>
     </div>
