@@ -244,6 +244,7 @@ defineExpose({ clear });
    */
   .base-input__wrapper {
     position: relative;
+    display: flex;
     background-color: var(--color-control, rgb(39 43 48 / 0.9));
     border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
     border-radius: var(--radius-control, 8px);

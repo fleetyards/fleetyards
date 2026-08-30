@@ -185,6 +185,7 @@ const timeConfig = computed(() => ({
 /* The control is the wrapper; see the note in FormInput. */
 .form-datetime__wrapper {
   position: relative;
+  display: flex;
   background-color: var(--color-control, rgb(39 43 48 / 0.9));
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
   border-radius: var(--radius-control, 8px);
@@ -251,8 +252,23 @@ const timeConfig = computed(() => ({
   --dp-border-radius: var(--radius-control, 8px);
 }
 
+/*
+ * The picker fills the control, the way FormInput's input does. Removing this
+ * component's flex column took the stretch with it and left the field sitting
+ * narrower than its neighbours.
+ */
+.form-datetime__wrapper :deep(.dp__main),
+.form-datetime__wrapper :deep(.dp__input_wrap) {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
 /* The frame is the wrapper's now. */
 .form-datetime__wrapper :deep(.dp__input) {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
   height: var(--field-h, 43px);
   font-family: inherit;
   font-size: 16px;
