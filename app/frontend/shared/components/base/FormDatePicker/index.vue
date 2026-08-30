@@ -70,6 +70,8 @@ const { t } = useI18n();
 
 const internalId = ref(props.id ?? `${props.name}-${uuidv4()}`);
 
+const errorId = computed(() => `${internalId.value}-error`);
+
 const innerLabel = computed(() => {
   if (props.label) return props.label;
   if (props.translationKey) return t(`labels.${props.translationKey}`);
@@ -170,6 +172,10 @@ defineExpose({ clear });
         @cleared="clear"
       />
     </div>
+    <!-- See the note in FormInput: below the control, and always present. -->
+    <p :id="errorId" class="base-input__error" role="alert">
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 
@@ -178,24 +184,29 @@ defineExpose({ clear });
 // so this block intentionally lives outside any scoped wrapper.
 .dp--theme-dark {
   --dp-font-family: inherit;
-  --dp-background-color: #{$input-bg};
-  --dp-text-color: #{$input-color};
-  --dp-hover-color: #{color.adjust($input-bg, $lightness: 5%)};
-  --dp-hover-text-color: #{$input-color};
-  --dp-primary-color: #{$primary};
+  /*
+   * The popup is a surface, so it takes the opaque one BtnDropdown/Menu uses
+   * rather than the control fill: it floats over arbitrary content, and a
+   * translucent menu lets whatever it covers compete with its own labels.
+   */
+  --dp-background-color: var(--color-gray-darker, #272b30);
+  --dp-text-color: var(--color-text, #c8c8c8);
+  --dp-hover-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+  --dp-hover-text-color: var(--color-lifted, #eee);
+  --dp-primary-color: var(--color-primary, #428bca);
   --dp-primary-text-color: #fff;
-  --dp-secondary-color: #{$gray-light};
-  --dp-border-color: #{$input-border};
-  --dp-menu-border-color: #{$input-border};
-  --dp-border-color-hover: #{color.adjust($input-border, $lightness: 8%)};
-  --dp-border-color-focus: #{$primary};
-  --dp-icon-color: #{$gray-light};
-  --dp-disabled-color: #{$input-bg};
-  --dp-disabled-color-text: #{color.adjust($input-color, $lightness: -10%)};
-  --dp-border-radius: 3px;
+  --dp-secondary-color: var(--color-endcap, #7a8288);
+  --dp-border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  --dp-menu-border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  --dp-border-color-hover: var(--color-endcap, #7a8288);
+  --dp-border-color-focus: var(--color-primary, #428bca);
+  --dp-icon-color: var(--color-endcap, #7a8288);
+  --dp-disabled-color: var(--color-control, rgb(39 43 48 / 0.9));
+  --dp-disabled-color-text: var(--color-endcap, #7a8288);
+  --dp-border-radius: var(--radius-control, 8px);
   --dp-font-size: 16px;
   --dp-success-color: #{$success};
-  --dp-danger-color: #{$danger};
+  --dp-danger-color: var(--color-danger, #dc3545);
 }
 </style>
 
@@ -214,7 +225,60 @@ defineExpose({ clear });
     padding: 0;
   }
 
-  // Match `.base-input__wrapper input` from FormInput exactly.
+  label {
+    display: block;
+    margin-bottom: var(--field-label-gap, 5px);
+    line-height: var(--field-label-line, 1.5rem);
+    white-space: nowrap;
+  }
+
+  /*
+   * The control is the wrapper, not the input -- the same arrangement FormInput
+   * uses, and for the same reason: an input renders no pseudo-elements, so it
+   * cannot carry an end-cap.
+   *
+   * This component used to duplicate FormInput's *old* internals -- the comment
+   * below still said "match FormInput exactly" while matching a version that no
+   * longer existed -- which is how it ended up as the one un-migrated control in
+   * a row of migrated ones.
+   */
+  .base-input__wrapper {
+    position: relative;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+    transition: background-color ease-in-out 0.15s;
+
+    &:hover {
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h-btn, 2px);
+      background-color: var(--field-cap, var(--color-endcap, #7a8288));
+      border-radius: var(--cap-r-btn, 1px);
+      transition: background-color 0.15s ease;
+      content: "";
+      z-index: 1;
+    }
+
+    &::before {
+      top: -1px;
+    }
+
+    &::after {
+      bottom: -1px;
+    }
+  }
+
+  &:focus-within {
+    --field-cap: var(--color-primary, #428bca);
+  }
+
   :deep(.dp--input) {
     display: block;
     box-sizing: border-box;
@@ -228,23 +292,21 @@ defineExpose({ clear });
     line-height: 1.42857;
     font-family: inherit;
     text-overflow: ellipsis;
-    background-color: $input-bg;
+    background-color: transparent;
     background-image: none;
-    border: 1px solid $input-border;
-    border-radius: 3px;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    border: none;
+    border-radius: 0;
     transition: none;
     cursor: pointer;
 
     &::placeholder {
-      color: $input-placerholder;
+      color: var(--color-endcap, #7a8288);
       opacity: 1;
     }
 
+    // The cap on the wrapper is the focus signal.
     &:focus {
       outline: none;
-      border-color: $input-border;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     }
   }
 
@@ -252,8 +314,8 @@ defineExpose({ clear });
   // FormInput muted-gray tone.
   :deep(.dp--input-icon),
   :deep(.dp--clear-btn) {
-    color: $gray-light;
-    fill: $gray-light;
+    color: var(--color-endcap, #7a8288);
+    fill: var(--color-endcap, #7a8288);
   }
 
   :deep(.dp--input-icon) {
@@ -264,14 +326,39 @@ defineExpose({ clear });
     inset-inline-end: 14px;
   }
 
-  &.base-input--with-error :deep(.dp--input) {
-    border-color: color.adjust($danger, $lightness: -15%);
+  // The frame stays neutral; the signature says what is wrong.
+  &.base-input--with-error {
+    --field-cap: var(--color-danger, #dc3545);
   }
 
-  &.base-input--disabled :deep(.dp--input) {
-    color: color.adjust($input-color, $lightness: -10%);
-    cursor: not-allowed;
-    opacity: 0.9;
+  &.base-input--disabled {
+    --field-cap: transparent;
+
+    .base-input__wrapper {
+      border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
+      opacity: 0.5;
+
+      &:hover {
+        background-color: var(--color-control, rgb(39 43 48 / 0.9));
+      }
+    }
+
+    :deep(.dp--input) {
+      cursor: not-allowed;
+    }
+  }
+
+  /*
+   * The message, below the control -- see the note in FormInput. It borrowed
+   * .base-input__error for its own element long before FormInput had one, which
+   * is the name overlap noted there; both mean the same thing now.
+   */
+  .base-input__error {
+    min-height: var(--field-message-line, 1.25rem);
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
   }
 }
 </style>
