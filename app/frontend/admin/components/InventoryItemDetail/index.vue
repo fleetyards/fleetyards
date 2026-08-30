@@ -58,9 +58,11 @@ const details = computed<Detail[]>(() => [
 
   <DetailList :details="details" />
 
-  <Heading class="mt-8 mb-4">
-    {{ t("headlines.admin.fleets.history") }}
-  </Heading>
+  <section class="mt-10">
+    <Heading class="mb-4">
+      {{ t("headlines.admin.fleets.history") }}
+    </Heading>
 
-  <VersionHistory :item-id="props.item.id" :item-type="props.itemType" />
+    <VersionHistory :item-id="props.item.id" :item-type="props.itemType" />
+  </section>
 </template>

@@ -110,58 +110,62 @@ const columns: BaseTableCol<FleetInventoryItem>[] = [
 
       <DetailList :details="details" />
 
-      <Heading class="mt-8 mb-4">
-        {{ t("headlines.admin.fleets.inventoryItems") }}
-      </Heading>
+      <section class="mt-10">
+        <Heading class="mb-4">
+          {{ t("headlines.admin.fleets.inventoryItems") }}
+        </Heading>
 
-      <BaseTable
-        v-if="items"
-        :records="items.items || []"
-        primary-key="id"
-        :columns="columns"
-        :empty-visible="(items.items || []).length === 0"
-      >
-        <template #col-name="{ record }">
-          <router-link
-            :to="{
-              name: 'admin-fleet-inventory-item',
-              params: {
-                id: props.fleet.id,
-                inventoryId,
-                itemId: record.id,
-              },
-            }"
-          >
-            {{ record.name }}
-          </router-link>
-        </template>
-        <template #col-category="{ record }">
-          {{ t(`labels.inventoryItems.categories.${record.category}`) }}
-        </template>
-        <template #col-entryType="{ record }">
-          {{ t(`labels.inventoryItems.entryTypes.${record.entryType}`) }}
-        </template>
-        <template #col-quantity="{ record }">
-          {{ record.quantity }}
-          {{ t(`labels.inventoryItems.units.${record.unit}`) }}
-        </template>
-        <template #col-createdAt="{ record }">
-          {{ l(record.createdAt, "datetime.formats.short") }}
-        </template>
-      </BaseTable>
+        <BaseTable
+          v-if="items"
+          :records="items.items || []"
+          primary-key="id"
+          :columns="columns"
+          :empty-visible="(items.items || []).length === 0"
+        >
+          <template #col-name="{ record }">
+            <router-link
+              :to="{
+                name: 'admin-fleet-inventory-item',
+                params: {
+                  id: props.fleet.id,
+                  inventoryId,
+                  itemId: record.id,
+                },
+              }"
+            >
+              {{ record.name }}
+            </router-link>
+          </template>
+          <template #col-category="{ record }">
+            {{ t(`labels.inventoryItems.categories.${record.category}`) }}
+          </template>
+          <template #col-entryType="{ record }">
+            {{ t(`labels.inventoryItems.entryTypes.${record.entryType}`) }}
+          </template>
+          <template #col-quantity="{ record }">
+            {{ record.quantity }}
+            {{ t(`labels.inventoryItems.units.${record.unit}`) }}
+          </template>
+          <template #col-createdAt="{ record }">
+            {{ l(record.createdAt, "datetime.formats.short") }}
+          </template>
+        </BaseTable>
 
-      <Paginator
-        v-if="items"
-        :query-result-ref="items"
-        :per-page="perPage"
-        :update-per-page="updatePerPage"
-      />
+        <Paginator
+          v-if="items"
+          :query-result-ref="items"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+        />
+      </section>
 
-      <Heading class="mt-8 mb-4">
-        {{ t("headlines.admin.fleets.history") }}
-      </Heading>
+      <section class="mt-10">
+        <Heading class="mb-4">
+          {{ t("headlines.admin.fleets.history") }}
+        </Heading>
 
-      <VersionHistory :item-id="inventoryId" item-type="FleetInventory" />
+        <VersionHistory :item-id="inventoryId" item-type="FleetInventory" />
+      </section>
     </template>
   </AsyncData>
 </template>

@@ -138,10 +138,12 @@ const handleCancel = async () => {
         />
       </form>
 
-      <Heading class="mt-8 mb-4">{{
-        t("headlines.admin.fleets.history")
-      }}</Heading>
-      <VersionHistory :item-id="memberId" item-type="FleetMembership" />
+      <section class="mt-10">
+        <Heading class="mb-4">{{
+          t("headlines.admin.fleets.history")
+        }}</Heading>
+        <VersionHistory :item-id="memberId" item-type="FleetMembership" />
+      </section>
     </template>
   </AsyncData>
 </template>

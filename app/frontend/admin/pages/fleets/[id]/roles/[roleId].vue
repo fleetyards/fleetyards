@@ -49,10 +49,12 @@ const details = computed(() =>
 
     <DetailList :details="details" />
 
-    <Heading class="mt-8 mb-4">
-      {{ t("headlines.admin.fleets.history") }}
-    </Heading>
+    <section class="mt-10">
+      <Heading class="mb-4">
+        {{ t("headlines.admin.fleets.history") }}
+      </Heading>
 
-    <VersionHistory :item-id="roleId" item-type="FleetRole" />
+      <VersionHistory :item-id="roleId" item-type="FleetRole" />
+    </section>
   </template>
 </template>
