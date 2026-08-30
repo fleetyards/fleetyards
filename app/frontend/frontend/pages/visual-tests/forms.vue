@@ -684,9 +684,9 @@ const powerMarks = (value: number) => ({ label: String(value) });
       produce, because CSS cannot show content that does not exist.
     </p>
     <p class="text-muted">
-      Flip the switch and watch what moves. The cost of an inline message is the
-      height it adds when validation fails, and these are the three ways to pay
-      it.
+      Flip the switch and watch what moves. Stacked rather than side by side,
+      because the cost is not what the message does — it is what the field below
+      it does. Each row has one, so the movement has somewhere to show.
     </p>
     <FormToggle
       v-model="rdShowError"
@@ -694,8 +694,8 @@ const powerMarks = (value: number) => ({ label: String(value) });
       label="Fail validation"
     />
     <div class="row">
-      <div class="col-12 col-md-6 col-lg-4">
-        <p class="text-muted">appears — the page jumps</p>
+      <div class="col-12 col-md-8 col-lg-5">
+        <p class="text-muted">appears — the next field jumps</p>
         <FormInput
           v-model="rdError"
           name="rd-msg-instant"
@@ -703,8 +703,15 @@ const powerMarks = (value: number) => ({ label: String(value) });
           :error-messages="rdShowError ? ['Not a known ship'] : []"
         />
         <p v-if="rdShowError" class="field-message">Not a known ship</p>
+        <FormInput
+          v-model="rdText"
+          name="rd-msg-instant-next"
+          label="Next field"
+        />
       </div>
-      <div class="col-12 col-md-6 col-lg-4">
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-8 col-lg-5">
         <p class="text-muted">animates open — it still moves, but readably</p>
         <FormInput
           v-model="rdError"
@@ -720,8 +727,15 @@ const powerMarks = (value: number) => ({ label: String(value) });
             <p class="field-message field-message--in-slot">Not a known ship</p>
           </div>
         </div>
+        <FormInput
+          v-model="rdText"
+          name="rd-msg-animated-next"
+          label="Next field"
+        />
       </div>
-      <div class="col-12 col-md-6 col-lg-4">
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-8 col-lg-5">
         <p class="text-muted">line always reserved — nothing moves, ever</p>
         <FormInput
           v-model="rdError"
@@ -732,6 +746,11 @@ const powerMarks = (value: number) => ({ label: String(value) });
         <p class="field-message field-message--reserved">
           {{ rdShowError ? "Not a known ship" : "" }}
         </p>
+        <FormInput
+          v-model="rdText"
+          name="rd-msg-reserved-next"
+          label="Next field"
+        />
       </div>
     </div>
     <p class="text-muted">
@@ -1130,6 +1149,14 @@ const powerMarks = (value: number) => ({ label: String(value) });
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 180ms ease;
+
+    /*
+     * The pull-up belongs to the slot, which is not clipped -- not to the
+     * message inside it. A negative margin within an overflow: hidden box moves
+     * the text out of the visible area instead of moving the box, so the line
+     * came out sliced along its top edge.
+     */
+    margin-top: -12px;
   }
 
   .field-message-slot--shown {
@@ -1140,8 +1167,11 @@ const powerMarks = (value: number) => ({ label: String(value) });
     overflow: hidden;
   }
 
+  /* Its own spacing has to be inside the clip, so the animated height counts
+     it. */
   .field-message--in-slot {
-    margin: -12px 0 0;
+    margin: 0;
+    padding-bottom: 4px;
   }
 
   /* The line is always there and merely empties, so nothing below it moves. */
