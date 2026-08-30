@@ -99,6 +99,8 @@ const rdCheck = ref<boolean>(true);
 
 const rdToggle = ref<boolean>(false);
 
+const rdShowError = ref<boolean>(false);
+
 const rdRadio = ref<string>("medium");
 
 const submitting = ref(false);
@@ -679,22 +681,57 @@ const powerMarks = (value: number) => ({ label: String(value) });
     <p class="text-muted">
       D8, mocked. A field renders no message element at all today — the text
       below is hand-written markup standing in for what the component would
-      produce, because CSS cannot show content that does not exist. The pair is
-      there to price it: the same field with and without a message, so the
-      height it adds when validation fails is visible rather than argued about.
+      produce, because CSS cannot show content that does not exist.
     </p>
+    <p class="text-muted">
+      Flip the switch and watch what moves. The cost of an inline message is the
+      height it adds when validation fails, and these are the three ways to pay
+      it.
+    </p>
+    <FormToggle
+      v-model="rdShowError"
+      name="rd-show-error"
+      label="Fail validation"
+    />
     <div class="row">
-      <div class="col-12 col-md-6 col-lg-3">
+      <div class="col-12 col-md-6 col-lg-4">
+        <p class="text-muted">appears — the page jumps</p>
         <FormInput
           v-model="rdError"
-          name="rd-msg-with"
+          name="rd-msg-instant"
           label="Ship name"
-          :error-messages="['Not a known ship']"
+          :error-messages="rdShowError ? ['Not a known ship'] : []"
         />
-        <p class="field-message">Not a known ship</p>
+        <p v-if="rdShowError" class="field-message">Not a known ship</p>
       </div>
-      <div class="col-12 col-md-6 col-lg-3">
-        <FormInput v-model="rdText" name="rd-msg-without" label="Ship name" />
+      <div class="col-12 col-md-6 col-lg-4">
+        <p class="text-muted">animates open — it still moves, but readably</p>
+        <FormInput
+          v-model="rdError"
+          name="rd-msg-animated"
+          label="Ship name"
+          :error-messages="rdShowError ? ['Not a known ship'] : []"
+        />
+        <div
+          class="field-message-slot"
+          :class="{ 'field-message-slot--shown': rdShowError }"
+        >
+          <div>
+            <p class="field-message field-message--in-slot">Not a known ship</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <p class="text-muted">line always reserved — nothing moves, ever</p>
+        <FormInput
+          v-model="rdError"
+          name="rd-msg-reserved"
+          label="Ship name"
+          :error-messages="rdShowError ? ['Not a known ship'] : []"
+        />
+        <p class="field-message field-message--reserved">
+          {{ rdShowError ? "Not a known ship" : "" }}
+        </p>
       </div>
     </div>
     <p class="text-muted">
@@ -1079,6 +1116,37 @@ const powerMarks = (value: number) => ({ label: String(value) });
     margin: -12px 0 15px;
     font-size: 0.875rem;
     color: var(--color-danger, #dc3545);
+  }
+
+  /*
+   * Animating to a natural height without knowing it: a grid row goes from 0fr
+   * to 1fr, which interpolates where `height: auto` does not. The child has to
+   * clip, or the text spills out of the closed row.
+   *
+   * Height is layout-bound, so this is not free -- but it is one short row, not
+   * a 300px list, and the alternative is a page that jumps.
+   */
+  .field-message-slot {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 180ms ease;
+  }
+
+  .field-message-slot--shown {
+    grid-template-rows: 1fr;
+  }
+
+  .field-message-slot > div {
+    overflow: hidden;
+  }
+
+  .field-message--in-slot {
+    margin: -12px 0 0;
+  }
+
+  /* The line is always there and merely empties, so nothing below it moves. */
+  .field-message--reserved {
+    min-height: 1.25rem;
   }
 
   /*
