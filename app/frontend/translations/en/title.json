@@ -198,7 +198,8 @@
           "edit": "Edit User",
           "inventories": "User Inventories",
           "inventory": "User Inventory",
-          "inventoryItem": "Inventory Entry"
+          "inventoryItem": "Inventory Entry",
+          "fleets": "User Fleets"
         },
         "vehicles": {
           "index": "Vehicles",

@@ -199,13 +199,16 @@
         "users": {
           "index": "Users",
           "edit": "Edit",
-          "fleets": "Fleets"
+          "fleets": "Fleets",
+          "inventories": "Inventories"
         },
         "fleets": {
           "index": "Fleets",
           "edit": "Edit",
           "members": "Members",
-          "history": "History"
+          "history": "History",
+          "roles": "Roles",
+          "inventories": "Inventories"
         },
         "destroyedFleets": {
           "index": "Destroyed Fleets"

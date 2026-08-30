@@ -166,7 +166,8 @@
           "edit": "Benutzer bearbeiten",
           "inventories": "Nutzer-Inventare",
           "inventory": "Nutzer-Inventar",
-          "inventoryItem": "Inventar-Eintrag"
+          "inventoryItem": "Inventar-Eintrag",
+          "fleets": "Nutzer-Flotten"
         },
         "vehicles": {
           "index": "Fahrzeuge",
