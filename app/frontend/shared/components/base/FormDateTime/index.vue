@@ -60,6 +60,8 @@ const { t, tExists } = useI18n();
 
 const internalId = `${props.name}-${uuidv4()}`;
 
+const errorId = `${internalId}-error`;
+
 const innerLabel = computed(() => {
   if (props.label) return props.label;
   if (props.translationKey) return t(`labels.${props.translationKey}`);
@@ -154,55 +156,117 @@ const timeConfig = computed(() => ({
         @update:model-value="onUpdate"
       />
     </div>
-    <div v-if="hasErrors" class="base-input__error" role="alert">
+    <p :id="errorId" class="base-input__error" role="alert">
       {{ errorMessage }}
-    </div>
+    </p>
   </div>
 </template>
 
 <style lang="scss" scoped>
+/*
+ * This was a third dialect: the same picker library as FormDatePicker but a
+ * separate implementation, with its own wrapper, its own small uppercase label,
+ * and a palette written against `--input-bg` and `--danger` -- neither of which
+ * exists, so both always fell through to their literals. `#c62828` is not the
+ * red the rest of the forms use, so a page with two invalid controls showed two
+ * different reds.
+ */
 .form-datetime {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
   margin-bottom: 1rem;
 }
+
 .form-datetime label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--color-muted, #7a8288);
+  display: block;
+  margin-bottom: var(--field-label-gap, 5px);
+  line-height: var(--field-label-line, 1.5rem);
+  white-space: nowrap;
 }
+
+/* The control is the wrapper; see the note in FormInput. */
+.form-datetime__wrapper {
+  position: relative;
+  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: var(--radius-control, 8px);
+  transition: background-color ease-in-out 0.15s;
+}
+
+.form-datetime__wrapper:hover {
+  background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+}
+
+.form-datetime__wrapper::before,
+.form-datetime__wrapper::after {
+  position: absolute;
+  right: max(10px, var(--cap-inset, 12%));
+  left: max(10px, var(--cap-inset, 12%));
+  height: var(--cap-h-btn, 2px);
+  background-color: var(--field-cap, var(--color-endcap, #7a8288));
+  border-radius: var(--cap-r-btn, 1px);
+  transition: background-color 0.15s ease;
+  content: "";
+  z-index: 1;
+}
+
+.form-datetime__wrapper::before {
+  top: -1px;
+}
+
+.form-datetime__wrapper::after {
+  bottom: -1px;
+}
+
+.form-datetime:focus-within {
+  --field-cap: var(--color-primary, #428bca);
+}
+
+.form-datetime.base-input--with-error {
+  --field-cap: var(--color-danger, #dc3545);
+}
+
 .form-datetime__wrapper :deep(.dp__main) {
   --dp-input-icon-padding: 2.6rem;
   --dp-input-padding: 0.55rem 2.4rem 0.55rem 0.75rem;
-  --dp-background-color: var(--input-bg, rgba(0, 0, 0, 0.4));
+  --dp-background-color: transparent;
   --dp-text-color: var(--color-text, #c8c8c8);
-  --dp-hover-color: rgba(74, 170, 170, 0.2);
-  --dp-hover-text-color: var(--color-text, #c8c8c8);
+  --dp-hover-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+  --dp-hover-text-color: var(--color-lifted, #eee);
   --dp-hover-icon-color: var(--color-primary, #428bca);
   --dp-primary-color: var(--color-primary, #428bca);
   --dp-primary-text-color: #fff;
-  --dp-secondary-color: var(--color-muted, #7a8288);
-  --dp-border-color: rgba(255, 255, 255, 0.15);
-  --dp-border-color-hover: rgba(255, 255, 255, 0.3);
-  --dp-disabled-color: rgba(255, 255, 255, 0.1);
-  --dp-scroll-bar-background: rgba(255, 255, 255, 0.05);
-  --dp-scroll-bar-color: rgba(255, 255, 255, 0.2);
+  --dp-secondary-color: var(--color-endcap, #7a8288);
+  --dp-border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  --dp-border-color-hover: var(--color-endcap, #7a8288);
+  --dp-border-color-focus: var(--color-primary, #428bca);
+  --dp-menu-border-color: var(--color-edge, rgb(122 130 136 / 0.5));
+  --dp-disabled-color: var(--color-control, rgb(39 43 48 / 0.9));
+  --dp-scroll-bar-background: rgb(255 255 255 / 0.05);
+  --dp-scroll-bar-color: rgb(255 255 255 / 0.2);
   --dp-success-color: var(--color-success, #5cb85c);
-  --dp-success-color-disabled: rgba(76, 175, 80, 0.4);
-  --dp-icon-color: var(--color-muted, #7a8288);
-  --dp-danger-color: var(--danger, #c62828);
-  --dp-highlight-color: rgba(74, 170, 170, 0.5);
+  --dp-success-color-disabled: rgb(76 175 80 / 0.4);
+  --dp-icon-color: var(--color-endcap, #7a8288);
+  --dp-danger-color: var(--color-danger, #dc3545);
+  --dp-highlight-color: rgb(66 139 202 / 0.35);
   --dp-menu-min-width: 260px;
+  --dp-border-radius: var(--radius-control, 8px);
 }
+
+/* The frame is the wrapper's now. */
 .form-datetime__wrapper :deep(.dp__input) {
+  height: var(--field-h, 43px);
   font-family: inherit;
-  font-size: 0.95rem;
-  border-radius: 4px;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
 }
+
+/* Shared with every other control -- see the note in FormInput. */
 .base-input__error {
-  color: var(--danger, #c62828);
-  font-size: 0.78rem;
+  min-height: var(--field-message-line, 1.25rem);
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  line-height: var(--field-message-line, 1.25rem);
+  color: var(--color-danger, #dc3545);
 }
 </style>
