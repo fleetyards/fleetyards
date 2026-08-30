@@ -631,6 +631,57 @@ const powerMarks = (value: number) => ({ label: String(value) });
         />
       </div>
     </div>
+    <p class="text-muted">
+      The sizes, and the states that are not reachable by pointing at them.
+    </p>
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput
+          v-model="rdText"
+          name="rd-medium"
+          label="Medium"
+          :size="InputSizesEnum.MEDIUM"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormInput
+          v-model="rdText"
+          name="rd-large"
+          label="Large"
+          :size="InputSizesEnum.LARGE"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <FormCheckbox
+          v-model="rdCheck"
+          name="rd-check-disabled"
+          label="Disabled, checked"
+          disabled
+        />
+        <FormToggle
+          v-model="rdToggle"
+          name="rd-toggle-disabled"
+          label="Disabled toggle"
+          disabled
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <RadioList
+          v-model="rdRadio"
+          name="rd-radio-disabled"
+          label="Disabled group"
+          :options="radioOptions"
+          :inline="true"
+          disabled
+        />
+      </div>
+    </div>
+    <p class="text-muted">
+      Invalid, using the same component the Error States section below renders
+      in today's treatment — so the two are the same controls, failing the same
+      rules, side by side.
+    </p>
+    <ErrorStates />
   </div>
 
   <Heading :level="HeadingLevelEnum.H2">Slider</Heading>
@@ -752,6 +803,31 @@ const powerMarks = (value: number) => ({ label: String(value) });
 
   .base-input__prefix,
   .base-input__suffix {
+    color: var(--color-endcap, #7a8288);
+  }
+
+  /*
+   * Hover lifts the fill, on the token Btn already uses for exactly this. Not on
+   * a checked radio or toggle, whose fill is the state -- there the signature is
+   * doing the talking and the surface should stay out of it.
+   */
+  .base-input__wrapper:hover,
+  .base-textarea__wrapper:hover,
+  .base-checkbox input:not(:disabled):hover + label::before,
+  .radio-list__item
+    input[type="radio"]:not(:disabled):not(:checked):hover
+    + label::before,
+  .form-toggle
+    input:not(:disabled):not(:checked):hover
+    + label
+    .form-toggle-switch {
+    background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+  }
+
+  /* Brighter than the $input-placerholder it replaces, which was mixed for a
+     lighter fill and disappears into this one. */
+  .base-input input::placeholder,
+  .base-textarea textarea::placeholder {
     color: var(--color-endcap, #7a8288);
   }
 
@@ -907,6 +983,30 @@ const powerMarks = (value: number) => ({ label: String(value) });
   .radio-list__item input[type="radio"]:checked:focus-visible + label::before {
     border-color: var(--color-primary, #428bca);
     box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
+  }
+
+  /*
+   * Error rides the same signature as focus, and loses to it while the control
+   * is focused -- the field's cap does exactly this, one carrier per control.
+   *
+   * RadioList is absent because it has none: it never calls useField, so a form
+   * has no way to mark it invalid. That is a gap in the component, not in the
+   * language.
+   */
+  .base-checkbox--with-error input + label::before {
+    border-color: var(--color-danger, #dc3545);
+  }
+
+  .form-toggle--with-error input + label .form-toggle-switch {
+    border-color: var(--color-danger, #dc3545);
+  }
+
+  /* Disabled says nothing at all: the signature goes quiet rather than neutral,
+     so a disabled control cannot be mistaken for a resting one. */
+  .base-checkbox input:disabled + label::before,
+  .radio-list__item input[type="radio"]:disabled + label::before,
+  .form-toggle input:disabled + label .form-toggle-switch {
+    border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
   }
 
   /* ---------- the toggle ---------- */
