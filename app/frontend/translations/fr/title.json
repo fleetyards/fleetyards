@@ -36,9 +36,10 @@
         "publicStats": "Statistiques du Hangar de %{user}",
         "wishlist": "Liste de souhait",
         "publicWishlist": "%{user} Liste de souhait",
-        "vehicleCargo": "Cargaison du vaisseau",
+        "vehicleLoadouts": "Loadouts du vaisseau",
         "inventories": "My Hangar Inventories",
-        "inventory": "%{inventory}"
+        "inventory": "%{inventory}",
+        "vehicleCargo": "Cargaison du vaisseau"
       },
       "requestPassword": "Demander un mot de passe",
       "changePassword": "Modifier le mot de passe",
@@ -57,11 +58,36 @@
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories"
         },
+        "missions": {
+          "index": "Missions de %{fleet}",
+          "create": "Créer une mission - %{fleet}",
+          "edit": {
+            "basic": "Modifier la mission - %{fleet}",
+            "description": "Modifier la description - %{fleet}",
+            "teams": "Modifier les équipes & places - %{fleet}"
+          },
+          "show": "Mission de %{fleet}"
+        },
+        "events": {
+          "index": "Événements de %{fleet}",
+          "calendar": "Calendrier de %{fleet}",
+          "create": "Créer un événement - %{fleet}",
+          "edit": {
+            "basic": "Modifier l'événement - %{fleet}",
+            "description": "Modifier la description - %{fleet}",
+            "teams": "Modifier les équipes & places - %{fleet}"
+          },
+          "show": "Événement de %{fleet}"
+        },
         "settings": {
           "index": "Paramètres de %{fleet}",
           "fleet": "Paramètres de %{fleet}",
           "membership": "Adhésion à %{fleet}",
-          "roles": "Rôles de %{fleet}"
+          "roles": "Rôles de %{fleet}",
+          "notifications": "Paramètres de notification de %{fleet}",
+          "discord": "Paramètres Discord de %{fleet}",
+          "calendar": "Paramètres de calendrier de %{fleet}",
+          "features": "Fonctionnalités de %{fleet}"
         }
       },
       "roadmap": {
@@ -74,10 +100,12 @@
         "profile": "Paramètres du profil",
         "account": "Compte",
         "hangar": "Paramètres de Hangar",
+        "privacy": "Paramètres de confidentialité",
         "features": "Indicateurs de fonctionnalités",
         "connections": "Connexions",
         "oauthApplications": "Applications OAuth",
         "notifications": "Paramètres de notification",
+        "calendar": "Abonnement au calendrier",
         "security": "Sécurité du Compte",
         "twoFactor": {
           "enable": "Activer l'authentification à deux étapes",
@@ -101,6 +129,7 @@
         "index": "Tests Visuels",
         "panels": "Panneaux - Tests Visuels",
         "buttons": "Boutons - Tests Visuels",
+        "events": "Événements",
         "typography": "Typographie - Tests visuels",
         "forms": "Formulaires - Tests visuels",
         "tables": "Tableaux - Tests Visuels",
@@ -109,8 +138,12 @@
         "states": "États - Tests visuels",
         "notifications": "Notifications - Tests Visuels",
         "syncModal": "Modale Sync - Tests Visuels",
+        "overlays": "Superpositions - Tests Visuels",
         "supportHint": "Indicateur de soutien - Tests Visuels",
-        "chips": "Chips - Tests Visuels"
+        "media": "Médias - Tests Visuels",
+        "charts": "Graphiques - Tests Visuels",
+        "chips": "Chips - Tests Visuels",
+        "notificationCenter": "Centre de notifications - Tests Visuels"
       },
       "admin": {
         "models": {
@@ -121,6 +154,7 @@
             "metrics": "Éditer les Métriques du Modèle",
             "prices": "Éditer les Prix du Modèle",
             "fleetchart": "Éditer les Images du Modèle",
+            "positions": "Modifier les postes d'équipage de %{manufacturer} %{model}",
             "hardpoints": "Éditer les Points de Montage du Modèle",
             "cargoAndFuel": "Cargaison et Carburant",
             "cargoHolds": "Modifier les soutes de %{manufacturer} %{model}",
@@ -130,8 +164,10 @@
             "images": "Éditer les Images du Modèle",
             "videos": "Éditer les Vidéos du Modèle",
             "loaners": "Éditer les Prêts du Modèle",
+            "snubCrafts": "Modifier les Snub Crafts de %{manufacturer} %{model}",
             "upgrades": "Éditer les Améliorations du Modèle",
-            "packages": "Éditer les Paquets du Modèle"
+            "packages": "Éditer les Paquets du Modèle",
+            "history": "Modifier l'historique de %{manufacturer} %{model}"
           }
         },
         "components": {
@@ -139,7 +175,8 @@
           "new": "Nouveau Composant",
           "edit": {
             "index": "Éditer le Composant",
-            "prices": "Éditer les Prix du Composant"
+            "prices": "Éditer les Prix du Composant",
+            "history": "Modifier l'historique du composant"
           }
         },
         "manufacturers": {
@@ -147,9 +184,23 @@
           "new": "Nouveau Fabricant",
           "edit": "Éditer le Fabricant"
         },
+        "supporterContributions": {
+          "index": "Contributions des soutiens",
+          "new": "Nouvelle contribution de soutien",
+          "edit": "Modifier la contribution de soutien"
+        },
+        "fundingGoals": {
+          "index": "Objectifs de financement",
+          "new": "Nouvel objectif de financement",
+          "edit": "Modifier l'objectif de financement"
+        },
         "users": {
           "index": "Utilisateurs",
-          "edit": "Éditer l'Utilisateur"
+          "edit": "Éditer l'Utilisateur",
+          "inventories": "Inventaires de l'utilisateur",
+          "inventory": "Inventaire de l'utilisateur",
+          "inventoryItem": "Entrée d'inventaire",
+          "fleets": "Flottes de l'utilisateur"
         },
         "vehicles": {
           "index": "Véhicules",
@@ -162,7 +213,14 @@
         "fleets": {
           "index": "Flottes",
           "edit": "Éditer la Flotte",
-          "memberEdit": "Modifier le membre de la flotte"
+          "members": "Membres de la flotte",
+          "memberEdit": "Modifier le membre de la flotte",
+          "history": "Historique de la flotte",
+          "roles": "Rôles de la flotte",
+          "role": "Rôle de la flotte",
+          "inventories": "Inventaires de la flotte",
+          "inventory": "Inventaire de la flotte",
+          "inventoryItem": "Entrée d'inventaire"
         },
         "oauthApplications": {
           "index": "Applications OAuth",
@@ -176,6 +234,9 @@
         "images": {
           "index": "Images"
         },
+        "notifications": {
+          "index": "Notifications"
+        },
         "maintenance": {
           "index": "Maintenance",
           "pghero": "PgHero",
@@ -183,6 +244,8 @@
           "flipper": "Flipper UI",
           "workers": "Workers",
           "tasks": "Tâches",
+          "imports": "Imports",
+          "importDetail": "Détail de l'import",
           "rsiApiStatus": "Statut de l'API RSI"
         },
         "modelPaints": {
@@ -194,7 +257,10 @@
           "edit": {
             "index": "Éditer %{name} Données de Base",
             "models": "Éditer %{name} Modèles",
-            "prices": "Éditer %{name} Prix"
+            "prices": "Éditer %{name} Prix",
+            "hardpoints": "Modifier les Points de Montage de %{name}",
+            "cargoHolds": "Modifier les soutes de %{name}",
+            "history": "Modifier l'historique du module"
           }
         },
         "unlistedModels": {
@@ -217,8 +283,13 @@
             "index": "Edit Equipment",
             "prices": "Edit Equipment Prices"
           }
+        },
+        "visualTests": {
+          "index": "Tests Visuels",
+          "notifications": "Notifications - Tests Visuels"
         }
-      }
+      },
+      "notifications": "Notifications"
     }
   }
 }
