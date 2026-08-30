@@ -39,7 +39,8 @@
             "loaners": "Leihschiffe",
             "upgrades": "Upgrades",
             "packages": "Pakete",
-            "linkUpgrade": "Vorhandenes Upgrade verknüpfen"
+            "linkUpgrade": "Vorhandenes Upgrade verknüpfen",
+            "history": "Verlauf"
           },
           "new": "Neues Modell",
           "show": "Modell",
@@ -51,7 +52,8 @@
           "new": "Neue Komponente",
           "edit": {
             "index": "Komponente bearbeiten",
-            "itemPrices": "Artikelpreise"
+            "itemPrices": "Artikelpreise",
+            "history": "Verlauf"
           }
         },
         "modelPaints": {
@@ -64,7 +66,8 @@
           "new": "Neues Modul",
           "edit": "Modul bearbeiten",
           "models": "Verknüpfte Modelle",
-          "prices": "Preise"
+          "prices": "Preise",
+          "history": "Verlauf"
         },
         "unlistedModels": {
           "index": "Schiffe in den Spieldateien ohne Model",
@@ -98,7 +101,8 @@
         "fleets": {
           "index": "Flotten",
           "edit": "Flotte bearbeiten",
-          "memberEdit": "Mitglied bearbeiten"
+          "memberEdit": "Mitglied bearbeiten",
+          "history": "Verlauf"
         },
         "admins": {
           "index": "Administratoren",

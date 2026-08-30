@@ -1722,6 +1722,18 @@
             "rsi-api-status": "RSI API Status",
             "stats": "Stats"
           }
+        },
+        "versions": {
+          "blank": "empty",
+          "revertQuestion": "Revert?",
+          "sources": {
+            "custom": "Admin",
+            "rsi_loader": "Ship Matrix",
+            "sc_data_loader": "Game Files",
+            "sc_loader": "Game Files",
+            "uex_price_sync": "UEX Price Sync",
+            "unknown": "Unknown"
+          }
         }
       },
       "hangarTable": {

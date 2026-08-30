@@ -165,7 +165,8 @@
             "loaners": "Edit %{manufacturer} %{model} Loaners",
             "snubCrafts": "Edit %{manufacturer} %{model} Snub Crafts",
             "upgrades": "Edit %{manufacturer} %{model} Upgrades",
-            "packages": "Edit %{manufacturer} %{model} Packages"
+            "packages": "Edit %{manufacturer} %{model} Packages",
+            "history": "Edit %{manufacturer} %{model} History"
           }
         },
         "components": {
@@ -173,7 +174,8 @@
           "new": "New Component",
           "edit": {
             "index": "Edit Component",
-            "prices": "Edit Component Prices"
+            "prices": "Edit Component Prices",
+            "history": "Edit Component History"
           }
         },
         "manufacturers": {
@@ -207,7 +209,8 @@
           "index": "Fleets",
           "edit": "Edit Fleet",
           "members": "Fleet Members",
-          "memberEdit": "Edit Fleet Member"
+          "memberEdit": "Edit Fleet Member",
+          "history": "Fleet History"
         },
         "oauthApplications": {
           "index": "OAuth Applications",
@@ -246,7 +249,8 @@
             "models": "Edit %{name} Models",
             "prices": "Edit %{name} Prices",
             "hardpoints": "Edit %{name} Hardpoints",
-            "cargoHolds": "Edit %{name} Cargo Holds"
+            "cargoHolds": "Edit %{name} Cargo Holds",
+            "history": "Edit Module History"
           }
         },
         "unlistedModels": {

@@ -57,6 +57,35 @@ class FleetTest < ActiveSupport::TestCase
     assert_equal 3, fleet.fleet_roles.reload.count
   end
 
+  # A fleet is touched by seven of its children, and rails' `touch` skips
+  # dirty-tracking -- so paper_trail files the version with no `object_changes`
+  # at all. Those are the ones the admin history showed as an empty heading.
+  class VersioningTest < FleetTest
+    setup do
+      @fleet = create(:fleet, created_by: create(:user).id)
+    end
+
+    test "a touch records no version" do
+      assert_no_difference -> { @fleet.versions.count } do
+        @fleet.touch
+      end
+    end
+
+    test "a child write that touches the fleet records no fleet version" do
+      assert_no_difference -> { @fleet.versions.count } do
+        @fleet.fleet_roles.first.update!(name: "Quartermaster")
+      end
+    end
+
+    test "a real edit still records a version with its changes" do
+      assert_difference -> { @fleet.versions.count }, 1 do
+        @fleet.update!(description: "A crew")
+      end
+
+      assert_equal [nil, "A crew"], @fleet.versions.last.changeset["description"]
+    end
+  end
+
   class UrlValidationTest < FleetTest
     setup do
       user = create(:user)

@@ -134,7 +134,21 @@ class Model < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
+  # `name`, `description` and `ground` are here because an admin can edit all
+  # three, not because the ship matrix writes them -- an edit with no history is
+  # the gap, and the loader's own report reading them is the second reason.
+  #
+  # The `rsi_*` shadow columns are watched because they are **not** the live
+  # column read twice: `mass` differs from `rsi_mass` on 196 of 246 models, and
+  # `max_speed`, `pitch`, `yaw` and `roll` on 188. `Rsi::ModelsLoader` writes a
+  # shadow on every run but the live column only when RSI moved `time_modified`
+  # and the new value is not blank -- so a shadow that moves alone is the matrix
+  # saying something we did not adopt, which nothing else records.
   has_paper_trail on: %i[update], only: %i[
+    name description ground
+    rsi_id rsi_chassis_id rsi_name rsi_description rsi_classification rsi_focus rsi_size rsi_store_url
+    rsi_length rsi_beam rsi_height rsi_mass rsi_cargo rsi_min_crew rsi_max_crew
+    rsi_scm_speed rsi_max_speed rsi_pitch rsi_yaw rsi_roll
     classification production_status production_note focus pledge_price length beam height mass
     cargo personal_inventory size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_decceleration pitch yaw roll price

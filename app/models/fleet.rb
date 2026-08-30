@@ -54,7 +54,7 @@ class Fleet < ApplicationRecord
     member: []
   }.freeze
 
-  has_paper_trail meta: {
+  has_paper_trail on: ::VersionedItem::RECORDED_EVENTS, meta: {
     author_id: :author_id,
     reason: :update_reason,
     reason_description: :update_reason_description

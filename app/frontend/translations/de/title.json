@@ -133,7 +133,8 @@
             "loaners": "Modell Leihgaben bearbeiten",
             "snubCrafts": "Modell Snub Crafts bearbeiten",
             "upgrades": "Modell Upgrades bearbeiten",
-            "packages": "Modell Pakete bearbeiten"
+            "packages": "Modell Pakete bearbeiten",
+            "history": "%{manufacturer} %{model} Verlauf"
           }
         },
         "components": {
@@ -141,7 +142,8 @@
           "new": "Neue Komponente",
           "edit": {
             "index": "Komponente bearbeiten",
-            "prices": "Komponente Preise bearbeiten"
+            "prices": "Komponente Preise bearbeiten",
+            "history": "Komponenten-Verlauf"
           }
         },
         "manufacturers": {
@@ -174,7 +176,8 @@
         "fleets": {
           "index": "Flotten",
           "edit": "Flotte bearbeiten",
-          "memberEdit": "Flottenmitglied bearbeiten"
+          "memberEdit": "Flottenmitglied bearbeiten",
+          "history": "Flotten-Verlauf"
         },
         "oauthApplications": {
           "index": "OAuth-Anwendungen",
@@ -208,7 +211,8 @@
           "edit": {
             "index": "%{name} Basisdaten bearbeiten",
             "models": "%{name} Modelle bearbeiten",
-            "prices": "%{name} Preise bearbeiten"
+            "prices": "%{name} Preise bearbeiten",
+            "history": "Modul-Verlauf"
           }
         },
         "unlistedModels": {

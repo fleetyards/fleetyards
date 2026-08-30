@@ -7418,6 +7418,104 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/versions":
+    get:
+      summary: Versions list
+      tags:
+      - Versions
+      operationId: versions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+        required: false
+      - name: itemType
+        in: query
+        schema:
+          "$ref": "#/components/schemas/VersionItemTypeEnum"
+        required: true
+      - name: itemId
+        in: query
+        schema:
+          type: string
+          format: uuid
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Versions"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/versions/{id}/revert":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    put:
+      summary: Revert one field of a version
+      tags:
+      - Versions
+      operationId: revertVersion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VersionRevertInput"
+      responses:
+        '204':
+          description: successful
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/videos":
     post:
       summary: Create new Video
@@ -15378,6 +15476,120 @@ components:
       - meta
       - items
       title: Vehicles
+    Version:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        itemId:
+          type: string
+          format: uuid
+        itemType:
+          "$ref": "#/components/schemas/VersionItemTypeEnum"
+        event:
+          type: string
+        reason:
+          type:
+          - string
+          - 'null'
+        reasonDescription:
+          type:
+          - string
+          - 'null'
+        author:
+          "$ref": "#/components/schemas/VersionAuthor"
+        changes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VersionChange"
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - id
+      - itemId
+      - itemType
+      - event
+      - changes
+      title: Version
+    VersionAuthor:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      required:
+      - id
+      - username
+      title: VersionAuthor
+    VersionChange:
+      type: object
+      properties:
+        field:
+          type: string
+        from:
+          type:
+          - string
+          - 'null'
+        to:
+          type:
+          - string
+          - 'null'
+      required:
+      - field
+      title: VersionChange
+    VersionItemTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Fleet
+      - FleetInventory
+      - FleetInventoryItem
+      - FleetMembership
+      - FleetRole
+      - Inventory
+      - InventoryItem
+      - Model
+      - ModelModule
+      x-enumNames:
+      - COMPONENT
+      - FLEET
+      - FLEET_INVENTORY
+      - FLEET_INVENTORY_ITEM
+      - FLEET_MEMBERSHIP
+      - FLEET_ROLE
+      - INVENTORY
+      - INVENTORY_ITEM
+      - MODEL
+      - MODEL_MODULE
+      title: VersionItemTypeEnum
+    VersionRevertInput:
+      type: object
+      properties:
+        field:
+          type: string
+      required:
+      - field
+      title: VersionRevertInput
+    Versions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Version"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Versions
     Video:
       type: object
       properties:

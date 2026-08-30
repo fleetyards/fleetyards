@@ -381,7 +381,8 @@
         "noManufacturer": "No manufacturer resolves from this identifier",
         "alreadyExists": "%{name} is already in the catalogue",
         "link": "Already in the catalogue"
-      }
+      },
+      "revert": "Revert"
     }
   }
 }

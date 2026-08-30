@@ -1,6 +1,10 @@
 ---
 en:
   validation_error:
+    version:
+      revert: Field could not be reverted.
+      unknown_field: This version did not change that field.
+      already_reverted: The field already holds the value this version replaced.
     sc_data_unlisted_model:
       link: Ship could not be linked to the catalogue.
       create_model: Ship could not be created from the game files.

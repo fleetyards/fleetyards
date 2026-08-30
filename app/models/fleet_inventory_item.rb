@@ -34,7 +34,7 @@
 class FleetInventoryItem < ApplicationRecord
   include InventoryLedgerEntry
 
-  has_paper_trail
+  has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
   paginates_per 30
 

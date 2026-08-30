@@ -41,7 +41,8 @@
             "snubCrafts": "Snub Crafts",
             "upgrades": "Upgrades",
             "packages": "Packages",
-            "linkUpgrade": "Link Existing Upgrade"
+            "linkUpgrade": "Link Existing Upgrade",
+            "history": "History"
           },
           "new": "New Model",
           "show": "Model",
@@ -53,7 +54,8 @@
           "new": "New Component",
           "edit": {
             "index": "Edit Component",
-            "itemPrices": "Item Prices"
+            "itemPrices": "Item Prices",
+            "history": "History"
           }
         },
         "modelPaints": {
@@ -70,7 +72,8 @@
           "models": "Linked Models",
           "prices": "Prices",
           "hardpoints": "Hardpoints",
-          "cargoHolds": "Cargo Holds"
+          "cargoHolds": "Cargo Holds",
+          "history": "History"
         },
         "unlistedModels": {
           "index": "Ships in the game files with no model",
@@ -105,7 +108,8 @@
           "index": "Fleets",
           "edit": "Edit Fleet",
           "members": "Members",
-          "memberEdit": "Edit Member"
+          "memberEdit": "Edit Member",
+          "history": "History"
         },
         "destroyedFleets": {
           "index": "Destroyed Fleets"
