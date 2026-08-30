@@ -245,20 +245,45 @@ const timeConfig = computed(() => ({
   width: 100%;
 }
 
-/* The frame is the wrapper's; the input carries nothing. */
+/*
+ * The frame is the wrapper's; the input carries nothing.
+ *
+ * Deliberately identical to FormDatePicker's rule, declaration for declaration.
+ * The two controls wrap the same library through two separate implementations,
+ * and every line that exists in one and not the other shows up as the two
+ * looking subtly unalike -- here it was the icon container keeping the library's
+ * default padding, which pushed the calendar glyph over the first character of
+ * the date.
+ *
+ * That they have to be kept identical by hand is the real defect. One of them
+ * should wrap the other.
+ */
 .form-datetime__wrapper :deep(.dp--input) {
   display: block;
   box-sizing: border-box;
   width: 100%;
   height: var(--field-h, 43px);
+  margin: 0;
   padding: 6px 12px 6px 36px;
+  color: var(--color-text, #c8c8c8);
   font-family: inherit;
   font-size: 16px;
-  color: var(--color-text, #c8c8c8);
+  font-weight: 400;
+  line-height: 1.42857;
+  text-overflow: ellipsis;
   background-color: transparent;
+  background-image: none;
   border: none;
   border-radius: 0;
   box-shadow: none;
+  transition: none;
+  cursor: pointer;
+}
+
+/* Tighten the icon-container padding (default is 6px 12px) so the glyph sits
+   inside the input's 36px left padding cleanly. */
+.form-datetime__wrapper :deep(.dp--input-icons) {
+  padding: 0;
 }
 
 .form-datetime__wrapper :deep(.dp--input)::placeholder {
