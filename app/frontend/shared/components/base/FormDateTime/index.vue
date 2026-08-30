@@ -225,56 +225,63 @@ const timeConfig = computed(() => ({
   --field-cap: var(--color-danger, #dc3545);
 }
 
-.form-datetime__wrapper :deep(.dp__main) {
-  --dp-input-icon-padding: 2.6rem;
-  --dp-input-padding: 0.55rem 2.4rem 0.55rem 0.75rem;
-  --dp-background-color: transparent;
-  --dp-text-color: var(--color-text, #c8c8c8);
-  --dp-hover-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
-  --dp-hover-text-color: var(--color-lifted, #eee);
-  --dp-hover-icon-color: var(--color-primary, #428bca);
-  --dp-primary-color: var(--color-primary, #428bca);
-  --dp-primary-text-color: #fff;
-  --dp-secondary-color: var(--color-endcap, #7a8288);
-  --dp-border-color: var(--color-edge, rgb(122 130 136 / 0.5));
-  --dp-border-color-hover: var(--color-endcap, #7a8288);
-  --dp-border-color-focus: var(--color-primary, #428bca);
-  --dp-menu-border-color: var(--color-edge, rgb(122 130 136 / 0.5));
-  --dp-disabled-color: var(--color-control, rgb(39 43 48 / 0.9));
-  --dp-scroll-bar-background: rgb(255 255 255 / 0.05);
-  --dp-scroll-bar-color: rgb(255 255 255 / 0.2);
-  --dp-success-color: var(--color-success, #5cb85c);
-  --dp-success-color-disabled: rgb(76 175 80 / 0.4);
-  --dp-icon-color: var(--color-endcap, #7a8288);
-  --dp-danger-color: var(--color-danger, #dc3545);
-  --dp-highlight-color: rgb(66 139 202 / 0.35);
-  --dp-menu-min-width: 260px;
-  --dp-border-radius: var(--radius-control, 8px);
-}
-
 /*
- * The picker fills the control, the way FormInput's input does. Removing this
- * component's flex column took the stretch with it and left the field sitting
- * narrower than its neighbours.
+ * `dp--`, not `dp__`. @vuepic/vue-datepicker 14 uses the first and has no class
+ * of the second form anywhere -- so this component's entire stylesheet, palette
+ * included, has never matched a single element. It rendered with the library's
+ * stock dark theme throughout, which is why putting a proper frame on the
+ * wrapper produced two nested boxes rather than one control.
+ *
+ * The palette that used to sit here is gone rather than corrected: the menu is
+ * teleported to the body, so a scoped block cannot reach it in any case.
+ * FormDatePicker carries a global `.dp--theme-dark` block for exactly that
+ * reason, and that one does apply. Extracting it so it does not depend on which
+ * component happens to be on the page is worth doing, and is not this change.
  */
-.form-datetime__wrapper :deep(.dp__main),
-.form-datetime__wrapper :deep(.dp__input_wrap) {
+.form-datetime__wrapper :deep(.dp--main),
+.form-datetime__wrapper :deep(.dp--input-wrap) {
   flex: 1 1 auto;
   min-width: 0;
   width: 100%;
 }
 
-/* The frame is the wrapper's now. */
-.form-datetime__wrapper :deep(.dp__input) {
+/* The frame is the wrapper's; the input carries nothing. */
+.form-datetime__wrapper :deep(.dp--input) {
   display: block;
   box-sizing: border-box;
   width: 100%;
   height: var(--field-h, 43px);
+  padding: 6px 12px 6px 36px;
   font-family: inherit;
   font-size: 16px;
+  color: var(--color-text, #c8c8c8);
   background-color: transparent;
   border: none;
   border-radius: 0;
+  box-shadow: none;
+}
+
+.form-datetime__wrapper :deep(.dp--input)::placeholder {
+  color: var(--color-endcap, #7a8288);
+  opacity: 1;
+}
+
+.form-datetime__wrapper :deep(.dp--input):focus {
+  outline: none;
+}
+
+.form-datetime__wrapper :deep(.dp--input-icon),
+.form-datetime__wrapper :deep(.dp--clear-btn) {
+  color: var(--color-endcap, #7a8288);
+  fill: var(--color-endcap, #7a8288);
+}
+
+.form-datetime__wrapper :deep(.dp--input-icon) {
+  inset-inline-start: 14px;
+}
+
+.form-datetime__wrapper :deep(.dp--clear-btn) {
+  inset-inline-end: 14px;
 }
 
 /* Shared with every other control -- see the note in FormInput. */
