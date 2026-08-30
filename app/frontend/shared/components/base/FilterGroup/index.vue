@@ -641,7 +641,18 @@ const focusSearch = async () => {
   if (props.searchable && visible.value) {
     await nextTick(() => {
       if (searchInput.value) {
-        searchInput.value.setFocus();
+        /*
+         * preventScroll matters here. The popover is still collapsed when this
+         * runs -- Collapsed animates its height from 0 under overflow: hidden --
+         * and an overflow: hidden box is still programmatically scrollable, so
+         * focusing the field made the browser scroll it into view inside a box
+         * of almost no height. That pushed the whole popover's content up behind
+         * the trigger, and it unwound over the next 500ms as the box grew, which
+         * read as the popover starting halfway under the control.
+         *
+         * Measured: scrollTop 21, content at -21px, against 0 and 0 with this.
+         */
+        searchInput.value.setFocus({ preventScroll: true });
       }
     });
   }
