@@ -47,11 +47,31 @@
         "logistics": {
           "index": "Logistics"
         },
+        "missions": {
+          "index": "Misiones",
+          "edit": {
+            "basic": "Básico",
+            "description": "Descripción",
+            "teams": "Equipos y plazas"
+          }
+        },
+        "events": {
+          "index": "Eventos",
+          "calendar": "Calendario",
+          "edit": {
+            "basic": "Básico",
+            "description": "Descripción",
+            "teams": "Equipos y plazas"
+          }
+        },
         "settings": {
           "index": "Configuración",
           "fleet": "Configuración de flota",
           "membership": "Configuración de membresía",
           "roles": "Roles",
+          "notifications": "Notificaciones",
+          "discord": "Discord",
+          "calendar": "Calendario",
           "features": "Funciones"
         }
       },
@@ -79,7 +99,9 @@
         "account": "Cuenta",
         "security": "Seguridad",
         "notifications": "Notificaciones",
+        "calendar": "Calendario",
         "hangar": "Hangar",
+        "privacy": "Privacidad",
         "features": "Funciones",
         "connections": "Conexiones",
         "oauthApplications": "Apps OAuth",
@@ -90,6 +112,7 @@
         "index": "Pruebas Visuales",
         "panels": "Paneles",
         "buttons": "Botones",
+        "events": "Eventos",
         "typography": "Tipografía",
         "forms": "Formularios",
         "tables": "Tablas",
@@ -98,8 +121,17 @@
         "states": "Estados",
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
+        "overlays": "Superposiciones",
         "supportHint": "Aviso de apoyo",
-        "chips": "Chips"
+        "media": "Multimedia",
+        "charts": "Gráficos",
+        "chips": "Chips",
+        "groups": {
+          "foundations": "Fundamentos",
+          "data": "Datos",
+          "feedback": "Feedback"
+        },
+        "notificationCenter": "Centro de notificaciones"
       },
       "admin": {
         "index": "Admin",
@@ -118,10 +150,13 @@
             "cargoAndFuel": "Carga y Combustible",
             "cargoHolds": "Bodegas de carga",
             "fleetchart": "Imágenes Fleetchart",
+            "positions": "Posiciones",
             "hardpoints": "Puntos de Conexión",
             "loaners": "Prestados",
+            "snubCrafts": "Snub Crafts",
             "upgrades": "Mejoras",
-            "packages": "Paquetes"
+            "packages": "Paquetes",
+            "history": "Historial"
           }
         },
         "modelPaints": {
@@ -134,7 +169,10 @@
           "edit": {
             "index": "Datos Base",
             "models": "Modelos",
-            "prices": "Precios"
+            "prices": "Precios",
+            "hardpoints": "Puntos de Conexión",
+            "cargoHolds": "Bodegas de carga",
+            "history": "Historial"
           }
         },
         "unlistedModels": {
@@ -148,7 +186,8 @@
           "index": "Componentes",
           "edit": {
             "index": "Datos base",
-            "prices": "Precios"
+            "prices": "Precios",
+            "history": "Historial"
           }
         },
         "manufacturers": {
@@ -158,10 +197,21 @@
           "index": "Imágenes"
         },
         "users": {
-          "index": "Usuarios"
+          "index": "Usuarios",
+          "edit": "Editar",
+          "fleets": "Flotas",
+          "inventories": "Inventarios"
         },
         "fleets": {
-          "index": "Flotas"
+          "index": "Flotas",
+          "edit": "Editar",
+          "members": "Miembros",
+          "history": "Historial",
+          "roles": "Roles",
+          "inventories": "Inventarios"
+        },
+        "destroyedFleets": {
+          "index": "Flotas eliminadas"
         },
         "vehicles": {
           "index": "Vehículos"
@@ -178,6 +228,7 @@
           "features": "Características",
           "workers": "Trabajadores",
           "tasks": "Tareas",
+          "imports": "Importaciones",
           "rsiApiStatus": "Estado API RSI"
         },
         "supporterContributions": {
@@ -189,6 +240,9 @@
           "index": "Objetivos de financiación",
           "new": "Nuevo objetivo de financiación",
           "edit": "Editar objetivo de financiación"
+        },
+        "notifications": {
+          "index": "Notificaciones"
         },
         "commodities": {
           "index": "Commodities",
@@ -202,8 +256,19 @@
             "index": "Base Data",
             "prices": "Prices"
           }
+        },
+        "visualTests": {
+          "index": "Pruebas Visuales",
+          "notifications": "Notificaciones"
+        },
+        "groups": {
+          "catalogue": "Catálogo",
+          "community": "Comunidad",
+          "people": "Personas",
+          "system": "Sistema"
         }
-      }
+      },
+      "notifications": "Notificaciones"
     }
   }
 }
