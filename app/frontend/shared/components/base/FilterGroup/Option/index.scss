@@ -10,6 +10,26 @@
   border-left: 4px solid transparent;
   cursor: pointer;
 
+  /*
+   * The rows that render outside the popover are <button> -- they remove a
+   * selection, they are not options of anything -- so the browser's control
+   * styling has to be undone here the way it is on the trigger.
+   *
+   * `width: 100%` is the load-bearing one: a button has intrinsic width and does
+   * not stretch to its container even with `display: flex`, unlike the anchor
+   * this replaced. Left alone it collapsed to its label, which put the hover
+   * rail (`::after`, `right: -4px`) in the middle of the row instead of at its
+   * edge. Measured: 75px against the anchor's 278px in the same container.
+   */
+  &:is(button) {
+    width: 100%;
+    appearance: none;
+    font: inherit;
+    text-align: left;
+    background: none;
+    border-top: none;
+  }
+
   .filter-group-item-label {
     padding-right: 14px;
     flex-grow: 1;
