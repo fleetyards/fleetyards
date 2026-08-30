@@ -29,7 +29,20 @@
         "visit": {
           "one": "%{label}:<br><b>%{count}</b> Visita",
           "other": "%{label}:<br><b>%{count}</b> Visitas"
+        },
+        "supporterContribution": {
+          "amount": "Aportaciones: <b>%{amount}</b>",
+          "goal": "Objetivo: <b>%{amount}</b>",
+          "count": {
+            "one": "<b>%{count}</b> patrocinador",
+            "other": "<b>%{count}</b> patrocinadores"
+          }
         }
+      },
+      "states": {
+        "empty": "Todavía no hay datos para el gráfico",
+        "failed": "No se pudo cargar este gráfico",
+        "retry": "Inténtalo de nuevo"
       }
     }
   }

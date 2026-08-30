@@ -5,9 +5,11 @@
       "chooseFiles": "Elegir archivos",
       "dropzone": {
         "textMultiple": "Suelta archivos aquí para subir",
+        "textDirectory": "Suelta una carpeta aquí",
         "text": "Suelta archivo aquí para subir",
         "or": "o",
-        "browse": "explorar"
+        "browse": "explorar",
+        "browseDirectory": "elegir una carpeta"
       },
       "previewImage": {
         "remove": "Eliminar"
