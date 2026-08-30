@@ -202,6 +202,13 @@ Reserving it won because the other two move what is below at the moment a user i
 reading or typing, and animating the movement makes it legible without making it
 stop.
 
+The reserved line has to be **exactly one `line-height` tall**, and the component
+has to set that line-height itself rather than inherit it. Inherited it was 21px
+against a reserved 20px, and the field below still moved -- by one pixel, which
+is both visible and precisely what reserving the line is for. Left inherited, a
+later change to the base typography would move every form again, silently and by
+a few pixels.
+
 The price is real and should be stated: every field is permanently taller, so a
 twelve-field form carries twelve empty lines, which is felt most on a phone. If
 that turns out to be too much on a long form, the fallback is the animated slot,

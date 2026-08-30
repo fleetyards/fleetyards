@@ -1086,13 +1086,21 @@ const powerMarks = (value: number) => ({ label: String(value) });
    * Sized down and pulled up into the field's own bottom margin so it reads as
    * belonging to the control rather than as the next paragraph.
    */
+  /*
+   * line-height is set here so that the reserved height below can equal it.
+   * Inherited it was 21px against a reserved 20px, so the field underneath still
+   * moved -- by one pixel, which is enough to see and exactly the thing
+   * reserving the line is meant to prevent.
+   */
   .field-message {
     margin: -12px 0 15px;
     font-size: 0.875rem;
+    line-height: 1.25rem;
     color: var(--color-danger, #dc3545);
   }
 
-  /* The line is always there and merely empties, so nothing below it moves. */
+  /* The line is always there and merely empties, so nothing below it moves.
+     Exactly one line-height -- a rounder number would move the page again. */
   .field-message--reserved {
     min-height: 1.25rem;
   }
