@@ -119,9 +119,10 @@ body {
   // dead space too on a short one: the button ends up flush against the
   // paginator with the whole gap underneath it.
   //
-  // So the section stretches over the dead space, and hands its bottom margin
-  // to the button, which carries the same distance as padding on the side it
-  // can use - above itself. See PrimaryAction/index.scss.
+  // So the section stretches over the dead space and drops the margin, and
+  // PrimaryAction insets itself on the side it can use. The button row is
+  // 90px of its own, so the page still clears the footer by more than the
+  // margin gave it. See PrimaryAction/index.scss.
   .main-inner--with-primary-action {
     display: flex;
     flex-direction: column;
@@ -139,7 +140,7 @@ body {
     left: 0;
     width: 100%;
     max-width: 100%;
-    margin-bottom: $main-bottom-spacing;
+    margin-bottom: 50px;
     padding-inline: 15px;
     margin-inline: auto;
   }

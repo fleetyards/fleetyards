@@ -11,13 +11,14 @@
   // Last in a `.main` that is stretched to fill the page and has given up its
   // bottom margin - see `.main-inner--with-primary-action` in
   // shared/layout.scss. `auto` sends the button to the end of that section,
-  // since sticky cannot push it down there itself, and the padding carries the
-  // margin the section dropped. Above rather than below, because below is the
-  // side the button already cannot reach: it is what left the button flush
-  // against the last row of the page with the gap beneath it.
+  // since sticky cannot push it down there itself.
+  //
+  // The inset is the same both ends, though the two are seen at different
+  // times: the bottom is the gap the button floats on all the way down the
+  // page, the top only shows once it comes to rest. Matching them is what
+  // stops it reading as flush against the last row with a gap beneath it.
   margin-top: auto;
-  padding-top: $main-bottom-spacing;
-  padding-bottom: 1rem;
+  padding-block: 1rem;
   // The floated element used to sit outside the flow; a flex row that ignores
   // pointer events keeps the page clickable around the button.
   pointer-events: none;
