@@ -14,16 +14,24 @@ export const useCompareHardpoints = (models: MaybeRefOrGetter<Model[]>) => {
   const cache = ref<Record<string, Hardpoint[]>>({});
   const pendingCount = ref(0);
 
-  const sourceFor = (model: Model) =>
-    model.inGame
-      ? HardpointSourceEnum.GAME_FILES
-      : HardpointSourceEnum.SHIP_MATRIX;
+  const from = async (model: Model, source: HardpointSourceEnum) =>
+    (await fetchModelHardpoints(model.slug, { source })) as Hardpoint[];
 
+  // Game files first, whatever `inGame` says. That flag asks whether the build we are
+  // on describes the ship, which is not the same question as whether an export of its
+  // loadout exists -- and the ship-matrix set answers with `component: null` on every
+  // entry, so preferring it leaves Combat, Defense and Loadout with nothing to compare
+  // and all three drop out of the table silently.
+  //
+  // The fallback costs a second request only for a ship the files do not fit, since a
+  // fitted set is recognisable from the first response.
   const fetchFor = async (model: Model) => {
     try {
-      const hardpoints = (await fetchModelHardpoints(model.slug, {
-        source: sourceFor(model),
-      })) as Hardpoint[];
+      const fitted = await from(model, HardpointSourceEnum.GAME_FILES);
+
+      const hardpoints = fitted.some((hardpoint) => hardpoint.component)
+        ? fitted
+        : await from(model, HardpointSourceEnum.SHIP_MATRIX);
 
       cache.value = { ...cache.value, [model.slug]: hardpoints };
     } catch (error) {
