@@ -6,8 +6,12 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type RouteRecordName, type RouteRecordRaw } from "vue-router";
+import { type RouteRecordRaw } from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
+import {
+  routeName,
+  useActiveTab,
+} from "@/shared/components/TabNavView/useActiveTab";
 
 type Props = {
   routes: RouteRecordRaw[];
@@ -33,24 +37,7 @@ const filteredRoutes = computed(() => {
 
 const { t } = useI18n();
 
-const route = useRoute();
-
-const activeRoute = (tabRouteName?: RouteRecordName) => {
-  if (tabRouteName === route.name) return true;
-
-  const tabRoute = filteredRoutes.value.find(
-    (r) => routeName(r) === tabRouteName,
-  );
-  if (!tabRoute?.children?.length) return false;
-
-  return route.matched.some(
-    (matched) => (matched.redirect as RouteRecordRaw)?.name === tabRouteName,
-  );
-};
-
-const routeName = (route: RouteRecordRaw) => {
-  return route.name || (route.redirect as RouteRecordRaw)?.name;
-};
+const { isActive } = useActiveTab(filteredRoutes);
 </script>
 
 <template>
@@ -63,7 +50,7 @@ const routeName = (route: RouteRecordRaw) => {
   >
     <li
       role="link"
-      :class="{ active: activeRoute(routeName(item)) }"
+      :class="{ active: isActive(routeName(item)) }"
       @click="navigate"
       @keypress.enter="() => navigate"
     >

@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.fleets.inventory",
       activeRoute: "admin-fleets",
+      activeTab: "admin-fleet-inventories",
       needsAuthentication: true,
     },
   },
@@ -20,6 +21,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.fleets.inventoryItem",
       activeRoute: "admin-fleets",
+      activeTab: "admin-fleet-inventories",
       needsAuthentication: true,
     },
   },

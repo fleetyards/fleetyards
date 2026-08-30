@@ -8,6 +8,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "admin.fleets.role",
       activeRoute: "admin-fleets",
+      activeTab: "admin-fleet-roles",
       needsAuthentication: true,
     },
   },
