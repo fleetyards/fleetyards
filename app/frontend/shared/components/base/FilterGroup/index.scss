@@ -24,10 +24,10 @@
     }
   }
 
+  // Inside the surface now, so it divides rather than frames.
   .filter-group-search {
-    border: 1px solid $input-border;
-    border-top: none;
-    border-bottom: none;
+    border: none;
+    border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   }
 
   .filter-group-title {
@@ -78,13 +78,14 @@
       background: $input-bg;
     }
 
+    /*
+     * No bottom-corner squaring any more: both segments stand off the trigger
+     * with a gap of their own, so nothing meets its lower edge.
+     */
     &.active {
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
-
       i,
       svg {
-        transform: rotate(90deg);
+        transform: rotate(180deg);
       }
     }
 
@@ -101,132 +102,69 @@
     &.selected {
       color: white;
       font-weight: bold;
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
     }
   }
 
+  // Only the scrolling. The frame belongs to the surface around it, which
+  // cannot clip, because the end-caps sit outside its box.
   .filter-group-items {
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: rgba($gray-darker, 0.95);
-    border: 1px solid $input-border;
-    border-top: none;
-    border-bottom-right-radius: $border-radius-base;
-    border-bottom-left-radius: $border-radius-base;
+  }
+
+  /*
+   * Both things that hang off the trigger -- the popover, and for a
+   * multi-select the list of chosen options -- are the same surface, and each
+   * stands off it rather than continuing its frame.
+   *
+   * That this element is inside the one Collapsed animates is load-bearing:
+   * Collapsed reads inline styles, so its keyframes resolve border, padding and
+   * margin to 0 for the full 500ms and snap them in at the end. A frame on the
+   * animated element stays collapsed and then jumps in.
+   */
+  .filter-group-surface {
+    position: relative;
+    margin-top: 6px;
+    background-color: var(--color-gray-darker, #272b30);
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h, 4px);
+      background-color: var(--color-endcap, #7a8288);
+      content: "";
+    }
+
+    &::before {
+      top: -1px;
+      border-radius: 0 0 var(--cap-r, 3px) var(--cap-r, 3px);
+    }
+
+    &::after {
+      bottom: -1px;
+      border-radius: var(--cap-r, 3px) var(--cap-r, 3px) 0 0;
+    }
   }
 
   .filter-group-items-wrapper {
     position: absolute;
     right: 0;
     left: 0;
-    z-index: 1000;
-    box-shadow: 0 1px 3px rgba(black, 0.9);
-    border-bottom-right-radius: $border-radius-base;
-    border-bottom-left-radius: $border-radius-base;
+    z-index: 2100;
   }
 
   .filter-group-fetch-more {
     width: 100%;
-    border-bottom-right-radius: $border-radius-base;
-    border-bottom-left-radius: $border-radius-base;
+    border-radius: 0 0 var(--radius-control-inner, 7px)
+      var(--radius-control-inner, 7px);
 
     > * {
       color: darken($input-color, 15%);
-    }
-  }
-
-  /*
-   * PREVIEW ONLY -- see F13 in docs/exec-plans/filter-group-redesign.md.
-   *
-   * Draws the popover the way BtnDropdown/Menu draws its own: a detached
-   * surface floating over the page, fully bordered and capped, rather than a
-   * continuation of the trigger. It exists so the two forms can be compared on
-   * the visual-tests page before the decision is made, and it goes away either
-   * way -- the real version is authored with @apply once the component leaves
-   * SCSS, which is why this uses var() on the same tokens instead.
-   *
-   * The trigger keeps its own radius here. Restyling it is Phase 3 and is
-   * deliberately not previewed, so that what is being compared is the popover's
-   * form and nothing else.
-   */
-  /*
-   * PREVIEW -- variant C, see the plan's D7/D8.
-   *
-   * The attached form, but read as one Panel rather than as a stack of framed
-   * boxes: a single surface with an end-cap at each outer edge and
-   * --color-edge-soft where the segments meet. That is the call Panel already
-   * makes -- caps signature the surface, soft rules divide inside it.
-   *
-   * Only one thing is ever attached below the trigger: the selected block hides
-   * itself while the popover is open. So the bottom cap belongs to whichever
-   * segment is last, which is expressible without knowing which that is.
-   */
-  /*
-   * PREVIEW -- variant D, see the plan's D7/D8.
-   *
-   * The trigger keeps exactly the look it has today. Only the two things that
-   * hang off it change: the popover and the selected list each become their own
-   * capped surface, and the selected items stay a list of full-width rows
-   * rather than turning into pills.
-   *
-   * The trigger's corners come back for the one reason that nothing meets it
-   * any more -- both segments now stand off it with a gap of their own.
-   */
-  &.filter-group--capped {
-    .filter-group-title.active,
-    .filter-group-title.selected {
-      border-bottom-right-radius: $border-radius-base;
-      border-bottom-left-radius: $border-radius-base;
-    }
-
-    .filter-group-surface {
-      position: relative;
-      margin-top: 6px;
-      background-color: var(--color-gray-darker, #272b30);
-      border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
-      border-radius: var(--radius-control, 8px);
-
-      &::before,
-      &::after {
-        position: absolute;
-        right: max(10px, var(--cap-inset, 12%));
-        left: max(10px, var(--cap-inset, 12%));
-        height: var(--cap-h, 4px);
-        background-color: var(--color-endcap, #7a8288);
-        content: "";
-      }
-
-      &::before {
-        top: -1px;
-        border-radius: 0 0 var(--cap-r, 3px) var(--cap-r, 3px);
-      }
-
-      &::after {
-        bottom: -1px;
-        border-radius: var(--cap-r, 3px) var(--cap-r, 3px) 0 0;
-      }
-    }
-
-    .filter-group-surface .filter-group-items {
-      background-color: transparent;
-      border: none;
-      border-radius: 0;
-    }
-
-    // Rows stay rows; only the division between them joins the new language.
-    .filter-group-item {
-      border-bottom-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
-    }
-
-    .filter-group-search {
-      border: none;
-      border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-
-      :deep(input) {
-        background-color: transparent;
-      }
     }
   }
 

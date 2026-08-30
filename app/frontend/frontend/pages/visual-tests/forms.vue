@@ -73,14 +73,6 @@ const toggleLoading = ref(false);
 
 const filterSingle = ref<string | null>("medium");
 
-const filterAttached = ref<string | null>(null);
-
-const filterDetached = ref<string | null>(null);
-
-const filterAttachedMultiple = ref<string[]>(["medium"]);
-
-const filterDetachedMultiple = ref<string[]>(["medium"]);
-
 const filterMultiple = ref<string[]>(["small", "large"]);
 
 const sizes = [
@@ -544,73 +536,6 @@ const powerMarks = (value: number) => ({ label: String(value) });
         label="Ship Size (disabled)"
         :options="sizeOptions"
         disabled
-      />
-    </div>
-  </div>
-
-  <Heading :level="HeadingLevelEnum.H2">
-    FilterGroup — how the dropdown meets the trigger
-  </Heading>
-  <p>
-    A decision, not a finished state: see D7 in
-    <code>docs/exec-plans/filter-group-redesign.md</code>. The trigger is
-    untouched in both. What differs is what hangs off it. Top row is single
-    select, the bottom row the same three with <code>multiple</code>.
-  </p>
-  <ul>
-    <li>
-      <strong>today</strong> — the segment continues the trigger's own frame.
-    </li>
-    <li>
-      <strong>capped</strong> — its own surface in the new language, standing
-      off the trigger with a gap, rounded all round, an end-cap top and bottom.
-    </li>
-  </ul>
-  <div class="row">
-    <div class="col-12 col-md-6 col-lg-4">
-      <p class="text-muted">today</p>
-      <FilterGroup
-        v-model="filterAttached"
-        name="filter-single-today"
-        label="Ship Size"
-        :options="sizeOptions"
-        search-label="Find a size…"
-        searchable
-      />
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-      <p class="text-muted">capped — chosen, see D7</p>
-      <FilterGroup
-        v-model="filterDetached"
-        name="filter-single-capped"
-        label="Ship Size"
-        :options="sizeOptions"
-        search-label="Find a size…"
-        searchable
-        class="filter-group--capped"
-      />
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-md-6 col-lg-4">
-      <p class="text-muted">today</p>
-      <FilterGroup
-        v-model="filterAttachedMultiple"
-        name="filter-multi-today"
-        label="Ship Sizes"
-        :options="sizeOptions"
-        multiple
-      />
-    </div>
-    <div class="col-12 col-md-6 col-lg-4">
-      <p class="text-muted">capped — chosen, see D7</p>
-      <FilterGroup
-        v-model="filterDetachedMultiple"
-        name="filter-multi-capped"
-        label="Ship Sizes"
-        :options="sizeOptions"
-        multiple
-        class="filter-group--capped"
       />
     </div>
   </div>
