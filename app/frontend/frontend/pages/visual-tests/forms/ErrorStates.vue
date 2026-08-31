@@ -25,7 +25,7 @@ import { useForm } from "vee-validate";
 // RadioList and FilterGroup are absent because they do not bind a field at all,
 // so a form has no way to mark them; and no control in this design system has a
 // readonly state, which is worth knowing before looking for one.
-const { validate } = useForm({
+const { validate, setTouched } = useForm({
   validationSchema: {
     handle: "required",
     contact: "required|email",
@@ -48,8 +48,28 @@ const { validate } = useForm({
   },
 });
 
+/*
+ * Validated and marked touched up front, so the invalid styling is visible
+ * without interaction.
+ *
+ * Both halves are needed. Validating fills the errors; marking touched is what
+ * lets them be seen, because a control shows its message only once its field has
+ * been left -- otherwise it corrects someone mid-word. On a page whose whole
+ * subject is the error states, there is nobody to do the leaving.
+ */
 onMounted(async () => {
   await validate();
+
+  setTouched({
+    handle: true,
+    contact: true,
+    quantity: true,
+    notes: true,
+    terms: true,
+    boughtAt: true,
+    avatar: true,
+    newsletter: true,
+  });
 });
 </script>
 

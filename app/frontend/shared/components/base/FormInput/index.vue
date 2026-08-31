@@ -125,6 +125,7 @@ const {
   value: inputValue,
   errorMessage,
   errors,
+  meta,
   handleChange,
   handleBlur,
   handleReset,
@@ -134,8 +135,30 @@ const {
   label: innerLabel.value,
 });
 
+/*
+ * An error is worth showing once the field has been left, not while it is being
+ * typed into. vee-validate validates on every keystroke either way; before the
+ * redesign that was invisible, because the message lived in a hover tooltip, and
+ * moving it inline turned it into a field correcting someone mid-word -- "must
+ * be at least 8 characters" on the first letter of a password.
+ *
+ * `touched` is set by handleBlur and by submitting, which are exactly the two
+ * moments the message is useful. After the first blur it stays true, so a
+ * message a reader is now fixing updates as they type rather than waiting for
+ * another blur.
+ *
+ * The blur handler is passed `shouldValidate` for the same reason: on its own
+ * handleBlur only marks the field, and vee-validate otherwise validates on a
+ * value change. Tabbing through an empty required field changes nothing, so
+ * without this there was no error to gate and the field stayed silent until the
+ * form was submitted.
+ *
+ * This gate is for controls that are typed into. A checkbox, a toggle, a date
+ * picker and a file input change by one deliberate act, so there is no
+ * mid-word to interrupt and they report as soon as they are wrong.
+ */
 const hasErrors = computed(() => {
-  return errors.value.length;
+  return errors.value.length > 0 && meta.touched;
 });
 
 const innerPlaceholder = computed(() => {
@@ -204,6 +227,29 @@ const setFocus = (options?: FocusOptions) => {
   inputElement.value?.focus(options);
 };
 
+/*
+ * Blur means "the reader left this field", and only then is an error worth
+ * raising. A field torn out of the DOM while focused fires the same event on its
+ * way out, and taking that at face value reported an empty required field on a
+ * page nobody had touched yet -- signup focuses its first field on mount and
+ * that subtree is then replaced, one millisecond later.
+ *
+ * Deferring by a tick separates them: the element a reader stepped out of is
+ * still in the document, and the one that was removed is not. Both the touch and
+ * the validation wait for that answer, because vee-validate keeps field state on
+ * the form -- marking a torn-down field touched would outlive it and show the
+ * error on whatever mounts next.
+ */
+const onBlur = (event: FocusEvent) => {
+  const element = event.target as HTMLElement | null;
+
+  window.setTimeout(() => {
+    if (element?.isConnected) {
+      handleBlur(event, true);
+    }
+  });
+};
+
 const slots = useSlots();
 
 defineExpose({
@@ -243,7 +289,7 @@ defineExpose({
       </slot>
       <input
         :id="internalId"
-        :aria-describedby="errorMessage ? errorId : undefined"
+        :aria-describedby="hasErrors ? errorId : undefined"
         ref="inputElement"
         v-tooltip.right="hasErrors && errorMessage"
         :value="inputValue"
@@ -262,7 +308,7 @@ defineExpose({
           clearable,
         }"
         @input="onChange"
-        @blur="handleBlur"
+        @blur="onBlur"
       />
       <div v-if="suffix || slots.suffix" class="base-input__suffix">
         <slot name="suffix">

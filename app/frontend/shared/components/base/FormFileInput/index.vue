@@ -153,7 +153,7 @@ const onUploadError = () => {
 };
 
 const hasErrors = computed(() => {
-  return errors.value.length || uploadFailed.value;
+  return errors.value.length > 0 || uploadFailed.value;
 });
 
 const shownError = computed(() =>

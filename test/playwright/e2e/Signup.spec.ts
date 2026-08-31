@@ -77,37 +77,45 @@ test.describe("Signup", () => {
     await appFactories([
       ["create", "user", { password, password_confirmation: password }],
     ]).then(async ([user]) => {
+      /*
+       * Blurred before each first assertion: a field reports on the way out, not
+       * while it is being typed into. Once it has been left the state follows
+       * every keystroke, which is why the later fills need no blur of their own.
+       */
       const usernameInput = page.getByTestId("input-username");
       await usernameInput.fill(user.username);
-      await expect(
-        page.getByTestId("input-wrapper-username"),
-      ).toHaveClass(/base-input--with-error/);
+      await usernameInput.blur();
+      await expect(page.getByTestId("input-wrapper-username")).toHaveClass(
+        /base-input--with-error/,
+      );
 
       const emailInput = page.getByTestId("input-email");
       await emailInput.fill(user.email);
-      await expect(
-        page.getByTestId("input-wrapper-email"),
-      ).toHaveClass(/base-input--with-error/);
+      await emailInput.blur();
+      await expect(page.getByTestId("input-wrapper-email")).toHaveClass(
+        /base-input--with-error/,
+      );
       const invalidEmail = "foo";
       await emailInput.fill(invalidEmail);
-      await expect(
-        page.getByTestId("input-wrapper-email"),
-      ).toHaveClass(/base-input--with-error/);
+      await expect(page.getByTestId("input-wrapper-email")).toHaveClass(
+        /base-input--with-error/,
+      );
       await emailInput.fill("test@test.de");
-      await expect(
-        page.getByTestId("input-wrapper-email"),
-      ).not.toHaveClass(/base-input--with-error/);
+      await expect(page.getByTestId("input-wrapper-email")).not.toHaveClass(
+        /base-input--with-error/,
+      );
 
       const passwordInput = page.getByTestId("input-password");
       const tooShortPassword = "foo";
       await passwordInput.fill(tooShortPassword);
-      await expect(
-        page.getByTestId("input-wrapper-password"),
-      ).toHaveClass(/base-input--with-error/);
+      await passwordInput.blur();
+      await expect(page.getByTestId("input-wrapper-password")).toHaveClass(
+        /base-input--with-error/,
+      );
       await passwordInput.fill("password");
-      await expect(
-        page.getByTestId("input-wrapper-password"),
-      ).not.toHaveClass(/base-input--with-error/);
+      await expect(page.getByTestId("input-wrapper-password")).not.toHaveClass(
+        /base-input--with-error/,
+      );
 
       await page.locator("input[name='passwordConfirmation']").fill(password);
     });
