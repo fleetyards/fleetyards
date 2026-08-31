@@ -192,14 +192,31 @@ const cssClasses = computed(() => {
   };
 });
 
-onMounted(() => {
+onMounted(async () => {
   if (props.id) {
     internalId.value = props.id;
   } else {
     internalId.value = `${props.name}-${uuidv4()}`;
   }
 
-  if (props.autofocus) {
+  if (!props.autofocus) {
+    return;
+  }
+
+  inputElement.value?.focus();
+
+  /*
+   * And once more after the tree settles. On signup the field is created,
+   * focused, and replaced in the same tick, which drops the focus on the floor
+   * -- the page has never actually opened with its first field focused.
+   *
+   * Only when nothing else has taken focus in between, so a reader who clicked
+   * elsewhere keeps their place, and only onto the element that is there now:
+   * the ref points at whatever replaced the original.
+   */
+  await nextTick();
+
+  if (document.activeElement === document.body) {
     inputElement.value?.focus();
   }
 });
