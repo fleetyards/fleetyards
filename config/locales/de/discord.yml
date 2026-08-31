@@ -1,6 +1,21 @@
 ---
 de:
   discord:
+    commands:
+      disabled: Fleetyards-Befehle sind noch nicht verfügbar.
+      failed: Beim Abrufen ist etwas schiefgelaufen. Bitte versuche es erneut.
+      ship:
+        ambiguous: '%{count} Schiffe passen zu „%{query}“:'
+        fields:
+          classification: Klassifizierung
+          crew: Besatzung
+          dimensions: Maße
+          pledge_price: Pledge-Preis
+          price: Preis
+          size: Größe
+        missing_query: Bitte gib einen Schiffsnamen an.
+        more: '…und weitere. Versuche einen genaueren Namen.'
+        not_found: 'Kein Schiff für „%{query}“ gefunden.'
     new_ship:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added

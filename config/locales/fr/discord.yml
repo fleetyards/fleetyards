@@ -1,6 +1,21 @@
 ---
 fr:
   discord:
+    commands:
+      disabled: Les commandes Fleetyards ne sont pas encore disponibles.
+      failed: "Une erreur est survenue lors de la recherche. Merci de réessayer."
+      ship:
+        ambiguous: '%{count} vaisseaux correspondent à « %{query} » :'
+        fields:
+          classification: Classification
+          crew: Équipage
+          dimensions: Dimensions
+          pledge_price: Prix pledge
+          price: Prix
+          size: Taille
+        missing_query: "Merci d'indiquer le nom d'un vaisseau."
+        more: "…et d'autres. Essayez un nom plus précis."
+        not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
     new_ship:
       message: 'Permettez-moi de vous présenter : %{manufacturer} %{model}'
       title: Nouveau vaisseau / véhicule ajouté

@@ -1,6 +1,21 @@
 ---
 zh-CN:
   discord:
+    commands:
+      disabled: Fleetyards 命令尚不可用。
+      failed: 查询时出错，请重试。
+      ship:
+        ambiguous: '有 %{count} 艘飞船匹配“%{query}”：'
+        fields:
+          classification: 分类
+          crew: 船员
+          dimensions: 尺寸
+          pledge_price: 众筹价格
+          price: 价格
+          size: 体积
+        missing_query: 请提供飞船名称。
+        more: '…还有更多，请使用更精确的名称。'
+        not_found: '未找到与“%{query}”匹配的飞船。'
     new_ship:
       message: '请允许我介绍一下： %{manufacturer} %{model}'
       title: 添加新的货运/车辆

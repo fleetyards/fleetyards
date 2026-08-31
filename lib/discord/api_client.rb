@@ -60,6 +60,14 @@ module Discord
       request(:get, "guilds/#{guild_id}")
     end
 
+    # A full replacement of the application's global command list, which is
+    # what makes `discord:commands:sync` idempotent: whatever the registry does
+    # not list stops existing. Rate-limited per day, so it belongs in a task
+    # rather than in a deploy hook.
+    def put_application_commands(application_id, definitions)
+      request(:put, "applications/#{application_id}/commands", definitions)
+    end
+
     def create_guild_scheduled_event(guild_id, payload)
       post("guilds/#{guild_id}/scheduled-events", payload)
     end
