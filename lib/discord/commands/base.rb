@@ -6,9 +6,12 @@ module Discord
     # Discord client -- the job owns the transport, so a command is a plain
     # unit test over its embed.
     class Base
-      # Bit 64: only the invoking member sees the reply. Default for every
-      # command, so a busy channel does not fill with bot output; a command
-      # that wants a public post opts out.
+      # Bit 64: only the invoking member sees the reply.
+      #
+      # Only meaningful on an *immediate* response. Discord fixes a deferred
+      # interaction's visibility at the acknowledgement and ignores flags on the
+      # follow-up, so a command payload cannot carry this -- Registry.ephemeral?
+      # decides it before the job runs.
       EPHEMERAL = 64
 
       attr_reader :options, :guild_id, :discord_user_id
@@ -27,11 +30,11 @@ module Discord
         options[name.to_s]
       end
 
-      private def message(content: nil, embeds: nil, ephemeral: true)
+      # No flags: this becomes a follow-up, where Discord ignores them.
+      private def message(content: nil, embeds: nil)
         payload = {}
         payload[:content] = content if content.present?
         payload[:embeds] = embeds if embeds.present?
-        payload[:flags] = EPHEMERAL if ephemeral
         payload
       end
 

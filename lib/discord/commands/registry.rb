@@ -11,6 +11,19 @@ module Discord
       # Discord application command option types.
       STRING = 3
 
+      # Whether a command's answer is private to the caller.
+      #
+      # Declared here rather than decided by the command, because **Discord
+      # fixes visibility at the deferred acknowledgement** -- before the job
+      # that produces the answer has run. Flags on the follow-up payload are
+      # ignored, so a command cannot make itself public afterwards, and one
+      # command cannot post a public hit and a private miss.
+      #
+      # All five are lookups over data the site publishes, so they answer in
+      # the channel: asking in company is the point. The cost is that their
+      # refusals are public too.
+      EPHEMERAL_BY_DEFAULT = false
+
       DEFINITIONS = [
         {
           name: "ship",
@@ -82,6 +95,15 @@ module Discord
         DEFINITIONS.find { |definition| definition[:name] == name.to_s }
       end
 
+      # Unknown commands answer privately: a "that command no longer exists"
+      # belongs to whoever typed it.
+      def self.ephemeral?(name)
+        definition = definition(name)
+        return true if definition.nil?
+
+        definition.fetch(:ephemeral, EPHEMERAL_BY_DEFAULT)
+      end
+
       def self.handler_for(name)
         definition = definition(name)
         return nil if definition.blank?
@@ -93,7 +115,7 @@ module Discord
       # ours and would be rejected as an unknown key.
       def self.payload
         DEFINITIONS.map do |definition|
-          definition.except(:handler).deep_dup
+          definition.except(:handler, :ephemeral).deep_dup
         end
       end
     end

@@ -18,7 +18,7 @@ module Discord
         model, answer = resolve_model(query)
         return answer if model.nil?
 
-        message(embeds: [embed(model)], ephemeral: false)
+        message(embeds: [embed(model)])
       end
 
       private def embed(model)

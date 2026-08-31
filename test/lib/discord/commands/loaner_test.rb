@@ -54,7 +54,7 @@ module Discord
         assert_includes call("Hornet")[:content], "Hornet F7C"
       end
 
-      test "a real answer is posted publicly" do
+      test "carries no flags, since a follow-up cannot set them" do
         add_loaner(@model, @loaner)
 
         assert_nil call("Carrack")[:flags]

@@ -10,7 +10,7 @@ module Discord
         return message(content: I18n.t("discord.commands.fleet.not_bound")) if fleet.nil?
         return message(content: I18n.t("discord.commands.fleet.not_allowed", fleet: fleet.name)) unless allowed?(fleet)
 
-        message(embeds: [embed(fleet)], ephemeral: false)
+        message(embeds: [embed(fleet)])
       end
 
       # The guild the command came from decides which fleet is meant, through

@@ -17,7 +17,7 @@ module Discord
         loaners = model.loaners.visible.active.ordered_by_name.to_a
         return message(content: I18n.t("discord.commands.loaner.none", ship: model.name)) if loaners.empty?
 
-        message(content: content_for(model, loaners), ephemeral: false)
+        message(content: content_for(model, loaners))
       end
 
       private def content_for(model, loaners)

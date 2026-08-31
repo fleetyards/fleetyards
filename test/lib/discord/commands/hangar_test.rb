@@ -71,10 +71,12 @@ module Discord
         assert_equal call("Nobody")[:content].sub("Nobody", "X"), call("Aendrax")[:content].sub("Aendrax", "X")
       end
 
-      test "a listing is only shown to the caller when it is a refusal" do
+      # Visibility is not a command's to decide -- RegistryTest and
+      # DiscordInteractionsTest cover it where Discord actually reads it.
+      test "carries no flags, since a follow-up cannot set them" do
         @user.update!(public_hangar: false)
 
-        assert_equal ::Discord::Commands::Base::EPHEMERAL, call("Aendrax")[:flags]
+        assert_nil call("Aendrax")[:flags]
       end
 
       test "a blank username asks for one" do

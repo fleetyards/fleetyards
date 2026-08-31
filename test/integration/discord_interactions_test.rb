@@ -84,7 +84,35 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
 
       assert_response :success
       assert_equal 5, response.parsed_body["type"]
+    end
+
+    # The acknowledgement is the only place Discord reads visibility: it fixes
+    # it there and ignores flags on the follow-up. A command that answers in
+    # the channel must therefore acknowledge without the ephemeral flag.
+    test "a public command is acknowledged without the ephemeral flag" do
+      post_signed(command_payload)
+
+      assert_nil response.parsed_body.dig("data", "flags")
+    end
+
+    test "an unknown command is acknowledged privately" do
+      post_signed(command_payload(name: "definitely-not-a-command"))
+
       assert_equal 64, response.parsed_body.dig("data", "flags")
+    end
+
+    test "every registered command is acknowledged the way the registry declares" do
+      Discord::Commands::Registry::DEFINITIONS.each do |definition|
+        post_signed(command_payload(name: definition[:name]))
+
+        flags = response.parsed_body.dig("data", "flags")
+
+        if Discord::Commands::Registry.ephemeral?(definition[:name])
+          assert_equal 64, flags, "/#{definition[:name]} should answer privately"
+        else
+          assert_nil flags, "/#{definition[:name]} should answer in the channel"
+        end
+      end
     end
 
     test "enqueues the command with everything the job needs" do

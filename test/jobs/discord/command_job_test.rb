@@ -7,7 +7,13 @@ module Discord
     setup do
       @client = mock("Discord::InteractionClient")
       ::Discord::InteractionClient.stubs(:new).returns(@client)
-      create(:model, name: "Carrack", classification: "explorer")
+      # The lookup matches on the model slug and the manufacturer slug too, and
+      # both are built from the manufacturer -- a random one can contain the
+      # "not found" query as a substring and answer with this ship.
+      create(:model,
+        name: "Carrack",
+        classification: "explorer",
+        manufacturer: create(:manufacturer, name: "Anvil Aerospace", code: "ANVL"))
     end
 
     def context(overrides = {})

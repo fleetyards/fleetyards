@@ -64,10 +64,9 @@ module Discord
     end
 
     private def failure
-      {
-        content: I18n.t("discord.commands.failed"),
-        flags: Commands::Base::EPHEMERAL
-      }
+      # No flags: Discord ignores them on a follow-up, and this message
+      # inherits the visibility the acknowledgement already fixed.
+      {content: I18n.t("discord.commands.failed")}
     end
   end
 end

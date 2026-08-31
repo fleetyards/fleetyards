@@ -30,10 +30,8 @@ module Discord
         assert_equal "Anvil Aerospace", embed.dig(:footer, :text)
       end
 
-      test "a single match is posted publicly rather than only to the caller" do
-        payload = call("Carrack")
-
-        assert_nil payload[:flags]
+      test "carries no flags, since a follow-up cannot set them" do
+        assert_nil call("Carrack")[:flags]
       end
 
       test "the embed carries the labels the site uses" do
@@ -64,11 +62,11 @@ module Discord
         assert_includes payload[:content], "Hornet F7A"
       end
 
-      test "a listing is only shown to the caller" do
+      test "a listing carries no flags either" do
         create(:model, name: "Hornet F7C", slug: "hornet-f7c", manufacturer: @manufacturer)
         create(:model, name: "Hornet F7A", slug: "hornet-f7a", manufacturer: @manufacturer)
 
-        assert_equal ::Discord::Commands::Base::EPHEMERAL, call("Hornet")[:flags]
+        assert_nil call("Hornet")[:flags]
       end
 
       test "answers a miss with a message rather than an empty embed" do
