@@ -1,6 +1,21 @@
 ---
 zh-TW:
   discord:
+    commands:
+      disabled: Fleetyards 指令尚未開放。
+      failed: 查詢時發生錯誤，請重試。
+      ship:
+        ambiguous: '有 %{count} 艘船艦符合「%{query}」：'
+        fields:
+          classification: 分類
+          crew: 船員
+          dimensions: 尺寸
+          pledge_price: 眾籌價格
+          price: 價格
+          size: 體積
+        missing_query: 請提供船艦名稱。
+        more: '…還有更多，請使用更精確的名稱。'
+        not_found: '找不到符合「%{query}」的船艦。'
     new_ship:
       message: '讓我來介紹：%{manufacturer} %{model}'
       title: 新增船艦／載具

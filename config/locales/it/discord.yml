@@ -1,6 +1,21 @@
 ---
 it:
   discord:
+    commands:
+      disabled: I comandi Fleetyards non sono ancora disponibili.
+      failed: Qualcosa è andato storto durante la ricerca. Riprova.
+      ship:
+        ambiguous: '%{count} navi corrispondono a «%{query}»:'
+        fields:
+          classification: Classificazione
+          crew: Equipaggio
+          dimensions: Misure
+          pledge_price: Prezzo pledge
+          price: Prezzo
+          size: Dimensione
+        missing_query: Indica il nome di una nave.
+        more: '…e altre. Prova con un nome più preciso.'
+        not_found: 'Nessuna nave trovata per «%{query}».'
     new_ship:
       message: 'Permettetemi di presentarvi: %{manufacturer} %{model}'
       title: Nuova nave/veicolo aggiunto

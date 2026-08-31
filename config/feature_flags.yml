@@ -16,6 +16,11 @@
 # push. Seeded from the flags live in Flipper at the time the registry was
 # introduced.
 
+# Gates command dispatch only. PING always answers, so the interactions
+# endpoint URL can be saved in the Discord portal before this is switched on.
+discord_commands:
+  description: "Discord slash commands answered by the interactions endpoint"
+
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
 

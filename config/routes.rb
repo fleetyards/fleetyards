@@ -17,6 +17,11 @@ Rails.application.routes.draw do
 
   post "/emails/inbound" => "inbound_emails#create"
 
+  # Discord's interactions endpoint. Deliberately outside :api_routes -- it is
+  # not public API surface, carries no OpenAPI component and must not enter the
+  # generated schema or the TS client.
+  post "/discord/interactions" => "discord/interactions#create"
+
   if Rails.env.production?
     match "/uploads/(*path)", to: redirect { |_params, request| "#{Rails.configuration.app.legacy_cdn_endpoint}#{request.fullpath}" }, via: [:get, :head]
   end

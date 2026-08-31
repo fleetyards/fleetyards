@@ -8,6 +8,7 @@ SC_DATA_S3__BUCKET=fltyrd-sc
 SC_DATA_S3__ACCESS_KEY_ID=op://Fleetyards/HETZNER_S3/access_key_id
 SC_DATA_S3__SECRET_ACCESS_KEY=op://Fleetyards/HETZNER_S3/secret_access_key
 # DISCORD__OAUTH_SECRET=op://Fleetyards/DISCORD_OAUTH/credential
+# DISCORD__PUBLIC_KEY=op://Fleetyards/DISCORD_BOT/public_key
 GITHUB__OAUTH_CLIENT_ID=op://Fleetyards/GITHUB_OAUTH/client_id
 GITHUB__OAUTH_SECRET=op://Fleetyards/GITHUB_OAUTH/credential
 TWITCH__OAUTH_CLIENT_ID=op://Fleetyards/TWITCH_OAUTH/client_id

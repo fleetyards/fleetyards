@@ -1,6 +1,21 @@
 ---
 en:
   discord:
+    commands:
+      disabled: Fleetyards commands are not available yet.
+      failed: Something went wrong while looking that up. Please try again.
+      ship:
+        ambiguous: '%{count} ships match "%{query}":'
+        fields:
+          classification: Classification
+          crew: Crew
+          dimensions: Dimensions
+          pledge_price: Pledge Price
+          price: Price
+          size: Size
+        missing_query: Please provide a ship name.
+        more: '…and more. Try a more specific name.'
+        not_found: 'No ship found for "%{query}".'
     new_ship:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added
