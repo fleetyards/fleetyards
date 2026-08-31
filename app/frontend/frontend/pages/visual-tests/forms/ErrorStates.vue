@@ -11,6 +11,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import RadioList from "@/shared/components/base/RadioList/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useForm } from "vee-validate";
 
@@ -22,9 +23,10 @@ import { useForm } from "vee-validate";
 // covers every control that calls `useField` without one, which is all of these.
 // Validated up front so the invalid styling is visible without interaction.
 //
-// RadioList and FilterGroup are absent because they do not bind a field at all,
-// so a form has no way to mark them; and no control in this design system has a
-// readonly state, which is worth knowing before looking for one.
+// RadioList is here now that it binds a field. FilterGroup still is not: its
+// `error` prop is passed by none of its call sites, so it has nothing to show.
+// And no control in this design system has a readonly state, which is worth
+// knowing before looking for one.
 const { validate, setTouched } = useForm({
   validationSchema: {
     handle: "required",
@@ -35,6 +37,7 @@ const { validate, setTouched } = useForm({
     boughtAt: "required",
     avatar: "required",
     newsletter: "required",
+    delivery: "required",
   },
   initialValues: {
     handle: "",
@@ -45,6 +48,7 @@ const { validate, setTouched } = useForm({
     boughtAt: null,
     avatar: null,
     newsletter: false,
+    delivery: undefined,
   },
 });
 
@@ -69,6 +73,7 @@ onMounted(async () => {
     boughtAt: true,
     avatar: true,
     newsletter: true,
+    delivery: true,
   });
 });
 </script>
@@ -92,6 +97,16 @@ onMounted(async () => {
     <div class="row">
       <div class="col-12 col-md-6">
         <FormTextarea name="notes" label="Notes (required)" />
+      </div>
+      <div class="col-12 col-md-6">
+        <RadioList
+          name="delivery"
+          label="Delivery (required)"
+          :options="[
+            { label: 'Pick up', value: 'pickup' },
+            { label: 'Deliver', value: 'deliver' },
+          ]"
+        />
       </div>
     </div>
     <div class="row">

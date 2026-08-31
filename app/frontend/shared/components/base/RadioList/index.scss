@@ -19,6 +19,16 @@
     padding-top: 2px;
   }
 
+  // Same shape as every other control's message, and rendered only when there
+  // is one, because a radio group changes by one deliberate act.
+  &__error {
+    min-height: var(--field-message-line, 1.25rem);
+    margin: var(--field-message-gap, 4px) 0 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
+  }
+
   &__item {
     margin-top: 0;
     padding: 5px 0;
@@ -109,4 +119,13 @@
       }
     }
   }
+}
+
+/*
+ * The edge carries invalid, the same signature that carries focus and loses to
+ * it while focused -- as on the checkbox and the toggle. The labels stay
+ * readable; the message beside them is what needs reading.
+ */
+.radio-list--with-error .radio-list__item input + label::before {
+  border-color: var(--color-danger, #dc3545);
 }
