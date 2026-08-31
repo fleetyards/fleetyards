@@ -21,6 +21,9 @@ export type FileUpload = {
   progress: number;
   status: "pending" | "uploading" | "done" | "error";
   blob?: Blob;
+  // Kept on the file so a consumer can say which one failed, not just that one
+  // did. The person holding it still gets the translated message.
+  error?: unknown;
 };
 
 type Props = {
@@ -229,13 +232,33 @@ const upload = async () => {
         file.status = "done";
       } catch (error) {
         file.status = "error";
+        file.error = error;
         clear();
-        displayAlert({
-          text: (error as string) || t("errors.upload.generic"),
-        });
+
+        /*
+         * The translated message, not the raw error. `error as string` handed
+         * the toast whatever the failure stringified to -- "Error creating Blob"
+         * for an ActiveStorage rejection -- which tells the person holding the
+         * file nothing they can act on. The detail goes to the console, where
+         * it is useful.
+         */
+        console.error("Direct upload failed", error);
+        displayAlert({ text: t("errors.upload.generic") });
       }
     }),
   ).then(() => {
+    const failed = files.value.filter((file) => file.status === "error");
+
+    /*
+     * A failure used to arrive as "done" with an emptied list, because clear()
+     * runs in the catch and this fires regardless -- so a consumer could not
+     * tell a successful upload of nothing from a failed upload of something.
+     */
+    if (failed.length) {
+      emit("upload:error", failed);
+      return;
+    }
+
     emit("upload:done", files.value);
   });
 };
@@ -262,6 +285,7 @@ const emit = defineEmits<{
   "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
   "upload:done": [files: FileUpload[]];
+  "upload:error": [files: FileUpload[]];
   "files:rejected": [files: File[]];
   clear: [];
 }>();

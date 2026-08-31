@@ -59,12 +59,17 @@ const emit = defineEmits<{
   "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
   "upload:done": [files: FileUpload[]];
+  "upload:error": [files: FileUpload[]];
   "files:rejected": [files: File[]];
   clear: [];
 }>();
 
 const handleUploadStart = (files: FileUpload[]) => {
   emit("upload:start", files);
+};
+
+const handleUploadError = (files: FileUpload[]) => {
+  emit("upload:error", files);
 };
 
 const handleUploadProgress = (progress: number) => {
@@ -115,6 +120,7 @@ defineExpose({
         :directory="directory"
         :filter="filter"
         @upload:done="handleUploadDone"
+        @upload:error="handleUploadError"
         @upload:progress="handleUploadProgress"
         @upload:start="handleUploadStart"
         @files:rejected="handleFilesRejected"
