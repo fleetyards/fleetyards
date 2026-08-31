@@ -265,10 +265,12 @@ class Notification < ApplicationRecord
     type_config(type)[:mailer]
   end
 
+  # Always a full channel set, whatever a type happens to configure: callers
+  # build database rows from this and insert_all needs identical keys.
   def self.preference_defaults_for(type)
-    type_config(type)
-      .fetch(:preference_defaults, {app: true, mail: false, push: false})
-      .reverse_merge(discord: false)
+    NotificationPreference::CHANNEL_DEFAULTS.merge(
+      type_config(type).fetch(:preference_defaults, {})
+    )
   end
 
   # Retention files a notification into the archive rather than making it

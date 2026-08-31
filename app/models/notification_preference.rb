@@ -23,6 +23,12 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class NotificationPreference < ApplicationRecord
+  # Every delivery channel, with its off-by-default value. One source of truth
+  # on purpose: a channel that exists here but not in one of the places that
+  # build a full row breaks User#create_default_notification_preferences, whose
+  # insert_all needs every row to carry identical keys.
+  CHANNEL_DEFAULTS = {app: true, mail: false, push: false, discord: false}.freeze
+
   belongs_to :user
 
   enum :notification_type, Notification.notification_types
