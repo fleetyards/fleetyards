@@ -137,6 +137,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
             v-bind="flagshipProps"
             name="flagship"
             :label="t('labels.vehicle.flagship')"
+            align-with-fields
           />
         </div>
         <div v-if="vehicle?.model?.hasPaints" class="col-12 col-md-6">
@@ -164,12 +165,14 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
             v-bind="saleNotifyProps"
             name="saleNotify"
             :label="t('labels.vehicle.saleNotify')"
+            align-with-fields
           />
           <FormToggle
             v-model="publicVisible"
             v-bind="publicVisibleProps"
             name="public"
             :label="t('labels.vehicle.public')"
+            :align-with-fields="!wishlist"
           />
         </div>
         <div class="col-12 col-md-6">

@@ -139,6 +139,7 @@ const useName = (newName: string) => {
             v-model="nameVisible"
             name="nameVisible"
             :label="t('labels.vehicle.nameVisible')"
+            align-with-fields
           />
         </div>
       </div>

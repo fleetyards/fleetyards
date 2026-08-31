@@ -94,6 +94,7 @@ const onSubmit = handleSubmit(async (values) => {
             name="public"
             v-bind="publicFieldProps"
             :label="t('labels.hangarGroup.public')"
+            align-with-fields
           />
         </div>
         <div class="col-12">

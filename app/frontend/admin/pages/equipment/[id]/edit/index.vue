@@ -147,6 +147,7 @@ const handleCancel = async () => {
           translation-key="equipment.hidden"
           v-bind="hiddenProps"
           name="hidden"
+          align-with-fields
         />
         <hr />
         <div class="row">

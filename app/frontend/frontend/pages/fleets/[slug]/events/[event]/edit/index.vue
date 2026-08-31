@@ -327,6 +327,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
           v-model="autoLockEnabled"
           name="autoLockEnabled"
           :label="t('labels.fleets.events.autoLockEnabled')"
+          align-with-fields
         />
       </div>
       <div v-if="autoLockEnabled" class="col-12 col-md-6">
