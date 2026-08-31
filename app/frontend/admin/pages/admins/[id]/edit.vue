@@ -131,6 +131,7 @@ const handleCancel = async () => {
           v-bind="superAdminProps"
           translation-key="adminUser.superAdmin"
           name="superAdmin"
+          align-with-fields
         />
       </div>
       <div class="col-12 col-md-6">

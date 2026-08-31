@@ -85,6 +85,7 @@ const itemPricesList = ref<{
           translation-key="model.onSale"
           v-bind="onSaleProps"
           name="onSale"
+          align-with-fields
         />
         <FormInput
           v-model="salesPageUrl"
