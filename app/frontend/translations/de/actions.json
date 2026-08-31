@@ -286,7 +286,8 @@
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
-        "clearCargo": "Fracht leeren"
+        "clearCargo": "Fracht leeren",
+        "viewCargoGrid": "Frachtraster ansehen"
       },
       "adminNotifications": {
         "unread": "Als ungelesen markieren",

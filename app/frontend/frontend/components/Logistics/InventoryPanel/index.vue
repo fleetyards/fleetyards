@@ -12,6 +12,12 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PanelUserTag from "@/frontend/components/base/PanelUserTag/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
+import {
+  containersForVolume,
+  encodeContainerCounts,
+} from "@/frontend/components/CargoGridViewer/constants";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { FeatureFlagName } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
@@ -36,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ edit: [] }>();
 
 const { t } = useI18n();
+const { isFeatureEnabled } = useFeatures();
 
 const totalScu = computed(() => props.inventory.totalScu ?? 0);
 
@@ -55,6 +62,28 @@ const cargoCapacity = computed(
 
 const overCapacity = computed(
   () => cargoCapacity.value > 0 && totalScu.value > cargoCapacity.value,
+);
+
+// The viewer opens on what the ship is actually carrying: the measured volume
+// counted out into the crates it would travel in.
+const cargoGridsRoute = computed(() => ({
+  name: "cargo-grids",
+  query: {
+    ship: props.inventory.vehicle?.model?.slug,
+    containers: encodeContainerCounts(
+      containersForVolume(props.inventory.totalVolumeScu ?? 0),
+    ),
+  },
+}));
+
+// It packs the hold it is given, so it is only worth offering once the ship
+// both has a grid and carries something to put in it.
+const showCargoGridsLink = computed(
+  () =>
+    isFeatureEnabled(FeatureFlagName.TOOLS_CARGO_GRIDS) &&
+    !!props.inventory.vehicle?.model?.slug &&
+    (props.inventory.vehicle?.model?.cargo ?? 0) > 0 &&
+    (props.inventory.totalVolumeScu ?? 0) >= 1,
 );
 
 const fallbackIndex = computed(() => {
@@ -85,8 +114,20 @@ const image = computed(
       <template v-if="subtitle" #subtitle>
         {{ subtitle }}
       </template>
-      <template v-if="editable" #actions>
+      <template v-if="editable || showCargoGridsLink" #actions>
         <Btn
+          v-if="showCargoGridsLink"
+          v-tooltip="t('actions.logistics.viewCargoGrid')"
+          :variant="BtnVariantsEnum.BARE"
+          :to="cargoGridsRoute"
+          :aria-label="t('actions.logistics.viewCargoGrid')"
+          class="inventory-panel-cargo-grids"
+          data-test="inventory-panel-cargo-grids"
+        >
+          <i class="fa-light fa-cube" />
+        </Btn>
+        <Btn
+          v-if="editable"
           :variant="BtnVariantsEnum.BARE"
           class="inventory-panel-edit"
           @click.prevent="emit('edit')"
@@ -144,7 +185,8 @@ const image = computed(
     min-height: 60px;
   }
 
-  &-edit {
+  &-edit,
+  &-cargo-grids {
     font-size: 18px;
 
     > :first-child {

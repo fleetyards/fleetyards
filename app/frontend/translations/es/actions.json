@@ -286,7 +286,8 @@
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
-        "clearCargo": "Vaciar carga"
+        "clearCargo": "Vaciar carga",
+        "viewCargoGrid": "Ver cuadrícula de carga"
       },
       "adminNotifications": {
         "unread": "Marcar como no leída",

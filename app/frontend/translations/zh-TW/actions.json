@@ -286,7 +286,8 @@
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
-        "clearCargo": "清空貨物"
+        "clearCargo": "清空貨物",
+        "viewCargoGrid": "檢視貨艙網格"
       },
       "adminNotifications": {
         "unread": "標示為未讀",

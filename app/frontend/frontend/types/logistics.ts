@@ -54,6 +54,7 @@ export type InventoryPanelRecord = {
   entriesCount: number;
   totalScu?: number;
   totalUnits?: number;
+  totalVolumeScu?: number;
   image?: { mediumUrl?: string };
   vehicle?: InventoryVehicleReference | null;
 };

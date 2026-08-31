@@ -13,6 +13,7 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import {
+  FeatureFlagName,
   type InventoryItem,
   type Vehicle,
   useVehicleInventory,
@@ -21,12 +22,17 @@ import {
   useDestroyVehicleInventory,
   useDestroyVehicleInventoryItem,
 } from "@/services/fyApi";
+import {
+  containersForVolume,
+  encodeContainerCounts,
+} from "@/frontend/components/CargoGridViewer/constants";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
 import type {
   InventoryStockRecord,
   InventoryTarget,
 } from "@/frontend/types/logistics";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -41,6 +47,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const mobile = useMobile();
+const { isFeatureEnabled } = useFeatures();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const vehicleId = computed(() => props.vehicle.id);
@@ -118,6 +125,26 @@ const remainingScu = computed(() =>
 );
 const overCapacity = computed(
   () => totalCapacity.value > 0 && storedScu.value > totalCapacity.value,
+);
+
+// The viewer opens on what the ship is actually carrying: the measured volume
+// counted out into the crates it would travel in.
+const cargoGridsRoute = computed(() => ({
+  name: "cargo-grids",
+  query: {
+    ship: props.vehicle.model?.slug,
+    containers: encodeContainerCounts(containersForVolume(storedScu.value)),
+  },
+}));
+
+// It packs the hold it is given, so it is only worth opening once the ship both
+// has a grid and carries something to put in it.
+const showCargoGridsLink = computed(
+  () =>
+    isFeatureEnabled(FeatureFlagName.TOOLS_CARGO_GRIDS) &&
+    !!props.vehicle.model?.slug &&
+    cargoCapacity.value > 0 &&
+    storedScu.value >= 1,
 );
 
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
@@ -240,6 +267,15 @@ onMounted(() => {
         {{ t("actions.logistics.importCsv") }}
       </Btn>
       <Btn
+        v-if="showCargoGridsLink"
+        :size="BtnSizesEnum.MD"
+        :to="cargoGridsRoute"
+        data-test="vehicle-cargo-grids-link"
+      >
+        <i class="fa-light fa-cube" />
+        {{ t("actions.logistics.viewCargoGrid") }}
+      </Btn>
+      <Btn
         v-if="hasCargo"
         :size="BtnSizesEnum.MD"
         :tone="BtnTonesEnum.DANGER"
@@ -275,6 +311,15 @@ onMounted(() => {
           <Btn :size="BtnSizesEnum.SM" @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             <span>{{ t("actions.logistics.importCsv") }}</span>
+          </Btn>
+          <Btn
+            v-if="showCargoGridsLink"
+            :size="BtnSizesEnum.SM"
+            :to="cargoGridsRoute"
+            data-test="vehicle-cargo-grids-link"
+          >
+            <i class="fa-light fa-cube" />
+            <span>{{ t("actions.logistics.viewCargoGrid") }}</span>
           </Btn>
           <Btn v-if="hasCargo" :size="BtnSizesEnum.SM" @click="clearCargo">
             <i class="fa-duotone fa-trash" />
