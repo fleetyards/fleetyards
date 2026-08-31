@@ -244,13 +244,22 @@
       &:last-child {
         position: relative;
 
+        /*
+         * The same rail the table rows use, from the same tokens -- see the note
+         * in base/Table/Col. The bloom that used to sit on it went with them:
+         * three 10px shadows at 0.9 alpha, in two more copies.
+         *
+         * The height stays in pixels rather than becoming the table's
+         * percentage. These rows size themselves from their content, so a
+         * percentage would give every row a different rail.
+         */
         &::before {
           position: absolute;
           top: 50%;
-          width: 4px;
+          width: var(--cap-h-row, 3px);
           height: 60px;
           margin-top: -30px;
-          background-color: $primary;
+          background-color: var(--color-primary, #428bca);
           opacity: 0;
           content: "";
         }
@@ -261,12 +270,8 @@
 
         &::before {
           right: 0;
-          border-top-left-radius: 2px;
-          border-bottom-left-radius: 2px;
-          box-shadow:
-            -3px 0 10px rgba(darken($primary, 20%), 0.9),
-            0 3px 10px rgba(darken($primary, 20%), 0.9),
-            0 -3px 10px rgba(darken($primary, 20%), 0.9);
+          border-top-left-radius: var(--cap-r-row, 1.5px);
+          border-bottom-left-radius: var(--cap-r-row, 1.5px);
         }
       }
 
@@ -275,12 +280,8 @@
 
         &::before {
           left: 0;
-          border-top-right-radius: 2px;
-          border-bottom-right-radius: 2px;
-          box-shadow:
-            3px 0 10px rgba(darken($primary, 20%), 0.9),
-            0 3px 10px rgba(darken($primary, 20%), 0.9),
-            0 -3px 10px rgba(darken($primary, 20%), 0.9);
+          border-top-right-radius: var(--cap-r-row, 1.5px);
+          border-bottom-right-radius: var(--cap-r-row, 1.5px);
         }
       }
     }
