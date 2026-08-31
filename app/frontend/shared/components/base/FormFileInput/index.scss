@@ -28,20 +28,56 @@
     position: absolute;
   }
 
+  /*
+   * The control, and until now it had no frame at all: at rest a file input was
+   * a 200px patch of nothing, with the drop zone appearing over it only on
+   * hover. It is a surface like every other control now, and the drop zone stays
+   * what it is -- an overlay that answers a drag.
+   *
+   * There is no input rule here any more either. A full copy of FormInput's
+   * field styling used to sit at this spot -- 43px, a fill, a border, a focus
+   * reset -- and the only <input> in the template is `hidden`, so none of it
+   * ever drew a pixel.
+   */
   &__wrapper {
     position: relative;
     display: flex;
     height: 200px;
     justify-content: center;
     align-items: center;
+    background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+    transition: background-color ease-in-out 0.15s;
 
-    /*
-     * There is no input rule here any more. A full copy of FormInput's field
-     * styling used to sit at this spot -- 43px, a fill, a border, a focus reset
-     * -- and the only <input> in the template is `hidden`, so none of it has
-     * ever drawn a pixel. It was copied along with the markup and then aged in
-     * place.
-     */
+    &:hover {
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h-btn, 2px);
+      background-color: var(--field-cap, var(--color-endcap, #7a8288));
+      border-radius: var(--cap-r-btn, 1px);
+      transition: background-color 0.15s ease;
+      content: "";
+      z-index: 3;
+    }
+
+    &::before {
+      top: -1px;
+    }
+
+    &::after {
+      bottom: -1px;
+    }
+  }
+
+  &:focus-within {
+    --field-cap: var(--color-primary, #428bca);
   }
 
   &__clear {
@@ -72,15 +108,23 @@
   }
 
   &--disabled {
+    --field-cap: transparent;
+
     cursor: not-allowed;
-    opacity: 0.5;
+
+    .base-image-input__wrapper {
+      border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
+      opacity: 0.5;
+
+      &:hover {
+        background-color: var(--color-control, rgb(39 43 48 / 0.9));
+      }
+    }
   }
 
   /* The signature says what is wrong; the frame stays neutral. */
   &--with-error {
-    .base-image-input__wrapper {
-      border-color: var(--color-danger, #dc3545);
-    }
+    --field-cap: var(--color-danger, #dc3545);
   }
 
   &--avatar {
