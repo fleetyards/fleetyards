@@ -10,6 +10,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import AffixSelect from "@/shared/components/base/FormInput/AffixSelect/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -408,15 +409,11 @@ const onSubmit = handleSubmit(async (values) => {
           >
             <template #suffix>
               <template v-if="isDeposit && unitOptions.length > 1">
-                <select v-model="unit" class="base-input__suffix-select">
-                  <option
-                    v-for="opt in unitOptions"
-                    :key="String(opt.value)"
-                    :value="opt.value"
-                  >
-                    {{ opt.label }}
-                  </option>
-                </select>
+                <AffixSelect
+                  v-model="unit"
+                  :options="unitOptions"
+                  :label="t('labels.logistics.unit')"
+                />
               </template>
               <span v-else class="base-input__suffix-text">
                 {{ t(`labels.logistics.units.${unit}`) }}

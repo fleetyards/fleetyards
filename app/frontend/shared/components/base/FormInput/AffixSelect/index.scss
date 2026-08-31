@@ -1,0 +1,47 @@
+/*
+ * A select that lives in a field's prefix or suffix slot -- the logistics
+ * quantity fields use one for their unit picker.
+ *
+ * It is a component rather than a class the call sites write themselves, which is
+ * what it was: `base-input__suffix-select` appeared at two call sites with no
+ * rule anywhere behind it, so both rendered as raw platform controls inside a
+ * field that has none. A <select> inherits neither font nor colour, the same trap
+ * the FilterGroup trigger hit as a <button>.
+ *
+ * Styling it from FormInput was the obvious repair and does not work: the element
+ * arrives through a slot, so it carries the caller's scope attribute. `:slotted`
+ * is the answer to that in principle, but this project puts component styles in
+ * an imported file, and the runtime marker comes from analysing the <style> block
+ * itself -- which sees only the @import. Owning its own scope sidesteps all of
+ * it, and inheritance still reaches it from the affix wrapper in the DOM.
+ */
+.form-input-affix-select {
+  appearance: none;
+  padding: 0 14px 0 0;
+  border: none;
+  background: none;
+
+  /*
+   * The caret's colour is written out rather than read from --color-endcap: a
+   * data URI cannot resolve a custom property, and a mask over the element would
+   * swallow the label with it.
+   */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M.7.7 4 4 7.3.7' fill='none' stroke='%237a8288' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  // The field's own cap already answers :focus-within, so this only has to say
+  // which control inside the field has focus, and can stay at a hairline.
+  &:focus-visible {
+    outline: 1px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}

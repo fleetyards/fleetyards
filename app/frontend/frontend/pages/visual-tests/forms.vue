@@ -12,6 +12,7 @@ import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import AffixSelect from "@/shared/components/base/FormInput/AffixSelect/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -41,6 +42,15 @@ const url = ref("https://fleetyards.net");
 const color = ref("#ffcc00");
 const clearable = ref("Clear me");
 const prefixed = ref(1250);
+
+const quantity = ref(12);
+const quantityUnit = ref("scu");
+
+const unitAffixOptions = [
+  { value: "scu", label: "SCU" },
+  { value: "cscu", label: "cSCU" },
+  { value: "mscu", label: "mSCU" },
+];
 const empty = ref<string | null>(null);
 const dateTime = ref<string | null>("2029-06-14T19:30:00.000Z");
 const dateOnly = ref<string | null>("2029-06-14T00:00:00.000Z");
@@ -229,6 +239,27 @@ const powerMarks = (value: number) => ({ label: String(value) });
         prefix="UEC"
         suffix="/ SCU"
       />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <!--
+        A select in the suffix slot, which the logistics quantity fields use for
+        their unit picker. It was uncovered here, and the rule behind its class
+        had to reach slot content to apply at all.
+      -->
+      <FormInput
+        v-model="quantity"
+        name="affix-select"
+        label="With a select affix"
+        :type="InputTypesEnum.NUMBER"
+      >
+        <template #suffix>
+          <AffixSelect
+            v-model="quantityUnit"
+            :options="unitAffixOptions"
+            label="Unit"
+          />
+        </template>
+      </FormInput>
     </div>
     <div class="col-12 col-md-6 col-lg-3">
       <FormInput
