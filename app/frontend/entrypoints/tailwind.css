@@ -56,6 +56,14 @@
    */
   --color-field: rgb(18 20 23 / 0.96);
 
+  /*
+   * The hover step for a field's frame. The first of the edge family to go up
+   * rather than down, and deliberately short of --color-endcap: taking the edge
+   * all the way to full opacity made it the cap's colour, which read as the
+   * frame collapsing into one line instead of the edge answering the cursor.
+   */
+  --color-edge-strong: rgb(122 130 136 / 0.7);
+
   --color-edge: rgb(122 130 136 / 0.5);
   --color-edge-soft: rgb(122 130 136 / 0.28);
   --color-edge-faint: rgb(122 130 136 / 0.16);
