@@ -31,4 +31,13 @@ class OmniauthConnection < ApplicationRecord
   }
 
   validates :provider, presence: true, uniqueness: {scope: :user_id}
+
+  # Linking an account changes no membership, so without this a member who
+  # links Discord after being accepted never receives the roles their fleets
+  # already mapped.
+  after_create_commit :backfill_discord_member_roles, if: :discord?
+
+  private def backfill_discord_member_roles
+    ::Discord::BackfillUserMemberRolesJob.perform_async(user_id)
+  end
 end

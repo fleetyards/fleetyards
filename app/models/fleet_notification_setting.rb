@@ -30,6 +30,10 @@ class FleetNotificationSetting < ApplicationRecord
 
   encrypts :discord_webhook_url
 
+  # Mapping a role is a configuration change, not a membership change, so
+  # nothing else would apply it to the members the fleet already has.
+  after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_member_role_id?
+
   DEFAULT_IN_APP_EVENTS = %w[
     fleet_event.published
     fleet_event.locked
@@ -51,5 +55,11 @@ class FleetNotificationSetting < ApplicationRecord
 
   def in_app_enabled?(event_name)
     Array(enabled_in_app_events).include?(event_name)
+  end
+
+  private def backfill_discord_member_roles
+    return if discord_guild_id.blank?
+
+    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id)
   end
 end

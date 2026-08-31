@@ -193,6 +193,22 @@ An accepted member gets the member role plus the role mapped to their rank; anyo
 
 Only two membership changes trigger a sync: the state and the rank. Everything else about a membership — ship filters, hangar groups, the primary flag — has no bearing on roles, and enqueuing on every save would put a Discord round trip behind ordinary edits.
 
+### Why event-driven is not enough on its own
+
+Those triggers cover every *change*, and miss every *rollout*. A fleet maps a role and nothing happens, because no membership changed. Three cases, all of them the first thing anyone will hit:
+
+| The fleet or member does this | Without a backfill |
+| --- | --- |
+| maps the member role for the first time | existing members get nothing |
+| maps a rank to a Discord role | that rank's members get nothing |
+| links their Discord account after being accepted | they get nothing |
+
+So configuration and account-linking enqueue a backfill of their own: `BackfillFleetMemberRolesJob` for the first two — narrowed to one rank when it is a rank mapping, since that is all a single mapping can affect — and `BackfillUserMemberRolesJob` for the third. Both only consider accepted members who actually linked a Discord account: a sync for anyone else is a job that can only decide to do nothing.
+
+A membership costs one `get_guild_member` plus a call per role change, so the fleet backfill spreads its work rather than firing a large fleet at Discord at once.
+
+**Not handled: unlinking.** Removing a Discord connection leaves the roles in place, because the uid the sync needs is gone with the record. Revoking them needs a different operation — "remove every managed role from this uid" — rather than the desired/current diff, since the membership is still accepted and the diff would want to *add* the roles back. Worth doing, and its own change.
+
 ### What is configurable, and what is not
 
 `fleet_notification_settings.discord_member_role_id` has an update endpoint, so the **verified-member role works end to end today**.
