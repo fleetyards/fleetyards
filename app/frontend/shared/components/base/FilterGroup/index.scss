@@ -172,7 +172,7 @@
    */
   .filter-group-surface {
     position: relative;
-    margin-top: 6px;
+    margin-top: var(--filter-group-gap, 6px);
     background-color: var(--color-gray-darker, #272b30);
     border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
     border-radius: var(--radius-control, 8px);
@@ -206,11 +206,68 @@
     }
   }
 
+  /*
+   * Fixed, not absolute. A modal body is a scroll container, and an absolutely
+   * positioned popover inside one is clipped by it -- which is what cut the
+   * options off in the hangar's edit modal. Fixed takes the popover out of that
+   * clip, because the scroller is no longer in its containing-block chain.
+   *
+   * The coordinates come from positionPopover(), which measures rather than
+   * assumes: an ancestor with a transform makes itself the containing block for
+   * fixed descendants, and every open modal dialog has one, so plain viewport
+   * coordinates would be off by the dialog's offset.
+   */
+  /*
+   * Absolute by default. The popover is then laid out with the page and follows
+   * a scroll exactly, because nothing repositions it -- and nothing follows a
+   * scroll as smoothly as not being moved at all. A fixed element nudged from a
+   * scroll handler always lands a frame behind the compositor, which reads as
+   * the popover swimming against the page.
+   */
   .filter-group-items-wrapper {
     position: absolute;
     right: 0;
     left: 0;
     z-index: 2100;
+  }
+
+  /*
+   * The exception, and only when one is really there: a scrolling ancestor
+   * clips an absolute popover, which is what cut the options off inside the
+   * hangar's edit modal. Fixed escapes the clip because the scroller is no
+   * longer in the containing-block chain, and positionPopover() then owns the
+   * coordinates.
+   */
+  .filter-group-items-wrapper--escapes-clip {
+    position: fixed;
+    right: auto;
+    left: auto;
+  }
+
+  /*
+   * Opened upwards, because there was not room below. The offset that stands the
+   * popover off the trigger has to change ends with it, or it would push it back
+   * down onto the trigger it just moved away from.
+   *
+   * In the absolute mode `bottom` is set from the script, because how far above
+   * the group's own bottom the trigger sits is not something the stylesheet can
+   * know -- a multi-select's chosen options are in between. In the fixed mode
+   * the coordinates already carry it and only the gap swaps here.
+   */
+  .filter-group-items-wrapper--above {
+    top: auto;
+
+    .filter-group-surface {
+      margin-top: 0;
+      margin-bottom: var(--filter-group-gap, 6px);
+    }
+  }
+
+  // Holds the popover's place in normal flow so that place can be measured. It
+  // is not always under the trigger: for a multi-select the chosen options sit
+  // between the two.
+  .filter-group-popover-anchor {
+    height: 0;
   }
 
   .filter-group-fetch-more {

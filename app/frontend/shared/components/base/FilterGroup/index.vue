@@ -543,11 +543,228 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener("click", documentClick);
+  stopFollowing();
 });
 
 const filterGroup = ref<HTMLElement | null>(null);
 
 const trigger = ref<HTMLButtonElement | null>(null);
+
+/*
+ * A popover only has to be taken out of the layout when something would clip
+ * it. Walking up for a scroller answers that, and the answer decides which of
+ * the two modes it opens in.
+ *
+ * `hidden` and `clip` count alongside `auto` and `scroll`: a modal body is
+ * `overflow: hidden auto`, and it was the hidden half of that pair that cut the
+ * options off.
+ */
+const clippingAncestor = (element: HTMLElement) => {
+  let node = element.parentElement;
+
+  while (node && node !== document.body && node !== document.documentElement) {
+    const style = window.getComputedStyle(node);
+
+    if (
+      /(auto|scroll|hidden|clip)/.test(
+        `${style.overflow}${style.overflowX}${style.overflowY}`,
+      )
+    ) {
+      return node;
+    }
+
+    node = node.parentElement;
+  }
+
+  return null;
+};
+
+const escapesClip = ref(false);
+const opensAbove = ref(false);
+
+/*
+ * Puts the popover where it belongs, and -- only when asked -- reconsiders which
+ * side of the trigger it opens on.
+ *
+ * The two are separate because they want different rhythms. Where it is has to
+ * keep up with a scroll, frame by frame, in the fixed mode. Which side it is on
+ * must not: re-deciding that per frame flips the popover over the trigger while
+ * someone is reading it. So the side is settled on opening, when the group or
+ * its options resize, and once a scroll has come to rest.
+ */
+const placePopover = (decideSide = false) => {
+  const root = filterGroup.value;
+  const anchor = root?.querySelector(".filter-group-popover-anchor");
+  const popover = root?.querySelector<HTMLElement>(
+    ".filter-group-items-wrapper",
+  );
+
+  if (!root || !anchor || !popover) {
+    return;
+  }
+
+  // Measured, not assumed: the popover does not always hang off the trigger --
+  // a multi-select puts the chosen options in between.
+  const place = anchor.getBoundingClientRect();
+
+  /*
+   * Collapsed animates the wrapper, not the surface inside it, so the surface
+   * has its full height from the first frame -- measuring the wrapper would
+   * read whatever the animation is currently at. The gap is read from the
+   * stylesheet for the same reason it is not written twice.
+   */
+  const surface = popover.querySelector<HTMLElement>(".filter-group-surface");
+  const gap = surface
+    ? parseFloat(window.getComputedStyle(surface).marginTop) ||
+      parseFloat(window.getComputedStyle(surface).marginBottom) ||
+      0
+    : 0;
+  const height = (surface?.getBoundingClientRect().height ?? 0) + gap;
+
+  const triggerRect = trigger.value?.getBoundingClientRect();
+  const fitsBelow = place.top + height <= window.innerHeight;
+  const fitsAbove = triggerRect != null && triggerRect.top - height >= 0;
+
+  if (decideSide) {
+    opensAbove.value = !fitsBelow && fitsAbove;
+  }
+
+  if (!escapesClip.value) {
+    /*
+     * Absolute: the stylesheet owns left and right, and the downward position is
+     * the element's own place in the flow. Only opening upwards needs saying,
+     * and it is said as an offset from the group's box -- which is what the
+     * containing block is -- rather than as a coordinate.
+     */
+    if (opensAbove.value && triggerRect) {
+      popover.style.bottom = `${root.getBoundingClientRect().bottom - triggerRect.top}px`;
+    } else {
+      popover.style.removeProperty("bottom");
+    }
+
+    return;
+  }
+
+  /*
+   * Fixed: a fixed element resolves against the viewport only while no ancestor
+   * is transformed, and an open modal dialog is, which makes it the containing
+   * block. Parking the popover at 0/0 and reading where it landed gives that
+   * offset, whatever it turns out to be. Two synchronous writes, never painted
+   * between -- an earlier version awaited a tick in the middle, which showed as
+   * a frame in the top-left corner on every scroll event.
+   */
+  popover.style.top = "0px";
+  popover.style.left = "0px";
+
+  const origin = popover.getBoundingClientRect();
+  const top =
+    opensAbove.value && triggerRect ? triggerRect.top - height : place.top;
+
+  popover.style.top = `${top - origin.top}px`;
+  popover.style.left = `${place.left - origin.left}px`;
+  popover.style.width = `${place.width}px`;
+};
+
+let followGroup: ResizeObserver | null = null;
+let queuedFrame: number | null = null;
+
+// Scroll fires off the compositor's own cadence, so repositioning straight from
+// the handler can land mid-frame. Folding every burst into one update on the
+// next frame is as close as a scripted position gets to keeping up.
+const followPopover = () => {
+  if (queuedFrame !== null) {
+    return;
+  }
+
+  queuedFrame = window.requestAnimationFrame(() => {
+    queuedFrame = null;
+    placePopover();
+  });
+};
+
+/*
+ * The side, re-checked after the scrolling stops. Scrolling changes how much
+ * room is left below the trigger, so a popover that opened downwards can end up
+ * hanging off the bottom of the window -- but moving it while the scroll is
+ * still running is the flip nobody asked for. Waiting for the rest gives both.
+ */
+const reconsiderSide = debounce(() => placePopover(true), 150);
+
+const stopFollowing = () => {
+  window.removeEventListener("scroll", followPopover, true);
+  window.removeEventListener("scroll", reconsiderSide, true);
+  window.removeEventListener("resize", reconsiderSide);
+  reconsiderSide.cancel();
+  followGroup?.disconnect();
+  followGroup = null;
+
+  if (queuedFrame !== null) {
+    window.cancelAnimationFrame(queuedFrame);
+    queuedFrame = null;
+  }
+};
+
+watch(visible, async (isVisible) => {
+  if (!isVisible) {
+    stopFollowing();
+    escapesClip.value = false;
+    opensAbove.value = false;
+
+    return;
+  }
+
+  const root = filterGroup.value;
+
+  escapesClip.value = root != null && clippingAncestor(root) != null;
+
+  await nextTick();
+
+  placePopover(true);
+
+  window.addEventListener("resize", reconsiderSide);
+
+  // Both modes reconsider the side once a scroll settles; `true` catches the
+  // scrollers on the way up, which do not bubble.
+  window.addEventListener("scroll", reconsiderSide, true);
+
+  /*
+   * Only the fixed popover is carried by the script, so only it has to be
+   * dragged along a scroll frame by frame. The absolute one is laid out with
+   * the page and follows it exactly by doing nothing, which is the whole reason
+   * it is the default.
+   */
+  if (escapesClip.value) {
+    window.addEventListener("scroll", followPopover, true);
+  }
+
+  /*
+   * Two things move under an open popover: a multi-select collapses its chosen
+   * options as it opens, over half a second, and a page of results can arrive
+   * after it. Both change where the popover belongs and whether it still fits
+   * below -- measuring once on open left it starting under the chosen options
+   * until a scroll happened to move it.
+   *
+   * The callback never resizes what it observes: it moves a popover that is out
+   * of flow either way.
+   *
+   * Guarded on availability -- the browserslist still reaches KaiOS 2.5, which
+   * has no ResizeObserver, and jsdom defines none either. Without it the popover
+   * still opens in the right place; it just does not follow.
+   */
+  if (typeof ResizeObserver === "undefined" || !root) {
+    return;
+  }
+
+  // eslint-disable-next-line compat/compat -- guarded above
+  followGroup = new ResizeObserver(() => placePopover(true));
+  followGroup.observe(root);
+
+  const surface = root.querySelector(".filter-group-surface");
+
+  if (surface) {
+    followGroup.observe(surface);
+  }
+});
 
 const documentClick = (event: Event) => {
   if (!filterGroup.value) {
@@ -771,10 +988,15 @@ defineExpose({
         </div>
       </div>
     </Collapsed>
+    <div class="filter-group-popover-anchor" aria-hidden="true" />
     <Collapsed
       :id="`${name}-options-${id}`"
       :visible="visible"
       class="filter-group-items-wrapper"
+      :class="{
+        'filter-group-items-wrapper--escapes-clip': escapesClip,
+        'filter-group-items-wrapper--above': opensAbove,
+      }"
     >
       <!--
         Collapsed animates this wrapper's height, and its keyframes drive
