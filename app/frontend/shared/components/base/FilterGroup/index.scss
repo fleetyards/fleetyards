@@ -177,24 +177,32 @@
     border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
     border-radius: var(--radius-control, 8px);
 
+    /*
+     * The control cap, not the panel one. This was --cap-h at 4px, chosen when
+     * the surface was thought of as a Panel -- and it sits directly under a
+     * trigger whose caps are 2px, so the pair read as two different weights of
+     * the same mark.
+     *
+     * BtnDropdown/Menu, the app's other floating popover, is 2px for the same
+     * reason: these are surfaces at control scale, not page panels.
+     */
     &::before,
     &::after {
       position: absolute;
       right: max(10px, var(--cap-inset, 12%));
       left: max(10px, var(--cap-inset, 12%));
-      height: var(--cap-h, 4px);
+      height: var(--cap-h-btn, 2px);
       background-color: var(--color-endcap, #7a8288);
+      border-radius: var(--cap-r-btn, 1px);
       content: "";
     }
 
     &::before {
       top: -1px;
-      border-radius: 0 0 var(--cap-r, 3px) var(--cap-r, 3px);
     }
 
     &::after {
       bottom: -1px;
-      border-radius: var(--cap-r, 3px) var(--cap-r, 3px) 0 0;
     }
   }
 
