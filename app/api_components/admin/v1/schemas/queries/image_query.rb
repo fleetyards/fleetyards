@@ -12,6 +12,9 @@ module Admin
             properties: {
               galleryIdEq: {type: :string, format: :uuid},
               galleryTypeEq: {type: :string},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ImageSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ImageSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::ImageSortEnum
               }, ::Admin::V1::Schemas::Sorts::ImageSortEnum]}

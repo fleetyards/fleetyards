@@ -22,6 +22,9 @@ module Admin
               userIdEq: {type: :string, format: :uuid},
               userIdNull: {type: :boolean},
               userUsernameCont: {type: :string},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::SupporterContributionSortEnum
+              }, ::Admin::V1::Schemas::Sorts::SupporterContributionSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::SupporterContributionSortEnum
               }, ::Admin::V1::Schemas::Sorts::SupporterContributionSortEnum]}

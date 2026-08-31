@@ -9,6 +9,7 @@ module Admin
         def index
           authorize! with: ::Admin::CommodityPolicy
 
+          normalize_sort_params(commodity_query_params)
           commodity_query_params["sorts"] = sorting_params(Commodity, commodity_query_params[:sorts])
 
           # The fallback join, not the current one: an admin list has to show a
@@ -75,7 +76,7 @@ module Admin
           @commodity_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :id_eq, :commodity_type_eq, :commodity_type_cont,
             :uex_code_cont, :store_image_blank, :buy_price_gteq, :buy_price_lteq, :sell_price_gteq,
-            :sell_price_lteq, :sorts,
+            :sell_price_lteq, :s, :sorts,
             sorts: [], name_in: [], id_in: [], commodity_type_in: []
           ]).fetch(:q, {})
         end

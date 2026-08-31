@@ -13,6 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::FleetPolicy
 
+          normalize_sort_params(fleet_query_params)
           fleet_query_params["sorts"] = sorting_params(Fleet, fleet_query_params[:sorts])
 
           @q = Fleet.kept.ransack(fleet_query_params)
@@ -76,7 +77,7 @@ module Admin
 
         private def fleet_query_params
           @fleet_query_params ||= params.permit(q: [
-            :name_cont, :fid_cont, :sorts, sorts: []
+            :name_cont, :fid_cont, :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

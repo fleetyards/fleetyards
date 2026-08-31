@@ -13,6 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::FundingGoalPolicy
 
+          normalize_sort_params(funding_goal_query_params)
           funding_goal_query_params["sorts"] = sorting_params(FundingGoal, funding_goal_query_params[:sorts])
 
           q = FundingGoal.ransack(funding_goal_query_params)
@@ -64,7 +65,7 @@ module Admin
             :title_cont,
             :amount_cents_eq, :amount_cents_gteq, :amount_cents_lteq,
             :effective_from_eq, :effective_from_gteq, :effective_from_lteq,
-            :sorts, sorts: []
+            :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

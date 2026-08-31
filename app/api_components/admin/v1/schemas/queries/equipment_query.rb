@@ -32,6 +32,9 @@ module Admin
               sellPriceGteq: {type: :number},
               sellPriceLteq: {type: :number},
 
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::EquipmentSortEnum
+              }, ::Admin::V1::Schemas::Sorts::EquipmentSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::EquipmentSortEnum
               }, ::Admin::V1::Schemas::Sorts::EquipmentSortEnum]}

@@ -12,6 +12,9 @@ module Admin
             properties: {
               nameCont: {type: :string},
               fidCont: {type: :string},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::FleetSortEnum
+              }, ::Admin::V1::Schemas::Sorts::FleetSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::FleetSortEnum
               }, ::Admin::V1::Schemas::Sorts::FleetSortEnum]}

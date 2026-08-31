@@ -13,6 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::ModelPaintPolicy
 
+          normalize_sort_params(model_paint_query_params)
           model_paint_query_params["sorts"] = sorting_params(ModelPaint, model_paint_query_params[:sorts], "created_at desc")
 
           @q = authorized_scope(ModelPaint.all).ransack(model_paint_query_params)
@@ -64,8 +65,8 @@ module Admin
 
         private def model_paint_query_params
           @model_paint_query_params ||= params.permit(q: [
-            :name_in, :id_eq, :name_cont, :name_eq, :model_id_eq, :sorts,
-            sorts: []
+            :name_in, :id_eq, :name_cont, :name_eq, :model_id_eq, :s, :sorts,
+            s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

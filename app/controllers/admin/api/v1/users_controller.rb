@@ -13,6 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::UserPolicy
 
+          normalize_sort_params(user_query_params)
           user_query_params["sorts"] = sorting_params(User, user_query_params[:sorts])
 
           q = authorized_scope(User.all).ransack(user_query_params)
@@ -83,8 +84,8 @@ module Admin
 
         private def user_query_params
           @user_query_params ||= params.permit(q: [
-            :id_eq, :search_cont, :username_cont, :username_eq, :email_cont, :rsi_handle_cont, :sorts,
-            id_in: [], username_in: [], email_in: [], rsi_handle_in: [], sorts: []
+            :id_eq, :search_cont, :username_cont, :username_eq, :email_cont, :rsi_handle_cont, :s, :sorts,
+            id_in: [], username_in: [], email_in: [], rsi_handle_in: [], s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

@@ -10,6 +10,7 @@ module V1
           type: :object,
           properties: {
             nameCont: {type: :string},
+            s: {type: :string},
             sorts: {type: :string}
           },
           additionalProperties: false,

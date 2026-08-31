@@ -19,6 +19,9 @@ module Admin
               idNotIn: {type: :array, items: {type: :string}},
               modelSlugIn: {type: :array, items: {type: :string}},
               modelSlugEq: {type: :string},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ModelPaintSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ModelPaintSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::ModelPaintSortEnum
               }, ::Admin::V1::Schemas::Sorts::ModelPaintSortEnum]}

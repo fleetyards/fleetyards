@@ -21,6 +21,9 @@ module Admin
               decisionEq: ::Admin::V1::Schemas::Enums::UnlistedModelDecisionEnum,
               decisionNull: {type: :boolean},
 
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ScDataUnlistedModelSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ScDataUnlistedModelSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::ScDataUnlistedModelSortEnum
               }, ::Admin::V1::Schemas::Sorts::ScDataUnlistedModelSortEnum]}

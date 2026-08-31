@@ -9,6 +9,7 @@ module Admin
         def index
           authorize! with: ::Admin::ComponentPolicy
 
+          normalize_sort_params(component_query_params)
           component_query_params["sorts"] = sorting_params(Component, component_query_params[:sorts])
 
           # The fallback join, not the fast one: the admin list has to show a
@@ -85,7 +86,7 @@ module Admin
           @component_query_params ||= params.permit(q: [
             :name_cont, :name_eq, :id_eq, :item_type_eq,
             :item_type_cont, :component_class_cont, :store_image_blank, :buy_price_gteq,
-            :buy_price_lteq, :sell_price_gteq, :sell_price_lteq, :sorts,
+            :buy_price_lteq, :sell_price_gteq, :sell_price_lteq, :s, :sorts,
             sorts: [], name_in: [], id_in: [], item_type_in: [], component_class_in: [],
             manufacturer_id_in: []
           ]).fetch(:q, {})

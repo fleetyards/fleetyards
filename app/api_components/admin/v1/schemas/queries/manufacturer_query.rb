@@ -18,6 +18,9 @@ module Admin
               slugEq: {type: :string},
               slugCont: {type: :string},
               slugIn: {type: :array, items: {type: :string}},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum
               }, ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum]}

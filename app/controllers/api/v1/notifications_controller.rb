@@ -19,6 +19,7 @@ module Api
       def index
         authorize! with: NotificationPolicy
 
+        normalize_sort_params(notification_query_params)
         notification_query_params["sorts"] = unread_first(
           sorting_params(Notification, notification_query_params["sorts"])
         )
@@ -190,7 +191,7 @@ module Api
 
       private def notification_query_params
         @notification_query_params ||= params.permit(q: [
-          :notification_type_eq, :read_at_null, :archived_at_null, :search_cont, :sorts, sorts: []
+          :notification_type_eq, :read_at_null, :archived_at_null, :search_cont, :s, :sorts, s: [], sorts: []
         ]).fetch(:q, {})
       end
     end

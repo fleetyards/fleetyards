@@ -13,6 +13,9 @@ module Admin
               usernameCont: {type: :string},
               stateEq: {type: :string},
               roleCont: {type: :string},
+              s: {anyOf: [{
+                type: :array, items: ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum
+              }, ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum
               }, ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum]}
