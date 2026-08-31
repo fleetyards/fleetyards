@@ -400,8 +400,13 @@ defineExpose({
       </Btn>
     </div>
     <!-- See the note in FormInput: below the control, and always present. -->
-    <p :id="errorId" class="base-image-input__error" role="alert">
-      {{ shownError }}
+    <p
+      :id="errorId"
+      class="base-image-input__error"
+      :class="{ 'base-image-input__error--shown': hasErrors }"
+      role="alert"
+    >
+      <span>{{ shownError }}</span>
     </p>
     <div v-if="slots.subline" class="base-image-input__subline">
       <slot name="subline"></slot>

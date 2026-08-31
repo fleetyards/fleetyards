@@ -130,7 +130,22 @@ const innerPlaceholder = computed(() => {
       </span>
     </label>
     <!-- See the note in FormCheckbox: below the control, and always present. -->
-    <p :id="errorId" class="form-toggle__error" role="alert">
+
+    <!--
+      Rendered only when there is something to say, unlike a field's message,
+      which holds its place so an error cannot move the page.
+
+      The reservation is worth its cost on a 43px field and not on a 24px one,
+      where it doubles the control's height: it put the middle of the
+      notification list's row selector on the message instead of the box, and it
+      left 24px of empty space under the login form's "Remember me".
+    -->
+    <p
+      v-if="errorMessage"
+      :id="errorId"
+      class="form-toggle__error"
+      role="alert"
+    >
       {{ errorMessage }}
     </p>
   </div>

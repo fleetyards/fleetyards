@@ -292,8 +292,13 @@ defineExpose({
       its own element, an overlap to resolve when it moves onto the shared
       treatment.
     -->
-    <p :id="errorId" class="base-input__error" role="alert">
-      {{ errorMessage }}
+    <p
+      :id="errorId"
+      class="base-input__error"
+      :class="{ 'base-input__error--shown': hasErrors }"
+      role="alert"
+    >
+      <span>{{ errorMessage }}</span>
     </p>
     <div v-if="slots.subline" class="base-input__subline">
       <slot name="subline"></slot>

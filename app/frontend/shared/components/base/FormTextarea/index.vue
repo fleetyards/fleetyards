@@ -193,12 +193,17 @@ defineExpose({
         :min="min"
         :max="max"
         @input="onChange"
-        @blur="handleBlur"
+        @blur="onBlur"
       />
     </div>
     <!-- See the note in FormInput: below the control, and always present. -->
-    <p :id="errorId" class="base-textarea__error" role="alert">
-      {{ errorMessage }}
+    <p
+      :id="errorId"
+      class="base-textarea__error"
+      :class="{ 'base-textarea__error--shown': hasErrors }"
+      role="alert"
+    >
+      <span>{{ errorMessage }}</span>
     </p>
   </div>
 </template>

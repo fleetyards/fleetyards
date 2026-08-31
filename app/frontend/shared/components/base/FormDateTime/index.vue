@@ -156,8 +156,13 @@ const timeConfig = computed(() => ({
         @update:model-value="onUpdate"
       />
     </div>
-    <p :id="errorId" class="base-input__error" role="alert">
-      {{ errorMessage }}
+    <p
+      :id="errorId"
+      class="base-input__error"
+      :class="{ 'base-input__error--shown': errorMessage }"
+      role="alert"
+    >
+      <span>{{ errorMessage }}</span>
     </p>
   </div>
 </template>
@@ -311,10 +316,30 @@ const timeConfig = computed(() => ({
 
 /* Shared with every other control -- see the note in FormInput. */
 .base-input__error {
-  min-height: var(--field-message-line, 1.25rem);
-  margin: var(--field-message-gap, 4px) 0 0;
+  display: grid;
+  grid-template-rows: 0fr;
+  margin: 0;
   font-size: 0.875rem;
   line-height: var(--field-message-line, 1.25rem);
   color: var(--color-danger, #dc3545);
+  opacity: 0;
+  transition:
+    grid-template-rows 180ms ease-in-out,
+    margin-top 180ms ease-in-out,
+    opacity 180ms ease-in-out;
+
+  > span {
+    overflow: hidden;
+  }
+
+  &--shown {
+    grid-template-rows: 1fr;
+    margin-top: var(--field-message-gap, 4px);
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 </style>
