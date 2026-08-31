@@ -74,6 +74,26 @@
     &::after {
       bottom: -1px;
     }
+
+    /*
+     * The frame is rounded, so what it holds has to be too -- a preview kept its
+     * square corners and pushed them through the corners of the frame.
+     *
+     * Clipped on the content rather than with `overflow: hidden` on the wrapper,
+     * because the clear button lives inside it and sits at -10px in the avatar
+     * variant, where clipping would remove it. The avatar variant already does
+     * exactly this with 50%.
+     */
+    :deep(.lazy-image),
+    :deep(.direct-upload),
+    :deep(.direct-upload__uploader) {
+      border-radius: var(--radius-control-inner, 7px);
+      overflow: hidden;
+    }
+
+    :deep(img) {
+      border-radius: var(--radius-control-inner, 7px);
+    }
   }
 
   &:focus-within {
@@ -92,7 +112,12 @@
     align-items: center;
     background-color: $danger !important;
     border-radius: 10px 0 0 10px;
-    z-index: 1;
+    /*
+     * Above the drop zone, which appears on the same hover: its scrim sits at 1
+     * and its content at 2, so a clear button at 1 was covered by the thing that
+     * turned up with it. An action has to outrank an overlay.
+     */
+    z-index: 4;
     opacity: 0;
 
     i,
@@ -128,10 +153,29 @@
   }
 
   &--avatar {
+    /*
+     * No caps on a circle. A cap marks where a surface's top and bottom edges
+     * are, and a circle has neither -- an arc would be a different mark, not the
+     * same one bent. So the edge carries what the cap carries elsewhere, which
+     * is the call the boxes you tick already make.
+     */
+    &:focus-within .base-image-input__wrapper {
+      border-color: var(--color-primary, #428bca);
+    }
+
+    &.base-image-input--with-error .base-image-input__wrapper {
+      border-color: var(--color-danger, #dc3545);
+    }
+
     .base-image-input__wrapper {
       width: 200px;
       margin-inline: auto;
       border-radius: 50%;
+
+      &::before,
+      &::after {
+        content: none;
+      }
 
       :deep(.lazy-image) {
         border-radius: 50%;
