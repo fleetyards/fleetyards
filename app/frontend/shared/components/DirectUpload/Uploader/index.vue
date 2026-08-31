@@ -417,6 +417,7 @@ defineExpose({
             :transparent="transparent"
             multiple
             @click="file.status !== 'done' && removeFile(file)"
+            @remove="removeFile(file)"
           />
         </TransitionGroup>
       </div>

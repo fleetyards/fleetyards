@@ -25,6 +25,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+const emit = defineEmits<{ remove: [] }>();
+
 const src = ref<string | undefined>();
 
 const alt = computed(() => props.file.file.name);
@@ -136,9 +138,23 @@ const holoModel = computed(() => {
       :class="progressCssClasses"
       :style="{ width: progressWidth }"
     />
-    <span class="preview__remove" v-if="isRemovable"
-      ><i class="fa fa-times fa-2x"
-    /></span>
+    <!--
+      A real button, not the decoration it was. Removal was a click handler on
+      the whole tile with a hover-only <span> as its affordance, so a queued file
+      could not be removed without a mouse and assistive tech was told nothing
+      about it at all.
+
+      The tile keeps its own click, so nothing changes for a pointer.
+    -->
+    <button
+      v-if="isRemovable"
+      type="button"
+      class="preview__remove"
+      :aria-label="t('directUpload.previewImage.remove')"
+      @click.stop="emit('remove')"
+    >
+      <i class="fa fa-times fa-2x" />
+    </button>
   </div>
 </template>
 
