@@ -285,9 +285,22 @@
   }
 }
 
-.has-error .filter-group-title {
-  border-color: darken($danger, 15%);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+/*
+ * The cap carries invalid, as it carries focus, and loses to focus on
+ * specificity -- the same signature as every field. What was here instead was a
+ * darkened border and an inset shadow: the glow the redesign removed everywhere
+ * else, on a class name from the framework that came before it.
+ */
+.filter-group--with-error .filter-group-title {
+  --field-cap: var(--color-danger, #dc3545);
+}
+
+.filter-group__error {
+  min-height: var(--field-message-line, 1.25rem);
+  margin: var(--field-message-gap, 4px) 0 0;
+  font-size: 0.875rem;
+  line-height: var(--field-message-line, 1.25rem);
+  color: var(--color-danger, #dc3545);
 }
 
 // 48px, to match Btn's md and FormInput's medium where a page header puts the two side by

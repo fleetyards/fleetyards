@@ -11,6 +11,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useForm } from "vee-validate";
@@ -23,10 +24,12 @@ import { useForm } from "vee-validate";
 // covers every control that calls `useField` without one, which is all of these.
 // Validated up front so the invalid styling is visible without interaction.
 //
-// RadioList is here now that it binds a field. FilterGroup still is not: its
-// `error` prop is passed by none of its call sites, so it has nothing to show.
-// And no control in this design system has a readonly state, which is worth
-// knowing before looking for one.
+// RadioList is here now that it binds a field, and FilterGroup because its error
+// is a prop the caller passes rather than a field a form marks -- which is why it
+// is the one on this page driven by hand.
+//
+// No control in this design system has a readonly state, which is worth knowing
+// before looking for one.
 const { validate, setTouched } = useForm({
   validationSchema: {
     handle: "required",
@@ -98,6 +101,19 @@ onMounted(async () => {
       <div class="col-12 col-md-6">
         <FormTextarea name="notes" label="Notes (required)" />
       </div>
+      <div class="col-12 col-md-6">
+        <FilterGroup
+          name="destination"
+          label="Destination (required)"
+          :options="[
+            { label: 'Port Olisar', value: 'olisar' },
+            { label: 'Lorville', value: 'lorville' },
+          ]"
+          error="The Destination field is required"
+        />
+      </div>
+    </div>
+    <div class="row">
       <div class="col-12 col-md-6">
         <RadioList
           name="delivery"

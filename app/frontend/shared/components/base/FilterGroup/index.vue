@@ -247,6 +247,8 @@ const triggerId = computed(() => `${props.name}-trigger-${id.value}`);
 
 const listboxId = computed(() => `${props.name}-listbox-${id.value}`);
 
+const errorId = computed(() => `${props.name}-error-${id.value}`);
+
 const optionId = (index: number) => `${listboxId.value}-option-${index}`;
 
 /*
@@ -327,7 +329,7 @@ const filteredOptions = computed(() => {
 });
 
 const cssClasses = computed(() => ({
-  "has-error has-feedback": props.error,
+  "filter-group--with-error": !!props.error,
   inline: props.inline,
   "filter-group--medium": props.size === FilterGroupSizesEnum.MEDIUM,
 }));
@@ -936,9 +938,10 @@ defineExpose({
     <button
       :id="triggerId"
       ref="trigger"
-      v-tooltip.right="error"
       type="button"
       role="combobox"
+      :aria-invalid="!!error || undefined"
+      :aria-describedby="error ? errorId : undefined"
       aria-haspopup="listbox"
       :aria-expanded="visible"
       :aria-controls="listboxId"
@@ -1054,6 +1057,15 @@ defineExpose({
         </div>
       </div>
     </Collapsed>
+    <!--
+      The message, below the control, rendered only when there is one -- the same
+      shape the other discrete controls use. This was the last state in the
+      language still signalled by a hover tooltip alone: nothing to see without a
+      mouse, and nothing at all for assistive tech.
+    -->
+    <p v-if="error" :id="errorId" class="filter-group__error" role="alert">
+      {{ error }}
+    </p>
   </div>
 </template>
 
