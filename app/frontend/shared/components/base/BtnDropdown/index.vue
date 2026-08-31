@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import debounce from "lodash.debounce";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Menu from "@/shared/components/base/BtnDropdown/Menu/index.vue";
 import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
@@ -48,48 +49,123 @@ onMounted(() => {
 
 onUnmounted(() => {
   document.removeEventListener("click", documentClick);
+  stopWatching();
+});
+
+const wrapper = ref<HTMLElement | undefined>();
+// Menu is a component, so the ref is an instance - reach its root element via
+// $el for the outside-click test and for measuring it.
+const btnList = ref<{ $el?: HTMLElement } | undefined>();
+
+/*
+ * The trigger, kept rather than read from the event: the menu is re-placed long
+ * after the click that opened it, when a scroll has changed how much room is
+ * left around it.
+ */
+const triggerElement = ref<HTMLElement | null>(null);
+
+// Stands the menu off its trigger. Written once, used by both sides.
+const MENU_OFFSET = 10;
+
+/*
+ * Which side the menu opens on, measured.
+ *
+ * This used to guess: "within 300px of an edge" stood in for "does not fit",
+ * which is wrong in both directions -- a short menu was pushed upwards with room
+ * to spare, and a long one still ran off the bottom. The menu is teleported and
+ * visible by the time this runs, so its real size can simply be read.
+ *
+ * The explicit props still win: a caller that says expandTop means it.
+ */
+const placeMenu = () => {
+  const trigger = triggerElement.value;
+  const menu = btnList.value?.$el;
+
+  if (!trigger || !menu) {
+    return;
+  }
+
+  const bounding = trigger.getBoundingClientRect();
+  const { height, width } = menu.getBoundingClientRect();
+
+  const fitsBelow =
+    bounding.bottom + MENU_OFFSET + height <= window.innerHeight;
+  const fitsAbove = bounding.top - MENU_OFFSET - height >= 0;
+  const expandTop =
+    !props.expandBottom && (props.expandTop || (!fitsBelow && fitsAbove));
+
+  const fitsRight = bounding.left + width <= window.innerWidth;
+  const fitsLeft = bounding.right - width >= 0;
+  const expandLeft = props.expandLeft || (!fitsRight && fitsLeft);
+
+  const position: Record<string, string> = {};
+  const transform: string[] = [];
+
+  if (expandTop) {
+    position.top = `${bounding.top + window.scrollY - MENU_OFFSET}px`;
+    transform.push("translateY(-100%)");
+  } else {
+    position.top = `${bounding.bottom + window.scrollY + MENU_OFFSET}px`;
+  }
+
+  if (expandLeft) {
+    position.left = `${bounding.right + window.scrollX}px`;
+    transform.push("translateX(-100%)");
+  } else {
+    position.left = `${bounding.left + window.scrollX}px`;
+  }
+
+  if (transform.length) {
+    position.transform = transform.join(" ");
+  }
+
+  listPosition.value = position;
+};
+
+/*
+ * The side, re-checked once the scrolling stops. Scrolling changes how much room
+ * is left around the trigger, so a menu that opened downwards can end up hanging
+ * off the bottom of the window -- but turning it over while the scroll is still
+ * running is a flip nobody asked for. Waiting for the rest gives both.
+ *
+ * Where the menu is needs no such handling: it is placed in document
+ * coordinates and teleported to the body, so it travels with the page by being
+ * left alone.
+ */
+const reconsiderSide = debounce(placeMenu, 150);
+
+const stopWatching = () => {
+  window.removeEventListener("scroll", reconsiderSide, true);
+  window.removeEventListener("resize", reconsiderSide);
+  reconsiderSide.cancel();
+};
+
+watch(visible, async (isVisible) => {
+  if (!isVisible) {
+    stopWatching();
+
+    return;
+  }
+
+  // Measured after it is on screen: the menu is display:none until then, and a
+  // hidden element has no size to read.
+  await nextTick();
+
+  placeMenu();
+
+  // `true` catches the scrollers on the way up, which do not bubble.
+  window.addEventListener("scroll", reconsiderSide, true);
+  window.addEventListener("resize", reconsiderSide);
 });
 
 const toggle = (event: MouseEvent) => {
   // The trigger, not whatever was clicked inside it: a click landing on a label
   // or an icon would otherwise anchor the menu to that glyph's box.
-  const target = (event.currentTarget || event.target) as HTMLElement | null;
-
-  if (target) {
-    const bounding = target.getBoundingClientRect();
-
-    const expandLeft =
-      props.expandLeft || window.innerWidth - bounding.left < 300;
-    const expandTop =
-      (props.expandTop || window.innerHeight - bounding.top < 300) &&
-      !props.expandBottom;
-
-    const position: Record<string, string> = {};
-
-    if (expandTop) {
-      position.top = `${bounding.top + window.scrollY - 10}px`;
-      position.transform = "translateY(-100%)";
-    } else {
-      position.top = `${bounding.bottom + window.scrollY + 10}px`;
-    }
-
-    if (expandLeft) {
-      position.left = `${bounding.right + window.scrollX}px`;
-      position.transform = (position.transform || "") + " translateX(-100%)";
-    } else {
-      position.left = `${bounding.left + window.scrollX}px`;
-    }
-
-    listPosition.value = position;
-  }
+  triggerElement.value = (event.currentTarget ||
+    event.target) as HTMLElement | null;
 
   visible.value = !visible.value;
 };
-
-const wrapper = ref<HTMLElement | undefined>();
-// Menu is a component, so the ref is an instance - reach its root element via
-// $el for the outside-click test.
-const btnList = ref<{ $el?: HTMLElement } | undefined>();
 
 const documentClick = (event: MouseEvent) => {
   if (!visible.value) return;
