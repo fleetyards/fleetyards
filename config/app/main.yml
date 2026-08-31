@@ -27,6 +27,12 @@ shared:
     client_id: <%= Rails.app.creds.option(:discord, :client_id) %>
     oauth_secret: <%= Rails.app.creds.option(:discord, :oauth_secret) %>
     bot_token: <%= Rails.app.creds.option(:discord, :bot_token) %>
+    # Ed25519 public key of the Discord application. Not a secret -- Discord
+    # publishes it in the app info -- but it differs per application, so it
+    # lives here next to client_id rather than being hardcoded. Verifying
+    # interaction signatures is impossible without it, and the endpoint
+    # rejects every request while it is blank.
+    public_key: <%= Rails.app.creds.option(:discord, :public_key) %>
 
   github:
     oauth_client_id: <%= Rails.app.creds.option(:github, :oauth_client_id) %>

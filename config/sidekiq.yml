@@ -1,6 +1,10 @@
 ---
 :concurrency: <%= Integer(ENV.fetch("MAX_THREADS", 2)) %>
 :queues:
+  # First: a Discord interaction token expires after 15 minutes and the user is
+  # watching a "thinking..." spinner, so this queue must not wait behind a
+  # loader or updater burst.
+  - discord
   - default
   - mailers
   - notifications

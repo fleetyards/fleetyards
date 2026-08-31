@@ -12533,6 +12533,7 @@ components:
     FeatureFlagName:
       type: string
       enum:
+      - discord_commands
       - fleet_logistics
       - fleet_mission_builder
       - fleet_starmap
@@ -12549,6 +12550,7 @@ components:
       - tools_cargo_grids
       - tools_travel_times
       x-enumNames:
+      - DISCORD_COMMANDS
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_STARMAP
