@@ -21,6 +21,9 @@ module V1
             requestedAtLteq: {type: :string, format: :date},
             declinedAtGteq: {type: :string, format: :date},
             declinedAtLteq: {type: :string, format: :date},
+            s: {anyOf: [{
+              type: :array, items: ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum
+            }, ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum]},
             sorts: {anyOf: [{
               type: :array, items: ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum
             }, ::Shared::V1::Schemas::Sorts::FleetMembershipSortEnum]}
