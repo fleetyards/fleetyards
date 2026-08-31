@@ -13,6 +13,9 @@ module Admin
               titleCont: {type: :string},
               effectiveFromGteq: {type: :string, format: :date},
               effectiveFromLteq: {type: :string, format: :date},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::FundingGoalSortEnum
+              }, ::Admin::V1::Schemas::Sorts::FundingGoalSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::FundingGoalSortEnum
               }, ::Admin::V1::Schemas::Sorts::FundingGoalSortEnum]}

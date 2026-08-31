@@ -14,6 +14,9 @@ module Admin
               nameCont: {type: :string},
               nameEq: {type: :string},
               modelIdEq: {type: :string, format: :uuid},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::ModelModulePackageSortEnum
+              }, ::Admin::V1::Schemas::Sorts::ModelModulePackageSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::ModelModulePackageSortEnum
               }, ::Admin::V1::Schemas::Sorts::ModelModulePackageSortEnum]}

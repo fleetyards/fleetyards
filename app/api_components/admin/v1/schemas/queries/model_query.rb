@@ -24,6 +24,9 @@ module Admin
               topViewColoredBlank: {type: :boolean},
               frontViewBlank: {type: :boolean},
               positionsNeedCurationEq: {type: :boolean},
+              s: {anyOf: [{
+                type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
+              }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
               }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]}

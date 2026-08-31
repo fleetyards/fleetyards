@@ -12,6 +12,7 @@ module Admin
         end
 
         def index
+          normalize_sort_params(member_query_params)
           member_query_params["sorts"] = sorting_params(FleetMembership, member_query_params[:sorts])
 
           @q = @fleet.fleet_memberships.kept.ransack(member_query_params)
@@ -82,7 +83,7 @@ module Admin
 
         private def member_query_params
           @member_query_params ||= params.permit(q: [
-            :username_cont, :state_eq, :role_cont, :sorts, sorts: []
+            :username_cont, :state_eq, :role_cont, :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

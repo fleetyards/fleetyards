@@ -15,6 +15,7 @@ module V1
             categoryEq: ::V1::Schemas::Enums::InventoryCategoryEnum,
             qualityGteq: {type: :integer},
             qualityLteq: {type: :integer},
+            s: {type: :string},
             sorts: {type: :string}
           },
           additionalProperties: false,

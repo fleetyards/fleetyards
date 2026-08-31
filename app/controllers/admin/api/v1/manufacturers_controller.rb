@@ -17,6 +17,7 @@ module Admin
 
           scope = scope.with_model if manufacturer_query_params.delete(:with_models)
 
+          normalize_sort_params(manufacturer_query_params)
           manufacturer_query_params["sorts"] = sorting_params(Manufacturer, manufacturer_query_params[:sorts])
 
           q = scope.ransack(manufacturer_query_params)
@@ -88,8 +89,8 @@ module Admin
 
         private def manufacturer_query_params
           @manufacturer_query_params ||= params.permit(q: [
-            :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, :logo_blank, :sorts,
-            name_in: [], slug_in: [], sorts: []
+            :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, :logo_blank, :s, :sorts,
+            name_in: [], slug_in: [], s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

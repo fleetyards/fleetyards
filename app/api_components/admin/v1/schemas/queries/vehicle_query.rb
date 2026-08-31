@@ -28,6 +28,9 @@ module Admin
               modelSearchCont: {type: :string},
               loanerEq: ::Shared::V1::Schemas::Enums::LoanerFilterEnum,
               wantedEq: {type: :boolean},
+              s: {anyOf: [{
+                type: :array, items: ::Shared::V1::Schemas::Sorts::VehicleSortEnum
+              }, ::Shared::V1::Schemas::Sorts::VehicleSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Shared::V1::Schemas::Sorts::VehicleSortEnum
               }, ::Shared::V1::Schemas::Sorts::VehicleSortEnum]}

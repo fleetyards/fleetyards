@@ -15,6 +15,9 @@ module Admin
               readAtNull: {type: :boolean},
               archivedAtNull: {type: :boolean},
               searchCont: {type: :string},
+              s: {anyOf: [{
+                type: :array, items: ::Admin::V1::Schemas::Sorts::AdminNotificationSortEnum
+              }, ::Admin::V1::Schemas::Sorts::AdminNotificationSortEnum]},
               sorts: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::AdminNotificationSortEnum
               }, ::Admin::V1::Schemas::Sorts::AdminNotificationSortEnum]}

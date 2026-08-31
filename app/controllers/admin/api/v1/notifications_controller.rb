@@ -13,6 +13,7 @@ module Admin
 
           notification_query_params["archived_at_null"] = true unless notification_query_params.key?("archived_at_null")
 
+          normalize_sort_params(notification_query_params)
           notification_query_params["sorts"] = unread_first(
             sorting_params(AdminNotification, notification_query_params["sorts"])
           )
@@ -166,7 +167,7 @@ module Admin
 
         private def notification_query_params
           @notification_query_params ||= params.permit(q: [
-            :notification_type_eq, :severity_eq, :read_at_null, :archived_at_null, :search_cont, :sorts, sorts: []
+            :notification_type_eq, :severity_eq, :read_at_null, :archived_at_null, :search_cont, :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

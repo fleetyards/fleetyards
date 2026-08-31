@@ -13,6 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::SupporterContributionPolicy
 
+          normalize_sort_params(supporter_contribution_query_params)
           supporter_contribution_query_params["sorts"] = sorting_params(SupporterContribution, supporter_contribution_query_params[:sorts])
 
           q = SupporterContribution.ransack(supporter_contribution_query_params)
@@ -106,7 +107,7 @@ module Admin
             :name_cont, :name_eq, :recurring_eq, :anonymous_eq, :source_eq,
             :started_at_gteq, :started_at_lteq, :ended_at_gteq, :ended_at_lteq,
             :user_id_eq, :user_id_null, :user_username_cont,
-            :sorts, sorts: []
+            :s, :sorts, s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

@@ -12,6 +12,7 @@ module Admin
         def index
           authorize!
 
+          normalize_sort_params(image_query_params)
           image_query_params["sorts"] = sorting_params(Image, image_query_params[:sorts])
 
           @q = authorized_scope(Image.all).ransack(image_query_params)
@@ -61,8 +62,8 @@ module Admin
 
         private def image_query_params
           @image_query_params ||= params.permit(q: [
-            :gallery_id_eq, :gallery_type_eq, :sorts,
-            sorts: []
+            :gallery_id_eq, :gallery_type_eq, :s, :sorts,
+            s: [], sorts: []
           ]).fetch(:q, {})
         end
 

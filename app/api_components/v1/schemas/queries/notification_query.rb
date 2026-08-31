@@ -13,6 +13,9 @@ module V1
             readAtNull: {type: :boolean},
             archivedAtNull: {type: :boolean},
             searchCont: {type: :string},
+            s: {anyOf: [{
+              type: :array, items: ::V1::Schemas::Sorts::NotificationSortEnum
+            }, ::V1::Schemas::Sorts::NotificationSortEnum]},
             sorts: {anyOf: [{
               type: :array, items: ::V1::Schemas::Sorts::NotificationSortEnum
             }, ::V1::Schemas::Sorts::NotificationSortEnum]}

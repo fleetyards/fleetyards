@@ -10,6 +10,7 @@ module Api
         after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
         def show
+          normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params[:sorts], ["name asc", "model_name asc"])
 
           scope = @user.vehicles.wanted.where(loaner: false)

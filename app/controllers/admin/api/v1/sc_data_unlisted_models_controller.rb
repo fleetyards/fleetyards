@@ -13,6 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::ScDataUnlistedModelPolicy
 
+          normalize_sort_params(query_params)
           query_params["sorts"] = sorting_params(ScDataUnlistedModel, query_params[:sorts])
 
           # Undecided by default, because that is the working list. An explicit
@@ -87,7 +88,7 @@ module Admin
 
         private def query_params
           @query_params ||= params.permit(q: [
-            :sorts, :identifier_cont, :name_cont, :comparison_eq, :decision_eq,
+            :s, :sorts, :identifier_cont, :name_cont, :comparison_eq, :decision_eq,
             :decision_null, :manufacturer_code_eq
           ]).fetch(:q, {})
         end

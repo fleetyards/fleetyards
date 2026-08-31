@@ -51,6 +51,7 @@ module Admin
         end
 
         private def index_scope
+          normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] ||= sorting_params(Vehicle, vehicle_query_params["sorts"])
 
           scope = authorized_scope(Vehicle.all).includes(:user, model: :manufacturer).where(hidden: false)
@@ -63,7 +64,8 @@ module Admin
         private def vehicle_query_params
           @vehicle_query_params ||= params.permit(q: [
             :search_cont, :name_cont, :model_name_cont, :id_eq, :model_id_eq,
-            :loaner_eq, :wanted_eq,
+            :loaner_eq, :wanted_eq, :s, :sorts,
+            s: [], sorts: [],
             name_in: [], id_in: [], id_not_in: [], model_slug_in: [], model_name_in: [],
             model_id_in: [], model_id_not_in: [], model_production_status_in: [],
             manufacturer_in: [], user_username_in: []

@@ -13,6 +13,7 @@ module Admin
         def index
           authorize! with: ::Admin::ModelModulePackagePolicy
 
+          normalize_sort_params(model_module_package_query_params)
           model_module_package_query_params["sorts"] = sorting_params(ModelModulePackage, model_module_package_query_params[:sorts], "created_at desc")
 
           @q = authorized_scope(ModelModulePackage.all).ransack(model_module_package_query_params)
@@ -75,8 +76,8 @@ module Admin
 
         private def model_module_package_query_params
           @model_module_package_query_params ||= params.permit(q: [
-            :name_in, :id_eq, :name_cont, :name_eq, :model_id_eq, :sorts,
-            sorts: []
+            :name_in, :id_eq, :name_cont, :name_eq, :model_id_eq, :s, :sorts,
+            s: [], sorts: []
           ]).fetch(:q, {})
         end
       end
