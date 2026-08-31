@@ -6,6 +6,7 @@
 #
 #  id                :uuid             not null, primary key
 #  app               :boolean          default(TRUE), not null
+#  discord           :boolean          default(FALSE), not null
 #  mail              :boolean          default(FALSE), not null
 #  notification_type :string           not null
 #  push              :boolean          default(FALSE), not null
@@ -42,5 +43,14 @@ class NotificationPreference < ApplicationRecord
 
   def self.push_available?(type)
     Notification.channels_for(type).include?(:push)
+  end
+
+  # Availability is per user here, not only per type: a DM needs somewhere to
+  # go, so the column is offered to readers who linked a Discord account and
+  # nobody else.
+  def self.discord_available?(type, user:)
+    return false unless Notification.channels_for(type).include?(:discord)
+
+    user.present? && user.omniauth_connections.exists?(provider: "discord")
   end
 end

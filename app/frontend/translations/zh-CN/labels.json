@@ -1976,7 +1976,8 @@
         "channels": {
           "app": "应用",
           "mail": "邮件",
-          "push": "推送"
+          "push": "推送",
+          "discord": "Discord"
         },
         "groups": {
           "account": "账户与机库",

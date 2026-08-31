@@ -39,6 +39,8 @@ it:
         missing_query: Indica il nome di una nave.
         more: '…e altre. Prova con un nome più preciso.'
         not_found: 'Nessuna nave trovata per «%{query}».'
+    direct_message:
+      footer: Inviato perché hai attivato le notifiche Discord su Fleetyards
     event_reminder:
       signups: '%{count} iscritti'
       slots: '%{open} di %{total} posti liberi'

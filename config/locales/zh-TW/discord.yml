@@ -39,6 +39,8 @@ zh-TW:
         missing_query: 請提供船艦名稱。
         more: '…還有更多，請使用更精確的名稱。'
         not_found: '找不到符合「%{query}」的船艦。'
+    direct_message:
+      footer: 因為你在 Fleetyards 上啟用了 Discord 通知
     event_reminder:
       signups: '%{count} 人已報名'
       slots: '%{total} 個位置中還有 %{open} 個空缺'

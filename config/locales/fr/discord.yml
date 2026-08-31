@@ -39,6 +39,8 @@ fr:
         missing_query: "Merci d'indiquer le nom d'un vaisseau."
         more: "…et d'autres. Essayez un nom plus précis."
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
+    direct_message:
+      footer: Envoyé parce que vous avez activé les notifications Discord sur Fleetyards
     event_reminder:
       signups: '%{count} inscrits'
       slots: '%{open} places libres sur %{total}'

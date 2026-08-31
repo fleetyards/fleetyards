@@ -72,6 +72,16 @@ module Discord
       post("guilds/#{guild_id}/scheduled-events", payload)
     end
 
+    # Opens (or returns the existing) DM channel with one user. Discord treats
+    # this as idempotent, so there is nothing to cache.
+    def create_dm_channel(recipient_id)
+      post("users/@me/channels", {recipient_id: recipient_id})
+    end
+
+    def create_message(channel_id, payload)
+      post("channels/#{channel_id}/messages", payload)
+    end
+
     def update_guild_scheduled_event(guild_id, event_id, payload)
       patch("guilds/#{guild_id}/scheduled-events/#{event_id}", payload)
     end

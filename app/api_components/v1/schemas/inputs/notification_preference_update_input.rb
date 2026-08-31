@@ -11,7 +11,8 @@ module V1
           properties: {
             app: {type: :boolean},
             mail: {type: :boolean},
-            push: {type: :boolean}
+            push: {type: :boolean},
+            discord: {type: :boolean}
           }
         })
       end
