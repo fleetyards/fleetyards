@@ -161,7 +161,19 @@ Goes through the existing webhook path (`lib/discord/webhook.rb`), so it needs *
 Mechanics: `POST /users/@me/channels` with the recipient, then a normal message. Requirements and limits, all of which need respecting rather than working around:
 
 - The user must share a server with the bot, and must not have DMs closed. A failed DM is a normal outcome, not an error to retry into a rate limit.
-- Opt-in per user, off by default, alongside the existing notification preferences. An unsolicited DM from a bot is the fastest way to get an app reported.
+- Opt-in per user, off by default. An unsolicited DM from a bot is the fastest way to get an app reported.
+
+### Not a wishlist feature — a delivery channel
+
+The obvious build is a bespoke path from the sale job to a DM. The better one is already there: `NotificationPreference` is a per-user, per-type matrix of channels (`app`, `mail`, `push`), `Notification::TYPES` declares which channels a type supports, and `Notification.deliver_channels` fans out. A Discord DM is a **fourth channel**, not a second notification system.
+
+So: a `discord` boolean on `notification_preferences`, `:discord` in `model_on_sale`'s `channels`, and three lines in `deliver_channels`. Every later type that wants DMs is then a one-word change, and the reader's existing settings page is where they turn it on.
+
+**Availability is per user here, not only per type.** `mailAvailable` and `pushAvailable` are properties of the notification type; a DM additionally needs somewhere to go, so `discordAvailable` is false for a reader who never linked a Discord account and the column simply does not appear for them. The settings page already hides a channel nothing can deliver on — that is how the dead `push` column stays out of the table.
+
+The DM renders in the **reader's** locale, not the sender's, through `Discord::Locale.resolve` — `users.locale` is free text and an unavailable value would otherwise raise.
+
+`403` and `404` are normal outcomes: DMs closed, no shared server, or an account unlinked between queueing and sending. None of those are changed by a retry, so they are logged and dropped; rate limits and 5xx still retry.
 
 ## Phase 6 — fleet roles ↔ Discord roles
 

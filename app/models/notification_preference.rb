@@ -6,6 +6,7 @@
 #
 #  id                :uuid             not null, primary key
 #  app               :boolean          default(TRUE), not null
+#  discord           :boolean          default(FALSE), not null
 #  mail              :boolean          default(FALSE), not null
 #  notification_type :string           not null
 #  push              :boolean          default(FALSE), not null
@@ -22,6 +23,12 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class NotificationPreference < ApplicationRecord
+  # Every delivery channel, with its off-by-default value. One source of truth
+  # on purpose: a channel that exists here but not in one of the places that
+  # build a full row breaks User#create_default_notification_preferences, whose
+  # insert_all needs every row to carry identical keys.
+  CHANNEL_DEFAULTS = {app: true, mail: false, push: false, discord: false}.freeze
+
   belongs_to :user
 
   enum :notification_type, Notification.notification_types
@@ -42,5 +49,14 @@ class NotificationPreference < ApplicationRecord
 
   def self.push_available?(type)
     Notification.channels_for(type).include?(:push)
+  end
+
+  # Availability is per user here, not only per type: a DM needs somewhere to
+  # go, so the column is offered to readers who linked a Discord account and
+  # nobody else.
+  def self.discord_available?(type, user:)
+    return false unless Notification.channels_for(type).include?(:discord)
+
+    user.present? && user.omniauth_connections.exists?(provider: "discord")
   end
 end

@@ -187,10 +187,15 @@ class NotificationTest < ActiveSupport::TestCase
     end
   end
 
-  %i[model_on_sale new_model fleet_invite fleet_member_requested fleet_member_accepted fleet_request_accepted].each do |type|
+  %i[new_model fleet_invite fleet_member_requested fleet_member_accepted fleet_request_accepted].each do |type|
     test "#{type} supports app and mail channels" do
       assert_equal %i[app mail], Notification.channels_for(type)
     end
+  end
+
+  # The only type that can also be delivered as a Discord DM so far.
+  test "model_on_sale supports app, mail and discord channels" do
+    assert_equal %i[app mail discord], Notification.channels_for(:model_on_sale)
   end
 
   test "stores the polymorphic record" do
@@ -318,15 +323,18 @@ class NotificationTest < ActiveSupport::TestCase
   end
 
   test ".preference_defaults_for returns opt-in defaults for model_on_sale" do
-    assert_equal({app: false, mail: false, push: false}, Notification.preference_defaults_for(:model_on_sale))
+    assert_equal({app: false, mail: false, push: false, discord: false},
+      Notification.preference_defaults_for(:model_on_sale))
   end
 
   test ".preference_defaults_for returns mail-enabled defaults for fleet types" do
-    assert_equal({app: true, mail: true, push: false}, Notification.preference_defaults_for(:fleet_invite))
+    assert_equal({app: true, mail: true, push: false, discord: false},
+      Notification.preference_defaults_for(:fleet_invite))
   end
 
   test ".preference_defaults_for returns standard defaults for app-only types" do
-    assert_equal({app: true, mail: false, push: false}, Notification.preference_defaults_for(:hangar_create))
+    assert_equal({app: true, mail: false, push: false, discord: false},
+      Notification.preference_defaults_for(:hangar_create))
   end
 
   private

@@ -1971,7 +1971,8 @@
         "channels": {
           "app": "App",
           "mail": "Mail",
-          "push": "Push"
+          "push": "Push",
+          "discord": "Discord"
         },
         "groups": {
           "account": "Account & hangar",

@@ -6,6 +6,7 @@
 #
 #  id                :uuid             not null, primary key
 #  app               :boolean          default(TRUE), not null
+#  discord           :boolean          default(FALSE), not null
 #  mail              :boolean          default(FALSE), not null
 #  notification_type :string           not null
 #  push              :boolean          default(FALSE), not null

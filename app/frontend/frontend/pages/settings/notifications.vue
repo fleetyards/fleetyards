@@ -71,7 +71,7 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
   },
 ];
 
-const CHANNELS = ["app", "mail", "push"] as const;
+const CHANNELS = ["app", "mail", "push", "discord"] as const;
 
 type Channel = (typeof CHANNELS)[number];
 
@@ -104,6 +104,12 @@ const supportsChannel = (
 
   if (channel === "push") {
     return !!preference.pushAvailable;
+  }
+
+  // Per user, not only per type: a DM needs a linked Discord account to go to,
+  // so the API reports this false for readers who have not linked one.
+  if (channel === "discord") {
+    return !!preference.discordAvailable;
   }
 
   return true;
@@ -148,6 +154,7 @@ const write = (
       app: channel === "app" ? next : preference.app,
       mail: channel === "mail" ? next : preference.mail,
       push: channel === "push" ? next : preference.push,
+      discord: channel === "discord" ? next : preference.discord,
     },
   });
 

@@ -559,12 +559,12 @@ class User < ApplicationRecord
 
     rows = Notification.notification_types.each_key.map do |type|
       defaults = if type == "model_on_sale" && sale_notify?
-        {app: true, mail: true, push: false}
+        {app: true, mail: true}
       else
         NotificationPreference.defaults_for(type)
       end
 
-      {app: true, mail: false, push: false}
+      NotificationPreference::CHANNEL_DEFAULTS
         .merge(defaults)
         .merge(user_id: id, notification_type: type, created_at: now, updated_at: now)
     end

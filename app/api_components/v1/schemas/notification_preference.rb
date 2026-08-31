@@ -12,11 +12,13 @@ module V1
           app: {type: :boolean},
           mail: {type: :boolean},
           push: {type: :boolean},
+          discord: {type: :boolean},
           mailAvailable: {type: :boolean},
-          pushAvailable: {type: :boolean}
+          pushAvailable: {type: :boolean},
+          discordAvailable: {type: :boolean}
         },
         additionalProperties: false,
-        required: %w[notificationType app mail push mailAvailable pushAvailable]
+        required: %w[notificationType app mail push discord mailAvailable pushAvailable discordAvailable]
       })
     end
   end

@@ -39,6 +39,8 @@ en:
         missing_query: Please provide a ship name.
         more: '…and more. Try a more specific name.'
         not_found: 'No ship found for "%{query}".'
+    direct_message:
+      footer: Sent because you enabled Discord notifications on Fleetyards
     event_reminder:
       signups: '%{count} signed up'
       slots: '%{open} of %{total} slots open'

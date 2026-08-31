@@ -35,7 +35,7 @@ module Api
       end
 
       private def notification_preference_params
-        params.permit(:app, :mail, :push)
+        params.permit(:app, :mail, :push, :discord)
       end
     end
   end

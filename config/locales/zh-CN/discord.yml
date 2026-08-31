@@ -39,6 +39,8 @@ zh-CN:
         missing_query: 请提供飞船名称。
         more: '…还有更多，请使用更精确的名称。'
         not_found: '未找到与“%{query}”匹配的飞船。'
+    direct_message:
+      footer: 因为你在 Fleetyards 上启用了 Discord 通知
     event_reminder:
       signups: '%{count} 人已报名'
       slots: '%{total} 个位置中还有 %{open} 个空缺'

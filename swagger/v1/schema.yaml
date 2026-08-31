@@ -18943,9 +18943,13 @@ components:
           type: boolean
         push:
           type: boolean
+        discord:
+          type: boolean
         mailAvailable:
           type: boolean
         pushAvailable:
+          type: boolean
+        discordAvailable:
           type: boolean
       additionalProperties: false
       required:
@@ -18953,8 +18957,10 @@ components:
       - app
       - mail
       - push
+      - discord
       - mailAvailable
       - pushAvailable
+      - discordAvailable
       title: NotificationPreference
     NotificationPreferenceUpdateInput:
       type: object
@@ -18964,6 +18970,8 @@ components:
         mail:
           type: boolean
         push:
+          type: boolean
+        discord:
           type: boolean
       title: NotificationPreferenceUpdateInput
     NotificationPreferencesList:
