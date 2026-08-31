@@ -148,10 +148,17 @@
     }
   }
 
+  /*
+   * For a field that sits inside another surface rather than on the page: no
+   * frame of its own, and no fill either. Keeping $input-bg made it read as a
+   * lighter slab inset into whatever contains it, with square corners cutting
+   * across that surface's rounded ones.
+   */
   &--clean {
     margin-bottom: 0;
 
     input {
+      background-color: transparent;
       border: none;
       border-radius: 0;
     }

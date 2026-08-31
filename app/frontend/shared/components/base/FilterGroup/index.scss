@@ -24,13 +24,26 @@
     }
   }
 
+  // Inside the surface now, so it divides rather than frames.
   .filter-group-search {
-    border: 1px solid $input-border;
-    border-top: none;
-    border-bottom: none;
+    border: none;
+    border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   }
 
   .filter-group-title {
+    /*
+     * This is a <button> now, not a div, so the browser's own control styling
+     * has to be undone: a button does not inherit the page's font or colour --
+     * it renders in the platform UI font at ~13px in `buttontext`, which on this
+     * surface is near-black on near-black -- and it centres its own text.
+     *
+     * `font: inherit` resets weight too, so the `font-weight: bold` below has to
+     * stay after it.
+     */
+    appearance: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
     position: relative;
     display: flex;
     align-items: center;
@@ -65,13 +78,14 @@
       background: $input-bg;
     }
 
+    /*
+     * No bottom-corner squaring any more: both segments stand off the trigger
+     * with a gap of their own, so nothing meets its lower edge.
+     */
     &.active {
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
-
       i,
       svg {
-        transform: rotate(90deg);
+        transform: rotate(180deg);
       }
     }
 
@@ -88,36 +102,66 @@
     &.selected {
       color: white;
       font-weight: bold;
-      border-bottom-right-radius: 0;
-      border-bottom-left-radius: 0;
     }
   }
 
+  // Only the scrolling. The frame belongs to the surface around it, which
+  // cannot clip, because the end-caps sit outside its box.
   .filter-group-items {
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
-    background-color: rgba($gray-darker, 0.95);
-    border: 1px solid $input-border;
-    border-top: none;
-    border-bottom-right-radius: $border-radius-base;
-    border-bottom-left-radius: $border-radius-base;
+  }
+
+  /*
+   * Both things that hang off the trigger -- the popover, and for a
+   * multi-select the list of chosen options -- are the same surface, and each
+   * stands off it rather than continuing its frame.
+   *
+   * That this element is inside the one Collapsed animates is load-bearing:
+   * Collapsed reads inline styles, so its keyframes resolve border, padding and
+   * margin to 0 for the full 500ms and snap them in at the end. A frame on the
+   * animated element stays collapsed and then jumps in.
+   */
+  .filter-group-surface {
+    position: relative;
+    margin-top: 6px;
+    background-color: var(--color-gray-darker, #272b30);
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h, 4px);
+      background-color: var(--color-endcap, #7a8288);
+      content: "";
+    }
+
+    &::before {
+      top: -1px;
+      border-radius: 0 0 var(--cap-r, 3px) var(--cap-r, 3px);
+    }
+
+    &::after {
+      bottom: -1px;
+      border-radius: var(--cap-r, 3px) var(--cap-r, 3px) 0 0;
+    }
   }
 
   .filter-group-items-wrapper {
     position: absolute;
     right: 0;
     left: 0;
-    z-index: 1000;
-    box-shadow: 0 1px 3px rgba(black, 0.9);
-    border-bottom-right-radius: $border-radius-base;
-    border-bottom-left-radius: $border-radius-base;
+    z-index: 2100;
   }
 
   .filter-group-fetch-more {
     width: 100%;
-    border-bottom-right-radius: $border-radius-base;
-    border-bottom-left-radius: $border-radius-base;
+    border-radius: 0 0 var(--radius-control-inner, 7px)
+      var(--radius-control-inner, 7px);
 
     > * {
       color: darken($input-color, 15%);
