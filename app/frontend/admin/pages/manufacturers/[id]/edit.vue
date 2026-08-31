@@ -69,6 +69,13 @@ const iconLabel = computed(() =>
     : t("labels.manufacturer.icon"),
 );
 
+// The same for the logo, whose other source is RSI's ship matrix.
+const logoLabel = computed(() =>
+  props.manufacturer.logoOverridden
+    ? t("labels.manufacturer.logoOverridden")
+    : t("labels.manufacturer.logo"),
+);
+
 const submitting = ref(false);
 
 const updateMutation = useUpdateManufacturer({
@@ -140,7 +147,7 @@ const handleCancel = async () => {
           v-model="logo"
           v-bind="logoProps"
           :file="manufacturer.logo"
-          translation-key="manufacturer.logo"
+          :label="logoLabel"
           name="logo"
           :allowed-types="AllowedFileTypes.IMAGE"
           avatar

@@ -902,6 +902,7 @@
         "longName": "全名",
         "code": "代碼",
         "logo": "標誌",
+        "logoOverridden": "標誌（已覆寫）",
         "icon": "圖示（遊戲檔案）",
         "iconOverridden": "圖示（已覆寫）",
         "scRef": "SC Ref"

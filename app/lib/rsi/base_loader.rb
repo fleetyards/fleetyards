@@ -9,6 +9,25 @@ module Rsi
       @graphql_client = Graphlient::Client.new("#{base_url}/graphql")
     end
 
+    # A load runs against a fixture in the test environment, where the site is
+    # not reachable and an attachment would be written per example. Named
+    # rather than asked inline so a test that is about the fetch can allow it.
+    private def fetch_images?
+      !Rails.env.test?
+    end
+
+    # RSI's media entries are not consistent about it: most `source_url`s are
+    # paths off the site root, but some name the media host outright. Prefixing
+    # an absolute one yielded the host `robertsspaceindustries.comhttps`, which
+    # `URI.parse` accepts and nothing serves, so the fetch failed for those --
+    # invisibly, because `attach_image_from_url` only logs.
+    private def media_url(source_url)
+      return if source_url.blank?
+      return source_url if source_url.start_with?("http")
+
+      "#{base_url}#{source_url}"
+    end
+
     private def attach_image_from_url(record, attachment_name, url)
       return if url.blank?
 
@@ -16,14 +35,33 @@ module Rsi
       tempfile = uri.open # rubocop:disable Security/Open
       filename = File.basename(uri.path)
       content_type = Marcel::MimeType.for(name: filename)
+      attachment = record.send(attachment_name)
 
-      record.send(attachment_name).attach(
+      # Nothing is written when the remote file is the one already attached, so
+      # a loader may follow a source on every run without minting a blob per
+      # pass. Digested in chunks because the same method carries store images,
+      # which are megabytes where a logo is kilobytes.
+      return if attachment.attached? && attachment.blob.checksum == digest(tempfile)
+
+      attachment.attach(
         io: tempfile,
         filename: filename,
         content_type: content_type
       )
     rescue => e
       Rails.logger.error "Failed to attach image #{attachment_name} for #{record.class}##{record.id}: #{e.message}"
+    end
+
+    private def digest(io)
+      digest = Digest::MD5.new
+
+      while (chunk = io.read(16.kilobytes))
+        digest << chunk
+      end
+
+      io.rewind
+
+      digest.base64digest
     end
 
     private def fetch_remote(url)
