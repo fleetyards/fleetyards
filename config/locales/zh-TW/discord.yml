@@ -39,6 +39,12 @@ zh-TW:
         missing_query: 請提供船艦名稱。
         more: '…還有更多，請使用更精確的名稱。'
         not_found: '找不到符合「%{query}」的船艦。'
+    event_reminder:
+      signups: '%{count} 人已報名'
+      slots: '%{total} 個位置中還有 %{open} 個空缺'
+      starting_now: 即將開始
+      starts_in: '%{count} 分鐘後開始'
+      title: '提醒：%{title}'
     new_ship:
       message: '讓我來介紹：%{manufacturer} %{model}'
       title: 新增船艦／載具

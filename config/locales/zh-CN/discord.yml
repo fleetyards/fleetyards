@@ -39,6 +39,12 @@ zh-CN:
         missing_query: 请提供飞船名称。
         more: '…还有更多，请使用更精确的名称。'
         not_found: '未找到与“%{query}”匹配的飞船。'
+    event_reminder:
+      signups: '%{count} 人已报名'
+      slots: '%{total} 个位置中还有 %{open} 个空缺'
+      starting_now: 即将开始
+      starts_in: '%{count} 分钟后开始'
+      title: '提醒：%{title}'
     new_ship:
       message: '请允许我介绍：%{manufacturer} %{model}'
       title: 新增飞船／载具

@@ -139,7 +139,20 @@ The dispatcher starts from `FleetNotificationSetting` rather than from the event
 
 Discord's own event reminder knows the time and nothing else. Fleetyards knows the slots. A reminder post — "starts in 1 h · 6 of 14 slots open · sign up" with a deep link — carries information Discord cannot produce.
 
-Goes through the existing webhook path (`lib/discord/webhook.rb`), so it needs **no bot permission at all** and works even in servers that never installed the bot. Reuses the `fleet_event.starting_soon` notification event that `FleetNotificationSetting::DEFAULT_IN_APP_EVENTS` already defines.
+Goes through the existing webhook path (`lib/discord/webhook.rb`), so it needs **no bot permission at all**, no bot token and no guild binding — it works in servers that never installed the bot. It hangs off the `fleet_event.starting_soon` notification that `Notifications::FleetEventStartingSoonJob` already broadcasts every five minutes, so there is no new schedule and no second definition of "starting soon".
+
+### The second dormant feature
+
+`fleet_notification_settings.discord_webhook_url` is encrypted, writable through the API, surfaced in the fleet settings UI — and **nothing has ever posted to it**. The only sender in the tree, `Discord::Webhook`, reads the global `discord_updates_endpoint` credential. So a fleet can fill the field in and nothing happens. This is what finally uses it.
+
+`Discord::Webhook` already has the right extension point (`get_webhook_endpoint` is a private method a subclass can override) but initialises in an order that makes it unusable: it calls `get_webhook_endpoint` **before** assigning `@options`, so an endpoint that depends on the options — a per-fleet webhook rather than the global feed — reads `nil`. Setting `@options` first is the fix; the existing five posters take their endpoint from credentials and are unaffected.
+
+### What the message says
+
+- **Slots are the point.** "6 of 14 slots open" is exactly what Discord's own reminder cannot produce.
+- An event with **no slots** reports the signup count instead. "0 of 0 slots open" reads like a full event, which is the opposite of true.
+- A **withdrawn** signup frees its slot again, so the count matches what the event page shows.
+- A recurring occurrence takes the parent's time of day on its own date, and an occurrence's overridden title wins over the series title.
 
 ## Phase 5 — wishlist alerts as DMs
 

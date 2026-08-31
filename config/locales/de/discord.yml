@@ -39,6 +39,12 @@ de:
         missing_query: Bitte gib einen Schiffsnamen an.
         more: '…und weitere. Versuche einen genaueren Namen.'
         not_found: 'Kein Schiff für „%{query}“ gefunden.'
+    event_reminder:
+      signups: '%{count} Anmeldungen'
+      slots: '%{open} von %{total} Plätzen frei'
+      starting_now: Beginnt jetzt
+      starts_in: 'Beginnt in %{count} Min.'
+      title: 'Erinnerung: %{title}'
     new_ship:
       message: 'Darf ich vorstellen: %{manufacturer} %{model}'
       title: Neues Schiff/Fahrzeug hinzugefügt
