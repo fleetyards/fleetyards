@@ -14,7 +14,7 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -328,7 +328,7 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <Modal :title="modalTitle">
     <form id="create-hangar-inventory-item-form" @submit.prevent="onSubmit">
-      <FilterGroup
+      <BaseSelect
         v-model="entryType"
         :options="entryTypeOptions"
         :label="t('labels.logistics.entryType')"
@@ -338,7 +338,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <!-- Withdrawal: pick from existing stock -->
       <template v-if="!isDeposit">
-        <FilterGroup
+        <BaseSelect
           v-model="selectedStockItem"
           :options="stockItemOptions"
           :label="t('labels.logistics.selectItem')"
@@ -355,7 +355,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <!-- Deposit: pick existing or manual entry -->
       <template v-if="isDeposit">
-        <FilterGroup
+        <BaseSelect
           v-if="existingItemOptions.length"
           v-model="selectedExistingItem"
           :options="existingItemOptions"
@@ -372,7 +372,7 @@ const onSubmit = handleSubmit(async (values) => {
           :rules="validationSchema.name"
           :label="t('labels.logistics.itemName')"
         />
-        <FilterGroup
+        <BaseSelect
           v-model="category"
           v-bind="categoryProps"
           name="category"

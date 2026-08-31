@@ -21,8 +21,8 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
 
@@ -125,7 +125,7 @@ const handleCancel = async () => {
           translation-key="modelModule.scKey"
           name="scKey"
         />
-        <ManufacturerFilterGroup
+        <ManufacturerSelect
           v-model="manufacturerId"
           v-bind="manufacturerIdProps"
           :no-label="false"
@@ -154,7 +154,7 @@ const handleCancel = async () => {
           </div>
         </div>
         <hr />
-        <ProductionStatusFilterGroup
+        <ProductionStatusSelect
           v-model="productionStatus"
           v-bind="productionStatusProps"
           :no-label="false"

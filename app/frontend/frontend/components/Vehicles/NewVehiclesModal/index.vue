@@ -11,8 +11,8 @@ import Chip from "@/shared/components/base/Chip/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
-import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
+import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
+import ClassificationSelect from "@/frontend/components/base/ModelClassificationSelect/index.vue";
 import ModelCard from "@/frontend/components/Vehicles/NewVehiclesModal/ModelCard/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
@@ -311,13 +311,13 @@ const save = async () => {
             clearable
           />
 
-          <ManufacturerFilterGroup
+          <ManufacturerSelect
             v-model="manufacturerIn"
             class="new-vehicles__filter"
             name="new-vehicles-manufacturer"
           />
 
-          <ClassificationFilterGroup
+          <ClassificationSelect
             v-model="classificationIn"
             class="new-vehicles__filter"
             name="new-vehicles-classification"
@@ -452,7 +452,7 @@ const save = async () => {
  * both let the images through. Opaque in this modal only - the component is
  * shared, and nowhere else has this behind it.
  */
-.new-vehicles__filter :deep(.filter-group-items-wrapper) {
+.new-vehicles__filter :deep(.base-select-items-wrapper) {
   background-color: var(--color-gray-darker, #272b30);
 }
 

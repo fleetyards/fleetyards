@@ -30,8 +30,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
@@ -282,14 +282,14 @@ const onUnlink = (record: ModelModule) => {
         />
       </div>
       <div>
-        <ManufacturerFilterGroup
+        <ManufacturerSelect
           v-model="editForm.manufacturerId"
           name="edit-manufacturer"
           :multiple="false"
           :no-label="false"
           value-attr="id"
         />
-        <ProductionStatusFilterGroup
+        <ProductionStatusSelect
           v-model="editForm.productionStatus"
           name="edit-production-status"
           :no-label="false"
@@ -325,14 +325,14 @@ const onUnlink = (record: ModelModule) => {
         />
       </div>
       <div>
-        <ManufacturerFilterGroup
+        <ManufacturerSelect
           v-model="createForm.manufacturerId"
           name="create-manufacturer"
           :multiple="false"
           :no-label="false"
           value-attr="id"
         />
-        <ProductionStatusFilterGroup
+        <ProductionStatusSelect
           v-model="createForm.productionStatus"
           name="create-production-status"
           :multiple="false"

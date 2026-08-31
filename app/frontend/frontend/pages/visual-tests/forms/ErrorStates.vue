@@ -11,7 +11,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useForm } from "vee-validate";
@@ -24,7 +24,7 @@ import { useForm } from "vee-validate";
 // covers every control that calls `useField` without one, which is all of these.
 // Validated up front so the invalid styling is visible without interaction.
 //
-// RadioList is here now that it binds a field, and FilterGroup because its error
+// RadioList is here now that it binds a field, and BaseSelect because its error
 // is a prop the caller passes rather than a field a form marks -- which is why it
 // is the one on this page driven by hand.
 //
@@ -102,7 +102,7 @@ onMounted(async () => {
         <FormTextarea name="notes" label="Notes (required)" />
       </div>
       <div class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           name="destination"
           label="Destination (required)"
           :options="[

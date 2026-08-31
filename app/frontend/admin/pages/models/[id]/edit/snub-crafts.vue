@@ -22,7 +22,7 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 
 type Props = {
   model: ModelExtended;
@@ -155,7 +155,7 @@ const onSaveCreate = async () => {
     </template>
 
     <template #edit>
-      <ModelFilterGroup
+      <ModelSelect
         v-model="editForm.snubCraftId"
         value-attr="id"
         no-label
@@ -167,7 +167,7 @@ const onSaveCreate = async () => {
     </template>
 
     <template #create>
-      <ModelFilterGroup
+      <ModelSelect
         v-model="createForm.snubCraftId"
         value-attr="id"
         no-label

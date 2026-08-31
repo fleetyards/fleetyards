@@ -10,7 +10,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -100,7 +100,7 @@ const onSubmit = handleSubmit(async (values) => {
         :rules="validationSchema.name"
         :label="t('labels.logistics.itemName')"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="category"
         v-bind="categoryProps"
         name="category"
@@ -108,7 +108,7 @@ const onSubmit = handleSubmit(async (values) => {
         :label="t('labels.logistics.category')"
         :searchable="false"
       />
-      <FilterGroup
+      <BaseSelect
         v-if="unitOptions.length > 1"
         v-model="unit"
         name="unit"

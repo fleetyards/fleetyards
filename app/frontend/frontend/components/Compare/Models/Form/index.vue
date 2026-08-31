@@ -6,8 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.vue";
-import { FilterGroupSizesEnum } from "@/shared/components/base/FilterGroup/types";
+import ModelSelect from "@/frontend/components/base/ModelSelect/index.vue";
+import { BaseSelectSizesEnum } from "@/shared/components/base/Select/types";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import { ComponentExposed } from "vue-component-type-helpers";
@@ -35,7 +35,7 @@ const disabledTooltip = computed(() =>
   selectDisabled.value ? t("labels.compare.enough") : undefined,
 );
 
-const modelFilterGroup = ref<ComponentExposed<typeof ModelFilterGroup>>();
+const modelSelect = ref<ComponentExposed<typeof ModelSelect>>();
 
 const handleChange = (model: string) => {
   if (model) {
@@ -47,17 +47,17 @@ const handleChange = (model: string) => {
     filter(form.value);
   }
 
-  modelFilterGroup.value?.clear();
+  modelSelect.value?.clear();
 };
 </script>
 
 <template>
   <div class="compare-form">
-    <ModelFilterGroup
-      ref="modelFilterGroup"
+    <ModelSelect
+      ref="modelSelect"
       v-tooltip="disabledTooltip"
       :disabled="selectDisabled"
-      :size="FilterGroupSizesEnum.MEDIUM"
+      :size="BaseSelectSizesEnum.MEDIUM"
       name="new-model"
       @update:model-value="handleChange"
     />

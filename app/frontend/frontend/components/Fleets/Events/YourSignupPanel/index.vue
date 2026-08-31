@@ -8,7 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
 import {
   type FilterOption,
@@ -175,7 +175,7 @@ const statusLabel = computed(() =>
     </p>
 
     <template v-if="editing">
-      <FilterGroup
+      <BaseSelect
         v-if="isEventLevel"
         v-model="status"
         :options="eventLevelStatusOptions"

@@ -10,7 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import EventEditFormShell from "@/frontend/components/Fleets/Events/EventEditFormShell/index.vue";
 import {
@@ -239,7 +239,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
 
     <div class="row">
       <div class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           v-model="timezone"
           v-bind="timezoneProps"
           :options="timezoneOptions"
@@ -280,7 +280,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
 
     <div class="row">
       <div class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           v-model="visibility"
           v-bind="visibilityProps"
           :options="visibilityOptions"
@@ -290,7 +290,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
         />
       </div>
       <div class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           v-model="category"
           v-bind="categoryProps"
           :options="categoryOptions"
@@ -359,7 +359,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     <template v-if="recurring">
       <div class="row">
         <div class="col-12 col-md-6">
-          <FilterGroup
+          <BaseSelect
             v-model="recurrenceInterval"
             v-bind="recurrenceIntervalProps"
             :options="recurrenceIntervalOptions"

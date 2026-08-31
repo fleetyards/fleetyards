@@ -9,7 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import type { FilterOption } from "@/services/fyApi";
 import {
   type Fleet,
@@ -162,7 +162,7 @@ const onSubmit = handleSubmit(async (values) => {
     <br />
     <div class="row">
       <div class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           v-model="shipsFilter"
           name="shipsFilter"
           translation-key="fleet.members.shipsFilter"
@@ -171,7 +171,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
       </div>
       <div v-if="shipsFilterIsHangarGroup" class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           v-model="hangarGroupId"
           name="hangarGroupId"
           translation-key="fleet.members.hangarGroupId"

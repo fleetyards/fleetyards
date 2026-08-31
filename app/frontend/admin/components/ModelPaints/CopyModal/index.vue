@@ -8,7 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import {
   type ModelPaint,
   type ModelPaintInput,
@@ -101,7 +101,7 @@ const submit = async () => {
     </p>
 
     <form id="model-paint-copy" @submit.prevent="submit">
-      <ModelFilterGroup
+      <ModelSelect
         v-model="targetModelId"
         :no-label="false"
         value-attr="id"

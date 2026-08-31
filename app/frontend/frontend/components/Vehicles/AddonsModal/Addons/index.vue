@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -166,7 +166,7 @@ const selectedAddon = (addonId: string) => {
       </div>
     </div>
     <div v-if="editable" class="col-12 col-md-6 add-addons">
-      <FilterGroup
+      <BaseSelect
         v-model="addonToAdd"
         :label="label"
         :options="options"

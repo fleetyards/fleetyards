@@ -1,0 +1,105 @@
+<script lang="ts">
+export default {
+  name: "FleetSelect",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import {
+  fleetOptions as fetchFleetOptions,
+  type FleetQuery,
+  type FleetOptions,
+  type FleetOption,
+} from "@/services/fyAdminApi";
+import BaseSelect, {
+  type BaseSelectParams,
+} from "@/shared/components/base/Select/index.vue";
+
+type Props = {
+  name: string;
+  modelValue?: string | string[];
+  multiple?: boolean;
+  noLabel?: boolean;
+  inline?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
+  multiple: false,
+  noLabel: true,
+  inline: false,
+});
+
+const { t } = useI18n();
+
+const internalValue = ref<string | string[] | undefined>(props.modelValue);
+
+onMounted(() => {
+  internalValue.value = props.modelValue;
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    internalValue.value = props.modelValue;
+  },
+);
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => internalValue.value,
+  () => {
+    emit("update:modelValue", internalValue.value);
+  },
+);
+
+const formatter = (response: FleetOptions) => {
+  return response.items.map((fleet) => {
+    return {
+      label: `${fleet.name} (${fleet.fid})`,
+      value: fleet.fid,
+    };
+  });
+};
+
+const fetch = async (params: BaseSelectParams<FleetOption>) => {
+  const q: FleetQuery = {};
+
+  if (params.search) {
+    q.nameCont = params.search;
+  }
+
+  if (params.missing) {
+    if (props.multiple) {
+      q.fidCont = Array.isArray(params.missing)
+        ? (params.missing[0] as string)
+        : (params.missing as string);
+    } else {
+      q.fidCont = params.missing as string;
+    }
+  }
+
+  return fetchFleetOptions({
+    page: String(params.page || 1),
+    q,
+  });
+};
+</script>
+
+<template>
+  <BaseSelect
+    v-model="internalValue"
+    :label="t('labels.selectFleet')"
+    :search-label="t('labels.findFleet')"
+    :query-fn="fetch"
+    :query-response-formatter="formatter"
+    :name="name"
+    :paginated="true"
+    :searchable="true"
+    :multiple="multiple"
+    :no-label="noLabel"
+    :inline="inline"
+  />
+</template>

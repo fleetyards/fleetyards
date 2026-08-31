@@ -9,7 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import VersionHistory from "@/admin/components/VersionHistory/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -121,7 +121,7 @@ const handleCancel = async () => {
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <form id="admin-fleet-member-edit-form" @submit.prevent="onSubmit">
-        <FilterGroup
+        <BaseSelect
           v-model="fleetRoleId"
           v-bind="fleetRoleIdProps"
           name="fleetRoleId"

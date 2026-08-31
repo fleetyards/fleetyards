@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import AdminUserFilterGroup from "@/admin/components/base/AdminUserFilterGroup/index.vue";
-import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
+import AdminUserSelect from "@/admin/components/base/AdminUserSelect/index.vue";
+import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type ImportQuery,
@@ -72,26 +72,26 @@ watch(
 
 <template>
   <form @submit.prevent>
-    <FilterGroup
+    <BaseSelect
       v-model="form.typeIn"
       :label="t('labels.imports.type')"
       :options="typeOptions"
       :multiple="true"
       name="type"
     />
-    <FilterGroup
+    <BaseSelect
       v-model="form.aasmStateIn"
       :label="t('labels.imports.status')"
       :options="statusOptions"
       :multiple="true"
       name="status"
     />
-    <AdminUserFilterGroup
+    <AdminUserSelect
       v-model="form.adminUserUsernameIn"
       name="admin-user"
       multiple
     />
-    <UserFilterGroup v-model="form.userUsernameIn" name="user" multiple />
+    <UserSelect v-model="form.userUsernameIn" name="user" multiple />
     <FormCheckbox
       v-model="form.includeSystem"
       :label="t('labels.imports.includeSystem')"

@@ -1,0 +1,81 @@
+{
+  "de": {
+    "baseSelect": {
+      "actions": {
+        "fetchMore": "Mehr laden"
+      },
+      "labels": {
+        "search": "Tippe um zu suchen",
+        "nullablePrompt": "Keine Option ausgewählt",
+        "prompt": "Bitte wähle eine Option",
+        "removeTooltip": "Klicke um eine Option abzuwählen"
+      },
+      "model": {
+        "baseModel": {
+          "label": "Basismodell"
+        }
+      },
+      "modelLoaner": {
+        "loanerModel": {
+          "label": "Leihmodell"
+        }
+      },
+      "modelSnubCraft": {
+        "snubCraft": {
+          "label": "Snub Craft",
+          "prompt": "Snub Craft auswählen"
+        }
+      },
+      "modelPosition": {
+        "positionType": {
+          "label": "Positionstyp",
+          "prompt": "Positionstyp auswählen"
+        },
+        "source": {
+          "label": "Quelle",
+          "prompt": "Quelle auswählen"
+        }
+      },
+      "modelHardpoint": {
+        "source": {
+          "label": "Quelle",
+          "prompt": "Quelle auswählen"
+        },
+        "group": {
+          "label": "Gruppe",
+          "prompt": "Gruppe auswählen"
+        },
+        "hardpointType": {
+          "label": "Typ",
+          "prompt": "Typ auswählen"
+        },
+        "size": {
+          "label": "Größe",
+          "nullablePrompt": "Größe auswählen"
+        },
+        "category": {
+          "label": "Kategorie",
+          "nullablePrompt": "Kategorie auswählen"
+        },
+        "subCategory": {
+          "label": "Unterkategorie",
+          "nullablePrompt": "Unterkategorie auswählen"
+        }
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "Schiffsfilter",
+            "prompt": "Wähle welche Schiffe angezeigt werden sollen",
+            "nullablePrompt": "Wähle eine Option"
+          },
+          "hangarGroupId": {
+            "label": "Hangar Gruppe",
+            "prompt": "Wähle eine Hangar Gruppe",
+            "nullablePrompt": "Wähle eine Gruppe"
+          }
+        }
+      }
+    }
+  }
+}

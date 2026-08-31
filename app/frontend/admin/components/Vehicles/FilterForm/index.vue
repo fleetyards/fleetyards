@@ -7,10 +7,10 @@ export default {
 <script lang="ts" setup>
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
-import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
+import UserSelect from "@/admin/components/base/UserSelect/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -70,16 +70,13 @@ watch(
       />
     </Teleport>
 
-    <ModelFilterGroup v-model="form.modelSlugIn" name="model" multiple />
+    <ModelSelect v-model="form.modelSlugIn" name="model" multiple />
 
-    <UserFilterGroup v-model="form.userUsernameIn" name="user" multiple />
+    <UserSelect v-model="form.userUsernameIn" name="user" multiple />
 
-    <ManufacturerFilterGroup
-      v-model="form.manufacturerIn"
-      name="manufacturer"
-    />
+    <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
 
-    <ProductionStatusFilterGroup
+    <ProductionStatusSelect
       v-model="form.modelProductionStatusIn"
       name="production-status"
     />

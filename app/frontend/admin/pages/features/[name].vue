@@ -12,9 +12,9 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
-import FleetFilterGroup from "@/admin/components/base/FleetFilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import UserSelect from "@/admin/components/base/UserSelect/index.vue";
+import FleetSelect from "@/admin/components/base/FleetSelect/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   useAdminFeature,
@@ -264,7 +264,7 @@ const stateLabel = (state: string) => {
 
       <h4>{{ t("headlines.admin.features.addActor") }}</h4>
       <div class="add-actor-form">
-        <FilterGroup
+        <BaseSelect
           v-model="actorType"
           inline
           name="actor-type"
@@ -272,14 +272,14 @@ const stateLabel = (state: string) => {
           :nullable="false"
           :label="t('labels.features.actorType')"
         />
-        <UserFilterGroup
+        <UserSelect
           v-if="actorType === 'User'"
           v-model="selectedUser"
           name="feature-user"
           inline
           :no-label="false"
         />
-        <FleetFilterGroup
+        <FleetSelect
           v-if="actorType === 'Fleet'"
           v-model="selectedFleet"
           name="feature-fleet"

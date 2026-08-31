@@ -10,7 +10,7 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
+import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type SupporterContributionQuery } from "@/services/fyAdminApi";
 import { useSupporterContributionFilters } from "@/admin/composables/useSupporterContributionFilters";
@@ -97,7 +97,7 @@ watch(
       name="anonymousEq"
     />
 
-    <UserFilterGroup
+    <UserSelect
       v-model="form.userIdEq"
       :label="t('labels.filters.supporterContributions.user')"
       :no-label="false"

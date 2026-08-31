@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Equipment,
@@ -107,7 +107,7 @@ watch(selected, (val) => {
 <template>
   <div class="row">
     <div class="col-12 col-md-5">
-      <FilterGroup
+      <BaseSelect
         v-model="itemType"
         name="equipmentItemType"
         :options="typeOptions"
@@ -118,8 +118,8 @@ watch(selected, (val) => {
     </div>
     <div class="col-12 col-md-7">
       <!-- Remounting on type change resets the option list, which is keyed to
-           the FilterGroup instance and would otherwise keep stale entries. -->
-      <FilterGroup
+           the BaseSelect instance and would otherwise keep stale entries. -->
+      <BaseSelect
         :key="`${equipmentTypes?.join(',') || 'all'}-${itemType || 'all'}`"
         v-model="selected"
         name="equipment"

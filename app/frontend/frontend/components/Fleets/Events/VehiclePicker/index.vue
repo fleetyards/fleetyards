@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   type FilterOption,
   type FleetEventShip,
@@ -122,7 +122,7 @@ watch(selectedMatches, (value) => emit("match", value), { immediate: true });
 
 <template>
   <div class="vehicle-picker">
-    <FilterGroup
+    <BaseSelect
       :model-value="modelValue"
       :options="options"
       :label="t('labels.fleets.events.myVehicle')"

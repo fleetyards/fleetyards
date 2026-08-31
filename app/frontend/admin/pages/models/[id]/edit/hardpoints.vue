@@ -276,21 +276,21 @@ const onSaveCreate = async () => {
           />
         </div>
         <div class="hardpoint-form__row">
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.source"
             name="edit-source"
             :options="sourceOptions"
             :nullable="false"
             translation-key="modelHardpoint.source"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.group"
             name="edit-group"
             :options="groupOptions"
             :nullable="false"
             translation-key="modelHardpoint.group"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.hardpointType"
             name="edit-type"
             :options="typeOptions"
@@ -299,19 +299,19 @@ const onSaveCreate = async () => {
           />
         </div>
         <div class="hardpoint-form__row">
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.size"
             name="edit-size"
             :options="sizeOptions"
             translation-key="modelHardpoint.size"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.category"
             name="edit-category"
             :options="categoryOptions"
             translation-key="modelHardpoint.category"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.subCategory"
             name="edit-sub-category"
             :options="subCategoryOptions"
@@ -359,21 +359,21 @@ const onSaveCreate = async () => {
           />
         </div>
         <div class="hardpoint-form__row">
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.source"
             name="create-source"
             :options="sourceOptions"
             :nullable="false"
             translation-key="modelHardpoint.source"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.group"
             name="create-group"
             :options="groupOptions"
             :nullable="false"
             translation-key="modelHardpoint.group"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.hardpointType"
             name="create-type"
             :options="typeOptions"
@@ -382,19 +382,19 @@ const onSaveCreate = async () => {
           />
         </div>
         <div class="hardpoint-form__row">
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.size"
             name="create-size"
             :options="sizeOptions"
             translation-key="modelHardpoint.size"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.category"
             name="create-category"
             :options="categoryOptions"
             translation-key="modelHardpoint.category"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.subCategory"
             name="create-sub-category"
             :options="subCategoryOptions"

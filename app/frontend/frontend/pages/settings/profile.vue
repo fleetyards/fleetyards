@@ -8,7 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -307,7 +307,7 @@ const onSubmit = handleSubmit(async (values) => {
     <hr />
     <div class="row">
       <div class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           v-model="dateFormat"
           v-bind="dateFormatProps"
           :options="dateFormatOptions"

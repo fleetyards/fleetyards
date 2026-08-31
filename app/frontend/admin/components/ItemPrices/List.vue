@@ -199,7 +199,7 @@ defineExpose({
     </template>
 
     <template #edit>
-      <FilterGroup
+      <BaseSelect
         v-model="editForm.priceType"
         name="edit-price-type"
         :options="priceTypeOptions"
@@ -214,7 +214,7 @@ defineExpose({
         :suffix="t('number.units.uec')"
         translation-key="itemPrice.price"
       />
-      <FilterGroup
+      <BaseSelect
         v-if="editForm.priceType === ItemPriceTypeEnum.RENTAL"
         v-model="editForm.timeRange"
         name="edit-time-range"
@@ -235,7 +235,7 @@ defineExpose({
     </template>
 
     <template #create>
-      <FilterGroup
+      <BaseSelect
         v-model="createForm.priceType"
         name="create-price-type"
         :options="priceTypeOptions"
@@ -250,7 +250,7 @@ defineExpose({
         :suffix="t('number.units.uec')"
         translation-key="itemPrice.price"
       />
-      <FilterGroup
+      <BaseSelect
         v-if="createForm.priceType === ItemPriceTypeEnum.RENTAL"
         v-model="createForm.timeRange"
         name="create-time-range"

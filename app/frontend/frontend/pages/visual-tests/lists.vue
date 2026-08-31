@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
@@ -305,14 +305,14 @@ const toggleFilteredListEmpty = () => {
     </template>
 
     <template #edit>
-      <FilterGroup
+      <BaseSelect
         v-model="editForm.dockType"
         name="edit-dock-type"
         :options="dockTypeOptions"
         :nullable="false"
         label="Dock Type"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="editForm.shipSize"
         name="edit-ship-size"
         :options="shipSizeOptions"
@@ -323,14 +323,14 @@ const toggleFilteredListEmpty = () => {
     </template>
 
     <template #create>
-      <FilterGroup
+      <BaseSelect
         v-model="createForm.dockType"
         name="create-dock-type"
         :options="dockTypeOptions"
         :nullable="false"
         label="Dock Type"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="createForm.shipSize"
         name="create-ship-size"
         :options="shipSizeOptions"
@@ -450,7 +450,7 @@ const toggleFilteredListEmpty = () => {
       <span class="text-muted">{{ records.length }} docks</span>
     </template>
     <template #filter>
-      <FilterGroup
+      <BaseSelect
         v-model="filteredListSize"
         name="filtered-list-ship-size"
         :options="shipSizeOptions"

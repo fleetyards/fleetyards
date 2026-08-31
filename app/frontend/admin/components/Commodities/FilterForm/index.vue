@@ -12,7 +12,7 @@ import {
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import CommodityTypeFilterGroup from "@/admin/components/base/CommodityTypeFilterGroup/index.vue";
+import CommodityTypeSelect from "@/admin/components/base/CommodityTypeSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type CommodityQuery } from "@/services/fyAdminApi";
@@ -71,10 +71,7 @@ watch(
       />
     </Teleport>
 
-    <CommodityTypeFilterGroup
-      v-model="form.commodityTypeIn"
-      name="commodity-type"
-    />
+    <CommodityTypeSelect v-model="form.commodityTypeIn" name="commodity-type" />
 
     <FormInput
       v-model="form.uexCodeCont"

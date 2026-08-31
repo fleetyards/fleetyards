@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import {
   InputSizesEnum,
@@ -84,7 +84,7 @@ defineExpose({ isFilterSelected });
       :clearable="true"
     />
 
-    <FilterGroup
+    <BaseSelect
       v-model="form.categoryEq"
       :options="categoryOptions"
       :label="t('labels.logistics.category')"

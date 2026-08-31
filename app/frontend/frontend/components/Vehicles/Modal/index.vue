@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -142,7 +142,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
         </div>
         <div v-if="vehicle?.model?.hasPaints" class="col-12 col-md-6">
           <div class="form-group">
-            <FilterGroup
+            <BaseSelect
               :key="`paints-new-${vehicle.model?.id}`"
               v-model="modelPaintId"
               v-bind="modelPaintIdProps"
@@ -182,7 +182,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
         </div>
         <div class="col-12 col-md-6">
           <div class="form-group">
-            <FilterGroup
+            <BaseSelect
               :key="`bought-via-${vehicle.model?.id}`"
               v-model="boughtVia"
               v-bind="boughtViaProps"

@@ -19,7 +19,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
+import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { todayIsoDateLocal } from "@/shared/utils/dateHelpers";
@@ -169,7 +169,7 @@ const handleCancel = async () => {
           translation-key="supporterContribution.anonymous"
           name="anonymous"
         />
-        <UserFilterGroup
+        <UserSelect
           v-model="userId"
           v-bind="userIdProps"
           :label="t('labels.supporterContribution.user')"
