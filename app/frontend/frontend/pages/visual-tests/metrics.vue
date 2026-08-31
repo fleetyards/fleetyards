@@ -271,21 +271,19 @@ const sampleMetrics = [
   <Heading :level="HeadingLevelEnum.H2">Model Metrics | Panel Rails</Heading>
   <p>
     The rail panels from the ship detail page, fed with live
-    <code>{{ SLUG }}</code> data.
+    <code>{{ SLUG }}</code> data. Base and crew carry their own frame through
+    <code>MetricsCard</code>; speed is bare rows, so it is the only one that
+    needs a <code>Panel</code> around it.
     <Btn @click="toggleExtended">
       {{ extended ? "Collapse" : "Extend" }} dimensions
     </Btn>
   </p>
   <div v-if="model" class="row">
     <div class="col-12 col-lg-4">
-      <Panel>
-        <ModelBaseMetrics :model="model" :extended="extended" />
-      </Panel>
+      <ModelBaseMetrics :model="model" :extended="extended" />
     </div>
     <div class="col-12 col-lg-4">
-      <Panel>
-        <ModelCrewMetrics :model="model" />
-      </Panel>
+      <ModelCrewMetrics :model="model" />
     </div>
     <div class="col-12 col-lg-4">
       <Panel>
