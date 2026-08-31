@@ -14,6 +14,12 @@ type Props = {
   label?: string;
   modelValue?: boolean | string | (string | number)[] | null;
   disabled?: boolean;
+  /*
+   * Reserves the line a field's label occupies, so this control lines up with
+   * the fields beside it in a row. Off by default: on its own it would add a
+   * phantom label line to every standalone checkbox in the app.
+   */
+  alignWithFields?: boolean;
   checkboxValue?: string | number;
   translationKey?: string;
   noPlaceholder?: boolean;
@@ -29,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: undefined,
   modelValue: undefined,
   disabled: false,
+  alignWithFields: false,
   checkboxValue: undefined,
   translationKey: undefined,
   slim: true,
@@ -49,6 +56,8 @@ const { value, errorMessage } = useField<
 >(props.name, undefined, fieldOptions);
 
 const uuid = ref(`${props.name}-${uuidv4()}`);
+
+const errorId = computed(() => `${uuid.value}-error`);
 
 const checked = computed(() => {
   if (props.checkboxValue === undefined) {
@@ -126,6 +135,7 @@ const innerPlaceholder = computed(() => {
       'base-checkbox--inline': inline,
       'base-checkbox--partial': partial,
       'base-checkbox--with-error': !!errorMessage,
+      'base-checkbox--align-with-fields': alignWithFields,
     }"
   >
     <input
@@ -133,6 +143,7 @@ const innerPlaceholder = computed(() => {
       v-model="value"
       v-tooltip.right="errorMessage"
       :aria-invalid="!!errorMessage || undefined"
+      :aria-describedby="errorMessage ? errorId : undefined"
       :placeholder="innerPlaceholder"
       :name="name"
       :checked="checked"
@@ -145,7 +156,29 @@ const innerPlaceholder = computed(() => {
     <label :for="uuid">
       {{ innerLabel }}
     </label>
-    {{ errorMessage }}
+    <!--
+      Below the control rather than trailing the label as a bare text node, and
+      present whether or not it has anything to say: the line is reserved so that
+      showing a message cannot move what is under it.
+    -->
+
+    <!--
+      Rendered only when there is something to say, unlike a field's message,
+      which holds its place so an error cannot move the page.
+
+      The reservation is worth its cost on a 43px field and not on a 24px one,
+      where it doubles the control's height: it put the middle of the
+      notification list's row selector on the message instead of the box, and it
+      left 24px of empty space under the login form's "Remember me".
+    -->
+    <p
+      v-if="errorMessage"
+      :id="errorId"
+      class="base-checkbox__error"
+      role="alert"
+    >
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 

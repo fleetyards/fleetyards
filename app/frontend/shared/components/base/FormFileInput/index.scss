@@ -5,8 +5,38 @@
 
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--field-label-gap, 5px);
+    line-height: var(--field-label-line, 1.5rem);
     white-space: nowrap;
+  }
+
+  /* Shared with every other control -- see the note in FormInput. */
+  &__error {
+    display: grid;
+    grid-template-rows: 0fr;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
+    opacity: 0;
+    transition:
+      grid-template-rows 180ms ease-in-out,
+      margin-top 180ms ease-in-out,
+      opacity 180ms ease-in-out;
+
+    > span {
+      overflow: hidden;
+    }
+
+    &--shown {
+      grid-template-rows: 1fr;
+      margin-top: var(--field-message-gap, 4px);
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   &__subline {
@@ -18,49 +48,76 @@
     position: absolute;
   }
 
+  /*
+   * The control, and until now it had no frame at all: at rest a file input was
+   * a 200px patch of nothing, with the drop zone appearing over it only on
+   * hover. It is a surface like every other control now, and the drop zone stays
+   * what it is -- an overlay that answers a drag.
+   *
+   * There is no input rule here any more either. A full copy of FormInput's
+   * field styling used to sit at this spot -- 43px, a fill, a border, a focus
+   * reset -- and the only <input> in the template is `hidden`, so none of it
+   * ever drew a pixel.
+   */
   &__wrapper {
     position: relative;
     display: flex;
     height: 200px;
     justify-content: center;
     align-items: center;
+    background-color: var(--color-field, rgb(18 20 23 / 0.96));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+    transition: background-color ease-in-out 0.15s;
 
-    input {
-      display: block;
-      width: 100%;
-      height: 43px;
-      padding: 6px 12px 6px 12px;
-      color: $input-color;
-      font-size: 16px;
-      line-height: 1.42857;
-      text-overflow: ellipsis;
-      background-color: $input-bg;
-      background-image: none;
-      border: 1px solid $input-border;
-      border-radius: 3px;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      transition:
-        border-color ease-in-out 0.15s,
-        box-shadow ease-in-out 0.15s;
-
-      &[type="number"]::-webkit-inner-spin-button,
-      &[type="number"]::-webkit-outer-spin-button {
-        margin: 0;
-        -webkit-appearance: none;
-      }
-
-      &[type="number"] {
-        -moz-appearance: textfield;
-      }
-
-      &:focus {
-        outline: none;
-      }
-
-      &.clearable {
-        padding-right: 50px;
-      }
+    &:hover {
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
     }
+
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h-btn, 2px);
+      background-color: var(--field-cap, var(--color-endcap, #7a8288));
+      border-radius: var(--cap-r-btn, 1px);
+      transition: background-color 0.15s ease;
+      content: "";
+      z-index: 3;
+    }
+
+    &::before {
+      top: -1px;
+    }
+
+    &::after {
+      bottom: -1px;
+    }
+
+    /*
+     * The frame is rounded, so what it holds has to be too -- a preview kept its
+     * square corners and pushed them through the corners of the frame.
+     *
+     * Clipped on the content rather than with `overflow: hidden` on the wrapper,
+     * because the clear button lives inside it and sits at -10px in the avatar
+     * variant, where clipping would remove it. The avatar variant already does
+     * exactly this with 50%.
+     */
+    :deep(.lazy-image),
+    :deep(.direct-upload),
+    :deep(.direct-upload__uploader) {
+      border-radius: var(--radius-control-inner, 7px);
+      overflow: hidden;
+    }
+
+    :deep(img) {
+      border-radius: var(--radius-control-inner, 7px);
+    }
+  }
+
+  &:focus-within {
+    --field-cap: var(--color-primary, #428bca);
   }
 
   &__clear {
@@ -75,7 +132,12 @@
     align-items: center;
     background-color: $danger !important;
     border-radius: 10px 0 0 10px;
-    z-index: 1;
+    /*
+     * Above the drop zone, which appears on the same hover: its scrim sits at 1
+     * and its content at 2, so a clear button at 1 was covered by the thing that
+     * turned up with it. An action has to outrank an overlay.
+     */
+    z-index: 4;
     opacity: 0;
 
     i,
@@ -91,25 +153,49 @@
   }
 
   &--disabled {
-    input {
-      color: darken($input-color, 10%);
-      cursor: not-allowed;
-      opacity: 0.9;
+    --field-cap: transparent;
+
+    cursor: not-allowed;
+
+    .base-image-input__wrapper {
+      border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
+      opacity: 0.5;
+
+      &:hover {
+        background-color: var(--color-field, rgb(18 20 23 / 0.96));
+      }
     }
   }
 
+  /* The signature says what is wrong; the frame stays neutral. */
   &--with-error {
-    input {
-      border-color: darken($danger, 15%);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    }
+    --field-cap: var(--color-danger, #dc3545);
   }
 
   &--avatar {
+    /*
+     * No caps on a circle. A cap marks where a surface's top and bottom edges
+     * are, and a circle has neither -- an arc would be a different mark, not the
+     * same one bent. So the edge carries what the cap carries elsewhere, which
+     * is the call the boxes you tick already make.
+     */
+    &:focus-within .base-image-input__wrapper {
+      border-color: var(--color-primary, #428bca);
+    }
+
+    &.base-image-input--with-error .base-image-input__wrapper {
+      border-color: var(--color-danger, #dc3545);
+    }
+
     .base-image-input__wrapper {
       width: 200px;
       margin-inline: auto;
       border-radius: 50%;
+
+      &::before,
+      &::after {
+        content: none;
+      }
 
       :deep(.lazy-image) {
         border-radius: 50%;

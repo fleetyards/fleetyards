@@ -185,6 +185,7 @@ const handleCancel = async () => {
           v-bind="recurringProps"
           translation-key="supporterContribution.recurring"
           name="recurring"
+          align-with-fields
         />
         <FormToggle
           v-model="anonymous"

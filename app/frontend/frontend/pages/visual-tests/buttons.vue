@@ -486,14 +486,28 @@ const toggleLoading = () => {
         <hr />
         <Btn :tone="BtnTonesEnum.DANGER">Destructive action</Btn>
       </BtnDropdown>
-      <BtnDropdown expand-bottom>
+      <BtnDropdown>
         <template #label>With a label</template>
+        <Btn>Menu item</Btn>
+        <Btn>Another item</Btn>
+      </BtnDropdown>
+      <!--
+        expand-bottom pins the menu below its trigger even when there is no room
+        there, which four context menus in the app rely on. It sat on the
+        labelled example above, where it read as that example behaving oddly:
+        the others turn over near the bottom of the window and it did not.
+      -->
+      <BtnDropdown expand-bottom>
+        <template #label>Pinned below</template>
         <Btn>Menu item</Btn>
         <Btn>Another item</Btn>
       </BtnDropdown>
       <BtnGroup>
         <Btn>Grouped</Btn>
-        <BtnDropdown />
+        <BtnDropdown>
+          <Btn>Grouped action</Btn>
+          <Btn>Another one</Btn>
+        </BtnDropdown>
       </BtnGroup>
     </div>
   </div>

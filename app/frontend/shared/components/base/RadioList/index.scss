@@ -1,6 +1,3 @@
-$color1: #f4f4f4;
-$color2: #3197ee;
-
 .radio-list {
   display: flex;
   margin-bottom: 20px;
@@ -22,6 +19,16 @@ $color2: #3197ee;
     padding-top: 2px;
   }
 
+  // Same shape as every other control's message, and rendered only when there
+  // is one, because a radio group changes by one deliberate act.
+  &__error {
+    min-height: var(--field-message-line, 1.25rem);
+    margin: var(--field-message-gap, 4px) 0 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
+  }
+
   &__item {
     margin-top: 0;
     padding: 5px 0;
@@ -33,13 +40,27 @@ $color2: #3197ee;
       display: inline-block;
     }
 
+    /*
+     * `opacity: 0`, not `display: none`. Hiding it with display took it out of
+     * the tab order, so a radio could not be reached by keyboard at all -- which
+     * is why the :focus rule that used to sit below has never once fired.
+     * FormCheckbox has always done it this way; the two simply disagreed.
+     */
     input[type="radio"] {
-      display: none;
       position: absolute;
+      opacity: 0;
 
       + label {
         cursor: pointer;
 
+        /*
+         * background-clip is not cosmetic here. --color-edge is translucent and
+         * a background paints under the border by default, so the edge
+         * composites over whatever fills the box. The dot below fills it
+         * primary, and an inset shadow stops at the padding box -- so without
+         * this the blue sits under the border and reads as a primary edge on
+         * the chosen radio, which is the one thing the edge must not say.
+         */
         &::before {
           display: inline-block;
           width: 24px;
@@ -47,8 +68,9 @@ $color2: #3197ee;
           margin-right: 10px;
           text-align: center;
           vertical-align: top;
-          background: $input-bg;
-          border: 1px solid $input-border;
+          background-color: var(--color-field, rgb(18 20 23 / 0.96));
+          background-clip: padding-box;
+          border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
           border-radius: 100%;
           cursor: pointer;
           transition: all 250ms ease;
@@ -56,14 +78,25 @@ $color2: #3197ee;
         }
       }
 
-      &:checked + label::before {
-        background-color: $primary;
-        box-shadow: inset 0 0 0 4px $input-bg;
+      &:not(:disabled):not(:checked):hover + label::before {
+        background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
       }
 
-      &:focus + label::before {
-        border-color: $primary;
-        outline: none;
+      /* Chosen is the dot, and only the dot. The edge stays neutral so that
+         primary on an edge means one thing in a form: this is focused. */
+      &:checked + label::before {
+        background-color: var(--color-primary, #428bca);
+        box-shadow: inset 0 0 0 4px var(--color-field, rgb(18 20 23 / 0.96));
+      }
+
+      /*
+       * :focus-visible, not :focus. A pointer click leaves the control focused,
+       * so answering :focus kept the edge lit when nothing looked focused any
+       * more -- and tabbing into a group lands on the chosen radio, whose dot
+       * has to survive it.
+       */
+      &:focus-visible + label::before {
+        border-color: var(--color-primary, #428bca);
       }
 
       &:disabled,
@@ -72,13 +105,27 @@ $color2: #3197ee;
         cursor: not-allowed;
       }
 
-      &:disabled + label::before {
-        opacity: 0.9;
+      /*
+       * Dimmed at all: this used to set only `cursor: not-allowed`, so a
+       * disabled group looked live, where FormCheckbox and FormToggle both drop
+       * to 0.5.
+       */
+      &:disabled + label {
+        opacity: 0.5;
       }
 
-      &:disabled:checked + label::before {
-        background: color.adjust($input-bg, $lightness: 10%);
+      &:disabled + label::before {
+        border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
       }
     }
   }
+}
+
+/*
+ * The edge carries invalid, the same signature that carries focus and loses to
+ * it while focused -- as on the checkbox and the toggle. The labels stay
+ * readable; the message beside them is what needs reading.
+ */
+.radio-list--with-error .radio-list__item input + label::before {
+  border-color: var(--color-danger, #dc3545);
 }

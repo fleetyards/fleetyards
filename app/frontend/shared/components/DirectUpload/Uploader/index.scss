@@ -34,7 +34,8 @@
         height: 150px;
         opacity: 0.5;
         margin-bottom: 20px;
-        border: 2px dashed #ccc;
+        /* The dashed edge says "drop here"; the colour is the frame's. */
+        border: 2px dashed var(--color-edge, rgb(122 130 136 / 0.5));
 
         &::before {
           display: none;
@@ -47,7 +48,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 6px;
+    /* Inside the control's frame, so its radius steps in by the border. */
+    border-radius: var(--radius-control-inner, 7px);
     width: 100%;
     gap: 10px;
     opacity: 0;
@@ -68,8 +70,13 @@
       z-index: 1;
       width: 100%;
       height: 100%;
-      border-radius: 4px;
-      background-color: rgba(black, 0.7);
+      border-radius: var(--radius-control-inner, 7px);
+      /*
+       * A scrim, not a surface: it darkens whatever it covers so the drop
+       * instruction over a photograph stays readable, which is a job no palette
+       * colour does.
+       */
+      background-color: rgb(0 0 0 / 0.7);
     }
 
     &--dragging {

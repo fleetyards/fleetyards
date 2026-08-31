@@ -58,13 +58,23 @@ const openModal = () => {
 const emit = defineEmits<{
   "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
+  /*
+   * These two are exclusive: a run ends with one or the other, never both.
+   * "done" means every file arrived, so anything that latches on "start" has to
+   * answer "error" as well or it will never be told the run finished.
+   */
   "upload:done": [files: FileUpload[]];
+  "upload:error": [files: FileUpload[]];
   "files:rejected": [files: File[]];
   clear: [];
 }>();
 
 const handleUploadStart = (files: FileUpload[]) => {
   emit("upload:start", files);
+};
+
+const handleUploadError = (files: FileUpload[]) => {
+  emit("upload:error", files);
 };
 
 const handleUploadProgress = (progress: number) => {
@@ -115,6 +125,7 @@ defineExpose({
         :directory="directory"
         :filter="filter"
         @upload:done="handleUploadDone"
+        @upload:error="handleUploadError"
         @upload:progress="handleUploadProgress"
         @upload:start="handleUploadStart"
         @files:rejected="handleFilesRejected"

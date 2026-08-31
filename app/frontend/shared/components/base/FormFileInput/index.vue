@@ -93,6 +93,8 @@ const inputElement = ref<HTMLInputElement | undefined>();
 
 const id = ref(`${props.name}-${uuidv4()}`);
 
+const errorId = computed(() => `${id.value}-error`);
+
 const innerLabel = computed(() => {
   if (props.label) {
     return props.label;
@@ -135,9 +137,28 @@ const internalSrc = ref<string>();
 // the picture for it left the input blank.
 const uploadedHere = ref(false);
 
+/*
+ * A failed upload used to reach nobody. The uploader caught it, cleared itself
+ * and raised a toast, and the only event it emitted afterwards was
+ * `upload:done` -- so this control never learned, and stood there empty and
+ * apparently fine while a toast said "Error creating Blob" somewhere else.
+ *
+ * Held separately from the validation errors because it is not one: it says the
+ * file did not get there, not that the value is wrong.
+ */
+const uploadFailed = ref(false);
+
+const onUploadError = () => {
+  uploadFailed.value = true;
+};
+
 const hasErrors = computed(() => {
-  return errors.value.length;
+  return errors.value.length > 0 || uploadFailed.value;
 });
+
+const shownError = computed(() =>
+  uploadFailed.value ? t("errors.upload.generic") : errorMessage.value,
+);
 
 const cssClasses = computed(() => {
   return {
@@ -170,6 +191,8 @@ const clear = () => {
 };
 
 const onUploadDone = (files: FileUpload[]) => {
+  uploadFailed.value = false;
+
   if (!files.length || !files[0].blob) {
     return;
   }
@@ -181,6 +204,7 @@ const onUploadDone = (files: FileUpload[]) => {
 
 const onUploadClear = () => {
   uploadedHere.value = false;
+  uploadFailed.value = false;
 
   resetField({
     value: props.modelValue,
@@ -352,6 +376,7 @@ defineExpose({
         :transparent="transparent || avatar"
         :active="!hasPreview"
         @upload:done="onUploadDone"
+        @upload:error="onUploadError"
         @clear="onUploadClear"
       />
       <input
@@ -374,6 +399,15 @@ defineExpose({
         <i class="fa fa-times" />
       </Btn>
     </div>
+    <!-- See the note in FormInput: below the control, and always present. -->
+    <p
+      :id="errorId"
+      class="base-image-input__error"
+      :class="{ 'base-image-input__error--shown': hasErrors }"
+      role="alert"
+    >
+      <span>{{ shownError }}</span>
+    </p>
     <div v-if="slots.subline" class="base-image-input__subline">
       <slot name="subline"></slot>
     </div>

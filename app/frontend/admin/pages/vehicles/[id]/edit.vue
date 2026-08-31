@@ -118,6 +118,7 @@ const handleCancel = async () => {
           v-bind="wantedProps"
           translation-key="vehicle.wanted"
           name="wanted"
+          align-with-fields
         />
         <FormToggle
           v-model="flagship"

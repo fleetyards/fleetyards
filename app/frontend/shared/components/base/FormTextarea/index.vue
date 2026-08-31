@@ -61,8 +61,16 @@ const props = withDefaults(defineProps<Props>(), {
 watch(
   () => props.modelValue,
   () => {
+    /*
+     * Carrying `touched` across, because this is a value being synced and not a
+     * field being started over. resetField clears the whole state, and dropping
+     * "has been visited" here silently switched the error message back off after
+     * every keystroke -- every keystroke emits update:modelValue, the parent
+     * writes it back, and this runs.
+     */
     resetField({
       value: props.modelValue,
+      touched: meta.touched,
     });
   },
 );
@@ -72,6 +80,8 @@ const { t } = useI18n();
 const inputElement = ref<HTMLTextAreaElement | undefined>();
 
 const id = ref(`${props.name}-${uuidv4()}`);
+
+const errorId = computed(() => `${id.value}-error`);
 
 const innerLabel = computed(() => {
   if (props.label) {
@@ -88,6 +98,7 @@ const innerLabel = computed(() => {
 const {
   value: inputValue,
   errorMessage,
+  meta,
   errors,
   handleChange,
   handleBlur,
@@ -98,8 +109,12 @@ const {
   label: innerLabel.value,
 });
 
+/*
+ * An error is worth showing once the field has been left, not while it is being
+ * typed into -- see the note in FormInput.
+ */
 const hasErrors = computed(() => {
-  return errors.value.length;
+  return errors.value.length > 0 && meta.touched;
 });
 
 const innerPlaceholder = computed(() => {
@@ -155,6 +170,29 @@ const setFocus = () => {
   inputElement.value?.focus();
 };
 
+/*
+ * Blur means "the reader left this field", and only then is an error worth
+ * raising. A field torn out of the DOM while focused fires the same event on its
+ * way out, and taking that at face value reported an empty required field on a
+ * page nobody had touched yet -- signup focuses its first field on mount and
+ * that subtree is then replaced, one millisecond later.
+ *
+ * Deferring by a tick separates them: the element a reader stepped out of is
+ * still in the document, and the one that was removed is not. Both the touch and
+ * the validation wait for that answer, because vee-validate keeps field state on
+ * the form -- marking a torn-down field touched would outlive it and show the
+ * error on whatever mounts next.
+ */
+const onBlur = (event: FocusEvent) => {
+  const element = event.target as HTMLElement | null;
+
+  window.setTimeout(() => {
+    if (element?.isConnected) {
+      handleBlur(event, true);
+    }
+  });
+};
+
 defineExpose({
   clear,
   setFocus,
@@ -176,6 +214,7 @@ defineExpose({
     <div class="base-textarea__wrapper">
       <textarea
         :id="id"
+        :aria-describedby="hasErrors ? errorId : undefined"
         ref="inputElement"
         v-tooltip.right="hasErrors && errorMessage"
         :value="inputValue"
@@ -190,9 +229,18 @@ defineExpose({
         :min="min"
         :max="max"
         @input="onChange"
-        @blur="handleBlur"
+        @blur="onBlur"
       />
     </div>
+    <!-- See the note in FormInput: below the control, and always present. -->
+    <p
+      :id="errorId"
+      class="base-textarea__error"
+      :class="{ 'base-textarea__error--shown': hasErrors }"
+      role="alert"
+    >
+      <span>{{ errorMessage }}</span>
+    </p>
   </div>
 </template>
 

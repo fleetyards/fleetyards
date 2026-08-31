@@ -9,7 +9,7 @@
 
     &:hover {
       .preview__remove {
-        display: block;
+        opacity: 1;
       }
     }
   }
@@ -29,8 +29,19 @@
     white-space: nowrap;
   }
 
+  /*
+   * Hidden by opacity rather than display, because a display:none button is not
+   * focusable -- which is what kept the remove out of reach of the keyboard.
+   * Focus reveals it, the same way hovering the tile does.
+   */
   &__remove {
-    display: none;
+    opacity: 0;
+    appearance: none;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    cursor: pointer;
     position: absolute;
 
     top: 50%;
@@ -38,6 +49,12 @@
     z-index: 1000;
     transform: translate(-50%, -50%);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    &:focus-visible {
+      opacity: 1;
+      outline: 2px solid var(--color-primary, #428bca);
+      outline-offset: 2px;
+    }
   }
 
   &__progress-overlay {

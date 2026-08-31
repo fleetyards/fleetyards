@@ -21,6 +21,9 @@ export type FileUpload = {
   progress: number;
   status: "pending" | "uploading" | "done" | "error";
   blob?: Blob;
+  // Kept on the file so a consumer can say which one failed, not just that one
+  // did. The person holding it still gets the translated message.
+  error?: unknown;
 };
 
 type Props = {
@@ -215,6 +218,8 @@ const upload = async () => {
     return;
   }
 
+  const failed: FileUpload[] = [];
+
   await Promise.all(
     files.value.map(async (file) => {
       try {
@@ -229,23 +234,52 @@ const upload = async () => {
         file.status = "done";
       } catch (error) {
         file.status = "error";
-        clear();
-        displayAlert({
-          text: (error as string) || t("errors.upload.generic"),
-        });
+        file.error = error;
+        failed.push(file);
+
+        /*
+         * The translated message, not the raw error. `error as string` handed
+         * the toast whatever the failure stringified to -- "Error creating Blob"
+         * for an ActiveStorage rejection -- which tells the person holding the
+         * file nothing they can act on. The detail goes to the console, where
+         * it is useful.
+         */
+        console.error("Direct upload failed", error);
+        displayAlert({ text: t("errors.upload.generic") });
       }
     }),
   ).then(() => {
+    /*
+     * The failures are collected as they happen rather than read back off
+     * `files` afterwards, and the reset happens here rather than in the catch.
+     *
+     * Both because `clear()` empties `files` *and* emits "clear" -- so reading
+     * the list here found nothing to report, and the consumer had already been
+     * told to forget the whole thing before being told anything went wrong.
+     * That is the same line that hid the failure in the first place.
+     */
+    if (failed.length) {
+      resetInput();
+      emit("upload:error", failed);
+      return;
+    }
+
     emit("upload:done", files.value);
   });
 };
 
-const clear = () => {
+// Lets the same file be picked again, without telling anyone the control was
+// cleared -- which after a failure would contradict the error being reported.
+const resetInput = () => {
   if (input.value) {
     input.value.value = "";
   }
 
   files.value = [];
+};
+
+const clear = () => {
+  resetInput();
 
   emit("clear");
 };
@@ -261,7 +295,13 @@ const removeFile = (file: FileUpload) => {
 const emit = defineEmits<{
   "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
+  /*
+   * These two are exclusive: a run ends with one or the other, never both.
+   * "done" means every file arrived, so anything that latches on "start" has to
+   * answer "error" as well or it will never be told the run finished.
+   */
   "upload:done": [files: FileUpload[]];
+  "upload:error": [files: FileUpload[]];
   "files:rejected": [files: File[]];
   clear: [];
 }>();
@@ -375,8 +415,9 @@ defineExpose({
             class="direct-upload__file"
             :file="file"
             :transparent="transparent"
-            multiple
+            :removable="file.status !== 'done'"
             @click="file.status !== 'done' && removeFile(file)"
+            @remove="removeFile(file)"
           />
         </TransitionGroup>
       </div>
@@ -388,7 +429,9 @@ defineExpose({
             class="direct-upload__file"
             :file="file"
             :transparent="transparent"
+            removable
             @click="removeFile(file)"
+            @remove="removeFile(file)"
           />
         </TransitionGroup>
       </div>

@@ -14,6 +14,12 @@ type Props = {
   label?: string;
   modelValue?: boolean | null;
   disabled?: boolean;
+  /*
+   * Reserves the line a field's label occupies, so this control lines up with
+   * the fields beside it in a row. Off by default: on its own it would add a
+   * phantom label line to every standalone checkbox in the app.
+   */
+  alignWithFields?: boolean;
   translationKey?: string;
   noPlaceholder?: boolean;
   placeholder?: string;
@@ -27,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: undefined,
   modelValue: undefined,
   disabled: false,
+  alignWithFields: false,
   translationKey: undefined,
   slim: true,
   inline: false,
@@ -38,6 +45,8 @@ const { t } = useI18n();
 const { value, errorMessage } = useField(props.name);
 
 const uuid = ref(`${props.name}-${uuidv4()}`);
+
+const errorId = computed(() => `${uuid.value}-error`);
 
 watch(
   () => props.modelValue,
@@ -98,6 +107,7 @@ const innerPlaceholder = computed(() => {
       'form-toggle--expanded': !slim,
       'form-toggle--inline': inline,
       'form-toggle--with-error': !!errorMessage,
+      'form-toggle--align-with-fields': alignWithFields,
     }"
   >
     <input
@@ -105,6 +115,7 @@ const innerPlaceholder = computed(() => {
       v-model="value"
       v-tooltip.right="errorMessage"
       :aria-invalid="!!errorMessage || undefined"
+      :aria-describedby="errorMessage ? errorId : undefined"
       :placeholder="innerPlaceholder"
       :name="name"
       :disabled="disabled"
@@ -118,7 +129,25 @@ const innerPlaceholder = computed(() => {
         {{ innerLabel }}
       </span>
     </label>
-    {{ errorMessage }}
+    <!-- See the note in FormCheckbox: below the control, and always present. -->
+
+    <!--
+      Rendered only when there is something to say, unlike a field's message,
+      which holds its place so an error cannot move the page.
+
+      The reservation is worth its cost on a 43px field and not on a 24px one,
+      where it doubles the control's height: it put the middle of the
+      notification list's row selector on the message instead of the box, and it
+      left 24px of empty space under the login form's "Remember me".
+    -->
+    <p
+      v-if="errorMessage"
+      :id="errorId"
+      class="form-toggle__error"
+      role="alert"
+    >
+      {{ errorMessage }}
+    </p>
   </div>
 </template>
 

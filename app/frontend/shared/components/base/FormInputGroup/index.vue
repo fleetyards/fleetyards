@@ -33,6 +33,13 @@ export default {
   :deep(.oauth-btn) {
     flex-shrink: 0;
     white-space: nowrap;
+
+    /*
+     * No offset needed: flex-end aligns the bottoms, and a field's bottom is
+     * its control's again now that the message collapses to nothing until there
+     * is one. While the line was reserved, this had to drop the button by
+     * exactly that line's height to keep the two level.
+     */
   }
 }
 </style>

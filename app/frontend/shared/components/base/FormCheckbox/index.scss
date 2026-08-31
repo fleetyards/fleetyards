@@ -1,4 +1,22 @@
 .base-checkbox {
+  /* The control and its message are a row and a line under it, not two things
+     side by side. */
+  flex-wrap: wrap;
+
+  /*
+   * The message, below the control. Its line is reserved whether or not there is
+   * anything to say -- the height comes from --field-message-line, which is also
+   * its line-height, so the two cannot drift apart and start moving the page by
+   * a pixel.
+   */
+  &__error {
+    width: 100%;
+    min-height: var(--field-message-line, 1.25rem);
+    margin: var(--field-message-gap, 4px) 0 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
+  }
   margin-bottom: 1rem;
   display: flex;
 
@@ -18,23 +36,36 @@
       align-items: center;
     }
 
+    /*
+     * Centred vertically, not pinned to the top. The box is an absolutely
+     * positioned pseudo-element, so it sits at the label's content top and stays
+     * there however tall the label becomes -- which is why the toggle followed
+     * `alignWithFields` and this did not: its switch is a real flex item.
+     *
+     * A no-op at the default height, where a 24px box fills a 24px label.
+     */
     & + label::before {
       position: absolute;
+      top: 50%;
       left: 0;
+      transform: translateY(-50%);
       display: inline-block;
       width: 24px;
       height: 24px;
       vertical-align: text-top;
-      background: $input-bg;
-      border: 1px solid $input-border;
-      border-radius: 2px;
+      background-color: var(--color-field, rgb(18 20 23 / 0.96));
+      background-clip: padding-box;
+      border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+      border-radius: var(--radius-control-bare, 6px);
       transition: all 250ms ease;
       content: "";
     }
 
     & + label::after {
       position: absolute;
+      top: 50%;
       left: 3px;
+      transform: translateY(-50%);
       width: 18px;
       height: 18px;
       background: transparent;
@@ -46,8 +77,8 @@
       content: "";
     }
 
-    &:hover + label::before {
-      background: $input-bg;
+    &:not(:disabled):hover + label::before {
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
     }
 
     &:checked + label::after {
@@ -59,15 +90,22 @@
       opacity: 0.5;
 
       &::before {
-        box-shadow: 0 0 0 1px $gray inset;
+        border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
       }
     }
 
-    &:checked {
-      &:focus + label::before {
-        outline: none;
-        box-shadow: 0 0 0 1px $primary inset;
-      }
+    /*
+     * :focus-visible, not :focus -- a pointer click leaves the control focused,
+     * so answering :focus kept the edge lit when nothing looked focused any
+     * more.
+     *
+     * The edge, and nothing else. This used to add an inset ring on top of it,
+     * which stacked with the border below and read as a 2px focus. And checked
+     * deliberately does not touch the edge: primary on an edge means one thing
+     * in a form, and the tick already says the rest.
+     */
+    &:focus-visible + label::before {
+      border-color: var(--color-primary, #428bca);
     }
   }
 
@@ -87,13 +125,52 @@
   &--inline {
     margin-bottom: 0;
   }
+  /*
+   * Lines this control up with the fields beside it. A field starts below its
+   * block label and this control has none -- its text sits beside it -- so in a
+   * mixed row it starts a label's height too high.
+   *
+   * Both halves are needed: the label's line, and then the field's own height
+   * with the control centred in it. Reserving only the line aligns the tops and
+   * leaves a 24px box at the top of a 43px band. Centring rather than offsetting
+   * by the difference keeps working when a field's height changes.
+   */
+  &--align-with-fields {
+    margin-top: calc(
+      var(--field-label-line, 1.5rem) + var(--field-label-gap, 5px)
+    );
+
+    /*
+     * The height goes on the control row, not on the component. The component
+     * holds two rows now -- the control and its message -- so a min-height there
+     * covered both, and the message ended up higher than the one beside it
+     * instead of on the same line.
+     *
+     * The label is already a centring flex row, so giving it the field's height
+     * puts the box in the middle of the same band the input next to it occupies,
+     * and drops the message to the same place.
+     *
+     * `input + label`, not a plain `label`, and this block sits last in the file
+     * on purpose: the base rule is `input + label` too, so the two are equally
+     * specific and only order separates them. Written earlier and as `label`, it
+     * lost twice over and the control simply did not move.
+     */
+
+    input + label {
+      min-height: var(--field-h, 43px);
+    }
+  }
 }
 
 /*
  * An invalid control was signalled by the hover tooltip alone: nothing to see
- * without a mouse, and nothing at all for assistive tech. The label carries the
- * state, matching `base-input--with-error` on the fields that already did.
+ * without a mouse, and nothing at all for assistive tech.
+ *
+ * The edge carries it, the same signature that carries focus and loses to it
+ * while focused. The label stays readable rather than turning danger itself --
+ * it was the wrong half to colour, since the signature already says invalid and
+ * the message beside it is what needs reading.
  */
-.base-checkbox--with-error label {
-  color: $danger;
+.base-checkbox--with-error input + label::before {
+  border-color: var(--color-danger, #dc3545);
 }

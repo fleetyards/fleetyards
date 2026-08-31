@@ -1,17 +1,88 @@
 .base-textarea {
+  /*
+   * The message, below the control. Its line is not held open: five fields with
+   * a permanently reserved line put 120px of almost always empty space into a
+   * form the size of the login page, which is what the reservation actually
+   * cost. It animates open instead, so an error still does not snap the page.
+   *
+   * `grid-template-rows` from 0fr to 1fr is what makes that a real height
+   * transition without a hard-coded height -- the row resolves to the text's
+   * own, so a message that wraps animates exactly as far as it needs.
+   */
+  &__error {
+    display: grid;
+    grid-template-rows: 0fr;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: var(--field-message-line, 1.25rem);
+    color: var(--color-danger, #dc3545);
+    opacity: 0;
+    transition:
+      grid-template-rows 180ms ease-in-out,
+      margin-top 180ms ease-in-out,
+      opacity 180ms ease-in-out;
+
+    > span {
+      overflow: hidden;
+    }
+
+    &--shown {
+      grid-template-rows: 1fr;
+      margin-top: var(--field-message-gap, 4px);
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
   position: relative;
   width: 100%;
   margin-bottom: 1rem;
 
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--field-label-gap, 5px);
+    line-height: var(--field-label-line, 1.5rem);
     white-space: nowrap;
   }
 
+  /*
+   * The control is this element, not the textarea inside it -- same reason as
+   * FormInput: a textarea renders no pseudo-elements, so it cannot carry a cap.
+   */
   &__wrapper {
     position: relative;
     display: flex;
+    background-color: var(--color-field, rgb(18 20 23 / 0.96));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
+    transition: background-color ease-in-out 0.15s;
+
+    &:hover {
+      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h-btn, 2px);
+      background-color: var(--field-cap, var(--color-endcap, #7a8288));
+      border-radius: var(--cap-r-btn, 1px);
+      transition: background-color 0.15s ease;
+      content: "";
+      z-index: 1;
+    }
+
+    &::before {
+      top: -1px;
+    }
+
+    &::after {
+      bottom: -1px;
+    }
 
     textarea {
       display: block;
@@ -22,14 +93,14 @@
       font-size: 16px;
       line-height: 1.42857;
       text-overflow: ellipsis;
-      background-color: $input-bg;
+      background-color: transparent;
       background-image: none;
-      border: 1px solid $input-border;
-      border-radius: 3px;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-      transition:
-        border-color ease-in-out 0.15s,
-        box-shadow ease-in-out 0.15s;
+      border: none;
+      border-radius: 0;
+
+      &::placeholder {
+        color: var(--color-endcap, #7a8288);
+      }
 
       &[type="number"]::-webkit-inner-spin-button,
       &[type="number"]::-webkit-outer-spin-button {
@@ -61,14 +132,6 @@
     }
   }
 
-  &--disabled {
-    textarea {
-      color: darken($input-color, 10%);
-      cursor: not-allowed;
-      opacity: 0.9;
-    }
-  }
-
   &--large {
     textarea {
       height: 55px;
@@ -79,12 +142,54 @@
     }
   }
 
+  /* The cap is the focus signal, as on FormInput. */
+  &:focus-within {
+    --field-cap: var(--color-primary, #428bca);
+  }
+
+  /*
+   * Quiet rather than neutral, so a disabled field is not read as a resting one:
+   * no cap at all, the edge dropped to --color-edge-faint, and the control
+   * dimmed. The label above keeps its opacity -- a form still has to be
+   * readable when half of it is locked.
+   *
+   * Killing the hover lift matters as much as the dimming. Without it a disabled
+   * field brightens under the cursor, which is worse than looking enabled: it
+   * answers.
+   */
+  &--disabled {
+    --field-cap: transparent;
+
+    .base-textarea__wrapper {
+      border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
+      opacity: 0.5;
+
+      &:hover {
+        background-color: var(--color-field, rgb(18 20 23 / 0.96));
+      }
+    }
+
+    textarea {
+      cursor: not-allowed;
+    }
+  }
+
   &--clean {
     margin-bottom: 0;
 
-    textarea {
+    .base-textarea__wrapper {
+      background-color: transparent;
       border: none;
       border-radius: 0;
+
+      &:hover {
+        background-color: transparent;
+      }
+
+      &::before,
+      &::after {
+        content: none;
+      }
     }
   }
 
@@ -112,10 +217,8 @@
     }
   }
 
+  /* The frame stays neutral; the signature says what is wrong. */
   &--with-error {
-    textarea {
-      border-color: darken($danger, 15%);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    }
+    --field-cap: var(--color-danger, #dc3545);
   }
 }

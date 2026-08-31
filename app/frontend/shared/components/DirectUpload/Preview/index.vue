@@ -14,16 +14,24 @@ import { fileTypeMap } from "../types";
 
 type Props = {
   file: FileUpload;
-  multiple?: boolean;
+  /*
+   * Whether this tile can be removed, told rather than inferred. It used to be
+   * guessed from `multiple`, while the click that actually removes lives on the
+   * parent -- so a single-file tile removed on click and showed no affordance
+   * for it at all. The caller now says once, and the two cannot disagree.
+   */
+  removable?: boolean;
   transparent?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  multiple: false,
+  removable: false,
   transparent: false,
 });
 
 const { t } = useI18n();
+
+const emit = defineEmits<{ remove: [] }>();
 
 const src = ref<string | undefined>();
 
@@ -51,9 +59,7 @@ const loading = computed(() => {
   return progessVisible.value && props.file.progress > 0;
 });
 
-const isRemovable = computed(() => {
-  return props.file.status !== "done" && props.multiple;
-});
+const isRemovable = computed(() => props.removable);
 
 const tooltipLabel = computed(() => {
   return isRemovable.value ? t("directUpload.previewImage.remove") : undefined;
@@ -136,9 +142,23 @@ const holoModel = computed(() => {
       :class="progressCssClasses"
       :style="{ width: progressWidth }"
     />
-    <span class="preview__remove" v-if="isRemovable"
-      ><i class="fa fa-times fa-2x"
-    /></span>
+    <!--
+      A real button, not the decoration it was. Removal was a click handler on
+      the whole tile with a hover-only <span> as its affordance, so a queued file
+      could not be removed without a mouse and assistive tech was told nothing
+      about it at all.
+
+      The tile keeps its own click, so nothing changes for a pointer.
+    -->
+    <button
+      v-if="isRemovable"
+      type="button"
+      class="preview__remove"
+      :aria-label="t('directUpload.previewImage.remove')"
+      @click.stop="emit('remove')"
+    >
+      <i class="fa fa-times fa-2x" />
+    </button>
   </div>
 </template>
 

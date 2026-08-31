@@ -74,8 +74,16 @@ const props = withDefaults(defineProps<Props>(), {
 watch(
   () => props.modelValue,
   () => {
+    /*
+     * Carrying `touched` across, because this is a value being synced and not a
+     * field being started over. resetField clears the whole state, and dropping
+     * "has been visited" here silently switched the error message back off after
+     * every keystroke -- every keystroke emits update:modelValue, the parent
+     * writes it back, and this runs.
+     */
     resetField({
       value: props.modelValue,
+      touched: meta.touched,
     });
   },
 );
@@ -84,7 +92,16 @@ const { t } = useI18n();
 
 const inputElement = ref<HTMLInputElement | undefined>();
 
-const internalId = ref(`${props.name}-${uuidv4()}`);
+const internalId = ref(props.id || `${props.name}-${uuidv4()}`);
+
+/*
+ * internalId was written to give the input an id when a call site does not pass
+ * one, and the template used the raw `id` prop instead -- which no call site
+ * passes at all. So every input in the app had no id and every label no `for`:
+ * clicking a label did nothing, and nothing tied the two together for assistive
+ * tech.
+ */
+const errorId = computed(() => `${internalId.value}-error`);
 
 const innerStep = computed(() => {
   if (props.type === "number") {
@@ -116,6 +133,7 @@ const {
   value: inputValue,
   errorMessage,
   errors,
+  meta,
   handleChange,
   handleBlur,
   handleReset,
@@ -125,8 +143,30 @@ const {
   label: innerLabel.value,
 });
 
+/*
+ * An error is worth showing once the field has been left, not while it is being
+ * typed into. vee-validate validates on every keystroke either way; before the
+ * redesign that was invisible, because the message lived in a hover tooltip, and
+ * moving it inline turned it into a field correcting someone mid-word -- "must
+ * be at least 8 characters" on the first letter of a password.
+ *
+ * `touched` is set by handleBlur and by submitting, which are exactly the two
+ * moments the message is useful. After the first blur it stays true, so a
+ * message a reader is now fixing updates as they type rather than waiting for
+ * another blur.
+ *
+ * The blur handler is passed `shouldValidate` for the same reason: on its own
+ * handleBlur only marks the field, and vee-validate otherwise validates on a
+ * value change. Tabbing through an empty required field changes nothing, so
+ * without this there was no error to gate and the field stayed silent until the
+ * form was submitted.
+ *
+ * This gate is for controls that are typed into. A checkbox, a toggle, a date
+ * picker and a file input change by one deliberate act, so there is no
+ * mid-word to interrupt and they report as soon as they are wrong.
+ */
 const hasErrors = computed(() => {
-  return errors.value.length;
+  return errors.value.length > 0 && meta.touched;
 });
 
 const innerPlaceholder = computed(() => {
@@ -161,12 +201,6 @@ const cssClasses = computed(() => {
 });
 
 onMounted(() => {
-  if (props.id) {
-    internalId.value = props.id;
-  } else {
-    internalId.value = `${props.name}-${uuidv4()}`;
-  }
-
   if (props.autofocus) {
     inputElement.value?.focus();
   }
@@ -195,6 +229,29 @@ const setFocus = (options?: FocusOptions) => {
   inputElement.value?.focus(options);
 };
 
+/*
+ * Blur means "the reader left this field", and only then is an error worth
+ * raising. A field torn out of the DOM while focused fires the same event on its
+ * way out, and taking that at face value reported an empty required field on a
+ * page nobody had touched yet -- signup focuses its first field on mount and
+ * that subtree is then replaced, one millisecond later.
+ *
+ * Deferring by a tick separates them: the element a reader stepped out of is
+ * still in the document, and the one that was removed is not. Both the touch and
+ * the validation wait for that answer, because vee-validate keeps field state on
+ * the form -- marking a torn-down field touched would outlive it and show the
+ * error on whatever mounts next.
+ */
+const onBlur = (event: FocusEvent) => {
+  const element = event.target as HTMLElement | null;
+
+  window.setTimeout(() => {
+    if (element?.isConnected) {
+      handleBlur(event, true);
+    }
+  });
+};
+
 const slots = useSlots();
 
 defineExpose({
@@ -205,7 +262,7 @@ defineExpose({
 
 <template>
   <div
-    :key="id"
+    :key="internalId"
     class="base-input"
     :class="cssClasses"
     :data-test="`input-wrapper-${name}`"
@@ -214,7 +271,7 @@ defineExpose({
       <label
         v-show="!hideLabelOnEmpty || inputValue"
         v-if="innerLabel && !noLabel"
-        :for="id"
+        :for="internalId"
       >
         <i v-if="icon" :class="icon" />
         {{ innerLabel }}
@@ -233,7 +290,8 @@ defineExpose({
         </div>
       </slot>
       <input
-        :id="id"
+        :id="internalId"
+        :aria-describedby="hasErrors ? errorId : undefined"
         ref="inputElement"
         v-tooltip.right="hasErrors && errorMessage"
         :value="inputValue"
@@ -252,7 +310,7 @@ defineExpose({
           clearable,
         }"
         @input="onChange"
-        @blur="handleBlur"
+        @blur="onBlur"
       />
       <div v-if="suffix || slots.suffix" class="base-input__suffix">
         <slot name="suffix">
@@ -272,6 +330,24 @@ defineExpose({
         />
       </div>
     </div>
+    <!--
+      The message was in a tooltip and nowhere else: invisible until hover, and
+      worth nothing to a screen reader. Its line is reserved whether or not it
+      has anything to say, so validating cannot move what is below the field.
+
+      role="alert" follows FormDateTime, which is the one control that already
+      rendered a message properly -- and which borrows this same class name for
+      its own element, an overlap to resolve when it moves onto the shared
+      treatment.
+    -->
+    <p
+      :id="errorId"
+      class="base-input__error"
+      :class="{ 'base-input__error--shown': hasErrors }"
+      role="alert"
+    >
+      <span>{{ errorMessage }}</span>
+    </p>
     <div v-if="slots.subline" class="base-input__subline">
       <slot name="subline"></slot>
     </div>

@@ -112,6 +112,15 @@ const onUploadStart = () => {
   uploading.value = plan.value.length > 0;
 };
 
+/*
+ * `upload:done` fires only when every file made it, so this has to answer the
+ * failure too -- without it a failed run leaves the folder stuck in its
+ * uploading state with nothing to end it.
+ */
+const onUploadError = () => {
+  uploading.value = false;
+};
+
 const onUploadDone = (files: FileUpload[]) => {
   uploading.value = false;
   uploaded.value = files.filter((file) => !!file.blob).map((file) => file.file);
@@ -144,6 +153,7 @@ const isUploaded = (entry: PlannedFile) => uploaded.value.includes(entry.file);
       :filter="filterFolder"
       @upload:start="onUploadStart"
       @upload:done="onUploadDone"
+      @upload:error="onUploadError"
       @files:rejected="onFilesRejected"
     />
 
