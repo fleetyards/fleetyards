@@ -105,4 +105,81 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     body = JSON.parse(response.body)
     assert_nil body["installUrl"]
   end
+
+  class RoleCapabilityTest < Api::V1::FleetsNotificationsDiscordStatusBehaviourTest
+    setup do
+      @api = mock("Discord::ApiClient")
+      @api.stubs(:get_guild).returns({"id" => "guild-1", "name" => "Test Server"})
+      Discord::ApiClient.stubs(:configured?).returns(true)
+      Discord::ApiClient.stubs(:new).returns(@api)
+    end
+
+    def map_member_role!
+      @fleet.create_fleet_notification_setting!(
+        discord_guild_id: "guild-1",
+        discord_member_role_id: "role-member"
+      )
+    end
+
+    def body
+      get @url, as: :json
+      JSON.parse(response.body)
+    end
+
+    # A fleet that never mapped a role is not told to re-authorise for a
+    # feature it is not using.
+    test "says nothing about roles when the fleet mapped none" do
+      @fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+
+      payload = body
+
+      assert_equal true, payload["ok"]
+      assert_nil payload["rolesOk"]
+      assert_nil payload["rolesCode"]
+    end
+
+    test "reports role management as ok once it works" do
+      map_member_role!
+      capability = mock
+      capability.stubs(:check).returns(Discord::RoleCapability::Result.new(:ok))
+      Discord::RoleCapability.stubs(:new).returns(capability)
+
+      payload = body
+
+      assert_equal true, payload["rolesOk"]
+      assert_equal "ok", payload["rolesCode"]
+    end
+
+    # The point of the whole thing: an install from before Manage Roles was
+    # requested keeps its old grant, and Discord never upgrades it.
+    test "tells a fleet installed under the old mask that roles do not work" do
+      map_member_role!
+      capability = mock
+      capability.stubs(:check).returns(Discord::RoleCapability::Result.new(:missing_manage_roles))
+      Discord::RoleCapability.stubs(:new).returns(capability)
+
+      payload = body
+
+      assert_equal false, payload["rolesOk"]
+      assert_equal "missing_manage_roles", payload["rolesCode"]
+    end
+
+    test "passes the offending role name through for a hierarchy problem" do
+      map_member_role!
+      capability = mock
+      capability.stubs(:check).returns(Discord::RoleCapability::Result.new(:role_above_bot, "Officers"))
+      Discord::RoleCapability.stubs(:new).returns(capability)
+
+      payload = body
+
+      assert_equal "role_above_bot", payload["rolesCode"]
+      assert_equal "Officers", payload["rolesDetail"]
+    end
+
+    test "the install url now asks for Manage Roles" do
+      Discord::ApiClient.stubs(:application_id).returns("123456789")
+
+      assert_includes body["installUrl"], "permissions=#{Discord::ApiClient::INSTALL_PERMISSIONS}"
+    end
+  end
 end

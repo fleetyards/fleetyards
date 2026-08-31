@@ -17,6 +17,7 @@ module V1
             },
             discordGuildId: {type: :string},
             discordChannelId: {type: :string},
+            discordMemberRoleId: {type: :string},
             # discord_webhook_url is encrypted; never returned, only writable.
             discordWebhookConfigured: {type: :boolean}
           },
