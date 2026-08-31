@@ -67,11 +67,11 @@ const featuredTools: Array<ToolEntry> = [
     category: t("tools.categories.loadouts"),
   },
   {
-    key: "regolith",
-    url: "https://regolith.rocks/",
-    name: "Regolith Co.",
-    description: t("tools.descriptions.regolith"),
-    category: t("tools.categories.mining"),
+    key: "uexCorp",
+    url: "https://uexcorp.space/",
+    name: "UEX Corp",
+    description: t("tools.descriptions.uexCorp"),
+    category: t("tools.categories.trading"),
   },
 ];
 
@@ -81,12 +81,6 @@ const tools: Array<ToolEntry> = [
     url: "https://www.spviewer.eu/",
     name: "SP Viewer",
     description: t("tools.descriptions.spviewer"),
-  },
-  {
-    key: "uexCorp",
-    url: "https://uexcorp.space/",
-    name: "UEX Corp",
-    description: t("tools.descriptions.uexCorp"),
   },
   {
     key: "itemFinder",
@@ -145,6 +139,13 @@ const tools: Array<ToolEntry> = [
 ];
 
 const discontinuedTools: Array<ToolEntry> = [
+  {
+    key: "regolith",
+    url: "https://regolith.rocks/",
+    name: "Regolith Co.",
+    description: t("tools.descriptions.regolith"),
+    disabled: true,
+  },
   {
     key: "starship42",
     url: "https://starship42.com/",
