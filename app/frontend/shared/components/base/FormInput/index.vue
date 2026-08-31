@@ -74,8 +74,16 @@ const props = withDefaults(defineProps<Props>(), {
 watch(
   () => props.modelValue,
   () => {
+    /*
+     * Carrying `touched` across, because this is a value being synced and not a
+     * field being started over. resetField clears the whole state, and dropping
+     * "has been visited" here silently switched the error message back off after
+     * every keystroke -- every keystroke emits update:modelValue, the parent
+     * writes it back, and this runs.
+     */
     resetField({
       value: props.modelValue,
+      touched: meta.touched,
     });
   },
 );
@@ -84,7 +92,7 @@ const { t } = useI18n();
 
 const inputElement = ref<HTMLInputElement | undefined>();
 
-const internalId = ref(`${props.name}-${uuidv4()}`);
+const internalId = ref(props.id || `${props.name}-${uuidv4()}`);
 
 /*
  * internalId was written to give the input an id when a call site does not pass
@@ -192,31 +200,8 @@ const cssClasses = computed(() => {
   };
 });
 
-onMounted(async () => {
-  if (props.id) {
-    internalId.value = props.id;
-  } else {
-    internalId.value = `${props.name}-${uuidv4()}`;
-  }
-
-  if (!props.autofocus) {
-    return;
-  }
-
-  inputElement.value?.focus();
-
-  /*
-   * And once more after the tree settles. On signup the field is created,
-   * focused, and replaced in the same tick, which drops the focus on the floor
-   * -- the page has never actually opened with its first field focused.
-   *
-   * Only when nothing else has taken focus in between, so a reader who clicked
-   * elsewhere keeps their place, and only onto the element that is there now:
-   * the ref points at whatever replaced the original.
-   */
-  await nextTick();
-
-  if (document.activeElement === document.body) {
+onMounted(() => {
+  if (props.autofocus) {
     inputElement.value?.focus();
   }
 });
