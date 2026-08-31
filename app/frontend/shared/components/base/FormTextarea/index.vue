@@ -61,8 +61,16 @@ const props = withDefaults(defineProps<Props>(), {
 watch(
   () => props.modelValue,
   () => {
+    /*
+     * Carrying `touched` across, because this is a value being synced and not a
+     * field being started over. resetField clears the whole state, and dropping
+     * "has been visited" here silently switched the error message back off after
+     * every keystroke -- every keystroke emits update:modelValue, the parent
+     * writes it back, and this runs.
+     */
     resetField({
       value: props.modelValue,
+      touched: meta.touched,
     });
   },
 );
