@@ -114,7 +114,7 @@
     "@vue/compiler-sfc": "^3.5.41",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.9.0",
-    "@vue/test-utils": "2.4.11",
+    "@vue/test-utils": "2.5.0",
     "asyncapi-cable": "^0.2.1",
     "c8": "12.0.0",
     "concurrently": "^10.0.5",
