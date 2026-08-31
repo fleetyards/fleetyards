@@ -81,3 +81,8 @@ fleet_events_auto_lock_job:
   cron: '*/5 * * * *' # Every 5 minutes
   class: 'FleetEvents::AutoLockJob'
   queue: 'default'
+discord_poll_event_rsvps_dispatch_job:
+  cron: '*/5 * * * *' # Every 5 minutes
+  class: 'Discord::PollEventRsvpsDispatchJob'
+  queue: 'notifications'
+  enabled: <%= Discord::ApiClient.configured? %>
