@@ -664,7 +664,17 @@ const placePopover = (decideSide = false) => {
      * the element's own place in the flow. Only opening upwards needs saying,
      * and it is said as an offset from the group's box -- which is what the
      * containing block is -- rather than as a coordinate.
+     *
+     * The other mode's coordinates come off first. They are viewport offsets and
+     * they mean something else entirely against the group's box, and a select is
+     * measured in both modes over its life -- one inside a modal escapes the clip
+     * while the modal is open and not once it has gone. Left on, they open the
+     * popover far down and to the right of its trigger.
      */
+    popover.style.removeProperty("top");
+    popover.style.removeProperty("left");
+    popover.style.removeProperty("width");
+
     if (opensAbove.value && triggerRect) {
       popover.style.bottom = `${root.getBoundingClientRect().bottom - triggerRect.top}px`;
     } else {
@@ -682,6 +692,10 @@ const placePopover = (decideSide = false) => {
    * between -- an earlier version awaited a tick in the middle, which showed as
    * a frame in the top-left corner on every scroll event.
    */
+  // Set only by the absolute mode, and a fixed box given both ends stretches
+  // between them instead of taking its height from its content.
+  popover.style.removeProperty("bottom");
+
   popover.style.top = "0px";
   popover.style.left = "0px";
 
@@ -745,14 +759,22 @@ const stopFollowing = () => {
 watch(visible, async (isVisible) => {
   if (!isVisible) {
     stopFollowing();
-    escapesClip.value = false;
-    opensAbove.value = false;
 
+    /*
+     * The mode is deliberately left standing. Collapsed animates the close over
+     * its own duration, and dropping --escapes-clip here handed a popover still
+     * carrying fixed coordinates back to `position: absolute`, which read them
+     * against the group's box and threw it into the bottom-right corner for the
+     * length of the animation. Both flags are recomputed on open below.
+     */
     return;
   }
 
   const root = baseSelect.value;
 
+  // Reset here rather than on close, where it would flip the mode out from under
+  // the closing animation. placePopover() settles it again a tick from now.
+  opensAbove.value = false;
   escapesClip.value = root != null && clippingAncestor(root) != null;
 
   await nextTick();
