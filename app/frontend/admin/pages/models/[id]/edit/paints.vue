@@ -225,7 +225,6 @@ const bulkCopy = (selectedIds: string[]) => {
       <Btn
         v-tooltip="t('actions.models.importPaints')"
         :loading="isImportingPaints"
-        spinner
         @click="importPaints"
       >
         <i class="fa-duotone fa-palette" />

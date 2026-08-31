@@ -130,7 +130,6 @@ const syncScData = () => {
       <Btn
         v-tooltip="t('actions.models.syncMatrix')"
         :loading="isSyncingMatrix"
-        spinner
         @click="syncMatrix"
       >
         <i class="fa-duotone fa-rotate" />
@@ -139,7 +138,6 @@ const syncScData = () => {
       <Btn
         v-tooltip="t('actions.models.syncScData')"
         :loading="isSyncingScData"
-        spinner
         @click="syncScData"
       >
         <i class="fa-duotone fa-database" />

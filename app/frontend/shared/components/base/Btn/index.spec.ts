@@ -26,7 +26,7 @@ const mountBtn = (
     slots: { default: "Label" },
     global: {
       provide,
-      stubs: { "router-link": RouterLinkStub, SmallLoader: true },
+      stubs: { "router-link": RouterLinkStub },
     },
   });
 
@@ -83,9 +83,10 @@ describe("BaseBtn", () => {
     expect(wrapper.get(".btn__status").text()).toBe("baseBtn.labels.loading");
   });
 
-  it("announces loading even without a visible spinner", () => {
-    // `spinner` is opt-in and was passed at only 11 of 51 loading call sites.
-    const wrapper = mountBtn({ loading: true, spinner: false });
+  it("announces loading, which nothing visual is required for", () => {
+    // The caps carry it visually, and they are decoration as far as assistive
+    // technology is concerned - this is the only thing that announces it.
+    const wrapper = mountBtn({ loading: true });
 
     expect(wrapper.find(".btn__status").exists()).toBe(true);
   });

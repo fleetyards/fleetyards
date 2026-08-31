@@ -180,7 +180,6 @@ const columns: BaseTableCol<Import>[] = [
       :confirm="t('messages.confirm.model.reloadMatrix')"
       :aria-label="t('actions.admin.dashboard.reloadModels')"
       mobile-icon-only
-      spinner
       @click="reloadModels"
     >
       <i class="fa fa-rotate" />
@@ -192,7 +191,6 @@ const columns: BaseTableCol<Import>[] = [
       :confirm="t('messages.confirm.model.reloadScData')"
       :aria-label="t('actions.admin.dashboard.reloadScData')"
       mobile-icon-only
-      spinner
       @click="reloadScData"
     >
       <i class="fa fa-database" />
@@ -204,7 +202,6 @@ const columns: BaseTableCol<Import>[] = [
       :confirm="t('messages.confirm.model.reloadModules')"
       :aria-label="t('actions.admin.dashboard.reloadModules')"
       mobile-icon-only
-      spinner
       @click="reloadModules"
     >
       <i class="fa fa-puzzle" />
@@ -216,7 +213,6 @@ const columns: BaseTableCol<Import>[] = [
       :confirm="t('messages.confirm.model.reloadPaints')"
       :aria-label="t('actions.admin.dashboard.reloadPaints')"
       mobile-icon-only
-      spinner
       @click="reloadPaints"
     >
       <i class="fa fa-palette" />
@@ -228,7 +224,6 @@ const columns: BaseTableCol<Import>[] = [
       :confirm="t('messages.confirm.model.reloadLoaners')"
       :aria-label="t('actions.admin.dashboard.reloadLoaners')"
       mobile-icon-only
-      spinner
       @click="reloadLoaners"
     >
       <i class="fa fa-handshake" />

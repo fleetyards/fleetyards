@@ -84,6 +84,94 @@ test.describe("Buttons", () => {
     }
   });
 
+  test("a loading button runs one fill around both caps", async ({ page }) => {
+    // The state used to be carried by an opt-in spinner, so 40 of 51 loading
+    // call sites showed nothing at all and read as a button gone dead.
+    const btn = page
+      .getByTestId("loading-variants")
+      .locator(".btn--solid.is-loading")
+      .first();
+
+    const caps = await btn.evaluate((el) =>
+      ["::before", "::after"].map((pseudo) => {
+        const cs = getComputedStyle(el, pseudo);
+        return {
+          content: cs.content,
+          animationName: cs.animationName,
+          animationDelay: cs.animationDelay,
+          opacity: cs.opacity,
+        };
+      }),
+    );
+
+    for (const cap of caps) {
+      expect(cap.content).not.toBe("none");
+      // A loading button renders disabled, and the disabled rule halves the
+      // caps - the part carrying the state has to stay at full strength.
+      expect(cap.opacity).toBe("1");
+      expect(cap.animationDelay).toBe("0s");
+    }
+
+    // One run around the outside: the top only ever travels rightwards and the
+    // bottom leftwards, filling or clearing, which is what lets two bars read as
+    // one thing going round. Scoped styles suffix the keyframes name, so match
+    // the stem. The anchors are animated, so they are not assertable from a
+    // computed value at an arbitrary moment - the two names carry the direction.
+    expect(caps[0].animationName).toMatch(/^btn-fill-rightward/);
+    expect(caps[1].animationName).toMatch(/^btn-fill-leftward/);
+  });
+
+  test("a loading button keeps its label at full strength", async ({
+    page,
+  }) => {
+    // Busy is not unavailable: the disabled rule dims content to 45%, which on a
+    // working button reads as one that cannot be used.
+    const content = page
+      .getByTestId("loading-variants")
+      .locator(".is-loading .btn__content")
+      .first();
+
+    expect(await style(content, "opacity")).toBe("1");
+  });
+
+  test("a loading group member fills its surface, not a cap", async ({
+    page,
+  }) => {
+    // The group draws one pair of caps for the whole control, and a rail along
+    // the member's bottom edge lands directly under the group's own cap - it
+    // read as a dirty edge, clipped by the track's rounding. The surface fills
+    // instead, in the same motion, touching no edge the group owns.
+    const member = page
+      .getByTestId("loading-containers")
+      .locator(".btn--grouped.is-loading")
+      .first();
+
+    const wash = await member.evaluate((el) => {
+      const after = getComputedStyle(el, "::after");
+      const box = el.getBoundingClientRect();
+      return {
+        cap: getComputedStyle(el, "::before").content,
+        content: after.content,
+        animationName: after.animationName,
+        animationDuration: after.animationDuration,
+        width: parseFloat(after.width),
+        height: parseFloat(after.height),
+        elementWidth: box.width,
+        elementHeight: box.height,
+      };
+    });
+
+    expect(wash.cap).toBe("none");
+    expect(wash.content).not.toBe("none");
+    // The top cap's run, at half its pace: the surface is the whole control, so
+    // the cap's speed on it reads as the button flashing.
+    expect(wash.animationName).toMatch(/^btn-fill-rightward/);
+    expect(wash.animationDuration).toBe("3.6s");
+    // The whole member, not a strip along one edge of it.
+    expect(Math.abs(wash.width - wash.elementWidth)).toBeLessThanOrEqual(1);
+    expect(Math.abs(wash.height - wash.elementHeight)).toBeLessThanOrEqual(1);
+  });
+
   test("a group shares the standalone button surface", async ({ page }) => {
     // A group used an opaque fill while standalone buttons are translucent, so
     // it read as a different material against a bright backdrop.

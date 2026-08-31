@@ -227,7 +227,6 @@ watch(
       :confirm="t('messages.confirm.model.reloadMatrix')"
       :aria-label="t('actions.admin.dashboard.reloadModels')"
       mobile-icon-only
-      spinner
       @click="reloadModels"
     >
       <i class="fa fa-rotate" />
@@ -239,7 +238,6 @@ watch(
       :confirm="t('messages.confirm.model.reloadScData')"
       :aria-label="t('actions.admin.dashboard.reloadScData')"
       mobile-icon-only
-      spinner
       @click="reloadScData"
     >
       <i class="fa fa-database" />
