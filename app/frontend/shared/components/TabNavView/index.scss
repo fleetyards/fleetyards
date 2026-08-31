@@ -35,22 +35,36 @@ $nav-transition-speed: 0.3s;
       text-overflow: ellipsis;
       border: 1px solid transparent;
       cursor: pointer;
-      transition:
-        box-shadow $nav-transition-speed,
-        color $nav-transition-speed;
+      // Colour only. The box-shadow entry named a property nothing on this
+      // element ever set: the blooms it was written for lived on ::before, which
+      // carries its own transition.
+      transition: color $nav-transition-speed;
 
       i {
         color: color.adjust($text-color, $lightness: 30%);
         transition: color $nav-transition-speed;
       }
 
+      /*
+       * The same rail the table rows use, from the same tokens -- see the note
+       * in base/Table/Col. It steps down from the panel's own --cap-h because a
+       * row is a smaller unit than the frame, and stays --color-primary because
+       * it only exists while the tab is pointed at or current.
+       *
+       * What went with it is the bloom: three 10px shadows at 0.9 alpha, in four
+       * copies. Worse here than in the table, because it fired on `.active` too
+       * -- a hovered row is transient, a current tab is not, so every settings
+       * page rendered a permanently glowing rail beside a frame whose whole
+       * premise is restraint. The `.active` step to 80% height stays: that is a
+       * real distinction from hover, and the one the bloom was drowning.
+       */
       &::before {
         position: absolute;
         left: 0;
         top: 0;
-        width: 3px;
+        width: var(--cap-h-row, 3px);
         height: 100%;
-        background: $primary;
+        background: var(--color-primary, #428bca);
         opacity: 0;
         transition: all ease $transition-base-speed;
         content: "";
@@ -130,17 +144,8 @@ $nav-transition-speed: 0.3s;
         border-left: none;
 
         &::before {
-          border-top-right-radius: 2px;
-          border-bottom-right-radius: 2px;
-        }
-
-        &:hover {
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
+          border-top-right-radius: var(--cap-r-row, 1.5px);
+          border-bottom-right-radius: var(--cap-r-row, 1.5px);
         }
       }
 
@@ -152,13 +157,6 @@ $nav-transition-speed: 0.3s;
           border-left: none;
           border-top-right-radius: 4px;
           border-bottom-right-radius: 4px;
-
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
         }
       }
     }
@@ -176,17 +174,8 @@ $nav-transition-speed: 0.3s;
 
         &::before {
           right: 0;
-          border-top-left-radius: 2px;
-          border-bottom-left-radius: 2px;
-        }
-
-        &:hover {
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
+          border-top-left-radius: var(--cap-r-row, 1.5px);
+          border-bottom-left-radius: var(--cap-r-row, 1.5px);
         }
       }
 
@@ -198,13 +187,6 @@ $nav-transition-speed: 0.3s;
           border-right: none;
           border-top-left-radius: 4px;
           border-bottom-left-radius: 4px;
-
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
         }
       }
     }
