@@ -167,8 +167,8 @@ importers:
         specifier: ^2.20.0
         version: 2.20.0
       vue-upload-component:
-        specifier: ^3.2.0
-        version: 3.2.0(vue@3.5.41(typescript@6.0.3))
+        specifier: ^3.2.1
+        version: 3.2.1(vue@3.5.41(typescript@6.0.3))
       vue3-highlightjs:
         specifier: ^1.0.5
         version: 1.0.5(vue@3.5.41(typescript@6.0.3))
@@ -4578,8 +4578,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@3.15.1:
-    resolution: {integrity: sha512-S99WuO3HlhO3XN41EtYUNl9zzXjoJx7QvmipxsJVxtCBT0YHEFy+iOJhjSvrmV12nYhWpZaM8lPHkJm0yUMbag==}
+  js-yaml@3.15.2:
+    resolution: {integrity: sha512-6EuL879VkRA+1Cz578mKMiKvjPNEuk6+r1JaFzoSWejZmtf7xWbIyw1e3KkxlkzTIt9Taw6JBhEppG7utc1P+w==}
     hasBin: true
 
   js-yaml@4.3.1:
@@ -6528,8 +6528,8 @@ packages:
     peerDependencies:
       typescript: '>=5.0.0'
 
-  vue-upload-component@3.2.0:
-    resolution: {integrity: sha512-3pYD5Uv85FXRtYOT/VBR8q2azyCmSBEooCUAfUCMgtK6g8Fw0xw4A58oL5MniaaxfjUmPhYoS5vOpK0XLFmnHw==}
+  vue-upload-component@3.2.1:
+    resolution: {integrity: sha512-3fvJyv9mM4X2LhQhO1Tio0TTLIv5x64v7xnr8MZWmEEPPpVSCBKJ8GBK8x3hYQwrrN9B48D2isWklseg7msazA==}
     peerDependencies:
       vue: ^3.5.41
 
@@ -11351,7 +11351,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@3.15.1:
+  js-yaml@3.15.2:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
@@ -12226,7 +12226,7 @@ snapshots:
   ramldt2jsonschema@1.2.3:
     dependencies:
       commander: 5.1.0
-      js-yaml: 3.15.1
+      js-yaml: 3.15.2
       json-schema-migrate: 0.2.0
       webapi-parser: 0.5.0
 
@@ -13398,7 +13398,7 @@ snapshots:
       '@vue/language-core': 3.3.11
       typescript: 6.0.3
 
-  vue-upload-component@3.2.0(vue@3.5.41(typescript@6.0.3)):
+  vue-upload-component@3.2.1(vue@3.5.41(typescript@6.0.3)):
     dependencies:
       vue: 3.5.41(typescript@6.0.3)
 
