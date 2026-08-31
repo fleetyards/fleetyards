@@ -147,5 +147,21 @@ module Rsi
       assert_in_delta 181.0, polaris.length.to_f
       assert_equal "2026-06-25T15:03:13Z", polaris.last_updated_at.utc.iso8601
     end
+
+    # The manufacturer loader is the only thing that fills a manufacturer's
+    # logo and its RSI metadata, and it used to be reached only for a model
+    # whose manufacturer was unset -- so a sync over ships that all had one
+    # never ran it.
+    test "#syncs the manufacturer of a model that already has one" do
+      manufacturer = create(:manufacturer, name: "Origin Jumpworks", code: "ORIG", rsi_id: nil, known_for: nil)
+      create(:model, name: "300i", rsi_id: 7, rsi_chassis_id: 1, manufacturer: manufacturer)
+
+      @loader.one(7)
+
+      manufacturer.reload
+
+      assert_equal 6, manufacturer.rsi_id
+      assert_predicate manufacturer.known_for, :present?
+    end
   end
 end

@@ -47,7 +47,12 @@ module Rsi
       unless paint?(data)
         sleep 5 unless Rails.env.test?
         pledge_store_loader.run(model)
-        model.manufacturer = manufacturers_loader.one(data["manufacturer"]) if model.manufacturer.blank?
+        # Called for every ship, not only for one whose manufacturer is unset:
+        # the loader is the only thing that fills a manufacturer's logo and its
+        # RSI metadata, and guarding the call on `model.manufacturer.blank?`
+        # meant it was reached for a newly created model and never again.
+        manufacturer = manufacturers_loader.one(data["manufacturer"])
+        model.manufacturer = manufacturer if model.manufacturer.blank?
         hardpoints_loader.all(model, data["compiled"])
       end
 
@@ -178,13 +183,12 @@ module Rsi
 
     # rubocop:disable Metrics/CyclomaticComplexity
     private def load_store_image(model, media_data)
-      return if Rails.env.test?
+      return unless fetch_images?
 
       updated_at = store_images_updated_at(media_data)
       up_to_date = updated_at.present? && model.store_images_updated_at.present? && model.store_images_updated_at >= updated_at
 
-      store_image_url = media_data["images"]["store_hub_large"]
-      store_image_url = "#{base_url}#{store_image_url}" unless store_image_url.starts_with?("https")
+      store_image_url = media_url(media_data["images"]["store_hub_large"])
 
       return if store_image_url.blank?
 
