@@ -31,24 +31,24 @@
       // A tile count that is not a multiple of the track count leaves the hero's
       // own background showing through as an empty cell - cards drop tiles for
       // stats a model has no value for - so a lone last tile fills the free
-      // tracks instead.
-      .metrics-card__tile:last-child:nth-child(3n + 1) {
-        grid-column: span 3;
-      }
+      // tracks instead. The two-track variant is excluded rather than
+      // overriding: its own `:last-child` rule carries one class fewer, so a
+      // second tile would match `3n + 2` here and span the whole hero.
+      &:not(.metrics-card__hero--grid-2) {
+        .metrics-card__tile:last-child:nth-child(3n + 1) {
+          grid-column: span 3;
+        }
 
-      .metrics-card__tile:last-child:nth-child(3n + 2) {
-        grid-column: span 2;
+        .metrics-card__tile:last-child:nth-child(3n + 2) {
+          grid-column: span 2;
+        }
       }
 
       &-2 {
         grid-template-columns: repeat(2, 1fr);
 
-        .metrics-card__tile:last-child {
-          grid-column: auto;
-
-          &:nth-child(odd) {
-            grid-column: span 2;
-          }
+        .metrics-card__tile:last-child:nth-child(odd) {
+          grid-column: span 2;
         }
       }
 
