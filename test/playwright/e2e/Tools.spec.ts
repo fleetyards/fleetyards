@@ -25,8 +25,8 @@ test.describe("Tools Index", () => {
   });
 
   test("Shows disabled banner for unavailable tools", async ({ page }) => {
-    const disabledBanner = page.getByTestId("tool-card-banner");
-    await expect(disabledBanner).toBeVisible();
+    const disabledBanners = page.getByTestId("tool-card-banner");
+    await expect(disabledBanners.first()).toBeVisible();
   });
 
   test("Tool cards have external links", async ({ page }) => {
