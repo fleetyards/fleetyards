@@ -100,11 +100,31 @@ Every response is ephemeral by default (flag 64) unless the invoking member aske
 
 The handler exists; only the transport is missing, and HTTP interactions cannot carry it.
 
-Instead, **poll**: `GET /guilds/{guild_id}/scheduled-events/{event_id}/users` returns the users subscribed to a scheduled event. `ScheduledEventSync` already runs per event and already knows `discord_guild_id` and `discord_event_id`, so it can diff the subscriber list against the FY signups and drive `ScheduledEventRsvpHandler#add!` / `#remove!` for the difference.
+Instead, **poll**: `GET /guilds/{guild_id}/scheduled-events/{event_id}/users` returns the users subscribed to a scheduled event, and `ScheduledEventRsvpSync` drives `ScheduledEventRsvpHandler#add!` / `#remove!` from the difference.
 
 This is strictly better than a Gateway here: it survives restarts and missed events (a Gateway drops what happens while it is down), it needs no new process and no intents, and the handler's existing "never downgrade a Fleetyards commitment" logic makes repeated polling naturally idempotent.
 
-The cost is latency — an RSVP lands on the next poll, not instantly. For an event days away that is invisible; the poll interval can tighten as the event approaches, reusing the same schedule the sync already follows.
+The cost is latency — an RSVP lands on the next poll, not instantly. For an event days away that is invisible.
+
+### What the diff runs against
+
+Not the Fleetyards signups. `ScheduledEventRsvpHandler#withdrawable?` can only ask "interested, and no slot behind it?", which is exactly what a member who answered **on the website** also looks like. Diffing Discord's subscriber list against FY signups would therefore withdraw the answer of every member who never touched Discord.
+
+So the poll diffs against `discord_event_subscriptions` — a snapshot of Discord's own state, one row per user seen subscribed. A withdrawal only ever happens for a user who was previously seen subscribed and has since unsubscribed. Rows are written whatever Fleetyards made of the RSVP, including for a subscriber with no linked account, so a poll does not retry them forever.
+
+Keyed by `discord_event_id` rather than by `FleetEvent`: a recurring series pushes one Discord event per occurrence and those ids live on `fleet_event_occurrence_states`, so the id is the only thing both cases share.
+
+Two failure modes are decided rather than left to chance: a **404** means the scheduled event is gone from Discord, which is not everyone changing their mind — the snapshot is dropped and no withdrawals are issued. A **403** means the bot lost a permission; that is persistent, so it is logged rather than retried every five minutes. Rate limits and 5xx are retried.
+
+| Change | File |
+| --- | --- |
+| Snapshot table | `db/migrate/*_create_discord_event_subscriptions.rb`, `app/models/discord_event_subscription.rb` |
+| Subscriber list, paginated | `lib/discord/api_client.rb` |
+| The diff | `lib/discord/scheduled_event_rsvp_sync.rb` |
+| Per-event poll | `app/jobs/discord/poll_event_rsvps_job.rb` |
+| Fan-out, every 5 min | `app/jobs/discord/poll_event_rsvps_dispatch_job.rb`, `config/sidekiq_schedule.yml` |
+
+The dispatcher starts from `FleetNotificationSetting` rather than from the events: the guild id lives there, every poll needs it, and a fleet without one has nothing to poll. It polls from 2 hours after a start (a last-minute RSVP still counts) to 30 days ahead, and covers both `FleetEvent` and `FleetEventOccurrenceState` ids.
 
 ## Phase 4 — event reminders with what Discord does not know
 
