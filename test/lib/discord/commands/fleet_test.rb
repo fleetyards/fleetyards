@@ -85,8 +85,8 @@ module Discord
         assert_equal "1", fields[I18n.t("discord.commands.fleet.fields.upcoming_events")]
       end
 
-      test "a refusal is only shown to the caller" do
-        assert_equal ::Discord::Commands::Base::EPHEMERAL, call(guild_id: "guild-nope")[:flags]
+      test "carries no flags, since a follow-up cannot set them" do
+        assert_nil call(guild_id: "guild-nope")[:flags]
       end
     end
   end

@@ -21,7 +21,7 @@ module Discord
 
         return message(content: I18n.t("discord.commands.hangar.empty", username: user.username)) if counts.empty?
 
-        message(content: content_for(user, counts), ephemeral: false)
+        message(content: content_for(user, counts))
       end
 
       # Mirrors Public::UserPolicy#show? -- the same rule the public hangar

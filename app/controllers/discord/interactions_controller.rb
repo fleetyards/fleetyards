@@ -50,13 +50,21 @@ module Discord
     # Nothing runs inline. Even a command that would finish in 40 ms locally
     # has to survive a cold connection pool and Discord's hard 3 second
     # deadline, after which the interaction cannot be answered at all.
+    #
+    # Visibility is decided *here*, not by the command: Discord fixes it at the
+    # deferred acknowledgement and ignores flags on the follow-up. The registry
+    # is the only place that knows it before the job has run.
     private def acknowledge_command
       Discord::CommandJob.perform_async(command_context)
 
-      render json: {
-        type: DEFERRED_MESSAGE,
-        data: {flags: Discord::Commands::Base::EPHEMERAL}
-      }
+      data = {}
+      data[:flags] = Discord::Commands::Base::EPHEMERAL if ephemeral_command?
+
+      render json: {type: DEFERRED_MESSAGE, data: data}
+    end
+
+    private def ephemeral_command?
+      Discord::Commands::Registry.ephemeral?(payload.dig("data", "name"))
     end
 
     private def refuse_command

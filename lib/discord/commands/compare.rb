@@ -27,7 +27,7 @@ module Discord
           return message(content: I18n.t("discord.commands.compare.same_ship", ship: first.name))
         end
 
-        message(embeds: [embed(first, second)], ephemeral: false)
+        message(embeds: [embed(first, second)])
       end
 
       # A Discord embed has no table, so each stat becomes one field holding
