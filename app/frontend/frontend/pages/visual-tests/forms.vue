@@ -20,6 +20,7 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import Slider from "@/shared/components/base/Slider/index.vue";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import ErrorStates from "@/frontend/pages/visual-tests/forms/ErrorStates.vue";
+import FileInputStates from "@/frontend/pages/visual-tests/forms/FileInputStates.vue";
 import TabsDemo from "@/frontend/pages/visual-tests/forms/TabsDemo.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -462,6 +463,14 @@ const powerMarks = (value: number) => ({ label: String(value) });
       />
     </div>
   </div>
+
+  <Heading :level="HeadingLevelEnum.H2">FormFileInput | States</Heading>
+  <p>
+    The states it can be in, which is more than any other control: empty,
+    holding a value that was saved elsewhere, disabled with one, and invalid.
+    Each in the plain, avatar and transparent treatments.
+  </p>
+  <FileInputStates />
 
   <Heading :level="HeadingLevelEnum.H2">RadioList</Heading>
   <p>Inline and stacked, with and without a reset option.</p>
