@@ -15,6 +15,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import { BaseSelectVariantsEnum } from "@/shared/components/base/Select/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -408,15 +409,14 @@ const onSubmit = handleSubmit(async (values) => {
           >
             <template #suffix>
               <template v-if="isDeposit && unitOptions.length > 1">
-                <select v-model="unit" class="base-input__suffix-select">
-                  <option
-                    v-for="opt in unitOptions"
-                    :key="String(opt.value)"
-                    :value="opt.value"
-                  >
-                    {{ opt.label }}
-                  </option>
-                </select>
+                <BaseSelect
+                  v-model="unit"
+                  :options="unitOptions"
+                  :label="t('labels.logistics.unit')"
+                  :variant="BaseSelectVariantsEnum.AFFIX"
+                  name="unit"
+                  no-label
+                />
               </template>
               <span v-else class="base-input__suffix-text">
                 {{ t(`labels.logistics.units.${unit}`) }}
