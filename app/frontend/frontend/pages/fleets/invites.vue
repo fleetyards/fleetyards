@@ -5,10 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BaseTable from "@/shared/components/base/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
-import Panel from "@/shared/components/base/Panel/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import { type FleetMember } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -107,6 +109,18 @@ const decline = async (invite: FleetMember) => {
 };
 
 const { data: invites, isLoading } = useFleetInvitesQuery();
+
+/*
+ * One named column and the actions slot. The fleet's name needs no cell template
+ * -- BaseTable falls back to the record's own attribute -- and the heading
+ * label stays empty, as the list this replaced had it.
+ */
+const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
+  {
+    name: "fleetName",
+    label: "",
+  },
+]);
 </script>
 
 <template>
@@ -120,65 +134,36 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
     </div>
     <div class="row lg:justify-center">
       <div class="col-12 col-lg-6">
-        <Panel>
-          <transition-group
-            name="fade"
-            class="flex-list flex-list-users"
-            tag="div"
-            appear
-          >
-            <div key="heading" class="fade-list-item col-12 flex-list-heading">
-              <div class="flex-list-row">
-                <div class="fleet-name" />
-                <div class="actions">
-                  {{ t("labels.actions") }}
-                </div>
-              </div>
-            </div>
-            <div
-              v-for="(invite, index) in invites"
-              :key="`invites-${index}`"
-              class="fade-list-item col-12 flex-list-item"
-            >
-              <div class="flex-list-row">
-                <div class="fleet-name">
-                  {{ invite.fleetName }}
-                </div>
-                <div v-if="invited(invite)" class="actions">
-                  <Btn :disabled="submitting" @click="accept(invite)">
-                    <i class="fa-light fa-check" />
-                    {{ t("actions.fleet.acceptInvite") }}
-                  </Btn>
-                  <Btn
-                    :disabled="submitting"
-                    @click="decline(invite)"
-                    :tone="BtnTonesEnum.DANGER"
-                  >
-                    <i class="fa-light fa-times" />
-                    {{ t("actions.fleet.declineInvite") }}
-                  </Btn>
-                </div>
-                <div v-else-if="requested(invite)">
-                  <Btn :disabled="true">
-                    <i class="fa-light fa-clock" />
-                    {{ t("labels.fleet.awaitingConfirmation") }}
-                  </Btn>
-                </div>
-              </div>
-            </div>
-            <div
-              v-if="!invites?.length && !isLoading"
-              key="empty"
-              class="fade-list-item col-12 flex-list-item"
-            >
-              <div class="flex-list-row">
-                <div class="empty">
-                  {{ t("labels.blank.fleetInvites") }}
-                </div>
-              </div>
-            </div>
-          </transition-group>
-        </Panel>
+        <BaseTable
+          :records="invites || []"
+          primary-key="id"
+          :columns="tableColumns"
+          :empty-visible="!invites?.length && !isLoading"
+        >
+          <template #actions="{ record }">
+            <template v-if="invited(record)">
+              <Btn :disabled="submitting" @click="accept(record)">
+                <i class="fa-light fa-check" />
+                {{ t("actions.fleet.acceptInvite") }}
+              </Btn>
+              <Btn
+                :disabled="submitting"
+                :tone="BtnTonesEnum.DANGER"
+                @click="decline(record)"
+              >
+                <i class="fa-light fa-times" />
+                {{ t("actions.fleet.declineInvite") }}
+              </Btn>
+            </template>
+            <Btn v-else-if="requested(record)" :disabled="true">
+              <i class="fa-light fa-clock" />
+              {{ t("labels.fleet.awaitingConfirmation") }}
+            </Btn>
+          </template>
+          <template #empty>
+            <Empty :name="t('labels.blank.fleetInvites')" inline />
+          </template>
+        </BaseTable>
 
         <Loader :loading="isLoading" :fixed="true" />
       </div>
