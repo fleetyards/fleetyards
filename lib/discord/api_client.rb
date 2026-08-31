@@ -80,6 +80,19 @@ module Discord
       request(:delete, "guilds/#{guild_id}/scheduled-events/#{event_id}")
     end
 
+    # Discord caps a page at 100 and paginates by user id.
+    SUBSCRIBER_PAGE_SIZE = 100
+
+    # Who has clicked "Interested" on a scheduled event. This is the only way
+    # to see RSVPs without a Gateway connection -- the corresponding
+    # GUILD_SCHEDULED_EVENT_USER_ADD/REMOVE events are Gateway-only.
+    def list_guild_scheduled_event_users(guild_id, event_id, after: nil, limit: SUBSCRIBER_PAGE_SIZE)
+      query = {limit: limit}
+      query[:after] = after if after.present?
+
+      request(:get, "guilds/#{guild_id}/scheduled-events/#{event_id}/users?#{query.to_query}")
+    end
+
     private def post(path, payload)
       request(:post, path, payload)
     end
