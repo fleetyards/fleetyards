@@ -466,11 +466,20 @@ the one most likely to be cut for time — it should not be.
 gap #4371 deliberately left — `FormDatePicker`, `Slider`, `Toggle`, and a
 decision about `v-select-overrides.scss` (F1).
 
-### Phase 5 — Verify
+### Phase 5 — Verify — **DONE for the keyboard; call-site spot-checks outstanding**
 
-Keyboard walkthrough of every control; the error states page in both
-treatments; and the 700-odd call sites spot-checked where they carry props the
-visual-tests page does not.
+Walked the visual-tests forms page by keyboard. 51 controls are reachable, every
+kind among them: text, number, password, email, url, colour, textarea, 12
+checkboxes, 9 radios. Focus is visible on all of them -- the cap turns primary on
+a field or textarea, the edge does on a checkbox, toggle or radio, confirmed on
+22 of them one by one.
+
+Worth knowing for anyone measuring this again: the edge transitions, so reading
+it in the same tick as the Tab press reports the resting colour and looks like a
+missing focus ring. And a programmatic `.focus()` does not satisfy
+`:focus-visible`, so the walk has to be driven by real Tab presses.
+
+Still owed: the call sites carrying props the visual-tests page does not cover.
 
 ## Open questions
 
@@ -480,9 +489,13 @@ visual-tests page does not.
    the vendor dropdown turned out to be an override for a package that is not
    installed (F17).
 
-2. **`RadioList` still cannot be marked invalid.** It never calls `useField`, so
-   a form has no way to reach it. That is a change in what the component _is_
-   rather than how it looks, and it is the last gap in D8's coverage.
+2. **`RadioList` cannot be marked invalid, and does not need to be.** It never
+   calls `useField`, so a form has no way to reach it -- but all thirteen call
+   sites are filter forms, and not one of them so much as calls `useForm`. There
+   is no form context to reach it from and nothing to validate. Binding it would
+   put thirteen filter forms into vee-validate state they do not have, for a case
+   that does not exist. Same evidence as the `FilterGroup` prop below; revisit if
+   a validating form ever wants one.
 
 3. **`FilterGroup`'s `error` prop is the one remaining tooltip.** It is passed by
    none of its 135 call sites, so it was left rather than given a message element
@@ -490,6 +503,29 @@ visual-tests page does not.
    bars taller for an unused prop. Worth resolving when something actually needs
    it.
 
-4. **`DirectUpload` is a component tree the inventory missed**, because it is not
-   named `Form*`. Its drop zone now reads the frame's colours, but its Preview,
-   Modal and Actions have not been looked at.
+4. **`DirectUpload`'s Preview, Modal and Actions have now been looked at.**
+   Actions, Modal and the root paint nothing of their own, which is why they
+   never drifted. Preview carried the one real defect: removal was a click
+   handler on the whole tile with a hover-only `<span>` as its affordance, so a
+   queued file could not be removed without a mouse and assistive tech was told
+   nothing. It is a button now, hidden by opacity rather than display so focus
+   can reveal it.
+
+   Left deliberately: the single-file preview also removes on click but renders
+   no affordance at all, because `isRemovable` asks for `multiple`. Giving it one
+   changes what every single-file uploader looks like, which is a decision rather
+   than a repair. Its scrim colours stay literal -- they are overlays on an image,
+   not control surfaces, and there is no token for a scrim.
+
+5. **Two things the gate in D12 uncovered, both older than this work.**
+
+   `FormInput` assigned `internalId` at setup and again in `onMounted`, and it is
+   the root element's `:key`. A changing key destroys the component and builds a
+   new one, so every field threw away its first life on mount -- which is why
+   signup never opened with its first field focused.
+
+   And the watcher mirroring `modelValue` into the field called `resetField`,
+   which starts the whole state over. Every keystroke emits `update:modelValue`
+   and the parent writes it back, so `touched` was reset on every keystroke. It
+   was invisible until something depended on it: measured as touched=true after
+   the blur and false one keystroke later, with the error still present.
