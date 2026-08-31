@@ -2,6 +2,18 @@ $padding-horizontal: floor(($grid-gutter-width / 2));
 $nav-transition-speed: 0.3s;
 
 .tabs {
+  /*
+   * Pointed at is a short rail; current is the full one. It used to be the other
+   * way round -- hover ran the full height and `.active` stepped down to 80% --
+   * so clicking a tab made the mark you had just made shrink under the pointer,
+   * which reads as a glitch rather than a state. The stronger state gets the
+   * fuller mark, and moving between them grows.
+   *
+   * Named once, for the same reason base/Table/Col names it: two rails that mean
+   * one thing must not drift apart.
+   */
+  --rail-h: 70%;
+
   position: relative;
   padding: 25px 0 20px;
 
@@ -61,12 +73,21 @@ $nav-transition-speed: 0.3s;
       &::before {
         position: absolute;
         left: 0;
-        top: 0;
+        top: 50%;
         width: var(--cap-h-row, 3px);
-        height: 100%;
+        height: var(--rail-h, 70%);
+        transform: translateY(-50%);
         background: var(--color-primary, #428bca);
         opacity: 0;
-        transition: all ease $transition-base-speed;
+        /*
+         * Named, not `all`, which also animated the radius and border the
+         * positional variants change. And at the nav's own speed rather than the
+         * slower base one: half a second to grow a rail reads as lag on
+         * something answering a click.
+         */
+        transition:
+          opacity $nav-transition-speed ease,
+          height $nav-transition-speed ease;
         content: "";
       }
 
@@ -95,8 +116,7 @@ $nav-transition-speed: 0.3s;
         }
 
         &::before {
-          top: 10%;
-          height: 80%;
+          height: 100%;
           opacity: 1;
         }
       }
