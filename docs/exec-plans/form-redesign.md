@@ -116,6 +116,50 @@ switching `color-scheme` on changes how the browser renders native controls,
 which is the worst possible side effect to take mid-redesign. Its own change,
 with its own verification.
 
+### F14 — Moving the frame grew every field by two pixels
+
+The frame moved from the input to its wrapper (F7) and the `43px` stayed on the
+input. With `box-sizing: border-box` that number had _included_ the border, so
+the control's outside went from 43 to 45 — against a `Btn` sm built to match it
+at 43, and against `FormInputGroup`, whose comment says exactly that.
+
+It surfaced three times as a two-pixel gap and was answered three times as a
+symptom: a `+ 2px` on the checkbox's alignment, another on the toggle's, and a
+third noticed on the FilterGroup trigger before the cause was read.
+
+The height tokens are outer heights now — the number a neighbour needs — and the
+input reads `calc(var(--field-h) - 2px)`.
+
+### F15 — Copied internals age silently
+
+Three components carried a copy of `FormInput`'s field styling. `FormDatePicker`
+said so in a comment — "match `.base-input__wrapper input` from FormInput
+exactly" — and did, to a version that no longer existed. `FormFileInput` copied a
+field it does not have: the only `<input>` in its template is `hidden`, so none of
+it had ever drawn a pixel. `FormDateTime` implemented the same picker library a
+second time and targeted `dp__` classes that release 14 does not emit, so its
+whole stylesheet, palette included, matched nothing.
+
+None of them failed. CSS that matches nothing is silent, and a copy is only
+wrong once the original moves.
+
+### F16 — A failed upload reached nobody
+
+The uploader caught the error, cleared itself, raised a toast with whatever the
+failure stringified to — "Error creating Blob" — and then let `.then()` run
+anyway, so the only event a consumer received was `upload:done` carrying the list
+`clear()` had just emptied. A consumer could not tell a successful upload of
+nothing from a failed upload of something.
+
+The same diagnosis as D8 one layer down: the error was in a bubble beside the
+control instead of on it.
+
+### F17 — An override for a component that is not installed
+
+`v-select-overrides.scss` styled `.v-select` and friends. `vue-select` is not a
+dependency and the class appears in no template; the file was compiled into every
+frontend bundle regardless.
+
 ## Decisions
 
 ### D1 — One signature per control, carrying its state — **DECIDED**
@@ -238,18 +282,18 @@ not the instant one.
 ~200 lines of unscoped CSS in the visual-tests forms page, reaching nothing
 else. Every decision above was made against it, and four were reversed by it.
 
-### Phase 1 — Tokens, then the fields
+### Phase 1 — Tokens, then the fields — **DONE**
 
 `FormInput` and `FormTextarea` onto the language. The field height becomes a
 token: the preview hard-codes `43px` to centre a control beside a field, and
 that number quietly stops being right the moment anyone changes it.
 
-### Phase 2 — The boxes you tick
+### Phase 2 — The boxes you tick — **DONE**
 
 `FormCheckbox`, `RadioList`, `FormToggle`. Carries F4 (one line), D3, D7, and
 the `background-clip` from F11.
 
-### Phase 3 — Error messages
+### Phase 3 — Error messages — **DONE**
 
 The message gets a real element, a place in the layout and `aria-describedby`,
 per D8 — which means touching all six components, since every one of them puts
@@ -259,7 +303,7 @@ all (F9).
 This is the phase that is about accessibility rather than appearance, and it is
 the one most likely to be cut for time — it should not be.
 
-### Phase 4 — The rest of the surface
+### Phase 4 — The rest of the surface — **DONE**
 
 `FormFileInput` (53 tags, the largest uncovered), `FilterGroup`'s trigger — the
 gap #4371 deliberately left — `FormDatePicker`, `Slider`, `Toggle`, and a
@@ -273,10 +317,22 @@ visual-tests page does not.
 
 ## Open questions
 
-1. **The vendor dropdown.** `v-select-overrides.scss` is coloured from the same
-   pair. Does it follow the redesign, get pinned to the old values, or get
-   replaced by `FilterGroup`?
-2. **`RadioList`'s error state** needs it to bind a field, which is a change in
-   what the component _is_, not how it looks.
-3. **Field height as a token** — see phase 1. Worth deciding early, because
-   every control that sits beside a field depends on it.
+1. **Nothing structural is left open.** The three the plan started with are
+   settled: the field height became `--field-h` (F14 corrected what it means),
+   `RadioList`'s missing error state is the one component change still owed, and
+   the vendor dropdown turned out to be an override for a package that is not
+   installed (F17).
+
+2. **`RadioList` still cannot be marked invalid.** It never calls `useField`, so
+   a form has no way to reach it. That is a change in what the component _is_
+   rather than how it looks, and it is the last gap in D8's coverage.
+
+3. **`FilterGroup`'s `error` prop is the one remaining tooltip.** It is passed by
+   none of its 135 call sites, so it was left rather than given a message element
+   nobody would see -- and reserving a line for it would have made 135 filter
+   bars taller for an unused prop. Worth resolving when something actually needs
+   it.
+
+4. **`DirectUpload` is a component tree the inventory missed**, because it is not
+   named `Form*`. Its drop zone now reads the frame's colours, but its Preview,
+   Modal and Actions have not been looked at.
