@@ -107,10 +107,11 @@ class FleetMembership < ApplicationRecord
   after_create_commit :schedule_setup_fleet_vehicles
   after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
+  after_commit :sync_discord_roles, on: %i[create update], if: :discord_roles_affected?
   before_destroy :check_if_can_be_destroyed
   before_discard :check_if_can_be_destroyed
-  after_discard :broadcast_destroy, :remove_fleet_vehicles
-  after_undiscard :broadcast_create, :schedule_setup_fleet_vehicles
+  after_discard :broadcast_destroy, :remove_fleet_vehicles, :sync_discord_roles
+  after_undiscard :broadcast_create, :schedule_setup_fleet_vehicles, :sync_discord_roles
 
   def has_access?(privileges)
     return false if fleet_role.blank?
@@ -328,6 +329,22 @@ class FleetMembership < ApplicationRecord
       link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
       record: self
     )
+  end
+
+  # Only the two things that change which Discord roles a member should hold:
+  # whether they are an accepted member at all, and which rank they hold.
+  # Everything else about a membership -- ship filters, hangar groups, a primary
+  # flag -- has no bearing on it, and enqueuing on every save would put a
+  # Discord round trip behind ordinary edits.
+  def discord_roles_affected?
+    saved_change_to_aasm_state? || saved_change_to_fleet_role_id?
+  end
+
+  def sync_discord_roles
+    return unless ::Discord::ApiClient.configured?
+    return if fleet&.fleet_notification_setting&.discord_guild_id.blank?
+
+    ::Discord::SyncMemberRolesJob.perform_async(id)
   end
 
   def broadcast_update

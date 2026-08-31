@@ -183,6 +183,38 @@ What org admins actually ask for. Two tiers: a "verified member" role on account
 
 Also note the role hierarchy: a bot can only assign roles **below its own highest role**. That is a server-configuration problem the app cannot fix, only detect and report.
 
+`Discord::RoleCapability` is what does both detections, and it runs from the existing discord-status endpoint the fleet settings page already polls, so a fleet is told "re-authorise" rather than watching role sync fail quietly. It reports `missing_manage_roles`, `role_above_bot` (naming the role), `unknown_role` for a mapping whose Discord role was deleted, or `ok` — and it reports nothing at all until the fleet has actually mapped a role, so nobody is told to re-authorise for a feature they are not using.
+
+### The invariant
+
+`MemberRoleSync` may only add or remove role ids the fleet itself configured. `managed_role_ids` is that whole universe, so a role handed out by hand in Discord — a colour, a game, a moderator role — is invisible to this code and can never be taken away by it. There is a test named after exactly that.
+
+An accepted member gets the member role plus the role mapped to their rank; anyone invited, requested, declined or discarded gets neither, which is what makes leaving a fleet take the roles off. A member who is not in the Discord server at all is not a failure — plenty never join.
+
+Only two membership changes trigger a sync: the state and the rank. Everything else about a membership — ship filters, hangar groups, the primary flag — has no bearing on roles, and enqueuing on every save would put a Discord round trip behind ordinary edits.
+
+### Why event-driven is not enough on its own
+
+Those triggers cover every *change*, and miss every *rollout*. A fleet maps a role and nothing happens, because no membership changed. Three cases, all of them the first thing anyone will hit:
+
+| The fleet or member does this | Without a backfill |
+| --- | --- |
+| maps the member role for the first time | existing members get nothing |
+| maps a rank to a Discord role | that rank's members get nothing |
+| links their Discord account after being accepted | they get nothing |
+
+So configuration and account-linking enqueue a backfill of their own: `BackfillFleetMemberRolesJob` for the first two — narrowed to one rank when it is a rank mapping, since that is all a single mapping can affect — and `BackfillUserMemberRolesJob` for the third. Both only consider accepted members who actually linked a Discord account: a sync for anyone else is a job that can only decide to do nothing.
+
+A membership costs one `get_guild_member` plus a call per role change, so the fleet backfill spreads its work rather than firing a large fleet at Discord at once.
+
+**Not handled: unlinking.** Removing a Discord connection leaves the roles in place, because the uid the sync needs is gone with the record. Revoking them needs a different operation — "remove every managed role from this uid" — rather than the desired/current diff, since the membership is still accepted and the diff would want to *add* the roles back. Worth doing, and its own change.
+
+### What is configurable, and what is not
+
+`fleet_notification_settings.discord_member_role_id` has an update endpoint, so the **verified-member role works end to end today**.
+
+`fleet_roles.discord_role_id` does not: `FleetRole` has **no write endpoint anywhere** — the public API exposes `index` only, and even `resource_access` is not writable through it. The sync reads the column and the rank mapping is fully implemented and tested, but until fleet roles become editable it can only be set from a console. Building that endpoint is its own piece of work (policy, schema, tests) and does not belong in a Discord PR.
+
 Hangar-based roles ("owns a Carrack" → role) are the natural extension and deliberately last: they turn a per-link action into a continuous reconcile against every member's hangar, which is a different cost class from everything above.
 
 ## Order and why

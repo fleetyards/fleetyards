@@ -12,6 +12,7 @@
 #  slug            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  discord_role_id :string
 #  fleet_id        :uuid             not null
 #
 # Indexes

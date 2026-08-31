@@ -10,6 +10,7 @@
 #  slug            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  discord_role_id :string
 #  fleet_id        :uuid             not null
 #
 # Indexes
@@ -73,6 +74,9 @@ class FleetRole < ApplicationRecord
 
   before_save :update_slugs
   before_create :setup_rank
+
+  # Narrowed to this rank: a single mapping cannot affect anyone else.
+  after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_role_id?
 
   DEFAULT_PRIVILEGES = {
     admin: [],
@@ -157,5 +161,9 @@ class FleetRole < ApplicationRecord
 
   private def update_slugs
     self.slug = generate_slug(name)
+  end
+
+  private def backfill_discord_member_roles
+    ::Discord::BackfillFleetMemberRolesJob.perform_async(fleet_id, id)
   end
 end

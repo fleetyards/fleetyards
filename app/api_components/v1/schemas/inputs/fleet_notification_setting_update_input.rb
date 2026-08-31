@@ -11,6 +11,7 @@ module V1
           properties: {
             discordGuildId: {type: [:string, :null]},
             discordChannelId: {type: [:string, :null]},
+            discordMemberRoleId: {type: [:string, :null]},
             discordWebhookUrl: {type: [:string, :null]},
             enabledInAppEvents: {type: :array, items: {type: :string}}
           }

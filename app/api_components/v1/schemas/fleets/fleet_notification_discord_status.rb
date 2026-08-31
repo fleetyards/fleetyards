@@ -15,7 +15,10 @@ module V1
             guildId: {type: :string},
             guildName: {type: :string},
             status: {type: :integer},
-            installUrl: {type: :string}
+            installUrl: {type: :string},
+            rolesOk: {type: :boolean},
+            rolesCode: {type: :string},
+            rolesDetail: {type: :string}
           }
         })
       end

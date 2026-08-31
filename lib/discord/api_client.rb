@@ -32,11 +32,18 @@ module Discord
       Rails.application.config.app.discord[:client_id].presence
     end
 
-    # Manage Events (1 << 33), plus View Channel (1 << 10) and Connect
-    # (1 << 20) — Discord rejects a voice-channel scheduled event without
-    # those two when a fleet sets a discord_channel_id. Must stay in sync
-    # with the app's Default Install Settings in the Discord dev portal.
-    INSTALL_PERMISSIONS = 8_590_984_192
+    # Manage Events (1 << 33), View Channel (1 << 10), Connect (1 << 20) and
+    # Manage Roles (1 << 28).
+    #
+    # Discord rejects a voice-channel scheduled event without View Channel and
+    # Connect when a fleet sets a discord_channel_id, and role assignment needs
+    # Manage Roles. Must stay in sync with the app's Default Install Settings in
+    # the Discord dev portal.
+    #
+    # Raising this does NOT upgrade servers that installed under the old mask --
+    # Discord keeps their original grant. Discord::RoleCapability is what tells
+    # a fleet it has to re-authorise.
+    INSTALL_PERMISSIONS = 8_859_419_648
 
     def self.install_url
       return nil if application_id.blank?
@@ -80,6 +87,22 @@ module Discord
 
     def create_message(channel_id, payload)
       post("channels/#{channel_id}/messages", payload)
+    end
+
+    def get_guild_roles(guild_id)
+      request(:get, "guilds/#{guild_id}/roles")
+    end
+
+    def get_guild_member(guild_id, user_id)
+      request(:get, "guilds/#{guild_id}/members/#{user_id}")
+    end
+
+    def add_guild_member_role(guild_id, user_id, role_id)
+      request(:put, "guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}")
+    end
+
+    def remove_guild_member_role(guild_id, user_id, role_id)
+      request(:delete, "guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}")
     end
 
     def update_guild_scheduled_event(guild_id, event_id, payload)

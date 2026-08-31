@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_31_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_31_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -647,6 +647,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_31_160000) do
     t.datetime "created_at", null: false
     t.string "discord_channel_id"
     t.string "discord_guild_id"
+    t.string "discord_member_role_id"
     t.text "discord_webhook_url"
     t.text "enabled_in_app_events", default: "---\n- fleet_event.published\n- fleet_event.locked\n- fleet_event.starting_soon\n- fleet_event.cancelled\n- fleet_event_signup.created\n- fleet_event_signup.withdrawn"
     t.uuid "fleet_id", null: false
@@ -657,6 +658,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_31_160000) do
 
   create_table "fleet_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "discord_role_id"
     t.uuid "fleet_id", null: false
     t.string "name"
     t.boolean "permanent"

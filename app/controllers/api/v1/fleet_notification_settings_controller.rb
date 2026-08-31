@@ -38,7 +38,7 @@ module Api
 
         begin
           guild = ::Discord::ApiClient.new.get_guild(@setting.discord_guild_id)
-          {ok: true, guildId: guild["id"], guildName: guild["name"]}
+          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload)
         rescue ::Discord::ApiClient::Error => e
           code = case e.status
           when 401 then "invalid_token"
@@ -47,6 +47,27 @@ module Api
           else "discord_error"
           end
           {ok: false, code: code, status: e.status, message: e.message}
+        end
+      end
+
+      # Only reported once the fleet has asked for role management, so a fleet
+      # that never mapped a role is not told to re-authorise for a feature it is
+      # not using.
+      #
+      # A fleet that installed the bot before Manage Roles was requested keeps
+      # its original grant -- Discord does not upgrade an existing install -- so
+      # this is the only thing that tells them to re-authorise instead of the
+      # sync failing quietly every time a member's rank changes.
+      private def roles_payload
+        managed = ([@setting.discord_member_role_id] +
+          @setting.fleet.fleet_roles.pluck(:discord_role_id)).compact_blank.uniq
+
+        return {} if managed.empty?
+
+        result = ::Discord::RoleCapability.new(@setting.discord_guild_id).check(managed)
+
+        {rolesOk: result.ok?, rolesCode: result.code.to_s}.tap do |payload|
+          payload[:rolesDetail] = result.detail if result.detail.present?
         end
       end
 
@@ -62,6 +83,7 @@ module Api
 
       private def setting_params
         permitted = params.permit(
+          :discord_member_role_id,
           :discord_guild_id,
           :discord_channel_id,
           :discord_webhook_url,

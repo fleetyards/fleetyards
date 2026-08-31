@@ -14464,6 +14464,12 @@ components:
           type: integer
         installUrl:
           type: string
+        rolesOk:
+          type: boolean
+        rolesCode:
+          type: string
+        rolesDetail:
+          type: string
       title: FleetNotificationDiscordStatus
     FleetNotificationInAppEventEnum:
       type: string
@@ -14499,6 +14505,8 @@ components:
           type: string
         discordChannelId:
           type: string
+        discordMemberRoleId:
+          type: string
         discordWebhookConfigured:
           type: boolean
       required:
@@ -14515,6 +14523,10 @@ components:
           - string
           - 'null'
         discordChannelId:
+          type:
+          - string
+          - 'null'
+        discordMemberRoleId:
           type:
           - string
           - 'null'
