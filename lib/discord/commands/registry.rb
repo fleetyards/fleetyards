@@ -24,6 +24,57 @@ module Discord
               required: true
             }
           ]
+        },
+        {
+          name: "loaner",
+          description: "Show the loaners a ship comes with",
+          handler: "Discord::Commands::Loaner",
+          options: [
+            {
+              name: "name",
+              description: "Ship name, slug, or manufacturer",
+              type: STRING,
+              required: true
+            }
+          ]
+        },
+        {
+          name: "compare",
+          description: "Compare two ships side by side",
+          handler: "Discord::Commands::Compare",
+          options: [
+            {
+              name: "first",
+              description: "First ship",
+              type: STRING,
+              required: true
+            },
+            {
+              name: "second",
+              description: "Second ship",
+              type: STRING,
+              required: true
+            }
+          ]
+        },
+        {
+          name: "hangar",
+          description: "Show a member's public hangar",
+          handler: "Discord::Commands::Hangar",
+          options: [
+            {
+              name: "username",
+              description: "Fleetyards username",
+              type: STRING,
+              required: true
+            }
+          ]
+        },
+        {
+          name: "fleet",
+          description: "Show this server's fleet on Fleetyards",
+          handler: "Discord::Commands::Fleet",
+          options: []
         }
       ].freeze
 

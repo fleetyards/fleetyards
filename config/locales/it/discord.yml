@@ -4,10 +4,33 @@ it:
     commands:
       disabled: I comandi Fleetyards non sono ancora disponibili.
       failed: Qualcosa è andato storto durante la ricerca. Riprova.
+      compare:
+        missing_query: Indica due navi.
+        same_ship: 'È la stessa nave due volte: %{ship}.'
+        title: '%{first} vs %{second}'
+      fleet:
+        fields:
+          members: Membri
+          models: Tipi di nave
+          ships: Navi
+          upcoming_events: Prossimi eventi
+        not_allowed: '%{fleet} non ha reso pubblica la propria pagina.'
+        not_bound: Questo server non è collegato a nessuna flotta su Fleetyards.
+      hangar:
+        empty: '%{username} non ha navi nell''hangar pubblico.'
+        heading: '[Hangar di %{username}](%{url}) — %{count} navi, %{models} tipi'
+        missing_query: Indica un nome utente.
+        more: '…e altre %{count}.'
+        not_available: 'Nessun hangar pubblico per «%{username}».'
+      loaner:
+        heading: '[%{ship}](%{url}) include %{count} nave(i) in prestito:'
+        missing_query: Indica il nome di una nave.
+        none: '%{ship} non ha navi in prestito.'
       ship:
         ambiguous: '%{count} navi corrispondono a «%{query}»:'
         fields:
           classification: Classificazione
+          cargo: Carico
           crew: Equipaggio
           dimensions: Misure
           pledge_price: Prezzo pledge

@@ -4,10 +4,33 @@ zh-CN:
     commands:
       disabled: Fleetyards 命令尚不可用。
       failed: 查询时出错，请重试。
+      compare:
+        missing_query: 请提供两艘飞船。
+        same_ship: '这是同一艘飞船：%{ship}。'
+        title: '%{first} vs %{second}'
+      fleet:
+        fields:
+          members: 成员
+          models: 飞船类型
+          ships: 飞船
+          upcoming_events: 即将开始的活动
+        not_allowed: '%{fleet} 未公开其页面。'
+        not_bound: 此服务器尚未与 Fleetyards 上的舰队关联。
+      hangar:
+        empty: '%{username} 的公开机库中没有飞船。'
+        heading: '[%{username} 的机库](%{url}) — %{count} 艘飞船，%{models} 种类型'
+        missing_query: 请提供用户名。
+        more: '…还有 %{count} 艘。'
+        not_available: '未找到“%{username}”的公开机库。'
+      loaner:
+        heading: '[%{ship}](%{url}) 附带 %{count} 艘替代飞船：'
+        missing_query: 请提供飞船名称。
+        none: '%{ship} 没有替代飞船。'
       ship:
         ambiguous: '有 %{count} 艘飞船匹配“%{query}”：'
         fields:
           classification: 分类
+          cargo: 货舱
           crew: 船员
           dimensions: 尺寸
           pledge_price: 众筹价格

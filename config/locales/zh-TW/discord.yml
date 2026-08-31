@@ -4,10 +4,33 @@ zh-TW:
     commands:
       disabled: Fleetyards 指令尚未開放。
       failed: 查詢時發生錯誤，請重試。
+      compare:
+        missing_query: 請提供兩艘船艦。
+        same_ship: '這是同一艘船艦：%{ship}。'
+        title: '%{first} vs %{second}'
+      fleet:
+        fields:
+          members: 成員
+          models: 船艦類型
+          ships: 船艦
+          upcoming_events: 即將開始的活動
+        not_allowed: '%{fleet} 未公開其頁面。'
+        not_bound: 此伺服器尚未與 Fleetyards 上的艦隊連結。
+      hangar:
+        empty: '%{username} 的公開機庫中沒有船艦。'
+        heading: '[%{username} 的機庫](%{url}) — %{count} 艘船艦，%{models} 種類型'
+        missing_query: 請提供使用者名稱。
+        more: '…還有 %{count} 艘。'
+        not_available: '找不到「%{username}」的公開機庫。'
+      loaner:
+        heading: '[%{ship}](%{url}) 附帶 %{count} 艘替代船艦：'
+        missing_query: 請提供船艦名稱。
+        none: '%{ship} 沒有替代船艦。'
       ship:
         ambiguous: '有 %{count} 艘船艦符合「%{query}」：'
         fields:
           classification: 分類
+          cargo: 貨艙
           crew: 船員
           dimensions: 尺寸
           pledge_price: 眾籌價格

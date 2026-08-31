@@ -4,10 +4,33 @@ en:
     commands:
       disabled: Fleetyards commands are not available yet.
       failed: Something went wrong while looking that up. Please try again.
+      compare:
+        missing_query: Please name two ships.
+        same_ship: 'That is the same ship twice: %{ship}.'
+        title: '%{first} vs %{second}'
+      fleet:
+        fields:
+          members: Members
+          models: Ship types
+          ships: Ships
+          upcoming_events: Upcoming events
+        not_allowed: '%{fleet} has not made its page public.'
+        not_bound: This server is not linked to a fleet on Fleetyards.
+      hangar:
+        empty: '%{username} has no ships in their public hangar.'
+        heading: '[%{username}''s hangar](%{url}) — %{count} ships, %{models} types'
+        missing_query: Please provide a username.
+        more: '…and %{count} more.'
+        not_available: 'No public hangar for "%{username}".'
+      loaner:
+        heading: '[%{ship}](%{url}) comes with %{count} loaner(s):'
+        missing_query: Please provide a ship name.
+        none: '%{ship} has no loaners.'
       ship:
         ambiguous: '%{count} ships match "%{query}":'
         fields:
           classification: Classification
+          cargo: Cargo
           crew: Crew
           dimensions: Dimensions
           pledge_price: Pledge Price

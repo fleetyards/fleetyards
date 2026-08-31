@@ -83,18 +83,27 @@ Command jobs get their own Sidekiq queue, listed **first** in `config/sidekiq.ym
 
 ## Phase 2 — the rest of the read-only commands
 
-Each is the same shape as `/ship`, so they are one PR per command at most and cheap:
+Each is the same shape as `/ship`:
 
 | Command | Source | Note |
 | --- | --- | --- |
-| `/loaner <ship>` | loaner mappings | |
-| `/hangar <user>` | public hangars | must honour the public-hangar setting; a private hangar answers "not public", never a 404 that leaks existence |
-| `/compare <a> <b>` | compare data | embed, not the table |
-| `/fleet` | fleet stats | resolves the guild via `FleetNotificationSetting.discord_guild_id` |
+| `/loaner <ship>` | `Model#loaners` | scoped `visible.active`, so a hidden loaner is not listed |
+| `/hangar <user>` | public hangars | mirrors `Public::UserPolicy#show?` |
+| `/compare <a> <b>` | the `Model` catalogue | one field per stat holding both values |
+| `/fleet` | the guild's fleet | resolves via `FleetNotificationSetting.discord_guild_id` |
 
-`/fleet` needs an **index on `fleet_notification_settings.discord_guild_id`** — the column exists but is unindexed, and this is the first read that looks a fleet up by it on a request path.
+Resolving a ship name moves into `Discord::Commands::ModelLookup`, shared by `/ship`, `/loaner` and `/compare`. All three must resolve a name the *same* way as the ship list — a bot that finds a different ship than the website for the same words is a bug report nobody can reproduce.
 
-Every response is ephemeral by default (flag 64) unless the invoking member asked for a public post, so a busy channel does not fill with bot output.
+`/fleet` needs an **index on `fleet_notification_settings.discord_guild_id`** — the column exists but is unindexed, and this is the first read that looks a fleet up by it on a request path. Not unique: nothing stops two fleets pointing at one guild today, and making that a constraint is a separate decision from making the lookup fast.
+
+Two privacy rules that are easy to get wrong:
+
+- **`/hangar` answers a private hangar and an unknown username identically.** Distinguishing them turns the command into a probe for which accounts exist. There is a test asserting the two answers are the same.
+- **`/fleet` treats sharing a Discord server as no evidence of membership.** A guild can have guests. A member (resolved through `OmniauthConnection` → an accepted `FleetMembership`) may always see the fleet; anyone else only if `public_fleet?`. A pending invite is not membership.
+
+`/compare` links the real comparison: the compare page keeps its selection in the query string through `useFilters`, as repeated `models[]` entries, so `/compare/?models[]=a&models[]=b` opens it populated. The embed carries only six stats — the site's table has dozens across ten sections, and an embed caps out long before that, so the link is what carries the full picture.
+
+Every refusal is ephemeral (flag 64); a real answer is posted to the channel, since that is the point of asking in company.
 
 ## Phase 3 — RSVPs, without a Gateway
 

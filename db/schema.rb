@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_31_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_31_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -651,6 +651,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_31_120000) do
     t.text "enabled_in_app_events", default: "---\n- fleet_event.published\n- fleet_event.locked\n- fleet_event.starting_soon\n- fleet_event.cancelled\n- fleet_event_signup.created\n- fleet_event_signup.withdrawn"
     t.uuid "fleet_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["discord_guild_id"], name: "index_fleet_notification_settings_on_discord_guild_id"
     t.index ["fleet_id"], name: "index_fleet_notification_settings_on_fleet_id", unique: true
   end
 
