@@ -38,8 +38,8 @@ importers:
         specifier: ^8.1.301
         version: 8.1.301
       '@tanstack/vue-query':
-        specifier: ^5.102.3
-        version: 5.102.3(vue@3.5.41(typescript@6.0.3))
+        specifier: ^5.102.8
+        version: 5.102.8(vue@3.5.41(typescript@6.0.3))
       '@tresjs/cientos':
         specifier: ^5.7.2
         version: 5.7.2(@tresjs/core@5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.185.1)(vue@3.5.41(typescript@6.0.3)))(@types/three@0.185.4)(react@19.1.0)(three@0.185.1)(vue@3.5.41(typescript@6.0.3))
@@ -199,7 +199,7 @@ importers:
         version: 5.102.3(eslint@10.9.1(jiti@2.7.0))(typescript@6.0.3)
       '@tanstack/vue-query-devtools':
         specifier: ^6.1.43
-        version: 6.1.43(@tanstack/vue-query@5.102.3(vue@3.5.41(typescript@6.0.3)))(vue@3.5.41(typescript@6.0.3))
+        version: 6.1.43(@tanstack/vue-query@5.102.8(vue@3.5.41(typescript@6.0.3)))(vue@3.5.41(typescript@6.0.3))
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^6.0.2
         version: 6.0.2(@vue/compiler-sfc@3.5.41)(prettier@3.9.6)(svelte@5.56.9(@typescript-eslint/types@8.68.0))
@@ -2460,8 +2460,8 @@ packages:
     resolution: {integrity: sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg==}
     engines: {node: '>=12'}
 
-  '@tanstack/query-core@5.102.3':
-    resolution: {integrity: sha512-5O2VEceonqC4uaTLUGglb0hgPouWCJ4K1ykVWyeV8aThhdNCzwpwu01bYoaRNJ9mgFUXS7Kf9utJ46ysT8m+bw==}
+  '@tanstack/query-core@5.102.8':
+    resolution: {integrity: sha512-ZNjkJ33CqvPNec/6lZBnHqLc3EVGPZ9ySLhYahU9TcuRFdmwXewuj0c4hwSWcGHqEUwcSrKeZ+oGcvPBqXcQcg==}
 
   '@tanstack/query-devtools@5.102.3':
     resolution: {integrity: sha512-J/QKK3J+YuqOY/CQBypJSUGANGcdurFyHP4GZDP90QiB3G/wQVeGamo3zFJ/sTcM2uvF3+V7K3rS521xS8B3lQ==}
@@ -2472,8 +2472,8 @@ packages:
       '@tanstack/vue-query': ^5.102.3
       vue: ^3.3.0
 
-  '@tanstack/vue-query@5.102.3':
-    resolution: {integrity: sha512-CNR35/HPFlfajOg2dYS2WLJIMFV/G1cE7n9PA/SOaJCwqgSR5cPUwN+huoQW8gQBHFIbz1kFw08Ymdx9ii7WVQ==}
+  '@tanstack/vue-query@5.102.8':
+    resolution: {integrity: sha512-W3Q6Od3FbdttACuavgbICKMFgYCPobvuMiO8tIpqMP073QnREVSaO4ZPqrFqosIbFKikiQTmZhEEbYR9bPsWLA==}
     peerDependencies:
       '@vue/composition-api': ^1.1.2
       vue: ^2.6.0 || ^3.3.0
@@ -4578,8 +4578,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@3.15.1:
-    resolution: {integrity: sha512-S99WuO3HlhO3XN41EtYUNl9zzXjoJx7QvmipxsJVxtCBT0YHEFy+iOJhjSvrmV12nYhWpZaM8lPHkJm0yUMbag==}
+  js-yaml@3.15.2:
+    resolution: {integrity: sha512-6EuL879VkRA+1Cz578mKMiKvjPNEuk6+r1JaFzoSWejZmtf7xWbIyw1e3KkxlkzTIt9Taw6JBhEppG7utc1P+w==}
     hasBin: true
 
   js-yaml@4.3.1:
@@ -8927,20 +8927,20 @@ snapshots:
     dependencies:
       remove-accents: 0.5.0
 
-  '@tanstack/query-core@5.102.3': {}
+  '@tanstack/query-core@5.102.8': {}
 
   '@tanstack/query-devtools@5.102.3': {}
 
-  '@tanstack/vue-query-devtools@6.1.43(@tanstack/vue-query@5.102.3(vue@3.5.41(typescript@6.0.3)))(vue@3.5.41(typescript@6.0.3))':
+  '@tanstack/vue-query-devtools@6.1.43(@tanstack/vue-query@5.102.8(vue@3.5.41(typescript@6.0.3)))(vue@3.5.41(typescript@6.0.3))':
     dependencies:
       '@tanstack/query-devtools': 5.102.3
-      '@tanstack/vue-query': 5.102.3(vue@3.5.41(typescript@6.0.3))
+      '@tanstack/vue-query': 5.102.8(vue@3.5.41(typescript@6.0.3))
       vue: 3.5.41(typescript@6.0.3)
 
-  '@tanstack/vue-query@5.102.3(vue@3.5.41(typescript@6.0.3))':
+  '@tanstack/vue-query@5.102.8(vue@3.5.41(typescript@6.0.3))':
     dependencies:
       '@tanstack/match-sorter-utils': 8.19.4
-      '@tanstack/query-core': 5.102.3
+      '@tanstack/query-core': 5.102.8
       '@vue/devtools-api': 6.6.4
       vue: 3.5.41(typescript@6.0.3)
       vue-demi: 0.14.10(vue@3.5.41(typescript@6.0.3))
@@ -11351,7 +11351,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@3.15.1:
+  js-yaml@3.15.2:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
@@ -12226,7 +12226,7 @@ snapshots:
   ramldt2jsonschema@1.2.3:
     dependencies:
       commander: 5.1.0
-      js-yaml: 3.15.1
+      js-yaml: 3.15.2
       json-schema-migrate: 0.2.0
       webapi-parser: 0.5.0
 
