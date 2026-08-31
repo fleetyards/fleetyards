@@ -7,6 +7,7 @@
  * against rather than being verified by eye.
  */
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import { flushPromises } from "@vue/test-utils";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 
@@ -379,6 +380,74 @@ describe("BaseSelect", () => {
       await wrapper.trigger("keydown", { key: "b" });
 
       expect(wrapper.find(".base-select-item--focused").exists()).toBe(false);
+    });
+  });
+
+  /*
+   * The popover opens in one of two positioning modes, and the coordinates only
+   * mean what they say in the mode they were measured for. These pin the two
+   * places the mode and the coordinates could drift apart.
+   */
+  describe("the popover's positioning mode", () => {
+    const ESCAPES_CLIP = "base-select-items-wrapper--escapes-clip";
+
+    // jsdom reports every ancestor as `overflow: visible`, so the clipping the
+    // fixed mode exists for has to be put there.
+    const clip = (wrapper: Wrapper) => {
+      const host = wrapper.element.parentElement as HTMLElement;
+      host.style.overflow = "hidden";
+
+      return host;
+    };
+
+    const popoverIn = (wrapper: Wrapper) =>
+      wrapper.find(".base-select-items-wrapper");
+
+    const openWith = async (wrapper: Wrapper) => {
+      await wrapper.find('[data-test="base-select-title"]').trigger("click");
+      await flushPromises();
+    };
+
+    const closeWith = async (wrapper: Wrapper) => {
+      await wrapper.trigger("keydown", { key: "Escape" });
+      await flushPromises();
+    };
+
+    it("holds the fixed mode through the closing animation", async () => {
+      const wrapper = await mount();
+      clip(wrapper);
+
+      await openWith(wrapper);
+
+      expect(popoverIn(wrapper).classes()).toContain(ESCAPES_CLIP);
+
+      await closeWith(wrapper);
+
+      // Collapsed animates the close over half a second with the element still
+      // shown. Dropping the class here handed a popover still carrying viewport
+      // coordinates back to `position: absolute`, which reads them against the
+      // group's box -- and threw it into the bottom-right corner until the
+      // animation finished.
+      expect(popoverIn(wrapper).classes()).toContain(ESCAPES_CLIP);
+    });
+
+    it("takes stale fixed coordinates off when it opens unclipped", async () => {
+      const wrapper = await mount();
+      const popover = popoverIn(wrapper).element as HTMLElement;
+
+      // What an earlier open in the fixed mode leaves on the element. The same
+      // select is measured in both modes over its life -- one inside a modal
+      // escapes the clip while the modal is open and not once it has gone.
+      popover.style.top = "120px";
+      popover.style.left = "340px";
+      popover.style.width = "200px";
+
+      await openWith(wrapper);
+
+      expect(popoverIn(wrapper).classes()).not.toContain(ESCAPES_CLIP);
+      expect(popover.style.top).toBe("");
+      expect(popover.style.left).toBe("");
+      expect(popover.style.width).toBe("");
     });
   });
 });
