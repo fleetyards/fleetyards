@@ -2,8 +2,11 @@
 es:
   discord:
     new_ship:
-      message: 'Allow me to introduce: The %{manufacturer} %{model}'
-      title: New Ship/Vehicle added
+      message: 'Permitidme presentaros: %{manufacturer} %{model}'
+      title: Nueva nave/vehículo añadido
+    new_supporter:
+      message: '%{name} acaba de convertirse en patrocinador de Patreon (%{amount})'
+      title: Nuevo patrocinador de Patreon
     progress_tracker_update:
       message: Ha habido %{changes} cambios en el rastreador de progreso
       title: Nuevos cambios en el rastreador de progreso
@@ -11,7 +14,7 @@ es:
       message: Ha habido %{changes} cambios en la hoja de ruta
       title: Nuevos cambios en la hoja de ruta
     ship_on_sale:
-      message: Starting at %{price} excl. VAT
-      title: The %{model} is now on Sale!
+      message: Desde %{price} sin IVA
+      title: '¡La %{model} ya está en oferta!'
     youtube_video:
-      title: New Video on Youtube!
+      title: '¡Nuevo vídeo en YouTube!'

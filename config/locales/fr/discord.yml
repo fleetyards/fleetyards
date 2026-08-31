@@ -4,6 +4,9 @@ fr:
     new_ship:
       message: 'Permettez-moi de vous présenter : %{manufacturer} %{model}'
       title: Nouveau vaisseau / véhicule ajouté
+    new_supporter:
+      message: '%{name} vient de devenir soutien Patreon (%{amount})'
+      title: Nouveau soutien Patreon
     progress_tracker_update:
       message: Il y a eu %{changes} modifications sur le Progress Tracker
       title: Nouveaux changements sur le Progress Tracker
@@ -12,6 +15,6 @@ fr:
       title: Nouveaux changements sur la Roadmap
     ship_on_sale:
       message: À partir de %{price} hors TVA
-      title: Le %{model} est maintenant en vente !
+      title: 'Le %{model} est maintenant en vente !'
     youtube_video:
-      title: Nouvelle vidéo sur YouTube !
+      title: 'Nouvelle vidéo sur YouTube !'

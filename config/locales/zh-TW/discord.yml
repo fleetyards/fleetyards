@@ -2,8 +2,11 @@
 zh-TW:
   discord:
     new_ship:
-      message: 'Allow me to introduce: The %{manufacturer} %{model}'
-      title: New Ship/Vehicle added
+      message: '讓我來介紹：%{manufacturer} %{model}'
+      title: 新增船艦／載具
+    new_supporter:
+      message: '%{name} 剛剛成為 Patreon 支持者（%{amount}）'
+      title: 新的 Patreon 支持者
     progress_tracker_update:
       message: 進度追蹤有 %{changes} 項變更
       title: 進度追蹤新變更
@@ -11,7 +14,7 @@ zh-TW:
       message: 路線圖有 %{changes} 項變更
       title: 路線圖新變更
     ship_on_sale:
-      message: Starting at %{price} excl. VAT
-      title: The %{model} is now on Sale!
+      message: 起價 %{price}，未含加值稅
+      title: '%{model} 現正特價中！'
     youtube_video:
-      title: New Video on Youtube!
+      title: 'YouTube 上有新影片！'
