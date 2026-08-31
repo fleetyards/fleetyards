@@ -18,11 +18,11 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
-import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
-import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
-import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";
+import ModelClassificationSelect from "@/frontend/components/base/ModelClassificationSelect/index.vue";
+import ModelFocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
 
 type Props = {
   model: ModelExtended;
@@ -109,7 +109,7 @@ const [brochure, brochureProps] = defineField("brochure");
           v-bind="descriptionProps"
           name="description"
         />
-        <ManufacturerFilterGroup
+        <ManufacturerSelect
           v-model="manufacturerId"
           v-bind="manufacturerIdProps"
           :no-label="false"
@@ -117,7 +117,7 @@ const [brochure, brochureProps] = defineField("brochure");
           :multiple="false"
           name="manufacturer"
         />
-        <ModelFilterGroup
+        <ModelSelect
           v-model="baseModelId"
           v-bind="baseModelIdProps"
           translation-key="model.baseModel"
@@ -203,7 +203,7 @@ const [brochure, brochureProps] = defineField("brochure");
         <hr />
         <div class="row">
           <div class="col-12 col-md-6">
-            <ModelClassificationFilterGroup
+            <ModelClassificationSelect
               v-model="classification"
               v-bind="classificationProps"
               :multiple="false"
@@ -212,7 +212,7 @@ const [brochure, brochureProps] = defineField("brochure");
             />
           </div>
           <div class="col-12 col-md-6">
-            <ModelFocusFilterGroup
+            <ModelFocusSelect
               v-model="focus"
               v-bind="focusProps"
               :no-label="false"
@@ -223,7 +223,7 @@ const [brochure, brochureProps] = defineField("brochure");
         </div>
         <div class="row">
           <div class="col-12 col-md-6">
-            <ProductionStatusFilterGroup
+            <ProductionStatusSelect
               v-model="productionStatus"
               :no-label="false"
               v-bind="productionStatusProps"

@@ -12,9 +12,9 @@ import InlineEditableList from "@/shared/components/InlineEditableList/index.vue
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
-import FleetFilterGroup from "@/admin/components/base/FleetFilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import UserSelect from "@/admin/components/base/UserSelect/index.vue";
+import FleetSelect from "@/admin/components/base/FleetSelect/index.vue";
 import {
   useAdminFeatures,
   getAdminFeaturesQueryKey,
@@ -380,7 +380,7 @@ const hasSelectedActor = computed(() => {
           </div>
 
           <div class="add-actor-form">
-            <FilterGroup
+            <BaseSelect
               v-model="editActorType"
               inline
               name="actor-type"
@@ -388,14 +388,14 @@ const hasSelectedActor = computed(() => {
               :nullable="false"
               :label="t('labels.features.actorType')"
             />
-            <UserFilterGroup
+            <UserSelect
               v-if="editActorType === 'User'"
               v-model="selectedUser"
               name="feature-user"
               inline
               :no-label="false"
             />
-            <FleetFilterGroup
+            <FleetSelect
               v-if="editActorType === 'Fleet'"
               v-model="selectedFleet"
               name="feature-fleet"

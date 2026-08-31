@@ -14,7 +14,7 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -492,7 +492,7 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
         <div class="row">
           <div class="col-12 col-md-6">
-            <FilterGroup
+            <BaseSelect
               v-model="timezone"
               v-bind="timezoneProps"
               :options="timezoneOptions"
@@ -533,7 +533,7 @@ const onSubmit = handleSubmit(async (values) => {
 
         <div class="row">
           <div class="col-12 col-md-6">
-            <FilterGroup
+            <BaseSelect
               v-model="visibility"
               v-bind="visibilityProps"
               :options="visibilityOptions"
@@ -543,7 +543,7 @@ const onSubmit = handleSubmit(async (values) => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <FilterGroup
+            <BaseSelect
               v-model="category"
               v-bind="categoryProps"
               :options="categoryOptions"
@@ -611,7 +611,7 @@ const onSubmit = handleSubmit(async (values) => {
         <template v-if="recurring">
           <div class="row">
             <div class="col-12 col-md-6">
-              <FilterGroup
+              <BaseSelect
                 v-model="recurrenceInterval"
                 v-bind="recurrenceIntervalProps"
                 :options="recurrenceIntervalOptions"

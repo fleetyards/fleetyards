@@ -6,16 +6,16 @@ export default {
 
 <script lang="ts" setup>
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/frontend/components/base/ProductionStatusFilterGroup/index.vue";
-import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
-import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
-import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
-import WillItFitFilterGroup from "@/frontend/components/base/ModelWillItFitFilterGroup/index.vue";
-import HangarGroupsFilterGroup from "@/frontend/components/base/HangarGroupsFilterGroup/index.vue";
-import BoughtViaFilterGroup from "@/frontend/components/base/BoughtViaFilterGroup/index.vue";
+import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
+import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
+import ClassificationSelect from "@/frontend/components/base/ModelClassificationSelect/index.vue";
+import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
+import SizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
+import WillItFitSelect from "@/frontend/components/base/ModelWillItFitSelect/index.vue";
+import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
+import BoughtViaSelect from "@/frontend/components/base/BoughtViaSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -115,26 +115,23 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :clearable="true"
     />
 
-    <ManufacturerFilterGroup
-      v-model="form.manufacturerIn"
-      name="manufacturer"
-    />
+    <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
 
-    <ProductionStatusFilterGroup
+    <ProductionStatusSelect
       v-model="form.productionStatusIn"
       name="production-status"
     />
 
-    <ClassificationFilterGroup
+    <ClassificationSelect
       v-model="form.classificationIn"
       name="classification"
     />
 
-    <FocusFilterGroup v-model="form.focusIn" name="focus" />
+    <FocusSelect v-model="form.focusIn" name="focus" />
 
-    <SizeFilterGroup v-model="form.sizeIn" name="size" />
+    <SizeSelect v-model="form.sizeIn" name="size" />
 
-    <FilterGroup
+    <BaseSelect
       v-model="form.pledgePriceIn"
       :options="pledgePriceOptions"
       :label="t('labels.filters.models.pledgePrice')"
@@ -143,7 +140,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :no-label="true"
     />
 
-    <FilterGroup
+    <BaseSelect
       v-model="form.priceIn"
       :options="priceOptions"
       :label="t('labels.filters.models.price')"
@@ -152,15 +149,11 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :no-label="true"
     />
 
-    <WillItFitFilterGroup
-      v-model="form.willItFit"
-      name="will-it-fit"
-      no-label
-    />
+    <WillItFitSelect v-model="form.willItFit" name="will-it-fit" no-label />
 
-    <HangarGroupsFilterGroup v-model="form.hangarGroupsIn" name="will-it-fit" />
+    <HangarGroupsSelect v-model="form.hangarGroupsIn" name="will-it-fit" />
 
-    <BoughtViaFilterGroup v-model="form.boughtViaEq" name="bought-via" />
+    <BoughtViaSelect v-model="form.boughtViaEq" name="bought-via" />
 
     <div class="row">
       <div class="col-6">

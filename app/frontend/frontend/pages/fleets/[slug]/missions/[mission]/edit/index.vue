@@ -8,7 +8,7 @@ export default {
 import { useForm, type SubmissionHandler } from "vee-validate";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import MissionEditFormShell from "@/frontend/components/Fleets/Missions/MissionEditFormShell/index.vue";
 import {
   type Fleet,
@@ -93,7 +93,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<MissionUpdateInput>) =>
 
     <div class="row">
       <div class="col-12 col-md-6">
-        <FilterGroup
+        <BaseSelect
           v-model="category"
           v-bind="categoryProps"
           :options="categoryOptions"

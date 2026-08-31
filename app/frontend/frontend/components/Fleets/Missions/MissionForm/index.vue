@@ -11,7 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import TeamCard from "@/frontend/components/Fleets/Missions/TeamCard/index.vue";
@@ -253,7 +253,7 @@ const onSubmit = handleSubmit(async (values) => {
 
         <div class="row">
           <div class="col-12 col-md-6">
-            <FilterGroup
+            <BaseSelect
               v-model="category"
               v-bind="categoryProps"
               :options="categoryOptions"

@@ -7,8 +7,8 @@ export default {
 <script lang="ts" setup>
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import ProductionStatusSelect from "@/admin/components/base/ProductionStatusSelect/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -74,13 +74,13 @@ watch(
       />
     </Teleport>
 
-    <ManufacturerFilterGroup
+    <ManufacturerSelect
       v-if="sessionStore.hasAccessTo('manufacturers')"
       v-model="form.manufacturerIn"
       name="manufacturer"
     />
 
-    <ProductionStatusFilterGroup
+    <ProductionStatusSelect
       v-model="form.productionStatusIn"
       name="production-status"
     />

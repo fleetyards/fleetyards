@@ -234,14 +234,14 @@ const onRegenerate = async () => {
           />
         </div>
         <div class="position-form__row">
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.positionType"
             name="edit-position-type"
             :options="positionTypeOptions"
             :nullable="false"
             translation-key="modelPosition.positionType"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="editForm.source"
             name="edit-source"
             :options="sourceOptions"
@@ -268,14 +268,14 @@ const onRegenerate = async () => {
           />
         </div>
         <div class="position-form__row">
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.positionType"
             name="create-position-type"
             :options="positionTypeOptions"
             :nullable="false"
             translation-key="modelPosition.positionType"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="createForm.source"
             name="create-source"
             :options="sourceOptions"

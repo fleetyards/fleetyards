@@ -16,7 +16,7 @@ import {
   getListModelModulesQueryKey,
   getModelModuleQueryKey,
 } from "@/services/fyAdminApi";
-import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
+import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -107,7 +107,7 @@ const onUnlinkModel = (item: Model) => {
     @save-create="onSaveCreate"
   >
     <template #create>
-      <ModelFilterGroup
+      <ModelSelect
         v-model="linkModelId"
         :no-label="false"
         value-attr="id"

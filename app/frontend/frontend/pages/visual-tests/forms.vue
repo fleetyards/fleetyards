@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
@@ -79,8 +79,8 @@ const sizes = [
   { label: "Capital", value: "capital" },
 ];
 
-// RadioList and FilterGroup type their options differently — RadioList requires
-// a non-null string value, FilterGroup allows null.
+// RadioList and BaseSelect type their options differently — RadioList requires
+// a non-null string value, BaseSelect allows null.
 const radioOptions = sizes;
 const sizeOptions: FilterOption[] = sizes;
 
@@ -456,7 +456,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
     </div>
   </div>
 
-  <Heading :level="HeadingLevelEnum.H2">FilterGroup</Heading>
+  <Heading :level="HeadingLevelEnum.H2">BaseSelect</Heading>
   <p>
     Single select, multi select with the selected-options rail, searchable, and
     disabled. Options are static here — in the app they usually come from a
@@ -464,7 +464,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
   </p>
   <div class="row">
     <div class="col-12 col-md-6 col-lg-3">
-      <FilterGroup
+      <BaseSelect
         v-model="filterSingle"
         name="filter-single"
         label="Ship Size"
@@ -472,7 +472,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
       />
     </div>
     <div class="col-12 col-md-6 col-lg-3">
-      <FilterGroup
+      <BaseSelect
         v-model="filterMultiple"
         name="filter-multiple"
         label="Ship Sizes"
@@ -481,7 +481,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
       />
     </div>
     <div class="col-12 col-md-6 col-lg-3">
-      <FilterGroup
+      <BaseSelect
         v-model="filterSingle"
         name="filter-searchable"
         label="Ship Size (searchable)"
@@ -491,7 +491,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
       />
     </div>
     <div class="col-12 col-md-6 col-lg-3">
-      <FilterGroup
+      <BaseSelect
         v-model="filterSingle"
         name="filter-disabled"
         label="Ship Size (disabled)"

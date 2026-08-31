@@ -14,9 +14,9 @@ import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import FilterGroup, {
-  type FilterGroupParams,
-} from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect, {
+  type BaseSelectParams,
+} from "@/shared/components/base/Select/index.vue";
 import {
   type ModelExtended,
   type ModelModulePackage,
@@ -80,7 +80,7 @@ const moduleNames = (item: ModelModulePackage) => {
 };
 
 // Module filter fetch
-const fetchModules = async (params: FilterGroupParams<ModelModule>) => {
+const fetchModules = async (params: BaseSelectParams<ModelModule>) => {
   const q: Record<string, string> = {};
 
   if (params.search) {
@@ -289,7 +289,7 @@ const onSaveCreate = async () => {
           name="edit-description"
           translation-key="modelModulePackage.description"
         />
-        <FilterGroup
+        <BaseSelect
           v-model="editModuleIds"
           :label="t('labels.modelModulePackage.modules')"
           :query-fn="fetchModules"
@@ -326,7 +326,7 @@ const onSaveCreate = async () => {
             name="create-description"
             translation-key="modelModulePackage.description"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="createModuleIds"
             :label="t('labels.modelModulePackage.modules')"
             :query-fn="fetchModules"

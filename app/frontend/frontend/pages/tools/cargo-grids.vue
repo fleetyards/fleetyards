@@ -16,10 +16,10 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
-import FilterGroup, {
-  type FilterGroupParams,
+import BaseSelect, {
+  type BaseSelectParams,
   type ValueType,
-} from "@/shared/components/base/FilterGroup/index.vue";
+} from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   models as fetchModels,
@@ -64,7 +64,7 @@ const CONTAINER_SIZES = Object.values(ContainerSizeEnum).map(Number);
 
 const MAX_SHIPS = 4;
 
-const modelFilterGroup = ref<ComponentExposed<typeof FilterGroup>>();
+const modelSelect = ref<ComponentExposed<typeof BaseSelect>>();
 
 // Parse initial slugs from URL (backward compat: ?ship= or new ?ships=)
 const parseInitialSlugs = (): string[] => {
@@ -170,7 +170,7 @@ const clearContainers = () => {
 };
 
 // Model filter that only shows flight-ready ships with cargo grids
-const fetchCargoModels = async (params: FilterGroupParams<Model>) => {
+const fetchCargoModels = async (params: BaseSelectParams<Model>) => {
   const q: ModelQuery = {
     withCargoGrids: true,
     productionStatusIn: [ModelProductionStatusEnum.FLIGHT_READY],
@@ -256,12 +256,12 @@ const handleShipSelect = (value: ValueType<Model> | undefined) => {
     selectedSlugs.value.includes(slug) ||
     selectedSlugs.value.length >= MAX_SHIPS
   ) {
-    modelFilterGroup.value?.clear();
+    modelSelect.value?.clear();
     return;
   }
 
   selectedSlugs.value = [...selectedSlugs.value, slug];
-  modelFilterGroup.value?.clear();
+  modelSelect.value?.clear();
   syncUrl();
 };
 
@@ -322,8 +322,8 @@ const resetFilters = () => {
       <div class="row toolbar">
         <div class="col-12 col-lg-8">
           <div class="ship-selector-row" data-test="ship-entries">
-            <FilterGroup
-              ref="modelFilterGroup"
+            <BaseSelect
+              ref="modelSelect"
               :key="filterKey"
               :label="t('labels.selectModel')"
               :search-label="t('labels.findModel')"

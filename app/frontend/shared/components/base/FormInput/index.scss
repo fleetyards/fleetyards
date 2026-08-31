@@ -241,7 +241,7 @@
 
     /*
      * No message line either. A clean field is embedded in another surface --
-     * FilterGroup's popover is the production caller -- and that surface owns
+     * BaseSelect's popover is the production caller -- and that surface owns
      * the error, so reserving a line here just made the search box a good deal
      * taller than the row it sits above.
      */

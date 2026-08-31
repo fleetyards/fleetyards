@@ -9,7 +9,7 @@ test.describe("Cargo Grids", () => {
     await page.goto("/tools/cargo-grids/");
 
     // Wait for the filter component to be interactive
-    await page.getByTestId("filter-group-cargo-grid-model").waitFor();
+    await page.getByTestId("base-select-cargo-grid-model").waitFor();
   });
 
   test("Loads the page", async ({ page }) => {
@@ -30,9 +30,9 @@ test.describe("Cargo Grids", () => {
     page,
   }) => {
     // Open the model filter dropdown and search for Caterpillar
-    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
-    await filterGroup.getByTestId("filter-group-title").click();
-    await filterGroup.locator("input").first().fill("Caterpillar");
+    const baseSelect = page.getByTestId("base-select-cargo-grid-model");
+    await baseSelect.getByTestId("base-select-title").click();
+    await baseSelect.locator("input").first().fill("Caterpillar");
 
     // Wait for search results and select
     const option = page.getByText("Caterpillar").first();
@@ -121,17 +121,17 @@ test.describe("Cargo Grids", () => {
     page,
   }) => {
     // Select first ship
-    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
-    await filterGroup.getByTestId("filter-group-title").click();
-    await filterGroup.locator("input").first().fill("Caterpillar");
+    const baseSelect = page.getByTestId("base-select-cargo-grid-model");
+    await baseSelect.getByTestId("base-select-title").click();
+    await baseSelect.locator("input").first().fill("Caterpillar");
     await page.getByText("Caterpillar").first().click();
 
     // First ship should appear in viewer
     await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
 
     // Select second ship
-    await filterGroup.getByTestId("filter-group-title").click();
-    await filterGroup.locator("input").first().fill("Freelancer");
+    await baseSelect.getByTestId("base-select-title").click();
+    await baseSelect.locator("input").first().fill("Freelancer");
     await page.getByText("Freelancer MAX").first().click();
 
     // Multi-ship stats should appear

@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Component as GameComponent,
@@ -81,7 +81,7 @@ watch(selected, (val) => {
 <template>
   <div class="row">
     <div class="col-12 col-md-5">
-      <FilterGroup
+      <BaseSelect
         v-model="category"
         name="componentCategory"
         :options="categoryOptions"
@@ -92,8 +92,8 @@ watch(selected, (val) => {
     </div>
     <div class="col-12 col-md-7">
       <!-- Remounting on category change resets the option list, which is keyed
-           to the FilterGroup instance and would otherwise keep stale entries. -->
-      <FilterGroup
+           to the BaseSelect instance and would otherwise keep stale entries. -->
+      <BaseSelect
         :key="category || 'all'"
         v-model="selected"
         name="component"

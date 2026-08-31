@@ -13,7 +13,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -26,7 +26,7 @@ import {
   useCreateFleetInventory,
   useUpdateFleetInventory,
 } from "@/services/fyApi";
-import { type FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
+import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 
 type Props = {
   fleet: Fleet;
@@ -76,7 +76,7 @@ const visibilityOptions: FilterOption[] = [
   },
 ];
 
-const fetchMembers = (params: FilterGroupParams<FilterOption>) => {
+const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
   return fetchFleetMembers(props.fleet.slug, {
     q: { usernameCont: params.search || undefined },
   });
@@ -180,7 +180,7 @@ const onSubmit = handleSubmit(async (values) => {
         translation-key="logistics.location"
         :label="t('labels.logistics.location')"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="visibility"
         v-bind="visibilityProps"
         name="visibility"
@@ -188,7 +188,7 @@ const onSubmit = handleSubmit(async (values) => {
         :label="t('labels.logistics.visibility')"
         :searchable="false"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="managedBy"
         :query-fn="fetchMembers"
         :query-response-formatter="formatMembers"

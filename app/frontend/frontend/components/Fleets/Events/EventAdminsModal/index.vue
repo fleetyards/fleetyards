@@ -8,7 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   type Fleet,
   type FleetEvent,
@@ -169,7 +169,7 @@ const revoke = (admin: FleetEventAdmin) => {
         <strong>{{ t("headlines.fleets.events.grantRole") }}</strong>
       </header>
       <div class="event-admins__form">
-        <FilterGroup
+        <BaseSelect
           v-model="selectedUserId"
           :options="memberOptions"
           :label="t('labels.fleets.events.memberPicker')"
@@ -178,7 +178,7 @@ const revoke = (admin: FleetEventAdmin) => {
           :searchable="true"
           :nullable="true"
         />
-        <FilterGroup
+        <BaseSelect
           v-model="selectedRole"
           :options="roleOptions"
           :label="t('labels.fleets.events.eventRole')"

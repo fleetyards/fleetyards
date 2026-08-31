@@ -1,0 +1,131 @@
+.base-select-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /*
+   * The 4px transparent side borders are gone, and their width folded into the
+   * padding so nothing moves. They existed to give the old rail room when it sat
+   * at -4px, outside the row -- and once the rail moved flush they only pushed it
+   * off the edge, because an absolutely positioned pseudo-element measures
+   * `left: 0` from the padding box, inside them.
+   */
+  padding: 10px;
+  color: $input-color;
+  border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  cursor: pointer;
+
+  /*
+   * The rows that render outside the popover are <button> -- they remove a
+   * selection, they are not options of anything -- so the browser's control
+   * styling has to be undone here the way it is on the trigger.
+   *
+   * `width: 100%` is the load-bearing one: a button has intrinsic width and does
+   * not stretch to its container even with `display: flex`, unlike the anchor
+   * this replaced. Left alone it collapsed to its label, which put the hover
+   * rail (`::after`, `right: -4px`) in the middle of the row instead of at its
+   * edge. Measured: 75px against the anchor's 278px in the same container.
+   */
+  &:is(button) {
+    width: 100%;
+    appearance: none;
+    font: inherit;
+    text-align: left;
+    background: none;
+    border-top: none;
+  }
+
+  .base-select-item-label {
+    padding-right: 14px;
+    flex-grow: 1;
+  }
+
+  .base-select-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 26px;
+    height: auto;
+    margin-right: 10px;
+
+    img {
+      border-radius: 2px;
+      display: block;
+      max-width: 30px;
+      max-height: 26px;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  i,
+  svg {
+    transition: all 0.5s ease;
+  }
+
+  /*
+   * The row rail, flat. It used to be a $primary bar under three 10px shadows
+   * at 0.9 alpha -- the same bloom PR #4595 took out of the table -- and it sat
+   * at -4px, outside the row, which now lands it on the surface's own frame.
+   *
+   * Same tokens the table rail uses, so the two say "this row" the same way.
+   */
+  &::before,
+  &::after {
+    position: absolute;
+    top: 50%;
+    width: var(--cap-h-row, 3px);
+    height: 26px;
+    margin-top: -13px;
+    background-color: var(--color-primary, #428bca);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    content: "";
+  }
+
+  &::before {
+    left: 0;
+    border-top-right-radius: var(--cap-r-row, 1.5px);
+    border-bottom-right-radius: var(--cap-r-row, 1.5px);
+  }
+
+  &::after {
+    right: 0;
+    border-top-left-radius: var(--cap-r-row, 1.5px);
+    border-bottom-left-radius: var(--cap-r-row, 1.5px);
+  }
+
+  /* Keyboard and pointer mark the same thing -- "this row" -- so they draw the
+     same cue. Phase 3 changes both at once when the glow rail goes. */
+  &:hover,
+  &--focused {
+    &::before,
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    color: $primary;
+  }
+
+  /*
+   * The rows outside the popover are all selected by definition, so saying so
+   * in primary tells the reader nothing and turns a list of choices into a list
+   * of links.
+   */
+  &:is(button).active {
+    color: $input-color;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.bigIcon {
+    .base-select-item-icon {
+      width: 60px;
+    }
+  }
+}

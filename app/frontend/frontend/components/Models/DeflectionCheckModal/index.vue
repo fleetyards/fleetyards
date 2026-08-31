@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import type { Hardpoint } from "@/services/fyApi";
 import { useComponentWeapons as useComponentWeaponsQuery } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -246,7 +246,7 @@ const detail = computed(
         </div>
 
         <div class="controls">
-          <FilterGroup
+          <BaseSelect
             v-model="classFilter"
             :options="classOptions"
             :label="t('labels.deflectionCheck.type')"

@@ -180,14 +180,14 @@ const onSaveCreate = async () => {
     </template>
 
     <template #edit>
-      <FilterGroup
+      <BaseSelect
         v-model="editForm.dockType"
         name="edit-dock-type"
         :options="dockTypeOptions"
         :nullable="false"
         label="Dock Type"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="editForm.shipSize"
         name="edit-ship-size"
         :options="shipSizeOptions"
@@ -202,14 +202,14 @@ const onSaveCreate = async () => {
     </template>
 
     <template #create>
-      <FilterGroup
+      <BaseSelect
         v-model="createForm.dockType"
         name="create-dock-type"
         :options="dockTypeOptions"
         :nullable="false"
         label="Dock Type"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="createForm.shipSize"
         name="create-ship-size"
         :options="shipSizeOptions"

@@ -10,7 +10,7 @@ import copyText from "@/frontend/utils/CopyText";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -220,13 +220,13 @@ const copy = (inviteUrl: FleetInviteUrl) => {
 
     <template v-if="form">
       <hr />
-      <FilterGroup
+      <BaseSelect
         v-model="form.expiresAfterMinutes"
         :options="expiresAfterOptions"
         :label="t('labels.filters.fleets.inviteUrls.expiresAfter')"
         name="expires-after"
       />
-      <FilterGroup
+      <BaseSelect
         v-model="form.limit"
         :options="limitOptions"
         :label="t('labels.filters.fleets.inviteUrls.limit')"

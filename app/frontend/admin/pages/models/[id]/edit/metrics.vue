@@ -15,8 +15,8 @@ import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
-import ModelSizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
-import ModelDockSizeFilterGroup from "@/admin/components/base/ModelDockSizeFilterGroup/index.vue";
+import ModelSizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
+import ModelDockSizeSelect from "@/admin/components/base/ModelDockSizeSelect/index.vue";
 
 type Props = {
   model: ModelExtended;
@@ -103,7 +103,7 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
   <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <div class="row">
       <div class="col-12 col-md-4">
-        <ModelSizeFilterGroup
+        <ModelSizeSelect
           v-model="size"
           v-bind="sizeProps"
           :no-label="false"
@@ -113,7 +113,7 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
       </div>
       <div class="col-12 col-md-4">
         {{ model.metrics.dockSize }}
-        <ModelDockSizeFilterGroup
+        <ModelDockSizeSelect
           v-model="dockSize"
           v-bind="dockSizeProps"
           :no-label="false"

@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -100,7 +100,7 @@ watch(
       name="severityEq"
     />
 
-    <FilterGroup
+    <BaseSelect
       v-model="form.notificationTypeEq"
       :label="t('labels.adminNotifications.type')"
       :options="typeOptions"

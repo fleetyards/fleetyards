@@ -188,7 +188,7 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
     </template>
 
     <template #edit>
-      <FilterGroup
+      <BaseSelect
         v-model="editForm.videoType"
         name="edit-video-type"
         :options="videoTypeOptions"
@@ -203,7 +203,7 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
     </template>
 
     <template #create>
-      <FilterGroup
+      <BaseSelect
         v-model="createForm.videoType"
         name="create-video-type"
         :options="videoTypeOptions"

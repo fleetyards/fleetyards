@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
@@ -110,7 +110,7 @@ const stateOptions: FilterOption[] = [
       />
     </Teleport>
 
-    <FilterGroup
+    <BaseSelect
       v-model="form.roleIn"
       :options="roleOptions"
       :label="t('labels.filters.fleets.members.role')"
@@ -143,7 +143,7 @@ const stateOptions: FilterOption[] = [
     </template>
 
     <template v-if="variant === 'invites'">
-      <FilterGroup
+      <BaseSelect
         v-model="form.stateIn"
         :options="stateOptions"
         :label="t('labels.filters.fleets.members.state')"

@@ -19,8 +19,8 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import EquipmentSlotFilterGroup from "@/admin/components/base/EquipmentSlotFilterGroup/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import EquipmentSlotSelect from "@/admin/components/base/EquipmentSlotSelect/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
 
@@ -102,7 +102,7 @@ const handleCancel = async () => {
           v-bind="descriptionProps"
           name="description"
         />
-        <ManufacturerFilterGroup
+        <ManufacturerSelect
           v-model="manufacturerId"
           v-bind="manufacturerIdProps"
           :no-label="false"
@@ -174,7 +174,7 @@ const handleCancel = async () => {
             />
           </div>
         </div>
-        <EquipmentSlotFilterGroup
+        <EquipmentSlotSelect
           v-model="slot"
           v-bind="slotProps"
           :no-label="false"

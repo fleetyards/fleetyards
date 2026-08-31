@@ -12,9 +12,9 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import FilterGroup, {
-  type FilterGroupParams,
-} from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect, {
+  type BaseSelectParams,
+} from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -122,7 +122,7 @@ const [minCargo, minCargoProps] = defineField("minCargo");
 const selectedModelId = ref<string | undefined>(props.ship?.model?.id);
 const selectedModelSlug = ref<string | undefined>(props.ship?.model?.slug);
 
-const fetchModelOptions = (params: FilterGroupParams<FilterOption>) => {
+const fetchModelOptions = (params: BaseSelectParams<FilterOption>) => {
   const q: Record<string, unknown> = { inGameEq: true };
   if (params.search) q.nameCont = params.search;
   if (params.missing) q.idIn = [params.missing as string];
@@ -302,7 +302,7 @@ const onSubmit = handleSubmit(async (values) => {
       <template v-if="mode === 'list'">
         <!-- The same picker the specific mode uses, taking several: a spot that
              names its ships is a list of one or more, not a filter. -->
-        <FilterGroup
+        <BaseSelect
           v-model="selectedModelIds"
           :query-fn="fetchModelOptions"
           :query-response-formatter="formatModels"
@@ -318,7 +318,7 @@ const onSubmit = handleSubmit(async (values) => {
       </template>
 
       <template v-else-if="mode === 'specific'">
-        <FilterGroup
+        <BaseSelect
           v-model="selectedModelId"
           :query-fn="fetchModelOptions"
           :query-response-formatter="formatModels"
@@ -367,7 +367,7 @@ const onSubmit = handleSubmit(async (values) => {
       </template>
 
       <template v-else>
-        <FilterGroup
+        <BaseSelect
           v-model="classification"
           :options="classificationOptions"
           :label="t('labels.fleets.missions.classification')"
@@ -375,7 +375,7 @@ const onSubmit = handleSubmit(async (values) => {
           :searchable="false"
           :nullable="true"
         />
-        <FilterGroup
+        <BaseSelect
           v-model="focus"
           :options="focusOptions"
           :label="t('labels.fleets.missions.focus')"
@@ -384,7 +384,7 @@ const onSubmit = handleSubmit(async (values) => {
           :nullable="true"
         />
         <div class="form-row">
-          <FilterGroup
+          <BaseSelect
             v-model="minSize"
             :options="sizeOptions"
             :label="t('labels.fleets.missions.minSize')"
@@ -392,7 +392,7 @@ const onSubmit = handleSubmit(async (values) => {
             :searchable="false"
             :nullable="true"
           />
-          <FilterGroup
+          <BaseSelect
             v-model="maxSize"
             :options="sizeOptions"
             :label="t('labels.fleets.missions.maxSize')"

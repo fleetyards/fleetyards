@@ -6,8 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
-import type { FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
+import type { BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 import { useRoute } from "vue-router";
 import { useImageFilters } from "@/admin/composables/useImageFilters";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -107,7 +107,7 @@ const modelsFormatter = (response: Models) => {
   });
 };
 
-const fetchModels = async (params: FilterGroupParams<Model>) => {
+const fetchModels = async (params: BaseSelectParams<Model>) => {
   const q: ModelQuery = {};
 
   if (params.search) {
@@ -132,7 +132,7 @@ const fetchModels = async (params: FilterGroupParams<Model>) => {
 
 <template>
   <form @submit.prevent="submit">
-    <FilterGroup
+    <BaseSelect
       key="admin-images-filter-model"
       v-model="modelIdEq"
       :label="t('labels.filters.images.model')"

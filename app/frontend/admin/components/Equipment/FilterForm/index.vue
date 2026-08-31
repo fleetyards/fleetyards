@@ -12,11 +12,11 @@ import {
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import EquipmentSlotFilterGroup from "@/admin/components/base/EquipmentSlotFilterGroup/index.vue";
-import EquipmentTypeFilterGroup from "@/admin/components/base/EquipmentTypeFilterGroup/index.vue";
-import EquipmentItemTypeFilterGroup from "@/admin/components/base/EquipmentItemTypeFilterGroup/index.vue";
-import EquipmentWeaponClassFilterGroup from "@/admin/components/base/EquipmentWeaponClassFilterGroup/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import EquipmentSlotSelect from "@/admin/components/base/EquipmentSlotSelect/index.vue";
+import EquipmentTypeSelect from "@/admin/components/base/EquipmentTypeSelect/index.vue";
+import EquipmentItemTypeSelect from "@/admin/components/base/EquipmentItemTypeSelect/index.vue";
+import EquipmentWeaponClassSelect from "@/admin/components/base/EquipmentWeaponClassSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type EquipmentQuery } from "@/services/fyAdminApi";
@@ -78,25 +78,22 @@ watch(
       />
     </Teleport>
 
-    <ManufacturerFilterGroup
+    <ManufacturerSelect
       v-model="form.manufacturerIdIn"
       value-attr="id"
       name="manufacturer"
     />
 
-    <EquipmentTypeFilterGroup
-      v-model="form.equipmentTypeIn"
-      name="equipment-type"
-    />
+    <EquipmentTypeSelect v-model="form.equipmentTypeIn" name="equipment-type" />
 
-    <EquipmentItemTypeFilterGroup v-model="form.itemTypeIn" name="item-type" />
+    <EquipmentItemTypeSelect v-model="form.itemTypeIn" name="item-type" />
 
-    <EquipmentWeaponClassFilterGroup
+    <EquipmentWeaponClassSelect
       v-model="form.weaponClassIn"
       name="weapon-class"
     />
 
-    <EquipmentSlotFilterGroup v-model="form.slotIn" name="slot" />
+    <EquipmentSlotSelect v-model="form.slotIn" name="slot" />
 
     <RadioList
       v-model="form.storeImageBlank"

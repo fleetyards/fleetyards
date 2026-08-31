@@ -12,9 +12,9 @@ import {
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
-import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
-import ComponentClassFilterGroup from "@/admin/components/base/ComponentClassFilterGroup/index.vue";
-import ComponentItemTypeFilterGroup from "@/admin/components/base/ComponentItemTypeFilterGroup/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
+import ComponentClassSelect from "@/admin/components/base/ComponentClassSelect/index.vue";
+import ComponentItemTypeSelect from "@/admin/components/base/ComponentItemTypeSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type ComponentQuery } from "@/services/fyAdminApi";
@@ -74,18 +74,18 @@ watch(
       />
     </Teleport>
 
-    <ManufacturerFilterGroup
+    <ManufacturerSelect
       v-model="form.manufacturerIdIn"
       value-attr="id"
       name="manufacturer"
     />
 
-    <ComponentClassFilterGroup
+    <ComponentClassSelect
       v-model="form.componentClassIn"
       name="component-class"
     />
 
-    <ComponentItemTypeFilterGroup v-model="form.itemTypeIn" name="item-type" />
+    <ComponentItemTypeSelect v-model="form.itemTypeIn" name="item-type" />
 
     <RadioList
       v-model="form.storeImageBlank"
