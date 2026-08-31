@@ -14,12 +14,18 @@ import { fileTypeMap } from "../types";
 
 type Props = {
   file: FileUpload;
-  multiple?: boolean;
+  /*
+   * Whether this tile can be removed, told rather than inferred. It used to be
+   * guessed from `multiple`, while the click that actually removes lives on the
+   * parent -- so a single-file tile removed on click and showed no affordance
+   * for it at all. The caller now says once, and the two cannot disagree.
+   */
+  removable?: boolean;
   transparent?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  multiple: false,
+  removable: false,
   transparent: false,
 });
 
@@ -53,9 +59,7 @@ const loading = computed(() => {
   return progessVisible.value && props.file.progress > 0;
 });
 
-const isRemovable = computed(() => {
-  return props.file.status !== "done" && props.multiple;
-});
+const isRemovable = computed(() => props.removable);
 
 const tooltipLabel = computed(() => {
   return isRemovable.value ? t("directUpload.previewImage.remove") : undefined;

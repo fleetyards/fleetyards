@@ -415,7 +415,7 @@ defineExpose({
             class="direct-upload__file"
             :file="file"
             :transparent="transparent"
-            multiple
+            :removable="file.status !== 'done'"
             @click="file.status !== 'done' && removeFile(file)"
             @remove="removeFile(file)"
           />
@@ -429,7 +429,9 @@ defineExpose({
             class="direct-upload__file"
             :file="file"
             :transparent="transparent"
+            removable
             @click="removeFile(file)"
+            @remove="removeFile(file)"
           />
         </TransitionGroup>
       </div>
