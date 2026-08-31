@@ -42,6 +42,20 @@
   --color-control-hover: rgb(52 58 64 / 0.95);
   --color-control-press: rgb(26 29 33 / 0.95);
 
+  /*
+   * What you type into, as opposed to what you press. The form redesign gave
+   * fields the button's frame so closely that the two became the same surface:
+   * a solid neutral button and a text input resolved to the same background,
+   * the same border colour and the same text colour, which on the login page
+   * left "Login" reading as a third text field under two others.
+   *
+   * The fill is the only axis that separates them -- a field is recessed, a
+   * button sits on top. The edge stays --color-edge on both, because on a field
+   * it is the frame that carries focus and error, and quieting it there would
+   * cost the state its loudest channel.
+   */
+  --color-field: rgb(18 20 23 / 0.96);
+
   --color-edge: rgb(122 130 136 / 0.5);
   --color-edge-soft: rgb(122 130 136 / 0.28);
   --color-edge-faint: rgb(122 130 136 / 0.16);

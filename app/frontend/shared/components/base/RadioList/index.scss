@@ -58,7 +58,7 @@
           margin-right: 10px;
           text-align: center;
           vertical-align: top;
-          background-color: var(--color-control, rgb(39 43 48 / 0.9));
+          background-color: var(--color-field, rgb(18 20 23 / 0.96));
           background-clip: padding-box;
           border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
           border-radius: 100%;
@@ -76,7 +76,7 @@
          primary on an edge means one thing in a form: this is focused. */
       &:checked + label::before {
         background-color: var(--color-primary, #428bca);
-        box-shadow: inset 0 0 0 4px var(--color-control, rgb(39 43 48 / 0.9));
+        box-shadow: inset 0 0 0 4px var(--color-field, rgb(18 20 23 / 0.96));
       }
 
       /*

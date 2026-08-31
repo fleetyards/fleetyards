@@ -186,7 +186,7 @@ const timeConfig = computed(() => ({
 .form-datetime__wrapper {
   position: relative;
   display: flex;
-  background-color: var(--color-control, rgb(39 43 48 / 0.9));
+  background-color: var(--color-field, rgb(18 20 23 / 0.96));
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
   border-radius: var(--radius-control, 8px);
   transition: background-color ease-in-out 0.15s;
