@@ -57,10 +57,21 @@
     background-color: var(--color-field, rgb(18 20 23 / 0.96));
     border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
     border-radius: var(--radius-control, 8px);
-    transition: background-color ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s;
 
+    /*
+     * The edge is the one channel no state uses -- focus and error both live on
+     * the caps -- so it is free to carry the hover without competing with
+     * either. It stops at --color-edge-strong rather than reaching the cap's
+     * own grey, which is loud enough to read as a state rather than a pointer
+     * answer. The fill stays put: a field is recessed, and lifting it to
+     * --color-control-hover made it read as a button.
+     *
+     * No --disabled or --clean override needed: both set border-color further
+     * down the file at equal specificity, so they win over this.
+     */
     &:hover {
-      background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
+      border-color: var(--color-edge-strong, rgb(122 130 136 / 0.7));
     }
 
     &::before,
@@ -152,10 +163,6 @@
    * no cap at all, the edge dropped to --color-edge-faint, and the control
    * dimmed. The label above keeps its opacity -- a form still has to be
    * readable when half of it is locked.
-   *
-   * Killing the hover lift matters as much as the dimming. Without it a disabled
-   * field brightens under the cursor, which is worse than looking enabled: it
-   * answers.
    */
   &--disabled {
     --field-cap: transparent;
@@ -163,10 +170,6 @@
     .base-textarea__wrapper {
       border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
       opacity: 0.5;
-
-      &:hover {
-        background-color: var(--color-field, rgb(18 20 23 / 0.96));
-      }
     }
 
     textarea {
@@ -181,10 +184,6 @@
       background-color: transparent;
       border: none;
       border-radius: 0;
-
-      &:hover {
-        background-color: transparent;
-      }
 
       &::before,
       &::after {
