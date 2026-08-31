@@ -33,6 +33,19 @@ export default {
   :deep(.oauth-btn) {
     flex-shrink: 0;
     white-space: nowrap;
+
+    /*
+     * flex-end aligns the bottoms, and a field's bottom is no longer its
+     * control's: every control now reserves a line for its message whether or
+     * not it has one, so the button was dropping by exactly that line's height.
+     *
+     * Read from the same tokens the message itself uses, so the two cannot
+     * disagree -- the label alignment on checkboxes is done the same way, for
+     * the same reason.
+     */
+    margin-bottom: calc(
+      var(--field-message-line, 1.25rem) + var(--field-message-gap, 4px)
+    );
   }
 }
 </style>

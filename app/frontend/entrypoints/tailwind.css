@@ -145,6 +145,7 @@
    * which is the whole thing reserving it prevents. Four components read it.
    */
   --field-message-line: 1.25rem;
+  --field-message-gap: 4px;
 
   /*
    * A field's label block: its own line, and the gap under it. Anything that

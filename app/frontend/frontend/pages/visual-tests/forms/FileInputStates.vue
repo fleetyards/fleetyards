@@ -8,6 +8,7 @@ export default {
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import storeImage from "@/images/fallback/store_image.webp";
+import { type MediaFile } from "@/services/fyApi";
 import { useForm } from "vee-validate";
 
 /*
@@ -34,6 +35,22 @@ onMounted(async () => {
 const saved = ref<string | null>("stored-blob-id");
 
 const empty = ref<string | null>(null);
+
+/*
+ * The other way an image reaches this control, and the one that happens in the
+ * app: a persisted file, from which the component reads `smallUrl` itself.
+ * `previewSrc` above is the shortcut for a caller that already has a URL.
+ */
+const savedFile: MediaFile = {
+  name: "caterpillar.webp",
+  contentType: "image/webp",
+  size: 84_233,
+  url: storeImage,
+  smallUrl: storeImage,
+  signedId: "stored-blob-id",
+  width: 1920,
+  height: 1080,
+};
 </script>
 
 <template>
@@ -57,6 +74,18 @@ const empty = ref<string | null>(null);
           name="fileSaved"
           label="Image"
           :preview-src="storeImage"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          :allowed-size-mb="5"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <p class="text-muted">saved — a persisted file</p>
+        <FormFileInput
+          v-model="saved"
+          name="fileSavedFile"
+          label="Image"
+          :file="savedFile"
           :allowed-types="AllowedFileTypes.IMAGE"
           :allowed-size-mb="5"
           clearable
@@ -97,12 +126,12 @@ const empty = ref<string | null>(null);
         />
       </div>
       <div class="col-12 col-md-6 col-lg-3">
-        <p class="text-muted">avatar, saved</p>
+        <p class="text-muted">avatar, saved from a file</p>
         <FormFileInput
           v-model="saved"
           name="fileAvatarSaved"
           label="Avatar"
-          :preview-src="storeImage"
+          :file="savedFile"
           :allowed-types="AllowedFileTypes.IMAGE"
           clearable
           avatar

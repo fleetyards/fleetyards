@@ -312,7 +312,7 @@ const timeConfig = computed(() => ({
 /* Shared with every other control -- see the note in FormInput. */
 .base-input__error {
   min-height: var(--field-message-line, 1.25rem);
-  margin: 4px 0 0;
+  margin: var(--field-message-gap, 4px) 0 0;
   font-size: 0.875rem;
   line-height: var(--field-message-line, 1.25rem);
   color: var(--color-danger, #dc3545);
