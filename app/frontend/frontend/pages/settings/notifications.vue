@@ -212,23 +212,24 @@ const toggleGroup = (
     :crumbs="[{ to: { name: 'settings' }, label: t('nav.settings.index') }]"
   />
 
-  <Heading hero>{{ t("headlines.settings.notifications") }}</Heading>
+  <div class="notification-prefs__header">
+    <div>
+      <Heading hero>{{ t("headlines.settings.notifications") }}</Heading>
 
-  <Teleport to="#header-right">
+      <p class="notification-prefs__hint">
+        {{ t("texts.settings.notifications.hint") }}
+      </p>
+    </div>
+
     <Btn
       :size="BtnSizesEnum.MD"
       :aria-label="t('actions.notifications.openCenter')"
       :to="{ name: 'notifications' }"
-      mobile-icon-only
     >
       <i class="fa-duotone fa-bell" />
       {{ t("actions.notifications.openCenter") }}
     </Btn>
-  </Teleport>
-
-  <p class="notification-prefs__hint">
-    {{ t("texts.settings.notifications.hint") }}
-  </p>
+  </div>
 
   <Loader :loading="isLoading" />
 
@@ -321,9 +322,18 @@ const toggleGroup = (
 </template>
 
 <style lang="scss" scoped>
+.notification-prefs__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
 .notification-prefs__hint {
   max-width: 60ch;
-  margin: 0 0 20px;
+  margin: 4px 0 0;
   color: $gray-lighter;
 }
 
