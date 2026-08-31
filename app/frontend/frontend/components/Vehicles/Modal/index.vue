@@ -137,7 +137,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
             v-bind="flagshipProps"
             name="flagship"
             :label="t('labels.vehicle.flagship')"
-            align-with-fields
+            :align-with-fields="!!vehicle?.model?.hasPaints"
           />
         </div>
         <div v-if="vehicle?.model?.hasPaints" class="col-12 col-md-6">
@@ -155,9 +155,14 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
             />
           </div>
         </div>
-        <div class="col-12">
-          <hr class="slim-spacer" />
-        </div>
+      </div>
+      <!--
+        A row per pair, rather than four half-columns in one. The paints picker
+        is conditional, and without it the columns reflowed: the toggles below
+        ended up beside the other toggle instead of the field they are meant to
+        line up with, and the field dropped to a line of its own.
+      -->
+      <div class="row">
         <div class="col-12 col-md-6">
           <FormToggle
             v-if="wishlist"
