@@ -11,7 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import debounce from "lodash.debounce";
 import { v4 as uuidv4 } from "uuid";
-import { BaseSelectSizesEnum } from "./types";
+import { BaseSelectSizesEnum, BaseSelectVariantsEnum } from "./types";
 import Option from "./Option/index.vue";
 import {
   UseQueryReturnType,
@@ -69,6 +69,7 @@ type Props = {
   hideSelected?: boolean;
   inline?: boolean;
   size?: `${BaseSelectSizesEnum}`;
+  variant?: `${BaseSelectVariantsEnum}`;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -92,6 +93,7 @@ const props = withDefaults(defineProps<Props>(), {
   hideSelected: false,
   inline: false,
   size: BaseSelectSizesEnum.DEFAULT,
+  variant: BaseSelectVariantsEnum.DEFAULT,
 });
 
 type FilterOptionValue = FilterOption["value"];
@@ -164,6 +166,30 @@ const prompt = computed(() => {
 
   return t(`baseSelect.labels.prompt`);
 });
+
+/*
+ * The name for assistive tech, whenever the visible label is not the thing
+ * naming the trigger.
+ *
+ * Two ways it was not. 27 call sites pass `no-label`, which stops the label
+ * element being rendered at all; and when the select is `searchable` the label's
+ * `for` points at the search box instead, so the trigger was unnamed there too.
+ * Its own text is the current selection, which names the value rather than the
+ * control.
+ *
+ * Omitted when the label does name it, so the two cannot compete.
+ */
+const triggerNamedByLabel = computed(
+  () =>
+    Boolean(innerLabel.value) &&
+    !props.noLabel &&
+    labelVisible.value &&
+    !props.searchable,
+);
+
+const triggerLabel = computed(() =>
+  triggerNamedByLabel.value ? undefined : innerLabel.value || undefined,
+);
 
 const loading = computed(() => {
   return isLoading.value || isFetching.value;
@@ -332,6 +358,7 @@ const cssClasses = computed(() => ({
   "base-select--with-error": !!props.error,
   inline: props.inline,
   "base-select--medium": props.size === BaseSelectSizesEnum.MEDIUM,
+  "base-select--affix": props.variant === BaseSelectVariantsEnum.AFFIX,
 }));
 
 /*
@@ -664,7 +691,16 @@ const placePopover = (decideSide = false) => {
 
   popover.style.top = `${top - origin.top}px`;
   popover.style.left = `${place.left - origin.left}px`;
-  popover.style.width = `${place.width}px`;
+  /*
+   * The affix variant is as narrow as a unit label, so its popover takes its
+   * width from its options instead -- see the stylesheet. Every other select
+   * matches its trigger.
+   */
+  if (props.variant === BaseSelectVariantsEnum.AFFIX) {
+    popover.style.removeProperty("width");
+  } else {
+    popover.style.width = `${place.width}px`;
+  }
 };
 
 let followGroup: ResizeObserver | null = null;
@@ -940,6 +976,7 @@ defineExpose({
       ref="trigger"
       type="button"
       role="combobox"
+      :aria-label="triggerLabel"
       :aria-invalid="!!error || undefined"
       :aria-describedby="error ? errorId : undefined"
       aria-haspopup="listbox"

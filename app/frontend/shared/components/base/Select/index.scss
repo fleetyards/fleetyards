@@ -312,3 +312,60 @@
     border-radius: 6px;
   }
 }
+
+/*
+ * The affix variant: the same select with its frame taken off, for a field's
+ * prefix or suffix slot.
+ *
+ * A native <select> was the obvious thing to put there and is the wrong thing --
+ * it opens the platform's own dropdown, so the app would have two selects that
+ * diverge the moment either is opened. Everything this switches off is framing;
+ * the trigger, the popover, the keyboard handling and the combobox semantics are
+ * the ones every other select uses.
+ *
+ * Last in the file on purpose: these selectors carry the same weight as the ones
+ * they override, so only order separates them.
+ */
+.base-select--affix {
+  display: inline-flex;
+  margin-bottom: 0;
+
+  .base-select-title {
+    width: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    padding: 0 14px 0 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+
+    // The field around it already draws a frame and answers focus with its own
+    // cap, so a second pair here would read as a control inside a control.
+    &::before,
+    &::after {
+      content: none;
+    }
+
+    &:hover:not(:disabled) {
+      background: none;
+    }
+
+    .base-select-item-label {
+      padding-right: 6px;
+      flex-grow: 0;
+    }
+  }
+
+  /*
+   * Wide enough for its options rather than for the trigger, which is as narrow
+   * as a unit label. Aligned to the trigger's right, because an affix sits at
+   * the field's edge and a popover growing outward from there would leave it.
+   */
+  .base-select-items-wrapper {
+    left: auto;
+    right: 0;
+    width: max-content;
+    min-width: 8rem;
+  }
+}

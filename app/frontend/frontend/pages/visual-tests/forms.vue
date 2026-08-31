@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import { BaseSelectVariantsEnum } from "@/shared/components/base/Select/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
@@ -41,6 +42,14 @@ const url = ref("https://fleetyards.net");
 const color = ref("#ffcc00");
 const clearable = ref("Clear me");
 const prefixed = ref(1250);
+
+const quantity = ref(12);
+const quantityUnit = ref("scu");
+const unitAffixOptions = [
+  { value: "scu", label: "SCU" },
+  { value: "cscu", label: "cSCU" },
+  { value: "mscu", label: "mSCU" },
+];
 const empty = ref<string | null>(null);
 const dateTime = ref<string | null>("2029-06-14T19:30:00.000Z");
 const dateOnly = ref<string | null>("2029-06-14T00:00:00.000Z");
@@ -229,6 +238,31 @@ const powerMarks = (value: number) => ({ label: String(value) });
         prefix="UEC"
         suffix="/ SCU"
       />
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <!--
+        A select in the suffix slot, which the logistics quantity fields use for
+        their unit picker. The affix variant is the same control with its frame
+        taken off, so opening it gives the app's own popover rather than the
+        platform's dropdown.
+      -->
+      <FormInput
+        v-model="quantity"
+        name="affix-select"
+        label="With a select affix"
+        :type="InputTypesEnum.NUMBER"
+      >
+        <template #suffix>
+          <BaseSelect
+            v-model="quantityUnit"
+            :options="unitAffixOptions"
+            :variant="BaseSelectVariantsEnum.AFFIX"
+            name="affix-unit"
+            label="Unit"
+            no-label
+          />
+        </template>
+      </FormInput>
     </div>
     <div class="col-12 col-md-6 col-lg-3">
       <FormInput
