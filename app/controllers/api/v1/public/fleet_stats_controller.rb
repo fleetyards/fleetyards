@@ -24,7 +24,7 @@ module Api
         end
 
         def members
-          @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params)
+          @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params.except("sorts", "s"))
 
           members = @q.result
 

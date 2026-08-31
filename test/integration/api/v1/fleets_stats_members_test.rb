@@ -48,6 +48,21 @@ class Api::V1::FleetsStatsMembersTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
   end
 
+  # The role breakdown is a grouped count, so a sort reaching ransack puts an
+  # ungrouped column in the ORDER BY and Postgres rejects the whole query.
+  test "GET /fleets/:slug/stats/members ignores sort params" do
+    create(:user).tap { |user| @fleet.fleet_memberships.create!(user:, fleet_role: @fleet.default_member_role, aasm_state: "accepted") }
+    sign_in @admin
+
+    ["s", "sorts"].each do |key|
+      assert_api_response :get, 200,
+        path_params: {fleetSlug: @fleet.slug},
+        params: {q: {key => "username asc"}} do
+        assert_equal 2, parsed_body["total"]
+      end
+    end
+  end
+
   test "GET /fleets/:slug/stats/members returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {fleetSlug: @fleet.slug}
   end

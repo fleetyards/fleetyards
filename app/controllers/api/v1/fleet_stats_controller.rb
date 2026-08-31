@@ -13,7 +13,9 @@ module Api
       before_action :set_fleet
 
       def members
-        @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params)
+        # Sorting a grouped count puts the ordered column outside the GROUP BY,
+        # which Postgres rejects. Stats never need an order anyway.
+        @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params.except("sorts", "s"))
 
         members = @q.result
 
