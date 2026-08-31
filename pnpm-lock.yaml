@@ -166,9 +166,6 @@ importers:
       vue-scrollto:
         specifier: ^2.20.0
         version: 2.20.0
-      vue-upload-component:
-        specifier: ^3.2.0
-        version: 3.2.0(vue@3.5.41(typescript@6.0.3))
       vue3-highlightjs:
         specifier: ^1.0.5
         version: 1.0.5(vue@3.5.41(typescript@6.0.3))
@@ -6527,11 +6524,6 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: '>=5.0.0'
-
-  vue-upload-component@3.2.0:
-    resolution: {integrity: sha512-3pYD5Uv85FXRtYOT/VBR8q2azyCmSBEooCUAfUCMgtK6g8Fw0xw4A58oL5MniaaxfjUmPhYoS5vOpK0XLFmnHw==}
-    peerDependencies:
-      vue: ^3.5.41
 
   vue3-highlightjs@1.0.5:
     resolution: {integrity: sha512-Q4YNPXu0X5VMBnwPVOk+IQf1Ohp9jFdMitEAmzaz8qVVefcQpN6Dx4BnDGKxja3TLDVF+EgL136wC8YzmoCX9w==}
@@ -13397,10 +13389,6 @@ snapshots:
       '@volar/typescript': 2.4.28
       '@vue/language-core': 3.3.11
       typescript: 6.0.3
-
-  vue-upload-component@3.2.0(vue@3.5.41(typescript@6.0.3)):
-    dependencies:
-      vue: 3.5.41(typescript@6.0.3)
 
   vue3-highlightjs@1.0.5(vue@3.5.41(typescript@6.0.3)):
     dependencies:
