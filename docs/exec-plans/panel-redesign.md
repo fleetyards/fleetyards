@@ -967,6 +967,13 @@ and the ones where F3's cap collapse was worst.
   action: `Table2` composes `Panel` and `PanelHeading` rather than copying their
   styles, so it tracks the rebuild automatically and correctly. It is still only
   reachable from the visual-tests page, so nothing presents it as shipped.
+
+  **Overturned later: deleted.** That answer was about it needing no work, which
+  was true, and not about it being worth keeping. 540 lines reachable only from a
+  demo page kept producing findings that had to be ruled out of scope by hand --
+  #4596 had to exclude its copy of the row-rail bloom explicitly. Deleting it
+  removed the last bloom in the codebase as a side effect.
+
 - ~~**Q5** Which spacing wins?~~ The panel's. Both the card and its slim
   variant now use `margin: 0 0 21px`; a column of cards used to sit almost twice
   as far apart as a column of panels, visible on the ship page where the two
