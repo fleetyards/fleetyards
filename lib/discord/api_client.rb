@@ -32,8 +32,11 @@ module Discord
       Rails.application.config.app.discord[:client_id].presence
     end
 
-    # Manage Events permission bit (1 << 33).
-    INSTALL_PERMISSIONS = 8_589_934_592
+    # Manage Events (1 << 33), plus View Channel (1 << 10) and Connect
+    # (1 << 20) — Discord rejects a voice-channel scheduled event without
+    # those two when a fleet sets a discord_channel_id. Must stay in sync
+    # with the app's Default Install Settings in the Discord dev portal.
+    INSTALL_PERMISSIONS = 8_590_984_192
 
     def self.install_url
       return nil if application_id.blank?
