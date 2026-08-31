@@ -80,6 +80,15 @@ const colour = ref(true);
 const toggleLoading = () => {
   loading.value = !loading.value;
 };
+
+// The showcase below starts loading rather than waiting for a click: the scan is
+// the whole point of the section, and a row that has to be armed first shows
+// nothing to anyone who lands here to look at it.
+const loadingShowcase = ref(true);
+
+const toggleLoadingShowcase = () => {
+  loadingShowcase.value = !loadingShowcase.value;
+};
 </script>
 
 <template>
@@ -137,11 +146,86 @@ const toggleLoading = () => {
       <Btn>Rest</Btn>
       <Btn active>Active</Btn>
       <Btn disabled>Disabled</Btn>
-      <Btn :loading="loading" spinner @click="toggleLoading">
-        Toggle loading
-      </Btn>
-      <Btn :loading="loading" @click="toggleLoading">Loading, no spinner</Btn>
+      <Btn :loading="loading" @click="toggleLoading">Toggle loading</Btn>
       <Btn confirm="Really?" @click="toggleLoading">With confirm</Btn>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Loading — the caps carry it</Heading>
+  <p>
+    One fill travels around the outside: left to right along the top cap, on
+    along the bottom cap right to left, and the top clears behind it as soon as
+    the bottom picks the run up — so the lit run is one cap long and neither cap
+    waits. Nothing is inserted beside the label, so the button neither grows nor
+    reflows when it starts working. It also needs no opt-in: the
+    <code>spinner</code> prop this replaces was passed at 12 of 51 loading call
+    sites, so most of them showed nothing at all. A fill is always one run
+    anchored to an edge, which is what makes it hold on a 23px icon-button cap
+    where a travelling marker read as two nubs in the corners. Where there are
+    no caps the surface takes the same run in the one direction it has, in from
+    the left and out to the right, at half the pace: it is the whole control
+    rather than a 2px edge, and at the cap's speed it reads as the button
+    flashing. Neutral borrows the hover accent, since its resting cap is already
+    grey.
+  </p>
+  <div class="row">
+    <div class="col-12 vt-row" data-test="loading-showcase">
+      <Btn @click="toggleLoadingShowcase">
+        {{ loadingShowcase ? "Stop" : "Start" }} the row below
+      </Btn>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 vt-row" data-test="loading-variants">
+      <template v-for="tone in tones" :key="`loading-${tone}`">
+        <Btn
+          v-for="variant in variants"
+          :key="`loading-${tone}-${variant}`"
+          :variant="variant"
+          :tone="tone"
+          :loading="loadingShowcase"
+        >
+          {{ variant }} / {{ tone }}
+        </Btn>
+      </template>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 vt-row" data-test="loading-sizes">
+      <!-- xs carries no caps at any state, so its surface fills instead. -->
+      <Btn
+        v-for="size in sizes"
+        :key="`loading-${size}`"
+        :size="size"
+        :loading="loadingShowcase"
+      >
+        {{ size }}
+      </Btn>
+      <Btn :loading="loadingShowcase" aria-label="Sync hangar">
+        <i class="fa-solid fa-rotate" />
+      </Btn>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 vt-row" data-test="loading-containers">
+      <!-- A member and a menu row have no caps either: the group draws one pair
+           for the whole control, and the edges are the group's, not theirs. -->
+      <BtnGroup>
+        <Btn :loading="loadingShowcase">Syncing</Btn>
+        <Btn>Cancel</Btn>
+      </BtnGroup>
+      <BtnDropdown>
+        <template #label>Menu</template>
+        <Btn :loading="loadingShowcase">Importing</Btn>
+        <Btn :tone="BtnTonesEnum.DANGER" :loading="loadingShowcase">
+          Deleting
+        </Btn>
+      </BtnDropdown>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <Btn block :loading="loadingShowcase">Block, working</Btn>
     </div>
   </div>
 

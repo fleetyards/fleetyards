@@ -5,8 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import SmallLoader from "@/shared/components/SmallLoader/index.vue";
-import { type SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
 import { type RouterLinkProps } from "vue-router";
 import {
   BtnTypesEnum,
@@ -24,7 +22,6 @@ export type Props = {
   target?: HTMLAnchorElement["target"];
   type?: `${BtnTypesEnum}`;
   loading?: boolean;
-  spinner?: boolean | `${SpinnerAlignment}`;
   variant?: `${BtnVariantsEnum}`;
   tone?: `${BtnTonesEnum}`;
   /** Defaults to `sm`, or to the size set by a containing BtnGroup. */
@@ -48,7 +45,6 @@ const props = withDefaults(defineProps<Props>(), {
   target: undefined,
   type: BtnTypesEnum.BUTTON,
   loading: false,
-  spinner: false,
   variant: BtnVariantsEnum.SOLID,
   tone: BtnTonesEnum.NEUTRAL,
   size: undefined,
@@ -160,10 +156,6 @@ const cssClasses = computed(() => [
   },
 ]);
 
-const spinnerAlignment = computed(() =>
-  typeof props.spinner === "boolean" ? "right" : props.spinner,
-);
-
 const { displayConfirm } = useAppNotifications();
 
 const handleClick = (event: MouseEvent) => {
@@ -208,14 +200,8 @@ const handleClick = (event: MouseEvent) => {
     <span class="btn__content">
       <slot />
     </span>
-    <SmallLoader
-      v-if="loading && spinner"
-      class="btn__loader"
-      :loading="loading"
-      :alignment="spinnerAlignment"
-    />
-    <!-- Announced for every loading button, not just the 11 that opt into a
-         visible spinner. The visible label is never replaced. -->
+    <!-- Announced for every loading button - the caps are visual only. The
+         visible label is never replaced. -->
     <span v-if="loading" class="btn__status" role="status">
       {{ t("baseBtn.labels.loading") }}
     </span>
@@ -648,12 +634,181 @@ const handleClick = (event: MouseEvent) => {
 /* ---------- loading ---------- */
 /* The label is kept. The old component replaced it with "Loading", which
    changed the accessible name mid-interaction. */
-.btn__loader {
-  @apply pointer-events-none;
-}
-
 .btn__status {
   @apply sr-only;
+}
+
+/*
+ * The two caps carry the state, as one run travelling around the outside: it
+ * fills the top cap left to right, carries on along the bottom cap right to
+ * left, and the tail follows the same way round. One direction, so the eye
+ * follows it rather than watching two things meet. Nothing is inserted next to
+ * the label, so the button neither grows nor reflows on the frame it starts
+ * working.
+ *
+ * This is the state the component had no answer for. It used to depend on an
+ * opt-in `spinner`, which was passed at 12 of 51 loading call sites - the other
+ * 39 showed nothing at all and only read as a button that had gone dead. The
+ * caps answer for every one of them, so that prop is gone: the caps are already
+ * this component's signature, the same call the hover and tone rules above make,
+ * and a rhombus dropped into the content row cost a reflow besides.
+ *
+ * A marker travelling along the cap was the first shape of this and it does not
+ * survive the narrow case: an icon-only sm button leaves a 23px cap, where the
+ * segment read as two nubs parked in the corners rather than as motion. A fill
+ * is always one run anchored to an edge, so it still reads at that length.
+ *
+ * Two legs of 0.9s, and neither cap ever waits: the moment the head moves onto
+ * the bottom cap, the top starts clearing behind it, so the lit run is one cap
+ * long and always moving. That also means each cap only ever travels one way -
+ * the top rightwards whether it is filling or clearing, the bottom leftwards -
+ * which is what lets two bars read as one thing going round. The anchor swaps
+ * once per leg, always while the cap is full or empty, where it cannot be seen.
+ */
+.btn.is-loading::before,
+.btn.is-loading::after {
+  /* The empty cap, dimmer than at rest, so a cap the run has left is visibly the
+     same cap rather than one that went missing. */
+  background-color: rgb(122 130 136 / 0.35);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  /* Linear, not eased: an ease per leg puts a hesitation at each corner, and
+     this is one run going round at one speed. */
+  animation-duration: 1.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* A loading button renders disabled, and the disabled rule halves the caps.
+     The part carrying the state has to stay at full strength - this has to sit
+     below that rule, which it ties with on specificity. */
+  opacity: 1;
+}
+
+/* The leading edge fades rather than ending on a hard line: a solid edge reads
+   as a progress bar reporting a percentage, and there is nothing to report. */
+.btn.is-loading::before {
+  background-image: linear-gradient(
+    to right,
+    var(--btn-cap, var(--color-endcap, #7a8288)) 80%,
+    transparent 100%
+  );
+  background-position: left center;
+  animation-name: btn-fill-rightward;
+}
+
+.btn.is-loading::after {
+  background-image: linear-gradient(
+    to left,
+    var(--btn-cap, var(--color-endcap, #7a8288)) 80%,
+    transparent 100%
+  );
+  background-position: right center;
+  animation-name: btn-fill-leftward;
+}
+
+/* In from the left, then out to the right: the fill grows from the left edge,
+   and once it covers the whole run the anchor moves to the right edge so the
+   second half clears it in the same direction rather than retreating. The top
+   cap and every cap-less surface run on this one. */
+@keyframes btn-fill-rightward {
+  0% {
+    background-position: left center;
+    background-size: 0% 100%;
+  }
+  50% {
+    background-position: left center;
+    background-size: 100% 100%;
+  }
+  50.01% {
+    background-position: right center;
+    background-size: 100% 100%;
+  }
+  100% {
+    background-position: right center;
+    background-size: 0% 100%;
+  }
+}
+
+/* The same run mirrored, and half a cycle into it: the bottom cap clears
+   leftwards while the top fills, and fills from the right while the top clears.
+   That is the hand-over at each corner. */
+@keyframes btn-fill-leftward {
+  0% {
+    background-position: left center;
+    background-size: 100% 100%;
+  }
+  50% {
+    background-position: left center;
+    background-size: 0% 100%;
+  }
+  50.01% {
+    background-position: right center;
+    background-size: 0% 100%;
+  }
+  100% {
+    background-position: right center;
+    background-size: 100% 100%;
+  }
+}
+
+/* Neutral has no colour of its own to fill with - its resting cap is the same
+   grey as the empty state - so it borrows the hover accent. Two classes, so
+   danger and warning keep filling in their own tone. */
+.btn--tone-neutral.is-loading {
+  --btn-cap: var(--color-primary, #428bca);
+}
+
+/*
+ * Busy is not unavailable. The disabled rule dims the content to 45%, which for
+ * a working button says the wrong thing - it reads as a control you cannot use
+ * rather than one that is already doing what you asked. The caps say it instead.
+ */
+.btn.is-loading .btn__content {
+  @apply opacity-100;
+  /* Above the wash below. Both are positioned boxes at z-index auto, and the
+     pseudo-element comes after the label in tree order, so without this the
+     wash paints over the text and tints it. */
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * The contexts that drop their caps - chip scale, bare, and the two container
+ * ones - have nothing to fill, and the edges are not theirs to use: a rail along
+ * a group member's bottom lands directly under the group's own cap and reads as
+ * a dirty edge, clipped by the track's rounding at that. So the surface fills
+ * instead, in the tone colour and on the top cap's own keyframes: head in from
+ * the left, tail out to the right, always that way. There is no circuit to run
+ * on a surface, so it takes the one leg rather than doubling back. The fill is
+ * the language; only the thing being filled changes with the context.
+ */
+.btn.is-loading.btn--xs::after,
+.btn.is-loading.btn--bare::after,
+.btn.is-loading.btn--grouped::after,
+.btn.is-loading.btn--menu-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* The cap rules above set a 2px height on a solid xs; this box is the whole
+     control, so it takes its height from the inset. */
+  height: auto;
+  border-radius: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(
+    var(--btn-cap, var(--color-primary, #428bca)),
+    var(--btn-cap, var(--color-primary, #428bca))
+  );
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  /* The strength of a hover tint, and well under the grouped active tint of
+     0.26, so a working member never reads as louder than a chosen one. At 0.2 a
+     bare button - the quietest variant there is - became a solid block of
+     tone. */
+  opacity: 0.16;
+  z-index: 0;
+  /* The top cap's run, but at half its pace. A surface is the whole control
+     rather than a 2px edge, so the same speed reads as the button flashing;
+     slower, it reads as the same idea kept quiet. */
+  animation: btn-fill-rightward 3.6s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -663,6 +818,26 @@ const handleClick = (event: MouseEvent) => {
   .btn--ghost::before,
   .btn--ghost::after {
     transition-duration: 1ms;
+  }
+
+  /* Nothing fills. Both caps hold steady at the tone colour, and the wash holds
+     at its lit end, so the state is still marked where motion was the only
+     thing carrying it. */
+  .btn.is-loading::before,
+  .btn.is-loading::after {
+    animation-name: none;
+    background-image: none;
+    background-color: var(--btn-cap, var(--color-endcap, #7a8288));
+  }
+
+  .btn.is-loading.btn--xs::after,
+  .btn.is-loading.btn--bare::after,
+  .btn.is-loading.btn--grouped::after,
+  .btn.is-loading.btn--menu-item::after {
+    animation-name: none;
+    /* Filled, not empty: without the animation the base size is 0 and the
+       surface would carry no marker at all. */
+    background-size: 100% 100%;
   }
 }
 
