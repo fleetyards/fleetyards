@@ -295,6 +295,11 @@ const removeFile = (file: FileUpload) => {
 const emit = defineEmits<{
   "upload:start": [files: FileUpload[]];
   "upload:progress": [progress: number];
+  /*
+   * These two are exclusive: a run ends with one or the other, never both.
+   * "done" means every file arrived, so anything that latches on "start" has to
+   * answer "error" as well or it will never be told the run finished.
+   */
   "upload:done": [files: FileUpload[]];
   "upload:error": [files: FileUpload[]];
   "files:rejected": [files: File[]];
