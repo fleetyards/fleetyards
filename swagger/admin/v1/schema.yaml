@@ -8236,6 +8236,12 @@ components:
           type: string
         roleCont:
           type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetMembershipSortEnum"
+          - "$ref": "#/components/schemas/FleetMembershipSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -8478,6 +8484,12 @@ components:
           type: boolean
         searchCont:
           type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/AdminNotificationSortEnum"
+          - "$ref": "#/components/schemas/AdminNotificationSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -9104,6 +9116,12 @@ components:
           type: number
         sellPriceLteq:
           type: number
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/CommoditySortEnum"
+          - "$ref": "#/components/schemas/CommoditySortEnum"
         sorts:
           anyOf:
           - type: array
@@ -9608,6 +9626,12 @@ components:
           type: number
         sellPriceLteq:
           type: number
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ComponentSortEnum"
+          - "$ref": "#/components/schemas/ComponentSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -10616,6 +10640,12 @@ components:
           type: number
         sellPriceLteq:
           type: number
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/EquipmentSortEnum"
+          - "$ref": "#/components/schemas/EquipmentSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -11155,6 +11185,12 @@ components:
           type: string
         fidCont:
           type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetSortEnum"
+          - "$ref": "#/components/schemas/FleetSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -11270,6 +11306,12 @@ components:
         effectiveFromLteq:
           type: string
           format: date
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FundingGoalSortEnum"
+          - "$ref": "#/components/schemas/FundingGoalSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -11662,6 +11704,12 @@ components:
           format: uuid
         galleryTypeEq:
           type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ImageSortEnum"
+          - "$ref": "#/components/schemas/ImageSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -12310,6 +12358,12 @@ components:
           type: array
           items:
             type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ManufacturerSortEnum"
+          - "$ref": "#/components/schemas/ManufacturerSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -13793,6 +13847,12 @@ components:
         modelIdEq:
           type: string
           format: uuid
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelModulePackageSortEnum"
+          - "$ref": "#/components/schemas/ModelModulePackageSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -14126,6 +14186,12 @@ components:
             type: string
         modelSlugEq:
           type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelPaintSortEnum"
+          - "$ref": "#/components/schemas/ModelPaintSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -14309,6 +14375,12 @@ components:
           type: boolean
         positionsNeedCurationEq:
           type: boolean
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelSortEnum"
+          - "$ref": "#/components/schemas/ModelSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -15280,6 +15352,12 @@ components:
           "$ref": "#/components/schemas/UnlistedModelDecisionEnum"
         decisionNull:
           type: boolean
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ScDataUnlistedModelSortEnum"
+          - "$ref": "#/components/schemas/ScDataUnlistedModelSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -15530,6 +15608,12 @@ components:
           type: boolean
         userUsernameCont:
           type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/SupporterContributionSortEnum"
+          - "$ref": "#/components/schemas/SupporterContributionSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -15816,6 +15900,12 @@ components:
           type: array
           items:
             type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/UserSortEnum"
+          - "$ref": "#/components/schemas/UserSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -16076,6 +16166,12 @@ components:
           "$ref": "#/components/schemas/LoanerFilterEnum"
         wantedEq:
           type: boolean
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/VehicleSortEnum"
+          - "$ref": "#/components/schemas/VehicleSortEnum"
         sorts:
           anyOf:
           - type: array
