@@ -9,9 +9,10 @@ module Admin
         schema({
           properties: {
             id: {type: :string, format: "uuid"},
-            iconOverridden: {type: :boolean}
+            iconOverridden: {type: :boolean},
+            logoOverridden: {type: :boolean}
           },
-          required: %w[id iconOverridden]
+          required: %w[id iconOverridden logoOverridden]
         })
       end
     end

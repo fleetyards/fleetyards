@@ -12266,6 +12266,8 @@ components:
           format: uuid
         iconOverridden:
           type: boolean
+        logoOverridden:
+          type: boolean
       additionalProperties: false
       required:
       - name
@@ -12274,6 +12276,7 @@ components:
       - updatedAt
       - id
       - iconOverridden
+      - logoOverridden
       title: Manufacturer
     ManufacturerInput:
       type: object

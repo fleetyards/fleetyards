@@ -902,6 +902,7 @@
         "longName": "Vollständiger Name",
         "code": "Code",
         "logo": "Logo",
+        "logoOverridden": "Logo (überschrieben)",
         "icon": "Icon (Spieldateien)",
         "iconOverridden": "Icon (überschrieben)",
         "scRef": "SC Ref"

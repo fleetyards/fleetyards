@@ -43,7 +43,7 @@ module Admin
         end
 
         def create
-          @manufacturer = Manufacturer.new(manufacturer_params.merge(icon_override))
+          @manufacturer = Manufacturer.new(manufacturer_params.merge(icon_override).merge(logo_override))
 
           authorize! @manufacturer, with: ::Admin::ManufacturerPolicy
 
@@ -53,7 +53,7 @@ module Admin
         end
 
         def update
-          return if @manufacturer.update(manufacturer_params.merge(icon_override))
+          return if @manufacturer.update(manufacturer_params.merge(icon_override).merge(logo_override))
 
           render json: ValidationError.new("manufacturer.update", errors: @manufacturer.errors), status: :bad_request
         end
@@ -79,6 +79,15 @@ module Admin
           return {} unless params.key?(:icon)
 
           {icon_overridden: params[:icon].present?}
+        end
+
+        # The same for the logo, whose other source is RSI's ship matrix:
+        # sending a file claims it, clearing it hands it back to the matrix
+        # loader, which refills it on the next sync.
+        private def logo_override
+          return {} unless params.key?(:logo)
+
+          {logo_overridden: params[:logo].present?}
         end
 
         private def manufacturer_params

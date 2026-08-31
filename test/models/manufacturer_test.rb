@@ -13,6 +13,7 @@ require "test_helper"
 #  icon_overridden :boolean          default(FALSE), not null
 #  icon_path       :string
 #  known_for       :string(255)
+#  logo_overridden :boolean          default(FALSE), not null
 #  long_name       :string
 #  name            :string(255)
 #  sc_ref          :string
