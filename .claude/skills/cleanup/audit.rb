@@ -124,14 +124,19 @@ end
 # worktrees that exist, and everything outside that set is what gets swept.
 def sanitize_worktree_name(name) = name.gsub(/[^a-zA-Z0-9]/, "_")[0, 20]
 
+# Supacode identifies a worktree by the percent-encoded form of its path, which
+# is what `worktree list` prints and what `worktree delete` expects back. Keep
+# that identifier verbatim rather than re-deriving it: a decoded path handed to
+# --worktree builds a deeplink with raw slashes in it, which Supacode rejects.
 def supacode_worktrees
-  return [] unless tool?("supacode")
+  return {} unless tool?("supacode")
 
-  capture("supacode", "worktree", "list").lines.filter_map do |line|
-    decoded = URI.decode_www_form_component(line.strip)
+  capture("supacode", "worktree", "list").lines.each_with_object({}) do |line, ids|
+    id = line.strip
+    decoded = URI.decode_www_form_component(id)
     next if decoded.empty?
 
-    decoded.chomp("/")
+    ids[decoded.chomp("/")] = id
   end
 end
 
@@ -156,7 +161,8 @@ def worktrees
   entries.each do |entry|
     path = entry[:path]
     entry[:main] = File.identical?(path, MAIN_ROOT)
-    entry[:supacode] = supacode.include?(path.chomp("/"))
+    entry[:supacode_id] = supacode[path.chomp("/")]
+    entry[:supacode] = !entry[:supacode_id].nil?
     entry[:dirty] = capture("git", "-C", path, "status", "--porcelain").lines.size
     entry[:suffix] =
       if entry[:main]
@@ -423,7 +429,7 @@ def apply_worktrees(rows)
   rows.each do |entry|
     path = entry[:path]
     if entry[:supacode]
-      _out, err, ok = sh("supacode", "worktree", "delete", "--worktree", path, "--background")
+      _out, err, ok = sh("supacode", "worktree", "delete", "--worktree", entry[:supacode_id], "--background")
       puts(ok ? "  removed #{path} (supacode)" : "  FAILED #{path}: #{err.strip}")
       next
     end
