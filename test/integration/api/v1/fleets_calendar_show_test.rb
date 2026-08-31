@@ -41,6 +41,10 @@ class Api::V1::FleetsCalendarShowTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:slug/calendar returns events" do
+    # Without from/to the window is the month start plus 35 days, so it shrinks
+    # to a few days late in the month. Anchor the clock so both events fit.
+    travel_to Time.current.beginning_of_month + 5.days
+
     create(:fleet_event, fleet: @fleet, created_by: @admin, starts_at: 1.day.from_now)
     create(:fleet_event, fleet: @fleet, created_by: @admin, starts_at: 5.days.from_now)
     sign_in @admin

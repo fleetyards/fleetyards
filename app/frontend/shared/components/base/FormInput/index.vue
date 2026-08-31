@@ -185,8 +185,14 @@ const onChange = (event: Event) => {
   emit("update:modelValue", inputValue.value);
 };
 
-const setFocus = () => {
-  inputElement.value?.focus();
+/*
+ * Options are passed through rather than fixed here. Focusing normally scrolls
+ * the field into view, which is what a caller focusing a failed field further
+ * down the page wants; a caller focusing into a container that is still
+ * animating open does not, and passes { preventScroll: true }.
+ */
+const setFocus = (options?: FocusOptions) => {
+  inputElement.value?.focus(options);
 };
 
 const slots = useSlots();

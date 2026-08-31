@@ -126,6 +126,18 @@ const prompt = computed(() => {
     return selectedOptions.value[0].label;
   }
 
+  /*
+   * A multi-select used to fall straight through to the generic prompt, so a
+   * group with two things chosen still read "No Option selected" and the only
+   * place the selection appeared was the list below. That is wrong in any
+   * layout and plainly wrong once the popover detaches.
+   */
+  if (props.multiple && selectedOptions.value.length > 0) {
+    return t("filterGroup.labels.selectedCount", {
+      count: selectedOptions.value.length,
+    });
+  }
+
   if (props.translationKey) {
     if (props.nullable) {
       if (tExists(`filterGroup.${props.translationKey}.nullablePrompt`)) {
@@ -231,12 +243,24 @@ const innerLabel = computed(() => {
   return t(`filterGroup.${props.name}.label`);
 });
 
+const triggerId = computed(() => `${props.name}-trigger-${id.value}`);
+
+const listboxId = computed(() => `${props.name}-listbox-${id.value}`);
+
+const optionId = (index: number) => `${listboxId.value}-option-${index}`;
+
+/*
+ * The label points at a real control now. It used to point at the collapsed
+ * container's id -- a div -- for every group that is not searchable, which is
+ * 68 of the component's 135 call sites: clicking the label did nothing and a
+ * screen reader announced nothing.
+ */
 const labelFor = computed(() => {
   if (props.searchable) {
     return `${props.name}-searchInput-${id.value}`;
   }
 
-  return `${props.name}-options-${id.value}`;
+  return triggerId.value;
 });
 
 const searchPlaceholder = computed(() => {
@@ -246,6 +270,25 @@ const searchPlaceholder = computed(() => {
 const searchLabelFallback = computed(() => {
   return t("filterGroup.labels.search");
 });
+
+/*
+ * Declared above availableOptions on purpose: a const is in its temporal dead
+ * zone until the line that defines it runs, and the watcher on filteredOptions
+ * evaluates that chain during setup. Defined below, this threw
+ * "Cannot access 'sort' before initialization" and nothing mounted.
+ */
+const sort = (options: FilterOption[]) => {
+  const sortedOptions = JSON.parse(JSON.stringify(options));
+  return sortedOptions.sort((a: FilterOption, b: FilterOption) => {
+    if (a.label < b.label) {
+      return -1;
+    }
+    if (a.label > b.label) {
+      return 1;
+    }
+    return 0;
+  });
+};
 
 const availableOptions = computed<FilterOption[]>(() =>
   sort(internalOptions.value),
@@ -267,14 +310,20 @@ const selectedOptions = computed(() => {
   return selectedOption ? [selectedOption] : [];
 });
 
+/*
+ * Sorted, which it was not. `sort()` ran in availableOptions, but the popover
+ * renders this -- so the selected rows came out alphabetical and the options a
+ * user picks from stayed in whatever order the API returned them. Two lists in
+ * one popover, ordered differently, from one sort that only half-ran.
+ */
 const filteredOptions = computed(() => {
   if (search.value) {
-    return internalOptions.value.filter((item) =>
+    return availableOptions.value.filter((item) =>
       item.label.toLowerCase().includes(String(search.value?.toLowerCase())),
     );
   }
 
-  return internalOptions.value;
+  return availableOptions.value;
 });
 
 const cssClasses = computed(() => ({
@@ -282,6 +331,205 @@ const cssClasses = computed(() => ({
   inline: props.inline,
   "filter-group--medium": props.size === FilterGroupSizesEnum.MEDIUM,
 }));
+
+/*
+ * The visually pointed-at row. Focus itself never leaves the trigger (or the
+ * search box), so this is carried as an index and published through
+ * aria-activedescendant rather than by moving focus into the list.
+ */
+const activeIndex = ref(-1);
+
+const activeOption = computed(() => filteredOptions.value[activeIndex.value]);
+
+const activeDescendant = computed(() =>
+  visible.value && activeIndex.value >= 0
+    ? optionId(activeIndex.value)
+    : undefined,
+);
+
+// A list that shrank under the cursor -- by a search, or a page of results
+// arriving -- must not leave the pointer past its end.
+watch(filteredOptions, () => {
+  if (activeIndex.value >= filteredOptions.value.length) {
+    activeIndex.value = filteredOptions.value.length - 1;
+  }
+});
+
+const moveActive = (delta: number) => {
+  const count = filteredOptions.value.length;
+
+  if (count === 0) {
+    activeIndex.value = -1;
+    return;
+  }
+
+  activeIndex.value =
+    activeIndex.value < 0
+      ? delta > 0
+        ? 0
+        : count - 1
+      : (activeIndex.value + delta + count) % count;
+
+  void scrollActiveIntoView();
+};
+
+const scrollActiveIntoView = async () => {
+  await nextTick();
+
+  if (activeIndex.value < 0 || !filterGroup.value) {
+    return;
+  }
+
+  filterGroup.value
+    .querySelector(`#${CSS.escape(optionId(activeIndex.value))}`)
+    ?.scrollIntoView({ block: "nearest" });
+};
+
+/*
+ * Type-ahead, for the groups that are not searchable. A native select gives
+ * this for free; a custom combobox has to pay it back, and without it the only
+ * way through the longer lists -- manufacturers, star systems -- is fifty
+ * arrow presses.
+ */
+const typeAheadBuffer = ref("");
+
+let typeAheadTimer: ReturnType<typeof setTimeout> | undefined;
+
+const typeAhead = (character: string) => {
+  clearTimeout(typeAheadTimer);
+  typeAheadBuffer.value += character.toLowerCase();
+  typeAheadTimer = setTimeout(() => {
+    typeAheadBuffer.value = "";
+  }, 500);
+
+  const match = filteredOptions.value.findIndex((option) =>
+    option.label.toLowerCase().startsWith(typeAheadBuffer.value),
+  );
+
+  if (match >= 0) {
+    activeIndex.value = match;
+    void scrollActiveIntoView();
+  }
+};
+
+const focusTrigger = async () => {
+  await nextTick();
+  trigger.value?.focus();
+};
+
+const close = (returnFocus = false) => {
+  visible.value = false;
+  activeIndex.value = -1;
+
+  if (returnFocus) {
+    void focusTrigger();
+  }
+};
+
+const onKeydown = async (event: KeyboardEvent) => {
+  if (props.disabled) {
+    return;
+  }
+
+  switch (event.key) {
+    case "ArrowDown":
+    case "ArrowUp": {
+      event.preventDefault();
+
+      if (!visible.value) {
+        await toggle();
+        activeIndex.value = event.key === "ArrowDown" ? 0 : -1;
+        if (event.key === "ArrowUp") moveActive(-1);
+        return;
+      }
+
+      moveActive(event.key === "ArrowDown" ? 1 : -1);
+      return;
+    }
+    case "Home":
+    case "End": {
+      if (!visible.value) {
+        return;
+      }
+
+      event.preventDefault();
+      activeIndex.value =
+        event.key === "Home" ? 0 : filteredOptions.value.length - 1;
+      void scrollActiveIntoView();
+      return;
+    }
+    case "Enter": {
+      event.preventDefault();
+
+      if (!visible.value) {
+        await toggle();
+        return;
+      }
+
+      if (activeOption.value) {
+        await select(activeOption.value.value);
+      }
+      return;
+    }
+    case " ": {
+      // In a searchable group a space is a character, not a command.
+      if (props.searchable) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (!visible.value) {
+        await toggle();
+        return;
+      }
+
+      if (activeOption.value) {
+        await select(activeOption.value.value);
+      }
+      return;
+    }
+    case "Escape": {
+      if (!visible.value) {
+        return;
+      }
+
+      event.preventDefault();
+      close(true);
+      return;
+    }
+    case "Tab": {
+      close();
+      return;
+    }
+    default: {
+      if (
+        !props.searchable &&
+        event.key.length === 1 &&
+        !event.metaKey &&
+        !event.ctrlKey &&
+        !event.altKey
+      ) {
+        if (!visible.value) {
+          await toggle();
+        }
+        typeAhead(event.key);
+      }
+    }
+  }
+};
+
+// A pointer click outside already closes the group; this is the same rule for
+// focus, so tabbing out of an open group does not leave the popover hanging.
+const onFocusout = (event: FocusEvent) => {
+  const next = event.relatedTarget as Node | null;
+
+  if (next && filterGroup.value?.contains(next)) {
+    return;
+  }
+
+  close();
+};
 
 onMounted(() => {
   document.addEventListener("click", documentClick);
@@ -298,6 +546,8 @@ onUnmounted(() => {
 });
 
 const filterGroup = ref<HTMLElement | null>(null);
+
+const trigger = ref<HTMLButtonElement | null>(null);
 
 const documentClick = (event: Event) => {
   if (!filterGroup.value) {
@@ -342,19 +592,6 @@ const fetchMore = async () => {
   page.value += 1;
 
   await refetch();
-};
-
-const sort = (options: FilterOption[]) => {
-  const sortedOptions = JSON.parse(JSON.stringify(options));
-  return sortedOptions.sort((a: FilterOption, b: FilterOption) => {
-    if (a.label < b.label) {
-      return -1;
-    }
-    if (a.label > b.label) {
-      return 1;
-    }
-    return 0;
-  });
 };
 
 const addOptions = (newOptions: FilterOption[]) => {
@@ -428,7 +665,18 @@ const focusSearch = async () => {
   if (props.searchable && visible.value) {
     await nextTick(() => {
       if (searchInput.value) {
-        searchInput.value.setFocus();
+        /*
+         * preventScroll matters here. The popover is still collapsed when this
+         * runs -- Collapsed animates its height from 0 under overflow: hidden --
+         * and an overflow: hidden box is still programmatically scrollable, so
+         * focusing the field made the browser scroll it into view inside a box
+         * of almost no height. That pushed the whole popover's content up behind
+         * the trigger, and it unwound over the next 500ms as the box grew, which
+         * read as the popover starting halfway under the control.
+         *
+         * Measured: scrollTop 21, content at -21px, against 0 and 0 with this.
+         */
+        searchInput.value.setFocus({ preventScroll: true });
       }
     });
   }
@@ -456,6 +704,8 @@ defineExpose({
     class="filter-group"
     :class="cssClasses"
     :data-test="`filter-group-${name}`"
+    @keydown="onKeydown"
+    @focusout="onFocusout"
   >
     <transition name="fade">
       <label
@@ -466,8 +716,17 @@ defineExpose({
         {{ innerLabel }}
       </label>
     </transition>
-    <div
+    <button
+      :id="triggerId"
+      ref="trigger"
       v-tooltip.right="error"
+      type="button"
+      role="combobox"
+      aria-haspopup="listbox"
+      :aria-expanded="visible"
+      :aria-controls="listboxId"
+      :aria-activedescendant="activeDescendant"
+      :disabled="disabled"
       :class="{
         active: visible,
         disabled,
@@ -482,64 +741,95 @@ defineExpose({
         {{ prompt }}
       </span>
       <SmallLoader v-if="props.queryFn" :loading="loading" />
-      <i class="fa fa-chevron-right" />
-    </div>
+      <i class="fa fa-chevron-down" />
+    </button>
     <Collapsed
       v-if="multiple && !hideSelected"
       :id="`${name}-selected-${id}`"
       :visible="selectedOptions.length > 0 && !visible"
-      class="filter-group-items"
+      class="filter-group-selected"
     >
-      <Option
-        v-for="(option, index) in selectedOptions"
-        :key="`${name}-selected-${id}-${option.value}-${index}`"
-        :option="option"
-        :selected="selected(option.value)"
-        :big-icon="bigIcon"
-        :multiple="multiple"
-        :nullable="nullable"
-        @select="select(option.value)"
-      />
+      <!--
+        Same shape as the popover below, and for the same reason: Collapsed
+        animates this element's height and drives its margin, padding and border
+        to zero for the duration, so anything framing the segment -- including
+        the gap that stands it off the trigger -- has to sit inside it or it
+        snaps in at the end.
+      -->
+      <div class="filter-group-surface">
+        <div class="filter-group-items">
+          <Option
+            v-for="(option, index) in selectedOptions"
+            :key="`${name}-selected-${id}-${option.value}-${index}`"
+            :option="option"
+            :selected="selected(option.value)"
+            :big-icon="bigIcon"
+            :multiple="multiple"
+            :nullable="nullable"
+            @select="select(option.value)"
+          />
+        </div>
+      </div>
     </Collapsed>
     <Collapsed
       :id="`${name}-options-${id}`"
       :visible="visible"
       class="filter-group-items-wrapper"
     >
-      <FormInput
-        v-if="searchable"
-        ref="searchInput"
-        :id="labelFor"
-        v-model="search"
-        :name="`${name}-searchInput-${id}`"
-        :placeholder="searchPlaceholder"
-        :label="searchLabelFallback"
-        class="filter-group-search"
-        :variant="InputVariantsEnum.CLEAN"
-        :no-label="true"
-        :clearable="true"
-        @input="onSearch"
-      />
-      <div class="filter-group-items">
-        <Option
-          v-for="(option, index) in filteredOptions"
-          :key="`${name}-options-${id}-${option.value}-${index}`"
-          :option="option"
-          :selected="selected(option.value)"
-          :big-icon="bigIcon"
-          :multiple="multiple"
-          :nullable="nullable"
-          @select="select(option.value)"
+      <!--
+        Collapsed animates this wrapper's height, and its keyframes drive
+        padding, border and margin to zero for the duration (it reads inline
+        styles, which a stylesheet never sets, so the end keyframe resolves to
+        0). Anything framing the popover therefore has to sit *inside* the
+        animated element, or it stays collapsed for 500ms and snaps in at the
+        end.
+      -->
+      <div class="filter-group-surface">
+        <FormInput
+          v-if="searchable"
+          ref="searchInput"
+          :id="labelFor"
+          v-model="search"
+          :name="`${name}-searchInput-${id}`"
+          :placeholder="searchPlaceholder"
+          :label="searchLabelFallback"
+          class="filter-group-search"
+          :variant="InputVariantsEnum.CLEAN"
+          :no-label="true"
+          :clearable="true"
+          @input="onSearch"
         />
+        <div class="filter-group-items">
+          <div
+            :id="listboxId"
+            role="listbox"
+            :aria-multiselectable="multiple"
+            :aria-labelledby="triggerId"
+          >
+            <Option
+              v-for="(option, index) in filteredOptions"
+              :key="`${name}-options-${id}-${option.value}-${index}`"
+              :option="option"
+              :option-id="optionId(index)"
+              :in-listbox="true"
+              :active="index === activeIndex"
+              :selected="selected(option.value)"
+              :big-icon="bigIcon"
+              :multiple="multiple"
+              :nullable="nullable"
+              @select="select(option.value)"
+            />
+          </div>
 
-        <Btn
-          v-if="fetchMoreVisible && paginated"
-          :disabled="loading"
-          class="fade-list-item filter-group-fetch-more"
-          @click="fetchMore"
-          :variant="BtnVariantsEnum.BARE"
-          >{{ t("filterGroup.actions.fetchMore") }}</Btn
-        >
+          <Btn
+            v-if="fetchMoreVisible && paginated"
+            :disabled="loading"
+            class="fade-list-item filter-group-fetch-more"
+            @click="fetchMore"
+            :variant="BtnVariantsEnum.BARE"
+            >{{ t("filterGroup.actions.fetchMore") }}</Btn
+          >
+        </div>
       </div>
     </Collapsed>
   </div>

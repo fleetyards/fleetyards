@@ -72,6 +72,7 @@ const toggleActive = ref(true);
 const toggleLoading = ref(false);
 
 const filterSingle = ref<string | null>("medium");
+
 const filterMultiple = ref<string[]>(["small", "large"]);
 
 const sizes = [
