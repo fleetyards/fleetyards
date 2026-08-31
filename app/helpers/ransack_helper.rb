@@ -12,7 +12,13 @@ module RansackHelper
   # Ransack accepts both "s" and "sorts" for sorting. This helper
   # normalizes the query params so that sorting_params always has data
   # regardless of which key the client used.
+  #
+  # "s" is always removed, not just when it is the one that fills "sorts" in:
+  # ransack reads "s" itself, so a leftover would silently outrank the "sorts"
+  # that sorting_params has whitelisted.
   def normalize_sort_params(query_params)
-    query_params["sorts"] ||= query_params.delete("s") if query_params["s"].present?
+    sorts = query_params.delete("s")
+
+    query_params["sorts"] ||= sorts if sorts.present?
   end
 end
