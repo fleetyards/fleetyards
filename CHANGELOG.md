@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.7.0](https://github.com/fleetyards/fleetyards/compare/v7.6.0...v7.7.0) (2026-08-31)
+
+
+### Features
+
+* **btn:** carry the loading state on the end-caps ([#4653](https://github.com/fleetyards/fleetyards/issues/4653)) ([83a4155](https://github.com/fleetyards/fleetyards/commit/83a4155782afee10c2ac8310392dfcbfa51f1b18))
+
+
+### Bug Fixes
+
+* **discord:** let commands answer in the channel ([#4648](https://github.com/fleetyards/fleetyards/issues/4648)) ([cd98b2b](https://github.com/fleetyards/fleetyards/commit/cd98b2be966387d1e65ac60117fb0109bcf8b4b6))
+* **forms:** move the input hover from the fill to the edge ([#4652](https://github.com/fleetyards/fleetyards/issues/4652)) ([5f5f5b0](https://github.com/fleetyards/fleetyards/commit/5f5f5b01d608090078bb25e26a36825fa373e330))
+* **metrics:** keep both crew tiles on one row ([#4647](https://github.com/fleetyards/fleetyards/issues/4647)) ([45975d1](https://github.com/fleetyards/fleetyards/commit/45975d14fb5a1da64c1cd11de2c967dd944a2000))
+* **rsi-loader:** fetch manufacturer logos again ([#4651](https://github.com/fleetyards/fleetyards/issues/4651)) ([bfe01e0](https://github.com/fleetyards/fleetyards/commit/bfe01e06cb1681b4d050529b24b9c4c1383811c8))
+* **tools:** mark Regolith Co. as discontinued ([#4650](https://github.com/fleetyards/fleetyards/issues/4650)) ([0154480](https://github.com/fleetyards/fleetyards/commit/015448071d32162fa324737533186278c4ff4524))
+
+
+### Chores
+
+* **annotations:** add the schema header to the commodity build test ([5a4553a](https://github.com/fleetyards/fleetyards/commit/5a4553a2e1ef76957cabe376f60434fd20c3ca29))
+
 ## [7.6.0](https://github.com/fleetyards/fleetyards/compare/v7.5.0...v7.6.0) (2026-08-31)
 
 
