@@ -2,6 +2,18 @@ $padding-horizontal: floor(($grid-gutter-width / 2));
 $nav-transition-speed: 0.3s;
 
 .tabs {
+  /*
+   * Pointed at is a short rail; current is the full one. It used to be the other
+   * way round -- hover ran the full height and `.active` stepped down to 80% --
+   * so clicking a tab made the mark you had just made shrink under the pointer,
+   * which reads as a glitch rather than a state. The stronger state gets the
+   * fuller mark, and moving between them grows.
+   *
+   * Named once, for the same reason base/Table/Col names it: two rails that mean
+   * one thing must not drift apart.
+   */
+  --rail-h: 70%;
+
   position: relative;
   padding: 25px 0 20px;
 
@@ -35,24 +47,47 @@ $nav-transition-speed: 0.3s;
       text-overflow: ellipsis;
       border: 1px solid transparent;
       cursor: pointer;
-      transition:
-        box-shadow $nav-transition-speed,
-        color $nav-transition-speed;
+      // Colour only. The box-shadow entry named a property nothing on this
+      // element ever set: the blooms it was written for lived on ::before, which
+      // carries its own transition.
+      transition: color $nav-transition-speed;
 
       i {
         color: color.adjust($text-color, $lightness: 30%);
         transition: color $nav-transition-speed;
       }
 
+      /*
+       * The same rail the table rows use, from the same tokens -- see the note
+       * in base/Table/Col. It steps down from the panel's own --cap-h because a
+       * row is a smaller unit than the frame, and stays --color-primary because
+       * it only exists while the tab is pointed at or current.
+       *
+       * What went with it is the bloom: three 10px shadows at 0.9 alpha, in four
+       * copies. Worse here than in the table, because it fired on `.active` too
+       * -- a hovered row is transient, a current tab is not, so every settings
+       * page rendered a permanently glowing rail beside a frame whose whole
+       * premise is restraint. The `.active` step to 80% height stays: that is a
+       * real distinction from hover, and the one the bloom was drowning.
+       */
       &::before {
         position: absolute;
         left: 0;
-        top: 0;
-        width: 3px;
-        height: 100%;
-        background: $primary;
+        top: 50%;
+        width: var(--cap-h-row, 3px);
+        height: var(--rail-h, 70%);
+        transform: translateY(-50%);
+        background: var(--color-primary, #428bca);
         opacity: 0;
-        transition: all ease $transition-base-speed;
+        /*
+         * Named, not `all`, which also animated the radius and border the
+         * positional variants change. And at the nav's own speed rather than the
+         * slower base one: half a second to grow a rail reads as lag on
+         * something answering a click.
+         */
+        transition:
+          opacity $nav-transition-speed ease,
+          height $nav-transition-speed ease;
         content: "";
       }
 
@@ -80,10 +115,22 @@ $nav-transition-speed: 0.3s;
           color: $text-color;
         }
 
+        /*
+         * The animation, not just the transition, because on most pages the tab
+         * list does not survive the navigation: each page renders its own
+         * TabNavView, so clicking a tab destroys the list and builds a new one
+         * with the rail already at full height. Measured -- the elements are not
+         * the same nodes afterwards -- and a transition has nothing to move from
+         * in that case.
+         *
+         * An animation runs when the element is created, so the rail grows in on
+         * arrival as well. Where the list does persist and the class merely
+         * toggles, this wins over the transition and does the same thing.
+         */
         &::before {
-          top: 10%;
-          height: 80%;
+          height: 100%;
           opacity: 1;
+          animation: tab-rail-grow $nav-transition-speed ease;
         }
       }
     }
@@ -130,17 +177,8 @@ $nav-transition-speed: 0.3s;
         border-left: none;
 
         &::before {
-          border-top-right-radius: 2px;
-          border-bottom-right-radius: 2px;
-        }
-
-        &:hover {
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
+          border-top-right-radius: var(--cap-r-row, 1.5px);
+          border-bottom-right-radius: var(--cap-r-row, 1.5px);
         }
       }
 
@@ -152,13 +190,6 @@ $nav-transition-speed: 0.3s;
           border-left: none;
           border-top-right-radius: 4px;
           border-bottom-right-radius: 4px;
-
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
         }
       }
     }
@@ -176,17 +207,8 @@ $nav-transition-speed: 0.3s;
 
         &::before {
           right: 0;
-          border-top-left-radius: 2px;
-          border-bottom-left-radius: 2px;
-        }
-
-        &:hover {
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
+          border-top-left-radius: var(--cap-r-row, 1.5px);
+          border-bottom-left-radius: var(--cap-r-row, 1.5px);
         }
       }
 
@@ -198,13 +220,6 @@ $nav-transition-speed: 0.3s;
           border-right: none;
           border-top-left-radius: 4px;
           border-bottom-left-radius: 4px;
-
-          &::before {
-            box-shadow:
-              -3px 0 10px rgba(darken($primary, 20%), 0.9),
-              0 3px 10px rgba(darken($primary, 20%), 0.9),
-              0 -3px 10px rgba(darken($primary, 20%), 0.9);
-          }
         }
       }
     }
@@ -215,5 +230,23 @@ $nav-transition-speed: 0.3s;
   .tabs-wrapper {
     margin-bottom: 20px;
     order: -1;
+  }
+}
+
+@keyframes tab-rail-grow {
+  from {
+    height: var(--rail-h, 70%);
+    opacity: 0;
+  }
+
+  to {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabs :deep(li.active) > a::before {
+    animation: none;
   }
 }
