@@ -262,7 +262,7 @@ const timeConfig = computed(() => ({
   display: block;
   box-sizing: border-box;
   width: 100%;
-  height: var(--field-h, 43px);
+  height: calc(var(--field-h, 43px) - 2px);
   margin: 0;
   padding: 6px 12px 6px 36px;
   color: var(--color-text, #c8c8c8);

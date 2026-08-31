@@ -135,13 +135,7 @@
      */
 
     input + label {
-      /*
-       * Plus the border. --field-h is the input's height, and a field's control
-       * is that inside a wrapper with a 1px edge top and bottom -- so the band
-       * to match is two pixels taller than the token. Measured: without this
-       * both controls sat exactly 2px high against the field beside them.
-       */
-      min-height: calc(var(--field-h, 43px) + 2px);
+      min-height: var(--field-h, 43px);
     }
   }
 }

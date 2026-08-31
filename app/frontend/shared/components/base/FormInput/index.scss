@@ -108,7 +108,7 @@
       flex: 1 1 auto;
       width: 100%;
       min-width: 0;
-      height: var(--field-h, 43px);
+      height: calc(var(--field-h, 43px) - 2px);
       padding: 6px 12px 6px 12px;
       color: $input-color;
       font-size: 16px;
@@ -192,14 +192,14 @@
   // crowds the field.
   &--medium {
     input {
-      height: var(--field-h-md, 48px);
+      height: calc(var(--field-h-md, 48px) - 2px);
       padding: 9px 14px;
     }
   }
 
   &--large {
     input {
-      height: var(--field-h-lg, 55px);
+      height: calc(var(--field-h-lg, 55px) - 2px);
       padding: 10px 16px;
       font-size: 19px;
       line-height: 1.33333;
@@ -214,6 +214,16 @@
    */
   &--clean {
     margin-bottom: 0;
+
+    /*
+     * No message line either. A clean field is embedded in another surface --
+     * FilterGroup's popover is the production caller -- and that surface owns
+     * the error, so reserving a line here just made the search box a good deal
+     * taller than the row it sits above.
+     */
+    .base-input__error {
+      display: none;
+    }
 
     .base-input__wrapper {
       background-color: transparent;

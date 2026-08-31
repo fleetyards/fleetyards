@@ -284,7 +284,7 @@ defineExpose({ clear });
     display: block;
     box-sizing: border-box;
     width: 100%;
-    height: 43px;
+    height: calc(var(--field-h, 43px) - 2px);
     padding: 6px 12px 6px 36px; // 36px left padding leaves room for the calendar icon
     margin: 0;
     color: $input-color;

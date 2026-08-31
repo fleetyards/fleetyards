@@ -4,7 +4,8 @@
 
   label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--field-label-gap, 5px);
+    line-height: var(--field-label-line, 1.5rem);
     white-space: nowrap;
   }
 
@@ -50,12 +51,20 @@
     justify-content: space-between;
     width: 100%;
     min-width: 200px;
-    height: 43px;
+    height: var(--field-h, 43px);
     padding: 0 12px;
     font-weight: bold;
-    background: rgba($input-bg, 0.9);
-    border: 1px solid $input-border;
-    border-radius: $border-radius-base;
+    /*
+     * #4371's first complaint, answered last: this borrowed the form-input
+     * treatment -- a lighter fill inside a *darker* edge, at half the radius --
+     * where a control in this language is a dark fill inside a lighter one. It
+     * was left alone through that redesign because every alternative that
+     * restyled it fell apart on a multi-select, and because the vocabulary it
+     * needed did not exist yet. It does now.
+     */
+    background: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: var(--radius-control, 8px);
     cursor: pointer;
 
     i,
@@ -73,9 +82,44 @@
       text-overflow: ellipsis;
     }
 
-    &:hover {
-      color: white;
-      background: $input-bg;
+    /*
+     * `:not(:disabled)`, or a disabled group brightens under the cursor -- which
+     * is worse than looking enabled, because it answers.
+     */
+    &:hover:not(:disabled) {
+      color: var(--color-lifted, #eee);
+      background: var(--color-control-hover, rgb(52 58 64 / 0.95));
+    }
+
+    /*
+     * The cap carries the state, as on every field. The trigger is the one
+     * control here that can draw its own -- it is a <button>, not a replaced
+     * element -- so it needs no wrapper to hold them.
+     */
+    &::before,
+    &::after {
+      position: absolute;
+      right: max(10px, var(--cap-inset, 12%));
+      left: max(10px, var(--cap-inset, 12%));
+      height: var(--cap-h-btn, 2px);
+      background-color: var(--field-cap, var(--color-endcap, #7a8288));
+      border-radius: var(--cap-r-btn, 1px);
+      transition: background-color 0.15s ease;
+      content: "";
+    }
+
+    &::before {
+      top: -1px;
+    }
+
+    &::after {
+      bottom: -1px;
+    }
+
+    &:focus-visible {
+      --field-cap: var(--color-primary, #428bca);
+
+      outline: none;
     }
 
     /*
@@ -90,17 +134,20 @@
     }
 
     &.disabled {
+      --field-cap: transparent;
+
+      border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
       cursor: not-allowed;
       opacity: 0.5;
     }
 
     &.hasLabel {
-      color: $input-placerholder;
+      color: var(--color-endcap, #7a8288);
       font-weight: normal;
     }
 
     &.selected {
-      color: white;
+      color: var(--color-lifted, #eee);
       font-weight: bold;
     }
   }

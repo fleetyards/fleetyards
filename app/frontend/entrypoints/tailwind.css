@@ -131,9 +131,15 @@
   );
 
   /*
-   * Field heights. Named because anything standing beside a field has to line up
-   * with it -- a checkbox centred next to one needs the number, and computing it
-   * from a literal is how it quietly stops being right.
+   * Field heights, measured on the *outside* of the control. Anything standing
+   * beside a field lines up by reading these, so they have to mean the height
+   * that shows -- not the height of the input within it, which differs by the
+   * frame and had every neighbour adding two pixels of its own to compensate.
+   *
+   * The frame moved from the input to its wrapper during this redesign, and the
+   * numbers stayed on the input, which quietly grew every field by 2px against a
+   * Btn sm built to match it at 43. The input reads
+   * `calc(var(--field-h) - 2px)` now and the outside is 43 again.
    *
    * --field-h-md is 48px to match Btn's md, where a page header puts the two
    * side by side.
