@@ -4,10 +4,33 @@ de:
     commands:
       disabled: Fleetyards-Befehle sind noch nicht verfügbar.
       failed: Beim Abrufen ist etwas schiefgelaufen. Bitte versuche es erneut.
+      compare:
+        missing_query: Bitte nenne zwei Schiffe.
+        same_ship: 'Das ist zweimal dasselbe Schiff: %{ship}.'
+        title: '%{first} vs. %{second}'
+      fleet:
+        fields:
+          members: Mitglieder
+          models: Schiffstypen
+          ships: Schiffe
+          upcoming_events: Kommende Events
+        not_allowed: '%{fleet} hat seine Seite nicht öffentlich gemacht.'
+        not_bound: Dieser Server ist mit keiner Flotte auf Fleetyards verknüpft.
+      hangar:
+        empty: '%{username} hat keine Schiffe im öffentlichen Hangar.'
+        heading: '[Hangar von %{username}](%{url}) — %{count} Schiffe, %{models} Typen'
+        missing_query: Bitte gib einen Benutzernamen an.
+        more: '…und %{count} weitere.'
+        not_available: 'Kein öffentlicher Hangar für „%{username}“.'
+      loaner:
+        heading: '[%{ship}](%{url}) kommt mit %{count} Leihschiff(en):'
+        missing_query: Bitte gib einen Schiffsnamen an.
+        none: 'Für %{ship} gibt es keine Leihschiffe.'
       ship:
         ambiguous: '%{count} Schiffe passen zu „%{query}“:'
         fields:
           classification: Klassifizierung
+          cargo: Frachtraum
           crew: Besatzung
           dimensions: Maße
           pledge_price: Pledge-Preis

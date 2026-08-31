@@ -15,7 +15,8 @@
 #
 # Indexes
 #
-#  index_fleet_notification_settings_on_fleet_id  (fleet_id) UNIQUE
+#  index_fleet_notification_settings_on_discord_guild_id  (discord_guild_id)
+#  index_fleet_notification_settings_on_fleet_id          (fleet_id) UNIQUE
 #
 # Foreign Keys
 #

@@ -4,10 +4,33 @@ fr:
     commands:
       disabled: Les commandes Fleetyards ne sont pas encore disponibles.
       failed: "Une erreur est survenue lors de la recherche. Merci de réessayer."
+      compare:
+        missing_query: Merci d'indiquer deux vaisseaux.
+        same_ship: "C'est deux fois le même vaisseau : %{ship}."
+        title: '%{first} vs %{second}'
+      fleet:
+        fields:
+          members: Membres
+          models: Types de vaisseau
+          ships: Vaisseaux
+          upcoming_events: Événements à venir
+        not_allowed: "%{fleet} n'a pas rendu sa page publique."
+        not_bound: "Ce serveur n'est lié à aucune flotte sur Fleetyards."
+      hangar:
+        empty: "%{username} n'a aucun vaisseau dans son hangar public."
+        heading: '[Hangar de %{username}](%{url}) — %{count} vaisseaux, %{models} types'
+        missing_query: Merci d'indiquer un nom d'utilisateur.
+        more: '…et %{count} de plus.'
+        not_available: 'Aucun hangar public pour « %{username} ».'
+      loaner:
+        heading: '[%{ship}](%{url}) donne accès à %{count} vaisseau(x) de prêt :'
+        missing_query: Merci d'indiquer le nom d'un vaisseau.
+        none: '%{ship} ne donne accès à aucun vaisseau de prêt.'
       ship:
         ambiguous: '%{count} vaisseaux correspondent à « %{query} » :'
         fields:
           classification: Classification
+          cargo: Fret
           crew: Équipage
           dimensions: Dimensions
           pledge_price: Prix pledge
