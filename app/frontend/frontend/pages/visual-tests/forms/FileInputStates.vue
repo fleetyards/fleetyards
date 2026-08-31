@@ -63,23 +63,24 @@ const empty = ref<string | null>(null);
         />
       </div>
       <div class="col-12 col-md-6 col-lg-3">
-        <p class="text-muted">saved, disabled</p>
+        <p class="text-muted">disabled, empty</p>
         <FormFileInput
-          v-model="saved"
-          name="fileDisabled"
+          v-model="empty"
+          name="fileDisabledEmpty"
           label="Image"
-          :preview-src="storeImage"
           :allowed-types="AllowedFileTypes.IMAGE"
           disabled
         />
       </div>
       <div class="col-12 col-md-6 col-lg-3">
-        <p class="text-muted">invalid — required, nothing chosen</p>
+        <p class="text-muted">disabled, saved</p>
         <FormFileInput
-          name="missingAvatar"
-          label="Avatar"
+          v-model="saved"
+          name="fileDisabledSaved"
+          label="Image"
+          :preview-src="storeImage"
           :allowed-types="AllowedFileTypes.IMAGE"
-          :allowed-size-mb="5"
+          disabled
         />
       </div>
     </div>
@@ -108,6 +109,16 @@ const empty = ref<string | null>(null);
         />
       </div>
       <div class="col-12 col-md-6 col-lg-3">
+        <p class="text-muted">transparent, empty</p>
+        <FormFileInput
+          v-model="empty"
+          name="fileTransparentEmpty"
+          label="Logo"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          transparent
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
         <p class="text-muted">transparent, saved</p>
         <FormFileInput
           v-model="saved"
@@ -118,13 +129,26 @@ const empty = ref<string | null>(null);
           transparent
         />
       </div>
+    </div>
+    <div class="row">
       <div class="col-12 col-md-6 col-lg-3">
-        <p class="text-muted">not settable from props</p>
+        <p class="text-muted">invalid — required, nothing chosen</p>
+        <FormFileInput
+          name="missingAvatar"
+          label="Avatar"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          :allowed-size-mb="5"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-6">
+        <p class="text-muted">two states no prop reaches</p>
         <p class="text-muted">
-          Drop a file on the empty control above to see the state between the
-          two: uploaded here, not yet saved. It is driven by
-          <code>uploadedHere</code>, which the upload flow sets, so no prop
-          reaches it.
+          Between empty and saved there is
+          <em>dropped here, not yet persisted</em>, driven by
+          <code>uploadedHere</code>, which the upload flow sets. And a
+          <em>failed upload</em> now shows on the control rather than only in a
+          toast. Both need an actual file: drop one on the empty control, and
+          disconnect to see the failure.
         </p>
       </div>
     </div>

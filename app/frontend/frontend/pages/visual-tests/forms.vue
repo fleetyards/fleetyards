@@ -11,7 +11,6 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
-import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
@@ -22,7 +21,6 @@ import Toggle from "@/shared/components/base/Toggle/index.vue";
 import ErrorStates from "@/frontend/pages/visual-tests/forms/ErrorStates.vue";
 import FileInputStates from "@/frontend/pages/visual-tests/forms/FileInputStates.vue";
 import TabsDemo from "@/frontend/pages/visual-tests/forms/TabsDemo.vue";
-import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
   InputAlignmentsEnum,
@@ -61,8 +59,6 @@ const checkboxGroup = ref<string[]>(["cargo"]);
 const toggleField = ref(true);
 
 const date = ref("2026-08-12");
-
-const file = ref<string | null>(null);
 
 const radio = ref("medium");
 
@@ -421,54 +417,10 @@ const powerMarks = (value: number) => ({ label: String(value) });
   <TabsDemo />
 
   <Heading :level="HeadingLevelEnum.H2">FormFileInput</Heading>
-  <p>The drop target, plus the avatar and transparent variants.</p>
-  <div class="row">
-    <div class="col-12 col-md-4">
-      <FormFileInput
-        v-model="file"
-        name="image"
-        label="Image"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        :allowed-size-mb="5"
-        clearable
-      />
-    </div>
-    <div class="col-12 col-md-4">
-      <FormFileInput
-        v-model="file"
-        name="disabledImage"
-        label="Disabled"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        :allowed-size-mb="5"
-        disabled
-      />
-    </div>
-    <div class="col-12 col-md-4">
-      <FormFileInput
-        v-model="file"
-        name="avatar"
-        label="Avatar"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        clearable
-        avatar
-      />
-    </div>
-    <div class="col-12 col-md-4">
-      <FormFileInput
-        v-model="file"
-        name="transparent"
-        label="Transparent"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        transparent
-      />
-    </div>
-  </div>
-
-  <Heading :level="HeadingLevelEnum.H2">FormFileInput | States</Heading>
   <p>
-    The states it can be in, which is more than any other control: empty,
-    holding a value that was saved elsewhere, disabled with one, and invalid.
-    Each in the plain, avatar and transparent treatments.
+    Every state it can be in, which is more than any other control: empty,
+    holding a value saved elsewhere, disabled either way, and invalid — each
+    across the plain, avatar and transparent treatments.
   </p>
   <FileInputStates />
 

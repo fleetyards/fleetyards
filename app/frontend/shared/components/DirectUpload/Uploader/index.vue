@@ -218,6 +218,8 @@ const upload = async () => {
     return;
   }
 
+  const failed: FileUpload[] = [];
+
   await Promise.all(
     files.value.map(async (file) => {
       try {
@@ -233,7 +235,7 @@ const upload = async () => {
       } catch (error) {
         file.status = "error";
         file.error = error;
-        clear();
+        failed.push(file);
 
         /*
          * The translated message, not the raw error. `error as string` handed
@@ -247,14 +249,17 @@ const upload = async () => {
       }
     }),
   ).then(() => {
-    const failed = files.value.filter((file) => file.status === "error");
-
     /*
-     * A failure used to arrive as "done" with an emptied list, because clear()
-     * runs in the catch and this fires regardless -- so a consumer could not
-     * tell a successful upload of nothing from a failed upload of something.
+     * The failures are collected as they happen rather than read back off
+     * `files` afterwards, and the reset happens here rather than in the catch.
+     *
+     * Both because `clear()` empties `files` *and* emits "clear" -- so reading
+     * the list here found nothing to report, and the consumer had already been
+     * told to forget the whole thing before being told anything went wrong.
+     * That is the same line that hid the failure in the first place.
      */
     if (failed.length) {
+      resetInput();
       emit("upload:error", failed);
       return;
     }
@@ -263,12 +268,18 @@ const upload = async () => {
   });
 };
 
-const clear = () => {
+// Lets the same file be picked again, without telling anyone the control was
+// cleared -- which after a failure would contradict the error being reported.
+const resetInput = () => {
   if (input.value) {
     input.value.value = "";
   }
 
   files.value = [];
+};
+
+const clear = () => {
+  resetInput();
 
   emit("clear");
 };
