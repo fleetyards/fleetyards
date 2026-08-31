@@ -81,7 +81,6 @@
     "vue-number-animation": "^2.0.2",
     "vue-router": "5.2.0",
     "vue-scrollto": "^2.20.0",
-    "vue-upload-component": "^3.2.0",
     "vue3-highlightjs": "^1.0.5",
     "vue3-swatches": "^1.2.4"
   },
