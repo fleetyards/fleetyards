@@ -10,6 +10,9 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import CargoGridViewer from "@/frontend/components/CargoGridViewer/index.vue";
 import {
   SHIP_COLORS,
+  encodeContainerCounts,
+  parseContainerCounts,
+  type ContainerRequest,
   type ShipEntry,
 } from "@/frontend/components/CargoGridViewer/constants";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -35,7 +38,6 @@ import {
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
 
-import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/constants";
 import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 import { FeatureFlagName } from "@/services/fyApi";
@@ -144,10 +146,12 @@ const singleShipCargoHolds = computed(() => {
   return shipSlots[0].combinedCargoHolds.value;
 });
 
-// Container requests: how many of each size the user wants to load
-const containerRequests = ref<Record<number, number>>(
-  Object.fromEntries(CONTAINER_SIZES.map((s) => [s, 0])),
-);
+// Container requests: how many of each size the user wants to load. A link may
+// arrive with a load already counted out - a ship inventory sends what it holds.
+const containerRequests = ref<Record<number, number>>({
+  ...Object.fromEntries(CONTAINER_SIZES.map((s) => [s, 0])),
+  ...parseContainerCounts(route.query.containers),
+});
 
 const hasContainerRequests = computed(() =>
   Object.values(containerRequests.value).some((v) => Number(v) > 0),
@@ -234,6 +238,11 @@ const syncUrl = () => {
     query.ships = slugs.join(",");
   }
 
+  const containers = encodeContainerCounts(containerRequests.value);
+  if (containers) {
+    query.containers = containers;
+  }
+
   // Per-ship modules
   for (let i = 0; i < slugs.length; i++) {
     const slug = slugs[i];
@@ -245,6 +254,10 @@ const syncUrl = () => {
 
   void router.replace({ query });
 };
+
+// The counts are typed into the form rather than routed through an action, so
+// the URL follows them instead of being rewritten only when a ship changes.
+watch(containerRequests, () => syncUrl(), { deep: true });
 
 // Ship management
 const handleShipSelect = (value: ValueType<Model> | undefined) => {
