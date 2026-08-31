@@ -39,6 +39,12 @@ en:
         missing_query: Please provide a ship name.
         more: '…and more. Try a more specific name.'
         not_found: 'No ship found for "%{query}".'
+    event_reminder:
+      signups: '%{count} signed up'
+      slots: '%{open} of %{total} slots open'
+      starting_now: Starting now
+      starts_in: 'Starts in %{count} min'
+      title: 'Reminder: %{title}'
     new_ship:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added

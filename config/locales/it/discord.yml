@@ -39,6 +39,12 @@ it:
         missing_query: Indica il nome di una nave.
         more: '…e altre. Prova con un nome più preciso.'
         not_found: 'Nessuna nave trovata per «%{query}».'
+    event_reminder:
+      signups: '%{count} iscritti'
+      slots: '%{open} di %{total} posti liberi'
+      starting_now: Inizia ora
+      starts_in: 'Inizia tra %{count} min'
+      title: 'Promemoria: %{title}'
     new_ship:
       message: 'Permettetemi di presentarvi: %{manufacturer} %{model}'
       title: Nuova nave/veicolo aggiunto

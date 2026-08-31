@@ -39,6 +39,12 @@ fr:
         missing_query: "Merci d'indiquer le nom d'un vaisseau."
         more: "…et d'autres. Essayez un nom plus précis."
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
+    event_reminder:
+      signups: '%{count} inscrits'
+      slots: '%{open} places libres sur %{total}'
+      starting_now: Commence maintenant
+      starts_in: 'Commence dans %{count} min'
+      title: 'Rappel : %{title}'
     new_ship:
       message: 'Permettez-moi de vous présenter : %{manufacturer} %{model}'
       title: Nouveau vaisseau / véhicule ajouté

@@ -10,8 +10,11 @@ module Discord
     attr_accessor :webhook_endpoint, :options, :title, :message, :url
 
     def initialize(options = {})
-      @webhook_endpoint = get_webhook_endpoint
+      # Options first: get_webhook_endpoint is an override point, and a
+      # subclass whose endpoint depends on its options -- a per-fleet webhook
+      # rather than the global announcements one -- cannot read them otherwise.
       @options = options
+      @webhook_endpoint = get_webhook_endpoint
       @title = get_title
       @message = get_message
       @url = get_url
