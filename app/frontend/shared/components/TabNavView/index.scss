@@ -115,9 +115,22 @@ $nav-transition-speed: 0.3s;
           color: $text-color;
         }
 
+        /*
+         * The animation, not just the transition, because on most pages the tab
+         * list does not survive the navigation: each page renders its own
+         * TabNavView, so clicking a tab destroys the list and builds a new one
+         * with the rail already at full height. Measured -- the elements are not
+         * the same nodes afterwards -- and a transition has nothing to move from
+         * in that case.
+         *
+         * An animation runs when the element is created, so the rail grows in on
+         * arrival as well. Where the list does persist and the class merely
+         * toggles, this wins over the transition and does the same thing.
+         */
         &::before {
           height: 100%;
           opacity: 1;
+          animation: tab-rail-grow $nav-transition-speed ease;
         }
       }
     }
@@ -217,5 +230,23 @@ $nav-transition-speed: 0.3s;
   .tabs-wrapper {
     margin-bottom: 20px;
     order: -1;
+  }
+}
+
+@keyframes tab-rail-grow {
+  from {
+    height: var(--rail-h, 70%);
+    opacity: 0;
+  }
+
+  to {
+    height: 100%;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabs :deep(li.active) > a::before {
+    animation: none;
   }
 }
