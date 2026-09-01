@@ -354,7 +354,6 @@ const onUnlink = (record: ModelModule) => {
   </InlineEditableList>
 
   <Paginator
-    v-if="data"
     :query-result-ref="data"
     :per-page="perPage"
     :update-per-page="updatePerPage"

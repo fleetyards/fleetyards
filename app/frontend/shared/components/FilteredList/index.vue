@@ -92,6 +92,16 @@ const hasActionsRight = computed(() => !!slots["actions-right"]);
 
 const hasPaginationTop = computed(() => !!slots["pagination-top"]);
 
+// A toolbar holding nothing but the paginator has no left-hand side to align
+// away from, so the control reads as centred rather than pushed to one edge.
+const paginationOnly = computed(
+  () =>
+    !!slots["pagination-top"] &&
+    !hasFilterSlot.value &&
+    !slots["actions-left"] &&
+    !slots["actions-right"],
+);
+
 const { t } = useI18n();
 
 const filterTooltip = computed(() => {
@@ -189,7 +199,10 @@ const toggleFilter = () => {
 </script>
 
 <template>
-  <div class="row filtered-list">
+  <div
+    class="row filtered-list"
+    :class="{ 'filtered-list--pagination-only': paginationOnly }"
+  >
     <div class="col-12">
       <div class="row">
         <div class="col-12 filtered-list__header">

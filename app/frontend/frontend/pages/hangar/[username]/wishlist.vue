@@ -212,7 +212,6 @@ onMounted(async () => {
         </template>
         <template #pagination>
           <Paginator
-            v-if="wishlist"
             :query-result-ref="wishlist"
             :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
             :size="BtnSizesEnum.SM"
@@ -224,7 +223,6 @@ onMounted(async () => {
 
     <template #pagination-top>
       <Paginator
-        v-if="wishlist"
         :query-result-ref="wishlist"
         :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
         :update-per-page="() => refetch()"
@@ -233,7 +231,6 @@ onMounted(async () => {
 
     <template #pagination-bottom>
       <Paginator
-        v-if="wishlist"
         :query-result-ref="wishlist"
         :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
         :update-per-page="() => refetch()"

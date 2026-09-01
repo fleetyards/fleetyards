@@ -180,7 +180,6 @@ const { t, l } = useI18n();
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="fleets"
         :query-result-ref="fleets"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -188,7 +187,6 @@ const { t, l } = useI18n();
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="fleets"
         :query-result-ref="fleets"
         :per-page="perPage"
         :update-per-page="updatePerPage"

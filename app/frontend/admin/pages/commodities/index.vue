@@ -220,7 +220,6 @@ const { t, l, toUEC } = useI18n();
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="commodities"
         :query-result-ref="commodities"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -228,7 +227,6 @@ const { t, l, toUEC } = useI18n();
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="commodities"
         :query-result-ref="commodities"
         :per-page="perPage"
         :update-per-page="updatePerPage"

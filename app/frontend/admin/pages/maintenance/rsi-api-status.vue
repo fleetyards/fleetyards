@@ -139,7 +139,6 @@ const resolve = async (log: RsiRequestLog) => {
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="rsiRequestLogs"
         :query-result-ref="rsiRequestLogs"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -147,7 +146,6 @@ const resolve = async (log: RsiRequestLog) => {
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="rsiRequestLogs"
         :query-result-ref="rsiRequestLogs"
         :per-page="perPage"
         :update-per-page="updatePerPage"

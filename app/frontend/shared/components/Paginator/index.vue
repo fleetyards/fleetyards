@@ -16,7 +16,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import type { MaybeRef } from "vue";
 
 type Props = {
-  queryResultRef: MaybeRef<BaseList>;
+  queryResultRef: MaybeRef<BaseList | undefined>;
   updatePerPage?: (perPage: number | string) => void;
   perPage?: number | string;
   size?: BtnSizesEnum;
@@ -32,11 +32,16 @@ const props = withDefaults(defineProps<Props>(), {
   hash: undefined,
 });
 
-const pagination = computed(() => {
-  const result = unref(props.queryResultRef);
+const result = computed(() => unref(props.queryResultRef));
 
-  return result.meta.pagination;
-});
+// No result yet rather than a result without pagination: the first stands in
+// for the list still loading and keeps the control on screen, the second is an
+// endpoint that does not paginate at all and gets nothing.
+const loading = computed(() => !result.value);
+
+const pagination = computed(() => result.value?.meta.pagination);
+
+const visible = computed(() => loading.value || !!pagination.value);
 
 const perPageSelectable = computed(
   () => !!pagination.value?.perPageSteps && !!props.updatePerPage,
@@ -45,6 +50,12 @@ const perPageSelectable = computed(
 const internalPerPage = computed(
   () => props.perPage || pagination.value?.defaultPerPage,
 );
+
+// An empty list still has a page one, and a page count is only unknown while the
+// request is out.
+const totalPages = computed(() => pagination.value?.totalPages || 1);
+
+const pagesVisible = computed(() => loading.value || totalPages.value > 1);
 
 const { t } = useI18n();
 
@@ -61,27 +72,31 @@ const currentPage = computed(() => {
   const page = Number(route.query.page);
   return Number.isNaN(page) ? 1 : page;
 });
+
+const pagesLabel = computed(() =>
+  t("paginator.labels.pages", {
+    page: String(currentPage.value),
+    total: loading.value ? "–" : String(totalPages.value),
+  }),
+);
 </script>
 
 <template>
-  <div
-    v-if="pagination && (perPageSelectable || pagination.totalCount > 0)"
-    class="pagination"
-  >
+  <div v-if="visible" class="pagination">
     <BtnGroup>
       <PerPageDropdown
         v-if="perPageSelectable"
         :size="size"
         :per-page="internalPerPage"
-        :steps="pagination.perPageSteps"
+        :steps="pagination?.perPageSteps"
         @change="updatePerPage"
       />
-      <template v-if="pagination.totalCount > 0 && pagination.totalPages > 1">
+      <template v-if="pagesVisible">
         <Btn
           v-if="!mobile"
           :size="size"
           :to="pageRoute(1)"
-          :disabled="currentPage <= 1"
+          :disabled="loading || currentPage <= 1"
           route-active-class=""
         >
           <i class="fa fa-chevron-double-left" />
@@ -89,29 +104,20 @@ const currentPage = computed(() => {
         <Btn
           :size="size"
           :to="pageRoute(currentPage - 1)"
-          :disabled="currentPage <= 1"
+          :disabled="loading || currentPage <= 1"
           route-active-class=""
         >
           <i class="fa fa-chevron-left" />
         </Btn>
       </template>
-      <span
-        v-if="pagination.totalCount > 0"
-        class="pagination__pages"
-        style="flex-grow: none"
-      >
-        {{
-          t("paginator.labels.pages", {
-            page: String(currentPage),
-            total: String(pagination.totalPages || 1),
-          })
-        }}
+      <span class="pagination__pages" style="flex-grow: none">
+        {{ pagesLabel }}
       </span>
-      <template v-if="pagination.totalCount > 0 && pagination.totalPages > 1">
+      <template v-if="pagesVisible">
         <Btn
           :size="size"
           :to="pageRoute(currentPage + 1)"
-          :disabled="currentPage >= pagination.totalPages"
+          :disabled="loading || currentPage >= totalPages"
           route-active-class=""
         >
           <i class="fa fa-chevron-right" />
@@ -119,8 +125,8 @@ const currentPage = computed(() => {
         <Btn
           v-if="!mobile"
           :size="size"
-          :to="pageRoute(pagination.totalPages)"
-          :disabled="currentPage >= pagination.totalPages"
+          :to="pageRoute(totalPages)"
+          :disabled="loading || currentPage >= totalPages"
           route-active-class=""
         >
           <i class="fa fa-chevron-double-right" />

@@ -180,7 +180,6 @@ const columns: BaseTableCol<User>[] = [
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="users"
         :query-result-ref="users"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -188,7 +187,6 @@ const columns: BaseTableCol<User>[] = [
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="users"
         :query-result-ref="users"
         :per-page="perPage"
         :update-per-page="updatePerPage"

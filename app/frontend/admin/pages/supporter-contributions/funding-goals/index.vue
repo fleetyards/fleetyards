@@ -186,7 +186,6 @@ const { formatCents } = useCurrencyFormat();
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="fundingGoals"
         :query-result-ref="fundingGoals"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -194,7 +193,6 @@ const { formatCents } = useCurrencyFormat();
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="fundingGoals"
         :query-result-ref="fundingGoals"
         :per-page="perPage"
         :update-per-page="updatePerPage"

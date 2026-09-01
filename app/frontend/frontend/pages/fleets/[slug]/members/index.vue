@@ -205,7 +205,6 @@ const crumbs = computed<Crumb[]>(() => {
 
     <template #pagination-top>
       <Paginator
-        v-if="members"
         :query-result-ref="members"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -214,7 +213,6 @@ const crumbs = computed<Crumb[]>(() => {
 
     <template #pagination-bottom>
       <Paginator
-        v-if="members"
         :query-result-ref="members"
         :per-page="perPage"
         :update-per-page="updatePerPage"

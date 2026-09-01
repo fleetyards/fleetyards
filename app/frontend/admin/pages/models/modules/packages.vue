@@ -213,7 +213,6 @@ const { t } = useI18n();
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="models"
         :query-result-ref="models"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -221,7 +220,6 @@ const { t } = useI18n();
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="models"
         :query-result-ref="models"
         :per-page="perPage"
         :update-per-page="updatePerPage"

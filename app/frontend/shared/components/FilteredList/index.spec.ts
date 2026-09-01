@@ -50,6 +50,12 @@ const mountWithToolbar = (slots: Record<string, string>) =>
     slots,
   });
 
+const mountWithSlots = (slots: Record<string, () => unknown>) =>
+  mountWithDefaults<typeof ListComponent>(ListComponent, {
+    props: { name: "test-list", records: [], asyncStatus: loaded() },
+    slots,
+  });
+
 describe("FilteredList", () => {
   it("sends a refused list to the access screen, not the outage one", async () => {
     const wrapper = await mount(403);
@@ -95,5 +101,26 @@ describe("FilteredList", () => {
     expect(wrapper.find(".filtered-list__actions").exists()).toBe(true);
     expect(wrapper.find(".filtered-list__actions-right").exists()).toBe(false);
     expect(wrapper.find(".filtered-list__pagination-top").exists()).toBe(false);
+  });
+
+  it("centres a toolbar that carries nothing but the paginator", async () => {
+    const wrapper = await mountWithSlots({
+      "pagination-top": () => "pages",
+    });
+
+    expect(wrapper.get(".filtered-list").classes()).toContain(
+      "filtered-list--pagination-only",
+    );
+  });
+
+  it("leaves the paginator on the edge once it shares the toolbar", async () => {
+    const wrapper = await mountWithSlots({
+      "pagination-top": () => "pages",
+      "actions-left": () => "action",
+    });
+
+    expect(wrapper.get(".filtered-list").classes()).not.toContain(
+      "filtered-list--pagination-only",
+    );
   });
 });

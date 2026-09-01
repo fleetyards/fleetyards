@@ -295,7 +295,6 @@ const columns: BaseTableCol<Import>[] = [
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="importsList"
         :query-result-ref="importsList"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -303,7 +302,6 @@ const columns: BaseTableCol<Import>[] = [
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="importsList"
         :query-result-ref="importsList"
         :per-page="perPage"
         :update-per-page="updatePerPage"

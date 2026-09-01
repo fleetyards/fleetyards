@@ -296,7 +296,6 @@ const handleUploadDone = async (files: FileUpload[]) => {
   </InlineEditableList>
 
   <Paginator
-    v-if="data"
     :query-result-ref="data"
     :per-page="perPage"
     :update-per-page="updatePerPage"

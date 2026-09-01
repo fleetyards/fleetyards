@@ -193,7 +193,6 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="destroyedFleets"
         :query-result-ref="destroyedFleets"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -201,7 +200,6 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="destroyedFleets"
         :query-result-ref="destroyedFleets"
         :per-page="perPage"
         :update-per-page="updatePerPage"
