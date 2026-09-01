@@ -24,8 +24,9 @@ module Discord
       # command cannot post a public hit and a private miss.
       #
       # The catalogue lookups answer in the channel: asking in company is the
-      # point, and the cost is that their refusals are public too. Anything that
-      # reads or changes one fleet's own data sets `ephemeral: true`.
+      # point, and the cost is that their refusals are public too. A command
+      # about one person's own data, or about one fleet's, sets
+      # `ephemeral: true` instead.
       EPHEMERAL_BY_DEFAULT = false
 
       # A subcommand is an option of type SUB_COMMAND that carries a `handler`
@@ -109,6 +110,20 @@ module Discord
               options: []
             }
           ]
+        },
+        {
+          name: "myhangar",
+          description: "Show your own hangar, only to you",
+          handler: "Discord::Commands::MyHangar",
+          ephemeral: true,
+          options: []
+        },
+        {
+          name: "mywishlist",
+          description: "Show your own wishlist, only to you",
+          handler: "Discord::Commands::MyWishlist",
+          ephemeral: true,
+          options: []
         }
       ].freeze
 

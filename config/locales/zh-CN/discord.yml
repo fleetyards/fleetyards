@@ -2,6 +2,7 @@
 zh-CN:
   discord:
     commands:
+      account_not_linked: '请先在 Fleetyards 上关联你的 Discord 账号：%{url}'
       disabled: Fleetyards 命令尚不可用。
       failed: 查询时出错，请重试。
       compare:
@@ -26,6 +27,14 @@ zh-CN:
         heading: '[%{ship}](%{url}) 附带 %{count} 艘替代飞船：'
         missing_query: 请提供飞船名称。
         none: '%{ship} 没有替代飞船。'
+      my_hangar:
+        empty: '[你的机库](%{url})中还没有飞船。'
+        heading: '[你的机库](%{url}) — %{count} 艘飞船，%{models} 种型号'
+        more: '…还有 %{count} 种。'
+      my_wishlist:
+        empty: '[你的心愿单](%{url})中还没有内容。'
+        heading: '[你的心愿单](%{url}) — %{count} 艘飞船，%{models} 种型号'
+        more: '…还有 %{count} 种。'
       ship:
         ambiguous: '有 %{count} 艘飞船匹配“%{query}”：'
         fields:

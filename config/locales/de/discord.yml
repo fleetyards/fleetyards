@@ -2,6 +2,7 @@
 de:
   discord:
     commands:
+      account_not_linked: 'Verknüpfe zuerst deinen Discord-Account auf Fleetyards: %{url}'
       disabled: Fleetyards-Befehle sind noch nicht verfügbar.
       failed: Beim Abrufen ist etwas schiefgelaufen. Bitte versuche es erneut.
       compare:
@@ -26,6 +27,14 @@ de:
         heading: '[%{ship}](%{url}) kommt mit %{count} Leihschiff(en):'
         missing_query: Bitte gib einen Schiffsnamen an.
         none: 'Für %{ship} gibt es keine Leihschiffe.'
+      my_hangar:
+        empty: 'Du hast noch keine Schiffe in [deinem Hangar](%{url}).'
+        heading: '[Dein Hangar](%{url}) — %{count} Schiffe, %{models} Typen'
+        more: '…und %{count} weitere.'
+      my_wishlist:
+        empty: 'Auf [deiner Wunschliste](%{url}) steht noch nichts.'
+        heading: '[Deine Wunschliste](%{url}) — %{count} Schiffe, %{models} Typen'
+        more: '…und %{count} weitere.'
       ship:
         ambiguous: '%{count} Schiffe passen zu „%{query}“:'
         fields:
