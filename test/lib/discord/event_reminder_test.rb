@@ -59,7 +59,7 @@ module Discord
     test "reports how many slots are open" do
       team_with_slots(14)
 
-      assert_includes post, I18n.t("discord.event_reminder.slots", open: 14, total: 14)
+      assert_includes post, I18n.t("discord.event_availability.slots", open: 14, total: 14)
     end
 
     test "a taken slot is not counted as open" do
@@ -69,7 +69,7 @@ module Discord
         fleet_event_slot: team.fleet_event_slots.first,
         fleet_membership: accepted_member)
 
-      assert_includes post, I18n.t("discord.event_reminder.slots", open: 2, total: 3)
+      assert_includes post, I18n.t("discord.event_availability.slots", open: 2, total: 3)
     end
 
     test "a withdrawn signup frees its slot again" do
@@ -80,7 +80,7 @@ module Discord
         fleet_membership: accepted_member)
       signup.update!(status: "withdrawn")
 
-      assert_includes post, I18n.t("discord.event_reminder.slots", open: 3, total: 3)
+      assert_includes post, I18n.t("discord.event_availability.slots", open: 3, total: 3)
     end
 
     # "0 of 0 slots open" reads like a full event, which is the opposite of true.
@@ -92,8 +92,8 @@ module Discord
 
       content = post
 
-      assert_includes content, I18n.t("discord.event_reminder.signups", count: 1)
-      assert_not_includes content, I18n.t("discord.event_reminder.slots", open: 0, total: 0)
+      assert_includes content, I18n.t("discord.event_availability.signups", count: 1)
+      assert_not_includes content, I18n.t("discord.event_availability.slots", open: 0, total: 0)
     end
 
     test "an event with neither slots nor signups still announces itself" do

@@ -155,6 +155,14 @@ module Discord
                   ]
                 }
               ]
+            },
+            {
+              name: "events",
+              description: "List this server's fleet events, only to you",
+              type: SUB_COMMAND,
+              handler: "Discord::Commands::FleetEvents",
+              ephemeral: true,
+              options: []
             }
           ]
         },

@@ -15,6 +15,10 @@ de:
           models: Schiffstypen
           ships: Schiffe
           upcoming_events: Kommende Events
+        events:
+          heading: '[Kommende Events von %{fleet}](%{url})'
+          none: In den nächsten 90 Tagen steht nichts an.
+          not_allowed: Du darfst die Events dieser Flotte nicht sehen.
         invite:
           expires: 'läuft in %{time} ab'
           failed: Der Einladungslink konnte nicht erstellt werden. Bitte versuche es erneut.
@@ -66,9 +70,10 @@ de:
         not_found: 'Kein Schiff für „%{query}“ gefunden.'
     direct_message:
       footer: Gesendet, weil du Discord-Benachrichtigungen auf Fleetyards aktiviert hast
-    event_reminder:
+    event_availability:
       signups: '%{count} Anmeldungen'
       slots: '%{open} von %{total} Plätzen frei'
+    event_reminder:
       starting_now: Beginnt jetzt
       starts_in: 'Beginnt in %{count} Min.'
       title: 'Erinnerung: %{title}'

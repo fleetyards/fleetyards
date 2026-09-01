@@ -15,6 +15,10 @@ zh-CN:
           models: 飞船类型
           ships: 飞船
           upcoming_events: 即将开始的活动
+        events:
+          heading: '[%{fleet} 即将举行](%{url})'
+          none: 未来 90 天内没有安排。
+          not_allowed: 你没有查看这支舰队活动的权限。
         invite:
           expires: '%{time}后过期'
           failed: 无法创建邀请链接，请重试。
@@ -66,9 +70,10 @@ zh-CN:
         not_found: '未找到与“%{query}”匹配的飞船。'
     direct_message:
       footer: 因为你在 Fleetyards 上启用了 Discord 通知
-    event_reminder:
+    event_availability:
       signups: '%{count} 人已报名'
       slots: '%{total} 个位置中还有 %{open} 个空缺'
+    event_reminder:
       starting_now: 即将开始
       starts_in: '%{count} 分钟后开始'
       title: '提醒：%{title}'

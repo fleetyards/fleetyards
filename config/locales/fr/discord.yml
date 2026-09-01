@@ -15,6 +15,10 @@ fr:
           models: Types de vaisseau
           ships: Vaisseaux
           upcoming_events: Événements à venir
+        events:
+          heading: '[À venir dans %{fleet}](%{url})'
+          none: 'Rien n''est prévu dans les 90 prochains jours.'
+          not_allowed: 'Tu n''as pas le droit de voir les événements de cette flotte.'
         invite:
           expires: 'expire dans %{time}'
           failed: 'Le lien d''invitation n''a pas pu être créé. Réessaie.'
@@ -66,9 +70,10 @@ fr:
         not_found: 'Aucun vaisseau trouvé pour « %{query} ».'
     direct_message:
       footer: Envoyé parce que vous avez activé les notifications Discord sur Fleetyards
-    event_reminder:
+    event_availability:
       signups: '%{count} inscrits'
       slots: '%{open} places libres sur %{total}'
+    event_reminder:
       starting_now: Commence maintenant
       starts_in: 'Commence dans %{count} min'
       title: 'Rappel : %{title}'

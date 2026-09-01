@@ -15,6 +15,10 @@ zh-TW:
           models: 船艦類型
           ships: 船艦
           upcoming_events: 即將開始的活動
+        events:
+          heading: '[%{fleet} 即將舉行](%{url})'
+          none: 未來 90 天內沒有安排。
+          not_allowed: 你沒有查看這支艦隊活動的權限。
         invite:
           expires: '%{time}後過期'
           failed: 無法建立邀請連結，請重試。
@@ -66,9 +70,10 @@ zh-TW:
         not_found: '找不到符合「%{query}」的船艦。'
     direct_message:
       footer: 因為你在 Fleetyards 上啟用了 Discord 通知
-    event_reminder:
+    event_availability:
       signups: '%{count} 人已報名'
       slots: '%{total} 個位置中還有 %{open} 個空缺'
+    event_reminder:
       starting_now: 即將開始
       starts_in: '%{count} 分鐘後開始'
       title: '提醒：%{title}'

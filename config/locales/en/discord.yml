@@ -15,6 +15,10 @@ en:
           models: Ship types
           ships: Ships
           upcoming_events: Upcoming events
+        events:
+          heading: '[Upcoming in %{fleet}](%{url})'
+          none: Nothing is coming up in the next 90 days.
+          not_allowed: 'You are not allowed to see this fleet''s events.'
         invite:
           expires: 'expires in %{time}'
           failed: The invite link could not be created. Please try again.
@@ -66,9 +70,10 @@ en:
         not_found: 'No ship found for "%{query}".'
     direct_message:
       footer: Sent because you enabled Discord notifications on Fleetyards
-    event_reminder:
+    event_availability:
       signups: '%{count} signed up'
       slots: '%{open} of %{total} slots open'
+    event_reminder:
       starting_now: Starting now
       starts_in: 'Starts in %{count} min'
       title: 'Reminder: %{title}'

@@ -15,6 +15,10 @@ it:
           models: Tipi di nave
           ships: Navi
           upcoming_events: Prossimi eventi
+        events:
+          heading: '[Prossimi eventi di %{fleet}](%{url})'
+          none: 'Non c''è nulla in programma nei prossimi 90 giorni.'
+          not_allowed: Non puoi vedere gli eventi di questa flotta.
         invite:
           expires: 'scade tra %{time}'
           failed: Non è stato possibile creare il link di invito. Riprova.
@@ -66,9 +70,10 @@ it:
         not_found: 'Nessuna nave trovata per «%{query}».'
     direct_message:
       footer: Inviato perché hai attivato le notifiche Discord su Fleetyards
-    event_reminder:
+    event_availability:
       signups: '%{count} iscritti'
       slots: '%{open} di %{total} posti liberi'
+    event_reminder:
       starting_now: Inizia ora
       starts_in: 'Inizia tra %{count} min'
       title: 'Promemoria: %{title}'
