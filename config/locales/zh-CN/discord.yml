@@ -23,6 +23,14 @@ zh-CN:
           limit_too_low: 邀请链接至少需要一次使用次数。
           needs_approval: 打开链接的人会提交加入申请 — 申请仍需批准。
           not_allowed: 你没有为这支舰队创建邀请链接的权限。
+        members:
+          empty: 这支舰队还没有已接受的成员。
+          heading: '[%{fleet} 成员](%{url}) — %{count}'
+          more: '…还有 %{count} 位。'
+          no_requests: 目前没有人在等待加入。
+          not_allowed: 你没有查看这支舰队成员的权限。
+          requests_heading: '[%{fleet} 加入申请](%{url}) — %{count}'
+          waiting: '已等待 %{time}'
         not_allowed: '%{fleet} 未公开其页面。'
         not_bound: 此服务器尚未与 Fleetyards 上的舰队关联。
       hangar:

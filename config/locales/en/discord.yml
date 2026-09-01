@@ -23,6 +23,14 @@ en:
           limit_too_low: An invite link needs at least one use.
           needs_approval: Whoever opens it asks to join — the request still needs accepting.
           not_allowed: You are not allowed to create invite links for this fleet.
+        members:
+          empty: This fleet has no accepted members yet.
+          heading: '[%{fleet} members](%{url}) — %{count}'
+          more: '…and %{count} more.'
+          no_requests: No one is waiting to join right now.
+          not_allowed: 'You are not allowed to see this fleet''s members.'
+          requests_heading: '[%{fleet} join requests](%{url}) — %{count}'
+          waiting: 'waiting %{time}'
         not_allowed: '%{fleet} has not made its page public.'
         not_bound: This server is not linked to a fleet on Fleetyards.
       hangar:

@@ -123,6 +123,12 @@ module Discord
         assert Registry.ephemeral?("fleet", "invite"), "/fleet invite would answer in the channel"
       end
 
+      # A roster is usernames and RSI handles, and the guild it was typed in may
+      # have guests.
+      test "the member list answers privately" do
+        assert Registry.ephemeral?("fleet", "members"), "/fleet members would answer in the channel"
+      end
+
       # A "that command no longer exists" belongs to whoever typed it.
       test "an unregistered name answers privately" do
         assert Registry.ephemeral?("definitely-not-a-command")

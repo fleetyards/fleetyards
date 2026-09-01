@@ -23,6 +23,14 @@ fr:
           limit_too_low: 'Un lien d''invitation nécessite au moins une utilisation.'
           needs_approval: 'Celui qui l''ouvre demande à rejoindre — la demande doit encore être acceptée.'
           not_allowed: 'Tu n''as pas le droit de créer des liens d''invitation pour cette flotte.'
+        members:
+          empty: 'Cette flotte n''a encore aucun membre accepté.'
+          heading: '[Membres de %{fleet}](%{url}) — %{count}'
+          more: '…et %{count} de plus.'
+          no_requests: 'Personne n''attend d''être accepté pour le moment.'
+          not_allowed: 'Tu n''as pas le droit de voir les membres de cette flotte.'
+          requests_heading: '[Demandes pour %{fleet}](%{url}) — %{count}'
+          waiting: 'en attente depuis %{time}'
         not_allowed: "%{fleet} n'a pas rendu sa page publique."
         not_bound: "Ce serveur n'est lié à aucune flotte sur Fleetyards."
       hangar:
