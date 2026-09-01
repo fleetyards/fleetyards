@@ -19,6 +19,13 @@ type Props = {
   size?: `${BtnSizesEnum}`;
   variant?: `${BtnVariantsEnum}`;
   tone?: `${BtnTonesEnum}`;
+  /**
+   * Stretches the trigger, not just this wrapper. A `w-full` class only widens
+   * the wrapper - the trigger inside it keeps its natural width and the extra
+   * space stays empty, which is what a full-width dropdown on a phone looked
+   * like before this.
+   */
+  block?: boolean;
   expandLeft?: boolean;
   expandTop?: boolean;
   expandBottom?: boolean;
@@ -28,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: undefined,
   variant: BtnVariantsEnum.SOLID,
   tone: BtnTonesEnum.NEUTRAL,
+  block: false,
   expandLeft: false,
   expandTop: false,
   expandBottom: false,
@@ -196,6 +204,7 @@ const documentClick = (event: MouseEvent) => {
         :size="size"
         :variant="variant"
         :tone="tone"
+        :block="block"
         :active="visible"
         aria-haspopup="menu"
         :aria-expanded="visible"
