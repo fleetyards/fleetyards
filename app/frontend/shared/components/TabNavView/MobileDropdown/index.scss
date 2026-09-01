@@ -97,6 +97,20 @@
         box-shadow: 0 0 8px rgba($primary, 0.8);
       }
     }
+
+    // Leaves for a list elsewhere, so it never carries the current dot.
+    &--link-out i {
+      margin-left: 6px;
+      font-size: 0.8em;
+      opacity: 0.6;
+    }
+  }
+
+  // The first link-out, which is the one that follows a tab, is what sets the
+  // group apart. `:first-of-type` cannot say this: every item here is an `li`,
+  // so it would match the first tab instead.
+  &__item:not(.tab-nav-dropdown__item--link-out) + &__item--link-out {
+    border-top: 1px solid $gray-darker;
   }
 }
 

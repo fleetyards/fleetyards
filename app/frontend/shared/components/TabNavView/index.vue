@@ -9,9 +9,11 @@ import { type RouteRecordRaw } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
 import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import TabNavViewMobileDropdown from "@/shared/components/TabNavView/MobileDropdown/index.vue";
+import { type TabNavLink } from "@/shared/components/TabNavView/types";
 
 type Props = {
   routes?: RouteRecordRaw[];
+  links?: TabNavLink[];
   authenticated?: boolean;
   resourceAccess?: string[];
   activeKey?: string;
@@ -19,6 +21,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   routes: undefined,
+  links: undefined,
   authenticated: false,
   resourceAccess: undefined,
   activeKey: undefined,
@@ -72,6 +75,7 @@ watch(
       <TabNavViewMobileDropdown
         v-if="mobile && props.routes"
         :routes="props.routes"
+        :links="props.links"
         :authenticated="props.authenticated"
         :resource-access="props.resourceAccess"
       />
@@ -80,6 +84,7 @@ watch(
           <TabNavViewItems
             v-if="props.routes"
             :routes="props.routes"
+            :links="props.links"
             :authenticated="props.authenticated"
             :resource-access="props.resourceAccess"
           />

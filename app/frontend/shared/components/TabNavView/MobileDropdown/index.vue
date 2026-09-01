@@ -6,20 +6,25 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type RouteRecordRaw } from "vue-router";
+import { type RouteLocationRaw, type RouteRecordRaw } from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
 import {
   routeName,
   useActiveTab,
 } from "@/shared/components/TabNavView/useActiveTab";
+import { type TabNavLink } from "@/shared/components/TabNavView/types";
 
 type Props = {
   routes: RouteRecordRaw[];
+  links?: TabNavLink[];
   authenticated: boolean;
   resourceAccess?: string[];
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  links: undefined,
+  resourceAccess: undefined,
+});
 
 const { t } = useI18n();
 const route = useRoute();
@@ -57,6 +62,12 @@ const select = (r: RouteRecordRaw) => {
   if (name) {
     void router.push({ name });
   }
+};
+
+const follow = (link: TabNavLink) => {
+  visible.value = false;
+
+  void router.push(link.to as RouteLocationRaw);
 };
 
 const onDocumentClick = (event: MouseEvent) => {
@@ -119,6 +130,20 @@ onUnmounted(() => {
           @click="select(item)"
         >
           <span>{{ t(`nav.${item.meta?.title}`) }}</span>
+        </li>
+        <li
+          v-for="link in props.links"
+          :key="link.label"
+          class="tab-nav-dropdown__item tab-nav-dropdown__item--link-out"
+          role="option"
+          :aria-selected="false"
+          @click="follow(link)"
+        >
+          <span>{{ link.label }}</span>
+          <i
+            class="fa-duotone fa-arrow-up-right-from-square"
+            aria-hidden="true"
+          />
         </li>
       </ul>
     </Transition>
