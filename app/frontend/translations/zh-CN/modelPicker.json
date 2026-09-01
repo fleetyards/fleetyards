@@ -1,7 +1,8 @@
 {
   "zh-CN": {
-    "newVehicles": {
-      "title": "将舰船添加到你的机库",
+    "modelPicker": {
+      "hangarTitle": "将舰船添加到你的机库",
+      "compareTitle": "选择要比较的飞船",
       "wishlistTitle": "将舰船添加到你的愿望清单",
       "labels": {
         "search": "按名称或制造商搜索",
@@ -16,7 +17,8 @@
       },
       "badges": {
         "inHangar": "已在机库",
-        "onWishlist": "已在愿望清单"
+        "onWishlist": "已在愿望清单",
+        "comparing": "比较中"
       }
     }
   }

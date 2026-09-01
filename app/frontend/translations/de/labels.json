@@ -339,7 +339,8 @@
           "share": "Anteil am besten Wert der Zeile",
           "better": "besser als die Referenz",
           "worse": "schlechter"
-        }
+        },
+        "selectShips": "Schiffe auswählen"
       },
       "cargoRoutes": "Frachtrouten",
       "uecPerUnit": "aUEC / Unit",

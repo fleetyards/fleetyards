@@ -337,7 +337,8 @@
           "share": "share of the row's best",
           "better": "beats the baseline",
           "worse": "behind it"
-        }
+        },
+        "selectShips": "Select Ships"
       },
       "cargoRoutes": "Cargo routes",
       "uecPerUnit": "aUEC / Unit",

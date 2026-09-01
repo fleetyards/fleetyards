@@ -339,7 +339,8 @@
           "share": "佔本列最佳值的比例",
           "better": "優於基準",
           "worse": "落後基準"
-        }
+        },
+        "selectShips": "選擇飛船"
       },
       "cargoRoutes": "貨物路線",
       "uecPerUnit": "aUEC / Unit",
