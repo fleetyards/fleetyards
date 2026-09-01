@@ -2,6 +2,7 @@
   "en": {
     "modelPicker": {
       "hangarTitle": "Add Ships to your Hangar",
+      "compareTitle": "Select Ships to Compare",
       "wishlistTitle": "Add Ships to your Wishlist",
       "labels": {
         "search": "Search by name or manufacturer",
@@ -16,7 +17,8 @@
       },
       "badges": {
         "inHangar": "In Hangar",
-        "onWishlist": "On Wishlist"
+        "onWishlist": "On Wishlist",
+        "comparing": "Comparing"
       }
     }
   }

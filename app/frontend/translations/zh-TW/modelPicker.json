@@ -2,6 +2,7 @@
   "zh-TW": {
     "modelPicker": {
       "hangarTitle": "將艦船加入你的機庫",
+      "compareTitle": "選擇要比較的飛船",
       "wishlistTitle": "將艦船加入你的願望清單",
       "labels": {
         "search": "依名稱或製造商搜尋",
@@ -16,7 +17,8 @@
       },
       "badges": {
         "inHangar": "已在機庫",
-        "onWishlist": "已在願望清單"
+        "onWishlist": "已在願望清單",
+        "comparing": "比較中"
       }
     }
   }

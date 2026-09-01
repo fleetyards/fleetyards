@@ -2,6 +2,7 @@
   "fr": {
     "modelPicker": {
       "hangarTitle": "Ajouter des vaisseaux à votre hangar",
+      "compareTitle": "Sélectionner des vaisseaux à comparer",
       "wishlistTitle": "Ajouter des vaisseaux à votre liste de souhaits",
       "labels": {
         "search": "Rechercher par nom ou constructeur",
@@ -16,7 +17,8 @@
       },
       "badges": {
         "inHangar": "Dans le hangar",
-        "onWishlist": "Dans la liste de souhaits"
+        "onWishlist": "Dans la liste de souhaits",
+        "comparing": "En comparaison"
       }
     }
   }

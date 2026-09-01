@@ -339,7 +339,8 @@
           "share": "porcentaje del mejor de la fila",
           "better": "supera la referencia",
           "worse": "por detrás de ella"
-        }
+        },
+        "selectShips": "Seleccionar naves"
       },
       "cargoRoutes": "Rutas de carga",
       "uecPerUnit": "aUEC / Unit",

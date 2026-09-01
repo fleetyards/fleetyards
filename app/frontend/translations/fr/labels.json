@@ -339,7 +339,8 @@
           "share": "part du meilleur de la ligne",
           "better": "dépasse la référence",
           "worse": "en dessous"
-        }
+        },
+        "selectShips": "Sélectionner des vaisseaux"
       },
       "cargoRoutes": "Routes de cargaisons",
       "uecPerUnit": "aUEC / Unité",

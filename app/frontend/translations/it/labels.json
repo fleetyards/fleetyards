@@ -339,7 +339,8 @@
           "share": "quota rispetto al migliore della riga",
           "better": "supera il riferimento",
           "worse": "resta indietro"
-        }
+        },
+        "selectShips": "Seleziona navi"
       },
       "cargoRoutes": "Rotte di carico",
       "uecPerUnit": "aUEC / Unit",

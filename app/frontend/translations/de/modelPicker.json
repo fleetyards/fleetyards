@@ -2,6 +2,7 @@
   "de": {
     "modelPicker": {
       "hangarTitle": "Schiffe zum Hangar hinzufügen",
+      "compareTitle": "Schiffe zum Vergleichen auswählen",
       "wishlistTitle": "Schiffe zur Wunschliste hinzufügen",
       "labels": {
         "search": "Nach Name oder Hersteller suchen",
@@ -16,7 +17,8 @@
       },
       "badges": {
         "inHangar": "Im Hangar",
-        "onWishlist": "Auf der Wunschliste"
+        "onWishlist": "Auf der Wunschliste",
+        "comparing": "Im Vergleich"
       }
     }
   }
