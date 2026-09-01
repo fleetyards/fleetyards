@@ -381,7 +381,9 @@
         "ignore": "忽略",
         "noManufacturer": "此标识符无法解析出制造商",
         "alreadyExists": "%{name} 已在目录中",
-        "link": "已在目录中"
+        "link": "已在目录中",
+        "markAsPaintSelected": "将所选标记为涂装",
+        "ignoreSelected": "忽略所选"
       },
       "revert": "还原"
     }

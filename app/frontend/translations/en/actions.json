@@ -381,7 +381,9 @@
         "ignore": "Ignore",
         "noManufacturer": "No manufacturer resolves from this identifier",
         "alreadyExists": "%{name} is already in the catalogue",
-        "link": "Already in the catalogue"
+        "link": "Already in the catalogue",
+        "markAsPaintSelected": "Mark selected as paints",
+        "ignoreSelected": "Ignore selected"
       },
       "revert": "Revert"
     }

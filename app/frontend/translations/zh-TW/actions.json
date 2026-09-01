@@ -381,7 +381,9 @@
         "ignore": "忽略",
         "noManufacturer": "此識別碼無法解析出製造商",
         "alreadyExists": "%{name} 已在目錄中",
-        "link": "已在目錄中"
+        "link": "已在目錄中",
+        "markAsPaintSelected": "將所選標記為塗裝",
+        "ignoreSelected": "忽略所選"
       },
       "revert": "還原"
     }
