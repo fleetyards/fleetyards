@@ -9,6 +9,7 @@ import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
+import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelModuleQuery } from "@/services/fyAdminApi";
 import { useModelModuleFilters } from "@/admin/composables/useModelModuleFilters";
@@ -19,6 +20,7 @@ const prefillFormValues = () => {
   return {
     nameCont: filters.value.nameCont,
     moduleHardpointsModelIdEq: filters.value.moduleHardpointsModelIdEq,
+    manufacturerIdIn: filters.value.manufacturerIdIn || [],
   };
 };
 
@@ -62,6 +64,12 @@ watch(
       v-model="form.moduleHardpointsModelIdEq"
       name="model"
       value-attr="id"
+    />
+
+    <ManufacturerSelect
+      v-model="form.manufacturerIdIn"
+      value-attr="id"
+      name="manufacturer"
     />
 
     <br />
