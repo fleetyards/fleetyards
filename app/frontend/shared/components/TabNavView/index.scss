@@ -153,6 +153,23 @@ $nav-transition-speed: 0.3s;
       }
     }
 
+    /*
+     * A link-out leaves for a list somewhere else, so it is never current and
+     * the rail never settles on it. The rule above still gives it the hover
+     * rail, which is what says it is reachable.
+     */
+    &.link-out > a > i {
+      margin-left: 6px;
+      font-size: 0.8em;
+      opacity: 0.6;
+    }
+
+    &.divider {
+      height: 1px;
+      margin: 12px $padding-horizontal;
+      background: $gray-darker;
+    }
+
     &.has-errors > a::after {
       content: "";
       display: inline-block;

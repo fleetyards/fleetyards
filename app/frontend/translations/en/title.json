@@ -182,7 +182,9 @@
         "manufacturers": {
           "index": "Manufacturers",
           "new": "New Manufacturer",
-          "edit": "Edit Manufacturer"
+          "edit": {
+            "index": "Edit Manufacturer"
+          }
         },
         "supporterContributions": {
           "index": "Supporter Contributions",

@@ -98,8 +98,9 @@ module Admin
 
         private def manufacturer_query_params
           @manufacturer_query_params ||= params.permit(q: [
-            :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, :logo_blank, :s, :sorts,
-            name_in: [], slug_in: [], s: [], sorts: []
+            :with_models, :name_eq, :name_cont, :slug_eq, :slug_cont, :logo_blank, :id_eq,
+            :s, :sorts,
+            name_in: [], slug_in: [], id_in: [], s: [], sorts: []
           ]).fetch(:q, {})
         end
       end

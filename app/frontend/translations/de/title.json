@@ -182,7 +182,9 @@
         "manufacturers": {
           "index": "Hersteller",
           "new": "Neuer Hersteller",
-          "edit": "Hersteller bearbeiten"
+          "edit": {
+            "index": "Hersteller bearbeiten"
+          }
         },
         "supporterContributions": {
           "index": "Unterstützer-Beiträge",

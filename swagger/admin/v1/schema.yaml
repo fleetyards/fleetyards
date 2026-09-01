@@ -12361,6 +12361,14 @@ components:
           type: array
           items:
             type: string
+        idEq:
+          type: string
+          format: uuid
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
         s:
           anyOf:
           - type: array
@@ -13914,6 +13922,11 @@ components:
         moduleHardpointsModelIdNotEq:
           type: string
           format: uuid
+        manufacturerIdIn:
+          type: array
+          items:
+            type: string
+            format: uuid
       additionalProperties: false
       example: {}
       title: ModelModuleQuery

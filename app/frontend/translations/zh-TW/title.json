@@ -182,7 +182,9 @@
         "manufacturers": {
           "index": "製造商",
           "new": "新製造商",
-          "edit": "編輯製造商"
+          "edit": {
+            "index": "編輯製造商"
+          }
         },
         "supporterContributions": {
           "index": "支持者貢獻",

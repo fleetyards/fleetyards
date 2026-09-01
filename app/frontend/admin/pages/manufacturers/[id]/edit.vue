@@ -1,26 +1,11 @@
-<script lang="ts">
-export default {
-  name: "AdminManufacturerEditPage",
-};
-</script>
-
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import Heading from "@/shared/components/base/Heading/index.vue";
-import {
-  type Manufacturer,
-  type ManufacturerInput,
-  useUpdateManufacturer,
-  getManufacturersQueryKey,
-  getManufacturerQueryKey,
-} from "@/services/fyAdminApi";
-import { useForm } from "vee-validate";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
-import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import FormActions from "@/shared/components/base/FormActions/index.vue";
-import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
-import { useQueryClient } from "@tanstack/vue-query";
+import { type Manufacturer } from "@/services/fyAdminApi";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import TabNavView from "@/shared/components/TabNavView/index.vue";
+import { type TabNavLink } from "@/shared/components/TabNavView/types";
+import { useSessionStore } from "@/admin/stores/session";
+import { routes as editRoutes } from "./edit/routes";
 
 type Props = {
   manufacturer: Manufacturer;
@@ -29,147 +14,69 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-const router = useRouter();
-const { extend } = useBreadCrumbs();
-const queryClient = useQueryClient();
 
-const initialValues = ref<ManufacturerInput>({
-  name: props.manufacturer.name,
-  longName: props.manufacturer.longName,
-  code: props.manufacturer.code,
-  description: undefined,
-  knownFor: undefined,
-  logo: undefined,
-  icon: undefined,
-  scRef: props.manufacturer.scRef,
-});
+const sessionStore = useSessionStore();
 
-const validationSchema = {
-  name: "required",
-};
-
-const { defineField, handleSubmit, meta } = useForm<ManufacturerInput>({
-  initialValues: initialValues.value,
-  validationSchema,
-});
-
-const [name, nameProps] = defineField("name");
-const [longName, longNameProps] = defineField("longName");
-const [code, codeProps] = defineField("code");
-const [scRef, scRefProps] = defineField("scRef");
-const [logo, logoProps] = defineField("logo");
-const [icon, iconProps] = defineField("icon");
-
-// The only place the override is visible: once it is on, the sc_data load stops
-// writing here, and clearing the field is what hands the icon back to the game
-// files.
-const iconLabel = computed(() =>
-  props.manufacturer.iconOverridden
-    ? t("labels.manufacturer.iconOverridden")
-    : t("labels.manufacturer.icon"),
-);
-
-// The same for the logo, whose other source is RSI's ship matrix.
-const logoLabel = computed(() =>
-  props.manufacturer.logoOverridden
-    ? t("labels.manufacturer.logoOverridden")
-    : t("labels.manufacturer.logo"),
-);
-
-const submitting = ref(false);
-
-const updateMutation = useUpdateManufacturer({
-  mutation: {
-    onSettled: () => {
-      void Promise.all([
-        queryClient.invalidateQueries({
-          queryKey: getManufacturersQueryKey(),
-        }),
-        queryClient.invalidateQueries({
-          queryKey: getManufacturerQueryKey(props.manufacturer.id),
-        }),
-      ]);
-    },
+const crumbs = [
+  {
+    to: { name: "admin-manufacturers", hash: `#${props.manufacturer.id}` },
+    label: t("nav.admin.manufacturers.index"),
   },
-});
+  {
+    to: {
+      name: "admin-manufacturer-edit",
+      params: { id: props.manufacturer.id },
+    },
+    label: props.manufacturer.name,
+  },
+];
 
-const onSubmit = handleSubmit(async (values) => {
-  submitting.value = true;
-
-  await updateMutation
-    .mutateAsync({ id: props.manufacturer.id, data: values })
-    .catch((error) => {
-      console.error("Error updating manufacturer:", error);
-      alert(error);
-    })
-    .finally(() => {
-      submitting.value = false;
-    });
-});
-
-const handleCancel = async () => {
-  await router.push(
-    extend({
-      name: "admin-manufacturers",
-      hash: `#${props.manufacturer.id}`,
-    }),
-  );
-};
+// What this company makes, in the lists that already hold it. A tab of its own
+// would be a second models list to keep in step with the first, and the filter
+// the list already has says the same thing.
+const links = computed<TabNavLink[]>(() =>
+  [
+    {
+      access: "models",
+      label: t("nav.admin.manufacturers.edit.models"),
+      to: {
+        name: "admin-models",
+        query: { manufacturerIn: [props.manufacturer.slug] },
+      },
+    },
+    {
+      access: "components",
+      label: t("nav.admin.manufacturers.edit.components"),
+      to: {
+        name: "admin-components",
+        query: { manufacturerIdIn: [props.manufacturer.id] },
+      },
+    },
+    {
+      access: "equipment",
+      label: t("nav.admin.manufacturers.edit.equipment"),
+      to: {
+        name: "admin-equipment",
+        query: { manufacturerIdIn: [props.manufacturer.id] },
+      },
+    },
+    {
+      access: "model_modules",
+      label: t("nav.admin.manufacturers.edit.modules"),
+      to: {
+        name: "admin-model-modules",
+        query: { manufacturerIdIn: [props.manufacturer.id] },
+      },
+    },
+  ].filter(({ access }) => sessionStore.hasAccessTo(access)),
+);
 </script>
 
 <template>
-  <Heading hero>{{ t("headlines.admin.manufacturers.edit") }}</Heading>
-  <form @submit.prevent="onSubmit" id="admin-manufacturer-edit-form">
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FormInput v-model="name" v-bind="nameProps" name="name" />
-        <FormInput
-          v-model="longName"
-          v-bind="longNameProps"
-          translation-key="manufacturer.longName"
-          name="longName"
-        />
-        <FormInput
-          v-model="code"
-          v-bind="codeProps"
-          translation-key="manufacturer.code"
-          name="code"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="scRef"
-          v-bind="scRefProps"
-          translation-key="manufacturer.scRef"
-          name="scRef"
-        />
-        <FormFileInput
-          v-model="logo"
-          v-bind="logoProps"
-          :file="manufacturer.logo"
-          :label="logoLabel"
-          name="logo"
-          :allowed-types="AllowedFileTypes.IMAGE"
-          avatar
-          clearable
-        />
-        <FormFileInput
-          v-model="icon"
-          v-bind="iconProps"
-          :file="manufacturer.icon"
-          :label="iconLabel"
-          name="icon"
-          :allowed-types="AllowedFileTypes.IMAGE"
-          avatar
-          clearable
-        />
-      </div>
-    </div>
-    <FormActions
-      :submitting="submitting"
-      formId="admin-manufacturer-edit-form"
-      :dirty="meta.dirty || meta.touched"
-      @cancel="handleCancel"
-    />
-  </form>
+  <BreadCrumbs :crumbs="crumbs" :current-id="manufacturer.id" />
+  <TabNavView :routes="editRoutes" :links="links" authenticated>
+    <template #content>
+      <router-view :manufacturer="manufacturer" />
+    </template>
+  </TabNavView>
 </template>

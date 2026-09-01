@@ -45,6 +45,19 @@ class Admin::Api::V1::ManufacturersOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # What a select needs to label a value it was handed but has not paged to. The
+  # id variants of it were asking for a slug that is a uuid, so a manufacturer
+  # outside the first page came back as its own id.
+  test "GET /manufacturers/options resolves a selection by id" do
+    wanted = create_list(:manufacturer, 2)
+    create(:manufacturer)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"idIn" => wanted.map(&:id)}} do
+      assert_equal wanted.map(&:id).sort, parsed_body["items"].map { |item| item["id"] }.sort
+    end
+  end
+
   test "GET /manufacturers/options returns 401 when not signed in" do
     assert_api_response :get, 401
   end

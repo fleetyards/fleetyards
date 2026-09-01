@@ -15,7 +15,8 @@ module Admin
               nameCont: {type: :string},
               nameEq: {type: :string},
               moduleHardpointsModelIdEq: {type: :string, format: :uuid},
-              moduleHardpointsModelIdNotEq: {type: :string, format: :uuid}
+              moduleHardpointsModelIdNotEq: {type: :string, format: :uuid},
+              manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}}
             },
             additionalProperties: false,
             example: {}

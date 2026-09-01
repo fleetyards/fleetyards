@@ -191,7 +191,14 @@
           }
         },
         "manufacturers": {
-          "index": "Hersteller"
+          "index": "Hersteller",
+          "edit": {
+            "index": "Basisdaten",
+            "models": "Schiffe",
+            "components": "Komponenten",
+            "equipment": "Ausrüstung",
+            "modules": "Module"
+          }
         },
         "images": {
           "index": "Bilder"

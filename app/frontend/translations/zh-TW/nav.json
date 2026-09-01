@@ -191,7 +191,14 @@
           }
         },
         "manufacturers": {
-          "index": "製造商"
+          "index": "製造商",
+          "edit": {
+            "index": "基礎資料",
+            "models": "飛船",
+            "components": "元件",
+            "equipment": "裝備",
+            "modules": "模組"
+          }
         },
         "images": {
           "index": "圖片"

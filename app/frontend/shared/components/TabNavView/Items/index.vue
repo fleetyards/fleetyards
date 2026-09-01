@@ -12,14 +12,19 @@ import {
   routeName,
   useActiveTab,
 } from "@/shared/components/TabNavView/useActiveTab";
+import { type TabNavLink } from "@/shared/components/TabNavView/types";
 
 type Props = {
   routes: RouteRecordRaw[];
+  links?: TabNavLink[];
   authenticated: boolean;
   resourceAccess?: string[];
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  links: undefined,
+  resourceAccess: undefined,
+});
 
 const filteredRoutes = computed(() => {
   return props.routes
@@ -57,4 +62,16 @@ const { isActive } = useActiveTab(filteredRoutes);
       <a :href="linkHref">{{ t(`nav.${item.meta?.title}`) }}</a>
     </li>
   </router-link>
+  <template v-if="props.links?.length">
+    <li class="divider" aria-hidden="true" />
+    <li v-for="link in props.links" :key="link.label" class="link-out">
+      <router-link :to="link.to">
+        {{ link.label }}
+        <i
+          class="fa-duotone fa-arrow-up-right-from-square"
+          aria-hidden="true"
+        />
+      </router-link>
+    </li>
+  </template>
 </template>

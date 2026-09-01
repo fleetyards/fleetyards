@@ -206,6 +206,19 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The manufacturer edit page links straight here with the company selected, so
+  # the list has to hold the filter the other catalogues already had.
+  test "GET /model-modules filters by manufacturerIdIn" do
+    manufacturer = create(:manufacturer)
+    mine = create(:model_module, manufacturer:)
+    create(:model_module)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"manufacturerIdIn" => [manufacturer.id]}} do
+      assert_equal [mine.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /model-modules returns 401 when not signed in" do
     assert_api_response :get, 401
   end

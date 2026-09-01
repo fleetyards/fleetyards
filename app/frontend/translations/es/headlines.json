@@ -82,7 +82,9 @@
         "manufacturers": {
           "index": "Fabricantes",
           "new": "Nuevo fabricante",
-          "edit": "Editar fabricante"
+          "edit": {
+            "index": "Editar fabricante"
+          }
         },
         "supporterContributions": {
           "index": "Contribuciones de patrocinadores",

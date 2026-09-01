@@ -191,7 +191,14 @@
           }
         },
         "manufacturers": {
-          "index": "Fabricantes"
+          "index": "Fabricantes",
+          "edit": {
+            "index": "Datos básicos",
+            "models": "Naves",
+            "components": "Componentes",
+            "equipment": "Equipamiento",
+            "modules": "Módulos"
+          }
         },
         "images": {
           "index": "Imágenes"
