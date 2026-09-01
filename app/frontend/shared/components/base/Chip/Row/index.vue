@@ -34,7 +34,11 @@ defineExpose({ itemsEl });
 </script>
 
 <template>
-  <BtnDropdown v-if="mobile" class="w-full md:w-auto" data-test="chip-row">
+  <!-- Full width, and `block` so the trigger goes with it. No `md:w-auto`: this
+       branch only renders below the 992px `mobile` switch, so the class only
+       ever took effect between md and that switch - where it collapsed the row
+       back to the label's own width and left the space beside it empty. -->
+  <BtnDropdown v-if="mobile" block class="w-full" data-test="chip-row">
     <!-- Omitted rather than rendered empty, so BtnDropdown's own fallback label
          still applies when a consumer passes no label. -->
     <template v-if="label" #label>

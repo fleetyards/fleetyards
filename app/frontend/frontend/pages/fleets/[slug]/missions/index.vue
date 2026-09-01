@@ -121,10 +121,20 @@ const crumbs = computed<Crumb[]>(() => [
 
     <template #actions-left>
       <BtnGroup segmented>
-        <Btn :active="!showArchived" @click="showArchived = false">
+        <Btn
+          :active="!showArchived"
+          mobile-icon-only
+          @click="showArchived = false"
+        >
+          <i class="fa-light fa-flag" />
           {{ t("labels.fleets.missions.activeTab") }}
         </Btn>
-        <Btn :active="showArchived" @click="showArchived = true">
+        <Btn
+          :active="showArchived"
+          mobile-icon-only
+          @click="showArchived = true"
+        >
+          <i class="fa-light fa-box-archive" />
           {{ t("labels.fleets.missions.archivedTab") }}
         </Btn>
       </BtnGroup>

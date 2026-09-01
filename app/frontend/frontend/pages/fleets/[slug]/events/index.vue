@@ -239,7 +239,9 @@ const crumbs = computed<Crumb[]>(() => [
     <Btn
       v-if="canManageMissions"
       :to="{ name: 'fleet-missions', params: { slug: props.fleet.slug } }"
+      :aria-label="t('actions.fleets.missions.viewMissions')"
       variant="bare"
+      mobile-icon-only
     >
       <i class="fa-light fa-flag-checkered" />
       <span>{{ t("actions.fleets.missions.viewMissions") }}</span>
@@ -247,6 +249,8 @@ const crumbs = computed<Crumb[]>(() => [
     <Btn
       v-if="canCreate"
       :to="{ name: 'fleet-event-new', params: { slug: props.fleet.slug } }"
+      :aria-label="t('actions.fleets.events.create')"
+      mobile-icon-only
     >
       <i class="fa-light fa-plus" />
       <span>{{ t("actions.fleets.events.create") }}</span>
@@ -259,13 +263,24 @@ const crumbs = computed<Crumb[]>(() => [
          offers to hand it to your own calendar instead. -->
     <div class="events-toolbar__lead">
       <BtnGroup v-if="view === 'list'" segmented data-test="events-tab-switch">
-        <Btn :active="tab === 'upcoming'" @click="tab = 'upcoming'">
+        <Btn
+          :active="tab === 'upcoming'"
+          mobile-icon-only
+          @click="tab = 'upcoming'"
+        >
+          <i class="fa-light fa-calendar-clock" />
           {{ t("labels.fleets.events.upcomingTab") }}
         </Btn>
-        <Btn :active="tab === 'past'" @click="tab = 'past'">
+        <Btn :active="tab === 'past'" mobile-icon-only @click="tab = 'past'">
+          <i class="fa-light fa-clock-rotate-left" />
           {{ t("labels.fleets.events.pastTab") }}
         </Btn>
-        <Btn :active="tab === 'archived'" @click="tab = 'archived'">
+        <Btn
+          :active="tab === 'archived'"
+          mobile-icon-only
+          @click="tab = 'archived'"
+        >
+          <i class="fa-light fa-box-archive" />
           {{ t("labels.fleets.events.archivedTab") }}
         </Btn>
       </BtnGroup>
@@ -289,11 +304,19 @@ const crumbs = computed<Crumb[]>(() => [
     </div>
 
     <BtnGroup segmented data-test="events-view-switch">
-      <Btn :active="view === 'list'" @click="toggleListCalendar('list')">
+      <Btn
+        :active="view === 'list'"
+        mobile-icon-only
+        @click="toggleListCalendar('list')"
+      >
         <i class="fa-light fa-list" />
         {{ t("labels.fleets.events.listTab") }}
       </Btn>
-      <Btn :active="isCalendar" @click="toggleListCalendar('calendar')">
+      <Btn
+        :active="isCalendar"
+        mobile-icon-only
+        @click="toggleListCalendar('calendar')"
+      >
         <i class="fa-light fa-calendar" />
         {{ t("labels.fleets.events.calendarTab") }}
       </Btn>

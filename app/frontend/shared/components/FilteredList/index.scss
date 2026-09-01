@@ -1,10 +1,12 @@
 .filtered-list {
   &__actions {
     display: flex;
-    justify-content: space-between;
     // Separates the toolbar from the list below it. Used to come from the
     // buttons' own margin-bottom, which Btn no longer ships.
-    gap: 20px;
+    // Two gaps, because the row now holds three blocks rather than two: 20px
+    // between wrapped rows, and the 10px the paginator had from the actions
+    // while it still sat inside their block.
+    gap: 20px 10px;
     margin-bottom: 20px;
     flex-wrap: wrap;
   }
@@ -16,7 +18,22 @@
     gap: 10px;
   }
 
-  &__actions-right {
+  // Whichever of the two right-hand blocks comes first carries the row: an
+  // auto margin rather than `space-between`, which would strand the actions in
+  // the middle of the row now that the paginator is a third child.
+  &__actions-right,
+  &__pagination-top {
+    margin-left: auto;
+  }
+
+  &__actions-right + &__pagination-top {
+    margin-left: 0;
+  }
+
+  &__pagination-top {
+    display: flex;
+    align-items: center;
+
     :deep(.pagination) {
       width: auto;
     }
@@ -26,6 +43,9 @@
 @media (max-width: $desktop-breakpoint) {
   .filtered-list {
     &__actions {
+      // No row gap: a wrapped paginator is centred on its own row, so it never
+      // reads as touching the actions above it, and 10px of air there would be
+      // 10px every list page pays for one that wraps.
       gap: 0 10px;
 
       &-left,
@@ -39,19 +59,22 @@
       }
 
       &-right {
-        flex: 1 1 auto;
+        flex: 0 1 auto;
         min-width: 0;
         justify-content: flex-end;
         gap: 10px;
       }
     }
 
+    // Takes the row it wraps onto, and holds the right edge of it - the same
+    // edge it sits on from the desktop breakpoint up. It used to centre here,
+    // which put it neither with the actions it shares the row with nor on the
+    // edge the rows below align to. The paginator under the list is the one
+    // that centres on a phone, and only because nothing shares its row.
     &__pagination-top {
-      order: -1;
       flex: 1 1 auto;
       min-width: 0;
-      display: flex;
-      justify-content: center;
+      justify-content: flex-end;
     }
   }
 }
