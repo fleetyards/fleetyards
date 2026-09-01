@@ -27,7 +27,7 @@ const { t } = useI18n();
 
 const { filter, filters } = useCompareModelFilters();
 
-const items = computed(() => filters.value.models || []);
+const items = computed(() => filters.value.models);
 
 // One detail request per ship rather than the models index. Compare wants more
 // of a ship than any list does, and taking it from the index means every list

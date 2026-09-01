@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "NewVehiclesModelCard",
+  name: "ModelPickerCard",
 };
 </script>
 
@@ -11,18 +11,25 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
+import type { ModelPickerBadge } from "@/frontend/components/Models/PickerModal/types";
 
 type Props = {
   option: ModelOption;
   selected?: boolean;
   quantity?: number;
-  wanted?: boolean;
+  quantities?: boolean;
+  highlight?: `${ModelPickerBadge}`;
+  note?: string;
+  disabled?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
   quantity: 1,
-  wanted: false,
+  quantities: false,
+  highlight: undefined,
+  note: undefined,
+  disabled: false,
 });
 
 const emit = defineEmits<{
@@ -54,25 +61,30 @@ const subtitle = computed(() =>
 /**
  * The flag matching the list you opened the picker from leads, because that is
  * the duplicate you are about to create; the other one is context worth having
- * (a wishlisted ship you are now buying) rather than a warning.
+ * (a wishlisted ship you are now buying) rather than a warning. A note names why
+ * the card cannot be picked, which outranks both.
  */
 const badges = computed(() => {
   // Which flag leads is a property of the flag, not of where it lands in the
   // list: keyed on position, a wishlisted ship shown in the *hangar* picker got
   // the loud tint purely by being the only badge on the card.
-  const leading = props.wanted ? "onWishlist" : "inHangar";
-
-  return [
+  const flags = [
     { key: "inHangar", set: props.option.inHangar },
     { key: "onWishlist", set: props.option.onWishlist },
   ]
     .filter((badge) => badge.set)
     .map((badge) => ({
       key: badge.key,
-      label: t(`newVehicles.badges.${badge.key}`),
-      primary: badge.key === leading,
+      label: t(`modelPicker.badges.${badge.key}`),
+      primary: badge.key === props.highlight,
     }))
     .sort((a, b) => Number(b.primary) - Number(a.primary));
+
+  if (!props.note) {
+    return flags;
+  }
+
+  return [{ key: "note", label: props.note, primary: true }, ...flags];
 });
 
 // The toggle is an empty overlay, so its name has to carry everything the card
@@ -91,8 +103,11 @@ const accessibleName = computed(() =>
 <template>
   <div
     class="model-card"
-    :class="{ 'model-card--selected': selected }"
-    :data-test="`new-vehicles-card-${option.slug}`"
+    :class="{
+      'model-card--selected': selected,
+      'model-card--disabled': disabled,
+    }"
+    :data-test="`model-picker-card-${option.slug}`"
   >
     <div class="model-card__image">
       <PanelBgImage :image="image" />
@@ -117,12 +132,12 @@ const accessibleName = computed(() =>
         a button may not contain buttons. Both are absolutely placed in this
         region, with the stepper stacked above so its clicks are its own.
       -->
-      <div v-if="selected" class="model-card__quantity">
+      <div v-if="quantities && selected" class="model-card__quantity">
         <button
           type="button"
           class="model-card__step"
           :disabled="quantity <= 1"
-          :aria-label="t('newVehicles.actions.decrease', { name: option.name })"
+          :aria-label="t('modelPicker.actions.decrease', { name: option.name })"
           @click="emit('decrease')"
         >
           <i class="fa-regular fa-minus" />
@@ -131,7 +146,7 @@ const accessibleName = computed(() =>
         <button
           type="button"
           class="model-card__step"
-          :aria-label="t('newVehicles.actions.increase', { name: option.name })"
+          :aria-label="t('modelPicker.actions.increase', { name: option.name })"
           @click="emit('increase')"
         >
           <i class="fa-regular fa-plus" />
@@ -149,6 +164,7 @@ const accessibleName = computed(() =>
       class="model-card__toggle"
       :aria-pressed="selected"
       :aria-label="accessibleName"
+      :disabled="disabled"
       @click="emit('toggle')"
     />
   </div>
@@ -177,6 +193,20 @@ const accessibleName = computed(() =>
 
 .model-card:hover {
   @apply bg-control-hover border-edge;
+}
+
+/* Already in the list you are picking for. Still readable - the badge says why -
+   but out of reach, so the count of what you are about to add stays honest. */
+.model-card--disabled {
+  @apply opacity-45;
+}
+
+.model-card--disabled:hover {
+  @apply bg-control border-edge-soft;
+}
+
+.model-card--disabled .model-card__toggle {
+  @apply cursor-default;
 }
 
 .model-card--selected {
