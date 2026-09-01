@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "discord/webhook"
+require "discord/event_availability"
 
 # rubocop:disable Naming/AccessorMethodName
 module Discord
@@ -45,25 +46,19 @@ module Discord
       frontend_fleet_event_url(fleet_slug: event.fleet.slug, event_slug: event.slug)
     end
 
-    private def event_title
-      state&.title.presence || event.title
+    # Title, start time and availability are all per-occurrence, and the event
+    # list needs exactly the same three. Sharing them is what keeps the reminder
+    # and the list from disagreeing about how many slots are open.
+    private def availability_for_occurrence
+      @availability_for_occurrence ||= ::Discord::EventAvailability.new(event, occurrence_date: occurrence_date)
     end
 
-    private def state
-      return nil if occurrence_date.blank?
-
-      event.occurrence_state_for(occurrence_date, build: false)
+    private def event_title
+      availability_for_occurrence.title
     end
 
     private def starts_at
-      return event.starts_at if occurrence_date.blank?
-
-      # A recurring occurrence keeps the parent's time of day on its own date.
-      event.starts_at.change(
-        year: occurrence_date.year,
-        month: occurrence_date.month,
-        day: occurrence_date.day
-      )
+      availability_for_occurrence.starts_at
     end
 
     private def starts_in
@@ -73,32 +68,8 @@ module Discord
       I18n.t("discord.event_reminder.starts_in", count: minutes)
     end
 
-    # Slots are the point of the message, but plenty of events have none --
-    # those get the signup count instead of "0 of 0 slots open", which reads
-    # like a full event.
     private def availability
-      total = event.slots.count
-      return signups if total.zero?
-
-      I18n.t("discord.event_reminder.slots", open: total - taken_slots, total: total)
-    end
-
-    private def signups
-      count = signups_scope.count
-      return nil if count.zero?
-
-      I18n.t("discord.event_reminder.signups", count: count)
-    end
-
-    private def taken_slots
-      signups_scope.where.not(fleet_event_slot_id: nil).count
-    end
-
-    private def signups_scope
-      scope = event.fleet_event_signups.where.not(status: "withdrawn")
-      return scope if occurrence_date.blank?
-
-      scope.where(occurrence_date: occurrence_date)
+      availability_for_occurrence.label
     end
   end
 end

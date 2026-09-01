@@ -15,6 +15,10 @@ es:
           models: Tipos de nave
           ships: Naves
           upcoming_events: Próximos eventos
+        events:
+          heading: '[Próximos eventos de %{fleet}](%{url})'
+          none: No hay nada previsto en los próximos 90 días.
+          not_allowed: No tienes permiso para ver los eventos de esta flota.
         invite:
           expires: 'caduca en %{time}'
           failed: No se pudo crear el enlace de invitación. Inténtalo de nuevo.
@@ -66,9 +70,10 @@ es:
         not_found: 'No se ha encontrado ninguna nave para «%{query}».'
     direct_message:
       footer: Enviado porque has activado las notificaciones de Discord en Fleetyards
-    event_reminder:
+    event_availability:
       signups: '%{count} inscritos'
       slots: '%{open} de %{total} plazas libres'
+    event_reminder:
       starting_now: Empieza ahora
       starts_in: 'Empieza en %{count} min'
       title: 'Recordatorio: %{title}'
