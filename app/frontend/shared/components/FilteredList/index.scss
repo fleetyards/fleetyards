@@ -66,12 +66,15 @@
       }
     }
 
-    // Takes the row it wraps onto, and centres itself in whatever is left of a
-    // row it still shares with the actions.
+    // Takes the row it wraps onto, and holds the right edge of it - the same
+    // edge it sits on from the desktop breakpoint up. It used to centre here,
+    // which put it neither with the actions it shares the row with nor on the
+    // edge the rows below align to. The paginator under the list is the one
+    // that centres on a phone, and only because nothing shares its row.
     &__pagination-top {
       flex: 1 1 auto;
       min-width: 0;
-      justify-content: center;
+      justify-content: flex-end;
     }
   }
 }
