@@ -31,8 +31,8 @@ module Discord
     end
 
     private def payload_for(context)
-      handler = Commands::Registry.handler_for(context[:command])
-      return unknown_command(context[:command]) if handler.nil?
+      handler = Commands::Registry.handler_for(context[:command], context[:subcommand])
+      return unknown_command(command_name(context)) if handler.nil?
 
       handler.new(
         options: context[:options] || {},
@@ -44,10 +44,14 @@ module Discord
       # already showing "thinking...", and an unanswered one stays there.
       # Deterministic failures are not worth a retry, so this does not re-raise
       # -- transport failures in edit_original still do.
-      Rails.logger.error("[Discord::CommandJob] command=#{context[:command]} failed: #{e.class}: #{e.message}")
+      Rails.logger.error("[Discord::CommandJob] command=#{command_name(context)} failed: #{e.class}: #{e.message}")
       Appsignal.report_error(e)
 
       failure
+    end
+
+    private def command_name(context)
+      [context[:command], context[:subcommand]].compact_blank.join(" ")
     end
 
     private def expired?(context)
