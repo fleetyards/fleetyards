@@ -191,7 +191,14 @@
           }
         },
         "manufacturers": {
-          "index": "制造商"
+          "index": "制造商",
+          "edit": {
+            "index": "基础数据",
+            "models": "飞船",
+            "components": "组件",
+            "equipment": "装备",
+            "modules": "模块"
+          }
         },
         "images": {
           "index": "图片"

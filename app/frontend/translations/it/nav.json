@@ -191,7 +191,14 @@
           }
         },
         "manufacturers": {
-          "index": "Produttori"
+          "index": "Produttori",
+          "edit": {
+            "index": "Dati di base",
+            "models": "Navi",
+            "components": "Componenti",
+            "equipment": "Equipaggiamento",
+            "modules": "Moduli"
+          }
         },
         "images": {
           "index": "Immagini"

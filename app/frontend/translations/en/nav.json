@@ -191,7 +191,14 @@
           }
         },
         "manufacturers": {
-          "index": "Manufacturers"
+          "index": "Manufacturers",
+          "edit": {
+            "index": "Base Data",
+            "models": "Ships",
+            "components": "Components",
+            "equipment": "Equipment",
+            "modules": "Modules"
+          }
         },
         "images": {
           "index": "Images"

@@ -191,7 +191,14 @@
           }
         },
         "manufacturers": {
-          "index": "Fabricants"
+          "index": "Fabricants",
+          "edit": {
+            "index": "Données de base",
+            "models": "Vaisseaux",
+            "components": "Composants",
+            "equipment": "Équipement",
+            "modules": "Modules"
+          }
         },
         "images": {
           "index": "Images"
