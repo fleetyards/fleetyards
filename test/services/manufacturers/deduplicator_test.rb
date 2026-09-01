@@ -172,6 +172,109 @@ module Manufacturers
       assert_equal [aegis.id], Manufacturer.where(name: "Aegis Dynamics").ids
     end
 
+    # The pair the table cannot group: the RSI matrix calls the company "MISC"
+    # and the export calls it "MIS", so neither the code nor the slug matches and
+    # both the name grouping and the slug grouping walk straight past them.
+    test "#call merges a manufacturer the export filed under a second code" do
+      keep = create(:manufacturer, name: "MISC", code: "MISC", rsi_id: 4)
+      drop = create(:manufacturer, name: "Musashi Industrial & Starflight Concern", code: "MIS")
+      component = create(:component, manufacturer: drop)
+
+      result = ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).call
+
+      assert_nil Manufacturer.find_by(id: drop.id)
+      assert_equal keep, component.reload.manufacturer
+      assert_equal ["MIS"], result.aliased
+    end
+
+    # The pair names the survivor rather than scoring it, so a cleanup cannot
+    # change the slug the public API and every saved filter already use.
+    test "#call keeps the aliased target even when the other row scores better" do
+      keep = create(:manufacturer, name: "MISC", code: "MISC", rsi_id: nil)
+      drop = create(:manufacturer, name: "Musashi Industrial & Starflight Concern",
+        code: "MIS", rsi_id: 4)
+      create_list(:component, 3, manufacturer: drop)
+
+      ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).call
+
+      assert_nil Manufacturer.find_by(code: "MIS")
+      assert_equal "misc", keep.reload.slug
+      assert_equal 3, keep.components.count
+    end
+
+    # `sc_ref` is what the next sc_data load matches on, so a merge that dropped
+    # it would have the very next import mint the duplicate again.
+    test "#call carries the export ref onto the surviving row" do
+      keep = create(:manufacturer, name: "MISC", code: "MISC", sc_ref: nil)
+      create(:manufacturer, name: "Musashi Industrial & Starflight Concern",
+        code: "MIS", sc_ref: "b28a5c61")
+
+      ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).call
+
+      assert_equal "b28a5c61", keep.reload.sc_ref
+    end
+
+    test "#call leaves a ref the surviving row already carries" do
+      keep = create(:manufacturer, name: "MISC", code: "MISC", sc_ref: "curated")
+      create(:manufacturer, name: "Musashi Industrial & Starflight Concern",
+        code: "MIS", sc_ref: "b28a5c61")
+
+      ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).call
+
+      assert_equal "curated", keep.reload.sc_ref
+    end
+
+    # The destroy purges what the loser still holds, so the export art has to
+    # move across before the row goes.
+    test "#call carries the export icon onto the surviving row" do
+      keep = create(:manufacturer, name: "MISC", code: "MISC", icon_path: nil)
+      drop = create(:manufacturer, :with_icon, name: "Musashi Industrial & Starflight Concern",
+        code: "MIS")
+      blob = drop.icon.blob
+
+      ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).call
+
+      assert_equal blob, keep.reload.icon.blob
+      assert_equal drop.icon_path, keep.icon_path
+      assert blob.service.exist?(blob.key), "the file behind the blob was deleted"
+    end
+
+    test "#call leaves an icon the surviving row already carries" do
+      keep = create(:manufacturer, :with_icon, name: "MISC", code: "MISC")
+      curated = keep.icon.blob
+      create(:manufacturer, :with_icon, name: "Musashi Industrial & Starflight Concern",
+        code: "MIS")
+
+      ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).call
+
+      assert_equal curated, keep.reload.icon.blob
+    end
+
+    # A pair pointing at a code the table does not carry is a stale entry, and
+    # the row it names sits there as a duplicate in the meantime.
+    test "#call reports an alias whose target no row carries" do
+      drop = create(:manufacturer, name: "Musashi Industrial & Starflight Concern", code: "MIS")
+      lines = []
+
+      result = ::Manufacturers::Deduplicator.new(
+        aliased_codes: {"MIS" => "MISC"},
+        logger: ->(line) { lines << line }
+      ).call
+
+      assert_equal drop, Manufacturer.find_by(code: "MIS")
+      assert_empty result.aliased
+      assert_includes lines.join("\n"), "no row carries MISC"
+    end
+
+    test "#call leaves the table alone when nothing carries the aliased code" do
+      create(:manufacturer, name: "MISC", code: "MISC")
+
+      result = ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).call
+
+      assert_empty result.aliased
+      assert_equal 1, Manufacturer.count
+    end
+
     # The merge repoints only the tables it is told about, and `dependent:
     # :nullify` on an association nobody declared does nothing -- so a table
     # added later would lose its manufacturer without a word. This is the guard
@@ -267,6 +370,22 @@ module Manufacturers
       # Two, not one: the component's build carries the manufacturer as well,
       # which is exactly why ComponentBuild is in ASSOCIATED_MODELS.
       assert_includes plan[:log].join("\n"), "2 records still point at it"
+    end
+
+    test "#plan reports the alias merge and rolls it back" do
+      create(:manufacturer, name: "MISC", code: "MISC", rsi_id: 4)
+      drop = create(:manufacturer, name: "Musashi Industrial & Starflight Concern", code: "MIS")
+      component = create(:component, manufacturer: drop)
+
+      plan = nil
+
+      assert_no_difference -> { Manufacturer.count } do
+        plan = ::Manufacturers::Deduplicator.new(aliased_codes: {"MIS" => "MISC"}).plan
+      end
+
+      assert_equal ["MIS"], plan[:aliased]
+      assert_equal 1, plan[:after]
+      assert_equal drop, component.reload.manufacturer
     end
 
     test "#plan reports no record left without a manufacturer" do
