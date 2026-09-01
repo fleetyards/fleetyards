@@ -264,8 +264,8 @@ importers:
         specifier: 2.5.0
         version: 2.5.0(@vue/compiler-dom@3.5.42)(@vue/server-renderer@3.5.42)(vue@3.5.42(typescript@6.0.3))
       asyncapi-cable:
-        specifier: ^0.2.1
-        version: 0.2.1(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3))
+        specifier: ^0.2.3
+        version: 0.2.3(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3))
       c8:
         specifier: 12.0.0
         version: 12.0.0
@@ -3172,8 +3172,8 @@ packages:
   async@3.2.6:
     resolution: {integrity: sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==}
 
-  asyncapi-cable@0.2.1:
-    resolution: {integrity: sha512-LSSv4j6RP0qoFEnVL3S798GKnUv5buHTRtT/DGdUBCg12fJBxzGt/FyQipc0PS+3XxOcV47KB6XyZjKVJjM8tQ==}
+  asyncapi-cable@0.2.3:
+    resolution: {integrity: sha512-CCJKElF1t12glZAmElNNmmz2TRm/VvLYhw1zhGcynn5qGn/PIxmq6qVhh73zV9RPYNGGjElXb11UThONAz/WhQ==}
     engines: {node: '>=20'}
     hasBin: true
     peerDependencies:
@@ -3932,8 +3932,8 @@ packages:
   fast-xml-builder@1.3.1:
     resolution: {integrity: sha512-pIM/1n3ntFXKYrUZwW7QCK0gAW7XY+wzj1YMIV3tLDvPj/V+zTGJK5e3/4WJfwj0qWw2ElNXiTixda/R+3YSug==}
 
-  fast-xml-parser@5.11.0:
-    resolution: {integrity: sha512-9IGxMqvqLOnqP+Egi1nqDHKv5k8aZ7r9n558enxcucmyVGEBNPAU+MOg/8jPIS7rO7sSq4gFm1/nHtiaubMruw==}
+  fast-xml-parser@5.11.1:
+    resolution: {integrity: sha512-TBw6K/fxoQGGjCmZDw9w/ZwP3uDcnTM4YH/g+PFRWr8sbe5idXtxNN6vITh4+1ruCZaho6uBFurElsA7F0zzgw==}
     hasBin: true
 
   fastest-levenshtein@1.0.16:
@@ -4560,6 +4560,10 @@ packages:
 
   js-yaml@4.3.1:
     resolution: {integrity: sha512-CY6crGq313MX8GkwvB7tzgp99vjQxY1++5y10/BKN/GUfHqWaOGQMNZkBvqSzsZKWk/ijwHlWzzkLulsGHhjWQ==}
+    hasBin: true
+
+  js-yaml@4.3.2:
+    resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
     hasBin: true
 
   jsdom@30.0.1:
@@ -5403,8 +5407,8 @@ packages:
   proto-list@1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
 
-  protobufjs@8.7.2:
-    resolution: {integrity: sha512-oTVHV+oelUBtiu5iTuTNNZ0eLYsXSMxry4cgr30mayNkgIZL6qZ0IOQVPuSWGcyAaXKl/XgqwWHIC3a0khYVBA==}
+  protobufjs@8.8.0:
+    resolution: {integrity: sha512-N3xhQ5yyBx3vQq4gubBfASzYhJGNzeDbjqBpu61g7UVylsN/qyffU96TKWD3GbbLOKF82VGNRNvv1+BFgE31Eg==}
     engines: {node: '>=12.0.0'}
 
   proxy-from-env@2.1.0:
@@ -6766,13 +6770,13 @@ snapshots:
     dependencies:
       '@jsdevtools/ono': 7.1.3
       '@types/json-schema': 7.0.15
-      js-yaml: 4.3.1
+      js-yaml: 4.3.2
 
   '@apidevtools/json-schema-ref-parser@11.9.3':
     dependencies:
       '@jsdevtools/ono': 7.1.3
       '@types/json-schema': 7.0.15
-      js-yaml: 4.3.1
+      js-yaml: 4.3.2
 
   '@apidevtools/openapi-schemas@2.1.0': {}
 
@@ -6829,8 +6833,8 @@ snapshots:
       '@asyncapi/parser': 3.6.3
       alterschema: 1.1.3
       change-case: 4.1.2
-      fast-xml-parser: 5.11.0
-      js-yaml: 4.3.1
+      fast-xml-parser: 5.11.1
+      js-yaml: 4.3.2
       openapi-types: 12.1.3
       typescript-json-schema: 0.58.1
     transitivePeerDependencies:
@@ -6876,7 +6880,7 @@ snapshots:
       ajv-errors: 3.0.0(ajv@8.20.0)
       ajv-formats: 2.1.1(ajv@8.20.0)
       avsc: 5.7.9
-      js-yaml: 4.3.1
+      js-yaml: 4.3.2
       jsonpath-plus: 7.2.0
       node-fetch: 2.6.7
     transitivePeerDependencies:
@@ -6896,7 +6900,7 @@ snapshots:
       ajv-errors: 3.0.0(ajv@8.20.0)
       ajv-formats: 2.1.1(ajv@8.20.0)
       avsc: 5.7.9
-      js-yaml: 4.3.1
+      js-yaml: 4.3.2
       jsonpath-plus: 7.2.0
       node-fetch: 2.6.7
       ramldt2jsonschema: 1.2.3
@@ -6922,7 +6926,7 @@ snapshots:
       ajv-errors: 3.0.0(ajv@8.20.0)
       ajv-formats: 2.1.1(ajv@8.20.0)
       avsc: 5.7.9
-      js-yaml: 4.3.1
+      js-yaml: 4.3.2
       jsonpath-plus: 10.4.0
       node-fetch: 2.6.7
     transitivePeerDependencies:
@@ -6932,7 +6936,7 @@ snapshots:
     dependencies:
       '@asyncapi/parser': 3.6.3
       '@types/protocol-buffers-schema': 3.4.3
-      protobufjs: 8.7.2
+      protobufjs: 8.8.0
     transitivePeerDependencies:
       - encoding
 
@@ -8651,14 +8655,14 @@ snapshots:
 
   '@stoplight/json-ref-readers@1.2.2':
     dependencies:
-      node-fetch: 2.6.7
+      node-fetch: 2.7.0
       tslib: 1.14.1
     transitivePeerDependencies:
       - encoding
 
   '@stoplight/json-ref-resolver@3.1.6':
     dependencies:
-      '@stoplight/json': 3.21.0
+      '@stoplight/json': 3.21.7
       '@stoplight/path': 1.3.2
       '@stoplight/types': 13.20.0
       '@types/urijs': 1.19.26
@@ -8695,7 +8699,7 @@ snapshots:
     dependencies:
       '@scarf/scarf': 1.4.0
       '@stoplight/better-ajv-errors': 1.0.3(ajv@8.20.0)
-      '@stoplight/json': 3.21.0
+      '@stoplight/json': 3.21.7
       '@stoplight/path': 1.3.2
       '@stoplight/spectral-parsers': 1.0.5
       '@stoplight/spectral-ref-resolver': 1.0.5
@@ -8721,7 +8725,7 @@ snapshots:
   '@stoplight/spectral-formats@1.8.5':
     dependencies:
       '@scarf/scarf': 1.4.0
-      '@stoplight/json': 3.21.0
+      '@stoplight/json': 3.21.7
       '@stoplight/spectral-core': 1.23.1
       '@types/json-schema': 7.0.15
       tslib: 2.8.1
@@ -8732,7 +8736,7 @@ snapshots:
     dependencies:
       '@scarf/scarf': 1.4.0
       '@stoplight/better-ajv-errors': 1.0.3(ajv@8.20.0)
-      '@stoplight/json': 3.21.0
+      '@stoplight/json': 3.21.7
       '@stoplight/spectral-core': 1.23.1
       '@stoplight/spectral-formats': 1.8.5
       '@stoplight/spectral-runtime': 1.1.6
@@ -8747,7 +8751,7 @@ snapshots:
 
   '@stoplight/spectral-parsers@1.0.5':
     dependencies:
-      '@stoplight/json': 3.21.0
+      '@stoplight/json': 3.21.7
       '@stoplight/types': 14.1.1
       '@stoplight/yaml': 4.3.0
       tslib: 2.8.1
@@ -8764,7 +8768,7 @@ snapshots:
 
   '@stoplight/spectral-runtime@1.1.6':
     dependencies:
-      '@stoplight/json': 3.21.0
+      '@stoplight/json': 3.21.7
       '@stoplight/path': 1.3.2
       '@stoplight/types': 13.20.0
       lodash: 4.18.1
@@ -9800,7 +9804,7 @@ snapshots:
 
   async@3.2.6: {}
 
-  asyncapi-cable@0.2.1(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3)):
+  asyncapi-cable@0.2.3(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3)):
     dependencies:
       '@anycable/core': 1.1.7
       '@asyncapi/modelina': 5.10.1
@@ -10708,7 +10712,7 @@ snapshots:
       path-expression-matcher: 1.6.2
       xml-naming: 0.3.0
 
-  fast-xml-parser@5.11.0:
+  fast-xml-parser@5.11.1:
     dependencies:
       '@nodable/entities': 3.0.0
       fast-xml-builder: 1.3.1
@@ -11306,6 +11310,10 @@ snapshots:
       esprima: 4.0.1
 
   js-yaml@4.3.1:
+    dependencies:
+      argparse: 2.0.1
+
+  js-yaml@4.3.2:
     dependencies:
       argparse: 2.0.1
 
@@ -12147,7 +12155,7 @@ snapshots:
 
   proto-list@1.2.4: {}
 
-  protobufjs@8.7.2:
+  protobufjs@8.8.0:
     dependencies:
       long: 5.3.2
 
