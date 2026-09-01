@@ -9,49 +9,112 @@ module Discord
     # published to Discord but has no handler shows up in the picker and then
     # times out on the user.
     class RegistryTest < ActiveSupport::TestCase
-      test "every published command has a handler that can run" do
-        ::Discord::Commands::Registry::DEFINITIONS.each do |definition|
-          handler = ::Discord::Commands::Registry.handler_for(definition[:name])
+      Registry = ::Discord::Commands::Registry
 
-          assert handler.present?, "no handler for /#{definition[:name]}"
+      # Every leaf a caller can actually invoke: a command without subcommands,
+      # or each subcommand of one that has them.
+      def self.invocable
+        Registry::DEFINITIONS.flat_map do |definition|
+          children = Registry.subcommands(definition)
+          next [[definition[:name], nil]] if children.empty?
+
+          children.map { |child| [definition[:name], child[:name]] }
+        end
+      end
+
+      test "every published command has a handler that can run" do
+        self.class.invocable.each do |name, subcommand|
+          handler = Registry.handler_for(name, subcommand)
+          label = [name, subcommand].compact.join(" ")
+
+          assert handler.present?, "no handler for /#{label}"
           assert handler.new.respond_to?(:call), "#{handler} cannot be called"
         end
       end
 
       test "the payload sent to Discord carries no keys of ours" do
-        ::Discord::Commands::Registry.payload.each do |command|
+        Registry.payload.each do |command|
           assert_not_includes command.keys, :handler
         end
       end
 
+      # A nested definition is published too, and Discord rejects the whole
+      # payload over one unknown key -- leaving the previous command list live,
+      # which reads as a sync that did nothing.
+      test "the payload carries no keys of ours at any depth" do
+        walk = lambda do |option|
+          assert_not_includes option.keys, :handler
+          assert_not_includes option.keys, :ephemeral
+
+          Array(option[:options]).each { |child| walk.call(child) }
+        end
+
+        Registry.payload.each { |command| walk.call(command) }
+      end
+
       test "every command declares a name and a description" do
-        ::Discord::Commands::Registry.payload.each do |command|
+        Registry.payload.each do |command|
           assert command[:name].present?
           assert command[:description].present?
         end
       end
 
+      test "every subcommand declares a name and a description" do
+        Registry.payload.each do |command|
+          Array(command[:options])
+            .select { |option| option[:type] == Registry::SUB_COMMAND }
+            .each do |subcommand|
+              assert subcommand[:name].present?
+              assert subcommand[:description].present?, "/#{command[:name]} #{subcommand[:name]} has no description"
+            end
+        end
+      end
+
       test "an unregistered name resolves to no handler" do
-        assert_nil ::Discord::Commands::Registry.handler_for("definitely-not-a-command")
+        assert_nil Registry.handler_for("definitely-not-a-command")
+      end
+
+      test "a subcommand resolves to its own handler" do
+        assert_equal ::Discord::Commands::Fleet, Registry.handler_for("fleet", "info")
+      end
+
+      # Discord refuses to invoke a command that has subcommands, so resolving a
+      # bare call to the parent would be inventing a command that cannot exist.
+      test "a command with subcommands cannot be invoked bare" do
+        assert_nil Registry.handler_for("fleet")
+        assert Registry.ephemeral?("fleet"), "a bare /fleet would answer in the channel"
+      end
+
+      test "an unknown subcommand resolves to no handler" do
+        assert_nil Registry.handler_for("fleet", "definitely-not-a-subcommand")
+        assert Registry.ephemeral?("fleet", "definitely-not-a-subcommand")
+      end
+
+      test "a subcommand named on a command that has none resolves to no handler" do
+        assert_nil Registry.handler_for("ship", "info")
       end
 
       # Discord fixes visibility at the deferred acknowledgement and ignores
       # flags on the follow-up, so this cannot live in the command: the answer
       # is needed before the command has run.
-      test "every command answers in the channel" do
-        ::Discord::Commands::Registry::DEFINITIONS.each do |definition|
-          refute ::Discord::Commands::Registry.ephemeral?(definition[:name]),
-            "/#{definition[:name]} would answer privately"
+      #
+      # Named one by one rather than derived from the list: these five answer in
+      # company on purpose, and a later command turning private must not be able
+      # to make this assertion pass by widening it.
+      test "the catalogue lookups and the fleet overview answer in the channel" do
+        [["ship", nil], ["loaner", nil], ["compare", nil], ["hangar", nil], ["fleet", "info"]].each do |name, subcommand|
+          refute Registry.ephemeral?(name, subcommand),
+            "/#{[name, subcommand].compact.join(" ")} would answer privately"
         end
       end
 
       # A "that command no longer exists" belongs to whoever typed it.
       test "an unregistered name answers privately" do
-        assert ::Discord::Commands::Registry.ephemeral?("definitely-not-a-command")
+        assert Registry.ephemeral?("definitely-not-a-command")
       end
 
       test "the visibility flag is ours and never reaches Discord" do
-        ::Discord::Commands::Registry.payload.each do |command|
+        Registry.payload.each do |command|
           assert_not_includes command.keys, :ephemeral
         end
       end

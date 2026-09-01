@@ -39,6 +39,15 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
     }
   end
 
+  # Discord nests a subcommand as an option of type 1 whose own `options` carry
+  # the arguments; there is no `value` on the subcommand itself.
+  def subcommand_payload(name: "fleet", subcommand: "info", options: [])
+    command_payload(
+      name: name,
+      options: [{"name" => subcommand, "type" => 1, "options" => options}]
+    )
+  end
+
   test "answers a ping with a pong" do
     post_signed({type: 1})
 
@@ -103,16 +112,59 @@ class DiscordInteractionsTest < ActionDispatch::IntegrationTest
 
     test "every registered command is acknowledged the way the registry declares" do
       Discord::Commands::Registry::DEFINITIONS.each do |definition|
-        post_signed(command_payload(name: definition[:name]))
+        children = Discord::Commands::Registry.subcommands(definition)
 
-        flags = response.parsed_body.dig("data", "flags")
+        calls =
+          if children.empty?
+            [[command_payload(name: definition[:name]), nil]]
+          else
+            children.map { |child| [subcommand_payload(name: definition[:name], subcommand: child[:name]), child[:name]] }
+          end
 
-        if Discord::Commands::Registry.ephemeral?(definition[:name])
-          assert_equal 64, flags, "/#{definition[:name]} should answer privately"
-        else
-          assert_nil flags, "/#{definition[:name]} should answer in the channel"
+        calls.each do |payload, subcommand|
+          post_signed(payload)
+
+          label = "/#{[definition[:name], subcommand].compact.join(" ")}"
+          flags = response.parsed_body.dig("data", "flags")
+
+          if Discord::Commands::Registry.ephemeral?(definition[:name], subcommand)
+            assert_equal 64, flags, "#{label} should answer privately"
+          else
+            assert_nil flags, "#{label} should answer in the channel"
+          end
         end
       end
+    end
+
+    test "enqueues a subcommand with the arguments nested under it" do
+      post_signed(
+        subcommand_payload(options: [{"name" => "limit", "value" => 5}])
+      )
+
+      context = Discord::CommandJob.jobs.first["args"].first
+
+      assert_equal "fleet", context["command"]
+      assert_equal "info", context["subcommand"]
+      assert_equal({"limit" => 5}, context["options"])
+    end
+
+    # A flat read of the top-level options would find the subcommand itself,
+    # which carries no value, and drop every argument the caller typed.
+    test "a subcommand does not leak into the options hash" do
+      post_signed(subcommand_payload)
+
+      context = Discord::CommandJob.jobs.first["args"].first
+
+      assert_equal({}, context["options"])
+    end
+
+    # Discord will not invoke a command that has subcommands, but the endpoint is
+    # public: a hand-rolled bare call must not dispatch to the parent.
+    test "a bare call to a command with subcommands is acknowledged privately" do
+      post_signed(command_payload(name: "fleet", options: []))
+
+      assert_equal 64, response.parsed_body.dig("data", "flags")
+      assert_nil Discord::CommandJob.jobs.first["args"].first["subcommand"]
     end
 
     test "enqueues the command with everything the job needs" do

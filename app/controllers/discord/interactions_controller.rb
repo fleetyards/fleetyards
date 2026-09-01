@@ -64,7 +64,7 @@ module Discord
     end
 
     private def ephemeral_command?
-      Discord::Commands::Registry.ephemeral?(payload.dig("data", "name"))
+      Discord::Commands::Registry.ephemeral?(command_data["name"], invoked_subcommand&.dig("name"))
     end
 
     private def refuse_command
@@ -81,13 +81,14 @@ module Discord
     # symbols under strict args, and the job reads this back with
     # with_indifferent_access anyway.
     private def command_context
-      data = payload["data"] || {}
+      subcommand = invoked_subcommand
 
       {
         "application_id" => payload["application_id"],
         "token" => payload["token"],
-        "command" => data["name"],
-        "options" => command_options(data["options"]),
+        "command" => command_data["name"],
+        "subcommand" => subcommand&.dig("name"),
+        "options" => command_options((subcommand || command_data)["options"]),
         "guild_id" => payload["guild_id"],
         "discord_user_id" => invoking_user_id,
         # Discord tells us the invoking member's own client locale; the guild
@@ -99,6 +100,19 @@ module Discord
 
     private def command_options(options)
       Array(options).to_h { |option| [option["name"], option["value"]] }
+    end
+
+    private def command_data
+      payload["data"] || {}
+    end
+
+    # Discord nests a subcommand as an option of type 1 that carries no `value`
+    # of its own -- the arguments the caller typed are in *its* `options`. A flat
+    # read of the top level therefore loses every one of them and dispatches to
+    # the parent command.
+    private def invoked_subcommand
+      Array(command_data["options"])
+        .find { |option| option["type"] == Discord::Commands::Registry::SUB_COMMAND }
     end
 
     # In a guild the invoking user is under `member`; in a DM it is `user`.

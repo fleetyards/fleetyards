@@ -73,6 +73,31 @@ module Discord
       end
     end
 
+    test "a subcommand is dispatched to its own handler" do
+      ::Discord::Commands::Fleet.any_instance.expects(:call).returns({content: "the fleet"})
+      @client.expects(:edit_original).with { |payload| payload[:content] == "the fleet" }
+
+      ::Discord::CommandJob.new.perform(
+        context("command" => "fleet", "subcommand" => "info", "options" => {})
+      )
+    end
+
+    # Nothing resolves to a parent that has subcommands, so this must answer
+    # rather than dispatch to the fleet overview.
+    test "a command invoked without its subcommand answers instead of guessing" do
+      @client.expects(:edit_original).with { |payload| payload[:content] == I18n.t("discord.commands.failed") }
+
+      ::Discord::CommandJob.new.perform(context("command" => "fleet", "options" => {}))
+    end
+
+    test "an unknown subcommand answers instead of timing out" do
+      @client.expects(:edit_original).with { |payload| payload[:content] == I18n.t("discord.commands.failed") }
+
+      ::Discord::CommandJob.new.perform(
+        context("command" => "fleet", "subcommand" => "nope", "options" => {})
+      )
+    end
+
     test "an unknown command answers instead of timing out" do
       @client.expects(:edit_original).with { |payload| payload[:content] == I18n.t("discord.commands.failed") }
 
