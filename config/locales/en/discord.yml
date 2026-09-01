@@ -37,6 +37,14 @@ en:
           waiting: 'waiting %{time}'
         not_allowed: '%{fleet} has not made its page public.'
         not_bound: This server is not linked to a fleet on Fleetyards.
+        requests:
+          accepted: '%{username} is now a member of %{fleet}.'
+          declined: 'The request from %{username} was declined.'
+          failed: That request could not be answered. Please try again.
+          missing_username: Please provide a username.
+          no_request: '''%{username}'' has no request to join this fleet.'
+          not_allowed: You are not allowed to answer join requests for this fleet.
+          not_pending: 'The request from %{username} is no longer pending — see [the member list](%{url}).'
       hangar:
         empty: '%{username} has no ships in their public hangar.'
         heading: '[%{username}''s hangar](%{url}) — %{count} ships, %{models} types'

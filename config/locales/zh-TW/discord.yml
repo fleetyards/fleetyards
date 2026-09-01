@@ -37,6 +37,14 @@ zh-TW:
           waiting: '已等待 %{time}'
         not_allowed: '%{fleet} 未公開其頁面。'
         not_bound: 此伺服器尚未與 Fleetyards 上的艦隊連結。
+        requests:
+          accepted: '%{username} 現在是 %{fleet} 的成員。'
+          declined: '已拒絕 %{username} 的申請。'
+          failed: 無法處理該申請，請重試。
+          missing_username: 請提供使用者名稱。
+          no_request: '「%{username}」沒有申請加入這支艦隊。'
+          not_allowed: 你沒有處理這支艦隊加入申請的權限。
+          not_pending: '%{username} 的申請已不再等待處理 — 請查看[成員列表](%{url})。'
       hangar:
         empty: '%{username} 的公開機庫中沒有船艦。'
         heading: '[%{username} 的機庫](%{url}) — %{count} 艘船艦，%{models} 種類型'

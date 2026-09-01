@@ -93,7 +93,7 @@ Two steps, deliberately separate reviews.
 
 **Step 1 — `/fleet accept <username>` / `/fleet decline <username>`.** Same plumbing as everything above: a subcommand, a capability check (`update_members`), and the existing `accept_request` / `decline` AASM events. Ephemeral. `whiny_transitions: false` means a second caller gets `false` rather than an exception, so a repeated accept answers "already accepted" instead of an error.
 
-**Step 2 — buttons on the request notification.** This is the first interaction that is not a command, and the controller cannot receive it yet:
+**Step 2 — buttons on the request notification.** Not built. This is the first interaction that is not a command, and the controller cannot receive it yet:
 
 - `MESSAGE_COMPONENT` is interaction type **3**. `InteractionsController#create` handles 1 and 2 and drops everything else to `head :no_content`, which Discord renders as "This interaction failed".
 - Components acknowledge with `DEFERRED_UPDATE_MESSAGE` (**6**) when the original message is being edited. Type 5 posts a *new* message and leaves the button spinning.
@@ -101,6 +101,8 @@ Two steps, deliberately separate reviews.
 - **Where the message comes from matters.** The per-fleet path built in the previous plan posts through the encrypted `discord_webhook_url`; interactive components require a message sent by the application itself, so the button post needs `discord_channel_id` and a bot token — i.e. it only works for fleets that installed the bot, not for the webhook-only fleets Phase 4 of the old plan deliberately supported. Confirm against Discord's current component rules before building, and fall back to Step 1 for webhook-only fleets.
 
 `notify_fleet_admins` already fires on `request!`, so this hangs off an existing hook rather than a new one.
+
+Step 2 is held back deliberately rather than half-built: the controller plumbing without a message that carries the buttons is dead code, and the delivery constraint above decides whether webhook-only fleets can have it at all. It needs checking against Discord's current component rules first, which is a question about their platform rather than about this repo.
 
 ## Phase 5 — private answers about yourself: `/myhangar`, `/wishlist`
 

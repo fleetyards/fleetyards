@@ -37,6 +37,14 @@ de:
           waiting: 'wartet seit %{time}'
         not_allowed: '%{fleet} hat seine Seite nicht öffentlich gemacht.'
         not_bound: Dieser Server ist mit keiner Flotte auf Fleetyards verknüpft.
+        requests:
+          accepted: '%{username} ist jetzt Mitglied von %{fleet}.'
+          declined: 'Die Anfrage von %{username} wurde abgelehnt.'
+          failed: Die Anfrage konnte nicht beantwortet werden. Bitte versuche es erneut.
+          missing_username: Bitte gib einen Benutzernamen an.
+          no_request: '„%{username}“ hat keine Anfrage für diese Flotte.'
+          not_allowed: Du darfst Beitrittsanfragen dieser Flotte nicht beantworten.
+          not_pending: 'Die Anfrage von %{username} ist nicht mehr offen — siehe [Mitgliederliste](%{url}).'
       hangar:
         empty: '%{username} hat keine Schiffe im öffentlichen Hangar.'
         heading: '[Hangar von %{username}](%{url}) — %{count} Schiffe, %{models} Typen'

@@ -37,6 +37,14 @@ fr:
           waiting: 'en attente depuis %{time}'
         not_allowed: "%{fleet} n'a pas rendu sa page publique."
         not_bound: "Ce serveur n'est lié à aucune flotte sur Fleetyards."
+        requests:
+          accepted: '%{username} est maintenant membre de %{fleet}.'
+          declined: 'La demande de %{username} a été refusée.'
+          failed: 'La demande n''a pas pu être traitée. Réessaie.'
+          missing_username: 'Indique un nom d''utilisateur.'
+          no_request: '« %{username} » n''a aucune demande pour cette flotte.'
+          not_allowed: 'Tu n''as pas le droit de traiter les demandes de cette flotte.'
+          not_pending: 'La demande de %{username} n''est plus en attente — voir [la liste des membres](%{url}).'
       hangar:
         empty: "%{username} n'a aucun vaisseau dans son hangar public."
         heading: '[Hangar de %{username}](%{url}) — %{count} vaisseaux, %{models} types'
