@@ -105,6 +105,11 @@ v1_admin_api_routes = lambda do
   # Ships the game files describe that we have no model for. Only listed and
   # decided on -- the rows are written by the sc_data load, never by hand.
   resources :sc_data_unlisted_models, path: "unlisted-models", only: %i[index] do
+    collection do
+      post "bulk-ignore", to: "sc_data_unlisted_models#ignore_bulk"
+      post "bulk-mark-as-paint", to: "sc_data_unlisted_models#mark_as_paint_bulk"
+      post "bulk-reset", to: "sc_data_unlisted_models#reset_bulk"
+    end
     member do
       post :ignore
       post "create-model", to: "sc_data_unlisted_models#create_model"
