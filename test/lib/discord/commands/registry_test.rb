@@ -135,6 +135,15 @@ module Discord
         assert Registry.ephemeral?("fleet", "events"), "/fleet events would answer in the channel"
       end
 
+      # The transition already notifies whoever it concerns, so a second public
+      # copy in whatever channel the officer typed in adds nothing.
+      test "answering a join request answers privately" do
+        ["accept", "decline"].each do |subcommand|
+          assert Registry.ephemeral?("fleet", subcommand),
+            "/fleet #{subcommand} would answer in the channel"
+        end
+      end
+
       # A "that command no longer exists" belongs to whoever typed it.
       test "an unregistered name answers privately" do
         assert Registry.ephemeral?("definitely-not-a-command")

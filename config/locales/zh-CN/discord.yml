@@ -37,6 +37,14 @@ zh-CN:
           waiting: '已等待 %{time}'
         not_allowed: '%{fleet} 未公开其页面。'
         not_bound: 此服务器尚未与 Fleetyards 上的舰队关联。
+        requests:
+          accepted: '%{username} 现在是 %{fleet} 的成员。'
+          declined: '已拒绝 %{username} 的申请。'
+          failed: 无法处理该申请，请重试。
+          missing_username: 请提供用户名。
+          no_request: '“%{username}”没有申请加入这支舰队。'
+          not_allowed: 你没有处理这支舰队加入申请的权限。
+          not_pending: '%{username} 的申请已不再等待处理 — 请查看[成员列表](%{url})。'
       hangar:
         empty: '%{username} 的公开机库中没有飞船。'
         heading: '[%{username} 的机库](%{url}) — %{count} 艘飞船，%{models} 种类型'

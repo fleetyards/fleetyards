@@ -163,6 +163,36 @@ module Discord
               handler: "Discord::Commands::FleetEvents",
               ephemeral: true,
               options: []
+            },
+            {
+              name: "accept",
+              description: "Accept someone's request to join this server's fleet",
+              type: SUB_COMMAND,
+              handler: "Discord::Commands::FleetAccept",
+              ephemeral: true,
+              options: [
+                {
+                  name: "username",
+                  description: "Fleetyards username",
+                  type: STRING,
+                  required: true
+                }
+              ]
+            },
+            {
+              name: "decline",
+              description: "Decline someone's request to join this server's fleet",
+              type: SUB_COMMAND,
+              handler: "Discord::Commands::FleetDecline",
+              ephemeral: true,
+              options: [
+                {
+                  name: "username",
+                  description: "Fleetyards username",
+                  type: STRING,
+                  required: true
+                }
+              ]
             }
           ]
         },
