@@ -18,6 +18,12 @@ module Admin
               slugEq: {type: :string},
               slugCont: {type: :string},
               slugIn: {type: :array, items: {type: :string}},
+
+              # The select resolves a value it was handed but has not paged to
+              # yet, and it hands back whichever attribute it was told to use.
+              idEq: {type: :string, format: :uuid},
+              idIn: {type: :array, items: {type: :string, format: :uuid}},
+
               s: {anyOf: [{
                 type: :array, items: ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum
               }, ::Admin::V1::Schemas::Sorts::ManufacturerSortEnum]},

@@ -72,8 +72,17 @@ const fetch = async (params: BaseSelectParams<ManufacturerOption>) => {
     q.nameCont = params.search;
   }
 
+  // Resolved by whichever attribute this select carries, not always the slug:
+  // the id variants were asking for a slug that is a uuid, so a preselected
+  // manufacturer outside the first page came back as its own id.
   if (params.missing) {
-    if (props.multiple) {
+    if (props.valueAttr === "id") {
+      if (props.multiple) {
+        q.idIn = params.missing as string[];
+      } else {
+        q.idEq = params.missing as string;
+      }
+    } else if (props.multiple) {
       q.slugIn = params.missing as string[];
     } else {
       q.slugEq = params.missing as string;

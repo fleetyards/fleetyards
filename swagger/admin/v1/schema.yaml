@@ -12361,6 +12361,14 @@ components:
           type: array
           items:
             type: string
+        idEq:
+          type: string
+          format: uuid
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
         s:
           anyOf:
           - type: array
