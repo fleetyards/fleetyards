@@ -15,6 +15,14 @@ it:
           models: Tipi di nave
           ships: Navi
           upcoming_events: Prossimi eventi
+        invite:
+          expires: 'scade tra %{time}'
+          failed: Non è stato possibile creare il link di invito. Riprova.
+          heading: 'Link di invito per %{fleet}:'
+          limit: '%{count} utilizzo/i'
+          limit_too_low: Un link di invito richiede almeno un utilizzo.
+          needs_approval: Chi lo apre chiede di entrare — la richiesta deve ancora essere accettata.
+          not_allowed: Non puoi creare link di invito per questa flotta.
         not_allowed: '%{fleet} non ha reso pubblica la propria pagina.'
         not_bound: Questo server non è collegato a nessuna flotta su Fleetyards.
       hangar:

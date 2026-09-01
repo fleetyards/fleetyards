@@ -15,6 +15,14 @@ zh-CN:
           models: 飞船类型
           ships: 飞船
           upcoming_events: 即将开始的活动
+        invite:
+          expires: '%{time}后过期'
+          failed: 无法创建邀请链接，请重试。
+          heading: '%{fleet} 的邀请链接：'
+          limit: '可使用 %{count} 次'
+          limit_too_low: 邀请链接至少需要一次使用次数。
+          needs_approval: 打开链接的人会提交加入申请 — 申请仍需批准。
+          not_allowed: 你没有为这支舰队创建邀请链接的权限。
         not_allowed: '%{fleet} 未公开其页面。'
         not_bound: 此服务器尚未与 Fleetyards 上的舰队关联。
       hangar:

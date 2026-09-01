@@ -15,6 +15,14 @@ en:
           models: Ship types
           ships: Ships
           upcoming_events: Upcoming events
+        invite:
+          expires: 'expires in %{time}'
+          failed: The invite link could not be created. Please try again.
+          heading: 'Invite link for %{fleet}:'
+          limit: '%{count} use(s)'
+          limit_too_low: An invite link needs at least one use.
+          needs_approval: Whoever opens it asks to join — the request still needs accepting.
+          not_allowed: You are not allowed to create invite links for this fleet.
         not_allowed: '%{fleet} has not made its page public.'
         not_bound: This server is not linked to a fleet on Fleetyards.
       hangar:
