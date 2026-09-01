@@ -85,6 +85,13 @@ const hasActions = computed(
     !!slots["pagination-top"],
 );
 
+// Both blocks only exist where their slot does: an empty one still claims the
+// toolbar's column gap, which on a phone is the difference between the actions
+// and the paginator sharing a row and the paginator wrapping below them.
+const hasActionsRight = computed(() => !!slots["actions-right"]);
+
+const hasPaginationTop = computed(() => !!slots["pagination-top"]);
+
 const { t } = useI18n();
 
 const filterTooltip = computed(() => {
@@ -202,11 +209,16 @@ const toggleFilter = () => {
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
-          <div class="filtered-list__actions-right">
+          <div v-if="hasActionsRight" class="filtered-list__actions-right">
             <slot name="actions-right" :records="records" />
-            <div class="filtered-list__pagination-top">
-              <slot name="pagination-top" />
-            </div>
+          </div>
+          <!-- A sibling of the two action blocks, not a child of the right one:
+               a phone toolbar that does not fit should drop the paginator to a
+               row of its own and keep the buttons up with the filter, and a flex
+               line breaks on a child's unwrapped width - so the paginator has to
+               be that child. -->
+          <div v-if="hasPaginationTop" class="filtered-list__pagination-top">
+            <slot name="pagination-top" />
           </div>
         </div>
       </div>
