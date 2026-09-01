@@ -1,7 +1,7 @@
 {
   "de": {
-    "newVehicles": {
-      "title": "Schiffe zum Hangar hinzufügen",
+    "modelPicker": {
+      "hangarTitle": "Schiffe zum Hangar hinzufügen",
       "wishlistTitle": "Schiffe zur Wunschliste hinzufügen",
       "labels": {
         "search": "Nach Name oder Hersteller suchen",

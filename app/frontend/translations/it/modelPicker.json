@@ -1,7 +1,7 @@
 {
   "it": {
-    "newVehicles": {
-      "title": "Aggiungi navi al tuo hangar",
+    "modelPicker": {
+      "hangarTitle": "Aggiungi navi al tuo hangar",
       "wishlistTitle": "Aggiungi navi alla tua lista dei desideri",
       "labels": {
         "search": "Cerca per nome o produttore",

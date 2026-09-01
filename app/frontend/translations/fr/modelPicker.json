@@ -1,7 +1,7 @@
 {
   "fr": {
-    "newVehicles": {
-      "title": "Ajouter des vaisseaux à votre hangar",
+    "modelPicker": {
+      "hangarTitle": "Ajouter des vaisseaux à votre hangar",
       "wishlistTitle": "Ajouter des vaisseaux à votre liste de souhaits",
       "labels": {
         "search": "Rechercher par nom ou constructeur",

@@ -1,7 +1,7 @@
 {
   "en": {
-    "newVehicles": {
-      "title": "Add Ships to your Hangar",
+    "modelPicker": {
+      "hangarTitle": "Add Ships to your Hangar",
       "wishlistTitle": "Add Ships to your Wishlist",
       "labels": {
         "search": "Search by name or manufacturer",

@@ -1,7 +1,7 @@
 {
   "zh-TW": {
-    "newVehicles": {
-      "title": "將艦船加入你的機庫",
+    "modelPicker": {
+      "hangarTitle": "將艦船加入你的機庫",
       "wishlistTitle": "將艦船加入你的願望清單",
       "labels": {
         "search": "依名稱或製造商搜尋",

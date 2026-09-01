@@ -1,7 +1,7 @@
 {
   "zh-CN": {
-    "newVehicles": {
-      "title": "将舰船添加到你的机库",
+    "modelPicker": {
+      "hangarTitle": "将舰船添加到你的机库",
       "wishlistTitle": "将舰船添加到你的愿望清单",
       "labels": {
         "search": "按名称或制造商搜索",
