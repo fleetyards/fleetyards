@@ -277,10 +277,20 @@ const crumbs = computed<Crumb[]>(() => [
 
           <template #actions-left>
             <BtnGroup segmented>
-              <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
+              <Btn
+                :active="activeTab === 'stock'"
+                mobile-icon-only
+                @click="activeTab = 'stock'"
+              >
+                <i class="fa-duotone fa-boxes-stacked" />
                 {{ t("labels.logistics.stockView") }}
               </Btn>
-              <Btn :active="activeTab === 'log'" @click="activeTab = 'log'">
+              <Btn
+                :active="activeTab === 'log'"
+                mobile-icon-only
+                @click="activeTab = 'log'"
+              >
+                <i class="fa-duotone fa-clock-rotate-left" />
                 {{ t("labels.logistics.logView") }}
               </Btn>
             </BtnGroup>

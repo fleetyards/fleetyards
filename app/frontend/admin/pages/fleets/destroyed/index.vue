@@ -147,14 +147,18 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
       <BtnGroup segmented>
         <Btn
           :active="source === DestroyedFleetSourceEnum.DISCARDED"
+          mobile-icon-only
           @click="setSource(DestroyedFleetSourceEnum.DISCARDED)"
         >
+          <i class="fa-duotone fa-trash-can" />
           {{ t("labels.destroyedFleets.discarded") }}
         </Btn>
         <Btn
           :active="source === DestroyedFleetSourceEnum.PURGED"
+          mobile-icon-only
           @click="setSource(DestroyedFleetSourceEnum.PURGED)"
         >
+          <i class="fa-duotone fa-trash-can-xmark" />
           {{ t("labels.destroyedFleets.purged") }}
         </Btn>
       </BtnGroup>
