@@ -23,6 +23,14 @@ de:
           limit_too_low: Ein Einladungslink braucht mindestens eine Verwendung.
           needs_approval: Wer ihn öffnet, stellt eine Beitrittsanfrage — die muss noch bestätigt werden.
           not_allowed: Du darfst für diese Flotte keine Einladungslinks erstellen.
+        members:
+          empty: Diese Flotte hat noch keine bestätigten Mitglieder.
+          heading: '[Mitglieder von %{fleet}](%{url}) — %{count}'
+          more: '…und %{count} weitere.'
+          no_requests: Derzeit wartet niemand auf Aufnahme.
+          not_allowed: Du darfst die Mitglieder dieser Flotte nicht sehen.
+          requests_heading: '[Beitrittsanfragen für %{fleet}](%{url}) — %{count}'
+          waiting: 'wartet seit %{time}'
         not_allowed: '%{fleet} hat seine Seite nicht öffentlich gemacht.'
         not_bound: Dieser Server ist mit keiner Flotte auf Fleetyards verknüpft.
       hangar:

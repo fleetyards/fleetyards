@@ -23,6 +23,14 @@ es:
           limit_too_low: Un enlace de invitación necesita al menos un uso.
           needs_approval: Quien lo abra solicitará unirse — la solicitud aún debe aceptarse.
           not_allowed: No tienes permiso para crear enlaces de invitación para esta flota.
+        members:
+          empty: Esta flota todavía no tiene miembros aceptados.
+          heading: '[Miembros de %{fleet}](%{url}) — %{count}'
+          more: '…y %{count} más.'
+          no_requests: Ahora mismo no hay nadie esperando para unirse.
+          not_allowed: No tienes permiso para ver los miembros de esta flota.
+          requests_heading: '[Solicitudes para %{fleet}](%{url}) — %{count}'
+          waiting: 'esperando %{time}'
         not_allowed: '%{fleet} no ha hecho pública su página.'
         not_bound: Este servidor no está vinculado a ninguna flota en Fleetyards.
       hangar:

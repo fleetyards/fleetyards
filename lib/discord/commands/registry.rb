@@ -136,6 +136,25 @@ module Discord
                   ]
                 }
               ]
+            },
+            {
+              name: "members",
+              description: "List this server's fleet members, only to you",
+              type: SUB_COMMAND,
+              handler: "Discord::Commands::FleetMembers",
+              ephemeral: true,
+              options: [
+                {
+                  name: "filter",
+                  description: "Which members to list",
+                  type: STRING,
+                  required: false,
+                  choices: [
+                    {name: "Members", value: "all"},
+                    {name: "Pending requests", value: "pending"}
+                  ]
+                }
+              ]
             }
           ]
         },
