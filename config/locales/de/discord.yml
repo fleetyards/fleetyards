@@ -15,6 +15,14 @@ de:
           models: Schiffstypen
           ships: Schiffe
           upcoming_events: Kommende Events
+        invite:
+          expires: 'läuft in %{time} ab'
+          failed: Der Einladungslink konnte nicht erstellt werden. Bitte versuche es erneut.
+          heading: 'Einladungslink für %{fleet}:'
+          limit: '%{count} Verwendung(en)'
+          limit_too_low: Ein Einladungslink braucht mindestens eine Verwendung.
+          needs_approval: Wer ihn öffnet, stellt eine Beitrittsanfrage — die muss noch bestätigt werden.
+          not_allowed: Du darfst für diese Flotte keine Einladungslinks erstellen.
         not_allowed: '%{fleet} hat seine Seite nicht öffentlich gemacht.'
         not_bound: Dieser Server ist mit keiner Flotte auf Fleetyards verknüpft.
       hangar:

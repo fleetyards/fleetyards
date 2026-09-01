@@ -15,6 +15,14 @@ zh-TW:
           models: 船艦類型
           ships: 船艦
           upcoming_events: 即將開始的活動
+        invite:
+          expires: '%{time}後過期'
+          failed: 無法建立邀請連結，請重試。
+          heading: '%{fleet} 的邀請連結：'
+          limit: '可使用 %{count} 次'
+          limit_too_low: 邀請連結至少需要一次使用次數。
+          needs_approval: 開啟連結的人會送出加入申請 — 申請仍需核准。
+          not_allowed: 你沒有為這支艦隊建立邀請連結的權限。
         not_allowed: '%{fleet} 未公開其頁面。'
         not_bound: 此伺服器尚未與 Fleetyards 上的艦隊連結。
       hangar:

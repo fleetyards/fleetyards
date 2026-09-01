@@ -15,6 +15,14 @@ fr:
           models: Types de vaisseau
           ships: Vaisseaux
           upcoming_events: Événements à venir
+        invite:
+          expires: 'expire dans %{time}'
+          failed: 'Le lien d''invitation n''a pas pu être créé. Réessaie.'
+          heading: 'Lien d''invitation pour %{fleet} :'
+          limit: '%{count} utilisation(s)'
+          limit_too_low: 'Un lien d''invitation nécessite au moins une utilisation.'
+          needs_approval: 'Celui qui l''ouvre demande à rejoindre — la demande doit encore être acceptée.'
+          not_allowed: 'Tu n''as pas le droit de créer des liens d''invitation pour cette flotte.'
         not_allowed: "%{fleet} n'a pas rendu sa page publique."
         not_bound: "Ce serveur n'est lié à aucune flotte sur Fleetyards."
       hangar:

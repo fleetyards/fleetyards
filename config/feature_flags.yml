@@ -21,6 +21,12 @@
 discord_commands:
   description: "Discord slash commands answered by the interactions endpoint"
 
+# Gates only the commands that change a fleet. discord_commands is on in
+# production and covers dispatch as a whole; the first path that writes from
+# Discord wants a switch of its own.
+discord_fleet_commands:
+  description: "Discord commands that create or change something in a fleet"
+
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
 

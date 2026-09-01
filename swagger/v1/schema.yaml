@@ -12534,6 +12534,7 @@ components:
       type: string
       enum:
       - discord_commands
+      - discord_fleet_commands
       - fleet_logistics
       - fleet_mission_builder
       - fleet_starmap
@@ -12551,6 +12552,7 @@ components:
       - tools_travel_times
       x-enumNames:
       - DISCORD_COMMANDS
+      - DISCORD_FLEET_COMMANDS
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_STARMAP

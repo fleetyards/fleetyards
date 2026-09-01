@@ -108,6 +108,34 @@ module Discord
               type: SUB_COMMAND,
               handler: "Discord::Commands::Fleet",
               options: []
+            },
+            {
+              name: "invite",
+              description: "Create an invite link for this server's fleet",
+              type: SUB_COMMAND,
+              handler: "Discord::Commands::FleetInvite",
+              ephemeral: true,
+              options: [
+                {
+                  name: "limit",
+                  description: "How many people may use the link",
+                  type: INTEGER,
+                  required: false,
+                  min_value: 1
+                },
+                {
+                  name: "expires_in",
+                  description: "How long the link stays valid",
+                  type: STRING,
+                  required: false,
+                  choices: [
+                    {name: "1 hour", value: "1h"},
+                    {name: "24 hours", value: "24h"},
+                    {name: "7 days", value: "7d"},
+                    {name: "Never", value: "never"}
+                  ]
+                }
+              ]
             }
           ]
         },

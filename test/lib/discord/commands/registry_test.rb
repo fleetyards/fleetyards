@@ -117,6 +117,12 @@ module Discord
         end
       end
 
+      # The token is the credential: a public answer hands the fleet to everyone
+      # in the channel, guests included.
+      test "an invite link answers privately" do
+        assert Registry.ephemeral?("fleet", "invite"), "/fleet invite would answer in the channel"
+      end
+
       # A "that command no longer exists" belongs to whoever typed it.
       test "an unregistered name answers privately" do
         assert Registry.ephemeral?("definitely-not-a-command")

@@ -3,24 +3,16 @@
 module Discord
   module Commands
     class Fleet < Base
-      include LinkedAccount
+      include FleetContext
 
       EMBED_COLOR = 0x2d9cdb
 
       def call
-        fleet = resolve_fleet
+        fleet = guild_fleet
         return message(content: I18n.t("discord.commands.fleet.not_bound")) if fleet.nil?
         return message(content: I18n.t("discord.commands.fleet.not_allowed", fleet: fleet.name)) unless allowed?(fleet)
 
         message(embeds: [embed(fleet)])
-      end
-
-      # The guild the command came from decides which fleet is meant, through
-      # the binding the fleet's own notification settings already carry.
-      private def resolve_fleet
-        return nil if guild_id.blank?
-
-        ::FleetNotificationSetting.find_by(discord_guild_id: guild_id)&.fleet
       end
 
       # A member of the fleet may always see it; anyone else only if the fleet
