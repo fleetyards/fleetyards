@@ -24,6 +24,20 @@ module Maintenance
     # nothing in the export references. Dropped only while nothing points at them.
     DROPPED_CODES = %w[TRAS GHEX].freeze
 
+    # One company under two codes, read as `export code => the code that stays`.
+    #
+    # MISC is the row the RSI matrix created in 2014 and every ship hangs off;
+    # MIS is what the export's `scitemmanufacturer` record calls the same
+    # company, and the loader had nothing to match it on -- neither the code nor
+    # the slug "Musashi Industrial & Starflight Concern" produces -- so it minted
+    # a second row for the items. The table already records the pair: MISC
+    # carries `code_mapping` "MIS" and the full name in `long_name`.
+    #
+    # Named here rather than read from that column because the merge destroys
+    # rows: which pairs collapse should be visible in a diff and pinned by a
+    # test, not taken from a field nothing else reads and no admin can see.
+    ALIASED_CODES = {"MIS" => "MISC"}.freeze
+
     # Left on by default so an accidental run reports instead of destroying.
     attribute :dry_run, :boolean, default: true
 
@@ -35,7 +49,7 @@ module Maintenance
       result = deduplicator(logger: method(:log)).call
 
       log "renamed #{result.renamed.size}, dropped #{result.dropped.size}, " \
-          "merged #{result.merged.size} slugs"
+          "aliased #{result.aliased.size}, merged #{result.merged.size} slugs"
     end
 
     private def report_plan
@@ -45,7 +59,7 @@ module Maintenance
 
       log "manufacturers: #{plan[:before]} -> #{plan[:after]}"
       log "renamed #{plan[:renamed].size}, dropped #{plan[:dropped].size}, " \
-          "merged #{plan[:merged].size} slugs"
+          "aliased #{plan[:aliased].size}, merged #{plan[:merged].size} slugs"
       log "records left without a manufacturer: #{plan[:orphaned]}"
       log "dry run -- rolled back, no rows were changed"
     end
@@ -54,6 +68,7 @@ module Maintenance
       ::Manufacturers::Deduplicator.new(
         corrections: CORRECTIONS,
         dropped_codes: DROPPED_CODES,
+        aliased_codes: ALIASED_CODES,
         logger:
       )
     end

@@ -69,6 +69,30 @@ module Maintenance
       assert_nil Manufacturer.find_by(code: "TRAS")
     end
 
+    test "#process merges the row the export filed under a second code" do
+      keep = create(:manufacturer, name: "MISC", code: "MISC", rsi_id: 4, sc_ref: nil)
+      drop = create(:manufacturer, name: "Musashi Industrial & Starflight Concern",
+        code: "MIS", sc_ref: "b28a5c61")
+      component = create(:component, manufacturer: drop)
+
+      run_task(dry_run: false)
+
+      assert_nil Manufacturer.find_by(code: "MIS")
+      assert_equal keep, component.reload.manufacturer
+      assert_equal "b28a5c61", keep.reload.sc_ref
+    end
+
+    test "#process reports the alias merge on a dry run" do
+      create(:manufacturer, name: "MISC", code: "MISC", rsi_id: 4)
+      create(:manufacturer, name: "Musashi Industrial & Starflight Concern", code: "MIS")
+
+      output = run_task(dry_run: true)
+
+      assert_includes output, "MIS -> MISC"
+      assert_includes output, "manufacturers: 2 -> 1"
+      assert_includes output, "dry run"
+    end
+
     # The corrections have to match the overrides the parser applies, or a fresh
     # import and a cleaned table would disagree about what a code is called.
     test "the corrections agree with the shipped parser overrides" do
