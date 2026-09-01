@@ -76,7 +76,7 @@ const { data: publicFleetData } = usePublicFleetQuery(fleetSlug, {
 
 const currentFleet = computed(() => fleetData.value || publicFleetData.value);
 
-const { data: myFleets } = useMyFleetsQuery({
+const { data: myFleets, isPending: myFleetsPending } = useMyFleetsQuery({
   query: {
     refetchOnWindowFocus: false,
     enabled: isAuthenticated,
@@ -163,7 +163,10 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         :image="primaryFleet.logo?.smallUrl"
         icon="fa-duotone fa-users"
       />
-      <NotificationsNav v-if="isAuthenticated" icon-only />
+      <NotificationsNav
+        v-else-if="isAuthenticated && !myFleetsPending"
+        icon-only
+      />
     </template>
   </AppNavigationMobile>
 </template>
