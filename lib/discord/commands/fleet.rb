@@ -3,6 +3,8 @@
 module Discord
   module Commands
     class Fleet < Base
+      include LinkedAccount
+
       EMBED_COLOR = 0x2d9cdb
 
       def call
@@ -30,7 +32,7 @@ module Discord
       end
 
       private def member?(fleet)
-        user = ::OmniauthConnection.find_by(provider: "discord", uid: discord_user_id)&.user
+        user = linked_user
         return false if user.blank?
 
         user.fleet_memberships.exists?(fleet_id: fleet.id, aasm_state: "accepted")

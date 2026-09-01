@@ -2,6 +2,7 @@
 fr:
   discord:
     commands:
+      account_not_linked: 'Associe d''abord ton compte Discord sur Fleetyards : %{url}'
       disabled: Les commandes Fleetyards ne sont pas encore disponibles.
       failed: "Une erreur est survenue lors de la recherche. Merci de réessayer."
       compare:
@@ -26,6 +27,14 @@ fr:
         heading: '[%{ship}](%{url}) donne accès à %{count} vaisseau(x) de prêt :'
         missing_query: Merci d'indiquer le nom d'un vaisseau.
         none: '%{ship} ne donne accès à aucun vaisseau de prêt.'
+      my_hangar:
+        empty: 'Tu n''as encore aucun vaisseau dans [ton hangar](%{url}).'
+        heading: '[Ton hangar](%{url}) — %{count} vaisseaux, %{models} types'
+        more: '…et %{count} de plus.'
+      my_wishlist:
+        empty: 'Il n''y a encore rien dans [ta liste de souhaits](%{url}).'
+        heading: '[Ta liste de souhaits](%{url}) — %{count} vaisseaux, %{models} types'
+        more: '…et %{count} de plus.'
       ship:
         ambiguous: '%{count} vaisseaux correspondent à « %{query} » :'
         fields:

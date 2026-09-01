@@ -3,7 +3,7 @@
 module Discord
   module Commands
     class Hangar < Base
-      MAX_SHIPS = 10
+      include VehicleCounts
 
       def call
         username = option("username").to_s.strip
@@ -16,8 +16,7 @@ module Discord
         # for whether an account exists.
         return message(content: I18n.t("discord.commands.hangar.not_available", username: username)) unless visible?(user)
 
-        vehicles = user.vehicles.purchased.public
-        counts = vehicles.joins(:model).group("models.name").order("count_all desc, models.name asc").count
+        counts = model_counts(user.vehicles.purchased.public)
 
         return message(content: I18n.t("discord.commands.hangar.empty", username: user.username)) if counts.empty?
 
@@ -31,17 +30,14 @@ module Discord
       end
 
       private def content_for(user, counts)
-        shown = counts.first(MAX_SHIPS)
-        lines = shown.map { |name, count| (count > 1) ? "• #{count}× #{name}" : "• #{name}" }
-
         [
           I18n.t("discord.commands.hangar.heading",
             username: user.username,
             url: user.public_hangar_url,
             count: counts.values.sum,
             models: counts.size),
-          lines.join("\n"),
-          (I18n.t("discord.commands.hangar.more", count: counts.size - shown.size) if counts.size > shown.size)
+          count_lines(counts).join("\n"),
+          (I18n.t("discord.commands.hangar.more", count: omitted_count(counts)) if omitted_count(counts).positive?)
         ].compact.join("\n")
       end
     end

@@ -2,6 +2,7 @@
 en:
   discord:
     commands:
+      account_not_linked: 'Link your Discord account on Fleetyards first: %{url}'
       disabled: Fleetyards commands are not available yet.
       failed: Something went wrong while looking that up. Please try again.
       compare:
@@ -26,6 +27,14 @@ en:
         heading: '[%{ship}](%{url}) comes with %{count} loaner(s):'
         missing_query: Please provide a ship name.
         none: '%{ship} has no loaners.'
+      my_hangar:
+        empty: 'You have no ships in [your hangar](%{url}) yet.'
+        heading: '[Your hangar](%{url}) — %{count} ships, %{models} types'
+        more: '…and %{count} more.'
+      my_wishlist:
+        empty: 'There is nothing on [your wishlist](%{url}) yet.'
+        heading: '[Your wishlist](%{url}) — %{count} ships, %{models} types'
+        more: '…and %{count} more.'
       ship:
         ambiguous: '%{count} ships match "%{query}":'
         fields:

@@ -2,6 +2,7 @@
 zh-TW:
   discord:
     commands:
+      account_not_linked: '請先在 Fleetyards 上連結你的 Discord 帳號：%{url}'
       disabled: Fleetyards 指令尚未開放。
       failed: 查詢時發生錯誤，請重試。
       compare:
@@ -26,6 +27,14 @@ zh-TW:
         heading: '[%{ship}](%{url}) 附帶 %{count} 艘替代船艦：'
         missing_query: 請提供船艦名稱。
         none: '%{ship} 沒有替代船艦。'
+      my_hangar:
+        empty: '[你的機庫](%{url})中還沒有飛船。'
+        heading: '[你的機庫](%{url}) — %{count} 艘飛船，%{models} 種型號'
+        more: '…還有 %{count} 種。'
+      my_wishlist:
+        empty: '[你的心願單](%{url})中還沒有內容。'
+        heading: '[你的心願單](%{url}) — %{count} 艘飛船，%{models} 種型號'
+        more: '…還有 %{count} 種。'
       ship:
         ambiguous: '有 %{count} 艘船艦符合「%{query}」：'
         fields:

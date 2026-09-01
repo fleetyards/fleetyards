@@ -2,6 +2,7 @@
 it:
   discord:
     commands:
+      account_not_linked: 'Collega prima il tuo account Discord su Fleetyards: %{url}'
       disabled: I comandi Fleetyards non sono ancora disponibili.
       failed: Qualcosa è andato storto durante la ricerca. Riprova.
       compare:
@@ -26,6 +27,14 @@ it:
         heading: '[%{ship}](%{url}) include %{count} nave(i) in prestito:'
         missing_query: Indica il nome di una nave.
         none: '%{ship} non ha navi in prestito.'
+      my_hangar:
+        empty: 'Non hai ancora navi nel [tuo hangar](%{url}).'
+        heading: '[Il tuo hangar](%{url}) — %{count} navi, %{models} tipi'
+        more: '…e altre %{count}.'
+      my_wishlist:
+        empty: 'Non c''è ancora nulla nella [tua lista dei desideri](%{url}).'
+        heading: '[La tua lista dei desideri](%{url}) — %{count} navi, %{models} tipi'
+        more: '…e altre %{count}.'
       ship:
         ambiguous: '%{count} navi corrispondono a «%{query}»:'
         fields:

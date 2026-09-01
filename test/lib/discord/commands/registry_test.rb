@@ -108,6 +108,15 @@ module Discord
         end
       end
 
+      # The point of these two commands. A public answer would post someone's
+      # private hangar into the channel they typed it in.
+      test "a command about your own data answers privately" do
+        ["myhangar", "mywishlist"].each do |name|
+          assert Registry.ephemeral?(name),
+            "/#{name} would answer in the channel"
+        end
+      end
+
       # A "that command no longer exists" belongs to whoever typed it.
       test "an unregistered name answers privately" do
         assert Registry.ephemeral?("definitely-not-a-command")
