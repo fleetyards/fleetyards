@@ -152,7 +152,6 @@ const columns: BaseTableCol<FleetInventoryItem>[] = [
         </BaseTable>
 
         <Paginator
-          v-if="items"
           :query-result-ref="items"
           :per-page="perPage"
           :update-per-page="updatePerPage"

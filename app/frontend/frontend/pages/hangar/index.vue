@@ -571,7 +571,6 @@ const openDisplayOptionsModal = () => {
         </template>
         <template #pagination>
           <Paginator
-            v-if="vehicles"
             :query-result-ref="vehicles"
             :per-page="perPage"
             :size="BtnSizesEnum.SM"
@@ -583,7 +582,6 @@ const openDisplayOptionsModal = () => {
 
     <template #pagination-top>
       <Paginator
-        v-if="vehicles"
         :query-result-ref="vehicles"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -592,7 +590,6 @@ const openDisplayOptionsModal = () => {
 
     <template #pagination-bottom>
       <Paginator
-        v-if="vehicles"
         :query-result-ref="vehicles"
         :per-page="perPage"
         :update-per-page="updatePerPage"

@@ -299,7 +299,6 @@ const columns: BaseTableCol<Image>[] = [
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="data"
         :query-result-ref="data"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -308,7 +307,6 @@ const columns: BaseTableCol<Image>[] = [
 
     <template #pagination-bottom>
       <Paginator
-        v-if="data"
         :query-result-ref="data"
         :per-page="perPage"
         :update-per-page="updatePerPage"

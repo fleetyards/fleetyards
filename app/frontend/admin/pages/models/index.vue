@@ -427,7 +427,6 @@ watch(
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="models"
         :query-result-ref="models"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -435,7 +434,6 @@ watch(
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="models"
         :query-result-ref="models"
         :per-page="perPage"
         :update-per-page="updatePerPage"

@@ -351,7 +351,6 @@ const {
           >
             <template #pagination>
               <Paginator
-                v-if="fleetVehicles"
                 :query-result-ref="fleetVehicles"
                 :per-page="perPage"
                 :size="BtnSizesEnum.SM"
@@ -362,7 +361,6 @@ const {
         </template>
         <template #pagination-top>
           <Paginator
-            v-if="fleetVehicles"
             :query-result-ref="fleetVehicles"
             :per-page="perPage"
             :update-per-page="updatePerPage"
@@ -371,7 +369,6 @@ const {
 
         <template #pagination-bottom>
           <Paginator
-            v-if="fleetVehicles"
             :query-result-ref="fleetVehicles"
             :per-page="perPage"
             :update-per-page="updatePerPage"

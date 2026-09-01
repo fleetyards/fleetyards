@@ -334,7 +334,6 @@ const crumbs = [
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="modules"
         :query-result-ref="modules"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -342,7 +341,6 @@ const crumbs = [
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="modules"
         :query-result-ref="modules"
         :per-page="perPage"
         :update-per-page="updatePerPage"

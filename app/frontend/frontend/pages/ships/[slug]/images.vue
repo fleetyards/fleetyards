@@ -168,10 +168,10 @@ useGallery(".images");
       </Grid>
     </template>
     <template #pagination-top>
-      <Paginator v-if="images" :query-result-ref="images" :per-page="perPage" />
+      <Paginator :query-result-ref="images" :per-page="perPage" />
     </template>
     <template #pagination-bottom>
-      <Paginator v-if="images" :query-result-ref="images" :per-page="perPage" />
+      <Paginator :query-result-ref="images" :per-page="perPage" />
     </template>
   </FilteredList>
 </template>

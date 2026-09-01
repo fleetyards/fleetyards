@@ -78,6 +78,18 @@ const singlePage: BaseList = {
   },
 };
 
+const emptyList: BaseList = {
+  meta: {
+    pagination: {
+      totalCount: 0,
+      currentPage: 1,
+      totalPages: 0,
+      perPage: 25,
+      defaultPerPage: 25,
+    },
+  },
+};
+
 const perPage = ref<number | string>(25);
 
 const updatePerPage = (value: number | string) => {
@@ -194,8 +206,9 @@ const updatePerPage = (value: number | string) => {
 
   <Heading :level="HeadingLevelEnum.H2">Paginator</Heading>
   <p>
-    Ten pages with a per-page dropdown, and a single-page result. Page links
-    write to the route, so clicking one navigates this page.
+    Ten pages with a per-page dropdown, a single-page result, an empty result
+    and the state before a list has answered. Page links write to the route, so
+    clicking one navigates this page.
   </p>
   <div class="row">
     <div class="col-12 vt-stack">
@@ -206,6 +219,8 @@ const updatePerPage = (value: number | string) => {
       />
       <Paginator :query-result-ref="paginated" inline />
       <Paginator :query-result-ref="singlePage" />
+      <Paginator :query-result-ref="emptyList" />
+      <Paginator :query-result-ref="undefined" />
     </div>
   </div>
 

@@ -242,7 +242,6 @@ const { t } = useI18n();
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="unlistedModels"
         :query-result-ref="unlistedModels"
         :per-page="perPage"
         :update-per-page="updatePerPage"

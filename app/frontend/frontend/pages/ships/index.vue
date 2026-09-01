@@ -133,7 +133,6 @@ const openDisplayOptionsModal = () => {
 
     <template #pagination-top>
       <Paginator
-        v-if="models"
         :query-result-ref="models"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -167,7 +166,6 @@ const openDisplayOptionsModal = () => {
       >
         <template #pagination>
           <Paginator
-            v-if="models"
             :query-result-ref="models"
             :per-page="perPage"
             :size="BtnSizesEnum.SM"
@@ -182,7 +180,6 @@ const openDisplayOptionsModal = () => {
 
     <template #pagination-bottom>
       <Paginator
-        v-if="models"
         :query-result-ref="models"
         :per-page="perPage"
         :update-per-page="updatePerPage"

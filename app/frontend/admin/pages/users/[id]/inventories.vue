@@ -107,7 +107,6 @@ const columns: BaseTableCol<Inventory>[] = [
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="inventories"
         :query-result-ref="inventories"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -115,7 +114,6 @@ const columns: BaseTableCol<Inventory>[] = [
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="inventories"
         :query-result-ref="inventories"
         :per-page="perPage"
         :update-per-page="updatePerPage"

@@ -308,7 +308,6 @@ useSubscription({
         </template>
         <template #pagination>
           <Paginator
-            v-if="vehicles"
             :query-result-ref="vehicles"
             :per-page="perPage"
             :size="BtnSizesEnum.SM"
@@ -320,7 +319,6 @@ useSubscription({
 
     <template #pagination-top>
       <Paginator
-        v-if="vehicles"
         :query-result-ref="vehicles"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -329,7 +327,6 @@ useSubscription({
 
     <template #pagination-bottom>
       <Paginator
-        v-if="vehicles"
         :query-result-ref="vehicles"
         :per-page="perPage"
         :update-per-page="updatePerPage"

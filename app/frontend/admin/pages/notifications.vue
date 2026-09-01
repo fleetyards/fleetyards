@@ -513,7 +513,6 @@ const destroySelected = () =>
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="notifications"
         :query-result-ref="notifications"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -521,7 +520,6 @@ const destroySelected = () =>
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="notifications"
         :query-result-ref="notifications"
         :per-page="perPage"
         :update-per-page="updatePerPage"

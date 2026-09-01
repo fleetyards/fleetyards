@@ -285,7 +285,6 @@ const syncFromPatreon = () => {
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="supporterContributions"
         :query-result-ref="supporterContributions"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -293,7 +292,6 @@ const syncFromPatreon = () => {
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="supporterContributions"
         :query-result-ref="supporterContributions"
         :per-page="perPage"
         :update-per-page="updatePerPage"

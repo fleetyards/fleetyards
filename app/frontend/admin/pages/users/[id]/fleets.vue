@@ -150,7 +150,6 @@ const columns: BaseTableCol<AdminUserFleet>[] = [
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="fleets"
         :query-result-ref="fleets"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -158,7 +157,6 @@ const columns: BaseTableCol<AdminUserFleet>[] = [
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="fleets"
         :query-result-ref="fleets"
         :per-page="perPage"
         :update-per-page="updatePerPage"

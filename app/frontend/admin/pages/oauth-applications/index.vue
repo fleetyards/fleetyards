@@ -129,7 +129,6 @@ const { t, l } = useI18n();
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="oauthApplications"
         :query-result-ref="oauthApplications"
         :per-page="perPage"
         :update-per-page="updatePerPage"
@@ -137,7 +136,6 @@ const { t, l } = useI18n();
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="oauthApplications"
         :query-result-ref="oauthApplications"
         :per-page="perPage"
         :update-per-page="updatePerPage"
