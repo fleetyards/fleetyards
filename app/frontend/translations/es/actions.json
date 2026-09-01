@@ -381,7 +381,9 @@
         "ignore": "Ignorar",
         "noManufacturer": "Este identificador no resuelve ningún fabricante",
         "alreadyExists": "%{name} ya está en el catálogo",
-        "link": "Ya está en el catálogo"
+        "link": "Ya está en el catálogo",
+        "markAsPaintSelected": "Marcar la selección como pinturas",
+        "ignoreSelected": "Ignorar la selección"
       },
       "revert": "Revertir"
     }

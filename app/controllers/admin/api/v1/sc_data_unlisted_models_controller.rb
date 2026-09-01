@@ -9,6 +9,7 @@ module Admin
       # create, update or destroy here -- only listing them and deciding.
       class ScDataUnlistedModelsController < ::Admin::Api::BaseController
         before_action :set_entry, only: %i[ignore create_model mark_as_paint link reset]
+        before_action :set_entries, only: %i[ignore_bulk mark_as_paint_bulk reset_bulk]
 
         def index
           authorize! with: ::Admin::ScDataUnlistedModelPolicy
@@ -78,6 +79,41 @@ module Admin
         # already point at it.
         def reset
           @sc_data_unlisted_model.reset!
+        end
+
+        # A patch's entries are mostly one decision repeated -- the marker filter
+        # misses a handful of NPC copies every build -- so the three decisions
+        # that need nothing but the entry itself can be made for a selection at
+        # once. `link` and `create_model` stay per row: each needs a target the
+        # admin picks, and each can fail on its own.
+        def ignore_bulk
+          decide_selection("ignored")
+        end
+
+        def mark_as_paint_bulk
+          decide_selection("paint")
+        end
+
+        def reset_bulk
+          ScDataUnlistedModel.transaction do
+            @sc_data_unlisted_models.find_each(&:reset!)
+          end
+
+          head :no_content
+        end
+
+        private def decide_selection(decision)
+          ScDataUnlistedModel.transaction do
+            @sc_data_unlisted_models.find_each { |entry| entry.decide!(decision) }
+          end
+
+          head :no_content
+        end
+
+        private def set_entries
+          authorize! with: ::Admin::ScDataUnlistedModelPolicy
+
+          @sc_data_unlisted_models = ScDataUnlistedModel.where(id: params[:ids])
         end
 
         private def set_entry

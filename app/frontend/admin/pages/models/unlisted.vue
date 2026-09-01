@@ -15,11 +15,14 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useScDataUnlistedModels,
+  useScDataUnlistedModelBulkIgnore,
+  useScDataUnlistedModelBulkMarkAsPaint,
   getScDataUnlistedModelsQueryKey,
   type ScDataUnlistedModel,
   type ScDataUnlistedModelSortEnum,
 } from "@/services/fyAdminApi";
 import UnlistedModelActions from "@/admin/components/UnlistedModels/Actions/index.vue";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 
 const route = useRoute();
 
@@ -55,6 +58,36 @@ watch(
     await refetch();
   },
 );
+
+const selected = ref<string[]>([]);
+
+const onSelectedChange = (ids: string[]) => {
+  selected.value = ids;
+};
+
+const deciding = ref(false);
+
+const ignoreMutation = useScDataUnlistedModelBulkIgnore();
+const markAsPaintMutation = useScDataUnlistedModelBulkMarkAsPaint();
+
+// A patch's list is mostly one decision repeated, so the two decisions that
+// need nothing but the entry are offered for the whole selection. Creating a
+// ship and linking one stay per row: each needs a target a person picks.
+const decideSelected = async (
+  mutation: typeof ignoreMutation | typeof markAsPaintMutation,
+) => {
+  deciding.value = true;
+
+  await mutation
+    .mutateAsync({ data: { ids: selected.value } })
+    .then(async () => {
+      selected.value = [];
+      await refetch();
+    })
+    .finally(() => {
+      deciding.value = false;
+    });
+};
 
 // What the export lets us work out. Not a verdict on whether the ship belongs
 // in the catalogue -- the game files never say whether a player can own one.
@@ -136,7 +169,29 @@ const { t } = useI18n();
         :loading="loading || refetching"
         :empty-visible="emptyVisible"
         default-sort="identifier asc"
+        selectable
+        :selected="selected"
+        @selected-change="onSelectedChange"
       >
+        <template #selected-actions>
+          <BtnGroup>
+            <Btn
+              v-tooltip="t('actions.unlistedModel.markAsPaintSelected')"
+              :disabled="deciding"
+              @click="decideSelected(markAsPaintMutation)"
+            >
+              <i class="fa-duotone fa-palette" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.unlistedModel.ignoreSelected')"
+              :tone="BtnTonesEnum.DANGER"
+              :disabled="deciding"
+              @click="decideSelected(ignoreMutation)"
+            >
+              <i class="fa-duotone fa-eye-slash" />
+            </Btn>
+          </BtnGroup>
+        </template>
         <template #col-identifier="{ record }">
           <code>{{ record.identifier }}</code>
         </template>

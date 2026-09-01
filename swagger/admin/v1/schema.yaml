@@ -6870,6 +6870,93 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/unlisted-models/bulk-ignore":
+    post:
+      summary: Ignore a selection
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelBulkIgnore
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ScDataUnlistedModelBulkInput"
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/unlisted-models/bulk-mark-as-paint":
+    post:
+      summary: Mark a selection as paints
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelBulkMarkAsPaint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ScDataUnlistedModelBulkInput"
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/unlisted-models/bulk-reset":
+    post:
+      summary: Return a selection to the list
+      tags:
+      - ScDataUnlistedModels
+      operationId: scDataUnlistedModelBulkReset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ScDataUnlistedModelBulkInput"
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/unlisted-models/{id}/create-model":
     parameters:
     - name: id
@@ -15343,6 +15430,18 @@ components:
       - createdAt
       - updatedAt
       title: ScDataUnlistedModel
+    ScDataUnlistedModelBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - ids
+      title: ScDataUnlistedModelBulkInput
     ScDataUnlistedModelLinkInput:
       type: object
       properties:

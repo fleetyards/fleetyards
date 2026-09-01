@@ -71,6 +71,33 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  {
+    "bulk-ignore" => "Ignore a selection",
+    "bulk-mark-as-paint" => "Mark a selection as paints",
+    "bulk-reset" => "Return a selection to the list"
+  }.each do |action, summary|
+    api_path "/unlisted-models/#{action}" do
+      post(summary) do
+        operationId "scDataUnlistedModel#{action.tr("-", "_").camelize}"
+        tags "ScDataUnlistedModels"
+        consumes "application/json"
+        produces "application/json"
+
+        request_body required: true, schema: ::Admin::V1::Schemas::Inputs::ScDataUnlistedModelBulkInput
+
+        response(204, "successful")
+
+        response(403, "forbidden") do
+          schema ::Shared::V1::Schemas::StandardError
+        end
+
+        response(401, "unauthorized") do
+          schema ::Shared::V1::Schemas::StandardError
+        end
+      end
+    end
+  end
+
   %w[ignore mark-as-paint create-model reset].each do |action|
     api_path "/unlisted-models/{id}/#{action}" do
       parameter name: "id", in: :path, description: "Unlisted model id",
@@ -339,5 +366,72 @@ class Admin::Api::V1::ScDataUnlistedModelsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 404,
       path_params: {id: @entry.id}, api_path: "/unlisted-models/{id}/link",
       body: {modelId: SecureRandom.uuid}
+  end
+
+  # A patch's list is mostly one decision repeated, so the working list is
+  # cleared a selection at a time rather than a row at a time.
+  test "POST bulk-ignore decides every entry in the selection" do
+    others = create_list(:sc_data_unlisted_model, 2)
+    untouched = create(:sc_data_unlisted_model)
+
+    sign_in @user
+
+    assert_api_response :post, 204,
+      api_path: "/unlisted-models/bulk-ignore",
+      body: {ids: [@entry.id, *others.map(&:id)]}
+
+    assert_equal ["ignored"], [@entry, *others].map { |entry| entry.reload.decision }.uniq
+    assert_nil untouched.reload.decision
+  end
+
+  test "POST bulk-mark-as-paint decides every entry in the selection" do
+    other = create(:sc_data_unlisted_model)
+
+    sign_in @user
+
+    assert_api_response :post, 204,
+      api_path: "/unlisted-models/bulk-mark-as-paint",
+      body: {ids: [@entry.id, other.id]}
+
+    assert_equal ["paint"], [@entry, other].map { |entry| entry.reload.decision }.uniq
+  end
+
+  test "POST bulk-reset returns the selection to the list" do
+    decided = create_list(:sc_data_unlisted_model, 2, :decided)
+
+    sign_in @user
+
+    assert_api_response :post, 204,
+      api_path: "/unlisted-models/bulk-reset",
+      body: {ids: decided.map(&:id)}
+
+    assert_equal [nil], decided.map { |entry| entry.reload.decision }.uniq
+  end
+
+  # An id nobody has is skipped rather than failing the decision for the rest --
+  # the selection is a list the client held, and a row may have been decided
+  # elsewhere since.
+  test "POST bulk-ignore ignores ids that are not there" do
+    sign_in @user
+
+    assert_api_response :post, 204,
+      api_path: "/unlisted-models/bulk-ignore",
+      body: {ids: [@entry.id, SecureRandom.uuid]}
+
+    assert_equal "ignored", @entry.reload.decision
+  end
+
+  test "POST bulk-ignore needs the models privilege" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :post, 403, api_path: "/unlisted-models/bulk-ignore", body: {ids: [@entry.id]}
+
+    assert_nil @entry.reload.decision
+  end
+
+  test "POST bulk-ignore is not public" do
+    assert_api_response :post, 401, api_path: "/unlisted-models/bulk-ignore", body: {ids: [@entry.id]}
+
+    assert_nil @entry.reload.decision
   end
 end

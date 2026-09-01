@@ -381,7 +381,9 @@
         "ignore": "Ignorieren",
         "noManufacturer": "Zu diesem Identifier lässt sich kein Hersteller auflösen",
         "alreadyExists": "%{name} ist bereits im Katalog",
-        "link": "Schon im Katalog"
+        "link": "Schon im Katalog",
+        "markAsPaintSelected": "Auswahl als Lackierungen markieren",
+        "ignoreSelected": "Auswahl ignorieren"
       },
       "revert": "Zurücksetzen"
     }
