@@ -262,6 +262,8 @@ en:
               must_be_in_game: name a ship that is not in the game yet
         fleet_role:
           attributes:
+            base:
+              cannot_destroy_with_members: Cannot delete a role that is still assigned to members
             resource_access:
               changed: Access privileges can not be changed
         fleet_membership:

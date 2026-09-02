@@ -248,6 +248,8 @@ zh-CN:
       models:
         fleet_role:
           attributes:
+            base:
+              cannot_destroy_with_members: 无法删除仍分配给成员的角色
             resource_access:
               changed: 访问权限无法更改
         fleet_membership:
