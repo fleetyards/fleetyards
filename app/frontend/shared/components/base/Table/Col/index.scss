@@ -87,8 +87,25 @@
     }
   }
 
+  /*
+   * `__inner` is a flex row, so the alignment a column asks for has to move the
+   * flex items -- `text-align` alone leaves a lone child sitting at the start,
+   * which is why `right` did nothing at all and `center` only ever centred text
+   * that already filled the cell. `--selection` and `--actions` below already
+   * spelled it this way; these two had been the odd ones out.
+   */
   &--center {
-    text-align: center;
+    .base-table-col__inner {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &--right {
+    .base-table-col__inner {
+      text-align: right;
+      justify-content: flex-end;
+    }
   }
 
   &--selection {
