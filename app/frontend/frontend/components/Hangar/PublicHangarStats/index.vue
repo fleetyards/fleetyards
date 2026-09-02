@@ -11,6 +11,12 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
+import StatsCsvExportBtn from "@/shared/components/StatsCsvExportBtn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  type StatsChart,
+  type StatsMetric,
+} from "@/shared/composables/useStatsCsv";
 import {
   usePublicHangarStats as usePublicHangarStatsQuery,
   usePublicHangarModelsByClassification as usePublicHangarModelsByClassificationQuery,
@@ -93,9 +99,93 @@ const flightReadyPercent = computed(() => {
   if (!totalCount.value || !flightReadyCount.value) return "";
   return `(${Math.round((flightReadyCount.value / totalCount.value) * 100)}%)`;
 });
+
+const csvScope = computed(() => `${props.username}-hangar`);
+
+/*
+ * Keyed by the same `name` the Chart component gets, so a panel's export button
+ * and its chart cannot drift apart and the page-level export is just every
+ * value in here.
+ */
+const csvCharts = computed(() => ({
+  "models-by-classification": {
+    name: "models-by-classification",
+    title: t("labels.stats.modelsByClassification"),
+    points: modelsByClassificationOptions.value,
+  },
+  "models-by-size": {
+    name: "models-by-size",
+    title: t("labels.stats.modelsBySize"),
+    points: modelsBySizeOptions.value,
+  },
+  "models-by-production-status": {
+    name: "models-by-production-status",
+    title: t("labels.stats.modelsByProductionStatus"),
+    points: modelsByProductionStatusOptions.value,
+  },
+  "models-by-manufacturer": {
+    name: "models-by-manufacturer",
+    title: t("labels.stats.modelsByManufacturer"),
+    points: modelsByManufacturerOptions.value,
+  },
+}));
+
+const csvChartList = computed<StatsChart[]>(() =>
+  Object.values(csvCharts.value),
+);
+
+// Read off the query, not off the animated refs above - those hold 0 for the
+// first 200ms of every visit, and an export is not an animation.
+const csvMetrics = computed<StatsMetric[]>(() => [
+  {
+    label: t("labels.stats.quickStats.totalShips"),
+    value: quickStats.value?.total,
+  },
+  {
+    label: t("labels.hangarMetrics.uniqueModels"),
+    value: quickStats.value?.metrics.uniqueModelsCount,
+  },
+  {
+    label: t("labels.hangarMetrics.flightReady"),
+    value: quickStats.value?.metrics.flightReadyCount,
+  },
+  {
+    label: t("labels.hangarMetrics.totalCargo"),
+    value: quickStats.value?.metrics.totalCargo,
+  },
+  {
+    label: t("labels.hangarMetrics.manufacturerCount"),
+    value: quickStats.value?.metrics.manufacturerCount,
+  },
+  {
+    label: t("labels.hangarMetrics.largestShip"),
+    value: quickStats.value?.metrics.largestShip,
+  },
+  {
+    label: t("labels.hangarMetrics.smallestShip"),
+    value: quickStats.value?.metrics.smallestShip,
+  },
+  {
+    label: t("labels.hangarMetrics.totalMinCrew"),
+    value: quickStats.value?.metrics.totalMinCrew,
+  },
+  {
+    label: t("labels.hangarMetrics.totalMaxCrew"),
+    value: quickStats.value?.metrics.totalMaxCrew,
+  },
+]);
 </script>
 
 <template>
+  <Teleport to="#header-right">
+    <StatsCsvExportBtn
+      :scope="csvScope"
+      :charts="csvChartList"
+      :metrics="csvMetrics"
+      :size="BtnSizesEnum.MD"
+    />
+  </Teleport>
+
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
@@ -180,6 +270,12 @@ const flightReadyPercent = computed(() => {
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByClassification") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-classification']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -198,6 +294,12 @@ const flightReadyPercent = computed(() => {
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsBySize") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-size']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -218,6 +320,12 @@ const flightReadyPercent = computed(() => {
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByProductionStatus") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-production-status']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -236,6 +344,12 @@ const flightReadyPercent = computed(() => {
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByManufacturer") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-manufacturer']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart

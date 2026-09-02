@@ -11,6 +11,12 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
+import StatsCsvExportBtn from "@/shared/components/StatsCsvExportBtn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  type StatsChart,
+  type StatsMetric,
+} from "@/shared/composables/useStatsCsv";
 import {
   usePublicFleetVehiclesStats as usePublicFleetVehiclesStatsQuery,
   usePublicFleetMembersStats as usePublicFleetMembersStatsQuery,
@@ -150,9 +156,122 @@ const totalCreditsCompact = computed(() => compactUec(totalCredits.value));
 const totalIngameValueCompact = computed(() =>
   compactUec(totalIngameValue.value),
 );
+
+const csvScope = computed(() => `${props.fleet.slug}-fleet`);
+
+/*
+ * Keyed by the same `name` the Chart component gets, so a panel's export button
+ * and its chart cannot drift apart and the page-level export is just every
+ * value in here.
+ */
+const csvCharts = computed(() => ({
+  "vehicles-by-model": {
+    name: "vehicles-by-model",
+    title: t("labels.stats.vehiclesByModel", {
+      limit: vehiclesByModelLimit.value,
+    }),
+    points: vehiclesByModelOptions.value,
+  },
+  "models-by-classification": {
+    name: "models-by-classification",
+    title: t("labels.stats.modelsByClassification"),
+    points: modelsByClassificationOptions.value,
+  },
+  "models-by-production-status": {
+    name: "models-by-production-status",
+    title: t("labels.stats.modelsByProductionStatus"),
+    points: modelsByProductionStatusOptions.value,
+  },
+  "models-by-manufacturer": {
+    name: "models-by-manufacturer",
+    title: t("labels.stats.modelsByManufacturer"),
+    points: modelsByManufacturerOptions.value,
+  },
+  "models-by-size": {
+    name: "models-by-size",
+    title: t("labels.stats.modelsBySize"),
+    points: modelsBySizeOptions.value,
+  },
+}));
+
+const csvChartList = computed<StatsChart[]>(() =>
+  Object.values(csvCharts.value),
+);
+
+/*
+ * Read off the queries, not off the animated refs above - those hold 0 for the
+ * first 200ms of every visit, and an export is not an animation. The aUEC
+ * figures go out at full precision too; `compactUec` is for a panel that has one
+ * line to spend, not for a spreadsheet column.
+ */
+const csvMetrics = computed<StatsMetric[]>(() => {
+  const metrics = vehicleStats.value?.metrics;
+
+  return [
+    {
+      label: t("labels.stats.quickStats.totalMembers"),
+      value: memberStats.value?.total,
+    },
+    {
+      label: t("labels.hangarMetrics.totalMinCrew"),
+      value: metrics?.totalMinCrew,
+    },
+    {
+      label: t("labels.hangarMetrics.totalMaxCrew"),
+      value: metrics?.totalMaxCrew,
+    },
+    {
+      label: t("labels.stats.quickStats.totalShips"),
+      value: vehicleStats.value?.total,
+    },
+    {
+      label: t("labels.hangarMetrics.uniqueModels"),
+      value: metrics?.uniqueModelsCount,
+    },
+    {
+      label: t("labels.hangarMetrics.flightReady"),
+      value: metrics?.flightReadyCount,
+    },
+    { label: t("labels.hangarMetrics.totalMoney"), value: metrics?.totalMoney },
+    {
+      label: t("labels.hangarMetrics.totalCredits"),
+      value: metrics?.totalCredits,
+    },
+    {
+      label: t("labels.hangarMetrics.totalIngameValue"),
+      value: metrics?.totalIngameValue,
+    },
+    {
+      label: t("labels.hangarMetrics.averagePledgePrice"),
+      value: metrics?.averagePledgePrice,
+    },
+    {
+      label: t("labels.hangarMetrics.manufacturerCount"),
+      value: metrics?.manufacturerCount,
+    },
+    {
+      label: t("labels.hangarMetrics.largestShip"),
+      value: metrics?.largestShip,
+    },
+    {
+      label: t("labels.hangarMetrics.smallestShip"),
+      value: metrics?.smallestShip,
+    },
+    { label: t("labels.hangarMetrics.totalCargo"), value: metrics?.totalCargo },
+  ];
+});
 </script>
 
 <template>
+  <Teleport to="#header-right">
+    <StatsCsvExportBtn
+      :scope="csvScope"
+      :charts="csvChartList"
+      :metrics="csvMetrics"
+      :size="BtnSizesEnum.MD"
+    />
+  </Teleport>
+
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
@@ -282,6 +401,12 @@ const totalIngameValueCompact = computed(() =>
               limit: vehiclesByModelLimit,
             })
           }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['vehicles-by-model']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -300,6 +425,12 @@ const totalIngameValueCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByClassification") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-classification']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -320,6 +451,12 @@ const totalIngameValueCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByProductionStatus") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-production-status']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -338,6 +475,12 @@ const totalIngameValueCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByManufacturer") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-manufacturer']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -358,6 +501,12 @@ const totalIngameValueCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsBySize") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              :scope="csvScope"
+              :chart="csvCharts['models-by-size']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart

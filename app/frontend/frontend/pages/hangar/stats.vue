@@ -16,6 +16,11 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import MissingRolesPanel from "@/shared/components/MissingRolesPanel/index.vue";
+import StatsCsvExportBtn from "@/shared/components/StatsCsvExportBtn/index.vue";
+import {
+  type StatsChart,
+  type StatsMetric,
+} from "@/shared/composables/useStatsCsv";
 import { useI18n } from "@/shared/composables/useI18n";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -174,6 +179,111 @@ const totalIngameValueCompact = computed(() =>
 const wishlistTotalCreditsCompact = computed(() =>
   compactUec(wishlistTotalCredits.value),
 );
+
+/*
+ * Keyed by the same `name` the Chart component gets, so a panel's export button
+ * and its chart cannot drift apart and the page-level export is just every
+ * value in here.
+ */
+const csvCharts = computed(() => ({
+  "models-by-classification": {
+    name: "models-by-classification",
+    title: t("labels.stats.modelsByClassification"),
+    points: modelsByClassificationOptions.value,
+  },
+  "models-by-size": {
+    name: "models-by-size",
+    title: t("labels.stats.modelsBySize"),
+    points: modelsBySizeOptions.value,
+  },
+  "models-by-production-status": {
+    name: "models-by-production-status",
+    title: t("labels.stats.modelsByProductionStatus"),
+    points: modelsByProductionStatusOptions.value,
+  },
+  "models-by-manufacturer": {
+    name: "models-by-manufacturer",
+    title: t("labels.stats.modelsByManufacturer"),
+    points: modelsByManufacturerOptions.value,
+  },
+}));
+
+const csvChartList = computed<StatsChart[]>(() =>
+  Object.values(csvCharts.value),
+);
+
+/*
+ * Read off the query, not off the animated refs above - those hold 0 for the
+ * first 200ms of every visit, and an export is not an animation. The aUEC
+ * figures go out at full precision too; `compactUec` is for a panel that has one
+ * line to spend, not for a spreadsheet column.
+ */
+const csvMetrics = computed<StatsMetric[]>(() => [
+  {
+    label: t("labels.stats.quickStats.totalShips"),
+    value: quickStats.value?.total,
+  },
+  {
+    label: t("labels.hangarMetrics.uniqueModels"),
+    value: quickStats.value?.metrics.uniqueModelsCount,
+  },
+  {
+    label: t("labels.hangarMetrics.flightReady"),
+    value: quickStats.value?.metrics.flightReadyCount,
+  },
+  {
+    label: t("labels.hangarMetrics.totalCargo"),
+    value: quickStats.value?.metrics.totalCargo,
+  },
+  {
+    label: t("labels.hangarMetrics.totalMoney"),
+    value: quickStats.value?.metrics.totalMoney,
+  },
+  {
+    label: t("labels.hangarMetrics.totalCredits"),
+    value: quickStats.value?.metrics.totalCredits,
+  },
+  {
+    label: t("labels.hangarMetrics.totalIngameValue"),
+    value: quickStats.value?.metrics.totalIngameValue,
+  },
+  {
+    label: t("labels.hangarMetrics.averagePledgePrice"),
+    value: quickStats.value?.metrics.averagePledgePrice,
+  },
+  {
+    label: t("labels.hangarMetrics.manufacturerCount"),
+    value: quickStats.value?.metrics.manufacturerCount,
+  },
+  {
+    label: t("labels.hangarMetrics.largestShip"),
+    value: quickStats.value?.metrics.largestShip,
+  },
+  {
+    label: t("labels.hangarMetrics.smallestShip"),
+    value: quickStats.value?.metrics.smallestShip,
+  },
+  {
+    label: t("labels.hangarMetrics.wishlistTotalMoney"),
+    value: quickStats.value?.metrics.wishlistTotalMoney,
+  },
+  {
+    label: t("labels.hangarMetrics.wishlistTotalCredits"),
+    value: quickStats.value?.metrics.wishlistTotalCredits,
+  },
+  {
+    label: t("labels.hangarMetrics.totalMinCrew"),
+    value: quickStats.value?.metrics.totalMinCrew,
+  },
+  {
+    label: t("labels.hangarMetrics.totalMaxCrew"),
+    value: quickStats.value?.metrics.totalMaxCrew,
+  },
+  {
+    label: t("labels.wishlist"),
+    value: quickStats.value?.wishlistTotal,
+  },
+]);
 </script>
 
 <template>
@@ -189,6 +299,12 @@ const wishlistTotalCreditsCompact = computed(() =>
       :url="shareUrl"
       :title="shareTitle"
       no-label
+    />
+    <StatsCsvExportBtn
+      scope="hangar"
+      :charts="csvChartList"
+      :metrics="csvMetrics"
+      :size="BtnSizesEnum.MD"
     />
   </Teleport>
 
@@ -341,6 +457,12 @@ const wishlistTotalCreditsCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByClassification") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="hangar"
+              :chart="csvCharts['models-by-classification']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -357,6 +479,12 @@ const wishlistTotalCreditsCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsBySize") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="hangar"
+              :chart="csvCharts['models-by-size']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -375,6 +503,12 @@ const wishlistTotalCreditsCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByProductionStatus") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="hangar"
+              :chart="csvCharts['models-by-production-status']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -391,6 +525,12 @@ const wishlistTotalCreditsCompact = computed(() =>
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByManufacturer") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="hangar"
+              :chart="csvCharts['models-by-manufacturer']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
