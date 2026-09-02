@@ -61,12 +61,13 @@ unless Model.exists?(name: "Aurora MR")
 end
 
 # Quantum drives (for travel times). The travel times page selects on
-# `category`, and the calculation reads the flat `drive_speed` /
-# `stage_*_accel_rate` keys the sc_data parser writes -- mirroring a loaded
-# drive here, or the page renders "-:-:-" for every row.
+# `category`, and reads the flat `drive_speed` / `stage_*_accel_rate` keys the
+# sc_data parser writes -- mirroring a loaded drive here, or the page renders
+# "-:-:-" for every row. `quantum_fuel_consumption` is milli-SCU per Gm; 5 and
+# 22 are the values real S1 and S2 drives carry.
 unless Component.exists?(name: "Beacon")
   FactoryBot.create(:component, name: "Beacon", category: "quantumdrive", component_type: "QuantumDrive", type_data: {
-    "quantum_fuel_requirement" => 0.04,
+    "quantum_fuel_consumption" => 5.0,
     "drive_speed" => 283046000.0,
     "stage_one_accel_rate" => 49500000.0,
     "stage_two_accel_rate" => 1500000.0
@@ -75,7 +76,7 @@ end
 
 unless Component.exists?(name: "Expedition")
   FactoryBot.create(:component, name: "Expedition", category: "quantumdrive", component_type: "QuantumDrive", type_data: {
-    "quantum_fuel_requirement" => 0.02,
+    "quantum_fuel_consumption" => 22.0,
     "drive_speed" => 183046000.0,
     "stage_one_accel_rate" => 39500000.0,
     "stage_two_accel_rate" => 1200000.0

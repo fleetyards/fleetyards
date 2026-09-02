@@ -42,10 +42,10 @@ test.describe("Travel Times", () => {
     page,
   }) => {
     await expect(driveRow(page, "Beacon")).toContainText("01:18");
-    await expect(driveRow(page, "Beacon")).toContainText("0.8");
+    await expect(driveRow(page, "Beacon")).toContainText("0.1 SCU");
 
     await expect(driveRow(page, "Expedition")).toContainText("01:55");
-    await expect(driveRow(page, "Expedition")).toContainText("0.4");
+    await expect(driveRow(page, "Expedition")).toContainText("0.44 SCU");
   });
 
   test("Sorts the fastest drive first", async ({ page }) => {

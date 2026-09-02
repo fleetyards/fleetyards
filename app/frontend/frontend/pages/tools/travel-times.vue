@@ -10,7 +10,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
-import { type BaseTableCol } from "@/shared/components/base/Table/types";
+import {
+  type BaseTableCol,
+  BaseTableColAlignmentEnum,
+} from "@/shared/components/base/Table/types";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -32,7 +35,7 @@ import {
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 import { FeatureFlagName } from "@/services/fyApi";
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 
 const route = useRoute();
 
@@ -54,12 +57,14 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
       label: t("labels.travelTimes.fuelUsage"),
       class: "fuel-usage",
       width: "30%",
+      alignment: BaseTableColAlignmentEnum.RIGHT,
     },
     {
       name: "travel_time",
       label: t("labels.travelTimes.travelTime"),
       class: "travel-time",
       width: "30%",
+      alignment: BaseTableColAlignmentEnum.RIGHT,
     },
   ];
 });
@@ -89,14 +94,32 @@ const storeImage = (component: Component) => {
 const isQuantumDrive = (
   typeData?: Component["typeData"],
 ): typeData is ComponentQuantumDrive => {
-  return !!typeData && "quantumFuelRequirement" in typeData;
+  return !!typeData && "quantumFuelConsumption" in typeData;
 };
 
-const getFuelRate = (component: Component): number | undefined => {
-  if (isQuantumDrive(component.typeData)) {
-    return component.typeData.quantumFuelRequirement;
+/*
+ * Quantum fuel burnt over the jump, in SCU. `quantumFuelConsumption` is
+ * milli-SCU per Gm, and a Gm is a million kilometres -- the same unit the
+ * distance is collected in -- so the jump costs rate * distance milli-SCU.
+ *
+ * The drive also carries `quantumFuelRequirement`, which is what this column
+ * used to read. Nothing else in the app touches that field and no unit is
+ * declared for it anywhere; the consumption figure is the one the hardpoint
+ * panel derives its jump range from, checked against erkul.games and
+ * spviewer.eu.
+ */
+const fuelUsage = (component: Component): number | undefined => {
+  if (!isQuantumDrive(component.typeData)) {
+    return undefined;
   }
-  return undefined;
+
+  const rate = component.typeData.quantumFuelConsumption;
+
+  if (!rate) {
+    return undefined;
+  }
+
+  return Math.round(((rate * distance.value) / 1000) * 100) / 100;
 };
 
 const sortedQuantumDrives = computed(() => {
@@ -200,8 +223,8 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
             {{ record.name }}
           </template>
           <template #col-fuel_usage="{ record }">
-            <template v-if="getFuelRate(record)">
-              {{ Math.round(getFuelRate(record)! * distance * 100) / 100.0 }}
+            <template v-if="fuelUsage(record)">
+              {{ toNumber(fuelUsage(record)!, "cargo") }}
             </template>
             <template v-else> - </template>
           </template>
