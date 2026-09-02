@@ -385,7 +385,9 @@
         "markAsPaintSelected": "将所选标记为涂装",
         "ignoreSelected": "忽略所选"
       },
-      "revert": "还原"
+      "revert": "还原",
+      "exportCsv": "导出 CSV",
+      "exportAllCsv": "全部导出为 CSV"
     }
   }
 }

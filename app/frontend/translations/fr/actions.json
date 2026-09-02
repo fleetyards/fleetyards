@@ -385,7 +385,9 @@
         "markAsPaintSelected": "Marquer la sélection comme peintures",
         "ignoreSelected": "Ignorer la sélection"
       },
-      "revert": "Rétablir"
+      "revert": "Rétablir",
+      "exportCsv": "Exporter en CSV",
+      "exportAllCsv": "Tout exporter en CSV"
     }
   }
 }

@@ -187,7 +187,12 @@
         "shipsOfTheMonth": "Vaisseau du mois",
         "crewDeficit": "Déficit d'équipage",
         "crewSurplus": "Excédent d'équipage",
-        "membersByRole": "Membres par rôle"
+        "membersByRole": "Membres par rôle",
+        "csv": {
+          "metric": "Métrique",
+          "value": "Valeur",
+          "count": "Nombre"
+        }
       },
       "roadmap": {
         "selectWeek": "Sélectionnez une carte",
