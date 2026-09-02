@@ -12,6 +12,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import EventPanel from "@/frontend/components/Fleets/Events/EventPanel/index.vue";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import {
@@ -331,6 +332,10 @@ const crumbs = computed<Crumb[]>(() => [
     :async-status="asyncStatus"
     hide-empty
   >
+    <template #skeleton="{ filterVisible }">
+      <GridSkeleton :filter-visible="filterVisible" />
+    </template>
+
     <template #default="{ records }">
       <Grid :records="records as FleetEvent[]" primary-key="id">
         <template #default="{ record }">

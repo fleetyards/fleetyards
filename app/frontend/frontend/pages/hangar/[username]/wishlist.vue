@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import HangarPublicHeading from "@/frontend/components/Hangar/PublicHeading/index.vue";
@@ -192,6 +193,10 @@ onMounted(async () => {
           <span>{{ t("labels.fleetchart") }}</span>
         </Btn>
       </BtnDropdown>
+    </template>
+
+    <template #skeleton="{ filterVisible }">
+      <GridSkeleton :filter-visible="filterVisible" />
     </template>
 
     <template #default="{ records, loading }">

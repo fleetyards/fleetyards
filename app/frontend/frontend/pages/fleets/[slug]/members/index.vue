@@ -190,16 +190,18 @@ const crumbs = computed<Crumb[]>(() => {
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
     hide-empty
+    placeholders
   >
     <template #filter>
       <FleetMembersFilterForm variant="members" />
     </template>
 
-    <template #default="{ emptyVisible }">
+    <template #default="{ emptyVisible, loading }">
       <FleetMembersList
         :members="memberItems"
         :capabilities="props.membership?.capabilities"
         :empty-visible="emptyVisible"
+        :loading="loading"
       />
     </template>
 

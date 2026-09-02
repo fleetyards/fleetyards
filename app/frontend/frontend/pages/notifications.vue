@@ -11,6 +11,8 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
+import { useReportListGeometry } from "@/shared/composables/useListGeometry";
 import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import Detail from "@/frontend/components/Notifications/Detail/index.vue";
@@ -125,6 +127,16 @@ watch([sorts, archive], async () => {
 const { data: unreadCount } = useNotificationsUnreadCount();
 
 const records = computed(() => notifications.value?.items || []);
+
+const list = ref<ComponentPublicInstance>();
+
+// What the placeholders of the next load stand as tall as: a row of this list
+// is as tall as its own two lines or the controls beside them, whichever wins,
+// and only the rendered row knows which.
+useReportListGeometry("row", list, {
+  ready: () => !!records.value.length,
+  pick: (host) => host.firstElementChild,
+});
 
 const totalCount = computed(
   () => notifications.value?.meta.pagination?.totalCount,
@@ -405,6 +417,10 @@ const destroySelected = () =>
         }}
       </Btn>
     </template>
+    <template #skeleton>
+      <ListSkeleton />
+    </template>
+
     <template #default="{ records: shown }">
       <BulkSelectionBar
         class="notifications__bulk"
@@ -473,7 +489,12 @@ const destroySelected = () =>
         class="notifications"
         :class="{ 'notifications--reading': !!selected }"
       >
-        <TransitionGroup tag="ul" name="fade-list" class="notifications__list">
+        <TransitionGroup
+          tag="ul"
+          name="fade-list"
+          ref="list"
+          class="notifications__list"
+        >
           <li
             v-for="notification in shown"
             :key="notification.id"

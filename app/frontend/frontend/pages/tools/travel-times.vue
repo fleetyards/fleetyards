@@ -179,6 +179,7 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
       :records="sortedQuantumDrives"
       :name="route.name?.toString() || ''"
       :async-status="asyncStatus"
+      placeholders
     >
       <template #default="{ records }">
         <BaseTable

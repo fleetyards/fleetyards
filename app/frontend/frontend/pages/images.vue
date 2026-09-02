@@ -8,6 +8,7 @@ export default {
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useGallery } from "@/shared/composables/useGallery";
@@ -48,6 +49,10 @@ useGallery(".images");
     class="images"
     data-test="images-list"
   >
+    <template #skeleton="{ filterVisible }">
+      <GridSkeleton variant="image" :filter-visible="filterVisible" />
+    </template>
+
     <template #default="{ records, loading, filterVisible }">
       <Grid
         :records="records"

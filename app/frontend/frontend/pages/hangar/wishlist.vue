@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -313,6 +314,10 @@ const openDisplayOptionsModal = () => {
 
     <template #filter>
       <FilterForm />
+    </template>
+
+    <template v-if="gridView" #skeleton="{ filterVisible }">
+      <GridSkeleton :details="detailsVisible" :filter-visible="filterVisible" />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">

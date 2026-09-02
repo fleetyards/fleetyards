@@ -29,6 +29,7 @@ type Props = {
   wishlist?: boolean;
   loading?: boolean;
   emptyVisible?: boolean;
+  skeletonRows?: number;
 };
 
 defineProps<Props>();
@@ -61,6 +62,9 @@ const extraImageColumns = computed(() => {
         label: "",
         width: col.endsWith("Wide") ? "270px" : "120px",
         centered: true,
+        // The heights of the LazyImage variants these cells render, so a
+        // loading table reserves the row the thumbnail will need.
+        skeletonMedia: col.endsWith("Wide") ? "100px" : "50px",
       };
     })
     .filter((col) => {
@@ -105,6 +109,7 @@ const angledImage = (record: Model) => {
       :columns="tableColumns"
       :loading="loading"
       :empty-visible="emptyVisible"
+      :skeleton-rows="skeletonRows"
     >
       <template #col-storeImage="{ record }">
         <ViewImage

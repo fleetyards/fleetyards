@@ -25,6 +25,7 @@ type Props = {
   members: FleetMember[];
   capabilities?: FleetMembershipCapabilities;
   emptyVisible?: boolean;
+  loading?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -94,6 +95,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     :columns="tableColumns"
     :row-clickable="mobile"
     :empty-visible="emptyVisible"
+    :loading="loading"
     @row-click="onRowClick"
   >
     <template #col-username="{ record }">
