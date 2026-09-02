@@ -43,9 +43,24 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
       label: "",
       class: "store-image extra-small",
     },
-    { name: "name", label: "", class: "name", width: "30%" },
-    { name: "fuel_usage", label: "", class: "fuel-usage", width: "30%" },
-    { name: "travel_time", label: "", class: "travel-time", width: "30%" },
+    {
+      name: "name",
+      label: t("labels.travelTimes.quantumDrive"),
+      class: "name",
+      width: "30%",
+    },
+    {
+      name: "fuel_usage",
+      label: t("labels.travelTimes.fuelUsage"),
+      class: "fuel-usage",
+      width: "30%",
+    },
+    {
+      name: "travel_time",
+      label: t("labels.travelTimes.travelTime"),
+      class: "travel-time",
+      width: "30%",
+    },
   ];
 });
 
@@ -149,7 +164,7 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
     <div class="row">
       <div class="col-12">
         <p>
-          powered by
+          {{ t("labels.travelTimes.poweredBy") }}
           <a
             href="https://gitlab.com/Erecco/a-study-on-quantum-travel-time/-/blob/master/A_study_on_Quantum_Travel_time_07042021.pdf?ref_type=heads"
             >Erec</a

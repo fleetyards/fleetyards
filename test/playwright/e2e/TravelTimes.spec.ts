@@ -29,6 +29,15 @@ test.describe("Travel Times", () => {
     await expect(page.getByText("Expedition")).toBeVisible();
   });
 
+  test("Labels every column", async ({ page }) => {
+    await expect(page.getByText("Beacon")).toBeVisible();
+
+    const header = page.getByRole("row").first();
+    await expect(header).toContainText("Quantum Drive");
+    await expect(header).toContainText("Fuel Usage");
+    await expect(header).toContainText("Travel Time");
+  });
+
   test("Calculates travel time and fuel usage for the default distance", async ({
     page,
   }) => {
