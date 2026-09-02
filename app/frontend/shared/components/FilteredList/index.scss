@@ -42,28 +42,11 @@
 
 .filtered-list--pagination-only {
   // Hidden rather than left empty: the flex gap counts an empty box as a
-  // sibling and would push the paginator off centre by half of it.
+  // sibling and would push the paginator off centre by half of it. The row
+  // itself needs no other change on a desktop - the auto margin the toolbar
+  // hands the block already holds the right edge every other row aligns to.
   .filtered-list__actions-left {
     display: none;
-  }
-
-  .filtered-list__actions {
-    justify-content: center;
-  }
-
-  // The toolbar hands its right-hand blocks an auto margin, which would swallow
-  // the free space before `justify-content` could split it; and below the
-  // desktop breakpoint the block grows and pins the control to the right edge.
-  // Neither holds for a row that has nothing else on it.
-  .filtered-list__pagination-top {
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  // The bottom paginator is alone in its row on every list; it follows the top
-  // one so the two ends of the same list do not disagree.
-  :deep(.pagination) {
-    justify-content: center;
   }
 }
 
@@ -113,6 +96,16 @@
       flex: 1 1 auto;
       min-width: 0;
       justify-content: flex-end;
+    }
+  }
+
+  // Nothing shares the row, so there is no left-hand side to align away from
+  // and the control reads as centred instead - the same thing the paginator
+  // under the list does on a phone. On a desktop it stays on the right edge.
+  .filtered-list--pagination-only {
+    .filtered-list__actions,
+    .filtered-list__pagination-top {
+      justify-content: center;
     }
   }
 }
