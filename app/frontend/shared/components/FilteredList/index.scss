@@ -91,6 +91,17 @@
         justify-content: flex-end;
         gap: 10px;
       }
+
+      // The auto margin that holds the right edge is only ever paid for by the
+      // paginator: while the two share a row it grows into the free space and
+      // the margin resolves to nothing, and once it wraps below the margin is
+      // all that is left - stranding the filter button on its own with the
+      // actions pinned to the far edge of an otherwise empty row. Drop it where
+      // a paginator follows, so the buttons stay the one cluster they are when
+      // the row fits, and let the paginator do the pushing while it can.
+      &-right:has(+ .filtered-list__pagination-top) {
+        margin-left: 0;
+      }
     }
 
     // Takes the row it wraps onto, and holds the right edge of it - the same
