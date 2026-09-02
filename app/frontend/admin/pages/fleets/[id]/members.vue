@@ -123,16 +123,15 @@ const columns: BaseTableCol<AdminFleetMember>[] = [
   </Heading>
 
   <FilteredList
-    v-if="members"
     name="admin-fleet-members"
-    :records="members.items || []"
+    :records="members?.items || []"
     :async-status="asyncStatus"
     hide-loading
     hide-empty
   >
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
-        :records="members.items || []"
+        :records="members?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading || refetching"

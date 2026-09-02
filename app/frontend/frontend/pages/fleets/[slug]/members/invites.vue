@@ -193,16 +193,18 @@ const openInviteModal = () => {
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
     hide-empty
+    placeholders
   >
     <template #filter>
       <FleetMembersFilterForm variant="invites" />
     </template>
 
-    <template #default="{ emptyVisible }">
+    <template #default="{ emptyVisible, loading }">
       <FleetInvitesList
         :members="memberItems"
         :capabilities="props.membership?.capabilities"
         :empty-visible="emptyVisible"
+        :loading="loading"
       />
     </template>
   </FilteredList>

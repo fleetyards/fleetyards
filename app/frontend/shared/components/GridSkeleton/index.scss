@@ -1,0 +1,113 @@
+// Row heights come from the same partial the real expanded card uses, so a
+// skeleton row and a metric row are the same height without repeating a number.
+@import "@/shared/components/metricsCard";
+@import "@/shared/components/skeleton";
+
+.grid-skeleton {
+  // A picture or an embed standing in a cell on its own. Both take a measured
+  // height when there is one; what differs is the shape they hold before that,
+  // and a wrong guess there is loud - a full-width cell at 16:9 is half a
+  // screen where a gallery picture is 250px.
+  &__bare {
+    // The height a gallery picture keeps at any column width. Same token
+    // LazyImage's own `.gallery-image` reads.
+    &--image {
+      height: var(--gallery-image-height, 250px);
+      // The gap between rows of the real gallery is this margin, so without it
+      // the placeholders stack tighter than the pictures will.
+      margin-bottom: 20px;
+    }
+
+    &--embed {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  // Once the card's own height is known, the well takes whatever the card
+  // leaves it rather than standing on the floor below: the floor is a guess for
+  // the first load only, and a card measured shorter than it would be held open
+  // by it.
+  &__panel--measured {
+    display: flex;
+    flex-direction: column;
+
+    .grid-skeleton__media {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+  }
+
+  // A card on the ships grid passes no body, so its height is exactly the
+  // image floor - which is the one measurement a placeholder has to match, and
+  // the reason the bars inside it need no height of their own.
+  &__media {
+    position: relative;
+    min-height: var(--panel-image-height, 286px);
+    // The card's own inner radius, not the well's default: the photo region is
+    // capped to the frame it sits in.
+    border-radius: $panelContentBorderRadius;
+
+    // The photo is capped on the inward edge only while details are open, the
+    // same way PanelBgImage is handed `rounded-top` by an expanded card.
+    &--open {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  // Mirrors PanelHeading's own `16px 18px 12px` and its top scrim: the bars
+  // stand in for a title that sits over the photo, not beside it.
+  &__heading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 18px 12px;
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
+    background: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.8),
+      rgb(0 0 0 / 0.55) 55%,
+      transparent
+    );
+  }
+
+  &__status {
+    padding: 9px 16px;
+    background: rgba(#000, 0.12);
+    border-bottom: 1px solid rgba($gray-light, 0.28);
+  }
+
+  &__metrics {
+    padding: 14px 16px 16px;
+  }
+
+  // Widths and type only - the bar itself is the shared primitive, and the type
+  // is what gives it its height.
+  .skeleton-bar {
+    &--title {
+      width: 62%;
+      font-size: 22px;
+    }
+
+    &--subtitle {
+      width: 38%;
+      font-size: 13px;
+    }
+
+    &--status {
+      display: block;
+      width: 42%;
+      font-size: 10px;
+    }
+  }
+
+  .metrics-card__row__label {
+    width: 58px;
+  }
+
+  .metrics-card__row__value {
+    width: 68px;
+  }
+}

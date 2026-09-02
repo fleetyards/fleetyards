@@ -1,3 +1,7 @@
+// The placeholders are slotted into TableCol, which keeps them in this
+// component's scope.
+@import "@/shared/components/skeleton";
+
 .base-table {
   &__outer-wrapper {
     position: relative;
@@ -19,6 +23,15 @@
 
     > * {
       margin-top: -20px;
+    }
+  }
+
+  // A row whose last cell holds buttons is as tall as those buttons, not as
+  // tall as its text - so the placeholders take the same token the controls in
+  // that cell are sized from rather than a number copied out of Btn.
+  &__skeleton-row--with-controls {
+    :deep(.base-table-col__inner) {
+      min-height: var(--field-h, 43px);
     }
   }
 

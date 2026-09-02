@@ -23,4 +23,9 @@ export type BaseTableCol<T> = {
   alignment?: `${BaseTableColAlignmentEnum}`;
   sortable?: boolean;
   attributeKey?: keyof T | string;
+  // The height of the media this column holds, which turns its placeholder
+  // from a line into an image well of that height. Only needed where a cell
+  // holds a thumbnail: a bar the height of a line stands in for neither its
+  // shape nor its height.
+  skeletonMedia?: string;
 };

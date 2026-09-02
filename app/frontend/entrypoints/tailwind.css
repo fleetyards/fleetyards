@@ -191,6 +191,14 @@
   --field-h: 43px;
   --field-h-md: 48px;
   --field-h-lg: 55px;
+
+  /*
+   * A picture in a gallery grid, which is as tall as this whatever the column
+   * width is. Named because the placeholder a loading gallery holds its place
+   * with has to stand exactly as tall - see GridSkeleton's `image` variant -
+   * and two copies of a number are one too many.
+   */
+  --gallery-image-height: 250px;
 }
 
 /*

@@ -5,6 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup generic="T">
+import { useReportListGeometry } from "@/shared/composables/useListGeometry";
+import type { ComponentPublicInstance } from "vue";
+
 type Props = {
   records: T[];
   primaryKey: keyof T;
@@ -47,10 +50,36 @@ const cssClasses = computed(() => {
 const primaryValue = (record: T) => {
   return record[props.primaryKey] as string | number;
 };
+
+// The transition group is a component, so the row it renders is reached through
+// its root rather than by the ref itself.
+const cells = ref<ComponentPublicInstance>();
+
+// What the placeholder cards of the next load stand as tall as. A card's height
+// is its content's - a longer name, an open details panel, the column count at
+// this width - so the card itself is the only thing that knows.
+const { report } = useReportListGeometry("card", cells, {
+  ready: () => !!props.records.length,
+  // The card, not the cell around it: a cell carries the card's outer margin as
+  // well, and a placeholder given that height would stand taller than the card
+  // it stands in for by exactly that margin.
+  pick: (host) =>
+    host.querySelector<HTMLElement>(".base-grid__cell")?.firstElementChild,
+});
+
+// The filter panel takes a column away from the grid, which makes every card in
+// it narrower and most of them taller.
+watch(() => props.filterVisible, report);
 </script>
 
 <template>
-  <transition-group name="fade-list" class="row" tag="div" :appear="true">
+  <transition-group
+    ref="cells"
+    name="fade-list"
+    class="row"
+    tag="div"
+    :appear="true"
+  >
     <div
       v-for="(record, index) in records"
       :key="primaryValue(record)"

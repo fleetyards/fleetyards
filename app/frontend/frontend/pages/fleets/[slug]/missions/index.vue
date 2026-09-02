@@ -12,6 +12,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import MissionPanel from "@/frontend/components/Fleets/Missions/MissionPanel/index.vue";
 import {
   type Fleet,
@@ -138,6 +139,10 @@ const crumbs = computed<Crumb[]>(() => [
           {{ t("labels.fleets.missions.archivedTab") }}
         </Btn>
       </BtnGroup>
+    </template>
+
+    <template #skeleton="{ filterVisible }">
+      <GridSkeleton :filter-visible="filterVisible" />
     </template>
 
     <template #default="{ records }">

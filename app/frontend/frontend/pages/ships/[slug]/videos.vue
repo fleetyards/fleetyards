@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
@@ -121,6 +122,14 @@ const updateTitle = () => {
     primary-key="id"
     class="videos"
   >
+    <template #skeleton="{ filterVisible }">
+      <GridSkeleton
+        variant="embed"
+        grid-base="2"
+        :filter-visible="filterVisible"
+      />
+    </template>
+
     <template #default="{ records, loading, filterVisible }">
       <Grid
         :records="records"

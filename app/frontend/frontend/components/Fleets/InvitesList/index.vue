@@ -25,6 +25,7 @@ type Props = {
   members: FleetMember[];
   capabilities?: FleetMembershipCapabilities;
   emptyVisible?: boolean;
+  loading?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -82,6 +83,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
 <template>
   <BaseTable
     :records="members"
+    :loading="loading"
     primary-key="id"
     :columns="tableColumns"
     :row-clickable="mobile"

@@ -8,6 +8,10 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
+import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
+import ModelsTable from "@/frontend/components/Models/Table/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
 import NotAuthorized from "@/shared/components/NotAuthorized/index.vue";
@@ -26,8 +30,15 @@ import {
   useModelsLatest as useLatestModelsQuery,
 } from "@/services/fyApi";
 
-const { isFetching: latestModelsFetching, refetch: refetchLatestModels } =
-  useLatestModelsQuery();
+const {
+  data: latestModels,
+  isFetching: latestModelsFetching,
+  refetch: refetchLatestModels,
+} = useLatestModelsQuery();
+
+const skeletonDetails = ref(false);
+
+const comparisonModels = computed(() => (latestModels.value || []).slice(0, 2));
 
 const progress = ref(35);
 
@@ -174,6 +185,54 @@ const updatePerPage = (value: number | string) => {
         Show fixed loader (2s)
       </Btn>
       <Loader :loading="fixedLoaderVisible" fixed />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">GridSkeleton</Heading>
+  <p>
+    The placeholder cards a grid list holds itself open with while it loads,
+    beside the real cards that replace them - a placeholder of a different
+    height moves the page under the reader once the records land, which is the
+    whole thing it is there to prevent. <code>details</code> follows the display
+    option the ships list carries.
+  </p>
+  <div class="row">
+    <div class="col-12">
+      <Btn
+        data-test="toggle-skeleton-details"
+        @click="skeletonDetails = !skeletonDetails"
+      >
+        {{ skeletonDetails ? "Hide details" : "Show details" }}
+      </Btn>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>placeholders</BaseText>
+      <GridSkeleton :count="2" :details="skeletonDetails" grid-base="2" />
+    </div>
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>the cards they stand in for</BaseText>
+      <Grid :records="comparisonModels" primary-key="slug" grid-base="2">
+        <template #default="{ record }">
+          <ModelPanel :model="record" :details="skeletonDetails" />
+        </template>
+      </Grid>
+    </div>
+  </div>
+  <p>
+    The same list in table view: the placeholder rows are the real table with
+    nothing in it yet, so the header, the column widths and the row height are
+    the ones the records arrive into.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>placeholder rows</BaseText>
+      <ModelsTable :models="[]" loading :skeleton-rows="3" />
+    </div>
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>the rows they stand in for</BaseText>
+      <ModelsTable :models="comparisonModels" />
     </div>
   </div>
 

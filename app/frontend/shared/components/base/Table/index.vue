@@ -19,6 +19,10 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useMobile } from "@/shared/composables/useMobile";
+import {
+  useListGeometry,
+  useReportListGeometry,
+} from "@/shared/composables/useListGeometry";
 import TableHeader from "./Header/index.vue";
 import TableRow from "./Row/index.vue";
 import TableCol from "./Col/index.vue";
@@ -42,6 +46,10 @@ type Props = {
   rowDisabled?: (record: T) => boolean;
   fillHeight?: boolean;
   admin?: boolean;
+  // Placeholder rows to hold the table open with while it waits for its first
+  // records. A table inside a list takes the count from the list instead, so
+  // this is only for one standing on its own.
+  skeletonRows?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,6 +67,7 @@ const props = withDefaults(defineProps<Props>(), {
   rowDisabled: undefined,
   fillHeight: false,
   admin: false,
+  skeletonRows: undefined,
 });
 
 const isLoading = computed(() => {
@@ -74,6 +83,60 @@ const isLoading = computed(() => {
 const internalSelected = ref<string[]>([]);
 
 const mobile = useMobile();
+
+// A list frames the table with its own page size and with what a row of this
+// very table measured last time; a table standing on its own is told.
+const geometry = useListGeometry();
+
+const skeletonRowCount = computed(
+  () => props.skeletonRows ?? geometry?.count.value ?? 0,
+);
+
+// Only for the first load. A refetch keeps the records it already has on
+// screen, and they hold the table open better than placeholders would.
+const skeletonVisible = computed(
+  () => !!skeletonRowCount.value && isLoading.value && !props.records.length,
+);
+
+// Held back only where the list around the table is already showing one over
+// the placeholder rows. A table left to load on its own - a list that hides the
+// outer spinner in favour of this one, or a table with no list at all - keeps
+// it.
+const ownLoaderVisible = computed(() => {
+  if (!isLoading.value || props.records.length) {
+    return false;
+  }
+
+  return !(skeletonVisible.value && !!geometry?.spinnerVisible.value);
+});
+
+// Nothing until this table has been seen once, and then exactly what it was:
+// the fallbacks below - a line of text, the control height where the row has
+// buttons - only have to carry the very first load.
+const skeletonRowHeight = computed(() => {
+  const remembered = geometry?.heightFor("row");
+
+  return remembered ? `${remembered}px` : undefined;
+});
+
+const inner = ref<HTMLElement>();
+
+// The measurement the next load reserves from. Taken from the first real row
+// once one exists, which is the only place the answer is: the tallest cell of a
+// row wins, and which cell that is - a wrapped name, a thumbnail, a cell of
+// buttons - is a question about this table's data at this width.
+useReportListGeometry("row", inner, {
+  ready: () => !!props.records.length,
+  // The head is skipped rather than the body selected: the header is a row of
+  // this same class - shorter than a record, and no indication of how tall one
+  // is - and the body is a transition group, which a test env stubs away.
+  pick: (host) =>
+    Array.from(
+      host.querySelectorAll<HTMLElement>(
+        ".base-table-row:not([data-test='base-table-skeleton-row'])",
+      ),
+    ).find((candidate) => !candidate.closest(".base-table-header")),
+});
 
 const filteredColumns = computed(() => {
   return props.columns.filter((column) => {
@@ -175,15 +238,12 @@ const resetSelected = () => {
     </BulkActions>
     <div class="base-table__outer-wrapper">
       <div class="base-table__wrapper w-full">
-        <div
-          class="base-table__loader"
-          v-if="isLoading && !props.records.length"
-        >
+        <div class="base-table__loader" v-if="ownLoaderVisible">
           <slot name="loader" :loading="isLoading">
             <Loader :loading="isLoading" :admin="props.admin" />
           </slot>
         </div>
-        <table class="base-table__inner">
+        <table ref="inner" class="base-table__inner">
           <TableHeader
             :id="props.id"
             :col-key="colKey"
@@ -212,6 +272,42 @@ const resetSelected = () => {
                 </slot>
               </TableCol>
             </TableRow>
+            <!-- The cells carry the columns' own widths, so the placeholders
+                 line up under the header they are waiting beneath rather than
+                 laying out a second, narrower table. -->
+            <template v-else-if="skeletonVisible">
+              <TableRow
+                v-for="row in skeletonRowCount"
+                :key="`base-table__skeleton-${row}`"
+                class="base-table__skeleton-row"
+                :class="{
+                  'base-table__skeleton-row--with-controls': !!slots.actions,
+                }"
+                :style="{ height: skeletonRowHeight }"
+                aria-hidden="true"
+                data-test="base-table-skeleton-row"
+              >
+                <TableCol v-if="props.selectable" variant="selection" />
+                <TableCol
+                  v-for="column in filteredColumns"
+                  :key="`base-table__skeleton-${colKey}-${column.name}`"
+                  :alignment="column.alignment"
+                  :style="{
+                    'flex-grow': column.flexGrow,
+                    width: column.width,
+                    'min-width': column.minWidth,
+                  }"
+                >
+                  <span
+                    v-if="column.skeletonMedia"
+                    class="skeleton-well"
+                    :style="{ height: column.skeletonMedia }"
+                  />
+                  <span v-else class="skeleton-bar" />
+                </TableCol>
+                <TableCol v-if="slots.actions" variant="actions" />
+              </TableRow>
+            </template>
             <TableRow
               v-for="record in props.records"
               v-else

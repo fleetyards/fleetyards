@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
@@ -117,6 +118,7 @@ const openDisplayOptionsModal = () => {
     :records="models?.items || []"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
+    placeholders
   >
     <template #actions-right>
       <Btn
@@ -137,6 +139,13 @@ const openDisplayOptionsModal = () => {
         :per-page="perPage"
         :update-per-page="updatePerPage"
       />
+    </template>
+
+    <!-- Only the card grid needs saying: a grid renders nothing from an empty
+         set. In table view the slot is gone and `placeholders` lets the table
+         itself draw its header and a page of placeholder rows. -->
+    <template v-if="gridView" #skeleton="{ filterVisible }">
+      <GridSkeleton :details="detailsVisible" :filter-visible="filterVisible" />
     </template>
 
     <template #default="{ records, loading, filterVisible, emptyVisible }">
