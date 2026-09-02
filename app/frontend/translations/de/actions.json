@@ -385,7 +385,9 @@
         "markAsPaintSelected": "Auswahl als Lackierungen markieren",
         "ignoreSelected": "Auswahl ignorieren"
       },
-      "revert": "Zurücksetzen"
+      "revert": "Zurücksetzen",
+      "exportCsv": "CSV exportieren",
+      "exportAllCsv": "Alles als CSV exportieren"
     }
   }
 }

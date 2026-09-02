@@ -187,7 +187,12 @@
         "shipsOfTheMonth": "Ship of the Month",
         "crewDeficit": "Crew Deficit",
         "crewSurplus": "Crew Surplus",
-        "membersByRole": "Members by Role"
+        "membersByRole": "Members by Role",
+        "csv": {
+          "metric": "Metric",
+          "value": "Value",
+          "count": "Count"
+        }
       },
       "roadmap": {
         "selectWeek": "Select Week",

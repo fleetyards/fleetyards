@@ -385,7 +385,9 @@
         "markAsPaintSelected": "Mark selected as paints",
         "ignoreSelected": "Ignore selected"
       },
-      "revert": "Revert"
+      "revert": "Revert",
+      "exportCsv": "Export CSV",
+      "exportAllCsv": "Export all as CSV"
     }
   }
 }

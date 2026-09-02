@@ -12,6 +12,12 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
+import StatsCsvExportBtn from "@/shared/components/StatsCsvExportBtn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  type StatsChart,
+  type StatsMetric,
+} from "@/shared/composables/useStatsCsv";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useStats as useStatsQuery,
@@ -107,12 +113,121 @@ watch(
   },
   { immediate: true },
 );
+
+/*
+ * Keyed by the same `name` the Chart component gets, so a panel's export button
+ * and its chart cannot drift apart and the page-level export is just every
+ * value in here.
+ */
+const csvCharts = computed(() => ({
+  "vehicles-by-model": {
+    name: "vehicles-by-model",
+    title: t("labels.stats.topVehiclesByModel"),
+    points: vehiclesByModelOptions.value,
+  },
+  "ships-of-the-month": {
+    name: "ships-of-the-month",
+    title: t("labels.stats.shipsOfTheMonth"),
+    points: shipsOfTheMonthOptions.value,
+  },
+  "models-by-classification": {
+    name: "models-by-classification",
+    title: t("labels.stats.modelsByClassification"),
+    points: modelsByClassification.value,
+  },
+  "models-by-size": {
+    name: "models-by-size",
+    title: t("labels.stats.modelsBySize"),
+    points: modelsBySize.value,
+  },
+  "models-by-production-status": {
+    name: "models-by-production-status",
+    title: t("labels.stats.modelsByProductionStatus"),
+    points: modelsByProductionStatus.value,
+  },
+  "models-per-month": {
+    name: "models-per-month",
+    title: t("labels.stats.modelsPerMonth"),
+    points: modelsPerMonth.value,
+  },
+  "models-by-manufacturer": {
+    name: "models-by-manufacturer",
+    title: t("labels.stats.modelsByManufacturer"),
+    points: modelsByManufacturer.value,
+  },
+  "vehicles-per-month": {
+    name: "vehicles-per-month",
+    title: t("labels.stats.vehiclesPerMonth"),
+    points: vehiclesPerMonthOptions.value,
+  },
+}));
+
+const csvChartList = computed<StatsChart[]>(() =>
+  Object.values(csvCharts.value),
+);
+
+// Read off the query, not off the animated refs above - those hold 0 for the
+// first 200ms of every visit, and an export is not an animation.
+const csvMetrics = computed<StatsMetric[]>(() => [
+  {
+    label: t("labels.stats.quickStats.newShips", {
+      year: String(new Date().getFullYear()),
+    }),
+    value: quickStats.value?.shipsCountYear,
+  },
+  {
+    label: t("labels.stats.quickStats.totalShips"),
+    value: quickStats.value?.shipsCountTotal,
+  },
+  {
+    label: t("labels.hangarMetrics.flightReady"),
+    value: quickStats.value?.flightReadyCount,
+  },
+  {
+    label: t("labels.hangarMetrics.manufacturerCount"),
+    value: quickStats.value?.manufacturerCount,
+  },
+  {
+    label: t("labels.hangarMetrics.averagePledgePrice"),
+    value: quickStats.value?.averagePledgePrice,
+  },
+  {
+    label: t("labels.hangarMetrics.largestShip"),
+    value: quickStats.value?.largestShip,
+  },
+  {
+    label: t("labels.hangarMetrics.smallestShip"),
+    value: quickStats.value?.smallestShip,
+  },
+  {
+    label: t("labels.stats.quickStats.vehicles"),
+    value: quickStats.value?.vehiclesCount,
+  },
+  {
+    label: t("labels.stats.quickStats.wishlists"),
+    value: quickStats.value?.wishlistsCount,
+  },
+  {
+    label: shipOfTheMonthLabel.value,
+    value: quickStats.value?.shipOfTheMonthCount,
+  },
+]);
 </script>
 
 <template>
   <Teleport to="#header-left">
     <Heading hidden>{{ t(`headlines.${route.meta.title}`) }}</Heading>
   </Teleport>
+
+  <Teleport to="#header-right">
+    <StatsCsvExportBtn
+      scope="stats"
+      :charts="csvChartList"
+      :metrics="csvMetrics"
+      :size="BtnSizesEnum.MD"
+    />
+  </Teleport>
+
   <div class="row" data-test="stats">
     <div class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
@@ -205,6 +320,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.topVehiclesByModel") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['vehicles-by-model']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -223,6 +344,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.shipsOfTheMonth") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['ships-of-the-month']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -244,6 +371,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByClassification") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['models-by-classification']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -262,6 +395,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsBySize") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['models-by-size']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -281,6 +420,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByProductionStatus") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['models-by-production-status']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -298,6 +443,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsPerMonth") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['models-per-month']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -317,6 +468,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.modelsByManufacturer") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['models-by-manufacturer']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart
@@ -334,6 +491,12 @@ watch(
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.vehiclesPerMonth") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['vehicles-per-month']"
+            />
+          </template>
         </PanelHeading>
         <PanelBody>
           <Chart

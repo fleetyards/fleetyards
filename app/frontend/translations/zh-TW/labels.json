@@ -187,7 +187,12 @@
         "shipsOfTheMonth": "月度飛船",
         "crewDeficit": "船員缺口",
         "crewSurplus": "船員盈餘",
-        "membersByRole": "按角色分組成員"
+        "membersByRole": "按角色分組成員",
+        "csv": {
+          "metric": "指標",
+          "value": "數值",
+          "count": "數量"
+        }
       },
       "roadmap": {
         "selectWeek": "選擇週",

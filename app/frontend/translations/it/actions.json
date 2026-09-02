@@ -385,7 +385,9 @@
         "markAsPaintSelected": "Segna la selezione come livree",
         "ignoreSelected": "Ignora la selezione"
       },
-      "revert": "Ripristina"
+      "revert": "Ripristina",
+      "exportCsv": "Esporta CSV",
+      "exportAllCsv": "Esporta tutto in CSV"
     }
   }
 }
