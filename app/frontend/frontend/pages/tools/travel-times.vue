@@ -17,7 +17,6 @@ import { usePagination } from "@/shared/composables/usePagination";
 import {
   useComponents as useComponentsQuery,
   getComponentsQueryKey,
-  ComponentTypeEnum,
   type ComponentQuantumDrive,
   type Component,
 } from "@/services/fyApi";
@@ -25,7 +24,7 @@ import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useMobile } from "@/shared/composables/useMobile";
-import { calculateTravelTime } from "@/frontend/utils/travelTimes";
+import { quantumDriveTravelTime } from "@/frontend/utils/travelTimes";
 import {
   InputTypesEnum,
   InputAlignmentsEnum,
@@ -85,24 +84,10 @@ const getFuelRate = (component: Component): number | undefined => {
   return undefined;
 };
 
-const travelTime = (quantumDrive: Component) => {
-  if (quantumDrive.type !== ComponentTypeEnum.QUANTUM_DRIVE) {
-    return undefined;
-  }
-
-  const typeData = quantumDrive.typeData as ComponentQuantumDrive;
-
-  const a1 = (typeData.stageOneAccelRate || 0) / 1000;
-  const a2 = (typeData.stageTwoAccelRate || 0) / 1000;
-  const speed = (typeData.driveSpeed || 0) / 1000;
-
-  return calculateTravelTime(a1, a2, speed, distance.value);
-};
-
 const sortedQuantumDrives = computed(() => {
   return [...(quantumDrives.value?.items || [])].sort((a, b) => {
-    const aTravelTime = travelTime(a);
-    const bTravelTime = travelTime(b);
+    const aTravelTime = quantumDriveTravelTime(a, distance.value);
+    const bTravelTime = quantumDriveTravelTime(b, distance.value);
 
     if (!aTravelTime) {
       return 1;
@@ -206,10 +191,7 @@ const { data: quantumDrives, ...asyncStatus } = useComponentsQuery(
             <template v-else> - </template>
           </template>
           <template #col-travel_time="{ record }">
-            <TravelTime
-              :quantum-drive="record"
-              :distance="distance * 1000000"
-            />
+            <TravelTime :quantum-drive="record" :distance="distance" />
           </template>
         </BaseTable>
       </template>

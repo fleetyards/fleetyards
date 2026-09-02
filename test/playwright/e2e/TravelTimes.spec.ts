@@ -1,5 +1,9 @@
+import type { Page } from "@playwright/test";
 import { app, appScenario } from "../support/on-rails";
 import { test, expect } from "../support/commands";
+
+const driveRow = (page: Page, name: string) =>
+  page.getByRole("row").filter({ hasText: name });
 
 test.describe("Travel Times", () => {
   test.beforeEach(async ({ page }) => {
@@ -21,22 +25,35 @@ test.describe("Travel Times", () => {
   });
 
   test("Shows quantum drives list", async ({ page }) => {
-    // Wait for quantum drives to load
     await expect(page.getByText("Beacon")).toBeVisible();
     await expect(page.getByText("Expedition")).toBeVisible();
   });
 
-  test("Updates travel times when distance changes", async ({ page }) => {
-    // Wait for initial load
+  test("Calculates travel time and fuel usage for the default distance", async ({
+    page,
+  }) => {
+    await expect(driveRow(page, "Beacon")).toContainText("01:18");
+    await expect(driveRow(page, "Beacon")).toContainText("0.8");
+
+    await expect(driveRow(page, "Expedition")).toContainText("01:55");
+    await expect(driveRow(page, "Expedition")).toContainText("0.4");
+  });
+
+  test("Sorts the fastest drive first", async ({ page }) => {
     await expect(page.getByText("Beacon")).toBeVisible();
 
-    // Change the distance
+    await expect(page.locator("tbody tr").first()).toContainText("Beacon");
+    await expect(page.locator("tbody tr").nth(1)).toContainText("Expedition");
+  });
+
+  test("Updates travel times when distance changes", async ({ page }) => {
+    await expect(driveRow(page, "Beacon")).toContainText("01:18");
+
     const distanceInput = page.locator('input[name="distance"]');
     await distanceInput.fill("50");
 
-    // The table should still show quantum drives
-    await expect(page.getByText("Beacon")).toBeVisible();
-    await expect(page.getByText("Expedition")).toBeVisible();
+    await expect(driveRow(page, "Beacon")).toContainText("03:04");
+    await expect(driveRow(page, "Expedition")).toContainText("04:39");
   });
 
   test("Shows powered by attribution", async ({ page }) => {
