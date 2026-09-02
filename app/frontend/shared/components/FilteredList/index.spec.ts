@@ -103,7 +103,7 @@ describe("FilteredList", () => {
     expect(wrapper.find(".filtered-list__pagination-top").exists()).toBe(false);
   });
 
-  it("centres a toolbar that carries nothing but the paginator", async () => {
+  it("marks a toolbar that carries nothing but the paginator", async () => {
     const wrapper = await mountWithSlots({
       "pagination-top": () => "pages",
     });
