@@ -131,9 +131,8 @@ const columns: BaseTableCol<User>[] = [
   </Heading>
 
   <FilteredList
-    v-if="users"
     name="admin-users"
-    :records="users.items || []"
+    :records="users?.items || []"
     :async-status="asyncStatus"
     hide-loading
     hide-empty
@@ -143,7 +142,7 @@ const columns: BaseTableCol<User>[] = [
     </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
-        :records="users.items || []"
+        :records="users?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading || refetching"

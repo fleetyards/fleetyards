@@ -95,16 +95,15 @@ const columns: BaseTableCol<AdminUserFleet>[] = [
   </Heading>
 
   <FilteredList
-    v-if="fleets"
     name="admin-user-fleets"
-    :records="fleets.items || []"
+    :records="fleets?.items || []"
     :async-status="asyncStatus"
     hide-loading
     hide-empty
   >
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
-        :records="fleets.items || []"
+        :records="fleets?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading || refetching"

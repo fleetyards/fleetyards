@@ -220,6 +220,7 @@ const columns: BaseTableCol<Image>[] = [
     primary-key="id"
     class="images"
     :is-filter-selected="isFilterSelected"
+    placeholders
   >
     <template v-if="filterable" #filter>
       <FilterForm />

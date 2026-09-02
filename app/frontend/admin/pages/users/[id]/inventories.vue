@@ -66,16 +66,15 @@ const columns: BaseTableCol<Inventory>[] = [
   </Heading>
 
   <FilteredList
-    v-if="inventories"
     name="admin-user-inventories"
-    :records="inventories.items || []"
+    :records="inventories?.items || []"
     :async-status="asyncStatus"
     hide-loading
     hide-empty
   >
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
-        :records="inventories.items || []"
+        :records="inventories?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading || refetching"
