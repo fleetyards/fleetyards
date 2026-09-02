@@ -245,6 +245,8 @@ it:
       models:
         fleet_role:
           attributes:
+            base:
+              cannot_destroy_with_members: Non è possibile eliminare un ruolo ancora assegnato ai membri
             resource_access:
               changed: I privilegi di accesso non possono essere modificati
         fleet_membership:

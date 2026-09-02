@@ -245,6 +245,8 @@ zh-TW:
       models:
         fleet_role:
           attributes:
+            base:
+              cannot_destroy_with_members: 無法刪除仍指派給成員的角色
             resource_access:
               changed: 存取權限無法變更
         fleet_membership:

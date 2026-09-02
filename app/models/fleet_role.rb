@@ -74,6 +74,7 @@ class FleetRole < ApplicationRecord
 
   before_save :update_slugs
   before_create :setup_rank
+  before_destroy :check_if_can_be_destroyed, prepend: true
 
   # Narrowed to this rank: a single mapping cannot affect anyone else.
   after_commit :backfill_discord_member_roles, if: :saved_change_to_discord_role_id?
@@ -151,6 +152,18 @@ class FleetRole < ApplicationRecord
     return if index < 0
 
     move_to(index - 1)
+  end
+
+  # Nullifying would leave the members silently without any privileges, so a
+  # role in use has to be emptied first. Skipped when the whole fleet is going
+  # away -- Fleet destroys its roles before its memberships. Prepended because
+  # the :nullify callback is registered first and would clear the rows we check.
+  private def check_if_can_be_destroyed
+    return if destroyed_by_association
+    return unless fleet_memberships.kept.exists?
+
+    errors.add(:base, I18n.t("activerecord.errors.models.fleet_role.attributes.base.cannot_destroy_with_members"))
+    throw(:abort)
   end
 
   private def resource_access_changed
