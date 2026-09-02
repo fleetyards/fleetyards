@@ -210,6 +210,7 @@
         },
         "admins": {
           "index": "Administratoren",
+          "new": "Neuer Admin",
           "edit": "Admin bearbeiten"
         },
         "fleets": {

@@ -58,6 +58,10 @@ zh-TW:
       update: 無法更新圖片
     request_password: 密碼請求失敗。
     signup: 註冊失敗。請解決所有錯誤後重試。
+    admin_user:
+      create: 管理員無法建立。
+      update: 管理員無法更新。
+      destroy: 管理員無法刪除。
     oauth_application:
       create: OAuth 應用程式無法建立。
       update: OAuth 應用程式無法更新。

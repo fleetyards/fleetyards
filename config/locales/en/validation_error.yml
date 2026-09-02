@@ -90,6 +90,10 @@ en:
       update: Image could not be updated
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
+    admin_user:
+      create: Admin could not be created.
+      update: Admin could not be updated.
+      destroy: Admin could not be destroyed.
     oauth_application:
       create: OAuth application could not be created.
       update: OAuth application could not be updated.

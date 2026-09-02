@@ -67,6 +67,10 @@ de:
     request_password: Passwort-Anforderung fehlgeschlagen.
     signup: Registrierung fehlgeschlagen. Bitte beheben Sie alle Fehler und versuchen
       Sie es erneut.
+    admin_user:
+      create: Admin konnte nicht erstellt werden.
+      update: Admin konnte nicht aktualisiert werden.
+      destroy: Admin konnte nicht gelöscht werden.
     oauth_application:
       create: OAuth-Anwendung konnte nicht erstellt werden.
       update: OAuth-Anwendung konnte nicht aktualisiert werden.
