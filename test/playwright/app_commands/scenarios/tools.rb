@@ -60,26 +60,25 @@ unless Model.exists?(name: "Aurora MR")
   FactoryBot.create(:model, :with_legacy_images, name: "Aurora MR", production_status: "flight-ready", manufacturer: rsi)
 end
 
-# Quantum drives (for travel times)
+# Quantum drives (for travel times). The travel times page selects on
+# `category`, and the calculation reads the flat `drive_speed` /
+# `stage_*_accel_rate` keys the sc_data parser writes -- mirroring a loaded
+# drive here, or the page renders "-:-:-" for every row.
 unless Component.exists?(name: "Beacon")
-  FactoryBot.create(:component, name: "Beacon", item_type: "quantum_drives", type_data: {
-    "fuel_rate" => 80.0,
-    "standard_jump" => {
-      "speed" => 283046000,
-      "stage_1_acceleration_rate" => 49500000,
-      "stage_2_acceleration_rate" => 1500000
-    }
+  FactoryBot.create(:component, name: "Beacon", category: "quantumdrive", component_type: "QuantumDrive", type_data: {
+    "quantum_fuel_requirement" => 0.04,
+    "drive_speed" => 283046000.0,
+    "stage_one_accel_rate" => 49500000.0,
+    "stage_two_accel_rate" => 1500000.0
   })
 end
 
 unless Component.exists?(name: "Expedition")
-  FactoryBot.create(:component, name: "Expedition", item_type: "quantum_drives", type_data: {
-    "fuel_rate" => 60.0,
-    "standard_jump" => {
-      "speed" => 183046000,
-      "stage_1_acceleration_rate" => 39500000,
-      "stage_2_acceleration_rate" => 1200000
-    }
+  FactoryBot.create(:component, name: "Expedition", category: "quantumdrive", component_type: "QuantumDrive", type_data: {
+    "quantum_fuel_requirement" => 0.02,
+    "drive_speed" => 183046000.0,
+    "stage_one_accel_rate" => 39500000.0,
+    "stage_two_accel_rate" => 1200000.0
   })
 end
 

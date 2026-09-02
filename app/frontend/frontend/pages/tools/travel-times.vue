@@ -128,7 +128,7 @@ const componentsQueryParams = computed(() => ({
   page: page.value,
   perPage: "240",
   q: {
-    itemTypeIn: ["quantum_drives"],
+    categoryIn: ["quantumdrive"],
   },
 }));
 
