@@ -58,6 +58,10 @@ zh-CN:
       update: 无法更新图片
     request_password: 密码请求失败。
     signup: 注册失败。请解决所有错误后重试。
+    admin_user:
+      create: 管理员无法创建。
+      update: 管理员无法更新。
+      destroy: 管理员无法删除。
     oauth_application:
       create: OAuth 应用无法创建。
       update: OAuth 应用无法更新。

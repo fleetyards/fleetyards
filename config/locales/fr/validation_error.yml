@@ -59,6 +59,10 @@ fr:
       update: Impossible de mettre à jour l'image
     request_password: La demande de mot de passe a échoué.
     signup: Échec de l'inscription. Veuillez résoudre toutes les erreurs et réessayer.
+    admin_user:
+      create: L'admin n'a pas pu être créé.
+      update: L'admin n'a pas pu être mis à jour.
+      destroy: L'admin n'a pas pu être supprimé.
     oauth_application:
       create: L'application OAuth n'a pas pu être créée.
       update: L'application OAuth n'a pas pu être mise à jour.

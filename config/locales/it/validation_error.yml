@@ -59,6 +59,10 @@ it:
       update: Impossibile aggiornare l'immagine
     request_password: Richiesta password fallita.
     signup: Registrazione fallita. Risolvi tutti gli errori e riprova.
+    admin_user:
+      create: L'admin non è stato creato.
+      update: L'admin non è stato aggiornato.
+      destroy: L'admin non è stato eliminato.
     oauth_application:
       create: L'applicazione OAuth non è stata creata.
       update: L'applicazione OAuth non è stata aggiornata.
