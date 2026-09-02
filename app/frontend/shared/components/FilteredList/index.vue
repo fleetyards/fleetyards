@@ -11,6 +11,9 @@ import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
+import { usePaginationStore } from "@/shared/stores/pagination";
+import { provideListGeometry } from "@/shared/composables/useListGeometry";
+import { useListGeometryStore } from "@/shared/stores/listGeometry";
 import {
   type AsyncStatus,
   ErrorTypesEnum,
@@ -29,6 +32,11 @@ type Props = {
   hideEmpty?: boolean;
   hideLoading?: boolean;
   isFilterSelected?: boolean;
+  // Render the list itself while its first page loads rather than a spinner in
+  // an empty box. It is handed no records, which is what a table needs to draw
+  // its header and a page of placeholder rows; a list of cards renders nothing
+  // from an empty set and brings a `skeleton` slot instead.
+  placeholders?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,6 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   hideEmpty: false,
   hideLoading: false,
   isFilterSelected: false,
+  placeholders: false,
 });
 
 const loading = computed(() => {
@@ -100,6 +109,60 @@ const paginationOnly = computed(
     !hasFilterSlot.value &&
     !slots["actions-left"] &&
     !slots["actions-right"],
+);
+
+const paginationStore = usePaginationStore();
+
+const geometryStore = useListGeometryStore();
+
+// Once the answer is in, whatever it held - including nothing. `isPending` is
+// what separates "the list is empty" from "the list has not answered yet", and
+// only the first of those is worth remembering.
+watch(
+  [() => props.records.length, () => props.asyncStatus.isPending.value],
+  ([count, pending]) => {
+    if (!pending) {
+      geometryStore.recordCount(props.name, count);
+    }
+  },
+  { immediate: true },
+);
+
+// Per-page lives in the store keyed by route, the same place usePagination
+// reads it - so a list opts into placeholders without also having to pass its
+// pagination down. It is unset until somebody picks a size, and the first step
+// of the dropdown is what the API falls back to.
+//
+// Capped by the most this list has ever held, because a page size is an upper
+// bound and not a promise: a ship's videos are two, and ten placeholders the
+// height of a video embed is a screen and a half of nothing. On a list that
+// fills its pages the two agree.
+const skeletonCount = computed(() => {
+  const perPage =
+    Number(paginationStore.findByKey((route.name as string) || "")) ||
+    undefined;
+
+  const seen = geometryStore.countByKey(props.name);
+
+  // Nobody has picked a size, so the API's default is in force - and the count
+  // of the last answer is the only reading of what that is.
+  if (perPage === undefined) {
+    return seen ?? 10;
+  }
+
+  return seen === undefined ? perPage : Math.min(perPage, seen);
+});
+
+// Offered to whatever renders inside: the count above, and how tall one record
+// was the last time this list drew any. The list reports its own measurement
+// back, so neither a table nor a grid carries a height written by hand.
+//
+// The spinner goes with it, because a list told to hide this one - a table view
+// that would rather use its own - has to know that it is on its own.
+provideListGeometry(
+  () => props.name,
+  skeletonCount,
+  computed(() => !props.hideLoading && loading.value),
 );
 
 const { t } = useI18n();
@@ -265,13 +328,45 @@ const toggleFilter = () => {
             </transition>
           </slot>
 
-          <slot
+          <div
             v-else-if="!hideLoading && loading"
-            name="loader"
-            :loading="loading"
+            class="filtered-list__loader"
           >
-            <Loader :loading="loading" fixed />
-          </slot>
+            <!-- `slots` is read at render time rather than through a computed:
+                 a call site is free to gate its placeholders behind a
+                 condition, and `slots` is not reactive, so a computed would
+                 answer from the render before that condition changed. -->
+            <template v-if="slots.skeleton">
+              <Loader :loading="loading" fixed />
+
+              <slot
+                name="skeleton"
+                :count="skeletonCount"
+                :filter-visible="filterVisible"
+              />
+            </template>
+
+            <!-- The list draws its own waiting state: a table hands its header
+                 and a page of placeholder rows straight out of an empty record
+                 set, which is closer to what arrives than anything written
+                 beside it could be. -->
+            <template v-else-if="props.placeholders">
+              <Loader :loading="loading" fixed />
+
+              <slot
+                name="default"
+                :records="props.records"
+                :filter-visible="filterVisible"
+                :loading="loading"
+                :refetching="refetching"
+                :empty-visible="false"
+              />
+            </template>
+
+            <slot v-else name="loader" :loading="loading">
+              <Loader :loading="loading" relative />
+            </slot>
+          </div>
 
           <slot
             v-else-if="!hideEmpty && emptyVisible"

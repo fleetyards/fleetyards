@@ -1,0 +1,54 @@
+// The two shapes a list waiting for records is made of, shared by the
+// placeholder cards and the placeholder table rows so a card and a row read as
+// the same thing waiting.
+
+// A line that has not arrived yet.
+//
+// Deliberately still: a table page reserves per-page rows times columns of
+// these, and animating a hundred of them to say what the one spinner over them
+// already says is not a trade worth making. The wells carry the movement.
+.skeleton-bar {
+  display: inline-block;
+  width: 100%;
+  border-radius: 3px;
+  background: rgba($gray-light, 0.18);
+
+  // A non-breaking space, so a bar is exactly as tall as the line it stands in
+  // for - inheriting the font of whatever it sits in rather than carrying a
+  // height that has to be kept in step with it by hand.
+  &::before {
+    content: "\00a0";
+  }
+}
+
+// An image that has not arrived yet.
+//
+// A well rather than a lighter block: --color-surface is byte-identical to
+// $gray-darker, so a placeholder built from that colour is the same tone as the
+// surface holding it, and all that reads is whatever sits over it. Darkening is
+// also what the photo region already does - see PanelBgImage - so the area
+// reads as somewhere an image goes.
+.skeleton-well {
+  display: block;
+  width: 100%;
+  border-radius: $border-radius-base;
+  background-color: rgba(#000, 0.45);
+  background-image: linear-gradient(
+    90deg,
+    transparent 20%,
+    rgba($gray-light, 0.22) 50%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
