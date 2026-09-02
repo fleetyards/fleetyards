@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.8.0](https://github.com/fleetyards/fleetyards/compare/v7.7.0...v7.8.0) (2026-09-02)
+
+
+### Features
+
+* **admin:** breadcrumbs and tabs on the manufacturer edit page ([#4662](https://github.com/fleetyards/fleetyards/issues/4662)) ([079e692](https://github.com/fleetyards/fleetyards/commit/079e692caf651178f63c9f57a8a972d63b236ffb))
+* **admin:** decide a selection of unlisted models at once ([#4661](https://github.com/fleetyards/fleetyards/issues/4661)) ([54b2027](https://github.com/fleetyards/fleetyards/commit/54b20276b7e17113397380610a46be0521523743))
+* **compare:** pick ships through the hangar's picker modal ([#4673](https://github.com/fleetyards/fleetyards/issues/4673)) ([041f59d](https://github.com/fleetyards/fleetyards/commit/041f59d64b9594d8db60eeea0c30ccf0649f8597))
+* **discord:** accept or decline a join request from Discord ([#4669](https://github.com/fleetyards/fleetyards/issues/4669)) ([87971f6](https://github.com/fleetyards/fleetyards/commit/87971f6dcd3969a5ec51a86790d14fee5bd8f875))
+* **discord:** answer privately about your own hangar and wishlist ([#4664](https://github.com/fleetyards/fleetyards/issues/4664)) ([de33348](https://github.com/fleetyards/fleetyards/commit/de33348996d36378b82604d0a97ebc1eba7abd09))
+* **discord:** create a fleet invite link from Discord ([#4665](https://github.com/fleetyards/fleetyards/issues/4665)) ([5808be7](https://github.com/fleetyards/fleetyards/commit/5808be7b2a5d9af5f0ae10eff39ce3b4543150d7))
+* **discord:** let a command carry subcommands ([#4663](https://github.com/fleetyards/fleetyards/issues/4663)) ([af17ec2](https://github.com/fleetyards/fleetyards/commit/af17ec209ba699bf52f75572ca02862b5815f731))
+* **discord:** list a fleet's members and join requests from Discord ([#4667](https://github.com/fleetyards/fleetyards/issues/4667)) ([04224eb](https://github.com/fleetyards/fleetyards/commit/04224eb1a8dae295921b55fdcbce891c36f1ce30))
+* **discord:** list a fleet's upcoming events from Discord ([#4668](https://github.com/fleetyards/fleetyards/issues/4668)) ([d455de3](https://github.com/fleetyards/fleetyards/commit/d455de3e80acb289aeff2e7118371971386d527b))
+* **paginator:** hold the paginator's place while a list loads ([#4672](https://github.com/fleetyards/fleetyards/issues/4672)) ([7bebb10](https://github.com/fleetyards/fleetyards/commit/7bebb10343138fe3197503c65ac83f48f91f9cdd))
+
+
+### Bug Fixes
+
+* **lists:** give the mobile list toolbar its wasted row back ([#4670](https://github.com/fleetyards/fleetyards/issues/4670)) ([f3d452c](https://github.com/fleetyards/fleetyards/commit/f3d452ce0abda11f2c42b3ce97dbda4d1ae78da9))
+* **manufacturers:** merge the row the export filed under a second code ([#4666](https://github.com/fleetyards/fleetyards/issues/4666)) ([0a86848](https://github.com/fleetyards/fleetyards/commit/0a86848c46339f99dd6d60d84dc566d9ae358bc9))
+* **nav:** show notifications on mobile only without a fleet ([#4659](https://github.com/fleetyards/fleetyards/issues/4659)) ([09e6f5a](https://github.com/fleetyards/fleetyards/commit/09e6f5a6431867ae737fab8169adc2440961639c))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.43 to 6.1.48 ([#4655](https://github.com/fleetyards/fleetyards/issues/4655)) ([44fb7bd](https://github.com/fleetyards/fleetyards/commit/44fb7bd68bc73f1e4b4a790979654d794eac4a63))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#4657](https://github.com/fleetyards/fleetyards/issues/4657)) ([14c9340](https://github.com/fleetyards/fleetyards/commit/14c93401627d1c21cb146873607fec3154230c34))
+* **deps-dev:** bump asyncapi-cable from 0.2.1 to 0.2.3 ([#4654](https://github.com/fleetyards/fleetyards/issues/4654)) ([81a9db9](https://github.com/fleetyards/fleetyards/commit/81a9db9d461bac08ed9b70b3ae029fff437ca97f))
+* **deps-dev:** bump bullet from 8.1.3 to 8.2.0 ([#4676](https://github.com/fleetyards/fleetyards/issues/4676)) ([c92ca8d](https://github.com/fleetyards/fleetyards/commit/c92ca8dc811cc92365014ed5b51b293c540890a3))
+* **deps-dev:** bump knip from 6.32.3 to 6.33.0 ([#4656](https://github.com/fleetyards/fleetyards/issues/4656)) ([56f7e56](https://github.com/fleetyards/fleetyards/commit/56f7e564bbcfb4aedbaaf97c471f509e64380f39))
+* **deps-dev:** bump orval from 8.26.0 to 8.27.0 ([#4677](https://github.com/fleetyards/fleetyards/issues/4677)) ([2f7d276](https://github.com/fleetyards/fleetyards/commit/2f7d2763151856f3561e1383e84fa7be1e4ed01c))
+* **deps-dev:** bump webmock from 3.26.3 to 3.26.4 ([#4675](https://github.com/fleetyards/fleetyards/issues/4675)) ([37ca85d](https://github.com/fleetyards/fleetyards/commit/37ca85db5e2253bc5da674c88b72e48c1052773c))
+* **deps:** bump highcharts from 13.0.1 to 13.0.2 ([#4658](https://github.com/fleetyards/fleetyards/issues/4658)) ([6268a40](https://github.com/fleetyards/fleetyards/commit/6268a4096d45a14a573f5199b341315d3352ea83))
+* **deps:** bump qs from 6.15.3 to 6.16.0 ([#4674](https://github.com/fleetyards/fleetyards/issues/4674)) ([2533099](https://github.com/fleetyards/fleetyards/commit/2533099368649989eee50be2f03e0789215fd0d3))
+
 ## [7.7.0](https://github.com/fleetyards/fleetyards/compare/v7.6.0...v7.7.0) (2026-08-31)
 
 
