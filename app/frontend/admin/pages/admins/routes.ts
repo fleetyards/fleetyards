@@ -13,6 +13,17 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "create/",
+    name: "admin-admin-create",
+    component: () => import("@/admin/pages/admins/create.vue"),
+    meta: {
+      title: "admin.admins.new",
+      needsAuthentication: true,
+      nav: "hidden",
+      activeRoute: "admin-admins",
+    },
+  },
+  {
     path: ":id/",
     component: () => import("@/admin/pages/admins/[id].vue"),
     children: adminUserRoutes,

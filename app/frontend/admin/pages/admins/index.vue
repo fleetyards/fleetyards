@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -78,6 +79,18 @@ const { t, l } = useI18n();
       }}
     </HeadingSmall>
   </Heading>
+
+  <Teleport to="#header-right">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'admin-admin-create' }"
+      :aria-label="t('actions.create')"
+      mobile-icon-only
+    >
+      <i class="fa fa-plus" />
+      {{ t("actions.create") }}
+    </Btn>
+  </Teleport>
 
   <FilteredList
     name="admin-admins"
