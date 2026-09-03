@@ -385,7 +385,7 @@ const csvMetrics = computed<StatsMetric[]>(() => [
   </div>
 
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 col-md-6">
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.trendingShips") }}
@@ -403,6 +403,30 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             name="trending-ships"
             :async-status="trendingShipsStatus"
             :options="trendingShipsOptions"
+            tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.patchChanges") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['patch-changes']"
+            />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="patchChangesOptions"
+            key="patch-changes"
+            name="patch-changes"
+            :async-status="patchChangesStatus"
+            :options="patchChangesOptions"
             tooltip-type="ship"
             type="bar"
           />
@@ -462,32 +486,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-12">
-      <Panel>
-        <PanelHeading :level="HeadingLevelEnum.H2">
-          {{ t("labels.stats.patchChanges") }}
-          <template #actions>
-            <StatsCsvExportBtn
-              scope="stats"
-              :chart="csvCharts['patch-changes']"
-            />
-          </template>
-        </PanelHeading>
-        <PanelBody>
-          <Chart
-            v-if="patchChangesOptions"
-            key="patch-changes"
-            name="patch-changes"
-            :async-status="patchChangesStatus"
-            :options="patchChangesOptions"
-            tooltip-type="ship"
-            type="bar"
-          />
-        </PanelBody>
-      </Panel>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-12 col-md-6">
