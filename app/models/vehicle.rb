@@ -40,6 +40,10 @@
 require "csv"
 
 class Vehicle < ApplicationRecord
+  # `name` and `serial` are whatever the owner typed, and a user's vehicles are
+  # destroyed along with the account.
+  include ErasableVersionsConcern
+
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   # Only an admin action sets `author_id`, so a loader write files nothing. The
