@@ -518,28 +518,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
     <div class="col-12 col-md-6">
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
-          {{ t("labels.stats.topPaints") }}
-          <template #actions>
-            <StatsCsvExportBtn scope="stats" :chart="csvCharts['top-paints']" />
-          </template>
-        </PanelHeading>
-        <PanelBody>
-          <Chart
-            key="top-paints"
-            name="top-paints"
-            :async-status="topPaintsStatus"
-            :options="topPaintsOptions"
-            type="bar"
-          />
-        </PanelBody>
-      </Panel>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <Panel>
-        <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.pledgePriceChanges") }}
           <template #actions>
             <StatsCsvExportBtn
@@ -555,6 +533,28 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             :async-status="pledgePriceChangesStatus"
             :options="pledgePriceChangesOptions"
             tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.topPaints") }}
+          <template #actions>
+            <StatsCsvExportBtn scope="stats" :chart="csvCharts['top-paints']" />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            key="top-paints"
+            name="top-paints"
+            :async-status="topPaintsStatus"
+            :options="topPaintsOptions"
             type="bar"
           />
         </PanelBody>
