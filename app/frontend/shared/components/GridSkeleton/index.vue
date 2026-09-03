@@ -16,10 +16,12 @@ type Props = {
   filterVisible?: boolean;
   gridBase?: "2" | "3";
   // What the cells of this grid hold. `panel` is a card - a photo with a title
-  // over it and a frame around it. The other two are bare: `image` a gallery
-  // picture, which is as tall as its token whatever the column width, and
-  // `embed` a video, which is 16:9 of it.
-  variant?: "panel" | "image" | "embed";
+  // over it and a frame around it. `summary` is the same card in the shape the
+  // inventory grids use - see InventoryPanel - which carries no picture floor
+  // of its own and closes with a strip of figures over the bottom of the photo.
+  // The other two are bare: `image` a gallery picture, which is as tall as its
+  // token whatever the column width, and `embed` a video, which is 16:9 of it.
+  variant?: "panel" | "summary" | "image" | "embed";
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -72,7 +74,7 @@ const dimensionRows = 6;
     <!-- No frame and no title: a cell of the image grid holds the picture
          itself, and one of the video grid the embed. -->
     <span
-      v-if="props.variant !== 'panel'"
+      v-if="props.variant === 'image' || props.variant === 'embed'"
       class="grid-skeleton__bare skeleton-well"
       :class="`grid-skeleton__bare--${props.variant}`"
       :style="{ height: cardHeight }"
@@ -84,7 +86,10 @@ const dimensionRows = 6;
     <Panel
       v-else
       class="grid-skeleton__panel"
-      :class="{ 'grid-skeleton__panel--measured': !!cardHeight }"
+      :class="{
+        'grid-skeleton__panel--measured': !!cardHeight,
+        'grid-skeleton__panel--summary': props.variant === 'summary',
+      }"
       :style="{ height: cardHeight }"
     >
       <template #default>
@@ -95,6 +100,13 @@ const dimensionRows = 6;
           <div class="grid-skeleton__heading">
             <span class="skeleton-bar skeleton-bar--title" />
             <span class="skeleton-bar skeleton-bar--subtitle" />
+          </div>
+
+          <!-- The card's own body, which on these cards is a count and what it
+               counts, over the bottom of the picture rather than under it. -->
+          <div v-if="props.variant === 'summary'" class="grid-skeleton__counts">
+            <span class="skeleton-bar skeleton-bar--figure" />
+            <span class="skeleton-bar skeleton-bar--figure-label" />
           </div>
         </div>
       </template>
