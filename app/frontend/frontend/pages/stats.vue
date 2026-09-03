@@ -550,7 +550,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="pledgePriceChangesOptions"
             key="pledge-price-changes"
             name="pledge-price-changes"
             :async-status="pledgePriceChangesStatus"

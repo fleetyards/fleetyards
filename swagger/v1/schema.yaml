@@ -7483,6 +7483,34 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/price-history":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Price History
+      tags:
+      - Models
+      operationId: modelPriceHistory
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPricePointsList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/sales":
     parameters:
     - name: slug
@@ -9615,6 +9643,19 @@ paths:
       tags:
       - Stats
       operationId: patchChanges
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
+  "/stats/pledge-price-changes":
+    get:
+      summary: Stats Pledge Price Changes
+      tags:
+      - Stats
+      operationId: pledgePriceChanges
       responses:
         '200':
           description: successful
@@ -18841,6 +18882,29 @@ components:
       items:
         "$ref": "#/components/schemas/ModelPosition"
       title: ModelPositionsList
+    ModelPricePoint:
+      type: object
+      properties:
+        changedAt:
+          type: string
+          format: date-time
+        from:
+          type:
+          - number
+          - 'null'
+        to:
+          type:
+          - number
+          - 'null'
+      required:
+      - changedAt
+      additionalProperties: false
+      title: ModelPricePoint
+    ModelPricePointsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ModelPricePoint"
+      title: ModelPricePointsList
     ModelProductionStatusEnum:
       type: string
       enum:
