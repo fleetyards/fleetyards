@@ -38,7 +38,8 @@ module Api
             vehicles_count: Vehicle.where(loaner: false, wanted: false).count,
             wishlists_count: Vehicle.where(wanted: true).count,
             ship_of_the_month: ship_of_the_month_entry&.dimensions&.dig("name"),
-            ship_of_the_month_count: ship_of_the_month_entry&.value&.to_i || 0
+            ship_of_the_month_count: ship_of_the_month_entry&.value&.to_i || 0,
+            painted_vehicles_percent: painted_vehicles_percent
           }
         end
 
@@ -91,6 +92,71 @@ module Api
           ).take(10)
 
           render json: patch_changes.to_json
+        end
+
+        # Below this a model has too little of a hangar presence for a ratio to
+        # mean anything: three owned and four wished is not demand, it is noise.
+        # The tenth percentile of models holds 744, so this excludes only ships
+        # nobody has rather than shaping the ranking.
+        WISH_TO_OWN_FLOOR = 100
+
+        # Share of hangared ships carrying a paint. Loaners are left out because
+        # nobody chose their paint.
+        private def painted_vehicles_percent
+          hangared = Vehicle.visible.purchased.where(loaner: false)
+          total = hangared.count
+          return 0 if total.zero?
+
+          (hangared.where.not(model_paint_id: nil).count * 100.0 / total).round(1)
+        end
+
+        # Standing demand, as opposed to `most_wishlisted`, which is the month's
+        # additions. A ship can be heavily wanted for years and add nobody new.
+        def wishlist_by_model
+          wishlist_by_model = transform_for_bar_chart(
+            Vehicle.visible.wanted.where(loaner: false)
+                   .joins(:model)
+                   .group("models.name").count
+          ).take(10)
+
+          render json: wishlist_by_model.to_json
+        end
+
+        # Wished against owned, which separates a ship people dream about from
+        # one they simply have. Expressed per 100 owned so the figure stays an
+        # integer and reads as a comparison rather than a rate.
+        def wish_to_own_ratio
+          counted = Vehicle.visible.where(loaner: false)
+            .joins(:model)
+            .group("models.name")
+            .pluck(
+              Arel.sql("models.name"),
+              Arel.sql("COUNT(*) FILTER (WHERE vehicles.wanted)"),
+              Arel.sql("COUNT(*) FILTER (WHERE NOT vehicles.wanted)")
+            )
+
+          wish_to_own_ratio = counted.filter_map do |name, wished, owned|
+            next if owned < WISH_TO_OWN_FLOOR
+
+            {label: name, count: (wished * 100.0 / owned).round, tooltip: name}
+          end
+
+          render json: wish_to_own_ratio.sort_by { |point| -point[:count] }.take(10).to_json
+        end
+
+        def top_paints
+          paint_counts = Vehicle.visible.purchased.where(loaner: false)
+            .where.not(model_paint_id: nil)
+            .group(:model_paint_id).count
+
+          names = ModelPaint.where(id: paint_counts.keys).includes(:model)
+            .to_h { |paint| [paint.id, paint.name_with_model] }
+
+          top_paints = transform_for_bar_chart(
+            paint_counts.filter_map { |id, count| [names[id], count] if names.key?(id) }.to_h
+          ).take(10)
+
+          render json: top_paints.to_json
         end
 
         # Grouped on `category`, not on the `component_class` this is named for.

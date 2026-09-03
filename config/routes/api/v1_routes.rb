@@ -102,6 +102,9 @@ v1_api_routes = lambda do
     get "vehicles-per-month", to: "base#vehicles_per_month"
     get "ships-of-the-month", to: "base#ships_of_the_month"
     get "trending-ships", to: "base#trending_ships"
+    get "wishlist-by-model", to: "base#wishlist_by_model"
+    get "wish-to-own-ratio", to: "base#wish_to_own_ratio"
+    get "top-paints", to: "base#top_paints"
     get "most-wishlisted", to: "base#most_wishlisted"
     get "patch-changes", to: "base#patch_changes"
   end

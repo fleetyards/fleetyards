@@ -31,6 +31,9 @@ import {
   useShipsOfTheMonth as useShipsOfTheMonthQuery,
   useTrendingShips as useTrendingShipsQuery,
   useMostWishlisted as useMostWishlistedQuery,
+  useWishlistByModel as useWishlistByModelQuery,
+  useWishToOwnRatio as useWishToOwnRatioQuery,
+  useTopPaints as useTopPaintsQuery,
   usePatchChanges as usePatchChangesQuery,
 } from "@/services/fyApi";
 
@@ -66,6 +69,14 @@ const { data: trendingShipsOptions, ...trendingShipsStatus } =
 
 const { data: mostWishlistedOptions, ...mostWishlistedStatus } =
   useMostWishlistedQuery();
+
+const { data: wishlistByModelOptions, ...wishlistByModelStatus } =
+  useWishlistByModelQuery();
+
+const { data: wishToOwnRatioOptions, ...wishToOwnRatioStatus } =
+  useWishToOwnRatioQuery();
+
+const { data: topPaintsOptions, ...topPaintsStatus } = useTopPaintsQuery();
 const { data: patchChangesOptions, ...patchChangesStatus } =
   usePatchChangesQuery();
 
@@ -81,6 +92,7 @@ const smallestShip = ref(0);
 const vehiclesCount = ref(0);
 const wishlistsCount = ref(0);
 const shipOfTheMonthCount = ref(0);
+const paintedVehiclesPercent = ref(0);
 
 const shipOfTheMonth = computed(() => quickStats.value?.shipOfTheMonth || null);
 
@@ -107,6 +119,7 @@ watch(
     quickStats.value?.vehiclesCount,
     quickStats.value?.wishlistsCount,
     quickStats.value?.shipOfTheMonthCount,
+    quickStats.value?.paintedVehiclesPercent,
   ],
   () => {
     setTimeout(() => {
@@ -120,6 +133,8 @@ watch(
       vehiclesCount.value = quickStats.value?.vehiclesCount || 0;
       wishlistsCount.value = quickStats.value?.wishlistsCount || 0;
       shipOfTheMonthCount.value = quickStats.value?.shipOfTheMonthCount || 0;
+      paintedVehiclesPercent.value =
+        quickStats.value?.paintedVehiclesPercent || 0;
     }, 200);
   },
   { immediate: true },
@@ -135,6 +150,21 @@ const csvCharts = computed(() => ({
     name: "trending-ships",
     title: t("labels.stats.trendingShips"),
     points: trendingShipsOptions.value,
+  },
+  "wishlist-by-model": {
+    name: "wishlist-by-model",
+    title: t("labels.stats.wishlistByModel"),
+    points: wishlistByModelOptions.value,
+  },
+  "wish-to-own-ratio": {
+    name: "wish-to-own-ratio",
+    title: t("labels.stats.wishToOwnRatio"),
+    points: wishToOwnRatioOptions.value,
+  },
+  "top-paints": {
+    name: "top-paints",
+    title: t("labels.stats.topPaints"),
+    points: topPaintsOptions.value,
   },
   "most-wishlisted": {
     name: "most-wishlisted",
@@ -235,6 +265,10 @@ const csvMetrics = computed<StatsMetric[]>(() => [
     value: quickStats.value?.wishlistsCount,
   },
   {
+    label: t("labels.stats.paintedVehicles"),
+    value: quickStats.value?.paintedVehiclesPercent,
+  },
+  {
     label: shipOfTheMonthLabel.value,
     value: quickStats.value?.shipOfTheMonthCount,
   },
@@ -333,6 +367,14 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         :label="t('labels.stats.quickStats.wishlists')"
       />
     </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+      <StatsPanel
+        icon="fa-duotone fa-palette fa-4x"
+        :value="paintedVehiclesPercent"
+        :label="t('labels.stats.paintedVehicles')"
+        suffix="%"
+      />
+    </div>
     <div v-if="shipOfTheMonth" class="col-12 col-sm-6 col-lg-3">
       <StatsPanel
         icon="fa-duotone fa-star fa-4x"
@@ -370,7 +412,31 @@ const csvMetrics = computed<StatsMetric[]>(() => [
   </div>
 
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.wishlistByModel") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['wishlist-by-model']"
+            />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="wishlistByModelOptions"
+            key="wishlist-by-model"
+            name="wishlist-by-model"
+            :async-status="wishlistByModelStatus"
+            :options="wishlistByModelOptions"
+            tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-md-6">
       <Panel>
         <PanelHeading :level="HeadingLevelEnum.H2">
           {{ t("labels.stats.mostWishlisted") }}
@@ -416,6 +482,53 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             :async-status="patchChangesStatus"
             :options="patchChangesOptions"
             tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.wishToOwnRatio") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['wish-to-own-ratio']"
+            />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="wishToOwnRatioOptions"
+            key="wish-to-own-ratio"
+            name="wish-to-own-ratio"
+            :async-status="wishToOwnRatioStatus"
+            :options="wishToOwnRatioOptions"
+            tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+    <div class="col-12 col-md-6">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.topPaints") }}
+          <template #actions>
+            <StatsCsvExportBtn scope="stats" :chart="csvCharts['top-paints']" />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="topPaintsOptions"
+            key="top-paints"
+            name="top-paints"
+            :async-status="topPaintsStatus"
+            :options="topPaintsOptions"
             type="bar"
           />
         </PanelBody>
