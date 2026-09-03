@@ -10,10 +10,16 @@ import { useListGeometry } from "@/shared/composables/useListGeometry";
 type Props = {
   // Comes from the list this stands in for when it is inside one.
   count?: number;
+  // Whether the rows this waits for carry a selection checkbox. The checkbox
+  // takes the row's left inset over from the title, so a placeholder without
+  // one stands the icon and both lines 35px left of where they land - which is
+  // the whole row sliding sideways as the records arrive.
+  selectable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   count: undefined,
+  selectable: false,
 });
 
 const geometry = useListGeometry();
@@ -39,14 +45,22 @@ const itemHeight = computed(() => {
       v-for="item in count"
       :key="`list-skeleton-${item}`"
       class="list-skeleton__item"
+      :class="{ 'list-skeleton__item--selectable': props.selectable }"
       :style="{ height: itemHeight }"
     >
-      <span class="list-skeleton__icon" />
-      <span class="list-skeleton__lines">
-        <span class="skeleton-bar skeleton-bar--title" />
-        <span class="list-skeleton__meta">
-          <span class="skeleton-bar skeleton-bar--type" />
-          <span class="skeleton-bar skeleton-bar--time" />
+      <span
+        v-if="props.selectable"
+        class="list-skeleton__checkbox"
+        data-test="list-skeleton-checkbox"
+      />
+      <span class="list-skeleton__select">
+        <span class="list-skeleton__icon" />
+        <span class="list-skeleton__lines">
+          <span class="skeleton-bar skeleton-bar--title" />
+          <span class="list-skeleton__meta">
+            <span class="skeleton-bar skeleton-bar--type" />
+            <span class="skeleton-bar skeleton-bar--time" />
+          </span>
         </span>
       </span>
     </li>

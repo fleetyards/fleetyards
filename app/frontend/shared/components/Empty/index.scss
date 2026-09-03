@@ -1,5 +1,9 @@
 .empty-list {
   width: 600px;
+  // A ceiling as well as a width: the box stands inside a list's own column on
+  // some pages - the notification pages put it where the list sits, beside the
+  // reading pane - and 600px overflows any column narrower than that.
+  max-width: 100%;
 }
 
 .empty-list-inline {

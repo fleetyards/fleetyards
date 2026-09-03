@@ -3,13 +3,19 @@
 }
 
 @media (min-width: $tablet-breakpoint) {
+  // Ceilings rather than widths. A box is usually centred in a page and these
+  // are the widths it holds there, but it also stands inside a column of a
+  // page now - the notification pages put the empty box where the list itself
+  // sits, beside the reading pane - and a fixed 600px there ran the box and
+  // everything in it over whatever was next to it.
   .box {
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
     margin: 0 auto 20px;
     margin-top: 6%;
 
     &.box-large {
-      width: 600px;
+      max-width: 600px;
     }
   }
 }

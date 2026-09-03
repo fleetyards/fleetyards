@@ -34,11 +34,12 @@ const isPagePresent = computed(
   () => !!route.query.page && Number(route.query.page) > 1,
 );
 
+// The filters live under `q`, and only they decide whether this list came back
+// empty because of something the reader can undo. Any parameter at all used to
+// count, which made a tab, a sort or a highlighted record read as a filter -
+// so the notifications page offered to reset filters it never had.
 const isQueryPresent = computed(
-  () =>
-    Object.keys(route.query?.q || {}).length > 0 ||
-    Object.keys(route.query || {}).length > 0 ||
-    isPagePresent.value,
+  () => Object.keys(route.query?.q || {}).length > 0 || isPagePresent.value,
 );
 
 const cssClasses = computed(() => {

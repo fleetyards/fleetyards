@@ -1,11 +1,11 @@
 @import "@/shared/components/skeleton";
 
-// Built to the recipe of the row it stands in for - a framed panel in a gapped
-// column, see NotificationsListItem and the two notification pages - rather
-// than to a height written by hand: the same surface, the same insets, and the
-// same type on each of the two lines. The height then falls out of the same
-// arithmetic the row's does, so the first load reserves the right space without
-// having measured anything yet.
+// Built to the recipe of the row it stands in for - see NotificationsListItem -
+// rather than to a height written by hand, and to the same two boxes it splits
+// its insets between: the row, and the button filling it. The height then falls
+// out of the same arithmetic the row's does, so the first load reserves the
+// right space without having measured anything yet, and every offset across the
+// row lands where the record's own will.
 .list-skeleton {
   display: flex;
   flex-direction: column;
@@ -17,29 +17,70 @@
   &__item {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    // The row splits the same insets between itself and the button it wraps -
-    // 4px and 8px vertically, 14px to the icon. A placeholder has no button, so
-    // it carries the total, less the 1px its border already contributes.
-    padding: 12px 12px 12px 14px;
+    // The row's own gap and insets. It keeps almost nothing on the left, since
+    // the button it wraps carries that side.
+    gap: 5px;
+    padding: 4px 8px 4px 0;
     overflow: hidden;
     background: $panel-bg;
     border: 1px solid rgba(#fff, 0.1);
     border-radius: 6px;
   }
 
-  // A round glyph the size of the row's icon, which sits 2px below the top of
-  // the first line rather than on it. The bar's fill rather than a well's: at
-  // 18px across, the well's sweep is a bright sliver crossing the dot every
-  // second and a half, which is exactly the flicker the placeholders are here
-  // to avoid.
-  &__icon {
+  // The button the row wraps, which carries the rest of the insets.
+  &__select {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+    padding: 8px 4px 8px 14px;
+  }
+
+  // The control's own box at the offsets the row's checkbox carries: 10px in
+  // from the edge, 30px of footprint for a 24px box - a checkbox's label is
+  // wider than the box drawn at its left - and 10px down, which is what lines
+  // it up with the first line of the title rather than the middle of the row.
+  &__checkbox {
     flex: none;
-    width: 18px;
-    height: 18px;
-    margin-top: 3px;
+    width: 24px;
+    height: 24px;
+    margin: 10px 6px 0 10px;
     background: rgba($gray-light, 0.18);
-    border-radius: 50%;
+    border-radius: var(--radius-control-bare, 6px);
+  }
+
+  // The checkbox has taken the left inset over, exactly as it does in the row.
+  &__item--selectable &__select {
+    padding-left: 4px;
+  }
+
+  // The footprint the row's icon keeps whatever glyph it draws - 1.25em of its
+  // own 1.15em type - so both lines beside it start where the record's will,
+  // and 2px down, since the icon sits just below the top of the first line
+  // rather than on it.
+  &__icon {
+    position: relative;
+    flex: none;
+    width: 1.4375em;
+    height: 18px;
+    margin-top: 2px;
+
+    // A round glyph the size of the row's icon, centred in that footprint. The
+    // bar's fill rather than a well's: at 18px across, the well's sweep is a
+    // bright sliver crossing the dot every second and a half, which is exactly
+    // the flicker the placeholders are here to avoid.
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      background: rgba($gray-light, 0.18);
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   &__lines {

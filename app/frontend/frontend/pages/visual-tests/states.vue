@@ -154,6 +154,17 @@ const updatePerPage = (value: number | string) => {
     </div>
   </div>
 
+  <Heading :level="HeadingLevelEnum.H3">Empty | In a narrow column</Heading>
+  <p>
+    The box is not always as wide as the page: the notification pages stand it
+    in the list's own column, beside the reading pane. Its 600px is a ceiling
+    rather than a width, and the headline wraps inside the box rather than
+    running over whatever sits next to it.
+  </p>
+  <div class="vt-narrow-column" data-test="empty-narrow">
+    <Empty :variant="EmptyVariantsEnum.BOX" hide-actions />
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2">Loader</Heading>
   <p>
     The cube loader. <code>relative</code> and <code>inline</code> sit in the
@@ -339,3 +350,12 @@ const updatePerPage = (value: number | string) => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+// The width the notifications list column has on a desktop, which is where the
+// box was overflowing.
+.vt-narrow-column {
+  width: 361px;
+  outline: 1px dashed rgba(#fff, 0.15);
+}
+</style>
