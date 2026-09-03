@@ -8,6 +8,10 @@ module Api
 
         include ChartHelper
 
+        # How far back a "trending" ship looks. Long enough that a quiet weekend
+        # does not empty the chart, short enough that it still reads as now.
+        TRENDING_WINDOW = 30.days
+
         before_action :authenticate_user!, only: []
 
         def quick_stats
@@ -36,6 +40,26 @@ module Api
             ship_of_the_month: ship_of_the_month_entry&.dimensions&.dig("name"),
             ship_of_the_month_count: ship_of_the_month_entry&.value&.to_i || 0
           }
+        end
+
+        def trending_ships
+          slug_views = Rollup
+            .where(name: MetricsJob::ROLLUP_SHIP_VIEWS, interval: "day")
+            .where(time: TRENDING_WINDOW.ago.beginning_of_day..)
+            .group(Arel.sql("dimensions->>'model_slug'"))
+            .sum(:value)
+
+          # The rollup stores whatever sat in `/ships/<here>/`, and two of those
+          # are routes rather than ships (`viewer`, `fleetchart`). Resolving each
+          # slug through Model drops them, and drops a ship that has since been
+          # hidden or retired along with them.
+          names = Model.visible.active.where(slug: slug_views.keys).pluck(:slug, :name).to_h
+
+          trending_ships = transform_for_bar_chart(
+            slug_views.filter_map { |slug, views| [names[slug], views.to_i] if names.key?(slug) }.to_h
+          ).take(10)
+
+          render json: trending_ships.to_json
         end
 
         def components_by_class

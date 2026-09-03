@@ -185,6 +185,7 @@
         "vehiclesPerMonth": "Hangared Ships per Month",
         "topVehiclesByModel": "Top 10 Hangared Ships",
         "shipsOfTheMonth": "Ship of the Month",
+        "trendingShips": "Most Viewed Ships (30 Days)",
         "crewDeficit": "Crew Deficit",
         "crewSurplus": "Crew Surplus",
         "membersByRole": "Members by Role",

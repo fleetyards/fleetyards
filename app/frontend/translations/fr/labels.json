@@ -185,6 +185,7 @@
         "vehiclesPerMonth": "Vaisseaux en hangar par mois",
         "topVehiclesByModel": "Top 10 vaisseaux en hangar",
         "shipsOfTheMonth": "Vaisseau du mois",
+        "trendingShips": "Vaisseaux les plus consultés (30 jours)",
         "crewDeficit": "Déficit d'équipage",
         "crewSurplus": "Excédent d'équipage",
         "membersByRole": "Membres par rôle",
