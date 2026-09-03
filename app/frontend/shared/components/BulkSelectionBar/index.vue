@@ -37,33 +37,64 @@ const { t } = useI18n();
 
 const hasSelection = computed(() => props.selectedCount > 0);
 
-const pageLabel = computed(() =>
-  props.pageSelected
-    ? t("bulkSelection.actions.unselectPage")
-    : t("bulkSelection.actions.selectPage"),
-);
+// Three states, three things the box does - and the label has to say which,
+// since a minus box that clears is not what a minus box does everywhere. It
+// stays on the control as its accessible name while the box is disabled and
+// the tooltip does not, because there is nothing to hover about a list with no
+// rows to tick.
+const pageLabel = computed(() => {
+  if (props.pagePartiallySelected) {
+    return t("bulkSelection.actions.clear");
+  }
+
+  if (props.pageSelected) {
+    return t("bulkSelection.actions.unselectPage");
+  }
+
+  return t("bulkSelection.actions.selectPage");
+});
+
+// A minus box means the reader ticked some of the page row by row, and the way
+// out of that is to drop the selection rather than to grow it to all 25:
+// "select everything here" is not the undo for "I picked these three". Ticking
+// the whole page from a partial one is then two clicks - clear, then tick -
+// which is the rarer of the two moves.
+const onTogglePage = (value?: boolean) => {
+  if (props.pagePartiallySelected) {
+    emit("clear");
+
+    return;
+  }
+
+  emit("toggle-page", !!value);
+};
 </script>
 
 <template>
   <div class="bulk-selection-bar" data-test="bulk-selection-bar">
-    <FormCheckbox
-      :model-value="props.pageSelected"
-      :partial="props.pagePartiallySelected"
-      :disabled="props.disabled"
-      v-tooltip="pageLabel"
-      :aria-label="pageLabel"
-      name="bulk-selection-page"
-      data-test="bulk-select-page"
-      no-label
-      inline
-      @update:model-value="emit('toggle-page', $event)"
-    />
+    <!-- The checkbox and the count it belongs to are one line and stay one
+         line. The bar wraps on a phone, and with the count free to wrap on its
+         own the checkbox was centred against a two-line body - stranded
+         halfway down the bar beside the buttons, reading as one of them rather
+         than as the thing that ticks the page. -->
+    <div class="bulk-selection-bar__lead">
+      <FormCheckbox
+        :model-value="props.pageSelected"
+        :partial="props.pagePartiallySelected"
+        :disabled="props.disabled"
+        v-tooltip="props.disabled ? '' : pageLabel"
+        :aria-label="pageLabel"
+        name="bulk-selection-page"
+        data-test="bulk-select-page"
+        no-label
+        inline
+        @update:model-value="onTogglePage"
+      />
 
-    <div
-      class="bulk-selection-bar__body"
-      :class="{ 'bulk-selection-bar__body--empty': !hasSelection }"
-    >
-      <span class="bulk-selection-bar__count">
+      <span
+        class="bulk-selection-bar__count"
+        :class="{ 'bulk-selection-bar__count--empty': !hasSelection }"
+      >
         <span data-test="bulk-selection-count">
           {{
             props.allMatchingSelected
@@ -88,21 +119,14 @@ const pageLabel = computed(() =>
             })
           }}
         </Btn>
-        <Btn
-          v-tooltip="t('bulkSelection.actions.clear')"
-          :aria-label="t('bulkSelection.actions.clear')"
-          :size="BtnSizesEnum.SM"
-          :variant="BtnVariantsEnum.BARE"
-          data-test="bulk-selection-clear"
-          @click="emit('clear')"
-        >
-          <i class="fa-duotone fa-xmark" />
-        </Btn>
       </span>
+    </div>
 
-      <div class="bulk-selection-bar__actions">
-        <slot />
-      </div>
+    <div
+      class="bulk-selection-bar__actions"
+      :class="{ 'bulk-selection-bar__actions--empty': !hasSelection }"
+    >
+      <slot />
     </div>
   </div>
 </template>

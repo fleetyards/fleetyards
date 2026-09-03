@@ -6,7 +6,12 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  min-height: 34px;
+  // As tall as a bar whose actions are buttons, whether or not it is holding
+  // any: the placeholders a loading list puts up draw this bar with an empty
+  // slot, and a bar that grows by 17px the moment the records land takes the
+  // whole list down with it. The token is the one the buttons are sized from,
+  // plus the bar's own insets.
+  min-height: calc(var(--field-h, 43px) + 8px);
   padding: 4px 8px 4px 10px;
 
   // The checkbox ships with a form field's bottom margin, which a toolbar row
@@ -16,21 +21,24 @@
   }
 }
 
+// The checkbox and the count, held together as one flex item. The bar wraps,
+// and the two are on the same line of it however narrow it gets - which is the
+// difference between a select-all that sits beside what it counts and one
+// centred against a two-line bar, level with the buttons at the far end.
+.bulk-selection-bar__lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
 // Kept in place rather than removed while nothing is ticked: the bar sits
 // directly above the list, and a row that grows the moment a checkbox is
 // clicked pushes the list out from under the pointer. `visibility` also takes
 // it off the tab order and out of the accessibility tree, so there is nothing
 // to reach while it is empty.
-.bulk-selection-bar__body {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  flex-wrap: wrap;
-  gap: 10px;
-  min-width: 0;
-}
-
-.bulk-selection-bar__body--empty {
+.bulk-selection-bar__count--empty,
+.bulk-selection-bar__actions--empty {
   visibility: hidden;
 }
 
