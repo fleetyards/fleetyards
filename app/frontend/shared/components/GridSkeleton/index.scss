@@ -37,6 +37,50 @@
     }
   }
 
+  // The inventory cards are the same photo card in another shape - see
+  // InventoryPanel: no floor of their own, a heading over the top of the
+  // picture and a strip of figures at the bottom of it, so the height is those
+  // two plus the body's own minimum rather than a picture's.
+  &__panel--summary {
+    .grid-skeleton__media {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 0;
+    }
+
+    // The heading is PanelHeading's own type rather than the ships card's: a
+    // `2xl` title on a 2rem line, and HeadingSmall's 70% of that below it on a
+    // line of the same height. Both bars stand exactly as tall as the line
+    // each replaces, which is what the card's own height is made of.
+    .grid-skeleton__heading {
+      gap: 8px;
+    }
+
+    .skeleton-bar--title {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    .skeleton-bar--subtitle {
+      width: 46%;
+      font-size: 1.05rem;
+      line-height: 2rem;
+    }
+  }
+
+  // Mirrors PanelBody's own `4px 18px 18px` and the floor the inventory card's
+  // body carries, with the figure at the type its count is set in - the strip
+  // is the taller half of that card, and a bar of body text there would leave
+  // the placeholder a third short.
+  &__counts {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 60px;
+    padding: 4px 18px 18px;
+  }
+
   // A card on the ships grid passes no body, so its height is exactly the
   // image floor - which is the one measurement a placeholder has to match, and
   // the reason the bars inside it need no height of their own.
@@ -100,6 +144,19 @@
       display: block;
       width: 42%;
       font-size: 10px;
+    }
+
+    // The count and its label, at the type each is set in: `2em` on a single
+    // line is what makes the figure the tall thing in that strip.
+    &--figure {
+      width: 46px;
+      font-size: 2em;
+      line-height: 1;
+    }
+
+    &--figure-label {
+      width: 84px;
+      font-size: 0.8em;
     }
   }
 

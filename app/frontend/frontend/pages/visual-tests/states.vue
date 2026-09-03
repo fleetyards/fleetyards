@@ -8,6 +8,8 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BaseText from "@/shared/components/base/Text/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import InventoryPanel from "@/frontend/components/Logistics/InventoryPanel/index.vue";
+import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
@@ -101,6 +103,34 @@ const emptyList: BaseList = {
   },
 };
 
+// The card the `summary` placeholders stand in for. Two of them, since the
+// second line of a card - a ship's name against a written location - is where
+// the heights of two cards in one row can differ.
+const inventories: InventoryPanelRecord[] = [
+  {
+    id: "inventory-1",
+    name: "Port Olisar Locker",
+    slug: "port-olisar-locker",
+    location: "Port Olisar",
+    entriesCount: 24,
+    totalScu: 118,
+    totalUnits: 1420,
+  },
+  {
+    id: "inventory-2",
+    name: "Ironclad Hold",
+    slug: "ironclad-hold",
+    entriesCount: 8,
+    totalScu: 384,
+    totalUnits: 0,
+    vehicle: {
+      id: "vehicle-1",
+      name: "Grey Hauler",
+      model: { slug: "ironclad", cargo: 384, personalInventory: 0 },
+    },
+  },
+];
+
 const perPage = ref<number | string>(25);
 
 const updatePerPage = (value: number | string) => {
@@ -163,6 +193,30 @@ const updatePerPage = (value: number | string) => {
   </p>
   <div class="vt-narrow-column" data-test="empty-narrow">
     <Empty :variant="EmptyVariantsEnum.BOX" hide-actions />
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H3">
+    GridSkeleton | The inventory cards
+  </Heading>
+  <p>
+    The <code>summary</code> variant, beside the cards it stands in for. These
+    carry no picture floor of their own — a heading over the top of the photo
+    and a strip of figures at the bottom of it — so the placeholder is built to
+    that shape instead of the ships card's.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>cards</BaseText>
+      <Grid :records="inventories" primary-key="id" grid-base="2">
+        <template #default="{ record }">
+          <InventoryPanel :inventory="record" :to="{ name: 'home' }" />
+        </template>
+      </Grid>
+    </div>
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>placeholders</BaseText>
+      <GridSkeleton :count="2" variant="summary" grid-base="2" />
+    </div>
   </div>
 
   <Heading :level="HeadingLevelEnum.H2">Loader</Heading>

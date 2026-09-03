@@ -13,6 +13,8 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
+import { useOwnListGeometry } from "@/shared/composables/useOwnListGeometry";
 import Empty from "@/shared/components/Empty/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
@@ -64,6 +66,14 @@ const {
 
 const inventoryList = computed<FleetInventory[]>(
   () => inventories.value?.items ?? [],
+);
+
+// This page is the grid's frame: nothing wraps it, so the count its
+// placeholders reserve and the height they take are the page's own to keep.
+const { count: inventoryCount } = useOwnListGeometry(
+  "fleet-inventories",
+  inventoryList,
+  inventoriesLoading,
 );
 
 const refetchAll = async () => {
@@ -195,6 +205,15 @@ const crumbs = computed<Crumb[]>(() => [
       />
     </template>
   </Grid>
+
+  <!-- The cards this grid is about to hold, as many of them as it held last
+       time: a grid that answers with a spinner in the space it will fill grows
+       the page under the reader the moment the answer lands. -->
+  <GridSkeleton
+    v-else-if="inventoriesLoading"
+    variant="summary"
+    :count="inventoryCount"
+  />
 
   <Empty
     v-if="!inventoriesLoading && !inventoryList.length"
