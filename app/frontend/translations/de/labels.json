@@ -1700,8 +1700,7 @@
         "totalCargo": "Gesamtfracht",
         "didNotFit": "Passte nicht",
         "openInTool": "Im Frachtraster-Tool öffnen",
-        "myHangar": "Nur meine Schiffe anzeigen",
-        "filterShips": "Schiffe nach Containergröße filtern",
+        "enoughShips": "Vier Schiffe füllen das Raster.",
         "addShip": "Schiff hinzufügen",
         "removeShip": "Entfernen",
         "autoFillShip": "Auto-Fill"

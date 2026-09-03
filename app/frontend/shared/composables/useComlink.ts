@@ -42,6 +42,7 @@ type Events = {
   "fleet-event-updated": () => void | Promise<unknown>;
   "fleet-event-signup-changed": () => void | Promise<unknown>;
   "fleet-event-children-changed": () => void | Promise<unknown>;
+  "cargo-grids-models-picked": (slugs: string[]) => void | Promise<unknown>;
 };
 
 const AppComlink = createNanoEvents<Events>();

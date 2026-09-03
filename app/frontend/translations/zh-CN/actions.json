@@ -154,6 +154,9 @@
       "compare": {
         "ships": "对比"
       },
+      "cargoGrids": {
+        "addShips": "添加飞船"
+      },
       "hangar": {
         "editGroups": "Add or remove Groups",
         "editName": "Name your Ship",

@@ -154,6 +154,9 @@
       "compare": {
         "ships": "Vergleichen"
       },
+      "cargoGrids": {
+        "addShips": "Schiffe hinzufügen"
+      },
       "hangar": {
         "editGroups": "Gruppen hinzufügen oder löschen",
         "editName": "Benenne dein Schiff",

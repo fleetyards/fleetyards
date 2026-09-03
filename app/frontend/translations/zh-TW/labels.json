@@ -1696,9 +1696,8 @@
         "totalCargo": "總貨物",
         "didNotFit": "放不下",
         "openInTool": "在貨物網格工具中開啟",
-        "myHangar": "僅顯示我的飛船",
-        "filterShips": "按貨櫃大小篩選飛船",
-        "addShip": "Add Ship",
+        "enoughShips": "四艘飛船已填滿網格。",
+        "addShip": "新增飛船",
         "removeShip": "Remove",
         "autoFillShip": "Auto-fill"
       },
