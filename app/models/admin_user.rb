@@ -40,8 +40,23 @@
 class AdminUser < ApplicationRecord
   include ResourceAccessConcern
 
+  # Every privilege an `Admin::*Policy` asks for has to appear here, or the
+  # policy names something nobody can be granted and the section it guards is
+  # silently super-admin-only. Fifteen were missing -- equipment, commodities,
+  # model_paints and the twelve model sub-resources -- not by decision, but
+  # because the list was never extended alongside the policies.
+  #
+  # Adding them grants nothing: an admin holds a privilege only once it is set
+  # on their account. `AdminUserPrivilegesTest` fails if a policy drifts out of
+  # this list again.
   RESOURCE_ACCESS = {
-    ship_data: %w[models model_modules components manufacturers vehicles images],
+    ship_data: %w[
+      models model_modules model_module_packages model_paints model_positions
+      model_hardpoints model_loaners model_snub_crafts model_upgrades
+      cargo_holds docks videos
+      components equipment commodities item_prices
+      manufacturers vehicles images
+    ],
     community: %w[fleets users supporters],
     system: %w[admins oauth_applications maintenance imports features workers pghero rsi-api-status stats]
   }.freeze

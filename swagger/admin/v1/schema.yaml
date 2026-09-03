@@ -8842,7 +8842,20 @@ components:
       enum:
       - models
       - model_modules
+      - model_module_packages
+      - model_paints
+      - model_positions
+      - model_hardpoints
+      - model_loaners
+      - model_snub_crafts
+      - model_upgrades
+      - cargo_holds
+      - docks
+      - videos
       - components
+      - equipment
+      - commodities
+      - item_prices
       - manufacturers
       - vehicles
       - images
@@ -8861,7 +8874,20 @@ components:
       x-enumNames:
       - MODELS
       - MODEL_MODULES
+      - MODEL_MODULE_PACKAGES
+      - MODEL_PAINTS
+      - MODEL_POSITIONS
+      - MODEL_HARDPOINTS
+      - MODEL_LOANERS
+      - MODEL_SNUB_CRAFTS
+      - MODEL_UPGRADES
+      - CARGO_HOLDS
+      - DOCKS
+      - VIDEOS
       - COMPONENTS
+      - EQUIPMENT
+      - COMMODITIES
+      - ITEM_PRICES
       - MANUFACTURERS
       - VEHICLES
       - IMAGES
