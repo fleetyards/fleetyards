@@ -33,7 +33,15 @@ class VersionedItem
     "Inventory" => [:holder],
     "InventoryItem" => [:inventory, :holder],
     "Model" => [],
-    "ModelModule" => []
+    "ModelModule" => [],
+    "ModelPaint" => [],
+    "Equipment" => [],
+    "Commodity" => [],
+    "Manufacturer" => [],
+    "Vehicle" => [],
+    "User" => [],
+    "FundingGoal" => [],
+    "SupporterContribution" => []
   }.freeze
 
   TYPES = ROOTS.keys.freeze
@@ -43,7 +51,14 @@ class VersionedItem
     "Fleet" => ::Admin::FleetPolicy,
     "Model" => ::Admin::ModelPolicy,
     "ModelModule" => ::Admin::ModelModulePolicy,
-    "User" => ::Admin::UserPolicy
+    "ModelPaint" => ::Admin::ModelPaintPolicy,
+    "Equipment" => ::Admin::EquipmentPolicy,
+    "Commodity" => ::Admin::CommodityPolicy,
+    "Manufacturer" => ::Admin::ManufacturerPolicy,
+    "Vehicle" => ::Admin::VehiclePolicy,
+    "User" => ::Admin::UserPolicy,
+    "FundingGoal" => ::Admin::FundingGoalPolicy,
+    "SupporterContribution" => ::Admin::SupporterContributionPolicy
   }.freeze
 
   def self.supported?(item_type)

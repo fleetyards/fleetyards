@@ -40,6 +40,23 @@
 require "csv"
 
 class Vehicle < ApplicationRecord
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  # Only an admin action sets `author_id`, so a loader write files nothing. The
+  # gate is not tidiness: the UEX sync rewrites all 232 commodities and 1,526 of
+  # 4,830 equipment rows a week, and versioning those unconditionally would bury
+  # the handful of real edits the way Fleet's touch versions already do.
+  has_paper_trail on: %i[update],
+    only: %i[
+      name serial wanted flagship public name_visible sale_notify hidden
+      loaner bought_via
+    ],
+    if: ->(record) { record.author_id.present? },
+    meta: {
+      author_id: :author_id,
+      reason: :update_reason,
+      reason_description: :update_reason_description
+    }
   paginates_per 30
   max_paginates_per 240
   per_page_steps [15, 30, 60, 120, 240, :all]

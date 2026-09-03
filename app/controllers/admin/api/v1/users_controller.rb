@@ -39,7 +39,7 @@ module Admin
         end
 
         def update
-          return if @user.update(user_params)
+          return if @user.update(user_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("user.update", errors: @user.errors), status: :bad_request
         end

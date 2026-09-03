@@ -26,7 +26,7 @@ module Admin
         end
 
         def update
-          return if @vehicle.update(vehicle_params)
+          return if @vehicle.update(vehicle_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("vehicle.update", errors: @vehicle.errors), status: :bad_request
         end

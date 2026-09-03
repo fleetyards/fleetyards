@@ -25,6 +25,27 @@
 #  index_commodities_on_uex_code        (uex_code)
 #
 class Commodity < ApplicationRecord
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  # Only an admin action sets `author_id`, so a loader write files nothing. The
+  # gate is not tidiness: the UEX sync rewrites all 232 commodities and 1,526 of
+  # 4,830 equipment rows a week, and versioning those unconditionally would bury
+  # the handful of real edits the way Fleet's touch versions already do.
+  has_paper_trail on: %i[update],
+    only: %i[
+      name description commodity_type uex_id uex_code sc_key sc_ref
+    ],
+    if: ->(record) { record.author_id.present? },
+    # `version` here is the sc_data build the row was last loaded from, and
+    # paper_trail claims that name for its own accessor unless told otherwise.
+    # Component already carries this rename for the same reason.
+    version: :paper_trail_version,
+    versions: {name: :paper_trail_versions},
+    meta: {
+      author_id: :author_id,
+      reason: :update_reason,
+      reason_description: :update_reason_description
+    }
   include AttachmentRansackers
   include ItemPriceConcern
   include ScDataVersioned

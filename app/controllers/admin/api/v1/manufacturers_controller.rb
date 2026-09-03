@@ -53,7 +53,7 @@ module Admin
         end
 
         def update
-          return if @manufacturer.update(manufacturer_params.merge(icon_override).merge(logo_override))
+          return if @manufacturer.update(manufacturer_params.merge(icon_override).merge(logo_override).merge(author_id: current_user.id))
 
           render json: ValidationError.new("manufacturer.update", errors: @manufacturer.errors), status: :bad_request
         end

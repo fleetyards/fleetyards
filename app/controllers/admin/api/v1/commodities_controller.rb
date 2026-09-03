@@ -37,7 +37,7 @@ module Admin
         end
 
         def update
-          return if @commodity.update_with_facts(commodity_params)
+          return if @commodity.update_with_facts(commodity_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("commodity.update", errors: @commodity.errors), status: :bad_request
         end

@@ -33,15 +33,33 @@ module Admin
         # can walk one item to its authorisation root, but a feed cannot do that
         # for every row it returns.
         #
-        # These three are the types that record *who* made the change -- they map
-        # `author_id` through paper_trail's `meta:`. Component is deliberately
-        # absent: it is versioned, but carries no `author_id` accessor, so a
-        # component edit is unattributed and would join the feed as an anonymous
-        # row. Worth closing separately; it is a gap in Component, not here.
+        # Every type that records who changed it, against the privilege its
+        # policy requires. Mirrors `Admin::*Policy#resource_access` -- that
+        # method is private, so the mapping is written out rather than asked for.
+        #
+        # `equipment`, `commodities` and `model_paints` are not in
+        # `AdminUser::AVAILABLE_PRIVILEGES`, so today only a super admin can hold
+        # them. That is pre-existing and true of the admin pages themselves, not
+        # something this map introduces.
         FEED_ACCESS_BY_ITEM_TYPE = {
           "Model" => :models,
           "ModelModule" => :model_modules,
-          "Fleet" => :fleets
+          "ModelPaint" => :model_paints,
+          "Component" => :components,
+          "Equipment" => :equipment,
+          "Commodity" => :commodities,
+          "Manufacturer" => :manufacturers,
+          "Fleet" => :fleets,
+          "Vehicle" => :vehicles,
+          "User" => :users,
+          "FundingGoal" => :supporters,
+          "SupporterContribution" => :supporters
+        }.freeze
+
+        # What to call a row in the feed. Everything else answers to `name`.
+        FEED_NAME_COLUMN = {
+          "User" => :username,
+          "FundingGoal" => :title
         }.freeze
 
         def recent
@@ -78,7 +96,7 @@ module Admin
 
             item_type.constantize
               .where(id: rows.map(&:item_id))
-              .pluck(:id, :name)
+              .pluck(:id, FEED_NAME_COLUMN.fetch(item_type, :name))
               .each { |id, name| names[[item_type, id]] = name }
           end
         end

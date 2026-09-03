@@ -16549,6 +16549,14 @@ components:
       - InventoryItem
       - Model
       - ModelModule
+      - ModelPaint
+      - Equipment
+      - Commodity
+      - Manufacturer
+      - Vehicle
+      - User
+      - FundingGoal
+      - SupporterContribution
       x-enumNames:
       - COMPONENT
       - FLEET
@@ -16560,6 +16568,14 @@ components:
       - INVENTORY_ITEM
       - MODEL
       - MODEL_MODULE
+      - MODEL_PAINT
+      - EQUIPMENT
+      - COMMODITY
+      - MANUFACTURER
+      - VEHICLE
+      - USER
+      - FUNDING_GOAL
+      - SUPPORTER_CONTRIBUTION
       title: VersionItemTypeEnum
     VersionRevertInput:
       type: object

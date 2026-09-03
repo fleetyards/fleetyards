@@ -38,7 +38,7 @@ module Admin
         end
 
         def update
-          return if @component.update_with_facts(component_params)
+          return if @component.update_with_facts(component_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("component.update", errors: @component.errors), status: :bad_request
         end

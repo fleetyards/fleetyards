@@ -78,7 +78,7 @@ module Admin
         end
 
         def update
-          return if @supporter_contribution.update(supporter_contribution_params)
+          return if @supporter_contribution.update(supporter_contribution_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("supporter_contribution.update", errors: @supporter_contribution.errors), status: :bad_request
         end

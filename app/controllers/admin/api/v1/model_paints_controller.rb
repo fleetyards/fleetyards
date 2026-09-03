@@ -37,7 +37,7 @@ module Admin
         end
 
         def update
-          return if @model_paint.update(model_paint_params)
+          return if @model_paint.update(model_paint_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("model_paint.update", errors: @model_paint.errors), status: :bad_request
         end

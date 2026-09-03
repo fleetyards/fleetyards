@@ -33,6 +33,23 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class SupporterContribution < ApplicationRecord
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  # Only an admin action sets `author_id`, so a loader write files nothing. The
+  # gate is not tidiness: the UEX sync rewrites all 232 commodities and 1,526 of
+  # 4,830 equipment rows a week, and versioning those unconditionally would bury
+  # the handful of real edits the way Fleet's touch versions already do.
+  has_paper_trail on: %i[update],
+    only: %i[
+      name amount_cents currency anonymous recurring
+      started_at ended_at note user_id
+    ],
+    if: ->(record) { record.author_id.present? },
+    meta: {
+      author_id: :author_id,
+      reason: :update_reason,
+      reason_description: :update_reason_description
+    }
   paginates_per 30
 
   # Touch so a linked account's cached public profile picks the badge up.
