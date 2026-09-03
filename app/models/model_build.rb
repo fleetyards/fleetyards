@@ -90,6 +90,20 @@ class ModelBuild < ApplicationRecord
   serialize :external_fuel_tanks, coder: YAML
   serialize :refuel_boom, coder: YAML
 
+  # Facts that are a shape rather than a number. Two loads of the same export
+  # can serialise these differently without anything having changed, so
+  # comparing them reports a change on every re-parse -- see the change log,
+  # which leaves them out for exactly that reason.
+  STRUCTURED_FACTS = %i[
+    hull_parts hull_doors signature_cross_section
+    cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom
+  ].freeze
+
+  # What a patch diff compares. Derived rather than listed, so a numeric fact
+  # added to FACTS is diffable without anyone remembering to say so. `ground` is
+  # excluded with the shapes: it classifies the ship rather than measuring it.
+  DIFFABLE_FACTS = (FACTS - STRUCTURED_FACTS - %i[ground]).freeze
+
   # The facts Model filters and sorts by, which is every one of them that
   # `Model.ransackable_attributes` lists. The other twelve nothing queries.
   FILTERABLE = %i[

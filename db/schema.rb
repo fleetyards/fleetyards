@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1012,6 +1012,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_160000) do
     t.index ["fleet_id", "slug"], name: "index_missions_on_fleet_id_and_slug", unique: true
   end
 
+  create_table "model_build_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "environment", null: false
+    t.string "field", null: false
+    t.string "from_version", null: false
+    t.uuid "model_id", null: false
+    t.decimal "new_value", precision: 15, scale: 2
+    t.decimal "old_value", precision: 15, scale: 2
+    t.datetime "recorded_at", null: false
+    t.string "to_version", null: false
+    t.datetime "updated_at", null: false
+    t.index ["environment", "to_version"], name: "index_model_build_changes_on_build"
+    t.index ["model_id", "environment", "to_version", "field"], name: "index_model_build_changes_on_model_and_field", unique: true
+    t.index ["model_id"], name: "index_model_build_changes_on_model_id"
+    t.index ["recorded_at"], name: "index_model_build_changes_on_recorded_at"
+  end
+
   create_table "model_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "cargo_holds"
     t.datetime "created_at", null: false
@@ -1721,6 +1738,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_160000) do
   add_foreign_key "mission_teams", "missions"
   add_foreign_key "missions", "fleets"
   add_foreign_key "missions", "users", column: "created_by_id"
+  add_foreign_key "model_build_changes", "models", on_delete: :cascade
   add_foreign_key "model_builds", "models", on_delete: :cascade
   add_foreign_key "model_paints", "components", on_delete: :nullify
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
