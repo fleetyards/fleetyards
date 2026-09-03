@@ -37,16 +37,21 @@
     }
   }
 
-  // The inventory cards are the same photo card in another shape - see
-  // InventoryPanel: no floor of their own, a heading over the top of the
-  // picture and a strip of figures at the bottom of it, so the height is those
-  // two plus the body's own minimum rather than a picture's.
+  // The inventory cards - see InventoryPanel - stand on the same picture floor
+  // the ships card does, since both are a Panel carrying a bg-image, so the
+  // height is that floor and not the sum of what sits over it. What differs is
+  // what sits over it: a heading at the top of the picture and a strip of
+  // figures at the bottom, rather than a heading alone.
+  //
+  // Measured against the card on /visual-tests/states/: 290px against 290px.
+  // Dropping the floor here, on the reasoning that a card with a body must be
+  // as tall as its parts, came out 126px short - the body carries `flex: 1` and
+  // grows into the floor rather than setting the height.
   &__panel--summary {
     .grid-skeleton__media {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 0;
     }
 
     // The heading is PanelHeading's own type rather than the ships card's: a
@@ -70,9 +75,9 @@
   }
 
   // Mirrors PanelBody's own `4px 18px 18px` and the floor the inventory card's
-  // body carries, with the figure at the type its count is set in - the strip
-  // is the taller half of that card, and a bar of body text there would leave
-  // the placeholder a third short.
+  // body carries, with the figure at the type its count is set in: the count is
+  // the tall thing in that strip, and a bar of body text there would sit a
+  // third of a line low.
   &__counts {
     display: flex;
     align-items: baseline;

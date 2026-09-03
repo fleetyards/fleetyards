@@ -200,9 +200,10 @@ const updatePerPage = (value: number | string) => {
   </Heading>
   <p>
     The <code>summary</code> variant, beside the cards it stands in for. These
-    carry no picture floor of their own — a heading over the top of the photo
-    and a strip of figures at the bottom of it — so the placeholder is built to
-    that shape instead of the ships card's.
+    stand on the same picture floor the ships card does, but carry a strip of
+    figures at the bottom of the photo as well as a heading at the top of it —
+    290px against 290px, which is the measurement the pair is here to keep
+    honest.
   </p>
   <div class="row">
     <div class="col-12 col-lg-6">
