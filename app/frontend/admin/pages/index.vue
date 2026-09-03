@@ -11,81 +11,162 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
+import AttentionTile from "@/admin/components/Dashboard/AttentionTile.vue";
+import LinkTile from "@/admin/components/Dashboard/LinkTile.vue";
+import EditFeed from "@/admin/components/Dashboard/EditFeed.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import DashboardUsers from "@/admin/components/Dashboard/Users.vue";
-import DashboardModels from "@/admin/components/Dashboard/Models.vue";
-import DashboardManufacturers from "@/admin/components/Dashboard/Manufacturers.vue";
-import DashboardComponents from "@/admin/components/Dashboard/Components.vue";
 import {
-  useStats as useStatsQuery,
+  useDashboard as useDashboardQuery,
   useVisitsPerDay as useVisitsPerDayQuery,
   useMostViewedPages as useMostViewedPagesQuery,
   useVisitsPerMonth as useVisitsPerMonthQuery,
+  useRegistrationsPerMonth as useRegistrationsPerMonthQuery,
 } from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
 
-const { t } = useI18n();
+const { t, lUtc: l, timeDistance } = useI18n();
 
 const sessionStore = useSessionStore();
 
-const { data: quickStats, refetch } = useStatsQuery({
-  query: {
-    enabled: () => sessionStore.hasAccessTo("stats"),
-  },
+const hasStats = () => sessionStore.hasAccessTo("stats");
+
+/*
+ * One request for every figure on the page, refetched by the query client rather
+ * than by a hand-rolled interval - a `setInterval` started in `onMounted` was
+ * never cleared, so each visit to this page stacked another poll on top of the
+ * last.
+ */
+const { data: dashboard } = useDashboardQuery({
+  query: { refetchInterval: 30_000 },
 });
 
-onMounted(() => {
-  setInterval(() => {
-    void refetch();
-  }, 30 * 1000);
+/*
+ * A queue with nothing in it is not news. The band renders only the tiles with
+ * a count above zero and collapses entirely when they are all clear, so a
+ * populated attention row always means something needs doing.
+ *
+ * A figure the admin has no privilege for is absent rather than zero, which is
+ * why a missing key is never treated as an "all clear" worth showing.
+ */
+const attentionTiles = computed(() =>
+  [
+    {
+      key: "unlistedModels",
+      count: dashboard.value?.unlistedModelsCount,
+      icon: "fa-duotone fa-rocket fa-4x",
+      to: { name: "admin-unlisted-models" },
+      severity: "warning" as const,
+    },
+    {
+      key: "failedImports",
+      count: dashboard.value?.failedImportsCount,
+      icon: "fa-duotone fa-file-import fa-4x",
+      to: { name: "imports" },
+      severity: "error" as const,
+    },
+    {
+      key: "stuckImports",
+      count: dashboard.value?.stuckImportsCount,
+      icon: "fa-duotone fa-hourglass-half fa-4x",
+      to: { name: "imports" },
+      severity: "warning" as const,
+    },
+    {
+      key: "deadJobs",
+      count: dashboard.value?.jobsDeadCount,
+      icon: "fa-duotone fa-skull fa-4x",
+      to: { name: "workers" },
+      severity: "error" as const,
+    },
+    {
+      key: "retryJobs",
+      count: dashboard.value?.jobsRetryCount,
+      icon: "fa-duotone fa-arrow-rotate-right fa-4x",
+      to: { name: "workers" },
+      severity: "warning" as const,
+    },
+    {
+      key: "rsiRequestLogs",
+      count: dashboard.value?.unresolvedRsiRequestLogsCount,
+      icon: "fa-duotone fa-plug-circle-xmark fa-4x",
+      to: { name: "rsi-api-status" },
+      severity: "error" as const,
+    },
+    {
+      key: "notifications",
+      count: dashboard.value?.actionableNotificationsCount,
+      icon: "fa-duotone fa-bell-exclamation fa-4x",
+      to: { name: "admin-notifications" },
+      severity: "warning" as const,
+    },
+  ].filter((tile) => (tile.count ?? 0) > 0),
+);
+
+const percentDelta = (current?: number, before?: number) => {
+  if (current === undefined || !before) {
+    return undefined;
+  }
+
+  const delta = Math.round(((current - before) / before) * 100);
+
+  return `${delta > 0 ? "+" : ""}${delta}%`;
+};
+
+const visitsDelta = computed(() =>
+  percentDelta(
+    dashboard.value?.visitsToday,
+    dashboard.value?.visitsSameWeekdayLastWeek,
+  ),
+);
+
+const signupsDelta = computed(() =>
+  percentDelta(
+    dashboard.value?.signupsThisWeek,
+    dashboard.value?.signupsLastWeek,
+  ),
+);
+
+// "4.9.0-live.12344265" -> "4.9.0". The build id is nineteen characters that
+// would force this one value to a smaller size than every other card on the row;
+// it rides in the tooltip instead. A version with no build id is shown whole.
+const cataloguePatch = computed(() => {
+  const version = dashboard.value?.catalogueVersion;
+
+  if (!version) {
+    return t("labels.admin.dashboard.catalogueUnknown");
+  }
+
+  return version.split("-")[0];
+});
+
+const catalogueTooltip = computed(() => {
+  const version = dashboard.value?.catalogueVersion;
+
+  if (!version) {
+    return false;
+  }
+
+  const loadedAt = dashboard.value?.catalogueLoadedAt;
+
+  if (!loadedAt) {
+    return version;
+  }
+
+  return `${version} — ${l(loadedAt, "datetime.formats.short")}`;
 });
 
 const { data: visitsPerDay, ...visitsPerDayStatus } = useVisitsPerDayQuery({
-  query: {
-    enabled: () => sessionStore.hasAccessTo("stats"),
-  },
+  query: { enabled: hasStats },
 });
 
 const { data: mostViewedPages, ...mostViewedPagesStatus } =
-  useMostViewedPagesQuery({
-    query: {
-      enabled: () => sessionStore.hasAccessTo("stats"),
-    },
-  });
+  useMostViewedPagesQuery({ query: { enabled: hasStats } });
 
 const { data: visitsPerMonth, ...visitsPerMonthStatus } =
-  useVisitsPerMonthQuery({
-    query: {
-      enabled: () => sessionStore.hasAccessTo("stats"),
-    },
-  });
+  useVisitsPerMonthQuery({ query: { enabled: hasStats } });
 
-const onlineCount = ref(0);
-const shipsCountYear = ref(0);
-const fleetsCountTotal = ref(0);
-const usersCountTotal = ref(0);
-const shipsCountTotal = ref(0);
-
-// use refs and watch for stats to trigger animation on every page visit
-watch(
-  () => [
-    quickStats.value?.onlineCount,
-    quickStats.value?.shipsCountYear,
-    quickStats.value?.fleetsCountTotal,
-    quickStats.value?.usersCountTotal,
-    quickStats.value?.shipsCountTotal,
-  ],
-  () => {
-    setTimeout(() => {
-      onlineCount.value = quickStats.value?.onlineCount || 0;
-      shipsCountYear.value = quickStats.value?.shipsCountYear || 0;
-      fleetsCountTotal.value = quickStats.value?.fleetsCountTotal || 0;
-      usersCountTotal.value = quickStats.value?.usersCountTotal || 0;
-      shipsCountTotal.value = quickStats.value?.shipsCountTotal || 0;
-    }, 200);
-  },
-  { immediate: true },
-);
+const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
+  useRegistrationsPerMonthQuery({ query: { enabled: hasStats } });
 </script>
 
 <template>
@@ -94,45 +175,64 @@ watch(
   </Teleport>
 
   <section>
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-5">
-        <div class="row">
-          <div class="col-12 col-sm-6">
-            <StatsPanel
-              icon="fa-duotone fa-user fa-4x"
-              :value="onlineCount"
-              :label="t('labels.admin.dashboard.quickStats.onlineUsers')"
-            />
-            <StatsPanel
-              icon="fa-duotone fa-rocket fa-4x"
-              :value="shipsCountYear"
-              :label="
-                t('labels.admin.dashboard.quickStats.newShipsInYear', {
-                  year: new Date().getFullYear(),
-                })
-              "
-            />
-            <StatsPanel
-              icon="fa-duotone fa-users-class fa-4x"
-              :value="fleetsCountTotal"
-              :label="t('labels.admin.dashboard.quickStats.totalFleets')"
-            />
-          </div>
-          <div class="col-12 col-sm-6">
-            <StatsPanel
-              icon="fa-duotone fa-users fa-4x"
-              :value="usersCountTotal"
-              :label="t('labels.admin.dashboard.quickStats.totalUsers')"
-            />
-            <StatsPanel
-              icon="fa-duotone fa-starship fa-4x"
-              :value="shipsCountTotal"
-              :label="t('labels.admin.dashboard.quickStats.totalShips')"
-            />
-          </div>
-        </div>
+    <div v-if="attentionTiles.length" class="row" data-test="attention-band">
+      <div
+        v-for="tile in attentionTiles"
+        :key="tile.key"
+        class="col-12 col-sm-6 col-lg-4 col-xl mb-4"
+      >
+        <AttentionTile
+          :count="tile.count || 0"
+          :label="t(`labels.admin.dashboard.attention.${tile.key}`)"
+          :icon="tile.icon"
+          :to="tile.to"
+          :severity="tile.severity"
+        />
       </div>
-      <div class="col-12 col-md-6 col-lg-7">
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-sm-6 col-lg-3">
+        <StatsPanel
+          icon="fa-duotone fa-user fa-4x"
+          :value="dashboard?.onlineCount || 0"
+          :label="t('labels.admin.dashboard.quickStats.onlineUsers')"
+        />
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <StatsPanel
+          icon="fa-duotone fa-chart-line fa-4x"
+          :value="dashboard?.visitsToday || 0"
+          :label="t('labels.admin.dashboard.quickStats.visitsToday')"
+          :suffix="visitsDelta"
+        />
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <StatsPanel
+          icon="fa-duotone fa-user-plus fa-4x"
+          :value="dashboard?.signupsThisWeek || 0"
+          :label="t('labels.admin.dashboard.quickStats.signupsThisWeek')"
+          :suffix="signupsDelta"
+        />
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <LinkTile
+          v-tooltip="catalogueTooltip"
+          icon="fa-duotone fa-database fa-4x"
+          :label="t('headlines.admin.dashboard.catalogue')"
+          :value="cataloguePatch"
+          :suffix="
+            dashboard?.catalogueLoadedAt
+              ? timeDistance(dashboard.catalogueLoadedAt)
+              : undefined
+          "
+          :to="{ name: 'imports' }"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-7">
         <Panel fill-height>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.visitsPerDay") }}
@@ -145,14 +245,11 @@ watch(
               :async-status="visitsPerDayStatus"
               tooltip-type="visit"
               :height="292"
-              :reload="30"
               admin
             />
           </PanelBody>
         </Panel>
       </div>
-    </div>
-    <div class="row">
       <div class="col-12 col-md-5">
         <Panel fill-height>
           <PanelHeading>
@@ -165,14 +262,16 @@ watch(
               :options="mostViewedPages"
               :async-status="mostViewedPagesStatus"
               tooltip-type="view"
-              :height="400"
-              :reload="30"
+              :height="292"
               admin
             />
           </PanelBody>
         </Panel>
       </div>
-      <div class="col-12 col-md-7">
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
         <Panel fill-height>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.visitsPerMonth") }}
@@ -184,19 +283,36 @@ watch(
               :options="visitsPerMonth"
               :async-status="visitsPerMonthStatus"
               tooltip-type="visit"
-              :height="400"
-              :reload="30"
+              :height="320"
+              admin
+            />
+          </PanelBody>
+        </Panel>
+      </div>
+      <div class="col-12 col-md-6">
+        <Panel fill-height>
+          <PanelHeading>
+            {{ t("headlines.admin.dashboard.registrationsPerMonth") }}
+          </PanelHeading>
+          <PanelBody class="dashboard-panel-body">
+            <Chart
+              name="registrations-per-month"
+              type="column"
+              :options="registrationsPerMonth"
+              :async-status="registrationsPerMonthStatus"
+              tooltip-type="user"
+              :height="320"
               admin
             />
           </PanelBody>
         </Panel>
       </div>
     </div>
+
     <div class="row">
-      <DashboardUsers />
-      <DashboardModels />
-      <DashboardManufacturers />
-      <DashboardComponents />
+      <div class="col-12">
+        <EditFeed />
+      </div>
     </div>
   </section>
 </template>

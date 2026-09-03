@@ -12,6 +12,7 @@ module Admin
             id: {type: :string, format: :uuid},
             itemId: {type: :string, format: :uuid},
             itemType: ::Admin::V1::Schemas::Enums::VersionItemTypeEnum,
+            itemName: {type: [:string, :null]},
             event: {type: :string},
             reason: {type: [:string, :null]},
             reasonDescription: {type: [:string, :null]},

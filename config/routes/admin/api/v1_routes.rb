@@ -146,10 +146,17 @@ v1_admin_api_routes = lambda do
   resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
 
   resources :versions, only: %i[index] do
+    collection do
+      get :recent
+    end
+
     member do
       put "revert" => "versions#revert"
     end
   end
+
+  # `controller:` because a singular resource pluralises to `dashboards#show`.
+  resource :dashboard, only: %i[show], controller: "dashboard"
 
   resource :stats, only: [] do
     get "quick-stats" => "stats#quick_stats"

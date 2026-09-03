@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1674,6 +1674,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_180000) do
     t.string "reason"
     t.text "reason_description"
     t.string "whodunnit"
+    t.index ["created_at"], name: "index_versions_on_created_at_where_authored", order: :desc, where: "(author_id IS NOT NULL)"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 

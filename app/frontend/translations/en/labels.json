@@ -1728,11 +1728,21 @@
         "dashboard": {
           "quickStats": {
             "onlineUsers": "Online Users",
-            "totalUsers": "Total Users",
-            "totalShips": "Total Ships",
-            "newShipsInYear": "New Ships in %{year}",
-            "totalFleets": "Total Fleets"
-          }
+            "visitsToday": "Visits Today",
+            "signupsThisWeek": "Signups This Week"
+          },
+          "attention": {
+            "unlistedModels": "Ships awaiting a decision",
+            "failedImports": "Imports failed today",
+            "stuckImports": "Imports stuck running",
+            "deadJobs": "Jobs given up on",
+            "retryJobs": "Jobs retrying",
+            "rsiRequestLogs": "Unresolved RSI failures",
+            "notifications": "Notifications needing action"
+          },
+          "catalogueUnknown": "No build recorded",
+          "systemAuthor": "System",
+          "moreFields": "+%{count} more"
         },
         "modelHardpoint": {
           "loadouts": "Loadouts"
