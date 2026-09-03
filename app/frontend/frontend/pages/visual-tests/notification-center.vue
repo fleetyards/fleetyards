@@ -10,6 +10,7 @@ import BaseText from "@/shared/components/base/Text/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import NotificationsListItem from "@/frontend/components/Notifications/ListItem/index.vue";
 import NotificationsDetail from "@/frontend/components/Notifications/Detail/index.vue";
+import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
 import { NotificationTypeEnum, type Notification } from "@/services/fyApi";
 
 /*
@@ -168,6 +169,25 @@ const record = (entry: string) => {
     <NotificationsListItem :notification="longTitle" />
   </div>
 
+  <Heading :level="HeadingLevelEnum.H2">ListItem | Waiting</Heading>
+  <p>
+    What the list puts up while its first page is on its way, beside the rows it
+    stands in for. The two are the check on each other: same surface, same
+    spacing, same height, so nothing moves when the records land.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <ul class="vt-notifications" data-test="waiting-rows">
+        <li v-for="item in listed" :key="item.id">
+          <NotificationsListItem :notification="item" />
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-lg-6">
+      <ListSkeleton :count="listed.length" />
+    </div>
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2">Detail | With a notification</Heading>
   <p>
     The reading pane. Its body is markdown, so the cases worth having are a
@@ -253,3 +273,17 @@ const record = (entry: string) => {
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+// The real page's list markup, which lives in the page rather than a component:
+// the placeholders beside it are only worth looking at against the spacing they
+// actually have to match.
+.vt-notifications {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+</style>

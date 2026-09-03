@@ -23,7 +23,9 @@ const geometry = useListGeometry();
 const count = computed(() => props.count ?? geometry?.count.value ?? 10);
 
 // Nothing until this list has been seen once, and then exactly what one of its
-// rows measured. The floor in the stylesheet only has to carry the first load.
+// rows measured - a row whose title runs to two lines is taller than the one
+// the stylesheet's arithmetic builds. Unmeasured, the placeholder stands as
+// tall as a single-line row on its own.
 const itemHeight = computed(() => {
   const remembered = geometry?.heightFor("row");
 
@@ -37,13 +39,15 @@ const itemHeight = computed(() => {
       v-for="item in count"
       :key="`list-skeleton-${item}`"
       class="list-skeleton__item"
-      :class="{ 'list-skeleton__item--measured': !!itemHeight }"
       :style="{ height: itemHeight }"
     >
-      <span class="skeleton-well list-skeleton__icon" />
+      <span class="list-skeleton__icon" />
       <span class="list-skeleton__lines">
-        <span class="skeleton-bar list-skeleton__bar--title" />
-        <span class="skeleton-bar list-skeleton__bar--meta" />
+        <span class="skeleton-bar skeleton-bar--title" />
+        <span class="list-skeleton__meta">
+          <span class="skeleton-bar skeleton-bar--type" />
+          <span class="skeleton-bar skeleton-bar--time" />
+        </span>
       </span>
     </li>
   </ul>
