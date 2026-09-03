@@ -130,10 +130,15 @@ module Api
           render json: patch_changes.to_json
         end
 
+        # Grouped on `category`, not on the `component_class` this is named for.
+        # That column is set on 333 of 8,739 components and `item_class` on 415,
+        # so either one renders as a single "Unknown" slice covering 95% of the
+        # chart. `category` is the taxonomy the catalogue actually filters on and
+        # is set on 7,335 of them.
         def components_by_class
           components_by_class = transform_for_pie_chart(
-            Component.group(:component_class).count
-                .map { |label, count| {(label.present? ? I18n.t("filter.component.class.items.#{label.downcase}") : I18n.t("labels.unknown")) => count} }
+            Component.group(:category).count
+                .map { |label, count| {(label.present? ? I18n.t("filter.component.category.items.#{label}", default: label.titleize) : I18n.t("labels.unknown")) => count} }
                 .reduce(:merge) || []
           )
 
