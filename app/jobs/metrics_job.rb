@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 class MetricsJob < ApplicationJob
+  # A `$view` event records the path it happened on, so the ship is the third
+  # segment of `/ships/<slug>/`. Sub-pages (`images/`, `videos/`) resolve to the
+  # same slug and count towards the ship, which is what interest in it looks
+  # like.
+  SHIP_VIEW_SLUG = Arel.sql("split_part(ahoy_events.properties->>'page', '/', 3)")
+
+  ROLLUP_SHIP_VIEWS = "Ship Views"
+
   def perform
     User.rollup("Registrations", interval: "month")
     User.rollup("Registrations", interval: "year")
@@ -16,11 +24,43 @@ class MetricsJob < ApplicationJob
     Vehicle.visible.wanted.where(loaner: false).rollup("Vehicle Wish", interval: "year")
     Vehicle.visible.wanted.where(loaner: false).rollup("Vehicle Wish", interval: "month")
 
+    track_ship_views
     track_ship_of_the_month
     track_api_usage
   end
 
   private
+
+  # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but
+  # a monthly total, so per-ship views are gone before anything can read them.
+  # The interval is deliberately `day`: the gem recomputes from the newest stored
+  # interval onward, so a monthly rollup would recompute a half-purged month down
+  # to a wrong number, while a day is always complete by the time it is purged.
+  def track_ship_views
+    scope = Ahoy::Event
+      .where(name: "$view")
+      .where("ahoy_events.properties->>'page' LIKE ?", "/ships/_%")
+
+    # `Ahoy.exclude_method` already refuses to record an objecting user, so this
+    # only covers rows written before they objected. `NOT IN` alone would drop
+    # every anonymous view along with them, since `NULL NOT IN (...)` is NULL.
+    blocked_user_ids = User.where(tracking: false).pluck(:id)
+    if blocked_user_ids.any?
+      scope = scope.where(
+        "ahoy_events.user_id IS NULL OR ahoy_events.user_id NOT IN (?)",
+        blocked_user_ids
+      )
+    end
+
+    scope.group(SHIP_VIEW_SLUG).rollup(
+      ROLLUP_SHIP_VIEWS,
+      interval: "day",
+      column: :time,
+      # The gem derives a dimension name from the grouped column and only accepts
+      # a bare word, which an expression is not.
+      dimension_names: ["model_slug"]
+    )
+  end
 
   # Rolls up every day still held in Redis, not just yesterday, so a failed run
   # does not drop a day of counters.
