@@ -980,3 +980,4 @@ PUT /fleets/{fleetSlug}/members/{username}/demote the response property `fleetRo
 PUT /fleets/{fleetSlug}/members/{username}/promote the response property `fleetRole` became optional for the status `200`
 GET /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`
 PUT /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`
+GET /stats/price-movers api path removed without deprecation

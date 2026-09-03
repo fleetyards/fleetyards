@@ -31,7 +31,6 @@ import {
   useShipsOfTheMonth as useShipsOfTheMonthQuery,
   useTrendingShips as useTrendingShipsQuery,
   useMostWishlisted as useMostWishlistedQuery,
-  usePriceMovers as usePriceMoversQuery,
   usePatchChanges as usePatchChangesQuery,
 } from "@/services/fyApi";
 
@@ -67,8 +66,6 @@ const { data: trendingShipsOptions, ...trendingShipsStatus } =
 
 const { data: mostWishlistedOptions, ...mostWishlistedStatus } =
   useMostWishlistedQuery();
-const { data: priceMoversOptions, ...priceMoversStatus } =
-  usePriceMoversQuery();
 const { data: patchChangesOptions, ...patchChangesStatus } =
   usePatchChangesQuery();
 
@@ -143,11 +140,6 @@ const csvCharts = computed(() => ({
     name: "most-wishlisted",
     title: t("labels.stats.mostWishlisted"),
     points: mostWishlistedOptions.value,
-  },
-  "price-movers": {
-    name: "price-movers",
-    title: t("labels.stats.priceMovers"),
-    points: priceMoversOptions.value,
   },
 
   "patch-changes": {
@@ -370,32 +362,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             :async-status="trendingShipsStatus"
             :options="trendingShipsOptions"
             tooltip-type="ship"
-            type="bar"
-          />
-        </PanelBody>
-      </Panel>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12">
-      <Panel>
-        <PanelHeading :level="HeadingLevelEnum.H2">
-          {{ t("labels.stats.priceMovers") }}
-          <template #actions>
-            <StatsCsvExportBtn
-              scope="stats"
-              :chart="csvCharts['price-movers']"
-            />
-          </template>
-        </PanelHeading>
-        <PanelBody>
-          <Chart
-            v-if="priceMoversOptions"
-            key="price-movers"
-            name="price-movers"
-            :async-status="priceMoversStatus"
-            :options="priceMoversOptions"
             type="bar"
           />
         </PanelBody>

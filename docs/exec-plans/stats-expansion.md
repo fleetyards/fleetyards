@@ -151,24 +151,46 @@ exist but never which ship they are for over time.
 
 ---
 
-## Phase 4: Price history (UEX snapshot)
+## ~~Phase 4: Price history (UEX snapshot)~~ ✅
 
-The daily UEX sync overwrites `item_prices` in place. Snapshot it before the overwrite.
+Shipped in #4704. The daily UEX sync overwrites `item_prices` in place, so the snapshot
+had to come before the next overwrite.
 
-- [ ] Migration: `commodity_price_snapshots` — `commodity_id`, `location`, `price_type`,
-      `price`, `recorded_on` (date), unique index on
-      `(commodity_id, location, price_type, recorded_on)`
-- [ ] Migration: `item_price_snapshots` — polymorphic `item`, `price_type`,
-      `min_price`, `max_price`, `avg_price`, `recorded_on`, unique index on
-      `(item_type, item_id, price_type, recorded_on)`
-- [ ] Write the snapshot from the syncers (`Uex::CommodityPriceSyncer`,
+**The framing here was wrong, and the correction matters for what gets built on top.**
+This phase was written as a trading feature — price history, movers, a chart traders read.
+Fleetyards is not where people go to look up commodity prices; UEX and its like own that,
+and a commodity chart on `/stats` sat among ship charts saying nothing to the audience
+reading them. The movers panel and its endpoint were removed again after they shipped.
+
+What the collection is actually for, and why it stays running:
+
+- **Ship prices.** `Uex::PriceSyncer` is `ITEM_TYPE = "Model"` — it prices ships, purchase
+  and rental, per terminal. That is a Fleetyards question, and it is in the same snapshot.
+- **Inventory value.** Ledger entries in `fleet_logistics` and `hangar_inventories` point
+  at `Commodity`, `Component` or `Equipment` through a polymorphic `item`. What a fleet's
+  cargo is worth, and what it was worth last month, needs exactly this history. There the
+  commodity price is the means rather than the point. See phase 11.
+
+Two corrections of fact from building it, kept because they change the design:
+
+- The second syncer prices **ships**, not components and equipment. Components and
+  equipment carry prices, but hand-entered ones no daily sync touches, so nothing about
+  them is being lost. That removed the reason for splitting the storage: both synced types
+  are recorded per terminal in one `item_price_snapshots` table.
+- Retention is 24 months for everything, not 12 for commodities and forever for aggregates.
+
+- [x] Migration: one `item_price_snapshots` table — polymorphic `item`, `location`,
+      `price_type`, `time_range`, `price`, `recorded_on`, unique index on all of them with
+      `nulls_not_distinct` (only rentals carry a `time_range`)
+- [x] Write the snapshot from the syncers (`Uex::CommodityPriceSyncer`,
       `Uex::PriceSyncer`) after a successful run, keyed on `recorded_on` so a re-run the
       same day upserts instead of duplicating
-- [ ] Retention: keep commodity-per-terminal rows for 12 months, aggregates indefinitely;
-      add a `Cleanup::PriceSnapshotsJob` to the Sidekiq schedule
-- [ ] Endpoints: price history for one commodity, and a global "biggest price movers"
-      chart
-- [ ] Frontend: history panel on the commodity detail view, movers panel on `/stats`
+- [x] Retention: 24 months for everything, via a monthly `Cleanup::PriceSnapshotsJob`
+- [x] Endpoint: price history for one commodity
+- [ ] ~~A global "biggest price movers" chart~~ — built, then removed again as off-topic
+- [ ] ~~Frontend: history panel on the commodity detail view~~ — there is no public
+      commodity page; `resources :commodities` is `only: [:index]` and the frontend has no
+      commodities route at all. The endpoint waits for one.
 
 ### Traps
 - Both loader jobs are `enabled: <%= Rails.env.production? %>`. Locally nothing populates
