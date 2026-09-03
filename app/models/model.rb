@@ -361,6 +361,11 @@ class Model < ApplicationRecord
     dependent: :destroy,
     inverse_of: :model
 
+  has_many :build_changes,
+    class_name: "ModelBuildChange",
+    dependent: :destroy,
+    inverse_of: :model
+
   has_many :images,
     as: :gallery,
     dependent: :destroy,

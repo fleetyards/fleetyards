@@ -115,6 +115,21 @@ module Api
             .average(:price)
         end
 
+        # Which ships the build we are on changed the most.
+        def patch_changes
+          changed_facts = ModelBuildChange
+            .for_build(::ScData::Source.environment, ::ScData::Source.version)
+            .group(:model_id).count
+
+          names = Model.visible.active.where(id: changed_facts.keys).pluck(:id, :name).to_h
+
+          patch_changes = transform_for_bar_chart(
+            changed_facts.filter_map { |id, changed| [names[id], changed] if names.key?(id) }.to_h
+          ).take(10)
+
+          render json: patch_changes.to_json
+        end
+
         def components_by_class
           components_by_class = transform_for_pie_chart(
             Component.group(:component_class).count

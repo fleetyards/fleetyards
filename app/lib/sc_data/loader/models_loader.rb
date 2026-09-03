@@ -106,7 +106,14 @@ module ScData
         # Dual-write. Built from `update_params` before the reason is merged in:
         # `update_reason` is an `attr_accessor` on Model for paper_trail's meta,
         # not a column, so it has nowhere to land here.
-        apply_build(model, update_params.slice(*ModelBuild::FACTS))
+        build = apply_build(model, update_params.slice(*ModelBuild::FACTS))
+
+        # Recorded now because the build it is measured against is pruned after
+        # three patches. Waiting until someone asks means there is nothing left
+        # to compare.
+        ModelBuildChange.record!(build)
+
+        build
       end
 
       # Whether this build ships a file for the model, which is what a build row
