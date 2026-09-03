@@ -211,9 +211,16 @@ defineExpose({ focus: () => select.value?.focus() });
 
 .notification-item__icon {
   flex-shrink: 0;
+  // A fixed footprint rather than the glyph's own. The icon comes from the
+  // notification type, its glyphs are not all the same width, and a column of
+  // titles that steps in and out by a few pixels a row reads as a list that
+  // cannot line itself up. 1.25em is the width a duotone glyph is drawn in, so
+  // nothing is clipped and the placeholders can reserve the same.
+  width: 1.25em;
   margin-top: 2px;
   color: $gray-lighter;
   font-size: 1.15em;
+  text-align: center;
 }
 
 .notification-item--unread .notification-item__icon {

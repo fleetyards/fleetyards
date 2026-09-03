@@ -11,6 +11,9 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import NotificationsListItem from "@/frontend/components/Notifications/ListItem/index.vue";
 import NotificationsDetail from "@/frontend/components/Notifications/Detail/index.vue";
 import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
+import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { NotificationTypeEnum, type Notification } from "@/services/fyApi";
 
 /*
@@ -120,6 +123,15 @@ const selected = computed(() =>
   listed.find((item) => item.id === selectedId.value),
 );
 
+// The bar's three states, which the checkbox does a different thing in each of.
+type BulkState = "none" | "some" | "page";
+
+const bulkState = ref<BulkState>("some");
+
+const bulkCounts: Record<BulkState, number> = { none: 0, some: 3, page: 25 };
+
+const bulkSelectedCount = computed(() => bulkCounts[bulkState.value]);
+
 const log = ref<string[]>([]);
 
 const record = (entry: string) => {
@@ -173,19 +185,114 @@ const record = (entry: string) => {
   <p>
     What the list puts up while its first page is on its way, beside the rows it
     stands in for. The two are the check on each other: same surface, same
-    spacing, same height, so nothing moves when the records land.
+    spacing, same height, so nothing moves when the records land. The rows of
+    both notification pages are selectable, and the checkbox takes the row's
+    left inset over from the title — so a placeholder without one stands the
+    icon and both lines 35px left of where they land.
   </p>
   <div class="row">
     <div class="col-12 col-lg-6">
       <ul class="vt-notifications" data-test="waiting-rows">
         <li v-for="item in listed" :key="item.id">
+          <NotificationsListItem :notification="item" selectable />
+        </li>
+      </ul>
+    </div>
+    <div class="col-12 col-lg-6">
+      <ListSkeleton :count="listed.length" selectable />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2"
+    >ListItem | Waiting | No selection</Heading
+  >
+  <p>
+    The same pair for a list whose rows carry no checkbox, which is what
+    ListSkeleton draws by default.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <ul class="vt-notifications" data-test="waiting-rows-plain">
+        <li v-for="item in listed.slice(0, 2)" :key="item.id">
           <NotificationsListItem :notification="item" />
         </li>
       </ul>
     </div>
     <div class="col-12 col-lg-6">
-      <ListSkeleton :count="listed.length" />
+      <ListSkeleton :count="2" />
     </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">BulkSelectionBar</Heading>
+  <p>
+    The header over the list. It keeps its height while nothing is ticked, so
+    ticking a row does not push the list out from under the pointer — the count
+    and the actions are hidden rather than absent. The checkbox does a different
+    thing in each of the three states, and its tooltip says which: an empty box
+    ticks the page, a full one unticks it, and a minus box clears the rows the
+    reader picked one by one rather than growing them to the whole page.
+  </p>
+  <div class="vt-row">
+    <Btn
+      v-for="state in ['none', 'some', 'page'] as BulkState[]"
+      :key="state"
+      :active="bulkState === state"
+      :data-test="`bulk-state-${state}`"
+      @click="bulkState = state"
+    >
+      {{ state }}
+    </Btn>
+  </div>
+  <div class="vt-stack" data-test="bulk-bars">
+    <BulkSelectionBar
+      :selected-count="bulkSelectedCount"
+      :matching-count="30"
+      :page-selected="bulkState === 'page'"
+      :page-partially-selected="bulkState === 'some'"
+      :can-select-all-matching="bulkState === 'page'"
+      :all-matching-selected="false"
+      @toggle-page="bulkState = $event ? 'page' : 'none'"
+      @select-all-matching="record('select-all-matching')"
+      @clear="bulkState = 'none'"
+    >
+      <Btn><i class="fa-duotone fa-envelope-open" /></Btn>
+      <Btn><i class="fa-duotone fa-envelope-dot" /></Btn>
+      <Btn><i class="fa-duotone fa-box-archive" /></Btn>
+      <Btn :tone="BtnTonesEnum.DANGER"><i class="fa-duotone fa-trash" /></Btn>
+    </BulkSelectionBar>
+
+    <!-- A phone's column, where the bar wraps: the checkbox stays on the
+         count's line instead of centring itself against a two-line bar. -->
+    <div class="vt-narrow" data-test="bulk-bar-narrow">
+      <BulkSelectionBar
+        :selected-count="bulkSelectedCount"
+        :matching-count="30"
+        :page-selected="bulkState === 'page'"
+        :page-partially-selected="bulkState === 'some'"
+        :can-select-all-matching="false"
+        :all-matching-selected="false"
+        @toggle-page="bulkState = $event ? 'page' : 'none'"
+        @clear="bulkState = 'none'"
+      >
+        <Btn><i class="fa-duotone fa-envelope-open" /></Btn>
+        <Btn><i class="fa-duotone fa-envelope-dot" /></Btn>
+        <Btn><i class="fa-duotone fa-box-archive" /></Btn>
+        <Btn :tone="BtnTonesEnum.DANGER"><i class="fa-duotone fa-trash" /></Btn>
+      </BulkSelectionBar>
+    </div>
+
+    <!-- Nothing to tick: the list came back empty, and the box says so rather
+         than offering an action that would do nothing. -->
+    <BulkSelectionBar
+      data-test="bulk-bar-disabled"
+      :selected-count="0"
+      :matching-count="0"
+      :page-selected="false"
+      :page-partially-selected="false"
+      :can-select-all-matching="false"
+      :all-matching-selected="false"
+      disabled
+    />
   </div>
 
   <Heading :level="HeadingLevelEnum.H2">Detail | With a notification</Heading>
@@ -285,5 +392,12 @@ const record = (entry: string) => {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+// A phone's column, held at that width on a desktop: the bar wraps here, and
+// the wrap is the state worth looking at.
+.vt-narrow {
+  width: 320px;
+  outline: 1px dashed rgba(#fff, 0.15);
 }
 </style>

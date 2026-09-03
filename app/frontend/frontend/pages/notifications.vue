@@ -11,6 +11,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import ListSkeleton from "@/shared/components/ListSkeleton/index.vue";
 import { useReportListGeometry } from "@/shared/composables/useListGeometry";
 import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
@@ -134,6 +135,10 @@ const list = ref<ComponentPublicInstance>();
 // is as tall as its own two lines or the controls beside them, whichever wins,
 // and only the rendered row knows which.
 useReportListGeometry("row", list, {
+  // Named rather than injected: the geometry is provided by the FilteredList
+  // this page renders, and inject only looks upwards - so the measurements of
+  // a list drawn in that list's slot have to be filed under its name.
+  name: "notifications",
   ready: () => !!records.value.length,
   pick: (host) => host.firstElementChild,
 });
@@ -325,13 +330,21 @@ const destroySelected = () =>
 <template>
   <Heading hero>
     {{ t("headlines.notifications.index") }}
-    <HeadingSmall v-if="notifications">
-      {{
-        t("headlines.pagination.count", {
-          current: notifications?.items.length,
-          total: notifications?.meta.pagination?.totalCount,
-        })
-      }}
+    <!-- The line is reserved whether or not the count is known yet: rendered
+         only once the answer is in, the heading grows by its height the moment
+         the first page lands and takes the whole page down with it. -->
+    <HeadingSmall>
+      <template v-if="notifications">
+        {{
+          t("headlines.pagination.count", {
+            current: notifications?.items.length,
+            total: notifications?.meta.pagination?.totalCount,
+          })
+        }}
+      </template>
+      <!-- A non-breaking space, so the line is exactly as tall as the one it
+           stands in for. -->
+      <template v-else>&nbsp;</template>
     </HeadingSmall>
   </Heading>
 
@@ -367,11 +380,15 @@ const destroySelected = () =>
     </Btn>
   </Teleport>
 
+  <!-- `hide-empty`, because the page draws that state itself: the list's own
+       box stands in place of the whole default slot, which on this page is the
+       selection bar, the list and the reading pane together. -->
   <FilteredList
     name="notifications"
     :records="records"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
+    hide-empty
   >
     <template #filter>
       <FilterForm />
@@ -417,13 +434,37 @@ const destroySelected = () =>
         }}
       </Btn>
     </template>
-    <template #skeleton>
-      <ListSkeleton />
-    </template>
-
-    <template #default="{ records: shown }">
+    <!-- The frame the records land in, not only the rows in it. From the
+         two-pane breakpoint up the reading pane takes the greater part of the
+         row, so a full-width column of placeholders would reflow to 38% of its
+         width the moment the first page arrived - and the selection bar above
+         them would push the whole list down by its height. Both are the real
+         ones in the state they are about to be in: nothing selected, nothing
+         open. The rows carry a checkbox for the same reason, since it takes the
+         row's left inset over from the title. -->
+    <template #skeleton="{ count }">
       <BulkSelectionBar
         class="notifications__bulk"
+        :selected-count="0"
+        :matching-count="0"
+        :page-selected="false"
+        :page-partially-selected="false"
+        :can-select-all-matching="false"
+        :all-matching-selected="false"
+        disabled
+      />
+
+      <div class="notifications">
+        <ListSkeleton class="notifications__list" :count="count" selectable />
+
+        <Detail class="notifications__detail" />
+      </div>
+    </template>
+
+    <template #default="{ records: shown, emptyVisible }">
+      <BulkSelectionBar
+        class="notifications__bulk"
+        :disabled="!shown.length"
         :class="{ 'notifications__bulk--hidden': !!selected }"
         :selected-count="selectedCount"
         :matching-count="matchingCount"
@@ -490,6 +531,7 @@ const destroySelected = () =>
         :class="{ 'notifications--reading': !!selected }"
       >
         <TransitionGroup
+          v-if="!emptyVisible"
           tag="ul"
           name="fade-list"
           ref="list"
@@ -518,6 +560,14 @@ const destroySelected = () =>
             />
           </li>
         </TransitionGroup>
+
+        <!-- In the list's own column rather than in place of the page: an
+             empty inbox is still a two-pane page, and putting the box where
+             the list itself sits leaves the selection bar and the reading pane
+             where they were. -->
+        <div v-else class="notifications__list">
+          <Empty variant="box" />
+        </div>
 
         <Detail
           class="notifications__detail"
