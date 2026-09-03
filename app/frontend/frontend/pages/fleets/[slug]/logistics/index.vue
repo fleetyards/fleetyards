@@ -203,6 +203,10 @@ const crumbs = computed<Crumb[]>(() => [
     name="inventories"
   />
 
+  <!-- `placeholders`, so both views draw their own wait. The two tables
+       take a loading flag already and hold themselves open with a header and
+       a page of placeholder rows; the log view was the one that never got
+       the chance, since only the stock view turns the frame's spinner off. -->
   <FilteredList
     v-if="inventoryList.length"
     name="all-inventory-items"
@@ -210,6 +214,7 @@ const crumbs = computed<Crumb[]>(() => [
     :async-status="logAsyncStatus"
     :hide-loading="activeTab === 'stock'"
     :hide-empty="true"
+    placeholders
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
