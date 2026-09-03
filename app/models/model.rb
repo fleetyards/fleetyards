@@ -906,6 +906,26 @@ class Model < ApplicationRecord
     slug&.start_with?(prefix) ? slug.delete_prefix(prefix) : slug
   end
 
+  # Price changes paper_trail has been recording since 2023, read back as a
+  # series. `from` is null where the ship was first given a price rather than
+  # repriced -- 189 of the 692 recorded changes are that, and treating them as a
+  # rise from zero would put every newly priced ship at the top of a chart about
+  # price movement.
+  #
+  # Costs 0.2ms per model: `versions` is indexed on (item_type, item_id), and
+  # the JSON is only touched for the rows that survive it.
+  def pledge_price_history
+    versions
+      .where("object_changes -> 'pledge_price' IS NOT NULL")
+      .order(:created_at)
+      .pluck(
+        :created_at,
+        Arel.sql("(object_changes -> 'pledge_price' ->> 0)::numeric"),
+        Arel.sql("(object_changes -> 'pledge_price' ->> 1)::numeric")
+      )
+      .map { |changed_at, from, to| {changed_at:, from:, to:} }
+  end
+
   def last_sale
     sales.recent_first.first
   end

@@ -21,6 +21,7 @@ resources :models, param: :slug, only: %i[index show] do
     get :upgrades
     get :paints
     get :sales
+    get :price_history, path: "price-history"
     get :wishlist_history, path: "wishlist-history"
     get :changes
     get :store_image, path: "store-image"
