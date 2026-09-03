@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1150,6 +1150,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_120000) do
     t.index ["model_id"], name: "index_model_positions_on_model_id"
   end
 
+  create_table "model_sales", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "ended_at"
+    t.uuid "model_id", null: false
+    t.datetime "started_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["model_id", "started_at"], name: "index_model_sales_on_model_id_and_started_at", unique: true
+    t.index ["model_id"], name: "index_model_sales_on_model_id"
+    t.index ["model_id"], name: "index_model_sales_on_model_id_ongoing", unique: true, where: "(ended_at IS NULL)"
+    t.index ["started_at"], name: "index_model_sales_on_started_at"
+  end
+
   create_table "model_snub_crafts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "model_id", null: false
@@ -1697,6 +1709,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_120000) do
   add_foreign_key "model_paints", "components", on_delete: :nullify
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"
+  add_foreign_key "model_sales", "models", on_delete: :cascade
   add_foreign_key "notification_preferences", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

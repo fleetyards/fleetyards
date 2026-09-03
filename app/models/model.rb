@@ -356,6 +356,11 @@ class Model < ApplicationRecord
     dependent: :destroy,
     inverse_of: :model
 
+  has_many :sales,
+    class_name: "ModelSale",
+    dependent: :destroy,
+    inverse_of: :model
+
   has_many :images,
     as: :gallery,
     dependent: :destroy,
@@ -452,6 +457,7 @@ class Model < ApplicationRecord
   before_create :set_last_updated_at
 
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
+  after_save :record_sale, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification, if: :saved_change_to_rsi_id?
 
@@ -895,6 +901,25 @@ class Model < ApplicationRecord
     slug&.start_with?(prefix) ? slug.delete_prefix(prefix) : slug
   end
 
+  def last_sale
+    sales.recent_first.first
+  end
+
+  def sales_count
+    sales.count
+  end
+
+  # Needs two sales to have a gap at all. Measured start to start, so a long
+  # sale does not read as a short wait for the next one.
+  def average_days_between_sales
+    started_ats = sales.order(:started_at).pluck(:started_at)
+    return if started_ats.size < 2
+
+    gaps = started_ats.each_cons(2).map { |before, after| (after - before) / 1.day }
+
+    (gaps.sum / gaps.size).round(1)
+  end
+
   private def broadcast_update
     ActionCable.server.broadcast("models", to_jbuilder_hash)
   end
@@ -905,6 +930,17 @@ class Model < ApplicationRecord
     Notifications::NewModelJob.perform_async(id)
 
     ActionCable.server.broadcast("new_model", to_jbuilder_hash)
+  end
+
+  # The flag alone says only whether a ship is on sale right now. Turning each
+  # flip into a row is what makes "how often" and "how long ago" answerable --
+  # and it only works forwards, since nothing recorded the flips before this.
+  private def record_sale
+    if on_sale?
+      sales.create!(started_at: Time.current) unless sales.ongoing.exists?
+    else
+      sales.ongoing.update_all(ended_at: Time.current, updated_at: Time.current)
+    end
   end
 
   private def send_on_sale_notification
