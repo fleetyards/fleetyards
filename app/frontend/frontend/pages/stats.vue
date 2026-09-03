@@ -398,7 +398,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="trendingShipsOptions"
             key="trending-ships"
             name="trending-ships"
             :async-status="trendingShipsStatus"
@@ -422,7 +421,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="patchChangesOptions"
             key="patch-changes"
             name="patch-changes"
             :async-status="patchChangesStatus"
@@ -449,7 +447,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="wishlistByModelOptions"
             key="wishlist-by-model"
             name="wishlist-by-model"
             :async-status="wishlistByModelStatus"
@@ -473,7 +470,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="mostWishlistedOptions"
             key="most-wishlisted"
             name="most-wishlisted"
             :async-status="mostWishlistedStatus"
@@ -485,7 +481,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
       </Panel>
     </div>
   </div>
-
 
   <div class="row">
     <div class="col-12 col-md-6">
@@ -501,7 +496,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="wishToOwnRatioOptions"
             key="wish-to-own-ratio"
             name="wish-to-own-ratio"
             :async-status="wishToOwnRatioStatus"
@@ -522,7 +516,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="topPaintsOptions"
             key="top-paints"
             name="top-paints"
             :async-status="topPaintsStatus"
@@ -548,7 +541,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="vehiclesByModelOptions"
             key="vehicles-by-model"
             name="vehicles-by-model"
             :async-status="vehiclesByModelStatus"
@@ -572,7 +564,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="shipsOfTheMonthOptions"
             key="ships-of-the-month"
             name="ships-of-the-month"
             :options="shipsOfTheMonthOptions"
