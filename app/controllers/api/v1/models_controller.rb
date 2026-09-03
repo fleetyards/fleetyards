@@ -4,6 +4,7 @@ module Api
   module V1
     class ModelsController < ::Api::BaseController
       include ViteRails::TagHelpers
+      include ModelCargoFiltersConcern
 
       skip_verify_authorized
 
@@ -354,15 +355,7 @@ module Api
 
         scope = scope.with_dock if model_query_params.delete("with_dock")
         scope = scope.where(cargo: 0.1..) if model_query_params.delete("with_cargo")
-        if model_query_params.delete("with_cargo_grids")
-          scope = scope.where(
-            id: Model.joins(:cargo_holds_db).select(:id)
-          ).or(
-            scope.where(
-              id: Model.joins(:module_hardpoints).select(:id)
-            )
-          ).distinct
-        end
+        scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
         scope = scope.where(id: current_resource_owner.models.select(:id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
         scope = container_fit(scope) if container_fit_params.present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
@@ -371,19 +364,6 @@ module Api
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         scope.ransack(model_query_params)
-      end
-
-      private def container_fit_params
-        @container_fit_params ||= params.permit(container_fit: {})[:container_fit]
-      end
-
-      private def container_fit(scope)
-        return scope if container_fit_params.blank?
-
-        container_set = container_fit_params.to_h.transform_keys(&:to_i).transform_values(&:to_i).select { |_k, v| v > 0 }
-        return scope if container_set.empty?
-
-        scope.where(id: ScData::CargoFinderSql.find_fitting_models(container_set).select(:id))
       end
 
       private def find_model_by_slug!(*includes, joins: nil)

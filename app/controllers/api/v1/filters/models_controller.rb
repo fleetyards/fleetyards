@@ -4,6 +4,8 @@ module Api
   module V1
     module Filters
       class ModelsController < ::Api::PublicBaseController
+        include ModelCargoFiltersConcern
+
         skip_verify_authorized
 
         def production_states
@@ -56,7 +58,9 @@ module Api
           model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
           scope = Model.visible.active.includes(:manufacturer)
+          scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
           scope = scope.where(id: current_resource_owner.models.select(:id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
+          scope = container_fit(scope) if container_fit_params.present?
 
           @q = scope.ransack(model_query_params)
 
@@ -84,7 +88,7 @@ module Api
         private def model_query_params
           @model_query_params ||= params.permit(
             q: [
-              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :s, :sorts,
+              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :with_cargo_grids, :s, :sorts,
               name_in: [], slug_in: [], id_in: [], id_not_in: [],
               manufacturer_in: [], classification_in: [], focus_in: [],
               size_in: [], production_status_in: []
