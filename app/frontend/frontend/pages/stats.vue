@@ -30,6 +30,7 @@ import {
   useVehiclesPerMonth as useVehiclesPerMonthQuery,
   useShipsOfTheMonth as useShipsOfTheMonthQuery,
   useTrendingShips as useTrendingShipsQuery,
+  usePledgePriceChanges as usePledgePriceChangesQuery,
   useMostWishlisted as useMostWishlistedQuery,
   useWishlistByModel as useWishlistByModelQuery,
   useWishToOwnRatio as useWishToOwnRatioQuery,
@@ -66,6 +67,9 @@ const { data: shipsOfTheMonthOptions, ...shipsOfTheMonthStatus } =
 
 const { data: trendingShipsOptions, ...trendingShipsStatus } =
   useTrendingShipsQuery();
+
+const { data: pledgePriceChangesOptions, ...pledgePriceChangesStatus } =
+  usePledgePriceChangesQuery();
 
 const { data: mostWishlistedOptions, ...mostWishlistedStatus } =
   useMostWishlistedQuery();
@@ -176,6 +180,11 @@ const csvCharts = computed(() => ({
     name: "patch-changes",
     title: t("labels.stats.patchChanges"),
     points: patchChangesOptions.value,
+  },
+  "pledge-price-changes": {
+    name: "pledge-price-changes",
+    title: t("labels.stats.pledgePriceChanges"),
+    points: pledgePriceChangesOptions.value,
   },
   "vehicles-by-model": {
     name: "vehicles-by-model",
@@ -520,6 +529,33 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             name="top-paints"
             :async-status="topPaintsStatus"
             :options="topPaintsOptions"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.pledgePriceChanges") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['pledge-price-changes']"
+            />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="pledgePriceChangesOptions"
+            key="pledge-price-changes"
+            name="pledge-price-changes"
+            :async-status="pledgePriceChangesStatus"
+            :options="pledgePriceChangesOptions"
+            tooltip-type="ship"
             type="bar"
           />
         </PanelBody>

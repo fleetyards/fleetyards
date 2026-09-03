@@ -173,6 +173,51 @@ module Api
           "#{model_name} - #{paint.name}"
         end
 
+        # How far back the pledge price chart reaches. Prices move on concept
+        # sales and flyable releases, so a year is roughly one such cycle.
+        PLEDGE_PRICE_WINDOW = 12.months
+
+        # Net move per ship over the window: the oldest change's starting price
+        # against the newest one's ending price.
+        #
+        # Only rows carrying both sides count. A ship first given a price, or one
+        # whose price was taken away, has not moved -- and reading either as a
+        # move from or to zero would put it straight to the top of the chart.
+        def pledge_price_changes
+          changes = ::PaperTrail::Version
+            .where(item_type: "Model")
+            .where(created_at: PLEDGE_PRICE_WINDOW.ago..)
+            .where("object_changes -> 'pledge_price' ->> 0 IS NOT NULL")
+            .where("object_changes -> 'pledge_price' ->> 1 IS NOT NULL")
+            .order(:created_at)
+            .pluck(
+              :item_id,
+              Arel.sql("(object_changes -> 'pledge_price' ->> 0)::numeric"),
+              Arel.sql("(object_changes -> 'pledge_price' ->> 1)::numeric")
+            )
+
+          net = changes.each_with_object({}) do |(model_id, from, to), moves|
+            moves[model_id] ||= {from:, to:}
+            moves[model_id][:to] = to
+          end
+
+          names = Model.visible.active.where(id: net.keys).pluck(:id, :name).to_h
+
+          pledge_price_changes = net.filter_map do |model_id, move|
+            next unless names.key?(model_id)
+
+            change = (move[:to] - move[:from]).round
+            next if change.zero?
+
+            {label: names[model_id], count: change, tooltip: names[model_id]}
+          end
+
+          # By size of the move, so the steepest cut ranks beside the steepest
+          # rise rather than falling off the end. Both happen: 220 rises against
+          # 161 cuts in what is recorded.
+          render json: pledge_price_changes.sort_by { |point| -point[:count].abs }.take(10).to_json
+        end
+
         # Grouped on `category`, not on the `component_class` this is named for.
         # That column is set on 333 of 8,739 components and `item_class` on 415,
         # so either one renders as a single "Unknown" slice covering 95% of the

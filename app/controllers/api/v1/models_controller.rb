@@ -316,6 +316,17 @@ module Api
         @changes = model.build_changes.newest_first
       end
 
+      # Every recorded pledge price change, oldest first. `from` is null where the
+      # ship was first given a price and `to` is null where one was taken away;
+      # neither is a price movement, and calling them one would be wrong in
+      # opposite directions.
+      def price_history
+        model = find_model_by_slug!
+        return if performed?
+
+        @price_history = model.pledge_price_history
+      end
+
       def store_image
         model = find_model_by_slug(Model.visible.active)
         return if performed?
