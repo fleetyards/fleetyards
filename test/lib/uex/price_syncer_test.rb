@@ -295,5 +295,26 @@ module Uex
     private def sync(overrides = {})
       Uex::PriceSyncer.new(client: uex_client_stub(overrides)).run
     end
+
+    test "#run records the day's ship prices as history" do
+      sync
+
+      held = ItemPrice.where(item_type: "Model")
+      recorded = ItemPriceSnapshot.where(item_type: "Model", recorded_on: Date.current)
+
+      assert_operator held.count, :>, 0
+      assert_equal held.count, recorded.count
+    end
+
+    # Rentals are the only rows carrying a time_range, and the unique index has
+    # to keep them apart from the sale at the same terminal.
+    test "#run records a rental beside the sale at the same terminal" do
+      sync
+
+      rentals = ItemPriceSnapshot.where(item_type: "Model", price_type: "rental")
+
+      assert_operator rentals.count, :>, 0
+      assert_equal ["1-day"], rentals.pluck(:time_range).uniq
+    end
   end
 end

@@ -131,6 +131,8 @@ module Uex
     private def persist(desired, live:, unmatched:)
       counts = persist_prices(desired, live:)
 
+      record_price_history
+
       Result.new(
         created: counts.created,
         updated: counts.updated,

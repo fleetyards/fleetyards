@@ -78,6 +78,43 @@ module Api
           render json: most_wishlisted.to_json
         end
 
+        # How far back a price movement is measured over. A week is long enough
+        # to be a trend rather than a terminal restocking.
+        PRICE_MOVER_WINDOW = 7.days
+
+        def price_movers
+          latest_day = ItemPriceSnapshot.where(item_type: "Commodity").maximum(:recorded_on)
+          earlier_day = latest_day && ItemPriceSnapshot
+            .where(item_type: "Commodity", recorded_on: ..(latest_day - PRICE_MOVER_WINDOW))
+            .maximum(:recorded_on)
+
+          # Nothing to compare against until the second week of collecting.
+          return render(json: [].to_json) if earlier_day.blank?
+
+          now = average_sold_prices(latest_day)
+          before = average_sold_prices(earlier_day)
+
+          names = Commodity.where(id: now.keys & before.keys).pluck(:id, :name).to_h
+
+          price_movers = names.filter_map do |id, name|
+            change = (now[id] - before[id]).round
+            next if change.zero?
+
+            {label: name, count: change, tooltip: name}
+          end
+
+          # By size of the move rather than by value, so the steepest drop ranks
+          # beside the steepest rise instead of falling off the end.
+          render json: price_movers.sort_by { |mover| -mover[:count].abs }.take(10).to_json
+        end
+
+        private def average_sold_prices(day)
+          ItemPriceSnapshot
+            .where(item_type: "Commodity", recorded_on: day, price_type: "sell")
+            .group(:item_id)
+            .average(:price)
+        end
+
         def components_by_class
           components_by_class = transform_for_pie_chart(
             Component.group(:component_class).count

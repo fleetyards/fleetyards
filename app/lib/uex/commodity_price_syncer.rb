@@ -33,6 +33,8 @@ module Uex
       desired = collect(prices, commodities:, terminals:, unknown:)
       counts = persist_prices(desired, live: terminals.values.map { |terminal| terminal["name"].to_s.strip }.to_set)
 
+      record_price_history
+
       Result.new(
         created: counts.created,
         updated: counts.updated,

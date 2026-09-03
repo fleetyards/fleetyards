@@ -58,6 +58,48 @@ module Uex
       counts
     end
 
+    # Copies what we now hold into the day's history.
+    #
+    # Deliberately outside `persist_prices` and its transaction: a removal pass
+    # that raises must not take the day's history down with it, and the rows are
+    # worth keeping either way. Reading back from `ItemPrice` rather than from
+    # the desired set is the same argument -- a terminal whose removal was held
+    # back is still a price we serve, so it belongs in the history.
+    #
+    # Delete-then-insert rather than an upsert: a second run on the same day is
+    # a correction, and replacing the day wholesale also drops rows for prices
+    # that have since gone away.
+    private def record_price_history(recorded_on: Date.current)
+      now = Time.current
+
+      rows = ItemPrice.where(item_type: self.class::ITEM_TYPE).map do |item_price|
+        {
+          item_type: item_price.item_type,
+          item_id: item_price.item_id,
+          location: item_price.location,
+          price_type: ItemPrice.price_types.fetch(item_price.price_type),
+          time_range: item_price.time_range && ItemPrice.time_ranges.fetch(item_price.time_range),
+          price: item_price.price,
+          recorded_on: recorded_on,
+          created_at: now,
+          updated_at: now
+        }
+      end
+
+      ItemPriceSnapshot.transaction do
+        ItemPriceSnapshot.where(item_type: self.class::ITEM_TYPE, recorded_on:).delete_all
+        ItemPriceSnapshot.insert_all(rows) if rows.any?
+      end
+
+      # The syncers only run in production, where nobody is watching the return
+      # value. A day that recorded nothing has to be visible in the log.
+      Rails.logger.info(
+        "[#{self.class.name}] recorded #{rows.size} #{self.class::ITEM_TYPE.downcase} price snapshots for #{recorded_on}"
+      )
+
+      rows.size
+    end
+
     # Decided per terminal, because that is the only granularity at which the
     # question is answerable. A terminal gone from the terminals feed has closed,
     # so its rows go. Otherwise the test is whether it reported at anything like

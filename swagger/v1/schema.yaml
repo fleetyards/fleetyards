@@ -40,6 +40,34 @@ paths:
                 "$ref": "#/components/schemas/Commodities"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/commodities/{slug}/price-history":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Commodity slug
+      required: true
+    get:
+      summary: Commodity Price History
+      tags:
+      - Commodities
+      operationId: commodityPriceHistory
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CommodityPricePointsList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/compare/share":
     post:
       summary: Create a short share URL for a comparison
@@ -9553,6 +9581,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+  "/stats/price-movers":
+    get:
+      summary: Stats Price Movers
+      tags:
+      - Stats
+      operationId: priceMovers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/quick-stats":
     get:
       summary: Stats
@@ -11355,6 +11396,45 @@ components:
       - createdAt
       - updatedAt
       title: Commodity
+    CommodityPricePoint:
+      type: object
+      properties:
+        recordedOn:
+          type: string
+          format: date
+        soldLowest:
+          type:
+          - number
+          - 'null'
+        soldAverage:
+          type:
+          - number
+          - 'null'
+        soldHighest:
+          type:
+          - number
+          - 'null'
+        boughtLowest:
+          type:
+          - number
+          - 'null'
+        boughtAverage:
+          type:
+          - number
+          - 'null'
+        boughtHighest:
+          type:
+          - number
+          - 'null'
+      required:
+      - recordedOn
+      additionalProperties: false
+      title: CommodityPricePoint
+    CommodityPricePointsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/CommodityPricePoint"
+      title: CommodityPricePointsList
     CommodityQuery:
       type: object
       properties:
