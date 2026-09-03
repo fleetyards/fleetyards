@@ -3,9 +3,12 @@
     "modelPicker": {
       "hangarTitle": "Ajouter des vaisseaux à votre hangar",
       "compareTitle": "Sélectionner des vaisseaux à comparer",
+      "cargoGridsTitle": "Sélectionner des vaisseaux pour la grille de cargaison",
       "wishlistTitle": "Ajouter des vaisseaux à votre liste de souhaits",
       "labels": {
         "search": "Rechercher par nom ou constructeur",
+        "hangarOnly": "Uniquement mes vaisseaux",
+        "containerFit": "Cargaison à transporter",
         "results": "%{count} vaisseaux",
         "selected": "%{count} sélectionnés"
       },
@@ -18,7 +21,8 @@
       "badges": {
         "inHangar": "Dans le hangar",
         "onWishlist": "Dans la liste de souhaits",
-        "comparing": "En comparaison"
+        "comparing": "En comparaison",
+        "onCargoGrid": "Sur la grille"
       }
     }
   }

@@ -3,9 +3,12 @@
     "modelPicker": {
       "hangarTitle": "Schiffe zum Hangar hinzufügen",
       "compareTitle": "Schiffe zum Vergleichen auswählen",
+      "cargoGridsTitle": "Schiffe für das Frachtraster auswählen",
       "wishlistTitle": "Schiffe zur Wunschliste hinzufügen",
       "labels": {
         "search": "Nach Name oder Hersteller suchen",
+        "hangarOnly": "Nur meine Schiffe",
+        "containerFit": "Zu transportierende Ladung",
         "results": "%{count} Schiffe",
         "selected": "%{count} ausgewählt"
       },
@@ -18,7 +21,8 @@
       "badges": {
         "inHangar": "Im Hangar",
         "onWishlist": "Auf der Wunschliste",
-        "comparing": "Im Vergleich"
+        "comparing": "Im Vergleich",
+        "onCargoGrid": "Im Raster"
       }
     }
   }

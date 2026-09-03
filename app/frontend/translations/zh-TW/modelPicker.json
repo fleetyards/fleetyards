@@ -3,9 +3,12 @@
     "modelPicker": {
       "hangarTitle": "將艦船加入你的機庫",
       "compareTitle": "選擇要比較的飛船",
+      "cargoGridsTitle": "選擇用於貨物網格的飛船",
       "wishlistTitle": "將艦船加入你的願望清單",
       "labels": {
         "search": "依名稱或製造商搜尋",
+        "hangarOnly": "僅我的飛船",
+        "containerFit": "要運載的貨物",
         "results": "%{count} 艘艦船",
         "selected": "已選擇 %{count} 艘"
       },
@@ -18,7 +21,8 @@
       "badges": {
         "inHangar": "已在機庫",
         "onWishlist": "已在願望清單",
-        "comparing": "比較中"
+        "comparing": "比較中",
+        "onCargoGrid": "已在網格"
       }
     }
   }

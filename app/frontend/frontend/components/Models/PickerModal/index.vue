@@ -9,6 +9,10 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import {
+  InputAlignmentsEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
@@ -20,10 +24,13 @@ import {
 } from "@/frontend/components/Models/PickerModal/types";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
+  ContainerSizeEnum,
+  type ContainerFitQuery,
   type ModelOption,
   type ModelQuery,
   useModelOptions,
 } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
 import { keepPreviousData } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -45,6 +52,19 @@ type Props = {
   // Ships the caller's list already holds: shown, named by `takenNote`, unpickable.
   takenSlugs?: string[];
   takenNote?: string;
+  // What the caller's list can display at all - a cargo grid has nothing to draw
+  // for a ship without one. Narrows every query the picker makes, and the filters
+  // below only ever narrow it further.
+  query?: ModelQuery;
+  // Offers a load to carry as a filter: only ships every counted container fits
+  // into are shown.
+  containerFilter?: boolean;
+  // The load the filter starts on. Editing it here only narrows or widens what
+  // the picker offers - the list you opened it from keeps the load it had.
+  containerFit?: ContainerFitQuery;
+  // Offers the hangar as a filter. Signed-out visitors have no hangar to filter
+  // by, so they never see it.
+  hangarFilter?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -55,6 +75,10 @@ const props = withDefaults(defineProps<Props>(), {
   highlight: undefined,
   takenSlugs: () => [],
   takenNote: undefined,
+  query: undefined,
+  containerFilter: false,
+  containerFit: undefined,
+  hangarFilter: false,
 });
 
 const emit = defineEmits<{
@@ -65,17 +89,52 @@ const PER_PAGE = "24";
 
 const { t } = useI18n();
 
+const sessionStore = useSessionStore();
+
+const hangarOffered = computed(
+  () => props.hangarFilter && sessionStore.isAuthenticated,
+);
+
 const search = ref<string>("");
 const searchTerm = ref<string>("");
 const manufacturerIn = ref<string[]>([]);
 const classificationIn = ref<string[]>([]);
+const hangarOnly = ref(false);
+
+// The sizes the API knows, as the literal keys ContainerFitQuery declares - so
+// the counts below index it without a cast, and a size added on the Ruby side
+// reaches this filter without an edit.
+const CONTAINER_SIZES = Object.values(ContainerSizeEnum);
+
+// Left sparse rather than zero-filled: an empty counter reads as "none asked
+// for", where a row of zeroes hides which sizes actually carry a load.
+const containerCounts = ref<ContainerFitQuery>({ ...props.containerFit });
+
+const containerCount = (size: `${ContainerSizeEnum}`) =>
+  Number(containerCounts.value[size]) || 0;
+
+const containerFit = computed<ContainerFitQuery | undefined>(() => {
+  const fit: ContainerFitQuery = {};
+
+  for (const size of CONTAINER_SIZES) {
+    const quantity = containerCount(size);
+
+    if (quantity > 0) {
+      fit[size] = quantity;
+    }
+  }
+
+  // Undefined rather than an empty map: the endpoint reads any present
+  // containerFit as a load to check against, and an empty one fits nothing.
+  return Object.keys(fit).length ? fit : undefined;
+});
 
 const page = ref(1);
 const records = ref<ModelOption[]>([]);
 const selection = ref<ModelPickerSelection[]>([]);
 
 const queryParams = computed(() => {
-  const q: ModelQuery = {};
+  const q: ModelQuery = { ...props.query };
 
   // searchCont, not nameCont: it is aliased to name-or-slug-or-manufacturer, so
   // typing "anvil" finds the manufacturer's ships rather than nothing.
@@ -91,10 +150,15 @@ const queryParams = computed(() => {
     q.classificationIn = classificationIn.value;
   }
 
+  if (hangarOnly.value) {
+    q.inHangar = true;
+  }
+
   return {
     page: String(page.value),
     perPage: PER_PAGE,
     q,
+    containerFit: containerFit.value,
   };
 });
 
@@ -161,7 +225,7 @@ watch(search, (value) => {
   applySearch(value);
 });
 
-watch([manufacturerIn, classificationIn], () => {
+watch([manufacturerIn, classificationIn, hangarOnly, containerFit], () => {
   page.value = 1;
 });
 
@@ -169,7 +233,9 @@ const filtersActive = computed(
   () =>
     !!searchTerm.value ||
     !!manufacturerIn.value.length ||
-    !!classificationIn.value.length,
+    !!classificationIn.value.length ||
+    hangarOnly.value ||
+    !!containerFit.value,
 );
 
 const resetFilters = () => {
@@ -177,6 +243,8 @@ const resetFilters = () => {
   searchTerm.value = "";
   manufacturerIn.value = [];
   classificationIn.value = [];
+  hangarOnly.value = false;
+  containerCounts.value = {};
   page.value = 1;
 };
 
@@ -320,6 +388,37 @@ const save = () => {
             class="model-picker__filter"
             name="model-picker-classification"
           />
+
+          <Btn
+            v-if="hangarOffered"
+            class="model-picker__hangar"
+            :active="hangarOnly"
+            data-test="model-picker-hangar-only"
+            @click="hangarOnly = !hangarOnly"
+          >
+            {{ t("modelPicker.labels.hangarOnly") }}
+          </Btn>
+        </div>
+
+        <div v-if="containerFilter" class="model-picker__containers">
+          <span class="model-picker__containers-label">
+            {{ t("modelPicker.labels.containerFit") }}
+          </span>
+          <FormInput
+            v-for="size in CONTAINER_SIZES"
+            :key="size"
+            v-model.number="containerCounts[size]"
+            class="model-picker__container"
+            :class="{
+              'model-picker__container--set': containerCount(size) > 0,
+            }"
+            :name="`model-picker-container-${size}`"
+            :label="`${size} SCU`"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            :step="1"
+            :alignment="InputAlignmentsEnum.RIGHT"
+          />
         </div>
 
         <div class="model-picker__summary">
@@ -418,6 +517,7 @@ const save = () => {
           :loading="submitting"
           :disabled="!selection.length"
           :size="BtnSizesEnum.LG"
+          data-test="model-picker-submit"
           @click="save"
         >
           {{ submitLabel }}
@@ -459,6 +559,37 @@ const save = () => {
  */
 .model-picker__filter :deep(.base-select-items-wrapper) {
   background-color: var(--color-gray-darker, #272b30);
+}
+
+/* Matched to the fields it stands next to rather than sized by its own text, so
+   the toolbar reads as one row. */
+.model-picker__hangar {
+  @apply self-stretch;
+}
+
+/* ---------- container filter ----------
+   A row of narrow counters, one per size, that wraps rather than scrolls: the
+   modal is wide but a phone fits three of them across. */
+.model-picker__containers {
+  @apply flex flex-wrap items-end gap-2;
+  padding-top: 12px;
+}
+
+.model-picker__containers-label {
+  @apply text-muted text-[13px];
+  /* Level with the fields' labels, not with the inputs the flex row bottom-aligns. */
+  @apply self-center;
+}
+
+.model-picker__container {
+  @apply w-[4.5rem] shrink-0;
+}
+
+/* Which sizes are actually being asked for, readable without comparing seven
+   numbers: an empty counter is silent, a filled one is marked. */
+.model-picker__container--set :deep(input) {
+  @apply text-gold font-semibold;
+  border-color: var(--color-gold);
 }
 
 .model-picker__summary {
