@@ -62,6 +62,22 @@ module Api
           render json: trending_ships.to_json
         end
 
+        def most_wishlisted
+          model_additions = Rollup
+            .where(name: MetricsJob::ROLLUP_WISHLIST_BY_MODEL, interval: "month")
+            .where(time: Time.current.beginning_of_month)
+            .group(Arel.sql("dimensions->>'model_id'"))
+            .sum(:value)
+
+          names = Model.visible.active.where(id: model_additions.keys).pluck(:id, :name).to_h
+
+          most_wishlisted = transform_for_bar_chart(
+            model_additions.filter_map { |id, additions| [names[id], additions.to_i] if names.key?(id) }.to_h
+          ).take(10)
+
+          render json: most_wishlisted.to_json
+        end
+
         def components_by_class
           components_by_class = transform_for_pie_chart(
             Component.group(:component_class).count
