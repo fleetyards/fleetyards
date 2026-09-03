@@ -131,7 +131,11 @@ onUnmounted(() => {
   }
 });
 
-const { data: user, refetch: refetchCurrentUser } = useMeQuery({
+const {
+  data: user,
+  isError: currentUserFailed,
+  refetch: refetchCurrentUser,
+} = useMeQuery({
   query: {
     enabled: isAuthenticated,
   },
@@ -144,6 +148,16 @@ watch(
       sessionStore.currentUser = user.value;
     }
   },
+);
+
+// A reload restores `authenticated` from storage but not the user it belongs to, so
+// the access check has no privileges to match against until `me` comes back. Denying
+// on that gap flashes "access denied" on every page whose route declares an `access`.
+const currentUserUnknown = computed(
+  () =>
+    isAuthenticated.value &&
+    !sessionStore.currentUser &&
+    !currentUserFailed.value,
 );
 
 const setNoScroll = () => {
@@ -182,8 +196,9 @@ const setNoScroll = () => {
 
           <router-view v-slot="{ Component, route: viewRoute }">
             <AccessCheck
-              :resource-access="user?.resourceAccess"
-              :super-admin="user?.superAdmin"
+              :resource-access="sessionStore.currentUser?.resourceAccess"
+              :super-admin="sessionStore.currentUser?.superAdmin"
+              :loading="currentUserUnknown"
             >
               <template #granted>
                 <transition name="fade" mode="out-in">
