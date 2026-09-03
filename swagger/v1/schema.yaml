@@ -7427,6 +7427,34 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/sales":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Sales
+      tags:
+      - Models
+      operationId: modelSales
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelSales"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/snub-crafts":
     parameters:
     - name: slug
@@ -18706,6 +18734,55 @@ components:
       additionalProperties: false
       example: {}
       title: ModelQuery
+    ModelSale:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        startedAt:
+          type: string
+          format: date-time
+        endedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        ongoing:
+          type: boolean
+        durationInDays:
+          type:
+          - number
+          - 'null'
+      required:
+      - id
+      - startedAt
+      - ongoing
+      additionalProperties: false
+      title: ModelSale
+    ModelSales:
+      type: object
+      properties:
+        sales:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelSale"
+        salesCount:
+          type: integer
+        lastSaleAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        averageDaysBetweenSales:
+          type:
+          - number
+          - 'null'
+      required:
+      - sales
+      - salesCount
+      additionalProperties: false
+      title: ModelSales
     ModelSignatureCrossSection:
       type: object
       properties:
