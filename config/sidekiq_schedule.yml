@@ -73,6 +73,10 @@ cleanup_visits_job:
   cron: '0 0 1 * *' # Monthly on the first day at 0:00
   class: 'Cleanup::VisitsJob'
   queue: 'cleanup'
+cleanup_price_snapshots_job:
+  cron: '30 0 1 * *' # Monthly on the first day at 0:30
+  class: 'Cleanup::PriceSnapshotsJob'
+  queue: 'cleanup'
 fleet_event_starting_soon_job:
   cron: '*/5 * * * *' # Every 5 minutes
   class: 'Notifications::FleetEventStartingSoonJob'

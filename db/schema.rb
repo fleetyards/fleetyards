@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -847,6 +847,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_140000) do
     t.integer "unit", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
+  end
+
+  create_table "item_price_snapshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "item_id", null: false
+    t.string "item_type", null: false
+    t.string "location", null: false
+    t.decimal "price", precision: 15, scale: 2, null: false
+    t.integer "price_type", null: false
+    t.date "recorded_on", null: false
+    t.integer "time_range"
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id", "location", "price_type", "time_range", "recorded_on"], name: "index_item_price_snapshots_on_item_and_day", unique: true, nulls_not_distinct: true
+    t.index ["item_type", "item_id", "recorded_on"], name: "index_item_price_snapshots_on_item_and_recorded_on"
+    t.index ["item_type", "item_id"], name: "index_item_price_snapshots_on_item"
+    t.index ["recorded_on"], name: "index_item_price_snapshots_on_recorded_on"
   end
 
   create_table "item_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

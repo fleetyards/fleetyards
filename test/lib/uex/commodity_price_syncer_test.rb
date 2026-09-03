@@ -143,5 +143,53 @@ module Uex
       assert_match(/\*\*Aslarite\*\* — UEX id `999`/, body)
       assert_no_match(/created=/, body)
     end
+
+    test "#run records the day's prices as history" do
+      sync
+
+      held = ItemPrice.where(item_type: "Commodity")
+      recorded = ItemPriceSnapshot.where(item_type: "Commodity", recorded_on: Date.current)
+
+      assert_operator held.count, :>, 0
+      assert_equal held.count, recorded.count
+      assert_equal held.pluck(:price).sort, recorded.pluck(:price).sort
+      assert_equal held.pluck(:location).sort, recorded.pluck(:location).sort
+    end
+
+    # A second run the same day is a correction, not a second day.
+    test "#run replaces the day it already recorded" do
+      sync
+      first = ItemPriceSnapshot.where(item_type: "Commodity").count
+
+      sync
+
+      assert_equal first, ItemPriceSnapshot.where(item_type: "Commodity").count
+    end
+
+    test "#run leaves earlier days alone" do
+      commodity = @commodities[:gold]
+      ItemPriceSnapshot.create!(
+        item: commodity, location: "Old Terminal", price_type: "sell",
+        price: 1, recorded_on: 30.days.ago.to_date
+      )
+
+      sync
+
+      assert ItemPriceSnapshot.exists?(location: "Old Terminal", recorded_on: 30.days.ago.to_date)
+    end
+
+    # Ships are synced by the other syncer on its own schedule, so one must not
+    # clear the other's day.
+    test "#run leaves another item type's history alone" do
+      model = create(:model)
+      ItemPriceSnapshot.create!(
+        item: model, location: "Astro Armada", price_type: "sell",
+        price: 100, recorded_on: Date.current
+      )
+
+      sync
+
+      assert_equal 1, ItemPriceSnapshot.where(item_type: "Model").count
+    end
   end
 end
