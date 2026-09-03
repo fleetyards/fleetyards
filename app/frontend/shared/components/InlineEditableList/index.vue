@@ -25,6 +25,10 @@ type Props = {
   hideDestroy?: boolean;
   hideEdit?: boolean;
   selectable?: boolean;
+  // Passed straight down: the placeholder rows a list waiting for its first
+  // records is held open with, which the ListGroup below draws to the recipe of
+  // the row it stands in for.
+  skeletonRows?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   hideDestroy: false,
   hideEdit: false,
   selectable: false,
+  skeletonRows: undefined,
 });
 
 const { displayConfirm } = useAppNotifications();
@@ -195,6 +200,7 @@ defineExpose({
     :empty-name="emptyName"
     :hide-empty="creating"
     :expanded-id="editingId"
+    :skeleton-rows="skeletonRows"
   >
     <template #prepend>
       <div v-if="creating" key="__create__" class="list-group__item">

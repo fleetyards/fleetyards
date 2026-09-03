@@ -76,6 +76,10 @@ const buildDocks = (): Dock[] => [
 
 const listGroupItems = ref(buildDocks());
 
+// Up by default: the placeholders are the state worth looking at, and the
+// toggle is there to watch them go.
+const listGroupLoading = ref(true);
+
 // ── InlineEditableList | full ────────────────────────────────────────
 
 type EditableListRef = {
@@ -183,6 +187,8 @@ const resetDocks = () => {
 
 const readOnlyDocks = ref(buildDocks());
 
+const editableListLoading = ref(true);
+
 // ── FilteredList ─────────────────────────────────────────────────────
 
 const filteredListLoading = ref(false);
@@ -230,8 +236,19 @@ const toggleFilteredListEmpty = () => {
   <Heading :level="HeadingLevelEnum.H2">ListGroup</Heading>
   <p>
     The plain list container behind the editable list — rows with a display and
-    an actions area, plus its own loading and empty states.
+    an actions area, plus its own loading and empty states. While it waits it
+    holds itself open with placeholder rows built to the recipe of the row each
+    one stands in for.
   </p>
+  <div class="vt-row">
+    <Btn
+      :active="listGroupLoading"
+      data-test="toggle-list-group-loading"
+      @click="listGroupLoading = !listGroupLoading"
+    >
+      Loading
+    </Btn>
+  </div>
   <div class="row">
     <div class="col-12 col-xl-6">
       <ListGroup :items="listGroupItems" empty-name="Docks">
@@ -249,7 +266,22 @@ const toggleFilteredListEmpty = () => {
       </ListGroup>
     </div>
     <div class="col-12 col-xl-6">
-      <ListGroup :items="[]" empty-name="Docks" loading />
+      <!-- Beside the list on the left, and reserving as many rows as that one
+           holds: the placeholders and the rows they stand in for are only
+           readable held against each other. The actions slot is passed for the
+           same reason - a row with buttons in it is as tall as those. -->
+      <ListGroup
+        :items="[]"
+        empty-name="Docks"
+        :loading="listGroupLoading"
+        :skeleton-rows="listGroupItems.length"
+      >
+        <template #actions>
+          <Btn>
+            <i class="fa-duotone fa-arrow-right" />
+          </Btn>
+        </template>
+      </ListGroup>
       <ListGroup :items="[]" empty-name="Docks" />
     </div>
   </div>
@@ -386,10 +418,28 @@ const toggleFilteredListEmpty = () => {
   <Heading :level="HeadingLevelEnum.H2">
     InlineEditableList | Loading & Empty
   </Heading>
-  <p>Both states are delegated to the underlying ListGroup.</p>
+  <p>
+    Both states are delegated to the underlying ListGroup. Every row of an
+    editable list carries the edit and destroy buttons, so its placeholders
+    reserve the control height rather than a line of text.
+  </p>
+  <div class="vt-row">
+    <Btn
+      :active="editableListLoading"
+      data-test="toggle-editable-list-loading"
+      @click="editableListLoading = !editableListLoading"
+    >
+      Loading
+    </Btn>
+  </div>
   <div class="row">
     <div class="col-12 col-xl-6">
-      <InlineEditableList :items="[]" empty-name="Docks" loading />
+      <InlineEditableList
+        :items="[]"
+        empty-name="Docks"
+        :loading="editableListLoading"
+        :skeleton-rows="4"
+      />
     </div>
     <div class="col-12 col-xl-6">
       <InlineEditableList :items="[]" empty-name="Docks" />
