@@ -1710,7 +1710,26 @@
         "quantumDrive": "Quantum-Antrieb",
         "fuelUsage": "Treibstoffverbrauch",
         "travelTime": "Reisezeit",
-        "poweredBy": "basiert auf"
+        "poweredBy": "basiert auf",
+        "rank": "#",
+        "size": "Größe",
+        "grade": "Grade",
+        "sizeValue": "S%{size}",
+        "intro": "Wie lange jeder Quantum-Antrieb für deinen Sprung braucht — und wie viel Quantum-Treibstoff er dabei verbraucht.",
+        "jumpDistance": "Sprungdistanz",
+        "distanceHint": "1 Mkm ist eine Million Kilometer. Quer durch Stanton sind es etwa 40.",
+        "filters": "Filter",
+        "resetFilters": "Zurücksetzen",
+        "barLegend": "Balken zeigt die Zeit im Verhältnis zum langsamsten Antrieb",
+        "count": "%{count} Antriebe",
+        "countFiltered": "%{count} von %{total} Antrieben",
+        "noMatch": "Kein Antrieb passt zu diesen Filtern.",
+        "presets": {
+          "moon": "Mond-Distanz",
+          "short": "Kurzer Sprung",
+          "system": "Stanton quer",
+          "far": "Weite Strecke"
+        }
       },
       "admin": {
         "dashboard": {

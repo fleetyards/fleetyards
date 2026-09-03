@@ -1710,7 +1710,26 @@
         "quantumDrive": "Motore Quantum",
         "fuelUsage": "Consumo di carburante",
         "travelTime": "Tempo di viaggio",
-        "poweredBy": "basato su"
+        "poweredBy": "basato su",
+        "rank": "#",
+        "size": "Dimensione",
+        "grade": "Grado",
+        "sizeValue": "S%{size}",
+        "intro": "Quanto impiega ogni motore Quantum per il tuo salto — e quanto carburante Quantum consuma.",
+        "jumpDistance": "Distanza di salto",
+        "distanceHint": "1 Mkm è un milione di chilometri. Attraversare Stanton ne richiede circa 40.",
+        "filters": "Filtri",
+        "resetFilters": "Reimposta",
+        "barLegend": "La barra mostra il tempo rispetto al motore più lento",
+        "count": "%{count} motori",
+        "countFiltered": "%{count} di %{total} motori",
+        "noMatch": "Nessun motore corrisponde a questi filtri.",
+        "presets": {
+          "moon": "Salto lunare",
+          "short": "Salto breve",
+          "system": "Attraverso Stanton",
+          "far": "Lunga tratta"
+        }
       },
       "admin": {
         "dashboard": {

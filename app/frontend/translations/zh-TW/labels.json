@@ -1706,7 +1706,26 @@
         "quantumDrive": "量子引擎",
         "fuelUsage": "燃料消耗",
         "travelTime": "旅行時間",
-        "poweredBy": "基於"
+        "poweredBy": "基於",
+        "rank": "#",
+        "size": "尺寸",
+        "grade": "等級",
+        "sizeValue": "S%{size}",
+        "intro": "每台量子引擎完成這次躍遷需要多久——以及消耗多少量子燃料。",
+        "jumpDistance": "躍遷距離",
+        "distanceHint": "1 Mkm 即一百萬公里。橫越斯坦頓約需 40。",
+        "filters": "篩選",
+        "resetFilters": "重設",
+        "barLegend": "長條表示相對最慢引擎的時間",
+        "count": "%{count} 台引擎",
+        "countFiltered": "%{total} 台中的 %{count} 台",
+        "noMatch": "沒有引擎符合這些篩選條件。",
+        "presets": {
+          "moon": "月球距離",
+          "short": "短距躍遷",
+          "system": "橫越斯坦頓",
+          "far": "長途"
+        }
       },
       "admin": {
         "dashboard": {

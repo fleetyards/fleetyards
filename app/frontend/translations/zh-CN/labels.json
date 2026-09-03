@@ -1706,7 +1706,26 @@
         "quantumDrive": "量子引擎",
         "fuelUsage": "燃料消耗",
         "travelTime": "旅行时间",
-        "poweredBy": "基于"
+        "poweredBy": "基于",
+        "rank": "#",
+        "size": "尺寸",
+        "grade": "等级",
+        "sizeValue": "S%{size}",
+        "intro": "每台量子引擎完成这次跃迁需要多久——以及消耗多少量子燃料。",
+        "jumpDistance": "跃迁距离",
+        "distanceHint": "1 Mkm 即一百万公里。横穿斯坦顿约需 40。",
+        "filters": "筛选",
+        "resetFilters": "重置",
+        "barLegend": "长条表示相对最慢引擎的时间",
+        "count": "%{count} 台引擎",
+        "countFiltered": "%{total} 台中的 %{count} 台",
+        "noMatch": "没有引擎符合这些筛选条件。",
+        "presets": {
+          "moon": "月球距离",
+          "short": "短距跃迁",
+          "system": "横穿斯坦顿",
+          "far": "长途"
+        }
       },
       "admin": {
         "dashboard": {
