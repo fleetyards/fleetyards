@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.9.0](https://github.com/fleetyards/fleetyards/compare/v7.8.0...v7.9.0) (2026-09-03)
+
+
+### Features
+
+* **admin:** add a create form for admins ([#4680](https://github.com/fleetyards/fleetyards/issues/4680)) ([e640181](https://github.com/fleetyards/fleetyards/commit/e6401811aee30469a612acbcbb75991c9e18fa95))
+* **cargo-grids:** pick ships with the picker compare uses ([#4692](https://github.com/fleetyards/fleetyards/issues/4692)) ([c20ea84](https://github.com/fleetyards/fleetyards/commit/c20ea84e34a737abb13e1cc9e98e7afbba27e09e))
+* **lists:** hold a loading list open with placeholders ([#4686](https://github.com/fleetyards/fleetyards/issues/4686)) ([ab360fe](https://github.com/fleetyards/fleetyards/commit/ab360fe0b8bc9e193071ae2b2dcfbb0fd21ecf5e))
+* **stats:** export every stats page as CSV ([#4681](https://github.com/fleetyards/fleetyards/issues/4681)) ([fd8680a](https://github.com/fleetyards/fleetyards/commit/fd8680a02238eb291a45d2c6f429029b0da51112))
+* **travel-times:** rebuild the tool around the jump you are planning ([#4689](https://github.com/fleetyards/fleetyards/issues/4689)) ([addd8bc](https://github.com/fleetyards/fleetyards/commit/addd8bc9ea72e73e80c972584c3ad72056c06078))
+
+
+### Bug Fixes
+
+* **filtered-list:** keep a lone paginator on the right edge on a desktop ([#4684](https://github.com/fleetyards/fleetyards/issues/4684)) ([c11a51a](https://github.com/fleetyards/fleetyards/commit/c11a51ae04ea588751f1403a2bce6e04afe4ff33))
+* **filtered-list:** keep the toolbar buttons together when the paginator wraps ([#4683](https://github.com/fleetyards/fleetyards/issues/4683)) ([41cd689](https://github.com/fleetyards/fleetyards/commit/41cd6890272ff98a855445f355473335c0f0db28))
+* **fleets:** refuse to delete a fleet role that still has members ([#4682](https://github.com/fleetyards/fleetyards/issues/4682)) ([c90b51f](https://github.com/fleetyards/fleetyards/commit/c90b51f4915a0c216fc5eb388b7019655a40f521))
+* **hangar-import:** map "MOLE - Talus Edition" to the Talus paint ([#4685](https://github.com/fleetyards/fleetyards/issues/4685)) ([2a91527](https://github.com/fleetyards/fleetyards/commit/2a9152772b4c8b536cd6c4b35901ac57ae1236ee))
+* **lists:** make a loading list look like the list it becomes ([#4691](https://github.com/fleetyards/fleetyards/issues/4691)) ([cc9c403](https://github.com/fleetyards/fleetyards/commit/cc9c4031515cfed4a597a9b1210ac21a380ce143))
+* **travel-times:** make the tool work against current data ([#4687](https://github.com/fleetyards/fleetyards/issues/4687)) ([1e56f9f](https://github.com/fleetyards/fleetyards/commit/1e56f9f9310752e18c602d0252cc63950708614f))
+
+
+### Chores
+
+* **deps:** bump git from 5.1.0 to 5.2.0 ([#4688](https://github.com/fleetyards/fleetyards/issues/4688)) ([4ab11fa](https://github.com/fleetyards/fleetyards/commit/4ab11fad94d8b34bdacc06ae6b533c3eb71b6797))
+* **deps:** clear every open Dependabot security alert ([#4678](https://github.com/fleetyards/fleetyards/issues/4678)) ([f890955](https://github.com/fleetyards/fleetyards/commit/f890955b1d87173cf3cc4c062b3ce3b989f253ea))
+
 ## [7.8.0](https://github.com/fleetyards/fleetyards/compare/v7.7.0...v7.8.0) (2026-09-02)
 
 
