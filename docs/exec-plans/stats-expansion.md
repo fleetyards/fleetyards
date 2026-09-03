@@ -47,29 +47,40 @@ Phases 1–5 come first and are independent of each other. Every day without the
 history that cannot be reconstructed. Phases 6–8 read what is already stored and can
 follow at any time.
 
+**Status:** phases 1–6 are shipped, so nothing is being lost any more. What remains reads
+what is now stored (7, 8, 9) or waits on a feature flag to open (10–12). Phase 7 comes
+before phase 8: the ship history page has four panels and the pledge price series is one
+of them, so building the page first would mean building it twice.
+
 Each phase is one PR. All API phases follow the workflow in AGENTS.md: integration test
 first, then model, controller, policy, route, `app/api_components/` component, then
 `bundle exec standardrb --fix`, `./bin/generate-schema`, Orval regeneration, `bin/rails test`.
 
 ---
 
-## Phase 1: Ship view rollup
+## ~~Phase 1: Ship view rollup~~ ✅
 
-Roll up `$view` events per ship **daily** from `MetricsJob` (1:00), so each day is
-captured well before `Cleanup::VisitsJob` runs on the 1st of the month.
+Shipped in #4698, as written.
 
-- [ ] Add a `Ship Views` rollup to `MetricsJob`, dimension = model slug:
+One thing turned out weaker than the plan assumed: excluding opted-out users is
+belt-and-braces, not the safeguard it reads as. `Ahoy.exclude_method` already refuses to
+*record* an objecting user, so the filter only covers rows written before they objected.
+It is written as `user_id IS NULL OR user_id NOT IN (...)` because `NOT IN` alone drops
+every anonymous view along with them -- `NULL NOT IN (…)` is `NULL`, and anonymous is most
+of the traffic.
+
+- [x] Add a `Ship Views` rollup to `MetricsJob`, dimension = model slug:
       filter `name: "$view"` and `properties->>'page' LIKE '/ships/%'`, group on a SQL
       expression that extracts the slug, `column: :time`, `interval: "day"`
-- [ ] Pass `dimension_names: ["model_slug"]` explicitly — the gem's
+- [x] Pass `dimension_names: ["model_slug"]` explicitly — the gem's
       `determine_dimension_name` only accepts a bare `\A\w+\z` tail, which a substring
       expression is not
-- [ ] Exclude opted-out users the same way the cleanup job does
+- [x] Exclude opted-out users the same way the cleanup job does
       (`Ahoy::Visit.without_users(tracking_blocklist)` / `users.tracking = false`)
-- [ ] Add a `trending-ships` endpoint on the global stats controller reading the last
+- [x] Add a `trending-ships` endpoint on the global stats controller reading the last
       30 days of that rollup, joined back to `Model` by slug so a renamed or hidden ship
       drops out
-- [ ] Frontend: bar chart panel on `/stats`, wired into `csvCharts`
+- [x] Frontend: bar chart panel on `/stats`, wired into `csvCharts`
 
 ### Traps
 - The rollups gem recomputes from `max_time..`, i.e. only the newest stored interval
@@ -91,22 +102,26 @@ captured well before `Cleanup::VisitsJob` runs on the 1st of the month.
 
 ---
 
-## Phase 2: Sale history
+## ~~Phase 2: Sale history~~ ✅
 
-`models.on_sale` already has a change hook (`after_save :send_on_sale_notification, if:
-:saved_change_to_on_sale?`). It notifies and forgets. A dedicated table turns that into
-"when was this ship last on sale, how often per year, what is the average gap" — probably
-the single most asked-for figure on the site.
+Shipped in #4700.
 
-- [ ] Migration: `model_sales` with `model_id`, `started_at`, `ended_at` (nullable),
+The plan offered a choice on the ships that were already on sale: seed them, or leave them
+out. They are seeded, and the reason is stronger than "otherwise the data starts late" --
+with no open row the flag's *next* flip has nothing to close, so the sale running that day
+would vanish entirely rather than merely start late. Their `started_at` is the migration's
+run time, which under-reports how long those first sales ran and is wrong in that one
+direction only.
+
+- [x] Migration: `model_sales` with `model_id`, `started_at`, `ended_at` (nullable),
       unique index on `(model_id, started_at)`, index on `started_at`
-- [ ] `ModelSale` model with `belongs_to :model`, an `ongoing` scope (`ended_at IS NULL`)
+- [x] `ModelSale` model with `belongs_to :model`, an `ongoing` scope (`ended_at IS NULL`)
       and a `duration` reader
-- [ ] Hook the existing `saved_change_to_on_sale?` callback: opening a sale creates a row,
+- [x] Hook the existing `saved_change_to_on_sale?` callback: opening a sale creates a row,
       closing it stamps `ended_at` on the open row. Do **not** add `on_sale` to the
       paper_trail `only:` list — a dedicated table is queryable, a JSON diff is not
-- [ ] Model readers: `last_sale`, `sales_count(period)`, `average_days_between_sales`
-- [ ] Endpoint `GET /v1/models/:slug/sales` returning the list plus those derived figures
+- [x] Model readers: `last_sale`, `sales_count(period)`, `average_days_between_sales`
+- [x] Endpoint `GET /v1/models/:slug/sales` returning the list plus those derived figures
 
 ### Traps
 - A sale that is already open when this ships has no `started_at`. Seed the initial rows
@@ -124,18 +139,26 @@ the single most asked-for figure on the site.
 
 ---
 
-## Phase 3: Wishlist rollup per model (hype curve)
+## ~~Phase 3: Wishlist rollup per model (hype curve)~~ ✅
 
-`Vehicle Wish` is rolled up without a dimension, so we know how many wishlist entries
-exist but never which ship they are for over time.
+Shipped in #4702, with one deliberate departure.
 
-- [ ] Add `model_id` as a dimension to the existing `Vehicle Wish` rollup in `MetricsJob`
+The dimension went on **its own rollup name** (`Vehicle Wish by Model`) rather than onto
+the existing `Vehicle Wish`. Under one name and interval the table would hold both a total
+row and up to 243 per-model rows, and every reader of the plain series would have to know
+to ask for the empty dimensions.
+
+The plan's reason for keeping the dimensionless rollup was also wrong: the `wishlistsCount`
+tile does a live `Vehicle.where(wanted: true).count`, not a rollup read. **Nothing** reads
+that rollup. It stays anyway -- twelve years of history nobody can reconstruct.
+
+- [x] Add `model_id` as a dimension to the existing `Vehicle Wish` rollup in `MetricsJob`
       (`Vehicle.visible.wanted.where(loaner: false).group(:model_id).rollup(...)`)
-- [ ] Keep the existing dimensionless rollup as well — the global
+- [x] Keep the existing dimensionless rollup as well — the global
       `wishlists_count` tile reads it, and it is 12 years of history
-- [ ] Endpoint: wishlist additions per month for one model, plus a global
+- [x] Endpoint: wishlist additions per month for one model, plus a global
       "biggest movers this month" chart
-- [ ] Frontend: line panel on the ship history page, mover chart on `/stats`
+- [x] Frontend: line panel on the ship history page, mover chart on `/stats`
 
 ### Traps
 - The rollup counts `created_at`, so it measures *additions*, not the standing total.
@@ -189,18 +212,26 @@ The daily UEX sync overwrites `item_prices` in place. Snapshot it before the ove
 
 ---
 
-## Phase 5: Patch change log
+## ~~Phase 5: Patch change log~~ ✅
 
-`ModelBuild` keeps three builds per environment (`BUILDS_RETAINED`), so a diff against the
-patch before last is possible today and gone in two patches. Persist the diff itself.
+Shipped in #4705.
 
-- [ ] Migration: `model_build_changes` — `model_id`, `environment`, `from_version`,
+Of the two options for the structured facts -- record a presence change, or normalise
+before comparing -- neither was taken: they are excluded outright, and the diffable list is
+**derived** (`FACTS - STRUCTURED_FACTS - [:ground]`) so a numeric fact added later is
+picked up without anyone remembering to say so.
+
+The three retained builds are deliberately **not** walked backwards on deploy. Re-deriving
+old diffs from rows that may since have been re-parsed would date them wrong, and a gap
+beats an invented history.
+
+- [x] Migration: `model_build_changes` — `model_id`, `environment`, `from_version`,
       `to_version`, `field`, `old_value`, `new_value`, `recorded_at`, unique index on
       `(model_id, environment, to_version, field)`
-- [ ] Compute the diff when a new build lands, over `ModelBuild::FACTS`, and write one row
+- [x] Compute the diff when a new build lands, over `ModelBuild::FACTS`, and write one row
       per changed field
-- [ ] Endpoints: changes for one model, and a global "what this patch changed" list
-- [ ] Frontend: change table on the ship history page, patch summary panel on `/stats`
+- [x] Endpoints: changes for one model, and a global "what this patch changed" list
+- [x] Frontend: change table on the ship history page, patch summary panel on `/stats`
 
 ### Traps
 - Five of the `FACTS` columns are YAML-serialized (`cargo_holds`, `quantum_fuel_tanks`,
@@ -223,22 +254,38 @@ patch before last is possible today and gone in two patches. Persist the diff it
 
 ---
 
-## Phase 6: Aggregate charts with no new collection
+## ~~Phase 6: Aggregate charts with no new collection~~ ✅
 
-Three charts whose data is already in the tables.
+Shipped in #4707.
 
-- [ ] **Top wishlist ships** — `stats/wishlist-by-model`, the mirror of the existing
+The index this phase expected was not needed. Measured against the full dump rather than
+assumed: **87ms** for the wishlist grouping and **68ms** for the paints grouping over 1.57M
+vehicles, both parallel sequential scans. An index on that table costs writes on every
+hangar change, so none was added.
+
+Two things came out of looking at the rendered page, which is worth doing before calling
+one of these done:
+
+- `name_with_model` made the paint chart say the ship twice -- "Carrack - Carrack
+  Expedition". Globally only 14 of 1,923 paints are named after their ship, but they are
+  six of the eight most-used, so they dominate exactly this chart.
+- The page had grown full-width panels among paired rows. Everything is two halves now.
+
+The wish-to-own floor is 100 owned, picked from the distribution rather than guessed: the
+median model holds 2,200 and the tenth percentile 744, so it excludes only ships nobody has.
+
+- [x] **Top wishlist ships** — `stats/wishlist-by-model`, the mirror of the existing
       `vehicles_by_model`:
       `Vehicle.visible.wanted.where(loaner: false).joins(:model).group("models.name").count`.
       457,593 wishlist rows exist; today only their total count is exposed.
-- [ ] **Wish-to-own ratio** — `stats/wish-to-own-ratio`, wishlist count over purchased
+- [x] **Wish-to-own ratio** — `stats/wish-to-own-ratio`, wishlist count over purchased
       count per model, minimum-sample floor so a model with three entries cannot top the
       chart. Separates a dream ship from a volume ship, and is not reachable by sorting
       the ship list.
-- [ ] **Most popular paints** — `stats/top-paints`, grouping `vehicles.model_paint_id`
+- [x] **Most popular paints** — `stats/top-paints`, grouping `vehicles.model_paint_id`
       (51,271 vehicles carry one, against 1,923 paints on 220 models). Add a paint
       adoption tile (share of vehicles with a paint set, ~3.3%).
-- [ ] Frontend: three panels on `/stats`, each registered in `csvCharts` so the panel
+- [x] Frontend: three panels on `/stats`, each registered in `csvCharts` so the panel
       export and the page export stay in sync
 
 ### Traps
