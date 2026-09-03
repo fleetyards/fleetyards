@@ -474,15 +474,20 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
           </span>
         </div>
 
+        <!-- `placeholders`, so the table itself draws the wait: a header and a
+             page of placeholder rows out of an empty record set is closer to
+             the answer on its way than a spinner in an empty box. -->
         <FilteredList
           key="quantumDrives"
           :records="visibleDrives"
           :name="route.name?.toString() || ''"
           :async-status="asyncStatus"
+          placeholders
         >
-          <template #default="{ records }">
+          <template #default="{ records, loading }">
             <BaseTable
               :records="records"
+              :loading="loading"
               :filter-visible="false"
               primary-key="slug"
               :columns="columns"
