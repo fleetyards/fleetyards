@@ -122,4 +122,45 @@ class MetricsJobTest < ActiveJob::TestCase
       dimensions: {model_slug: slug}
     ).sum(:value)
   end
+
+  test "#perform rolls up wishlist additions per model" do
+    wanted = create(:model)
+    other = create(:model)
+    create_list(:vehicle, 2, model: wanted, wanted: true, loaner: false)
+    create(:vehicle, model: other, wanted: true, loaner: false)
+
+    MetricsJob.new.perform
+
+    assert_equal 2, wishlist_additions(wanted)
+    assert_equal 1, wishlist_additions(other)
+  end
+
+  test "#perform leaves purchased ships out of the wishlist rollup" do
+    model = create(:model)
+    create(:vehicle, model:, wanted: true, loaner: false)
+    create(:vehicle, model:, wanted: false, loaner: false)
+
+    MetricsJob.new.perform
+
+    assert_equal 1, wishlist_additions(model)
+  end
+
+  # The dimensionless series is twelve years of history and nothing else writes
+  # it, so the per-model rollup has to sit beside it rather than replace it.
+  test "#perform keeps the plain wishlist series" do
+    model = create(:model)
+    create(:vehicle, model:, wanted: true, loaner: false)
+
+    MetricsJob.new.perform
+
+    assert_operator Rollup.where(name: "Vehicle Wish", interval: "month").count, :>, 0
+  end
+
+  private def wishlist_additions(model)
+    Rollup.where(
+      name: MetricsJob::ROLLUP_WISHLIST_BY_MODEL,
+      interval: "month",
+      dimensions: {model_id: model.id}
+    ).sum(:value)
+  end
 end

@@ -9,6 +9,11 @@ class MetricsJob < ApplicationJob
 
   ROLLUP_SHIP_VIEWS = "Ship Views"
 
+  # Its own name rather than a dimension on `Vehicle Wish`: the same name and
+  # interval would then hold both a total row and one row per model, and reading
+  # the plain series back would have to know to ask for the empty dimensions.
+  ROLLUP_WISHLIST_BY_MODEL = "Vehicle Wish by Model"
+
   def perform
     User.rollup("Registrations", interval: "month")
     User.rollup("Registrations", interval: "year")
@@ -25,6 +30,7 @@ class MetricsJob < ApplicationJob
     Vehicle.visible.wanted.where(loaner: false).rollup("Vehicle Wish", interval: "month")
 
     track_ship_views
+    track_wishlist_by_model
     track_ship_of_the_month
     track_api_usage
   end
@@ -60,6 +66,18 @@ class MetricsJob < ApplicationJob
       # a bare word, which an expression is not.
       dimension_names: ["model_slug"]
     )
+  end
+
+  # Which ship the wishlist grew by, which the dimensionless `Vehicle Wish`
+  # rollup beside it cannot say.
+  #
+  # This counts `created_at`, so it measures wishlist *additions* in a month
+  # rather than how many people want the ship in total. A ship whose demand is
+  # steady and high shows a flat line, not a rising one.
+  def track_wishlist_by_model
+    Vehicle.visible.wanted.where(loaner: false)
+      .group(:model_id)
+      .rollup(ROLLUP_WISHLIST_BY_MODEL, interval: "month")
   end
 
   # Rolls up every day still held in Redis, not just yesterday, so a failed run
