@@ -279,7 +279,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="modelsByClassificationOptions"
             key="models-by-classification"
             name="models-by-classification"
             :async-status="modelsByClassificationStatus"
@@ -303,7 +302,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="modelsBySizeOptions"
             key="models-by-size"
             name="models-by-size"
             :async-status="modelsBySizeStatus"
@@ -329,7 +327,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="modelsByProductionStatusOptions"
             key="models-by-production-status"
             name="models-by-production-status"
             :async-status="modelsByProductionStatusStatus"
@@ -353,7 +350,6 @@ const csvMetrics = computed<StatsMetric[]>(() => [
         </PanelHeading>
         <PanelBody>
           <Chart
-            v-if="modelsByManufacturerOptions"
             key="models-by-manufacturer"
             name="models-by-manufacturer"
             :async-status="modelsByManufacturerStatus"
