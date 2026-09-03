@@ -1702,6 +1702,12 @@
         "removeShip": "Remove",
         "autoFillShip": "Auto-fill"
       },
+      "travelTimes": {
+        "quantumDrive": "量子引擎",
+        "fuelUsage": "燃料消耗",
+        "travelTime": "旅行時間",
+        "poweredBy": "基於"
+      },
       "admin": {
         "dashboard": {
           "quickStats": {

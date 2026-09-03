@@ -70,6 +70,7 @@ const cssClasses = (column: BaseTableCol<T>) => {
         v-for="(column, index) in props.columns"
         :key="`base-table__header-${colKey}-${index}-${column.name}`"
         as="th"
+        :alignment="column.alignment"
         :class="cssClasses(column)"
         :style="{
           'flex-grow': column.flexGrow,

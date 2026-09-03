@@ -1,3 +1,7 @@
+import { type Component, type ComponentQuantumDrive } from "@/services/fyApi";
+
+const KM_PER_MKM = 1000000;
+
 export const calculateTravelTime = (
   a1: number,
   a2: number,
@@ -32,5 +36,27 @@ export const calculateTravelTime = (
     (4 * vmax) / (a1 + a2) +
     distance / vmax -
     (4 * vmax * (2 * a1 + a2)) / (3 * (a1 + a2) ** 2)
+  );
+};
+
+// The drive's rates are stored in metres and metres per second, the formula
+// works in kilometres, and the tool asks for a distance in millions of them.
+// Both the table cell and the sort go through here, so the two cannot drift
+// onto different units.
+export const quantumDriveTravelTime = (
+  quantumDrive: Component,
+  distanceInMkm: number,
+): number | undefined => {
+  const typeData = quantumDrive.typeData as ComponentQuantumDrive | undefined;
+
+  if (!typeData?.driveSpeed) {
+    return undefined;
+  }
+
+  return calculateTravelTime(
+    (typeData.stageOneAccelRate || 0) / 1000,
+    (typeData.stageTwoAccelRate || 0) / 1000,
+    typeData.driveSpeed / 1000,
+    distanceInMkm * KM_PER_MKM,
   );
 };

@@ -1706,6 +1706,12 @@
         "removeShip": "Entfernen",
         "autoFillShip": "Auto-Fill"
       },
+      "travelTimes": {
+        "quantumDrive": "Quantum-Antrieb",
+        "fuelUsage": "Treibstoffverbrauch",
+        "travelTime": "Reisezeit",
+        "poweredBy": "basiert auf"
+      },
       "admin": {
         "dashboard": {
           "quickStats": {
