@@ -52,7 +52,7 @@ module Admin
         end
 
         def update
-          return if @equipment.update_with_facts(equipment_params)
+          return if @equipment.update_with_facts(equipment_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("equipment.update", errors: @equipment.errors), status: :bad_request
         end

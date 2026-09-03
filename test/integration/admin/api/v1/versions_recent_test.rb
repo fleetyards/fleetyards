@@ -84,6 +84,44 @@ class Admin::Api::V1::VersionsRecentTest < ActionDispatch::IntegrationTest
     assert_equal ["ModelModule"], item_types
   end
 
+  # Equipment gained versioning alongside the feed; before that an equipment
+  # edit was recorded nowhere at all.
+  test "GET /versions/recent lists an equipment edit under its own name" do
+    admin = create(:admin_user, super_admin: true)
+    equipment = create(:equipment, name: "Before")
+
+    equipment.author_id = admin.id
+    equipment.update!(name: "After")
+
+    sign_in admin
+
+    assert_api_response :get, 200
+
+    item = response.parsed_body["items"].first
+
+    assert_equal "Equipment", item["itemType"]
+    assert_equal "After", item["itemName"]
+    assert_equal admin.username, item["author"]["username"]
+  end
+
+  # A user is labelled by username, not by a `name` column it does not have.
+  test "GET /versions/recent labels a user edit with its username" do
+    admin = create(:admin_user, super_admin: true)
+    user = create(:user, rsi_handle: "before")
+
+    user.author_id = admin.id
+    user.update!(rsi_handle: "after")
+
+    sign_in admin
+
+    assert_api_response :get, 200
+
+    item = response.parsed_body["items"].first
+
+    assert_equal "User", item["itemType"]
+    assert_equal user.username, item["itemName"]
+  end
+
   test "GET /versions/recent returns nothing for an admin with no versioned access" do
     admin = create(:admin_user, resource_access: [:stats])
     model = create(:model, name: "Before")

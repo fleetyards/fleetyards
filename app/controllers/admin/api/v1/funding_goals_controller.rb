@@ -37,7 +37,7 @@ module Admin
         end
 
         def update
-          return if @funding_goal.update(funding_goal_params)
+          return if @funding_goal.update(funding_goal_params.merge(author_id: current_user.id))
 
           render json: ValidationError.new("funding_goal.update", errors: @funding_goal.errors), status: :bad_request
         end

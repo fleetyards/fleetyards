@@ -36,6 +36,23 @@
 #  fk_rails_...  (component_id => components.id) ON DELETE => nullify
 #
 class ModelPaint < ApplicationRecord
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  # Only an admin action sets `author_id`, so a loader write files nothing. The
+  # gate is not tidiness: the UEX sync rewrites all 232 commodities and 1,526 of
+  # 4,830 equipment rows a week, and versioning those unconditionally would bury
+  # the handful of real edits the way Fleet's touch versions already do.
+  has_paper_trail on: %i[update],
+    only: %i[
+      name description model_id active hidden on_sale pledge_price
+      production_status production_note store_url
+    ],
+    if: ->(record) { record.author_id.present? },
+    meta: {
+      author_id: :author_id,
+      reason: :update_reason,
+      reason_description: :update_reason_description
+    }
   include ActiveStorageVariants
 
   paginates_per 30

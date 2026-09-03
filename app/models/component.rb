@@ -54,6 +54,11 @@ class Component < ApplicationRecord
   # The associations are renamed because PaperTrail's default `version` reader
   # shadows this table's `version` column -- left alone, an update writes NULL
   # over the build a component was last seen in.
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  # No `if:` guard, unlike the models versioned alongside this one: Component
+  # already records loader changes and its history page shows them. This adds
+  # the author the record never carried, nothing else.
   has_paper_trail on: %i[update],
     only: %i[
       name description size grade item_type item_class component_class component_sub_type
@@ -61,7 +66,12 @@ class Component < ApplicationRecord
       inventory_consumption tracking_signal manufacturer_id hidden
     ],
     version: :paper_trail_version,
-    versions: {name: :paper_trail_versions}
+    versions: {name: :paper_trail_versions},
+    meta: {
+      author_id: :author_id,
+      reason: :update_reason,
+      reason_description: :update_reason_description
+    }
 
   belongs_to :manufacturer, optional: true
 
