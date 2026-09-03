@@ -282,6 +282,31 @@ module Api
         @sales = @model.sales.recent_first
       end
 
+      # Additions per month, not the standing total: the rollup counts when a
+      # wishlist entry was created, so a steadily wanted ship draws a flat line.
+      def wishlist_history
+        model = find_model_by_slug!
+        return if performed?
+
+        wishlist_history = Rollup
+          .where(
+            name: MetricsJob::ROLLUP_WISHLIST_BY_MODEL,
+            interval: "month",
+            dimensions: {model_id: model.id}
+          )
+          .where("time > ?", 1.year.ago)
+          .order(:time)
+          .map do |entry|
+            {
+              label: I18n.l(entry.time.to_date, format: :month_year_short),
+              count: entry.value.to_i,
+              tooltip: I18n.l(entry.time.to_date, format: :month_year)
+            }
+          end
+
+        render json: wishlist_history.to_json
+      end
+
       def store_image
         model = find_model_by_slug(Model.visible.active)
         return if performed?

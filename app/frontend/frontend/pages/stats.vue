@@ -30,6 +30,7 @@ import {
   useVehiclesPerMonth as useVehiclesPerMonthQuery,
   useShipsOfTheMonth as useShipsOfTheMonthQuery,
   useTrendingShips as useTrendingShipsQuery,
+  useMostWishlisted as useMostWishlistedQuery,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -61,6 +62,9 @@ const { data: shipsOfTheMonthOptions, ...shipsOfTheMonthStatus } =
 
 const { data: trendingShipsOptions, ...trendingShipsStatus } =
   useTrendingShipsQuery();
+
+const { data: mostWishlistedOptions, ...mostWishlistedStatus } =
+  useMostWishlistedQuery();
 
 const route = useRoute();
 
@@ -128,6 +132,11 @@ const csvCharts = computed(() => ({
     name: "trending-ships",
     title: t("labels.stats.trendingShips"),
     points: trendingShipsOptions.value,
+  },
+  "most-wishlisted": {
+    name: "most-wishlisted",
+    title: t("labels.stats.mostWishlisted"),
+    points: mostWishlistedOptions.value,
   },
   "vehicles-by-model": {
     name: "vehicles-by-model",
@@ -343,6 +352,33 @@ const csvMetrics = computed<StatsMetric[]>(() => [
             name="trending-ships"
             :async-status="trendingShipsStatus"
             :options="trendingShipsOptions"
+            tooltip-type="ship"
+            type="bar"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <Panel>
+        <PanelHeading :level="HeadingLevelEnum.H2">
+          {{ t("labels.stats.mostWishlisted") }}
+          <template #actions>
+            <StatsCsvExportBtn
+              scope="stats"
+              :chart="csvCharts['most-wishlisted']"
+            />
+          </template>
+        </PanelHeading>
+        <PanelBody>
+          <Chart
+            v-if="mostWishlistedOptions"
+            key="most-wishlisted"
+            name="most-wishlisted"
+            :async-status="mostWishlistedStatus"
+            :options="mostWishlistedOptions"
             tooltip-type="ship"
             type="bar"
           />
