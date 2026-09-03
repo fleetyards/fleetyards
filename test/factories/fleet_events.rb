@@ -5,12 +5,15 @@
 # Table name: fleet_events
 #
 #  id                        :uuid             not null, primary key
+#  active_at                 :datetime
 #  archived_at               :datetime
 #  auto_lock_enabled         :boolean          default(TRUE), not null
 #  auto_lock_minutes_before  :integer          default(60), not null
 #  briefing                  :text
+#  cancelled_at              :datetime
 #  cancelled_reason          :text
 #  category                  :integer          default(0), not null
+#  completed_at              :datetime
 #  cover_image_preset        :string
 #  description               :text
 #  discord_synced_at         :datetime
@@ -18,8 +21,11 @@
 #  excluded_dates            :date             default([]), not null, is an Array
 #  external_uid              :uuid             not null
 #  location                  :string
+#  locked_at                 :datetime
 #  max_attendees             :integer
 #  meetup_location           :string
+#  open_at                   :datetime
+#  published_at              :datetime
 #  recurrence_count          :integer
 #  recurrence_interval       :string
 #  recurrence_until          :date

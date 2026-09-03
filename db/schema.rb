@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_31_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -530,12 +530,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_31_200000) do
   end
 
   create_table "fleet_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "active_at"
     t.datetime "archived_at"
     t.boolean "auto_lock_enabled", default: true, null: false
     t.integer "auto_lock_minutes_before", default: 60, null: false
     t.text "briefing"
+    t.datetime "cancelled_at"
     t.text "cancelled_reason"
     t.integer "category", default: 0, null: false
+    t.datetime "completed_at"
     t.string "cover_image_preset"
     t.datetime "created_at", null: false
     t.uuid "created_by_id", null: false
@@ -548,9 +551,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_31_200000) do
     t.uuid "external_uid", null: false
     t.uuid "fleet_id", null: false
     t.string "location"
+    t.datetime "locked_at"
     t.integer "max_attendees"
     t.string "meetup_location"
     t.uuid "mission_id"
+    t.datetime "open_at"
+    t.datetime "published_at"
     t.integer "recurrence_count"
     t.string "recurrence_interval"
     t.date "recurrence_until"

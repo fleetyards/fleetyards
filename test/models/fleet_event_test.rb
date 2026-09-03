@@ -7,12 +7,15 @@ require "test_helper"
 # Table name: fleet_events
 #
 #  id                        :uuid             not null, primary key
+#  active_at                 :datetime
 #  archived_at               :datetime
 #  auto_lock_enabled         :boolean          default(TRUE), not null
 #  auto_lock_minutes_before  :integer          default(60), not null
 #  briefing                  :text
+#  cancelled_at              :datetime
 #  cancelled_reason          :text
 #  category                  :integer          default(0), not null
+#  completed_at              :datetime
 #  cover_image_preset        :string
 #  description               :text
 #  discord_synced_at         :datetime
@@ -20,8 +23,11 @@ require "test_helper"
 #  excluded_dates            :date             default([]), not null, is an Array
 #  external_uid              :uuid             not null
 #  location                  :string
+#  locked_at                 :datetime
 #  max_attendees             :integer
 #  meetup_location           :string
+#  open_at                   :datetime
+#  published_at              :datetime
 #  recurrence_count          :integer
 #  recurrence_interval       :string
 #  recurrence_until          :date
@@ -268,6 +274,64 @@ class FleetEventTest < ActiveSupport::TestCase
         recurrence_count: 4, recurrence_until: Date.tomorrow)
 
       refute event.valid?
+    end
+  end
+
+  class StatusTimestampsTest < FleetEventTest
+    test "records the moment of every transition" do
+      event = create(:fleet_event)
+
+      event.publish!
+      assert_not_nil event.open_at
+
+      event.lock_signups!
+      assert_not_nil event.locked_at
+
+      event.start!
+      assert_not_nil event.active_at
+
+      event.complete!
+      assert_not_nil event.completed_at
+    end
+
+    test "records a cancellation" do
+      event = create(:fleet_event)
+      event.publish!
+
+      event.cancel!
+
+      assert_not_nil event.cancelled_at
+    end
+
+    test "stamps published_at on the first publish" do
+      event = create(:fleet_event)
+
+      event.publish!
+
+      assert_not_nil event.published_at
+      assert_equal event.open_at.to_i, event.published_at.to_i
+    end
+
+    # aasm rewrites open_at on every transition into open, so an unlock moves
+    # it. published_at is what a lead time measures against and has to stay put.
+    test "keeps published_at when signups are unlocked again" do
+      event = travel_to(2.days.ago) { create(:fleet_event).tap(&:publish!) }
+      first_published_at = event.published_at
+
+      event.lock_signups!
+      event.unlock_signups!
+
+      assert_operator event.open_at, :>, first_published_at
+      assert_equal first_published_at.to_i, event.reload.published_at.to_i
+    end
+
+    test "leaves the timestamps alone on an unrelated update" do
+      event = create(:fleet_event)
+
+      event.update!(title: "Renamed")
+
+      assert_nil event.published_at
+      assert_nil event.open_at
     end
   end
 end
