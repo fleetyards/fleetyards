@@ -20,6 +20,11 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
         style: :deepObject,
         explode: true,
         required: false
+      parameter name: "containerFit", in: :query,
+        schema: ::V1::Schemas::Queries::ContainerFitQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
 
       response(200, "successful") do
         schema ::V1::Schemas::Models::Options::ModelOptions
@@ -74,6 +79,51 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
       assert_equal ["combat"], items.map { |item| item["classification"] }.uniq
       assert_equal ["Combat"], items.map { |item| item["classificationLabel"] }.uniq
     end
+  end
+
+  test "GET /filters/models/options filters by withCargoGrids" do
+    with_grid = create(:model, :with_store_image)
+    with_grid.update!(cargo_holds: [cargo_hold_attributes])
+    without_grid = create(:model, :with_store_image)
+
+    assert_api_response :get, 200, params: {q: {"withCargoGrids" => true}} do
+      ids = parsed_body["items"].map { |item| item["id"] }
+
+      assert_includes ids, with_grid.id
+      refute_includes ids, without_grid.id
+    end
+  end
+
+  test "GET /filters/models/options filters by containerFit" do
+    roomy = create(:model, :with_store_image)
+    roomy.update!(cargo_holds: [cargo_hold_attributes])
+    cramped = create(:model, :with_store_image)
+    cramped.update!(cargo_holds: [cargo_hold_attributes(capacity: 1, size: 1)])
+
+    assert_api_response :get, 200, params: {containerFit: {"8" => 1}} do
+      ids = parsed_body["items"].map { |item| item["id"] }
+
+      assert_includes ids, roomy.id
+      refute_includes ids, cramped.id
+    end
+  end
+
+  # One hold big enough for `size` SCU containers, in the shape the game files
+  # describe them - the before_save hook turns this into the CargoHold rows and
+  # container capacities both filters query.
+  private def cargo_hold_attributes(capacity: 8, size: 8)
+    dimensions = {"x" => 2.0, "y" => 2.0, "z" => 2.0}
+
+    {
+      "name" => "cargo_#{size}",
+      "capacity" => capacity,
+      "dimensions" => {"x" => 5.0, "y" => 2.5, "z" => 2.5},
+      "max_container_size" => {"size" => size, "dimensions" => dimensions},
+      "limits" => {
+        "min" => {"dimensions" => {"x" => 1.0, "y" => 1.0, "z" => 1.0}, "capacity" => 1},
+        "max" => {"dimensions" => dimensions, "capacity" => capacity}
+      }
+    }
   end
 
   test "GET /filters/models/options marks models the signed in user owns or wants" do

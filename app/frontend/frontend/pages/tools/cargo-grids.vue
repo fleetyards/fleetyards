@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ComponentExposed } from "vue-component-type-helpers";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import CargoGridViewer from "@/frontend/components/CargoGridViewer/index.vue";
 import {
@@ -19,30 +18,18 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
-import BaseSelect, {
-  type BaseSelectParams,
-  type ValueType,
-} from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  models as fetchModels,
-  ModelProductionStatusEnum,
-  ContainerSizeEnum,
-  type ContainerFitQuery,
-  type Model,
-  type ModelQuery,
-  type Models,
-} from "@/services/fyApi";
+import { ContainerSizeEnum, type ContainerFitQuery } from "@/services/fyApi";
 import {
   InputTypesEnum,
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
 
-import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 import { FeatureFlagName } from "@/services/fyApi";
 import { useCargoGridShip } from "@/frontend/composables/useCargoGridShip";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
@@ -50,23 +37,20 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const sessionStore = useSessionStore();
 const { displayConfirm } = useAppNotifications();
 
+const comlink = useComlink();
+
 const mobile = useMobile();
-
-const hangarOnly = ref(false);
-
-const containerFilterActive = ref(false);
 
 // Derived from the schema rather than repeated: ContainerSizeEnum is generated
 // from CargoHoldContainerCapacity::CONTAINER_SIZES, so adding a size on the
 // Ruby side reaches this page without an edit.
-const CONTAINER_SIZES = Object.values(ContainerSizeEnum).map(Number);
+const CONTAINER_SIZE_KEYS = Object.values(ContainerSizeEnum);
+
+const CONTAINER_SIZES = CONTAINER_SIZE_KEYS.map(Number);
 
 const MAX_SHIPS = 4;
-
-const modelSelect = ref<ComponentExposed<typeof BaseSelect>>();
 
 // Parse initial slugs from URL (backward compat: ?ship= or new ?ships=)
 const parseInitialSlugs = (): string[] => {
@@ -148,84 +132,49 @@ const singleShipCargoHolds = computed(() => {
 
 // Container requests: how many of each size the user wants to load. A link may
 // arrive with a load already counted out - a ship inventory sends what it holds.
+//
+// Sparse rather than zero-filled: an empty counter reads as "none of these",
+// where a row of zeroes hides which sizes carry a load.
 const containerRequests = ref<Record<number, number>>({
-  ...Object.fromEntries(CONTAINER_SIZES.map((s) => [s, 0])),
   ...parseContainerCounts(route.query.containers),
 });
+
+const containerCount = (size: number) =>
+  Number(containerRequests.value[size]) || 0;
 
 const hasContainerRequests = computed(() =>
   Object.values(containerRequests.value).some((v) => Number(v) > 0),
 );
 
 const requestedContainers = computed<ContainerRequest[]>(() => {
-  return CONTAINER_SIZES.filter(
-    (s) => Number(containerRequests.value[s]) > 0,
-  ).map((s) => ({
+  return CONTAINER_SIZES.filter((s) => containerCount(s) > 0).map((s) => ({
     size: s,
-    quantity: Number(containerRequests.value[s]),
+    quantity: containerCount(s),
   }));
 });
 
 const clearContainers = () => {
-  containerFilterActive.value = false;
-  for (const size of CONTAINER_SIZES) {
-    containerRequests.value[size] = 0;
-  }
+  containerRequests.value = {};
 };
 
-// Model filter that only shows flight-ready ships with cargo grids
-const fetchCargoModels = async (params: BaseSelectParams<Model>) => {
-  const q: ModelQuery = {
-    withCargoGrids: true,
-    productionStatusIn: [ModelProductionStatusEnum.FLIGHT_READY],
-  };
+// The load typed into the form, in the shape the picker's query takes. Iterated
+// over the enum rather than CONTAINER_SIZES: its values are the literal keys
+// ContainerFitQuery declares, so this indexes without a cast.
+const containerFit = computed<ContainerFitQuery>(() => {
+  const fit: ContainerFitQuery = {};
 
-  if (params.search) {
-    q.nameCont = params.search;
-  }
+  for (const size of CONTAINER_SIZE_KEYS) {
+    const quantity = containerCount(Number(size));
 
-  if (params.missing && !params.search) {
-    q.slugEq = params.missing as string;
-  }
-
-  if (hangarOnly.value) {
-    q.inHangar = true;
-  }
-
-  const containerFit: ContainerFitQuery = {};
-  if (containerFilterActive.value && hasContainerRequests.value) {
-    // Over the enum rather than CONTAINER_SIZES: its values are the literal
-    // keys ContainerFitQuery declares, so this indexes without a cast.
-    for (const size of Object.values(ContainerSizeEnum)) {
-      const qty = Number(containerRequests.value[Number(size)]);
-      if (qty > 0) {
-        containerFit[size] = qty;
-      }
+    if (quantity > 0) {
+      fit[size] = quantity;
     }
   }
 
-  return fetchModels({
-    page: String(params.page || 1),
-    q,
-    containerFit,
-  });
-};
+  return fit;
+});
 
-const formatModels = (response: Models) => {
-  return response.items.map((model) => ({
-    label: model.name,
-    value: model.slug,
-    object: model,
-  }));
-};
-
-const containerFilterVersion = ref(0);
-
-const filterKey = computed(
-  () => `cargo-grid-model-${hangarOnly.value}-${containerFilterVersion.value}`,
-);
-
-const selectDisabled = computed(() => selectedSlugs.value.length >= MAX_SHIPS);
+const full = computed(() => selectedSlugs.value.length >= MAX_SHIPS);
 
 // URL sync
 const syncUrl = () => {
@@ -259,24 +208,50 @@ const syncUrl = () => {
 // the URL follows them instead of being rewritten only when a ship changes.
 watch(containerRequests, () => syncUrl(), { deep: true });
 
-// Ship management
-const handleShipSelect = (value: ValueType<Model> | undefined) => {
-  const slug = value as string;
-  if (!slug) return;
+/**
+ * Opens the shared ship picker, carrying the load typed into the form over as its
+ * container filter - the ships worth offering are the ones that can take it. The
+ * filter is editable in the modal, and widening it there leaves the page's counts
+ * alone.
+ */
+const openPicker = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/CargoGrids/Models/PickerModal/index.vue"),
+    props: {
+      taken: selectedSlugs.value,
+      max: MAX_SHIPS,
+      containerFit: containerFit.value,
+    },
+    wide: true,
+  });
+};
 
-  // Prevent duplicates and enforce max
-  if (
-    selectedSlugs.value.includes(slug) ||
-    selectedSlugs.value.length >= MAX_SHIPS
-  ) {
-    modelSelect.value?.clear();
-    return;
+// The picker sizes its own cap from what was free when it opened, so the ceiling
+// and the duplicates are checked again here - a link opened in the meantime, or a
+// ship removed behind the modal, moves both.
+const addShips = (slugs: string[]) => {
+  const next = [...selectedSlugs.value];
+
+  for (const slug of slugs) {
+    if (next.length >= MAX_SHIPS || next.includes(slug)) continue;
+
+    next.push(slug);
   }
 
-  selectedSlugs.value = [...selectedSlugs.value, slug];
-  modelSelect.value?.clear();
+  selectedSlugs.value = next;
   syncUrl();
 };
+
+const offModelsPicked = ref<() => void>();
+
+onMounted(() => {
+  offModelsPicked.value = comlink.on("cargo-grids-models-picked", addShips);
+});
+
+onUnmounted(() => {
+  offModelsPicked.value?.();
+});
 
 const removeShip = (index: number) => {
   const next = [...selectedSlugs.value];
@@ -292,28 +267,18 @@ const handleToggleModule = (slotIndex: number, moduleSlug: string) => {
 
 const handleFillGreedy = (slotIndex: number) => {
   const counts = shipSlots[slotIndex].getGreedyFillCounts();
+  const next: Record<number, number> = {};
+
   for (const size of CONTAINER_SIZES) {
-    containerRequests.value[size] = counts[size] || 0;
+    if (counts[size] > 0) {
+      next[size] = counts[size];
+    }
   }
-};
 
-const applyContainerFilter = () => {
-  containerFilterActive.value = true;
-  containerFilterVersion.value++;
-  selectedSlugs.value = [];
-  syncUrl();
-};
-
-const toggleHangarOnly = () => {
-  hangarOnly.value = !hangarOnly.value;
-  containerFilterVersion.value++;
-  selectedSlugs.value = [];
-  syncUrl();
+  containerRequests.value = next;
 };
 
 const doResetFilters = () => {
-  hangarOnly.value = false;
-  containerFilterActive.value = false;
   clearContainers();
   selectedSlugs.value = [];
   syncUrl();
@@ -335,22 +300,23 @@ const resetFilters = () => {
       <div class="row toolbar">
         <div class="col-12 col-lg-8">
           <div class="ship-selector-row" data-test="ship-entries">
-            <BaseSelect
-              ref="modelSelect"
-              :key="filterKey"
-              :label="t('labels.selectModel')"
-              :search-label="t('labels.findModel')"
-              :query-fn="fetchCargoModels"
-              :query-response-formatter="formatModels"
-              name="cargo-grid-model"
-              :paginated="true"
-              :searchable="true"
-              :multiple="false"
-              :disabled="selectDisabled"
-              no-label
-              inline
-              @update:model-value="handleShipSelect"
-            />
+            <!-- The tooltip hangs on the wrapper, not the button: a disabled
+                 button dispatches no pointer events, so the one case that has
+                 something to say could never say it. -->
+            <div
+              v-tooltip="
+                full ? t('labels.cargoGridViewer.enoughShips') : undefined
+              "
+            >
+              <Btn
+                :disabled="full"
+                data-test="cargo-grid-add-ships"
+                @click="openPicker()"
+              >
+                <i class="fa-light fa-plus" />
+                {{ t("labels.cargoGridViewer.addShip") }}
+              </Btn>
+            </div>
             <Btn
               v-if="selectedSlugs.length > 0"
               v-tooltip="t('actions.reset')"
@@ -358,13 +324,6 @@ const resetFilters = () => {
               @click="resetFilters"
             >
               <i class="fa-light fa-undo" />
-            </Btn>
-            <Btn
-              v-if="sessionStore.isAuthenticated"
-              :active="hangarOnly"
-              @click="toggleHangarOnly"
-            >
-              {{ t("labels.cargoGridViewer.myHangar") }}
             </Btn>
           </div>
 
@@ -378,6 +337,9 @@ const resetFilters = () => {
             >
               <FormInput
                 v-model.number="containerRequests[size]"
+                :class="{
+                  'container-field--set': containerCount(size) > 0,
+                }"
                 :name="`container-${size}`"
                 :label="`${size} SCU`"
                 :type="InputTypesEnum.NUMBER"
@@ -387,9 +349,6 @@ const resetFilters = () => {
               />
             </div>
             <div class="container-fields__actions">
-              <Btn v-if="hasContainerRequests" @click="applyContainerFilter">
-                {{ t("labels.cargoGridViewer.filterShips") }}
-              </Btn>
               <Btn v-if="hasContainerRequests" @click="clearContainers">
                 {{ t("actions.clear") }}
               </Btn>

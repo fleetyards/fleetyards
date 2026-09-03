@@ -3,9 +3,12 @@
     "modelPicker": {
       "hangarTitle": "将舰船添加到你的机库",
       "compareTitle": "选择要比较的飞船",
+      "cargoGridsTitle": "选择用于货物网格的飞船",
       "wishlistTitle": "将舰船添加到你的愿望清单",
       "labels": {
         "search": "按名称或制造商搜索",
+        "hangarOnly": "仅我的飞船",
+        "containerFit": "要运载的货物",
         "results": "%{count} 艘舰船",
         "selected": "已选择 %{count} 艘"
       },
@@ -18,7 +21,8 @@
       "badges": {
         "inHangar": "已在机库",
         "onWishlist": "已在愿望清单",
-        "comparing": "比较中"
+        "comparing": "比较中",
+        "onCargoGrid": "已在网格"
       }
     }
   }

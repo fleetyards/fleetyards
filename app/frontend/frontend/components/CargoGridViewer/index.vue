@@ -1278,7 +1278,14 @@ const onDragEnd = (_shipIndex: number) => {
             :position="getShipPosition(shipResult)"
           >
             <!-- Ship label (Html from cientos) -->
-            <Html :position="[0, shipResult.boundingHeight + 1, 0]" center>
+            <!-- Capped well below the modal layer: cientos defaults the range to
+                 16777271, which floats the label over dialogs and overlays. It
+                 only ever has to clear the canvas it labels. -->
+            <Html
+              :position="[0, shipResult.boundingHeight + 1, 0]"
+              :z-index-range="[100, 0]"
+              center
+            >
               <span
                 class="cargo-grid-viewer__ship-label"
                 :style="{ color: shipResult.color }"

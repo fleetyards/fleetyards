@@ -1700,9 +1700,8 @@
         "totalCargo": "Carico totale",
         "didNotFit": "Non entra",
         "openInTool": "Apri nello strumento griglia di carico",
-        "myHangar": "Mostra solo le mie navi",
-        "filterShips": "Filtra navi per dimensione container",
-        "addShip": "Add Ship",
+        "enoughShips": "Quattro navi riempiono la griglia.",
+        "addShip": "Aggiungi nave",
         "removeShip": "Remove",
         "autoFillShip": "Auto-fill"
       },

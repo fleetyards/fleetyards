@@ -1700,9 +1700,8 @@
         "totalCargo": "Cargaison totale",
         "didNotFit": "Ne rentre pas",
         "openInTool": "Ouvrir dans l'outil de grille de cargaison",
-        "myHangar": "Afficher uniquement mes vaisseaux",
-        "filterShips": "Filtrer les vaisseaux par taille de conteneur",
-        "addShip": "Add Ship",
+        "enoughShips": "Quatre vaisseaux remplissent la grille.",
+        "addShip": "Ajouter un vaisseau",
         "removeShip": "Remove",
         "autoFillShip": "Auto-fill"
       },

@@ -3,9 +3,12 @@
     "modelPicker": {
       "hangarTitle": "Add Ships to your Hangar",
       "compareTitle": "Select Ships to Compare",
+      "cargoGridsTitle": "Select Ships for the Cargo Grid",
       "wishlistTitle": "Add Ships to your Wishlist",
       "labels": {
         "search": "Search by name or manufacturer",
+        "hangarOnly": "Only my Ships",
+        "containerFit": "Load to carry",
         "results": "%{count} Ships",
         "selected": "%{count} Selected"
       },
@@ -18,7 +21,8 @@
       "badges": {
         "inHangar": "In Hangar",
         "onWishlist": "On Wishlist",
-        "comparing": "Comparing"
+        "comparing": "Comparing",
+        "onCargoGrid": "On the Grid"
       }
     }
   }

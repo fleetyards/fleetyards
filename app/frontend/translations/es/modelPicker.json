@@ -3,9 +3,12 @@
     "modelPicker": {
       "hangarTitle": "Añadir naves a tu hangar",
       "compareTitle": "Seleccionar naves para comparar",
+      "cargoGridsTitle": "Seleccionar naves para la grilla de carga",
       "wishlistTitle": "Añadir naves a tu lista de deseos",
       "labels": {
         "search": "Buscar por nombre o fabricante",
+        "hangarOnly": "Solo mis naves",
+        "containerFit": "Carga a transportar",
         "results": "%{count} naves",
         "selected": "%{count} seleccionadas"
       },
@@ -18,7 +21,8 @@
       "badges": {
         "inHangar": "En el hangar",
         "onWishlist": "En la lista de deseos",
-        "comparing": "En comparación"
+        "comparing": "En comparación",
+        "onCargoGrid": "En la grilla"
       }
     }
   }

@@ -20,6 +20,14 @@
   }
 }
 
+// Which sizes are actually being asked for, readable without comparing seven
+// numbers: an empty counter is silent, a filled one is marked.
+.container-field--set :deep(input) {
+  color: var(--color-gold);
+  font-weight: 600;
+  border-color: var(--color-gold);
+}
+
 .toolbar {
   align-items: flex-start;
   position: relative;
