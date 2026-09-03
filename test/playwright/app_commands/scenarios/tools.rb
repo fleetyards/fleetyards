@@ -66,7 +66,7 @@ end
 # "-:-:-" for every row. `quantum_fuel_consumption` is milli-SCU per Gm; 5 and
 # 22 are the values real S1 and S2 drives carry.
 unless Component.exists?(name: "Beacon")
-  FactoryBot.create(:component, name: "Beacon", category: "quantumdrive", component_type: "QuantumDrive", type_data: {
+  FactoryBot.create(:component, name: "Beacon", category: "quantumdrive", component_type: "QuantumDrive", size: "1", grade: "1", type_data: {
     "quantum_fuel_consumption" => 5.0,
     "drive_speed" => 283046000.0,
     "stage_one_accel_rate" => 49500000.0,
@@ -75,7 +75,7 @@ unless Component.exists?(name: "Beacon")
 end
 
 unless Component.exists?(name: "Expedition")
-  FactoryBot.create(:component, name: "Expedition", category: "quantumdrive", component_type: "QuantumDrive", type_data: {
+  FactoryBot.create(:component, name: "Expedition", category: "quantumdrive", component_type: "QuantumDrive", size: "2", grade: "3", type_data: {
     "quantum_fuel_consumption" => 22.0,
     "drive_speed" => 183046000.0,
     "stage_one_accel_rate" => 39500000.0,

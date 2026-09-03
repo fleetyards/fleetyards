@@ -1,0 +1,190 @@
+.travel-times {
+  &__intro {
+    max-width: 44rem;
+    margin-bottom: 1.5rem;
+    color: $gray-light;
+  }
+
+  &__slider {
+    margin: 1.5rem 0 1.25rem;
+  }
+
+  &__presets,
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__hint {
+    margin: 1rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    font-size: 0.8125rem;
+    color: $gray;
+  }
+
+  &__filter-label {
+    margin-bottom: 0.65rem;
+    font-size: 0.8125rem;
+    color: $gray-light;
+
+    & + .travel-times__chips {
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  &__reset {
+    padding: 0;
+    font-size: 0.75rem;
+    color: $primary;
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  &__credit {
+    margin-top: 1rem;
+    font-size: 0.8125rem;
+    color: $gray;
+  }
+
+  /*
+   * The distance is the one number the page is steered by, so it is set at the
+   * size of a heading rather than of a field. Everything else about the control
+   * -- frame, focus, the suffix -- stays the shared input's.
+   */
+  &__distance {
+    :deep(input) {
+      height: auto;
+      padding: 0.35rem 0.75rem;
+      font-family: "Orbitron", sans-serif;
+      font-size: 1.875rem;
+      line-height: 2.5rem;
+    }
+  }
+
+  &__preset-value {
+    margin-left: 0.4rem;
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+
+    &::after {
+      content: " Mkm";
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.65rem;
+    padding: 0 0.25rem;
+    font-size: 0.8125rem;
+    color: $gray-light;
+  }
+
+  &__legend {
+    margin: 0.75rem 0 0;
+    padding: 0 0.25rem;
+    font-size: 0.8125rem;
+    color: $gray;
+  }
+
+  /*
+   * Deliberately NOT the heading face: Orbitron draws a slashed zero with no
+   * alternate, so a rank of "01" reads as "Ø1" and a time as "Ø1:18". Tabular
+   * figures give the column the alignment the display face was wanted for.
+   */
+  &__rank {
+    font-variant-numeric: tabular-nums;
+    color: $gray;
+
+    &--podium {
+      color: $primary;
+    }
+  }
+
+  /*
+   * Size and grade are one glyph each. Framed, they read as the attributes of
+   * the drive rather than as more numbers in a row already carrying two.
+   */
+  &__badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-radius: $border-radius-base + 2px;
+    font-size: 0.75rem;
+    color: $gray-light;
+    white-space: nowrap;
+
+    // The grade ladder, borrowed from the class colours the rest of the app
+    // uses: gold reads as the best of a set, the greys as the plain end of it.
+    &--grade-a {
+      color: $gold;
+      border-color: rgba($gold, 0.4);
+    }
+
+    &--grade-b {
+      color: $cyan;
+      border-color: rgba($cyan, 0.4);
+    }
+
+    &--grade-c {
+      color: $gray-light;
+    }
+
+    &--grade-d {
+      color: $gray;
+      border-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    }
+  }
+
+  &__time {
+    font-size: 1.0625rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__drive {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+    /* Clear of the next column, so a full-length bar never touches it. */
+    padding-right: 1.25rem;
+  }
+
+  /*
+   * The same 3px the row's hover rail is drawn at, so the two read as one
+   * family rather than two thicknesses of line in the same row.
+   */
+  &__bar {
+    display: block;
+    height: 3px;
+    border-radius: 2px;
+    background-color: var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    overflow: hidden;
+  }
+
+  &__bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background-color: var(--color-edge, rgb(122 130 136 / 0.5));
+    transition: width 0.3s ease;
+
+    &--podium {
+      background-color: var(--color-primary, #{$primary});
+    }
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    color: $gray;
+  }
+}

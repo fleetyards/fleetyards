@@ -1701,7 +1701,26 @@
         "quantumDrive": "Quantum Drive",
         "fuelUsage": "Fuel Usage",
         "travelTime": "Travel Time",
-        "poweredBy": "powered by"
+        "poweredBy": "powered by",
+        "rank": "#",
+        "size": "Size",
+        "grade": "Grade",
+        "sizeValue": "S%{size}",
+        "intro": "How long each quantum drive takes for your jump — and how much quantum fuel it burns getting there.",
+        "jumpDistance": "Jump distance",
+        "distanceHint": "1 Mkm is a million kilometres. Crossing Stanton is about 40.",
+        "filters": "Filters",
+        "resetFilters": "Reset",
+        "barLegend": "Bar shows time against the slowest drive",
+        "count": "%{count} drives",
+        "countFiltered": "%{count} of %{total} drives",
+        "noMatch": "No drive matches these filters.",
+        "presets": {
+          "moon": "Moon hop",
+          "short": "Short jump",
+          "system": "Across Stanton",
+          "far": "Long haul"
+        }
       },
       "admin": {
         "dashboard": {
