@@ -9510,6 +9510,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+  "/stats/trending-ships":
+    get:
+      summary: Stats Trending Ships
+      tags:
+      - Stats
+      operationId: trendingShips
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/vehicles-by-model":
     get:
       summary: Stats Vehicles by Model

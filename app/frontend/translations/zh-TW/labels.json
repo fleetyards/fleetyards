@@ -185,6 +185,7 @@
         "vehiclesPerMonth": "每月機庫飛船",
         "topVehiclesByModel": "前 10 機庫飛船",
         "shipsOfTheMonth": "月度飛船",
+        "trendingShips": "瀏覽最多的飛船（30 天）",
         "crewDeficit": "船員缺口",
         "crewSurplus": "船員盈餘",
         "membersByRole": "按角色分組成員",

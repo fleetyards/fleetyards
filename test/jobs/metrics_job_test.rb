@@ -57,4 +57,69 @@ class MetricsJobTest < ActiveJob::TestCase
 
     assert_not Rollup.exists?(name: ApiUsageTracker::ROLLUP_NAME)
   end
+
+  test "#perform rolls up ship page views per slug" do
+    track_ship_view("/ships/aurora-mr/")
+    track_ship_view("/ships/aurora-mr/")
+    track_ship_view("/ships/cutlass-black/")
+
+    MetricsJob.new.perform
+
+    assert_equal 2, ship_views("aurora-mr")
+    assert_equal 1, ship_views("cutlass-black")
+  end
+
+  test "#perform counts a ship's sub-pages towards the ship" do
+    track_ship_view("/ships/aurora-mr/")
+    track_ship_view("/ships/aurora-mr/images/")
+
+    MetricsJob.new.perform
+
+    assert_equal 2, ship_views("aurora-mr")
+  end
+
+  test "#perform ignores the ship index, which names no ship" do
+    track_ship_view("/ships/")
+
+    MetricsJob.new.perform
+
+    assert_equal 0, Rollup.where(name: MetricsJob::ROLLUP_SHIP_VIEWS).count
+  end
+
+  # Ahoy refuses to record an objecting user from the moment they object, so
+  # what is left to exclude here are the rows written before that.
+  test "#perform leaves out views by a user who objected to tracking" do
+    objector = create(:user, tracking: false)
+    track_ship_view("/ships/aurora-mr/", user: objector)
+    track_ship_view("/ships/aurora-mr/")
+
+    MetricsJob.new.perform
+
+    assert_equal 1, ship_views("aurora-mr")
+  end
+
+  private def track_ship_view(page, user: nil, at: 1.day.ago)
+    visit = Ahoy::Visit.create!(
+      visit_token: SecureRandom.hex,
+      visitor_token: SecureRandom.hex,
+      started_at: at,
+      user_id: user&.id
+    )
+
+    Ahoy::Event.create!(
+      visit: visit,
+      user_id: user&.id,
+      name: "$view",
+      properties: {"page" => page},
+      time: at
+    )
+  end
+
+  private def ship_views(slug)
+    Rollup.where(
+      name: MetricsJob::ROLLUP_SHIP_VIEWS,
+      interval: "day",
+      dimensions: {model_slug: slug}
+    ).sum(:value)
+  end
 end
