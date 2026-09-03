@@ -20,6 +20,7 @@ resources :models, param: :slug, only: %i[index show] do
     get :module_packages, path: "module-packages"
     get :upgrades
     get :paints
+    get :sales
     get :store_image, path: "store-image"
     get :fleetchart_image, path: "fleetchart-image"
   end

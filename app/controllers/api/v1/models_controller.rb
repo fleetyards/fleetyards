@@ -275,6 +275,13 @@ module Api
           .order(name: :asc)
       end
 
+      def sales
+        @model = find_model_by_slug!
+        return if performed?
+
+        @sales = @model.sales.recent_first
+      end
+
       def store_image
         model = find_model_by_slug(Model.visible.active)
         return if performed?

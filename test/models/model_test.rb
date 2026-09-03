@@ -530,4 +530,90 @@ class ModelTest < ActiveSupport::TestCase
     assert_not_predicate concept, :in_game?
     assert_includes Model.visible.active, concept
   end
+
+  test "going on sale opens a sale" do
+    model = create(:model, on_sale: false)
+
+    model.update!(on_sale: true)
+
+    assert_equal 1, model.sales.count
+    assert_predicate model.sales.last, :ongoing?
+  end
+
+  test "coming off sale closes the open sale" do
+    model = create(:model, on_sale: false)
+    model.update!(on_sale: true)
+
+    model.update!(on_sale: false)
+
+    sale = model.sales.sole
+    assert_not_predicate sale, :ongoing?
+    assert_not_nil sale.ended_at
+  end
+
+  # The store sync writes the flag on every run, so a save that does not change
+  # it must not look like a new sale.
+  test "saving an already discounted model does not open a second sale" do
+    model = create(:model, on_sale: false)
+    model.update!(on_sale: true)
+
+    model.update!(name: "Renamed")
+    model.update!(on_sale: true)
+
+    assert_equal 1, model.sales.count
+  end
+
+  test "a second sale opens its own row" do
+    model = create(:model, on_sale: false)
+    model.update!(on_sale: true)
+    model.update!(on_sale: false)
+
+    model.update!(on_sale: true)
+
+    assert_equal 2, model.sales.count
+    assert_equal 1, model.sales.ongoing.count
+  end
+
+  test "#last_sale returns the most recently started one" do
+    model = create(:model)
+    create(:model_sale, :finished, model:, started_at: 1.year.ago, ended_at: 11.months.ago)
+    newest = create(:model_sale, model:, started_at: 1.week.ago, ended_at: nil)
+
+    assert_equal newest, model.last_sale
+  end
+
+  test "#average_days_between_sales needs two sales to have a gap" do
+    model = create(:model)
+    create(:model_sale, :finished, model:)
+
+    assert_nil model.average_days_between_sales
+  end
+
+  test "#average_days_between_sales measures start to start" do
+    model = create(:model)
+    create(:model_sale, :finished, model:, started_at: 100.days.ago, ended_at: 96.days.ago)
+    create(:model_sale, :finished, model:, started_at: 60.days.ago, ended_at: 56.days.ago)
+    create(:model_sale, model:, started_at: 20.days.ago, ended_at: nil)
+
+    assert_equal 40.0, model.average_days_between_sales
+  end
+
+  test "a running sale has no duration yet" do
+    sale = create(:model_sale, ended_at: nil)
+
+    assert_nil sale.duration_in_days
+  end
+
+  test "a finished sale knows how long it ran" do
+    sale = create(:model_sale, started_at: 10.days.ago, ended_at: 7.days.ago)
+
+    assert_equal 3.0, sale.duration_in_days
+  end
+
+  test "a sale cannot end before it started" do
+    sale = build(:model_sale, started_at: 1.day.ago, ended_at: 2.days.ago)
+
+    assert_not_predicate sale, :valid?
+    assert_predicate sale.errors[:ended_at], :present?
+  end
 end
