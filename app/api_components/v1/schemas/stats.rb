@@ -18,11 +18,13 @@ module V1
           vehiclesCount: {type: :integer},
           wishlistsCount: {type: :integer},
           shipOfTheMonth: {type: :string},
-          shipOfTheMonthCount: {type: :integer}
+          shipOfTheMonthCount: {type: :integer},
+          paintedVehiclesPercent: {type: :number}
         },
         additionalProperties: false,
         required: %w[shipsCountYear shipsCountTotal manufacturerCount flightReadyCount
-          averagePledgePrice vehiclesCount wishlistsCount shipOfTheMonthCount]
+          averagePledgePrice vehiclesCount wishlistsCount shipOfTheMonthCount
+          paintedVehiclesPercent]
       })
     end
   end

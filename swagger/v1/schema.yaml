@@ -9648,6 +9648,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+  "/stats/top-paints":
+    get:
+      summary: Stats Top Paints
+      tags:
+      - Stats
+      operationId: topPaints
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/trending-ships":
     get:
       summary: Stats Trending Ships
@@ -9680,6 +9693,32 @@ paths:
       tags:
       - Stats
       operationId: vehiclesPerMonth
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
+  "/stats/wish-to-own-ratio":
+    get:
+      summary: Stats Wish to Own Ratio
+      tags:
+      - Stats
+      operationId: wishToOwnRatio
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
+  "/stats/wishlist-by-model":
+    get:
+      summary: Stats Wishlist by Model
+      tags:
+      - Stats
+      operationId: wishlistByModel
       responses:
         '200':
           description: successful
@@ -19889,6 +19928,8 @@ components:
           type: string
         shipOfTheMonthCount:
           type: integer
+        paintedVehiclesPercent:
+          type: number
       additionalProperties: false
       required:
       - shipsCountYear
@@ -19899,6 +19940,7 @@ components:
       - vehiclesCount
       - wishlistsCount
       - shipOfTheMonthCount
+      - paintedVehiclesPercent
       title: Stats
     StoreImageMedia:
       type: object
