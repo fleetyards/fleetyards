@@ -9622,19 +9622,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
-  "/stats/price-movers":
-    get:
-      summary: Stats Price Movers
-      tags:
-      - Stats
-      operationId: priceMovers
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/BarChartStatsList"
   "/stats/quick-stats":
     get:
       summary: Stats
