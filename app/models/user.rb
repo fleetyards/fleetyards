@@ -75,16 +75,24 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
+  # A version of a user row holds their old email and username verbatim, so it
+  # has to go when the account does.
+  include ErasableVersionsConcern
+
   attr_accessor :update_reason, :update_reason_description, :author_id
 
-  # Only an admin action sets `author_id`, so a loader write files nothing. The
-  # gate is not tidiness: the UEX sync rewrites all 232 commodities and 1,526 of
-  # 4,830 equipment rows a week, and versioning those unconditionally would bury
-  # the handful of real edits the way Fleet's touch versions already do.
+  # Only an admin action sets `author_id`, so a change a user makes to their own
+  # account files nothing -- this records what an admin did to somebody else's.
+  #
+  # `unconfirmed_email` is in the list because devise is `reconfirmable`: an
+  # admin changing a confirmed user's address writes there and leaves `email`
+  # alone until the user confirms, so versioning `email` by itself would record
+  # the change nowhere. `email` still covers an account that was never confirmed,
+  # where devise writes it directly.
   has_paper_trail on: %i[update],
     only: %i[
-      username rsi_handle sale_notify public_hangar public_hangar_loaners
-      public_wishlist hide_owner tester
+      username email unconfirmed_email rsi_handle sale_notify public_hangar
+      public_hangar_loaners public_wishlist hide_owner tester
     ],
     if: ->(record) { record.author_id.present? },
     meta: {

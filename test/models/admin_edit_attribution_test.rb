@@ -69,6 +69,64 @@ class AdminEditAttributionTest < ActiveSupport::TestCase
       PaperTrail::Version.where(item_type: "Component").order(created_at: :desc).first.author_id
   end
 
+  # devise is `reconfirmable`, so an admin retyping a confirmed user's address
+  # writes `unconfirmed_email` and leaves `email` where it was. Versioning
+  # `email` alone would have recorded this nowhere.
+  test "an admin changing a confirmed user's email is recorded" do
+    user = create(:user, email: "before@example.test")
+    user.confirm
+
+    user.author_id = @admin.id
+    user.update!(email: "after@example.test")
+
+    changeset = PaperTrail::Version.where(item_type: "User", item_id: user.id)
+      .order(created_at: :desc).first.changeset
+
+    assert_equal "after@example.test", changeset["unconfirmed_email"].last
+    assert_equal "before@example.test", user.reload.email
+  end
+
+  test "a destroyed user takes its versions with it" do
+    user = create(:user)
+
+    user.author_id = @admin.id
+    user.update!(rsi_handle: "changed_by_admin")
+
+    assert_equal 1, PaperTrail::Version.where(item_type: "User", item_id: user.id).count
+
+    user.destroy!
+
+    assert_empty PaperTrail::Version.where(item_type: "User", item_id: user.id),
+      "an old email would outlive the account it belonged to"
+  end
+
+  test "a destroyed vehicle takes its versions with it" do
+    vehicle = create(:vehicle)
+
+    vehicle.author_id = @admin.id
+    vehicle.update!(serial: "SN-ADMIN-2")
+
+    assert_equal 1, PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id).count
+
+    vehicle.destroy!
+
+    assert_empty PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
+  end
+
+  # The catalogue is not somebody's to erase, so it keeps paper_trail's default.
+  test "a destroyed catalogue record keeps its versions" do
+    equipment = create(:equipment)
+
+    equipment.author_id = @admin.id
+    equipment.update!(name: "Renamed by an admin")
+
+    assert_equal 1, PaperTrail::Version.where(item_type: "Equipment", item_id: equipment.id).count
+
+    equipment.destroy!
+
+    assert_equal 1, PaperTrail::Version.where(item_type: "Equipment", item_id: equipment.id).count
+  end
+
   test "every versioned type the feed can carry is authorised and named" do
     feed_types = Admin::Api::V1::VersionsController::FEED_ACCESS_BY_ITEM_TYPE.keys
 
