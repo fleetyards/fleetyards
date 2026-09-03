@@ -13,6 +13,7 @@ import Forbidden from "@/shared/components/Forbidden/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { usePaginationStore } from "@/shared/stores/pagination";
 import { provideListGeometry } from "@/shared/composables/useListGeometry";
+import { useMinimumDuration } from "@/shared/composables/useMinimumDuration";
 import { useListGeometryStore } from "@/shared/stores/listGeometry";
 import {
   type AsyncStatus,
@@ -47,13 +48,19 @@ const props = withDefaults(defineProps<Props>(), {
   placeholders: false,
 });
 
-const loading = computed(() => {
+const fetching = computed(() => {
   return (
     (props.asyncStatus.isFetching.value &&
       !props.asyncStatus.isRefetching.value) ||
     props.asyncStatus.isLoading.value
   );
 });
+
+// Held on the way down: a list that answers as fast as a cached page does puts
+// its placeholders up and takes them away again inside a frame or two, and a
+// box that fills with grey bars and empties reads as a glitch rather than as a
+// load. See useMinimumDuration.
+const loading = useMinimumDuration(() => fetching.value);
 
 const refetching = computed(() => {
   return props.asyncStatus.isRefetching.value;

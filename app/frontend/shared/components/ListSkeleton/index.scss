@@ -1,36 +1,44 @@
 @import "@/shared/components/skeleton";
 
+// Built to the recipe of the row it stands in for - a framed panel in a gapped
+// column, see NotificationsListItem and the two notification pages - rather
+// than to a height written by hand: the same surface, the same insets, and the
+// same type on each of the two lines. The height then falls out of the same
+// arithmetic the row's does, so the first load reserves the right space without
+// having measured anything yet.
 .list-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 
   &__item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 12px;
-    padding: 10px 16px;
-    border-bottom: 1px solid rgba($gray-light, 0.16);
-    // A row of this kind carries controls on its right, so it is at least as
-    // tall as those - the same token they are sized from rather than a number
-    // copied out of Btn. Only until the list has been measured once.
-    min-height: calc(var(--field-h, 43px) + 20px);
-
-    &:last-child {
-      border-bottom: 0;
-    }
-
-    // A measured row can be shorter than that floor, and a floor it cannot go
-    // under would hold the placeholder taller than the row it stands in for.
-    &--measured {
-      min-height: 0;
-    }
+    // The row splits the same insets between itself and the button it wraps -
+    // 4px and 8px vertically, 14px to the icon. A placeholder has no button, so
+    // it carries the total, less the 1px its border already contributes.
+    padding: 12px 12px 12px 14px;
+    overflow: hidden;
+    background: $panel-bg;
+    border: 1px solid rgba(#fff, 0.1);
+    border-radius: 6px;
   }
 
+  // A round glyph the size of the row's icon, which sits 2px below the top of
+  // the first line rather than on it. The bar's fill rather than a well's: at
+  // 18px across, the well's sweep is a bright sliver crossing the dot every
+  // second and a half, which is exactly the flicker the placeholders are here
+  // to avoid.
   &__icon {
     flex: none;
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    background: rgba($gray-light, 0.18);
     border-radius: 50%;
   }
 
@@ -38,21 +46,33 @@
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
-    gap: 6px;
+    gap: 3px;
     min-width: 0;
+  }
+
+  // The row's second line is a type and a timestamp side by side, so it is two
+  // bars rather than one long one.
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   // Widths and type only - the bars themselves are the shared primitive, and
   // the type is what gives them their height.
   .skeleton-bar {
     &--title {
-      width: 42%;
-      font-size: 15px;
+      width: 58%;
     }
 
-    &--meta {
-      width: 24%;
-      font-size: 12px;
+    &--type {
+      width: 26%;
+      font-size: 0.8em;
+    }
+
+    &--time {
+      width: 16%;
+      font-size: 0.8em;
     }
   }
 }
