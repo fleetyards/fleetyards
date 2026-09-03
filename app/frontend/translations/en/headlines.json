@@ -4,20 +4,12 @@
       "admin": {
         "dashboard": {
           "title": "Dashboard",
-          "modelsByClassification": "Models by Classification",
-          "models": "Reloaded Models",
-          "modelsByManufacturer": "Models by Manufacturer",
-          "manufacturers": "Manufacturers",
-          "modelsByStatus": "Models by Status",
-          "modelsBySize": "Models by Size",
-          "modelsPerMonth": "Models per Month",
-          "componentsByClass": "Components by Class",
-          "components": "Components",
           "visitsPerDay": "Visits per Day",
           "visitsPerMonth": "Visits per Month",
           "mostViewedPages": "Most Viewed Pages",
           "registrationsPerMonth": "Registrations per Month",
-          "users": "Users"
+          "catalogue": "Catalogue Build",
+          "recentEdits": "Recent Admin Edits"
         },
         "models": {
           "index": "Models",

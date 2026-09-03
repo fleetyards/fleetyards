@@ -4,6 +4,7 @@ json.id version.id
 
 json.item_id version.item_id
 json.item_type version.item_type
+json.item_name @item_names&.dig([version.item_type, version.item_id])
 
 json.event version.event
 json.reason version.reason

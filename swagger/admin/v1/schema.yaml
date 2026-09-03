@@ -747,6 +747,25 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/dashboard":
+    get:
+      summary: Dashboard
+      tags:
+      - Dashboard
+      operationId: dashboard
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Dashboard"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/destroyed-fleets":
     get:
       summary: Destroyed Fleets list
@@ -7948,6 +7967,25 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/versions/recent":
+    get:
+      summary: Recent Versions
+      tags:
+      - Versions
+      operationId: recentVersions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Versions"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/versions/{id}/revert":
     parameters:
     - name: id
@@ -10195,6 +10233,46 @@ components:
       - meta
       - items
       title: Components
+    Dashboard:
+      type: object
+      properties:
+        unlistedModelsCount:
+          type: integer
+        failedImportsCount:
+          type: integer
+        stuckImportsCount:
+          type: integer
+        unresolvedRsiRequestLogsCount:
+          type: integer
+        actionableNotificationsCount:
+          type: integer
+        jobsEnqueuedCount:
+          type: integer
+        jobsRetryCount:
+          type: integer
+        jobsDeadCount:
+          type: integer
+        onlineCount:
+          type: integer
+        visitsToday:
+          type: integer
+        visitsSameWeekdayLastWeek:
+          type: integer
+        signupsThisWeek:
+          type: integer
+        signupsLastWeek:
+          type: integer
+        catalogueVersion:
+          type:
+          - string
+          - 'null'
+        catalogueLoadedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      title: Dashboard
     DestroyedFleet:
       type: object
       properties:
@@ -16398,6 +16476,10 @@ components:
           format: uuid
         itemType:
           "$ref": "#/components/schemas/VersionItemTypeEnum"
+        itemName:
+          type:
+          - string
+          - 'null'
         event:
           type: string
         reason:

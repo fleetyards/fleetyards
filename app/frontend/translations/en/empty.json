@@ -23,6 +23,9 @@
         "wishlist": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
         "features": "There are currently no self-service features available. Check back later as new features are added regularly.",
         "fleetFeatures": "There are currently no features a fleet can switch on for itself. Check back later as new features are added regularly."
+      },
+      "admin": {
+        "recentEdits": "No admin has changed anything yet"
       }
     }
   }
