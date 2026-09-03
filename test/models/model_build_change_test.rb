@@ -2,6 +2,33 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: model_build_changes
+#
+#  id           :uuid             not null, primary key
+#  environment  :string           not null
+#  field        :string           not null
+#  from_version :string           not null
+#  new_value    :decimal(15, 2)
+#  old_value    :decimal(15, 2)
+#  recorded_at  :datetime         not null
+#  to_version   :string           not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  model_id     :uuid             not null
+#
+# Indexes
+#
+#  index_model_build_changes_on_build            (environment,to_version)
+#  index_model_build_changes_on_model_and_field  (model_id,environment,to_version,field) UNIQUE
+#  index_model_build_changes_on_model_id         (model_id)
+#  index_model_build_changes_on_recorded_at      (recorded_at)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (model_id => models.id) ON DELETE => cascade
+#
 class ModelBuildChangeTest < ActiveSupport::TestCase
   setup do
     @model = create(:model)

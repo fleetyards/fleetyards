@@ -7196,6 +7196,34 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/changes":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Changes
+      tags:
+      - Models
+      operationId: modelChanges
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelBuildChangesList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/fleetchart-image":
     parameters:
     - name: slug
@@ -9574,6 +9602,19 @@ paths:
       tags:
       - Stats
       operationId: mostWishlisted
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BarChartStatsList"
+  "/stats/patch-changes":
+    get:
+      summary: Stats Patch Changes
+      tags:
+      - Stats
+      operationId: patchChanges
       responses:
         '200':
           description: successful
@@ -17611,6 +17652,45 @@ components:
       - soldAt
       - rentalAt
       title: ModelAvailability
+    ModelBuildChange:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        environment:
+          type: string
+        fromVersion:
+          type: string
+        toVersion:
+          type: string
+        field:
+          type: string
+        oldValue:
+          type:
+          - number
+          - 'null'
+        newValue:
+          type:
+          - number
+          - 'null'
+        recordedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - environment
+      - fromVersion
+      - toVersion
+      - field
+      - recordedAt
+      additionalProperties: false
+      title: ModelBuildChange
+    ModelBuildChangesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ModelBuildChange"
+      title: ModelBuildChangesList
     ModelCrew:
       type: object
       properties:

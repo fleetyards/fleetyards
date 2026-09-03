@@ -307,6 +307,15 @@ module Api
         render json: wishlist_history.to_json
       end
 
+      # What each patch changed about this ship, newest first. The builds these
+      # were derived from are pruned after three patches; the log is not.
+      def changes
+        model = find_model_by_slug!
+        return if performed?
+
+        @changes = model.build_changes.newest_first
+      end
+
       def store_image
         model = find_model_by_slug(Model.visible.active)
         return if performed?
