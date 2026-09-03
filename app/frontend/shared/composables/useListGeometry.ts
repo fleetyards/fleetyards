@@ -29,6 +29,12 @@ export type ListGeometry = {
 
 const listGeometryKey = Symbol("listGeometry") as InjectionKey<ListGeometry>;
 
+// One list can be drawn as a card grid or as a table, and a row that wraps on a
+// phone is not the row it is on a desktop: each shape is remembered apart, and
+// each viewport class apart again.
+const keyFor = (name: string, kind: ListGeometryKindType, mobile: boolean) =>
+  `${name}:${kind}:${mobile ? "mobile" : "desktop"}`;
+
 // Offered by whatever frames a list - FilteredList - and picked up by the list
 // that renders inside it, so a table or a grid needs to be told neither how
 // many placeholders to draw nor how tall.
@@ -40,15 +46,15 @@ export const provideListGeometry = (
   const store = useListGeometryStore();
   const mobile = useMobile();
 
-  const keyFor = (kind: ListGeometryKindType) =>
-    `${toValue(name)}:${kind}:${mobile.value ? "mobile" : "desktop"}`;
+  const ownKeyFor = (kind: ListGeometryKindType) =>
+    keyFor(toValue(name), kind, mobile.value);
 
   const geometry: ListGeometry = {
     count,
     spinnerVisible,
-    heightFor: (kind) => store.findByKey(keyFor(kind)),
+    heightFor: (kind) => store.findByKey(ownKeyFor(kind)),
     report: (kind, measured) => {
-      const key = keyFor(kind);
+      const key = ownKeyFor(kind);
 
       if (measured > 0 && measured !== store.findByKey(key)) {
         store.setByKey(key, measured);
@@ -66,19 +72,47 @@ export const useListGeometry = () => inject(listGeometryKey, undefined);
 // The reporting half, for whatever actually drew the records: a table, a grid,
 // or a page with a list of its own. `pick` names the element to measure, since
 // only the caller knows which of its children stands for one record.
+//
+// `name` is for a page that draws its list inside a frame's slot. The provide
+// then happens in a child of that page - FilteredList is rendered by it - and
+// inject only ever looks upwards, so such a page has nothing to report to and
+// its measurements were going nowhere. Naming the list writes to the same key
+// the frame reads back, which is the list's own name.
 export const useReportListGeometry = (
   kind: ListGeometryKindType,
   root: Ref<HTMLElement | ComponentPublicInstance | undefined>,
   options: {
     ready: () => boolean;
     pick: (host: HTMLElement) => Element | null | undefined;
+    name?: MaybeRefOrGetter<string>;
   },
 ) => {
   const geometry = useListGeometry();
+  const store = useListGeometryStore();
   const mobile = useMobile();
 
+  const record = (measured: number) => {
+    if (geometry) {
+      geometry.report(kind, measured);
+
+      return;
+    }
+
+    const name = toValue(options.name);
+
+    if (!name) {
+      return;
+    }
+
+    const key = keyFor(name, kind, mobile.value);
+
+    if (measured > 0 && measured !== store.findByKey(key)) {
+      store.setByKey(key, measured);
+    }
+  };
+
   const report = async () => {
-    if (!geometry || !options.ready()) {
+    if ((!geometry && !toValue(options.name)) || !options.ready()) {
       return;
     }
 
@@ -93,10 +127,7 @@ export const useReportListGeometry = (
     const measured = host ? options.pick(host) : undefined;
 
     if (measured) {
-      geometry.report(
-        kind,
-        Math.round(measured.getBoundingClientRect().height),
-      );
+      record(Math.round(measured.getBoundingClientRect().height));
     }
   };
 
