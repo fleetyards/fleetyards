@@ -36,6 +36,18 @@ class Api::V1::StatsTopPaintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Most of the paints that reach this chart are named after their ship, and
+  # repeating it would say the same word twice on two wrapped lines.
+  test "GET /stats/top-paints does not repeat a ship already in the paint name" do
+    model = create(:model, name: "Carrack")
+    paint = create(:model_paint, model:, name: "Carrack Expedition")
+    create(:vehicle, model:, model_paint: paint, wanted: false, loaner: false)
+
+    assert_api_response :get, 200 do
+      assert_equal ["Carrack Expedition"], parsed_body.map { |point| point["label"] }
+    end
+  end
+
   test "GET /stats/top-paints ignores a ship with no paint set" do
     model = create(:model)
     create(:vehicle, model:, model_paint: nil, wanted: false, loaner: false)

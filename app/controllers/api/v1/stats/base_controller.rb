@@ -150,13 +150,27 @@ module Api
             .group(:model_paint_id).count
 
           names = ModelPaint.where(id: paint_counts.keys).includes(:model)
-            .to_h { |paint| [paint.id, paint.name_with_model] }
+            .to_h { |paint| [paint.id, paint_label(paint)] }
 
           top_paints = transform_for_bar_chart(
             paint_counts.filter_map { |id, count| [names[id], count] if names.key?(id) }.to_h
           ).take(10)
 
           render json: top_paints.to_json
+        end
+
+        # A paint needs its ship named -- "Thundercloud" alone says nothing, and
+        # paint names repeat across ships. But most of the ones that reach this
+        # chart are already named after their ship, and `name_with_model` turns
+        # those into "Carrack - Carrack Expedition", which then wraps onto two
+        # lines to say the same word twice. Six of the eight most-used paints
+        # are like that.
+        private def paint_label(paint)
+          model_name = paint.model&.name
+          return paint.name if model_name.blank?
+          return paint.name if paint.name.downcase.start_with?(model_name.downcase)
+
+          "#{model_name} - #{paint.name}"
         end
 
         # Grouped on `category`, not on the `component_class` this is named for.
