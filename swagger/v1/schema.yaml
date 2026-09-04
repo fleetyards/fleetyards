@@ -9682,6 +9682,15 @@ paths:
       tags:
       - Stats
       operationId: shipsOfTheMonth
+      parameters:
+      - name: months
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 120
+        description: How many months back to reach
       responses:
         '200':
           description: successful
@@ -9689,6 +9698,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/BarChartStatsList"
+        '400':
+          description: invalid range
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
   "/stats/top-paints":
     get:
       summary: Stats Top Paints

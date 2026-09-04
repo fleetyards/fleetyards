@@ -2320,6 +2320,20 @@
       "erkul": {
         "prefix": "Tryout Loadouts with",
         "link": "Erkul's DPS Calculator"
+      },
+      "shipHistory": {
+        "sales": "促銷歷史",
+        "salesCount": "記錄的促銷",
+        "lastSale": "最近一次促銷",
+        "averageGap": "平均間隔",
+        "days": "%{count} 天",
+        "ongoing": "進行中",
+        "priceHistory": "現金購買價歷史",
+        "firstPriced": "首次定價",
+        "priceRemoved": "價格已移除",
+        "wishlist": "每月願望清單新增",
+        "patchChanges": "更新改動",
+        "notRecordedYet": "僅從開始記錄之日起統計，因此飛船可能尚無記錄。"
       }
     }
   }

@@ -26,6 +26,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "history/",
+    name: "ship-history",
+    component: () => import("@/frontend/pages/ships/[slug]/history.vue"),
+    meta: {
+      customTitle: true,
+    },
+  },
+  {
     path: "viewer/",
     name: "ship-viewer",
     component: () => import("@/frontend/pages/ships/[slug]/viewer.vue"),

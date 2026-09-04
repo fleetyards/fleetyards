@@ -286,10 +286,16 @@ module Api
           render json: vehicles_by_model.to_json
         end
 
+        # How much of the series a caller gets by default. The chart has always
+        # shown a year; the rollup now goes back as far as it was ever written,
+        # and a caller asks for more with `?months=`.
+        SHIPS_OF_THE_MONTH_DEFAULT = 12
+        SHIPS_OF_THE_MONTH_MAX = 120
+
         def ships_of_the_month
           ships_of_the_month = Rollup
-            .where(name: "Ship of the Month", interval: "month")
-            .where("time > ?", 1.year.ago)
+            .where(name: MetricsJob::ROLLUP_SHIP_OF_THE_PERIOD, interval: "month")
+            .where(time: ships_of_the_month_months.months.ago..)
             .order(time: :desc)
             .map do |entry|
               {
@@ -300,6 +306,18 @@ module Api
             end
 
           render json: ships_of_the_month.to_json
+        end
+
+        # The schema turns away anything outside 1..MAX before this runs, so the
+        # clamp is for callers that reach the action another way -- the figure
+        # ends up in a `months.ago`, and an unbounded one would ask Postgres for
+        # every rollup ever written.
+        private def ships_of_the_month_months
+          requested = params[:months].presence&.to_i
+
+          return SHIPS_OF_THE_MONTH_DEFAULT if requested.blank? || requested < 1
+
+          [requested, SHIPS_OF_THE_MONTH_MAX].min
         end
 
         def vehicles_per_month

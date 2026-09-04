@@ -15,6 +15,7 @@
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} Immagini",
       "shipVideos": "%{name} Video",
+      "shipHistory": "Cronologia del %{name}",
       "shipViewer": "%{name} Viewer",
       "images": "Immagini",
       "stats": "Statistiche",

@@ -14,6 +14,7 @@
       "manufacturers": "制造商",
       "images": "图片",
       "videos": "视频",
+      "shipHistory": "历史",
       "hangar": {
         "index": "我的机库",
         "vehicleLoadouts": "Loadouts",
