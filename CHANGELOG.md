@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.11.0](https://github.com/fleetyards/fleetyards/compare/v7.10.0...v7.11.0) (2026-09-04)
+
+
+### Features
+
+* **mobile:** pull down to reload a page's data ([#4719](https://github.com/fleetyards/fleetyards/issues/4719)) ([efa816b](https://github.com/fleetyards/fleetyards/commit/efa816b9b6232f3e411c72942e0de3c5bce9860f))
+
 ## [7.10.0](https://github.com/fleetyards/fleetyards/compare/v7.9.0...v7.10.0) (2026-09-04)
 
 
