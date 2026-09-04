@@ -415,6 +415,15 @@ const adiMap = computed(() => {
                 <span>{{ t("nav.videos") }}</span>
               </Btn>
               <Btn
+                :to="{
+                  name: 'ship-history',
+                  params: { slug: model.slug },
+                }"
+              >
+                <i class="fa-light fa-clock-rotate-left" />
+                <span>{{ t("nav.shipHistory") }}</span>
+              </Btn>
+              <Btn
                 v-if="model.media.brochure?.url"
                 :href="model.media.brochure.url"
               >

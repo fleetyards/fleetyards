@@ -2328,6 +2328,20 @@
       "pagination": {
         "perPage": "Par Page",
         "pages": "%{page} sur %{total}"
+      },
+      "shipHistory": {
+        "sales": "Historique des soldes",
+        "salesCount": "Soldes enregistrés",
+        "lastSale": "Dernier solde",
+        "averageGap": "Écart moyen",
+        "days": "%{count} jours",
+        "ongoing": "En cours",
+        "priceHistory": "Historique du prix pledge",
+        "firstPriced": "Premier prix",
+        "priceRemoved": "Prix retiré",
+        "wishlist": "Ajouts en liste de souhaits par mois",
+        "patchChanges": "Modifications de patch",
+        "notRecordedYet": "Enregistré seulement depuis le début du suivi, un vaisseau peut donc n'avoir rien."
       }
     }
   }

@@ -15,6 +15,7 @@
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} 图片",
       "shipVideos": "%{name} 视频",
+      "shipHistory": "%{name} 历史",
       "shipViewer": "%{name} 查看器",
       "images": "图片",
       "stats": "统计",

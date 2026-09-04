@@ -906,16 +906,22 @@ class Model < ApplicationRecord
     slug&.start_with?(prefix) ? slug.delete_prefix(prefix) : slug
   end
 
-  # Price changes paper_trail has been recording since 2023, read back as a
-  # series. `from` is null where the ship was first given a price rather than
-  # repriced -- 189 of the 692 recorded changes are that, and treating them as a
-  # rise from zero would put every newly priced ship at the top of a chart about
-  # price movement.
+  # What the ship cost, a day at a time.
+  #
+  # Built from the last value recorded on each day rather than from every
+  # version, because the loader writes what the store showed at scrape time and
+  # scrapes several times a day. 145 of the 381 recorded changes sit on a day
+  # that already had one, and 52 are under a dollar -- the 100i went
+  # 59.59 -> 65.01 -> 65.00 -> 50.00 inside four hours, which is one price
+  # change and three artefacts of currency and rounding.
+  #
+  # `from` is null on the first day recorded, and `to` is null where the price
+  # was taken away. Neither is a price movement.
   #
   # Costs 0.2ms per model: `versions` is indexed on (item_type, item_id), and
   # the JSON is only touched for the rows that survive it.
   def pledge_price_history
-    versions
+    recorded = versions
       .where("object_changes -> 'pledge_price' IS NOT NULL")
       .order(:created_at)
       .pluck(
@@ -923,7 +929,27 @@ class Model < ApplicationRecord
         Arel.sql("(object_changes -> 'pledge_price' ->> 0)::numeric"),
         Arel.sql("(object_changes -> 'pledge_price' ->> 1)::numeric")
       )
-      .map { |changed_at, from, to| {changed_at:, from:, to:} }
+
+    per_day = recorded.each_with_object({}) do |(changed_at, _was, price), days|
+      days[changed_at.to_date] = [changed_at, price]
+    end
+
+    # Seeded from what the first recorded change moved away from, so a ship
+    # whose first event was its price being taken away still says what it lost
+    # rather than opening on a blank.
+    previous = recorded.first&.second
+
+    per_day.filter_map do |_day, (changed_at, price)|
+      was = previous
+      previous = price
+
+      # A day that ends where the one before it did changed nothing, whatever
+      # happened in between -- and that also drops the opening row of a ship
+      # whose first recorded event was its price being taken away.
+      next if was == price
+
+      {changed_at:, from: was, to: price}
+    end
   end
 
   def last_sale

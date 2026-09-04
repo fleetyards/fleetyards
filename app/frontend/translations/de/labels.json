@@ -2324,6 +2324,20 @@
       "erkul": {
         "prefix": "Tryout Loadouts with",
         "link": "Erkul's DPS Calculator"
+      },
+      "shipHistory": {
+        "sales": "Sale-Historie",
+        "salesCount": "Aufgezeichnete Sales",
+        "lastSale": "Letzter Sale",
+        "averageGap": "Durchschnittlicher Abstand",
+        "days": "%{count} Tage",
+        "ongoing": "Läuft",
+        "priceHistory": "Pledge-Preis-Historie",
+        "firstPriced": "Erstmals bepreist",
+        "priceRemoved": "Preis entfernt",
+        "wishlist": "Wunschlisten-Zuwachs pro Monat",
+        "patchChanges": "Patch-Änderungen",
+        "notRecordedYet": "Wird erst seit dem Start der Aufzeichnung erfasst, ein Schiff kann also noch nichts haben."
       }
     }
   }

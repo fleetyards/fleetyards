@@ -4,7 +4,8 @@
       "formats": {
         "default": "d MMMM y 'at' HH:mm z",
         "short": "d MMM HH:mm z",
-        "iso": "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+        "iso": "yyyy-MM-dd'T'HH:mm:ss.SSSxxx",
+        "date": "d MMM y"
       }
     }
   }

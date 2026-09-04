@@ -101,12 +101,20 @@ class MetricsJob < ApplicationJob
     end
   end
 
-  def track_ship_of_the_month
-    month_start = Time.current.beginning_of_month
+  ROLLUP_SHIP_OF_THE_PERIOD = "Ship of the Month"
 
+  def track_ship_of_the_month
+    track_most_hangared(Time.current.beginning_of_month, interval: "month")
+    track_most_hangared(Time.current.beginning_of_year, interval: "year")
+  end
+
+  # The ship that entered the most hangars since `from`. Written under one name
+  # at two intervals rather than two names: the reader tells them apart by the
+  # interval it asks for, the way every other rollup here does.
+  def track_most_hangared(from, interval:)
     ship = Vehicle.visible
       .where(loaner: false, wanted: false)
-      .where(created_at: month_start..)
+      .where(created_at: from..)
       .joins(:model)
       .group("models.name")
       .order(Arel.sql("count(*) DESC"))
@@ -116,11 +124,11 @@ class MetricsJob < ApplicationJob
 
     return unless ship
 
-    Rollup.where(name: "Ship of the Month", interval: "month", time: month_start).delete_all
+    Rollup.where(name: ROLLUP_SHIP_OF_THE_PERIOD, interval:, time: from).delete_all
     Rollup.create!(
-      name: "Ship of the Month",
-      interval: "month",
-      time: month_start,
+      name: ROLLUP_SHIP_OF_THE_PERIOD,
+      interval:,
+      time: from,
       value: ship.last,
       dimensions: {name: ship.first}
     )

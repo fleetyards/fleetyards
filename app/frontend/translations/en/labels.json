@@ -2321,6 +2321,20 @@
       "scDataSource": {
         "dataSource": "Data source",
         "notLive": "Not the live build"
+      },
+      "shipHistory": {
+        "sales": "Sale History",
+        "salesCount": "Recorded sales",
+        "lastSale": "Last sale",
+        "averageGap": "Average gap",
+        "days": "%{count} days",
+        "ongoing": "Ongoing",
+        "priceHistory": "Pledge Price History",
+        "firstPriced": "First priced",
+        "priceRemoved": "Price removed",
+        "wishlist": "Wishlist Additions per Month",
+        "patchChanges": "Patch Changes",
+        "notRecordedYet": "Only recorded from the day this started, so a ship can have none yet."
       }
     }
   }
