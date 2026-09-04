@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.10.0](https://github.com/fleetyards/fleetyards/compare/v7.9.0...v7.10.0) (2026-09-04)
+
+
+### Features
+
+* **admin:** record who changed what, on everything an admin can edit ([#4708](https://github.com/fleetyards/fleetyards/issues/4708)) ([7d7d125](https://github.com/fleetyards/fleetyards/commit/7d7d1251dbd40140bec6f181c64fa260397a93a9))
+* **fleet-events:** record when an event changed state ([#4696](https://github.com/fleetyards/fleetyards/issues/4696)) ([90dc93e](https://github.com/fleetyards/fleetyards/commit/90dc93ec3e48ec98f348f3b8cf1e3de64f145e3a))
+* **logistics:** hold the inventory grid open with the cards it is about to hold ([#4701](https://github.com/fleetyards/fleetyards/issues/4701)) ([091c5d2](https://github.com/fleetyards/fleetyards/commit/091c5d23361094a6851b49ab18f3f5d55b1dfc03))
+* **models:** record what a patch changed about a ship ([#4705](https://github.com/fleetyards/fleetyards/issues/4705)) ([e3321c0](https://github.com/fleetyards/fleetyards/commit/e3321c067567ab60e773d1f61a24e7bf9038b342))
+* **models:** record when a ship is on sale ([#4700](https://github.com/fleetyards/fleetyards/issues/4700)) ([efdf882](https://github.com/fleetyards/fleetyards/commit/efdf88282c40ca67bde7325c5a5ec7a7648df41e))
+* **prices:** keep the prices the UEX sync overwrites every morning ([#4704](https://github.com/fleetyards/fleetyards/issues/4704)) ([834f61b](https://github.com/fleetyards/fleetyards/commit/834f61b151b29f481fa340615c750209dd653e76))
+* **ships:** give a ship a history page ([#4717](https://github.com/fleetyards/fleetyards/issues/4717)) ([ec98301](https://github.com/fleetyards/fleetyards/commit/ec98301378f40231946cfbaedc672e819e727308))
+* **stats:** chart standing wishlist demand, the wish-to-own gap and paints ([#4707](https://github.com/fleetyards/fleetyards/issues/4707)) ([153a35d](https://github.com/fleetyards/fleetyards/commit/153a35dc1e81fdeceac234c0484536a1d537daba))
+* **stats:** read the pledge price history paper_trail already keeps ([#4712](https://github.com/fleetyards/fleetyards/issues/4712)) ([c527bd3](https://github.com/fleetyards/fleetyards/commit/c527bd3936507f6aed8ac9e2b14cc3d60ba166b2))
+* **stats:** show which ships people are actually looking at ([#4698](https://github.com/fleetyards/fleetyards/issues/4698)) ([5da0e19](https://github.com/fleetyards/fleetyards/commit/5da0e198ea452c8406f051018a2acd39440b5438))
+* **stats:** show which ships people started wanting ([#4702](https://github.com/fleetyards/fleetyards/issues/4702)) ([c9d3ccf](https://github.com/fleetyards/fleetyards/commit/c9d3ccf49e58cb06fdbcc07ab9e119b1134b6e1a))
+
+
+### Bug Fixes
+
+* **admin:** stop flashing access denied while the session loads ([#4693](https://github.com/fleetyards/fleetyards/issues/4693)) ([eb41227](https://github.com/fleetyards/fleetyards/commit/eb412270d879f715814872df54d9adcea1df4c77))
+* **lists:** let the last six lists draw their own wait ([#4699](https://github.com/fleetyards/fleetyards/issues/4699)) ([6ab7bcb](https://github.com/fleetyards/fleetyards/commit/6ab7bcbc4a3c548e0acf55ab6f4ac10b31dffc45))
+* **lists:** put the picture floor back under the summary placeholder ([#4703](https://github.com/fleetyards/fleetyards/issues/4703)) ([4412d11](https://github.com/fleetyards/fleetyards/commit/4412d11b780791767c4f51aee523aa41007aa650))
+* **notifications:** stand the placeholders in the frame the records land in ([#4695](https://github.com/fleetyards/fleetyards/issues/4695)) ([b085c85](https://github.com/fleetyards/fleetyards/commit/b085c856aab26df49ebc12888d8f9c0a44128b34))
+* **stats:** let the fleet and hangar charts show they are loading ([#4714](https://github.com/fleetyards/fleetyards/issues/4714)) ([08f40e7](https://github.com/fleetyards/fleetyards/commit/08f40e7b80577d437875590ba8494bc21b99743f))
+
+
+### Chores
+
+* **deps:** bump mini_magick from 5.3.3 to 5.4.0 ([#4715](https://github.com/fleetyards/fleetyards/issues/4715)) ([ea857e4](https://github.com/fleetyards/fleetyards/commit/ea857e482878a81a3b2ba9dc07c3f48b9f4b2b1a))
+* **deps:** bump omniauth-google-oauth2 from 1.2.2 to 1.2.3 ([#4716](https://github.com/fleetyards/fleetyards/issues/4716)) ([5c9f06f](https://github.com/fleetyards/fleetyards/commit/5c9f06f0888a002f1cb0fa355facd8a96e4c1a9f))
+
 ## [7.9.0](https://github.com/fleetyards/fleetyards/compare/v7.8.0...v7.9.0) (2026-09-03)
 
 
