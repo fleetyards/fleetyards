@@ -1,0 +1,85 @@
+$pull-to-refresh-size: 38px;
+
+.pull-to-refresh {
+  position: fixed;
+  top: -($pull-to-refresh-size + 8px);
+  left: 50%;
+  /* Above the page but below the top progress bar, which reports the refetch
+     the release starts and should stay the topmost thing on screen. */
+  z-index: 1030;
+  margin-top: env(safe-area-inset-top);
+  pointer-events: none;
+  transform: translate3d(-50%, 0, 0);
+  transition:
+    transform ease 0.25s,
+    opacity ease 0.25s;
+
+  /* While the finger is down the indicator is the finger's position, so it
+     cannot be interpolated towards it. */
+  &--pulling {
+    transition: none;
+  }
+
+  &__indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $pull-to-refresh-size;
+    height: $pull-to-refresh-size;
+    font-size: 18px;
+    color: #c8c8c8;
+    background-color: rgba(darken($gray-darker, 7%), 0.95);
+    border: 1px solid rgba(30, 34, 38, 0.5);
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+
+    i {
+      transition: transform ease 0.25s;
+    }
+  }
+
+  &--pulling &__indicator i {
+    transition: none;
+  }
+
+  /* The pull has gone far enough that letting go will refetch — the only cue
+     the gesture gets, since it carries no label. */
+  &--armed &__indicator {
+    color: $primary;
+    border-color: rgba($primary, 0.8);
+    box-shadow: 0 2px 12px rgba(darken($primary, 20%), 0.6);
+  }
+
+  &--refreshing &__indicator {
+    color: $primary;
+    border-color: rgba($primary, 0.8);
+
+    i {
+      animation: pull-to-refresh-spin 0.9s linear infinite;
+    }
+  }
+}
+
+@keyframes pull-to-refresh-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* No continuous spin, and no travel either: the top progress bar is already
+   reporting the same refetch, so nothing is lost by holding still. */
+@media (prefers-reduced-motion: reduce) {
+  .pull-to-refresh {
+    transition: none;
+
+    &__indicator i,
+    &--refreshing &__indicator i {
+      animation: none;
+      transition: none;
+    }
+  }
+}
