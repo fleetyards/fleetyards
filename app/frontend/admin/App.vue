@@ -21,6 +21,7 @@ import { useI18nStore } from "@/shared/stores/i18n";
 import { useAppStore } from "@/admin/stores/app";
 import { storeToRefs } from "pinia";
 import FetchProgressBar from "@/shared/components/FetchProgressBar/index.vue";
+import PullToRefresh from "@/shared/components/PullToRefresh/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -32,6 +33,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
 import { useAxiosInterceptors } from "@/admin/composables/useAxiosInterceptors";
 import { useMe as useMeQuery } from "@/services/fyAdminApi";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 
@@ -65,6 +67,14 @@ const pageKey = (viewRoute: { path: string }) =>
 const appStore = useAppStore();
 
 const mobile = useMobile();
+
+const queryClient = useQueryClient();
+
+const mainInner = ref<HTMLElement | null>(null);
+
+// Same reason as the frontend's: the admin manifest is `standalone` too, so an
+// installed admin has no reload button either. See frontend/App.vue.
+const refreshPage = () => queryClient.invalidateQueries();
 
 const navStore = useNavStore();
 
@@ -184,6 +194,12 @@ const setNoScroll = () => {
     class="app-body"
   >
     <FetchProgressBar />
+    <PullToRefresh
+      v-if="mobile"
+      :target="mainInner"
+      :refresh="refreshPage"
+      :disabled="!navCollapsed || overlayVisible"
+    />
     <BackgroundImage />
 
     <div class="app-content">
@@ -191,7 +207,7 @@ const setNoScroll = () => {
         <AdminNavigation />
       </transition>
       <div class="main-wrapper">
-        <div class="main-inner">
+        <div ref="mainInner" class="main-inner">
           <AppNavigationHeader />
 
           <router-view v-slot="{ Component, route: viewRoute }">

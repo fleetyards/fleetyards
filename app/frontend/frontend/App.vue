@@ -31,7 +31,9 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useMe as useMeQuery } from "@/services/fyApi";
+import { useQueryClient } from "@tanstack/vue-query";
 import FetchProgressBar from "@/shared/components/FetchProgressBar/index.vue";
+import PullToRefresh from "@/shared/components/PullToRefresh/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
 import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
@@ -88,6 +90,20 @@ watch(
     setNoScroll();
   },
 );
+
+const queryClient = useQueryClient();
+
+const mainInner = ref<HTMLElement | null>(null);
+
+/*
+ * Installed as a PWA there is no reload button, and `refetchOnWindowFocus` is
+ * off, so a page left open keeps showing what it had when it was opened. This
+ * is the way back to fresh data: every mounted query is marked stale and the
+ * active ones refetch, which is a reload of the page's data without paying for
+ * the app shell again -- and it keeps the scroll position and the filters that
+ * a document reload would throw away.
+ */
+const refreshPage = () => queryClient.invalidateQueries();
 
 const router = useRouter();
 
@@ -248,6 +264,12 @@ const setLocale = (locale: string) => {
     class="app-body"
   >
     <FetchProgressBar />
+    <PullToRefresh
+      v-if="mobile"
+      :target="mainInner"
+      :refresh="refreshPage"
+      :disabled="!navCollapsed || overlayVisible"
+    />
     <BackgroundImage />
 
     <div class="app-content">
@@ -256,6 +278,7 @@ const setLocale = (locale: string) => {
       </transition>
       <div class="main-wrapper">
         <div
+          ref="mainInner"
           class="main-inner"
           :class="{
             'main-inner--with-primary-action': route.meta.primaryAction,

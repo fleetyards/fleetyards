@@ -1,0 +1,17 @@
+// The viewport's own pull-to-refresh, switched off for the apps that replace it.
+//
+// PullToRefresh reads the overscroll at the top of the page itself, and the two
+// gestures are the same drag: left on, Chrome reloads the document while the
+// component refetches its data, and the release does both at once.
+//
+// Only `html` governs the viewport — see scroll.scss, which owns the same
+// property for every inner scroll pane. `contain` rather than `none`, because
+// the elastic bounce is what makes the pull feel like it is being resisted.
+//
+// Imported by the frontend and admin entrypoints only: docs has no PullToRefresh
+// and so must keep the browser's.
+@media (max-width: $desktop-breakpoint) {
+  html {
+    overscroll-behavior-y: contain;
+  }
+}
