@@ -49,4 +49,25 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
   test "GET /models/:slug/modules returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end
+
+  # The logo hangs off the manufacturer, so it moves nothing the module's own
+  # cache key names -- see Manufacturer.artwork_version.
+  test "GET /models/:slug/modules serves a manufacturer logo replaced after the payload was cached" do
+    manufacturer = create(:manufacturer, :with_logo)
+    model = create(:model)
+    create(:module_hardpoint, model:, model_module: create(:model_module, manufacturer:))
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/modules"
+      cached_url = response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
+
+      manufacturer.logo.attach(
+        Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg")
+      )
+
+      get "/api/v1/models/#{model.slug}/modules"
+
+      assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
+    end
+  end
 end
