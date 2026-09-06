@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class ImportsController < ::Admin::Api::BaseController
-        before_action :set_import, only: [:show]
+        before_action :set_import, only: %i[show cleanup]
 
         def index
           authorize! with: ::Admin::ImportPolicy
@@ -21,6 +21,42 @@ module Admin
         end
 
         def show
+        end
+
+        # Marking a `started` import failed is the only cleanup there is: the row
+        # is what makes the dashboard say something is running, and the job it
+        # describes is long gone.
+        def cleanup
+          unless @import.started?
+            return render json: {
+              code: "import.not_running",
+              message: I18n.t("messages.admin.imports.not_running")
+            }, status: :unprocessable_entity
+          end
+
+          @import.cleanup!(admin_user: current_user)
+
+          render :show
+        end
+
+        # The same thing for the rows an admin ticked in the table.
+        #
+        # Narrowed to the running ones rather than refused over them: a
+        # selection made minutes ago can hold a run that has since finished, and
+        # one of those must not take the whole batch down. The count that comes
+        # back is what actually changed.
+        #
+        # Per record rather than an `update_all` so each one gets its
+        # `failed_at` and its note.
+        def cleanup_bulk
+          authorize! with: ::Admin::ImportPolicy
+
+          @count = 0
+
+          authorized_scope(Import.where(id: params[:ids], aasm_state: "started")).find_each do |import|
+            import.cleanup!(admin_user: current_user)
+            @count += 1
+          end
         end
 
         private def imports_query_params
