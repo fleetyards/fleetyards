@@ -48,9 +48,12 @@ export const useSessionStore = defineStore("session", {
       this.authenticated = true;
       this.currentUser = user;
     },
-    async logout() {
+    clearSession() {
       this.authenticated = false;
       this.currentUser = undefined;
+    },
+    async logout() {
+      this.clearSession();
 
       await destroySession().catch(() => {});
     },

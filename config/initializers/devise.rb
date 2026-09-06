@@ -139,6 +139,13 @@ Devise.setup do |config|
   # If true, extends the user's remember period when remembered via cookie.
   config.extend_remember_period = true
 
+  # Devise defaults this to true, which nulls `remember_created_at` on sign out.
+  # That column backs every remember cookie the account has, so a sign out in one
+  # browser silently deauthorizes all the others -- they stay signed in only until
+  # their session hits `timeout_in`, then drop to the login screen. Signing out is
+  # per device here; the cookie for the device doing it is deleted either way.
+  config.expire_all_remember_me_on_sign_out = false
+
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
   # Strip port from domain — cookie domains must not include ports

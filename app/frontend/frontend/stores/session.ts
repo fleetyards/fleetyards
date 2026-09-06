@@ -47,11 +47,14 @@ export const useSessionStore = defineStore("session", {
       this.authenticated = true;
       this.currentUser = user;
     },
-    async logout() {
+    clearSession() {
       const hangarStore = useHangarStore();
       hangarStore.ships = [];
 
       this.$reset();
+    },
+    async logout() {
+      this.clearSession();
 
       await destroySession().catch(() => {});
     },

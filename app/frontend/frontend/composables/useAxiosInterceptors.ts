@@ -17,7 +17,7 @@ export const useAxiosInterceptors = () => {
     (response) => {
       return response;
     },
-    async (error) => {
+    (error) => {
       const sessionStore = useSessionStore();
 
       if (
@@ -25,7 +25,11 @@ export const useAxiosInterceptors = () => {
         error.response.status === 401 &&
         sessionStore.isAuthenticated
       ) {
-        await sessionStore.logout();
+        // Only drop the local state. Calling logout() here would send
+        // DELETE /sessions, which authenticates via the remember-me cookie before
+        // signing out -- so a single stray 401 would consume that cookie and take
+        // remember-me with it.
+        sessionStore.clearSession();
       }
 
       return Promise.reject(error);

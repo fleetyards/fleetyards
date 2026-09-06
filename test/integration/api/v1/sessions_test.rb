@@ -66,4 +66,82 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
   test "DELETE /sessions returns 401 when not signed in" do
     assert_api_response :delete, 401
   end
+
+  # ==> remember me
+  REMEMBER_COOKIE = "#{Rails.configuration.cookie_prefix}_USER_STORED_#{Rails.env.upcase}"
+
+  test "a remembered browser stays signed in once its session is gone" do
+    browser = sign_in_remembered(create(:user, password: "enterprise"))
+
+    browser.cookies.delete(Rails.configuration.cookie_prefix)
+    browser.get "/api/v1/users/me"
+
+    assert_equal 200, browser.response.status
+  end
+
+  test "DELETE /sessions leaves other remembered browsers signed in" do
+    user = create(:user, password: "enterprise")
+    browser = sign_in_remembered(user)
+
+    elsewhere = open_session
+    sign_in_json(elsewhere, user, remember: false)
+    elsewhere.delete "/api/v1/sessions"
+    assert_equal 200, elsewhere.response.status
+
+    browser.cookies.delete(Rails.configuration.cookie_prefix)
+    browser.get "/api/v1/users/me"
+
+    assert_equal 200, browser.response.status
+  end
+
+  test "signing in on one device does not unremember the other" do
+    user = create(:user, password: "enterprise")
+    phone = sign_in_remembered(user)
+
+    # the axios interceptor signs out on any 401, then the user logs back in
+    computer = sign_in_remembered(user)
+    computer.delete "/api/v1/sessions"
+    sign_in_json(computer, user, remember: true)
+
+    phone.cookies.delete(Rails.configuration.cookie_prefix)
+    phone.get "/api/v1/users/me"
+
+    assert_equal 200, phone.response.status
+  end
+
+  test "DELETE /sessions drops the remember cookie of the browser doing it" do
+    browser = sign_in_remembered(create(:user, password: "enterprise"))
+
+    browser.delete "/api/v1/sessions"
+
+    assert_predicate remember_cookie(browser).to_s, :empty?
+  end
+
+  private def sign_in_remembered(user)
+    browser = open_session
+    sign_in_json(browser, user, remember: true)
+
+    value = remember_cookie(browser)
+    assert value.present?, "expected a remember-me cookie"
+    browser.cookies[REMEMBER_COOKIE] = value
+
+    browser
+  end
+
+  private def sign_in_json(browser, user, remember:)
+    browser.post "/api/v1/sessions",
+      params: {login: user.username, password: "enterprise", rememberMe: remember}.to_json,
+      headers: {"CONTENT_TYPE" => "application/json"}
+
+    assert_equal 200, browser.response.status
+  end
+
+  # The remember cookie is scoped to the app's configured domain, which is not the
+  # host integration tests run on, so the test jar throws it away. Read it off the
+  # response instead, and put it back by hand where a real browser would have kept it.
+  private def remember_cookie(browser)
+    Array(browser.response.headers["Set-Cookie"])
+      .find { |cookie| cookie.start_with?(REMEMBER_COOKIE) }
+      &.then { |cookie| CGI.unescape(cookie[/#{REMEMBER_COOKIE}=([^;]*)/o, 1].to_s) }
+  end
 end
