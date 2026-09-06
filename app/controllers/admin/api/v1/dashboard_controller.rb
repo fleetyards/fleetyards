@@ -14,11 +14,6 @@ module Admin
       class DashboardController < ::Admin::Api::BaseController
         include TrackingStatsConcern
 
-        # An import that entered `started` and is still there long after any run
-        # would have finished. Not a state of its own: the job died without ever
-        # reaching `fail`, so nothing marked it.
-        STUCK_IMPORT_AFTER = 1.hour
-
         # A failure from last year is history, not a to-do. The dashboard asks
         # what needs attention now; /imports/ holds the rest.
         RECENT_FAILURE_WINDOW = 24.hours
@@ -56,12 +51,7 @@ module Admin
           @dashboard[:failed_imports_count] =
             Import.where(aasm_state: "failed", failed_at: RECENT_FAILURE_WINDOW.ago..).count
 
-          # `started_at` rather than `created_at`: an import can sit queued for a
-          # while before it runs, and that wait is not the job hanging.
-          @dashboard[:stuck_imports_count] =
-            Import.where(aasm_state: "started")
-              .where(started_at: ...STUCK_IMPORT_AFTER.ago)
-              .count
+          @dashboard[:stuck_imports_count] = Import.stuck.count
         end
 
         private def add_rsi_figures

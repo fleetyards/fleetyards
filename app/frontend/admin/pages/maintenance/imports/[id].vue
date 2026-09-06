@@ -12,6 +12,7 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 
 import {
   useImport,
+  useCleanupImport,
   type Import,
   ImportStatusEnum,
 } from "@/services/fyAdminApi";
@@ -19,11 +20,14 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import copyText from "@/shared/utils/CopyText";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const route = useRoute();
 
 const { t, l } = useI18n();
-const { displayInfo, displayAlert } = useAppNotifications();
+const { displayInfo, displaySuccess, displayAlert } = useAppNotifications();
+const queryClient = useQueryClient();
 
 const copyPayload = (value: string | null) => {
   if (!value) return;
@@ -36,6 +40,33 @@ const copyPayload = (value: string | null) => {
 const { data: importRecord, ...asyncStatus } = useImport(
   route.params.id as string,
 );
+
+/*
+ * Only offered while the row still reads `started`. Whether that means a job
+ * that died an hour ago or one that is still working is the one thing this page
+ * cannot know, so the decision stays with the admin reading it.
+ */
+const cleanupMutation = useCleanupImport();
+
+const isRunning = computed(
+  () => importRecord.value?.status === ImportStatusEnum.STARTED,
+);
+
+const cleanup = async () => {
+  const id = importRecord.value?.id;
+
+  if (!id) return;
+
+  try {
+    await cleanupMutation.mutateAsync({ id });
+
+    void queryClient.invalidateQueries({ queryKey: ["imports"] });
+
+    displaySuccess({ text: t("messages.admin.imports.cleaned") });
+  } catch {
+    displayAlert({ text: t("messages.admin.imports.cleanupError") });
+  }
+};
 
 const formatType = (type: string): string =>
   type
@@ -142,6 +173,21 @@ const headlineTitle = (record: Import) => formatType(record.type);
         <Heading hero>
           {{ headlineTitle(importRecord) }}
         </Heading>
+
+        <Teleport to="#header-right">
+          <Btn
+            v-if="isRunning"
+            :size="BtnSizesEnum.MD"
+            :loading="cleanupMutation.isPending.value"
+            :confirm="t('messages.confirm.import.cleanup')"
+            :aria-label="t('actions.admin.imports.cleanup')"
+            mobile-icon-only
+            @click="cleanup"
+          >
+            <i class="fa fa-hourglass-end" />
+            {{ t("actions.admin.imports.cleanup") }}
+          </Btn>
+        </Teleport>
 
         <div class="import-detail">
           <div class="import-detail__meta">

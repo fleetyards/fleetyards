@@ -11,6 +11,10 @@
         },
         "supporterContributions": {
           "syncFromPatreon": "从 Patreon 同步"
+        },
+        "imports": {
+          "cleanup": "标记为失败",
+          "cleanupSelected": "将所选标记为失败"
         }
       },
       "duplicate": "复制",

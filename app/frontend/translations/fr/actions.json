@@ -11,6 +11,10 @@
         },
         "supporterContributions": {
           "syncFromPatreon": "Synchroniser depuis Patreon"
+        },
+        "imports": {
+          "cleanup": "Marquer comme échouée",
+          "cleanupSelected": "Marquer la sélection comme échouée"
         }
       },
       "duplicate": "Dupliquer",

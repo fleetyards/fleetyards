@@ -153,4 +153,58 @@ class ImportTest < ActiveSupport::TestCase
     assert_equal record.id, payload["id"]
     assert_equal "Imports::ModulesImport", payload["type"]
   end
+
+  test "the stuck scope holds only runs that have been going for over an hour" do
+    stuck = create(:import, aasm_state: "started", started_at: 5.hours.ago)
+    create(:import, aasm_state: "started", started_at: 2.minutes.ago)
+    create(:import, aasm_state: "created", started_at: nil)
+    create(:import, aasm_state: "finished", started_at: 5.hours.ago, finished_at: 4.hours.ago)
+
+    assert_equal [stuck.id], Import.stuck.pluck(:id)
+  end
+
+  test "cleanup! records the timestamp and who did it" do
+    admin_user = create(:admin_user)
+    record = create(:import, :modules_import, aasm_state: "started", started_at: 5.hours.ago)
+
+    record.cleanup!(admin_user:)
+    record.reload
+
+    assert_predicate record, :failed?
+    assert_not_nil record.failed_at
+    assert_includes record.info, admin_user.username
+  end
+
+  test "cleanup! keeps whatever the run had already reported" do
+    record = create(:import, :modules_import, aasm_state: "started", started_at: 5.hours.ago,
+      info: "142 models read")
+
+    record.cleanup!
+
+    assert_includes record.reload.info, "142 models read"
+  end
+
+  # A hangar import whose attached file is long gone is exactly the row that
+  # gets stuck, and it must not be the one row that cannot be written off.
+  test "cleanup! clears a record that no longer validates" do
+    record = create(:import, type: "Imports::HangarImport", aasm_state: "started",
+      started_at: 5.hours.ago)
+
+    record.reload.cleanup!
+
+    assert_predicate record.reload, :failed?
+  end
+
+  # The admin is looking at the page that told them about it, and one error
+  # notification per row would trade the dashboard's stuck tile for a larger one.
+  test "cleanup! tells neither the notification center nor the channel" do
+    create(:admin_user, resource_access: [:imports])
+    ImportsChannel.expects(:broadcast_to).never
+
+    record = create(:import, :modules_import, aasm_state: "started", started_at: 5.hours.ago)
+
+    record.cleanup!
+
+    assert_equal 0, AdminNotification.where(notification_type: "import_run").count
+  end
 end

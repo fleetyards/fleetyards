@@ -6,6 +6,8 @@ it:
     background_enabled:
       success: "%{resource} usato come sfondo."
     admin:
+      imports:
+        not_running: Solo un'importazione in corso può essere ripulita.
       fleet_members:
         invalid_role: Il ruolo selezionato non appartiene a questa flotta.
         cannot_demote_last_admin: Questo è l'ultimo amministratore della flotta e non

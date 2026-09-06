@@ -11,6 +11,10 @@
         },
         "supporterContributions": {
           "syncFromPatreon": "Sync from Patreon"
+        },
+        "imports": {
+          "cleanup": "Mark as failed",
+          "cleanupSelected": "Mark selected as failed"
         }
       },
       "duplicate": "Duplicate",

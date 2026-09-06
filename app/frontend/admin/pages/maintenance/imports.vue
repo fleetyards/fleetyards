@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -18,6 +18,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useImports,
+  useCleanupBulkImports,
   useReloadModelsMatrix,
   useReloadModelsScData,
   useReloadPaints,
@@ -33,9 +34,13 @@ import FilterForm from "@/admin/components/Imports/FilterForm/index.vue";
 import { useFilters } from "@/shared/composables/useFilters";
 import type { ImportQuery } from "@/services/fyAdminApi";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const { t, l } = useI18n();
 const router = useRouter();
+const queryClient = useQueryClient();
+const { displaySuccess, displayInfo, displayAlert } = useAppNotifications();
 
 const onRowClick = async (record: Import) => {
   await router.push({ name: "import", params: { id: record.id } });
@@ -91,6 +96,43 @@ const isReloadingModules = computed(
 const isReloadingLoaners = computed(
   () => reloadLoanersMutation.isPending.value,
 );
+
+/*
+ * A stuck import is not a state of its own -- the row still says `started`
+ * because the job died before anything could mark it. Nothing but an admin can
+ * tell the difference between that and a run that is simply slow, which is why
+ * the rows to write off are ticked rather than swept.
+ */
+const selected = ref<string[]>([]);
+
+const onSelectedChange = (ids: string[]) => {
+  selected.value = ids;
+};
+
+const cleanupMutation = useCleanupBulkImports();
+
+// The selection is spent once the action lands: the rows it named have moved
+// on, and leaving them ticked only invites a second run over them.
+const cleanupSelected = async () => {
+  try {
+    const { count } = await cleanupMutation.mutateAsync({
+      data: { ids: selected.value },
+    });
+
+    selected.value = [];
+    void queryClient.invalidateQueries({ queryKey: ["imports"] });
+
+    if (count === 0) {
+      displayInfo({ text: t("messages.admin.imports.noneRunning") });
+
+      return;
+    }
+
+    displaySuccess({ text: t("messages.admin.imports.cleanedUp", { count }) });
+  } catch {
+    displayAlert({ text: t("messages.admin.imports.cleanupError") });
+  }
+};
 
 const reloadModels = () => reloadMatrixMutation.mutateAsync();
 const reloadScData = () => reloadScDataMutation.mutateAsync();
@@ -251,8 +293,23 @@ const columns: BaseTableCol<Import>[] = [
         :empty-visible="emptyVisible"
         default-sort="created_at desc"
         row-clickable
+        selectable
+        :selected="selected"
         @row-click="onRowClick"
+        @selected-change="onSelectedChange"
       >
+        <template #selected-actions>
+          <Btn
+            v-tooltip="t('actions.admin.imports.cleanupSelected')"
+            :tone="BtnTonesEnum.DANGER"
+            :loading="cleanupMutation.isPending.value"
+            :confirm="t('messages.confirm.import.cleanupSelected')"
+            :aria-label="t('actions.admin.imports.cleanupSelected')"
+            @click="cleanupSelected"
+          >
+            <i class="fa-duotone fa-hourglass-end" />
+          </Btn>
+        </template>
         <template #col-type="{ record }">
           {{ formatType(record.type) }}
         </template>

@@ -173,7 +173,14 @@ v1_admin_api_routes = lambda do
     end
   end
 
-  resources :imports, only: %i[index show]
+  resources :imports, only: %i[index show] do
+    member do
+      put :cleanup
+    end
+    collection do
+      put "cleanup-bulk", to: "imports#cleanup_bulk"
+    end
+  end
 
   resources :funding_goals, path: "funding-goals", only: %i[index show create update destroy]
   resources :supporter_contributions, path: "supporter-contributions", only: %i[index show create update destroy] do

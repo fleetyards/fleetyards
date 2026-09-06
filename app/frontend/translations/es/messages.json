@@ -470,6 +470,10 @@
         },
         "unlistedModel": {
           "createModel": "¿Crear una nave a partir de %{name}? La próxima carga de sc_data rellenará su mecánica."
+        },
+        "import": {
+          "cleanup": "¿Marcar esta importación como fallida? Hazlo solo si el trabajo ya no existe: una ejecución que siga activa fallará al terminar.",
+          "cleanupSelected": "¿Marcar como fallidas las importaciones seleccionadas? Solo afecta a las que siguen en curso, y una ejecución que siga realmente activa fallará al terminar."
         }
       },
       "oauthAuthorize": {
@@ -512,6 +516,15 @@
       "admin": {
         "supporterContributions": {
           "patreonSyncStarted": "Sincronización con Patreon iniciada. Actualiza en un minuto para ver los patrocinadores importados."
+        },
+        "imports": {
+          "cleaned": "Importación marcada como fallida",
+          "cleanedUp": {
+            "one": "%{count} importación marcada como fallida",
+            "other": "%{count} importaciones marcadas como fallidas"
+          },
+          "noneRunning": "Nada de la selección seguía en curso",
+          "cleanupError": "No se pudo limpiar la importación"
         }
       },
       "logistics": {

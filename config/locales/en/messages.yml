@@ -6,6 +6,8 @@ en:
     background_enabled:
       success: "%{resource} used for Background."
     admin:
+      imports:
+        not_running: Only a running import can be cleaned up.
       fleet_members:
         invalid_role: The selected role does not belong to this fleet.
         cannot_demote_last_admin: This is the fleet's last admin and cannot be demoted.

@@ -6,6 +6,8 @@ zh-CN:
     background_enabled:
       success: "%{resource} 已用作背景。"
     admin:
+      imports:
+        not_running: 只有正在运行的导入才能被清理。
       fleet_members:
         invalid_role: 所选角色不属于该舰队。
         cannot_demote_last_admin: 这是该舰队的最后一名管理员，无法降级。
