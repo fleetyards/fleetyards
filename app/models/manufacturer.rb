@@ -80,6 +80,32 @@ class Manufacturer < ApplicationRecord
     ["components", "models"]
   end
 
+  # Every payload that draws a manufacturer's picture -- a ship, a component, a
+  # module, and the hardpoint and loadout trees that nest those several partials
+  # deep -- embeds a URL that lives on this row rather than on theirs. A new logo
+  # or icon moves nothing those fragments are keyed on, so without this they go
+  # on serving the blob that happened to be attached when they were first
+  # rendered.
+  #
+  # One stamp over all the artwork rather than the manufacturer named in each
+  # key: the nested cases reach a manufacturer through a collection, sometimes a
+  # recursive one, where there is no single record a key could name.
+  #
+  # Counting as well as taking the maximum is what makes a purge move it --
+  # removing a logo leaves the newest remaining blob exactly where it was.
+  #
+  # Deliberately coarse: any manufacturer's new artwork invalidates all of them.
+  # `ScData::Loader::BaseLoader#attach_icon` compares checksums before it writes,
+  # so that is a build genuinely reworking an icon or an admin uploading a logo,
+  # not every load.
+  def self.artwork_version
+    Artwork.version ||= begin
+      attachments = ActiveStorage::Attachment.where(record_type: polymorphic_name, name: %w[logo icon])
+
+      [attachments.count, attachments.maximum(:created_at)&.to_f]
+    end
+  end
+
   def self.with_name
     where.not(name: nil)
   end

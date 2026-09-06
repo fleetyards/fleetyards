@@ -3,4 +3,4 @@
 json.array! @hardpoints,
   partial: "api/v1/hardpoints/base",
   as: :hardpoint,
-  cached: ->(hardpoint) { ["v1", hardpoint, hardpoint.component] }
+  cached: ->(hardpoint) { ["v1", hardpoint, hardpoint.component, Manufacturer.artwork_version] }

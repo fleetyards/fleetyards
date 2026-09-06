@@ -70,4 +70,43 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
       assert_equal 2, parsed_body["items"].count
     end
   end
+
+  # The logo and the icon hang off the manufacturer, so neither one moves the
+  # model's own `updated_at` -- the cache key has to name the manufacturer or the
+  # list keeps serving the picture the first request happened to render.
+  test "GET /models serves a manufacturer logo replaced after the payload was cached" do
+    manufacturer = create(:manufacturer, :with_logo)
+    create(:model, manufacturer:)
+
+    with_fragment_caching do
+      get "/api/v1/models"
+      cached_url = response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
+
+      manufacturer.logo.attach(
+        Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg")
+      )
+
+      get "/api/v1/models"
+
+      assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
+    end
+  end
+
+  test "GET /models serves a manufacturer icon replaced after the payload was cached" do
+    manufacturer = create(:manufacturer, :with_icon)
+    create(:model, manufacturer:)
+
+    with_fragment_caching do
+      get "/api/v1/models"
+      cached_url = response.parsed_body["items"].first.dig("manufacturer", "icon", "url")
+
+      manufacturer.icon.attach(
+        Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg")
+      )
+
+      get "/api/v1/models"
+
+      assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "icon", "url")
+    end
+  end
 end

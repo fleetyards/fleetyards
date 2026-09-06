@@ -108,4 +108,24 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
       assert_equal "2", rifle["size"]
     end
   end
+
+  # The icon hangs off the manufacturer, so it moves nothing the equipment's own
+  # cache key names -- see Manufacturer.artwork_version.
+  test "GET /equipment serves a manufacturer icon replaced after the payload was cached" do
+    manufacturer = create(:manufacturer, :with_icon)
+    create(:equipment, name: "Arclight Sidearm", manufacturer:)
+
+    with_fragment_caching do
+      get "/api/v1/equipment", params: {q: {"nameCont" => "Arclight"}}
+      cached_url = response.parsed_body["items"].first.dig("manufacturer", "icon", "url")
+
+      manufacturer.icon.attach(
+        Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg")
+      )
+
+      get "/api/v1/equipment", params: {q: {"nameCont" => "Arclight"}}
+
+      assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "icon", "url")
+    end
+  end
 end

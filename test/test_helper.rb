@@ -68,6 +68,29 @@ def mock_omniauth(provider, uid: "123456", email: "oauth@example.com", nickname:
   )
 end
 
+# Fragment caching is off in test, so a cache-key regression cannot show up in a
+# plain request test. This turns it on around a block with a store of its own, so
+# the second request in the block reads what the first one wrote.
+#
+# `ActionController::API` is listed separately because it is not a subclass of
+# `ActionController::Base` -- every API controller here descends from it, so
+# setting the flag on `Base` alone leaves the JSON endpoints uncached and the
+# block passes whatever the cache keys say.
+CACHING_CONTROLLER_BASES = [ActionController::Base, ActionController::API].freeze
+
+def with_fragment_caching
+  previous_store = Rails.cache
+  previous_flags = CACHING_CONTROLLER_BASES.map(&:perform_caching)
+
+  Rails.cache = ActiveSupport::Cache::MemoryStore.new
+  CACHING_CONTROLLER_BASES.each { |base| base.perform_caching = true }
+
+  yield
+ensure
+  Rails.cache = previous_store
+  CACHING_CONTROLLER_BASES.zip(previous_flags).each { |base, flag| base.perform_caching = flag }
+end
+
 module ActiveSupport
   class TestCase
     parallelize(workers: :number_of_processors)

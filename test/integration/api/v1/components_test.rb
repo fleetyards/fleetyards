@@ -110,4 +110,24 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert_includes names, older.name
     end
   end
+
+  # The logo hangs off the manufacturer, so it moves nothing the component's own
+  # cache key names -- see Manufacturer.artwork_version.
+  test "GET /components serves a manufacturer logo replaced after the payload was cached" do
+    manufacturer = create(:manufacturer, :with_logo)
+    component = create(:component, manufacturer:)
+
+    with_fragment_caching do
+      get "/api/v1/components", params: {q: {"nameCont" => component.name}}
+      cached_url = response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
+
+      manufacturer.logo.attach(
+        Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg")
+      )
+
+      get "/api/v1/components", params: {q: {"nameCont" => component.name}}
+
+      assert_not_equal cached_url, response.parsed_body["items"].first.dig("manufacturer", "logo", "url")
+    end
+  end
 end
