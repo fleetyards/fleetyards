@@ -469,6 +469,10 @@
         },
         "unlistedModel": {
           "createModel": "根据 %{name} 创建飞船？下次 sc_data 载入会补齐其数据。"
+        },
+        "import": {
+          "cleanup": "将此导入标记为失败？仅在任务确实已经消失时才这样做——仍在运行的任务会在结束时报错。",
+          "cleanupSelected": "将所选导入标记为失败？只影响仍在运行的那些，确实仍在运行的任务会在结束时报错。"
         }
       },
       "oauthAuthorize": {
@@ -511,6 +515,15 @@
       "admin": {
         "supporterContributions": {
           "patreonSyncStarted": "Patreon 同步已开始。请稍后刷新以查看导入的支持者。"
+        },
+        "imports": {
+          "cleaned": "导入已标记为失败",
+          "cleanedUp": {
+            "one": "已将 %{count} 个导入标记为失败",
+            "other": "已将 %{count} 个导入标记为失败"
+          },
+          "noneRunning": "所选内容中没有仍在运行的导入",
+          "cleanupError": "无法清理该导入"
         }
       },
       "logistics": {

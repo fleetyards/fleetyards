@@ -470,6 +470,10 @@
         },
         "unlistedModel": {
           "createModel": "Ein Schiff aus %{name} anlegen? Der nächste sc_data-Load ergänzt die Mechanik."
+        },
+        "import": {
+          "cleanup": "Diesen Import als fehlgeschlagen markieren? Nur wenn der Job wirklich weg ist — ein noch laufender Durchlauf bricht am Ende mit einem Fehler ab.",
+          "cleanupSelected": "Die ausgewählten Importe als fehlgeschlagen markieren? Betroffen sind nur die noch laufenden, und ein tatsächlich noch laufender Durchlauf bricht am Ende mit einem Fehler ab."
         }
       },
       "oauthAuthorize": {
@@ -512,6 +516,15 @@
       "admin": {
         "supporterContributions": {
           "patreonSyncStarted": "Patreon-Synchronisierung gestartet. Aktualisiere in einer Minute, um importierte Unterstützer zu sehen."
+        },
+        "imports": {
+          "cleaned": "Import als fehlgeschlagen markiert",
+          "cleanedUp": {
+            "one": "%{count} Import als fehlgeschlagen markiert",
+            "other": "%{count} Importe als fehlgeschlagen markiert"
+          },
+          "noneRunning": "In der Auswahl lief nichts mehr",
+          "cleanupError": "Der Import konnte nicht bereinigt werden"
         }
       },
       "logistics": {

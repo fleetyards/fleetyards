@@ -469,6 +469,10 @@
         },
         "unlistedModel": {
           "createModel": "根據 %{name} 建立飛船？下次 sc_data 載入會補齊其資料。"
+        },
+        "import": {
+          "cleanup": "將此匯入標記為失敗？僅在工作確實已經消失時才這樣做——仍在執行的工作會在結束時報錯。",
+          "cleanupSelected": "將所選匯入標記為失敗？只影響仍在執行的那些，確實仍在執行的工作會在結束時報錯。"
         }
       },
       "oauthAuthorize": {
@@ -511,6 +515,15 @@
       "admin": {
         "supporterContributions": {
           "patreonSyncStarted": "Patreon 同步已開始。請在一分鐘後重新整理以查看匯入的支持者。"
+        },
+        "imports": {
+          "cleaned": "匯入已標記為失敗",
+          "cleanedUp": {
+            "one": "已將 %{count} 個匯入標記為失敗",
+            "other": "已將 %{count} 個匯入標記為失敗"
+          },
+          "noneRunning": "所選內容中沒有仍在執行的匯入",
+          "cleanupError": "無法清理該匯入"
         }
       },
       "logistics": {

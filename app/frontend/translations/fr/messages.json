@@ -470,6 +470,10 @@
         },
         "unlistedModel": {
           "createModel": "Créer un vaisseau à partir de %{name} ? Le prochain chargement sc_data complétera ses caractéristiques."
+        },
+        "import": {
+          "cleanup": "Marquer cet import comme échoué ? À ne faire que si le job a vraiment disparu : une exécution encore active échouera à la fin.",
+          "cleanupSelected": "Marquer les imports sélectionnés comme échoués ? Seuls ceux encore en cours sont concernés, et une exécution réellement encore active échouera à la fin."
         }
       },
       "oauthAuthorize": {
@@ -512,6 +516,15 @@
       "admin": {
         "supporterContributions": {
           "patreonSyncStarted": "Synchronisation Patreon démarrée. Actualisez dans une minute pour voir les soutiens importés."
+        },
+        "imports": {
+          "cleaned": "Import marqué comme échoué",
+          "cleanedUp": {
+            "one": "%{count} import marqué comme échoué",
+            "other": "%{count} imports marqués comme échoués"
+          },
+          "noneRunning": "Rien dans la sélection n'était encore en cours",
+          "cleanupError": "L'import n'a pas pu être nettoyé"
         }
       },
       "logistics": {

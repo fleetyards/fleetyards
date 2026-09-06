@@ -469,6 +469,10 @@
         },
         "unlistedModel": {
           "createModel": "Create a ship from %{name}? The next sc_data load fills in its mechanics."
+        },
+        "import": {
+          "cleanup": "Mark this import as failed? Do this only if the job is really gone — a run that is still working will error out when it finishes.",
+          "cleanupSelected": "Mark the selected imports as failed? Only the ones still running are affected, and a run that is genuinely still working will error out when it finishes."
         }
       },
       "oauthAuthorize": {
@@ -511,6 +515,15 @@
       "admin": {
         "supporterContributions": {
           "patreonSyncStarted": "Patreon sync started. Refresh in a minute to see imported supporters."
+        },
+        "imports": {
+          "cleaned": "Import marked as failed",
+          "cleanedUp": {
+            "one": "%{count} import marked as failed",
+            "other": "%{count} imports marked as failed"
+          },
+          "noneRunning": "Nothing in the selection was still running",
+          "cleanupError": "The import could not be cleaned up"
         }
       },
       "logistics": {
