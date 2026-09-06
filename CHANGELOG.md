@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.11.1](https://github.com/fleetyards/fleetyards/compare/v7.11.0...v7.11.1) (2026-09-06)
+
+
+### Bug Fixes
+
+* **auth:** stop remember-me invalidating itself across devices ([#4724](https://github.com/fleetyards/fleetyards/issues/4724)) ([b2dbdbf](https://github.com/fleetyards/fleetyards/commit/b2dbdbffb7c052187b2fd25dfe9b00ec79b03b69))
+* **cache:** rebuild cached payloads when manufacturer artwork changes ([#4721](https://github.com/fleetyards/fleetyards/issues/4721)) ([4550226](https://github.com/fleetyards/fleetyards/commit/455022644da39e2780745b47eb4df42fd576231d))
+
 ## [7.11.0](https://github.com/fleetyards/fleetyards/compare/v7.10.0...v7.11.0) (2026-09-04)
 
 
