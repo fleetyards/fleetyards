@@ -99,6 +99,23 @@ class HangarSyncTest < ActiveSupport::TestCase
     end
   end
 
+  class WithPaintOnlyPledgeTest < HangarSyncTest
+    test "matches a paint the RSI hangar names after its ship" do
+      gladius = Model.find_by!(slug: "aegs-gladius")
+      paint = create(:model_paint, model: gladius, name: "Dunlevy")
+
+      input = @input + [{"id" => "99999", "type" => "ship", "name" => "Gladius Dunlevy"}]
+
+      result = ::HangarSync.new(input).run(@user.id)
+
+      assert_equal [], result[:missing_models]
+
+      vehicle = Vehicle.where(id: result[:imported_vehicles]).find_by(model_paint_id: paint.id)
+      assert vehicle.present?
+      assert_equal gladius.id, vehicle.model_id
+    end
+  end
+
   class NotificationTest < HangarSyncTest
     test "summarises the sync in the notification body" do
       result = ::HangarSync.new(@input).run(@user.id)

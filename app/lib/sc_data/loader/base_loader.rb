@@ -305,7 +305,7 @@ module ScData
       # rows match it -- two jobs that used to be one recursive method that wrote
       # as it walked, which is why the rules could not be exercised without a
       # database and why the destructive cleanup sat in the middle of them.
-      Slot = Struct.new(:name, :component, :children, :retain_only)
+      Slot = Struct.new(:name, :component, :children, :retain_only, :min_size, :max_size, :types)
 
       private def update_loadout(parent, loadout, cleanup: true)
         # The module-key derivation below only applies to a ship. A module's own
@@ -335,7 +335,16 @@ module ScData
 
         return flatten_hidden(item, component) if component&.hidden?
 
-        [Slot.new(name: item["name"].downcase, component:, children: nested_slots(item))]
+        [
+          Slot.new(
+            name: item["name"].downcase,
+            component:,
+            children: nested_slots(item),
+            min_size: item["min_size"],
+            max_size: item["max_size"],
+            types: item["types"]
+          )
+        ]
       end
 
       # A hidden component is a container the game files ship as an item -- a
@@ -437,17 +446,32 @@ module ScData
         return hardpoint.persisted? ? hardpoint.id : nil if slot.retain_only
 
         update_params = {source: :game_files, component: slot.component}
-
-        if slot.component.present?
-          update_params[:min_size] = slot.component.size
-          update_params[:max_size] = slot.component.size
-        end
+        update_params[:types] = slot.types if slot.types.present?
+        update_params.merge!(slot_sizes(slot))
 
         apply(hardpoint, update_params)
 
         persist_loadout(hardpoint, slot.children) if slot.children.present?
 
         hardpoint.id
+      end
+
+      # What is installed still sets the size the port is shown as, because the
+      # declared bounds are not trustworthy enough to display -- the files carry
+      # ports declared 0-0 with an S1 door sitting in them. The declaration is
+      # only allowed to say what the installed item cannot: the floor a smaller
+      # item would satisfy, and both bounds when nothing is installed at all.
+      private def slot_sizes(slot)
+        declared_min = slot.min_size.presence&.to_i
+        declared_max = slot.max_size.presence&.to_i
+        installed_size = slot.component&.size.presence&.to_i
+
+        return {} if installed_size.blank? && declared_min.blank? && declared_max.blank?
+        return {min_size: declared_min, max_size: declared_max} if installed_size.blank?
+
+        floor = (declared_min if declared_min.present? && declared_min < installed_size)
+
+        {min_size: floor || installed_size, max_size: installed_size}
       end
 
       private def loadout_name_blacklisted?(name, default_loadout = nil)

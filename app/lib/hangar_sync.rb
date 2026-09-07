@@ -547,7 +547,8 @@ class HangarSync < HangarImporter
       "Retaliator Bomber" => "Retaliator",
       "Crusader A1 Spirit" => "A1 Spirit",
       "Crusader C1 Spirit" => "C1 Spirit",
-      "Crusader E1 Spirit" => "E1 Spirit"
+      "Crusader E1 Spirit" => "E1 Spirit",
+      "Gladius Dunlevy" => "Dunlevy"
     }
 
     return name if mapping[name.strip].nil?

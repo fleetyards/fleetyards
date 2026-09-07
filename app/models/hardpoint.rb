@@ -35,6 +35,12 @@ class Hardpoint < ApplicationRecord
     radar computers fuel_intakes
   ].freeze
 
+  # The column is a string holding what an array serialised into it, which the
+  # API has always declared -- and the generated client has always typed -- as
+  # an array of strings. Read back as one, so the two agree. Every value ever
+  # written is already valid JSON, so nothing needs rewriting.
+  serialize :types, type: Array, coder: JSON
+
   belongs_to :parent, polymorphic: true, touch: true
   belongs_to :component, optional: true
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
