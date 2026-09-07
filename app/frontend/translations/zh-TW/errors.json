@@ -2,6 +2,7 @@
   "zh-TW": {
     "errors": {
       "generic": "發生了錯誤",
+      "imageNotLoaded": "無法載入圖片。",
       "upload": {
         "oneFile": "一次只能上傳一個檔案。",
         "generic": "上傳過程中發生了錯誤。",

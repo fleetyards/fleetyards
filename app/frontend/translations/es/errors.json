@@ -2,6 +2,7 @@
   "es": {
     "errors": {
       "generic": "Se produjo un error",
+      "imageNotLoaded": "No se pudo cargar la imagen.",
       "upload": {
         "oneFile": "Solo se puede subir un archivo a la vez.",
         "generic": "Se produjo un error durante la subida.",

@@ -2,6 +2,7 @@
   "de": {
     "errors": {
       "generic": "Ein Fehler ist aufgetreten",
+      "imageNotLoaded": "Das Bild konnte nicht geladen werden.",
       "upload": {
         "oneFile": "Es kann nur eine Datei gleichzeitig hochgeladen werden.",
         "generic": "Beim Hochladen ist ein Fehler aufgetreten.",

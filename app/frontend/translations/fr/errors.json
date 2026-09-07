@@ -2,6 +2,7 @@
   "fr": {
     "errors": {
       "generic": "Une erreur s'est produite",
+      "imageNotLoaded": "L'image n'a pas pu être chargée.",
       "upload": {
         "oneFile": "Un seul fichier peut être téléchargé à la fois.",
         "generic": "Une erreur s'est produite lors du téléchargement.",
