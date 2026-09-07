@@ -63,6 +63,75 @@ module ScData
         assert_equal 3, hardpoint.max_size
       end
 
+      # A port declares what it accepts, which is what a swap has to satisfy. The
+      # Retaliator's ordnance bay is the case that needs it: S3-S9, and a bomb
+      # launcher is as welcome in it as the S9 torpedo rack sitting there.
+      test "persists the types a port declares it accepts" do
+        create(:component, sc_key: "torpedo_rack_s9", size: "9")
+
+        update_loadout(@model, {"loadout" => [{
+          "name" => "hardpoint_torpedo_launcher_fore",
+          "key" => "torpedo_rack_s9",
+          "min_size" => "3",
+          "max_size" => "9",
+          "types" => ["MissileLauncher", "BombLauncher", "WeaponGun"]
+        }]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_equal ["MissileLauncher", "BombLauncher", "WeaponGun"], hardpoint.types
+        assert_equal 3, hardpoint.min_size
+        assert_equal 9, hardpoint.max_size
+      end
+
+      # The size shown for a port stays the size of what is in it: the files
+      # carry ports declared 0-0 holding an S1 door, so the declaration only
+      # gets to lower the floor.
+      test "keeps the installed size as max_size when the declaration disagrees" do
+        create(:component, sc_key: "cargo_door_s1", size: "1")
+
+        update_loadout(@model, {"loadout" => [{
+          "name" => "hardpoint_cargo_pod",
+          "key" => "cargo_door_s1",
+          "min_size" => "0",
+          "max_size" => "0"
+        }]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_equal 1, hardpoint.max_size
+      end
+
+      test "ignores a declared floor above the installed size" do
+        create(:component, sc_key: "cooler_s3", size: "3")
+
+        update_loadout(@model, {"loadout" => [{
+          "name" => "hardpoint_cooler",
+          "key" => "cooler_s3",
+          "min_size" => "5",
+          "max_size" => "9"
+        }]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_equal 3, hardpoint.min_size
+        assert_equal 3, hardpoint.max_size
+      end
+
+      # An empty port has no installed size to fall back on, and used to get no
+      # size at all -- so an empty module slot could not say what fits it.
+      test "takes both bounds from the declaration when the port is empty" do
+        update_loadout(@model, {"loadout" => [{
+          "name" => "hardpoint_ordnance_bay",
+          "min_size" => "3",
+          "max_size" => "5",
+          "types" => ["BombLauncher"]
+        }]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_nil hardpoint.component
+        assert_equal 3, hardpoint.min_size
+        assert_equal 5, hardpoint.max_size
+        assert_equal ["BombLauncher"], hardpoint.types
+      end
+
       test "resolves by ref when the entry carries no key" do
         component = create(:component, sc_ref: "a1b2c3", sc_key: "cooler_s1")
 

@@ -23,7 +23,7 @@ module ScData
             extract_loadout(item)
           end
 
-          loadout = merge_module_ports(values, loadout)
+          loadout = merge_port_defs(values, loadout)
 
           {
             key:,
@@ -73,7 +73,7 @@ module ScData
             extract_loadout(item)
           end
 
-          loadout = merge_module_ports(values, loadout)
+          loadout = merge_port_defs(values, loadout)
 
           insurance = values.dig("StaticEntityClassData", "SEntityInsuranceProperties")
 
@@ -135,7 +135,7 @@ module ScData
             extract_loadout(entry)
           end
 
-          loadout = merge_module_ports(values, loadout)
+          loadout = merge_port_defs(values, loadout)
 
           insurance_params = values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "shipInsuranceParams")
 
@@ -163,7 +163,45 @@ module ScData
         save_items(powersuits, folder: "models")
       end
 
-      private def merge_module_ports(values, loadout)
+      # A port declares what may sit in it -- the item types it accepts and the
+      # size range it takes -- and none of that is derivable from whatever the
+      # default loadout happens to have installed. The Retaliator's ordnance bay
+      # takes an S3-S9 missile, bomb or gun launcher; all the loadout says is
+      # that an S9 torpedo rack is in it today.
+      #
+      # A port that accepts a module is also appended when the loadout leaves it
+      # empty, since an empty module slot is still a slot.
+      private def merge_port_defs(values, loadout)
+        record_port_defs = extract_port_defs(values)
+        port_defs = extract_definition_port_defs(values.dig("Components", "VehicleComponentParams"))
+          .merge(record_port_defs)
+
+        return loadout if port_defs.blank?
+
+        merged = loadout.map do |entry|
+          port_def = port_defs[entry[:name]]
+
+          port_def.present? ? entry.merge(port_def) : entry
+        end
+
+        merged_names = merged.map { |entry| entry[:name] }.to_set
+
+        # Appended from the entity record alone, which is the set that was
+        # appended before reading the definition at all. The definition also
+        # calls the Hornet's configurable centre mount module-capable, and
+        # appending that would hand the Super Hornet a module slot it has never
+        # had -- a change to what the ship offers, not to what a port declares.
+        record_port_defs.each do |name, port_def|
+          next if merged_names.include?(name)
+          next unless port_def[:types].include?("Module")
+
+          merged << {name:, ref: nil, key: nil, **port_def}
+        end
+
+        merged
+      end
+
+      private def extract_port_defs(values)
         port_defs = values.dig(
           "Components",
           "SItemPortContainerComponentParams",
@@ -171,28 +209,84 @@ module ScData
           "SItemPortDef"
         )
 
-        return loadout if port_defs.blank?
+        return {} if port_defs.blank?
 
         port_defs = [port_defs] unless port_defs.is_a?(Array)
-        loadout_names = loadout.map { |entry| entry[:name] }.to_set
 
-        port_defs.each do |port|
+        port_defs.each_with_object({}) do |port, index|
           name = port["Name"]
           next if name.blank?
-          next if loadout_names.include?(name)
 
-          types = port.dig("Types", "SItemPortDefTypes")
-          types = [types] unless types.is_a?(Array)
-          next unless types.compact.any? { |t| t["Type"] == "Module" }
-
-          loadout << {
-            name:,
-            ref: nil,
-            key: nil
+          index[name] ||= {
+            min_size: port["MinSize"],
+            max_size: port["MaxSize"],
+            types: extract_port_def_types(port)
           }
         end
+      end
 
-        loadout
+      private def extract_port_def_types(port)
+        types = port.dig("Types", "SItemPortDefTypes")
+        types = [types] unless types.is_a?(Array)
+
+        types.compact.filter_map { |type| type["Type"] }
+      end
+
+      # A ship's item ports are declared in its vehicle implementation XML. The
+      # entity record's own `Ports` block only adds a handful of late ones (life
+      # support, the relay), so both are needed: the Eclipse's torpedo rack port
+      # -- the one that takes a bomb rack just as happily -- exists only here.
+      private def extract_definition_port_defs(component_params)
+        definition_file_path = component_params&.dig("vehicleDefinition")
+
+        return {} if definition_file_path.blank?
+
+        definition_file = "#{definition_path}/#{definition_file_path}"
+
+        return {} unless File.exist?(definition_file)
+
+        definition_data = extract_modification_definition(
+          Hash.from_xml(File.read(definition_file)),
+          component_params.dig("modification")
+        )
+
+        collect_item_ports(definition_data.dig("Vehicle", "Parts", "Part"))
+      end
+
+      # The same nested part tree `collect_hull_parts` walks, keeping exactly the
+      # parts it throws away.
+      private def collect_item_ports(node, ports = {})
+        case node
+        when Array
+          node.each { |value| collect_item_ports(value, ports) }
+        when Hash
+          item_port = node["ItemPort"]
+
+          if node["name"].present? && node["class"] == "ItemPort" && item_port.is_a?(Hash)
+            ports[node["name"]] ||= {
+              min_size: item_port["minSize"],
+              max_size: item_port["maxSize"],
+              types: extract_item_port_types(item_port)
+            }
+          end
+
+          collect_item_ports(node.dig("Parts", "Part"), ports)
+        end
+
+        ports
+      end
+
+      # A handful of ports carry junk where their types should be -- the
+      # Reclaimer's shield mounts hold a stray backtick -- so the block is only
+      # read when it came through as one.
+      private def extract_item_port_types(item_port)
+        types = item_port["Types"]
+
+        return [] unless types.is_a?(Hash)
+
+        Array.wrap(types["Type"]).filter_map do |type|
+          type["type"] if type.is_a?(Hash)
+        end
       end
 
       private def extract_loadout(item)
