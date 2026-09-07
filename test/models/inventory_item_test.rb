@@ -152,6 +152,20 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
     assert_predicate item, :item_available?
   end
 
+  # The column records whichever build was loaded last, across every
+  # environment, so loading ptu moves it off the live build for every row in the
+  # catalogue at once. Measured on the first real ptu load: as a live request 0
+  # of 10 entries reported available, while every one of them still had its live
+  # build row.
+  test "leaves an entry alone when another environment's load moved the version column" do
+    current = create(:component, version: ScData::Source.version)
+    current.update_column(:version, "4.10.1-ptu.12578875")
+
+    item = create(:inventory_item, inventory: @inventory, item: current)
+
+    assert_predicate item, :item_available?
+  end
+
   # Most entries name a thing without pointing at one, and a name has no build
   # to be missing from.
   test "leaves an entry that references nothing alone" do
