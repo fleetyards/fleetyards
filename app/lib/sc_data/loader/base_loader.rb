@@ -460,6 +460,19 @@ module ScData
 
         apply(hardpoint, update_params)
 
+        # Dual-written from here: the row keeps the facts and the build row gets
+        # a copy, so the reads can move over in their own step. Read off the
+        # hardpoint rather than off `update_params`, because `group`, `category`
+        # and `group_key` are derived by Hardpoint's `before_validation` and are
+        # only correct once `apply` has saved.
+        #
+        # A `retain_only` slot returns above and gets no build row on purpose: it
+        # exists to keep a leftover row alive through the cleanup, and it
+        # describes a build where the component was not yet hidden. What that
+        # should mean once the cleanup retires build rows instead of destroying
+        # slots is a decision for that step, not this one.
+        apply_build(hardpoint, HardpointBuild.facts_from(hardpoint))
+
         persist_loadout(hardpoint, slot.children) if slot.children.present?
 
         hardpoint.id

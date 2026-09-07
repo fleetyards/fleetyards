@@ -127,16 +127,43 @@ separate and unblocked.
    which is the same asymmetry that keeps build rows off the matrix half. It is
    worth reading as a second, independent argument for that constraint rather
    than as a detail of the index.
-2. **Dual-write.** `persist_slot` calls `apply_build` alongside `apply`, and
-   `persist_loadout` stops destroying: `retire_absent_builds(HardpointBuild,
-   :hardpoint_id, …)` takes its place for the `game_files` half. This is the PR
-   that makes a second load non-destructive, and it is the one item 3 is gated
-   on.
+2. **Dual-write, cleanup untouched.** `persist_slot` calls `apply_build`
+   alongside `apply`. No behaviour change: build rows start existing, and a slot
+   still exists if and only if it has a row for the current build, because the
+   destroy is still there and takes the build row with it on the cascade.
 3. **Move the reads.** `api/v1/hardpoints/_base.jbuilder` and everything that
    embeds it resolve facts through the build, and the nested `json.hardpoints`
-   recursion filters to children the build describes.
-4. **Drop the columns**, after (3) has been on `main` long enough to trust —
-   and this folds into item 4 of the parent plan rather than standing alone.
+   recursion filters to children the build describes. Still no visible change,
+   for the same reason: with the destroy in place, "has a build row" and "exists"
+   are the same predicate.
+4. **Stop destroying.** `persist_loadout` retires build rows instead of
+   destroying slots, and *this* is the PR that fixes the bug and the one item 3
+   of the parent plan is gated on.
+5. **Drop the columns**, after (4) has been on `main` long enough to trust — and
+   this folds into item 4 of the parent plan rather than standing alone.
+
+**The order of (3) and (4) is not interchangeable, and an earlier version of
+this plan had them the other way round.** `Api::V1::ModelsController#hardpoints`
+serves `model.hardpoints.includes(:component)` filtered by nothing but `source`.
+Stop destroying while the reads are still column-based and every slot retired by
+every past build appears in that response at once — along with stale children in
+the `json.hardpoints` recursion and a changed `group_key`, since `group_keys`
+counts a slot's children. Moving the reads first makes (4) a pure improvement:
+a retired slot keeps its row, has no build row, and simply stops being offered.
+
+Two things (4) has to get right, noted while (2) was written:
+
+- **`retire_absent_builds` is global.** It does
+  `build_class.current(source).where.not(foreign_key => loaded)`, and
+  `persist_loadout` runs per parent and again per nested level — so used as-is,
+  the first call would retire every other ship's build rows. It needs scoping to
+  the parent's own slots.
+- **A `retain_only` slot has no build row**, deliberately: it exists to keep a
+  leftover alive through the cleanup and describes a build where the component
+  was not yet hidden. Once existence is decided by the build row, that row stops
+  being offered. That is probably right, and it changes a characterized
+  behaviour, so it has to be a decision rather than a side effect. Pinned in
+  `base_loader_loadout_test.rb`.
 
 ## Risks
 

@@ -44,9 +44,7 @@ module Maintenance
       # Assigned through the model rather than written raw, because the enums and
       # the serialized arrays have to go back through the build's own casters:
       # `hardpoint.group` hands back "weapons" and the build stores 40.
-      build.assign_attributes(
-        HardpointBuild::FACTS.index_with { |fact| hardpoint.public_send(fact) }
-      )
+      build.assign_attributes(HardpointBuild.facts_from(hardpoint))
 
       return unless build.changed?
 

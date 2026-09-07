@@ -84,6 +84,17 @@ class HardpointBuild < ApplicationRecord
   validates :version, presence: true
   validates :hardpoint_id, uniqueness: {scope: [:environment, :version]}
 
+  # The facts a build row holds, read off a slot. Deliberately read from the
+  # record rather than from whatever params a caller has in hand: `group`,
+  # `category` and `group_key` are derived by Hardpoint's `before_validation`,
+  # so they are only correct once the slot itself has been saved.
+  #
+  # One method because both writers need exactly this -- the loader's dual-write
+  # and the backfill task -- and a second copy of the list would drift.
+  def self.facts_from(hardpoint)
+    FACTS.index_with { |fact| hardpoint.public_send(fact) }
+  end
+
   # Every build this environment still has.
   scope :for_source, ->(source = ::ScData::Source.current) {
     where(environment: source.environment)
