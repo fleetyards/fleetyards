@@ -101,7 +101,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: data/sc_data/parsed
-          key: ${{ runner.os }}-sc-data-parsed-v1-${{ steps.sc-data.outputs.key }}
+          key: ${{ runner.os }}-sc-data-parsed-v2-${{ steps.sc-data.outputs.key }}
 
       - name: Fetch the parsed sc_data tree
         if: steps.parsed-tree.outputs.cache-hit != 'true'
