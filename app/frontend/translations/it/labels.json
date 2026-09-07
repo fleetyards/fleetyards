@@ -1245,7 +1245,6 @@
         "moduleFitted": "Installato",
         "moduleCargo": "%{cargo} SCU",
         "moduleContentsUnknown": "Nessun equipaggiamento proprio",
-        "clearModule": "Cancella selezione",
         "categories": {
           "radar": "Radar",
           "armor": "Corazza",

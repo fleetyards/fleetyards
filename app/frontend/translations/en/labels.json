@@ -1236,7 +1236,6 @@
         },
         "moduleSlotEmpty": "— Select Module —",
         "selectModule": "Select Module",
-        "clearModule": "Clear Selection",
         "moduleStock": "As delivered",
         "moduleStockHint": "Slot left as the ship comes",
         "moduleFitted": "Fitted",

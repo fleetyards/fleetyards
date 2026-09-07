@@ -1245,7 +1245,6 @@
         "moduleFitted": "Verbaut",
         "moduleCargo": "%{cargo} SCU",
         "moduleContentsUnknown": "Keine eigene Ausstattung",
-        "clearModule": "Auswahl löschen",
         "categories": {
           "radar": "Radar",
           "armor": "Panzerung",

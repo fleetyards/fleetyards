@@ -1245,7 +1245,6 @@
         "moduleFitted": "Installé",
         "moduleCargo": "%{cargo} SCU",
         "moduleContentsUnknown": "Aucun équipement propre",
-        "clearModule": "Effacer la sélection",
         "categories": {
           "radar": "Radar",
           "armor": "Blindage",

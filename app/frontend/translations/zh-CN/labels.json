@@ -1245,7 +1245,6 @@
         "moduleFitted": "已装配",
         "moduleCargo": "%{cargo} SCU",
         "moduleContentsUnknown": "无自带设备",
-        "clearModule": "清除选择",
         "categories": {
           "radar": "雷达",
           "armor": "装甲",
