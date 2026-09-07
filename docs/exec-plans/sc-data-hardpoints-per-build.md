@@ -100,11 +100,33 @@ separate and unblocked.
    `retained_versions` mirroring `ComponentBuild`, and a backfill writing the
    current live build from the columns already on the row. Nothing reads it yet.
 
-   Add a unique index on `(parent_type, parent_id, sc_name)` in the same PR.
-   The slot's natural key is already unique in fact — 0 duplicates over the
-   22,561 game-file rows — but nothing enforces it except
-   `find_or_initialize_by` in the loader, and once a slot is the thing other
-   records point at, that is not enough.
+   The backfill is a **maintenance task**, not a data migration.
+   `bin/deploy-release` runs `data:migrate` inside the Kamal pre-deploy hook, so
+   as a migration it would block every deploy behind two minutes of work --
+   22,561 slots at one lookup and one insert each, measured -- and the hook
+   retries three times, re-scanning the table on each attempt. A leaked Kamal
+   lock from a failed deploy then kills the next one before it can run the fix.
+   As a task it is triggered once, watched and resumable.
+
+   No `dry_run` attribute on it: one that defaults to true makes a console run
+   roll back silently while still reporting "succeeded", and an additive
+   backfill has nothing to rehearse.
+
+   Add a unique index on `(parent_type, parent_id, sc_name)` in the same PR,
+   **scoped to `source = 1`**. The slot's natural key is unique in fact on the
+   game-files side — 0 duplicates over its 22,561 rows — but nothing enforces it
+   except `find_or_initialize_by` in the loader, and once a slot is the thing
+   build rows hang off, that is not enough.
+
+   An earlier version of this step said to add it unscoped. That is impossible,
+   measured before it was written: 1,222 duplicate groups and 2,406 excess rows,
+   every one of them `ship_matrix`. The matrix half is not a set of named ports
+   at all — it repeats names by design, and a ship carries 32 rows called
+   "Maneuvering Thruster". So "the slot called X on this parent" is a
+   well-defined thing on the game-files side and meaningless on the matrix side,
+   which is the same asymmetry that keeps build rows off the matrix half. It is
+   worth reading as a second, independent argument for that constraint rather
+   than as a detail of the index.
 2. **Dual-write.** `persist_slot` calls `apply_build` alongside `apply`, and
    `persist_loadout` stops destroying: `retire_absent_builds(HardpointBuild,
    :hardpoint_id, …)` takes its place for the `game_files` half. This is the PR
