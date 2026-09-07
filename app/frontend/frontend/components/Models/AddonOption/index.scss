@@ -1,0 +1,206 @@
+// How far the wrapped figures sit in at phone width, so they line up under the
+// name rather than under the thumbnail: the narrow image plus the row's gap.
+$phone-indent: 82px;
+
+/*
+ * A row in a list of addons, shared by the hardpoint slot's module picker and
+ * the hangar's modules-and-upgrades modal. A list rather than a grid of
+ * photographs: the figures line up down the modal and can be read against each
+ * other, which a two-up grid of store images never allowed.
+ */
+.addon-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 10px 16px 10px 10px;
+  text-align: left;
+  background-color: $panel-bg;
+  border: $panel-border-width solid transparent;
+  border-radius: $panel-border-radius;
+  transition:
+    border-color $transition-base-speed,
+    background-color $transition-base-speed;
+
+  &:hover {
+    border-color: $panel-inner-border;
+  }
+
+  &--selected {
+    border-color: $success;
+  }
+
+  // Nothing to press: the row is reporting what is fitted, not offering it.
+  &--static,
+  &--static:hover {
+    border-color: transparent;
+  }
+
+  &--static.addon-option--selected {
+    border-color: $success;
+  }
+}
+
+/*
+ * Stretched over the row instead of wrapping it, because a <button> may not
+ * contain the quantity stepper's buttons. Sits under the stepper.
+ */
+.addon-option__toggle {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: $panel-border-radius;
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: -3px;
+  }
+}
+
+.addon-option__image {
+  flex: none;
+  width: 96px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: $panelContentBorderRadius;
+
+  &--glyph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($gray-black, 0.6);
+
+    i,
+    svg {
+      font-size: 24px;
+      color: $gray-light;
+    }
+  }
+}
+
+.addon-option__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.addon-option__name {
+  color: $text-color;
+  font-size: 16px;
+}
+
+/*
+ * Two lines at most: a module's description is a store paragraph, and left to
+ * run it makes one row taller than the rest of the list.
+ */
+.addon-option__contents {
+  display: -webkit-box;
+  overflow: hidden;
+  color: $gray-lighter;
+  font-size: 13px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.addon-option__meta {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.addon-option__figure {
+  color: $text-color;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.addon-option__quantity {
+  display: flex;
+  z-index: 2;
+  flex: none;
+  align-items: center;
+  background-color: rgba($gray-black, 0.9);
+  border: 1px solid $gray;
+  border-radius: 6px;
+}
+
+.addon-option__step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  padding: 0;
+  color: $text-color;
+  font-size: 11px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: -2px;
+  }
+}
+
+.addon-option__count {
+  min-width: 18px;
+  color: #fff;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-align: center;
+}
+
+/*
+ * The meta column drops under the name rather than squeezing it: at this width
+ * a cargo figure and two pills beside a name leave the name a few characters.
+ */
+@media (max-width: $tablet-breakpoint) {
+  .addon-option {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .addon-option__image {
+    width: 72px;
+    height: 48px;
+  }
+
+  .addon-option__meta {
+    width: 100%;
+    padding-left: $phone-indent;
+  }
+
+  // Wraps onto its own line below the figures, so it lines up with them rather
+  // than sitting back under the thumbnail.
+  .addon-option__quantity {
+    margin-left: $phone-indent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .addon-option {
+    transition-duration: 1ms;
+  }
+}

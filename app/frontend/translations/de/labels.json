@@ -1242,9 +1242,6 @@
         "selectModule": "Modul auswählen",
         "moduleStock": "Wie ausgeliefert",
         "moduleStockHint": "Slot bleibt, wie das Schiff geliefert wird",
-        "moduleFitted": "Verbaut",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "Keine eigene Ausstattung",
         "categories": {
           "radar": "Radar",
           "armor": "Panzerung",

@@ -1242,9 +1242,6 @@
         "selectModule": "選擇模組",
         "moduleStock": "出廠狀態",
         "moduleStockHint": "插槽保持船艦出廠時的狀態",
-        "moduleFitted": "已裝配",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "無自帶設備",
         "categories": {
           "radar": "雷達",
           "armor": "裝甲",

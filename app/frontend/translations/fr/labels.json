@@ -1242,9 +1242,6 @@
         "selectModule": "Sélectionner un module",
         "moduleStock": "Tel que livré",
         "moduleStockHint": "Emplacement tel que le vaisseau est livré",
-        "moduleFitted": "Installé",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "Aucun équipement propre",
         "categories": {
           "radar": "Radar",
           "armor": "Blindage",
