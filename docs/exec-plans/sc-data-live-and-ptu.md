@@ -169,11 +169,12 @@ build, so it did not fire.
 ### 2. Hardpoints per build — before anything else
 
 The loadout has to stop being a single set of rows that the last load to run
-owns. The shape that fits both this and a loadout manager is the one the other
-four catalogues already use, split one layer further:
+owns. That is the whole reason, and it needs no other: the shape is the one the
+other four catalogues already use, split one layer further, because a loadout
+differs between builds in *structure* and not only in facts.
 
-- a **slot** — `parent` plus `sc_name` — stable across builds, which is what a
-  saved loadout or a named preset can safely point at;
+- a **slot** — `parent` plus `sc_name` — stable across builds, which is what
+  `ModelPosition` already points at;
 - a **`HardpointBuild`** carrying what the build says is in it: the component,
   `min_size`/`max_size`, `types`, `port_tags`, `required_tags`, `flags`;
 - a slot the build does not describe simply has no build row, so nothing is
@@ -209,10 +210,12 @@ there is no curated data on that table to preserve, and the slot identity is
 `hardpoints`.
 
 `vehicle_loadout_hardpoints` still points at `model_hardpoints` rather than at
-`hardpoints`, which is why a loadout manager cannot be built on it as it stands
-— but with 0 rows against 319 `vehicle_loadouts` there is nothing to migrate,
-only a foreign key to repoint. Deleting the legacy pair is a separate,
-unblocked piece of work.
+`hardpoints`, and it has never held a row. It is not a constraint on this work
+in either direction: the *live* vehicle-loadout feature is a bookmark — all 319
+`vehicle_loadouts` rows carry a URL to `spviewer.eu` or `erkul.games` and none
+carry anything else — so it reads no hardpoints and knows nothing about builds.
+The two share the word "loadout" and nothing else. Deleting the legacy pair,
+`vehicle_loadout_hardpoints` included, is separate and unblocked.
 
 ### 3. A production load path for a second environment
 
