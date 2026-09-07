@@ -13,8 +13,12 @@ if ! PATH="$clean_path" command -v op &> /dev/null; then
   exit 1
 fi
 
+# .env.local last so per-worktree overrides win. .env is deliberately absent:
+# op applies --env-file in order, so listing it here would let a stale .env
+# shadow a resolved vault value. dotenv-rails still loads it at boot, where it
+# fills gaps instead of clobbering.
 env_args=()
-for env_file in .env.tpl .env .env.local; do
+for env_file in .env.tpl .env.local; do
   if [ -f "$env_file" ]; then
     env_args+=(--env-file="$env_file")
   fi
