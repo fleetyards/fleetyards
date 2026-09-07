@@ -13,8 +13,21 @@ export const useGallery = (
 
   const lightbox = ref<PhotoSwipeLightbox>();
 
-  const copy = (url: string) => {
-    copyText(url).then(
+  /*
+   * Pass an element inside the open lightbox as `container`. Optional only
+   * because copyText's own argument is - copying without one does not work
+   * from in here, it just fails quietly.
+   *
+   * copyText hands clipboard.js a throwaway textarea to select and copy from,
+   * and clipboard.js appends it to the container - document.body by default.
+   * PhotoSwipe traps focus inside its own root while it is open, so a textarea
+   * parked in body never takes the selection, and `execCommand("copy")` copies
+   * an empty one. It still returns true, so clipboard.js reports success and
+   * the notification below claimed the URL had been copied while the clipboard
+   * kept whatever was in it before.
+   */
+  const copy = (url: string, container?: HTMLElement) => {
+    copyText(url, container).then(
       () => {
         displaySuccess({
           text: t("messages.copyImageUrl.success"),
@@ -85,7 +98,7 @@ export const useGallery = (
             return;
           }
 
-          copy(url);
+          copy(url, pswp.element);
         },
       });
 
