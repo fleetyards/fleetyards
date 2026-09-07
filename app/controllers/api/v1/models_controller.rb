@@ -135,7 +135,13 @@ module Api
         model = find_model_by_slug!
         return if performed?
 
-        scope = model.hardpoints.includes(:component)
+        # `in_build` narrows to what this build describes; the nested levels are
+        # narrowed by the partial. The build rows are preloaded to the depth the
+        # export actually nests -- measured at three, with 638 slots at the
+        # deepest level -- since the partial reads `facts` on every child.
+        scope = model.hardpoints.in_build.includes(
+          :component, :build, hardpoints: [:component, :build, {hardpoints: [:component, :build]}]
+        )
 
         scope = scope.where(source: params[:source]) if params[:source].present?
 

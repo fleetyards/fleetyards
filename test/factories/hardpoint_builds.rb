@@ -3,7 +3,7 @@ FactoryBot.define do
     # `game_files` explicitly rather than the hardpoint factory's random source:
     # only that half carries build rows, and a matrix slot with one would be the
     # very thing the design forbids.
-    association :hardpoint, factory: :hardpoint, source: :game_files
+    association :hardpoint, factory: [:hardpoint, :without_build], source: :game_files
     environment { ScData::Source.environment }
     version { ScData::Source.version }
     min_size { 2 }

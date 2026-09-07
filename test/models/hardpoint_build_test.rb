@@ -9,7 +9,7 @@ class HardpointBuildTest < ActiveSupport::TestCase
   end
 
   test "a slot carries one row per build, not two" do
-    hardpoint = create(:hardpoint, source: :game_files)
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
     create(:hardpoint_build, hardpoint:, environment: @environment, version: @version)
 
     duplicate = build(:hardpoint_build, hardpoint:, environment: @environment, version: @version)
@@ -19,7 +19,7 @@ class HardpointBuildTest < ActiveSupport::TestCase
   end
 
   test "a later build of the same environment sits beside the earlier one" do
-    hardpoint = create(:hardpoint, source: :game_files)
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
     create(:hardpoint_build, hardpoint:, environment: @environment, version: "0.0.1-live.1")
     create(:hardpoint_build, hardpoint:, environment: @environment, version: "0.0.2-live.2")
 
@@ -27,7 +27,7 @@ class HardpointBuildTest < ActiveSupport::TestCase
   end
 
   test "the same slot can be described by more than one environment" do
-    hardpoint = create(:hardpoint, source: :game_files)
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
     create(:hardpoint_build, hardpoint:, environment: "live", version: @version)
     create(:hardpoint_build, hardpoint:, environment: "ptu", version: @version)
 
@@ -45,7 +45,7 @@ class HardpointBuildTest < ActiveSupport::TestCase
   # --- Which build is in force -----------------------------------------------
 
   test "#build resolves the row for the source in force and nothing else" do
-    hardpoint = create(:hardpoint, source: :game_files)
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
     live = create(:hardpoint_build, hardpoint:, environment: "live", version: "1.0.0-live.1")
     ptu = create(:hardpoint_build, hardpoint:, environment: "ptu", version: "1.0.1-ptu.2")
 
@@ -62,7 +62,7 @@ class HardpointBuildTest < ActiveSupport::TestCase
   # destroy in `persist_loadout`. So "no build" has to be a clean nil rather than
   # some other environment's row.
   test "#build is nil for a source that does not describe the slot" do
-    hardpoint = create(:hardpoint, source: :game_files)
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
     create(:hardpoint_build, hardpoint:, environment: "live", version: "1.0.0-live.1")
 
     ScData::Source.with(ScData::Source.new(environment: "ptu", version: "1.0.1-ptu.2")) do
@@ -71,7 +71,7 @@ class HardpointBuildTest < ActiveSupport::TestCase
   end
 
   test ".retained_versions keeps the newest builds of one environment, oldest first" do
-    hardpoint = create(:hardpoint, source: :game_files)
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
 
     %w[0.0.1-live.1 0.0.2-live.2 0.0.3-live.3 0.0.4-live.4].each_with_index do |version, index|
       create(:hardpoint_build, hardpoint:, environment: "live", version:,
@@ -117,10 +117,10 @@ class HardpointBuildTest < ActiveSupport::TestCase
   # and nothing enforced it.
   test "refuses a second game_files slot of the same name on one parent" do
     model = create(:model)
-    create(:hardpoint, parent: model, sc_name: "hardpoint_power", source: :game_files)
+    create(:hardpoint, :without_build, parent: model, sc_name: "hardpoint_power", source: :game_files)
 
     assert_raises(ActiveRecord::RecordNotUnique) do
-      create(:hardpoint, parent: model, sc_name: "hardpoint_power", source: :game_files)
+      create(:hardpoint, :without_build, parent: model, sc_name: "hardpoint_power", source: :game_files)
     end
   end
 
@@ -130,24 +130,85 @@ class HardpointBuildTest < ActiveSupport::TestCase
   # duplicate groups and 2,406 excess rows, every one of them ship_matrix.
   test "allows a repeated ship_matrix slot name, which the matrix relies on" do
     model = create(:model)
-    create(:hardpoint, parent: model, sc_name: "Maneuvering Thruster", source: :ship_matrix)
+    create(:hardpoint, :without_build, parent: model, sc_name: "Maneuvering Thruster", source: :ship_matrix)
 
     assert_nothing_raised do
-      create(:hardpoint, parent: model, sc_name: "Maneuvering Thruster", source: :ship_matrix)
+      create(:hardpoint, :without_build, parent: model, sc_name: "Maneuvering Thruster", source: :ship_matrix)
     end
   end
 
   test "does not collide a game_files slot with a matrix slot of the same name" do
     model = create(:model)
-    create(:hardpoint, parent: model, sc_name: "shared_name", source: :ship_matrix)
+    create(:hardpoint, :without_build, parent: model, sc_name: "shared_name", source: :ship_matrix)
 
     assert_nothing_raised do
-      create(:hardpoint, parent: model, sc_name: "shared_name", source: :game_files)
+      create(:hardpoint, :without_build, parent: model, sc_name: "shared_name", source: :game_files)
+    end
+  end
+
+  # --- Reading through the build ---------------------------------------------
+
+  # An object to read from rather than reader overrides in the style of
+  # Component, because Hardpoint derives group, category and group_key in a
+  # before_validation and the enum predicates those use read the attribute
+  # rather than the reader -- so an override would leave `group` and
+  # `thruster_group?` disagreeing.
+  test "#facts is the build row when one describes the slot" do
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
+    build_row = create(:hardpoint_build, hardpoint:)
+
+    assert_equal build_row, hardpoint.reload.facts
+  end
+
+  # The matrix half comes from no build, and its facts live only on the row.
+  test "#facts is the slot itself when no build describes it" do
+    hardpoint = create(:hardpoint, :without_build, source: :ship_matrix)
+
+    assert_equal hardpoint, hardpoint.facts
+  end
+
+  # A build row's nil is an answer, not a gap: an empty port in this build has
+  # to read as empty rather than falling through to the column.
+  test "#facts answers with the build's emptiness rather than the column's value" do
+    hardpoint = create(:hardpoint, :without_build, source: :game_files,
+      component: create(:component))
+    create(:hardpoint_build, hardpoint:, component: nil)
+
+    assert_nil hardpoint.reload.facts.component
+    assert_not_nil hardpoint.component, "the column still holds what it held"
+  end
+
+  test "#retired? is true only for a game-files slot no build describes" do
+    assert_predicate create(:hardpoint, :without_build, source: :game_files), :retired?
+    assert_not_predicate create(:hardpoint, source: :game_files), :retired?
+    assert_not_predicate create(:hardpoint, :without_build, source: :ship_matrix), :retired?
+  end
+
+  test ".in_build keeps the slots this build describes and the whole matrix half" do
+    described = create(:hardpoint, source: :game_files)
+    retired = create(:hardpoint, :without_build, source: :game_files)
+    matrix = create(:hardpoint, :without_build, source: :ship_matrix)
+
+    ids = Hardpoint.in_build.pluck(:id)
+
+    assert_includes ids, described.id
+    assert_includes ids, matrix.id
+    assert_not_includes ids, retired.id
+  end
+
+  test ".in_build resolves against the source asked for" do
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
+    create(:hardpoint_build, hardpoint:, environment: "ptu", version: "9.9.9-ptu.1")
+
+    assert_not_includes Hardpoint.in_build.pluck(:id), hardpoint.id
+
+    ScData::Source.with(ScData::Source.new(environment: "ptu", version: "9.9.9-ptu.1")) do
+      assert_includes Hardpoint.in_build.pluck(:id), hardpoint.id
     end
   end
 
   test "goes away with the slot it describes" do
-    hardpoint = create(:hardpoint, source: :game_files)
+    hardpoint = create(:hardpoint, :without_build, source: :game_files)
     build_row = create(:hardpoint_build, hardpoint:)
 
     hardpoint.destroy!
