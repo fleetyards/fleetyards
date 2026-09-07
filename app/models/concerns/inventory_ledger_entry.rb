@@ -119,14 +119,22 @@ module InventoryLedgerEntry
   # than leaving a player to work out why they cannot record more of something
   # they are holding.
   #
-  # `version` records the build an item was last seen in, which is the same
-  # question `current_version` asks of the catalogues. Entries naming a thing
-  # without pointing at one -- most of them -- have nothing to be missing from.
+  # Asked of the build describing the item rather than of the `version` column
+  # on its row. The column names whichever build was loaded last, across every
+  # environment, so a ptu load moves it off the live build for every row at
+  # once and leaves every live entry claiming to be missing. Measured on the
+  # first real ptu load: as a live request 0 of 10 entries reported available,
+  # as a ptu request 10 of 10, with each item's live build row sitting there
+  # untouched. The build row is the same thing `current_version` resolves
+  # against for all three catalogues an entry can name.
+  #
+  # Entries naming a thing without pointing at one -- most of them -- have
+  # nothing to be missing from.
   def item_available?
     return true unless referenced_item?
-    return true unless item.respond_to?(:version)
+    return true unless item.respond_to?(:build)
 
-    item.version == ScData::Source.version
+    item.build.present?
   end
 
   # What one piece costs a cargo grid, in SCU. Bulk cargo is already counted in
