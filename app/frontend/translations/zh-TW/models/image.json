@@ -12,11 +12,7 @@
         "error": "錯誤",
         "name": "名稱",
         "size": "檔案大小",
-        "dropzone": "將圖片拖放到此處",
-        "cancelUpload": "取消上傳",
-        "startUpload": "開始上傳",
-        "selectImages": "新增圖片...",
-        "selectFolder": "新增資料夾..."
+        "dropzone": "將圖片拖放到此處"
       }
     }
   }

@@ -8,7 +8,6 @@
       "twoFactorCode": "Codice due-fattori",
       "confirmationCode": "Codice di conferma",
       "email": "E-mail",
-      "currentPassword": "Password Attuale",
       "password": "Password",
       "passwordConfirmation": "Conferma Password",
       "homepage": "Homepage",
@@ -39,16 +38,12 @@
       "signup-status": "Confermata o non definitiva?",
       "features": {
         "username": "Username or User ID",
-        "fleetFid": "Fleet FID or Fleet ID",
         "name": "Nome funzione"
       },
       "fleetInviteToken": "Inviti Alla Flotta",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
-        "models-fleetchart": "Avenger, Carrack, Cutlass...",
-        "hangar": "Enterprise, Andromeda...",
-        "hangar-fleetchart": "Enterprise, Andromeda...",
-        "hangar-wishlist": "Avenger, Carrack, Cutlass..."
+        "hangar": "Enterprise, Andromeda..."
       },
       "search": {
         "default": "Cerca nel Verse...",
@@ -57,13 +52,6 @@
       "home": {
         "search": "Cerca Navi..."
       },
-      "container-1": "0",
-      "container-2": "0",
-      "container-4": "0",
-      "container-8": "0",
-      "container-16": "0",
-      "container-24": "0",
-      "container-32": "0",
       "image": {
         "caption": "Didascalia"
       },
@@ -238,7 +226,6 @@
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Nave capitale, Caccia...",
           "classification": "Veicolo, Caccia, Cargo...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
           "onSale": "Sì o No",

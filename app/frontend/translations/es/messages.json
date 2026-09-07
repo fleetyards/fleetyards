@@ -67,8 +67,7 @@
         "groupAdded": "Grupo agregado a la función.",
         "groupRemoved": "Grupo eliminado de la función.",
         "created": "Función creada.",
-        "destroyed": "Función eliminada.",
-        "createError": "No se pudo crear la función."
+        "destroyed": "Función eliminada."
       },
       "rsiRequestLogs": {
         "resolved": "Registro de solicitud marcado como resuelto.",
@@ -111,14 +110,12 @@
           "success": "Avatar removed",
           "failure": "Could not remove Avatar"
         },
-        "invalidExtension": "La imagen que proporcionaste tiene un formato inválido. Los formatos soportados son: %{extensions}.",
         "success": "Avatar subido"
       },
       "hangarImport": {
         "success": "Importación completada",
         "partialSuccess": "Importación parcialmente completada.<br><br>Naves no encontradas: <br>%{missing}",
-        "failure": "Falló la importación",
-        "invalidExtension": "La importación que proporcionaste tiene un formato inválido. Los formatos soportados son: %{extensions}."
+        "failure": "Falló la importación"
       },
       "hangarExport": {
         "failure": "Falló la exportación, por favor inténtalo más tarde."
@@ -150,7 +147,6 @@
       },
       "model": {
         "onSale": "¡%{model} ahora en oferta!",
-        "syncStarted": "Model sync started. You will be notified when it completes.",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "Importación de pinturas iniciada. Se te avisará cuando termine."
@@ -188,7 +184,6 @@
       "error": {
         "usernameTaken": "El nombre de usuario ya está tomado.",
         "userNotFound": "Usuario no encontrado",
-        "urlInvalid": "La URL es inválida",
         "emailTaken": "El email ya está tomado.",
         "fleetTaken": "La flota ya está tomada.",
         "colorInvalid": "Color is invalid",
@@ -322,7 +317,6 @@
         "webglNotSupported": "El visor 3D no está disponible en este dispositivo."
       },
       "cargoGridViewer": {
-        "noCargoHolds": "Esta nave no tiene bodegas de carga.",
         "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
@@ -585,8 +579,7 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
-            "confirmAll": "¿Eliminar este artículo y todas sus entradas? Esta acción no se puede deshacer."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
           }
         },
         "vehicleInventory": {

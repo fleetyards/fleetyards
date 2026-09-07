@@ -67,8 +67,7 @@
         "groupAdded": "群組已新增到功能。",
         "groupRemoved": "群組已從功能中移除。",
         "created": "功能已建立。",
-        "destroyed": "功能已移除。",
-        "createError": "無法建立功能。"
+        "destroyed": "功能已移除。"
       },
       "rsiRequestLogs": {
         "resolved": "請求日誌已標記為已解決。",
@@ -110,14 +109,12 @@
         "destroy": {
           "success": "頭像已移除",
           "failure": "無法移除頭像"
-        },
-        "invalidExtension": "您提供的圖片格式無效。支援的格式為：%{extensions}。"
+        }
       },
       "hangarImport": {
         "success": "匯入完成",
         "partialSuccess": "匯入部分完成。<br><br>未找到的飛船：<br>%{missing}",
-        "failure": "匯入失敗",
-        "invalidExtension": "您提供的匯入檔案格式無效。支援的格式為：%{extensions}。"
+        "failure": "匯入失敗"
       },
       "hangarExport": {
         "failure": "匯出失敗，請稍後再試。"
@@ -149,7 +146,6 @@
       },
       "model": {
         "onSale": "%{model}現在特價中！",
-        "syncStarted": "Model sync started. You will be notified when it completes.",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "塗裝匯入已開始。完成後會通知您。"
@@ -187,7 +183,6 @@
       "error": {
         "usernameTaken": "使用者名稱已被使用。",
         "userNotFound": "找不到使用者",
-        "urlInvalid": "網址無效",
         "emailTaken": "電子郵件已被使用。",
         "fleetTaken": "艦隊名稱已被使用。",
         "colorInvalid": "顏色無效",
@@ -321,7 +316,6 @@
         "webglNotSupported": "此裝置無法使用 3D 檢視器。"
       },
       "cargoGridViewer": {
-        "noCargoHolds": "此飛船沒有貨艙。",
         "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
@@ -584,8 +578,7 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
-            "confirmAll": "刪除該物品及其所有記錄？此操作無法復原。"
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
           }
         },
         "vehicleInventory": {

@@ -22,11 +22,8 @@
         "trading": "Trading & Economy",
         "loadouts": "Ship Loadouts & Combat",
         "mining": "Mining",
-        "guides": "Information & Guides",
         "missions": "Missions & Database",
-        "roadmap": "Roadmap & Tracking",
-        "fleet": "Fleet Management",
-        "marketplace": "Marketplace"
+        "fleet": "Fleet Management"
       },
       "discontinued": "This project has been discontinued.",
       "discontinuedHeading": "Discontinued Projects"

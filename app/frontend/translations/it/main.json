@@ -1,8 +1,7 @@
 {
   "it": {
     "meta": {
-      "description": "FleetYards.net, il tuo database per tutte le informazioni relative alle navi di “Star Citizen“.",
-      "keywords": "Star Citizen, Astronavi, Navi, Caccia, Database, Squadron, 42, Star, Citizen, Italiano, Chris, Roberts, Online, Gioco, Spazio, Simulazione"
+      "description": "FleetYards.net, il tuo database per tutte le informazioni relative alle navi di “Star Citizen“."
     },
     "model": {
       "focus": "Specializzazione",
@@ -11,7 +10,6 @@
       "beam": "Raggio",
       "cargo": "Carico",
       "personalInventory": "Inventario della nave",
-      "netCargo": "Carico con Rover/Snub",
       "crew": "Equipaggio",
       "speed": "Velocità",
       "minCrew": "min. Equipaggio",
@@ -37,8 +35,6 @@
       "groundDecceleration": "Decelerazione",
       "scmSpeedAcceleration": "Zero a SCM",
       "scmSpeedDecceleration": "SCM a Zero",
-      "maxSpeedAcceleration": "Zero a Max",
-      "maxSpeedDecceleration": "Max a Zero",
       "compare": {
         "groundMaxSpeed": "Velocità Massima a Terra",
         "groundReverseSpeed": "Velocità Indietro a Terra",
@@ -56,10 +52,8 @@
       "weapons": "Armamenti",
       "equipment": "Equipaggiamento",
       "variants": "Varianti",
-      "maxUpgrades": "Upgrade",
       "productionStatus": "Stato Della Produzione",
       "propulsion": "Propulsione",
-      "ordnance": "Ordinanza",
       "modular": "Modulare",
       "soldAt": "Venduto a?",
       "rentalAt": "Noleggiato a?",
@@ -71,7 +65,6 @@
       "size": "Dimensione"
     },
     "availability": {
-      "listedAt": "Elencato a",
       "soldAt": "Venduto a",
       "boughtAt": "Acquistato a"
     },

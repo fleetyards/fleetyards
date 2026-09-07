@@ -15,7 +15,6 @@
         "size": "Taille",
         "beam": "Largeur",
         "cargo": "Cargaison",
-        "netCargo": "Cargaison avec Rover/Snub",
         "crew": "Équipage",
         "speed": "Vitesse",
         "minCrew": "Équipage min.",
@@ -34,8 +33,6 @@
         "groundDecceleration": "Décélération",
         "scmSpeedAcceleration": "Zéro à SCM",
         "scmSpeedDecceleration": "SCM à Zéro",
-        "maxSpeedAcceleration": "Zéro à Max",
-        "maxSpeedDecceleration": "Max à Zéro",
         "compare": {
           "groundMaxSpeed": "Vitesse au sol max.",
           "groundReverseSpeed": "Vitesse de recul au sol",
@@ -53,10 +50,8 @@
         "weapons": "Armes",
         "equipment": "Équipement",
         "variants": "Variantes",
-        "maxUpgrades": "Améliorations",
         "productionStatus": "Statut de production",
         "propulsion": "Propulsion",
-        "ordnance": "Armement",
         "modular": "Modulaire",
         "soldAt": "Vendu à ?",
         "rentalAt": "Loué à ?",
@@ -72,10 +67,7 @@
         "addons": "Modules et kits d'amélioration",
         "productionStatuses": {
           "notAvailable": "N/A",
-          "in-production": "En production",
-          "in-concept": "En concept",
           "ready": "Prêt pour le hangar",
-          "flight-ready": "Prêt au vol",
           "announced": "Annoncé"
         }
       }

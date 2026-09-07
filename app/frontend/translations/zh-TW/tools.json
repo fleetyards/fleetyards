@@ -22,11 +22,8 @@
         "trading": "貿易與經濟",
         "loadouts": "飛船裝載與戰鬥",
         "mining": "採礦",
-        "guides": "資訊與指南",
         "missions": "任務與資料庫",
-        "roadmap": "路線圖與追蹤",
-        "fleet": "艦隊管理",
-        "marketplace": "市場"
+        "fleet": "艦隊管理"
       },
       "discontinued": "該項目已停止維護。",
       "discontinuedHeading": "已停止的項目"

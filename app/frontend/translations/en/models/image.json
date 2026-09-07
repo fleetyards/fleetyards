@@ -12,11 +12,7 @@
         "error": "Error",
         "name": "Name",
         "size": "File size",
-        "dropzone": "Drop images here",
-        "cancelUpload": "Cancel upload",
-        "startUpload": "Start upload",
-        "selectImages": "Add images...",
-        "selectFolder": "Add a folder..."
+        "dropzone": "Drop images here"
       }
     }
   }

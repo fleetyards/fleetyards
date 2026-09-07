@@ -1,8 +1,7 @@
 {
   "zh-TW": {
     "meta": {
-      "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“.",
-      "keywords": "Star Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
+      "description": "FleetYards.net, Your Database for all Information related to Ships from “Star Citizen“."
     },
     "model": {
       "focus": "定位",
@@ -11,7 +10,6 @@
       "beam": "寬度",
       "cargo": "貨物",
       "personalInventory": "飛船庫存",
-      "netCargo": "含 Rover/Snub 的貨物",
       "crew": "船員",
       "speed": "速度",
       "minCrew": "最少船員",
@@ -37,8 +35,6 @@
       "groundDecceleration": "減速度",
       "scmSpeedAcceleration": "零到SCM",
       "scmSpeedDecceleration": "SCM到零",
-      "maxSpeedAcceleration": "零到最大",
-      "maxSpeedDecceleration": "最大到零",
       "compare": {
         "groundMaxSpeed": "地面最大速度",
         "groundReverseSpeed": "地面倒車速度",
@@ -56,10 +52,8 @@
       "weapons": "武器",
       "equipment": "裝備",
       "variants": "變體",
-      "maxUpgrades": "升級",
       "productionStatus": "生產狀態",
       "propulsion": "推進",
-      "ordnance": "武器彈藥",
       "modular": "模組化",
       "soldAt": "在哪裡出售?",
       "rentalAt": "在哪裡租賃?",
@@ -71,7 +65,6 @@
       "size": "尺寸"
     },
     "availability": {
-      "listedAt": "Listed at",
       "soldAt": "Sold at",
       "boughtAt": "Bought at"
     },

@@ -8,7 +8,6 @@
       "twoFactorCode": "Two-factor code",
       "confirmationCode": "Confirmation code",
       "email": "Email",
-      "currentPassword": "Current Password",
       "password": "Password",
       "passwordConfirmation": "Password Confirmation",
       "homepage": "Homepage",
@@ -39,16 +38,12 @@
       "signup-status": "Confirmed or tentative?",
       "features": {
         "username": "Username or User ID",
-        "fleetFid": "Fleet FID or Fleet ID",
         "name": "Feature name"
       },
       "fleetInviteToken": "Fleet Invite",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
-        "models-fleetchart": "Avenger, Carrack, Cutlass...",
-        "hangar": "Enterprise, Andromeda...",
-        "hangar-fleetchart": "Enterprise, Andromeda...",
-        "hangar-wishlist": "Avenger, Carrack, Cutlass..."
+        "hangar": "Enterprise, Andromeda..."
       },
       "search": {
         "default": "Search...",
@@ -57,13 +52,6 @@
       "home": {
         "search": "Search for Ships..."
       },
-      "container-1": "0",
-      "container-2": "0",
-      "container-4": "0",
-      "container-8": "0",
-      "container-16": "0",
-      "container-24": "0",
-      "container-32": "0",
       "image": {
         "caption": "Caption"
       },
@@ -237,7 +225,6 @@
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Capital Ship, Fighter...",
           "classification": "Vehicle, Fighter, Cargo...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
           "onSale": "Yes or No",

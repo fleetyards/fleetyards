@@ -8,7 +8,6 @@
       "twoFactorCode": "Code à deux facteurs",
       "confirmationCode": "Code de confirmation",
       "email": "E-mail",
-      "currentPassword": "Mot de passe actuel",
       "password": "Mot de passe",
       "passwordConfirmation": "Confirmation du mot de passe",
       "homepage": "Page d'accueil",
@@ -39,16 +38,12 @@
       "signup-status": "Confirmé ou provisoire ?",
       "features": {
         "username": "Username or User ID",
-        "fleetFid": "Fleet FID or Fleet ID",
         "name": "Nom de fonctionnalité"
       },
       "fleetInviteToken": "Invitation de flotte",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
-        "models-fleetchart": "Avenger, Carrack, Cutlass...",
-        "hangar": "Enterprise, Andromeda...",
-        "hangar-fleetchart": "Enterprise, Andromeda...",
-        "hangar-wishlist": "Avenger, Carrack, Cutlass..."
+        "hangar": "Enterprise, Andromeda..."
       },
       "search": {
         "default": "Search the Verse...",
@@ -57,13 +52,6 @@
       "home": {
         "search": "Rechercher des vaisseaux..."
       },
-      "container-1": "0",
-      "container-2": "0",
-      "container-4": "0",
-      "container-8": "0",
-      "container-16": "0",
-      "container-24": "0",
-      "container-32": "0",
       "image": {
         "caption": "Légende"
       },
@@ -238,7 +226,6 @@
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Vaisseau capital, Chasseur...",
           "classification": "Véhicule, Chasseur, Cargo...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
           "onSale": "Oui ou Non",
