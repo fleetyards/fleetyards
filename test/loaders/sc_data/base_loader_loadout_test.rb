@@ -391,14 +391,31 @@ module ScData
 
       # --- Cleanup ----------------------------------------------------------
 
-      test "destroys game_files hardpoints the run did not touch" do
+      # This used to destroy the row. It retires it instead: the slot stays, and
+      # what it loses is its row for this build -- which is what makes a load of
+      # one environment stop reaching into what another one wrote, and what lets
+      # a ModelPosition pointing at a dropped port survive the patch.
+      test "retires game_files hardpoints the run did not touch, keeping the row" do
         create(:component, sc_key: "kept_component")
         stale = create(:hardpoint, parent: @model, sc_name: "gone", source: :game_files)
 
         update_loadout(@model, {"loadout" => [{"name" => "kept", "key" => "kept_component"}]})
 
-        refute Hardpoint.exists?(stale.id)
-        assert_equal ["kept"], game_files_hardpoints(@model).pluck(:sc_name)
+        assert Hardpoint.exists?(stale.id), "the row survives"
+        assert_predicate stale.reload, :retired?
+        assert_equal ["kept"], game_files_hardpoints(@model).in_build.pluck(:sc_name)
+      end
+
+      # A loadout that resolved to nothing retires everything the parent had,
+      # which is what the destroy did too -- `where.not(id: [])` is `1=1`, and
+      # here that is deliberate rather than the trap it is in `retire_absent`.
+      test "retires everything under a parent when the loadout named nothing" do
+        existing = create(:hardpoint, parent: @model, sc_name: "was_here", source: :game_files)
+
+        update_loadout(@model, {"loadout" => [{"name" => "hardpoint_console_catwalk"}]})
+
+        assert Hardpoint.exists?(existing.id)
+        assert_predicate existing.reload, :retired?
       end
 
       # Ship-matrix hardpoints are the curated ones. A game-files load must not
@@ -412,20 +429,16 @@ module ScData
         assert Hardpoint.exists?(curated.id)
       end
 
-      # The finding from the first real PTU load, pinned here because nothing in
-      # the suite covered it: `hardpoints` carries no `environment`, so the two
-      # environments share one set of rows and the second load to run destroys
-      # what the first wrote rather than sitting beside it.
+      # The finding from the first real PTU load, and the reason for all of this.
+      # It was pinned as a bug in #4758 and every assertion in it has now
+      # inverted: the two environments no longer share one set of rows in any way
+      # that matters, because a load retires build rows instead of destroying
+      # slots.
       #
-      # `4.10.1-ptu.12578875` did not expose this in the real load: it agrees
-      # with `4.10.0-live.12519617` on every loadout, so there was nothing to
-      # destroy. A build where they diverge rewrites live's ship pages.
-      #
-      # This is a bug, and it is item 2 of `docs/exec-plans/sc-data-live-and-ptu.md`.
-      # Once the reads resolve through the build and the cleanup stops
-      # destroying, the live slot has to survive with no build row for ptu, and
-      # every assertion here inverts.
-      test "a load for another environment destroys the loadout the first one wrote" do
+      # `4.10.1-ptu.12578875` never exposed it -- it agrees with
+      # `4.10.0-live.12519617` on every loadout, so there was nothing to destroy.
+      # This is the divergence that build never had.
+      test "a load for another environment leaves the first one's loadout intact" do
         create(:component, sc_key: "live_component")
         create(:component, sc_key: "ptu_component")
 
@@ -438,13 +451,39 @@ module ScData
         loading_as("ptu", "1.0.1-ptu.2")
         update_loadout(@model, {"loadout" => [{"name" => "ptu_only", "key" => "ptu_component"}]})
 
-        refute Hardpoint.exists?(live_hardpoint.id), "the live slot is destroyed, not retired"
-        assert_equal ["ptu_only"], game_files_hardpoints(@model).pluck(:sc_name)
+        assert Hardpoint.exists?(live_hardpoint.id), "the live slot survives the ptu load"
+        assert HardpointBuild.exists?(live_build.id), "and so does what live said about it"
 
-        # And the build row goes with it, on the cascade. Writing build rows is
-        # not on its own enough: what live said is gone either way until the
-        # cleanup stops destroying slots.
-        refute HardpointBuild.exists?(live_build.id)
+        # Each source sees its own loadout and only its own.
+        ::ScData::Source.with(::ScData::Source.new(environment: "live", version: "1.0.0-live.1")) do
+          assert_equal ["live_only"], game_files_hardpoints(@model).in_build.pluck(:sc_name)
+        end
+
+        ::ScData::Source.with(::ScData::Source.new(environment: "ptu", version: "1.0.1-ptu.2")) do
+          assert_equal ["ptu_only"], game_files_hardpoints(@model).in_build.pluck(:sc_name)
+        end
+      end
+
+      # A later build of the same environment is the case that still has to
+      # retire: live moving on from a port means the port is gone, not that a
+      # second opinion arrived.
+      test "a later build of the same environment retires what it no longer names" do
+        create(:component, sc_key: "old_component")
+        create(:component, sc_key: "new_component")
+
+        loading_as("live", "1.0.0-live.1")
+        update_loadout(@model, {"loadout" => [{"name" => "old_slot", "key" => "old_component"}]})
+
+        loading_as("live", "1.0.1-live.2")
+        update_loadout(@model, {"loadout" => [{"name" => "new_slot", "key" => "new_component"}]})
+
+        # `loading_as` points the loader; `in_build` is a *reader* and resolves
+        # against `ScData::Source`, so the read has to name the build too.
+        ::ScData::Source.with(::ScData::Source.new(environment: "live", version: "1.0.1-live.2")) do
+          assert_equal ["new_slot"], game_files_hardpoints(@model).in_build.pluck(:sc_name)
+        end
+
+        assert_equal 2, game_files_hardpoints(@model).count, "both rows are still there"
       end
 
       # --- Dual-write --------------------------------------------------------

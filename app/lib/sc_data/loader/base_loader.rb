@@ -441,9 +441,29 @@ module ScData
       private def persist_loadout(parent, slots, cleanup: true)
         hardpoint_ids = slots.filter_map { |slot| persist_slot(parent, slot) }
 
-        parent.hardpoints.where(source: :game_files).where.not(id: hardpoint_ids).destroy_all if cleanup
+        retire_absent_slots(parent, hardpoint_ids) if cleanup
 
         hardpoint_ids
+      end
+
+      # What the destroy became. A slot this build no longer names keeps its row
+      # and loses its row for this build, which is what makes it retired -- so a
+      # load of one environment stops reaching into what another one wrote, and
+      # a `ModelPosition` pointing at a port survives a patch that dropped it.
+      #
+      # Scoped to this parent's own slots rather than going through
+      # `retire_absent_builds`, which is global: `persist_loadout` runs once per
+      # parent and again per nested level, so the unscoped version would retire
+      # every other ship's build rows on the first call.
+      #
+      # `where.not(id: [])` is `1=1` here on purpose, matching the destroy it
+      # replaces: a loadout that named nothing retires everything the parent had.
+      # That is the opposite of `retire_absent`, which guards against it, because
+      # there a run that loaded nothing would sweep a whole catalogue.
+      private def retire_absent_slots(parent, hardpoint_ids)
+        absent = parent.hardpoints.where(source: :game_files).where.not(id: hardpoint_ids)
+
+        HardpointBuild.current(source).where(hardpoint_id: absent.select(:id)).delete_all
       end
 
       private def persist_slot(parent, slot)

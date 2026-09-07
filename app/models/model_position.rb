@@ -87,7 +87,7 @@ class ModelPosition < ApplicationRecord
     end
 
     # 3. Loadmaster (if max_crew > 1 AND model has cargogrid hardpoint)
-    if model.max_crew.to_i > 1 && model.hardpoints.where(category: :cargogrid).exists?
+    if model.max_crew.to_i > 1 && model.hardpoints.in_build.where(category: :cargogrid).exists?
       positions << {
         name: "Loadmaster",
         position_type: :loadmaster,
@@ -112,14 +112,22 @@ class ModelPosition < ApplicationRecord
     model.update_column(:positions_need_curation, needs_curation) if model.positions_need_curation != needs_curation
   end
 
+  # `in_build` on all three collectors: a slot the build dropped keeps its row
+  # now that the loadout is retired rather than destroyed, and its columns still
+  # hold whatever the last load to touch it wrote. Without this, a ship keeps
+  # generating positions for a seat it no longer has.
+  #
+  # The filters stay on the columns rather than the build row because the two are
+  # dual-written and agree for any slot still in the build. They have to become
+  # joins to the build when the columns go.
   def self.collect_seat_hardpoints(model)
-    model.hardpoints.includes(:component).where(group: :seat).select do |hp|
+    model.hardpoints.in_build.includes(:component).where(group: :seat).select do |hp|
       hp.sc_name.present? && !hp.sc_name.include?("_access")
     end
   end
 
   def self.collect_manned_turret_hardpoints(model)
-    model.hardpoints.includes(:component).where.not(component: nil).select do |hp|
+    model.hardpoints.in_build.includes(:component).where.not(component: nil).select do |hp|
       hp.component&.item_type == "manned_turrets" ||
         (hp.component&.name == "Manned Turret" && hp.component&.component_type == "TurretBase")
     end
