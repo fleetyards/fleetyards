@@ -58,6 +58,14 @@ module ScData
 
         prune_builds(ModelBuild)
 
+        # Hardpoint builds are pruned here rather than in each loader that
+        # writes them: `prune_builds` is global to an environment, and this
+        # loader writes the bulk of them -- 15,138 model-parented slots and
+        # 3,617 nested ones against the items loader's 3,789. The module loader
+        # runs after this and writes 22, which the next run prunes; at three
+        # retained builds that is harmless.
+        prune_builds(HardpointBuild)
+
         Hardpoint.find_each(&:save) # hack to generate correct group_keys
       end
 
