@@ -26,6 +26,16 @@ module ScData
         parent.hardpoints.reload.where(source: :game_files)
       end
 
+      # A loader reads its build from `ScData::Source` in the constructor, so
+      # wrapping a call in `ScData::Source.with` does not move it -- and
+      # `sc_environment` is an accessor precisely so a caller can point a loader
+      # it already has somewhere else. This is what a load of another
+      # environment actually looks like.
+      private def loading_as(environment, version)
+        @loader.sc_environment = environment
+        @loader.sc_version = version
+      end
+
       # --- Resolution by key ------------------------------------------------
 
       test "creates a game_files hardpoint per entry and resolves the component by key" do
@@ -403,35 +413,125 @@ module ScData
       end
 
       # The finding from the first real PTU load, pinned here because nothing in
-      # the suite covered it: `hardpoints` carries no `environment`, and nothing
-      # below `update_loadout` consults `ScData::Source`. The block around each
-      # load makes no difference to what is written, which is the point -- the
-      # two environments share one set of rows, and the second load to run
-      # destroys what the first wrote rather than sitting beside it.
+      # the suite covered it: `hardpoints` carries no `environment`, so the two
+      # environments share one set of rows and the second load to run destroys
+      # what the first wrote rather than sitting beside it.
       #
       # `4.10.1-ptu.12578875` did not expose this in the real load: it agrees
       # with `4.10.0-live.12519617` on every loadout, so there was nothing to
       # destroy. A build where they diverge rewrites live's ship pages.
       #
       # This is a bug, and it is item 2 of `docs/exec-plans/sc-data-live-and-ptu.md`.
-      # Once a slot carries builds, the live hardpoint has to survive with no
-      # build row for ptu, and both assertions here invert.
+      # Once the reads resolve through the build and the cleanup stops
+      # destroying, the live slot has to survive with no build row for ptu, and
+      # every assertion here inverts.
       test "a load for another environment destroys the loadout the first one wrote" do
         create(:component, sc_key: "live_component")
         create(:component, sc_key: "ptu_component")
 
-        ::ScData::Source.with(::ScData::Source.new(environment: "live", version: "1.0.0-live.1")) do
-          update_loadout(@model, {"loadout" => [{"name" => "live_only", "key" => "live_component"}]})
-        end
+        loading_as("live", "1.0.0-live.1")
+        update_loadout(@model, {"loadout" => [{"name" => "live_only", "key" => "live_component"}]})
 
         live_hardpoint = game_files_hardpoints(@model).sole
+        live_build = live_hardpoint.builds.sole
 
-        ::ScData::Source.with(::ScData::Source.new(environment: "ptu", version: "1.0.1-ptu.2")) do
-          update_loadout(@model, {"loadout" => [{"name" => "ptu_only", "key" => "ptu_component"}]})
-        end
+        loading_as("ptu", "1.0.1-ptu.2")
+        update_loadout(@model, {"loadout" => [{"name" => "ptu_only", "key" => "ptu_component"}]})
 
-        refute Hardpoint.exists?(live_hardpoint.id), "the live loadout is destroyed, not retired"
+        refute Hardpoint.exists?(live_hardpoint.id), "the live slot is destroyed, not retired"
         assert_equal ["ptu_only"], game_files_hardpoints(@model).pluck(:sc_name)
+
+        # And the build row goes with it, on the cascade. Writing build rows is
+        # not on its own enough: what live said is gone either way until the
+        # cleanup stops destroying slots.
+        refute HardpointBuild.exists?(live_build.id)
+      end
+
+      # --- Dual-write --------------------------------------------------------
+
+      test "writes a build row carrying what the slot says" do
+        component = create(:component, sc_key: "torpedo_rack_s9", size: "9")
+
+        loading_as("live", "1.0.0-live.1")
+        update_loadout(@model, {"loadout" => [{
+          "name" => "hardpoint_torpedo",
+          "key" => "torpedo_rack_s9",
+          "min_size" => "3",
+          "types" => ["MissileLauncher"],
+          "port_tags" => ["Eclipse_BombRack"],
+          "required_tags" => ["Eclipse_BombRack"],
+          "flags" => ["editable"]
+        }]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        build_row = hardpoint.builds.sole
+
+        assert_equal "live", build_row.environment
+        assert_equal "1.0.0-live.1", build_row.version
+        assert_equal component.id, build_row.component_id
+        assert_equal 3, build_row.min_size
+        assert_equal 9, build_row.max_size
+        assert_equal ["MissileLauncher"], build_row.types
+        assert_equal ["Eclipse_BombRack"], build_row.port_tags
+        assert_equal ["Eclipse_BombRack"], build_row.required_tags
+        assert_equal ["editable"], build_row.flags
+      end
+
+      # `group`, `category` and `group_key` are derived by Hardpoint's
+      # `before_validation`, so they are only correct once the slot has saved --
+      # which is why the build row is read off the record rather than off the
+      # params the walk had in hand.
+      test "carries the derived group and category onto the build row" do
+        create(:component, sc_key: "shield_s2", size: "2", category: "shieldgenerator")
+
+        update_loadout(@model, {"loadout" => [{"name" => "hardpoint_shield", "key" => "shield_s2"}]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        build_row = hardpoint.builds.sole
+
+        assert_equal hardpoint.group, build_row.group
+        assert_equal hardpoint.category, build_row.category
+        assert_equal hardpoint.group_key, build_row.group_key
+        assert_not_nil build_row.group
+      end
+
+      test "updates the build row in place when the same build is loaded again" do
+        create(:component, sc_key: "cooler_s1", size: "1")
+        create(:component, sc_key: "cooler_s3", size: "3")
+
+        loading_as("live", "1.0.0-live.1")
+        update_loadout(@model, {"loadout" => [{"name" => "hardpoint_cooler", "key" => "cooler_s1"}]})
+        update_loadout(@model, {"loadout" => [{"name" => "hardpoint_cooler", "key" => "cooler_s3"}]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_equal 1, hardpoint.builds.count
+        assert_equal 3, hardpoint.builds.sole.min_size
+      end
+
+      # A `retain_only` slot exists to keep a leftover row alive through the
+      # cleanup, and it describes a build where the component was not yet hidden.
+      # It gets no build row, so once the cleanup retires build rows rather than
+      # destroying slots, this row stops being offered -- which is a decision for
+      # that step and is pinned here so it has to be made deliberately.
+      test "writes no build row for a slot the walk only retains" do
+        cargo_grid = create(:component, sc_key: "cargo_grid_s4")
+        door = create(:component, :hidden, sc_key: "cargo_door")
+        create(:hardpoint, parent: door, sc_name: "grid", component: cargo_grid, source: :game_files)
+
+        # The retained row has to pre-exist: `retain_only` protects a leftover
+        # from the cleanup and never creates one.
+        stale = create(:hardpoint, parent: @model, sc_name: "hardpoint_door",
+          component: create(:component, sc_key: "old_door_component"), source: :game_files)
+
+        update_loadout(@model, {"loadout" => [{"name" => "hardpoint_door", "key" => "cargo_door"}]})
+
+        assert Hardpoint.exists?(stale.id), "the leftover is still protected from cleanup"
+        assert_empty stale.reload.builds
+
+        # The slot the flattening promoted does get one -- it is part of this
+        # build's loadout.
+        promoted = game_files_hardpoints(@model).find_by(sc_name: "hardpoint_door-grid")
+        assert_not_nil promoted.builds.sole
       end
 
       # `cleanup: false` is what the hidden-component flattening recurses with,
