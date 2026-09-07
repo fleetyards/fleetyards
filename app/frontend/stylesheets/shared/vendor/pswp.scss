@@ -1,4 +1,15 @@
 .pswp {
+  /*
+   * Into the app's z-index scale, from a vendor default of 100000 that sat far
+   * outside it. High enough to cover the page chrome it takes over from - the
+   * mobile navigation and NetworkStatus at 2000, OffCanvas at 2020, AppConfirm
+   * and HoloViewer at 2050, and the dropdown and Fleetchart layers at 2100 -
+   * and below Loader (3000) and AppNotifications (3100), which have to be able
+   * to report over it. The copy button confirms only through a notification, so
+   * at 100000 that confirmation was painted underneath the viewer.
+   */
+  --pswp-root-z-index: 2200;
+
   .pswp__button {
     transition: all ease 0.5s;
   }
