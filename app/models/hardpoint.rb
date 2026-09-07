@@ -2,22 +2,25 @@
 #
 # Table name: hardpoints
 #
-#  id           :uuid             not null, primary key
-#  category     :integer
-#  details      :string
-#  group        :integer
-#  group_key    :string
-#  matrix_key   :string
-#  max_size     :integer
-#  min_size     :integer
-#  parent_type  :string           not null
-#  sc_name      :string
-#  source       :integer
-#  types        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  component_id :uuid
-#  parent_id    :uuid             not null
+#  id            :uuid             not null, primary key
+#  category      :integer
+#  details       :string
+#  flags         :string
+#  group         :integer
+#  group_key     :string
+#  matrix_key    :string
+#  max_size      :integer
+#  min_size      :integer
+#  parent_type   :string           not null
+#  port_tags     :string
+#  required_tags :string
+#  sc_name       :string
+#  source        :integer
+#  types         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  component_id  :uuid
+#  parent_id     :uuid             not null
 #
 # Indexes
 #
@@ -40,6 +43,12 @@ class Hardpoint < ApplicationRecord
   # an array of strings. Read back as one, so the two agree. Every value ever
   # written is already valid JSON, so nothing needs rewriting.
   serialize :types, type: Array, coder: JSON
+
+  # What the port carries, what it demands of whatever is put in it, and whether
+  # it may be changed at all. Same storage as `types` above.
+  serialize :port_tags, type: Array, coder: JSON
+  serialize :required_tags, type: Array, coder: JSON
+  serialize :flags, type: Array, coder: JSON
 
   belongs_to :parent, polymorphic: true, touch: true
   belongs_to :component, optional: true

@@ -22,10 +22,12 @@ require "test_helper"
 #  item_type             :string
 #  name                  :string(255)
 #  power_connection      :string
+#  required_tags         :string
 #  sc_key                :string
 #  sc_ref                :string
 #  size                  :string(255)
 #  slug                  :string
+#  tags                  :string
 #  tracking_signal       :integer
 #  type_data             :string
 #  version               :string

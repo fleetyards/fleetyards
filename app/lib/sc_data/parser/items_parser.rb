@@ -106,6 +106,8 @@ module ScData
           ref: value_or_nil(values.dig("__ref")),
           category: category,
           type: type,
+          tags: normalize_tags(tags),
+          required_tags: normalize_tags(values.dig("Components", "SAttachableComponentParams", "AttachDef", "RequiredTags")),
           sub_type: value_or_nil(values.dig("Components", "SAttachableComponentParams", "AttachDef", "SubType")),
           size: values.dig("Components", "SAttachableComponentParams", "AttachDef", "Size"),
           grade: values.dig("Components", "SAttachableComponentParams", "AttachDef", "Grade"),
@@ -681,6 +683,9 @@ module ScData
             name:,
             min_size: item.dig("MinSize"),
             max_size: item.dig("MaxSize"),
+            port_tags: normalize_tags(item.dig("PortTags")),
+            required_tags: normalize_tags(item.dig("RequiredPortTags")),
+            flags: normalize_tags(item.dig("Flags")),
             types: types.map do |type|
               type.dig("Type")
             end

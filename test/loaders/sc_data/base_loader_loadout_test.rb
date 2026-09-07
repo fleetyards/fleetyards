@@ -83,6 +83,35 @@ module ScData
         assert_equal 9, hardpoint.max_size
       end
 
+      # Which of the nine bomb racks a port takes is decided by a tag, not by
+      # the type and size it shares with the other eight.
+      test "persists the tags a port names and whether it may be changed" do
+        create(:component, sc_key: "torpedo_rack_s9", size: "9")
+
+        update_loadout(@model, {"loadout" => [{
+          "name" => "hardpoint_torpedorack",
+          "key" => "torpedo_rack_s9",
+          "port_tags" => ["Eclipse_BombRack"],
+          "required_tags" => ["Eclipse_BombRack"],
+          "flags" => ["editable", "swaponly"]
+        }]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_equal ["Eclipse_BombRack"], hardpoint.port_tags
+        assert_equal ["Eclipse_BombRack"], hardpoint.required_tags
+        assert_equal ["editable", "swaponly"], hardpoint.flags
+      end
+
+      test "leaves the tags alone for a port that names none" do
+        create(:component, sc_key: "cooler_s1", size: "1")
+
+        update_loadout(@model, {"loadout" => [{"name" => "hardpoint_cooler", "key" => "cooler_s1"}]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_equal [], hardpoint.port_tags
+        assert_equal [], hardpoint.flags
+      end
+
       # The size shown for a port stays the size of what is in it: the files
       # carry ports declared 0-0 holding an S1 door, so the declaration only
       # gets to lower the floor.

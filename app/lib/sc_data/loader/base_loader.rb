@@ -305,7 +305,10 @@ module ScData
       # rows match it -- two jobs that used to be one recursive method that wrote
       # as it walked, which is why the rules could not be exercised without a
       # database and why the destructive cleanup sat in the middle of them.
-      Slot = Struct.new(:name, :component, :children, :retain_only, :min_size, :max_size, :types)
+      Slot = Struct.new(
+        :name, :component, :children, :retain_only,
+        :min_size, :max_size, :types, :port_tags, :required_tags, :flags
+      )
 
       private def update_loadout(parent, loadout, cleanup: true)
         # The module-key derivation below only applies to a ship. A module's own
@@ -342,7 +345,10 @@ module ScData
             children: nested_slots(item),
             min_size: item["min_size"],
             max_size: item["max_size"],
-            types: item["types"]
+            types: item["types"],
+            port_tags: item["port_tags"],
+            required_tags: item["required_tags"],
+            flags: item["flags"]
           )
         ]
       end
@@ -447,6 +453,9 @@ module ScData
 
         update_params = {source: :game_files, component: slot.component}
         update_params[:types] = slot.types if slot.types.present?
+        update_params[:port_tags] = slot.port_tags if slot.port_tags.present?
+        update_params[:required_tags] = slot.required_tags if slot.required_tags.present?
+        update_params[:flags] = slot.flags if slot.flags.present?
         update_params.merge!(slot_sizes(slot))
 
         apply(hardpoint, update_params)

@@ -50,6 +50,25 @@ module ScData
         assert_equal ["MissileLauncher", "BombLauncher"], port["types"]
       end
 
+      # A type and a size are not enough to tell the Eclipse's racks from the
+      # Gladiator's -- both are S3-S5 bomb launchers. The shared tag is, and the
+      # flags say whether the port may be changed at all.
+      test "carries the tags and flags a ship's own definition declares" do
+        port = ports.fetch("hardpoint_torpedorack")
+
+        assert_equal ["Eclipse_BombRack"], port["port_tags"]
+        assert_equal ["Eclipse_BombRack"], port["required_tags"]
+        assert_equal ["editable", "swaponly"], port["flags"]
+      end
+
+      test "carries the tags and flags the entity record declares" do
+        port = ports.fetch("hardpoint_relay")
+
+        assert_equal ["Relay_Bay"], port["port_tags"]
+        assert_equal ["Relay_Bay"], port["required_tags"]
+        assert_equal ["uneditable"], port["flags"]
+      end
+
       # The entity record declares a handful of ports of its own rather than in
       # the vehicle definition, so both sources have to be read.
       test "carries what the entity record declares for its own ports" do
@@ -77,7 +96,7 @@ module ScData
               <VehicleComponentParams vehicleName="@vehicle_NameTEST_Bomber" vehicleDefinition="#{DEFINITION_PATH}" />
               <SItemPortContainerComponentParams>
                 <Ports>
-                  <SItemPortDef Name="hardpoint_relay" MinSize="0" MaxSize="1">
+                  <SItemPortDef Name="hardpoint_relay" MinSize="0" MaxSize="1" PortTags="Relay_Bay" RequiredPortTags="$Relay_Bay" Flags="$uneditable">
                     <Types>
                       <SItemPortDefTypes Type="Relay" />
                     </Types>
@@ -115,7 +134,7 @@ module ScData
               <Part name="body" class="Animated" damageMax="1000">
                 <Parts>
                   <Part name="hardpoint_torpedorack" class="ItemPort">
-                    <ItemPort minSize="3" maxSize="10" flags="editable $swaponly">
+                    <ItemPort minSize="3" maxSize="10" flags="editable $swaponly" portTags="Eclipse_BombRack" requiredTags="$Eclipse_BombRack">
                       <Types>
                         <Type type="MissileLauncher" subtypes="MissileRack" />
                         <Type type="BombLauncher" subtypes="BombRack" />

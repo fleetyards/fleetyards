@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_07_132814) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -247,7 +247,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_200000) do
     t.uuid "manufacturer_id"
     t.string "name"
     t.string "power_connection"
+    t.string "required_tags"
     t.string "size"
+    t.string "tags"
     t.integer "tracking_signal"
     t.string "type_data"
     t.datetime "updated_at", null: false
@@ -278,10 +280,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_200000) do
     t.uuid "manufacturer_id"
     t.string "name", limit: 255
     t.string "power_connection"
+    t.string "required_tags"
     t.string "sc_key"
     t.string "sc_ref"
     t.string "size", limit: 255
     t.string "slug"
+    t.string "tags"
     t.integer "tracking_signal"
     t.string "type_data"
     t.datetime "updated_at", precision: nil
@@ -768,6 +772,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_200000) do
     t.uuid "component_id"
     t.datetime "created_at", null: false
     t.string "details"
+    t.string "flags"
     t.integer "group"
     t.string "group_key"
     t.string "matrix_key"
@@ -775,6 +780,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_200000) do
     t.integer "min_size"
     t.uuid "parent_id", null: false
     t.string "parent_type", null: false
+    t.string "port_tags"
+    t.string "required_tags"
     t.string "sc_name"
     t.integer "source"
     t.string "types"

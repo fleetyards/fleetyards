@@ -23,7 +23,9 @@ require "test_helper"
 #  item_type             :string
 #  name                  :string
 #  power_connection      :string
+#  required_tags         :string
 #  size                  :string
+#  tags                  :string
 #  tracking_signal       :integer
 #  type_data             :string
 #  version               :string           not null
