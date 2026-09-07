@@ -39,7 +39,7 @@ end
 # Run bare, this falls back to reading 1Password directly, the way `sync` does,
 # so neither invocation needs the wrapper.
 def s3_settings
-  return ScData::ParsedStore.settings if ScData::ParsedStore.configured?
+  return ScData::ObjectStore.settings if ScData::ObjectStore.configured?
 
   {
     endpoint: "https://fsn1.your-objectstorage.com",
