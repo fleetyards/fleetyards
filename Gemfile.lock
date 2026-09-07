@@ -197,7 +197,7 @@ GEM
       railties (>= 7.0)
       responders
       warden (~> 1.2.3)
-    devise-two-factor (6.4.0)
+    devise-two-factor (6.4.1)
       activesupport (>= 7.2, < 8.2)
       devise (>= 4.0, < 6.0)
       railties (>= 7.2, < 8.2)
@@ -1061,7 +1061,7 @@ CHECKSUMS
   deep_merge (1.2.2) sha256=83ced3a3d7f95f67de958d2ce41b1874e83c8d94fe2ddbff50c8b4b82323563a
   device_detector (1.1.3) sha256=c5fe3fe42cab2e8aa01f193b2074b8bb1510373ce47127206f28c7dea75a9c79
   devise (5.0.4) sha256=d605f2b85854e74e56ee789e2d398702bc2d06e6bcd894717a670a3199c74cc1
-  devise-two-factor (6.4.0) sha256=09e3a23b5b9ae7da78881d238a89860454d9e2ba0912e175576e9c028757adb4
+  devise-two-factor (6.4.1) sha256=82f70ebc1d0b2efa751da214bb9fc9ea1c6d506b35e8934396528b0f42322086
   didkit (0.3.3) sha256=caa71e8c5b1f2cdf99804b3345677f6a6a687cbcc9916aeb4d8ae17304324a39
   discard (2.0.0) sha256=0fc520786b4d7b9b1ea8b2b3dadbb13c3e41d2ce7d297d04869baf1c9e30d2c0
   discordrb (3.8.0) sha256=53802e5e64aa557c566538c86f6a682f63f5da9380a23792b78f13b7a72b6f21
