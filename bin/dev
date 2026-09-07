@@ -12,7 +12,6 @@ services=(web worker vite)
 
 for arg in "$@"; do
   case "$arg" in
-    --docker)      use_docker=1 ;;
     --rdbg)        use_rdbg=1 ;;
     --open)        open_browser=1 ;;
     --no-web)      no_web=1 ;;
@@ -26,7 +25,6 @@ Usage: bin/dev [OPTIONS]
 Start the development server (Rails, Sidekiq, Vite).
 
 Options:
-  --docker       Include Docker Compose services
   --rdbg         Attach Ruby debugger (rdbg) to the Rails server
   --open         Open browser when server is ready
 
@@ -83,10 +81,7 @@ else
   [ -n "$no_vite" ]   && run_vite=0
 fi
 
-run_docker=0
-[ -n "$use_docker" ] && run_docker=1
-
-formation="web=${run_web},worker=${run_worker},vite=${run_vite},docker-compose=${run_docker}"
+formation="web=${run_web},worker=${run_worker},vite=${run_vite}"
 
 if [ -n "$open_browser" ]; then
   (
