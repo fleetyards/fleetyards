@@ -136,23 +136,28 @@ const hasExpandableContent = computed(
 </script>
 
 <template>
-  <HardpointItem :count="count">
+  <HardpointItem :count="count" class="module-slot" @click="openModuleModal">
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
       <HardpointComponent>
-        <span
+        <!--
+          A button rather than the label it used to be, so the slot is reachable
+          from the keyboard. It needs no handler of its own: a click on it -- or
+          Enter, which fires one -- reaches the row.
+        -->
+        <button
+          type="button"
           class="module-select-btn"
           :class="{ 'module-select-btn-active': selectedModule }"
-          @click="openModuleModal"
         >
           <i class="fa-duotone fa-puzzle" />
           {{ selectedModule?.name || t("labels.hardpoint.moduleSlotEmpty") }}
-        </span>
+        </button>
       </HardpointComponent>
       <button
         v-if="selectedModule && hasExpandableContent"
         class="module-expand-toggle"
-        @click="toggleExpanded"
+        @click.stop="toggleExpanded"
       >
         <i
           class="fa-light"
@@ -161,9 +166,14 @@ const hasExpandableContent = computed(
       </button>
     </template>
     <template #loadout>
+      <!--
+        The expanded contents sit inside the row, so without this a click on one
+        of the module's own hardpoints would reach the row and reopen the picker.
+      -->
       <div
         v-if="expanded && selectedModule && hasExpandableContent"
         class="module-loadout"
+        @click.stop
       >
         <HardpointCategory
           v-for="(items, category) in moduleCategories"
