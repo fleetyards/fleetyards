@@ -311,7 +311,7 @@ if ARGV.include?("--help") || ARGV.include?("-h")
       --port=N        Override the Rails port (default: derived from the slot)
       --vite-port=N   Override the Vite dev server port (default: derived from the slot)
       --dev           Start the development server after setup
-      --dev-<flag>    Forward --<flag> to bin/dev (e.g. --dev-docker, --dev-open)
+      --dev-<flag>    Forward --<flag> to bin/dev (e.g. --dev-open, --dev-rdbg)
       --verbose       Show full command output (default: concise status lines)
       --help          Show this help message
   HELP
