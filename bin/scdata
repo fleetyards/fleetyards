@@ -11,11 +11,22 @@ COMMANDS = {
   "parse" => "Parse SC data for the given environment",
   "push" => "Upload the parsed tree for the given environment to S3",
   "pull" => "Download the parsed tree for the given environment from S3",
-  "load" => "Load all SC data (manufacturers, items, models, modules)",
-  "load:manufacturers" => "Load manufacturers from SC data",
-  "load:items" => "Load items from SC data",
-  "load:models" => "Load models (hardpoints) from SC data",
-  "load:modules" => "Load model modules from SC data"
+  "load" => "Load all SC data for the given environment (manufacturers, items, models, modules)",
+  "load:manufacturers" => "Load manufacturers for the given environment",
+  "load:items" => "Load items for the given environment",
+  "load:models" => "Load models (hardpoints) for the given environment",
+  "load:modules" => "Load model modules for the given environment"
+}.freeze
+
+# What each load command runs, and what to call it while it runs. Bodies are not
+# evaluated until the step is reached, so naming the loaders here does not need
+# Rails to be booted yet.
+LOAD_STEPS = {
+  "load" => ["all SC Data", -> { ScData::Loader::BaseLoader.all }],
+  "load:manufacturers" => ["manufacturers", -> { ScData::Loader::ManufacturersLoader.new.all }],
+  "load:items" => ["items", -> { ScData::Loader::ItemsLoader.new.all }],
+  "load:models" => ["models", -> { ScData::Loader::ModelsLoader.new.all }],
+  "load:modules" => ["model modules", -> { ScData::Loader::ModelModulesLoader.new.all }]
 }.freeze
 
 def usage
@@ -30,8 +41,18 @@ def boot_rails
   require_relative "../config/environment"
 end
 
-def config_info
-  "version: #{ScData::Source.current}"
+# The build a load is about to write. Naming an environment loads that one
+# without moving the default onto it -- `ScData::Source.with` is the same seam a
+# request goes through, so a loader resolves its build the way it always does
+# rather than reading the config a second way.
+def requested_source(environment)
+  return ScData::Source.current if environment.blank?
+
+  source = ScData::Source.find(environment)
+
+  abort "No build configured for environment: #{environment}" if source.blank?
+
+  source
 end
 
 # Under `bin/op` the settings are already in the environment, resolved from
@@ -188,58 +209,17 @@ when "push", "pull"
   moved = result[:uploaded] || result[:downloaded]
   puts "  #{(command == "push") ? "Uploaded" : "Downloaded"}: #{moved}, removed: #{result[:removed]}, unchanged: #{result[:unchanged]}"
 
-when "load"
+when *LOAD_STEPS.keys
   CliHelpers.run_step("Booting Rails") {
     boot_rails
     [true, ""]
   }
 
-  CliHelpers.run_step("Loading all SC Data #{config_info}") do
-    ScData::Loader::BaseLoader.all
-    [true, ""]
-  end
+  source = requested_source(args.shift)
+  label, load = LOAD_STEPS.fetch(command)
 
-when "load:manufacturers"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading manufacturers #{config_info}") do
-    ScData::Loader::ManufacturersLoader.new.all
-    [true, ""]
-  end
-
-when "load:items"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading items #{config_info}") do
-    ScData::Loader::ItemsLoader.new.all
-    [true, ""]
-  end
-
-when "load:models"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading models #{config_info}") do
-    ScData::Loader::ModelsLoader.new.all
-    [true, ""]
-  end
-
-when "load:modules"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading model modules #{config_info}") do
-    ScData::Loader::ModelModulesLoader.new.all
+  CliHelpers.run_step("Loading #{label} (#{source})") do
+    ScData::Source.with(source) { load.call }
     [true, ""]
   end
 
