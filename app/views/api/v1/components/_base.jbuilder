@@ -34,8 +34,11 @@ json.hidden component.hidden
 # export had dropped as though it were current.
 json.retired component.retired?
 
+# Narrowed the same way the nested levels are: a component's own ports are
+# game-file slots, and one this build no longer describes has to stop being
+# listed.
 json.hardpoints do
-  json.array! component.hardpoints, partial: "api/v1/hardpoints/base", as: :hardpoint
+  json.array! component.hardpoints.in_build, partial: "api/v1/hardpoints/base", as: :hardpoint
 end
 
 json.manufacturer do

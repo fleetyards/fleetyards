@@ -520,7 +520,8 @@ module ScData
 
         # The retained row has to pre-exist: `retain_only` protects a leftover
         # from the cleanup and never creates one.
-        stale = create(:hardpoint, parent: @model, sc_name: "hardpoint_door",
+        # `:without_build` on purpose: the point is a slot with no build row.
+        stale = create(:hardpoint, :without_build, parent: @model, sc_name: "hardpoint_door",
           component: create(:component, sc_key: "old_door_component"), source: :game_files)
 
         update_loadout(@model, {"loadout" => [{"name" => "hardpoint_door", "key" => "cargo_door"}]})

@@ -10,8 +10,8 @@ module Maintenance
     end
 
     test "#collection is the game-file slots and not the matrix ones" do
-      game_files = create(:hardpoint, source: :game_files)
-      matrix = create(:hardpoint, source: :ship_matrix)
+      game_files = create(:hardpoint, :without_build, source: :game_files)
+      matrix = create(:hardpoint, :without_build, source: :ship_matrix)
 
       ids = @task.collection.pluck(:id)
 
@@ -44,7 +44,7 @@ module Maintenance
     # `before_validation`. They have to survive the trip as the same enum value,
     # which is what the shared constant on Hardpoint is for.
     test "#process carries the derived group and category across as themselves" do
-      hardpoint = create(:hardpoint, source: :game_files,
+      hardpoint = create(:hardpoint, :without_build, source: :game_files,
         component: create(:component, category: "weapons"))
 
       @task.process(hardpoint)
@@ -58,7 +58,7 @@ module Maintenance
     # Additive and re-runnable: the row for a source is updated in place rather
     # than a second one landing beside it.
     test "#process is idempotent for the same source" do
-      hardpoint = create(:hardpoint, source: :game_files, min_size: 2)
+      hardpoint = create(:hardpoint, :without_build, source: :game_files, min_size: 2)
 
       @task.process(hardpoint)
       @task.process(hardpoint)
@@ -67,7 +67,7 @@ module Maintenance
     end
 
     test "#process picks up a slot whose facts changed since the last run" do
-      hardpoint = create(:hardpoint, source: :game_files, min_size: 2)
+      hardpoint = create(:hardpoint, :without_build, source: :game_files, min_size: 2)
       @task.process(hardpoint)
 
       hardpoint.update!(min_size: 5, max_size: 5)
@@ -79,7 +79,7 @@ module Maintenance
     # Another environment's row is a separate row, not a rewrite of this one --
     # the whole point of the table.
     test "#process leaves another environment's row alone" do
-      hardpoint = create(:hardpoint, source: :game_files, min_size: 2)
+      hardpoint = create(:hardpoint, :without_build, source: :game_files, min_size: 2)
       other = create(:hardpoint_build, hardpoint:, environment: "ptu",
         version: "9.9.9-ptu.1", min_size: 7)
 

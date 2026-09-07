@@ -65,6 +65,19 @@ class Hardpoint < ApplicationRecord
   enum :source,
     {ship_matrix: 0, game_files: 1}
 
+  # The slots a build describes: the game-files ones carrying a row for it, plus
+  # the whole matrix half, which comes from no build and whose facts live only on
+  # the row.
+  #
+  # A no-op today for the game-files half, because the cleanup still destroys
+  # every slot a load did not name -- so a slot exists if and only if it has a
+  # row for the current build. It starts to mean something on the step that stops
+  # destroying, and it has to be in place first: the other order shows every slot
+  # ever retired in one response.
+  scope :in_build, ->(source = ::ScData::Source.current) {
+    where(source: :ship_matrix).or(where(id: HardpointBuild.current(source).select(:hardpoint_id)))
+  }
+
   # Named constants rather than inline maps, because `HardpointBuild` declares
   # the same two: `group` and `category` are derived from the installed
   # component, so they move to the build row, and a build holding `40` has to
@@ -98,6 +111,31 @@ class Hardpoint < ApplicationRecord
   enum :group, GROUPS, suffix: true
 
   enum :category, CATEGORIES, suffix: true
+
+  # What the build in force says about this slot, or the row itself when no build
+  # describes it -- which is the whole matrix half.
+  #
+  # An object to read from rather than reader overrides in the style of Component
+  # and Equipment, and for a reason particular to this table: Hardpoint derives
+  # `group`, `category` and `group_key` in a `before_validation`, and the enum
+  # predicates those derivations use read the *attribute* rather than the reader.
+  # Measured -- with `group` overridden to "weapon" over a stored `thruster`,
+  # `thruster_group?` still answers true. An override would leave
+  # `hardpoint.group` and `hardpoint.thruster_group?` disagreeing, and
+  # `group_keys` reads both.
+  #
+  # Read through entirely rather than field by field: a build row's nil is an
+  # answer, not a gap. An empty port in this build has to read as empty instead
+  # of falling through to whatever the column last held.
+  def facts
+    build || self
+  end
+
+  # Not in the build we are on -- a port the loadout no longer has. Only ever
+  # true for the game-files half; a matrix slot answers to no build.
+  def retired?
+    game_files? && build.blank?
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     ["category", "component_id", "created_at", "group", "id", "parent_id", "parent_type",
