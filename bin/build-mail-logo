@@ -1,0 +1,93 @@
+#!/usr/bin/env node
+// Renders the mail header lockup - the planet mark above "FleetYards.net" set in
+// Orbitron - to app/frontend/images/mail-logo.png.
+//
+// It has to be an image. Orbitron is the app's display face but every mail
+// client that matters (Gmail, Outlook, Yahoo) strips @font-face, so live text
+// falls back to Helvetica and the wordmark loses the one thing that makes it
+// the app's. Baked into a PNG, every client shows the real face.
+//
+// Chromium does the typesetting rather than ImageMagick, because the font ships
+// as a woff2 and Chromium reads that natively - so this uses the exact file the
+// app serves, at the weight typography.scss sets for a heading, with no
+// conversion step to drift.
+//
+// Run after changing the wordmark, the font file or the palette:
+//   bin/build-mail-logo
+
+import { chromium } from "playwright";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+import { execFileSync } from "node:child_process";
+import { writeFileSync, mkdirSync, rmSync } from "node:fs";
+
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const out = resolve(root, "app/frontend/images/mail-logo.png");
+
+// Kept in step with MailerTheme::TEXT and the h1 class in layouts/mailer.html.mjml.
+const TEXT = "#c8c8c8";
+const WORDMARK = "FleetYards.net";
+const FONT_SIZE = 34;
+const FONT_WEIGHT = 500;
+const ICON_WIDTH = 72;
+const GAP = 12;
+// Rendered at 2x and displayed at half, so the lockup stays sharp on a retina
+// screen. The layout reads the displayed width this script prints.
+const SCALE = 2;
+
+const page = `<!doctype html>
+<style>
+  @font-face {
+    font-family: "Orbitron";
+    font-style: normal;
+    font-weight: 400 900;
+    src: url("file://${root}/app/frontend/fonts/orbitron/yMJRMIlzdpvBhQQL_Qq7dy1biN15.woff2") format("woff2");
+  }
+  html, body { margin: 0; padding: 0; background: transparent; }
+  .lockup {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: ${GAP}px;
+    padding: 4px;
+  }
+  .lockup img { display: block; width: ${ICON_WIDTH}px; height: auto; }
+  .lockup span {
+    font-family: "Orbitron", sans-serif;
+    font-weight: ${FONT_WEIGHT};
+    font-size: ${FONT_SIZE}px;
+    line-height: 1.1;
+    color: ${TEXT};
+    white-space: nowrap;
+  }
+</style>
+<div class="lockup">
+  <img src="file://${root}/app/frontend/images/logo.png" alt="">
+  <span>${WORDMARK}</span>
+</div>`;
+
+// Written to a file and opened by URL rather than handed to setContent: an
+// about:blank document has no origin, so Chromium refuses to load the file://
+// font and the file:// icon, and the lockup renders as unstyled grey text with
+// no mark at all.
+const scratch = resolve(root, "tmp/mail-logo.html");
+mkdirSync(dirname(scratch), { recursive: true });
+writeFileSync(scratch, page);
+
+const browser = await chromium.launch();
+const tab = await browser.newPage({ deviceScaleFactor: SCALE, viewport: { width: 900, height: 400 } });
+await tab.goto(`file://${scratch}`);
+await tab.evaluate(() => document.fonts.ready);
+
+const lockup = await tab.locator(".lockup");
+await lockup.screenshot({ path: out, omitBackground: true });
+const box = await lockup.boundingBox();
+await browser.close();
+rmSync(scratch, { force: true });
+
+execFileSync("magick", [out, "-strip", out]);
+
+const displayed = Math.round(box.width);
+console.log(`wrote ${out}`);
+console.log(`  rendered at ${SCALE}x, display width ${displayed}px`);
+console.log(`  set the mj-image width in layouts/mailer.html.mjml to ${displayed}px`);
