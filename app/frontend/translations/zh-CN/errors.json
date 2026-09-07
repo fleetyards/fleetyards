@@ -2,6 +2,7 @@
   "zh-CN": {
     "errors": {
       "generic": "发生了错误",
+      "imageNotLoaded": "无法加载图片。",
       "upload": {
         "oneFile": "一次只能上传一个文件。",
         "generic": "上传过程中发生了错误。",

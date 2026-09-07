@@ -2,6 +2,7 @@
   "en": {
     "errors": {
       "generic": "An error occurred",
+      "imageNotLoaded": "The image could not be loaded.",
       "upload": {
         "oneFile": "Only one file can be uploaded at a time.",
         "generic": "An error occurred during the upload.",

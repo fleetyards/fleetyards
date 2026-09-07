@@ -1,17 +1,243 @@
+/*
+ * PhotoSwipe, wearing the app's own control language.
+ *
+ * The lightbox shipped as stock vendor chrome: bare 50x60 hit areas with white
+ * glyphs outlined in grey, and a full-bleed black caption band. Nothing in it
+ * came from the design system, so the one surface that covers the whole page
+ * was the one surface that looked like a different product.
+ *
+ * Values are taken from Btn and Panel rather than designed fresh - a control in
+ * the viewer and a control on the page behind it are one motif. The var()
+ * fallbacks are spelled out throughout because this is a plain stylesheet, not
+ * a Tailwind-processed one: a bare var() gets no fallback inlined for it here.
+ */
 .pswp {
+  /*
+   * Into the app's z-index scale, from a vendor default of 100000 that sat far
+   * outside it. High enough to cover the page chrome it takes over from - the
+   * mobile navigation and NetworkStatus at 2000, OffCanvas at 2020, AppConfirm
+   * and HoloViewer at 2050, and the dropdown and Fleetchart layers at 2100 -
+   * and below Loader (3000) and AppNotifications (3100), which have to be able
+   * to report over it. The copy button confirms only through a notification, so
+   * at 100000 that confirmation was painted underneath the viewer.
+   */
+  --pswp-root-z-index: 2200;
+
+  /* --pswp-bg stays #000, which is already $background. */
+  --pswp-placeholder-bg: var(--color-gray-black, #222);
+
+  --pswp-icon-color: var(--color-text, #c8c8c8);
+
+  /*
+   * Only the zoom icon reads this, for the two bars that draw its plus and
+   * minus. They have to read as cut-outs in the magnifier glass, so this is the
+   * backdrop the unfilled button shows through to rather than the ink - at the
+   * ink colour the bars merge into the glass and the button loses the one thing
+   * that tells zoom-in from zoom-out.
+   */
+  --pswp-icon-color-secondary: var(--color-background, #000);
+
+  /*
+   * pswp outlines every glyph in grey so it survives a photo showing through
+   * the chrome. The backdrop is opaque and the glyphs now sit on a framed
+   * control, so the outline only thickens them.
+   */
+  --pswp-icon-stroke-width: 0;
+
+  --pswp-error-text-color: var(--color-text, #c8c8c8);
+  --pswp-preloader-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  --pswp-preloader-color-secondary: var(--color-primary, #428bca);
+
+  /* The inset the chrome keeps from the viewport edge, and the control size it
+     is built on - Btn's `sm`, so the viewer's buttons are the app's buttons. */
+  --viewer-gutter: 16px;
+  --viewer-btn: var(--field-h, 43px);
+
+  .pswp__top-bar {
+    height: auto;
+    padding: var(--viewer-gutter, 16px);
+    gap: 8px;
+    align-items: center;
+  }
+
+  /* pswp ships 6px here to part the close button from the zoom button. The bar
+     owns its spacing through `gap` now, so this would double one seam. */
+  .pswp__button--close {
+    margin-right: 0;
+  }
+
   .pswp__button {
-    transition: all ease 0.5s;
+    /*
+     * Deliberately no `display`. pswp hides the zoom button until zoom is
+     * allowed, and hides a disabled arrow, using `display: none` on a single
+     * class - which any rule nested in `.pswp` outranks. Centring is done by
+     * the absolutely positioned glyph instead, so pswp keeps control of what
+     * shows.
+     */
+    width: var(--viewer-btn, 43px);
+    height: var(--viewer-btn, 43px);
+
+    /* pswp ships .85 and lifts it to 1 on hover - a second hover channel on a
+       control whose wash already answers. */
+    opacity: 1;
+
+    /*
+     * Btn's `bare`: no fill, no drawn edge and no end-cap, so nothing frames
+     * the picture and the chrome is only the glyphs until you reach for one.
+     * The border stays declared but transparent, the way Btn does it, so the
+     * box does not resize on the states below.
+     */
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--radius-control-bare, 6px);
+    color: var(--color-text, #c8c8c8);
+
+    /*
+     * Was `all ease 0.5s`. Half a second is what made the toolbar feel
+     * detached from the cursor, and `all` drags layout properties into the
+     * transition; 150ms on the painted properties is where Btn and Panel
+     * landed for the same reason.
+     */
+    transition:
+      background-color 150ms ease-in-out,
+      border-color 150ms ease-in-out,
+      color 150ms ease-in-out;
+
+    /*
+     * Position and size only. The ink stays on pswp's own --pswp-icon-color
+     * pair, which the states below re-point; setting `fill` and `color` here
+     * would take the zoom icon's bars with it and flatten it into a blob.
+     */
+    .pswp__icn {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 32px;
+      height: 32px;
+    }
+
+    /*
+     * The download and copy buttons carry a Font Awesome glyph rather than
+     * pswp's SVG sprite. Pinned to 16px because the sprites draw their glyph
+     * 16px inside a 32px viewBox, and because Tailwind's preflight gives a
+     * button `font: inherit` - without this the two would take whatever size
+     * the page body happens to run at.
+     */
+    > .fa {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    /*
+     * The whole state, which for `bare` is a faint wash and lifted ink rather
+     * than a cap - it has no cap to light. The wash is Btn's literal, which
+     * has no token of its own.
+     */
+    &:hover:not(:disabled),
+    &:focus-visible {
+      background-color: rgb(122 130 136 / 0.12);
+      /* `color` lifts the Font Awesome glyphs, the variable lifts the sprites. */
+      color: var(--color-lifted, #eee);
+      --pswp-icon-color: var(--color-lifted, #eee);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: auto;
+    }
+  }
+
+  .pswp__button--arrow {
+    width: var(--viewer-btn, 43px);
+    height: var(--viewer-btn, 43px);
+    top: 50%;
+    margin-top: calc(var(--viewer-btn, 43px) / -2);
+  }
+
+  .pswp__button--arrow--prev {
+    left: var(--viewer-gutter, 16px);
+    right: auto;
+  }
+
+  .pswp__button--arrow--next {
+    right: var(--viewer-gutter, 16px);
+    left: auto;
+  }
+
+  /*
+   * The chevron is drawn inside a 60px viewBox rather than the 32px the top-bar
+   * sprites use, so it takes its own size to land on the same optical weight.
+   * Its path spans x 10-29 of that 60, which leaves the glyph 10.5 units - 17.5%
+   * of the box - left of centre. pswp absorbed that with a `right: 14px` tuned
+   * to its own 75px-wide arrow button; at this size the correction has to be
+   * proportional, and the flip makes it symmetrical for the next arrow.
+   */
+  .pswp__button--arrow .pswp__icn {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    margin: auto;
+    transform: translateX(17.5%);
+  }
+
+  .pswp__button--arrow--next .pswp__icn {
+    transform: scale(-1, 1) translateX(17.5%);
+  }
+
+  /* Dormant while `counter` is off in useGallery, but pswp owns the element and
+     it should not come back wearing vendor styling if it is ever turned on. */
+  .pswp__counter {
+    height: auto;
+    margin: 0 auto 0 0;
+    padding: 0 4px;
+    font-size: 15px;
+    line-height: var(--viewer-btn, 43px);
+    color: var(--color-text, #c8c8c8);
+    /* pswp shadows the counter to survive a photo behind it; ours is opaque. */
+    text-shadow: none;
+    opacity: 1;
   }
 
   .pswp__custom-caption {
-    font-size: 16px;
-    line-height: 1.5;
-    color: white;
-    text-align: center;
     position: absolute;
-    bottom: 0;
-    padding: 10px;
-    width: 100vw;
-    background-color: rgba(0, 0, 0, 0.5);
+    left: 50%;
+    bottom: calc(var(--viewer-gutter, 16px) + 8px);
+    transform: translateX(-50%);
+
+    /*
+     * Was a `width: 100vw` band flush against the bottom edge, which set no
+     * reading measure and read as a browser artefact rather than as part of the
+     * app. A panel held to a line length that can be read is what the rest of
+     * the app does with prose.
+     */
+    width: max-content;
+    max-width: min(72ch, calc(100% - (var(--viewer-gutter, 16px) * 2)));
+    padding: 10px 16px;
+
+    font-size: 15px;
+    line-height: 1.5;
+    text-align: center;
+    text-wrap: pretty;
+    /* Was #fff - the one place in the viewer that set pure white for body copy. */
+    color: var(--color-text, #c8c8c8);
+
+    background-color: var(--color-surface, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: var(--radius-surface-slim, 12px);
+    box-shadow: var(--shadow-surface-slim, 0 6px 20px -14px rgb(0 0 0 / 0.9));
+
+    /* An uncaptioned image still gets the element, so without this it sits
+       there as a small empty box. */
+    &:empty {
+      display: none;
+    }
   }
 }

@@ -2,6 +2,7 @@
   "it": {
     "errors": {
       "generic": "Si è verificato un errore",
+      "imageNotLoaded": "Impossibile caricare l'immagine.",
       "upload": {
         "oneFile": "È possibile caricare un solo file alla volta.",
         "generic": "Si è verificato un errore durante il caricamento.",

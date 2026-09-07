@@ -13,8 +13,21 @@ export const useGallery = (
 
   const lightbox = ref<PhotoSwipeLightbox>();
 
-  const copy = (url: string) => {
-    copyText(url).then(
+  /*
+   * Pass an element inside the open lightbox as `container`. Optional only
+   * because copyText's own argument is - copying without one does not work
+   * from in here, it just fails quietly.
+   *
+   * copyText hands clipboard.js a throwaway textarea to select and copy from,
+   * and clipboard.js appends it to the container - document.body by default.
+   * PhotoSwipe traps focus inside its own root while it is open, so a textarea
+   * parked in body never takes the selection, and `execCommand("copy")` copies
+   * an empty one. It still returns true, so clipboard.js reports success and
+   * the notification below claimed the URL had been copied while the clipboard
+   * kept whatever was in it before.
+   */
+  const copy = (url: string, container?: HTMLElement) => {
+    copyText(url, container).then(
       () => {
         displaySuccess({
           text: t("messages.copyImageUrl.success"),
@@ -46,16 +59,31 @@ export const useGallery = (
       children,
       bgOpacity: 1,
       counter: false,
+      /*
+       * pswp's own chrome ships hardcoded English for its titles, which are
+       * both the tooltip and the accessible name of every button it draws.
+       */
+      closeTitle: t("actions.close"),
+      zoomTitle: t("actions.zoom"),
+      arrowPrevTitle: t("actions.previous"),
+      arrowNextTitle: t("actions.next"),
+      errorMsg: t("errors.imageNotLoaded"),
       pswpModule: () => import("photoswipe"),
     });
 
     lightbox.value.on("uiRegister", () => {
       const pswp = lightbox.value?.pswp;
+      /*
+       * These two sit at 8 and 9, after pswp's own preloader at 7. The copy
+       * button used to be a 7 as well, which left it and the preloader to
+       * settle their position in the bar by registration order.
+       */
       pswp?.ui?.registerElement({
         name: "download-button",
-        order: 8,
+        order: 9,
         isButton: true,
         tagName: "button",
+        title: t("actions.download"),
         html: '<i class="fa fa-download"></i>',
 
         onClick: (_event, _el, pswp) => {
@@ -74,9 +102,10 @@ export const useGallery = (
 
       pswp?.ui?.registerElement({
         name: "copy-button",
-        order: 7,
+        order: 8,
         isButton: true,
         tagName: "button",
+        title: t("actions.copy"),
         html: '<i class="fa fa-copy"></i>',
         onClick: (_event, _el, pswp) => {
           const url = pswp.currSlide?.data.src;
@@ -85,7 +114,7 @@ export const useGallery = (
             return;
           }
 
-          copy(url);
+          copy(url, pswp.element);
         },
       });
 
@@ -94,7 +123,13 @@ export const useGallery = (
         order: 9,
         isButton: false,
         appendTo: "root",
-        html: "Caption text",
+        /*
+         * Empty, not placeholder copy. The caption is a panel now, and one that
+         * starts with text in it flashes that text before the first `change`
+         * swaps it - and stays a visible empty box on an uncaptioned image,
+         * which is what the `:empty` rule in pswp.scss keys off.
+         */
+        html: "",
         onInit: (el, pswp) => {
           pswp.on("change", () => {
             const currSlideElement = pswp.currSlide?.data.element;

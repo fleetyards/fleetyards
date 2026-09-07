@@ -1,8 +1,24 @@
+/*
+ * Above everything. A notification is the app's topmost transient layer - it
+ * reports on what just happened, so there is nothing it should sit behind.
+ *
+ * At 1100 it sat behind seven of them: the mobile navigation and NetworkStatus
+ * (2000), OffCanvas (2020), AppConfirm and HoloViewer (2050), BtnDropdown,
+ * Select and Fleetchart (2100) and Loader (3000) - and behind PhotoSwipe, whose
+ * vendor default is 100000. In the lightbox that was load-bearing: copying an
+ * image URL confirms only through this layer, so the confirmation was painted
+ * under the viewer and the button read as doing nothing at all.
+ *
+ * Ahead of Loader deliberately. A blocking spinner is the one thing most likely
+ * to be up when something worth reporting completes. The lightbox is the other,
+ * and it is now held below this rather than at its vendor default - see
+ * --pswp-root-z-index in stylesheets/shared/vendor/pswp.scss.
+ */
 .app-notifications {
   position: fixed;
   top: calc(20px + env(safe-area-inset-top));
   right: calc(20px + env(safe-area-inset-right));
-  z-index: 1100;
+  z-index: 3100;
 }
 
 /* transitions */
