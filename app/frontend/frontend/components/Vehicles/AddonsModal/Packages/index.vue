@@ -5,9 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
+import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { type ModelModulePackage } from "@/services/fyApi";
-import Panel from "@/shared/components/base/Panel/index.vue";
 
 type Props = {
   packages: ModelModulePackage[];
@@ -16,92 +18,91 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  modelValue: undefined,
+  modelValue: () => [],
   editable: false,
 });
 
+const emit = defineEmits<{
+  "update:modelValue": [ids: string[]];
+}>();
+
 const { t } = useI18n();
 
-const internalValue = ref<string[]>([]);
+const moduleIds = (item: ModelModulePackage) =>
+  item.modules.map((mod) => mod.id);
 
-onMounted(() => {
-  internalValue.value = [...(props.modelValue || [])];
-});
+const fingerprint = (ids: string[]) => [...ids].sort().join(",");
 
-const emit = defineEmits(["upate:modelValue"]);
+const applied = (item: ModelModulePackage) =>
+  fingerprint(props.modelValue) === fingerprint(moduleIds(item));
 
-watch(
-  () => internalValue.value,
-  () => {
-    emit("upate:modelValue", internalValue.value);
-  },
-);
-
-const activatePackage = (addonPackage: ModelModulePackage) => {
+/**
+ * A package is a preset, so applying one *replaces* the module selection with
+ * exactly what it contains. It used to add its modules on top of whatever was
+ * already chosen, which could not agree with the tick beside it: that was only
+ * ever drawn on an exact match, so applying a package to a ship that already
+ * carried a module left a selection no package claimed.
+ *
+ * Duplicates are carried through rather than collapsed — the Endeavor's Olympic
+ * Class is two Bio Domes.
+ */
+const apply = (item: ModelModulePackage) => {
   if (!props.editable) {
     return;
   }
 
-  internalValue.value = [...(props.modelValue || [])];
+  emit("update:modelValue", moduleIds(item));
+};
 
-  addonPackage.modules.forEach((module) => {
-    const additionalPackageModules = addonPackage.modules.filter(
-      (packageModule) => packageModule.id === module.id,
-    );
-    const foundModules = internalValue.value.filter((id) => id === module.id);
+// What the preset actually fits, which is the only thing separating one package
+// from the next; the count matters because a package may hold a module twice.
+const contents = (item: ModelModulePackage) => {
+  const counts = new Map<string, number>();
 
-    if (
-      !foundModules.length ||
-      foundModules.length < additionalPackageModules.length
-    ) {
-      internalValue.value.push(module.id);
-    }
+  item.modules.forEach((mod) => {
+    counts.set(mod.name, (counts.get(mod.name) || 0) + 1);
   });
+
+  return [...counts.entries()]
+    .map(([name, count]) => (count > 1 ? `${count} × ${name}` : name))
+    .join(" · ");
 };
 
-const selectedPackage = (addonPackage: ModelModulePackage) => {
-  return (
-    JSON.stringify([...(props.modelValue || [])].sort()) ===
-    JSON.stringify(addonPackage.modules.map((module) => module.id).sort())
-  );
-};
+// Read-only the list holds only the package that is applied, so the pill saying
+// so would be the only row's only badge.
+const badges = (item: ModelModulePackage): AddonBadge[] =>
+  applied(item) && props.editable
+    ? [
+        {
+          key: "applied",
+          label: t("addon.packages.applied"),
+          variant: PillVariantsEnum.SUCCESS,
+        },
+      ]
+    : [];
+
+const rows = computed(() =>
+  props.editable ? props.packages : props.packages.filter(applied),
+);
 </script>
 
 <template>
-  <div class="row">
-    <div v-for="item in packages" :key="item.id" class="col-12 col-md-6 addon">
-      <Panel>
-        <div
-          v-tooltip="editable"
-          class="model-panel"
-          :class="{
-            editable,
-          }"
-          @click="activatePackage(item)"
-        >
-          <div
-            v-if="item.media.storeImage"
-            :style="{
-              'background-image': `url(${item.media.storeImage.smallUrl})`,
-            }"
-            class="model-panel-image"
-          />
-          <div class="model-panel-body">
-            <h3>{{ item.name }}</h3>
-          </div>
-          <div
-            v-if="selectedPackage(item)"
-            v-tooltip="editable && t('labels.selected')"
-            class="model-panel-selected"
-          >
-            <i class="fa fa-check" />
-          </div>
-        </div>
-      </Panel>
-    </div>
+  <div class="addon-options">
+    <AddonOption
+      v-for="item in rows"
+      :key="item.id"
+      :name="item.name"
+      :image="item.media.storeImage?.smallUrl"
+      :contents="contents(item)"
+      :badges="badges(item)"
+      :selected="editable && applied(item)"
+      :editable="editable"
+      test-id="vehicle-addon-package"
+      @toggle="apply(item)"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import "index";
+@import "@/frontend/components/Models/AddonOption/list";
 </style>

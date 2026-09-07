@@ -1,28 +1,23 @@
 <script lang="ts">
 export default {
-  name: "ModuleSelectModal",
+  name: "ModuleItemModal",
 };
 </script>
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Pill from "@/shared/components/base/Pill/index.vue";
+import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
+import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  HardpointCategoryEnum,
-  type Hardpoint,
-  type ModelModule,
-} from "@/services/fyApi";
+import { useModuleContents } from "@/frontend/composables/useModuleContents";
+import { type ModelModule } from "@/services/fyApi";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-
-import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import fallbackImageJpg from "@/images/fallback/store_image.jpg";
-import fallbackImage from "@/images/fallback/store_image.webp";
 
 type Props = {
   modules: ModelModule[];
   selectedModuleSlug?: string;
+  // Null is the stock slot: the caller reads it as "leave it as delivered".
   onSelect: (mod: ModelModule | null) => void;
 };
 
@@ -32,55 +27,59 @@ const { t } = useI18n();
 
 const comlink = useComlink();
 
-const { supported: webpSupported } = useWebpCheck();
+const { contents } = useModuleContents();
 
-const storeImage = (mod: ModelModule) =>
-  mod.media.storeImage?.smallUrl ||
-  (webpSupported.value ? fallbackImage : fallbackImageJpg);
+const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
 
-// Ports that say nothing about what the module is for. The slot row drops the
-// same two from its own expansion.
-const UNINFORMATIVE: HardpointCategoryEnum[] = [
-  HardpointCategoryEnum.CONTROLLER,
-  HardpointCategoryEnum.UNKNOWN,
-];
+// Its fittings are the whole reason to pick one module over another here, so
+// they lead; a module with none says so outright rather than falling back to
+// its store paragraph, because "what is in this slot" is the question asked.
+const summary = (mod: ModelModule) =>
+  contents(mod) || t("addon.contentsUnknown");
 
-// What the module brings, which is the whole reason to pick one over another: a
-// torpedo bay and a cargo bay fill the same slot and ship the same photograph,
-// and only their fittings tell them apart. The count is dropped at one, because
-// every category label is already plural.
-const contents = (mod: ModelModule): string => {
-  const counts = new Map<string, number>();
+/**
+ * Only a status worth a warning is shown. Most modules are flight ready, and a
+ * pill on every row would say nothing while crowding the figures that do.
+ */
+const badges = (mod: ModelModule): AddonBadge[] => {
+  const list: AddonBadge[] = [];
 
-  (mod.hardpoints || []).forEach((hardpoint: Hardpoint) => {
-    const category = hardpoint.category;
-
-    if (!category || UNINFORMATIVE.includes(category)) {
-      return;
-    }
-
-    counts.set(category, (counts.get(category) || 0) + 1);
-  });
-
-  if (!counts.size) {
-    return t("labels.hardpoint.moduleContentsUnknown");
+  if (isSelected(mod)) {
+    list.push({
+      key: "fitted",
+      label: t("addon.fitted"),
+      variant: PillVariantsEnum.SUCCESS,
+    });
   }
 
-  return [...counts.entries()]
-    .map(([category, count]) => {
-      const label = t(`labels.hardpoint.categories.${category}`);
+  const cargo = mod.metrics?.cargo || 0;
 
-      return count > 1 ? `${count} × ${label}` : label;
-    })
-    .join(" · ");
+  if (cargo) {
+    list.push({ key: "cargo", label: t("addon.cargo", { cargo }) });
+  }
+
+  if (mod.productionStatus && mod.productionStatus !== "flight-ready") {
+    list.push({
+      key: "status",
+      label: t(`labels.model.productionStatus.${mod.productionStatus}`),
+      variant: PillVariantsEnum.WARNING,
+    });
+  }
+
+  return list;
 };
 
-const cargo = (mod: ModelModule): number => mod.metrics?.cargo || 0;
-
-// Only a status worth a warning is shown. Most modules are flight ready, and a
-// pill on every row would say nothing while crowding the figures that do.
-const upcoming = (mod: ModelModule): boolean =>
-  !!mod.productionStatus && mod.productionStatus !== "flight-ready";
+const stockBadges = computed((): AddonBadge[] =>
+  props.selectedModuleSlug
+    ? []
+    : [
+        {
+          key: "fitted",
+          label: t("addon.fitted"),
+          variant: PillVariantsEnum.SUCCESS,
+        },
+      ],
+);
 
 const selectModule = (mod: ModelModule) => {
   props.onSelect(mod);
@@ -91,75 +90,36 @@ const clearModule = () => {
   props.onSelect(null);
   comlink.emit("close-modal");
 };
-
-const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
 </script>
 
 <template>
   <Modal :title="t('labels.hardpoint.selectModule')">
-    <div class="module-options">
-      <button
-        type="button"
-        class="module-option"
-        :class="{ 'module-option--selected': !selectedModuleSlug }"
-        data-test="module-option-stock"
-        @click="clearModule"
-      >
-        <span class="module-option__image module-option__image--stock">
-          <i class="fa-duotone fa-layer-minus" />
-        </span>
-        <span class="module-option__body">
-          <span class="module-option__name">
-            {{ t("labels.hardpoint.moduleStock") }}
-          </span>
-          <span class="module-option__contents">
-            {{ t("labels.hardpoint.moduleStockHint") }}
-          </span>
-        </span>
-        <span class="module-option__meta">
-          <Pill v-if="!selectedModuleSlug" :variant="PillVariantsEnum.SUCCESS">
-            <i class="fa fa-check" />
-            {{ t("labels.hardpoint.moduleFitted") }}
-          </Pill>
-        </span>
-      </button>
+    <div class="addon-options">
+      <AddonOption
+        :name="t('labels.hardpoint.moduleStock')"
+        :contents="t('labels.hardpoint.moduleStockHint')"
+        icon="fa-duotone fa-layer-minus"
+        :badges="stockBadges"
+        :selected="!selectedModuleSlug"
+        test-id="module-option-stock"
+        @toggle="clearModule"
+      />
 
-      <button
+      <AddonOption
         v-for="mod in modules"
         :key="mod.id"
-        type="button"
-        class="module-option"
-        :class="{ 'module-option--selected': isSelected(mod) }"
-        data-test="module-option"
-        @click="selectModule(mod)"
-      >
-        <img
-          :src="storeImage(mod)"
-          :alt="mod.name"
-          class="module-option__image"
-          loading="lazy"
-        />
-        <span class="module-option__body">
-          <span class="module-option__name">{{ mod.name }}</span>
-          <span class="module-option__contents">{{ contents(mod) }}</span>
-        </span>
-        <span class="module-option__meta">
-          <Pill v-if="isSelected(mod)" :variant="PillVariantsEnum.SUCCESS">
-            <i class="fa fa-check" />
-            {{ t("labels.hardpoint.moduleFitted") }}
-          </Pill>
-          <span v-if="cargo(mod)" class="module-option__cargo">
-            {{ t("labels.hardpoint.moduleCargo", { cargo: cargo(mod) }) }}
-          </span>
-          <Pill v-if="upcoming(mod)" :variant="PillVariantsEnum.WARNING">
-            {{ t(`labels.model.productionStatus.${mod.productionStatus}`) }}
-          </Pill>
-        </span>
-      </button>
+        :name="mod.name"
+        :image="mod.media.storeImage?.smallUrl"
+        :contents="summary(mod)"
+        :badges="badges(mod)"
+        :selected="isSelected(mod)"
+        test-id="module-option"
+        @toggle="selectModule(mod)"
+      />
     </div>
   </Modal>
 </template>
 
 <style lang="scss" scoped>
-@import "index";
+@import "@/frontend/components/Models/AddonOption/list";
 </style>

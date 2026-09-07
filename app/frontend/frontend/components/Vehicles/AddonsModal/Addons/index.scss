@@ -1,45 +1,10 @@
-.add-addons {
-  justify-content: center;
-
-  .form-group {
-    margin-bottom: 21px;
-  }
-}
-
-.addon {
-  .addon-image {
-    max-width: 100px;
-    flex: none;
-  }
-
-  .addon-panel {
-    &-editable {
-      cursor: pointer;
-    }
-
-    .addon-panel-selected {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: $success;
-      border-radius: 0 10px 0 $panelContentBorderRadius;
-
-      i,
-      svg {
-        color: #fff;
-      }
-    }
-  }
-}
-
-@media (max-width: $desktop-breakpoint) {
-  .add-addons,
-  .addon {
-    margin: 0;
-  }
+/*
+ * A line rather than the shared Empty component: that one is a hero heading
+ * built for a page whose list came back empty, and inside a modal section it
+ * shouts louder than the sections that do have rows.
+ */
+.addon-options__empty {
+  margin: 0;
+  color: $gray-lighter;
+  font-size: 14px;
 }

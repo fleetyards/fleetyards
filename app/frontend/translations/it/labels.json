@@ -32,7 +32,6 @@
       "toggleNavigation": "Attiva/disattiva navigazione",
       "openInNewWindow": "Apri a schermo intero",
       "or": "o",
-      "deselect": "Fare clic per deselezionare",
       "networkStatusOffline": "Stato Della Rete: Offline - Servizio Non Disponibile",
       "groups": "Gruppi",
       "classifications": "Classificazioni",
@@ -1200,9 +1199,6 @@
         "selectModule": "Seleziona modulo",
         "moduleStock": "Come consegnato",
         "moduleStockHint": "Slot lasciato come arriva la nave",
-        "moduleFitted": "Installato",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "Nessun equipaggiamento proprio",
         "categories": {
           "radar": "Radar",
           "armor": "Corazza",
@@ -1553,9 +1549,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "Seleziona una Nave"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} selezionati"
