@@ -402,6 +402,38 @@ module ScData
         assert Hardpoint.exists?(curated.id)
       end
 
+      # The finding from the first real PTU load, pinned here because nothing in
+      # the suite covered it: `hardpoints` carries no `environment`, and nothing
+      # below `update_loadout` consults `ScData::Source`. The block around each
+      # load makes no difference to what is written, which is the point -- the
+      # two environments share one set of rows, and the second load to run
+      # destroys what the first wrote rather than sitting beside it.
+      #
+      # `4.10.1-ptu.12578875` did not expose this in the real load: it agrees
+      # with `4.10.0-live.12519617` on every loadout, so there was nothing to
+      # destroy. A build where they diverge rewrites live's ship pages.
+      #
+      # This is a bug, and it is item 2 of `docs/exec-plans/sc-data-live-and-ptu.md`.
+      # Once a slot carries builds, the live hardpoint has to survive with no
+      # build row for ptu, and both assertions here invert.
+      test "a load for another environment destroys the loadout the first one wrote" do
+        create(:component, sc_key: "live_component")
+        create(:component, sc_key: "ptu_component")
+
+        ::ScData::Source.with(::ScData::Source.new(environment: "live", version: "1.0.0-live.1")) do
+          update_loadout(@model, {"loadout" => [{"name" => "live_only", "key" => "live_component"}]})
+        end
+
+        live_hardpoint = game_files_hardpoints(@model).sole
+
+        ::ScData::Source.with(::ScData::Source.new(environment: "ptu", version: "1.0.1-ptu.2")) do
+          update_loadout(@model, {"loadout" => [{"name" => "ptu_only", "key" => "ptu_component"}]})
+        end
+
+        refute Hardpoint.exists?(live_hardpoint.id), "the live loadout is destroyed, not retired"
+        assert_equal ["ptu_only"], game_files_hardpoints(@model).pluck(:sc_name)
+      end
+
       # `cleanup: false` is what the hidden-component flattening recurses with,
       # so a flattening pass cannot delete what its siblings just wrote.
       test "skips cleanup entirely when cleanup is false" do
