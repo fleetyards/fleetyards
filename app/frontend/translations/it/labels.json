@@ -1198,7 +1198,11 @@
         },
         "moduleSlotEmpty": "— Seleziona modulo —",
         "selectModule": "Seleziona modulo",
-        "clearModule": "Cancella selezione",
+        "moduleStock": "Come consegnato",
+        "moduleStockHint": "Slot lasciato come arriva la nave",
+        "moduleFitted": "Installato",
+        "moduleCargo": "%{cargo} SCU",
+        "moduleContentsUnknown": "Nessun equipaggiamento proprio",
         "categories": {
           "radar": "Radar",
           "armor": "Corazza",

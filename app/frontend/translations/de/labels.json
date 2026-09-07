@@ -1198,7 +1198,11 @@
         },
         "moduleSlotEmpty": "— Modul auswählen —",
         "selectModule": "Modul auswählen",
-        "clearModule": "Auswahl löschen",
+        "moduleStock": "Wie ausgeliefert",
+        "moduleStockHint": "Slot bleibt, wie das Schiff geliefert wird",
+        "moduleFitted": "Verbaut",
+        "moduleCargo": "%{cargo} SCU",
+        "moduleContentsUnknown": "Keine eigene Ausstattung",
         "categories": {
           "radar": "Radar",
           "armor": "Panzerung",

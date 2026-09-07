@@ -1198,7 +1198,11 @@
         },
         "moduleSlotEmpty": "— Seleccionar módulo —",
         "selectModule": "Seleccionar módulo",
-        "clearModule": "Borrar selección",
+        "moduleStock": "Tal como se entrega",
+        "moduleStockHint": "Ranura tal como viene la nave",
+        "moduleFitted": "Instalado",
+        "moduleCargo": "%{cargo} SCU",
+        "moduleContentsUnknown": "Sin equipamiento propio",
         "categories": {
           "radar": "Radar",
           "armor": "Blindaje",

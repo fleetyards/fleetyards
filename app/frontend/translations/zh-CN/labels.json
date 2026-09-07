@@ -1198,7 +1198,11 @@
         },
         "moduleSlotEmpty": "— 选择模块 —",
         "selectModule": "选择模块",
-        "clearModule": "清除选择",
+        "moduleStock": "出厂状态",
+        "moduleStockHint": "插槽保持飞船出厂时的状态",
+        "moduleFitted": "已装配",
+        "moduleCargo": "%{cargo} SCU",
+        "moduleContentsUnknown": "无自带设备",
         "categories": {
           "radar": "雷达",
           "armor": "装甲",

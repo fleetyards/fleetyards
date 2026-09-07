@@ -1194,7 +1194,11 @@
         },
         "moduleSlotEmpty": "— Select Module —",
         "selectModule": "Select Module",
-        "clearModule": "Clear Selection",
+        "moduleStock": "As delivered",
+        "moduleStockHint": "Slot left as the ship comes",
+        "moduleFitted": "Fitted",
+        "moduleCargo": "%{cargo} SCU",
+        "moduleContentsUnknown": "No fittings of its own",
         "categories": {
           "radar": "Radar",
           "armor": "Armor",

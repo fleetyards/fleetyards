@@ -26,6 +26,10 @@ import {
 import type { FlightMode } from "@/frontend/composables/powerSim";
 import { useMetricsMasonry } from "@/frontend/composables/useMetricsMasonry";
 import {
+  useEquippedHardpoints,
+  type EquippedModules,
+} from "@/frontend/composables/useEquippedHardpoints";
+import {
   useModelHardpoints as useModelHardpointsQuery,
   HardpointGroupEnum,
   HardpointSourceEnum,
@@ -112,6 +116,19 @@ const {
 // in flight, so they never pop into the layout once the data lands.
 const loadingHardpoints = computed(() => isLoading.value || isFetching.value);
 
+// The module the reader picked per slot, chosen in the slot row and provided by
+// the ship page. Grafted onto the slot so every metric below answers for the
+// loadout on screen rather than the one the game ships.
+const equippedModules = inject<Ref<EquippedModules>>(
+  "equippedModules",
+  ref({}),
+);
+
+const loadoutHardpoints = useEquippedHardpoints(
+  () => hardpoints.value as Hardpoint[] | undefined,
+  equippedModules,
+);
+
 // User pip choices from the Power Distribution control; empty = auto (default).
 const powerOverrides = ref<PortOverrides>({});
 const flightMode = ref<FlightMode>("SCM");
@@ -122,7 +139,7 @@ watch([() => props.model.slug, source], () => {
 });
 
 const combatStats = useLoadoutStats(
-  () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+  loadoutHardpoints,
   () => props.model.metrics?.weaponPoolSize,
   powerOverrides,
 );
@@ -138,7 +155,7 @@ provide("powerOverrides", powerOverrides);
 
 // Shield power allocation → Defense card scales shield HP/regen with the pips.
 const powerSim = useLoadoutSim(
-  () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+  loadoutHardpoints,
   () => props.model.metrics?.weaponPoolSize,
   flightMode,
   powerOverrides,
@@ -222,19 +239,19 @@ useMetricsMasonry(metricsGrid);
       </div>
       <div v-if="showMetrics" ref="metricsGrid" class="metrics-grid">
         <ModelCombatMetrics
-          :hardpoints="hardpoints as Hardpoint[]"
+          :hardpoints="loadoutHardpoints"
           :loading="loadingHardpoints"
         />
         <ModelPowerDistribution
           v-model="powerOverrides"
           v-model:mode="flightMode"
-          :hardpoints="hardpoints as Hardpoint[]"
+          :hardpoints="loadoutHardpoints"
           :weapon-pool-size="model.metrics?.weaponPoolSize"
           :cross-section="model.metrics?.signatureCrossSection"
           :loading="loadingHardpoints"
         />
         <ModelDefenseMetrics
-          :hardpoints="hardpoints as Hardpoint[]"
+          :hardpoints="loadoutHardpoints"
           :model-name="model.name"
           :loading="loadingHardpoints"
         />
