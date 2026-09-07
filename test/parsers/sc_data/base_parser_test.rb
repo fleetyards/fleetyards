@@ -141,6 +141,26 @@ module ScData
         assert_nil @parser.send(:save_icon, "ui/logos/acme_256.tif")
       end
 
+      # A port and the item that fits it name the same tag in different
+      # spellings -- one side marks it with a `$`, the other does not -- and the
+      # whole point of the tag is that the two sides compare equal.
+      test "#normalize_tags drops the marker the files put on a matched tag" do
+        assert_equal ["Eclipse_BombRack"], @parser.send(:normalize_tags, "$Eclipse_BombRack")
+        assert_equal ["Eclipse_BombRack"], @parser.send(:normalize_tags, "Eclipse_BombRack")
+      end
+
+      test "#normalize_tags splits a list and keeps each tag once" do
+        assert_equal(
+          ["flightReady", "Retaliator_BombRack_Front"],
+          @parser.send(:normalize_tags, "flightReady $Retaliator_BombRack_Front flightReady")
+        )
+      end
+
+      test "#normalize_tags answers an empty list for a port that names none" do
+        assert_equal [], @parser.send(:normalize_tags, nil)
+        assert_equal [], @parser.send(:normalize_tags, "")
+      end
+
       private def write_asset(path, contents)
         target = "#{@base_folder}/raw/1.0.0/Data/#{path}"
 

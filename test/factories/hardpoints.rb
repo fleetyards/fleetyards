@@ -2,22 +2,25 @@
 #
 # Table name: hardpoints
 #
-#  id           :uuid             not null, primary key
-#  category     :integer
-#  details      :string
-#  group        :integer
-#  group_key    :string
-#  matrix_key   :string
-#  max_size     :integer
-#  min_size     :integer
-#  parent_type  :string           not null
-#  sc_name      :string
-#  source       :integer
-#  types        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  component_id :uuid
-#  parent_id    :uuid             not null
+#  id            :uuid             not null, primary key
+#  category      :integer
+#  details       :string
+#  flags         :string
+#  group         :integer
+#  group_key     :string
+#  matrix_key    :string
+#  max_size      :integer
+#  min_size      :integer
+#  parent_type   :string           not null
+#  port_tags     :string
+#  required_tags :string
+#  sc_name       :string
+#  source        :integer
+#  types         :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  component_id  :uuid
+#  parent_id     :uuid             not null
 #
 # Indexes
 #

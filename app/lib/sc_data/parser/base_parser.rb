@@ -263,6 +263,16 @@ module ScData
         data
       end
 
+      # A port and the item that fits it name the same tag, but not in the same
+      # spelling: the Retaliator's front rack carries `$Retaliator_BombRack_Front`
+      # and requires `Retaliator_BombRack_Front`, while the port it fits is the
+      # other way round. The `$` marks a tag as taking part in matching rather
+      # than being part of the tag, so it is dropped -- left on, the two sides
+      # never compare equal. Flags are the same shape (`$uneditable`).
+      private def normalize_tags(value)
+        value.to_s.split.map { |tag| tag.delete_prefix("$") }.uniq
+      end
+
       private def value_or_nil(value)
         if value == "<= PLACEHOLDER =>" ||
             value == "UNDEFINED" ||

@@ -21,7 +21,9 @@
 #  item_type             :string
 #  name                  :string
 #  power_connection      :string
+#  required_tags         :string
 #  size                  :string
+#  tags                  :string
 #  tracking_signal       :integer
 #  type_data             :string
 #  version               :string           not null
@@ -103,6 +105,11 @@ class ComponentBuild < ApplicationRecord
   serialize :heat_connection, coder: YAML
   serialize :ammunition, coder: YAML
   serialize :inventory_consumption, coder: YAML
+
+  # JSON rather than YAML, matching Component: these two are lists of tags, and
+  # a build has to read back the same shape the column does.
+  serialize :tags, type: Array, coder: JSON
+  serialize :required_tags, type: Array, coder: JSON
 
   enum :item_class,
     {stealth: 0, civilian: 1, industrial: 2, military: 3, competition: 4}

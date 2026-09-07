@@ -220,6 +220,9 @@ module ScData
           index[name] ||= {
             min_size: port["MinSize"],
             max_size: port["MaxSize"],
+            port_tags: normalize_tags(port["PortTags"]),
+            required_tags: normalize_tags(port["RequiredPortTags"]),
+            flags: normalize_tags(port["Flags"]),
             types: extract_port_def_types(port)
           }
         end
@@ -266,6 +269,9 @@ module ScData
             ports[node["name"]] ||= {
               min_size: item_port["minSize"],
               max_size: item_port["maxSize"],
+              port_tags: normalize_tags(item_port["portTags"]),
+              required_tags: normalize_tags(item_port["requiredTags"]),
+              flags: normalize_tags(item_port["flags"]),
               types: extract_item_port_types(item_port)
             }
           end

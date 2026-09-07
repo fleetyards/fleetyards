@@ -21,6 +21,8 @@ module ScData
             category: item["category"],
             component_type: item["type"],
             component_sub_type: item["sub_type"],
+            tags: item["tags"],
+            required_tags: item["required_tags"],
             size: item["size"],
             grade: item["grade"],
             description: item["description"]
@@ -152,7 +154,10 @@ module ScData
             source: :game_files,
             min_size: loadout["min_size"],
             max_size: loadout["max_size"],
-            types: loadout["types"]
+            types: loadout["types"],
+            port_tags: loadout["port_tags"],
+            required_tags: loadout["required_tags"],
+            flags: loadout["flags"]
           }
 
           if default_loadout.present?

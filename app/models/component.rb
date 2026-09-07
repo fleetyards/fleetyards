@@ -20,10 +20,12 @@
 #  item_type             :string
 #  name                  :string(255)
 #  power_connection      :string
+#  required_tags         :string
 #  sc_key                :string
 #  sc_ref                :string
 #  size                  :string(255)
 #  slug                  :string
+#  tags                  :string
 #  tracking_signal       :integer
 #  type_data             :string
 #  version               :string
@@ -72,6 +74,13 @@ class Component < ApplicationRecord
       reason: :update_reason,
       reason_description: :update_reason_description
     }
+
+  # The tags an item carries and the tags it demands of the port it goes into.
+  # A port and the item that fits it name a shared tag -- how the Eclipse's
+  # ordnance port takes its own bomb racks and not the Gladiator's. Stored as a
+  # serialised array, the way `Hardpoint#types` is.
+  serialize :tags, type: Array, coder: JSON
+  serialize :required_tags, type: Array, coder: JSON
 
   belongs_to :manufacturer, optional: true
 
