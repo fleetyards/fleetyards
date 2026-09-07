@@ -1,0 +1,256 @@
+<%#
+  The mailer layout, in MJML. Replaces the Inky/foundation_emails layout this
+  file used to be; every mailer picks it up through ApplicationMailer's
+  `layout "mailer"`, Devise::Mailer included.
+
+  MRML (Rust) compiles it, so the production image needs no Node - which matters
+  because the final Docker stage deletes node_modules and app/frontend.
+
+  mrml-rails runs ERB first and compiles only the render that carries the <mjml>
+  root, which is this file. The content templates and the partials under
+  shared/mailer are therefore plain MJML fragments, and a fragment rendered
+  outside this layout would reach the recipient as literal <mj-text> - MRML
+  passes tags it does not recognise straight through without an error, so
+  MjmlRenderingTest asserts that none survive.
+%>
+<mjml>
+  <mj-head>
+    <mj-title><%= I18n.t("title.default") %></mj-title>
+
+    <%#
+      No mj-font, deliberately.
+
+      mj-font emits <link href="https://fonts.googleapis.com/...">, and
+      premailer-rails resolves every stylesheet link it finds - through its
+      NetworkLoader for a remote one. That put a blocking third-party HTTP
+      request on the path of every single delivery, and a Net::OpenTimeout when
+      the host was unreachable. The Inky layout never did this: vite_stylesheet_tag
+      gave premailer a local path.
+
+      The cost of leaving it out is small. Gmail, Outlook and Yahoo strip
+      @font-face regardless, so Orbitron only ever reached Apple Mail. The one
+      place it has to be right - the wordmark - is a PNG now, built by
+      bin/build-mail-logo. What is left asking for it in CSS is the small
+      tracked uppercase label, where the tracking and the uppercase carry the
+      treatment on their own. Body copy asks for Open Sans and falls back to
+      Helvetica with no visible change in weight or measure.
+
+      If a webfont is ever wanted back, it has to come with a way to keep
+      premailer off it - premailer honours data-premailer="ignore" on a link, but
+      mj-font emits no such attribute.
+    %>
+    <mj-attributes>
+      <mj-all font-family="<%= MailerTheme::BODY_FONT %>" />
+      <mj-body background-color="<%= MailerTheme::BACKGROUND %>" />
+      <mj-text color="<%= MailerTheme::TEXT %>" font-size="16px" line-height="1.5" padding="0 0 16px" />
+      <mj-divider padding="0" />
+
+      <%#
+        typography.scss: h2 is 1.7rem at weight 500, line-height 1.2. There is no
+        h1 class: the only h1 a mail had was the wordmark, which is part of the
+        header image now.
+
+        No h4 class. The app's h4 is $font-size-base - the same 16px as body copy
+        - which works on a page where a card's frame and position already say
+        "this is a heading". In a mail it does not: a 16px/500 headline directly
+        above 16px/400 body read as two paragraphs, with no hierarchy at all.
+        The mails that used <h4> use h2 now, like every other mail.
+      %>
+      <mj-class name="h2" font-size="27px" font-weight="500" line-height="1.2" color="<%= MailerTheme::TEXT %>" />
+
+      <%# The Orbitron label: small, tracked, uppercase. %>
+      <mj-class name="label"
+                font-family="<%= MailerTheme::LABEL_FONT %>"
+                font-size="12px"
+                letter-spacing="2px"
+                text-transform="uppercase"
+                color="<%= MailerTheme::MUTED %>" />
+
+      <mj-class name="footer" font-size="13px" color="<%= MailerTheme::MUTED %>" line-height="1.6" />
+    </mj-attributes>
+
+    <%#
+      Keep prose out of the mj-style block below. MRML parses its contents
+      looking for tags, so a single angle bracket in a CSS comment - "the / size
+      shorthand" written with brackets round the word - aborts the whole compile
+      with "unexpected token in root template" and a byte offset. Comments
+      without brackets are fine, but ERB comments never reach the parser at all.
+
+      .mail-bg paints the backdrop, and it has to be a stylesheet rule rather
+      than mj-wrapper's background-url attributes. Those attributes do work in
+      MJML - MRML emits the picture as a shorthand, and generates the VML that
+      Outlook reads - but premailer then reduces the shorthand to
+      "background: no-repeat center top / cover": css_parser cannot read the
+      slash-size form, so it drops the url and the colour with it. Worse, that
+      wrecked shorthand then wins the merge against any longhand from a class,
+      which is why declaring both routes at once left the mail with no picture
+      at all. Longhands on their own come through the pass untouched.
+
+      The cost of giving up the attributes is Outlook, which needs the VML and
+      now falls back to background-color. That is the flat black the mail had
+      before, so the floor has not moved.
+    %>
+    <mj-style>
+      /*
+        The inward-rounded end of each cap - the top cap rounds its bottom
+        corners and the bottom cap its top, so the outward edge stays a line
+        continuous with the border. Outlook drops border-radius and Gmail strips
+        this block in a forwarded message, and both degrade to a square-ended
+        bar: the motif survives, the 3px corner does not. Nothing load-bearing
+        lives in here for that reason.
+      */
+      .cap-top p { border-radius: 0 0 <%= MailerTheme::CAP_RADIUS %> <%= MailerTheme::CAP_RADIUS %> !important; }
+      .cap-bottom p { border-radius: <%= MailerTheme::CAP_RADIUS %> <%= MailerTheme::CAP_RADIUS %> 0 0 !important; }
+
+      .mail-panel > table {
+        border: 2px solid <%= MailerTheme::EDGE %> !important;
+        border-radius: <%= MailerTheme::RADIUS_SURFACE %> !important;
+        border-collapse: separate !important;
+      }
+
+      .mail-bg {
+        background-image: url('<%= vite_asset_url("images/mail-bg.jpg") %>') !important;
+        background-position: center top !important;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        background-color: <%= MailerTheme::BACKGROUND %> !important;
+      }
+    </mj-style>
+  </mj-head>
+
+  <mj-body background-color="<%= MailerTheme::BACKGROUND %>" width="<%= MailerTheme::WIDTH %>">
+
+    <%#
+      The app's backdrop. BackgroundImage renders bg-6 fixed and cover at
+      opacity .4 over black; email has no opacity to give, so
+      images/mail-bg.jpg is that composite baked into the file.
+
+      Dimmed to .30 rather than the app's .40, and the difference is not taste.
+      On the page the backdrop only ever sits behind panels, so page text never
+      touches it. In a mail the title, both transmission labels and the whole
+      footer sit directly on the picture, and bg-6's brightest region - the
+      planet limb - runs straight across the top where the title goes. Measured
+      against that peak, #c8c8c8 scores 3.05:1 at .40 and 4.90:1 at .30, so .30
+      is the first step that clears AA for the small labels. Tune this one
+      number if the picture wants to be more or less present.
+
+      Regenerate with:
+        magick app/frontend/images/bg-6.jpg -resize 1200x -evaluate multiply 0.30 \
+          -strip -interlace Plane -quality 72 app/frontend/images/mail-bg.jpg
+
+      31KB, because 30% of a night sky compresses to almost nothing. It is a
+      remote image, so it costs the message nothing and only loads if the reader
+      allows images - which is also why it can never be load-bearing:
+      background-color carries the mail on its own, and that is the flat black
+      the mail had before.
+
+      full-width so the picture reaches the window edges while the content stays
+      at 640px, which is how the app shows it.
+    %>
+    <mj-wrapper full-width="full-width"
+                background-url="<%= vite_asset_url("images/mail-bg.jpg") %>"
+                background-size="cover"
+                background-repeat="no-repeat"
+                background-position="center top"
+                background-color="<%= MailerTheme::BACKGROUND %>"
+                css-class="mail-bg"
+                padding="0">
+
+    <%#
+      The header lockup - the planet mark over the wordmark - is one image
+      because the wordmark is set in Orbitron, and Gmail, Outlook and Yahoo all
+      strip @font-face. As live text it fell back to Helvetica in exactly the
+      clients most people read mail in, which is the one place the app's display
+      face has to be right. Baked into a PNG, every client shows it.
+
+      Generated by bin/build-mail-logo, which typesets it in Chromium from the
+      same woff2 the app serves. Rendered at 2x and displayed at 285px, so it
+      stays sharp on a retina screen; rerun that script if the width changes.
+
+      alt is the wordmark itself, so a reader with images off still gets the
+      name - and it is the only place it appears now, so nothing repeats it. The
+      old layout paired a decorative icon with an <h1> saying the same thing,
+      which premailer read out twice in the text part.
+    %>
+    <mj-section padding="32px 0 4px">
+      <mj-column>
+        <mj-image src="<%= vite_asset_url("images/mail-logo.png") %>"
+                  alt="<%= I18n.t("title.default") %>"
+                  width="285px"
+                  padding="0" />
+      </mj-column>
+    </mj-section>
+
+    <mj-section padding="12px 0 20px">
+      <mj-column>
+        <mj-text mj-class="label" align="center" padding="0">
+          <%= I18n.t("mailer.transmission_start") %>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <%#
+      The panel: --color-surface fill, a 2px --color-edge frame, --radius-surface.
+
+      The frame comes from .mail-panel in mj-style rather than mj-wrapper's own
+      `border` attribute, because that attribute lands on the inner td while the
+      radius and the fill land on the table around it. Two things then go wrong
+      at once: premailer drops the td's border-radius, and even with it there a
+      cell's radius is inert under border-collapse: collapse, which is what MJML
+      sets. The result was a rounded fill inside a square frame.
+
+      Putting all three on the table - with border-collapse: separate, which is
+      what lets a radius clip a border at all - keeps them on one element.
+      cellspacing="0" is already on the tag, so `separate` adds no gaps.
+
+      The table is deliberately the host rather than the wrapper's outer div,
+      which also carries the fill and the radius: Outlook ignores divs but does
+      render this table, so it degrades to a square 2px frame instead of losing
+      the frame entirely.
+    %>
+    <mj-wrapper background-color="<%= MailerTheme::SURFACE %>"
+                border-radius="<%= MailerTheme::RADIUS_SURFACE %>"
+                css-class="mail-panel"
+                padding="0">
+      <%= render "shared/mailer/cap", side: "top" %>
+
+      <%#
+        Bottom padding is 24 rather than 12 so that with the 4px every template
+        leaves on its last element the frame breathes equally top and bottom. At
+        12 the bottom cap crowded the final line while the top had 28px of air,
+        which on a two-line notification was the whole panel.
+      %>
+      <mj-section padding="28px 28px 24px" background-color="transparent">
+        <mj-column padding="0">
+          <%= yield %>
+        </mj-column>
+      </mj-section>
+
+      <%= render "shared/mailer/cap", side: "bottom" %>
+    </mj-wrapper>
+
+    <mj-section padding="24px 0 6px">
+      <mj-column>
+        <mj-text mj-class="label" align="center" padding="0">
+          <%= I18n.t("mailer.transmission_end") %>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section padding="10px 0 32px">
+      <mj-column>
+        <mj-text mj-class="footer" align="center" padding="0">
+          <%= I18n.t("copyright") %> &copy; <%= Time.current.year %>
+          <%= Rails.configuration.app.copyright_owner %>
+          <br />
+          <a href="<%= frontend_privacy_policy_url %>" style="color: <%= MailerTheme::PRIMARY %>;"><%= I18n.t("mailer.privacy") %></a>
+          &nbsp;&middot;&nbsp;
+          <a href="<%= frontend_settings_notifications_url %>" style="color: <%= MailerTheme::PRIMARY %>;"><%= I18n.t("mailer.notification_settings") %></a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    </mj-wrapper>
+
+  </mj-body>
+</mjml>

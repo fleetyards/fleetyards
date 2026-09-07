@@ -1,0 +1,16 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @username) %>
+</mj-text>
+
+<mj-text>
+  <%= I18n.t("mailer.fleet_membership.new_invite.headline", fleet: @fleet.name) %>
+</mj-text>
+
+<mj-text padding="0 0 4px">
+  <%= I18n.t("mailer.fleet_membership.new_invite.body") %>
+</mj-text>
+
+<%= render "shared/mailer/btn",
+           href: frontend_fleets_invites_url,
+           label: I18n.t("mailer.fleet_membership.new_invite.action", fleet: @fleet.name),
+           tone: :primary %>

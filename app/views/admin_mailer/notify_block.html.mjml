@@ -1,6 +1,7 @@
-<h4>
+<mj-text mj-class="h2" padding="0 0 12px">
   <%= I18n.t("mailer.admin.notify_block.headline") %>
-</h4>
-<p>
+</mj-text>
+
+<mj-text padding="0 0 4px">
   <%= I18n.t("mailer.admin.notify_block.text", url: @url) %>
-</p>
+</mj-text>

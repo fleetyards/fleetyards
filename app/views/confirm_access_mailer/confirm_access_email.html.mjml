@@ -1,0 +1,29 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @username) %>
+</mj-text>
+
+<mj-text>
+  <%= I18n.t("mailer.confirm_access.body") %>
+</mj-text>
+
+<%#
+  Same treatment as the two-factor code: the value has to be read off the screen
+  and typed back, so it gets the app's tracked-uppercase label face at display
+  size. The tracking is doing real work here - it separates the characters so a
+  code cannot be misread - which is why it stays where the webfont is stripped.
+
+  Was an <h1> inside a <center>, which made it the loudest thing in the mail and
+  a second competing title under the real one.
+%>
+<mj-text mj-class="label"
+         font-size="30px"
+         letter-spacing="8px"
+         color="<%= MailerTheme::TEXT %>"
+         align="center"
+         padding="12px 0 16px">
+  <%= @confirmation_code %>
+</mj-text>
+
+<mj-text mj-class="footer" padding="0 0 4px">
+  <%= I18n.t("mailer.confirm_access.expires") %>
+</mj-text>

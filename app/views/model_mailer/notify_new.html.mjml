@@ -1,0 +1,29 @@
+<%#
+  A two-line heading: the small line is a label above the ship's name, which is
+  the app's metric-label treatment, so it gets Orbitron tracked uppercase rather
+  than the <small> inside an <h2> it used to be. Two mj-texts, because the label
+  and the heading are different faces at different sizes and MJML has no reason
+  to keep them in one box.
+%>
+<mj-text mj-class="label" padding="0 0 6px">
+  <%= I18n.t("mailer.model.new.headline_part_1") %>
+</mj-text>
+
+<mj-text mj-class="h2" padding="0 0 16px">
+  <%= I18n.t("mailer.model.new.headline_part_2", manufacturer: @model.manufacturer.name) %>
+  <a href="<%= frontend_model_url(slug: @model.slug) %>"
+     target="_blank"
+     style="color: <%= MailerTheme::PRIMARY %>; text-decoration: none;"><%= @model.name %></a>!
+</mj-text>
+
+<% if @model.store_image.attached? %>
+  <%#
+    mj-image, not an <img> in an mj-text: it is the one that emits the
+    width/height and display:block Outlook needs, and it scales the picture down
+    to the column on a phone.
+  %>
+  <mj-image src="<%= rails_representation_url(@model.store_image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium])) %>"
+            alt="<%= @model.name %>"
+            border-radius="<%= MailerTheme::RADIUS_CONTROL %>"
+            padding="0 0 4px" />
+<% end %>
