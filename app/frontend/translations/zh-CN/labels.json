@@ -33,7 +33,6 @@
       "enableYoutube": "点击启用YouTube嵌入或右键复制视频链接",
       "openInNewWindow": "全屏打开",
       "or": "或",
-      "deselect": "点击取消选择",
       "networkStatusOffline": "网络状态：离线 - 服务不可用",
       "groups": "分组",
       "classifications": "分类",
@@ -1633,9 +1632,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "选择飞船"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} 已选择"

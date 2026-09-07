@@ -33,7 +33,6 @@
       "enableYoutube": "Haz clic para habilitar videos de YouTube o clic derecho para copiar URL del video",
       "openInNewWindow": "Abrir en pantalla completa",
       "or": "o",
-      "deselect": "Haz clic para deseleccionar",
       "networkStatusOffline": "Estado de red: Desconectado - Servicio no disponible",
       "groups": "Grupos",
       "classifications": "Clasificaciones",
@@ -1633,9 +1632,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "Seleccionar una nave"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} seleccionados"

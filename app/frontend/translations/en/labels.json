@@ -33,7 +33,6 @@
       "enableYoutube": "Click to enable Youtube embeds or right click to copy Video URL",
       "openInNewWindow": "Open in fullscreen",
       "or": "or",
-      "deselect": "Click to deselect",
       "networkStatusOffline": "Network Status: Offline - Service Unavailable",
       "groups": "Groups",
       "classifications": "Classifications",
@@ -1628,9 +1627,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "Select a Ship"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} Selected"

@@ -33,7 +33,6 @@
       "enableYoutube": "Klicken Sie, um Youtube-Einbettungen zu aktivieren, oder rechtsklicken Sie, um die Video-URL zu kopieren",
       "openInNewWindow": "Im Vollbild öffnen",
       "or": "oder",
-      "deselect": "Klicken zum Abwählen",
       "networkStatusOffline": "Netzwerkstatus: Offline - Dienst nicht verfügbar",
       "groups": "Gruppen",
       "classifications": "Klassifizierungen",
@@ -1633,9 +1632,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "Schiff auswählen"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} ausgewählt"
