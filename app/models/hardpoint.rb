@@ -24,8 +24,9 @@
 #
 # Indexes
 #
-#  index_hardpoints_on_component_id  (component_id)
-#  index_hardpoints_on_parent        (parent_type,parent_id)
+#  index_hardpoints_on_component_id        (component_id)
+#  index_hardpoints_on_parent              (parent_type,parent_id)
+#  index_hardpoints_on_parent_and_sc_name  (parent_type,parent_id,sc_name) UNIQUE WHERE (source = 1)
 #
 # Foreign Keys
 #
@@ -55,36 +56,48 @@ class Hardpoint < ApplicationRecord
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :model_positions, dependent: :nullify
 
+  # What each build of the game says about this slot. Written alongside the
+  # columns for now, so the reads can move over in their own step -- and only
+  # for `game_files` slots, since the matrix comes from no build.
+  has_many :builds, class_name: "HardpointBuild", dependent: :destroy
+  has_one :build, -> { current }, class_name: "HardpointBuild", inverse_of: :hardpoint
+
   enum :source,
     {ship_matrix: 0, game_files: 1}
 
-  enum :group,
-    {
-      avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, defense: 5, auxiliary: 6,
-      seat: 7, relay: 8,
-      other: 9,
-      external_fuel_tank: 10,
-      refuel_boom: 11,
-      unknown: 99
-    },
-    suffix: true
+  # Named constants rather than inline maps, because `HardpointBuild` declares
+  # the same two: `group` and `category` are derived from the installed
+  # component, so they move to the build row, and a build holding `40` has to
+  # read as `weapons` there as well. Two copies of a 30-entry map is one copy
+  # too many.
+  GROUPS = {
+    avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, defense: 5, auxiliary: 6,
+    seat: 7, relay: 8,
+    other: 9,
+    external_fuel_tank: 10,
+    refuel_boom: 11,
+    unknown: 99
+  }.freeze
 
-  enum :category,
-    {
-      radar: 1, computers: 2, scanners: 3,
-      powerplant: 10, cooler: 11, shieldgenerator: 12, module: 13, salvagefillerstation: 14,
-      fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23, external_fuel_tanks: 24,
-      refuel_boom: 25,
-      main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
-      weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
-      quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
-      armor: 50, countermeasures: 51,
-      selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63,
-      seat: 70,
-      relay: 80,
-      paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
-      unknown: 999
-    }, suffix: true
+  CATEGORIES = {
+    radar: 1, computers: 2, scanners: 3,
+    powerplant: 10, cooler: 11, shieldgenerator: 12, module: 13, salvagefillerstation: 14,
+    fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23, external_fuel_tanks: 24,
+    refuel_boom: 25,
+    main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
+    weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
+    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
+    armor: 50, countermeasures: 51,
+    selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63,
+    seat: 70,
+    relay: 80,
+    paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
+    unknown: 999
+  }.freeze
+
+  enum :group, GROUPS, suffix: true
+
+  enum :category, CATEGORIES, suffix: true
 
   def self.ransackable_attributes(auth_object = nil)
     ["category", "component_id", "created_at", "group", "id", "parent_id", "parent_type",

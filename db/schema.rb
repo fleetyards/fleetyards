@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_132814) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -767,6 +767,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_132814) do
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
   end
 
+  create_table "hardpoint_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "category"
+    t.uuid "component_id"
+    t.datetime "created_at", null: false
+    t.string "environment", null: false
+    t.string "flags"
+    t.integer "group"
+    t.string "group_key"
+    t.uuid "hardpoint_id", null: false
+    t.integer "max_size"
+    t.integer "min_size"
+    t.string "port_tags"
+    t.string "required_tags"
+    t.string "types"
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.index ["component_id"], name: "index_hardpoint_builds_on_component_id"
+    t.index ["environment", "version"], name: "index_hardpoint_builds_on_environment_and_version"
+    t.index ["hardpoint_id", "environment", "version"], name: "index_hardpoint_builds_on_hardpoint_and_build", unique: true
+    t.index ["hardpoint_id"], name: "index_hardpoint_builds_on_hardpoint_id"
+  end
+
   create_table "hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "category"
     t.uuid "component_id"
@@ -787,6 +809,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_132814) do
     t.string "types"
     t.datetime "updated_at", null: false
     t.index ["component_id"], name: "index_hardpoints_on_component_id"
+    t.index ["parent_type", "parent_id", "sc_name"], name: "index_hardpoints_on_parent_and_sc_name", unique: true, where: "(source = 1)"
     t.index ["parent_type", "parent_id"], name: "index_hardpoints_on_parent"
   end
 
@@ -1734,6 +1757,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_132814) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"
   add_foreign_key "inventories", "vehicles", on_delete: :nullify

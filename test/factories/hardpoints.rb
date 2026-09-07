@@ -24,8 +24,9 @@
 #
 # Indexes
 #
-#  index_hardpoints_on_component_id  (component_id)
-#  index_hardpoints_on_parent        (parent_type,parent_id)
+#  index_hardpoints_on_component_id        (component_id)
+#  index_hardpoints_on_parent              (parent_type,parent_id)
+#  index_hardpoints_on_parent_and_sc_name  (parent_type,parent_id,sc_name) UNIQUE WHERE (source = 1)
 #
 # Foreign Keys
 #
