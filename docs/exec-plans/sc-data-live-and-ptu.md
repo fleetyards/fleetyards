@@ -192,18 +192,27 @@ should ever be unified is a separate question: they are alternative descriptions
 today, the frontend picks one per ship, and the ship-matrix set answers
 `component: null` on every entry.
 
-**There are two hardpoint tables, and the loadout feature is on the wrong one.**
-`hardpoints` (27,540 rows) is loader-owned and serves the public API.
-`model_hardpoints` (26,258 rows, 8,322 not deleted) is legacy — `deleted_at`,
-`loadout_identifier`, `hardpoint_type`, `item_slot`, `mount` — with admin-only
-controllers, last written 2026-04-02 for one source and 2024-05-23 for the
-other, and **no sc_data loader touches it**. It carries 6,077
-`ModelHardpointLoadout` rows, curated named presets per hardpoint, and
-`vehicle_loadout_hardpoints` points at it rather than at `hardpoints` (0 rows,
-against 319 `vehicle_loadouts`). So the note in item 4 below — that Fleetyards
-has nothing for named presets at model level — is wrong: it has one, on a table
-no build updates. Which of the two is the slot identity has to be settled before
-a loadout manager is built on either.
+**There are two hardpoint tables, and the second one is dead.** `hardpoints`
+(27,540 rows) is loader-owned and serves the public API. `model_hardpoints`
+(26,258 rows, of which 17,933 are soft-deleted) is its predecessor: same
+`source` enum (`ship_matrix: 0, game_files: 1`), created from 2020-12-20, last
+written 2026-04-02 for the matrix half and 2024-05-23 for the game-files half,
+**no sc_data loader touches it**, no public endpoint reads it, and only
+`Admin::Api::V1::ModelHardpointsController` remains.
+
+Its 6,077 `ModelHardpointLoadout` rows are not a preset system, which is what
+they look like from the class name. They sit over 2,662 parent hardpoints, ~2.3
+each, and their names are game-file port names — `missile_01_attach` 938 times,
+`hardpoint_class_2` 795, `turret_left` 199. They are **nested sub-ports**, which
+is exactly what `hardpoints` now does through `parent_type: "Hardpoint"`. So
+there is no curated data on that table to preserve, and the slot identity is
+`hardpoints`.
+
+`vehicle_loadout_hardpoints` still points at `model_hardpoints` rather than at
+`hardpoints`, which is why a loadout manager cannot be built on it as it stands
+— but with 0 rows against 319 `vehicle_loadouts` there is nothing to migrate,
+only a foreign key to repoint. Deleting the legacy pair is a separate,
+unblocked piece of work.
 
 ### 3. A production load path for a second environment
 
@@ -265,12 +274,12 @@ wrong control for.
 - The five vendor component sets behind the `collector_*` and `exec_*` variants
   (`collector_military`, `collector_stealth`, `collector_indust`,
   `exec_military`, `exec_stealth`) are reusable product lines, not per-ship
-  loadouts. They would make good named loadout presets at model level. An
-  earlier version of this note said Fleetyards has nothing for that; it does —
-  `ModelHardpointLoadout`, 6,077 curated rows with admin-only controllers, on
-  the legacy `model_hardpoints` table no build updates. See (2). The ignored
-  rows in `sc_data_unlisted_models` are the source list, since rows are kept
-  with `last_seen_version` rather than deleted.
+  loadouts. They would make good named loadout presets at model level, where
+  Fleetyards currently has nothing — `VehicleLoadout` exists only per vehicle.
+  `ModelHardpointLoadout` is not a counter-example despite the name: it is
+  nested sub-ports on the dead legacy table, see (2). The ignored rows in
+  `sc_data_unlisted_models` are the source list, since rows are kept with
+  `last_seen_version` rather than deleted.
 
 ## Verification
 
