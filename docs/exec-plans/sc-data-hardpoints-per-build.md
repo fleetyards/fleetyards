@@ -66,6 +66,22 @@ alternative descriptions today: the frontend picks one per ship, and
 `useCompareHardpoints` notes the ship-matrix set "answers `component: null` on
 every entry". Nobody has measured whether they align by name.
 
+**Saved vehicle loadouts are not a driver for this, and it is worth writing
+down why.** The live feature is a bookmark: all 319 `vehicle_loadouts` rows
+carry a URL to a third-party calculator — `spviewer.eu` and `erkul.games` — and
+**zero** have a blank one. It reads no hardpoints, resolves no components and
+knows nothing about builds. The internal half,
+`vehicle_loadout_hardpoints`, has never held a single row;
+`create_from_defaults!` sits behind a `from_defaults` parameter nobody has ever
+passed, and it seeds from `model_hardpoints`, the dead table whose game-files
+rows stopped being written in 2024. So it is dead code beside a dead table, and
+the honest move is deleting it rather than designing around it.
+
+The two share the word "loadout" and nothing else. This plan stands entirely on
+the loader destroying the other environment's loadouts, and needs no argument
+about a future builder. What *does* point at hardpoint rows today is
+`ModelPosition` — see the risks below.
+
 **The legacy hardpoint table is dead and is not the answer.**
 `model_hardpoints` (26,258 rows, 17,933 soft-deleted) carries the same
 `ship_matrix`/`game_files` enum, was last written 2024-05-23 for the game-files
