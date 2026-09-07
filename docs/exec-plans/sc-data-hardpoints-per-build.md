@@ -99,6 +99,12 @@ separate and unblocked.
    `(hardpoint_id, environment, version)` unique, `BUILDS_RETAINED` and
    `retained_versions` mirroring `ComponentBuild`, and a backfill writing the
    current live build from the columns already on the row. Nothing reads it yet.
+
+   Add a unique index on `(parent_type, parent_id, sc_name)` in the same PR.
+   The slot's natural key is already unique in fact — 0 duplicates over the
+   22,561 game-file rows — but nothing enforces it except
+   `find_or_initialize_by` in the loader, and once a slot is the thing other
+   records point at, that is not enough.
 2. **Dual-write.** `persist_slot` calls `apply_build` alongside `apply`, and
    `persist_loadout` stops destroying: `retire_absent_builds(HardpointBuild,
    :hardpoint_id, …)` takes its place for the `game_files` half. This is the PR
@@ -157,3 +163,45 @@ separate and unblocked.
   `parent_type:parent_id/sc_name=component_id` over `source = 1`, hashed.
 - `test/loaders/sc_data/base_loader_loadout_test.rb` already characterizes
   `persist_loadout`; the cleanup change belongs there.
+
+## What it makes possible later
+
+Recorded as a **consequence**, not as a reason to do this. The justification is
+the loader destroying the other environment's loadouts and nothing else — see
+the note above about what this is not about.
+
+Fleetyards has no loadout editor of its own; the saved "loadouts" today are
+links to `spviewer.eu` and `erkul.games`. When one is built, the user's
+selection is a set of `(slot → component)` pairs per vehicle, and three things
+about it follow from this split:
+
+**The slot reference.** A foreign key to the `hardpoints` row plus the
+denormalised name path — at most three segments, since nesting bottoms out at
+depth 3 (18,944 slots at depth 1, 2,979 at 2, 638 at 3). The key gives
+integrity, the path survives a slot row being recreated. That is the same
+division the catalogues already use, where the UUID is internal and the export's
+key is the identity.
+
+**A saved selection floats rather than pins.** It is "these components in these
+slots", re-resolved against whichever source the reader asked for, with each
+entry able to say whether its slot and its component are in that build — the
+pattern #4753 established for inventory entries: the row survives the patch and
+reports that it is no longer available. Pinning a loadout to the build it was
+made against would be more honest historically and would take away the thing a
+player actually wants after a patch, which is to see their own ship against the
+new one.
+
+**Validity is itself a build fact.** `min_size`, `max_size`, `types`,
+`port_tags` and `required_tags` all move to the build row, so "does this
+component fit this slot" has a different answer per source: a selection valid
+under live can be invalid under PTU. The selection therefore cannot be validated
+once on write — it has to be validated on read, per source. This is the part
+most likely to be missed, because every other write path in the app validates
+once.
+
+**`vehicle_loadout_hardpoints` should be deleted rather than kept for this.** It
+has never held a row, it is wired to the dead `model_hardpoints`, and an editor
+needs fields it does not have — the name path, and a separation between a
+model-level preset and a user's own selection on their own ship. Carrying an
+empty table forward because a feature might want it one day is how the legacy
+pair came to exist.
