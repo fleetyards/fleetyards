@@ -1,4 +1,24 @@
+/*
+ * The whole row opens the picker, not just the label in it: the label is a few
+ * words wide in a row that is the width of the panel, so most of a slot looked
+ * inert. The label stays a button for the keyboard, and the row carries the
+ * cursor so the hit area is honest about how big it is.
+ */
+.module-slot {
+  cursor: pointer;
+
+  &:hover .module-select-btn {
+    color: $text-color;
+  }
+}
+
 .module-select-btn {
+  appearance: none;
+  padding: 0;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font: inherit;
   cursor: pointer;
   color: color.scale($text-color, $lightness: -20%);
 
