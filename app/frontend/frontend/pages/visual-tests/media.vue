@@ -15,6 +15,7 @@ import BaseText from "@/shared/components/base/Text/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import { ViewImageSizeEnum } from "@/shared/components/ViewImage/types";
+import { useGallery } from "@/shared/composables/useGallery";
 import { useCookiesStore } from "@/frontend/stores/cookies";
 import { VideoTypeEnum, type MediaFile } from "@/services/fyApi";
 import { storeToRefs } from "pinia";
@@ -70,6 +71,16 @@ const { youtubeAccepted } = storeToRefs(cookiesStore);
 const toggleYoutube = () => {
   cookiesStore.cookies.youtube = !cookiesStore.cookies.youtube;
 };
+
+/*
+ * The lightbox is the one piece of this page that cannot be shown standing
+ * still: its chrome only exists once PhotoSwipe opens, so reviewing it means
+ * clicking a tile. The real dimensions of the bundled image are passed through
+ * because they are what pswp sizes the slide from.
+ */
+const storeImageSize = { width: 1200, height: 420 };
+
+useGallery(".vt-gallery");
 
 const video = {
   id: "vt-video",
@@ -238,6 +249,58 @@ const video = {
     <div class="col-12 col-lg-4">
       <BaseText muted no-spacing>broken url</BaseText>
       <ViewImage :image="file(brokenSrc)" alt="Broken" />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">Gallery | Lightbox</Heading>
+  <p>
+    Click a tile to open PhotoSwipe. Its chrome wears the app's control language
+    — the same fill, edge, radius and end-cap as
+    <code>Btn</code>, lighting the cap on hover — and the caption is a panel
+    held to a reading measure rather than a full-bleed band. The three tiles
+    cover the caption cases: one short, one long enough to wrap, and one with
+    none at all, which hides the panel instead of leaving an empty box.
+  </p>
+  <div class="row vt-gallery">
+    <div class="col-12 col-lg-4">
+      <LazyImage
+        :src="storeImage"
+        :href="storeImage"
+        :width="storeImageSize.width"
+        :height="storeImageSize.height"
+        alt="Short caption"
+        title="Short caption"
+        caption="Aegis Idris P"
+        shadow
+        gallery
+      />
+    </div>
+    <div class="col-12 col-lg-4">
+      <LazyImage
+        :src="storeImage"
+        :href="storeImage"
+        :width="storeImageSize.width"
+        :height="storeImageSize.height"
+        alt="Long caption"
+        title="Long caption"
+        caption="The <b>Aegis Idris P</b> under escort over Yela — a caption long
+          enough to run past the measure the panel holds, so it wraps instead of
+          spanning the whole viewport the way the old full-bleed band did."
+        shadow
+        gallery
+      />
+    </div>
+    <div class="col-12 col-lg-4">
+      <LazyImage
+        :src="storeImage"
+        :href="storeImage"
+        :width="storeImageSize.width"
+        :height="storeImageSize.height"
+        alt="No caption"
+        title="No caption"
+        shadow
+        gallery
+      />
     </div>
   </div>
 

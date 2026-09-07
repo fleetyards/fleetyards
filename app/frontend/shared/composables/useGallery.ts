@@ -123,7 +123,13 @@ export const useGallery = (
         order: 9,
         isButton: false,
         appendTo: "root",
-        html: "Caption text",
+        /*
+         * Empty, not placeholder copy. The caption is a panel now, and one that
+         * starts with text in it flashes that text before the first `change`
+         * swaps it - and stays a visible empty box on an uncaptioned image,
+         * which is what the `:empty` rule in pswp.scss keys off.
+         */
+        html: "",
         onInit: (el, pswp) => {
           pswp.on("change", () => {
             const currSlideElement = pswp.currSlide?.data.element;
