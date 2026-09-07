@@ -1,0 +1,22 @@
+{
+  "zh-TW": {
+    "addon": {
+      "fitted": "已裝配",
+      "cargo": "%{cargo} SCU",
+      "contentsUnknown": "無自帶設備",
+      "copies": "已裝配 %{count} 個",
+      "actions": {
+        "increase": "再新增一個%{name}",
+        "decrease": "移除一個%{name}"
+      },
+      "packages": {
+        "applied": "已套用",
+        "hint": "恰好安裝這組模組"
+      },
+      "empty": {
+        "modules": "未裝配模組",
+        "upgrades": "未裝配升級套件"
+      }
+    }
+  }
+}

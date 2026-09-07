@@ -32,7 +32,6 @@
       "toggleNavigation": "Changer de navigation",
       "openInNewWindow": "Ouvrir en plein écran",
       "or": "ou",
-      "deselect": "cliquer pour désélectionner",
       "networkStatusOffline": "statut du serveur : hors-ligne - service indisponible",
       "groups": "Groupes",
       "classifications": "Classifications",
@@ -1200,9 +1199,6 @@
         "selectModule": "Sélectionner un module",
         "moduleStock": "Tel que livré",
         "moduleStockHint": "Emplacement tel que le vaisseau est livré",
-        "moduleFitted": "Installé",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "Aucun équipement propre",
         "categories": {
           "radar": "Radar",
           "armor": "Blindage",
@@ -1553,9 +1549,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "Sélectionner un vaisseau"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} sélectionné"

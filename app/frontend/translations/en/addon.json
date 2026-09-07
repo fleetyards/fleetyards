@@ -1,0 +1,22 @@
+{
+  "en": {
+    "addon": {
+      "fitted": "Fitted",
+      "cargo": "%{cargo} SCU",
+      "contentsUnknown": "No fittings of its own",
+      "copies": "%{count} fitted",
+      "actions": {
+        "increase": "Add another %{name}",
+        "decrease": "Remove one %{name}"
+      },
+      "packages": {
+        "applied": "Applied",
+        "hint": "Fits exactly this set of modules"
+      },
+      "empty": {
+        "modules": "No modules fitted",
+        "upgrades": "No upgrade kits fitted"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "fr": {
+    "addon": {
+      "fitted": "Installé",
+      "cargo": "%{cargo} SCU",
+      "contentsUnknown": "Aucun équipement propre",
+      "copies": "%{count} installé(s)",
+      "actions": {
+        "increase": "Ajouter un autre %{name}",
+        "decrease": "Retirer un %{name}"
+      },
+      "packages": {
+        "applied": "Appliqué",
+        "hint": "Installe exactement cet ensemble de modules"
+      },
+      "empty": {
+        "modules": "Aucun module installé",
+        "upgrades": "Aucun kit d'amélioration installé"
+      }
+    }
+  }
+}

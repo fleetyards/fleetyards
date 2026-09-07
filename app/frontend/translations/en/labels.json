@@ -32,7 +32,6 @@
       "toggleNavigation": "Toggle Navigation",
       "openInNewWindow": "Open in fullscreen",
       "or": "or",
-      "deselect": "Click to deselect",
       "networkStatusOffline": "Network Status: Offline - Service Unavailable",
       "groups": "Groups",
       "classifications": "Classifications",
@@ -1196,9 +1195,6 @@
         "selectModule": "Select Module",
         "moduleStock": "As delivered",
         "moduleStockHint": "Slot left as the ship comes",
-        "moduleFitted": "Fitted",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "No fittings of its own",
         "categories": {
           "radar": "Radar",
           "armor": "Armor",
@@ -1548,9 +1544,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "Select a Ship"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} Selected"

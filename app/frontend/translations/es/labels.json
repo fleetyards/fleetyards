@@ -32,7 +32,6 @@
       "toggleNavigation": "Alternar navegación",
       "openInNewWindow": "Abrir en pantalla completa",
       "or": "o",
-      "deselect": "Haz clic para deseleccionar",
       "networkStatusOffline": "Estado de red: Desconectado - Servicio no disponible",
       "groups": "Grupos",
       "classifications": "Clasificaciones",
@@ -1200,9 +1199,6 @@
         "selectModule": "Seleccionar módulo",
         "moduleStock": "Tal como se entrega",
         "moduleStockHint": "Ranura tal como viene la nave",
-        "moduleFitted": "Instalado",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "Sin equipamiento propio",
         "categories": {
           "radar": "Radar",
           "armor": "Blindaje",
@@ -1553,9 +1549,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "Seleccionar una nave"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} seleccionados"

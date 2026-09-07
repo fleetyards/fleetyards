@@ -32,7 +32,6 @@
       "toggleNavigation": "切換導航",
       "openInNewWindow": "全螢幕開啟",
       "or": "或",
-      "deselect": "點擊取消選擇",
       "networkStatusOffline": "網絡狀態：離線 - 服務不可用",
       "groups": "分組",
       "classifications": "分類",
@@ -1200,9 +1199,6 @@
         "selectModule": "選擇模組",
         "moduleStock": "出廠狀態",
         "moduleStockHint": "插槽保持船艦出廠時的狀態",
-        "moduleFitted": "已裝配",
-        "moduleCargo": "%{cargo} SCU",
-        "moduleContentsUnknown": "無自帶設備",
         "categories": {
           "radar": "雷達",
           "armor": "裝甲",
@@ -1553,9 +1549,6 @@
       },
       "newVehicle": {
         "nullablePrompt": "選擇飛船"
-      },
-      "addAddon": {
-        "nullablePrompt": ""
       },
       "table": {
         "selected": "%{count} 已選擇"

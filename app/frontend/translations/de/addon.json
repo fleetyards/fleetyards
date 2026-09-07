@@ -1,0 +1,22 @@
+{
+  "de": {
+    "addon": {
+      "fitted": "Verbaut",
+      "cargo": "%{cargo} SCU",
+      "contentsUnknown": "Keine eigene Ausstattung",
+      "copies": "%{count}× verbaut",
+      "actions": {
+        "increase": "Weiteres %{name} hinzufügen",
+        "decrease": "Ein %{name} entfernen"
+      },
+      "packages": {
+        "applied": "Angewendet",
+        "hint": "Verbaut genau diesen Satz Module"
+      },
+      "empty": {
+        "modules": "Keine Module verbaut",
+        "upgrades": "Keine Upgrade-Kits verbaut"
+      }
+    }
+  }
+}

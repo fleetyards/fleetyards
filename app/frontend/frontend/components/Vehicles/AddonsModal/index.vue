@@ -33,32 +33,34 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-onMounted(() => {
-  setupForm();
-});
-
-watch(
-  () => props.vehicle,
-  () => {
-    setupForm();
-  },
-);
-
-const setupForm = () => {
-  initialValues.value = {
-    modelModuleIds: [...props.vehicle.modelModuleIds],
-    modelUpgradeIds: [...props.vehicle.modelUpgradeIds],
-  };
-};
-
-const initialValues = ref<VehicleUpdateInput>({
+const currentAddons = (): VehicleUpdateInput => ({
   modelModuleIds: [...props.vehicle.modelModuleIds],
   modelUpgradeIds: [...props.vehicle.modelUpgradeIds],
 });
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: initialValues.value,
-});
+const { defineField, handleSubmit, resetForm, meta } =
+  useForm<VehicleUpdateInput>({
+    initialValues: currentAddons(),
+  });
+
+/**
+ * Re-seeds the fields rather than the initial values, which vee-validate has
+ * already copied by this point: reassigning those did nothing at all, so the
+ * modal kept answering for whichever ship it was first opened for.
+ *
+ * A pending choice wins over the refresh, or a background refetch of the hangar
+ * would discard what you had just picked and not yet saved.
+ */
+watch(
+  () => props.vehicle,
+  () => {
+    if (meta.value.dirty) {
+      return;
+    }
+
+    resetForm({ values: currentAddons() });
+  },
+);
 
 const [modelModuleIds] = defineField("modelModuleIds");
 const [modelUpgradeIds] = defineField("modelUpgradeIds");
@@ -68,11 +70,17 @@ const modelSlug = computed(() => props.vehicle?.model?.slug ?? "");
 const { data: modulePackages, ...modulePackagesAsyncStatus } =
   useModelModulePackagesQuery(modelSlug);
 
-const { data: modules, ...modulesAsyncStatus } =
+const { data: modulesData, ...modulesAsyncStatus } =
   useModelModulesQuery(modelSlug);
 
-const { data: upgrades, ...upgradesAsyncStatus } =
+const { data: upgradesData, ...upgradesAsyncStatus } =
   useModelUpgradesQuery(modelSlug);
+
+// Three endpoints, three shapes: modules and packages come back paginated under
+// `items`, upgrades as a bare array.
+const packages = computed(() => modulePackages.value?.items ?? []);
+const modules = computed(() => modulesData.value?.items ?? []);
+const upgrades = computed(() => upgradesData.value ?? []);
 
 const comlink = useComlink();
 
@@ -108,67 +116,55 @@ const onSubmit = handleSubmit(async (values) => {
       class="addons"
       @submit.prevent="onSubmit"
     >
-      <div class="row">
-        <div class="col-12">
-          <AsyncData
-            :fullscreen="false"
-            :async-status="modulePackagesAsyncStatus"
-          >
-            <template #resolved>
-              <fieldset v-if="modulePackages?.items.length">
-                <legend>
-                  <h3>{{ t("labels.model.modulePackages") }}:</h3>
-                </legend>
-                <Packages
-                  v-model="modelModuleIds"
-                  :packages="modulePackages?.items"
-                  :editable="editable"
-                />
-              </fieldset>
-            </template>
-          </AsyncData>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <AsyncData :fullscreen="false" :async-status="modulesAsyncStatus">
-            <template #resolved>
-              <fieldset v-if="modules?.items.length">
-                <legend>
-                  <h3>{{ t("labels.model.modules") }}:</h3>
-                </legend>
-                <Addons
-                  v-model="modelModuleIds"
-                  :addons="modules.items"
-                  :label="t('actions.addModule')"
-                  :initial-addons="vehicle.modelModuleIds"
-                  :editable="editable"
-                />
-              </fieldset>
-            </template>
-          </AsyncData>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <AsyncData :fullscreen="false" :async-status="upgradesAsyncStatus">
-            <template #resolved>
-              <fieldset v-if="upgrades?.length">
-                <legend>
-                  <h3>{{ t("labels.model.upgrades") }}:</h3>
-                </legend>
-                <Addons
-                  v-model="modelUpgradeIds"
-                  :addons="upgrades"
-                  :label="t('actions.addUpgrade')"
-                  :initial-addons="vehicle.modelModuleIds"
-                  :editable="editable"
-                />
-              </fieldset>
-            </template>
-          </AsyncData>
-        </div>
-      </div>
+      <AsyncData :fullscreen="false" :async-status="modulePackagesAsyncStatus">
+        <template #resolved>
+          <fieldset v-if="packages.length">
+            <legend>
+              <h3>{{ t("labels.model.modulePackages") }}</h3>
+              <span v-if="editable" class="addons__hint">
+                {{ t("addon.packages.hint") }}
+              </span>
+            </legend>
+            <Packages
+              v-model="modelModuleIds"
+              :packages="packages"
+              :editable="editable"
+            />
+          </fieldset>
+        </template>
+      </AsyncData>
+
+      <AsyncData :fullscreen="false" :async-status="modulesAsyncStatus">
+        <template #resolved>
+          <fieldset v-if="modules.length">
+            <legend>
+              <h3>{{ t("labels.model.modules") }}</h3>
+            </legend>
+            <Addons
+              v-model="modelModuleIds"
+              :addons="modules"
+              :editable="editable"
+              :empty-label="t('addon.empty.modules')"
+            />
+          </fieldset>
+        </template>
+      </AsyncData>
+
+      <AsyncData :fullscreen="false" :async-status="upgradesAsyncStatus">
+        <template #resolved>
+          <fieldset v-if="upgrades.length">
+            <legend>
+              <h3>{{ t("labels.model.upgrades") }}</h3>
+            </legend>
+            <Addons
+              v-model="modelUpgradeIds"
+              :addons="upgrades"
+              :editable="editable"
+              :empty-label="t('addon.empty.upgrades')"
+            />
+          </fieldset>
+        </template>
+      </AsyncData>
     </form>
     <template v-if="editable" #footer>
       <div class="modal-actions">

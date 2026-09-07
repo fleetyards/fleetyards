@@ -1,0 +1,10 @@
+/*
+ * The column an AddonOption list sits in. Its own partial because scoped styles
+ * cannot reach a child component's wrapper, so every list of rows would
+ * otherwise restate the same three declarations.
+ */
+.addon-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
