@@ -7,15 +7,26 @@ require_relative "../lib/cli_helpers"
 EXPORT_FOLDER = "data/sc_data"
 
 COMMANDS = {
-  "sync" => "Sync raw SC data from Hetzner S3 (optionally specify version)",
+  "sync" => "Sync a raw SC data export from S3 (optionally specify an environment or version)",
   "parse" => "Parse SC data for the given environment",
   "push" => "Upload the parsed tree for the given environment to S3",
   "pull" => "Download the parsed tree for the given environment from S3",
-  "load" => "Load all SC data (manufacturers, items, models, modules)",
-  "load:manufacturers" => "Load manufacturers from SC data",
-  "load:items" => "Load items from SC data",
-  "load:models" => "Load models (hardpoints) from SC data",
-  "load:modules" => "Load model modules from SC data"
+  "load" => "Load all SC data for the given environment (manufacturers, items, models, modules)",
+  "load:manufacturers" => "Load manufacturers for the given environment",
+  "load:items" => "Load items for the given environment",
+  "load:models" => "Load models (hardpoints) for the given environment",
+  "load:modules" => "Load model modules for the given environment"
+}.freeze
+
+# What each load command runs, and what to call it while it runs. Bodies are not
+# evaluated until the step is reached, so naming the loaders here does not need
+# Rails to be booted yet.
+LOAD_STEPS = {
+  "load" => ["all SC Data", -> { ScData::Loader::BaseLoader.all }],
+  "load:manufacturers" => ["manufacturers", -> { ScData::Loader::ManufacturersLoader.new.all }],
+  "load:items" => ["items", -> { ScData::Loader::ItemsLoader.new.all }],
+  "load:models" => ["models", -> { ScData::Loader::ModelsLoader.new.all }],
+  "load:modules" => ["model modules", -> { ScData::Loader::ModelModulesLoader.new.all }]
 }.freeze
 
 def usage
@@ -30,16 +41,26 @@ def boot_rails
   require_relative "../config/environment"
 end
 
-def config_info
-  "version: #{ScData::Source.current}"
+# The build a load is about to write. Naming an environment loads that one
+# without moving the default onto it -- `ScData::Source.with` is the same seam a
+# request goes through, so a loader resolves its build the way it always does
+# rather than reading the config a second way.
+def requested_source(environment)
+  return ScData::Source.current if environment.blank?
+
+  source = ScData::Source.find(environment)
+
+  abort "No build configured for environment: #{environment}" if source.blank?
+
+  source
 end
 
 # Under `bin/op` the settings are already in the environment, resolved from
 # `.env.tpl` -- which is also how production supplies them to the loader jobs.
-# Run bare, this falls back to reading 1Password directly, the way `sync` does,
-# so neither invocation needs the wrapper.
+# Run bare, this falls back to reading 1Password directly, so neither
+# invocation needs the wrapper.
 def s3_settings
-  return ScData::ParsedStore.settings if ScData::ParsedStore.configured?
+  return ScData::ObjectStore.settings if ScData::ObjectStore.configured?
 
   {
     endpoint: "https://fsn1.your-objectstorage.com",
@@ -79,41 +100,38 @@ usage if command.nil? || command == "--help" || command == "-h"
 
 case command
 when "sync"
-  require "open3"
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
 
-  s3_bucket = "fltyrd-sc"
-  s3_endpoint = "fsn1.your-objectstorage.com"
-  s3_access_key = `op read "op://Fleetyards/HETZNER_S3/access_key_id"`.strip
-  s3_secret_key = `op read "op://Fleetyards/HETZNER_S3/secret_access_key"`.strip
-  s3cmd = "s3cmd --host=#{s3_endpoint} --host-bucket='%(bucket)s.#{s3_endpoint}' --access_key=#{s3_access_key} --secret_key=#{s3_secret_key}"
+  # Either an export folder or the environment to take the newest one from, so
+  # `sync ptu` reads the way `parse ptu` does. Bare, it follows the configured
+  # default rather than whatever build happens to be newest in the bucket --
+  # picking that up would sync a ptu export to someone who only ever asked
+  # about live.
+  target = args.shift || ScData::Source.environment
+  version = target
 
-  version = args.shift
-
-  if version.nil?
-    CliHelpers.run_step("Finding latest version in s3://#{s3_bucket}") do
-      output, status = Open3.capture2e("#{s3cmd} ls s3://#{s3_bucket}/")
-      abort "Failed to list bucket: #{output}" unless status.success?
-
-      folders = output.lines
-        .filter_map { |line| line[%r{s3://#{Regexp.escape(s3_bucket)}/([^/]+)/}, 1] }
-        .select { |name| name.match?(/\A.+\.\d+\z/) }
-        .sort_by { |name| name.match(/\.(\d+)\z/)[1].to_i }
-
-      abort "No versions found in s3://#{s3_bucket}" if folders.empty?
-
-      version = folders.last
-      [true, ""]
+  unless ScData::RawStore::VERSION_PATTERN.match?(target)
+    CliHelpers.run_step("Finding the newest #{target} export") do
+      version = ScData::RawStore.latest(target, settings: s3_settings)
+      [version.present?, version.present? ? "" : "no export found for environment: #{target}"]
     end
-    puts "  Latest version: #{version}"
+    abort if version.blank?
+
+    puts "  Newest #{target} export: #{version}"
   end
 
-  local_dir = File.join(EXPORT_FOLDER, "raw", version)
+  store = ScData::RawStore.new(version, settings: s3_settings)
+  result = nil
 
-  CliHelpers.run_step("Syncing s3://#{s3_bucket}/#{version} to #{local_dir}") do
-    FileUtils.mkdir_p(local_dir)
-    output, status = Open3.capture2e("#{s3cmd} sync --no-check-md5 s3://#{s3_bucket}/#{version}/ #{local_dir}/")
-    [status.success?, output]
+  CliHelpers.run_step("Syncing #{version} to #{store.local_root.relative_path_from(Rails.root)}") do
+    result = store.pull
+    [true, ""]
   end
+
+  puts "  Downloaded: #{result[:downloaded]}, unchanged: #{result[:unchanged]}"
 
 when "parse"
   CliHelpers.run_step("Booting Rails") {
@@ -191,58 +209,17 @@ when "push", "pull"
   moved = result[:uploaded] || result[:downloaded]
   puts "  #{(command == "push") ? "Uploaded" : "Downloaded"}: #{moved}, removed: #{result[:removed]}, unchanged: #{result[:unchanged]}"
 
-when "load"
+when *LOAD_STEPS.keys
   CliHelpers.run_step("Booting Rails") {
     boot_rails
     [true, ""]
   }
 
-  CliHelpers.run_step("Loading all SC Data #{config_info}") do
-    ScData::Loader::BaseLoader.all
-    [true, ""]
-  end
+  source = requested_source(args.shift)
+  label, load = LOAD_STEPS.fetch(command)
 
-when "load:manufacturers"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading manufacturers #{config_info}") do
-    ScData::Loader::ManufacturersLoader.new.all
-    [true, ""]
-  end
-
-when "load:items"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading items #{config_info}") do
-    ScData::Loader::ItemsLoader.new.all
-    [true, ""]
-  end
-
-when "load:models"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading models #{config_info}") do
-    ScData::Loader::ModelsLoader.new.all
-    [true, ""]
-  end
-
-when "load:modules"
-  CliHelpers.run_step("Booting Rails") {
-    boot_rails
-    [true, ""]
-  }
-
-  CliHelpers.run_step("Loading model modules #{config_info}") do
-    ScData::Loader::ModelModulesLoader.new.all
+  CliHelpers.run_step("Loading #{label} (#{source})") do
+    ScData::Source.with(source) { load.call }
     [true, ""]
   end
 
