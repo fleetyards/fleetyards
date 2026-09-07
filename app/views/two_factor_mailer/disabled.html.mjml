@@ -1,0 +1,16 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @username) %>
+</mj-text>
+
+<mj-text>
+  <%= I18n.t("mailer.two_factor.disabled.body") %>
+</mj-text>
+
+<mj-text padding="0 0 4px">
+  <%= I18n.t("mailer.security.info") %>
+</mj-text>
+
+<%= render "shared/mailer/btn",
+           href: frontend_security_settings_url,
+           label: I18n.t("mailer.security.action"),
+           tone: :primary %>

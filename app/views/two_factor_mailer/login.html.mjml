@@ -1,0 +1,22 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.two_factor.login.headline") %>
+</mj-text>
+
+<mj-text>
+  <%= I18n.t("mailer.two_factor.login.body") %>
+</mj-text>
+
+<%#
+  The code is the whole point of this mail, so it gets the treatment the app
+  gives a value that has to be read off the screen: Orbitron, tracked, large.
+  Tracking matters twice over here - it separates the digits so a code cannot be
+  misread - so it stays even where the webfont is stripped.
+%>
+<mj-text mj-class="label"
+         font-size="30px"
+         letter-spacing="8px"
+         color="<%= MailerTheme::TEXT %>"
+         align="center"
+         padding="12px 0 4px">
+  <%= @two_factor_code %>
+</mj-text>

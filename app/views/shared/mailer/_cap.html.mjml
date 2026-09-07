@@ -1,0 +1,27 @@
+<%#
+  A panel end-cap: the bar the app draws with Panel's ::before / ::after.
+
+  locals: side - "top" or "bottom", which inward edge gets the radius.
+
+  Email has no pseudo-elements, so the cap is a real row inside the frame. Two
+  differences from the app, both forced:
+
+  - It sits flush against the inside of the border rather than straddling it at
+    top:-2px. Nothing in a table can overlap a border.
+  - The inset is a flat 12% rather than max(10px, 12%). max() is unsupported,
+    and the floor only mattered below ~83px wide.
+
+  An mj-divider, not a styled cell: MJML gives a divider an explicit width and
+  centre, which is exactly a cap inset equally from both sides.
+%>
+<mj-section padding="0" background-color="transparent">
+  <mj-column padding="0">
+    <mj-divider border-width="<%= MailerTheme::CAP_HEIGHT %>"
+                border-style="solid"
+                border-color="<%= MailerTheme::ENDCAP %>"
+                width="<%= MailerTheme::CAP_WIDTH %>"
+                align="center"
+                padding="0"
+                css-class="cap-<%= side %>" />
+  </mj-column>
+</mj-section>

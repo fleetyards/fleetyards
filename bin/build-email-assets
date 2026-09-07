@@ -1,21 +1,47 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Gives the test environment a Vite manifest carrying the assets the mailer
+# layout resolves through vite_asset_url: images/mail-logo.png and
+# images/mail-bg.jpg.
+#
+# Development and production get those entries from the real Vite build, which
+# fingerprints everything in app/frontend/images. The Ruby test job runs no
+# frontend build at all, and config/vite.json points the test environment at
+# public/vite-test with autoBuild off - so without this, every mailer test dies
+# on "Vite Ruby can't find images/mail-logo.png in the manifests".
+#
+# The lockup itself is built by bin/build-mail-logo, not here - this only
+# copies it.
+#
+# This used to build entrypoints/email.scss through vite.config.email.ts: the
+# Inky layout linked that stylesheet and premailer inlined it. MJML carries every
+# style inline instead, so the stylesheet is gone and only the logo is left -
+# which needs a copy and a manifest entry, not a bundler.
+
 OUT_DIR="public/vite-test"
-MANIFEST="$OUT_DIR/.vite/manifest.json"
+MANIFEST_DIR="$OUT_DIR/.vite"
+MANIFEST="$MANIFEST_DIR/manifest.json"
 
 echo "Building email assets for test environment..."
-npx vite build --config vite.config.email.ts
 
-# Copy logo image and add it to the manifest
-cp app/frontend/images/logo.png "$OUT_DIR/assets/logo.png"
+ASSETS=(mail-logo.png mail-bg.jpg)
 
-# Merge logo entry into the Vite manifest
-node -e "
-const fs = require('fs');
-const manifest = JSON.parse(fs.readFileSync('$MANIFEST', 'utf8'));
-manifest['images/logo.png'] = { file: 'assets/logo.png', src: 'images/logo.png' };
-fs.writeFileSync('$MANIFEST', JSON.stringify(manifest, null, 2));
-"
+mkdir -p "$MANIFEST_DIR" "$OUT_DIR/assets"
+for asset in "${ASSETS[@]}"; do
+  cp "app/frontend/images/$asset" "$OUT_DIR/assets/$asset"
+done
+
+# Merged rather than overwritten: a full `bin/vite build` for the test
+# environment writes this same manifest, and it is built with emptyOutDir off so
+# the two are meant to coexist whichever order they run in.
+ruby -rjson -e '
+  path, *assets = ARGV
+  manifest = File.exist?(path) ? JSON.parse(File.read(path)) : {}
+  assets.each do |asset|
+    manifest["images/#{asset}"] = {"file" => "assets/#{asset}", "src" => "images/#{asset}"}
+  end
+  File.write(path, JSON.pretty_generate(manifest))
+' "$MANIFEST" "${ASSETS[@]}"
 
 echo "Email assets built successfully."

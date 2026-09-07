@@ -1,0 +1,22 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @user.username) %>
+</mj-text>
+
+<mj-text>
+  <%= @notification.title %>
+</mj-text>
+
+<% if @notification.body.present? %>
+  <mj-text font-style="italic" color="<%= MailerTheme::MUTED %>">
+    <%= @notification.body %>
+  </mj-text>
+<% end %>
+
+<mj-text padding="0 0 4px">
+  <%= I18n.t("mailer.fleet_event.#{@key}.body", fleet: @event.fleet.name) %>
+</mj-text>
+
+<%= render "shared/mailer/btn",
+           href: frontend_fleet_event_url(fleet_slug: @event.fleet.slug, event_slug: @event.slug),
+           label: I18n.t("mailer.fleet_event.action"),
+           tone: :primary %>

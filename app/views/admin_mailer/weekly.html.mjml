@@ -1,0 +1,102 @@
+<%#
+  The weekly report.
+
+  The only template whose conversion is not mechanical: it was the one styled
+  through classes in entrypoints/email.scss (.report-table, .report-section,
+  .report-delta-*), and an MJML mail loads no stylesheet, so every rule it relied
+  on has to arrive inline.
+
+  Two colours change on the way, both towards the app rather than away from it.
+  email.scss drew the row rule as rgba(#c8c8c8, .12) and the negative delta as
+  #d9534f - an old Bootstrap red. Neither is a token the app has; --color-edge-faint
+  and --color-danger are, so those are what it uses now.
+
+  Section headings keep their Orbitron tracked-uppercase treatment, which is the
+  app's metric-label face and what .report-section already asked for.
+%>
+<%
+  cell = "padding: 6px 8px; border-bottom: 1px solid #{MailerTheme::EDGE_FAINT}; font-size: 14px;"
+  head = "#{cell} color: #{MailerTheme::MUTED}; font-weight: normal; font-size: 11px; " \
+         "letter-spacing: 1px; text-transform: uppercase;"
+  label_cell = "#{cell} text-align: left; color: #{MailerTheme::TEXT};"
+  # tabular-nums so a column of figures lines up on the decimal.
+  number_cell = "#{cell} text-align: right; width: 90px; font-variant-numeric: tabular-nums;"
+  delta_color = {
+    "positive" => MailerTheme::SUCCESS,
+    "negative" => MailerTheme::DANGER,
+    "neutral" => MailerTheme::MUTED
+  }
+  table_attrs = 'width="100%" cellpadding="0" cellspacing="0" padding="0 0 8px" font-size="14px"'
+%>
+
+<mj-text mj-class="h2" padding="0 0 6px">
+  <%= I18n.t("mailer.admin.weekly.headline") %>
+</mj-text>
+
+<mj-text mj-class="footer" padding="0 0 18px">
+  <%= I18n.t("mailer.admin.weekly.period",
+        from: I18n.l(@report[:starts_at].to_date, format: :day_month),
+        to: I18n.l(@report[:ends_at].to_date, format: :day_month)) %>
+</mj-text>
+
+<% @report[:sections].each do |section| %>
+  <mj-text mj-class="label" padding="18px 0 6px">
+    <%= I18n.t("mailer.admin.weekly.sections.#{section.key}") %>
+  </mj-text>
+
+  <mj-table <%= table_attrs.html_safe %>>
+    <tr>
+      <th style="<%= head %> text-align: left;"><%= I18n.t("mailer.admin.weekly.columns.metric") %></th>
+      <th style="<%= head %> text-align: right;"><%= I18n.t("mailer.admin.weekly.columns.current") %></th>
+      <th style="<%= head %> text-align: right;"><%= I18n.t("mailer.admin.weekly.columns.previous") %></th>
+      <th style="<%= head %> text-align: right;"><%= I18n.t("mailer.admin.weekly.columns.delta") %></th>
+    </tr>
+    <% section.metrics.each do |metric| %>
+      <tr>
+        <td style="<%= label_cell %>">
+          <%= I18n.t("mailer.admin.weekly.metrics.#{metric.key}") %>
+        </td>
+        <td style="<%= number_cell %> color: <%= MailerTheme::TEXT %>;">
+          <%= admin_report_metric_value(metric) %>
+        </td>
+        <td style="<%= number_cell %> color: <%= MailerTheme::MUTED %>;">
+          <%= admin_report_previous_value(metric) || "&mdash;".html_safe %>
+        </td>
+        <td style="<%= number_cell %> color: <%= delta_color.fetch(admin_report_delta_class(metric)) %>;">
+          <%= admin_report_delta(metric) || "&mdash;".html_safe %>
+        </td>
+      </tr>
+    <% end %>
+  </mj-table>
+<% end %>
+
+<mj-text mj-class="label" padding="18px 0 6px">
+  <%= I18n.t("mailer.admin.weekly.notifications.headline", count: @notifications.size) %>
+</mj-text>
+
+<% if @notifications.any? %>
+  <mj-table <%= table_attrs.html_safe %>>
+    <% @notifications.each do |notification| %>
+      <tr>
+        <td style="<%= label_cell %>">
+          <%= notification.title %>
+          <% if notification.occurrences > 1 %>
+            <span style="color: <%= MailerTheme::MUTED %>;">&times;<%= notification.occurrences %></span>
+          <% end %>
+        </td>
+        <td style="<%= number_cell %> color: <%= MailerTheme::MUTED %>;">
+          <%= I18n.l(notification.created_at.to_date, format: :day_month) %>
+        </td>
+      </tr>
+    <% end %>
+  </mj-table>
+<% else %>
+  <mj-text color="<%= MailerTheme::MUTED %>" padding="0 0 4px">
+    <%= I18n.t("mailer.admin.weekly.notifications.empty") %>
+  </mj-text>
+<% end %>
+
+<%= render "shared/mailer/btn",
+           href: @notifications_url,
+           label: I18n.t("mailer.admin.weekly.notifications.action"),
+           tone: :primary %>

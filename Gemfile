@@ -32,9 +32,13 @@ gem "rails-i18n", "~> 8.0"
 
 gem "js_cookie_rails"
 
-gem "inky-rb", require: "inky"
-# Stylesheet inlining for email **
-gem "foundation_emails"
+# MJML templates for mailer views, via MRML - a Rust implementation shipping
+# precompiled native gems, so the production image needs no Node.
+gem "mrml-rails"
+
+# Still needed after the move to MJML, for the part MJML does not do: premailer
+# generates the text/plain alternative for every mail in its delivery hook.
+# Dropping it would silently make every mail HTML-only.
 gem "premailer-rails"
 
 gem "griddler"

@@ -1,0 +1,32 @@
+<mj-text mj-class="h2" padding="0 0 16px">
+  <%= I18n.t("mailer.hello", username: @username) %>
+</mj-text>
+
+<% if @vehicle.model.store_image.attached? %>
+  <mj-image src="<%= rails_representation_url(@vehicle.model.store_image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium])) %>"
+            alt="<%= @vehicle.model.name %>"
+            border-radius="<%= MailerTheme::RADIUS_CONTROL %>"
+            padding="0 0 16px" />
+<% end %>
+
+<%#
+  Was an <h4> holding a <small>, a link and a trailing phrase, nested inside a
+  <p> - so the heading sat inside a paragraph. Split into the label line the app
+  would use and the sentence itself.
+%>
+<mj-text mj-class="label" padding="0 0 6px">
+  <%= I18n.t("mailer.vehicle.on_sale.headline.part_one") %>
+</mj-text>
+
+<mj-text mj-class="h2" padding="0 0 12px">
+  <a href="<%= frontend_model_url(slug: @vehicle.model.slug) %>"
+     target="_blank"
+     style="color: <%= MailerTheme::PRIMARY %>; text-decoration: none;"><%= @vehicle.model.name %></a>
+  <%= I18n.t("mailer.vehicle.on_sale.headline.part_two") %>
+</mj-text>
+
+<%# The price was .text-right, which in a one-column mail read as orphaned. %>
+<mj-text mj-class="footer" padding="0 0 4px">
+  <%= I18n.t("mailer.vehicle.on_sale.price", price: number_to_currency(@vehicle.model.pledge_price)) %>
+  <%= I18n.t("labels.tax_excluded") %>
+</mj-text>

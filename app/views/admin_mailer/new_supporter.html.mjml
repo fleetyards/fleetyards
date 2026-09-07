@@ -1,0 +1,7 @@
+<mj-text mj-class="h2" padding="0 0 12px">
+  <%= I18n.t("mailer.admin.new_supporter.headline") %>
+</mj-text>
+
+<mj-text padding="0 0 4px">
+  <%= I18n.t("mailer.admin.new_supporter.text", name: @supporter.display_name, amount: @supporter.formatted_amount) %>
+</mj-text>
