@@ -67,8 +67,7 @@
         "groupAdded": "Group added to feature.",
         "groupRemoved": "Group removed from feature.",
         "created": "Feature created.",
-        "destroyed": "Feature removed.",
-        "createError": "Could not create feature."
+        "destroyed": "Feature removed."
       },
       "rsiRequestLogs": {
         "resolved": "Request log marked as resolved.",
@@ -110,14 +109,12 @@
         "destroy": {
           "success": "Avatar removed",
           "failure": "Could not remove Avatar"
-        },
-        "invalidExtension": "The Picture you provided has an invalid Format. Supported Formats are: %{extensions}."
+        }
       },
       "hangarImport": {
         "success": "Import completed",
         "partialSuccess": "Import partially completed.<br><br>Not found Ships: <br>%{missing}",
-        "failure": "Import failed",
-        "invalidExtension": "The Import you provided has an invalid Format. Supported Formats are: %{extensions}."
+        "failure": "Import failed"
       },
       "hangarExport": {
         "failure": "Export failed, Please try again later."
@@ -149,7 +146,6 @@
       },
       "model": {
         "onSale": "%{model} now on Sale!",
-        "syncStarted": "Model sync started. You will be notified when it completes.",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
         "importPaintsStarted": "Paint import started. You will be notified when it completes."
@@ -187,7 +183,6 @@
       "error": {
         "usernameTaken": "Username is already taken.",
         "userNotFound": "User not found",
-        "urlInvalid": "URL is invalid",
         "emailTaken": "Email is already taken.",
         "fleetTaken": "Fleet is already taken.",
         "colorInvalid": "Color is invalid",
@@ -321,7 +316,6 @@
         "webglNotSupported": "3D viewer is not available on this device."
       },
       "cargoGridViewer": {
-        "noCargoHolds": "This ship has no cargo holds.",
         "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
@@ -584,8 +578,7 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
-            "confirmAll": "Delete this item and all of its entries? This cannot be undone."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
           }
         },
         "vehicleInventory": {

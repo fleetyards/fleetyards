@@ -30,7 +30,6 @@
       "anonymous": "匿名",
       "refreshing": "正在刷新...",
       "toggleNavigation": "切换导航",
-      "enableYoutube": "点击启用YouTube嵌入或右键复制视频链接",
       "openInNewWindow": "全屏打开",
       "or": "或",
       "deselect": "点击取消选择",
@@ -42,8 +41,6 @@
         "stateOff": "已禁用",
         "stateConditional": "有条件",
         "selfService": "自助服务",
-        "selfServiceEnabled": "用户可以切换此功能",
-        "selfServiceDisabled": "用户无法切换此功能",
         "actors": "角色",
         "groups": "群组",
         "noGroups": "此功能没有启用的群组。",
@@ -56,7 +53,6 @@
         "currentState": "当前状态",
         "toggle": "切换",
         "settingsIntro": "为您的账户启用或禁用实验性功能。这些功能可能不完整或随时更改。",
-        "noFeaturesAvailable": "目前没有可用的自助服务功能。",
         "descriptions": {
           "tools_travel_times": "显示地点之间的预计旅行时间。",
           "tools_cargo_grids": "显示飞船的交互式货物网格查看器。",
@@ -130,7 +126,6 @@
       },
       "fleetInviteToken": "舰队邀请",
       "scDataVersion": "补丁版本",
-      "lastReload": "最后重载",
       "createdAt": "创建于",
       "updatedAt": "更新于",
       "addToHangar": "添加到机库",
@@ -138,34 +133,19 @@
         "search": "搜索飞船..."
       },
       "shop": {
-        "rentalPrice": "租赁",
         "sellPrice": "出售价格",
         "buyPrice": "购买价格"
       },
       "shopCommodity": {
         "item": "物品",
         "shop": "商店",
-        "sellPrices": "卖出价格",
         "buyPrices": "买入价格",
         "rentalPrices": "租赁价格",
         "confirmed": "已确认?",
-        "submittedBy": "提交者",
         "prices": {
           "label": "价格",
-          "rentalPrice": "租赁",
-          "averageRentalPrice": "rental (Ø)",
           "sellPrice": "售价",
-          "averageSellPrice": "sells for (Ø)",
-          "buyPrice": "买入价",
-          "averageBuyPrice": "buys for (Ø)",
-          "rentalPrice1Day": "1 Day for",
-          "averageRentalPrice1Day": "1 Day for (Ø)",
-          "rentalPrice3Days": "3 Days for",
-          "averageRentalPrice3Days": "3 Days for (Ø)",
-          "rentalPrice7Days": "7 Days for",
-          "averageRentalPrice7Days": "7 Days for (Ø)",
-          "rentalPrice30Days": "30 Days for",
-          "averageRentalPrice30Days": "30 Days for (Ø)"
+          "buyPrice": "买入价"
         }
       },
       "stats": {
@@ -204,14 +184,8 @@
         }
       },
       "roadmap": {
-        "selectWeek": "选择周",
-        "shipRoadmap": "飞船路线图",
         "releases": "发布",
-        "unscheduled": "未计划",
-        "lastUpdate": "最后更新",
         "released": "已发布",
-        "recentlyUpdated": "最近更新",
-        "committed": "已确认",
         "lastVersion": {
           "active": {
             "false": "条目已从路线图移除",
@@ -219,10 +193,8 @@
             "decreased": "Item was removed from the Roadmap",
             "increased": "Item was readded to the Roadmap"
           },
-          "committed": "Item was marked as committed",
           "released": "Item was released to PU",
-          "release": "Item moved from release %{old} to %{new}",
-          "addedToRelease": "Item new in release %{release}"
+          "release": "Item moved from release %{old} to %{new}"
         },
         "stories": {
           "one": "%{count} Story",
@@ -237,14 +209,10 @@
           "other": "%{count} Ships"
         }
       },
-      "rsiRoadmap": "RSI Roadmap",
       "unknown": "未知",
       "none": "-",
       "notAvailable": "N/A",
-      "unknownModel": "%{slug} Unknown",
       "not-available": "N/A",
-      "receiveSaleNotifications": "",
-      "publicUrl": "公开 URL",
       "name": "名称",
       "homepage": "主页",
       "discord": "Discord 服务器",
@@ -316,13 +284,11 @@
           "nullablePrompt": "添加飞船"
         },
         "enough": "Don't you think 8 Ships are enough? ;)",
-        "toggleSection": "切换 %{section}",
         "shipCount": {
           "one": "%{count} 飞船",
           "other": "%{count} 飞船"
         },
         "containersOfSize": "%{size} SCU 集装箱",
-        "shieldGenerators": "护盾发生器",
         "armorHp": "装甲 HP",
         "fuelAndQuantum": "燃料与量子",
         "weaponPoolSize": "武器能量池",
@@ -356,8 +322,6 @@
         },
         "selectShips": "选择飞船"
       },
-      "cargoRoutes": "货物路线",
-      "uecPerUnit": "aUEC / Unit",
       "au": "AU",
       "uec": "aUEC",
       "sell": "卖出",
@@ -403,7 +367,6 @@
         "awaitingConfirmation": "等待舰队确认",
         "members": {
           "primary": "主舰队?",
-          "hideShips": "为此舰队隐藏您的飞船?",
           "shipsFilter": {
             "label": "哪些飞船应该添加到舰队?",
             "nullablePrompt": "未选择选项",
@@ -427,7 +390,6 @@
           "declined": "已拒绝",
           "pending": "待处理的邀请与请求",
           "accepted": "成员",
-          "declinedMembers": "已拒绝",
           "role": "角色",
           "roles": {
             "admin": "管理员",
@@ -498,9 +460,7 @@
           "rank": "等级"
         },
         "inviteUrls": {
-          "noLimit": "No limit",
           "noExpiration": "Never expires",
-          "usesLeft": "%{count} uses left",
           "used": "已使用 %{count} 次",
           "usedOfLimit": "已使用 %{count} / %{limit}",
           "expiresIn": "Expires in %{time}",
@@ -529,7 +489,6 @@
           "howTo": "将上面的链接分享给您的成员。他们把它粘贴到日历应用中（“订阅日历”或“通过 URL 添加”）。该链接是私有的 — 任何拿到它的人都能看到本舰队的活动。"
         },
         "notifications": {
-          "inAppHeading": "应用内通知",
           "inAppHint": "选择哪些活动状态变更会以应用内通知的形式推送给舰队成员。",
           "events": {
             "fleet_event": {
@@ -721,7 +680,6 @@
         "cargo": "货物",
         "combat": "战斗",
         "hardpoints": "挂载点",
-        "missileOptions": "导弹选项（如果可用）",
         "topView": "Top View"
       },
       "flight": {
@@ -1282,12 +1240,8 @@
       },
       "blank": {
         "propulsion": "没有推进系统",
-        "ordnance": "没有武器弹药",
         "modular": "没有模块",
-        "avionics": "没有航电系统",
-        "fleetInvites": "没有邀请",
-        "shopCommodities": "没有可用的商品",
-        "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
+        "fleetInvites": "没有邀请"
       },
       "user": {
         "rsiHandle": "用户名",
@@ -1334,7 +1288,6 @@
         "nameVisible": "公开可见",
         "saleNotify": "我希望收到销售通知",
         "hangarGroups": "群组",
-        "selectGroup": "选择群组",
         "modelPaintSelect": {
           "nullablePrompt": "选择涂装",
           "label": "涂装"
@@ -1379,7 +1332,6 @@
       "email": "电子邮件",
       "avatar": "头像",
       "alreadyRegistered": "已有账户?",
-      "currentPassword": "当前密码",
       "password": "密码",
       "passwordConfirmation": "确认密码",
       "rememberMe": "记住我",
@@ -1407,25 +1359,16 @@
         "shops": {
           "name": "名称",
           "type": "类型",
-          "celestialObject": "天体",
           "model": "飞船",
           "equipment": "装备",
           "component": "组件",
           "commodity": "商品",
-          "commodityType": "商品类型",
-          "starsystem": "星系",
-          "station": "空间站"
+          "commodityType": "商品类型"
         },
         "shopCommodities": {
           "commodityType": "商品类型",
-          "station": "空间站",
-          "shopId": "商店",
           "equipment": "装备",
           "component": "组件",
-          "componentItemTypeFilter": "Component Item Types",
-          "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "装备类型",
-          "equipmentSlotFilter": "Equipment Slot",
           "commodity": "商品",
           "model": "飞船",
           "name": "名称"
@@ -1434,20 +1377,13 @@
           "category": "分类",
           "subCategory": "子分类",
           "name": "名称",
-          "manufacturer": "制造商",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
+          "manufacturer": "制造商"
         },
         "stations": {
           "name": "名称",
-          "celestialObject": "天体",
-          "starsystem": "星系",
           "type": "空间站类型",
           "shops": "商店",
-          "docks": "停靠口",
-          "habs": "居住区?",
-          "cargoHub": "货运中心?",
-          "refinery": "精炼站?"
+          "docks": "停靠口"
         },
         "vehicles": {
           "name": "Name or Ship name",
@@ -1468,21 +1404,13 @@
         "tradeRoutes": {
           "sortBy": "Sort by",
           "sortByValues": {
-            "percent": "Max. Percent",
-            "profit": "Max. Profit"
+            "percent": "Max. Percent"
           },
-          "cargoShip": "With Cargoship?",
           "origin": "From?",
-          "destination": "To?",
-          "excludeCommodityType": "Exclude Commodity Type",
-          "originCelestialObject": "Origin Celestial Object",
-          "destinationCelestialObject": "Destination Celestial Object",
-          "originStarsystem": "Origin Starsystem",
-          "destinationStarsystem": "Destination Starsystem"
+          "destination": "To?"
         },
         "models": {
           "name": "名称",
-          "shipRole": "飞船角色",
           "classification": "分类",
           "focus": "定位",
           "manufacturer": "制造商",
@@ -1535,7 +1463,6 @@
           "search": "搜索"
         },
         "images": {
-          "station": "空间站",
           "model": "飞船"
         },
         "users": {
@@ -1599,25 +1526,15 @@
         "docks": "停靠口",
         "location": "位置",
         "type": "类型",
-        "habitation": "居住区",
-        "habs": "居住舱",
         "shops": "商店",
         "locationPrefix": {
           "default": "on",
-          "asteriod": "on asteroid near",
           "orbit": "in orbit around"
-        },
-        "locationSuffix": "near %{location}"
+        }
       },
       "tradeRoutes": {
         "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}",
-        "cargoShip": "for %{cargo} SCU",
-        "sortByPercent": "Sort by Percent",
-        "sortByProfit": "Sort by Profit",
-        "sortByStation": "Sort by Station",
-        "showAveragePrices": "Display average Prices",
-        "showLatestPrices": "Display latest Prices"
+        "sell": "Sell for: %{uec}"
       },
       "hardpoints": {
         "prefix": "使用以下工具试用配置",
@@ -1640,15 +1557,10 @@
         "selected": "%{count} 已选择"
       },
       "commodityPrice": {
-        "shopId": "商店",
-        "station": "空间站",
-        "commodityItemType": "商品类型",
-        "commodityItemId": "商品物品",
         "item": "ShopCommodity",
         "price": "价格",
         "type": "类型",
-        "shop": "商店",
-        "submittedBy": "提交者"
+        "shop": "商店"
       },
       "syncExtension": {
         "warnings": "警告",
@@ -1680,7 +1592,6 @@
           "all": "所有质押物品",
           "ships": "飞船",
           "components": "模块",
-          "skins": "涂装",
           "upgrades": "升级"
         },
         "importedItems": {
@@ -1704,7 +1615,6 @@
         "packed": "已装载",
         "totalCargo": "总货物",
         "didNotFit": "放不下",
-        "openInTool": "在货物网格工具中打开",
         "enoughShips": "四艘飞船已填满网格。",
         "addShip": "添加飞船",
         "removeShip": "Remove",
@@ -1846,13 +1756,7 @@
       "logistics": {
         "inventoryCount": "inventories",
         "pending": "pending",
-        "inProgress": "in progress",
-        "drafts": "drafts",
-        "noInventories": "No inventories yet.",
-        "noRequests": "No requests found.",
-        "noItems": "No entries in this inventory.",
         "entriesCount": "entries",
-        "comments": "comments",
         "managedBy": "Managed by",
         "itemName": "Name",
         "category": "Category",
@@ -1867,41 +1771,24 @@
         "notes": "Notes",
         "status": "Status",
         "requested": "Requested",
-        "fulfilled": "Fulfilled",
-        "itemFulfilled": "Fulfilled",
-        "itemPending": "Pending",
-        "requestTitle": "Title",
         "description": "Description",
-        "requestType": "Type",
         "priority": "Priority",
         "requestedBy": "Requested by",
-        "approvedBy": "Approved by",
-        "fulfilledBy": "Fulfilled by",
-        "addComment": "Write a comment...",
         "states": {
           "draft": "Draft",
           "submitted": "Submitted",
-          "approved": "Approved",
-          "in_progress": "In Progress",
-          "fulfilled": "Fulfilled",
           "rejected": "Rejected",
           "cancelled": "Cancelled"
         },
         "requestTypes": {
-          "supply": "Supply",
-          "outfitting": "Outfitting",
           "general": "General"
         },
         "priorities": {
-          "routine": "Routine",
           "standard": "Standard",
-          "urgent": "Urgent",
           "critical": "Critical"
         },
-        "searchInventories": "Search inventories...",
         "searchItems": "Search items...",
         "quality": "Quality (0-1000)",
-        "qualityShort": "Quality",
         "qualityMin": "Quality >=",
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
@@ -2082,7 +1969,6 @@
           "minCrewOverrideLabel": "最少船员覆盖值",
           "minCrewOverrideHint": "留空则使用该飞船的默认最少船员数。",
           "minCargo": "最小货舱（SCU）",
-          "shipFilters": "飞船筛选",
           "createdBy": "创建者",
           "seats": "座位",
           "category": "分类",
@@ -2111,7 +1997,6 @@
           "meetupLocation": "集合地点",
           "visibility": "可见性",
           "maxAttendees": "最多参与人数",
-          "maxAttendeesValue": "最多 %{count} 人参与",
           "autoLockEnabled": "自动锁定报名",
           "autoLockMinutesBefore": "开始前多少分钟锁定",
           "recurring": "重复",
@@ -2144,17 +2029,12 @@
           "skipOccurrenceSuccess": "场次已跳过。",
           "endSeriesSuccess": "系列已从该日期起结束。",
           "cancelledReason": "取消原因",
-          "noEvents": "暂无活动。",
-          "noUpcoming": "没有即将到来的活动。",
-          "noPast": "没有过往活动。",
           "createdBy": "创建者",
           "signups": "报名",
           "signupsCount": "%{count} 人报名",
-          "signupYou": "您",
           "youAreHere": "您在这里",
           "attendance": "出席",
           "signupsLockedHint": "此活动的报名已锁定。",
-          "noOverview": "暂无描述或简报。",
           "alreadySignedUpHint": "您已报名了另一个席位。请先取消报名再切换。",
           "slotTakenHint": "此席位已被占用。",
           "currentSlot": "当前席位",
@@ -2164,7 +2044,6 @@
           "signupCtaHint": "报名参加此活动 — 您可以现在就选择具体席位，或稍后由管理员为您分配。",
           "noSlotYet": "尚无席位",
           "signupApproval": "报名审批",
-          "signupApprovalInherit": "沿用活动设置",
           "signupStatuses": {
             "confirmed": "已确认",
             "tentative": "待定",
@@ -2188,7 +2067,6 @@
             "moderator": "协管员"
           },
           "memberPicker": "成员",
-          "spawnedFromMission": "由任务生成",
           "spawnedEvents": "已生成的活动",
           "fromMission": "来自任务",
           "pickTemplate": "选择模板",
@@ -2197,7 +2075,6 @@
           "noTemplateHint": "从零开始创建活动。",
           "changeTemplate": "更换模板",
           "clearTemplate": "清除模板",
-          "freeSlot": "空缺席位",
           "myVehicle": "我的载具",
           "selectVehicle": "选择载具（可选）",
           "vehicleMismatchHint": "所选载具不符合此席位的要求。",
@@ -2212,9 +2089,6 @@
           "archivedTab": "已归档",
           "listTab": "列表",
           "calendarTab": "日历",
-          "openInCalendar": "订阅 (.ics)",
-          "openInCalendarHint": "将此 URL 添加到您的日历应用，以保持活动同步。",
-          "rotateFeedToken": "更换订阅源链接",
           "subscribeHint": "将日历订阅源 URL 复制到剪贴板，以便粘贴到您的日历应用中。",
           "visibilities": {
             "members": "成员",

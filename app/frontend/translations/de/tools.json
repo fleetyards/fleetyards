@@ -22,11 +22,8 @@
         "trading": "Handel & Wirtschaft",
         "loadouts": "Schiffsausrüstung & Kampf",
         "mining": "Bergbau",
-        "guides": "Informationen & Anleitungen",
         "missions": "Missionen & Datenbank",
-        "roadmap": "Roadmap & Verfolgung",
-        "fleet": "Flottenverwaltung",
-        "marketplace": "Marktplatz"
+        "fleet": "Flottenverwaltung"
       },
       "discontinued": "Dieses Projekt wurde eingestellt.",
       "discontinuedHeading": "Eingestellte Projekte"

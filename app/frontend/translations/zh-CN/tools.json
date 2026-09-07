@@ -22,11 +22,8 @@
         "trading": "贸易与经济",
         "loadouts": "飞船装载与战斗",
         "mining": "采矿",
-        "guides": "信息与指南",
         "missions": "任务与数据库",
-        "roadmap": "路线图与追踪",
-        "fleet": "舰队管理",
-        "marketplace": "市场"
+        "fleet": "舰队管理"
       },
       "discontinued": "该项目已停止维护。",
       "discontinuedHeading": "已停止的项目"

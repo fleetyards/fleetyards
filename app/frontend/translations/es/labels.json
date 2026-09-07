@@ -30,7 +30,6 @@
       "anonymous": "Anónimo",
       "refreshing": "Actualizando...",
       "toggleNavigation": "Alternar navegación",
-      "enableYoutube": "Haz clic para habilitar videos de YouTube o clic derecho para copiar URL del video",
       "openInNewWindow": "Abrir en pantalla completa",
       "or": "o",
       "deselect": "Haz clic para deseleccionar",
@@ -42,8 +41,6 @@
         "stateOff": "Deshabilitado",
         "stateConditional": "Condicional",
         "selfService": "Autoservicio",
-        "selfServiceEnabled": "Los usuarios pueden activar/desactivar esta función",
-        "selfServiceDisabled": "Los usuarios no pueden activar/desactivar esta función",
         "actors": "Actores",
         "groups": "Grupos",
         "noGroups": "No hay grupos habilitados para esta función.",
@@ -56,7 +53,6 @@
         "currentState": "Estado actual",
         "toggle": "Alternar",
         "settingsIntro": "Habilite o deshabilite funciones experimentales para su cuenta. Estas funciones pueden estar incompletas o cambiar sin previo aviso.",
-        "noFeaturesAvailable": "Actualmente no hay funciones de autoservicio disponibles.",
         "descriptions": {
           "tools_travel_times": "Mostrar tiempos de viaje estimados entre ubicaciones.",
           "tools_cargo_grids": "Mostrar visor interactivo de grilla de carga para naves.",
@@ -130,7 +126,6 @@
       },
       "fleetInviteToken": "Invitación de flota",
       "scDataVersion": "Versión del parche",
-      "lastReload": "Última recarga",
       "createdAt": "Creado el",
       "updatedAt": "Actualizado el",
       "addToHangar": "Agregar al hangar",
@@ -138,34 +133,19 @@
         "search": "Buscar naves..."
       },
       "shop": {
-        "rentalPrice": "alquiler",
         "sellPrice": "vende por",
         "buyPrice": "compra por"
       },
       "shopCommodity": {
         "item": "Artículo",
         "shop": "Tienda",
-        "sellPrices": "Precios de venta",
         "buyPrices": "Precios de compra",
         "rentalPrices": "Precios de alquiler",
         "confirmed": "¿Confirmado?",
-        "submittedBy": "Enviado por",
         "prices": {
           "label": "Precios",
-          "rentalPrice": "alquiler",
-          "averageRentalPrice": "alquiler (Ø)",
           "sellPrice": "vende por",
-          "averageSellPrice": "vende por (Ø)",
-          "buyPrice": "compra por",
-          "averageBuyPrice": "compra por (Ø)",
-          "rentalPrice1Day": "1 día por",
-          "averageRentalPrice1Day": "1 día por (Ø)",
-          "rentalPrice3Days": "3 días por",
-          "averageRentalPrice3Days": "3 días por (Ø)",
-          "rentalPrice7Days": "7 días por",
-          "averageRentalPrice7Days": "7 días por (Ø)",
-          "rentalPrice30Days": "30 días por",
-          "averageRentalPrice30Days": "30 días por (Ø)"
+          "buyPrice": "compra por"
         }
       },
       "stats": {
@@ -204,14 +184,8 @@
         }
       },
       "roadmap": {
-        "selectWeek": "Seleccionar semana",
-        "shipRoadmap": "Roadmap de naves",
         "releases": "Lanzamientos",
-        "unscheduled": "Sin programar",
-        "lastUpdate": "Última actualización",
         "released": "Lanzado",
-        "recentlyUpdated": "Actualizado recientemente",
-        "committed": "Comprometido",
         "lastVersion": {
           "active": {
             "false": "Elemento eliminado de la hoja de ruta",
@@ -219,10 +193,8 @@
             "decreased": "Item was removed from the Roadmap",
             "increased": "Item was readded to the Roadmap"
           },
-          "committed": "Item was marked as committed",
           "released": "Item was released to PU",
-          "release": "Item moved from release %{old} to %{new}",
-          "addedToRelease": "Item new in release %{release}"
+          "release": "Item moved from release %{old} to %{new}"
         },
         "stories": {
           "one": "%{count} Story",
@@ -237,14 +209,10 @@
           "other": "%{count} Ships"
         }
       },
-      "rsiRoadmap": "RSI Roadmap",
       "unknown": "Desconocido",
       "none": "-",
       "notAvailable": "N/A",
-      "unknownModel": "%{slug} Unknown",
       "not-available": "N/A",
-      "receiveSaleNotifications": "",
-      "publicUrl": "URL pública",
       "name": "Nombre",
       "homepage": "Página principal",
       "discord": "Servidor de Discord",
@@ -316,13 +284,11 @@
           "nullablePrompt": "Agregar una nave"
         },
         "enough": "Don't you think 8 Ships are enough? ;)",
-        "toggleSection": "Alternar %{section}",
         "shipCount": {
           "one": "%{count} nave",
           "other": "%{count} naves"
         },
         "containersOfSize": "Contenedores de %{size} SCU",
-        "shieldGenerators": "Generadores de escudo",
         "armorHp": "HP de blindaje",
         "fuelAndQuantum": "Combustible y Quantum",
         "weaponPoolSize": "Reserva de energía de armas",
@@ -356,8 +322,6 @@
         },
         "selectShips": "Seleccionar naves"
       },
-      "cargoRoutes": "Rutas de carga",
-      "uecPerUnit": "aUEC / Unit",
       "au": "AU",
       "uec": "aUEC",
       "sell": "Vender",
@@ -403,7 +367,6 @@
         "awaitingConfirmation": "Esperando confirmación de la flota",
         "members": {
           "primary": "¿Flota principal?",
-          "hideShips": "¿Ocultar sus naves para esta flota?",
           "shipsFilter": {
             "label": "¿Qué naves deben agregarse a la flota?",
             "nullablePrompt": "No se seleccionó ninguna opción",
@@ -427,7 +390,6 @@
           "declined": "Rechazado",
           "pending": "Invitaciones y solicitudes pendientes",
           "accepted": "Miembros",
-          "declinedMembers": "Rechazado",
           "role": "Rol",
           "roles": {
             "admin": "Admin",
@@ -498,9 +460,7 @@
           "rank": "Rango"
         },
         "inviteUrls": {
-          "noLimit": "No limit",
           "noExpiration": "Never expires",
-          "usesLeft": "%{count} uses left",
           "used": "Usado %{count} veces",
           "usedOfLimit": "%{count} de %{limit} usados",
           "expiresIn": "Expires in %{time}",
@@ -529,7 +489,6 @@
           "howTo": "Comparte el enlace de arriba con tus miembros. Ellos lo pegan en su aplicación de calendario (\"Suscribirse al calendario\" o \"Añadir por URL\"). El enlace es privado: cualquiera que lo tenga puede ver los eventos de esta flota."
         },
         "notifications": {
-          "inAppHeading": "Notificaciones en la app",
           "inAppHint": "Elige qué cambios del ciclo de vida de los eventos aparecen como notificaciones en la app para los miembros de la flota.",
           "events": {
             "fleet_event": {
@@ -721,7 +680,6 @@
         "cargo": "Carga",
         "combat": "Combate",
         "hardpoints": "Puntos de montaje",
-        "missileOptions": "Opciones de misiles (si disponibles)",
         "topView": "Top View"
       },
       "flight": {
@@ -1282,12 +1240,8 @@
       },
       "blank": {
         "propulsion": "Sin propulsión presente",
-        "ordnance": "Sin armamento presente",
         "modular": "Sin módulo presente",
-        "avionics": "Sin aviónica presente",
-        "fleetInvites": "Sin invitaciones presentes",
-        "shopCommodities": "No hay mercancías disponibles",
-        "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
+        "fleetInvites": "Sin invitaciones presentes"
       },
       "user": {
         "rsiHandle": "Handle",
@@ -1334,7 +1288,6 @@
         "nameVisible": "Visible públicamente",
         "saleNotify": "Deseo recibir notificaciones de ventas",
         "hangarGroups": "Grupos",
-        "selectGroup": "Seleccionar un grupo",
         "modelPaintSelect": {
           "nullablePrompt": "Seleccionar una pintura",
           "label": "Pintura"
@@ -1379,7 +1332,6 @@
       "email": "Correo electrónico",
       "avatar": "Avatar",
       "alreadyRegistered": "¿Ya tiene una cuenta?",
-      "currentPassword": "Contraseña actual",
       "password": "Contraseña",
       "passwordConfirmation": "Confirmación de contraseña",
       "rememberMe": "Recordarme",
@@ -1407,25 +1359,16 @@
         "shops": {
           "name": "Nombre",
           "type": "Tipo",
-          "celestialObject": "Objeto celeste",
           "model": "Nave",
           "equipment": "Equipamiento",
           "component": "Componente",
           "commodity": "Mercancía",
-          "commodityType": "Tipo de mercancía",
-          "starsystem": "Sistema estelar",
-          "station": "Estación"
+          "commodityType": "Tipo de mercancía"
         },
         "shopCommodities": {
           "commodityType": "Tipo de mercancía",
-          "station": "Estación",
-          "shopId": "Tienda",
           "equipment": "Equipamiento",
           "component": "Componente",
-          "componentItemTypeFilter": "Component Item Types",
-          "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "Tipo de equipamiento",
-          "equipmentSlotFilter": "Equipment Slot",
           "commodity": "Mercancía",
           "model": "Nave",
           "name": "Nombre"
@@ -1434,20 +1377,13 @@
           "category": "Categoría",
           "subCategory": "Subcategoría",
           "name": "Nombre",
-          "manufacturer": "Fabricante",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
+          "manufacturer": "Fabricante"
         },
         "stations": {
           "name": "Nombre",
-          "celestialObject": "Objeto celeste",
-          "starsystem": "Sistema estelar",
           "type": "Tipo de estación",
           "shops": "Tiendas",
-          "docks": "Muelles",
-          "habs": "¿Habitación?",
-          "cargoHub": "¿Centro de carga?",
-          "refinery": "¿Estación de refinería?"
+          "docks": "Muelles"
         },
         "vehicles": {
           "name": "Name or Ship name",
@@ -1468,21 +1404,13 @@
         "tradeRoutes": {
           "sortBy": "Sort by",
           "sortByValues": {
-            "percent": "Max. Percent",
-            "profit": "Max. Profit"
+            "percent": "Max. Percent"
           },
-          "cargoShip": "With Cargoship?",
           "origin": "From?",
-          "destination": "To?",
-          "excludeCommodityType": "Exclude Commodity Type",
-          "originCelestialObject": "Origin Celestial Object",
-          "destinationCelestialObject": "Destination Celestial Object",
-          "originStarsystem": "Origin Starsystem",
-          "destinationStarsystem": "Destination Starsystem"
+          "destination": "To?"
         },
         "models": {
           "name": "Nombre",
-          "shipRole": "Rol de nave",
           "classification": "Clasificación",
           "focus": "Enfoque",
           "manufacturer": "Fabricante",
@@ -1535,7 +1463,6 @@
           "search": "Buscar"
         },
         "images": {
-          "station": "Estación",
           "model": "Nave"
         },
         "users": {
@@ -1599,25 +1526,15 @@
         "docks": "Muelles",
         "location": "Ubicación",
         "type": "Tipo",
-        "habitation": "Habitación",
-        "habs": "Habitaciones",
         "shops": "Tiendas",
         "locationPrefix": {
           "default": "on",
-          "asteriod": "on asteroid near",
           "orbit": "in orbit around"
-        },
-        "locationSuffix": "near %{location}"
+        }
       },
       "tradeRoutes": {
         "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}",
-        "cargoShip": "for %{cargo} SCU",
-        "sortByPercent": "Sort by Percent",
-        "sortByProfit": "Sort by Profit",
-        "sortByStation": "Sort by Station",
-        "showAveragePrices": "Display average Prices",
-        "showLatestPrices": "Display latest Prices"
+        "sell": "Sell for: %{uec}"
       },
       "hardpoints": {
         "prefix": "Probar configuraciones con",
@@ -1640,15 +1557,10 @@
         "selected": "%{count} seleccionados"
       },
       "commodityPrice": {
-        "shopId": "Tienda",
-        "station": "Estación",
-        "commodityItemType": "Tipo de mercancía",
-        "commodityItemId": "Artículo de mercancía",
         "item": "ShopCommodity",
         "price": "Precio",
         "type": "Tipo",
-        "shop": "Tienda",
-        "submittedBy": "Enviado por"
+        "shop": "Tienda"
       },
       "syncExtension": {
         "warnings": "Avisos",
@@ -1680,7 +1592,6 @@
           "all": "Todos los objetos de Pledge",
           "ships": "Naves",
           "components": "Módulos",
-          "skins": "Pinturas",
           "upgrades": "Mejoras"
         },
         "importedItems": {
@@ -1708,7 +1619,6 @@
         "packed": "Empaquetado",
         "totalCargo": "Carga total",
         "didNotFit": "No cabe",
-        "openInTool": "Abrir en la herramienta de grilla de carga",
         "enoughShips": "Cuatro naves llenan la grilla.",
         "addShip": "Añadir nave",
         "removeShip": "Remove",
@@ -1850,13 +1760,7 @@
       "logistics": {
         "inventoryCount": "inventories",
         "pending": "pending",
-        "inProgress": "in progress",
-        "drafts": "drafts",
-        "noInventories": "No inventories yet.",
-        "noRequests": "No requests found.",
-        "noItems": "No entries in this inventory.",
         "entriesCount": "entries",
-        "comments": "comments",
         "managedBy": "Managed by",
         "itemName": "Name",
         "category": "Category",
@@ -1871,41 +1775,24 @@
         "notes": "Notes",
         "status": "Status",
         "requested": "Requested",
-        "fulfilled": "Fulfilled",
-        "itemFulfilled": "Fulfilled",
-        "itemPending": "Pending",
-        "requestTitle": "Title",
         "description": "Description",
-        "requestType": "Type",
         "priority": "Priority",
         "requestedBy": "Requested by",
-        "approvedBy": "Approved by",
-        "fulfilledBy": "Fulfilled by",
-        "addComment": "Write a comment...",
         "states": {
           "draft": "Draft",
           "submitted": "Submitted",
-          "approved": "Approved",
-          "in_progress": "In Progress",
-          "fulfilled": "Fulfilled",
           "rejected": "Rejected",
           "cancelled": "Cancelled"
         },
         "requestTypes": {
-          "supply": "Supply",
-          "outfitting": "Outfitting",
           "general": "General"
         },
         "priorities": {
-          "routine": "Routine",
           "standard": "Standard",
-          "urgent": "Urgent",
           "critical": "Critical"
         },
-        "searchInventories": "Search inventories...",
         "searchItems": "Search items...",
         "quality": "Quality (0-1000)",
-        "qualityShort": "Quality",
         "qualityMin": "Quality >=",
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
@@ -2086,7 +1973,6 @@
           "minCrewOverrideLabel": "Anulación de tripulación mín.",
           "minCrewOverrideHint": "Déjalo vacío para usar la tripulación mínima por defecto de la nave.",
           "minCargo": "Carga mín. (SCU)",
-          "shipFilters": "Filtros de naves",
           "createdBy": "Creada por",
           "seats": "Asientos",
           "category": "Categoría",
@@ -2115,7 +2001,6 @@
           "meetupLocation": "Punto de encuentro",
           "visibility": "Visibilidad",
           "maxAttendees": "Asistentes máx.",
-          "maxAttendeesValue": "Máx. %{count} asistentes",
           "autoLockEnabled": "Bloquear inscripciones automáticamente",
           "autoLockMinutesBefore": "Minutos antes del inicio para bloquear",
           "recurring": "Se repite",
@@ -2148,17 +2033,12 @@
           "skipOccurrenceSuccess": "Repetición omitida.",
           "endSeriesSuccess": "Serie finalizada a partir de esta fecha.",
           "cancelledReason": "Motivo de la cancelación",
-          "noEvents": "Aún no hay eventos.",
-          "noUpcoming": "No hay eventos próximos.",
-          "noPast": "No hay eventos pasados.",
           "createdBy": "Creado por",
           "signups": "Inscripciones",
           "signupsCount": "%{count} inscripciones",
-          "signupYou": "Tú",
           "youAreHere": "Estás aquí",
           "attendance": "Asistencia",
           "signupsLockedHint": "Las inscripciones están bloqueadas para este evento.",
-          "noOverview": "Aún no hay descripción ni briefing.",
           "alreadySignedUpHint": "Ya estás inscrito en otro slot. Retírate primero para cambiar.",
           "slotTakenHint": "Este slot ya está ocupado.",
           "currentSlot": "Slot actual",
@@ -2168,7 +2048,6 @@
           "signupCtaHint": "Inscríbete en el evento — puedes elegir un slot concreto ahora o dejar que un administrador te asigne uno más tarde.",
           "noSlotYet": "Sin slot todavía",
           "signupApproval": "Aprobación de inscripciones",
-          "signupApprovalInherit": "Heredar del evento",
           "signupStatuses": {
             "confirmed": "Confirmada",
             "tentative": "Tentativa",
@@ -2192,7 +2071,6 @@
             "moderator": "Moderador"
           },
           "memberPicker": "Miembro",
-          "spawnedFromMission": "Generado desde la misión",
           "spawnedEvents": "Eventos generados",
           "fromMission": "De la misión",
           "pickTemplate": "Elegir una plantilla",
@@ -2201,7 +2079,6 @@
           "noTemplateHint": "Crea el evento desde cero.",
           "changeTemplate": "Cambiar plantilla",
           "clearTemplate": "Quitar plantilla",
-          "freeSlot": "Slot libre",
           "myVehicle": "Mi vehículo",
           "selectVehicle": "Seleccionar un vehículo (opcional)",
           "vehicleMismatchHint": "El vehículo seleccionado no cumple los requisitos de este slot.",
@@ -2216,9 +2093,6 @@
           "archivedTab": "Archivados",
           "listTab": "Lista",
           "calendarTab": "Calendario",
-          "openInCalendar": "Suscribirse (.ics)",
-          "openInCalendarHint": "Añade esta URL a tu aplicación de calendario para mantener los eventos sincronizados.",
-          "rotateFeedToken": "Rotar el enlace del feed",
           "subscribeHint": "Copia la URL del feed del calendario a tu portapapeles para que puedas pegarla en tu aplicación de calendario.",
           "visibilities": {
             "members": "Miembros",

@@ -30,7 +30,6 @@
       "anonymous": "匿名",
       "refreshing": "正在重新載入...",
       "toggleNavigation": "切換導航",
-      "enableYoutube": "點擊啟用YouTube嵌入或右鍵複製視頻鏈接",
       "openInNewWindow": "全螢幕開啟",
       "or": "或",
       "deselect": "點擊取消選擇",
@@ -42,8 +41,6 @@
         "stateOff": "已停用",
         "stateConditional": "有條件",
         "selfService": "自助服務",
-        "selfServiceEnabled": "使用者可以切換此功能",
-        "selfServiceDisabled": "使用者無法切換此功能",
         "actors": "角色",
         "groups": "群組",
         "noGroups": "此功能沒有啟用的群組。",
@@ -56,7 +53,6 @@
         "currentState": "目前狀態",
         "toggle": "切換",
         "settingsIntro": "為您的帳戶啟用或停用實驗性功能。這些功能可能不完整或隨時變更。",
-        "noFeaturesAvailable": "目前沒有可用的自助服務功能。",
         "descriptions": {
           "tools_travel_times": "顯示地點之間的預計旅行時間。",
           "tools_cargo_grids": "顯示飛船的互動式貨物網格檢視器。",
@@ -130,7 +126,6 @@
       },
       "fleetInviteToken": "艦隊邀請",
       "scDataVersion": "補丁版本",
-      "lastReload": "最後重載",
       "createdAt": "建立於",
       "updatedAt": "更新於",
       "addToHangar": "新增到機庫",
@@ -138,34 +133,19 @@
         "search": "搜尋飛船..."
       },
       "shop": {
-        "rentalPrice": "租賃",
         "sellPrice": "出售價格",
         "buyPrice": "購買價格"
       },
       "shopCommodity": {
         "item": "項目",
         "shop": "商店",
-        "sellPrices": "出售價格",
         "buyPrices": "購買價格",
         "rentalPrices": "租賃價格",
         "confirmed": "已確認？",
-        "submittedBy": "提交者",
         "prices": {
           "label": "價格",
-          "rentalPrice": "租賃",
-          "averageRentalPrice": "租賃 (Ø)",
           "sellPrice": "出售價格",
-          "averageSellPrice": "出售價格 (Ø)",
-          "buyPrice": "購買價格",
-          "averageBuyPrice": "購買價格 (Ø)",
-          "rentalPrice1Day": "1 天",
-          "averageRentalPrice1Day": "1 天 (Ø)",
-          "rentalPrice3Days": "3 天",
-          "averageRentalPrice3Days": "3 天 (Ø)",
-          "rentalPrice7Days": "7 天",
-          "averageRentalPrice7Days": "7 天 (Ø)",
-          "rentalPrice30Days": "30 天",
-          "averageRentalPrice30Days": "30 天 (Ø)"
+          "buyPrice": "購買價格"
         }
       },
       "stats": {
@@ -204,14 +184,8 @@
         }
       },
       "roadmap": {
-        "selectWeek": "選擇週",
-        "shipRoadmap": "飛船路線圖",
         "releases": "發佈",
-        "unscheduled": "未安排",
-        "lastUpdate": "最後更新",
         "released": "已發佈",
-        "recentlyUpdated": "最近更新",
-        "committed": "已承諾",
         "lastVersion": {
           "active": {
             "false": "條目已從路線圖移除",
@@ -219,10 +193,8 @@
             "decreased": "項目已從路線圖中移除",
             "increased": "項目已重新添加到路線圖"
           },
-          "committed": "項目已標記為承諾",
           "released": "項目已發佈到 PU",
-          "release": "項目從版本 %{old} 移動到 %{new}",
-          "addedToRelease": "項目在版本 %{release} 中新增"
+          "release": "項目從版本 %{old} 移動到 %{new}"
         },
         "stories": {
           "one": "%{count} 個故事",
@@ -237,14 +209,10 @@
           "other": "%{count} 艘飛船"
         }
       },
-      "rsiRoadmap": "RSI 路線圖",
       "unknown": "未知",
       "none": "-",
       "notAvailable": "不可用",
-      "unknownModel": "%{slug} 未知",
       "not-available": "不可用",
-      "receiveSaleNotifications": "",
-      "publicUrl": "公開網址",
       "name": "名稱",
       "homepage": "首頁",
       "discord": "Discord 伺服器",
@@ -316,13 +284,11 @@
           "nullablePrompt": "新增飛船"
         },
         "enough": "Don't you think 8 Ships are enough? ;)",
-        "toggleSection": "切換 %{section}",
         "shipCount": {
           "one": "%{count} 艘飛船",
           "other": "%{count} 艘飛船"
         },
         "containersOfSize": "%{size} SCU 貨櫃",
-        "shieldGenerators": "護盾產生器",
         "armorHp": "裝甲 HP",
         "fuelAndQuantum": "燃料與量子",
         "weaponPoolSize": "武器能量池",
@@ -356,8 +322,6 @@
         },
         "selectShips": "選擇飛船"
       },
-      "cargoRoutes": "貨物路線",
-      "uecPerUnit": "aUEC / Unit",
       "au": "AU",
       "uec": "aUEC",
       "sell": "賣出",
@@ -403,7 +367,6 @@
         "awaitingConfirmation": "等待艦隊確認",
         "members": {
           "primary": "主艦隊?",
-          "hideShips": "為此艦隊隱藏您的飛船?",
           "shipsFilter": {
             "label": "哪些飛船應該新增到艦隊?",
             "nullablePrompt": "未選擇選項",
@@ -427,7 +390,6 @@
           "declined": "已拒絕",
           "pending": "待處理的邀請與請求",
           "accepted": "成員",
-          "declinedMembers": "已拒絕",
           "role": "角色",
           "roles": {
             "admin": "管理員",
@@ -498,9 +460,7 @@
           "rank": "階級"
         },
         "inviteUrls": {
-          "noLimit": "No limit",
           "noExpiration": "Never expires",
-          "usesLeft": "%{count} uses left",
           "used": "已使用 %{count} 次",
           "usedOfLimit": "已使用 %{count} / %{limit}",
           "expiresIn": "Expires in %{time}",
@@ -529,7 +489,6 @@
           "howTo": "把上面的連結分享給你的成員。他們只要把它貼進行事曆應用程式（\"訂閱行事曆\"或\"以網址新增\"）即可。這個連結是私人的 — 任何拿到連結的人都能看到這個艦隊的活動。"
         },
         "notifications": {
-          "inAppHeading": "應用程式內通知",
           "inAppHint": "選擇哪些活動狀態變化要以應用程式內通知的形式顯示給艦隊成員。",
           "events": {
             "fleet_event": {
@@ -721,7 +680,6 @@
         "cargo": "貨物",
         "combat": "戰鬥",
         "hardpoints": "掛載點",
-        "missileOptions": "飛彈選項（如果可用）",
         "topView": "Top View"
       },
       "flight": {
@@ -1282,12 +1240,8 @@
       },
       "blank": {
         "propulsion": "沒有推進系統",
-        "ordnance": "沒有武器彈藥",
         "modular": "沒有模組",
-        "avionics": "沒有航電系統",
-        "fleetInvites": "沒有邀請",
-        "shopCommodities": "沒有可用的商品",
-        "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
+        "fleetInvites": "沒有邀請"
       },
       "user": {
         "rsiHandle": "使用者名",
@@ -1334,7 +1288,6 @@
         "nameVisible": "公開可見",
         "saleNotify": "我希望收到銷售通知",
         "hangarGroups": "群組",
-        "selectGroup": "選擇群組",
         "modelPaintSelect": {
           "nullablePrompt": "選擇塗裝",
           "label": "塗裝"
@@ -1379,7 +1332,6 @@
       "email": "電子郵件",
       "avatar": "頭像",
       "alreadyRegistered": "已有帳戶?",
-      "currentPassword": "目前密碼",
       "password": "密碼",
       "passwordConfirmation": "確認密碼",
       "rememberMe": "記住我",
@@ -1407,25 +1359,16 @@
         "shops": {
           "name": "名稱",
           "type": "類型",
-          "celestialObject": "天體",
           "model": "飛船",
           "equipment": "裝備",
           "component": "組件",
           "commodity": "商品",
-          "commodityType": "商品類型",
-          "starsystem": "星系",
-          "station": "太空站"
+          "commodityType": "商品類型"
         },
         "shopCommodities": {
           "commodityType": "商品類型",
-          "station": "太空站",
-          "shopId": "商店",
           "equipment": "裝備",
           "component": "組件",
-          "componentItemTypeFilter": "Component Item Types",
-          "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "裝備類型",
-          "equipmentSlotFilter": "Equipment Slot",
           "commodity": "商品",
           "model": "飛船",
           "name": "名稱"
@@ -1434,20 +1377,13 @@
           "category": "分類",
           "subCategory": "子分類",
           "name": "名稱",
-          "manufacturer": "製造商",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
+          "manufacturer": "製造商"
         },
         "stations": {
           "name": "名稱",
-          "celestialObject": "天體",
-          "starsystem": "星系",
           "type": "太空站類型",
           "shops": "商店",
-          "docks": "停靠口",
-          "habs": "居住區?",
-          "cargoHub": "貨運中心?",
-          "refinery": "精煉站?"
+          "docks": "停靠口"
         },
         "vehicles": {
           "name": "Name or Ship name",
@@ -1468,21 +1404,13 @@
         "tradeRoutes": {
           "sortBy": "Sort by",
           "sortByValues": {
-            "percent": "Max. Percent",
-            "profit": "Max. Profit"
+            "percent": "Max. Percent"
           },
-          "cargoShip": "With Cargoship?",
           "origin": "From?",
-          "destination": "To?",
-          "excludeCommodityType": "Exclude Commodity Type",
-          "originCelestialObject": "Origin Celestial Object",
-          "destinationCelestialObject": "Destination Celestial Object",
-          "originStarsystem": "Origin Starsystem",
-          "destinationStarsystem": "Destination Starsystem"
+          "destination": "To?"
         },
         "models": {
           "name": "名稱",
-          "shipRole": "飛船角色",
           "classification": "分類",
           "focus": "定位",
           "manufacturer": "製造商",
@@ -1535,7 +1463,6 @@
           "search": "搜尋"
         },
         "images": {
-          "station": "太空站",
           "model": "飛船"
         },
         "users": {
@@ -1599,25 +1526,15 @@
         "docks": "停靠口",
         "location": "位置",
         "type": "類型",
-        "habitation": "居住區",
-        "habs": "居住艙",
         "shops": "商店",
         "locationPrefix": {
           "default": "on",
-          "asteriod": "on asteroid near",
           "orbit": "in orbit around"
-        },
-        "locationSuffix": "near %{location}"
+        }
       },
       "tradeRoutes": {
         "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}",
-        "cargoShip": "for %{cargo} SCU",
-        "sortByPercent": "Sort by Percent",
-        "sortByProfit": "Sort by Profit",
-        "sortByStation": "Sort by Station",
-        "showAveragePrices": "Display average Prices",
-        "showLatestPrices": "Display latest Prices"
+        "sell": "Sell for: %{uec}"
       },
       "hardpoints": {
         "prefix": "使用以下工具試用配置",
@@ -1640,15 +1557,10 @@
         "selected": "%{count} 已選擇"
       },
       "commodityPrice": {
-        "shopId": "商店",
-        "station": "太空站",
-        "commodityItemType": "商品類型",
-        "commodityItemId": "商品物品",
         "item": "ShopCommodity",
         "price": "價格",
         "type": "類型",
-        "shop": "商店",
-        "submittedBy": "提交者"
+        "shop": "商店"
       },
       "syncExtension": {
         "warnings": "警告",
@@ -1680,7 +1592,6 @@
           "all": "所有質押物品",
           "ships": "飛船",
           "components": "模組",
-          "skins": "塗裝",
           "upgrades": "升級"
         },
         "importedItems": {
@@ -1704,7 +1615,6 @@
         "packed": "已裝載",
         "totalCargo": "總貨物",
         "didNotFit": "放不下",
-        "openInTool": "在貨物網格工具中開啟",
         "enoughShips": "四艘飛船已填滿網格。",
         "addShip": "新增飛船",
         "removeShip": "Remove",
@@ -1846,13 +1756,7 @@
       "logistics": {
         "inventoryCount": "inventories",
         "pending": "pending",
-        "inProgress": "in progress",
-        "drafts": "drafts",
-        "noInventories": "No inventories yet.",
-        "noRequests": "No requests found.",
-        "noItems": "No entries in this inventory.",
         "entriesCount": "entries",
-        "comments": "comments",
         "managedBy": "Managed by",
         "itemName": "Name",
         "category": "Category",
@@ -1867,41 +1771,24 @@
         "notes": "Notes",
         "status": "Status",
         "requested": "Requested",
-        "fulfilled": "Fulfilled",
-        "itemFulfilled": "Fulfilled",
-        "itemPending": "Pending",
-        "requestTitle": "Title",
         "description": "Description",
-        "requestType": "Type",
         "priority": "Priority",
         "requestedBy": "Requested by",
-        "approvedBy": "Approved by",
-        "fulfilledBy": "Fulfilled by",
-        "addComment": "Write a comment...",
         "states": {
           "draft": "Draft",
           "submitted": "Submitted",
-          "approved": "Approved",
-          "in_progress": "In Progress",
-          "fulfilled": "Fulfilled",
           "rejected": "Rejected",
           "cancelled": "Cancelled"
         },
         "requestTypes": {
-          "supply": "Supply",
-          "outfitting": "Outfitting",
           "general": "General"
         },
         "priorities": {
-          "routine": "Routine",
           "standard": "Standard",
-          "urgent": "Urgent",
           "critical": "Critical"
         },
-        "searchInventories": "Search inventories...",
         "searchItems": "Search items...",
         "quality": "Quality (0-1000)",
-        "qualityShort": "Quality",
         "qualityMin": "Quality >=",
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
@@ -2082,7 +1969,6 @@
           "minCrewOverrideLabel": "最少船員覆寫",
           "minCrewOverrideHint": "留空即使用飛船預設的最少船員數。",
           "minCargo": "最少貨物（SCU）",
-          "shipFilters": "飛船篩選",
           "createdBy": "建立者",
           "seats": "座位",
           "category": "分類",
@@ -2111,7 +1997,6 @@
           "meetupLocation": "集合地點",
           "visibility": "可見範圍",
           "maxAttendees": "人數上限",
-          "maxAttendeesValue": "最多 %{count} 位參加者",
           "autoLockEnabled": "自動鎖定報名",
           "autoLockMinutesBefore": "開始前幾分鐘鎖定",
           "recurring": "重複",
@@ -2144,17 +2029,12 @@
           "skipOccurrenceSuccess": "已略過這一場。",
           "endSeriesSuccess": "系列已從這個日期起結束。",
           "cancelledReason": "取消原因",
-          "noEvents": "尚無活動。",
-          "noUpcoming": "沒有即將舉行的活動。",
-          "noPast": "沒有過去的活動。",
           "createdBy": "建立者",
           "signups": "報名",
           "signupsCount": "%{count} 筆報名",
-          "signupYou": "你",
           "youAreHere": "你在這裡",
           "attendance": "出席",
           "signupsLockedHint": "這個活動的報名已鎖定。",
-          "noOverview": "尚無描述或簡報。",
           "alreadySignedUpHint": "你已經報名了另一個席位。要更換的話請先取消報名。",
           "slotTakenHint": "這個席位已經有人了。",
           "currentSlot": "目前席位",
@@ -2164,7 +2044,6 @@
           "signupCtaHint": "報名參加這個活動 — 你可以現在挑選特定席位，或稍後讓管理員為你指派。",
           "noSlotYet": "尚未指派席位",
           "signupApproval": "報名審核",
-          "signupApprovalInherit": "沿用活動設定",
           "signupStatuses": {
             "confirmed": "已確認",
             "tentative": "暫定",
@@ -2188,7 +2067,6 @@
             "moderator": "版主"
           },
           "memberPicker": "成員",
-          "spawnedFromMission": "由任務產生",
           "spawnedEvents": "已產生的活動",
           "fromMission": "來自任務",
           "pickTemplate": "挑選範本",
@@ -2197,7 +2075,6 @@
           "noTemplateHint": "從空白開始建立活動。",
           "changeTemplate": "更換範本",
           "clearTemplate": "清除範本",
-          "freeSlot": "空缺席位",
           "myVehicle": "我的載具",
           "selectVehicle": "選擇載具（選填）",
           "vehicleMismatchHint": "所選載具不符合這個席位的需求。",
@@ -2212,9 +2089,6 @@
           "archivedTab": "已封存",
           "listTab": "清單",
           "calendarTab": "行事曆",
-          "openInCalendar": "訂閱（.ics）",
-          "openInCalendarHint": "把這個網址加入你的行事曆應用程式，就能讓活動保持同步。",
-          "rotateFeedToken": "更換訂閱連結",
           "subscribeHint": "把行事曆訂閱網址複製到剪貼簿，方便你貼進行事曆應用程式。",
           "visibilities": {
             "members": "成員",

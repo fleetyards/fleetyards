@@ -8,7 +8,6 @@
       "twoFactorCode": "两步验证码",
       "confirmationCode": "确认码",
       "email": "电子邮件",
-      "currentPassword": "当前密码",
       "password": "密码",
       "passwordConfirmation": "确认密码",
       "homepage": "主页",
@@ -39,16 +38,12 @@
       "signup-status": "已确认还是待定?",
       "features": {
         "username": "Username or User ID",
-        "fleetFid": "Fleet FID or Fleet ID",
         "name": "功能名称"
       },
       "fleetInviteToken": "舰队邀请",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
-        "models-fleetchart": "Avenger, Carrack, Cutlass...",
-        "hangar": "Enterprise, Andromeda...",
-        "hangar-fleetchart": "Enterprise, Andromeda...",
-        "hangar-wishlist": "Avenger, Carrack, Cutlass..."
+        "hangar": "Enterprise, Andromeda..."
       },
       "search": {
         "default": "Search the Verse...",
@@ -57,13 +52,6 @@
       "home": {
         "search": "搜索飞船..."
       },
-      "container-1": "0",
-      "container-2": "0",
-      "container-4": "0",
-      "container-8": "0",
-      "container-16": "0",
-      "container-24": "0",
-      "container-32": "0",
       "image": {
         "caption": "标题"
       },
@@ -238,7 +226,6 @@
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "货船、主力舰、战斗机...",
           "classification": "载具、战斗机、货船...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
           "onSale": "是或否",

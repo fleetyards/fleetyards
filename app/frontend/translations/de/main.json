@@ -1,8 +1,7 @@
 {
   "de": {
     "meta": {
-      "description": "FleetYards.net, Deine Datenbank für alle Information rund um die Schiffe & Stationen von “Star Citizen“.",
-      "keywords": "Star, Citizen, Spaceships, Raumschiffe, Weltraum, Ships, Fighter, Database, Squadron, 42, Star, Citizen, English, Chris, Roberts, Online, Game, Space, Simulation"
+      "description": "FleetYards.net, Deine Datenbank für alle Information rund um die Schiffe & Stationen von “Star Citizen“."
     },
     "model": {
       "focus": "Fokus",
@@ -11,7 +10,6 @@
       "beam": "Breite",
       "cargo": "Fracht",
       "personalInventory": "Schiffsinventar",
-      "netCargo": "Fracht mit Rover/Snub",
       "crew": "Besatzung",
       "speed": "Geschwindigkeit",
       "minCrew": "min. Besatzung",
@@ -37,8 +35,6 @@
       "groundDecceleration": "Abbremsung",
       "scmSpeedAcceleration": "Null zu SCM",
       "scmSpeedDecceleration": "SCM zu Null",
-      "maxSpeedAcceleration": "Null zu Max",
-      "maxSpeedDecceleration": "Max zu Null",
       "compare": {
         "groundMaxSpeed": "Max-Geschwindigkeit am Boden",
         "groundReverseSpeed": "Rückwärts-Geschwindigkeit am Boden",
@@ -56,10 +52,8 @@
       "weapons": "Waffen",
       "equipment": "Ausrüstung",
       "variants": "Varianten",
-      "maxUpgrades": "Upgrades",
       "productionStatus": "Produktionsstatus",
       "propulsion": "Antrieb",
-      "ordnance": "Gegenmaßnahmen",
       "modular": "Modular",
       "soldAt": "Verkauft bei?",
       "rentalAt": "Vermietung bei?",
@@ -71,7 +65,6 @@
       "size": "Größe"
     },
     "availability": {
-      "listedAt": "Gelistet bei",
       "soldAt": "Verkauft bei",
       "boughtAt": "Gekauft von"
     },

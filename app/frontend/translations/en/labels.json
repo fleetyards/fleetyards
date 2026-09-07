@@ -30,7 +30,6 @@
       "anonymous": "Anonymous",
       "refreshing": "Refreshing...",
       "toggleNavigation": "Toggle Navigation",
-      "enableYoutube": "Click to enable Youtube embeds or right click to copy Video URL",
       "openInNewWindow": "Open in fullscreen",
       "or": "or",
       "deselect": "Click to deselect",
@@ -42,8 +41,6 @@
         "stateOff": "Disabled",
         "stateConditional": "Conditional",
         "selfService": "Self-service",
-        "selfServiceEnabled": "Users can toggle this feature",
-        "selfServiceDisabled": "Users cannot toggle this feature",
         "actors": "Actors",
         "groups": "Groups",
         "noGroups": "No groups enabled for this feature.",
@@ -56,7 +53,6 @@
         "currentState": "Current State",
         "toggle": "Toggle",
         "settingsIntro": "Enable or disable experimental features for your account. These features may be incomplete or change without notice.",
-        "noFeaturesAvailable": "No self-service features are currently available.",
         "descriptions": {
           "tools_travel_times": "Show estimated travel times between locations.",
           "tools_cargo_grids": "Show interactive cargo grid viewer for ships.",
@@ -130,7 +126,6 @@
       },
       "fleetInviteToken": "Fleet Invite",
       "scDataVersion": "Patch Version",
-      "lastReload": "Last Reload",
       "createdAt": "Created at",
       "updatedAt": "Updated at",
       "addToHangar": "Add to Hangar",
@@ -138,34 +133,19 @@
         "search": "Search for Ships..."
       },
       "shop": {
-        "rentalPrice": "rental",
         "sellPrice": "sells for",
         "buyPrice": "buys for"
       },
       "shopCommodity": {
         "item": "Item",
         "shop": "Shop",
-        "sellPrices": "Sell Prices",
         "buyPrices": "Buy Prices",
         "rentalPrices": "Rental Prices",
         "confirmed": "Confirmed?",
-        "submittedBy": "Submitted By",
         "prices": {
           "label": "Prices",
-          "rentalPrice": "rental",
-          "averageRentalPrice": "rental (Ø)",
           "sellPrice": "sells for",
-          "averageSellPrice": "sells for (Ø)",
-          "buyPrice": "buys for",
-          "averageBuyPrice": "buys for (Ø)",
-          "rentalPrice1Day": "1 Day for",
-          "averageRentalPrice1Day": "1 Day for (Ø)",
-          "rentalPrice3Days": "3 Days for",
-          "averageRentalPrice3Days": "3 Days for (Ø)",
-          "rentalPrice7Days": "7 Days for",
-          "averageRentalPrice7Days": "7 Days for (Ø)",
-          "rentalPrice30Days": "30 Days for",
-          "averageRentalPrice30Days": "30 Days for (Ø)"
+          "buyPrice": "buys for"
         }
       },
       "stats": {
@@ -204,23 +184,15 @@
         }
       },
       "roadmap": {
-        "selectWeek": "Select Week",
-        "shipRoadmap": "Ship-Roadmap",
         "releases": "Releases",
-        "unscheduled": "Unscheduled",
-        "lastUpdate": "Last Update",
         "released": "Released",
-        "recentlyUpdated": "Recently Updated",
-        "committed": "Committed",
         "lastVersion": {
           "active": {
             "false": "Item was removed from the Roadmap",
             "true": "Item was readded to the Roadmap"
           },
-          "committed": "Item was marked as committed",
           "released": "Item was released to PU",
-          "release": "Item moved from release %{old} to %{new}",
-          "addedToRelease": "Item new in release %{release}"
+          "release": "Item moved from release %{old} to %{new}"
         },
         "stories": {
           "one": "%{count} Story",
@@ -235,14 +207,10 @@
           "other": "%{count} Ships"
         }
       },
-      "rsiRoadmap": "RSI Roadmap",
       "unknown": "Unknown",
       "none": "-",
       "notAvailable": "N/A",
-      "unknownModel": "%{slug} Unknown",
       "not-available": "N/A",
-      "receiveSaleNotifications": "",
-      "publicUrl": "Public URL",
       "name": "Name",
       "homepage": "Homepage",
       "discord": "Discord Server",
@@ -314,13 +282,11 @@
           "nullablePrompt": "Add a Ship"
         },
         "enough": "Don't you think 8 Ships are enough? ;)",
-        "toggleSection": "Toggle %{section}",
         "shipCount": {
           "one": "%{count} Ship",
           "other": "%{count} Ships"
         },
         "containersOfSize": "%{size} SCU Containers",
-        "shieldGenerators": "Shield Generators",
         "armorHp": "Armor HP",
         "fuelAndQuantum": "Fuel & Quantum",
         "weaponPoolSize": "Weapon Power Pool",
@@ -354,8 +320,6 @@
         },
         "selectShips": "Select Ships"
       },
-      "cargoRoutes": "Cargo routes",
-      "uecPerUnit": "aUEC / Unit",
       "au": "AU",
       "uec": "aUEC",
       "sell": "Sell",
@@ -401,7 +365,6 @@
         "awaitingConfirmation": "Awaiting confirmation by Fleet",
         "members": {
           "primary": "Primary Fleet?",
-          "hideShips": "Hide your Ships for this Fleet?",
           "shipsFilter": {
             "label": "Which Ships should be added to the Fleet?",
             "nullablePrompt": "No Option selected",
@@ -425,7 +388,6 @@
           "declined": "Declined",
           "pending": "Pending Invites & Requests",
           "accepted": "Members",
-          "declinedMembers": "Declined",
           "role": "Role",
           "roles": {
             "admin": "Admin",
@@ -496,9 +458,7 @@
           "rank": "Rank"
         },
         "inviteUrls": {
-          "noLimit": "No limit",
           "noExpiration": "Never expires",
-          "usesLeft": "%{count} uses left",
           "used": "Used %{count} times",
           "usedOfLimit": "Used %{count} of %{limit}",
           "expiresIn": "Expires in %{time}",
@@ -527,7 +487,6 @@
           "howTo": "Share the link above with your members. They paste it into their calendar app (\"Subscribe to calendar\" or \"Add by URL\"). The link is private — anyone with it can see this fleet's events."
         },
         "notifications": {
-          "inAppHeading": "In-app Notifications",
           "inAppHint": "Pick which event lifecycle changes show up as in-app notifications for fleet members.",
           "events": {
             "fleet_event": {
@@ -717,8 +676,7 @@
         "speed": "Speed",
         "cargo": "Cargo",
         "combat": "Combat",
-        "hardpoints": "Hardpoints",
-        "missileOptions": "Missle Options (if available)"
+        "hardpoints": "Hardpoints"
       },
       "flight": {
         "title": "Flight",
@@ -1278,12 +1236,8 @@
       },
       "blank": {
         "propulsion": "No Propulsion present",
-        "ordnance": "No Ordnance present",
         "modular": "No Modular present",
-        "avionics": "No Avionics present",
-        "fleetInvites": "No Invites present",
-        "shopCommodities": "No Commodites available",
-        "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
+        "fleetInvites": "No Invites present"
       },
       "user": {
         "rsiHandle": "Handle",
@@ -1330,7 +1284,6 @@
         "nameVisible": "Public Visible",
         "saleNotify": "I want to receive Sale Notifications",
         "hangarGroups": "Groups",
-        "selectGroup": "Select a Group",
         "modelPaintSelect": {
           "nullablePrompt": "Select a Paint",
           "label": "Paint"
@@ -1375,7 +1328,6 @@
       "email": "Email",
       "avatar": "Avatar",
       "alreadyRegistered": "Already have an Account?",
-      "currentPassword": "Current Password",
       "password": "Password",
       "passwordConfirmation": "Password Confirmation",
       "rememberMe": "Remember me",
@@ -1403,25 +1355,16 @@
         "shops": {
           "name": "Name",
           "type": "Type",
-          "celestialObject": "Celestial object",
           "model": "Ship",
           "equipment": "Equipment",
           "component": "Component",
           "commodity": "Commodity",
-          "commodityType": "Commodity Type",
-          "starsystem": "Starsystem",
-          "station": "Station"
+          "commodityType": "Commodity Type"
         },
         "shopCommodities": {
           "commodityType": "Commodity Type",
-          "station": "Station",
-          "shopId": "Shop",
           "equipment": "Equipment",
           "component": "Component",
-          "componentItemTypeFilter": "Component Item Types",
-          "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "Equipment Type",
-          "equipmentSlotFilter": "Equipment Slot",
           "commodity": "Commodity",
           "model": "Ship",
           "name": "Name"
@@ -1430,20 +1373,13 @@
           "category": "Category",
           "subCategory": "Sub Category",
           "name": "Name",
-          "manufacturer": "Manufacturer",
-          "minPrice": "min. Price",
-          "maxPrice": "max. Price"
+          "manufacturer": "Manufacturer"
         },
         "stations": {
           "name": "Name",
-          "celestialObject": "Celestial Object",
-          "starsystem": "Starsystem",
           "type": "Station Type",
           "shops": "Shops",
-          "docks": "Docks",
-          "habs": "Habitation?",
-          "cargoHub": "Cargo Hub?",
-          "refinery": "Refinery Station?"
+          "docks": "Docks"
         },
         "vehicles": {
           "name": "Name or Ship name",
@@ -1464,21 +1400,13 @@
         "tradeRoutes": {
           "sortBy": "Sort by",
           "sortByValues": {
-            "percent": "Max. Percent",
-            "profit": "Max. Profit"
+            "percent": "Max. Percent"
           },
-          "cargoShip": "With Cargoship?",
           "origin": "From?",
-          "destination": "To?",
-          "excludeCommodityType": "Exclude Commodity Type",
-          "originCelestialObject": "Origin Celestial Object",
-          "destinationCelestialObject": "Destination Celestial Object",
-          "originStarsystem": "Origin Starsystem",
-          "destinationStarsystem": "Destination Starsystem"
+          "destination": "To?"
         },
         "models": {
           "name": "Name",
-          "shipRole": "Ship Role",
           "classification": "Classification",
           "focus": "Focus",
           "manufacturer": "Manufacturer",
@@ -1530,7 +1458,6 @@
           "search": "Search"
         },
         "images": {
-          "station": "Station",
           "model": "Ship"
         },
         "users": {
@@ -1594,25 +1521,15 @@
         "docks": "Docks",
         "location": "Location",
         "type": "Type",
-        "habitation": "Habitation",
-        "habs": "Habs",
         "shops": "Shops",
         "locationPrefix": {
           "default": "on",
-          "asteriod": "on asteroid near",
           "orbit": "in orbit around"
-        },
-        "locationSuffix": "near %{location}"
+        }
       },
       "tradeRoutes": {
         "buy": "Buy for: %{uec}",
-        "sell": "Sell for: %{uec}",
-        "cargoShip": "for %{cargo} SCU",
-        "sortByPercent": "Sort by Percent",
-        "sortByProfit": "Sort by Profit",
-        "sortByStation": "Sort by Station",
-        "showAveragePrices": "Display average Prices",
-        "showLatestPrices": "Display latest Prices"
+        "sell": "Sell for: %{uec}"
       },
       "hardpoints": {
         "prefix": "Tryout Loadouts with",
@@ -1635,15 +1552,10 @@
         "selected": "%{count} Selected"
       },
       "commodityPrice": {
-        "shopId": "Shop",
-        "station": "Station",
-        "commodityItemType": "Commodity Type",
-        "commodityItemId": "Commodity Item",
         "item": "ShopCommodity",
         "price": "Price",
         "type": "Type",
-        "shop": "Shop",
-        "submittedBy": "Submitted By"
+        "shop": "Shop"
       },
       "syncExtension": {
         "warnings": "Warnings",
@@ -1675,7 +1587,6 @@
           "all": "All Pledge Items",
           "ships": "Ships",
           "components": "Modules",
-          "skins": "Paints",
           "upgrades": "Upgrades"
         },
         "importedItems": {
@@ -1699,7 +1610,6 @@
         "packed": "Packed",
         "totalCargo": "Total Cargo",
         "didNotFit": "Did not fit",
-        "openInTool": "Open in Cargo Grid Tool",
         "enoughShips": "Four ships fill the grid.",
         "addShip": "Add Ship",
         "removeShip": "Remove",
@@ -1851,13 +1761,7 @@
       "logistics": {
         "inventoryCount": "inventories",
         "pending": "pending",
-        "inProgress": "in progress",
-        "drafts": "drafts",
-        "noInventories": "No inventories yet.",
-        "noRequests": "No requests found.",
-        "noItems": "No entries in this inventory.",
         "entriesCount": "entries",
-        "comments": "comments",
         "managedBy": "Managed by",
         "itemName": "Name",
         "category": "Category",
@@ -1872,41 +1776,24 @@
         "notes": "Notes",
         "status": "Status",
         "requested": "Requested",
-        "fulfilled": "Fulfilled",
-        "itemFulfilled": "Fulfilled",
-        "itemPending": "Pending",
-        "requestTitle": "Title",
         "description": "Description",
-        "requestType": "Type",
         "priority": "Priority",
         "requestedBy": "Requested by",
-        "approvedBy": "Approved by",
-        "fulfilledBy": "Fulfilled by",
-        "addComment": "Write a comment...",
         "states": {
           "draft": "Draft",
           "submitted": "Submitted",
-          "approved": "Approved",
-          "in_progress": "In Progress",
-          "fulfilled": "Fulfilled",
           "rejected": "Rejected",
           "cancelled": "Cancelled"
         },
         "requestTypes": {
-          "supply": "Supply",
-          "outfitting": "Outfitting",
           "general": "General"
         },
         "priorities": {
-          "routine": "Routine",
           "standard": "Standard",
-          "urgent": "Urgent",
           "critical": "Critical"
         },
-        "searchInventories": "Search inventories...",
         "searchItems": "Search items...",
         "quality": "Quality (0-1000)",
-        "qualityShort": "Quality",
         "qualityMin": "Quality >=",
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
@@ -2087,7 +1974,6 @@
           "minCrewOverrideLabel": "Min Crew Override",
           "minCrewOverrideHint": "Leave empty to use the ship's default min crew.",
           "minCargo": "Min Cargo (SCU)",
-          "shipFilters": "Ship Filters",
           "createdBy": "Created by",
           "seats": "Seats",
           "category": "Category",
@@ -2116,7 +2002,6 @@
           "meetupLocation": "Meetup location",
           "visibility": "Visibility",
           "maxAttendees": "Max attendees",
-          "maxAttendeesValue": "Max %{count} attendees",
           "autoLockEnabled": "Auto-lock signups",
           "autoLockMinutesBefore": "Lock minutes before start",
           "recurring": "Repeats",
@@ -2149,17 +2034,12 @@
           "skipOccurrenceSuccess": "Occurrence skipped.",
           "endSeriesSuccess": "Series ended from this date forward.",
           "cancelledReason": "Cancellation reason",
-          "noEvents": "No events yet.",
-          "noUpcoming": "No upcoming events.",
-          "noPast": "No past events.",
           "createdBy": "Created by",
           "signups": "Signups",
           "signupsCount": "%{count} signups",
-          "signupYou": "You",
           "youAreHere": "You're here",
           "attendance": "Attendance",
           "signupsLockedHint": "Sign-ups are locked for this event.",
-          "noOverview": "No description or briefing yet.",
           "alreadySignedUpHint": "You're already signed up to a different slot. Withdraw first to switch.",
           "slotTakenHint": "This slot is already taken.",
           "currentSlot": "Current slot",
@@ -2169,7 +2049,6 @@
           "signupCtaHint": "Sign up to the event — you can pick a specific slot now or let an admin assign you later.",
           "noSlotYet": "No slot yet",
           "signupApproval": "Signup approval",
-          "signupApprovalInherit": "Inherit from event",
           "signupStatuses": {
             "confirmed": "Confirmed",
             "tentative": "Tentative",
@@ -2193,7 +2072,6 @@
             "moderator": "Moderator"
           },
           "memberPicker": "Member",
-          "spawnedFromMission": "Spawned from mission",
           "spawnedEvents": "Spawned events",
           "fromMission": "From mission",
           "pickTemplate": "Pick a template",
@@ -2202,7 +2080,6 @@
           "noTemplateHint": "Build the event from scratch.",
           "changeTemplate": "Change template",
           "clearTemplate": "Clear template",
-          "freeSlot": "Open slot",
           "myVehicle": "My vehicle",
           "selectVehicle": "Select a vehicle (optional)",
           "vehicleMismatchHint": "The selected vehicle doesn't match this slot's requirements.",
@@ -2217,9 +2094,6 @@
           "archivedTab": "Archived",
           "listTab": "List",
           "calendarTab": "Calendar",
-          "openInCalendar": "Subscribe (.ics)",
-          "openInCalendarHint": "Add this URL to your calendar app to keep events in sync.",
-          "rotateFeedToken": "Rotate feed link",
           "subscribeHint": "Copies the calendar feed URL to your clipboard so you can paste it into your calendar app.",
           "visibilities": {
             "members": "Members",

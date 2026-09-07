@@ -22,11 +22,8 @@
         "trading": "Commerce et Économie",
         "loadouts": "Équipement et Combat",
         "mining": "Minage",
-        "guides": "Informations et Guides",
         "missions": "Missions et Base de Données",
-        "roadmap": "Feuille de Route et Suivi",
-        "fleet": "Gestion de Flotte",
-        "marketplace": "Marché"
+        "fleet": "Gestion de Flotte"
       },
       "discontinued": "Ce projet a été abandonné.",
       "discontinuedHeading": "Projets abandonnés"

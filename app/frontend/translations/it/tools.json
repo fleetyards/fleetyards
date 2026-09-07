@@ -22,11 +22,8 @@
         "trading": "Commercio ed Economia",
         "loadouts": "Equipaggiamento e Combattimento",
         "mining": "Estrazione Mineraria",
-        "guides": "Informazioni e Guide",
         "missions": "Missioni e Database",
-        "roadmap": "Roadmap e Tracciamento",
-        "fleet": "Gestione Flotta",
-        "marketplace": "Mercato"
+        "fleet": "Gestione Flotta"
       },
       "discontinued": "Questo progetto è stato dismesso.",
       "discontinuedHeading": "Progetti dismessi"

@@ -67,8 +67,7 @@
         "groupAdded": "Gruppe zur Funktion hinzugefügt.",
         "groupRemoved": "Gruppe von der Funktion entfernt.",
         "created": "Funktion erstellt.",
-        "destroyed": "Funktion entfernt.",
-        "createError": "Funktion konnte nicht erstellt werden."
+        "destroyed": "Funktion entfernt."
       },
       "rsiRequestLogs": {
         "resolved": "Anfrage-Log als gelöst markiert.",
@@ -111,14 +110,12 @@
           "success": "Avatar removed",
           "failure": "Could not remove Avatar"
         },
-        "invalidExtension": "Das von dir bereitgestellte Bild hat ein ungültiges Format. Unterstützte Formate sind: %{extensions}.",
         "success": "Avatar hochgeladen"
       },
       "hangarImport": {
         "success": "Import abgeschlossen",
         "partialSuccess": "Import teilweise abgeschlossen.<br><br>Nicht gefundene Schiffe: <br>%{missing}",
-        "failure": "Import fehlgeschlagen",
-        "invalidExtension": "Der von dir bereitgestellte Import hat ein ungültiges Format. Unterstützte Formate sind: %{extensions}."
+        "failure": "Import fehlgeschlagen"
       },
       "hangarExport": {
         "failure": "Export fehlgeschlagen. Bitte versuche es später erneut."
@@ -150,7 +147,6 @@
       },
       "model": {
         "onSale": "%{model} jetzt im Verkauf!",
-        "syncStarted": "Model-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "importPaintsStarted": "Lackierungs-Import gestartet. Du wirst benachrichtigt, sobald er abgeschlossen ist."
@@ -188,7 +184,6 @@
       "error": {
         "usernameTaken": "Benutzername ist bereits vergeben.",
         "userNotFound": "Benutzer nicht gefunden",
-        "urlInvalid": "URL ist ungültig",
         "emailTaken": "E-Mail-Adresse ist bereits vergeben.",
         "fleetTaken": "Flotte ist bereits vergeben.",
         "colorInvalid": "Color is invalid",
@@ -322,7 +317,6 @@
         "webglNotSupported": "Der 3D-Viewer ist auf diesem Gerät nicht verfügbar."
       },
       "cargoGridViewer": {
-        "noCargoHolds": "Dieses Schiff hat keine Frachträume.",
         "confirmReset": "Möchtest du wirklich alle Schiffe und Container-Einstellungen zurücksetzen?"
       },
       "confirm": {
@@ -585,8 +579,7 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
-            "confirmAll": "Diesen Eintrag und alle zugehörigen Buchungen löschen? Das kann nicht rückgängig gemacht werden."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
           }
         },
         "vehicleInventory": {

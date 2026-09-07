@@ -15,7 +15,6 @@
         "size": "尺寸",
         "beam": "寬度",
         "cargo": "貨物",
-        "netCargo": "含 Rover/Snub 的貨物",
         "crew": "船員",
         "speed": "速度",
         "minCrew": "最少船員",
@@ -34,8 +33,6 @@
         "groundDecceleration": "減速",
         "scmSpeedAcceleration": "零到 SCM",
         "scmSpeedDecceleration": "SCM 到零",
-        "maxSpeedAcceleration": "零到最大",
-        "maxSpeedDecceleration": "最大到零",
         "compare": {
           "groundMaxSpeed": "最大地面速度",
           "groundReverseSpeed": "地面倒退速度",
@@ -53,10 +50,8 @@
         "weapons": "武器",
         "equipment": "裝備",
         "variants": "變體",
-        "maxUpgrades": "升級",
         "productionStatus": "生產狀態",
         "propulsion": "推進",
-        "ordnance": "武器彈藥",
         "modular": "模組化",
         "soldAt": "在哪裡出售?",
         "rentalAt": "在哪裡租賃?",
@@ -72,10 +67,7 @@
         "addons": "模組與升級套件",
         "productionStatuses": {
           "notAvailable": "N/A",
-          "in-production": "生產中",
-          "in-concept": "概念階段",
           "ready": "機庫就緒",
-          "flight-ready": "可飛行",
           "announced": "已公佈"
         }
       }
