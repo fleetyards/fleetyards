@@ -635,10 +635,10 @@ class Model < ApplicationRecord
   # takes to reach SCM speed, which is `scm_speed / main_acceleration`. Every
   # figure those columns expressed still follows from these two and a speed the
   # model already carries, and these say what they hold.
-  def accelerations_from_hardpoints
+  def accelerations_from_hardpoints(source = ::ScData::Source.current)
     thrust = {"Main" => 0.0, "Retro" => 0.0}
 
-    thruster_components.each do |data|
+    thruster_components(source).each do |data|
       next unless thrust.key?(data["thruster_type"])
 
       thrust[data["thruster_type"]] += data["thrust_capacity"].to_f
@@ -664,8 +664,15 @@ class Model < ApplicationRecord
   # `HashWithIndifferentAccess`, which the YAML coder's safe load refuses to read
   # back, and a single one of them would otherwise take down a whole load. Every
   # load rewrites the column, so they heal rather than accumulate.
-  private def thruster_components
-    hardpoints.includes(:component).where(group: :thruster).filter_map do |hardpoint|
+  # Narrowed to the build in force: a thruster port a build dropped keeps its
+  # row now that the loadout is retired rather than destroyed, and it would go
+  # on contributing thrust to the accelerations and fuel consumption derived
+  # from this.
+  # The source is passed rather than read from `ScData::Source`: both callers are
+  # the models loader, and a loader can be pointed at an environment by setting
+  # `sc_environment` without `ScData::Source.with` around it.
+  private def thruster_components(source)
+    hardpoints.in_build(source).includes(:component).where(group: :thruster).filter_map do |hardpoint|
       next if hardpoint.component.blank?
 
       begin
@@ -706,8 +713,8 @@ class Model < ApplicationRecord
   # Returns rather than assigns, so the loader can put it through `update_params`
   # like every other game-file fact and it reaches the build as well as the row.
   # Assigning it here is what kept it out of both.
-  def fuel_consumption_from_hardpoints
-    thrusters = thruster_components
+  def fuel_consumption_from_hardpoints(source = ::ScData::Source.current)
+    thrusters = thruster_components(source)
 
     thrusters.sum do |thruster|
       thruster.dig("fuel_burn_rate_per10_k_newton").to_f

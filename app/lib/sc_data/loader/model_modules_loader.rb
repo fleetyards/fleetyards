@@ -23,7 +23,10 @@ module ScData
         }
 
         update_params = update_metrics(module_data, update_params)
-        update_params = update_cargo_holds(model_module.hardpoints.game_files, update_params)
+        # This build's slots, for the same reason the models loader asks that
+        # way: a slot the build dropped keeps its row and would still be counted
+        # into the module's cargo holds.
+        update_params = update_cargo_holds(model_module.hardpoints.in_build(source), update_params)
 
         apply(model_module, update_params.merge(update_reason: :sc_loader))
       end
