@@ -128,10 +128,15 @@ const hasSubmenu = (route: RouteRecordRaw) => {
   return childRoutes.length > 1;
 };
 
+/*
+ * An external `href` renders an item with no `to` for the router to derive a
+ * key from, so the name is passed explicitly - otherwise every such item shares
+ * a `data-test` of `nav-nav-item`.
+ */
 const menuKey = (route: RouteRecordRaw) => {
   return route.children
     ? `admin-menu-${route.children[0].name as string}`
-    : undefined;
+    : (route.name as string | undefined);
 };
 
 const routeTo = (route: RouteRecordRaw, nav: NavTypes = "main") => {
@@ -153,7 +158,8 @@ const routeTo = (route: RouteRecordRaw, nav: NavTypes = "main") => {
   <NavItem
     v-for="route in filteredRoutes"
     :key="route.name"
-    :to="routeTo(route)"
+    :to="route.meta?.href ? undefined : routeTo(route)"
+    :href="route.meta?.href"
     :label="t(`nav.${route.meta?.title}`)"
     :submenu-active="isSubmenuActive(route)"
     :active="isActive(route)"
@@ -166,6 +172,7 @@ const routeTo = (route: RouteRecordRaw, nav: NavTypes = "main") => {
         :key="child.name"
         :to="child.meta?.href ? undefined : { name: child.name }"
         :href="child.meta?.href"
+        :menu-key="String(child.name)"
         :label="t(`nav.${child.meta?.title}`)"
         :icon="child.meta?.icon"
         :active="isActive(child)"
