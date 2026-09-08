@@ -23,6 +23,8 @@ import {
   useRegistrationsPerMonth as useRegistrationsPerMonthQuery,
 } from "@/services/fyAdminApi";
 import { useSessionStore } from "@/admin/stores/session";
+import { engineUrls } from "@/admin/utils/EngineUrls";
+import { type RouteLocationRaw } from "vue-router";
 
 const { t, lUtc: l, timeDistance } = useI18n();
 
@@ -48,59 +50,70 @@ const { data: dashboard } = useDashboardQuery({
  * A figure the admin has no privilege for is absent rather than zero, which is
  * why a missing key is never treated as an "all clear" worth showing.
  */
-const attentionTiles = computed(() =>
-  [
+type AttentionTile = {
+  key: string;
+  count?: number;
+  icon: string;
+  to?: RouteLocationRaw;
+  href?: string;
+  severity: "warning" | "error";
+};
+
+const attentionTiles = computed(() => {
+  const tiles: AttentionTile[] = [
     {
       key: "unlistedModels",
       count: dashboard.value?.unlistedModelsCount,
       icon: "fa-duotone fa-rocket fa-4x",
       to: { name: "admin-unlisted-models" },
-      severity: "warning" as const,
+      severity: "warning",
     },
     {
       key: "failedImports",
       count: dashboard.value?.failedImportsCount,
       icon: "fa-duotone fa-file-import fa-4x",
       to: { name: "imports" },
-      severity: "error" as const,
+      severity: "error",
     },
     {
       key: "stuckImports",
       count: dashboard.value?.stuckImportsCount,
       icon: "fa-duotone fa-hourglass-half fa-4x",
       to: { name: "imports" },
-      severity: "warning" as const,
+      severity: "warning",
     },
     {
       key: "deadJobs",
       count: dashboard.value?.jobsDeadCount,
       icon: "fa-duotone fa-skull fa-4x",
-      to: { name: "workers" },
-      severity: "error" as const,
+      href: engineUrls.workers,
+      severity: "error",
     },
     {
       key: "retryJobs",
       count: dashboard.value?.jobsRetryCount,
       icon: "fa-duotone fa-arrow-rotate-right fa-4x",
-      to: { name: "workers" },
-      severity: "warning" as const,
+      href: engineUrls.workers,
+      severity: "warning",
     },
     {
       key: "rsiRequestLogs",
       count: dashboard.value?.unresolvedRsiRequestLogsCount,
       icon: "fa-duotone fa-plug-circle-xmark fa-4x",
       to: { name: "rsi-api-status" },
-      severity: "error" as const,
+      severity: "error",
     },
     {
       key: "notifications",
       count: dashboard.value?.actionableNotificationsCount,
       icon: "fa-duotone fa-bell-exclamation fa-4x",
       to: { name: "admin-notifications" },
-      severity: "warning" as const,
+      severity: "warning",
     },
-  ].filter((tile) => (tile.count ?? 0) > 0),
-);
+  ];
+
+  return tiles.filter((tile) => (tile.count ?? 0) > 0);
+});
 
 const percentDelta = (current?: number, before?: number) => {
   if (current === undefined || !before) {
@@ -186,6 +199,7 @@ const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
           :label="t(`labels.admin.dashboard.attention.${tile.key}`)"
           :icon="tile.icon"
           :to="tile.to"
+          :href="tile.href"
           :severity="tile.severity"
         />
       </div>
