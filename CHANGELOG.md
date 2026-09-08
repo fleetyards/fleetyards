@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.13.0](https://github.com/fleetyards/fleetyards/compare/v7.12.0...v7.13.0) (2026-09-08)
+
+
+### Features
+
+* **admin:** bring back the hardpoints tab, over the live table ([#4785](https://github.com/fleetyards/fleetyards/issues/4785)) ([0eae9e7](https://github.com/fleetyards/fleetyards/commit/0eae9e7f3c99069bdf809e708b79cde553be1129))
+* **admin:** give the admin a view of the live hardpoints ([#4782](https://github.com/fleetyards/fleetyards/issues/4782)) ([7feb56b](https://github.com/fleetyards/fleetyards/commit/7feb56b987482a4a66ac58c9657206d2f72bd594))
+* **admin:** show what changed between two sc_data builds ([#4799](https://github.com/fleetyards/fleetyards/issues/4799)) ([8e484d2](https://github.com/fleetyards/fleetyards/commit/8e484d2b1b9ca95ff21da38e910beabccd222318))
+* **sc_data:** compare what two builds say ([#4795](https://github.com/fleetyards/fleetyards/issues/4795)) ([830da28](https://github.com/fleetyards/fleetyards/commit/830da284b3d85696f9801c2b225af4b9df78025e))
+* **sc_data:** give model modules a build of their own ([#4780](https://github.com/fleetyards/fleetyards/issues/4780)) ([8ff866b](https://github.com/fleetyards/fleetyards/commit/8ff866bcb7ad668e3d34d790490d22be2bede6dc))
+* **sc_data:** load every configured source, not only the default ([#4774](https://github.com/fleetyards/fleetyards/issues/4774)) ([92b0783](https://github.com/fleetyards/fleetyards/commit/92b07833b4d444dd6f3f8772497f8e0d1bd14587))
+* **sc_data:** serve a build list and a comparison of two builds ([#4797](https://github.com/fleetyards/fleetyards/issues/4797)) ([0168c5c](https://github.com/fleetyards/fleetyards/commit/0168c5c585a2948b5c413f260afbb192ffa4a483))
+* **teardown:** release a worktree's resources before it is removed ([#4787](https://github.com/fleetyards/fleetyards/issues/4787)) ([d95a00c](https://github.com/fleetyards/fleetyards/commit/d95a00cfe445e738ab71dac69724a45d501c5754))
+
+
+### Bug Fixes
+
+* **admin:** give the build compare panels their padding ([#4800](https://github.com/fleetyards/fleetyards/issues/4800)) ([f717748](https://github.com/fleetyards/fleetyards/commit/f71774889cf962561651502f434ba84d0f7ad975))
+* **admin:** open the mounted engines in a new tab ([#4790](https://github.com/fleetyards/fleetyards/issues/4790)) ([88888e0](https://github.com/fleetyards/fleetyards/commit/88888e04ec72a81b68c2e8b41fb1b61bc0cd6b51))
+* **middleware:** scrub invalid UTF-8 from client headers ([#4781](https://github.com/fleetyards/fleetyards/issues/4781)) ([1d33f3a](https://github.com/fleetyards/fleetyards/commit/1d33f3a75a041f2f1ea428bd4b9386dbd10135d8))
+* **pghero:** serve PgHero's assets from the app, not the CDN ([#4783](https://github.com/fleetyards/fleetyards/issues/4783)) ([0a5f9fb](https://github.com/fleetyards/fleetyards/commit/0a5f9fb9b03a0c6e0e616af4fe49f861ca316c73))
+* **sc_data:** derive a model's facts from this build's slots only ([#4779](https://github.com/fleetyards/fleetyards/issues/4779)) ([27fd580](https://github.com/fleetyards/fleetyards/commit/27fd5806dbd904168e16f2b322f60c12885a339a))
+* **sc_data:** narrow the module hardpoint reads and the in_build source test ([#4778](https://github.com/fleetyards/fleetyards/issues/4778)) ([9c95da9](https://github.com/fleetyards/fleetyards/commit/9c95da944a0c4cc9da3902b73127ff3492217b07))
+* **sc_data:** retry a failed object instead of failing the transfer ([#4775](https://github.com/fleetyards/fleetyards/issues/4775)) ([956dd62](https://github.com/fleetyards/fleetyards/commit/956dd62061a295a7f8bb73ded6d2299a251394af))
+* **sc_data:** survive a build that stopped shipping a module's item file ([#4776](https://github.com/fleetyards/fleetyards/issues/4776)) ([0ec6b30](https://github.com/fleetyards/fleetyards/commit/0ec6b30ae63e4c6333032de0b8cabd790a861028))
+
+
+### Chores
+
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#4770](https://github.com/fleetyards/fleetyards/issues/4770)) ([d35f49b](https://github.com/fleetyards/fleetyards/commit/d35f49b1a6747fc571310ba12389be81c631f762))
+* **deps-dev:** bump orval from 8.27.0 to 8.28.1 ([#4766](https://github.com/fleetyards/fleetyards/issues/4766)) ([6a122cc](https://github.com/fleetyards/fleetyards/commit/6a122cc1a8c29467aa154f80181dcc0c0f4da2f8))
+* **deps-dev:** bump simplecov from 1.1.1 to 1.2.0 ([#4763](https://github.com/fleetyards/fleetyards/issues/4763)) ([466932f](https://github.com/fleetyards/fleetyards/commit/466932ff1cfd814fbe68f24febfbc2ba4b5ec474))
+* **deps-dev:** bump stylelint from 17.14.1 to 17.15.0 ([#4769](https://github.com/fleetyards/fleetyards/issues/4769)) ([51be62f](https://github.com/fleetyards/fleetyards/commit/51be62f12d0417d50fafdc3f5b85e1fca20f83db))
+* **deps-dev:** bump the playwright group across 1 directory with 2 updates ([#4764](https://github.com/fleetyards/fleetyards/issues/4764)) ([6c926d0](https://github.com/fleetyards/fleetyards/commit/6c926d06a4ddf76086a02ea9aece91225a437a89))
+* **deps:** bound the ajv overrides to 6.x and drop the unused eslintrc ([#4789](https://github.com/fleetyards/fleetyards/issues/4789)) ([8e9f488](https://github.com/fleetyards/fleetyards/commit/8e9f488f232c217a509f359d0b5542ea3a3429d2))
+* **deps:** bump bootsnap from 1.25.0 to 1.26.0 ([#4767](https://github.com/fleetyards/fleetyards/issues/4767)) ([49cc6eb](https://github.com/fleetyards/fleetyards/commit/49cc6eb6b73050a299f94d53f1c57ef22c1fe8c4))
+* **deps:** bump git from 5.3.0 to 5.4.1 ([#4765](https://github.com/fleetyards/fleetyards/issues/4765)) ([c74d526](https://github.com/fleetyards/fleetyards/commit/c74d52613f635875016570f54d79ff564054b500))
+* **deps:** bump swagger-ui-dist from 5.32.14 to 5.32.15 ([#4771](https://github.com/fleetyards/fleetyards/issues/4771)) ([52c1a16](https://github.com/fleetyards/fleetyards/commit/52c1a16363aff107d22c4d69a52da2f48eb50978))
+* run the same postgres image everywhere ([#4796](https://github.com/fleetyards/fleetyards/issues/4796)) ([2f98d29](https://github.com/fleetyards/fleetyards/commit/2f98d298edfa61346621b483b50f6313443f0d2a))
+
 ## [7.12.0](https://github.com/fleetyards/fleetyards/compare/v7.11.1...v7.12.0) (2026-09-08)
 
 
