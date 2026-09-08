@@ -28,6 +28,10 @@ module V1
       CATALOGUE = {
         type: :object,
         properties: {
+          # False when one side has no rows for this catalogue at all -- it was
+          # not recorded for that build, rather than everything having appeared.
+          # The lists are empty when it is false.
+          recorded: {type: :boolean},
           counts: {
             type: :object,
             properties: {
@@ -55,7 +59,7 @@ module V1
           }
         },
         additionalProperties: false,
-        required: %w[counts appeared vanished changed]
+        required: %w[recorded counts appeared vanished changed]
       }.freeze
 
       schema({

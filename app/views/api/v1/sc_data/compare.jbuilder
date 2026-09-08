@@ -13,6 +13,12 @@ end
 json.catalogues do
   @comparisons.each do |name, result|
     json.set! name do
+      # False when one side has no rows for this catalogue at all: it was not
+      # recorded for that build, which is a different statement from "everything
+      # appeared". The lists are empty in that case, so a reader that ignores
+      # this still cannot draw the wrong conclusion.
+      json.recorded result.recorded?
+
       json.counts result.counts
 
       json.appeared result.appeared

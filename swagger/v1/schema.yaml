@@ -19739,6 +19739,8 @@ components:
             components:
               type: object
               properties:
+                recorded:
+                  type: boolean
                 counts:
                   type: object
                   properties:
@@ -19785,6 +19787,7 @@ components:
                     - fields
               additionalProperties: false
               required:
+              - recorded
               - counts
               - appeared
               - vanished
@@ -19792,6 +19795,8 @@ components:
             equipment:
               type: object
               properties:
+                recorded:
+                  type: boolean
                 counts:
                   type: object
                   properties:
@@ -19838,6 +19843,7 @@ components:
                     - fields
               additionalProperties: false
               required:
+              - recorded
               - counts
               - appeared
               - vanished
@@ -19845,6 +19851,8 @@ components:
             commodities:
               type: object
               properties:
+                recorded:
+                  type: boolean
                 counts:
                   type: object
                   properties:
@@ -19891,6 +19899,7 @@ components:
                     - fields
               additionalProperties: false
               required:
+              - recorded
               - counts
               - appeared
               - vanished
@@ -19898,6 +19907,8 @@ components:
             models:
               type: object
               properties:
+                recorded:
+                  type: boolean
                 counts:
                   type: object
                   properties:
@@ -19944,6 +19955,7 @@ components:
                     - fields
               additionalProperties: false
               required:
+              - recorded
               - counts
               - appeared
               - vanished
