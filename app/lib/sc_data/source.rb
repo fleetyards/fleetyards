@@ -53,6 +53,26 @@ module ScData
         end
       end
 
+      # Every build any catalogue carries a row for, newest first.
+      #
+      # Built from the rows rather than from the config, and that is the whole
+      # difference from `available`: the config names one version per
+      # environment, while a comparison wants the ones before it too. Live
+      # 4.9.0 is not configured any more and is exactly what a patch diff
+      # compares 4.10.0 against.
+      #
+      # `available` is also the wrong list for another reason -- it hides
+      # everything behind the default, which is precisely what a comparison
+      # needs to see.
+      def recorded
+        BUILDS
+          .flat_map { |klass| klass.distinct.pluck(:environment, :version) }
+          .uniq
+          .map { |environment, version| new(environment:, version:) }
+          .sort_by(&:precedence)
+          .reverse
+      end
+
       # Runs a block with a source in force, and puts back whatever was there.
       # Nested so a job inside a request cannot strand the outer value.
       def with(source)
@@ -104,7 +124,9 @@ module ScData
       (precedence <=> other.precedence) == 1
     end
 
-    protected def precedence
+    # Public because an ordered list of builds needs it -- `recorded` sorts by
+    # it. `ahead_of?` is the comparison this exists for.
+    def precedence
       release, build = version.to_s.split("-", 2)
       id = build.to_s[/\d+\z/].to_i
 
