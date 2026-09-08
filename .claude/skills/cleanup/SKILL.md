@@ -20,6 +20,21 @@ approves.
 Do **not** use it to reclaim space inside a live worktree (`node_modules`, `tmp`, `log`)
 — it only removes whole checkouts and their allocated resources.
 
+For a **single** worktree that is about to go away, `bin/teardown` is the cheaper path:
+it releases that worktree's resources without auditing anything else, needs no
+confirmation, and takes about a second. This skill is what finds what earlier removals
+left behind.
+
+```bash
+bin/teardown                      # the worktree the script lives in
+bin/teardown <path> --dry-run     # any other worktree, reporting only
+```
+
+It refuses to run against the main checkout, and skips a database suffix, Redis band or
+port that a live worktree still claims. Configured in Supacode's repository settings as
+the **delete script** (`./bin/teardown`), it runs on its own whenever a worktree is
+deleted, and none of this accumulates in the first place.
+
 ---
 
 ## What a checkout owns

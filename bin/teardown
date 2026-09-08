@@ -1,0 +1,361 @@
+#!/usr/bin/env ruby
+
+# Releases everything bin/setup allocated to one worktree — its Postgres
+# databases, its Redis band, the processes still holding its ports, and the
+# symlinks into the main checkout's shared downloads — so the checkout can be
+# removed without leaving them behind.
+#
+# Configure it as Supacode's delete script (repository settings -> Scripts) to
+# have it run whenever a worktree is deleted, or invoke it by hand with the path
+# of any worktree. It never removes the checkout itself: whoever runs it does
+# that, which is also why it always exits 0 once it has recognised its target —
+# a Postgres that happens to be down must not block a deletion.
+
+require "open3"
+require "optparse"
+require "uri"
+
+STEPS = %w[processes databases redis links].freeze
+
+OPTIONS = {dry_run: false, only: STEPS}
+
+OptionParser.new do |opts|
+  opts.banner = <<~BANNER
+    Usage: bin/teardown [PATH] [options]
+
+    Releases the resources bin/setup allocated to a worktree. Defaults to the
+    worktree this script lives in.
+
+  BANNER
+  opts.on("--dry-run", "Report what would be released, change nothing") { OPTIONS[:dry_run] = true }
+  opts.on("--only=LIST", "Restrict to #{STEPS.join(",")}") do |value|
+    selected = value.split(",").map(&:strip)
+    unknown = selected - STEPS
+    abort "Unknown step: #{unknown.join(", ")}" if unknown.any?
+    OPTIONS[:only] = selected
+  end
+  opts.on("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+def enabled?(step) = OPTIONS[:only].include?(step)
+
+def sh(*cmd)
+  out, err, status = Open3.capture3(*cmd)
+  [out, err, status.success?]
+end
+
+def capture(*cmd)
+  out, _err, ok = sh(*cmd)
+  ok ? out : ""
+end
+
+# Mirrors bin/setup: a worktree owns one slot, and the slot owns a band of
+# consecutive Redis databases. The main checkout leaves REDIS_DB unset and takes
+# the first band, which is why nothing below REDIS_DB_BASE is ever ours.
+REDIS_DBS_PER_CHECKOUT = 4
+REDIS_DB_BASE = REDIS_DBS_PER_CHECKOUT
+
+# bin/setup symlinks these from the main checkout into every worktree, so one
+# download serves all of them. Only the link is removed here — following it
+# would delete the shared original.
+SHARED_PATHS = %w[storage dumps data/sc_data/raw data/sc_data/parsed].freeze
+
+def sanitize_worktree_name(name) = name.gsub(/[^a-zA-Z0-9]/, "_")[0, 20]
+
+SCRIPT_ROOT = File.expand_path("..", __dir__)
+
+# A worktree's `.git` is a file pointing at the shared git directory; the main
+# checkout's is a directory.
+def worktree_checkout?(path) = File.file?(File.join(path, ".git"))
+
+# The script's own location decides, so a `cd` elsewhere cannot redirect the
+# teardown at the wrong checkout. Supacode's own view of which worktree it is
+# acting on only stands in when the script is reached through the main checkout,
+# where its location says nothing about which worktree is going away.
+def resolve_target
+  explicit = ARGV.first
+  return File.expand_path(explicit) if explicit
+  return SCRIPT_ROOT if worktree_checkout?(SCRIPT_ROOT)
+
+  supacode = ENV["SUPACODE_WORKTREE_PATH"].to_s
+  # Older Supacode versions export only the id, which is the percent-encoded path.
+  supacode = URI.decode_www_form_component(ENV["SUPACODE_WORKTREE_ID"].to_s) if supacode.empty?
+  return supacode if !supacode.empty? && Dir.exist?(supacode)
+
+  SCRIPT_ROOT
+end
+
+requested = resolve_target
+abort "Not a directory: #{requested}" unless Dir.exist?(requested)
+
+TARGET = capture("git", "-C", requested, "rev-parse", "--show-toplevel").strip
+if TARGET.empty?
+  # A directory left behind by an `rm -rf` is no longer a worktree, so nothing
+  # here can tell which resources it held. The audit derives that the other way
+  # round, from the worktrees that still exist.
+  abort "#{requested} is not a git worktree. For a directory a removal left behind, run .claude/skills/cleanup/audit.rb."
+end
+
+# `--path-format=absolute` matters: from the main checkout the plain form
+# answers a relative `.git`, which resolves against the caller's directory.
+GIT_COMMON = capture("git", "-C", TARGET, "rev-parse", "--path-format=absolute", "--git-common-dir").strip
+MAIN_ROOT = File.dirname(GIT_COMMON)
+
+if File.identical?(TARGET, MAIN_ROOT)
+  abort <<~REFUSED
+    Refusing to run against the main checkout (#{MAIN_ROOT}).
+    It owns fleetyards_dev, fleetyards_test and Redis db0-db3 — nothing here is disposable.
+  REFUSED
+end
+
+def env_value(path, key)
+  return nil unless File.file?(path)
+
+  File.read(path)[/^#{Regexp.escape(key)}=(.*)$/, 1]&.strip
+end
+
+def claim(path, main:)
+  local = File.join(path, ".env.local")
+  slot = env_value(local, "WORKTREE_SLOT")&.to_i
+  redis_db = env_value(local, "REDIS_DB")&.to_i
+  redis_db ||= REDIS_DB_BASE + (slot * REDIS_DBS_PER_CHECKOUT) if slot
+
+  {
+    path: path,
+    main: main,
+    setup: File.file?(local),
+    # The main checkout leaves the suffix empty and takes the bare database
+    # names; its band is the first one whether or not it recorded anything.
+    suffix: main ? "" : env_value(local, "WORKTREE_SUFFIX") || env_value(File.join(path, ".env.test.local"), "WORKTREE_SUFFIX"),
+    slot: main ? nil : slot,
+    redis_db: main ? 0 : redis_db,
+    ports: main ? [] : [env_value(local, "PORT"), env_value(local, "VITE_RUBY_PORT")].compact.map(&:to_i)
+  }
+end
+
+def worktree_paths
+  capture("git", "-C", MAIN_ROOT, "worktree", "list", "--porcelain")
+    .lines.filter_map { |line| line.split(" ", 2).last.strip if line.start_with?("worktree ") }
+end
+
+TARGET_CLAIM = claim(TARGET, main: false)
+# A worktree that never ran bin/setup records nothing, so the suffix is derived
+# the same way bin/setup would have. It can only ever name that worktree's own
+# databases — never the main checkout's, whose suffix is empty.
+DERIVED_SUFFIX = TARGET_CLAIM[:suffix].nil?
+TARGET_CLAIM[:suffix] ||= "_wt_#{sanitize_worktree_name(File.basename(TARGET))}"
+
+SIBLINGS = worktree_paths.reject { |path| File.identical?(path, TARGET) }
+  .map { |path| claim(path, main: File.identical?(path, MAIN_ROOT)) }
+
+DB_HOST = ENV["DB_HOST"] || "localhost"
+DB_USER = ENV["DB_USER"] || "root"
+DB_PASSWORD = ENV["DB_PASSWORD"] || "password"
+
+def setting(key, fallback)
+  ENV[key] ||
+    env_value(File.join(TARGET, ".env.local"), key) ||
+    env_value(File.join(MAIN_ROOT, ".env.local"), key) ||
+    env_value(File.join(MAIN_ROOT, ".env"), key) ||
+    fallback
+end
+
+def db_port = setting("DB_PORT", "8271")
+
+def redis_url = setting("REDIS_URL", "redis://localhost:8272")
+
+# The statements go in over stdin rather than through `-c`: psql wraps several
+# `-c` statements in one implicit transaction, and DROP DATABASE refuses to run
+# inside a transaction block.
+def psql(sql)
+  Open3.capture3(
+    {"PGPASSWORD" => DB_PASSWORD},
+    "psql", "-h", DB_HOST, "-p", db_port, "-U", DB_USER, "-d", "postgres",
+    "-X", "-A", "-t", "-F", "\t", "-v", "ON_ERROR_STOP=1", "-f", "-",
+    stdin_data: sql
+  ).then { |out, err, status| [out, err, status.success?] }
+end
+
+def redis_cli(*args)
+  uri = URI(redis_url)
+  capture("redis-cli", "-h", uri.host || "localhost", "-p", (uri.port || 6379).to_s, *args)
+end
+
+def say(line) = puts("  #{line}")
+
+def act(verb, past, subject)
+  if OPTIONS[:dry_run]
+    say "would #{verb} #{subject}"
+    return
+  end
+
+  say(yield ? "#{past} #{subject}" : "FAILED to #{verb} #{subject}")
+end
+
+# --- processes ---------------------------------------------------------------
+
+def listening_pids(port) = capture("lsof", "-ti", ":#{port}", "-sTCP:LISTEN").split.map(&:to_i).uniq
+
+def process_cwd(pid)
+  capture("lsof", "-a", "-d", "cwd", "-p", pid.to_s, "-Fn")
+    .lines.grep(%r{\An/}).first&.strip&.delete_prefix("n")
+end
+
+def process_group(pid) = capture("ps", "-o", "pgid=", "-p", pid.to_s).strip.to_i
+
+def alive?(pid)
+  Process.kill(0, pid)
+  true
+rescue Errno::ESRCH
+  false
+rescue Errno::EPERM
+  true
+end
+
+def signal(target, name)
+  Process.kill(name, target)
+  true
+rescue Errno::ESRCH, Errno::EPERM
+  false
+end
+
+def stop_processes
+  claimed = SIBLINGS.flat_map { |entry| entry[:ports] }
+  own_group = Process.getpgrp
+  doomed = {}
+
+  TARGET_CLAIM[:ports].each do |port|
+    if claimed.include?(port)
+      say "port #{port} is also recorded by another worktree — left alone"
+      next
+    end
+
+    listening_pids(port).each do |pid|
+      cwd = process_cwd(pid)
+      # A server whose worktree was already deleted still reports the path it
+      # was started from, so this recognises the stale ones too.
+      if cwd && !cwd.start_with?(TARGET)
+        say "port #{port}: PID #{pid} runs from #{cwd} — left alone"
+        next
+      end
+
+      group = process_group(pid)
+      # bin/dev's children share one process group, so signalling the group
+      # takes Sidekiq and Vite down with the server holding the port.
+      doomed[pid] = (group.positive? && group != own_group) ? -group : pid
+    end
+  end
+
+  return say("no ports recorded — nothing to stop") if TARGET_CLAIM[:ports].empty?
+  return say("no processes on ports #{TARGET_CLAIM[:ports].join(", ")}") if doomed.empty?
+
+  if OPTIONS[:dry_run]
+    return say("would stop PID(s) #{doomed.keys.join(", ")} holding ports #{TARGET_CLAIM[:ports].join(", ")}")
+  end
+
+  doomed.each_value { |target| signal(target, "TERM") }
+  20.times do
+    break if doomed.keys.none? { |pid| alive?(pid) }
+
+    sleep 0.25
+  end
+
+  survivors = doomed.select { |pid, _| alive?(pid) }
+  survivors.each_value { |target| signal(target, "KILL") }
+  say "stopped PID(s) #{doomed.keys.join(", ")}#{" (#{survivors.length} needed SIGKILL)" unless survivors.empty?}"
+end
+
+# --- databases ---------------------------------------------------------------
+
+def drop_databases
+  suffix = TARGET_CLAIM[:suffix]
+  # The suffix is truncated to 20 characters, so two long worktree names can
+  # produce the same one. Dropping then would take a live worktree's databases.
+  shared_with = SIBLINGS.find { |entry| entry[:suffix] == suffix }
+  if shared_with
+    return say("suffix #{suffix} is also claimed by #{File.basename(shared_with[:path])} — no databases dropped")
+  end
+
+  out, err, ok = psql(<<~SQL)
+    select datname from pg_database
+    where datname like 'fleetyards%' and not datistemplate
+    order by datname
+  SQL
+  return say("Postgres unreachable at #{DB_HOST}:#{db_port} — no databases dropped (#{err.strip.lines.first&.strip})") unless ok
+
+  # Anchored, so `_wt_mjml` never matches `_wt_mjml_mail`. The trailing `_N` is
+  # the per-worker database a parallel test run creates.
+  pattern = /\Afleetyards_(dev|test)#{Regexp.escape(suffix)}(_\d+)?\z/
+  names = out.lines.map(&:strip).select { |name| name.match?(pattern) }
+  return say("no databases matching fleetyards_{dev,test}#{suffix}") if names.empty?
+
+  act("drop", "dropped", "#{names.length} database(s) matching fleetyards_{dev,test}#{suffix}") do
+    # FORCE (Postgres 13+) terminates the leftover connections a crashed test
+    # run leaves behind, which otherwise fail the drop with PG::ObjectInUse.
+    _out, drop_err, dropped = psql(names.map { |name| %(DROP DATABASE IF EXISTS "#{name}" WITH (FORCE);) }.join("\n"))
+    warn drop_err unless dropped
+    dropped
+  end
+end
+
+# --- redis -------------------------------------------------------------------
+
+def flush_redis
+  base = TARGET_CLAIM[:redis_db]
+  return say("no Redis band recorded — nothing to flush") if base.nil?
+  return say("Redis db#{base} belongs to the main checkout — not flushed") if base < REDIS_DB_BASE
+
+  band = (base...(base + REDIS_DBS_PER_CHECKOUT))
+  shared_with = SIBLINGS.find { |entry| entry[:redis_db] && band.cover?(entry[:redis_db]) }
+  if shared_with
+    return say("Redis db#{band.first}-#{band.max} overlaps #{File.basename(shared_with[:path])} — not flushed")
+  end
+
+  keyspace = redis_cli("info", "keyspace")
+  return say("Redis unreachable at #{redis_url} — nothing flushed") if keyspace.empty?
+
+  populated = keyspace.scan(/^db(\d+):keys=(\d+)/).map { |index, keys| [index.to_i, keys.to_i] }
+    .select { |index, _| band.cover?(index) }
+  return say("Redis db#{band.first}-#{band.max} already empty") if populated.empty?
+
+  populated.each do |index, keys|
+    act("flush", "flushed", "Redis db#{index} (#{keys} key(s))") { redis_cli("-n", index.to_s, "flushdb").start_with?("OK") }
+  end
+end
+
+# --- links -------------------------------------------------------------------
+
+def unlink_shared_paths
+  links = SHARED_PATHS.map { |path| File.join(TARGET, path) }.select { |path| File.symlink?(path) }
+  return say("no shared symlinks left") if links.empty?
+
+  links.each do |path|
+    act("unlink", "unlinked", "#{path.sub("#{TARGET}/", "")} -> #{File.readlink(path)}") do
+      File.unlink(path)
+      true
+    end
+  end
+end
+
+# --- main --------------------------------------------------------------------
+
+label = File.basename(TARGET)
+details = [
+  TARGET_CLAIM[:slot] ? "slot #{TARGET_CLAIM[:slot]}" : "no slot recorded",
+  "suffix #{TARGET_CLAIM[:suffix]}#{" (derived — never set up)" if DERIVED_SUFFIX}"
+]
+puts "  Tearing down: #{label} (#{details.join(", ")})#{" [dry run]" if OPTIONS[:dry_run]}"
+
+stop_processes if enabled?("processes")
+drop_databases if enabled?("databases")
+flush_redis if enabled?("redis")
+unlink_shared_paths if enabled?("links")
+
+# Always succeeds once it has decided the target is a worktree: this runs as a
+# delete hook, and a Postgres that happens to be down must not block a removal.
+# What it could not release is printed above, and `.claude/skills/cleanup`
+# sweeps the leftovers.
+puts "  Teardown complete. The checkout itself is left in place."
