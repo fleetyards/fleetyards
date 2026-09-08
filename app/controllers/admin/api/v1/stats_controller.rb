@@ -6,6 +6,10 @@ module Admin
       class StatsController < ::Admin::Api::BaseController
         include TrackingStatsConcern
 
+        # Ahoy writes the path a `$view` event was recorded on into its
+        # `properties` document; there is no column for it.
+        VIEWED_PAGE = Arel.sql("ahoy_events.properties->>'page'")
+
         def quick_stats
           authorize! with: ::Admin::StatsPolicy
 
@@ -21,15 +25,21 @@ module Admin
         def most_viewed_pages
           authorize! with: ::Admin::StatsPolicy
 
-          most_viewed_pages = Ahoy::Event.one_month.where(name: "$view").to_a.group_by do |event|
-            event.properties["page"]
-          end.map do |page, views|
-            {
-              label: page,
-              count: views.size,
-              tooltip: page
-            }
-          end.sort_by { |item| item[:count] }.reverse.take(10)
+          # Grouped in the database rather than in Ruby. Ten rows come back; the
+          # month behind them is tens of thousands of events, and each one was
+          # instantiated with its whole `properties` document to be counted.
+          most_viewed_pages = Ahoy::Event.one_month.where(name: "$view")
+            .group(VIEWED_PAGE)
+            .order(Arel.sql("COUNT(*) DESC"))
+            .limit(10)
+            .count
+            .map do |page, count|
+              {
+                label: page,
+                count:,
+                tooltip: page
+              }
+            end
 
           render json: most_viewed_pages.to_json
         end

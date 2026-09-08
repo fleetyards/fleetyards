@@ -77,23 +77,28 @@ module Api
       # rubocop:enable Metrics/CyclomaticComplexity
 
       def model_counts
-        scope = @fleet.vehicles.includes(
-          :model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
-          model: [:manufacturer]
-        )
-
-        scope = scope.where(loaner: loaner_included?)
+        scope = @fleet.vehicles.where(loaner: loaner_included?)
 
         scope = scope.where(user_id: for_members) if for_members.present?
 
-        scope = scope.includes(:model).where(models: {price: price_range}) if price_range.present?
+        scope = scope.joins(:model).where(models: {price: price_range}) if price_range.present?
 
-        scope = scope.includes(:model).where(models: {pledge_price: pledge_price_range}) if pledge_price_range.present?
+        scope = scope.joins(:model).where(models: {pledge_price: pledge_price_range}) if pledge_price_range.present?
 
         count_params = vehicle_query_params.except("sorts", "s")
         @q = scope.ransack(count_params)
 
-        @model_counts = @q.result.includes(:model).joins(:model).group("models.slug").count
+        # No `includes`: this returns a grouped count, so no vehicle is ever
+        # instantiated and nothing reads an association off one. Eager loading
+        # them only added six outer joins to every call, filtered or not.
+        #
+        # The count stays DISTINCT, though nothing `vehicle_query_params`
+        # permits joins a `has_many` today. Ransack joins what a filter names,
+        # and one naming a `has_many` returns a vehicle once per matching row --
+        # 106 instead of 49 on a fleet I tried. Dropping DISTINCT would make
+        # these numbers correct only for as long as that permit list stays as
+        # it is.
+        @model_counts = @q.result.joins(:model).group("models.slug").distinct.count(:id)
       end
 
       def vehicles_by_model
