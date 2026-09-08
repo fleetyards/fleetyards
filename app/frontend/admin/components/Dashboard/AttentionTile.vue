@@ -9,19 +9,37 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import NumberFlow from "@number-flow/vue";
-import { type RouteLocationRaw } from "vue-router";
+import { RouterLink, type RouteLocationRaw } from "vue-router";
 
 type Props = {
   count: number;
   label: string;
   icon: string;
-  to: RouteLocationRaw;
+  to?: RouteLocationRaw;
+  href?: string;
   severity?: "warning" | "error";
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
+  to: undefined,
+  href: undefined,
   severity: "warning",
 });
+
+/*
+ * A queue living outside the SPA - Sidekiq, PgHero - is an `href` rather than a
+ * route, and opens in its own tab: it is a tool you keep open beside the admin,
+ * not a page you navigate to and come back from.
+ *
+ * One binding rather than a `:href` and a `:to` side by side: a fallthrough
+ * `href` of `undefined` overrides the one RouterLink resolves for itself, so the
+ * internal tile rendered an anchor with no destination at all.
+ */
+const link = computed(() =>
+  props.href
+    ? { href: props.href, target: "_blank", rel: "noopener" }
+    : { to: props.to },
+);
 </script>
 
 <template>
@@ -31,8 +49,9 @@ withDefaults(defineProps<Props>(), {
     list it counts. The rail is coloured by severity rather than the theme accent,
     so a full band reads as a priority order and not as decoration.
   -->
-  <router-link
-    :to="to"
+  <component
+    :is="href ? 'a' : RouterLink"
+    v-bind="link"
     class="attention-tile"
     :class="`attention-tile--${severity}`"
     :data-test="`attention-tile-${severity}`"
@@ -48,7 +67,7 @@ withDefaults(defineProps<Props>(), {
         </div>
       </PanelBody>
     </Panel>
-  </router-link>
+  </component>
 </template>
 
 <style lang="scss" scoped>

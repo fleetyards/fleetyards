@@ -22,6 +22,12 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/pghero/",
+    name: "pghero",
+    component: Blank,
+    meta: { title: "pghero", href: "/admin/pghero" },
+  },
 ] as RouteRecordRaw[];
 
 const currentRoute = {
@@ -49,6 +55,15 @@ describe("AppNavigationItems", () => {
     const wrapper = await mountItems({});
 
     expect(wrapper.find(".nav-item__sub-menu").exists()).toBe(true);
+  });
+
+  it("opens a route with an external href in a new tab", async () => {
+    const wrapper = await mountItems({});
+
+    const link = wrapper.find('[data-test="nav-pghero"] a');
+
+    expect(link.attributes("href")).toBe("/admin/pghero");
+    expect(link.attributes("target")).toBe("_blank");
   });
 
   it("links straight to the first child when submenus are hidden", async () => {

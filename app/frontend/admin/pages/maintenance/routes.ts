@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-
-const prefix = window.ON_SUBDOMAIN ? "" : "/admin";
+import { engineUrls } from "@/admin/utils/EngineUrls";
 
 /*
  * Top-level, not nested. These were children of a `/maintenance` route whose
@@ -63,7 +62,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-list-timeline",
       needsAuthentication: true,
       access: ["workers"],
-      href: `${prefix}/workers`,
+      href: engineUrls.workers,
     },
   },
   {
@@ -75,7 +74,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-database",
       needsAuthentication: true,
       access: ["pghero"],
-      href: `${prefix}/pghero`,
+      href: engineUrls.pghero,
     },
   },
   {
@@ -87,7 +86,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-clipboard-list-check",
       needsAuthentication: true,
       access: ["maintenance"],
-      href: `${prefix}/maintenance_tasks`,
+      href: engineUrls.maintenanceTasks,
     },
   },
   {
