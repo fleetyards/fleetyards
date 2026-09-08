@@ -169,6 +169,34 @@ module ScData
       assert File.exist?(File.join(@root, "models/aurora.json"))
     end
 
+    # --- Retries ----------------------------------------------------------
+
+    # A transfer is thousands of independent round trips and each one is
+    # idempotent, so one slow object must not fail the run. It used to: a single
+    # `commodities/jaclium_ore.json` that Hetzner did not answer in time failed a
+    # whole 15,103-object CI pull, and the same path runs on the loaders
+    # container.
+    test "#pull retries an object that failed and finishes the transfer" do
+      stub_listing("models/aurora.json" => "fetched")
+      @client.stub_responses(:get_object, [Timeout::Error.new("no answer"), {body: "fetched"}])
+
+      result = store.pull
+
+      assert_equal "fetched", File.read(File.join(@root, "models/aurora.json"))
+      assert_equal 1, result[:downloaded]
+    end
+
+    test "#pull gives up after the attempt limit and says which object and why" do
+      stub_listing("models/aurora.json" => "fetched")
+      @client.stub_responses(:get_object, Timeout::Error.new("no answer"))
+
+      error = assert_raises(::ScData::ParsedStore::TransferFailed) { store.pull }
+
+      assert_match "models/aurora.json", error.message
+      assert_match "Timeout::Error", error.message, "the class has to survive, not just the message"
+      assert_match "no answer", error.message
+    end
+
     # --- Version ----------------------------------------------------------
 
     test "#remote_version reads the version the parser stamped on the tree" do
