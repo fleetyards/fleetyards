@@ -2189,6 +2189,24 @@
         "wishlist": "每月願望清單新增",
         "patchChanges": "更新改動",
         "notRecordedYet": "僅從開始記錄之日起統計，因此飛船可能尚無記錄。"
+      },
+      "buildCompare": {
+        "from": "起始版本",
+        "to": "目標版本",
+        "appeared": "新增",
+        "vanished": "移除",
+        "changed": "變更",
+        "notRecorded": "其中一個版本沒有記錄該目錄。",
+        "needsTwoBuilds": "只記錄了一個版本，無法進行比較。",
+        "pickTwoBuilds": "請選擇兩個不同的版本。",
+        "failed": "無法比較這兩個版本。",
+        "andMore": "還有 %{count} 項",
+        "catalogues": {
+          "components": "部件",
+          "equipment": "裝備",
+          "commodities": "商品",
+          "models": "艦船"
+        }
       }
     }
   }

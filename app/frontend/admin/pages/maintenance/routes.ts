@@ -32,6 +32,20 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // Behind `imports` rather than a privilege of its own: the page reads what
+    // an import wrote, and nobody who may not see the ledger has a use for a
+    // diff of two of its results.
+    path: "/build-compare/",
+    name: "build-compare",
+    component: () => import("@/admin/pages/maintenance/build-compare.vue"),
+    meta: {
+      title: "admin.maintenance.buildCompare",
+      icon: "fa-duotone fa-code-compare",
+      needsAuthentication: true,
+      access: ["imports"],
+    },
+  },
+  {
     path: "/features/",
     name: "admin-features",
     component: () => import("@/admin/pages/maintenance/features.vue"),

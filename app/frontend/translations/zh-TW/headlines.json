@@ -171,6 +171,9 @@
         "visualTests": {
           "index": "視覺測試",
           "notifications": "通知"
+        },
+        "buildCompare": {
+          "index": "版本比較"
         }
       },
       "welcome": "Welcome to",

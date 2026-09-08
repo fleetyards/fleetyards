@@ -2193,6 +2193,24 @@
         "wishlist": "Adiciones a la lista de deseos por mes",
         "patchChanges": "Cambios del parche",
         "notRecordedYet": "Solo se registra desde que empezó el seguimiento, así que una nave puede no tener nada."
+      },
+      "buildCompare": {
+        "from": "Desde la compilación",
+        "to": "Hasta la compilación",
+        "appeared": "Nuevos",
+        "vanished": "Desaparecidos",
+        "changed": "Modificados",
+        "notRecorded": "No registrado para una de estas compilaciones.",
+        "needsTwoBuilds": "Solo hay una compilación registrada, así que no hay nada con que compararla.",
+        "pickTwoBuilds": "Elige dos compilaciones distintas.",
+        "failed": "No se han podido comparar estas dos compilaciones.",
+        "andMore": "y %{count} más",
+        "catalogues": {
+          "components": "Componentes",
+          "equipment": "Equipamiento",
+          "commodities": "Mercancías",
+          "models": "Naves"
+        }
       }
     }
   }

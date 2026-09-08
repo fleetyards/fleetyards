@@ -2189,6 +2189,24 @@
         "wishlist": "每月心愿单新增",
         "patchChanges": "更新改动",
         "notRecordedYet": "仅从开始记录之日起统计，因此飞船可能尚无记录。"
+      },
+      "buildCompare": {
+        "from": "起始版本",
+        "to": "目标版本",
+        "appeared": "新增",
+        "vanished": "移除",
+        "changed": "变更",
+        "notRecorded": "其中一个版本没有记录该目录。",
+        "needsTwoBuilds": "只记录了一个版本，无法进行对比。",
+        "pickTwoBuilds": "请选择两个不同的版本。",
+        "failed": "无法对比这两个版本。",
+        "andMore": "还有 %{count} 项",
+        "catalogues": {
+          "components": "部件",
+          "equipment": "装备",
+          "commodities": "商品",
+          "models": "舰船"
+        }
       }
     }
   }

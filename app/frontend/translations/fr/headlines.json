@@ -171,6 +171,9 @@
         "visualTests": {
           "index": "Tests Visuels",
           "notifications": "Notifications"
+        },
+        "buildCompare": {
+          "index": "Comparer les builds"
         }
       },
       "welcome": "Bienvenue sur",

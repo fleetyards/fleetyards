@@ -237,7 +237,8 @@
           "workers": "工作进程",
           "tasks": "任务",
           "imports": "导入",
-          "rsiApiStatus": "RSI API 状态"
+          "rsiApiStatus": "RSI API 状态",
+          "buildCompare": "版本对比"
         },
         "supporterContributions": {
           "index": "支持者贡献",

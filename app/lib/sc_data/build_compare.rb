@@ -28,6 +28,11 @@ module ScData
       alias_method :recorded?, :recorded
     end
 
+    # A record named as well as identified. The UUID is what a reader drills
+    # into; the name is the only half a person can read, and both lists are
+    # otherwise a column of identifiers nobody can act on.
+    Entry = Struct.new(:id, :name)
+
     Change = Struct.new(:id, :name, :fields)
 
     attr_reader :build_class, :from, :to
@@ -108,11 +113,13 @@ module ScData
     end
 
     private def appeared
-      to_rows.keys - from_rows.keys
+      (to_rows.keys - from_rows.keys).map { |id| Entry.new(id:, name: to_rows[id]["name"]) }
     end
 
+    # Named from the older build, which is the only side that still describes
+    # the record: the newer one has no row for it at all.
     private def vanished
-      from_rows.keys - to_rows.keys
+      (from_rows.keys - to_rows.keys).map { |id| Entry.new(id:, name: from_rows[id]["name"]) }
     end
 
     private def changed
