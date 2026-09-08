@@ -36,32 +36,6 @@
           "prompt": "选择来源"
         }
       },
-      "modelHardpoint": {
-        "source": {
-          "label": "来源",
-          "prompt": "选择来源"
-        },
-        "group": {
-          "label": "群组",
-          "prompt": "选择群组"
-        },
-        "hardpointType": {
-          "label": "类型",
-          "prompt": "选择类型"
-        },
-        "size": {
-          "label": "尺寸",
-          "nullablePrompt": "选择尺寸"
-        },
-        "category": {
-          "label": "分类",
-          "nullablePrompt": "选择分类"
-        },
-        "subCategory": {
-          "label": "子分类",
-          "nullablePrompt": "选择子分类"
-        }
-      },
       "fleet": {
         "members": {
           "shipsFilter": {

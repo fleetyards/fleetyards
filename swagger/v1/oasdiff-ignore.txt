@@ -981,3 +981,13 @@ PUT /fleets/{fleetSlug}/members/{username}/promote the response property `fleetR
 GET /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`
 PUT /fleets/{fleetSlug}/membership the response property `fleetRole` became optional for the status `200`
 GET /stats/price-movers api path removed without deprecation
+GET /vehicles/{vehicle_id}/loadouts removed the required property `items/hardpoints` from the response with the `200` status
+POST /vehicles/{vehicle_id}/loadouts removed the required property `hardpoints` from the response with the `201` status
+DELETE /vehicles/{vehicle_id}/loadouts/{id} removed the required property `hardpoints` from the response with the `200` status
+GET /vehicles/{vehicle_id}/loadouts/{id} removed the required property `hardpoints` from the response with the `200` status
+PUT /vehicles/{vehicle_id}/loadouts/{id} removed the required property `hardpoints` from the response with the `200` status
+PUT /vehicles/{vehicle_id}/loadouts/{id}/activate removed the required property `hardpoints` from the response with the `200` status
+POST /vehicles/{vehicle_id}/loadouts removed the request property `fromDefaults`
+POST /vehicles/{vehicle_id}/loadouts removed the request property `vehicleLoadoutHardpointsAttributes`
+PUT /vehicles/{vehicle_id}/loadouts/{id} removed the request property `fromDefaults`
+PUT /vehicles/{vehicle_id}/loadouts/{id} removed the request property `vehicleLoadoutHardpointsAttributes`

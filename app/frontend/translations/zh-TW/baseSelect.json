@@ -36,32 +36,6 @@
           "prompt": "選擇來源"
         }
       },
-      "modelHardpoint": {
-        "source": {
-          "label": "來源",
-          "prompt": "選擇來源"
-        },
-        "group": {
-          "label": "群組",
-          "prompt": "選擇群組"
-        },
-        "hardpointType": {
-          "label": "類型",
-          "prompt": "選擇類型"
-        },
-        "size": {
-          "label": "尺寸",
-          "nullablePrompt": "選擇尺寸"
-        },
-        "category": {
-          "label": "分類",
-          "nullablePrompt": "選擇分類"
-        },
-        "subCategory": {
-          "label": "子分類",
-          "nullablePrompt": "選擇子分類"
-        }
-      },
       "fleet": {
         "members": {
           "shipsFilter": {

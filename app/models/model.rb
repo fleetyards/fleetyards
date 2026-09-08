@@ -323,10 +323,6 @@ class Model < ApplicationRecord
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :components, through: :hardpoints
 
-  has_many :model_hardpoints,
-    dependent: :destroy,
-    autosave: true
-  has_many :hardpoint_components, through: :model_hardpoints
   has_many :vehicles, dependent: :destroy
 
   has_many :module_hardpoints, dependent: :destroy
@@ -508,7 +504,7 @@ class Model < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     [
-      "components", "docks", "images", "loaners", "manufacturer", "model_hardpoints",
+      "components", "docks", "images", "loaners", "manufacturer",
       "model_loaners", "model_snub_crafts", "module_hardpoints", "module_packages",
       "modules", "paints", "snub_crafts", "upgrade_kits", "upgrades", "vehicles",
       "versions", "videos"

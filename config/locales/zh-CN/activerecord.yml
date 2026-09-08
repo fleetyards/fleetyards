@@ -171,39 +171,6 @@ zh-CN:
         variants: 变体
         weapons: 武器
         fleetchart_image: Lagacy 舰队图图像
-      model_hardpoint:
-        categories:
-          fixed: 修复Maneuflu推进器
-          gimbal: 修复Maneuflu推进器
-          joint: 修复Maneuflu推进器
-          main: 推进器 S
-          manned_turret: 载人炮塔
-          missile_turret: 导弹炮塔
-          remote_turret: 遥控炮塔
-          retro: Retro 推进器
-          vtol: 垂直起降推进器
-          qed: 定时数
-          emp: 电磁脉冲弹
-        sizes:
-          capital: C (4)
-          eight: 8
-          eleven: 11
-          five: 5
-          four: 4
-          large: L (3)
-          medium: M (2)
-          nine: 9
-          one: 1
-          seven: 7
-          six: 6
-          small: S (1)
-          tbd: TBD
-          ten: 10
-          three: 3
-          twelve: 12
-          two: 2
-          vehicle: V (0)
-          snub: Snub (0)
       progress_tracker_item:
         statuses:
           done: 完成

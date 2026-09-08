@@ -952,23 +952,6 @@
           "custom": "Personalizzata"
         }
       },
-      "modelHardpoint": {
-        "name": "Nome",
-        "key": "Chiave",
-        "source": "Fonte",
-        "group": "Gruppo",
-        "hardpointType": "Tipo",
-        "size": "Dimensione",
-        "category": "Categoria",
-        "subCategory": "Sottocategoria",
-        "details": "Dettagli",
-        "mount": "Montaggio",
-        "itemSlots": "Slot oggetti",
-        "loadoutIdentifier": "Identificatore configurazione"
-      },
-      "modelHardpointLoadout": {
-        "name": "Nome"
-      },
       "modelUpgrade": {
         "name": "Nome",
         "description": "Descrizione",
@@ -1655,9 +1638,6 @@
             "newShipsInYear": "Nuove navi nel %{year}",
             "totalFleets": "Flotte totali"
           }
-        },
-        "modelHardpoint": {
-          "loadouts": "Configurazioni"
         },
         "supporterContributions": {
           "source": {

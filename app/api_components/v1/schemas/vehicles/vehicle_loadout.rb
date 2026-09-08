@@ -14,15 +14,11 @@ module V1
             active: {type: :boolean},
             url: {type: :string},
             urlSource: {type: :string},
-            hardpoints: {
-              type: :array,
-              items: VehicleLoadoutHardpoint
-            },
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id active url hardpoints createdAt updatedAt]
+          required: %w[id active url createdAt updatedAt]
         })
       end
     end

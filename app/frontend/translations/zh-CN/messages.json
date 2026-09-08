@@ -387,14 +387,8 @@
         "supporterContribution": {
           "destroy": "确定要删除此支持者捐助吗? 此操作无法撤销。"
         },
-        "modelHardpoint": {
-          "destroy": "确定要删除此挂载点吗? 此操作无法撤销。"
-        },
         "modelPosition": {
           "destroy": "确定要删除此岗位吗? 此操作无法撤销。"
-        },
-        "modelHardpointLoadout": {
-          "destroy": "确定要删除此配置吗? 此操作无法撤销。"
         },
         "modelLoaner": {
           "destroy": "确定要删除此借用船吗? 此操作无法撤销。"

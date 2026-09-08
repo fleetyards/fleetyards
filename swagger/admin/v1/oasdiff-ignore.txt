@@ -110,3 +110,15 @@ PUT /vehicles/{id} the response property `modulePackage/modules/items/cargoHolds
 PUT /vehicles/{id} the response property `modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #4: CargoHold]/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `modulePackage/modules/items/models/items/cargoHolds/items/name` became nullable for the status `200`
 PUT /vehicles/{id} the response property `paint/model/cargoHolds/items/name` became nullable for the status `200`
+POST /admin_users removed the enum value `model_hardpoints` of the request property `resourceAccess/items/`
+PUT /admin_users/{id} removed the enum value `model_hardpoints` of the request property `resourceAccess/items/`
+GET /model-hardpoint-loadouts api path removed without deprecation
+POST /model-hardpoint-loadouts api path removed without deprecation
+DELETE /model-hardpoint-loadouts/{id} api path removed without deprecation
+GET /model-hardpoint-loadouts/{id} api path removed without deprecation
+PUT /model-hardpoint-loadouts/{id} api path removed without deprecation
+GET /model-hardpoints api path removed without deprecation
+POST /model-hardpoints api path removed without deprecation
+DELETE /model-hardpoints/{id} api path removed without deprecation
+GET /model-hardpoints/{id} api path removed without deprecation
+PUT /model-hardpoints/{id} api path removed without deprecation

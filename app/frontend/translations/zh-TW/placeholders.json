@@ -201,17 +201,6 @@
         "name": "職位名稱",
         "position": "0"
       },
-      "modelHardpoint": {
-        "name": "掛載點名稱",
-        "key": "hardpoint_key",
-        "details": "詳情",
-        "mount": "掛載類型",
-        "itemSlots": "0",
-        "loadoutIdentifier": "配置標識"
-      },
-      "modelHardpointLoadout": {
-        "name": "配置名稱"
-      },
       "logistics": {
         "inventoryName": "Main Depot, Cargo Bay...",
         "description": "Optional details about this inventory",

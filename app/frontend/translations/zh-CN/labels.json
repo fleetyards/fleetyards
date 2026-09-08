@@ -952,23 +952,6 @@
           "custom": "自定义"
         }
       },
-      "modelHardpoint": {
-        "name": "名称",
-        "key": "键",
-        "source": "来源",
-        "group": "群组",
-        "hardpointType": "类型",
-        "size": "尺寸",
-        "category": "分类",
-        "subCategory": "子分类",
-        "details": "详情",
-        "mount": "挂载",
-        "itemSlots": "物品槽",
-        "loadoutIdentifier": "配置标识"
-      },
-      "modelHardpointLoadout": {
-        "name": "名称"
-      },
       "modelUpgrade": {
         "name": "名称",
         "description": "描述",
@@ -1651,9 +1634,6 @@
             "newShipsInYear": "%{year} 新飞船",
             "totalFleets": "总舰队数"
           }
-        },
-        "modelHardpoint": {
-          "loadouts": "配置"
         },
         "supporterContributions": {
           "source": {

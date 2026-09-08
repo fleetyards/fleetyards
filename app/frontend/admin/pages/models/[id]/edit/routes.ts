@@ -111,18 +111,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "hardpoints/",
-    name: "admin-model-edit-hardpoints",
-    component: () => import("@/admin/pages/models/[id]/edit/hardpoints.vue"),
-    meta: {
-      title: "admin.models.edit.hardpoints",
-      customTitle: true,
-      activeRoute: "admin-models",
-      nav: "editTabs",
-      needsAuthentication: true,
-    },
-  },
-  {
     path: "loaners/",
     name: "admin-model-edit-loaners",
     component: () => import("@/admin/pages/models/[id]/edit/loaners.vue"),
