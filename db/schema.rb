@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -180,7 +180,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
     t.index ["parent_type", "parent_id", "max_container_size_scu"], name: "index_cargo_holds_on_parent_and_max_container_size"
-    t.index ["parent_type", "parent_id"], name: "index_cargo_holds_on_parent_type_and_parent_id"
   end
 
   create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -211,7 +210,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.string "version", null: false
     t.index ["commodity_id", "environment", "version"], name: "index_commodity_builds_on_commodity_and_build", unique: true
-    t.index ["commodity_id"], name: "index_commodity_builds_on_commodity_id"
     t.index ["environment", "commodity_type"], name: "index_commodity_builds_on_environment_and_commodity_type"
     t.index ["environment", "version"], name: "index_commodity_builds_on_environment_and_version"
   end
@@ -255,7 +253,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.string "version", null: false
     t.index ["component_id", "environment", "version"], name: "index_component_builds_on_component_and_build", unique: true
-    t.index ["component_id"], name: "index_component_builds_on_component_id"
     t.index ["environment", "component_class"], name: "index_component_builds_on_environment_and_component_class"
     t.index ["environment", "item_type"], name: "index_component_builds_on_environment_and_item_type"
     t.index ["environment", "version"], name: "index_component_builds_on_environment_and_version"
@@ -291,6 +288,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", precision: nil
     t.string "version"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
+    t.index ["name"], name: "index_components_on_name"
     t.index ["sc_key"], name: "index_components_on_sc_key", unique: true
     t.index ["version"], name: "index_components_on_version"
   end
@@ -397,7 +395,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.index ["environment", "item_type"], name: "index_equipment_builds_on_environment_and_item_type"
     t.index ["environment", "version"], name: "index_equipment_builds_on_environment_and_version"
     t.index ["equipment_id", "environment", "version"], name: "index_equipment_builds_on_equipment_and_build", unique: true
-    t.index ["equipment_id"], name: "index_equipment_builds_on_equipment_id"
     t.index ["manufacturer_id"], name: "index_equipment_builds_on_manufacturer_id"
   end
 
@@ -428,7 +425,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.index ["fleet_event_id", "user_id"], name: "index_fleet_event_admins_on_fleet_event_id_and_user_id", unique: true
-    t.index ["fleet_event_id"], name: "index_fleet_event_admins_on_fleet_event_id"
     t.index ["user_id"], name: "index_fleet_event_admins_on_user_id"
   end
 
@@ -462,7 +458,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.index ["fleet_event_ship_id", "model_id"], name: "index_fleet_event_ship_models_on_ship_and_model", unique: true
     t.index ["fleet_event_ship_id", "position"], name: "index_fleet_event_ship_models_on_ship_and_position"
-    t.index ["fleet_event_ship_id"], name: "index_fleet_event_ship_models_on_ship"
     t.index ["model_id"], name: "index_fleet_event_ship_models_on_model_id"
   end
 
@@ -482,7 +477,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["fleet_event_team_id", "position"], name: "index_fleet_event_ships_on_fleet_event_team_id_and_position"
-    t.index ["fleet_event_team_id"], name: "index_fleet_event_ships_on_fleet_event_team_id"
     t.index ["model_id"], name: "index_fleet_event_ships_on_model_id"
   end
 
@@ -500,7 +494,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "withdrawn_at"
     t.index ["fleet_event_id", "occurrence_date", "fleet_membership_id"], name: "idx_fleet_event_signups_on_event_and_occurrence_and_member"
     t.index ["fleet_event_id", "occurrence_date", "fleet_membership_id"], name: "index_fleet_event_signups_unique_active_per_event", unique: true, where: "((status)::text <> 'withdrawn'::text)"
-    t.index ["fleet_event_id"], name: "index_fleet_event_signups_on_fleet_event_id"
     t.index ["fleet_event_slot_id"], name: "index_fleet_event_signups_on_fleet_event_slot_id"
     t.index ["fleet_membership_id"], name: "index_fleet_event_signups_on_fleet_membership_id"
   end
@@ -518,7 +511,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.index ["model_position_id"], name: "index_fleet_event_slots_on_model_position_id"
     t.index ["slottable_type", "slottable_id", "position"], name: "index_fleet_event_slots_on_slottable_and_position"
-    t.index ["slottable_type", "slottable_id"], name: "index_fleet_event_slots_on_slottable_type_and_slottable_id"
   end
 
   create_table "fleet_event_teams", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -530,7 +522,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["fleet_event_id", "position"], name: "index_fleet_event_teams_on_fleet_event_id_and_position"
-    t.index ["fleet_event_id"], name: "index_fleet_event_teams_on_fleet_event_id"
   end
 
   create_table "fleet_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -844,7 +835,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.string "version"
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
+    t.index ["type", "id"], name: "index_imports_on_type_and_id"
     t.index ["type"], name: "index_imports_on_type"
+    t.index ["user_id"], name: "index_imports_on_user_id"
   end
 
   create_table "inventories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -891,7 +884,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id", "location", "price_type", "time_range", "recorded_on"], name: "index_item_price_snapshots_on_item_and_day", unique: true, nulls_not_distinct: true
     t.index ["item_type", "item_id", "recorded_on"], name: "index_item_price_snapshots_on_item_and_recorded_on"
-    t.index ["item_type", "item_id"], name: "index_item_price_snapshots_on_item"
     t.index ["recorded_on"], name: "index_item_price_snapshots_on_recorded_on"
   end
 
@@ -976,7 +968,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.index ["mission_ship_id", "model_id"], name: "index_mission_ship_models_on_ship_and_model", unique: true
     t.index ["mission_ship_id", "position"], name: "index_mission_ship_models_on_ship_and_position"
-    t.index ["mission_ship_id"], name: "index_mission_ship_models_on_mission_ship_id"
     t.index ["model_id"], name: "index_mission_ship_models_on_model_id"
   end
 
@@ -995,7 +986,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["mission_team_id", "position"], name: "index_mission_ships_on_mission_team_id_and_position"
-    t.index ["mission_team_id"], name: "index_mission_ships_on_mission_team_id"
     t.index ["model_id"], name: "index_mission_ships_on_model_id"
   end
 
@@ -1010,7 +1000,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.index ["model_position_id"], name: "index_mission_slots_on_model_position_id"
     t.index ["slottable_type", "slottable_id", "position"], name: "index_mission_slots_on_slottable_and_position"
-    t.index ["slottable_type", "slottable_id"], name: "index_mission_slots_on_slottable_type_and_slottable_id"
   end
 
   create_table "mission_teams", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1021,7 +1010,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["mission_id", "position"], name: "index_mission_teams_on_mission_id_and_position"
-    t.index ["mission_id"], name: "index_mission_teams_on_mission_id"
   end
 
   create_table "missions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1055,7 +1043,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.index ["environment", "to_version"], name: "index_model_build_changes_on_build"
     t.index ["model_id", "environment", "to_version", "field"], name: "index_model_build_changes_on_model_and_field", unique: true
-    t.index ["model_id"], name: "index_model_build_changes_on_model_id"
     t.index ["recorded_at"], name: "index_model_build_changes_on_recorded_at"
   end
 
@@ -1097,7 +1084,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.decimal "yaw_boosted", precision: 15, scale: 2
     t.index ["environment", "version"], name: "index_model_builds_on_environment_and_version"
     t.index ["model_id", "environment", "version"], name: "index_model_builds_on_model_and_build", unique: true
-    t.index ["model_id"], name: "index_model_builds_on_model_id"
   end
 
   create_table "model_hardpoint_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1220,7 +1206,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "started_at", null: false
     t.datetime "updated_at", null: false
     t.index ["model_id", "started_at"], name: "index_model_sales_on_model_id_and_started_at", unique: true
-    t.index ["model_id"], name: "index_model_sales_on_model_id"
     t.index ["model_id"], name: "index_model_sales_on_model_id_ongoing", unique: true, where: "(ended_at IS NULL)"
     t.index ["started_at"], name: "index_model_sales_on_started_at"
   end
@@ -1357,7 +1342,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["legacy_slug"], name: "index_models_on_legacy_slug"
     t.index ["manufacturer_id", "name"], name: "index_models_on_manufacturer_id_and_name", unique: true
-    t.index ["manufacturer_id"], name: "index_models_on_manufacturer_id"
     t.index ["production_status"], name: "index_models_on_production_status"
     t.index ["size"], name: "index_models_on_size"
   end
@@ -1611,10 +1595,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.string "username", limit: 255, default: "", null: false
     t.integer "wanted_vehicles_count", default: 0, null: false
     t.string "youtube"
+    t.index "lower((email)::text)", name: "index_users_on_lower_email"
+    t.index "lower((username)::text)", name: "index_users_on_lower_username"
     t.index ["calendar_feed_token"], name: "index_users_on_calendar_feed_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["id"], name: "index_users_on_id_where_not_tracking", where: "(tracking = false)"
     t.index ["last_active_at"], name: "index_users_on_last_active_at"
+    t.index ["normalized_email"], name: "index_users_on_normalized_email"
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -1628,7 +1616,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.datetime "updated_at", null: false
     t.uuid "vehicle_loadout_id", null: false
     t.index ["vehicle_loadout_id", "model_hardpoint_id"], name: "idx_vehicle_loadout_hardpoints_unique", unique: true
-    t.index ["vehicle_loadout_id"], name: "index_vehicle_loadout_hardpoints_on_vehicle_loadout_id"
   end
 
   create_table "vehicle_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1639,7 +1626,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_200000) do
     t.string "url"
     t.uuid "vehicle_id", null: false
     t.index ["vehicle_id", "name"], name: "index_vehicle_loadouts_on_vehicle_id_and_name", unique: true
-    t.index ["vehicle_id"], name: "index_vehicle_loadouts_on_vehicle_id"
   end
 
   create_table "vehicle_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

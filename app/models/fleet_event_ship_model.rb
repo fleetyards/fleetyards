@@ -17,7 +17,6 @@
 # Indexes
 #
 #  index_fleet_event_ship_models_on_model_id           (model_id)
-#  index_fleet_event_ship_models_on_ship               (fleet_event_ship_id)
 #  index_fleet_event_ship_models_on_ship_and_model     (fleet_event_ship_id,model_id) UNIQUE
 #  index_fleet_event_ship_models_on_ship_and_position  (fleet_event_ship_id,position)
 #

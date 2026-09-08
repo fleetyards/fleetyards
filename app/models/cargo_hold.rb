@@ -32,7 +32,6 @@
 #
 #  index_cargo_holds_on_capacity_scu                   (capacity_scu)
 #  index_cargo_holds_on_parent_and_max_container_size  (parent_type,parent_id,max_container_size_scu)
-#  index_cargo_holds_on_parent_type_and_parent_id      (parent_type,parent_id)
 #
 class CargoHold < ApplicationRecord
   belongs_to :parent, polymorphic: true, touch: true

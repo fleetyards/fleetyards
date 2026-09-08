@@ -25,7 +25,6 @@
 #
 #  index_model_build_changes_on_build            (environment,to_version)
 #  index_model_build_changes_on_model_and_field  (model_id,environment,to_version,field) UNIQUE
-#  index_model_build_changes_on_model_id         (model_id)
 #  index_model_build_changes_on_recorded_at      (recorded_at)
 #
 # Foreign Keys

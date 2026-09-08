@@ -40,7 +40,6 @@
 #  index_equipment_builds_on_environment_and_item_type       (environment,item_type)
 #  index_equipment_builds_on_environment_and_version         (environment,version)
 #  index_equipment_builds_on_equipment_and_build             (equipment_id,environment,version) UNIQUE
-#  index_equipment_builds_on_equipment_id                    (equipment_id)
 #  index_equipment_builds_on_manufacturer_id                 (manufacturer_id)
 #
 # Foreign Keys

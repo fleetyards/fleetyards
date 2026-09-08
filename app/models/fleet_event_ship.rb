@@ -22,7 +22,6 @@
 #
 # Indexes
 #
-#  index_fleet_event_ships_on_fleet_event_team_id               (fleet_event_team_id)
 #  index_fleet_event_ships_on_fleet_event_team_id_and_position  (fleet_event_team_id,position)
 #  index_fleet_event_ships_on_model_id                          (model_id)
 #

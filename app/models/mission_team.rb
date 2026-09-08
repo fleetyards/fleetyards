@@ -14,7 +14,6 @@
 #
 # Indexes
 #
-#  index_mission_teams_on_mission_id               (mission_id)
 #  index_mission_teams_on_mission_id_and_position  (mission_id,position)
 #
 # Foreign Keys

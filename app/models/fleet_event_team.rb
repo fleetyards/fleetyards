@@ -15,7 +15,6 @@
 #
 # Indexes
 #
-#  index_fleet_event_teams_on_fleet_event_id               (fleet_event_id)
 #  index_fleet_event_teams_on_fleet_event_id_and_position  (fleet_event_id,position)
 #
 # Foreign Keys

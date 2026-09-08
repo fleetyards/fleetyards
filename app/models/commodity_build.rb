@@ -23,7 +23,6 @@
 # Indexes
 #
 #  index_commodity_builds_on_commodity_and_build             (commodity_id,environment,version) UNIQUE
-#  index_commodity_builds_on_commodity_id                    (commodity_id)
 #  index_commodity_builds_on_environment_and_commodity_type  (environment,commodity_type)
 #  index_commodity_builds_on_environment_and_version         (environment,version)
 #

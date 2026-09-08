@@ -22,7 +22,6 @@
 #
 # Indexes
 #
-#  index_item_price_snapshots_on_item                  (item_type,item_id)
 #  index_item_price_snapshots_on_item_and_day          (item_type,item_id,location,price_type,time_range,recorded_on) UNIQUE NULLS NOT DISTINCT
 #  index_item_price_snapshots_on_item_and_recorded_on  (item_type,item_id,recorded_on)
 #  index_item_price_snapshots_on_recorded_on           (recorded_on)
