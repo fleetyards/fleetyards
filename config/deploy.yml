@@ -74,7 +74,46 @@ env:
 accessories:
   db:
     image: postgres:16
-    cmd: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all
+    # Everything below the two `pg_stat_statements` flags is off its default,
+    # and the defaults are the ones PostgreSQL ships for a machine nothing here
+    # resembles. Strength of the case differs per line and is noted with it.
+    #
+    # random_page_cost         Measured. At 4 a random read is priced like a
+    #                          seek on a spinning disk, and the planner rejects
+    #                          index scans it should take -- the fleet counts
+    #                          read all 1.57M rows of `vehicles` instead of the
+    #                          few thousand in the fleet. At 1.1 that query goes
+    #                          61ms -> 15ms and the hangar list 63ms -> 13ms,
+    #                          with none of six measured getting slower.
+    # shared_buffers           Sized, not measured. The database is 2.5GB and
+    #                          `vehicles` plus `fleet_vehicles` with their
+    #                          indexes are 630MB of it; at 128MB none of that
+    #                          hot set can live in the buffers at all. 1GB of
+    #                          the container's 4GB leaves room for the ~45
+    #                          connections and their work_mem.
+    # max_wal_size             Suspected. The sign-in tracking UPDATE takes
+    #                          3.56ms on an idle copy and 32ms here, which is
+    #                          what checkpoints forced by WAL volume rather
+    #                          than by time look like. Costs disk and a longer
+    #                          crash recovery.
+    # wal_compression          Same suspicion, other end: less WAL means fewer
+    #                          forced checkpoints and smaller full-page writes,
+    #                          for some CPU.
+    # effective_io_concurrency 1 is the value for a single spindle. Little is
+    #                          expected of this on a mostly-cached database; it
+    #                          is here because it costs nothing.
+    #
+    # work_mem is deliberately left alone: six of the slow queries were checked
+    # with EXPLAIN (ANALYZE, BUFFERS) and none spilled to disk.
+    cmd: >-
+      postgres
+      -c shared_preload_libraries=pg_stat_statements
+      -c pg_stat_statements.track=all
+      -c random_page_cost=1.1
+      -c shared_buffers=1GB
+      -c max_wal_size=4GB
+      -c wal_compression=lz4
+      -c effective_io_concurrency=200
     port: "5432:5432"
     env:
       clear:
