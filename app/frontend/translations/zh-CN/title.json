@@ -250,7 +250,8 @@
           "tasks": "任务",
           "imports": "导入",
           "importDetail": "导入详情",
-          "rsiApiStatus": "RSI API 状态"
+          "rsiApiStatus": "RSI API 状态",
+          "buildCompare": "版本对比"
         },
         "modelPaints": {
           "index": "模型涂装",

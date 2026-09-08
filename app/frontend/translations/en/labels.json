@@ -2190,6 +2190,24 @@
         "wishlist": "Wishlist Additions per Month",
         "patchChanges": "Patch Changes",
         "notRecordedYet": "Only recorded from the day this started, so a ship can have none yet."
+      },
+      "buildCompare": {
+        "from": "From build",
+        "to": "To build",
+        "appeared": "Appeared",
+        "vanished": "Vanished",
+        "changed": "Changed",
+        "notRecorded": "Not recorded for one of these builds.",
+        "needsTwoBuilds": "Only one build is on record, so there is nothing to compare it with.",
+        "pickTwoBuilds": "Pick two different builds.",
+        "failed": "Could not compare these two builds.",
+        "andMore": "and %{count} more",
+        "catalogues": {
+          "components": "Components",
+          "equipment": "Equipment",
+          "commodities": "Commodities",
+          "models": "Ships"
+        }
       }
     }
   }

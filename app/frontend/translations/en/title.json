@@ -250,7 +250,8 @@
           "tasks": "Tasks",
           "imports": "Imports",
           "importDetail": "Import Detail",
-          "rsiApiStatus": "RSI API Status"
+          "rsiApiStatus": "RSI API Status",
+          "buildCompare": "Build Compare"
         },
         "modelPaints": {
           "index": "Model Paints",

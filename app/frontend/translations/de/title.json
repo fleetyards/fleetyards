@@ -250,7 +250,8 @@
           "tasks": "Aufgaben",
           "imports": "Importe",
           "importDetail": "Import-Details",
-          "rsiApiStatus": "RSI-API-Status"
+          "rsiApiStatus": "RSI-API-Status",
+          "buildCompare": "Build-Vergleich"
         },
         "modelPaints": {
           "index": "Modell Lackierungen",

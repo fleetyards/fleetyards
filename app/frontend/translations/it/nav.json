@@ -237,7 +237,8 @@
           "workers": "Worker",
           "tasks": "Attività",
           "imports": "Importazioni",
-          "rsiApiStatus": "Stato API RSI"
+          "rsiApiStatus": "Stato API RSI",
+          "buildCompare": "Confronto build"
         },
         "supporterContributions": {
           "index": "Contributi dei sostenitori",

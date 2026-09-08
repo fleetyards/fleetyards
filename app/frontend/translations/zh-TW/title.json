@@ -250,7 +250,8 @@
           "tasks": "任務",
           "imports": "匯入",
           "importDetail": "匯入詳情",
-          "rsiApiStatus": "RSI API 狀態"
+          "rsiApiStatus": "RSI API 狀態",
+          "buildCompare": "版本比較"
         },
         "modelPaints": {
           "index": "模型塗裝",

@@ -2197,6 +2197,24 @@
         "wishlist": "Ajouts en liste de souhaits par mois",
         "patchChanges": "Modifications de patch",
         "notRecordedYet": "Enregistré seulement depuis le début du suivi, un vaisseau peut donc n'avoir rien."
+      },
+      "buildCompare": {
+        "from": "Depuis le build",
+        "to": "Vers le build",
+        "appeared": "Apparus",
+        "vanished": "Disparus",
+        "changed": "Modifiés",
+        "notRecorded": "Non enregistré pour l'un de ces builds.",
+        "needsTwoBuilds": "Un seul build est enregistré, il n'y a donc rien à comparer.",
+        "pickTwoBuilds": "Choisis deux builds différents.",
+        "failed": "Impossible de comparer ces deux builds.",
+        "andMore": "et %{count} de plus",
+        "catalogues": {
+          "components": "Composants",
+          "equipment": "Équipement",
+          "commodities": "Marchandises",
+          "models": "Vaisseaux"
+        }
       }
     }
   }

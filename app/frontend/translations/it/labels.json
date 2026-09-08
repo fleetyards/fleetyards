@@ -2193,6 +2193,24 @@
         "wishlist": "Aggiunte alla lista dei desideri per mese",
         "patchChanges": "Modifiche della patch",
         "notRecordedYet": "Registrato solo da quando è iniziato il tracciamento, quindi una nave può non avere nulla."
+      },
+      "buildCompare": {
+        "from": "Dalla build",
+        "to": "Alla build",
+        "appeared": "Comparsi",
+        "vanished": "Scomparsi",
+        "changed": "Modificati",
+        "notRecorded": "Non registrato per una di queste build.",
+        "needsTwoBuilds": "È registrata una sola build, quindi non c'è nulla con cui confrontarla.",
+        "pickTwoBuilds": "Scegli due build diverse.",
+        "failed": "Impossibile confrontare queste due build.",
+        "andMore": "e altri %{count}",
+        "catalogues": {
+          "components": "Componenti",
+          "equipment": "Equipaggiamento",
+          "commodities": "Merci",
+          "models": "Navi"
+        }
       }
     }
   }
