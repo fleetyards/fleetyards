@@ -69,13 +69,46 @@ class Hardpoint < ApplicationRecord
   # the whole matrix half, which comes from no build and whose facts live only on
   # the row.
   #
-  # A no-op today for the game-files half, because the cleanup still destroys
-  # every slot a load did not name -- so a slot exists if and only if it has a
-  # row for the current build. It starts to mean something on the step that stops
-  # destroying, and it has to be in place first: the other order shows every slot
-  # ever retired in one response.
+  # And -- the third clause -- everything, while this environment has no build
+  # rows at all. That is the window between the build table shipping and the
+  # backfill task running: without it, deploying the build-resolved reads before
+  # that task drops all 22,561 game-file slots out of
+  # `/models/{slug}/hardpoints` at once and leaves only the 4,974 matrix ones,
+  # which for most ships is nothing.
+  #
+  # Deliberately asked of the environment rather than of the slot. "This slot has
+  # no build row" looks like the same thing and is not: retiring a slot *deletes*
+  # its row for that build, and `prune_builds` later drops the older ones, so a
+  # slot that left the game four builds ago would run out of rows and read as
+  # never-described -- quietly reappearing in the API. Asked of the environment,
+  # the clause stops applying the moment anything is loaded and never applies
+  # again.
+  #
+  # It is also uncorrelated, so Postgres evaluates it once per query rather than
+  # once per row, and `EXISTS` keeps all three clauses one predicate over
+  # indexed columns instead of an `.or` of three relations.
+  # Named placeholders because `:environment` is asked twice, and a constant
+  # because a heredoc has to open on the line it is used from.
+  IN_BUILD_SQL = <<~SQL.squish
+    hardpoints.source = :matrix
+    OR EXISTS (
+      SELECT 1 FROM hardpoint_builds
+       WHERE hardpoint_builds.hardpoint_id = hardpoints.id
+         AND hardpoint_builds.environment = :environment
+         AND hardpoint_builds.version = :version
+    )
+    OR NOT EXISTS (
+      SELECT 1 FROM hardpoint_builds WHERE hardpoint_builds.environment = :environment
+    )
+  SQL
+
   scope :in_build, ->(source = ::ScData::Source.current) {
-    where(source: :ship_matrix).or(where(id: HardpointBuild.current(source).select(:hardpoint_id)))
+    where(
+      sanitize_sql_array([
+        IN_BUILD_SQL,
+        {matrix: sources[:ship_matrix], environment: source.environment, version: source.version}
+      ])
+    )
   }
 
   # Named constants rather than inline maps, because `HardpointBuild` declares
@@ -133,6 +166,7 @@ class Hardpoint < ApplicationRecord
 
   # Not in the build we are on -- a port the loadout no longer has. Only ever
   # true for the game-files half; a matrix slot answers to no build.
+  #
   def retired?
     game_files? && build.blank?
   end
