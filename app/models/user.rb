@@ -267,6 +267,30 @@ class User < ApplicationRecord
     where(confirmed_at: nil)
   end
 
+  # Devise counts a sign-in on every authentication that is not a session fetch,
+  # and with `remember_for` at six months against a two-hour session timeout,
+  # most of those are the cookie proving who someone is again rather than anyone
+  # signing in. Over one reporting window that was 433,159 writes to the busiest
+  # table in the database, while the query that looks an account up by login ran
+  # 27,858 times -- so about one in sixteen of them followed a password.
+  #
+  # Skipping the rest leaves `sign_in_count` counting what its name says, and
+  # `last_sign_in_at` holding the last time someone really signed in. Nothing
+  # loses "when was this account last used" -- that is `last_active_at`, which
+  # every API client updates.
+  def update_tracked_fields!(request)
+    return if remembered_authentication?(request)
+
+    super
+  end
+
+  private def remembered_authentication?(request)
+    warden = request.env["warden"]
+    return false if warden.nil?
+
+    warden.winning_strategy.is_a?(Devise::Strategies::Rememberable)
+  end
+
   def set_normalized_login_fields
     self.normalized_email = email.downcase
     self.normalized_username = username.downcase

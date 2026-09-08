@@ -117,6 +117,27 @@ class Api::V1::SessionsTest < ActionDispatch::IntegrationTest
     assert_predicate remember_cookie(browser).to_s, :empty?
   end
 
+  test "a remembered browser does not count as another sign in" do
+    user = create(:user, password: "enterprise")
+    browser = sign_in_remembered(user)
+    signed_in = user.reload.slice(:sign_in_count, :current_sign_in_at)
+
+    browser.cookies.delete(Rails.configuration.cookie_prefix)
+    browser.get "/api/v1/users/me"
+
+    assert_equal 200, browser.response.status
+    assert_equal signed_in, user.reload.slice(:sign_in_count, :current_sign_in_at)
+  end
+
+  test "signing in with a password still counts" do
+    user = create(:user, password: "enterprise")
+    browser = open_session
+
+    assert_difference -> { user.reload.sign_in_count }, 1 do
+      sign_in_json(browser, user, remember: true)
+    end
+  end
+
   private def sign_in_remembered(user)
     browser = open_session
     sign_in_json(browser, user, remember: true)
