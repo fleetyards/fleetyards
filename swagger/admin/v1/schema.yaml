@@ -2640,6 +2640,105 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hardpoints":
+    get:
+      summary: Hardpoints
+      tags:
+      - Hardpoints
+      operationId: listHardpoints
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/AdminHardpointQuery"
+        required: false
+        style: deepObject
+        explode: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminHardpoints"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Create Hardpoint
+      tags:
+      - Hardpoints
+      operationId: createHardpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminHardpointInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminHardpoint"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+  "/hardpoints/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hardpoint
+      tags:
+      - Hardpoints
+      operationId: hardpoint
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminHardpoint"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Hardpoint
+      tags:
+      - Hardpoints
+      operationId: updateHardpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminHardpointInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminHardpoint"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Destroy Hardpoint
+      tags:
+      - Hardpoints
+      operationId: destroyHardpoint
+      responses:
+        '204':
+          description: no content
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     post:
       summary: Image create
@@ -8131,6 +8230,146 @@ components:
       - name
       - permanent
       title: AdminFleetRole
+    AdminHardpoint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        parentId:
+          type: string
+          format: uuid
+        parentType:
+          type: string
+        source:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        editable:
+          type: boolean
+        retired:
+          type: boolean
+        group:
+          "$ref": "#/components/schemas/HardpointGroupEnum"
+        category:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
+        groupKey:
+          type: string
+        matrixKey:
+          type: string
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        types:
+          type: array
+          items:
+            type: string
+        portTags:
+          type: array
+          items:
+            type: string
+        requiredTags:
+          type: array
+          items:
+            type: string
+        flags:
+          type: array
+          items:
+            type: string
+        details:
+          type: string
+        component:
+          "$ref": "#/components/schemas/Component"
+        hardpoints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminHardpoint"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - source
+      - editable
+      - retired
+      - createdAt
+      - updatedAt
+      title: AdminHardpoint
+    AdminHardpointInput:
+      type: object
+      properties:
+        parentId:
+          type: string
+          format: uuid
+        parentType:
+          type: string
+        scName:
+          type: string
+        componentId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        group:
+          "$ref": "#/components/schemas/HardpointGroupEnum"
+        category:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
+        minSize:
+          type:
+          - integer
+          - 'null'
+        maxSize:
+          type:
+          - integer
+          - 'null'
+        details:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: AdminHardpointInput
+    AdminHardpointQuery:
+      type: object
+      properties:
+        parentIdEq:
+          type: string
+          format: uuid
+        parentTypeEq:
+          type: string
+        sourceEq:
+          "$ref": "#/components/schemas/HardpointSourceEnum"
+        groupEq:
+          "$ref": "#/components/schemas/HardpointGroupEnum"
+        categoryEq:
+          "$ref": "#/components/schemas/HardpointCategoryEnum"
+        componentIdEq:
+          type: string
+          format: uuid
+        scNameCont:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: AdminHardpointQuery
+    AdminHardpoints:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminHardpoint"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AdminHardpoints
     AdminModelMedia:
       type: object
       properties:
