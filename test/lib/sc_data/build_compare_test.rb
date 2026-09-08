@@ -31,6 +31,9 @@ module ScData
     # deleted: a catalogue row the export drops keeps its row and loses its build.
     test "#call reports a record the newer build stopped describing" do
       gone = build_for(OLD).component
+      # A second record both builds describe, so the catalogue counts as
+      # recorded on either side and the rule below is the one under test.
+      build_for(NEW, component: build_for(OLD).component)
 
       assert_equal [gone.id], compare.vanished
       assert Component.exists?(gone.id), "the record itself is still there"
@@ -119,6 +122,26 @@ module ScData
         assert_equal foreign_key, ::ScData::BuildCompare.subject_key(build_class),
           "#{build_class} should be keyed on #{foreign_key}"
       end
+    end
+
+    # Commodities and models only gained build rows in 4.10.0, so a diff against
+    # 4.9.0 reported all 232 and all 215 of them as new -- which is a wrong
+    # answer rather than a surprising one.
+    test "#call reports a catalogue with no rows on one side as not recorded" do
+      build_for(NEW)
+
+      result = compare
+
+      assert_not result.recorded?
+      assert_empty result.appeared, "the lists stay empty so the flag cannot be ignored into a wrong reading"
+      assert_empty result.vanished
+    end
+
+    test "#call is recorded when both sides have rows" do
+      build_for(OLD)
+      build_for(NEW)
+
+      assert_predicate compare, :recorded?
     end
 
     test "#counts summarises without walking the lists again" do

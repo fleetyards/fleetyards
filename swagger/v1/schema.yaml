@@ -9380,6 +9380,51 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/sc-data/builds":
+    get:
+      summary: SC Data Builds
+      tags:
+      - Versions
+      operationId: scDataBuilds
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataBuilds"
+  "/sc-data/compare":
+    get:
+      summary: Compare two SC Data builds
+      tags:
+      - Versions
+      operationId: scDataCompare
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: to
+        in: query
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataCompare"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/sc-data/sources":
     get:
       summary: SC Data Sources
@@ -19640,6 +19685,293 @@ components:
       - UPGRADE
       - SKIN
       title: RsiHangarItemKindEnum
+    ScDataBuilds:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              environment:
+                type: string
+              version:
+                type: string
+              default:
+                type: boolean
+            additionalProperties: false
+            required:
+            - environment
+            - version
+            - default
+      additionalProperties: false
+      required:
+      - items
+      title: ScDataBuilds
+    ScDataCompare:
+      type: object
+      properties:
+        from:
+          type: object
+          properties:
+            environment:
+              type: string
+            version:
+              type: string
+          additionalProperties: false
+          required:
+          - environment
+          - version
+        to:
+          type: object
+          properties:
+            environment:
+              type: string
+            version:
+              type: string
+          additionalProperties: false
+          required:
+          - environment
+          - version
+        catalogues:
+          type: object
+          properties:
+            components:
+              type: object
+              properties:
+                recorded:
+                  type: boolean
+                counts:
+                  type: object
+                  properties:
+                    appeared:
+                      type: integer
+                    vanished:
+                      type: integer
+                    changed:
+                      type: integer
+                  additionalProperties: false
+                  required:
+                  - appeared
+                  - vanished
+                  - changed
+                appeared:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                vanished:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                changed:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      fields:
+                        type: array
+                        items:
+                          type: string
+                    additionalProperties: false
+                    required:
+                    - id
+                    - fields
+              additionalProperties: false
+              required:
+              - recorded
+              - counts
+              - appeared
+              - vanished
+              - changed
+            equipment:
+              type: object
+              properties:
+                recorded:
+                  type: boolean
+                counts:
+                  type: object
+                  properties:
+                    appeared:
+                      type: integer
+                    vanished:
+                      type: integer
+                    changed:
+                      type: integer
+                  additionalProperties: false
+                  required:
+                  - appeared
+                  - vanished
+                  - changed
+                appeared:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                vanished:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                changed:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      fields:
+                        type: array
+                        items:
+                          type: string
+                    additionalProperties: false
+                    required:
+                    - id
+                    - fields
+              additionalProperties: false
+              required:
+              - recorded
+              - counts
+              - appeared
+              - vanished
+              - changed
+            commodities:
+              type: object
+              properties:
+                recorded:
+                  type: boolean
+                counts:
+                  type: object
+                  properties:
+                    appeared:
+                      type: integer
+                    vanished:
+                      type: integer
+                    changed:
+                      type: integer
+                  additionalProperties: false
+                  required:
+                  - appeared
+                  - vanished
+                  - changed
+                appeared:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                vanished:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                changed:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      fields:
+                        type: array
+                        items:
+                          type: string
+                    additionalProperties: false
+                    required:
+                    - id
+                    - fields
+              additionalProperties: false
+              required:
+              - recorded
+              - counts
+              - appeared
+              - vanished
+              - changed
+            models:
+              type: object
+              properties:
+                recorded:
+                  type: boolean
+                counts:
+                  type: object
+                  properties:
+                    appeared:
+                      type: integer
+                    vanished:
+                      type: integer
+                    changed:
+                      type: integer
+                  additionalProperties: false
+                  required:
+                  - appeared
+                  - vanished
+                  - changed
+                appeared:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                vanished:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                changed:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                      fields:
+                        type: array
+                        items:
+                          type: string
+                    additionalProperties: false
+                    required:
+                    - id
+                    - fields
+              additionalProperties: false
+              required:
+              - recorded
+              - counts
+              - appeared
+              - vanished
+              - changed
+          additionalProperties: false
+          required:
+          - components
+          - equipment
+          - commodities
+          - models
+      additionalProperties: false
+      required:
+      - from
+      - to
+      - catalogues
+      title: ScDataCompare
     ScDataSources:
       type: object
       properties:

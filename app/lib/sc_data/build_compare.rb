@@ -20,10 +20,12 @@ module ScData
     # reverse. `vanished` means "has no row for the newer build" rather than
     # "was deleted": a catalogue row the export drops keeps its row and loses its
     # build, the same distinction the loadout work settled for slots.
-    Result = Struct.new(:appeared, :vanished, :changed) do
+    Result = Struct.new(:appeared, :vanished, :changed, :recorded) do
       def counts
         {appeared: appeared.size, vanished: vanished.size, changed: changed.size}
       end
+
+      alias_method :recorded?, :recorded
     end
 
     Change = Struct.new(:id, :name, :fields)
@@ -37,7 +39,21 @@ module ScData
     end
 
     def call
-      Result.new(appeared:, vanished:, changed:)
+      # A catalogue with no rows at all on one side was not *recorded* for that
+      # build, which is a different statement from "everything appeared" -- and
+      # reporting the lists would make it the wrong one. Commodities and models
+      # only gained build rows in 4.10.0, so comparing 4.9.0 against it would
+      # otherwise announce all 232 commodities and all 215 models as new.
+      #
+      # The lists are empty rather than merely flagged, so a reader that ignores
+      # the flag still cannot draw the wrong conclusion.
+      return Result.new([], [], [], false) unless recorded?
+
+      Result.new(appeared, vanished, changed, true)
+    end
+
+    def recorded?
+      from_rows.any? && to_rows.any?
     end
 
     # The record a build describes, derived from the one required `belongs_to`
