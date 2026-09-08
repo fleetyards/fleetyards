@@ -236,7 +236,11 @@ module Api
         model = find_model_by_slug!
         return if performed?
 
+        # `in_build` alongside the curation filters: a module only another
+        # build describes is not part of this ship here, even though its row is
+        # shared by every source.
         @model_modules = model.modules
+          .in_build
           .visible
           .active
           .order(name: :asc)
