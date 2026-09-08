@@ -5,18 +5,26 @@ module Loaders
     class AllJob < ::Loaders::BaseJob
       include FetchesParsedTree
 
-      def perform(version = nil, admin_user_id = nil)
-        version ||= ::ScData::Source.version
+      def perform(version = nil, admin_user_id = nil, environment = nil)
+        source = source_for(version, environment)
 
-        import = Imports::ScData::AllImport.create(version:, admin_user_id:)
+        import = Imports::ScData::AllImport.create(version: source.version, admin_user_id:)
 
         import.start!
 
-        fetch_parsed_tree!(version)
-
+        # Everything the load touches resolves its build from `ScData::Source`,
+        # so the whole of it runs inside the source rather than each loader
+        # being handed a version -- the seam #4590 added, and the reason
+        # `fetch_parsed_tree!` reaches for the right environment's tree without
+        # being told.
+        #
         # `to_h` rather than the bare return: a loader set that produced
         # nothing hands back nil, and the report still has to render.
-        stats = ::ScData::Loader::BaseLoader.all.to_h
+        stats = ::ScData::Source.with(source) do
+          fetch_parsed_tree!(source.version)
+
+          ::ScData::Loader::BaseLoader.all.to_h
+        end
 
         # Kept on the import so the admin view of a load says what it did.
         # Otherwise the only record of a build that rewrote the catalogue, versus
@@ -25,8 +33,8 @@ module Loaders
 
         AdminReport.deliver(
           task_type: "sc_data_import",
-          title: "sc_data Import Results (#{version})",
-          body: results_body(version, stats),
+          title: "sc_data Import Results (#{source})",
+          body: results_body(source, stats),
           actionable: empty_catalogue?(stats),
           link: "/maintenance/imports",
           record: import
@@ -40,8 +48,20 @@ module Loaders
         raise e
       end
 
-      private def results_body(version, stats)
-        lines = ["## sc_data #{version}", ""]
+      # The build to load. A version and an environment name it exactly; either
+      # one alone falls back to the configured source, which is what the admin
+      # trigger hands over and what a job enqueued before this shipped carries.
+      private def source_for(version, environment)
+        return ::ScData::Source.current if version.blank? && environment.blank?
+
+        ::ScData::Source.new(
+          version: version.presence || ::ScData::Source.version,
+          environment: environment.presence || ::ScData::Source.environment
+        )
+      end
+
+      private def results_body(source, stats)
+        lines = ["## sc_data #{source}", ""]
 
         stats.each do |loader, counts|
           lines << "### #{loader}"

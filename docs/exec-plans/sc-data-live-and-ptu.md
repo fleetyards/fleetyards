@@ -149,11 +149,18 @@ where they diverge, loading PTU rewrites live's ship pages. This is now item 2.
 asks `ScData::Source.version` — the default source only — and
 `Loaders::ScData::AllJob` and `FetchesParsedTree` do the same. Nothing iterates
 `ScData::Source.configured` and nothing calls `ScData::Source.with`, the seam
-#4590 added for it. `Imports::ScData::AllImport` is keyed on `version` with no
-`environment`, so `MAX_IMPORTS_PER_VERSION` counts two environments' loads
-together and the admin ledger cannot tell them apart.
-`Api::V1::ScDataController#current_version` reads the same import ledger, so it
-answers for whichever load finished last. This is now item 3, and it must not
+#4590 added for it. `Api::V1::ScDataController#current_version` reads the import
+ledger without naming a source, so it answers for whichever load finished last.
+And `CheckJob`'s coverage check asks the catalogues' own `version` columns, which
+are shared between environments and rewritten wholesale by a load — so after a
+ptu load it reads a finished live build as never loaded.
+
+The ledger itself needs nothing, which an earlier version of this note got
+wrong: it claimed `MAX_IMPORTS_PER_VERSION` conflates two environments and that
+an admin cannot tell their loads apart. A version names its environment —
+`4.10.1-ptu.12578875` — so it is already unique across sources, the count is
+already per build, and the version the admin view shows already says which
+source a load was for. This is now item 3, and it must not
 land before item 2 — giving production the ability to load PTU while loadouts
 are still single-source is what turns a harmless second source into a rewrite of
 live.
@@ -220,11 +227,14 @@ The two share the word "loadout" and nothing else. Deleting the legacy pair,
 ### 3. A production load path for a second environment
 
 `ScData::CheckJob` iterating `ScData::Source.configured` rather than asking only
-the default, `Loaders::ScData::AllJob` taking an environment and running its load
-inside `ScData::Source.with`, and `environment` on
-`Imports::ScData::AllImport` so `MAX_IMPORTS_PER_VERSION`, the admin ledger and
-`current_version` stop conflating two environments. `bin/scdata load
-<environment>` already goes through that seam and is the shape to follow.
+the default, `Loaders::ScData::AllJob` taking an environment and running its
+whole load inside `ScData::Source.with`, `current_version` answering for the
+source in force, and the coverage check reading the build rows rather than the
+catalogues' shared `version` columns. `bin/scdata load <environment>` already
+goes through that seam and is the shape to follow.
+
+No column is added to `Imports::ScData::AllImport`. A version names its
+environment, so the ledger is already per source.
 
 The config pointer belongs here rather than on its own: an entry naming a build
 nothing loads makes that source simply not appear, which is quiet rather than

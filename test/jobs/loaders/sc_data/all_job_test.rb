@@ -15,6 +15,48 @@ module Loaders
         AdminNotification.find_by(admin_user: @admin_user, notification_type: "sc_data_import")
       end
 
+      # Without an environment the job loads the configured default, which is
+      # what the admin trigger sends and what a job enqueued before the argument
+      # existed carries.
+      test "#perform loads the configured source when given nothing" do
+        loaded = nil
+        ::ScData::Loader::BaseLoader.stubs(:all).with { loaded = ::ScData::Source.current.to_s }
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        assert_equal "3.24.0 (live)", loaded
+        assert_equal "3.24.0", Imports::ScData::AllImport.last.version
+      end
+
+      # The whole load runs inside the source it was given, so every loader,
+      # scope and the parsed-tree fetch underneath resolve that build without
+      # being handed it -- which is what makes a second environment loadable at
+      # all.
+      test "#perform runs the load inside the environment it was given" do
+        Rails.configuration.stubs(:sc_data).returns({
+          sources: {live: "3.24.0", ptu: "3.24.1-ptu.2"}, default: "live"
+        })
+
+        loaded = nil
+        ::ScData::Loader::BaseLoader.stubs(:all).with { loaded = ::ScData::Source.current.to_s }
+
+        ::Loaders::ScData::AllJob.new.perform("3.24.1-ptu.2", nil, "ptu")
+
+        assert_equal "3.24.1-ptu.2 (ptu)", loaded
+        assert_equal "3.24.1-ptu.2", Imports::ScData::AllImport.last.version
+      end
+
+      # The source is back to what it was once the job returns: a job inside a
+      # request must not strand the outer value.
+      test "#perform leaves the source as it found it" do
+        before = ::ScData::Source.current
+
+        ::ScData::Loader::BaseLoader.stubs(:all)
+        ::Loaders::ScData::AllJob.new.perform("3.24.1-ptu.2", nil, "ptu")
+
+        assert_equal before, ::ScData::Source.current
+      end
+
       test "#perform creates an import, runs the loader, and finishes the import" do
         ::ScData::Loader::BaseLoader.expects(:all)
 
