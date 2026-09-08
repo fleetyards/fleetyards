@@ -15,12 +15,20 @@ module Api
         end
 
         def model_counts
-          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
-
           count_params = vehicle_query_params.except("sorts", "s")
-          @q = scope.ransack(count_params)
+          @q = @fleet.vehicles.ransack(count_params)
 
-          @model_counts = @q.result.includes(:model).joins(:model).group("models.slug").count
+          # No `includes`: this returns a grouped count, so no vehicle is ever
+          # instantiated and nothing reads an association off one. Eager loading
+          # them only added six outer joins to every call, filtered or not.
+          #
+          # The count stays DISTINCT, though nothing `vehicle_query_params`
+          # permits joins a `has_many` today. Ransack joins what a filter names,
+          # and one naming a `has_many` returns a vehicle once per matching row
+          # -- 106 instead of 49 on a fleet I tried. Dropping DISTINCT would
+          # make these numbers correct only for as long as that permit list
+          # stays as it is.
+          @model_counts = @q.result.joins(:model).group("models.slug").distinct.count(:id)
         end
 
         def members
