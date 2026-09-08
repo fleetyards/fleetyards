@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.12.0](https://github.com/fleetyards/fleetyards/compare/v7.11.1...v7.12.0) (2026-09-08)
+
+
+### Features
+
+* **gallery:** bring the image viewer in line with the design system ([#4745](https://github.com/fleetyards/fleetyards/issues/4745)) ([1a70928](https://github.com/fleetyards/fleetyards/commit/1a70928fe8fa6a1b9137b839ddbca8d60cfeb908))
+* **sc_data:** add hardpoint_builds and enforce the slot's natural key ([#4759](https://github.com/fleetyards/fleetyards/issues/4759)) ([505c25e](https://github.com/fleetyards/fleetyards/commit/505c25e69afb6c2241f0857cd9e41ffeff7823ab))
+* **sc_data:** dual-write what a build says about a hardpoint ([#4760](https://github.com/fleetyards/fleetyards/issues/4760)) ([4983f06](https://github.com/fleetyards/fleetyards/commit/4983f06ed8cfef00bfb3467dbdf901700bc7cf62))
+* **sc_data:** keep the size range and types a port declares ([#4740](https://github.com/fleetyards/fleetyards/issues/4740)) ([09a34e5](https://github.com/fleetyards/fleetyards/commit/09a34e5fd8ce16dea4d5c5e5cde25a37b40467e5))
+* **sc_data:** keep the tags a port and an item match on ([#4746](https://github.com/fleetyards/fleetyards/issues/4746)) ([5450a43](https://github.com/fleetyards/fleetyards/commit/5450a43a428bd27b62a4c03cfd8d5c18424e7109))
+* **sc_data:** read a hardpoint's facts through its build ([#4761](https://github.com/fleetyards/fleetyards/issues/4761)) ([dd2e5c0](https://github.com/fleetyards/fleetyards/commit/dd2e5c094cd8d563bde95386503b27686702f93e))
+* **sc_data:** retire a hardpoint's build instead of destroying the slot ([#4762](https://github.com/fleetyards/fleetyards/issues/4762)) ([caca83b](https://github.com/fleetyards/fleetyards/commit/caca83b0c569099166f966fa536cd52f175ad782))
+
+
+### Bug Fixes
+
+* **dev:** keep .env from shadowing vault secrets in bin/op ([#4748](https://github.com/fleetyards/fleetyards/issues/4748)) ([f961a9b](https://github.com/fleetyards/fleetyards/commit/f961a9b90486f407aec6cc119244a7838dd37558))
+* **hangar:** re-land the addons modal rework that never reached main ([#4751](https://github.com/fleetyards/fleetyards/issues/4751)) ([0c57e15](https://github.com/fleetyards/fleetyards/commit/0c57e15fb220e945432692d903cabbd9cbeefae9))
+* **inventory:** ask the build whether an item is still in the game ([#4753](https://github.com/fleetyards/fleetyards/issues/4753)) ([f6bac83](https://github.com/fleetyards/fleetyards/commit/f6bac83e7c7b03d8aa3f1851fa974f9775ddb9f0))
+* **sc_data:** let in_build tolerate an environment with no builds yet ([#4773](https://github.com/fleetyards/fleetyards/issues/4773)) ([61f6a61](https://github.com/fleetyards/fleetyards/commit/61f6a6189ad78f90bb023a6e10babad8aa34c25c))
+* **ships:** make a module choice move the metrics, and rebuild the picker ([#4742](https://github.com/fleetyards/fleetyards/issues/4742)) ([a0ab93d](https://github.com/fleetyards/fleetyards/commit/a0ab93de8e05d15394b8987aae369241654878b4))
+* **ships:** open the module picker from anywhere on the slot ([#4747](https://github.com/fleetyards/fleetyards/issues/4747)) ([401621d](https://github.com/fleetyards/fleetyards/commit/401621dc35018a5014f4d387f5d451b1684d4f5e))
+
+
+### Refactorings
+
+* **mail:** redesign the mails in MJML, in the app's own design language ([#4744](https://github.com/fleetyards/fleetyards/issues/4744)) ([aaad7c3](https://github.com/fleetyards/fleetyards/commit/aaad7c33d6c6d47b6cc853d66f1dd26e5a921717))
+* remove the legacy model hardpoint tables from the code ([#4772](https://github.com/fleetyards/fleetyards/issues/4772)) ([0679ed6](https://github.com/fleetyards/fleetyards/commit/0679ed6797352cc6db37df527ba0d61470c43c43))
+
+
+### Chores
+
+* **deps-dev:** bump @eslint/eslintrc from 3.3.6 to 3.3.7 ([#4735](https://github.com/fleetyards/fleetyards/issues/4735)) ([c656356](https://github.com/fleetyards/fleetyards/commit/c656356abd6002dd4340d19348cbd31cd36add89))
+* **deps-dev:** bump @types/node from 26.4.0 to 26.4.1 ([#4729](https://github.com/fleetyards/fleetyards/issues/4729)) ([95a06e7](https://github.com/fleetyards/fleetyards/commit/95a06e7850fe653aeabf6171eff9f39d8b4f5507))
+* **deps-dev:** bump @typescript-eslint/parser from 8.68.0 to 8.69.0 ([#4731](https://github.com/fleetyards/fleetyards/issues/4731)) ([4aefe5c](https://github.com/fleetyards/fleetyards/commit/4aefe5ca00fa43cf31b047e7bcd90277fa0e2dbc))
+* **deps-dev:** bump globals from 17.11.0 to 17.12.0 ([#4727](https://github.com/fleetyards/fleetyards/issues/4727)) ([8508a42](https://github.com/fleetyards/fleetyards/commit/8508a42208861b09599c75f4942374bce2a864bd))
+* **deps-dev:** bump knip from 6.33.0 to 6.34.0 ([#4736](https://github.com/fleetyards/fleetyards/issues/4736)) ([c7b5894](https://github.com/fleetyards/fleetyards/commit/c7b5894b540a17eab47f36338764a1ca2a23433e))
+* **deps-dev:** bump mocha from 11.8.0 to 12.0.0 ([#4737](https://github.com/fleetyards/fleetyards/issues/4737)) ([8688f91](https://github.com/fleetyards/fleetyards/commit/8688f91a6762aefe1ac674fdbb9f1e131330fd45))
+* **deps-dev:** bump sass from 1.103.1 to 1.104.0 ([#4734](https://github.com/fleetyards/fleetyards/issues/4734)) ([ba976e1](https://github.com/fleetyards/fleetyards/commit/ba976e1efd990a77b722b89e16a43b062cd5d6fe))
+* **deps-dev:** bump vitest from 4.1.11 to 5.0.0 ([#4732](https://github.com/fleetyards/fleetyards/issues/4732)) ([139d4ea](https://github.com/fleetyards/fleetyards/commit/139d4ea3c6d3d6f79dcb234f04a6e040e5f0507c))
+* **deps:** bump @event-calendar/core from 5.12.0 to 5.12.2 ([#4738](https://github.com/fleetyards/fleetyards/issues/4738)) ([4bff4f1](https://github.com/fleetyards/fleetyards/commit/4bff4f1d107be59758420a3f5e427cf945358b13))
+* **deps:** bump action_policy from 0.7.6 to 0.7.7 ([#4730](https://github.com/fleetyards/fleetyards/issues/4730)) ([770ee9f](https://github.com/fleetyards/fleetyards/commit/770ee9f7d41acf74c3f24b40256d27666d28382d))
+* **deps:** bump devise-two-factor from 6.4.0 to 6.4.1 ([#4726](https://github.com/fleetyards/fleetyards/issues/4726)) ([05cb9e0](https://github.com/fleetyards/fleetyards/commit/05cb9e0e614d9408945ecfa906294a0199cc9be7))
+* **deps:** bump git from 5.2.0 to 5.3.0 ([#4733](https://github.com/fleetyards/fleetyards/issues/4733)) ([3177278](https://github.com/fleetyards/fleetyards/commit/3177278d61517dbe9928feb0200d13ae541c5f43))
+* **deps:** bump image_processing from 2.0.3 to 2.1.0 ([#4725](https://github.com/fleetyards/fleetyards/issues/4725)) ([1fb4306](https://github.com/fleetyards/fleetyards/commit/1fb430602778f40a3f5ccbb4e1c897eb8d8f7eaf))
+* **deps:** bump pg_query from 6.2.2 to 6.2.3 ([#4728](https://github.com/fleetyards/fleetyards/issues/4728)) ([99b8d99](https://github.com/fleetyards/fleetyards/commit/99b8d99a7fa61e0e14aaef349cca908b2f770b05))
+* **deps:** bump vue-router from 5.3.0 to 5.3.1 ([#4739](https://github.com/fleetyards/fleetyards/issues/4739)) ([e87c188](https://github.com/fleetyards/fleetyards/commit/e87c188a302e4598d224700e9927975c7520b9b5))
+* **dev:** drop the dead --docker flag ([#4749](https://github.com/fleetyards/fleetyards/issues/4749)) ([e7bd3fb](https://github.com/fleetyards/fleetyards/commit/e7bd3fb2086721acf77dee3e219902c01702bb60))
+* **i18n:** remove 200 translation keys nothing can reach ([#4743](https://github.com/fleetyards/fleetyards/issues/4743)) ([b2aefb4](https://github.com/fleetyards/fleetyards/commit/b2aefb4659f8f954fc56f4ef492b6a8a9d623dc8))
+
 ## [7.11.1](https://github.com/fleetyards/fleetyards/compare/v7.11.0...v7.11.1) (2026-09-06)
 
 
