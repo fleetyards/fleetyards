@@ -16,9 +16,27 @@ module ScData
     # limits on the loaders container.
     CONCURRENCY = 16
 
+    # One object could not be moved after every attempt. Named rather than a
+    # bare string, because `raise "..."` is a RuntimeError and loses the class
+    # of what actually went wrong -- which is exactly what happened the first
+    # time a slow object failed a CI pull.
+    class TransferFailed < StandardError; end
+
     class NotConfigured < StandardError; end
 
     class MissingTree < StandardError; end
+
+    # A transfer is thousands of independent round trips, and each one is
+    # idempotent: a GET or a PUT of a single key. So a failure is worth another
+    # go rather than failing the whole run -- one object Hetzner did not answer
+    # in time used to kill a 15,103-object pull, in CI and in the loaders
+    # container alike.
+    #
+    # Bounded and short: the point is to ride out a slow object, not to sit
+    # through an outage. Three attempts at 0.5s and 1.0s adds at most 1.5s to a
+    # failure that was going to happen anyway.
+    ATTEMPTS = 3
+    RETRY_BACKOFF = 0.5
 
     # One object as a listing describes it.
     #
@@ -120,17 +138,43 @@ module ScData
         Thread.new do
           while (path = queue.pop)
             begin
-              yield path
+              with_retries { yield path }
             rescue => e
-              errors << "#{path}: #{e.message}"
+              errors << [path, e]
             end
           end
         end
       end.each(&:join)
 
-      raise errors.pop unless errors.empty?
+      unless errors.empty?
+        path, error = errors.pop
+
+        # The class is carried into the message as well as being the cause: this
+        # surfaces in a CI log and on a loaders container, where "which error"
+        # is the whole question.
+        raise TransferFailed, "#{path}: #{error.class}: #{error.message}"
+      end
 
       paths.size
+    end
+
+    # Retried for anything, deliberately. Telling a transient failure from a
+    # permanent one here would mean keeping a list of error classes in step with
+    # a provider's behaviour, and getting it wrong fails a whole transfer --
+    # while retrying a permanent failure only costs the backoff before it fails
+    # anyway.
+    private def with_retries
+      attempt = 0
+
+      begin
+        attempt += 1
+        yield
+      rescue
+        raise if attempt >= ATTEMPTS
+
+        sleep(RETRY_BACKOFF * attempt)
+        retry
+      end
     end
 
     private def bucket
@@ -156,7 +200,15 @@ module ScData
         endpoint: settings.fetch(:endpoint),
         access_key_id: settings.fetch(:access_key_id),
         secret_access_key: settings.fetch(:secret_access_key),
-        region: "unused"
+        region: "unused",
+
+        # The SDK classifies better than the retry above can -- throttling, 5xx
+        # and networking errors each get their own treatment and a jittered
+        # backoff. Raised from the default of three because a transfer this size
+        # will meet a slow object. `with_retries` is the backstop for whatever
+        # the SDK decides not to retry.
+        retry_limit: 5,
+        retry_mode: "standard"
       )
     end
   end
