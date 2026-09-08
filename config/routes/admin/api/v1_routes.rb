@@ -73,6 +73,10 @@ v1_admin_api_routes = lambda do
       put :regenerate
     end
   end
+  # Read for both halves of the table, write only for the curated one -- the
+  # policy decides, not the routes, so a refused write is a 403 rather than a
+  # missing action.
+  resources :hardpoints, only: %i[index show create update destroy]
   resources :docks, only: %i[index show create update destroy]
   resources :model_loaners, path: "model-loaners", only: %i[index show create update destroy]
   resources :model_snub_crafts, path: "model-snub-crafts", only: %i[index show create update destroy]
