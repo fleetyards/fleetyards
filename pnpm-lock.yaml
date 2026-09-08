@@ -9,8 +9,8 @@ overrides:
   semver: '>=7.5.2'
   picomatch: '>=4.0.4'
   serialize-javascript: '>=7.0.5'
-  ajv@5: '>=6.14.0'
-  ajv@6: '>=6.14.0'
+  ajv@5: '>=6.14.0 <7'
+  ajv@6: '>=6.14.0 <7'
   jsonpath-plus@7: '>=10.3.0'
 
 patchedDependencies:
@@ -7807,7 +7807,7 @@ snapshots:
 
   '@eslint/eslintrc@3.3.7':
     dependencies:
-      ajv: 8.20.0
+      ajv: 6.15.0
       debug: 4.4.3(supports-color@8.1.1)
       espree: 10.4.0
       globals: 14.0.0
@@ -11229,7 +11229,7 @@ snapshots:
 
   json-schema-migrate@0.2.0:
     dependencies:
-      ajv: 8.20.0
+      ajv: 6.15.0
 
   json-schema-traverse@0.4.1: {}
 
@@ -13223,7 +13223,7 @@ snapshots:
 
   webapi-parser@0.5.0:
     dependencies:
-      ajv: 8.20.0
+      ajv: 6.15.0
 
   webidl-conversions@3.0.1: {}
 
