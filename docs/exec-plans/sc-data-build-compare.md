@@ -78,12 +78,22 @@ about which questions each can answer:
 So: compute the preview, record the history. That is why (1) comes first — it is
 the half that needs nothing built underneath it.
 
-**And the useful diff is not "which fields differ".** 420 of the 430 field
-changes were `type_data`, a serialized blob whose diff reads as "something
-inside this changed" and tells a reader nothing. A field-level summary would
-bury the 10 renames under it. Either unpack that blob or leave it out of the
-summary — `ModelBuildChange` already stores `old_value`/`new_value` as text and
-would happily record 420 rows of noise per patch.
+**And the useful diff is not "which fields differ".** Two kinds of field drown
+out the rest.
+
+*Serialized shapes.* 420 components differed on `type_data`, a blob whose diff
+reads as "something inside this changed". `ModelBuild` already excludes its
+shapes from `DIFFABLE_FACTS`, and for a sharper reason than mine: two loads of
+the same export can serialise one differently with nothing having changed, so
+comparing them reports a difference on every re-parse. Worth stating precisely —
+of those 420, 189 also differ in length and so are likely real; the rest may be
+re-serialisation. Either way the field is not an answer.
+
+*Prose.* Measured after the first version of this plan, and the larger of the
+two: with the shapes already excluded, **2,171 of 2,182** changed components
+differed on `description` alone, against 10 on `name`. Excluding it turns a page
+of 2,182 into one of 359. `ModelBuild` never hit this because it carries no
+description at all.
 
 The three numbers a person wants are **appeared, vanished, renamed**.
 
