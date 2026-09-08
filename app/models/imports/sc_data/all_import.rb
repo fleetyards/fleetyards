@@ -37,8 +37,15 @@ module Imports
 
       validates :version, presence: true
 
-      def self.current_version
-        finished.order(created_at: :asc).last&.version
+      # The build this source is on, once a load has finished for it -- rather
+      # than whichever load finished last, which with two sources configured
+      # answers for the wrong one.
+      #
+      # No environment column is needed to ask it per source: a version names
+      # its environment (`4.10.1-ptu.12578875`), so it is already unique across
+      # them, and an admin reading the ledger can tell two loads apart by it.
+      def self.current_version(source = ::ScData::Source.current)
+        finished.where(version: source.version).order(created_at: :asc).last&.version
       end
     end
   end
