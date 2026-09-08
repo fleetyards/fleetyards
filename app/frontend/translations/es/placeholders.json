@@ -201,17 +201,6 @@
         "name": "Nombre de la posición",
         "position": "0"
       },
-      "modelHardpoint": {
-        "name": "Nombre del punto de montaje",
-        "key": "hardpoint_key",
-        "details": "Detalles",
-        "mount": "Tipo de montaje",
-        "itemSlots": "0",
-        "loadoutIdentifier": "Identificador de configuración"
-      },
-      "modelHardpointLoadout": {
-        "name": "Nombre de configuración"
-      },
       "logistics": {
         "inventoryName": "Main Depot, Cargo Bay...",
         "description": "Optional details about this inventory",

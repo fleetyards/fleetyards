@@ -388,14 +388,8 @@
         "supporterContribution": {
           "destroy": "Êtes-vous sûr de vouloir supprimer cette contribution de soutien ? Cette action est irréversible."
         },
-        "modelHardpoint": {
-          "destroy": "Êtes-vous sûr de vouloir supprimer ce point d'attache ? Cette action est irréversible."
-        },
         "modelPosition": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce poste ? Cette action est irréversible."
-        },
-        "modelHardpointLoadout": {
-          "destroy": "Êtes-vous sûr de vouloir supprimer cette configuration ? Cette action est irréversible."
         },
         "modelLoaner": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce prêt ? Cette action est irréversible."

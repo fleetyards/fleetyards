@@ -388,14 +388,8 @@
         "supporterContribution": {
           "destroy": "Bist du sicher, dass du diesen Unterstützer-Beitrag löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
-        "modelHardpoint": {
-          "destroy": "Sind Sie sicher, dass Sie diesen Aufhängungspunkt löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
-        },
         "modelPosition": {
           "destroy": "Bist du sicher, dass du diese Position löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
-        },
-        "modelHardpointLoadout": {
-          "destroy": "Sind Sie sicher, dass Sie diese Konfiguration löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         "modelLoaner": {
           "destroy": "Sind Sie sicher, dass Sie dieses Leihschiff löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."

@@ -24,24 +24,12 @@
 class VehicleLoadout < ApplicationRecord
   belongs_to :vehicle, touch: true
 
-  has_many :vehicle_loadout_hardpoints, dependent: :destroy
-
-  accepts_nested_attributes_for :vehicle_loadout_hardpoints, allow_destroy: true
-
   before_validation :set_default_name, if: -> { name.blank? }
 
   validates :url, presence: true
   validates :name, uniqueness: {scope: :vehicle_id}, allow_nil: true
 
   scope :active, -> { where(active: true) }
-
-  def create_from_defaults!
-    vehicle.model.model_hardpoints.each do |mh|
-      vehicle_loadout_hardpoints.find_or_create_by!(model_hardpoint_id: mh.id) do |vlh|
-        vlh.component_id = mh.component_id
-      end
-    end
-  end
 
   def activate!
     transaction do

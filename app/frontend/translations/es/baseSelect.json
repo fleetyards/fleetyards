@@ -36,32 +36,6 @@
           "prompt": "Seleccionar fuente"
         }
       },
-      "modelHardpoint": {
-        "source": {
-          "label": "Fuente",
-          "prompt": "Seleccionar fuente"
-        },
-        "group": {
-          "label": "Grupo",
-          "prompt": "Seleccionar grupo"
-        },
-        "hardpointType": {
-          "label": "Tipo",
-          "prompt": "Seleccionar tipo"
-        },
-        "size": {
-          "label": "Tamaño",
-          "nullablePrompt": "Seleccionar tamaño"
-        },
-        "category": {
-          "label": "Categoría",
-          "nullablePrompt": "Seleccionar categoría"
-        },
-        "subCategory": {
-          "label": "Subcategoría",
-          "nullablePrompt": "Seleccionar subcategoría"
-        }
-      },
       "fleet": {
         "members": {
           "shipsFilter": {

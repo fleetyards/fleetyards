@@ -952,23 +952,6 @@
           "custom": "Benutzerdefiniert"
         }
       },
-      "modelHardpoint": {
-        "name": "Name",
-        "key": "Schlüssel",
-        "source": "Quelle",
-        "group": "Gruppe",
-        "hardpointType": "Typ",
-        "size": "Größe",
-        "category": "Kategorie",
-        "subCategory": "Unterkategorie",
-        "details": "Details",
-        "mount": "Halterung",
-        "itemSlots": "Gegenstandsplätze",
-        "loadoutIdentifier": "Loadout-Kennung"
-      },
-      "modelHardpointLoadout": {
-        "name": "Name"
-      },
       "modelUpgrade": {
         "name": "Name",
         "description": "Beschreibung",
@@ -1655,9 +1638,6 @@
             "newShipsInYear": "Neue Schiffe in %{year}",
             "totalFleets": "Flotten gesamt"
           }
-        },
-        "modelHardpoint": {
-          "loadouts": "Konfigurationen"
         },
         "supporterContributions": {
           "source": {

@@ -30,7 +30,7 @@ module Frontend
     end
 
     def model
-      @model = model_record.includes(model_hardpoints: [:component]).first
+      @model = model_record.first
       return if redirect_to_canonical_slug(@model)
 
       if @model.present?

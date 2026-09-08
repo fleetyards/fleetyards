@@ -171,39 +171,6 @@ zh-TW:
         variants: 變體
         weapons: 武器
         fleetchart_image: Lagacy Fleetchart Image
-      model_hardpoint:
-        categories:
-          fixed: 固定機動推進器
-          gimbal: 萬向機動推進器
-          joint: 關節機動推進器
-          main: 主推進器
-          manned_turret: 有人砲塔
-          missile_turret: 飛彈砲塔
-          remote_turret: 遙控砲塔
-          retro: 反推推進器
-          vtol: VTOL 推進器
-          qed: QED
-          emp: EMP
-        sizes:
-          capital: C (4)
-          eight: 8
-          eleven: 11
-          five: 5
-          four: 4
-          large: L (3)
-          medium: M (2)
-          nine: 9
-          one: 1
-          seven: 7
-          six: 6
-          small: S (1)
-          tbd: TBD
-          ten: 10
-          three: 3
-          twelve: 12
-          two: 2
-          vehicle: V (0)
-          snub: Snub (0)
       progress_tracker_item:
         statuses:
           done: 完成

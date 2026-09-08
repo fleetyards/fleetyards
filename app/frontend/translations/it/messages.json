@@ -387,14 +387,8 @@
         "supporterContribution": {
           "destroy": "Sei sicuro di voler eliminare questo contributo del sostenitore? Questa azione non può essere annullata."
         },
-        "modelHardpoint": {
-          "destroy": "Sei sicuro di voler eliminare questo punto di montaggio? Questa azione non può essere annullata."
-        },
         "modelPosition": {
           "destroy": "Sei sicuro di voler eliminare questa posizione? Questa azione non può essere annullata."
-        },
-        "modelHardpointLoadout": {
-          "destroy": "Sei sicuro di voler eliminare questa configurazione? Questa azione non può essere annullata."
         },
         "modelLoaner": {
           "destroy": "Sei sicuro di voler eliminare questo prestito? Questa azione non può essere annullata."

@@ -17,9 +17,7 @@ module Api
       def index
         authorize! with: VehicleLoadoutPolicy
 
-        @vehicle_loadouts = @vehicle.vehicle_loadouts
-          .order(active: :desc, name: :asc)
-          .includes(vehicle_loadout_hardpoints: [:model_hardpoint, :component])
+        @vehicle_loadouts = @vehicle.vehicle_loadouts.order(active: :desc, name: :asc)
       end
 
       def show
@@ -31,8 +29,6 @@ module Api
         @vehicle_loadout = @vehicle.vehicle_loadouts.new(vehicle_loadout_params)
 
         if @vehicle_loadout.save
-          @vehicle_loadout.create_from_defaults! if params[:from_defaults]
-          @vehicle_loadout.reload
           render status: :created
         else
           render json: ValidationError.new("vehicle_loadout.create", errors: @vehicle_loadout.errors),
@@ -74,10 +70,7 @@ module Api
 
       private def vehicle_loadout_params
         @vehicle_loadout_params ||= params.transform_keys(&:underscore)
-          .permit(
-            :name, :url,
-            vehicle_loadout_hardpoints_attributes: [:id, :model_hardpoint_id, :component_id, :_destroy]
-          )
+          .permit(:name, :url)
       end
     end
   end

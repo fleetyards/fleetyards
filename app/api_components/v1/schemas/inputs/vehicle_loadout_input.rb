@@ -10,12 +10,7 @@ module V1
           type: :object,
           properties: {
             name: {type: [:string, :null]},
-            url: {type: :string},
-            fromDefaults: {type: :boolean},
-            vehicleLoadoutHardpointsAttributes: {
-              type: :array,
-              items: VehicleLoadoutHardpointInput
-            }
+            url: {type: :string}
           },
           additionalProperties: false
         })

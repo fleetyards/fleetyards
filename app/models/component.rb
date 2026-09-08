@@ -217,8 +217,6 @@ class Component < ApplicationRecord
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :hardpoint_loadouts, class_name: "Hardpoint", dependent: :nullify
 
-  has_many :model_hardpoints, dependent: :nullify
-
   before_save :update_slugs
   before_save :extract_data_from_description
 

@@ -388,14 +388,8 @@
         "supporterContribution": {
           "destroy": "¿Seguro que quieres eliminar esta aportación de patrocinador? Esta acción no se puede revertir."
         },
-        "modelHardpoint": {
-          "destroy": "¿Está seguro de que desea eliminar este punto de montaje? Esta acción no se puede revertir."
-        },
         "modelPosition": {
           "destroy": "¿Seguro que quieres eliminar esta posición? Esta acción no se puede revertir."
-        },
-        "modelHardpointLoadout": {
-          "destroy": "¿Está seguro de que desea eliminar esta configuración? Esta acción no se puede revertir."
         },
         "modelLoaner": {
           "destroy": "¿Está seguro de que desea eliminar este préstamo? Esta acción no se puede revertir."

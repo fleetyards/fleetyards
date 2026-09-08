@@ -200,17 +200,6 @@
         "name": "Position Name",
         "position": "0"
       },
-      "modelHardpoint": {
-        "name": "Hardpoint Name",
-        "key": "hardpoint_key",
-        "details": "Details",
-        "mount": "Mount Type",
-        "itemSlots": "0",
-        "loadoutIdentifier": "Loadout Identifier"
-      },
-      "modelHardpointLoadout": {
-        "name": "Loadout Name"
-      },
       "logistics": {
         "inventoryName": "Main Depot, Cargo Bay...",
         "description": "Optional details about this inventory",
