@@ -45,9 +45,25 @@ module ScData
 
         update_loadout(model_module, module_data)
 
-        update_params = {
-          production_status: "flight-ready"
-        }
+        # Curated until the live game ships it, automatic afterwards.
+        #
+        # A ptu build saying so is not the game saying so, so this asks the
+        # *default* source rather than the one being loaded -- a ptu load of a
+        # module live does not have leaves whatever an admin chose alone, and a
+        # live load flips it.
+        #
+        # Two ways live can describe it: a row already exists, or this load is
+        # the live one and is about to write it. Without the second, the status
+        # would lag a build behind, because `apply_build` runs after this.
+        #
+        # It does not go back if live later drops the module: there is nothing to
+        # go back to that would not be a guess, and guessing would overwrite
+        # curation. Not decidable at all before modules had builds.
+        live = ::ScData::Source.default
+        ships_in_live = source == live || model_module.builds.current(live).any?
+
+        update_params = {}
+        update_params[:production_status] = "flight-ready" if ships_in_live
 
         update_params = update_metrics(module_data, update_params)
         # This build's slots, for the same reason the models loader asks that
