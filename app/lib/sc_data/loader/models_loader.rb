@@ -89,12 +89,21 @@ module ScData
         update_params = {}
 
         # Computed here because they read the loadout `update_loadout` just wrote.
-        update_params[:fuel_consumption] = model.fuel_consumption_from_hardpoints
-        update_params.merge!(model.accelerations_from_hardpoints)
+        update_params[:fuel_consumption] = model.fuel_consumption_from_hardpoints(source)
+        update_params.merge!(model.accelerations_from_hardpoints(source))
 
         update_params = update_metrics(model, model_data, update_params)
         update_params = update_personal_inventory(model_data, update_params)
-        hardpoints = model.hardpoints.game_files
+        # This build's slots, not every game-file slot the model has ever had.
+        # Before the cleanup stopped destroying, those were the same set; now a
+        # port a build dropped keeps its row, and six derived facts below --
+        # cargo holds, three kinds of fuel tank, the refuel boom and the speeds
+        # -- would go on counting it.
+        #
+        # `source` rather than the ambient one: a loader can be pointed at an
+        # environment by setting `sc_environment`, without `ScData::Source.with`
+        # around it.
+        hardpoints = model.hardpoints.in_build(source)
         update_params = update_cargo_holds(hardpoints, update_params)
         update_params = update_quantum_fuel_tanks(hardpoints, update_params)
         update_params = update_hydrogen_fuel_tanks(hardpoints, update_params)
