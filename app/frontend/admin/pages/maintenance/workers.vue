@@ -1,4 +1,5 @@
 <script lang="ts" setup>
-const prefix = window.ON_SUBDOMAIN ? "" : "/admin";
-window.location.href = `${prefix}/workers`;
+import { engineUrls } from "@/admin/utils/EngineUrls";
+
+window.location.href = engineUrls.workers;
 </script>
