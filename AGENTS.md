@@ -57,6 +57,8 @@ rails db:create db:migrate db:seed
 docker-compose up -d              # Start database and services
 foreman start -f Procfile          # Start Rails + Vite
 bin/dev                           # Alternative: start dev environment
+bin/setup                         # Set up a checkout (allocates a worktree's ports, databases, Redis band)
+bin/teardown                      # Release everything bin/setup allocated to a worktree, before removing it
 ```
 
 ### Testing
