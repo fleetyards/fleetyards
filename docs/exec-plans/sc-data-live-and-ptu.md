@@ -243,7 +243,39 @@ loud.
 **Gated on item 2.** Until the loadout carries a build, this hands production
 the ability to overwrite live's ship pages with a PTU build.
 
-### 4. Contract phase — 73 columns still held twice
+### 4. Model modules per build — done, 2026-09-08
+
+`ModelModule` was the one catalogue the row-per-build work never covered, and
+what it was missing was not facts but **existence**. A module row is created by
+`ModulesImporter` from the RSI store data or by an admin, never by a load, and it
+is shared by every source. So a module only the PTU build described was offered
+under live as well, with `description` from whichever load ran last and a loadout
+that resolved to nothing — its slots carry `HardpointBuild` rows for ptu and not
+for live.
+
+Measured before deciding: 27 module rows, **6 with an `sc_key`**, and exactly
+those 6 have slots. The loader writes three things, of which one is an export
+fact. On that count a table looks unjustifiable, and an earlier version of this
+plan said so — weighing the fields and missing that the value is the question
+"does this build describe it", which is the one a PTU-only module raises.
+
+`ModelModuleBuild` holds `description` and `cargo_holds`;
+`ModelModule.in_build` narrows the modules a ship offers; `ScData::Source::BUILDS`
+lists it, so a source can now count as loaded on modules alone.
+
+Two things deliberately left alone:
+
+- **`cargo_holds` is recorded but not read through.** `set_cargo_from_hardpoints`
+  derives `cargo` from it in a `before_save`, so a reader answering from the
+  build would hand that callback the *previous* build's value on the second load
+  and store a capacity the module does not have. Same reason `ComponentBuild`
+  holds back `manufacturer_id` and `hidden`.
+- **`production_status` stays on the row.** The loader hardcodes it to
+  "flight-ready" while the admin API also permits it, so it is a
+  load-versus-curation conflict that predates the table and wants deciding on
+  its own rather than being quietly settled by moving it.
+
+### 5. Contract phase — 73 columns still held twice
 
 Measured against the current schema:
 
@@ -268,7 +300,7 @@ build, so dropping them is mechanical — but it is one-way, and the PTU load th
 the columns are the fallback that makes a bad load survivable, and a load is not
 yet survivable while it rewrites the other environment's loadouts.
 
-### 5. Patch-by-patch compare
+### 6. Patch-by-patch compare
 
 What appeared, changed and vanished between two builds — live→PTU, or version N
 against N-1. Now cheap, because each catalogue retains `BUILDS_RETAINED = 3`
@@ -280,7 +312,7 @@ feature wants its own list built from the existing build rows, plus a second
 selection point — "compare against what" — which the one-of-n switch is the
 wrong control for.
 
-### 6. Out of the model work
+### 7. Out of the model work
 
 - The bulk action on `sc_data_unlisted_models`, so a patch's new entries can be
   triaged in one pass rather than row by row.

@@ -195,9 +195,9 @@ Two things (4) has to get right, noted while (2) was written:
   than defaulting: uniform is simpler, but a component's ports describe the
   component, which is already per-build.
 
-  `ModelModule` has no build table at all (parent plan, item 1's findings), so a
-  module's slots have no build to resolve against until it gets one. At 22 rows
-  that is a footnote, not a blocker.
+  `ModelModule` had no build table at all when this was written; it has one as
+  of item 4 of the parent plan, so a module's slots resolve against a build like
+  any other now.
 - **Row count.** 22,561 game-file slots times three retained builds per
   environment is ~68k build rows per environment. Small, but the loader writes
   them all on every load, and `Hardpoint.find_each(&:save)` already runs over

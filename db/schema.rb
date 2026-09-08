@@ -1125,6 +1125,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_160000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "model_module_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "cargo_holds"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "environment", null: false
+    t.uuid "model_module_id", null: false
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.index ["environment", "version"], name: "index_model_module_builds_on_environment_and_version"
+    t.index ["model_module_id", "environment", "version"], name: "index_model_module_builds_on_module_and_build", unique: true
+    t.index ["model_module_id"], name: "index_model_module_builds_on_model_module_id"
+  end
+
   create_table "model_module_package_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "model_module_id"
@@ -1758,6 +1771,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_160000) do
   add_foreign_key "missions", "users", column: "created_by_id"
   add_foreign_key "model_build_changes", "models", on_delete: :cascade
   add_foreign_key "model_builds", "models", on_delete: :cascade
+  add_foreign_key "model_module_builds", "model_modules", on_delete: :cascade
   add_foreign_key "model_paints", "components", on_delete: :nullify
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"

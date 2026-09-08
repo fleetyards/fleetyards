@@ -53,6 +53,50 @@ class ModelModule < ApplicationRecord
 
   serialize :cargo_holds, coder: YAML
 
+  # What each build of the game says about this module. Written alongside the
+  # columns, so the reads can move over in their own step.
+  has_many :builds, class_name: "ModelModuleBuild", dependent: :destroy
+  has_one :build, -> { current }, class_name: "ModelModuleBuild", inverse_of: :model_module
+
+  # The modules a build describes, plus -- while this environment has no build
+  # rows at all -- everything. That last clause is the window between this table
+  # shipping and its backfill running, and it is asked of the environment rather
+  # than of the module for the same reason `Hardpoint.in_build` asks that way: a
+  # module retired from a build loses its row for it, and prune_builds drops the
+  # older ones, so a per-module version would let a module that left the game
+  # quietly reappear.
+  #
+  # A module with no `sc_key` is never described by a build -- the loader only
+  # walks keyed ones -- and has to stay offered regardless: those are the
+  # RSI-store modules Fleetyards knows about and the game files do not.
+  IN_BUILD_SQL = <<~SQL.squish
+    model_modules.sc_key IS NULL
+    OR EXISTS (
+      SELECT 1 FROM model_module_builds
+       WHERE model_module_builds.model_module_id = model_modules.id
+         AND model_module_builds.environment = :environment
+         AND model_module_builds.version = :version
+    )
+    OR NOT EXISTS (
+      SELECT 1 FROM model_module_builds WHERE model_module_builds.environment = :environment
+    )
+  SQL
+
+  scope :in_build, ->(source = ::ScData::Source.current) {
+    where(sanitize_sql_array([IN_BUILD_SQL, {environment: source.environment, version: source.version}]))
+  }
+
+  # Read through the build, falling back to the column. The column still answers
+  # for a module no load has given a build -- an RSI-store module the game files
+  # do not name, or one an admin filled in by hand.
+  ModelModuleBuild::READ_THROUGH.each do |fact|
+    define_method(fact) do
+      value = build&.public_send(fact)
+
+      value.nil? ? super() : value
+    end
+  end
+
   has_one_attached :store_image
 
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true
