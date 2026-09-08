@@ -66,8 +66,11 @@ class Hardpoint < ApplicationRecord
     {ship_matrix: 0, game_files: 1}
 
   # The slots a build describes: the game-files ones carrying a row for it, plus
-  # the whole matrix half, which comes from no build and whose facts live only on
-  # the row.
+  # everything that is not game-files at all -- the matrix half, which comes from
+  # no build and whose facts live only on the row, and the handful of rows whose
+  # `source` is null. `IS DISTINCT FROM` rather than `= :matrix` so a null is on
+  # the unfiltered side: only the half that carries build rows is narrowed by
+  # them, and 5 module slots have no source at all.
   #
   # And -- the third clause -- everything, while this environment has no build
   # rows at all. That is the window between the build table shipping and the
@@ -90,7 +93,7 @@ class Hardpoint < ApplicationRecord
   # Named placeholders because `:environment` is asked twice, and a constant
   # because a heredoc has to open on the line it is used from.
   IN_BUILD_SQL = <<~SQL.squish
-    hardpoints.source = :matrix
+    hardpoints.source IS DISTINCT FROM :game_files
     OR EXISTS (
       SELECT 1 FROM hardpoint_builds
        WHERE hardpoint_builds.hardpoint_id = hardpoints.id
@@ -106,7 +109,7 @@ class Hardpoint < ApplicationRecord
     where(
       sanitize_sql_array([
         IN_BUILD_SQL,
-        {matrix: sources[:ship_matrix], environment: source.environment, version: source.version}
+        {game_files: sources[:game_files], environment: source.environment, version: source.version}
       ])
     )
   }
