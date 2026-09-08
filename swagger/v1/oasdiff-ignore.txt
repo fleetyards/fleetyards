@@ -991,3 +991,11 @@ POST /vehicles/{vehicle_id}/loadouts removed the request property `fromDefaults`
 POST /vehicles/{vehicle_id}/loadouts removed the request property `vehicleLoadoutHardpointsAttributes`
 PUT /vehicles/{vehicle_id}/loadouts/{id} removed the request property `fromDefaults`
 PUT /vehicles/{vehicle_id}/loadouts/{id} removed the request property `vehicleLoadoutHardpointsAttributes`
+GET /sc-data/compare the `catalogues/commodities/appeared/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+GET /sc-data/compare the `catalogues/commodities/vanished/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+GET /sc-data/compare the `catalogues/components/appeared/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+GET /sc-data/compare the `catalogues/components/vanished/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+GET /sc-data/compare the `catalogues/equipment/appeared/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+GET /sc-data/compare the `catalogues/equipment/vanished/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+GET /sc-data/compare the `catalogues/models/appeared/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+GET /sc-data/compare the `catalogues/models/vanished/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`

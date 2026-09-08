@@ -25,6 +25,19 @@ module V1
         required: %w[environment version]
       }.freeze
 
+      # A record identified and named. `name` is nullable because not every
+      # catalogue's build row carries one, and absent rather than blank is the
+      # honest answer when it does not.
+      ENTRY = {
+        type: :object,
+        properties: {
+          id: {type: :string, format: :uuid},
+          name: {type: [:string, :null]}
+        },
+        additionalProperties: false,
+        required: %w[id]
+      }.freeze
+
       CATALOGUE = {
         type: :object,
         properties: {
@@ -42,8 +55,8 @@ module V1
             additionalProperties: false,
             required: %w[appeared vanished changed]
           },
-          appeared: {type: :array, items: {type: :string, format: :uuid}},
-          vanished: {type: :array, items: {type: :string, format: :uuid}},
+          appeared: {type: :array, items: ENTRY},
+          vanished: {type: :array, items: ENTRY},
           changed: {
             type: :array,
             items: {

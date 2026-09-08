@@ -24,7 +24,7 @@ module ScData
       arrived = build_for(NEW).component
       build_for(OLD)
 
-      assert_equal [arrived.id], compare.appeared
+      assert_equal [arrived.id], compare.appeared.map(&:id)
     end
 
     # "Vanished" means the newer build has no row for it, not that anything was
@@ -35,8 +35,26 @@ module ScData
       # recorded on either side and the rule below is the one under test.
       build_for(NEW, component: build_for(OLD).component)
 
-      assert_equal [gone.id], compare.vanished
+      assert_equal [gone.id], compare.vanished.map(&:id)
       assert Component.exists?(gone.id), "the record itself is still there"
+    end
+
+    # Both lists are a column of identifiers without this, which nobody can read
+    # and nothing can act on.
+    test "#call names what appeared, from the build that describes it" do
+      build_for(NEW, name: "Arrived")
+      build_for(OLD)
+
+      assert_equal ["Arrived"], compare.appeared.map(&:name)
+    end
+
+    # The newer build has no row for a vanished record, so the older one is the
+    # only side left that can name it.
+    test "#call names what vanished, from the build that still describes it" do
+      build_for(OLD, name: "Departed")
+      build_for(NEW, component: build_for(OLD).component)
+
+      assert_equal ["Departed"], compare.vanished.map(&:name)
     end
 
     test "#call names the facts that differ on a record both builds describe" do
@@ -70,7 +88,7 @@ module ScData
 
       result = compare(from: NEW, to: PTU)
 
-      assert_equal [only_in_ptu.id], result.appeared
+      assert_equal [only_in_ptu.id], result.appeared.map(&:id)
     end
 
     # --- What a comparison looks at --------------------------------------------

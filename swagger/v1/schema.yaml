@@ -19758,13 +19758,33 @@ components:
                 appeared:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 vanished:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 changed:
                   type: array
                   items:
@@ -19814,13 +19834,33 @@ components:
                 appeared:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 vanished:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 changed:
                   type: array
                   items:
@@ -19870,13 +19910,33 @@ components:
                 appeared:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 vanished:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 changed:
                   type: array
                   items:
@@ -19926,13 +19986,33 @@ components:
                 appeared:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 vanished:
                   type: array
                   items:
-                    type: string
-                    format: uuid
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                      name:
+                        type:
+                        - string
+                        - 'null'
+                    additionalProperties: false
+                    required:
+                    - id
                 changed:
                   type: array
                   items:

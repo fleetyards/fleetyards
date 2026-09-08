@@ -73,8 +73,8 @@ class Api::V1::ScDataCompareTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/sc-data/compare", params: {from: OLD, to: NEW} do
       components = parsed_body.dig("catalogues", "components")
 
-      assert_equal [arrived.id], components["appeared"]
-      assert_equal [gone.id], components["vanished"]
+      assert_equal [arrived.id], components["appeared"].map { |entry| entry["id"] }
+      assert_equal [gone.id], components["vanished"].map { |entry| entry["id"] }
       assert_equal({"appeared" => 1, "vanished" => 1, "changed" => 0}, components["counts"])
     end
   end
@@ -100,7 +100,9 @@ class Api::V1::ScDataCompareTest < ActionDispatch::IntegrationTest
     build_for(NEW, "live")
 
     assert_api_response :get, 200, api_path: "/sc-data/compare", params: {from: NEW, to: PTU} do
-      assert_equal [only_in_ptu.id], parsed_body.dig("catalogues", "components", "appeared")
+      appeared = parsed_body.dig("catalogues", "components", "appeared")
+
+      assert_equal [only_in_ptu.id], appeared.map { |entry| entry["id"] }
     end
   end
 

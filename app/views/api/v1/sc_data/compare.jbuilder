@@ -21,8 +21,19 @@ json.catalogues do
 
       json.counts result.counts
 
-      json.appeared result.appeared
-      json.vanished result.vanished
+      json.appeared do
+        json.array! result.appeared do |entry|
+          json.id entry.id
+          json.name entry.name
+        end
+      end
+
+      json.vanished do
+        json.array! result.vanished do |entry|
+          json.id entry.id
+          json.name entry.name
+        end
+      end
 
       # The changes carry the fields that differ, so a reader can pick the ones
       # it cares about -- a rename is the interesting one, and it is a change on
