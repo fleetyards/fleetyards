@@ -462,6 +462,9 @@
         "import": {
           "cleanup": "Diesen Import als fehlgeschlagen markieren? Nur wenn der Job wirklich weg ist — ein noch laufender Durchlauf bricht am Ende mit einem Fehler ab.",
           "cleanupSelected": "Die ausgewählten Importe als fehlgeschlagen markieren? Betroffen sind nur die noch laufenden, und ein tatsächlich noch laufender Durchlauf bricht am Ende mit einem Fehler ab."
+        },
+        "hardpoint": {
+          "destroy": "Bist du sicher, dass du diesen Aufhängungspunkt löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         }
       },
       "oauthAuthorize": {

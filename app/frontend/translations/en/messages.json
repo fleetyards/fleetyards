@@ -461,6 +461,9 @@
         "import": {
           "cleanup": "Mark this import as failed? Do this only if the job is really gone — a run that is still working will error out when it finishes.",
           "cleanupSelected": "Mark the selected imports as failed? Only the ones still running are affected, and a run that is genuinely still working will error out when it finishes."
+        },
+        "hardpoint": {
+          "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
         }
       },
       "oauthAuthorize": {

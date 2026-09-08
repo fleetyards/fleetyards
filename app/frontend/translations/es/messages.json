@@ -462,6 +462,9 @@
         "import": {
           "cleanup": "¿Marcar esta importación como fallida? Hazlo solo si el trabajo ya no existe: una ejecución que siga activa fallará al terminar.",
           "cleanupSelected": "¿Marcar como fallidas las importaciones seleccionadas? Solo afecta a las que siguen en curso, y una ejecución que siga realmente activa fallará al terminar."
+        },
+        "hardpoint": {
+          "destroy": "¿Seguro que quieres eliminar este punto de montaje? Esta acción no se puede revertir."
         }
       },
       "oauthAuthorize": {

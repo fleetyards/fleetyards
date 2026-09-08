@@ -156,7 +156,7 @@
             "prices": "Modifica prezzi di %{manufacturer} %{model}",
             "fleetchart": "Modifica immagini del grafico flotta di %{manufacturer} %{model}",
             "positions": "Modifica posizioni di %{manufacturer} %{model}",
-            "hardpoints": "Modifica hardpoint di %{manufacturer} %{model}",
+            "hardpoints": "Modifica punti di montaggio di %{manufacturer} %{model}",
             "cargoAndFuel": "Modifica carburante di %{manufacturer} %{model}",
             "cargoHolds": "Modifica stive di carico di %{manufacturer} %{model}",
             "docks": "Modifica dock di %{manufacturer} %{model}",
