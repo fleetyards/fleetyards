@@ -14,7 +14,6 @@
 #
 # Indexes
 #
-#  index_vehicle_loadouts_on_vehicle_id           (vehicle_id)
 #  index_vehicle_loadouts_on_vehicle_id_and_name  (vehicle_id,name) UNIQUE
 #
 # Foreign Keys

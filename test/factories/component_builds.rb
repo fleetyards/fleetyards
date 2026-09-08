@@ -33,7 +33,6 @@
 # Indexes
 #
 #  index_component_builds_on_component_and_build              (component_id,environment,version) UNIQUE
-#  index_component_builds_on_component_id                     (component_id)
 #  index_component_builds_on_environment_and_component_class  (environment,component_class)
 #  index_component_builds_on_environment_and_item_type        (environment,item_type)
 #  index_component_builds_on_environment_and_version          (environment,version)

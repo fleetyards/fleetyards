@@ -15,7 +15,6 @@
 #
 # Indexes
 #
-#  index_model_sales_on_model_id                 (model_id)
 #  index_model_sales_on_model_id_and_started_at  (model_id,started_at) UNIQUE
 #  index_model_sales_on_model_id_ongoing         (model_id) UNIQUE WHERE (ended_at IS NULL)
 #  index_model_sales_on_started_at               (started_at)

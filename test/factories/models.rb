@@ -118,7 +118,6 @@
 #  index_models_on_base_model_id             (base_model_id)
 #  index_models_on_classification            (classification)
 #  index_models_on_legacy_slug               (legacy_slug)
-#  index_models_on_manufacturer_id           (manufacturer_id)
 #  index_models_on_manufacturer_id_and_name  (manufacturer_id,name) UNIQUE
 #  index_models_on_production_status         (production_status)
 #  index_models_on_size                      (size)

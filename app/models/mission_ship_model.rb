@@ -16,7 +16,6 @@
 #
 # Indexes
 #
-#  index_mission_ship_models_on_mission_ship_id    (mission_ship_id)
 #  index_mission_ship_models_on_model_id           (model_id)
 #  index_mission_ship_models_on_ship_and_model     (mission_ship_id,model_id) UNIQUE
 #  index_mission_ship_models_on_ship_and_position  (mission_ship_id,position)

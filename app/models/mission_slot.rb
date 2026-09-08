@@ -16,9 +16,8 @@
 #
 # Indexes
 #
-#  index_mission_slots_on_model_position_id                (model_position_id)
-#  index_mission_slots_on_slottable_and_position           (slottable_type,slottable_id,position)
-#  index_mission_slots_on_slottable_type_and_slottable_id  (slottable_type,slottable_id)
+#  index_mission_slots_on_model_position_id       (model_position_id)
+#  index_mission_slots_on_slottable_and_position  (slottable_type,slottable_id,position)
 #
 # Foreign Keys
 #

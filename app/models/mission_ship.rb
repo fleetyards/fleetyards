@@ -21,7 +21,6 @@
 #
 # Indexes
 #
-#  index_mission_ships_on_mission_team_id               (mission_team_id)
 #  index_mission_ships_on_mission_team_id_and_position  (mission_team_id,position)
 #  index_mission_ships_on_model_id                      (model_id)
 #

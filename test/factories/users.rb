@@ -63,14 +63,18 @@
 #
 # Indexes
 #
-#  index_users_on_calendar_feed_token   (calendar_feed_token) UNIQUE
-#  index_users_on_confirmation_token    (confirmation_token) UNIQUE
-#  index_users_on_email                 (email) UNIQUE
-#  index_users_on_last_active_at        (last_active_at)
-#  index_users_on_normalized_username   (normalized_username)
-#  index_users_on_reset_password_token  (reset_password_token) UNIQUE
-#  index_users_on_unlock_token          (unlock_token) UNIQUE
-#  index_users_on_username              (username) UNIQUE
+#  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
+#  index_users_on_confirmation_token     (confirmation_token) UNIQUE
+#  index_users_on_email                  (email) UNIQUE
+#  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
+#  index_users_on_last_active_at         (last_active_at)
+#  index_users_on_lower_email            (lower((email)::text))
+#  index_users_on_lower_username         (lower((username)::text))
+#  index_users_on_normalized_email       (normalized_email)
+#  index_users_on_normalized_username    (normalized_username)
+#  index_users_on_reset_password_token   (reset_password_token) UNIQUE
+#  index_users_on_unlock_token           (unlock_token) UNIQUE
+#  index_users_on_username               (username) UNIQUE
 #
 FactoryBot.define do
   factory :user do

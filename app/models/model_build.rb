@@ -51,7 +51,6 @@
 #
 #  index_model_builds_on_environment_and_version  (environment,version)
 #  index_model_builds_on_model_and_build          (model_id,environment,version) UNIQUE
-#  index_model_builds_on_model_id                 (model_id)
 #
 # Foreign Keys
 #

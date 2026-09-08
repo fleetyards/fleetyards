@@ -14,7 +14,6 @@
 #
 # Indexes
 #
-#  index_fleet_event_admins_on_fleet_event_id              (fleet_event_id)
 #  index_fleet_event_admins_on_fleet_event_id_and_user_id  (fleet_event_id,user_id) UNIQUE
 #  index_fleet_event_admins_on_user_id                     (user_id)
 #
