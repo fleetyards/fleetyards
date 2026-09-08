@@ -550,14 +550,19 @@ class Model < ApplicationRecord
     end
   end
 
+  # Eight values, read off the column rather than out of a model. Building them
+  # in Ruby loaded every visible ship in full to look at one string on each.
   def self.classifications
-    Model.visible.active.order(classification: :asc).all.map(&:classification).compact_blank.compact.uniq
+    Model.visible.active.order(:classification).distinct.pluck(:classification).compact_blank
   end
 
+  # As `classifications`, and with an order it did not have: the list was
+  # whatever order the rows came back in, which is no order at all once ninety
+  # of them are in a filter.
   def self.focus_filters(classification: nil)
     scope = Model.visible.active
     scope = scope.where(classification: classification) if classification.present?
-    scope.map(&:focus).compact_blank.compact.uniq.map do |item|
+    scope.order(:focus).distinct.pluck(:focus).compact_blank.map do |item|
       Filter.new(
         category: "focus",
         label: item.humanize,
