@@ -196,9 +196,33 @@ class HardpointBuildTest < ActiveSupport::TestCase
     assert_not_includes ids, retired.id
   end
 
+  # The deploy this exists for: the build table and the build-resolved reads can
+  # ship before the backfill task has run, and without this clause every
+  # game-file slot drops out of the API at once -- 22,561 of them, leaving only
+  # the 4,974 matrix ones, which for most ships is nothing.
+  test ".in_build keeps everything while the environment has no build rows at all" do
+    slot = create(:hardpoint, :without_build, source: :game_files)
+    HardpointBuild.delete_all
+
+    assert_includes Hardpoint.in_build.pluck(:id), slot.id
+  end
+
+  # Asked of the environment rather than of the slot, and that distinction is
+  # the point: retiring a slot deletes its row for that build and `prune_builds`
+  # drops the older ones, so a per-slot version of this clause would let a slot
+  # that left the game four builds ago run out of rows and quietly reappear.
+  test ".in_build excludes a slot with no row once the environment has any" do
+    retired = create(:hardpoint, :without_build, source: :game_files)
+    create(:hardpoint, source: :game_files)
+
+    assert_not_includes Hardpoint.in_build.pluck(:id), retired.id
+  end
+
   test ".in_build resolves against the source asked for" do
     hardpoint = create(:hardpoint, :without_build, source: :game_files)
     create(:hardpoint_build, hardpoint:, environment: "ptu", version: "9.9.9-ptu.1")
+    # So the live half has rows of its own and the transition clause stays shut.
+    create(:hardpoint, source: :game_files)
 
     assert_not_includes Hardpoint.in_build.pluck(:id), hardpoint.id
 
