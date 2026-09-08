@@ -15,7 +15,7 @@ jobs:
       REDIS_URL: redis://localhost:6379
     services:
       postgres:
-        image: postgres:13.2-alpine
+        image: postgres:16
         env:
           POSTGRES_USER: root
           POSTGRES_DB: fleetyards_test

@@ -61,6 +61,17 @@ bin/setup                         # Set up a checkout (allocates a worktree's po
 bin/teardown                      # Release everything bin/setup allocated to a worktree, before removing it
 ```
 
+Postgres runs the same `postgres:16` image locally, in CI and in production. That
+is deliberate: the Alpine variant links musl, which has no locale collation and
+sorts text by byte instead, so `ORDER BY` gave one answer locally and another one
+live.
+
+A data directory carries the collation its indexes were built under. If yours was
+created by an Alpine image, every text index in it is sorted the musl way and this
+image will read it the glibc way — nothing warns, because musl reports no
+collation version to compare against, and an index lookup simply stops finding
+rows. Recreate the volume, or `REINDEX DATABASE fleetyards_dev` once.
+
 ### Testing
 ```bash
 bin/rails test                    # Backend tests (Minitest)
