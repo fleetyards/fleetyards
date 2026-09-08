@@ -218,6 +218,17 @@ class HardpointBuildTest < ActiveSupport::TestCase
     assert_not_includes Hardpoint.in_build.pluck(:id), retired.id
   end
 
+  # Only the half that carries build rows is narrowed by them. 5 module slots
+  # have no `source` at all, and `= :matrix` would have swept them out of the
+  # module views the moment those started using this scope.
+  test ".in_build leaves a slot with no source at all alone" do
+    sourceless = create(:hardpoint, :without_build, source: :game_files)
+    sourceless.update_column(:source, nil)
+    create(:hardpoint, source: :game_files)
+
+    assert_includes Hardpoint.in_build.pluck(:id), sourceless.id
+  end
+
   test ".in_build resolves against the source asked for" do
     hardpoint = create(:hardpoint, :without_build, source: :game_files)
     create(:hardpoint_build, hardpoint:, environment: "ptu", version: "9.9.9-ptu.1")
