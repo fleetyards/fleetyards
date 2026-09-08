@@ -156,6 +156,38 @@ class MetricsJobTest < ActiveJob::TestCase
     assert_operator Rollup.where(name: "Vehicle Wish", interval: "month").count, :>, 0
   end
 
+  # `Cleanup::VisitsJob` writes the same name at a monthly interval and runs
+  # once a month. The per-day chart reads this one.
+  test "#perform rolls up visits per day" do
+    2.times { visit_on(2.days.ago) }
+
+    MetricsJob.new.perform
+
+    assert_equal 2, visits_rolled_up_on(2.days.ago)
+  end
+
+  test "#perform leaves a visit by a user who objects to tracking out of the daily rollup" do
+    visit_on(2.days.ago, user: create(:user, tracking: false))
+    visit_on(2.days.ago)
+
+    MetricsJob.new.perform
+
+    assert_equal 1, visits_rolled_up_on(2.days.ago)
+  end
+
+  private def visit_on(time, user: nil)
+    Ahoy::Visit.create!(
+      started_at: time,
+      user:,
+      visit_token: SecureRandom.uuid,
+      visitor_token: SecureRandom.uuid
+    )
+  end
+
+  private def visits_rolled_up_on(time)
+    Rollup.where(name: "Visits", interval: "day", time: time.to_date).sum(:value)
+  end
+
   private def wishlist_additions(model)
     Rollup.where(
       name: MetricsJob::ROLLUP_WISHLIST_BY_MODEL,
