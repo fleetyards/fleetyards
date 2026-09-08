@@ -8,10 +8,14 @@ export default {
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BasePanel from "@/shared/components/base/Panel/index.vue";
+import BasePanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import BasePanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -159,113 +163,118 @@ const entryName = (entry: Entry | Change) => entry.name || entry.id;
     <BasePanel
       v-for="name in CATALOGUES"
       :key="name"
+      :variant="PanelVariantsEnum.SLIM"
       class="build-compare__catalogue"
       data-test="build-compare-catalogue"
       :data-catalogue="name"
     >
-      <h3>{{ t(`labels.buildCompare.catalogues.${name}`) }}</h3>
+      <BasePanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
+        {{ t(`labels.buildCompare.catalogues.${name}`) }}
+      </BasePanelHeading>
 
-      <!--
-        A catalogue with no rows on one side was never recorded for that build.
-        Saying so is the whole point: without it the answer reads as "nothing
-        changed", which is a different and wrong statement.
-      -->
-      <p
-        v-if="!catalogueFor(name)?.recorded"
-        class="text-muted"
-        data-test="build-compare-not-recorded"
-      >
-        {{ t("labels.buildCompare.notRecorded") }}
-      </p>
-
-      <template v-else>
-        <div class="build-compare__counts">
-          <BasePill
-            :variant="PillVariantsEnum.SUCCESS"
-            uppercase
-            data-test="build-compare-count-appeared"
-          >
-            {{ t("labels.buildCompare.appeared") }}
-            {{ catalogueFor(name)?.counts.appeared }}
-          </BasePill>
-          <BasePill
-            :variant="PillVariantsEnum.DANGER"
-            uppercase
-            data-test="build-compare-count-vanished"
-          >
-            {{ t("labels.buildCompare.vanished") }}
-            {{ catalogueFor(name)?.counts.vanished }}
-          </BasePill>
-          <BasePill
-            :variant="PillVariantsEnum.WARNING"
-            uppercase
-            data-test="build-compare-count-changed"
-          >
-            {{ t("labels.buildCompare.changed") }}
-            {{ catalogueFor(name)?.counts.changed }}
-          </BasePill>
-        </div>
-
-        <template
-          v-for="list in [
-            { key: 'appeared', entries: catalogueFor(name)?.appeared || [] },
-            { key: 'vanished', entries: catalogueFor(name)?.vanished || [] },
-          ]"
-          :key="list.key"
+      <BasePanelBody>
+        <!--
+          A catalogue with no rows on one side was never recorded for that
+          build. Saying so is the whole point: without it the answer reads as
+          "nothing changed", which is a different and wrong statement.
+        -->
+        <p
+          v-if="!catalogueFor(name)?.recorded"
+          class="text-muted"
+          data-test="build-compare-not-recorded"
         >
-          <div v-if="list.entries.length" class="build-compare__list">
-            <h4>{{ t(`labels.buildCompare.${list.key}`) }}</h4>
+          {{ t("labels.buildCompare.notRecorded") }}
+        </p>
+
+        <template v-else>
+          <div class="build-compare__counts">
+            <BasePill
+              :variant="PillVariantsEnum.SUCCESS"
+              uppercase
+              data-test="build-compare-count-appeared"
+            >
+              {{ t("labels.buildCompare.appeared") }}
+              {{ catalogueFor(name)?.counts.appeared }}
+            </BasePill>
+            <BasePill
+              :variant="PillVariantsEnum.DANGER"
+              uppercase
+              data-test="build-compare-count-vanished"
+            >
+              {{ t("labels.buildCompare.vanished") }}
+              {{ catalogueFor(name)?.counts.vanished }}
+            </BasePill>
+            <BasePill
+              :variant="PillVariantsEnum.WARNING"
+              uppercase
+              data-test="build-compare-count-changed"
+            >
+              {{ t("labels.buildCompare.changed") }}
+              {{ catalogueFor(name)?.counts.changed }}
+            </BasePill>
+          </div>
+
+          <template
+            v-for="list in [
+              { key: 'appeared', entries: catalogueFor(name)?.appeared || [] },
+              { key: 'vanished', entries: catalogueFor(name)?.vanished || [] },
+            ]"
+            :key="list.key"
+          >
+            <div v-if="list.entries.length" class="build-compare__list">
+              <h4>{{ t(`labels.buildCompare.${list.key}`) }}</h4>
+              <ul>
+                <li
+                  v-for="entry in shown(list.entries)"
+                  :key="entry.id"
+                  data-test="build-compare-entry"
+                >
+                  {{ entryName(entry) }}
+                </li>
+              </ul>
+              <p
+                v-if="hidden(list.entries)"
+                class="text-muted"
+                data-test="build-compare-more"
+              >
+                {{
+                  t("labels.buildCompare.andMore", {
+                    count: hidden(list.entries),
+                  })
+                }}
+              </p>
+            </div>
+          </template>
+
+          <div
+            v-if="catalogueFor(name)?.changed.length"
+            class="build-compare__list"
+          >
+            <h4>{{ t("labels.buildCompare.changed") }}</h4>
             <ul>
               <li
-                v-for="entry in shown(list.entries)"
-                :key="entry.id"
-                data-test="build-compare-entry"
+                v-for="change in shown(catalogueFor(name)?.changed || [])"
+                :key="change.id"
+                data-test="build-compare-change"
               >
-                {{ entryName(entry) }}
+                {{ entryName(change) }}
+                <span class="text-muted">{{ change.fields.join(", ") }}</span>
               </li>
             </ul>
             <p
-              v-if="hidden(list.entries)"
+              v-if="hidden(catalogueFor(name)?.changed || [])"
               class="text-muted"
               data-test="build-compare-more"
             >
               {{
                 t("labels.buildCompare.andMore", {
-                  count: hidden(list.entries),
+                  count: hidden(catalogueFor(name)?.changed || []),
                 })
               }}
             </p>
           </div>
         </template>
-
-        <div
-          v-if="catalogueFor(name)?.changed.length"
-          class="build-compare__list"
-        >
-          <h4>{{ t("labels.buildCompare.changed") }}</h4>
-          <ul>
-            <li
-              v-for="change in shown(catalogueFor(name)?.changed || [])"
-              :key="change.id"
-              data-test="build-compare-change"
-            >
-              {{ entryName(change) }}
-              <span class="text-muted">{{ change.fields.join(", ") }}</span>
-            </li>
-          </ul>
-          <p
-            v-if="hidden(catalogueFor(name)?.changed || [])"
-            class="text-muted"
-            data-test="build-compare-more"
-          >
-            {{
-              t("labels.buildCompare.andMore", {
-                count: hidden(catalogueFor(name)?.changed || []),
-              })
-            }}
-          </p>
-        </div>
-      </template>
+      </BasePanelBody>
     </BasePanel>
   </div>
 </template>
