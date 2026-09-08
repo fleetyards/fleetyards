@@ -18,6 +18,11 @@ module Admin
         # what needs attention now; /imports/ holds the rest.
         RECENT_FAILURE_WINDOW = 24.hours
 
+        # Only the traffic figures are cached. The attention tiles above them --
+        # failed imports, stuck imports, unlisted models -- are cheap counts on
+        # indexed columns, and they are the ones an admin is watching for.
+        TRAFFIC_TTL = 5.minutes
+
         def show
           authorize! with: ::Admin::DashboardPolicy
 
@@ -92,17 +97,30 @@ module Admin
 
           @dashboard[:online_count] = online_count
 
+          # The page polls every thirty seconds and these four scan `ahoy_visits`
+          # and `users` for a window measured in days. The date is in the key so
+          # they roll over at midnight rather than at whatever the entry's five
+          # minutes happen to be.
+          @dashboard.merge!(
+            Rails.cache.fetch("admin/dashboard/traffic/#{Time.zone.today}", expires_in: TRAFFIC_TTL) do
+              traffic_figures
+            end
+          )
+        end
+
+        private def traffic_figures
           today = Time.zone.today
 
-          @dashboard[:visits_today] = visits_on(today)
-          # The same weekday, not yesterday: traffic has a weekly shape, and a
-          # Monday compared against a Sunday reads as a spike every week.
-          @dashboard[:visits_same_weekday_last_week] = visits_on(today - 1.week)
-
-          @dashboard[:signups_this_week] = User.where(created_at: today.beginning_of_week..).count
-          @dashboard[:signups_last_week] = User.where(
-            created_at: (today - 1.week).beginning_of_week...today.beginning_of_week
-          ).count
+          {
+            visits_today: visits_on(today),
+            # The same weekday, not yesterday: traffic has a weekly shape, and a
+            # Monday compared against a Sunday reads as a spike every week.
+            visits_same_weekday_last_week: visits_on(today - 1.week),
+            signups_this_week: User.where(created_at: today.beginning_of_week..).count,
+            signups_last_week: User.where(
+              created_at: (today - 1.week).beginning_of_week...today.beginning_of_week
+            ).count
+          }
         end
 
         private def visits_on(date)

@@ -10,16 +10,24 @@ module Admin
         # `properties` document; there is no column for it.
         VIEWED_PAGE = Arel.sql("ahoy_events.properties->>'page'")
 
+        # The dashboard refetches on every window focus, and these are counts
+        # over whole tables. None of them moves enough in five minutes to be
+        # worth counting again; `online_count` is deliberately not among them.
+        TOTALS_TTL = 5.minutes
+
         def quick_stats
           authorize! with: ::Admin::StatsPolicy
 
-          @quick_stats = {
-            online_count:,
-            ships_count_year: Model.year(Time.current.year).count,
-            ships_count_total: Model.count,
-            users_count_total: User.count,
-            fleets_count_total: Fleet.count
-          }
+          totals = Rails.cache.fetch("admin/stats/quick_stats", expires_in: TOTALS_TTL) do
+            {
+              ships_count_year: Model.year(Time.current.year).count,
+              ships_count_total: Model.count,
+              users_count_total: User.count,
+              fleets_count_total: Fleet.count
+            }
+          end
+
+          @quick_stats = {online_count:}.merge(totals)
         end
 
         def most_viewed_pages
@@ -47,13 +55,20 @@ module Admin
         def visits_per_day
           authorize! with: ::Admin::StatsPolicy
 
-          visits_per_day = Ahoy::Visit.without_users(tracking_blocklist).one_month
-            .group_by_day(:started_at).count
-            .map do |created_at, count|
+          # Read from the daily rollup `MetricsJob` writes, rather than
+          # aggregating a month of `ahoy_visits` on every request.
+          #
+          # The window is whole days now. The query this replaces began at a
+          # timestamp one month back, so its leftmost bar covered only part of
+          # that day and always read low -- 1,846 against the day's real 4,848
+          # on the database I checked.
+          visits_per_day = Rollup.where(time: 1.month.ago.to_date...Time.zone.today)
+            .series("Visits", interval: :day)
+            .map do |started_at, count|
             {
-              label: I18n.l(created_at.to_date, format: :day_month_short),
-              count:,
-              tooltip: I18n.l(created_at.to_date, format: :day_month)
+              label: I18n.l(started_at.to_date, format: :day_month_short),
+              count: count.to_i,
+              tooltip: I18n.l(started_at.to_date, format: :day_month)
             }
           end
 

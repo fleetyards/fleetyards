@@ -30,12 +30,22 @@ class MetricsJob < ApplicationJob
     Vehicle.visible.wanted.where(loaner: false).rollup("Vehicle Wish", interval: "month")
 
     track_ship_views
+    track_visits
     track_wishlist_by_model
     track_ship_of_the_month
     track_api_usage
   end
 
   private
+
+  # `Cleanup::VisitsJob` writes the monthly total under the same name, but it
+  # runs once a month, which no per-day chart can be built on. The day interval
+  # is the only safe one here for the reason `track_ship_views` gives: a visit
+  # is purged after a month, and a day is always complete before that happens.
+  def track_visits
+    Ahoy::Visit.without_users(User.where(tracking: false).pluck(:id))
+      .rollup("Visits", interval: "day", column: :started_at)
+  end
 
   # Ahoy keeps visits for a month (`Cleanup::VisitsJob`) and rolls up nothing but
   # a monthly total, so per-ship views are gone before anything can read them.

@@ -12,9 +12,21 @@ module Api
         # does not empty the chart, short enough that it still reads as now.
         TRENDING_WINDOW = 30.days
 
+        QUICK_STATS_TTL = 5.minutes
+
         before_action :authenticate_user!, only: []
 
         def quick_stats
+          # Twelve figures about the whole catalogue and every hangar in it, on
+          # a public page, recomputed per visitor. Two of them count their way
+          # through 1.57M vehicles. None of it is per-visitor, and none of it
+          # changes meaningfully inside five minutes.
+          @quick_stats = Rails.cache.fetch("stats/quick_stats", expires_in: QUICK_STATS_TTL) do
+            build_quick_stats
+          end
+        end
+
+        private def build_quick_stats
           models = Model.visible.active
           total = models.count
           flight_ready = models.where(production_status: "flight-ready").count
@@ -27,7 +39,7 @@ module Api
             time: Time.current.beginning_of_month
           ).first
 
-          @quick_stats = {
+          {
             ships_count_year: models.year(Time.current.year).count,
             ships_count_total: total,
             manufacturer_count: Manufacturer.with_model.count,

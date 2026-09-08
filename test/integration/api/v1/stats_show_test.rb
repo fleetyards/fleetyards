@@ -44,4 +44,31 @@ class Api::V1::StatsShowTest < ActionDispatch::IntegrationTest
       assert_equal 100.0, parsed_body["paintedVehiclesPercent"]
     end
   end
+
+  # The test environment caches into a null store, so every other example here
+  # recomputes and none of them would notice the cache being dropped. This one
+  # puts a real store in place and asks whether the second request used it.
+  test "GET /stats/quick-stats serves a repeat request from the cache" do
+    model = create(:model)
+    create(:vehicle, model:, wanted: false, loaner: false)
+
+    with_cache_store(ActiveSupport::Cache::MemoryStore.new) do
+      cached = nil
+      assert_api_response(:get, 200) { cached = parsed_body["vehiclesCount"] }
+
+      create(:vehicle, model:, wanted: false, loaner: false)
+
+      assert_api_response(:get, 200) do
+        assert_equal cached, parsed_body["vehiclesCount"]
+      end
+    end
+  end
+
+  private def with_cache_store(store)
+    previous = Rails.cache
+    Rails.cache = store
+    yield
+  ensure
+    Rails.cache = previous
+  end
 end
