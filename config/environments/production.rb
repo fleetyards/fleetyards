@@ -29,8 +29,15 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
-  config.action_controller.asset_host = Rails.configuration.app.cdn_endpoint || endpoints.frontend_endpoint
-  config.asset_host = Rails.configuration.app.cdn_endpoint || endpoints.frontend_endpoint
+  # The CDN pull zone only holds Vite's build output. PgHero renders through Rails' asset
+  # helpers, and the pghero_assets middleware serves those files from the app itself, so they
+  # have to stay on the origin instead of being prefixed with the asset host.
+  cdn_host = Rails.configuration.app.cdn_endpoint || endpoints.frontend_endpoint
+  origin_served_assets = %r{\A/(?:javascripts|images|stylesheets)/pghero}
+  asset_host = ->(source) { cdn_host unless origin_served_assets.match?(source) }
+
+  config.action_controller.asset_host = asset_host
+  config.asset_host = asset_host
 
   # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
   # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
@@ -42,9 +49,6 @@ Rails.application.configure do
   config.public_file_server.headers = {
     "Cache-Control" => "public, max-age=31536000, immutable"
   }
-
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.asset_host = Rails.configuration.app.cdn_endpoint
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
