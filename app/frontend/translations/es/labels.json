@@ -1219,7 +1219,10 @@
           "salvagefillerstation": "Estación de llenado de salvamento",
           "cargogrid": "Grilla de carga",
           "seat": "Asientos"
-        }
+        },
+        "name": "Nombre",
+        "category": "Categoría",
+        "source": "Fuente"
       },
       "blank": {
         "propulsion": "Sin propulsión presente",

@@ -1219,7 +1219,10 @@
           "salvagefillerstation": "Station de remplissage de récupération",
           "cargogrid": "Grille de cargaison",
           "seat": "Sièges"
-        }
+        },
+        "name": "Nom",
+        "category": "Catégorie",
+        "source": "Source"
       },
       "blank": {
         "propulsion": "Aucune propulsion présente",

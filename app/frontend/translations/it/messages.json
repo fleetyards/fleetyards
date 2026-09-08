@@ -461,6 +461,9 @@
         "import": {
           "cleanup": "Segnare questa importazione come fallita? Fallo solo se il job è davvero sparito: un'esecuzione ancora attiva darà errore al termine.",
           "cleanupSelected": "Segnare come fallite le importazioni selezionate? Riguarda solo quelle ancora in corso, e un'esecuzione davvero ancora attiva darà errore al termine."
+        },
+        "hardpoint": {
+          "destroy": "Sei sicuro di voler eliminare questo punto di montaggio? Questa azione non può essere annullata."
         }
       },
       "oauthAuthorize": {

@@ -1219,7 +1219,10 @@
           "salvagefillerstation": "打撈填充站",
           "cargogrid": "貨物網格",
           "seat": "座位"
-        }
+        },
+        "name": "名稱",
+        "category": "分類",
+        "source": "來源"
       },
       "blank": {
         "propulsion": "沒有推進系統",

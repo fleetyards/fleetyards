@@ -156,7 +156,7 @@
             "prices": "%{manufacturer} %{model} Preise bearbeiten",
             "fleetchart": "%{manufacturer} %{model} Flottendiagramm-Bilder bearbeiten",
             "positions": "%{manufacturer} %{model} Positionen bearbeiten",
-            "hardpoints": "%{manufacturer} %{model} Hardpoints bearbeiten",
+            "hardpoints": "%{manufacturer} %{model} Aufhängungspunkte bearbeiten",
             "cargoAndFuel": "%{manufacturer} %{model} Treibstoff bearbeiten",
             "cargoHolds": "%{manufacturer} %{model} Frachträume bearbeiten",
             "docks": "%{manufacturer} %{model} Docks bearbeiten",

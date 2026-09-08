@@ -1215,7 +1215,10 @@
           "salvagefillerstation": "Salvage Filler Station",
           "cargogrid": "Cargo Grid",
           "seat": "Seats"
-        }
+        },
+        "name": "Name",
+        "category": "Category",
+        "source": "Source"
       },
       "blank": {
         "propulsion": "No Propulsion present",

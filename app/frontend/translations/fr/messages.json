@@ -462,6 +462,9 @@
         "import": {
           "cleanup": "Marquer cet import comme échoué ? À ne faire que si le job a vraiment disparu : une exécution encore active échouera à la fin.",
           "cleanupSelected": "Marquer les imports sélectionnés comme échoués ? Seuls ceux encore en cours sont concernés, et une exécution réellement encore active échouera à la fin."
+        },
+        "hardpoint": {
+          "destroy": "Êtes-vous sûr de vouloir supprimer ce point d'attache ? Cette action est irréversible."
         }
       },
       "oauthAuthorize": {
