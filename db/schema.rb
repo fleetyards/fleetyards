@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1086,37 +1086,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_160000) do
     t.index ["model_id", "environment", "version"], name: "index_model_builds_on_model_and_build", unique: true
   end
 
-  create_table "model_hardpoint_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "component_id"
-    t.datetime "created_at", null: false
-    t.uuid "model_hardpoint_id"
-    t.string "name"
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "model_hardpoints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "category"
-    t.uuid "component_id"
-    t.datetime "created_at", null: false
-    t.datetime "deleted_at", precision: nil
-    t.string "details"
-    t.integer "group"
-    t.integer "hardpoint_type"
-    t.integer "item_slot"
-    t.integer "item_slots"
-    t.string "key"
-    t.string "loadout_identifier"
-    t.uuid "model_id"
-    t.string "mount"
-    t.string "name"
-    t.integer "size"
-    t.integer "source"
-    t.integer "sub_category"
-    t.datetime "updated_at", null: false
-    t.index ["component_id"], name: "index_model_hardpoints_on_component_id"
-    t.index ["model_id"], name: "index_model_hardpoints_on_model_id"
-  end
-
   create_table "model_loaners", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "hidden", default: false
@@ -1622,15 +1591,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_160000) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  create_table "vehicle_loadout_hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "component_id"
-    t.datetime "created_at", null: false
-    t.uuid "model_hardpoint_id", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "vehicle_loadout_id", null: false
-    t.index ["vehicle_loadout_id", "model_hardpoint_id"], name: "idx_vehicle_loadout_hardpoints_unique", unique: true
-  end
-
   create_table "vehicle_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "active", default: false, null: false
     t.datetime "created_at", null: false
@@ -1787,8 +1747,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_160000) do
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
-  add_foreign_key "vehicle_loadout_hardpoints", "components"
-  add_foreign_key "vehicle_loadout_hardpoints", "model_hardpoints"
-  add_foreign_key "vehicle_loadout_hardpoints", "vehicle_loadouts"
   add_foreign_key "vehicle_loadouts", "vehicles"
 end
