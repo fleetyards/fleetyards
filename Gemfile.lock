@@ -277,7 +277,7 @@ GEM
     geocoder (1.8.6)
       base64 (>= 0.1.0)
       csv (>= 3.0.0)
-    git (5.3.0)
+    git (5.4.1)
       activesupport (>= 5.0)
       addressable (~> 2.8)
       process_executer (~> 4.1)
@@ -1098,7 +1098,7 @@ CHECKSUMS
   foreman (0.90.0) sha256=ff675e2d47b607ac58714a6d4ac3e1ee8f06f41d8db084531c31961e2c3f117c
   fugit (1.12.1) sha256=5898f478ede9b415f0804e42b8f3fd53f814bd85eebffceebdbc34e1107aaf68
   geocoder (1.8.6) sha256=e0ca1554b499f466de9b003f7dff70f89a5888761c2ca68ed9f86b6e5e24e74c
-  git (5.3.0) sha256=9d5958d0418560cee4d6281b613a5aa708fb81a1fa38cd076c29191716f055d1
+  git (5.4.1) sha256=c301236ed09f3dbbc31c33c2fc916b5e267a6ca6184eb232c46119cca9fb251e
   globalid (1.4.0) sha256=037f12fbf1d9d7a014d501c2d5c77356fd4ddd96d7a7991d6700bba96706f427
   google-protobuf (4.36.1-arm64-darwin) sha256=4d82184f4582dfa123f9793cd7a73beca9b0d3f0d3717948c4120b6cc0d50f2d
   google-protobuf (4.36.1-x86_64-linux-gnu) sha256=e735a3f3d6596b1010013c2030778bc030770e659106fe7e4ae0f07631b551cb
