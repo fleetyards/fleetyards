@@ -999,3 +999,5 @@ GET /sc-data/compare the `catalogues/equipment/appeared/items/` response's prope
 GET /sc-data/compare the `catalogues/equipment/vanished/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
 GET /sc-data/compare the `catalogues/models/appeared/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
 GET /sc-data/compare the `catalogues/models/vanished/items/` response's property type/format changed from `string`/`uuid` to `object`/`` for status `200`
+POST /vehicles/bulk removed the required property `details` from the response with the `400` status
+POST /vehicles/bulk removed the required property `error` from the response with the `400` status
