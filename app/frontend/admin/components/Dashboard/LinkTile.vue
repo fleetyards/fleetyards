@@ -101,8 +101,8 @@ withDefaults(defineProps<Props>(), {
     transform: translateY(-50%);
     font-size: 34px;
     color: $gray-lighter;
-    opacity: 0.4;
-    --fa-secondary-opacity: 1;
+    opacity: 0.5;
+    --fa-secondary-opacity: 0.6;
     pointer-events: none;
   }
 }
