@@ -26,6 +26,10 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.unlistedModels.index",
       icon: "fa-duotone fa-magnifying-glass-plus",
       activeRoute: "admin-models",
+      // Reached from the ships list, which is the only place the decision it
+      // asks for makes sense, and which carries the count of what is waiting.
+      // In the nav it was a permanent entry for a list that is empty most days.
+      nav: "hidden",
       access: ["models"],
     },
   },

@@ -23,6 +23,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 
 import {
   useModels as useModelsQuery,
+  useScDataUnlistedModels,
   getModelsQueryKey,
   type Model,
   type ModelSortEnum,
@@ -196,6 +197,26 @@ watch(
   },
   { immediate: true },
 );
+/*
+ * How many ships the game files describe that the catalogue has no model for.
+ * Asked for one record rather than none: the endpoint answers with a page and
+ * its pagination meta, and the count is what we are after -- there is no cheaper
+ * shape for it that does not mean a second endpoint.
+ *
+ * It matches what the target page shows because both leave `decision` unset, and
+ * the controller defaults that to undecided -- the same scope the dashboard
+ * tile counts.
+ */
+const { data: unlistedModels } = useScDataUnlistedModels({
+  // Strings, because that is what the generated params are: these go into a
+  // query string, and the schema types them as it receives them.
+  page: "1",
+  perPage: "1",
+});
+
+const unlistedCount = computed(
+  () => unlistedModels.value?.meta.pagination?.totalCount ?? 0,
+);
 </script>
 
 <template>
@@ -212,6 +233,25 @@ watch(
   </Heading>
 
   <Teleport to="#header-right">
+    <!--
+      Always rendered, never hidden on a zero count. The dashboard's attention
+      tile is the only other way in and it filters itself out at zero, so a
+      button that did the same would put the page out of reach exactly when
+      someone wants to confirm there is nothing waiting. The count is what
+      disappears instead.
+    -->
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'admin-unlisted-models' }"
+      :aria-label="t('headlines.admin.unlistedModels.index')"
+      mobile-icon-only
+    >
+      <i class="fa-duotone fa-magnifying-glass-plus" />
+      {{ t("labels.admin.models.unlisted") }}
+      <span v-if="unlistedCount" class="unlisted-count">{{
+        unlistedCount
+      }}</span>
+    </Btn>
     <Btn
       :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-model-modules' }"
@@ -441,3 +481,18 @@ watch(
     </template>
   </FilteredList>
 </template>
+
+<style lang="scss" scoped>
+/*
+ * Quieter than the label it follows, so the button reads as one control with a
+ * figure on it rather than as two things. Slot content carries this page's scope
+ * id, so the rule reaches inside Btn without a :deep - and it collapses with the
+ * label under `mobile-icon-only`, which zeroes the font size of the whole
+ * content row. A Pill would not: it would keep its own box and sit there as a
+ * blob beside the icon.
+ */
+.unlisted-count {
+  color: var(--color-primary, #428bca);
+  font-variant-numeric: tabular-nums;
+}
+</style>
