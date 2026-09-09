@@ -95,6 +95,13 @@ separate and unblocked.
 
 ## Order
 
+**Status, 2026-09-08.** (1)–(4) are on `main`: #4761 the table and the backfill,
+#4773 the transition clause the backfill needed, #4772 the legacy code removal,
+#4779 dual-write and the reads, #4781 stop destroying, #4782 / #4785 the admin
+view, #4798 the legacy tables themselves. **(5) is the only step still open**,
+and it folds into item 5 of the parent plan.
+
+
 1. **The table and the backfill.** `hardpoint_builds` with
    `(hardpoint_id, environment, version)` unique, `BUILDS_RETAINED` and
    `retained_versions` mirroring `ComponentBuild`, and a backfill writing the
@@ -139,8 +146,10 @@ separate and unblocked.
 4. **Stop destroying.** `persist_loadout` retires build rows instead of
    destroying slots, and *this* is the PR that fixes the bug and the one item 3
    of the parent plan is gated on.
-5. **Drop the columns**, after (4) has been on `main` long enough to trust — and
-   this folds into item 4 of the parent plan rather than standing alone.
+5. **Drop the columns** — *open*. After (4) has been on `main` long enough to
+   trust, and this folds into item 5 of the parent plan rather than standing
+   alone. What it is waiting on now is a PTU load having run in production: the
+   columns are the fallback that makes a bad load survivable.
 
 **The order of (3) and (4) is not interchangeable, and an earlier version of
 this plan had them the other way round.** `Api::V1::ModelsController#hardpoints`
