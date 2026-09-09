@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+set +a
+export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_STAGE/credential")
+bundle exec kamal accessory "$@" -d stage

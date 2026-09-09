@@ -91,6 +91,8 @@ bin/logs-stage                    # View staging logs
 bin/logs-live                     # View production logs
 bin/setup-stage                   # Run Kamal setup for staging
 bin/setup-live                    # Run Kamal setup for production
+bin/accessory-stage <cmd> <name>  # Kamal accessory command on staging (e.g. bin/accessory-stage reboot db)
+bin/accessory-live <cmd> <name>   # Kamal accessory command on production
 ```
 
 ### Linting & Formatting
