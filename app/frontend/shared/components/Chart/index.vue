@@ -31,7 +31,6 @@ type Props = {
   reload?: number;
   tooltipType?: string;
   height?: number;
-  admin?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,7 +39,6 @@ const props = withDefaults(defineProps<Props>(), {
   tooltipType: "",
   reload: undefined,
   height: 400,
-  admin: false,
 });
 
 const { t } = useI18n();
@@ -259,7 +257,7 @@ const setupChart = () => {
       <span>{{ t("chart.states.empty") }}</span>
     </div>
 
-    <Loader :loading="loading" :admin="admin" relative />
+    <Loader :loading="loading" relative />
   </div>
 </template>
 

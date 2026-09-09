@@ -45,7 +45,6 @@ type Props = {
   rowClickable?: boolean;
   rowDisabled?: (record: T) => boolean;
   fillHeight?: boolean;
-  admin?: boolean;
   // Placeholder rows to hold the table open with while it waits for its first
   // records. A table inside a list takes the count from the list instead, so
   // this is only for one standing on its own.
@@ -66,7 +65,6 @@ const props = withDefaults(defineProps<Props>(), {
   rowClickable: false,
   rowDisabled: undefined,
   fillHeight: false,
-  admin: false,
   skeletonRows: undefined,
 });
 
@@ -240,7 +238,7 @@ const resetSelected = () => {
       <div class="base-table__wrapper w-full">
         <div class="base-table__loader" v-if="ownLoaderVisible">
           <slot name="loader" :loading="isLoading">
-            <Loader :loading="isLoading" :admin="props.admin" />
+            <Loader :loading="isLoading" />
           </slot>
         </div>
         <table ref="inner" class="base-table__inner">

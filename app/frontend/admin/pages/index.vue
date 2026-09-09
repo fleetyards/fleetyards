@@ -259,7 +259,6 @@ const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
               :async-status="visitsPerDayStatus"
               tooltip-type="visit"
               :height="292"
-              admin
             />
           </PanelBody>
         </Panel>
@@ -277,7 +276,6 @@ const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
               :async-status="mostViewedPagesStatus"
               tooltip-type="view"
               :height="292"
-              admin
             />
           </PanelBody>
         </Panel>
@@ -298,7 +296,6 @@ const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
               :async-status="visitsPerMonthStatus"
               tooltip-type="visit"
               :height="320"
-              admin
             />
           </PanelBody>
         </Panel>
@@ -316,7 +313,6 @@ const { data: registrationsPerMonth, ...registrationsPerMonthStatus } =
               :async-status="registrationsPerMonthStatus"
               tooltip-type="user"
               :height="320"
-              admin
             />
           </PanelBody>
         </Panel>

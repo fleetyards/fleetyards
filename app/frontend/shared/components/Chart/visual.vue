@@ -259,23 +259,6 @@ const redraw = () => {
     </div>
   </div>
 
-  <Heading :level="HeadingLevelEnum.H2">Admin theme</Heading>
-  <p>The same series on the admin palette.</p>
-  <div class="row">
-    <div class="col-12 col-lg-6">
-      <Chart
-        :key="`admin-${redrawKey}`"
-        name="vt-admin"
-        type="column"
-        :async-status="settled"
-        :options="bars"
-        tooltip-type="ship"
-        admin
-        :height="300"
-      />
-    </div>
-  </div>
-
   <Heading :level="HeadingLevelEnum.H2">Redraw</Heading>
   <p>
     Remounts every chart above. Highcharts holds its own instance outside Vue's
