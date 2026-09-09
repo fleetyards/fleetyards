@@ -14,6 +14,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { type ModelQuery } from "@/services/fyApi";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   wanted?: boolean;
@@ -26,6 +28,8 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 const comlink = useComlink();
+
+const { displayAlert } = useAppNotifications();
 
 const { useCreateBulkMutation } = useVehicleMutations();
 
@@ -67,10 +71,15 @@ const save = async (selection: ModelPickerSelection[]) => {
     .mutateAsync({ data: { vehicles } })
     .then(() => {
       comlink.emit("hangar-change");
+      comlink.emit("close-modal");
+    })
+    .catch((error) => {
+      const { message } = validationErrorFrom(error);
+
+      displayAlert({ text: message });
     })
     .finally(() => {
       submitting.value = false;
-      comlink.emit("close-modal");
     });
 };
 </script>
