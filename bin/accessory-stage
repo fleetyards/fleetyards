@@ -4,4 +4,4 @@ set -euo pipefail
 set +a
 HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_STAGE/credential")
 export HCLOUD_TOKEN
-bundle exec kamal setup -d stage "$@"
+bundle exec kamal accessory "$@" -d stage

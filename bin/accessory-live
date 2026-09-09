@@ -4,7 +4,4 @@ set -euo pipefail
 set +a
 HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
 export HCLOUD_TOKEN
-
-ROLE="${1:-web}"
-shift 2>/dev/null || true
-bundle exec kamal app logs -d live -r "$ROLE" "$@"
+bundle exec kamal accessory "$@" -d live

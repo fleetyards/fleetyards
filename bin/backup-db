@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
+HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
+export HCLOUD_TOKEN
 
 echo "Triggering on-demand database backup on live..."
 bundle exec kamal accessory exec db-backup -d live --reuse /backup.sh

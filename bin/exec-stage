@@ -2,7 +2,8 @@
 set -euo pipefail
 
 set +a
-export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_STAGE/credential")
+HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_STAGE/credential")
+export HCLOUD_TOKEN
 
 ROLE="${1:-web}"
 shift 2>/dev/null || true
