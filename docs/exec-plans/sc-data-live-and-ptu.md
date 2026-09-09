@@ -366,11 +366,19 @@ wrong control for.
 
 ### 7. Out of the model work
 
-- The bulk action on `sc_data_unlisted_models`, so a patch's new entries can be
-  triaged in one pass rather than row by row. **Still open.**
+- The bulk action on `sc_data_unlisted_models` — **done, #4661, shipped in
+  v7.10.0**, the same release as the detector itself. `ignore_bulk`,
+  `mark_as_paint_bulk` and `reset_bulk` on the controller, and a selection with
+  two bulk buttons on `admin/pages/models/unlisted.vue`. `link` and
+  `create_model` stay per row on purpose: each needs a target a person picks.
+  (An earlier revision of this file listed it as open. It never was.)
 
-  Its prerequisite was not: the table was empty in production because its only
-  writer had no caller. The report sat in `Loaders::ScData::ModelsJob`, which
+  The one loose end: `reset_bulk` has a route and no button. Reset is for a
+  decision made in error, which is a per-row thing, so that may be right — but it
+  is an accident rather than a decision.
+
+  What kept the feature from being usable was elsewhere: the table was empty in
+  production because its only writer had no caller. The report sat in `Loaders::ScData::ModelsJob`, which
   nothing enqueues — the scheduled `Loaders::ModelsJob` is the RSI ship matrix
   loader, one namespace away. #4808 moved it to `Loaders::ScData::AllJob`, which
   `CheckJob` and the admin trigger actually run, and scoped the sweep to
