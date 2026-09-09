@@ -40,12 +40,39 @@ module Loaders
           record: import
         )
 
+        report_unlisted_models(source, import)
+
         import.finish!
       rescue => e
         import.fail!
         import.update!(info: e.message)
 
         raise e
+      end
+
+      # The load only ever iterates models that already exist, so a ship in the
+      # game files with no row is invisible to it. This is what says so.
+      #
+      # Here rather than in `Loaders::ScData::ModelsJob`, where it used to live:
+      # nothing enqueues that job. `CheckJob` -- the only thing that triggers a
+      # load, and only when a build has not been loaded yet -- enqueues this
+      # one, and the admin trigger does too. So the report ran for the first
+      # time in production only if somebody called it by hand.
+      #
+      # Inside the source, so a run reads the tree of the build it just loaded.
+      #
+      # Only a genuinely new entry is actionable, so the pile that has been
+      # sitting undecided does not reopen an issue on every patch.
+      private def report_unlisted_models(source, import)
+        result = ::ScData::Source.with(source) { ::ScData::UnlistedModels.new.run }
+
+        AdminReport.deliver(
+          task_type: "sc_data_unlisted_models",
+          title: "Ships in the game files with no model (#{result[:new].size} new)",
+          body: ::ScData::UnlistedModels.report_body(result, source),
+          actionable: ::ScData::UnlistedModels.actionable?(result),
+          record: import
+        )
       end
 
       # The build to load. A version and an environment name it exactly; either

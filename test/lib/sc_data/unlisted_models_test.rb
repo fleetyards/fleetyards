@@ -194,6 +194,58 @@ class ScData::UnlistedModelsTest < ActiveSupport::TestCase
     assert_equal 1, result[:undecided].size
   end
 
+  # The bug wiring this into a per-source load would have activated: one row
+  # serves both environments -- the unique index is on `identifier` alone -- so
+  # an unscoped sweep under ptu deleted every identifier only live shows, and the
+  # next live run recreated it with a fresh `first_seen_*` and announced it as
+  # new again. `CheckJob` loads both sources, so that is a churn loop.
+  test "a ptu run leaves an identifier only live shows alone" do
+    write_ship("drak_newhull")
+    run_detector
+
+    entry = ScDataUnlistedModel.sole
+    ptu_models = File.join(@dir, "parsed", "ptu", "models")
+    FileUtils.mkdir_p(ptu_models)
+    File.write(File.join(ptu_models, "drak_otherhull.json"), JSON.dump({"name" => "Other"}))
+
+    ScData::UnlistedModels.new(
+      ScData::Source.new(version: "1.0.1-ptu.1", environment: "ptu"), base_folder: @dir
+    ).run
+
+    assert ScDataUnlistedModel.exists?(entry.id), "live's row is not ptu's to retire"
+    assert_equal "1.0.0", ScDataUnlistedModel.find(entry.id).first_seen_version
+  end
+
+  # The other half of the same rule: what this environment saw last and no longer
+  # ships is this environment's to retire.
+  test "a run retires an identifier its own environment stopped shipping" do
+    write_ship("drak_newhull")
+    run_detector
+
+    File.delete(File.join(models_path, "drak_newhull.json"))
+    write_ship("drak_otherhull")
+
+    result = run_detector
+
+    assert_equal ["drak_otherhull"], ScDataUnlistedModel.pluck(:identifier)
+    assert_equal 1, result[:seen]
+  end
+
+  # `where.not(identifier: [])` is `1=1`. The live tree carries 894 unlisted
+  # files, so a run that found none failed to read a tree rather than watched a
+  # catalogue empty itself.
+  test "a run that found nothing sweeps nothing" do
+    write_ship("drak_newhull")
+    run_detector
+
+    File.delete(File.join(models_path, "drak_newhull.json"))
+
+    result = run_detector
+
+    assert_equal 0, result[:seen]
+    assert_equal 1, ScDataUnlistedModel.count, "an unreadable tree must not empty the table"
+  end
+
   test "a decided ship stops being reported" do
     write_ship("drak_newhull")
     run_detector
