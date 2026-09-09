@@ -98,6 +98,13 @@ comparing them reports a difference on every re-parse. Worth stating precisely â
 of those 420, 189 also differ in length and so are likely real; the rest may be
 re-serialisation. Either way the field is not an answer.
 
+That 420 is a comparison of *deserialised* values, and the distinction turns out
+to matter more than it sounds. Re-measured 2026-09-09 against the same pair, the
+raw column text differs on **4,530** of the 7,251 rows â€” every one of them also
+differing in length. So comparing the stored string rather than the object turns
+a field that is already mostly noise into one that is almost entirely noise, and
+the exclusion is load-bearing rather than tidy.
+
 *Prose.* Measured after the first version of this plan, and the larger of the
 two: with the shapes already excluded, **2,171 of 2,182** changed components
 differed on `description` alone, against 10 on `name`. Excluding it turns a page
@@ -126,5 +133,11 @@ settled for slots.
 
 The measurement above is the fixture: a compare of live `4.9.0-live.12344265`
 against `4.10.0-live.12519617` has to report 23 appeared, 61 vanished and 10
-renamed for components. Those numbers come from the production dump of
+renamed for components.
+
+**Re-verified 2026-09-09**, every figure in this file except the two noted
+above: 7,251 present in both, 23 appeared, 61 vanished, 10 on `name`, 0 on
+`size`/`grade`/`durability`, 2,182 changed with shapes excluded, 2,171 of them on
+`description` alone, 359 once prose goes too. Production answers the same 23 / 61
+/ 359 through `/v1/sc-data/compare`. Those numbers come from the production dump of
 2026-09-06 and are stable as long as both builds are retained.
