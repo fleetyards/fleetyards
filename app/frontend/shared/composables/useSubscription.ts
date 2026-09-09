@@ -36,30 +36,39 @@ export const useSubscription = <T = unknown>({
       return;
     }
 
-    channel.value = consumer.subscriptions.create(
-      {
-        channel: channelName,
-      },
-      {
-        received,
-        connected: () => {
-          console.info("Connected to Channel:", channelName);
-
-          if (connected) {
-            connected();
-          }
+    // actioncable opens the socket synchronously inside `create`, so a client
+    // that cannot open one at all -- a proxy rewriting the URL, an extension,
+    // a network policy blocking wss -- throws right here and used to take the
+    // mount with it. Live updates are an enhancement, so the page has to work
+    // without them.
+    try {
+      channel.value = consumer.subscriptions.create(
+        {
+          channel: channelName,
         },
-        disconnected: () => {
-          unsubscribe();
+        {
+          received,
+          connected: () => {
+            console.info("Connected to Channel:", channelName);
 
-          console.info("Disconnected from Channel:", channelName);
+            if (connected) {
+              connected();
+            }
+          },
+          disconnected: () => {
+            unsubscribe();
 
-          if (disconnected) {
-            disconnected();
-          }
+            console.info("Disconnected from Channel:", channelName);
+
+            if (disconnected) {
+              disconnected();
+            }
+          },
         },
-      },
-    );
+      );
+    } catch (error) {
+      console.warn("Subscriptions: could not subscribe to", channelName, error);
+    }
   };
 
   onMounted(() => {
