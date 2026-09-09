@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.14.0](https://github.com/fleetyards/fleetyards/compare/v7.13.0...v7.14.0) (2026-09-09)
+
+
+### Features
+
+* **admin:** move unlisted ships from the nav to the ships list ([#4824](https://github.com/fleetyards/fleetyards/issues/4824)) ([865ea75](https://github.com/fleetyards/fleetyards/commit/865ea75e87629b46a47c1eaf9559e0c0690ea3e2))
+* **theme:** a theme layer, and an admin theme built on it ([#4823](https://github.com/fleetyards/fleetyards/issues/4823)) ([915b65a](https://github.com/fleetyards/fleetyards/commit/915b65a10ba590ef6346c08d059c6147d5f85e72))
+
+
+### Bug Fixes
+
+* **api:** stop a malformed page parameter from 500ing ([#4812](https://github.com/fleetyards/fleetyards/issues/4812)) ([7da729e](https://github.com/fleetyards/fleetyards/commit/7da729e68b4d7c936817749b4a62112220d5ae7c))
+* **auth:** stop reporting the change-password redirect as an error ([#4813](https://github.com/fleetyards/fleetyards/issues/4813)) ([15c2f2d](https://github.com/fleetyards/fleetyards/commit/15c2f2d52c49fe6837717e842a16ca9dbec3db0e))
+* **base-select:** treat a single filter value as a one-item selection ([#4804](https://github.com/fleetyards/fleetyards/issues/4804)) ([4f97882](https://github.com/fleetyards/fleetyards/commit/4f9788279142767de2a4376b7511c1023a8cd87f))
+* **btn:** dim the label while a button is loading ([#4820](https://github.com/fleetyards/fleetyards/issues/4820)) ([ba8242c](https://github.com/fleetyards/fleetyards/commit/ba8242cac8c17e00992c5ec5d4fc9acac76efbe2))
+* **cable:** keep rendering when the client cannot open a socket ([#4817](https://github.com/fleetyards/fleetyards/issues/4817)) ([0686497](https://github.com/fleetyards/fleetyards/commit/06864970e845f052b9077159ba73b5493699d6ae))
+* **cable:** resubscribe after a reconnect, and resync the admin notification list ([#4821](https://github.com/fleetyards/fleetyards/issues/4821)) ([4061d4b](https://github.com/fleetyards/fleetyards/commit/4061d4bffe3b0685fbf72aad2554a9d9204a79a6))
+* **hangar:** only offer ships a player can actually own ([#4810](https://github.com/fleetyards/fleetyards/issues/4810)) ([1cd90b7](https://github.com/fleetyards/fleetyards/commit/1cd90b7a66ac6ae4f812f80602f9545be2ff001c))
+* **oauth:** answer 401 on userinfo instead of erroring ([#4814](https://github.com/fleetyards/fleetyards/issues/4814)) ([2e02f86](https://github.com/fleetyards/fleetyards/commit/2e02f86c8ed630e0de783f9c2b06231e040be379))
+* **sc_data:** report unlisted models from the load that actually runs ([#4808](https://github.com/fleetyards/fleetyards/issues/4808)) ([9641c32](https://github.com/fleetyards/fleetyards/commit/9641c325b584640aa6371db137ad50d9e37c5409))
+* **stats:** give the stat tile icons their two tones back ([#4822](https://github.com/fleetyards/fleetyards/issues/4822)) ([76ad28e](https://github.com/fleetyards/fleetyards/commit/76ad28e4dca2f1dca8d50361cd8b6ea3ed0b8d0a))
+* **storage:** answer 404 when a representation's original is gone ([#4809](https://github.com/fleetyards/fleetyards/issues/4809)) ([dfbfc70](https://github.com/fleetyards/fleetyards/commit/dfbfc70fc8d4dbba5d22cedb50687ce7f2b6338f))
+* **storage:** keep serving representations when the store cannot answer ([#4807](https://github.com/fleetyards/fleetyards/issues/4807)) ([c954224](https://github.com/fleetyards/fleetyards/commit/c9542241ea88dab55a9f5514767a083ca26eaf7f))
+* **viewer:** stop the WebGL probe from spending the context it tests for ([#4816](https://github.com/fleetyards/fleetyards/issues/4816)) ([facbf12](https://github.com/fleetyards/fleetyards/commit/facbf12949da5ff25f954076e6336773ae14909b))
+
+
+### Refactorings
+
+* **sc_data:** make build retention a property of the environment ([#4801](https://github.com/fleetyards/fleetyards/issues/4801)) ([04e3973](https://github.com/fleetyards/fleetyards/commit/04e3973647863d6349121f0f3cc935ede5178cd1))
+
+
+### Chores
+
+* **appsignal:** stop reporting exceptions Rails already answers ([#4806](https://github.com/fleetyards/fleetyards/issues/4806)) ([463c6dd](https://github.com/fleetyards/fleetyards/commit/463c6dd034e2b7d42779162adb054840c600727d))
+* **db:** drop the legacy hardpoint tables ([#4798](https://github.com/fleetyards/fleetyards/issues/4798)) ([6a5f822](https://github.com/fleetyards/fleetyards/commit/6a5f822bc8f78eaee8484d3088de957c89e6ade3))
+* **deps:** force js-yaml 4.3.2 for orval (CVE-2026-84375) ([#4805](https://github.com/fleetyards/fleetyards/issues/4805)) ([a4be26e](https://github.com/fleetyards/fleetyards/commit/a4be26e402e7968235a1bda770645f8a73b3e27b))
+* wrap kamal accessory the way every other remote command is wrapped ([#4803](https://github.com/fleetyards/fleetyards/issues/4803)) ([d74d54d](https://github.com/fleetyards/fleetyards/commit/d74d54d4eeed1afe586c2dec6002c22c51d0c651))
+
 ## [7.13.0](https://github.com/fleetyards/fleetyards/compare/v7.12.0...v7.13.0) (2026-09-08)
 
 
