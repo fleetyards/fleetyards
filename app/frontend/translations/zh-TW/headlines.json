@@ -396,7 +396,8 @@
         "syncModal": "同步彈窗",
         "overlays": "覆蓋層",
         "supportHint": "支援提示",
-        "notificationCenter": "通知中心"
+        "notificationCenter": "通知中心",
+        "themes": "主題"
       },
       "logistics": {
         "index": "Logistics",

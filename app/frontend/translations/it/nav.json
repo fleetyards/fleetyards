@@ -132,7 +132,8 @@
           "data": "Dati",
           "feedback": "Feedback"
         },
-        "notificationCenter": "Centro notifiche"
+        "notificationCenter": "Centro notifiche",
+        "themes": "Temi"
       },
       "admin": {
         "index": "Admin",

@@ -132,7 +132,8 @@
           "data": "資料",
           "feedback": "回饋"
         },
-        "notificationCenter": "通知中心"
+        "notificationCenter": "通知中心",
+        "themes": "主題"
       },
       "admin": {
         "index": "管理員",

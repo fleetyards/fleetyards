@@ -157,6 +157,15 @@ export const routes = [
     },
   },
   {
+    path: "themes/",
+    name: "visual-tests-themes",
+    component: () => import("@/frontend/pages/visual-tests/themes.vue"),
+    meta: {
+      title: "visualTests.themes",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "chips/",
     name: "visual-tests-chips",
     component: () => import("@/shared/components/base/Chip/visual.vue"),
