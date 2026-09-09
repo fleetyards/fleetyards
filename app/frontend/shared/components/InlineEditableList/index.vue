@@ -324,12 +324,12 @@ defineExpose({
   display: flex;
   align-items: center;
   gap: 10px;
-  color: $primary;
+  color: var(--color-primary, #428bca);
   white-space: nowrap;
   font-size: 120%;
 
   :deep(.btn__content) {
-    color: $primary;
+    color: var(--color-primary, #428bca);
   }
 }
 

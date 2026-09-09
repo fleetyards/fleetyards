@@ -15,14 +15,14 @@
 }
 
 .base-table-bulk-actions__count {
-  color: $primary;
+  color: var(--color-primary, #428bca);
   white-space: nowrap;
   display: flex;
   align-items: center;
   font-size: 120%;
 
   :deep(.btn__content) {
-    color: $primary;
+    color: var(--color-primary, #428bca);
   }
 
   &--hide {

@@ -7,7 +7,7 @@
   height: 3px;
   margin-top: env(safe-area-inset-top);
   pointer-events: none;
-  background: $primary;
+  background: var(--color-primary, #428bca);
   opacity: 0;
   transform: scaleX(0);
   transform-origin: left;

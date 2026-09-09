@@ -23,8 +23,9 @@
 
     &:hover,
     &.open {
-      border-color: $primary;
-      box-shadow: 0 0 12px rgba($primary, 0.4);
+      border-color: var(--color-primary, #428bca);
+      box-shadow: 0 0 12px
+        color-mix(in srgb, var(--color-primary, #428bca) 40%, transparent);
       background: rgba($gray-darker, 0.8);
     }
   }
@@ -39,7 +40,7 @@
   &__chevron {
     flex-shrink: 0;
     margin-left: 12px;
-    color: $primary;
+    color: var(--color-primary, #428bca);
     transition: transform $transition-base-speed ease;
 
     .open & {
@@ -77,7 +78,7 @@
       left: 10px;
       width: 6px;
       height: 6px;
-      background: $primary;
+      background: var(--color-primary, #428bca);
       border-radius: 50%;
       transform: translateY(-50%);
       opacity: 0;
@@ -86,7 +87,11 @@
     }
 
     &:hover {
-      background: rgba($primary, 0.15);
+      background: color-mix(
+        in srgb,
+        var(--color-primary, #428bca) 15%,
+        transparent
+      );
     }
 
     &.active {
@@ -94,7 +99,8 @@
 
       &::before {
         opacity: 1;
-        box-shadow: 0 0 8px rgba($primary, 0.8);
+        box-shadow: 0 0 8px
+          color-mix(in srgb, var(--color-primary, #428bca) 80%, transparent);
       }
     }
 

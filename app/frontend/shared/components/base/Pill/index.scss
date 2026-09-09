@@ -7,9 +7,14 @@
   text-align: center;
   vertical-align: baseline;
   border-radius: 4px;
-  background: rgba($primary, 0.2);
-  border: 1px solid rgba($primary, 0.4);
-  color: color.adjust($primary, $lightness: 20%);
+  background: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 20%,
+    transparent
+  );
+  border: 1px solid
+    color-mix(in srgb, var(--color-primary, #428bca) 40%, transparent);
+  color: var(--color-primary-tint, #92bce0);
 
   // The event lifecycle needs a quiet state as well as coloured ones: draft,
   // completed and past all mean "nothing to react to", and the default fill is

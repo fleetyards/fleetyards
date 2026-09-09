@@ -195,12 +195,24 @@ const stateHint = computed(() => {
    which was louder than any other control in the app and left an active chip
    with no hover feedback, since hover and active were the same declaration. */
 .chip--included {
-  background-color: rgb(66 139 202 / 0.22);
-  border-color: rgb(66 139 202 / 0.5);
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 22%,
+    transparent
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 50%,
+    transparent
+  );
 }
 
 .chip--included:hover {
-  background-color: rgb(66 139 202 / 0.32);
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 32%,
+    transparent
+  );
 }
 
 .chip--excluded {
