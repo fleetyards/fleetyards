@@ -149,8 +149,13 @@ columns yet.
 
 ### What the load found
 
+*Written on 2026-09-07, as the record of what a first real second tree exposed.
+Three of the four have since been fixed and are marked; the first still
+describes current behaviour. Re-verified against the code on 2026-09-09.*
+
 **Every catalogue row's `version` column ends up naming the other
-environment's build.** Each loader's `update_params` carries `version:
+environment's build.** — *still true: the loaders still write `version:
+sc_version` onto the shared row. Only the consumer that misread it was fixed.* Each loader's `update_params` carries `version:
 sc_version` into `apply`, which writes the shared row, so after the PTU load no
 catalogue row claimed `4.10.0-live.12519617` at all. `current_version` no longer
 reads that column for Component, Commodity or Equipment, but
@@ -159,7 +164,9 @@ inventory entries pointing at a catalogue item reported available, as a PTU
 request 10 of 10 — with every one of them still holding its live build row.
 Fixed by asking the build row instead.
 
-**Loadouts are single-source, and the write is destructive.** `hardpoints`
+**Loadouts are single-source, and the write is destructive.** — *fixed, #4762.
+`destroy_all` is gone from `persist_loadout`; `retire_absent_slots` retires the
+build row and leaves the slot.* `hardpoints`
 carries no `environment` or `version`, and `persist_loadout` ends with
 `parent.hardpoints.where(source: :game_files).where.not(id: hardpoint_ids)
 .destroy_all`. The 28 model facts moved to `ModelBuild`; the loadout, which is
@@ -168,7 +175,9 @@ most of what a ship page shows, did not. This load did not demonstrate it —
 zero ships moved — because the two builds agree on every loadout. On a build
 where they diverge, loading PTU rewrites live's ship pages. This is now item 2.
 
-**Nothing in production can load a second environment.** `ScData::CheckJob`
+**Nothing in production can load a second environment.** — *fixed, #4774.
+`CheckJob` iterates `ScData::Source.configured` and `AllJob` runs inside
+`ScData::Source.with`.* `ScData::CheckJob`
 asks `ScData::Source.version` — the default source only — and
 `Loaders::ScData::AllJob` and `FetchesParsedTree` do the same. Nothing iterates
 `ScData::Source.configured` and nothing calls `ScData::Source.with`, the seam
@@ -188,7 +197,9 @@ land before item 2 — giving production the ability to load PTU while loadouts
 are still single-source is what turns a harmless second source into a rewrite of
 live.
 
-**`ModelModule` has no build table at all.** `ModelModulesLoader` writes
+**`ModelModule` has no build table at all.** — *fixed, #4780. `ModelModuleBuild`
+exists, `ScData::Source::BUILDS` lists it, and `load_module_data` returning nil
+is guarded.* `ModelModulesLoader` writes
 `production_status` and `description` straight onto the row and rewrites its
 hardpoints, there is no `ModelModuleBuild`, and `ScData::Source::BUILDS` does
 not list it. It also has no guard for a module the export stopped shipping:
@@ -213,7 +224,10 @@ differs between builds in *structure* and not only in facts.
 Two things constrain it, both measured rather than assumed:
 
 **Only `game_files` slots may carry build rows.** `hardpoints.source` is
-`{ship_matrix: 0, game_files: 1}`, 4,974 rows against 22,561. The ship matrix
+`{ship_matrix: 0, game_files: 1}`. The `game_files` half is 22,561 rows on every
+dump checked; the matrix half is not stable — 4,974 when this was written,
+10,750 on a later dump — because a ship-matrix import rewrites it. The ratio is
+the point, not the figure. The ship matrix
 comes from no build and has no version, so if "has a build row" were the test
 for "is in this build", every ship-matrix hardpoint would read as retired from
 every build — the same conflation this plan already rejected for `in_game` and
@@ -223,13 +237,14 @@ should ever be unified is a separate question: they are alternative descriptions
 today, the frontend picks one per ship, and the ship-matrix set answers
 `component: null` on every entry.
 
-**There are two hardpoint tables, and the second one is dead.** `hardpoints`
-(27,540 rows) is loader-owned and serves the public API. `model_hardpoints`
-(26,258 rows, of which 17,933 are soft-deleted) is its predecessor: same
-`source` enum (`ship_matrix: 0, game_files: 1`), created from 2020-12-20, last
-written 2026-04-02 for the matrix half and 2024-05-23 for the game-files half,
-**no sc_data loader touches it**, no public endpoint reads it, and only
-`Admin::Api::V1::ModelHardpointsController` remains.
+**There were two hardpoint tables, and the second one was dead.** *The second is
+gone — #4772 removed the code, #4798 dropped the table. What follows is the case
+for dropping it.* `hardpoints` is loader-owned and serves the public API.
+`model_hardpoints` (26,258 rows, of which 17,933 were soft-deleted) was its
+predecessor: same `source` enum (`ship_matrix: 0, game_files: 1`), created from
+2020-12-20, last written 2026-04-02 for the matrix half and 2024-05-23 for the
+game-files half, **no sc_data loader touched it**, no public endpoint read it,
+and only `Admin::Api::V1::ModelHardpointsController` remained.
 
 Its 6,077 `ModelHardpointLoadout` rows are not a preset system, which is what
 they look like from the class name. They sit over 2,662 parent hardpoints, ~2.3
@@ -239,13 +254,13 @@ is exactly what `hardpoints` now does through `parent_type: "Hardpoint"`. So
 there is no curated data on that table to preserve, and the slot identity is
 `hardpoints`.
 
-`vehicle_loadout_hardpoints` still points at `model_hardpoints` rather than at
-`hardpoints`, and it has never held a row. It is not a constraint on this work
-in either direction: the *live* vehicle-loadout feature is a bookmark — all 319
-`vehicle_loadouts` rows carry a URL to `spviewer.eu` or `erkul.games` and none
-carry anything else — so it reads no hardpoints and knows nothing about builds.
-The two share the word "loadout" and nothing else. Deleting the legacy pair,
-`vehicle_loadout_hardpoints` included, is separate and unblocked.
+`vehicle_loadout_hardpoints` pointed at `model_hardpoints` rather than at
+`hardpoints`, and never held a row. It was not a constraint on this work in
+either direction: the *live* vehicle-loadout feature is a bookmark — every
+`vehicle_loadouts` row carries a URL to `spviewer.eu` or `erkul.games` and none
+is blank, which held on both dumps checked on 2026-09-09 — so it reads no
+hardpoints and knows nothing about builds. The two share the word "loadout" and
+nothing else. *Dropped in #4798.*
 
 ### 3. A production load path for a second environment — done, 2026-09-08
 
@@ -425,6 +440,14 @@ wrong control for.
 
 ## Verification
 
+**Every figure in this file was re-checked on 2026-09-09** against the code, the
+production dump and, where the endpoint allows it, production itself. What
+changed as a result is recorded in place: the contract-phase count (73 → 87), the
+hardpoint PR list, the bulk action (never open), and status marks on the findings
+under (1) that have since been fixed. Counts that turned out to depend on which
+dump you ask are now labelled as such — the `game_files` slot count is stable at
+22,561, the ship-matrix half is not.
+
 - `test/lib/sc_data/source_test.rb` — which source is in force, and which are
   offered.
 - `test/integration/api/v1/sc_data_*.rb` — the endpoint, the request parameter
@@ -441,9 +464,12 @@ wrong control for.
 
 - **A second tree exposes single-source assumptions in the loaders.** This was
   the point of doing (1) first, and it found four: the `version` column, the
-  loadout, the missing production load path, and `ModelModule`. Two are fixed,
-  two are (2) and (3). The columns are still there, which is what keeps a bad
-  load survivable — do not drop them before (2).
+  loadout, the missing production load path, and `ModelModule`. All four are
+  addressed — the last three by (2), (3) and (4), and the `version` column by
+  fixing its one bad consumer rather than the column itself, which the loaders
+  still write. The dual-held columns are still there, which is what keeps a bad
+  load survivable; the gate on dropping them is no longer (2) but a PTU load
+  having run in production. See (5).
 - **A stale generated API client reads as a broken branch.** The TS clients are
   gitignored; after a rebase onto a main that changed the schema, run
   `pnpm generate-api-client` and `pnpm generate-cable-client` before believing
