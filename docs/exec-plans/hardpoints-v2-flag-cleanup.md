@@ -1,5 +1,12 @@
 # Exec Plan: Remove the `hardpoints-v2` feature flag and dead legacy code path
 
+> **Done, and its out-of-scope note is now history.** This plan deliberately kept
+> the `ModelHardpoint` model and the `model_hardpoints` table. Both are gone:
+> #4772 removed the code, #4798 dropped `model_hardpoints`,
+> `model_hardpoint_loadouts` and `vehicle_loadout_hardpoints`. Read the
+> "Explicitly out of scope" section below as the decision it was on 2026-06-25,
+> not as the current shape of the schema.
+
 ## Goal & scope
 
 Make the **v2 hardpoints** implementation (`Hardpoint` model → `model.hardpoints`)

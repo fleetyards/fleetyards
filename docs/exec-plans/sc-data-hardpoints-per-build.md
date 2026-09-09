@@ -95,11 +95,13 @@ separate and unblocked.
 
 ## Order
 
-**Status, 2026-09-08.** (1)–(4) are on `main`: #4761 the table and the backfill,
-#4773 the transition clause the backfill needed, #4772 the legacy code removal,
-#4779 dual-write and the reads, #4781 stop destroying, #4782 / #4785 the admin
-view, #4798 the legacy tables themselves. **(5) is the only step still open**,
-and it folds into item 5 of the parent plan.
+**Status, 2026-09-09.** (1)–(4) are on `main`: #4759 the table and the slot's
+natural key, #4761 reading a hardpoint's facts through its build, #4762 retiring
+a build instead of destroying the slot, #4773 the transition clause `in_build`
+needed, #4779 deriving a model's facts from this build's slots only, #4772 the
+legacy code removal and #4798 the legacy tables, #4782 / #4785 the admin view.
+**(5) is the only step still open**, and it folds into item 5 of the parent
+plan, where the 10 dual-held hardpoint columns are counted.
 
 
 1. **The table and the backfill.** `hardpoint_builds` with

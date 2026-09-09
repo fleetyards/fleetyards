@@ -45,10 +45,12 @@ filters:
 
 **Hardpoints per build** — the loadout stopped being one set of rows whichever
 load ran last owns:
-- #4761 the table and the backfill, #4772 remove the legacy code, #4773 the
-  transition clause, #4779 dual-write and move the reads, #4781 stop destroying
+- #4759 the table and the slot's natural key, #4761 read a hardpoint's facts
+  through its build, #4762 retire a build instead of destroying the slot
+- #4773 let `in_build` tolerate an environment with no builds yet, #4779 derive a
+  model's facts from this build's slots only
+- #4772 remove the legacy code, #4798 drop the legacy tables themselves
 - #4782 / #4785 the admin view the rebuild had left without one
-- #4798 drop the legacy tables themselves
 
 **Model modules per build**
 - #4780 existence per build, and production status following live
@@ -302,24 +304,47 @@ Two things deliberately left alone:
   load-versus-curation conflict that predates the table and wants deciding on
   its own rather than being quietly settled by moving it.
 
-### 5. Contract phase — 73 columns still held twice
+### 5. Contract phase — 87 columns still held twice
 
-Measured against the current schema:
+Re-measured 2026-09-09, by intersecting each build class's `FACTS` with its
+row's `column_names`:
 
 | Catalogue | Facts on both tables |
 | --------- | -------------------- |
-| Model     | 28 |
+| Model     | 30 |
 | Equipment | 23 |
 | Component | 19 |
+| Hardpoint | 10 |
 | Commodity | 3  |
+| ModelModule | 2 |
+| **Total** | **87** |
+
+An earlier revision of this file said 73, counting only the four catalogues and
+predating two facts. Model has since gained `main_acceleration` and
+`retro_acceleration`; `Hardpoint` and `ModelModule` became dual-held when they
+got build rows, and belong to the same contract phase — hardpoints via step (5)
+of [sc-data-hardpoints-per-build.md](sc-data-hardpoints-per-build.md), which
+folds into this item.
 
 Model, in full: `cargo_holds`, `external_fuel_tanks`, `fuel_consumption`,
 `ground`, `ground_acceleration`, `ground_decceleration`, `ground_max_speed`,
 `ground_reverse_speed`, `hull_doors`, `hull_health`, `hull_parts`,
-`hydrogen_fuel_tanks`, `mass`, `max_speed`, `personal_inventory`, `pitch`,
-`pitch_boosted`, `quantum_fuel_tanks`, `refuel_boom`, `reverse_speed_boosted`,
-`roll`, `roll_boosted`, `scm_speed`, `scm_speed_boosted`,
-`signature_cross_section`, `weapon_pool_size`, `yaw`, `yaw_boosted`.
+`hydrogen_fuel_tanks`, `main_acceleration`, `mass`, `max_speed`,
+`personal_inventory`, `pitch`, `pitch_boosted`, `quantum_fuel_tanks`,
+`refuel_boom`, `retro_acceleration`, `reverse_speed_boosted`, `roll`,
+`roll_boosted`, `scm_speed`, `scm_speed_boosted`, `signature_cross_section`,
+`weapon_pool_size`, `yaw`, `yaw_boosted`.
+
+Hardpoint: `category`, `component_id`, `flags`, `group`, `group_key`,
+`max_size`, `min_size`, `port_tags`, `required_tags`, `types`.
+
+ModelModule: `cargo_holds`, `description`.
+
+The count is derivable, so it should be re-measured rather than trusted:
+
+```ruby
+build::FACTS.map(&:to_s).select { |fact| row.column_names.include?(fact) }
+```
 
 Every one is a place a row and its build can drift. Reads already go through the
 build, so dropping them is mechanical — but it is one-way, and the PTU load that
@@ -366,11 +391,19 @@ wrong control for.
 
 ### 7. Out of the model work
 
-- The bulk action on `sc_data_unlisted_models`, so a patch's new entries can be
-  triaged in one pass rather than row by row. **Still open.**
+- The bulk action on `sc_data_unlisted_models` — **done, #4661, shipped in
+  v7.10.0**, the same release as the detector itself. `ignore_bulk`,
+  `mark_as_paint_bulk` and `reset_bulk` on the controller, and a selection with
+  two bulk buttons on `admin/pages/models/unlisted.vue`. `link` and
+  `create_model` stay per row on purpose: each needs a target a person picks.
+  (An earlier revision of this file listed it as open. It never was.)
 
-  Its prerequisite was not: the table was empty in production because its only
-  writer had no caller. The report sat in `Loaders::ScData::ModelsJob`, which
+  The one loose end: `reset_bulk` has a route and no button. Reset is for a
+  decision made in error, which is a per-row thing, so that may be right — but it
+  is an accident rather than a decision.
+
+  What kept the feature from being usable was elsewhere: the table was empty in
+  production because its only writer had no caller. The report sat in `Loaders::ScData::ModelsJob`, which
   nothing enqueues — the scheduled `Loaders::ModelsJob` is the RSI ship matrix
   loader, one namespace away. #4808 moved it to `Loaders::ScData::AllJob`, which
   `CheckJob` and the admin trigger actually run, and scoped the sweep to

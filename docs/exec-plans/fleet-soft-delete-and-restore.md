@@ -10,7 +10,7 @@ A fleet was hard-destroyed and there is currently no way to:
 
 ## Current State
 
-- `paper_trail` 17.0.0 is present; `discard` is **not**. No soft-delete gem anywhere (one model, `ModelHardpoint`, hand-rolls `deleted_at` + scopes).
+- `paper_trail` 17.0.0 is present; `discard` is **not**. No soft-delete gem anywhere. (The one model that hand-rolled `deleted_at` + scopes, `ModelHardpoint`, was removed in #4772 and its table dropped in #4798, so there is now no hand-rolled example either.)
 - `Fleet` and `FleetMembership` both `has_paper_trail meta: { author_id:, reason:, reason_description: }`, but those `attr_accessor`s are **never assigned anywhere** — the custom meta is dead, those version columns are always nil.
 - `set_paper_trail_whodunnit` runs only in `Admin::ApplicationController` (the server-rendered admin). Neither `Api::BaseController` nor `Admin::Api::BaseController` set whodunnit, so **API/admin-API destroys record nil whodunnit**.
 - `versions.object` column is **`json`** → PaperTrail stores attribute snapshots as a JSON hash; we can query `object ->> 'fid'` / `object ->> 'name'` in SQL.

@@ -1,5 +1,16 @@
 # Vehicle Loadout System
 
+> **Partly shipped, and the schema below is out of date.** What went live is the
+> bookmark half: `vehicle_loadouts` carries a name and a URL to erkul or
+> spviewer, and all 342 rows have one. The internal half never held a single row
+> and is gone — #4798 dropped `vehicle_loadout_hardpoints` along with
+> `model_hardpoints` and `model_hardpoint_loadouts`, so `ModelHardpointLoadout`
+> and `VehicleLoadoutHardpoint` no longer exist. Slot identity is `hardpoints`
+> now. Read the schema and model sections below as the 2026 design, not as the
+> current tables; a future loadout editor is sketched under "What it makes
+> possible later" in
+> [sc-data-hardpoints-per-build.md](sc-data-hardpoints-per-build.md).
+
 ## Context
 
 Fleetyards tracks ships and their hardpoints from Star Citizen game data, but weapon stats are not extracted (commented out since implementation) and there's no way for users to store custom loadout configurations on their vehicles. The mission builder needs loadout data to let organizers specify equipment requirements and members to show what they're bringing.
