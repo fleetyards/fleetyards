@@ -52,7 +52,7 @@ const suffix = computed(() => {
     A metrics tile, not a filled panel. The blue fill this used to carry came
     from Panel's bgColor and was the loudest thing on any stats page - sixteen
     saturated blocks on hangar/stats alone. The emphasis is now the tile's 3px
-    $primary rail, which is how the ship page's cards mark their headline figure.
+    accent rail, which is how the ship page's cards mark their headline figure.
 
     `slim` because these repeat: sixteen full frames with end-caps in col-lg-3
     columns is exactly the noise that variant exists to avoid.

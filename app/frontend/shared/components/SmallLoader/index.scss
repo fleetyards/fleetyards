@@ -34,7 +34,7 @@
   width: 15px;
   height: 15px;
   margin: 0 auto;
-  background-color: $primary;
+  background-color: var(--color-primary, #428bca);
   border-radius: 2px;
   transform: translateY(0) rotate(45deg) scale(0);
   animation: looping-rhombuses-spinner-animation 2500ms linear infinite;

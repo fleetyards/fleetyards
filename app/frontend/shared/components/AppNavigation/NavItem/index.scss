@@ -51,10 +51,11 @@
       left: 0;
       width: 3px;
       height: 80%;
-      background: $primary;
+      background: var(--color-primary, #428bca);
       border-top-right-radius: 2px;
       border-bottom-right-radius: 2px;
-      box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
+      box-shadow: 2px 0 10px
+        color-mix(in srgb, var(--color-primary-shade, #245682) 90%, transparent);
       content: "";
     }
   }

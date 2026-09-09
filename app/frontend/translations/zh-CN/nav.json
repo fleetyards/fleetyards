@@ -132,7 +132,8 @@
           "data": "数据",
           "feedback": "反馈"
         },
-        "notificationCenter": "通知中心"
+        "notificationCenter": "通知中心",
+        "themes": "主题"
       },
       "admin": {
         "index": "管理员",

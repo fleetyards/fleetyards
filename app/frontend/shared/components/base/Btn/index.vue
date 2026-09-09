@@ -386,7 +386,7 @@ const handleClick = (event: MouseEvent) => {
   @apply bg-control-press;
   /* Dimmer than hover, so the press reads as the control receding along with
      its surface rather than as a second, brighter hover. */
-  --btn-cap: rgb(66 139 202 / 0.6);
+  --btn-cap: color-mix(in srgb, var(--color-primary, #428bca) 60%, transparent);
 }
 
 /* The outline stays - see the focus rule below. This only brings the cap along,
@@ -543,7 +543,11 @@ const handleClick = (event: MouseEvent) => {
 .btn--grouped.active,
 .btn--grouped[aria-pressed="true"] {
   @apply text-white;
-  background-color: rgb(66 139 202 / 0.26);
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 26%,
+    transparent
+  );
   box-shadow:
     inset 0 -2px 0 var(--color-primary, #428bca),
     -1px 0 0 var(--color-seam, #3a3f44);
@@ -553,7 +557,11 @@ const handleClick = (event: MouseEvent) => {
    neutral grouped hover, so without this an engaged toggle felt dead. */
 .btn--grouped.active:hover:not([disabled]),
 .btn--grouped[aria-pressed="true"]:hover:not([disabled]) {
-  background-color: rgb(66 139 202 / 0.38);
+  background-color: color-mix(
+    in srgb,
+    var(--color-primary, #428bca) 38%,
+    transparent
+  );
 }
 .btn--grouped:focus-visible {
   @apply outline-offset-[-2px];

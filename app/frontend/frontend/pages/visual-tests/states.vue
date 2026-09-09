@@ -236,10 +236,6 @@ const updatePerPage = (value: number | string) => {
       <Loader loading inline />
     </div>
     <div class="col-12 col-lg-3 vt-stack">
-      <BaseText muted no-spacing>admin</BaseText>
-      <Loader loading relative admin />
-    </div>
-    <div class="col-12 col-lg-3 vt-stack">
       <BaseText muted no-spacing>with progress ({{ progress }}%)</BaseText>
       <Loader loading relative :progress="progress" />
       <Btn data-test="bump-progress" @click="bumpProgress"> Advance </Btn>

@@ -396,7 +396,8 @@
         "syncModal": "Modal de sincronización",
         "overlays": "Superposiciones",
         "supportHint": "Aviso de apoyo",
-        "notificationCenter": "Centro de notificaciones"
+        "notificationCenter": "Centro de notificaciones",
+        "themes": "Temas"
       },
       "logistics": {
         "index": "Logistics",

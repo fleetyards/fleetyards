@@ -266,7 +266,7 @@ const columns: BaseTableCol<Image>[] = [
           </BtnGroup>
         </template>
         <template #loader="{ loading }">
-          <Loader :loading="loading" admin />
+          <Loader :loading="loading" />
         </template>
         <template #col-file="{ record }">
           <ViewImage

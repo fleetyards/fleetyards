@@ -20,7 +20,7 @@
     top: 0;
     left: 0;
     height: 100%;
-    background-color: $primary;
+    background-color: var(--color-primary, #428bca);
     border-radius: 15px;
   }
 
@@ -60,7 +60,7 @@
       text-align: center;
       color: #fff;
       border-radius: 5px;
-      background-color: $primary;
+      background-color: var(--color-primary, #428bca);
       box-sizing: content-box;
       position: relative;
 
@@ -71,7 +71,7 @@
         left: 50%;
         transform: translateX(-50%);
         border: 5px solid transparent;
-        border-top-color: $primary;
+        border-top-color: var(--color-primary, #428bca);
       }
     }
   }
@@ -116,7 +116,8 @@
 
   &:focus-visible {
     .base-slider__dot-handle {
-      box-shadow: 0 0 1px 2px rgba($primary, 0.36);
+      box-shadow: 0 0 1px 2px
+        color-mix(in srgb, var(--color-primary, #428bca) 36%, transparent);
     }
   }
 

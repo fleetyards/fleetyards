@@ -65,7 +65,7 @@
   }
 
   /*
-   * The row rail, flat. It used to be a $primary bar under three 10px shadows
+   * The row rail, flat. It used to be an accent bar under three 10px shadows
    * at 0.9 alpha -- the same bloom PR #4595 took out of the table -- and it sat
    * at -4px, outside the row, which now lands it on the surface's own frame.
    *
@@ -107,7 +107,7 @@
   }
 
   &.active {
-    color: $primary;
+    color: var(--color-primary, #428bca);
   }
 
   /*

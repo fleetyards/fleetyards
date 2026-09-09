@@ -46,7 +46,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  color: var(--color-primary, #{$primary});
+  color: var(--color-primary, #428bca);
   white-space: nowrap;
 
   :deep(.btn__content) {

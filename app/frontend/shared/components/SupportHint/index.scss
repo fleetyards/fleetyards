@@ -40,7 +40,7 @@
     padding: 1rem 1.25rem;
 
     .support-hint__icon {
-      color: $primary;
+      color: var(--color-primary, #428bca);
       opacity: 1;
     }
 

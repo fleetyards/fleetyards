@@ -52,8 +52,8 @@
   }
 
   &--active &-track {
-    background: $primary;
-    border-color: $primary;
+    background: var(--color-primary, #428bca);
+    border-color: var(--color-primary, #428bca);
   }
 
   &--active &-knob {
@@ -62,7 +62,7 @@
   }
 
   &--active:hover:not(:disabled) &-track {
-    border-color: darken($primary, 10%);
+    border-color: var(--color-primary-shade-soft, #3071a9);
   }
 
   &--loading &-knob {

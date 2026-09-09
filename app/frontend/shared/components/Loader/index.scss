@@ -45,7 +45,7 @@ $progress-bar-offset: -10px;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: $primary;
+      background-color: var(--color-primary, #428bca);
       transform-origin: 100% 100%;
       animation: loader-foldCubeAngle $animation-duration infinite linear both;
       content: "";
@@ -79,7 +79,7 @@ $progress-bar-offset: -10px;
   .progress {
     position: absolute;
     border-radius: 0;
-    background-color: $primary;
+    background-color: var(--color-primary, #428bca);
 
     &.progress-left {
       bottom: $progress-bar-offset;
@@ -97,16 +97,6 @@ $progress-bar-offset: -10px;
       width: $progress-bar-size;
       max-height: 100%;
       transition: height $transition-base-speed ease;
-    }
-  }
-
-  &--admin {
-    .cube::before {
-      background-color: $admin-primary;
-    }
-
-    .progress {
-      background-color: $admin-primary;
     }
   }
 }

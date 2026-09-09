@@ -45,14 +45,23 @@ $pull-to-refresh-size: 38px;
   /* The pull has gone far enough that letting go will refetch — the only cue
      the gesture gets, since it carries no label. */
   &--armed &__indicator {
-    color: $primary;
-    border-color: rgba($primary, 0.8);
-    box-shadow: 0 2px 12px rgba(darken($primary, 20%), 0.6);
+    color: var(--color-primary, #428bca);
+    border-color: color-mix(
+      in srgb,
+      var(--color-primary, #428bca) 80%,
+      transparent
+    );
+    box-shadow: 0 2px 12px
+      color-mix(in srgb, var(--color-primary-shade, #245682) 60%, transparent);
   }
 
   &--refreshing &__indicator {
-    color: $primary;
-    border-color: rgba($primary, 0.8);
+    color: var(--color-primary, #428bca);
+    border-color: color-mix(
+      in srgb,
+      var(--color-primary, #428bca) 80%,
+      transparent
+    );
 
     i {
       animation: pull-to-refresh-spin 0.9s linear infinite;
