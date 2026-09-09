@@ -136,6 +136,63 @@ describe("BaseSelect", () => {
         ["a", "c"],
       ]);
     });
+
+    /*
+     * A filter reads its value straight off `route.query`, which is a plain
+     * string when the param appears once and an array only when it repeats.
+     * So every one of these arrives at a `multiple` select in the wild.
+     */
+    describe("given a single value rather than a list", () => {
+      it("selects that one option instead of substring-matching the rest", async () => {
+        const wrapper = await mount({
+          multiple: true,
+          options: [
+            { value: "a", label: "Aurora" },
+            { value: "ab", label: "Aurora LX" },
+          ],
+          modelValue: "ab",
+        });
+
+        expect(labelsIn(wrapper, '[id^="ships-selected-"]')).toEqual([
+          "Aurora LX",
+        ]);
+      });
+
+      it("handles a value with no includes of its own", async () => {
+        const wrapper = await mount({
+          multiple: true,
+          options: [
+            { value: 3, label: "Three" },
+            { value: 7, label: "Seven" },
+          ],
+          modelValue: 3,
+        });
+
+        expect(labelsIn(wrapper, '[id^="ships-selected-"]')).toEqual(["Three"]);
+      });
+
+      it("adds to it rather than throwing", async () => {
+        const wrapper = await mount({ multiple: true, modelValue: "a" });
+
+        await wrapper
+          .findAll('[id^="ships-options-"] .base-select-item')[2]
+          .trigger("click");
+
+        expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([
+          ["a", "c"],
+        ]);
+      });
+
+      it("clears it when its own row is clicked again", async () => {
+        const wrapper = await mount({ multiple: true, modelValue: "a" });
+
+        await wrapper
+          .findAll('[id^="ships-options-"] .base-select-item')[0]
+          .trigger("click");
+
+        expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([[]]);
+      });
+    });
   });
 
   describe("the imperative API four call sites depend on", () => {
