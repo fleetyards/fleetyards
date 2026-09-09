@@ -758,12 +758,12 @@ const handleClick = (event: MouseEvent) => {
 }
 
 /*
- * Busy is not unavailable. The disabled rule dims the content to 45%, which for
- * a working button says the wrong thing - it reads as a control you cannot use
- * rather than one that is already doing what you asked. The caps say it instead.
+ * The label dims with the disabled rule, because a loading button is not
+ * takeable: it already refuses the click, and a full-strength label invited one.
+ * Only the caps stay lit - the surface goes quiet and the run around the outside
+ * is the one thing still moving, which is what says busy rather than dead.
  */
 .btn.is-loading .btn__content {
-  @apply opacity-100;
   /* Above the wash below. Both are positioned boxes at z-index auto, and the
      pseudo-element comes after the label in tree order, so without this the
      wash paints over the text and tints it. */
