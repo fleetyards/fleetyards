@@ -121,17 +121,16 @@ test.describe("Buttons", () => {
     expect(caps[1].animationName).toMatch(/^btn-fill-leftward/);
   });
 
-  test("a loading button keeps its label at full strength", async ({
-    page,
-  }) => {
-    // Busy is not unavailable: the disabled rule dims content to 45%, which on a
-    // working button reads as one that cannot be used.
+  test("a loading button dims its label", async ({ page }) => {
+    // A loading button renders disabled and already refuses the click, so the
+    // label takes the disabled dim with everything else - at full strength it
+    // read as takeable. The caps are what say busy, and they stay lit.
     const content = page
       .getByTestId("loading-variants")
       .locator(".is-loading .btn__content")
       .first();
 
-    expect(await style(content, "opacity")).toBe("1");
+    expect(await style(content, "opacity")).toBe("0.45");
   });
 
   test("a loading group member fills its surface, not a cap", async ({
