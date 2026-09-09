@@ -2,5 +2,6 @@
 set -euo pipefail
 
 set +a
-export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
+HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
+export HCLOUD_TOKEN
 bundle exec kamal accessory "$@" -d live
