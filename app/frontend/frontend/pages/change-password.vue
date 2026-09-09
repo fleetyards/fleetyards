@@ -43,7 +43,10 @@ const [passwordConfirmation, passwordConfirmationProps] = defineField(
 
 onMounted(async () => {
   if (isAuthenticated.value) {
-    await router.push({ name: "settings-change-password" });
+    // Nothing to do if this redirect loses a race with another navigation, and
+    // vue-router rejects on any navigation failure. Same guard as the push on
+    // success below.
+    await router.push({ name: "settings-change-password" }).catch(() => {});
   }
 });
 
