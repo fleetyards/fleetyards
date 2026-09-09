@@ -13,6 +13,7 @@ import { type Camera, type Mesh, type Object3D, type Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
+import { webglAvailable } from "@/shared/utils/Webgl";
 import { OrbitControls, TransformControls, Grid } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -53,15 +54,22 @@ const mobile = useMobile();
 const webglSupported = ref(true);
 
 onMounted(() => {
-  try {
-    const canvas = document.createElement("canvas");
-    const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
-    if (!gl) {
-      webglSupported.value = false;
-    }
-  } catch {
-    webglSupported.value = false;
+  webglSupported.value = webglAvailable();
+});
+
+// THREE throws while constructing the renderer, which TresCanvas's `on-error`
+// never sees: it comes out through Vue's error handler instead, which is how a
+// missing context got reported as an application error rather than showing the
+// fallback this component already has. Swallowing it is scoped to this
+// boundary, and a 3D viewer is the right place to decide that WebGL is absent.
+onErrorCaptured((error) => {
+  if (!(error instanceof Error) || !error.message.includes("WebGL")) {
+    return true;
   }
+
+  webglSupported.value = false;
+
+  return false;
 });
 
 const dpr = computed(() =>
