@@ -95,6 +95,9 @@ zh-CN:
       update: 无法更新停机位。
     fleet_events:
       update_occurrence: 无法更新该活动场次。
+      create: 无法创建活动。
+      destroy: 无法删除活动。
+      update: 无法更新活动。
     fleet_invite_urls:
       create: 无法创建邀请链接。
       destroy: 无法删除邀请链接。
@@ -167,3 +170,32 @@ zh-CN:
     video:
       create: 无法创建视频。
       update: 无法更新视频。
+    commodity:
+      create: 无法创建商品。
+      destroy: 无法删除商品。
+      update: 无法更新商品。
+    equipment:
+      create: 无法创建装备。
+      destroy: 无法删除装备。
+      update: 无法更新装备。
+    fleet_event_admins:
+      create: 无法授予活动管理员权限。
+    fleet_event_ships:
+      create: 无法创建活动舰船。
+      destroy: 无法删除活动舰船。
+      update: 无法更新活动舰船。
+    fleet_event_signups:
+      create: 报名失败。
+      update: 无法更新报名。
+    fleet_event_slots:
+      create: 无法创建活动 Slot。
+      destroy: 无法删除活动 Slot。
+      update: 无法更新活动 Slot。
+    fleet_event_teams:
+      create: 无法创建活动小队。
+      destroy: 无法删除活动小队。
+      update: 无法更新活动小队。
+    fleet_notification_settings:
+      update: 无法更新通知设置。
+    version:
+      revert: 无法还原该字段。

@@ -104,6 +104,9 @@ de:
       update: Dock konnte nicht aktualisiert werden.
     fleet_events:
       update_occurrence: Dieser Termin der Serie konnte nicht aktualisiert werden.
+      create: Event konnte nicht erstellt werden.
+      destroy: Event konnte nicht gelöscht werden.
+      update: Event konnte nicht aktualisiert werden.
     fleet_invite_urls:
       create: Einladungslink konnte nicht erstellt werden.
       destroy: Einladungslink konnte nicht gelöscht werden.
@@ -176,3 +179,30 @@ de:
     video:
       create: Video konnte nicht erstellt werden.
       update: Video konnte nicht aktualisiert werden.
+    commodity:
+      create: Ware konnte nicht erstellt werden.
+      destroy: Ware konnte nicht gelöscht werden.
+      update: Ware konnte nicht aktualisiert werden.
+    equipment:
+      create: Ausrüstung konnte nicht erstellt werden.
+      destroy: Ausrüstung konnte nicht gelöscht werden.
+      update: Ausrüstung konnte nicht aktualisiert werden.
+    fleet_event_admins:
+      create: Event-Admin konnte nicht vergeben werden.
+    fleet_event_ships:
+      create: Event-Schiff konnte nicht erstellt werden.
+      destroy: Event-Schiff konnte nicht gelöscht werden.
+      update: Event-Schiff konnte nicht aktualisiert werden.
+    fleet_event_signups:
+      create: Anmeldung fehlgeschlagen.
+      update: Anmeldung konnte nicht aktualisiert werden.
+    fleet_event_slots:
+      create: Event-Slot konnte nicht erstellt werden.
+      destroy: Event-Slot konnte nicht gelöscht werden.
+      update: Event-Slot konnte nicht aktualisiert werden.
+    fleet_event_teams:
+      create: Event-Team konnte nicht erstellt werden.
+      destroy: Event-Team konnte nicht gelöscht werden.
+      update: Event-Team konnte nicht aktualisiert werden.
+    fleet_notification_settings:
+      update: Benachrichtigungseinstellungen konnten nicht aktualisiert werden.

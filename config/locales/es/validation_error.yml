@@ -99,6 +99,9 @@ es:
       update: No se pudo actualizar el dique.
     fleet_events:
       update_occurrence: No se pudo actualizar esta repetición del evento.
+      create: No se pudo crear el evento.
+      destroy: No se pudo eliminar el evento.
+      update: No se pudo actualizar el evento.
     fleet_invite_urls:
       create: No se pudo crear el enlace de invitación.
       destroy: No se pudo eliminar el enlace de invitación.
@@ -171,3 +174,32 @@ es:
     video:
       create: No se pudo crear el vídeo.
       update: No se pudo actualizar el vídeo.
+    commodity:
+      create: No se pudo crear la mercancía.
+      destroy: No se pudo eliminar la mercancía.
+      update: No se pudo actualizar la mercancía.
+    equipment:
+      create: No se pudo crear el equipamiento.
+      destroy: No se pudo eliminar el equipamiento.
+      update: No se pudo actualizar el equipamiento.
+    fleet_event_admins:
+      create: No se pudo conceder el rol de administrador del evento.
+    fleet_event_ships:
+      create: No se pudo crear la nave del evento.
+      destroy: No se pudo eliminar la nave del evento.
+      update: No se pudo actualizar la nave del evento.
+    fleet_event_signups:
+      create: La inscripción falló.
+      update: No se pudo actualizar la inscripción.
+    fleet_event_slots:
+      create: No se pudo crear el slot del evento.
+      destroy: No se pudo eliminar el slot del evento.
+      update: No se pudo actualizar el slot del evento.
+    fleet_event_teams:
+      create: No se pudo crear el equipo del evento.
+      destroy: No se pudo eliminar el equipo del evento.
+      update: No se pudo actualizar el equipo del evento.
+    fleet_notification_settings:
+      update: No se pudieron actualizar los ajustes de notificación.
+    version:
+      revert: No se pudo restaurar el campo.

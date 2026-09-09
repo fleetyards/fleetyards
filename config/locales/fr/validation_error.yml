@@ -96,6 +96,9 @@ fr:
       update: Impossible de mettre à jour le dock.
     fleet_events:
       update_occurrence: Impossible de mettre à jour cette occurrence de l'événement.
+      create: Impossible de créer l'événement.
+      destroy: Impossible de supprimer l'événement.
+      update: Impossible de mettre à jour l'événement.
     fleet_invite_urls:
       create: Impossible de créer le lien d'invitation.
       destroy: Impossible de supprimer le lien d'invitation.
@@ -168,3 +171,32 @@ fr:
     video:
       create: Impossible de créer la vidéo.
       update: Impossible de mettre à jour la vidéo.
+    commodity:
+      create: Impossible de créer la marchandise.
+      destroy: Impossible de supprimer la marchandise.
+      update: Impossible de mettre à jour la marchandise.
+    equipment:
+      create: Impossible de créer l'équipement.
+      destroy: Impossible de supprimer l'équipement.
+      update: Impossible de mettre à jour l'équipement.
+    fleet_event_admins:
+      create: Impossible d'accorder le rôle d'administrateur de l'événement.
+    fleet_event_ships:
+      create: Impossible de créer le vaisseau de l'événement.
+      destroy: Impossible de supprimer le vaisseau de l'événement.
+      update: Impossible de mettre à jour le vaisseau de l'événement.
+    fleet_event_signups:
+      create: L'inscription a échoué.
+      update: Impossible de mettre à jour l'inscription.
+    fleet_event_slots:
+      create: Impossible de créer le slot de l'événement.
+      destroy: Impossible de supprimer le slot de l'événement.
+      update: Impossible de mettre à jour le slot de l'événement.
+    fleet_event_teams:
+      create: Impossible de créer l'équipe de l'événement.
+      destroy: Impossible de supprimer l'équipe de l'événement.
+      update: Impossible de mettre à jour l'équipe de l'événement.
+    fleet_notification_settings:
+      update: Impossible de mettre à jour les paramètres de notification.
+    version:
+      revert: Impossible de rétablir le champ.
