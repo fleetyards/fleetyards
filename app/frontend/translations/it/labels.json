@@ -1687,6 +1687,9 @@
             "uex_price_sync": "Sincronizzazione prezzi UEX",
             "unknown": "Sconosciuto"
           }
+        },
+        "models": {
+          "unlisted": "Senza modello"
         }
       },
       "hangarTable": {

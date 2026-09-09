@@ -1683,6 +1683,9 @@
             "uex_price_sync": "UEX 價格同步",
             "unknown": "未知"
           }
+        },
+        "models": {
+          "unlisted": "未收錄"
         }
       },
       "hangarTable": {
