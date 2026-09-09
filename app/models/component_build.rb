@@ -54,11 +54,6 @@ class ComponentBuild < ApplicationRecord
   belongs_to :component
   belongs_to :manufacturer, optional: true
 
-  # How many builds of one environment are kept. Enough to diff a patch against
-  # the one before it, and to compare a bad load with what it replaced, without
-  # the table growing with every patch forever.
-  BUILDS_RETAINED = 3
-
   # Everything a build says, as opposed to what identifies the component. Taken
   # from Component's own paper_trail list, which already named the specs that move
   # between builds, plus `category` -- the loader writes it and it decides
@@ -134,7 +129,7 @@ class ComponentBuild < ApplicationRecord
   # The versions worth keeping for one environment, ordered by when they first
   # appeared. Re-loading a build updates its rows in place, so `created_at` is
   # when that build first landed rather than when it was last touched.
-  def self.retained_versions(environment, keep: BUILDS_RETAINED)
+  def self.retained_versions(environment, keep: ::ScData::Source.builds_retained(environment))
     where(environment:)
       .group(:version)
       .minimum(:created_at)

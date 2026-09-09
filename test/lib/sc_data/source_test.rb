@@ -151,4 +151,23 @@ class ScData::SourceTest < ActiveSupport::TestCase
     assert_predicate ScData::Source.find("live"), :default?
     assert_not_predicate ScData::Source.find("ptu"), :default?
   end
+
+  # --- Retention --------------------------------------------------------------
+
+  # Live carries history a reader may cite; a preview is only ever asked what it
+  # has that live does not, and what changed since the last preview.
+  test "live keeps more builds than ptu" do
+    assert_equal 3, ScData::Source.builds_retained("live")
+    assert_equal 2, ScData::Source.builds_retained("ptu")
+  end
+
+  # A pruned build row cannot be recovered, so an environment this policy has
+  # not considered keeps the larger number rather than the smaller.
+  test "an environment the policy does not name keeps the larger number" do
+    assert_equal 3, ScData::Source.builds_retained("eptu")
+  end
+
+  test "the environment may be named as a symbol" do
+    assert_equal 2, ScData::Source.builds_retained(:ptu)
+  end
 end

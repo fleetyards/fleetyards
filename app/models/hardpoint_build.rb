@@ -48,10 +48,6 @@ class HardpointBuild < ApplicationRecord
   belongs_to :hardpoint
   belongs_to :component, optional: true
 
-  # How many builds of one environment are kept, matching the catalogues: enough
-  # to diff a patch against the one before it without the table growing forever.
-  BUILDS_RETAINED = 3
-
   # Everything a build says, as opposed to what identifies the slot. `parent`,
   # `sc_name` and `source` are the identity and stay on the row; `matrix_key` and
   # `details` stay too -- neither is written by a load.
@@ -109,7 +105,7 @@ class HardpointBuild < ApplicationRecord
   # The versions worth keeping for one environment, ordered by when they first
   # appeared. Re-loading a build updates its rows in place, so `created_at` is
   # when that build first landed rather than when it was last touched.
-  def self.retained_versions(environment, keep: BUILDS_RETAINED)
+  def self.retained_versions(environment, keep: ::ScData::Source.builds_retained(environment))
     where(environment:)
       .group(:version)
       .minimum(:created_at)
