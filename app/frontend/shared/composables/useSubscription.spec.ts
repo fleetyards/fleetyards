@@ -55,6 +55,32 @@ describe("useSubscription", () => {
     expect(console.warn).toHaveBeenCalled();
   });
 
+  /*
+   * actioncable reopens the socket by itself and resubscribes everything still
+   * in its registry -- returning to a backgrounded tab is enough to trigger it.
+   * Dropping the subscription when the socket goes down takes it out of that
+   * registry, and the channel stays quiet for good.
+   */
+  it("keeps the subscription when the socket drops", () => {
+    const unsubscribe = vi.fn();
+    create.mockReturnValue({ unsubscribe });
+    vi.spyOn(console, "info").mockImplementation(() => {});
+
+    const disconnected = vi.fn();
+
+    const { subscribe } = useSubscription({
+      channelName: "ShipsChannel",
+      disconnected,
+    });
+
+    subscribe();
+
+    create.mock.calls[0][1].disconnected();
+
+    expect(disconnected).toHaveBeenCalled();
+    expect(unsubscribe).not.toHaveBeenCalled();
+  });
+
   it("does nothing when there is no consumer at all", () => {
     consumer = undefined;
 

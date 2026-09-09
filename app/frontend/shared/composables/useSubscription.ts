@@ -55,9 +55,12 @@ export const useSubscription = <T = unknown>({
               connected();
             }
           },
+          // No `unsubscribe()` here: actioncable reopens the socket by
+          // itself -- returning to a backgrounded tab is enough -- and
+          // resubscribes everything it still knows about. Dropping the
+          // subscription on the way down takes it out of that list, so the
+          // channel goes quiet for good after the first reconnect.
           disconnected: () => {
-            unsubscribe();
-
             console.info("Disconnected from Channel:", channelName);
 
             if (disconnected) {

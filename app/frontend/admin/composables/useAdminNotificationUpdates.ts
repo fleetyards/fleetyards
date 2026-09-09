@@ -92,9 +92,26 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
     announce(notification);
   };
 
+  // Whatever was broadcast while the socket was down is gone - the channel has
+  // no replay - so a reconnect has to resync rather than carry on. Without it a
+  // notification that arrives while the tab sits in the background is missing
+  // from the list until something else refetches it, and the unread count, on
+  // its own interval, is the only sign it ever happened. Not on the first
+  // connect: the queries have only just loaded.
+  let seenConnect = false;
+
+  const connected = () => {
+    if (seenConnect) {
+      invalidate();
+    }
+
+    seenConnect = true;
+  };
+
   useSubscription({
     channelName: ChannelsEnum.ADMIN_NOTIFICATIONS_CHANNEL,
     received,
+    connected,
     enabled,
   });
 
