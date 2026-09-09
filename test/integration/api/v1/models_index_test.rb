@@ -63,6 +63,26 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     assert_response :bad_request
   end
 
+  # `page` and `per_page` were handed straight to kaminari, which calls `to_i`
+  # on them -- so a query string that made either a hash or an array was a 500.
+  # Same treatment as `?page=abc`: the value is dropped and the first page is
+  # served. Covers 19 controllers through the Pagination concern.
+  [
+    ["a nested page", {page: {"x" => 1}}],
+    ["an array page", {page: [1]}],
+    ["a nested per_page", {per_page: {"x" => 1}}],
+    ["an array per_page", {per_page: [1]}]
+  ].each do |label, params|
+    test "GET /models serves the first page given #{label}" do
+      create(:model)
+
+      get "/api/v1/models", params: params
+
+      assert_response :success
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
+
   test "GET /models honours perPage" do
     create_list(:model, 6)
 

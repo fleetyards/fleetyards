@@ -38,7 +38,7 @@ module Pagination
     if per_page_params == "all"
       result.all
     else
-      result.page(params[:page])
+      result.page(page_params)
         .per(per_page)
     end
   end
@@ -61,7 +61,23 @@ module Pagination
     )
   end
 
+  private def page_params
+    scalar_param(:page)
+  end
+
   private def per_page_params
-    @per_page_params ||= params[:per_page] || params[:perPage]
+    @per_page_params ||= scalar_param(:per_page) || scalar_param(:perPage)
+  end
+
+  # `?page[x]=1` and `?page[]=1` arrive as Parameters and as an Array, and both
+  # kaminari and `per_page` above call `to_i` on whatever they are handed --
+  # which is a 500 for a malformed query string. Only the camelCase `perPage` is
+  # covered by request validation, so the snake_case spellings reach here raw.
+  # Dropping the value rather than rejecting it matches what already happens to
+  # `?page=abc`, where `to_i` yields 0 and kaminari serves page 1.
+  private def scalar_param(name)
+    value = params[name]
+
+    (value.is_a?(String) || value.is_a?(Numeric)) ? value : nil
   end
 end
