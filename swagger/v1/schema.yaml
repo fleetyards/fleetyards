@@ -10233,14 +10233,18 @@ paths:
       responses:
         '204':
           description: successful
+        '400':
+          description: bad request - a ship that cannot be owned
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update multiple vehicles
       tags:

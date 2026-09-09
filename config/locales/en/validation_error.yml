@@ -14,6 +14,7 @@ en:
       create: Ship could not be added.
       destroy: Ship could not be removed.
       update: Ship could not be updated.
+      bulk_create: Some ships could not be added.
     vehicle_loadout:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.

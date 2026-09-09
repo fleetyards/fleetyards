@@ -14,6 +14,7 @@ de:
       create: Schiff konnte nicht hinzugefügt werden.
       destroy: Schiff konnte nicht entfernt werden.
       update: Schiff konnte nicht aktualisiert werden.
+      bulk_create: Einige Schiffe konnten nicht hinzugefügt werden.
     vehicle_loadout:
       create: Loadout konnte nicht erstellt werden.
       destroy: Loadout konnte nicht entfernt werden.
