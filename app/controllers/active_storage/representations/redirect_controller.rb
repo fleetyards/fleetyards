@@ -10,7 +10,7 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
     "Seahorse::Client::NetworkingError"
   ].freeze
 
-  rescue_from ActiveStorage::FileNotFoundError, with: :reprocess_representation
+  rescue_from ActiveStorage::FileNotFoundError, with: :representation_not_found
 
   def show
     reprocess_representation unless representation_exists?
@@ -45,9 +45,22 @@ class ActiveStorage::Representations::RedirectController < ActiveStorage::Repres
     end
   end
 
+  # Reached from `show` when the probe reports the variant's own object missing:
+  # dropping the records and processing again rebuilds it from the original,
+  # after which `show` redirects to it.
   def reprocess_representation
     @blob.variant_records.destroy_all
     set_representation
+  end
+
+  # Not the same situation, despite looking like it. `set_representation` is a
+  # before_action and processing downloads the *original*, so this error means
+  # the original object is confirmed absent -- s3_service raises it only
+  # `unless object.exists?`. Reprocessing would download that same missing
+  # object again, which is what the handler used to do before letting the second
+  # raise escape as a 500. Nothing here is broken; the file is gone.
+  def representation_not_found
+    head :not_found
   end
 
   def url_with_origin_param(url)
