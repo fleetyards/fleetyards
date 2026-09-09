@@ -15,6 +15,9 @@ de:
       destroy: Schiff konnte nicht entfernt werden.
       update: Schiff konnte nicht aktualisiert werden.
       bulk_create: Einige Schiffe konnten nicht hinzugefügt werden.
+      bulk_update: Einige Schiffe konnten nicht aktualisiert werden.
+      move_all_ingame_to_wish_list: Ingame-Schiffe konnten nicht auf die Wunschliste verschoben werden.
+      sync: Hangar konnte nicht synchronisiert werden.
     vehicle_loadout:
       create: Loadout konnte nicht erstellt werden.
       destroy: Loadout konnte nicht entfernt werden.
@@ -29,6 +32,7 @@ de:
       decline: Flottenmitglied konnte nicht abgelehnt werden.
       destroy: Flottenmitglied konnte nicht entfernt werden.
       update: Flottenmitglied konnte nicht aktualisiert werden.
+      demote: Flottenmitglied konnte nicht herabgestuft werden.
     fleet_memberships:
       create: Flotteneinladung konnte nicht verwendet werden
       destroy: Flotte konnte nicht verlassen werden.
@@ -36,6 +40,7 @@ de:
       decline: Flotteneinladung konnte nicht abgelehnt werden.
       demote_not_permitted: Sie können das letzte Mitglied einer permanenten Flottenrolle
         nicht degradieren.
+      update: Flottenmitgliedschaft konnte nicht aktualisiert werden.
     hangar_group:
       create: Gruppe konnte nicht erstellt werden
       destroy: Gruppe konnte nicht gelöscht werden
@@ -65,6 +70,8 @@ de:
     image:
       create: Bild konnte nicht erstellt werden
       update: Bild konnte nicht aktualisiert werden
+      bulk_update: Einige Bilder konnten nicht aktualisiert werden.
+      destroy: Bild konnte nicht gelöscht werden.
     request_password: Passwort-Anforderung fehlgeschlagen.
     signup: Registrierung fehlgeschlagen. Bitte beheben Sie alle Fehler und versuchen
       Sie es erneut.
@@ -76,9 +83,96 @@ de:
       create: OAuth-Anwendung konnte nicht erstellt werden.
       update: OAuth-Anwendung konnte nicht aktualisiert werden.
       destroy: OAuth-Anwendung konnte nicht gelöscht werden.
+      regenerate_secret: Secret konnte nicht neu erzeugt werden.
     user:
       destroy: Benutzer konnte nicht gelöscht werden.
+      update: Benutzer konnte nicht aktualisiert werden.
     current_user:
       destroy: Account konnte nicht gelöscht werden.
     hangar:
       import: Import fehlgeschlagen
+    cargo_hold:
+      update: Frachtraum konnte nicht aktualisiert werden.
+    compare:
+      share: Vergleich konnte nicht geteilt werden.
+    component:
+      create: Bauteil konnte nicht erstellt werden.
+      destroy: Bauteil konnte nicht gelöscht werden.
+      update: Bauteil konnte nicht aktualisiert werden.
+    dock:
+      create: Dock konnte nicht erstellt werden.
+      update: Dock konnte nicht aktualisiert werden.
+    fleet_events:
+      update_occurrence: Dieser Termin der Serie konnte nicht aktualisiert werden.
+    fleet_invite_urls:
+      create: Einladungslink konnte nicht erstellt werden.
+      destroy: Einladungslink konnte nicht gelöscht werden.
+    funding_goal:
+      create: Finanzierungsziel konnte nicht erstellt werden.
+      destroy: Finanzierungsziel konnte nicht gelöscht werden.
+      update: Finanzierungsziel konnte nicht aktualisiert werden.
+    hardpoint:
+      create: Hardpoint konnte nicht erstellt werden.
+      update: Hardpoint konnte nicht aktualisiert werden.
+    item_price:
+      create: Gegenstandspreis konnte nicht erstellt werden.
+      update: Gegenstandspreis konnte nicht aktualisiert werden.
+    manufacturer:
+      create: Hersteller konnte nicht erstellt werden.
+      destroy: Hersteller konnte nicht gelöscht werden.
+      update: Hersteller konnte nicht aktualisiert werden.
+    mission_ships:
+      create: Missionsschiff konnte nicht erstellt werden.
+      destroy: Missionsschiff konnte nicht gelöscht werden.
+      duplicate: Missionsschiff konnte nicht dupliziert werden.
+      update: Missionsschiff konnte nicht aktualisiert werden.
+    mission_slots:
+      create: Missionsplatz konnte nicht erstellt werden.
+      destroy: Missionsplatz konnte nicht gelöscht werden.
+      update: Missionsplatz konnte nicht aktualisiert werden.
+    mission_teams:
+      create: Missionsteam konnte nicht erstellt werden.
+      destroy: Missionsteam konnte nicht gelöscht werden.
+      update: Missionsteam konnte nicht aktualisiert werden.
+    missions:
+      create: Mission konnte nicht erstellt werden.
+      destroy: Mission konnte nicht gelöscht werden.
+      unarchive: Mission konnte nicht aus dem Archiv geholt werden.
+      update: Mission konnte nicht aktualisiert werden.
+    model:
+      create: Schiff konnte nicht erstellt werden.
+      destroy: Schiff konnte nicht gelöscht werden.
+      update: Schiff konnte nicht aktualisiert werden.
+      use_rsi_image: RSI-Bild konnte nicht übernommen werden.
+    model_loaner:
+      create: Leihschiff konnte nicht erstellt werden.
+      update: Leihschiff konnte nicht aktualisiert werden.
+    model_module:
+      bulk_update: Einige Module konnten nicht aktualisiert werden.
+      create: Modul konnte nicht erstellt werden.
+      update: Modul konnte nicht aktualisiert werden.
+    model_module_package:
+      create: Modulpaket konnte nicht erstellt werden.
+      update: Modulpaket konnte nicht aktualisiert werden.
+    model_paint:
+      create: Lackierung konnte nicht erstellt werden.
+      destroy: Lackierung konnte nicht gelöscht werden.
+      update: Lackierung konnte nicht aktualisiert werden.
+    model_position:
+      create: Modellposition konnte nicht erstellt werden.
+      update: Modellposition konnte nicht aktualisiert werden.
+    model_snub_craft:
+      create: Snub-Schiff konnte nicht erstellt werden.
+      update: Snub-Schiff konnte nicht aktualisiert werden.
+    model_upgrade:
+      create: Upgrade konnte nicht erstellt werden.
+      update: Upgrade konnte nicht aktualisiert werden.
+    notification_preference: Benachrichtigungseinstellung konnte nicht aktualisiert werden.
+    supporter_contribution:
+      create: Unterstützerbeitrag konnte nicht erstellt werden.
+      destroy: Unterstützerbeitrag konnte nicht gelöscht werden.
+      update: Unterstützerbeitrag konnte nicht aktualisiert werden.
+    update: Profil konnte nicht aktualisiert werden.
+    video:
+      create: Video konnte nicht erstellt werden.
+      update: Video konnte nicht aktualisiert werden.

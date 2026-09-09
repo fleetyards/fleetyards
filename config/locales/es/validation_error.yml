@@ -11,6 +11,9 @@ es:
       destroy: La nave no pudo ser eliminada.
       update: La nave no pudo ser actualizada.
       bulk_create: Algunas naves no se pudieron añadir.
+      bulk_update: No se pudieron actualizar algunas naves.
+      move_all_ingame_to_wish_list: No se pudieron mover las naves del juego a la lista de deseos.
+      sync: No se pudo sincronizar el hangar.
     vehicle_loadout:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
@@ -25,6 +28,7 @@ es:
       decline: No se pudo rechazar al miembro de la flota.
       destroy: No se pudo eliminar al miembro de la flota.
       update: No se pudo actualizar al miembro de la flota.
+      demote: No se pudo degradar al miembro de la flota.
     fleet_memberships:
       create: La invitación de flota no pudo ser utilizada
       destroy: No se pudo abandonar la flota.
@@ -32,6 +36,7 @@ es:
       decline: La invitación de flota no pudo ser rechazada.
       demote_not_permitted: No puede degradar al último miembro de un rol de flota
         permanente.
+      update: No se pudo actualizar la membresía de la flota.
     hangar_group:
       create: No se pudo crear el grupo
       destroy: No se pudo destruir el grupo
@@ -61,6 +66,8 @@ es:
     image:
       create: No se pudo crear la imagen
       update: No se pudo actualizar la imagen
+      bulk_update: No se pudieron actualizar algunas imágenes.
+      destroy: No se pudo eliminar la imagen.
     request_password: Solicitud de contraseña fallida.
     signup: Registro fallido. Resuelva todos los errores e intente de nuevo.
     admin_user:
@@ -71,9 +78,96 @@ es:
       create: La aplicación OAuth no pudo ser creada.
       update: La aplicación OAuth no pudo ser actualizada.
       destroy: La aplicación OAuth no pudo ser eliminada.
+      regenerate_secret: No se pudo regenerar el secreto.
     user:
       destroy: El usuario no pudo ser eliminado.
+      update: No se pudo actualizar el usuario.
     current_user:
       destroy: La cuenta no pudo ser eliminada.
     hangar:
       import: Importación fallida
+    cargo_hold:
+      update: No se pudo actualizar la bodega de carga.
+    compare:
+      share: No se pudo compartir la comparación.
+    component:
+      create: No se pudo crear el componente.
+      destroy: No se pudo eliminar el componente.
+      update: No se pudo actualizar el componente.
+    dock:
+      create: No se pudo crear el dique.
+      update: No se pudo actualizar el dique.
+    fleet_events:
+      update_occurrence: No se pudo actualizar esta repetición del evento.
+    fleet_invite_urls:
+      create: No se pudo crear el enlace de invitación.
+      destroy: No se pudo eliminar el enlace de invitación.
+    funding_goal:
+      create: No se pudo crear el objetivo de financiación.
+      destroy: No se pudo eliminar el objetivo de financiación.
+      update: No se pudo actualizar el objetivo de financiación.
+    hardpoint:
+      create: No se pudo crear el anclaje.
+      update: No se pudo actualizar el anclaje.
+    item_price:
+      create: No se pudo crear el precio del objeto.
+      update: No se pudo actualizar el precio del objeto.
+    manufacturer:
+      create: No se pudo crear el fabricante.
+      destroy: No se pudo eliminar el fabricante.
+      update: No se pudo actualizar el fabricante.
+    mission_ships:
+      create: No se pudo crear la nave de la misión.
+      destroy: No se pudo eliminar la nave de la misión.
+      duplicate: No se pudo duplicar la nave de la misión.
+      update: No se pudo actualizar la nave de la misión.
+    mission_slots:
+      create: No se pudo crear el puesto de la misión.
+      destroy: No se pudo eliminar el puesto de la misión.
+      update: No se pudo actualizar el puesto de la misión.
+    mission_teams:
+      create: No se pudo crear el equipo de la misión.
+      destroy: No se pudo eliminar el equipo de la misión.
+      update: No se pudo actualizar el equipo de la misión.
+    missions:
+      create: No se pudo crear la misión.
+      destroy: No se pudo eliminar la misión.
+      unarchive: No se pudo desarchivar la misión.
+      update: No se pudo actualizar la misión.
+    model:
+      create: No se pudo crear la nave.
+      destroy: No se pudo eliminar la nave.
+      update: No se pudo actualizar la nave.
+      use_rsi_image: No se pudo usar la imagen de RSI.
+    model_loaner:
+      create: No se pudo crear la nave de préstamo.
+      update: No se pudo actualizar la nave de préstamo.
+    model_module:
+      bulk_update: No se pudieron actualizar algunos módulos.
+      create: No se pudo crear el módulo.
+      update: No se pudo actualizar el módulo.
+    model_module_package:
+      create: No se pudo crear el paquete de módulos.
+      update: No se pudo actualizar el paquete de módulos.
+    model_paint:
+      create: No se pudo crear la pintura.
+      destroy: No se pudo eliminar la pintura.
+      update: No se pudo actualizar la pintura.
+    model_position:
+      create: No se pudo crear la posición del modelo.
+      update: No se pudo actualizar la posición del modelo.
+    model_snub_craft:
+      create: No se pudo crear la nave snub.
+      update: No se pudo actualizar la nave snub.
+    model_upgrade:
+      create: No se pudo crear la mejora.
+      update: No se pudo actualizar la mejora.
+    notification_preference: No se pudo actualizar la preferencia de notificación.
+    supporter_contribution:
+      create: No se pudo crear la contribución del patrocinador.
+      destroy: No se pudo eliminar la contribución del patrocinador.
+      update: No se pudo actualizar la contribución del patrocinador.
+    update: No se pudo actualizar el perfil.
+    video:
+      create: No se pudo crear el vídeo.
+      update: No se pudo actualizar el vídeo.

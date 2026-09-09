@@ -8,6 +8,9 @@ zh-CN:
       destroy: 飞船无法移除。
       update: 飞船无法更新。
       bulk_create: 部分舰船无法添加。
+      bulk_update: 部分舰船无法更新。
+      move_all_ingame_to_wish_list: 无法将游戏内舰船移至愿望清单。
+      sync: 无法同步机库。
     vehicle_loadout:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
@@ -22,12 +25,14 @@ zh-CN:
       decline: 无法拒绝舰队成员。
       destroy: 无法移除舰队成员。
       update: 无法更新舰队成员。
+      demote: 无法降级该舰队成员。
     fleet_memberships:
       create: 舰队邀请无法使用
       destroy: 无法离开舰队。
       accept: 舰队邀请无法接受。
       decline: 舰队邀请无法拒绝。
       demote_not_permitted: 您不能降级永久舰队角色的最后一个成员。
+      update: 无法更新舰队成员资格。
     hangar_group:
       create: 无法创建群组
       destroy: 无法删除群组
@@ -57,6 +62,8 @@ zh-CN:
     image:
       create: 无法创建图片
       update: 无法更新图片
+      bulk_update: 部分图片无法更新。
+      destroy: 无法删除图片。
     request_password: 密码请求失败。
     signup: 注册失败。请解决所有错误后重试。
     admin_user:
@@ -67,9 +74,96 @@ zh-CN:
       create: OAuth 应用无法创建。
       update: OAuth 应用无法更新。
       destroy: OAuth 应用无法删除。
+      regenerate_secret: 无法重新生成密钥。
     user:
       destroy: 无法删除用户。
+      update: 无法更新用户。
     current_user:
       destroy: 无法删除账户。
     hangar:
       import: 导入失败
+    cargo_hold:
+      update: 无法更新货舱。
+    compare:
+      share: 无法分享该对比。
+    component:
+      create: 无法创建组件。
+      destroy: 无法删除组件。
+      update: 无法更新组件。
+    dock:
+      create: 无法创建停机位。
+      update: 无法更新停机位。
+    fleet_events:
+      update_occurrence: 无法更新该活动场次。
+    fleet_invite_urls:
+      create: 无法创建邀请链接。
+      destroy: 无法删除邀请链接。
+    funding_goal:
+      create: 无法创建募资目标。
+      destroy: 无法删除募资目标。
+      update: 无法更新募资目标。
+    hardpoint:
+      create: 无法创建挂点。
+      update: 无法更新挂点。
+    item_price:
+      create: 无法创建物品价格。
+      update: 无法更新物品价格。
+    manufacturer:
+      create: 无法创建制造商。
+      destroy: 无法删除制造商。
+      update: 无法更新制造商。
+    mission_ships:
+      create: 无法创建任务舰船。
+      destroy: 无法删除任务舰船。
+      duplicate: 无法复制该任务舰船。
+      update: 无法更新任务舰船。
+    mission_slots:
+      create: 无法创建任务席位。
+      destroy: 无法删除任务席位。
+      update: 无法更新任务席位。
+    mission_teams:
+      create: 无法创建任务小队。
+      destroy: 无法删除任务小队。
+      update: 无法更新任务小队。
+    missions:
+      create: 无法创建任务。
+      destroy: 无法删除任务。
+      unarchive: 无法取消归档该任务。
+      update: 无法更新任务。
+    model:
+      create: 无法创建舰船。
+      destroy: 无法删除舰船。
+      update: 无法更新舰船。
+      use_rsi_image: 无法使用 RSI 图片。
+    model_loaner:
+      create: 无法创建借用舰船。
+      update: 无法更新借用舰船。
+    model_module:
+      bulk_update: 部分模块无法更新。
+      create: 无法创建模块。
+      update: 无法更新模块。
+    model_module_package:
+      create: 无法创建模块套件。
+      update: 无法更新模块套件。
+    model_paint:
+      create: 无法创建涂装。
+      destroy: 无法删除涂装。
+      update: 无法更新涂装。
+    model_position:
+      create: 无法创建模型位置。
+      update: 无法更新模型位置。
+    model_snub_craft:
+      create: 无法创建微型舰载机。
+      update: 无法更新微型舰载机。
+    model_upgrade:
+      create: 无法创建升级。
+      update: 无法更新升级。
+    notification_preference: 无法更新通知设置。
+    supporter_contribution:
+      create: 无法创建支持者贡献。
+      destroy: 无法删除支持者贡献。
+      update: 无法更新支持者贡献。
+    update: 无法更新个人资料。
+    video:
+      create: 无法创建视频。
+      update: 无法更新视频。

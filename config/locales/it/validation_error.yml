@@ -8,6 +8,9 @@ it:
       destroy: La nave non è stata rimossa.
       update: La nave non è stata aggiornata.
       bulk_create: Alcune navi non sono state aggiunte.
+      bulk_update: Impossibile aggiornare alcune navi.
+      move_all_ingame_to_wish_list: Impossibile spostare le navi in-game nella lista dei desideri.
+      sync: Impossibile sincronizzare l'hangar.
     vehicle_loadout:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
@@ -22,6 +25,7 @@ it:
       decline: Impossibile rifiutare il membro della flotta.
       destroy: Impossibile rimuovere il membro della flotta.
       update: Impossibile aggiornare il membro della flotta.
+      demote: Impossibile retrocedere il membro della flotta.
     fleet_memberships:
       create: L'invito alla flotta non è stato utilizzato
       destroy: Impossibile lasciare la flotta.
@@ -29,6 +33,7 @@ it:
       decline: L'invito alla flotta non è stato rifiutato.
       demote_not_permitted: Non puoi degradare l'ultimo membro di un ruolo flotta
         permanente.
+      update: Impossibile aggiornare l'iscrizione alla flotta.
     hangar_group:
       create: Impossibile creare il gruppo
       destroy: Impossibile eliminare il gruppo
@@ -58,6 +63,8 @@ it:
     image:
       create: Impossibile creare l'immagine
       update: Impossibile aggiornare l'immagine
+      bulk_update: Impossibile aggiornare alcune immagini.
+      destroy: Impossibile eliminare l'immagine.
     request_password: Richiesta password fallita.
     signup: Registrazione fallita. Risolvi tutti gli errori e riprova.
     admin_user:
@@ -68,9 +75,96 @@ it:
       create: L'applicazione OAuth non è stata creata.
       update: L'applicazione OAuth non è stata aggiornata.
       destroy: L'applicazione OAuth non è stata eliminata.
+      regenerate_secret: Impossibile rigenerare il secret.
     user:
       destroy: L'utente non è stato eliminato.
+      update: Impossibile aggiornare l'utente.
     current_user:
       destroy: Account non è stato eliminato.
     hangar:
       import: Importazione fallita
+    cargo_hold:
+      update: Impossibile aggiornare la stiva.
+    compare:
+      share: Impossibile condividere il confronto.
+    component:
+      create: Impossibile creare il componente.
+      destroy: Impossibile eliminare il componente.
+      update: Impossibile aggiornare il componente.
+    dock:
+      create: Impossibile creare il dock.
+      update: Impossibile aggiornare il dock.
+    fleet_events:
+      update_occurrence: Impossibile aggiornare questa ricorrenza dell'evento.
+    fleet_invite_urls:
+      create: Impossibile creare il link di invito.
+      destroy: Impossibile eliminare il link di invito.
+    funding_goal:
+      create: Impossibile creare l'obiettivo di finanziamento.
+      destroy: Impossibile eliminare l'obiettivo di finanziamento.
+      update: Impossibile aggiornare l'obiettivo di finanziamento.
+    hardpoint:
+      create: Impossibile creare l'attacco.
+      update: Impossibile aggiornare l'attacco.
+    item_price:
+      create: Impossibile creare il prezzo dell'oggetto.
+      update: Impossibile aggiornare il prezzo dell'oggetto.
+    manufacturer:
+      create: Impossibile creare il produttore.
+      destroy: Impossibile eliminare il produttore.
+      update: Impossibile aggiornare il produttore.
+    mission_ships:
+      create: Impossibile creare la nave della missione.
+      destroy: Impossibile eliminare la nave della missione.
+      duplicate: Impossibile duplicare la nave della missione.
+      update: Impossibile aggiornare la nave della missione.
+    mission_slots:
+      create: Impossibile creare il posto della missione.
+      destroy: Impossibile eliminare il posto della missione.
+      update: Impossibile aggiornare il posto della missione.
+    mission_teams:
+      create: Impossibile creare la squadra della missione.
+      destroy: Impossibile eliminare la squadra della missione.
+      update: Impossibile aggiornare la squadra della missione.
+    missions:
+      create: Impossibile creare la missione.
+      destroy: Impossibile eliminare la missione.
+      unarchive: Impossibile ripristinare la missione dall'archivio.
+      update: Impossibile aggiornare la missione.
+    model:
+      create: Impossibile creare la nave.
+      destroy: Impossibile eliminare la nave.
+      update: Impossibile aggiornare la nave.
+      use_rsi_image: Impossibile utilizzare l'immagine RSI.
+    model_loaner:
+      create: Impossibile creare la nave in prestito.
+      update: Impossibile aggiornare la nave in prestito.
+    model_module:
+      bulk_update: Impossibile aggiornare alcuni moduli.
+      create: Impossibile creare il modulo.
+      update: Impossibile aggiornare il modulo.
+    model_module_package:
+      create: Impossibile creare il pacchetto di moduli.
+      update: Impossibile aggiornare il pacchetto di moduli.
+    model_paint:
+      create: Impossibile creare la verniciatura.
+      destroy: Impossibile eliminare la verniciatura.
+      update: Impossibile aggiornare la verniciatura.
+    model_position:
+      create: Impossibile creare la posizione del modello.
+      update: Impossibile aggiornare la posizione del modello.
+    model_snub_craft:
+      create: Impossibile creare la nave snub.
+      update: Impossibile aggiornare la nave snub.
+    model_upgrade:
+      create: Impossibile creare il potenziamento.
+      update: Impossibile aggiornare il potenziamento.
+    notification_preference: Impossibile aggiornare la preferenza di notifica.
+    supporter_contribution:
+      create: Impossibile creare il contributo del sostenitore.
+      destroy: Impossibile eliminare il contributo del sostenitore.
+      update: Impossibile aggiornare il contributo del sostenitore.
+    update: Impossibile aggiornare il profilo.
+    video:
+      create: Impossibile creare il video.
+      update: Impossibile aggiornare il video.
