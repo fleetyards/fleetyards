@@ -52,9 +52,7 @@ module ScData
 
       identifiers.each { |identifier| record(identifier) }
 
-      # A row the rule now covers stops being reported. Only undecided ones go:
-      # a decision that was already made is the record of it.
-      ScDataUnlistedModel.undecided.where.not(identifier: identifiers).delete_all
+      retire_absent(identifiers)
 
       {
         seen: identifiers.size,
@@ -116,12 +114,48 @@ module ScData
 
     private
 
+    # A row the rule now covers stops being reported. Only undecided ones go: a
+    # decision that was already made is the record of it.
+    #
+    # Scoped to the environment that saw it last, because this runs once per
+    # source. One row serves both -- the unique index is on `identifier` alone,
+    # and an unlisted ship is a decision about the ship rather than about a
+    # build -- so an unscoped sweep under ptu would delete every identifier only
+    # live shows, and the next live run would recreate it with a fresh
+    # `first_seen_*` and announce it as new all over again. With `CheckJob`
+    # loading both sources that is a churn loop, not a one-off.
+    #
+    # A row last seen elsewhere is that environment's to retire. An identifier
+    # both still ship keeps being refreshed by whichever runs; one neither ships
+    # any more is swept by whichever runs second.
+    #
+    # `where.not(identifier: [])` is `1=1`, so an empty list sweeps everything --
+    # and that is right when the rules now cover every identifier, which is a
+    # state this actually reaches.
+    #
+    # What must not sweep is a tree that was never read: no export ships zero
+    # ships, so an empty glob is a missing or half-fetched tree rather than a
+    # catalogue that emptied itself. Guarded on the files rather than on the
+    # filtered list, which is the difference between those two.
+    def retire_absent(identifiers)
+      return 0 if parsed_identifiers.empty?
+
+      ScDataUnlistedModel
+        .undecided
+        .where(last_seen_environment: source.environment)
+        .where.not(identifier: identifiers)
+        .delete_all
+    end
+
     def export_path
       Pathname(@base_folder).join("parsed", source.environment.to_s)
     end
 
+    # Memoized because the sweep asks whether the tree was readable at all, and
+    # a second glob over a few thousand files to answer that is waste.
     def parsed_identifiers
-      Dir.glob(export_path.join("models", "*.json")).map { |file| File.basename(file, ".json") }
+      @parsed_identifiers ||=
+        Dir.glob(export_path.join("models", "*.json")).map { |file| File.basename(file, ".json") }
     end
 
     # Everything the export ships, less what the catalogue already has and less

@@ -9,6 +9,13 @@ module Loaders
         Rails.configuration.stubs(:sc_data).returns({sources: {live: "3.24.0"}, default: "live"})
         @admin_user = create(:admin_user, resource_access: [:models])
         AdminNotificationsChannel.stubs(:broadcast_to)
+
+        # Otherwise every test here reads whatever parsed tree happens to be on
+        # disk -- 1109 model files locally, none on CI -- and the unlisted report
+        # decides whether a second issue is opened. The tests that are about that
+        # report stub it themselves.
+        ::ScData::UnlistedModels.any_instance.stubs(:run)
+          .returns({seen: 0, new: [], undecided: []})
       end
 
       def notification
@@ -111,6 +118,69 @@ module Loaders
         ::Loaders::ScData::AllJob.new.perform
 
         assert_equal "warning", notification.severity
+      end
+
+      # The load only iterates models that already exist, so a ship in the game
+      # files with no row is invisible to it. These moved here from
+      # `ModelsJobTest`: nothing enqueues that job, so the report never ran.
+      test "#perform reports the ships the game files describe and we have no model for" do
+        ::ScData::Loader::BaseLoader.stubs(:all).returns({})
+
+        entry = create(:sc_data_unlisted_model, identifier: "krig_s65_stingray", name: "Kruger S-65 Stingray")
+        ::ScData::UnlistedModels.any_instance.stubs(:run)
+          .returns({seen: 1, new: [entry], undecided: [entry]})
+
+        creator = mock("GithubIssueCreator")
+        creator.stubs(:run)
+        GithubIssueCreator.stubs(:new).returns(creator)
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        unlisted = AdminNotification.find_by(
+          admin_user: @admin_user, notification_type: "sc_data_unlisted_models"
+        )
+        assert_not_nil unlisted
+        assert_equal "warning", unlisted.severity
+        assert_includes unlisted.body, "krig_s65_stingray"
+      end
+
+      # Only a genuinely new entry is worth an issue, or a pile that has been
+      # sitting undecided would reopen one on every patch.
+      test "#perform opens no issue for the unlisted pile when nothing is new" do
+        ::ScData::Loader::BaseLoader.stubs(:all).returns({
+          "ModelsLoader" => {"Model" => {created: 0, updated: 1, unchanged: 0}}
+        })
+
+        entry = create(:sc_data_unlisted_model)
+        ::ScData::UnlistedModels.any_instance.stubs(:run)
+          .returns({seen: 1, new: [], undecided: [entry]})
+        GithubIssueCreator.expects(:new).never
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        unlisted = AdminNotification.find_by(
+          admin_user: @admin_user, notification_type: "sc_data_unlisted_models"
+        )
+        assert_equal "info", unlisted.severity
+      end
+
+      # The report reads the tree of the build the job just loaded, not the
+      # configured default -- otherwise a ptu load would report live's ships.
+      test "#perform reports the unlisted ships of the source it loaded" do
+        Rails.configuration.stubs(:sc_data).returns({
+          sources: {live: "3.24.0", ptu: "3.24.1-ptu.2"}, default: "live"
+        })
+        ::ScData::Loader::BaseLoader.stubs(:all).returns({})
+
+        seen = nil
+        ::ScData::UnlistedModels.any_instance.stubs(:run).with {
+          seen = ::ScData::Source.current.to_s
+          true
+        }.returns({seen: 0, new: [], undecided: []})
+
+        ::Loaders::ScData::AllJob.new.perform("3.24.1-ptu.2", nil, "ptu")
+
+        assert_equal "3.24.1-ptu.2 (ptu)", seen
       end
 
       test "#perform marks import as failed on error" do
