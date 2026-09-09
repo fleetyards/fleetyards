@@ -64,7 +64,13 @@ Branch: `feat/loadout-dps-readonly`.
 3. **Sustained DPS** — model power draw vs power-plant output and heat vs cooler
    capacity to derive erkul's throttled sustained DPS (currently burst only).
 4. **Interactive per-hardpoint picker + persistence** — swap components per slot and
-   recompute; persist to the existing `VehicleLoadoutHardpoint` table (schema ready).
+   recompute. **There is no table to persist to any more:**
+   `vehicle_loadout_hardpoints` was dropped in #4798 — it never held a row, and it
+   hung off `model_hardpoints`, which is also gone. A saved selection needs a new
+   store keyed on `hardpoints`; the shape it should take is set out under "What
+   it makes possible later" in
+   [sc-data-hardpoints-per-build.md](sc-data-hardpoints-per-build.md), including
+   why validity has to be checked per source rather than once on write.
 5. **Loadout-vs-loadout / ship-vs-ship combat comparison** — extend `compare.vue`.
 6. **Weapon detail gaps** — spread/recoil and projectile falloff aren't imported, so
    effective-DPS-at-range can't be computed yet. Missiles and gimbal/convergence
