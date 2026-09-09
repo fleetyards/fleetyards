@@ -35,9 +35,6 @@
 class ModelModuleBuild < ApplicationRecord
   belongs_to :model_module
 
-  # How many builds of one environment are kept, matching the other catalogues.
-  BUILDS_RETAINED = 3
-
   # Everything a build says, as opposed to what identifies or curates the
   # module. `name`, `slug`, the prices, `manufacturer_id`, `active` and `hidden`
   # are Fleetyards' own and stay on the row.
@@ -82,7 +79,7 @@ class ModelModuleBuild < ApplicationRecord
 
   # The versions worth keeping for one environment, ordered by when they first
   # appeared.
-  def self.retained_versions(environment, keep: BUILDS_RETAINED)
+  def self.retained_versions(environment, keep: ::ScData::Source.builds_retained(environment))
     where(environment:)
       .group(:version)
       .minimum(:created_at)

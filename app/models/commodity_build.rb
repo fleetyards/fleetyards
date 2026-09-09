@@ -33,11 +33,6 @@
 class CommodityBuild < ApplicationRecord
   belongs_to :commodity
 
-  # How many builds of one environment are kept. Enough to diff a patch against
-  # the one before it, and to compare a bad load with what it replaced, without
-  # the table growing with every patch forever.
-  BUILDS_RETAINED = 3
-
   # Everything a build says, as opposed to what identifies the commodity. Three
   # facts -- this catalogue has no enums, no serialized columns and no
   # manufacturer, which is why it fits in one change rather than three.
@@ -76,7 +71,7 @@ class CommodityBuild < ApplicationRecord
   # The versions worth keeping for one environment, ordered by when they first
   # appeared. Re-loading a build updates its rows in place, so `created_at` is
   # when that build first landed rather than when it was last touched.
-  def self.retained_versions(environment, keep: BUILDS_RETAINED)
+  def self.retained_versions(environment, keep: ::ScData::Source.builds_retained(environment))
     where(environment:)
       .group(:version)
       .minimum(:created_at)

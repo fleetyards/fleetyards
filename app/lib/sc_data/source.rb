@@ -9,7 +9,33 @@ module ScData
   # rather than reaching into `Rails.configuration` from a model or a job is what
   # made that possible without touching the eighty-odd callers.
   class Source
+    # How many builds of an environment to keep. Retention is a property of the
+    # environment rather than of a catalogue, which is why it lives here rather
+    # than six times over as a constant on each build class.
+    #
+    # The two environments are asked different questions. Live carries the patch
+    # history a reader may cite, so it keeps enough to diff a patch against the
+    # one before it and still have the one before that to fall back on when a
+    # load goes wrong. A ptu build is only ever asked "what does this have that
+    # live does not" and "what changed since the last preview" -- both answered
+    # by the current build and one behind it -- and a ptu cycle produces builds
+    # several times a week, so a third would be paid for constantly and read
+    # never.
+    #
+    # Pruning is per environment, so this is genuinely independent: a week of
+    # ptu builds can never displace a live one.
+    BUILDS_RETAINED = {"live" => 3, "ptu" => 2}.freeze
+
+    # An environment nobody listed keeps the larger number. A pruned build row
+    # cannot be recovered, so a channel this policy has not considered errs
+    # towards keeping rather than towards tidiness.
+    BUILDS_RETAINED_DEFAULT = 3
+
     class << self
+      def builds_retained(environment)
+        BUILDS_RETAINED.fetch(environment.to_s, BUILDS_RETAINED_DEFAULT)
+      end
+
       # The source the work in hand is reading: what a request asked for, else
       # the configured default.
       #

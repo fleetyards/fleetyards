@@ -5,8 +5,10 @@ module ScData
   # builds.
   #
   # Computed rather than recorded, and that is the point of doing this half
-  # first: every catalogue retains `BUILDS_RETAINED` builds per environment, so
-  # the two sides of a comparison are both present and the answer is a join. Only
+  # first: every catalogue retains several builds per environment -- see
+  # `ScData::Source::BUILDS_RETAINED` for how many, which differs per
+  # environment -- so the two sides of a comparison are both present and the
+  # answer is a join. Only
   # history that has to outlive those retained builds needs a table --
   # `ModelBuildChange` is that, for models, within one environment.
   #

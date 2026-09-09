@@ -90,7 +90,7 @@ module ScData
       # Bounded on purpose: history is worth a couple of patches, not every patch
       # ever shipped.
       test "#prune_builds keeps the retained builds and drops the rest" do
-        keep = EquipmentBuild::BUILDS_RETAINED
+        keep = ::ScData::Source.builds_retained(::ScData::Source.environment)
 
         (keep + 2).times do |index|
           create(
@@ -105,6 +105,35 @@ module ScData
         @loader.prune_builds(EquipmentBuild)
 
         assert_equal keep, EquipmentBuild.distinct.count(:version)
+      end
+
+      # The number is the environment's, not the catalogue's: a ptu build is a
+      # preview and keeps one fewer than live. Pruning is per environment, so a
+      # week of ptu builds can never displace a live one either.
+      test "#prune_builds keeps ptu to its own smaller number" do
+        @loader.sc_environment = "ptu"
+
+        4.times do |index|
+          create(
+            :equipment_build,
+            equipment: create(:equipment, :without_build),
+            environment: "ptu",
+            version: "4.#{index}.0-ptu.#{index}",
+            created_at: index.days.from_now
+          )
+        end
+
+        live = create(
+          :equipment_build,
+          equipment: create(:equipment, :without_build),
+          environment: "live",
+          version: "4.9.0-live.1"
+        )
+
+        @loader.prune_builds(EquipmentBuild)
+
+        assert_equal 2, EquipmentBuild.where(environment: "ptu").distinct.count(:version)
+        assert EquipmentBuild.exists?(live.id), "live is pruned on its own terms, not ptu's"
       end
 
       # `where.not(version: [])` is `1=1`, so an environment with nothing loaded
