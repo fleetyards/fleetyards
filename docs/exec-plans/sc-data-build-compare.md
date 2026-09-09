@@ -27,6 +27,15 @@ altitude, not four more copies of it.
 
 ## What is missing, in the order worth doing it
 
+**Status, 2026-09-08: all three are on `main`.** #4795 the comparer (1),
+#4797 `/sc-data/builds` and `/sc-data/compare` (2, and (3) with it — the
+comparer derives its facts per build class rather than needing a recorder each),
+#4799 the admin page, #4800 its padding. Two findings from running it against
+real data are recorded in item 6 of
+[sc-data-live-and-ptu.md](sc-data-live-and-ptu.md): the `recorded` flag, and that
+the oldest retained build is a backfill rather than a record of that build.
+
+
 ### 1. The cross-environment axis
 
 `ModelBuildChange.for_build(environment, version)` and its `previous_build` are

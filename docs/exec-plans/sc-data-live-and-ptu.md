@@ -43,6 +43,27 @@ filters:
   in the game
 - #4754 refetch the parsed tree after re-parsing live
 
+**Hardpoints per build** — the loadout stopped being one set of rows whichever
+load ran last owns:
+- #4761 the table and the backfill, #4772 remove the legacy code, #4773 the
+  transition clause, #4779 dual-write and move the reads, #4781 stop destroying
+- #4782 / #4785 the admin view the rebuild had left without one
+- #4798 drop the legacy tables themselves
+
+**Model modules per build**
+- #4780 existence per build, and production status following live
+
+**A production load path for a second environment**
+- #4774 load every configured source, not only the default
+
+**Patch-by-patch compare**
+- #4795 the comparer, #4797 the endpoints, #4799 the admin page, #4800 its
+  padding
+
+**Retention and reporting**
+- #4801 retention is a property of the environment: live 3, ptu 2
+- #4808 the unlisted-models report, from the load that actually runs
+
 Four catalogues carry builds. `ScData::Source` answers which one is in force,
 `ScData::Current` scopes it per request and per job, and the switch appears in
 the header only when more than one source is on offer. Since 2026-09-07 that is
@@ -173,7 +194,7 @@ not list it. It also has no guard for a module the export stopped shipping:
 `resolve_loadout` indexes it immediately. All six keys were present in this
 build, so it did not fire.
 
-### 2. Hardpoints per build — before anything else
+### 2. Hardpoints per build — done except (5), 2026-09-08
 
 The loadout has to stop being a single set of rows that the last load to run
 owns. That is the whole reason, and it needs no other: the shape is the one the
@@ -224,7 +245,13 @@ carry anything else — so it reads no hardpoints and knows nothing about builds
 The two share the word "loadout" and nothing else. Deleting the legacy pair,
 `vehicle_loadout_hardpoints` included, is separate and unblocked.
 
-### 3. A production load path for a second environment
+### 3. A production load path for a second environment — done, 2026-09-08
+
+Landed as #4774. `ScData::CheckJob` iterates `ScData::Source.configured`,
+`Loaders::ScData::AllJob` takes an environment and runs its whole load inside
+`ScData::Source.with`, and the coverage check reads the build rows. The
+description below is what was built.
+
 
 `ScData::CheckJob` iterating `ScData::Source.configured` rather than asking only
 the default, `Loaders::ScData::AllJob` taking an environment and running its
@@ -296,15 +323,40 @@ Model, in full: `cargo_holds`, `external_fuel_tanks`, `fuel_consumption`,
 
 Every one is a place a row and its build can drift. Reads already go through the
 build, so dropping them is mechanical — but it is one-way, and the PTU load that
-(1) was gating it on has now happened. What it should wait on instead is (2):
-the columns are the fallback that makes a bad load survivable, and a load is not
-yet survivable while it rewrites the other environment's loadouts.
+(1) was gating it on has now happened.
 
-### 6. Patch-by-patch compare
+**Still open, and now the largest thing left.** It was waiting on (2), which
+landed on 2026-09-08: the loadout carries a build, so a load no longer rewrites
+the other environment's ship pages. What it should wait on now is a PTU load
+having run *in production* — the columns are the fallback that makes a bad load
+survivable, and no second environment has been loaded there yet. #4774 gave
+production the ability; nothing has exercised it.
+
+### 6. Patch-by-patch compare — done, 2026-09-08
+
+Landed as #4795 (the comparer), #4797 (`/sc-data/builds` and `/sc-data/compare`),
+#4799 (the admin page) and #4800. Planned in
+[sc-data-build-compare.md](sc-data-build-compare.md), which carries the
+measurements behind computing rather than recording.
+
+Two things the real data taught, both worth keeping:
+
+- **A catalogue with no rows on one side was never recorded for that build**, and
+  saying "everything appeared" instead is a wrong answer, not a rough one.
+  Comparing live 4.9.0 with 4.10.0 announced all 232 commodities and all 215
+  models as new until the endpoint learned to say so. Production confirms it on
+  the first day: two of four catalogues answer `recorded: false`.
+- **The oldest retained build is a backfill, not a record of that build.** Every
+  `*_builds` backfill stamped the then-current column values with the current
+  version label, so any comparison whose older side is that build measures the
+  backfill. Decided 2026-09-08: leave it, since it ages out of the retention
+  window. Do not read the first comparison against the oldest build as a patch
+  diff.
 
 What appeared, changed and vanished between two builds — live→PTU, or version N
-against N-1. Now cheap, because each catalogue retains `BUILDS_RETAINED = 3`
-builds per environment rather than deleting the old ones.
+against N-1. Cheap because each catalogue retains several builds per environment
+rather than deleting the old ones — see `ScData::Source::BUILDS_RETAINED`, which
+since #4801 keeps 3 for live and 2 for ptu.
 
 **It cannot reuse `ScData::Source.available`.** That list deliberately hides
 everything behind the default, which is exactly what a comparison needs. This
@@ -315,7 +367,19 @@ wrong control for.
 ### 7. Out of the model work
 
 - The bulk action on `sc_data_unlisted_models`, so a patch's new entries can be
-  triaged in one pass rather than row by row.
+  triaged in one pass rather than row by row. **Still open.**
+
+  Its prerequisite was not: the table was empty in production because its only
+  writer had no caller. The report sat in `Loaders::ScData::ModelsJob`, which
+  nothing enqueues — the scheduled `Loaders::ModelsJob` is the RSI ship matrix
+  loader, one namespace away. #4808 moved it to `Loaders::ScData::AllJob`, which
+  `CheckJob` and the admin trigger actually run, and scoped the sweep to
+  `last_seen_environment` so a per-source load does not delete the other
+  environment's rows. Expect rows to appear after the first load following that
+  deploy; if none do, the caller analysis was incomplete.
+
+  `Loaders::ScData::ModelsJob` still has no caller and is now a plain
+  single-catalogue loader. Deleting it and its tests is undecided.
 - The five vendor component sets behind the `collector_*` and `exec_*` variants
   (`collector_military`, `collector_stealth`, `collector_indust`,
   `exec_military`, `exec_stealth`) are reusable product lines, not per-ship
