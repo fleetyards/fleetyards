@@ -322,12 +322,35 @@ const availableOptions = computed<FilterOption[]>(() =>
   sort(internalOptions.value),
 );
 
+/*
+ * `ValueType` also covers a bare value and an option object, and the router
+ * hands us a plain string for a single-valued query param -- so `multiple`
+ * cannot assume the model value is already a list.
+ */
+const selectedValues = computed<FilterOptionValue[]>(() => {
+  const value = internalValue.value;
+
+  if (value === undefined || value === null) {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) =>
+      typeof item === "object" && item !== null ? item.value : item,
+    );
+  }
+
+  if (typeof value === "object") {
+    return [value.value];
+  }
+
+  return [value as FilterOptionValue];
+});
+
 const selectedOptions = computed(() => {
   if (props.multiple) {
-    return availableOptions.value.filter(
-      (item) =>
-        internalValue.value &&
-        (internalValue.value as FilterOptionValue[]).includes(item.value),
+    return availableOptions.value.filter((item) =>
+      selectedValues.value.includes(item.value),
     );
   }
 
@@ -853,8 +876,7 @@ const fetchMissingOption = async () => {
   if (
     !internalValue.value ||
     (props.multiple &&
-      selectedOptions.value.length ===
-        (internalValue.value as string[]).length) ||
+      selectedOptions.value.length === selectedValues.value.length) ||
     (!props.multiple && selectedOptions.value[0]?.value === internalValue.value)
   ) {
     return;
@@ -885,9 +907,7 @@ const clearSearch = () => {
 
 const selected = (option: FilterOptionValue) => {
   if (props.multiple) {
-    return ((internalValue.value as FilterOptionValue[]) || []).includes(
-      option,
-    );
+    return selectedValues.value.includes(option);
   }
 
   return internalValue.value === option;
@@ -902,17 +922,13 @@ const select = async (optionValue: FilterOptionValue) => {
     if (props.multiple) {
       emits(
         "update:modelValue",
-        (internalValue.value as string[]).filter(
-          (item: string) => item !== optionValue,
-        ),
+        selectedValues.value.filter((item) => item !== optionValue),
       );
     } else if (props.nullable) {
       emits("update:modelValue", null);
     }
   } else if (props.multiple) {
-    const values: FilterOptionValue[] = JSON.parse(
-      JSON.stringify(internalValue.value || []),
-    );
+    const values: FilterOptionValue[] = [...selectedValues.value];
 
     values.push(optionValue);
 
