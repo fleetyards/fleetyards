@@ -30,7 +30,7 @@ module Api
         if @notification_preference.update(notification_preference_params)
           render :show
         else
-          render json: ValidationError.new("notification_preference", @notification_preference.errors), status: :bad_request
+          render json: ValidationError.new("notification_preference", errors: @notification_preference.errors), status: :bad_request
         end
       end
 

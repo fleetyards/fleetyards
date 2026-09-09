@@ -15,6 +15,9 @@ en:
       destroy: Ship could not be removed.
       update: Ship could not be updated.
       bulk_create: Some ships could not be added.
+      bulk_update: Some ships could not be updated.
+      move_all_ingame_to_wish_list: In-game ships could not be moved to the wishlist.
+      sync: Hangar could not be synchronised.
     vehicle_loadout:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
@@ -29,16 +32,19 @@ en:
       decline: Fleet Member could not be declined.
       destroy: Fleet Member could not be removed.
       update: Fleet Member could not be updated.
+      demote: Fleet member could not be demoted.
     fleet_memberships:
       create: Fleet Invitation could not be used
       destroy: Fleet could not be leaved.
       accept: Fleet Invitation could not be accepted.
       decline: Fleet Invitation could not be declined.
       demote_not_permitted: You can't demote the last Member of a permanent Fleet Role.
+      update: Fleet membership could not be updated.
     fleet_events:
       create: Event could not be created.
       update: Event could not be updated.
       destroy: Event could not be deleted.
+      update_occurrence: This occurrence of the event could not be updated.
     fleet_event_teams:
       create: Event team could not be created.
       update: Event team could not be updated.
@@ -89,6 +95,8 @@ en:
     image:
       create: Image could not be created
       update: Image could not be updated
+      bulk_update: Some images could not be updated.
+      destroy: Image could not be destroyed.
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
     admin_user:
@@ -99,8 +107,10 @@ en:
       create: OAuth application could not be created.
       update: OAuth application could not be updated.
       destroy: OAuth application could not be destroyed.
+      regenerate_secret: Secret could not be regenerated.
     user:
       destroy: User could not be destroyed.
+      update: User could not be updated.
     current_user:
       destroy: Account could not be destroyed.
     hangar:
@@ -113,3 +123,86 @@ en:
       create: Commodity could not be created.
       update: Commodity could not be updated.
       destroy: Commodity could not be destroyed.
+    cargo_hold:
+      update: Cargo hold could not be updated.
+    compare:
+      share: Comparison could not be shared.
+    component:
+      create: Component could not be created.
+      destroy: Component could not be destroyed.
+      update: Component could not be updated.
+    dock:
+      create: Dock could not be created.
+      update: Dock could not be updated.
+    fleet_invite_urls:
+      create: Invite link could not be created.
+      destroy: Invite link could not be destroyed.
+    funding_goal:
+      create: Funding goal could not be created.
+      destroy: Funding goal could not be destroyed.
+      update: Funding goal could not be updated.
+    hardpoint:
+      create: Hardpoint could not be created.
+      update: Hardpoint could not be updated.
+    item_price:
+      create: Item price could not be created.
+      update: Item price could not be updated.
+    manufacturer:
+      create: Manufacturer could not be created.
+      destroy: Manufacturer could not be destroyed.
+      update: Manufacturer could not be updated.
+    mission_ships:
+      create: Mission ship could not be created.
+      destroy: Mission ship could not be destroyed.
+      duplicate: Mission ship could not be duplicated.
+      update: Mission ship could not be updated.
+    mission_slots:
+      create: Mission slot could not be created.
+      destroy: Mission slot could not be destroyed.
+      update: Mission slot could not be updated.
+    mission_teams:
+      create: Mission team could not be created.
+      destroy: Mission team could not be destroyed.
+      update: Mission team could not be updated.
+    missions:
+      create: Mission could not be created.
+      destroy: Mission could not be destroyed.
+      unarchive: Mission could not be unarchived.
+      update: Mission could not be updated.
+    model:
+      create: Ship could not be created.
+      destroy: Ship could not be destroyed.
+      update: Ship could not be updated.
+      use_rsi_image: RSI image could not be used.
+    model_loaner:
+      create: Loaner could not be created.
+      update: Loaner could not be updated.
+    model_module:
+      bulk_update: Some modules could not be updated.
+      create: Module could not be created.
+      update: Module could not be updated.
+    model_module_package:
+      create: Module package could not be created.
+      update: Module package could not be updated.
+    model_paint:
+      create: Paint could not be created.
+      destroy: Paint could not be destroyed.
+      update: Paint could not be updated.
+    model_position:
+      create: Model position could not be created.
+      update: Model position could not be updated.
+    model_snub_craft:
+      create: Snub craft could not be created.
+      update: Snub craft could not be updated.
+    model_upgrade:
+      create: Upgrade could not be created.
+      update: Upgrade could not be updated.
+    notification_preference: Notification preference could not be updated.
+    supporter_contribution:
+      create: Supporter contribution could not be created.
+      destroy: Supporter contribution could not be destroyed.
+      update: Supporter contribution could not be updated.
+    update: Profile could not be updated.
+    video:
+      create: Video could not be created.
+      update: Video could not be updated.

@@ -8,6 +8,9 @@ fr:
       destroy: Le vaisseau n'a pas pu être retiré.
       update: Le vaisseau n'a pas pu être mis à jour.
       bulk_create: Certains vaisseaux n'ont pas pu être ajoutés.
+      bulk_update: Impossible de mettre à jour certains vaisseaux.
+      move_all_ingame_to_wish_list: Impossible de déplacer les vaisseaux in-game vers la liste de souhaits.
+      sync: Impossible de synchroniser le hangar.
     vehicle_loadout:
       create: Loadout could not be created.
       destroy: Loadout could not be removed.
@@ -22,6 +25,7 @@ fr:
       decline: Impossible de refuser le membre de la flotte.
       destroy: Impossible de retirer le membre de la flotte.
       update: Impossible de mettre à jour le membre de la flotte.
+      demote: Impossible de rétrograder le membre de la flotte.
     fleet_memberships:
       create: L'invitation à la flotte n'a pas pu être utilisée
       destroy: Impossible de quitter la flotte.
@@ -29,6 +33,7 @@ fr:
       decline: L'invitation à la flotte n'a pas pu être refusée.
       demote_not_permitted: Vous ne pouvez pas rétrograder le dernier membre d'un
         rôle de flotte permanent.
+      update: Impossible de mettre à jour l'adhésion à la flotte.
     hangar_group:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit
@@ -58,6 +63,8 @@ fr:
     image:
       create: Impossible de créer l'image
       update: Impossible de mettre à jour l'image
+      bulk_update: Impossible de mettre à jour certaines images.
+      destroy: Impossible de supprimer l'image.
     request_password: La demande de mot de passe a échoué.
     signup: Échec de l'inscription. Veuillez résoudre toutes les erreurs et réessayer.
     admin_user:
@@ -68,9 +75,128 @@ fr:
       create: L'application OAuth n'a pas pu être créée.
       update: L'application OAuth n'a pas pu être mise à jour.
       destroy: L'application OAuth n'a pas pu être supprimée.
+      regenerate_secret: Impossible de régénérer le secret.
     user:
       destroy: L'utilisateur n'a pas pu être supprimé.
+      update: Impossible de mettre à jour l'utilisateur.
     current_user:
       destroy: Le compte n'a pas pu être supprimé.
     hangar:
       import: Échec de l'import
+    cargo_hold:
+      update: Impossible de mettre à jour la soute.
+    compare:
+      share: Impossible de partager la comparaison.
+    component:
+      create: Impossible de créer le composant.
+      destroy: Impossible de supprimer le composant.
+      update: Impossible de mettre à jour le composant.
+    dock:
+      create: Impossible de créer le dock.
+      update: Impossible de mettre à jour le dock.
+    fleet_events:
+      update_occurrence: Impossible de mettre à jour cette occurrence de l'événement.
+      create: Impossible de créer l'événement.
+      destroy: Impossible de supprimer l'événement.
+      update: Impossible de mettre à jour l'événement.
+    fleet_invite_urls:
+      create: Impossible de créer le lien d'invitation.
+      destroy: Impossible de supprimer le lien d'invitation.
+    funding_goal:
+      create: Impossible de créer l'objectif de financement.
+      destroy: Impossible de supprimer l'objectif de financement.
+      update: Impossible de mettre à jour l'objectif de financement.
+    hardpoint:
+      create: Impossible de créer le point d'ancrage.
+      update: Impossible de mettre à jour le point d'ancrage.
+    item_price:
+      create: Impossible de créer le prix de l'objet.
+      update: Impossible de mettre à jour le prix de l'objet.
+    manufacturer:
+      create: Impossible de créer le fabricant.
+      destroy: Impossible de supprimer le fabricant.
+      update: Impossible de mettre à jour le fabricant.
+    mission_ships:
+      create: Impossible de créer le vaisseau de mission.
+      destroy: Impossible de supprimer le vaisseau de mission.
+      duplicate: Impossible de dupliquer le vaisseau de mission.
+      update: Impossible de mettre à jour le vaisseau de mission.
+    mission_slots:
+      create: Impossible de créer le poste de mission.
+      destroy: Impossible de supprimer le poste de mission.
+      update: Impossible de mettre à jour le poste de mission.
+    mission_teams:
+      create: Impossible de créer l'équipe de mission.
+      destroy: Impossible de supprimer l'équipe de mission.
+      update: Impossible de mettre à jour l'équipe de mission.
+    missions:
+      create: Impossible de créer la mission.
+      destroy: Impossible de supprimer la mission.
+      unarchive: Impossible de désarchiver la mission.
+      update: Impossible de mettre à jour la mission.
+    model:
+      create: Impossible de créer le vaisseau.
+      destroy: Impossible de supprimer le vaisseau.
+      update: Impossible de mettre à jour le vaisseau.
+      use_rsi_image: Impossible d'utiliser l'image RSI.
+    model_loaner:
+      create: Impossible de créer le vaisseau de prêt.
+      update: Impossible de mettre à jour le vaisseau de prêt.
+    model_module:
+      bulk_update: Impossible de mettre à jour certains modules.
+      create: Impossible de créer le module.
+      update: Impossible de mettre à jour le module.
+    model_module_package:
+      create: Impossible de créer le pack de modules.
+      update: Impossible de mettre à jour le pack de modules.
+    model_paint:
+      create: Impossible de créer la peinture.
+      destroy: Impossible de supprimer la peinture.
+      update: Impossible de mettre à jour la peinture.
+    model_position:
+      create: Impossible de créer la position du modèle.
+      update: Impossible de mettre à jour la position du modèle.
+    model_snub_craft:
+      create: Impossible de créer le vaisseau snub.
+      update: Impossible de mettre à jour le vaisseau snub.
+    model_upgrade:
+      create: Impossible de créer l'amélioration.
+      update: Impossible de mettre à jour l'amélioration.
+    notification_preference: Impossible de mettre à jour la préférence de notification.
+    supporter_contribution:
+      create: Impossible de créer la contribution du soutien.
+      destroy: Impossible de supprimer la contribution du soutien.
+      update: Impossible de mettre à jour la contribution du soutien.
+    update: Impossible de mettre à jour le profil.
+    video:
+      create: Impossible de créer la vidéo.
+      update: Impossible de mettre à jour la vidéo.
+    commodity:
+      create: Impossible de créer la marchandise.
+      destroy: Impossible de supprimer la marchandise.
+      update: Impossible de mettre à jour la marchandise.
+    equipment:
+      create: Impossible de créer l'équipement.
+      destroy: Impossible de supprimer l'équipement.
+      update: Impossible de mettre à jour l'équipement.
+    fleet_event_admins:
+      create: Impossible d'accorder le rôle d'administrateur de l'événement.
+    fleet_event_ships:
+      create: Impossible de créer le vaisseau de l'événement.
+      destroy: Impossible de supprimer le vaisseau de l'événement.
+      update: Impossible de mettre à jour le vaisseau de l'événement.
+    fleet_event_signups:
+      create: L'inscription a échoué.
+      update: Impossible de mettre à jour l'inscription.
+    fleet_event_slots:
+      create: Impossible de créer le slot de l'événement.
+      destroy: Impossible de supprimer le slot de l'événement.
+      update: Impossible de mettre à jour le slot de l'événement.
+    fleet_event_teams:
+      create: Impossible de créer l'équipe de l'événement.
+      destroy: Impossible de supprimer l'équipe de l'événement.
+      update: Impossible de mettre à jour l'équipe de l'événement.
+    fleet_notification_settings:
+      update: Impossible de mettre à jour les paramètres de notification.
+    version:
+      revert: Impossible de rétablir le champ.
