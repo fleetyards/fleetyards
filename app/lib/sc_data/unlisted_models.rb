@@ -16,7 +16,8 @@ module ScData
   class UnlistedModels
     # What the export names an NPC copy, a wreck or a template. 733 of the 894
     # unlisted files in the live tree carry one of these -- a single
-    # `aegs_avenger_stalker` ships seven `_pu_ai_` variants. The same idea as
+    # `aegs_avenger_stalker` ships eight `_pu_ai_` variants (advocacy, bh, civ,
+    # civ_lowfuel, crim, pir, sec_crusader, sec_microtech). The same idea as
     # `WEAPON_VARIANT_KEYS`, which trims the weapon list from 175 to 133.
     MARKERS = %w[
       _pu_ai_ _ai_ _unmanned _template _derelict _wreck _dead _swarm _test _modifiers
