@@ -13,6 +13,7 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { type ModelQuery } from "@/services/fyApi";
 
 type Props = {
   wanted?: boolean;
@@ -44,6 +45,12 @@ const highlight = computed(() =>
   props.wanted ? ModelPickerBadge.ON_WISHLIST : ModelPickerBadge.IN_HANGAR,
 );
 
+// A ship the game does not let players own cannot go in a hangar or on a
+// wishlist -- Vehicle rejects it outright. The single-ship button already hides
+// itself for those, so without this the picker was the one way to reach a save
+// that could only fail.
+const ownableOnly: ModelQuery = { playerOwnableEq: true };
+
 const save = async (selection: ModelPickerSelection[]) => {
   submitting.value = true;
 
@@ -74,6 +81,7 @@ const save = async (selection: ModelPickerSelection[]) => {
     :submit-label="submitLabel"
     :submitting="submitting"
     :highlight="highlight"
+    :query="ownableOnly"
     quantities
     @submit="save"
   />
