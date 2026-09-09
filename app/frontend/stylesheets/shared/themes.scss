@@ -1,0 +1,60 @@
+/*
+ * Themes.
+ *
+ * A theme is a set of colour tokens components read through `var()`. That
+ * indirection is what makes theming possible at all here: `shared/components`
+ * compiles once and its CSS is shared by every bundle, so a SCSS variable can
+ * only ever hold one value across all of them. A custom property can hold a
+ * different one per document.
+ *
+ * The default theme is not declared in this file. It lives as the fallback
+ * literal in each `var(--token, #literal)` call, which is the convention the
+ * redesigned components already follow -- and it is what keeps the bundles that
+ * register no tokens at all, the embed above all, rendering correctly. So a
+ * document with no `data-theme` needs nothing loaded and cannot drift.
+ *
+ * `<html>` carries the attribute; the admin layout sets it. Each theme is
+ * declared twice: `:root[data-theme]` outranks the `:root` block Tailwind emits
+ * for `@theme` no matter which stylesheet the document loads last, and the bare
+ * attribute lets any element scope a theme for the subtree under it, which is
+ * what the visual test previews two themes side by side with. Custom properties
+ * inherit, and a declaration on the element beats an inherited one whatever its
+ * specificity, so the nested form needs no help to win.
+ */
+
+/*
+ * Admin.
+ *
+ * A violet accent, so the admin is recognisable as a different place at a
+ * glance without the neutral surfaces, the layout or any component changing.
+ * The hue was chosen for distance, measured as CIELAB dE against every colour
+ * the app already assigns a meaning to: 71 to the frontend's blue, 99 to
+ * danger, 101 to info. The previous half-applied admin red sat at 24 from
+ * danger, which is closer than danger and info sit to each other, so a primary
+ * and a destructive button were the same colour.
+ *
+ * Its contrast profile is deliberately near-identical to the blue it stands in
+ * for -- 5.31:1 on the page and 3.80:1 on a panel, against the blue's 5.78 and
+ * 4.14 -- so every rail, cap and focus ring it lands in keeps the weight it was
+ * designed with, and nothing needed re-tuning to take the swap.
+ *
+ * The three derived tones exist because SCSS `darken()`/`lighten()` cannot
+ * follow a custom property: a shade a component used to compute at build time
+ * has to be a token a theme declares. Each is the same HSL lightness step the
+ * call it replaced applied, so the default fallbacks are exactly what the
+ * frontend compiled before.
+ */
+:root[data-theme="admin"],
+[data-theme="admin"] {
+  --color-primary: #a855f7;
+
+  // darken(-20%): the glow under a navigation rail and the pull-to-refresh cue.
+  --color-primary-shade: #760adc;
+
+  // darken(-10%): a toggle's border once it is on and hovered.
+  --color-primary-shade-soft: #8f24f5;
+
+  // lighten(+20%): label text on a pill, which sits on a fill of the accent
+  // itself and so cannot be the accent.
+  --color-primary-tint: #dab6fc;
+}
