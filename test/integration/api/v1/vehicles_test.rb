@@ -288,6 +288,25 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {name: "Enterprise A"}
   end
 
+  # The controller sets `whodunnit` from `current_resource_owner`, so the owner
+  # is on the record the moment their edit is filed at all -- which it was not
+  # until the `author_id` gate came off.
+  test "PUT /vehicles/:id records the change against the user who made it" do
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_difference -> { PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id).count }, 1 do
+      assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {name: "Enterprise A"}
+    end
+
+    version = PaperTrail::Version
+      .where(item_type: "Vehicle", item_id: vehicle.id).order(created_at: :desc).first
+
+    assert_equal "Enterprise A", version.changeset["name"].last
+    assert_equal @user.id, version.whodunnit
+    assert_nil version.author_id, "an owner's own edit is not an admin action"
+  end
+
   test "PUT /vehicles/:id returns 404 for missing id" do
     sign_in @user
 
