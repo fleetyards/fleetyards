@@ -127,9 +127,16 @@ accessories:
       memory: 4g
 
   redis:
-    image: redis:7.2.15
+    image: redis:8.2.9
     port: "6379:6379"
-    cmd: redis-server --maxmemory 1536mb --maxmemory-policy allkeys-lru
+    # `maxmemory-policy` applies to the whole instance, not per database, so the
+    # policy the cache needs is also the policy Sidekiq's queues get. `volatile-lru`
+    # only ever evicts keys that carry a TTL: the cache, the API usage counters,
+    # the Rack::Attack throttles and the sessions all set one, while Sidekiq's
+    # `queue:*`, `retry` and `schedule` do not, and are therefore unreachable.
+    # Sidekiq still warns at boot because it compares the policy against
+    # `noeviction` verbatim — see docs/exec-plans/4334-redis-8-upgrade.md.
+    cmd: redis-server --maxmemory 1536mb --maxmemory-policy volatile-lru
     directories:
       - data:/data
     options:
