@@ -21,6 +21,7 @@
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "forbidden": "Votre autorisation ne couvre pas cette zone. Si une fonctionnalité est en cours de déploiement, vous pourrez l'activer vous-même dans Paramètres > Fonctionnalités dès qu'elle sera disponible.",
       "featureNotReady": "Cette fonctionnalité n'est pas encore prête et sera bientôt disponible. Restez à l'écoute !",
+      "inviteInvalid": "Ce lien d'invitation n'est pas valide. Il a peut-être été mal recopié, il a peut-être expiré, ou il a peut-être déjà atteint sa limite d'utilisations. Demandez un nouveau lien à la personne qui vous a invité.",
       "accessDenied": "Vous n'êtes pas autorisé à consulter cette page.",
       "serverError": "Le serveur rencontre actuellement des difficultés techniques. Veuillez réessayer plus tard.",
       "compare": {

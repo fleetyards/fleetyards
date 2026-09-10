@@ -124,6 +124,7 @@
         "publicShort": "Public"
       },
       "fleetInviteToken": "Fleet Invite",
+      "inviteToken": "Invite code",
       "scDataVersion": "Patch Version",
       "createdAt": "Created at",
       "updatedAt": "Updated at",

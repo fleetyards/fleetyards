@@ -124,6 +124,7 @@
         "publicShort": "Público"
       },
       "fleetInviteToken": "Invitación de flota",
+      "inviteToken": "Código de invitación",
       "scDataVersion": "Versión del parche",
       "createdAt": "Creado el",
       "updatedAt": "Actualizado el",

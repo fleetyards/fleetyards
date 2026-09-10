@@ -307,7 +307,6 @@
       "fleetInvite": {
         "used": "<b>Beitrittsanfrage für %{fleet} gesendet!</b><br>Sobald deine Mitgliedschaft akzeptiert wird, wirst du per E-Mail benachrichtigt",
         "failure": "Einladung konnte nicht verwendet werden.",
-        "notFound": "Einladung nicht gefunden.",
         "confirm": "Bist du sicher, dass du der Flotte beitreten möchtest: \"%{fleet}\"?"
       },
       "holoViewer": {

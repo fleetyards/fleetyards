@@ -306,7 +306,6 @@
       "fleetInvite": {
         "used": "<b>已發送加入%{fleet}的申請！</b><br>一旦您的會員資格被接受，您將收到電子郵件通知",
         "failure": "邀請無法使用。",
-        "notFound": "找不到邀請。",
         "confirm": "您確定要加入艦隊：\"%{fleet}\"嗎？"
       },
       "holoViewer": {

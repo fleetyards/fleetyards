@@ -188,6 +188,7 @@
       "notFound": "Error de navegación",
       "forbidden": "Acceso denegado",
       "featureNotReady": "Próximamente",
+      "inviteInvalid": "Enlace de invitación no válido",
       "accessDenied": "Acceso denegado",
       "serverError": "Error del servidor",
       "comments": "Comentarios",

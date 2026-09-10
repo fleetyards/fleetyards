@@ -21,6 +21,7 @@
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "forbidden": "你的權限不包含此區域。如果某項功能仍在灰度發布中，等它對你開放後，可以在「設定 > 功能」中自行開啟。",
       "featureNotReady": "此功能尚未完成，即將推出。敬請期待！",
+      "inviteInvalid": "此邀請連結無效。可能是輸入有誤、已過期，或已達到使用次數上限。請向邀請你的人索取新的連結。",
       "accessDenied": "您無權檢視此頁面。",
       "serverError": "伺服器目前遇到技術問題。請稍後再試。",
       "compare": {

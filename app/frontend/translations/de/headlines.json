@@ -188,6 +188,7 @@
       "notFound": "Navigationsfehler",
       "forbidden": "Zugriff verweigert",
       "featureNotReady": "Demnächst",
+      "inviteInvalid": "Ungültiger Einladungslink",
       "accessDenied": "Zugriff verweigert",
       "serverError": "Serverfehler",
       "comments": "Kommentare",
