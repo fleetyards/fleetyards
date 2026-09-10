@@ -111,7 +111,10 @@
       "syncRsiHangar": "Sincronizar hangar RSI",
       "oauthApplications": {
         "create": "Nueva aplicación",
-        "regenerateSecret": "Regenerar secreto"
+        "regenerateSecret": "Regenerar secreto",
+        "approve": "Aprobar",
+        "reject": "Rechazar",
+        "rejectSelected": "Rechazar seleccionadas"
       },
       "oauthAuthorize": {
         "authorize": "Autorizar",

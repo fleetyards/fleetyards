@@ -3,19 +3,19 @@
 module Admin
   module V1
     module Schemas
-      module Queries
-        class OauthApplicationQuery
+      module Inputs
+        class OauthApplicationRejectInput
           include OpenapiRuby::Components::Base
 
+          # The reason is what the owner is shown, so it is required here rather
+          # than optional with a validation waiting behind it.
           schema({
             type: :object,
             properties: {
-              nameCont: {type: :string},
-              ownerIdEq: {type: :string, format: :uuid},
-              aasmStateEq: {type: :string, enum: %w[pending approved rejected]}
+              rejectionReason: {type: :string}
             },
             additionalProperties: false,
-            example: {}
+            required: %w[rejectionReason]
           })
         end
       end

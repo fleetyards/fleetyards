@@ -108,6 +108,8 @@ en:
       update: OAuth application could not be updated.
       destroy: OAuth application could not be destroyed.
       regenerate_secret: Secret could not be regenerated.
+      approve: OAuth application could not be approved.
+      reject: OAuth application could not be rejected.
     user:
       destroy: User could not be destroyed.
       update: User could not be updated.

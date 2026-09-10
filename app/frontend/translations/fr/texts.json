@@ -49,6 +49,9 @@
             },
             "ignored": "Ignorés : %{files}"
           }
+        },
+        "oauthApplications": {
+          "rejectHint": "Le motif est montré à la personne qui a enregistré l'application : indiquez donc ce qui doit changer."
         }
       },
       "hangarGuide": {
@@ -165,6 +168,11 @@
           "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
           "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
         }
+      },
+      "oauthApplications": {
+        "pendingReview": "Cette application est enregistrée et attend son examen. Elle ne peut demander aucun accès avant d'être approuvée.",
+        "rejected": "Cette application a été refusée et ne peut demander aucun accès. Corriger ce que le motif indique la remet dans la file.",
+        "returnedToReview": "Modifier l'URI de redirection ou les portées renvoie une application approuvée à l'examen."
       }
     }
   }

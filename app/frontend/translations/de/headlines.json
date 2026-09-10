@@ -128,7 +128,9 @@
         "oauthApplications": {
           "index": "OAuth-Anwendungen",
           "new": "Neue OAuth-Anwendung",
-          "edit": "OAuth-Anwendung bearbeiten"
+          "edit": "OAuth-Anwendung bearbeiten",
+          "reject": "%{name} ablehnen",
+          "rejectBulk": "%{count} Anwendungen ablehnen"
         },
         "features": {
           "index": "Feature-Flags",

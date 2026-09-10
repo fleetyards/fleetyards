@@ -127,6 +127,7 @@ components:
       - sc_data_import
       - sc_data_unlisted_models
       - import_run
+      - oauth_application_review
       x-enumNames:
       - PAINTS_IMPORT
       - MODULES_IMPORT
@@ -141,6 +142,7 @@ components:
       - SC_DATA_IMPORT
       - SC_DATA_UNLISTED_MODELS
       - IMPORT_RUN
+      - OAUTH_APPLICATION_REVIEW
     Import:
       type: object
       properties:

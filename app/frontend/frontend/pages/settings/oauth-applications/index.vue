@@ -9,6 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import OauthApplicationState from "@/shared/components/OauthApplicationState/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -94,6 +95,7 @@ const formatScopes = (scopes: string) => {
           {{ item.name }}
         </router-link>
         <div class="oauth-app-meta">
+          <OauthApplicationState :state="item.state" />
           <span
             class="oauth-app-meta-item oauth-app-meta-item--copyable"
             @click.stop.prevent="copyToClipboard(item.uid)"

@@ -49,6 +49,9 @@
             },
             "ignored": "Ignored: %{files}"
           }
+        },
+        "oauthApplications": {
+          "rejectHint": "The reason is shown to whoever registered the application, so name what has to change."
         }
       },
       "hangarGuide": {
@@ -159,7 +162,12 @@
         "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
         "alreadyRunning": "A Hangar Sync is already in progress. Please wait for it to finish."
       },
-      "setEmail": "To set a password, enable two-factor authentication, or receive email notifications, you need to add an email address to your account. You will receive a confirmation email to verify the address."
+      "setEmail": "To set a password, enable two-factor authentication, or receive email notifications, you need to add an email address to your account. You will receive a confirmation email to verify the address.",
+      "oauthApplications": {
+        "pendingReview": "This application has been registered and is waiting to be reviewed. It cannot request access until it is approved.",
+        "rejected": "This application was refused and cannot request access. Correcting what the reason names puts it back in the queue.",
+        "returnedToReview": "Changing the redirect URI or the scopes returns an approved application to review."
+      }
     }
   }
 }

@@ -49,6 +49,9 @@
             },
             "ignored": "已忽略：%{files}"
           }
+        },
+        "oauthApplications": {
+          "rejectHint": "此原因會顯示給註冊此應用程式的人，請說明需要修改什麼。"
         }
       },
       "hangarGuide": {
@@ -168,6 +171,11 @@
         "wishlist": {
           "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
         }
+      },
+      "oauthApplications": {
+        "pendingReview": "此應用程式已註冊，正在等待審核。在獲得核准前無法請求存取權限。",
+        "rejected": "此應用程式已被拒絕，無法請求存取權限。依照原因所述修改後會重新進入審核佇列。",
+        "returnedToReview": "修改重新導向 URI 或權限範圍會使已核准的應用程式重新進入審核。"
       }
     }
   }

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import OauthApplicationState from "@/shared/components/OauthApplicationState/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -155,6 +156,25 @@ const confirmDestroy = () => {
     </BtnGroup>
   </div>
 
+  <div
+    v-if="oauthApplication.state !== 'approved'"
+    class="oauth-state-banner"
+    :class="`oauth-state-banner--${oauthApplication.state}`"
+  >
+    <OauthApplicationState :state="oauthApplication.state" />
+    <p class="oauth-state-text">
+      {{
+        oauthApplication.state === "rejected"
+          ? t("texts.oauthApplications.rejected")
+          : t("texts.oauthApplications.pendingReview")
+      }}
+    </p>
+    <p v-if="oauthApplication.rejectionReason" class="oauth-state-reason">
+      <strong>{{ t("labels.oauthApplications.rejectionReason") }}:</strong>
+      {{ oauthApplication.rejectionReason }}
+    </p>
+  </div>
+
   <div v-if="visibleSecret" class="oauth-secret-banner">
     <div class="oauth-secret-banner-header">
       <strong>{{ t("labels.oauthApplications.clientSecret") }}</strong>
@@ -248,6 +268,26 @@ const confirmDestroy = () => {
 </template>
 
 <style lang="scss" scoped>
+.oauth-state-banner {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 3px solid var(--color-warning, #d9a441);
+}
+
+.oauth-state-banner--rejected {
+  border-left-color: var(--color-danger, #c0392b);
+}
+
+.oauth-state-text {
+  margin: 0.5rem 0 0;
+}
+
+.oauth-state-reason {
+  margin: 0.5rem 0 0;
+}
+
 .oauth-detail-header {
   display: flex;
   align-items: center;

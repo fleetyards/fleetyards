@@ -76,6 +76,8 @@ fr:
       update: L'application OAuth n'a pas pu être mise à jour.
       destroy: L'application OAuth n'a pas pu être supprimée.
       regenerate_secret: Impossible de régénérer le secret.
+      approve: L'application OAuth n'a pas pu être approuvée.
+      reject: L'application OAuth n'a pas pu être refusée.
     user:
       destroy: L'utilisateur n'a pas pu être supprimé.
       update: Impossible de mettre à jour l'utilisateur.

@@ -128,7 +128,9 @@
         "oauthApplications": {
           "index": "Applicazioni OAuth",
           "new": "Nuova applicazione OAuth",
-          "edit": "Modifica applicazione OAuth"
+          "edit": "Modifica applicazione OAuth",
+          "reject": "Rifiuta %{name}",
+          "rejectBulk": "Rifiuta %{count} applicazioni"
         },
         "features": {
           "index": "Flag funzionalità",

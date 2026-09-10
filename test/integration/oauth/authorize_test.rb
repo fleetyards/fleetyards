@@ -139,6 +139,26 @@ class Oauth::AuthorizeTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The gate at the point a grant would be issued. 401 rather than 200 is the
+  # whole feature: an application nobody reviewed cannot mint one.
+  test "POST /authorize refuses an application still awaiting review" do
+    sign_in @user
+    @oauth_application.update_columns(aasm_state: "pending", approved_at: nil)
+
+    assert_api_response :post, 401, body: auth_body do
+      assert_equal "unauthorized_client", parsed_body["error"]
+    end
+  end
+
+  test "POST /authorize refuses a rejected application" do
+    sign_in @user
+    @oauth_application.update_columns(aasm_state: "rejected", approved_at: nil)
+
+    assert_api_response :post, 401, body: auth_body do
+      assert_equal "unauthorized_client", parsed_body["error"]
+    end
+  end
+
   test "POST /authorize returns 401 when no user is signed in" do
     new_app = create(
       :oauth_application,

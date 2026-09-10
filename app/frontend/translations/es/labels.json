@@ -81,7 +81,9 @@
         "redirectUriHint": "Use una URI por línea.",
         "confidential": "Confidencial",
         "scopes": "Alcances",
-        "scopesHint": "Si no se seleccionan alcances, se usarán los alcances predeterminados: %{scopes}"
+        "scopesHint": "Si no se seleccionan alcances, se usarán los alcances predeterminados: %{scopes}",
+        "logo": "Logotipo",
+        "logoHint": "Se muestra en la pantalla de consentimiento para que la gente reconozca tu aplicación. PNG, JPG, GIF o WebP."
       },
       "rsiRequestLogs": {
         "resolved": "Resuelto",
@@ -121,7 +123,15 @@
         "scopes": "Alcances",
         "defaultScopes": "Alcances predeterminados",
         "confidentialShort": "Confidencial",
-        "publicShort": "Público"
+        "publicShort": "Público",
+        "logo": "Logotipo",
+        "state": "Estado",
+        "rejectionReason": "Motivo del rechazo",
+        "statePending": "Pendiente de revisión",
+        "stateApproved": "Aprobada",
+        "stateRejected": "Rechazada",
+        "reviewedBy": "Revisada por",
+        "owner": "Registrada por"
       },
       "fleetInviteToken": "Invitación de flota",
       "inviteToken": "Código de invitación",

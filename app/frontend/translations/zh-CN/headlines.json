@@ -128,7 +128,9 @@
         "oauthApplications": {
           "index": "OAuth 应用",
           "new": "新建 OAuth 应用",
-          "edit": "编辑 OAuth 应用"
+          "edit": "编辑 OAuth 应用",
+          "reject": "拒绝 %{name}",
+          "rejectBulk": "拒绝 %{count} 个应用"
         },
         "features": {
           "index": "功能标志",

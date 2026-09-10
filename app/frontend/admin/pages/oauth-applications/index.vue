@@ -20,6 +20,11 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import OauthApplicationActions from "@/admin/components/OauthApplications/Actions/index.vue";
+import OauthApplicationState from "@/shared/components/OauthApplicationState/index.vue";
+import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useBulkSelection } from "@/shared/composables/useBulkSelection";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const queryKey = computed(() => {
   return getOauthApplicationsQueryKey(queryParams.value);
@@ -30,16 +35,59 @@ const { perPage, page, updatePerPage } = usePagination(queryKey);
 const queryParams = computed(() => {
   return {
     page: page.value,
+    q: {},
   };
 });
 
 const { data: oauthApplications, ...asyncStatus } =
   useOauthApplications(queryParams);
 
+const records = computed(() => oauthApplications.value?.items || []);
+
+const totalCount = computed(
+  () => oauthApplications.value?.meta.pagination?.totalCount,
+);
+
+const {
+  selectedIds,
+  allMatchingSelected,
+  selectedCount,
+  matchingCount,
+  pageSelected,
+  pagePartiallySelected,
+  canSelectAllMatching,
+  togglePage,
+  selectAllMatching,
+  clear: clearSelection,
+  payload: bulkPayload,
+} = useBulkSelection(records, () => queryParams.value.q, totalCount);
+
+const comlink = useComlink();
+
+// The modal owns the reason, because it is required and there is nowhere on a
+// toolbar to type one.
+const rejectSelected = () => {
+  if (!selectedCount.value) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/OauthApplications/RejectModal/index.vue"),
+    props: {
+      bulkPayload: bulkPayload.value,
+      count: selectedCount.value,
+      onRejected: clearSelection,
+    },
+  });
+};
+
 const columns: BaseTableCol<OauthApplication>[] = [
   {
     name: "name",
     label: "Name",
+  },
+  {
+    name: "state",
+    label: "Status",
   },
   {
     name: "ownerName",
@@ -98,14 +146,41 @@ const { t, l } = useI18n();
     hide-empty
   >
     <template #default="{ loading, refetching, emptyVisible }">
+      <BulkSelectionBar
+        :disabled="!records.length"
+        :selected-count="selectedCount"
+        :matching-count="matchingCount"
+        :page-selected="pageSelected"
+        :page-partially-selected="pagePartiallySelected"
+        :can-select-all-matching="canSelectAllMatching"
+        :all-matching-selected="allMatchingSelected"
+        @toggle-page="togglePage"
+        @select-all-matching="selectAllMatching"
+        @clear="clearSelection"
+      >
+        <Btn
+          v-tooltip="t('actions.oauthApplications.rejectSelected')"
+          :aria-label="t('actions.oauthApplications.rejectSelected')"
+          data-test="bulk-reject"
+          @click="rejectSelected"
+        >
+          <i class="fa-duotone fa-circle-xmark" />
+        </Btn>
+      </BulkSelectionBar>
+
       <BaseTable
         :records="oauthApplications?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading || refetching"
         :empty-visible="emptyVisible"
+        :selected="selectedIds"
         selectable
+        @selected-change="selectedIds = $event"
       >
+        <template #col-state="{ record }">
+          <OauthApplicationState :state="record.state" />
+        </template>
         <template #col-name="{ record }">
           {{ record.name }}
         </template>

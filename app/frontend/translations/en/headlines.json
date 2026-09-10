@@ -120,7 +120,9 @@
         "oauthApplications": {
           "index": "OAuth Applications",
           "new": "New OAuth Application",
-          "edit": "Edit OAuth Application"
+          "edit": "Edit OAuth Application",
+          "reject": "Refuse %{name}",
+          "rejectBulk": "Refuse %{count} applications"
         },
         "features": {
           "index": "Feature Flags",

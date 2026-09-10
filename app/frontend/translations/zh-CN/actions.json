@@ -111,7 +111,10 @@
       "syncRsiHangar": "同步RSI机库",
       "oauthApplications": {
         "create": "新建应用",
-        "regenerateSecret": "重新生成密钥"
+        "regenerateSecret": "重新生成密钥",
+        "approve": "批准",
+        "reject": "拒绝",
+        "rejectSelected": "拒绝所选"
       },
       "oauthAuthorize": {
         "authorize": "授权",

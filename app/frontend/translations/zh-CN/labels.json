@@ -81,7 +81,9 @@
         "redirectUriHint": "每行一个 URI。",
         "confidential": "机密",
         "scopes": "权限范围",
-        "scopesHint": "如果未选择权限范围，将使用默认范围: %{scopes}"
+        "scopesHint": "如果未选择权限范围，将使用默认范围: %{scopes}",
+        "logo": "图标",
+        "logoHint": "显示在授权页面上，方便用户辨认你的应用。支持 PNG、JPG、GIF 或 WebP。"
       },
       "rsiRequestLogs": {
         "resolved": "已解决",
@@ -121,7 +123,15 @@
         "scopes": "权限范围",
         "defaultScopes": "默认权限范围",
         "confidentialShort": "机密",
-        "publicShort": "公开"
+        "publicShort": "公开",
+        "logo": "图标",
+        "state": "状态",
+        "rejectionReason": "拒绝原因",
+        "statePending": "等待审核",
+        "stateApproved": "已批准",
+        "stateRejected": "已拒绝",
+        "reviewedBy": "审核人",
+        "owner": "注册者"
       },
       "fleetInviteToken": "舰队邀请",
       "inviteToken": "邀请码",
