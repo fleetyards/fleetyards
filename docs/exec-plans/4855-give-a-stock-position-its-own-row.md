@@ -49,7 +49,13 @@ That is not a behaviour change — two such rows already share one slug today, a
 .group(:inventory_position_id)    # after
 ```
 
-### D3 — `inventory_positions`, not `positions`
+### D3 — Two tables, not one polymorphic one
+
+`inventory_positions` and `fleet_inventory_positions`, mirroring the pair that already exists at every other level: `inventories`/`fleet_inventories`, `inventory_items`/`fleet_inventory_items`, with the shared behaviour in a concern. A single polymorphic table would hold identical columns for both cases, which is the argument for it, but it gives up the database-enforced foreign key and it would be the only part of this subsystem shaped that way.
+
+The shared behaviour is `StockPosition`, and it carries the same `inventory_association` trick `InventoryLedgerEntry` uses so both sides are reachable under one name. Note `has_many :positions` cannot be declared directly — Rails infers a `Position` class from it — so the association is named for its table and the alias does the work.
+
+### D3a — `inventory_positions`, not `positions`
 
 `model_positions` already exists (`db/schema.rb:1171`) for ship crew positions, and `positionIds` in the frontend already means those (`Fleets/Missions/ShipModal/index.vue:214`). The table is `inventory_positions` and the column `inventory_position_id`. A bare `position_id` on `inventory_items` would read fine in isolation and be ambiguous everywhere else.
 
@@ -66,7 +72,9 @@ The slug becomes a stored column on `inventory_positions`, unique per inventory,
 `.kamal/hooks/pre-deploy:22` runs `bin/deploy-release`, which is `db:migrate data:migrate` — **before the new containers boot**, retried up to three times. So while the migration runs, the *old* release is still serving writes and knows nothing about `inventory_position_id`. A `NOT NULL` FK cannot land in the same deploy as the code that populates it: the old code's `INSERT` would violate it. Same shape as the column-drop hazard, in the other direction.
 
 1. **Deploy A** — create the table; add `inventory_position_id` **nullable** with a FK; ship find-or-create on every write path and the dual read; backfill.
-2. **Deploy B** — `change_column_null false` and the unique index, once the backfill has run everywhere.
+2. **Deploy B** — `change_column_null false` on the entry foreign keys, once the backfill has run everywhere.
+
+The unique indexes on the *positions* do not wait: the table is new and the previous release never writes to it, so identity can be enforced from the first migration. Only the column on the existing entry tables has to be nullable first.
 
 CI never runs `db:migrate` or `data:migrate` — every job does `db:create db:schema:load` — so a broken migration passes CI and fails in the hook. `db/schema.rb` must be committed with the migration or the column is missing in CI.
 
@@ -97,6 +105,12 @@ All of it retires, which is the measure of whether this refactor is the right sh
 | the four `oasdiff` ignore entries | the 400 they cover stops being reachable |
 
 **Sequencing.** This branch is cut from `main`, which does not have #4849 yet, so none of the above exists here. #4849 is `CLEAN` and green; it should merge first, then this branch rebases and Phase 5 has something to delete. Built the other way round, the removal has nothing to remove and the conflict surfaces at rebase time instead. `main` has also moved twice since the branch was cut (`#4851`, `#4854`), so a rebase is due regardless.
+
+### D10 — The entries keep their own name, category and unit for now
+
+Once a position owns the identity, the same three columns on every entry are duplicated state that can drift. They cannot go yet, for the reason in D5: the previous release is still writing them while the migration runs, and the backfill reads them to decide which position each entry belongs to.
+
+Dropping them is a third deploy, after Deploy B, and it is a real piece of work rather than a tidy-up — `set_name_from_item`, the ransack attributes, the CSV importer and `PurgedFleetRestorer`'s column allowlist all name them. Recorded here so it is a planned step and not a surprise.
 
 ### D9 — Do not converge the two legacy list schemas
 
@@ -134,7 +148,7 @@ Everything in D8, once this branch sits on a main that has #4849.
 4. The three identical "the rename moved the address" blocks can go: an id does not move.
 
 ### Phase 7 — Deploy B
-`change_column_null false` plus the unique index on `(inventory, name, category, unit)`, in its own migration and its own deploy.
+`change_column_null false` on `inventory_position_id` and `fleet_inventory_position_id`, in its own migration and its own deploy.
 
 ### Phase 8 — Tests
 ~120 Ruby tests across 12 stock-specific files and 4 model files, plus two frontend specs. Includes a gap worth closing while in there: `fleet_inventory_item_test.rb` never mirrored the five position-move tests from `inventory_item_test.rb:212`, though the behaviour lives in the shared concern.
@@ -180,11 +194,12 @@ Everything in D8, once this branch sits on a main that has #4849.
 
 ## Discovery Log
 
+- **2026-09-10** Phase 1 landed: both tables, the `StockPosition` concern, the nullable foreign keys, and 15 tests. Settled three things the plan had left open — two tables rather than one polymorphic one (D3), the position unique indexes can land in Deploy A rather than waiting for Deploy B (D5), and the duplicated identity columns on the entries need a third deploy of their own (D10). Also found that `annotaterb` runs automatically on `db:migrate` here, contrary to the research, and that it re-annotates one unrelated file left behind by #4843 — reverted each time rather than carried in this diff.
 - **2026-09-10** Research and plan creation. Two findings changed the shape: `current_stock` groups by four columns including `quality`, so "what is a position" had two answers in the codebase and D1 has to pick one; and the pre-deploy hook migrates before the new containers boot, which forces the nullable-then-not-null split in D5. Also confirmed the identity is unenforced today — no unique index on the triple — and that the slug is lossy enough to collide, so the backfill cannot assume uniqueness.
 
 ## Progress
 
-- [ ] Phase 1 — The table
+- [x] Phase 1 — The table
 - [ ] Phase 2 — Writes
 - [ ] Phase 3 — Backfill
 - [ ] Phase 4 — Reads
