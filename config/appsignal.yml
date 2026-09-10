@@ -10,6 +10,12 @@ production:
       - ActionDispatch::Http::MimeNegotiation::InvalidType
       - ActionController::BadRequest
       - ActionDispatch::Http::Parameters::ParseError
+      # Sidekiq's fetch loop blocks on Redis with a 5s read timeout, and the
+      # nightly db-backup (03:00 UTC) runs on the same host as the Redis
+      # accessory. The timeouts that follow are handled by Sidekiq itself --
+      # the processor sleeps a second and fetches again, no job is lost -- so
+      # they are noise rather than a failure. AppSignal incident #15724.
+      - RedisClient::ReadTimeoutError
 
 staging:
   push_api_key: "<%= Rails.application.credentials.dig(:appsignal, :push_api_key) rescue nil %>"
@@ -24,6 +30,12 @@ staging:
       - ActionDispatch::Http::MimeNegotiation::InvalidType
       - ActionController::BadRequest
       - ActionDispatch::Http::Parameters::ParseError
+      # Sidekiq's fetch loop blocks on Redis with a 5s read timeout, and the
+      # nightly db-backup (03:00 UTC) runs on the same host as the Redis
+      # accessory. The timeouts that follow are handled by Sidekiq itself --
+      # the processor sleeps a second and fetches again, no job is lost -- so
+      # they are noise rather than a failure. AppSignal incident #15724.
+      - RedisClient::ReadTimeoutError
 
 development:
   active: false
