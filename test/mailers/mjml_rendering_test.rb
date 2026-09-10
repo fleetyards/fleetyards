@@ -21,6 +21,8 @@ require "test_helper"
 #   border-radius off the element MJML puts the panel's frame on.
 # - The button's hover state is the one part of it that cannot be inlined, so it
 #   is the one part premailer could throw away.
+# - The accent is per theme, and a mail resolves it in Ruby because no client
+#   resolves a custom property - so a mail can silently wear the wrong one.
 class MjmlRenderingTest < ActionMailer::TestCase
   MJML_LAYOUT = "mailer"
 
@@ -140,7 +142,7 @@ class MjmlRenderingTest < ActionMailer::TestCase
         "the lifted label" =>
           /\.mail-btn:hover \.mail-btn__label\s*\{\s*color:\s*#{MailerTheme::LIFTED}\s*!important/io,
         "the lit end-cap" =>
-          /\.mail-btn--neutral:hover \.mail-btn__cap\s*\{\s*background-color:\s*#{MailerTheme::PRIMARY}\s*!important/io
+          /\.mail-btn--neutral:hover \.mail-btn__cap\s*\{\s*background-color:\s*#{accent_for(preview)}\s*!important/i
       }.each do |what, pattern|
         assert_match pattern, html,
           "#{preview.name}##{email} lost #{what}. premailer is supposed to leave a " \
@@ -156,6 +158,41 @@ class MjmlRenderingTest < ActionMailer::TestCase
         "#{preview.name}##{email} moved the button's padding off the anchor, so the " \
         "hover area is now wider than the link.")
     end
+
+    # The admin app is a violet place and its mails are sent from it, so they
+    # carry the violet too. Nothing else about them changes - a theme touches
+    # the accent and only the accent - which is exactly what makes the wrong one
+    # hard to notice: the mail still looks right, just like the other app.
+    test "#{preview.name}##{email} wears its mailer's accent and no other" do
+      html = html_part_for(preview, email).downcase
+      accent = accent_for(preview)
+
+      assert_includes html, accent,
+        "#{preview.name}##{email} contains no #{accent} anywhere. " \
+        "#{self.class.mailer_for(preview)}.mail_theme is " \
+        "#{self.class.mailer_for(preview).mail_theme.inspect}, so that is the accent " \
+        "every link and end-cap in it should resolve to."
+
+      [*MailerTheme::ACCENTS.values, MailerTheme::PRIMARY].each do |other|
+        next if other.downcase == accent
+
+        refute_includes html, other.downcase,
+          "#{preview.name}##{email} still contains #{other}, which belongs to a " \
+          "different theme. A call site is reading MailerTheme::PRIMARY directly " \
+          "instead of going through mail_accent."
+      end
+    end
+  end
+
+  # A theme that no mailer selects is dead weight, and an accent asserted only
+  # against mails that never use it proves nothing.
+  test "every declared accent is selected by some mailer" do
+    selected = self.class.mjml_emails.map { |preview, _| self.class.mailer_for(preview).mail_theme }.uniq
+
+    unused = MailerTheme::ACCENTS.keys - selected
+    assert_empty unused,
+      "MailerTheme::ACCENTS declares #{unused.join(", ")}, which no mailer with a preview " \
+      "selects - so nothing above checks that theme renders."
   end
 
   # The hover assertions above are guarded on a button being present, so this
@@ -170,6 +207,10 @@ class MjmlRenderingTest < ActionMailer::TestCase
   end
 
   private
+
+  def accent_for(preview)
+    MailerTheme.accent(self.class.mailer_for(preview).mail_theme).downcase
+  end
 
   # premailer generates the text part in its delivery hook, so the multipart
   # message only exists after the hook has run. Calling the hook directly keeps

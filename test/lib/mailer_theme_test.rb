@@ -8,6 +8,7 @@ require "test_helper"
 # disagree - in either direction.
 class MailerThemeTest < ActiveSupport::TestCase
   THEME_FILE = Rails.root.join("app/frontend/entrypoints/tailwind.css")
+  THEME_LAYER = Rails.root.join("app/frontend/stylesheets/shared/themes.scss")
 
   # --color-<name>: <value>, ignoring the var() aliases (the mission categories).
   DECLARATION = /^\s*--color-([a-z0-9-]+):\s*(#[0-9a-f]{3,6}|rgb\([^)]*\))\s*;/i
@@ -77,6 +78,38 @@ class MailerThemeTest < ActiveSupport::TestCase
       "--cap-h-btn is max(2px, --cap-h - 2px)"
     assert_equal [MailerTheme::CAP_HEIGHT_BTN.to_i / 2, 1].max, MailerTheme::CAP_RADIUS_BTN.to_i,
       "--cap-r-btn is held to half the button cap's own height"
+  end
+
+  # A theme is a set of custom properties on the frontend, and no mail client
+  # resolves one - so ACCENTS restates the accent each theme declares, with the
+  # same risk of drift the colours above have and the same answer to it.
+  test "each themed accent equals that theme's --color-primary" do
+    css = THEME_LAYER.read
+
+    MailerTheme::ACCENTS.each do |theme, accent|
+      block = css[/\[data-theme=["']#{Regexp.escape(theme.to_s)}["']\]\s*\{(.*?)\}/m, 1]
+      assert block,
+        "themes.scss declares no [data-theme=\"#{theme}\"] block, but MailerTheme::ACCENTS " \
+        "has an accent for it. Either the theme was renamed or it no longer exists."
+
+      declared = block[/^\s*--color-primary:\s*(#[0-9a-f]{3,6})\s*;/i, 1]
+      assert declared, "[data-theme=\"#{theme}\"] declares no --color-primary"
+
+      assert_equal normalize_hex(declared), accent.downcase,
+        "MailerTheme::ACCENTS[#{theme.inspect}] is #{accent} but themes.scss declares " \
+        "#{declared} for that theme. Update the constant."
+    end
+  end
+
+  test "a mail that names no theme gets the default accent" do
+    assert_equal MailerTheme::PRIMARY, MailerTheme.accent(nil)
+  end
+
+  # Silently rendering the frontend blue is the failure this indirection exists
+  # to prevent, so a name nobody declared has to be loud.
+  test "an unknown theme raises rather than falling back" do
+    error = assert_raises(ArgumentError) { MailerTheme.accent(:nope) }
+    assert_match(/unknown mail theme :nope/, error.message)
   end
 
   # The flooded tones are the one pair with no --color-* to mirror: Btn writes

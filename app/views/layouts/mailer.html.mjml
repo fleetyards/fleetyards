@@ -124,7 +124,7 @@
         the :primary tone already wears at rest - so a primary button lifts its
         surface and its label and keeps the cap it had.
       */
-      .mail-btn--neutral:hover .mail-btn__cap { background-color: <%= MailerTheme::PRIMARY %> !important; }
+      .mail-btn--neutral:hover .mail-btn__cap { background-color: <%= mail_accent %> !important; }
 
       .mail-btn--danger:hover {
         background-color: <%= MailerTheme::DANGER %> !important;
@@ -281,9 +281,9 @@
           <%= I18n.t("copyright") %> &copy; <%= Time.current.year %>
           <%= Rails.configuration.app.copyright_owner %>
           <br />
-          <a href="<%= frontend_privacy_policy_url %>" style="color: <%= MailerTheme::PRIMARY %>;"><%= I18n.t("mailer.privacy") %></a>
+          <a href="<%= frontend_privacy_policy_url %>" style="color: <%= mail_accent %>;"><%= I18n.t("mailer.privacy") %></a>
           &nbsp;&middot;&nbsp;
-          <a href="<%= frontend_settings_notifications_url %>" style="color: <%= MailerTheme::PRIMARY %>;"><%= I18n.t("mailer.notification_settings") %></a>
+          <a href="<%= frontend_settings_notifications_url %>" style="color: <%= mail_accent %>;"><%= I18n.t("mailer.notification_settings") %></a>
         </mj-text>
       </mj-column>
     </mj-section>

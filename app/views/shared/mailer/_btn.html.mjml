@@ -18,6 +18,10 @@
   active, borrowed here at rest to mark the one action a mail is asking for.
   Nothing in the app changes.
 
+  Which colour that is depends on the mailer's theme, not on this file: an
+  AdminMailer resolves the admin violet, everything else the frontend blue. Same
+  for the hovered neutral cap. See ApplicationMailer.mail_theme.
+
   Hover is real, in the clients that have a pointer and keep an embedded
   stylesheet - Apple Mail, Gmail's web client, Outlook.com, Yahoo. The rules
   live in the layout's mj-style under .mail-btn, because a pseudo-class cannot
@@ -50,7 +54,7 @@
   width = defined?(width) && width.present? ? width : 260
   cap_color = {
     neutral: MailerTheme::ENDCAP,
-    primary: MailerTheme::PRIMARY,
+    primary: mail_accent,
     danger: MailerTheme::DANGER,
     warning: MailerTheme::WARNING
   }.fetch(tone)

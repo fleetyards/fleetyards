@@ -21,7 +21,7 @@
 <mj-text mj-class="h2" padding="0 0 12px">
   <a href="<%= frontend_model_url(slug: @vehicle.model.slug) %>"
      target="_blank"
-     style="color: <%= MailerTheme::PRIMARY %>; text-decoration: none;"><%= @vehicle.model.name %></a>
+     style="color: <%= mail_accent %>; text-decoration: none;"><%= @vehicle.model.name %></a>
   <%= I18n.t("mailer.vehicle.on_sale.headline.part_two") %>
 </mj-text>
 
