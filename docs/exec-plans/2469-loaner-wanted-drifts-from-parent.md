@@ -9,7 +9,7 @@
 Reported three years ago against a real fleet. Two symptoms, which turn out to be two distinct bugs sitting in the same five-line method:
 
 > all the loaners on the list were considered to be commanded by myself […] they were loaners from unpurchased ships
-
+>
 > when I removed my ships from the fleet we had no loaners that showed up at all
 
 Both were dismissed at the time as "the underlying loaner system makes this very complicated". They are not complicated; the method one screen further down the same file already does both things correctly.
