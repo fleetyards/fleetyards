@@ -51,6 +51,11 @@ useImportUpdates(isAuthenticated);
 
 const route = useRoute();
 
+// Every section needs authentication, so on the login page the sidebar is a
+// logo above an empty list and the mobile bar is a burger that opens it. Both
+// are dropped rather than rendered empty.
+const navigationVisible = computed(() => route.name !== "admin-login");
+
 const comlink = useComlink();
 
 const i18nStore = useI18nStore();
@@ -204,7 +209,7 @@ const setNoScroll = () => {
 
     <div class="app-content">
       <transition name="fade" mode="out-in">
-        <AdminNavigation />
+        <AdminNavigation v-if="navigationVisible" />
       </transition>
       <div class="main-wrapper">
         <div ref="mainInner" class="main-inner">
@@ -249,7 +254,7 @@ const setNoScroll = () => {
     </div>
 
     <transition name="fade" mode="out-in">
-      <AdminNavigationMobile v-if="mobile" />
+      <AdminNavigationMobile v-if="mobile && navigationVisible" />
     </transition>
 
     <AppConfirm />

@@ -53,3 +53,12 @@
     }
   }
 }
+
+// The mobile tab bar is dropped on this page, so the room the layout reserves
+// for it is dead space at the foot of the form. Matched on the page class the
+// app body carries, since the padding sits on `body` itself.
+@media (max-width: $desktop-breakpoint) {
+  body:has(.page-admin-login) {
+    padding-bottom: 0;
+  }
+}
