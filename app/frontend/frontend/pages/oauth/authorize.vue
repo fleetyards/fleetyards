@@ -118,6 +118,13 @@ async function deny() {
     </template>
 
     <template v-else-if="preAuth">
+      <img
+        v-if="preAuth.clientLogo?.smallUrl"
+        :src="preAuth.clientLogo.smallUrl"
+        :alt="preAuth.clientName"
+        class="authorize-logo"
+      />
+
       <p class="authorize-info">
         {{
           t("texts.oauthAuthorize.requestingAccess", {
@@ -156,6 +163,17 @@ async function deny() {
 </template>
 
 <style lang="scss" scoped>
+// The logo identifies who is asking, so it sits above the sentence naming them
+// rather than beside it.
+.authorize-logo {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
 .authorize-info {
   margin-bottom: 15px;
 }

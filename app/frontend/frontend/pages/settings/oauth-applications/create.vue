@@ -9,6 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
@@ -20,6 +21,7 @@ import {
   getOauthApplicationsQueryKey,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useForm } from "vee-validate";
 import {
   AVAILABLE_SCOPES,
@@ -49,6 +51,7 @@ const { defineField, handleSubmit, meta } = useForm<OauthApplicationInput>({
 const [name, nameProps] = defineField("name");
 const [redirectUri, redirectUriProps] = defineField("redirectUri");
 const [confidential, confidentialProps] = defineField("confidential");
+const [logo, logoProps] = defineField("logo");
 defineField("scopes");
 
 const submitting = ref(false);
@@ -104,6 +107,17 @@ const handleCancel = async () => {
           name="name"
           translation-key="oauthApplication.name"
         />
+        <FormFileInput
+          v-model="logo"
+          v-bind="logoProps"
+          name="logo"
+          translation-key="oauthApplication.logo"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
+        <p class="field-hint">
+          {{ t("labels.oauthApplication.logoHint") }}
+        </p>
         <FormTextarea
           v-model="redirectUri"
           v-bind="redirectUriProps"

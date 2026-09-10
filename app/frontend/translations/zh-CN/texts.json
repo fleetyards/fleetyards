@@ -49,6 +49,9 @@
             },
             "ignored": "已忽略: %{files}"
           }
+        },
+        "oauthApplications": {
+          "rejectHint": "该原因会展示给注册此应用的人，请说明需要修改什么。"
         }
       },
       "hangarGuide": {
@@ -168,6 +171,11 @@
         "wishlist": {
           "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
         }
+      },
+      "oauthApplications": {
+        "pendingReview": "此应用已注册，正在等待审核。在获得批准前无法请求访问权限。",
+        "rejected": "此应用已被拒绝，无法请求访问权限。按照原因中所述修改后会重新进入审核队列。",
+        "returnedToReview": "修改重定向 URI 或权限范围会使已批准的应用重新进入审核。"
       }
     }
   }

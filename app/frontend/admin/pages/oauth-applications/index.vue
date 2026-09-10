@@ -42,6 +42,10 @@ const columns: BaseTableCol<OauthApplication>[] = [
     label: "Name",
   },
   {
+    name: "state",
+    label: "Status",
+  },
+  {
     name: "ownerName",
     label: "Owner",
   },

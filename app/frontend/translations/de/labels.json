@@ -81,7 +81,9 @@
         "redirectUriHint": "Verwenden Sie eine URI pro Zeile.",
         "confidential": "Vertraulich",
         "scopes": "Berechtigungen",
-        "scopesHint": "Wenn keine Berechtigungen ausgewählt sind, werden die Standardberechtigungen verwendet: %{scopes}"
+        "scopesHint": "Wenn keine Berechtigungen ausgewählt sind, werden die Standardberechtigungen verwendet: %{scopes}",
+        "logo": "Logo",
+        "logoHint": "Wird auf der Zustimmungsseite angezeigt, damit Nutzer deine Anwendung erkennen. PNG, JPG, GIF oder WebP."
       },
       "rsiRequestLogs": {
         "resolved": "Gelöst",
@@ -121,7 +123,15 @@
         "scopes": "Berechtigungen",
         "defaultScopes": "Standard-Berechtigungen",
         "confidentialShort": "Vertraulich",
-        "publicShort": "Öffentlich"
+        "publicShort": "Öffentlich",
+        "logo": "Logo",
+        "state": "Status",
+        "rejectionReason": "Ablehnungsgrund",
+        "statePending": "Wartet auf Prüfung",
+        "stateApproved": "Freigegeben",
+        "stateRejected": "Abgelehnt",
+        "reviewedBy": "Geprüft von",
+        "owner": "Registriert von"
       },
       "fleetInviteToken": "Flotteneinladung",
       "inviteToken": "Einladungscode",

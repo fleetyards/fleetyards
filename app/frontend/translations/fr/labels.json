@@ -81,7 +81,9 @@
         "redirectUriHint": "Utilisez une URI par ligne.",
         "confidential": "Confidentiel",
         "scopes": "Portées",
-        "scopesHint": "Si aucune portée n'est sélectionnée, les portées par défaut seront utilisées : %{scopes}"
+        "scopesHint": "Si aucune portée n'est sélectionnée, les portées par défaut seront utilisées : %{scopes}",
+        "logo": "Logo",
+        "logoHint": "Affiché sur l'écran de consentement afin que les utilisateurs reconnaissent votre application. PNG, JPG, GIF ou WebP."
       },
       "rsiRequestLogs": {
         "resolved": "Résolu",
@@ -121,7 +123,15 @@
         "scopes": "Portées",
         "defaultScopes": "Portées par défaut",
         "confidentialShort": "Confidentiel",
-        "publicShort": "Public"
+        "publicShort": "Public",
+        "logo": "Logo",
+        "state": "Statut",
+        "rejectionReason": "Motif du refus",
+        "statePending": "En attente d'examen",
+        "stateApproved": "Approuvée",
+        "stateRejected": "Refusée",
+        "reviewedBy": "Examinée par",
+        "owner": "Enregistrée par"
       },
       "fleetInviteToken": "invitation de la flotte",
       "inviteToken": "Code d'invitation",

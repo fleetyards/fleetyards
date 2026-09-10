@@ -81,7 +81,9 @@
         "redirectUriHint": "Use one URI per line.",
         "confidential": "Confidential",
         "scopes": "Scopes",
-        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}",
+        "logo": "Logo",
+        "logoHint": "Shown on the consent screen so people recognise your application. PNG, JPG, GIF or WebP."
       },
       "rsiRequestLogs": {
         "resolved": "Resolved",
@@ -121,7 +123,15 @@
         "scopes": "Scopes",
         "defaultScopes": "Default scopes",
         "confidentialShort": "Confidential",
-        "publicShort": "Public"
+        "publicShort": "Public",
+        "logo": "Logo",
+        "state": "Status",
+        "rejectionReason": "Reason for refusal",
+        "statePending": "Awaiting review",
+        "stateApproved": "Approved",
+        "stateRejected": "Refused",
+        "reviewedBy": "Reviewed by",
+        "owner": "Registered by"
       },
       "fleetInviteToken": "Fleet Invite",
       "inviteToken": "Invite code",

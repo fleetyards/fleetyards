@@ -128,7 +128,8 @@
         "oauthApplications": {
           "index": "Aplicaciones OAuth",
           "new": "Nueva aplicación OAuth",
-          "edit": "Editar aplicación OAuth"
+          "edit": "Editar aplicación OAuth",
+          "reject": "Rechazar %{name}"
         },
         "features": {
           "index": "Indicadores de características",

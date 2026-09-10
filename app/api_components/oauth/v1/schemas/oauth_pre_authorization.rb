@@ -12,6 +12,16 @@ module Oauth
             clientId: {type: :string},
             clientName: {type: :string},
             redirectUri: {type: :string},
+            clientLogo: {
+              type: :object,
+              properties: {
+                url: {type: :string, format: :uri},
+                smallUrl: {type: :string, format: :uri},
+                mediumUrl: {type: :string, format: :uri}
+              },
+              additionalProperties: false,
+              required: %w[url]
+            },
             state: {type: :string},
             responseType: {type: :string},
             responseMode: {type: :string},

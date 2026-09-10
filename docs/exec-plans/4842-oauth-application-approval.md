@@ -66,6 +66,10 @@ A shared enum component leaks into the public schema. Three literal enums cost l
 
 The one existing application becomes `approved`; `approved_at` stays null. Nobody reviewed it, and a fabricated timestamp would say otherwise.
 
+### D10 — The consent screen describes its logo inline
+
+`clientLogo` cannot `$ref` the shared `MediaFile`: the OAuth schema is its own document and does not carry the shared components, so orval fails with `INVALID_REFERENCE`. The consent screen draws one image, so the inline object carries the three URLs it might use and nothing else.
+
 ## What changed
 
 ### Phase 1 — Model and migration
@@ -90,6 +94,13 @@ The one existing application becomes `approved`; `approved_at` stays null. Nobod
 11. Admin approve/reject, including the refusal without a reason.
 12. Factory approved by default with `:pending` and `:rejected` traits — nearly every test is about a working client, and the gate is its own handful of tests.
 
+### Phase 6 — Frontend
+13. `OauthApplicationState`, a shared pill, rather than the same mapping written at four call sites.
+14. Settings list carries the state; the detail page leads with a banner naming it and the refusal reason, ahead of the credentials — whether the client works at all is the first thing its owner needs.
+15. Logo upload on create and edit. `AllowedFileTypes.IMAGE` already excludes SVG, so the picker cannot offer one and `no_vector_image` is the backstop rather than the only guard.
+16. Consent screen draws the logo above the sentence naming the application.
+17. Admin list gains a state column and approve/reject actions; refusing opens a modal, because the reason is required and `displayConfirm` takes no input.
+
 ## Intent Verification
 
 - [ ] **An unreviewed application is inert** — `POST /authorize` answers `unauthorized_client`
@@ -108,6 +119,7 @@ The one existing application becomes `approved`; `approved_at` stays null. Nobod
 
 ## Discovery Log
 
+- **2026-09-10** Frontend built. Hit the cross-document `$ref` limit on `MediaFile` in the OAuth schema — recorded as D10. UI copy added by hand across seven locales; a Ruby-side test enforces the same for validation error codes, which is how the two new codes were caught.
 - **2026-09-10** Audited the provider rather than trusting the earlier triage, which had called this "built, needs a rollout" and pointed at `oauth-security.md` — that plan is about OAuth as a *consumer* (Discord login), not the provider. Probed production: everything answers. Found the real gap is the flag and the missing `feature_settings` row. Found D4, the bypass, while reading the controller.
 
 ## Progress
@@ -117,4 +129,5 @@ The one existing application becomes `approved`; `approved_at` stays null. Nobod
 - [x] Phase 3 — Admin
 - [x] Phase 4 — API surface
 - [x] Phase 5 — Tests
-- [ ] Phase 6 — Frontend: consent-screen logo, settings upload and state, admin review UI
+- [x] Phase 6 — Frontend: consent-screen logo, settings upload and state, admin review UI
+- [ ] Turn the flag on (admin action, not code)
