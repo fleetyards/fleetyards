@@ -70,4 +70,30 @@ describe("scDataSource store", () => {
     expect(store.requestParam).toBeUndefined();
     expect(store.hasChoice).toBe(false);
   });
+
+  // The boot requests go out before the list can arrive, so a rehydrated choice
+  // has to answer on its own -- otherwise the first paint is the default's data
+  // under the other build's label.
+  it("sends a rehydrated choice before the list has arrived", () => {
+    const store = useScDataSourceStore();
+    store.select("ptu");
+
+    expect(store.available).toEqual([]);
+    expect(store.requestParam).toBe("ptu");
+  });
+
+  it("still sends nothing before the list arrives when nothing was chosen", () => {
+    const store = useScDataSourceStore();
+
+    expect(store.requestParam).toBeUndefined();
+  });
+
+  it("stops sending a rehydrated choice the server does not offer", () => {
+    const store = useScDataSourceStore();
+    store.select("ptu");
+
+    store.setAvailable([live]);
+
+    expect(store.requestParam).toBeUndefined();
+  });
 });

@@ -43,7 +43,16 @@ export const useScDataSourceStore = defineStore("scDataSource", {
 
     // What the axios client puts on a request. Nothing for the default, so a
     // reader who has not chosen sends exactly what it always sent.
-    requestParam(): string | undefined {
+    requestParam(state): string | undefined {
+      // The list has not arrived yet and the boot requests are already going
+      // out -- they are issued in the same tick as the switch's own query, so
+      // no answer can beat them. A stored choice is the only answer there is,
+      // and it is never the default: `select` stores undefined for that one.
+      // A source the server no longer offers is ignored rather than refused,
+      // so the worst case is the default it would have served anyway, and
+      // `setAvailable` drops the selection as soon as the list lands.
+      if (!state.available.length) return state.environment;
+
       const selected = this.selected as ScDataSourceOption | undefined;
 
       if (!selected || selected.default) return undefined;
