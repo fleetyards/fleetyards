@@ -47,7 +47,21 @@ WARNING: Your Redis instance will evict Sidekiq data under heavy load.
 The 'noeviction' maxmemory policy is recommended (current policy: 'volatile-lru').
 ```
 
-The check is a string comparison against `noeviction`; it does not know that Sidekiq's own keys carry no TTL and are therefore unreachable by `volatile-lru`. The warning is a false positive here, and the `cmd:` line carries a comment saying so. Silencing it is what D2's rejected option costs.
+The check is a literal string comparison and nothing more; it knows nothing about which keys would actually be candidates. The warning is a false positive here, and the `cmd:` line carries a comment saying so. Silencing it is what D2's rejected option costs.
+
+Sidekiq is not entirely TTL-free, so the claim needs to be precise about which of its keys `volatile-lru` can reach:
+
+| Sidekiq key | TTL | Consequence if evicted |
+| --- | --- | --- |
+| `queue:*`, `retry`, `schedule`, `dead` | none | unreachable — this is the job data #4335 is about |
+| Heartbeat / process keys | 60s, rewritten every 10s (`BEAT_PAUSE`) | the worker drops out of the Web UI until the next beat; cosmetic |
+| `stat:processed:<date>`, `stat:failed:<date>` | 5 years | one day's counter in the stats |
+| Metrics histograms | 8 hours | a metric |
+| `Sidekiq::Job::Iterable` state | 30 days | **would be real damage** — an interrupted iterable job restarts from the beginning |
+
+Only the last row would hurt, and it does not apply: the app uses `Sidekiq::Job::Iterable` nowhere. The `JobIteration::ActiveRecordCursor` seen elsewhere is Shopify's gem behind `maintenance_tasks`, whose cursor is a Postgres column (`maintenance_tasks_runs.cursor`), not a Redis key.
+
+Worth noting what Sidekiq OSS does *not* do: it never recovers jobs from the process set — that is a Pro feature. An evicted heartbeat therefore cannot cause a job to be lost or replayed.
 
 ### D4 — Rollback means deleting `dump.rdb`
 
@@ -105,7 +119,7 @@ No gem gates on the server version except Sidekiq, and only from below: `sidekiq
 Rather than infer support from that, every Redis consumer in the app was exercised against a real `redis:8.2.9-alpine` started with the production `cmd` — 13 checks, all passing:
 
 - **Sidekiq** — enqueue / read back / delete on `queue:*`, `perform_in` onto the scheduled set, a retry-set round-trip, `Sidekiq::Stats` and the process set
-- **Sidekiq's keys carry no TTL** — asserted directly, since that is the premise `volatile-lru` rests on
+- **Sidekiq's `queue:*` keys carry no TTL** — asserted directly, since that is the premise `volatile-lru` rests on
 - **Rails cache** — `write`/`read`/`fetch`/`increment`/`delete_matched`, plus an assertion that a written key really does get a TTL
 - **Sessions** — `Redis::Store` round-trip with `expire_after`, TTL confirmed
 - **Action Cable** — redis pubsub across two connections with a `channel_prefix`
