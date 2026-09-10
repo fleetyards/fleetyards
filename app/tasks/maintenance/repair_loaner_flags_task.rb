@@ -25,6 +25,12 @@ module Maintenance
   #
   # Re-runnable, and no `dry_run` attribute -- one defaulting to true makes a
   # console run roll back silently while still reporting "succeeded".
+  #
+  # Nothing locks a parent against a concurrent save. `create_loaner` runs
+  # inside the parent's own transaction, so a flip landing mid-batch can leave
+  # one loaner holding the `wanted` read at the start of that user's rows --
+  # the value it already holds today, corrected by the parent's next save or by
+  # a re-run. Locking every parent would block real saves behind a batch job.
   class RepairLoanerFlagsTask < MaintenanceTasks::Task
     def collection
       User.where(id: Vehicle.where(loaner: true).select(:user_id))
