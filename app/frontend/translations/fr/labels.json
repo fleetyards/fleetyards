@@ -124,6 +124,7 @@
         "publicShort": "Public"
       },
       "fleetInviteToken": "invitation de la flotte",
+      "inviteToken": "Code d'invitation",
       "scDataVersion": "Version corrigée",
       "createdAt": "Créé le",
       "updatedAt": "Mis à jour le",

@@ -180,6 +180,7 @@
       "notFound": "Navigation Error",
       "forbidden": "Access Denied",
       "featureNotReady": "Coming Soon",
+      "inviteInvalid": "Invalid Invite Link",
       "accessDenied": "Access Denied",
       "serverError": "Server Error",
       "comments": "Comments",

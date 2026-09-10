@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import InviteInvalid from "@/shared/components/InviteInvalid/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetStore } from "@/frontend/stores/fleet";
@@ -29,6 +30,11 @@ const router = useRouter();
 
 const inviteToken = computed(() => route.params.token as string);
 
+// The lookup failing is a property of the link itself, so it stays on the page
+// rather than becoming a toast the reader is redirected away from. Redeeming a
+// valid invite can fail transiently, which is why only this half is a state.
+const inviteInvalid = ref(false);
+
 const useInvite = async () => {
   await findFleetByInvite(inviteToken.value)
     .then((fleet) => {
@@ -48,18 +54,10 @@ const useInvite = async () => {
         },
       });
     })
-    .catch(async (error) => {
+    .catch((error) => {
       console.error(error);
 
-      displayAlert({
-        text: t("messages.fleetInvite.notFound"),
-      });
-
-      await router
-        .push({
-          name: "home",
-        })
-        .catch(() => {});
+      inviteInvalid.value = true;
     });
 };
 
@@ -102,5 +100,7 @@ const handleFleetInvite = async () => {
 </script>
 
 <template>
-  <section class="container fleet-detail" />
+  <section class="container fleet-detail">
+    <InviteInvalid v-if="inviteInvalid" :token="inviteToken" />
+  </section>
 </template>

@@ -21,6 +21,7 @@
       "notFound": "Attualmente stai avventurando uno spazio sconosciuto. In caso di smarrimento, l'UEE raccomanda vivamente di tracciare una nuova destinazione di nuovo verso lo spazio di casa.",
       "forbidden": "La tua autorizzazione non copre quest'area. Se una funzione è ancora in distribuzione, potrai attivarla tu stesso in Impostazioni > Funzioni non appena sarà disponibile.",
       "featureNotReady": "Questa funzione non è ancora pronta e sarà disponibile a breve. Resta sintonizzato!",
+      "inviteInvalid": "Questo link di invito non è valido. Potrebbe essere stato copiato male, potrebbe essere scaduto oppure potrebbe aver già raggiunto il limite di utilizzi. Chiedi un nuovo link a chi ti ha invitato.",
       "accessDenied": "Non sei autorizzato a visualizzare questa pagina.",
       "serverError": "Il server sta riscontrando difficoltà tecniche. Riprova più tardi.",
       "compare": {

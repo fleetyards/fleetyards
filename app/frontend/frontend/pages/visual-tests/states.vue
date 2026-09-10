@@ -16,6 +16,7 @@ import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
+import InviteInvalid from "@/shared/components/InviteInvalid/index.vue";
 import NotAuthorized from "@/shared/components/NotAuthorized/index.vue";
 import NotFound from "@/shared/components/NotFound/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -374,15 +375,18 @@ const updatePerPage = (value: number | string) => {
 
   <Heading :level="HeadingLevelEnum.H2">Error Pages</Heading>
   <p>
-    The four full-page error blocks. They are normally rendered as a whole
+    The five full-page error blocks. They are normally rendered as a whole
     route, so they bring their own heading. <code>Forbidden</code> is the one
     for a resource that exists and is not yours, as against
     <code>NotAuthorized</code> for not being signed in at all.
+    <code>InviteInvalid</code> names the token it was given, which is opaque and
+    long enough to run out of the box if it does not break.
   </p>
   <NotFound />
   <NotAuthorized />
   <Forbidden />
   <ServerError />
+  <InviteInvalid token="8f14e45fceea167a5a36dedd4bea2543" />
 
   <Heading :level="HeadingLevelEnum.H2">FetchProgressBar</Heading>
   <p>

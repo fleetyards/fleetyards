@@ -124,6 +124,7 @@
         "publicShort": "公开"
       },
       "fleetInviteToken": "舰队邀请",
+      "inviteToken": "邀请码",
       "scDataVersion": "补丁版本",
       "createdAt": "创建于",
       "updatedAt": "更新于",
