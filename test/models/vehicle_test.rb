@@ -106,6 +106,94 @@ class VehicleBundledSnubCraftsTest < ActiveSupport::TestCase
   end
 end
 
+class VehicleLoanersTest < ActiveSupport::TestCase
+  setup do
+    @user = create(:user)
+    @loaner_model = create(:model)
+    @parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+  end
+
+  test "auto-creates a loaner for each model.loaners entry" do
+    assert_difference -> { Vehicle.where(loaner: true, user_id: @user.id).count }, 1 do
+      create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    end
+
+    loaner = Vehicle.find_by(loaner: true, user_id: @user.id)
+    assert_equal @loaner_model.id, loaner.model_id
+    assert_equal false, loaner.wanted
+  end
+
+  test "is idempotent: re-saving the parent does not duplicate the loaner" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+
+    assert_no_difference -> { Vehicle.where(loaner: true, vehicle_id: parent.id).count } do
+      parent.update!(name: "Renamed")
+    end
+  end
+
+  test "cascades wanted state to the loaner" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+
+    parent.update!(wanted: true)
+
+    loaners = Vehicle.where(loaner: true, vehicle_id: parent.id)
+    assert_equal 1, loaners.count
+    assert_equal true, loaners.first.wanted
+  end
+
+  # The lookup used to be scoped by `wanted`, so a flip missed the existing row,
+  # created a second one and stranded the first with the old value -- which is
+  # what put loaners of wishlisted ships into fleets.
+  test "flipping wanted back and forth strands no loaner" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+
+    parent.update!(wanted: true)
+    parent.update!(wanted: false)
+
+    loaners = Vehicle.where(loaner: true, vehicle_id: parent.id)
+    assert_equal 1, loaners.count
+    assert_equal false, loaners.first.wanted
+  end
+
+  # The `hidden` recomputation matched the row it was about, so a visible loaner
+  # answered "yes, a visible loaner exists" about itself and hid itself on the
+  # parent's next save.
+  test "re-saving the parent does not hide its only loaner" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    assert_equal false, Vehicle.find_by(loaner: true, vehicle_id: parent.id).hidden
+
+    parent.update!(name: "Renamed")
+
+    assert_equal false, Vehicle.find_by(loaner: true, vehicle_id: parent.id).hidden
+  end
+
+  test "keeps exactly one visible loaner when two parents loan the same model" do
+    other_parent_model = create(:model).tap { |m| m.loaners << @loaner_model }
+
+    create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    create(:vehicle, user: @user, model: other_parent_model, wanted: false)
+
+    loaners = Vehicle.where(loaner: true, user_id: @user.id, model_id: @loaner_model.id)
+    assert_equal 2, loaners.count
+    assert_equal 1, loaners.where(hidden: false).count
+  end
+
+  test "destroys loaners when the parent is destroyed" do
+    parent = create(:vehicle, user: @user, model: @parent_model, wanted: false)
+    assert_equal 1, Vehicle.where(loaner: true, vehicle_id: parent.id).count
+
+    parent.destroy
+
+    assert_equal 0, Vehicle.where(loaner: true, vehicle_id: parent.id).count
+  end
+
+  test "does not create loaners for a loaner vehicle" do
+    loaner_parent = create(:vehicle, :loaner, user: @user, model: @parent_model)
+
+    assert_empty Vehicle.where(loaner: true, vehicle_id: loaner_parent.id)
+  end
+end
+
 class VehicleScheduleFleetVehicleUpdateTest < ActiveSupport::TestCase
   setup do
     @vehicle = create(:vehicle)
