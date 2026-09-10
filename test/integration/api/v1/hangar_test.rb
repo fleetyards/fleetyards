@@ -61,6 +61,31 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A carrier holding a dock of each kind takes the branch that used to hand a
+  # Hash to `or`, which Rails refuses outright -- so this filter answered with a
+  # 500 for exactly the three ships anybody would pick: Polaris, Carrack, 890
+  # Jump.
+  test "GET /hangar filters by a carrier that takes both ships and vehicles" do
+    user = create(:user)
+    carrier = create(:model, slug: "carrier-with-both")
+    create(:dock, :with_dimensions, model: carrier, dock_type: :hangar)
+    create(:dock, :with_dimensions, model: carrier, dock_type: :garage)
+
+    fits = create(:model, ground: false, length: 20.0, beam: 10.0, height: 5.0)
+    too_big = create(:model, ground: false, length: 200.0, beam: 100.0, height: 50.0)
+    create(:vehicle, user:, model: fits, wanted: false)
+    create(:vehicle, user:, model: too_big, wanted: false)
+
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {willItFit: carrier.slug}} do
+      slugs = parsed_body["items"].map { |item| item.dig("model", "slug") }
+
+      assert_includes slugs, fits.slug
+      assert_not_includes slugs, too_big.slug
+    end
+  end
+
   test "DELETE /hangar clears the hangar" do
     user = create(:user, vehicle_count: 2)
     sign_in user

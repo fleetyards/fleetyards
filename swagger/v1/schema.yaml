@@ -16091,7 +16091,6 @@ components:
             type: string
         willItFit:
           type: string
-          format: uuid
         withCargo:
           type: boolean
         s:
@@ -18849,7 +18848,6 @@ components:
             type: string
         willItFit:
           type: string
-          format: uuid
         withCargo:
           type: boolean
         withCargoGrids:
