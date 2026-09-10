@@ -42,4 +42,11 @@ setupAppsignal(app);
 app.use(veeValidate);
 app.use(Tooltip);
 
-app.mount("#app");
+const mountApp = () => app.mount("#app");
+
+// Not `mountApp()` on its own: the router resolves its first navigation
+// asynchronously, so the first render would be the start location, where
+// `route.name` is undefined and `route.meta` empty. Mounted on a rejected
+// navigation as well, so a dead route chunk shows the app instead of leaving
+// the intro splash up for good — `router.onError` reloads in production.
+router.isReady().then(mountApp, mountApp);

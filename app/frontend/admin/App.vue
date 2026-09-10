@@ -53,8 +53,12 @@ const route = useRoute();
 
 // Every section needs authentication, so on the login page the sidebar is a
 // logo above an empty list and the mobile bar is a burger that opens it. Both
-// are dropped rather than rendered empty.
-const navigationVisible = computed(() => route.name !== "admin-login");
+// are dropped rather than rendered empty. Named routes only: an unresolved
+// route has no name, and reading that as "not the login page" rendered the
+// navigation for a frame and then faded it back out over half a second.
+const navigationVisible = computed(
+  () => route.name !== undefined && route.name !== "admin-login",
+);
 
 const comlink = useComlink();
 
