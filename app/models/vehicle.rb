@@ -273,10 +273,18 @@ class Vehicle < ApplicationRecord
   end
 
   def create_loaner(model_loaner)
-    existing_loaner = Vehicle.where(loaner: true, vehicle_id: id, model_id: model_loaner.id, wanted:, user_id:).first
+    # `vehicle_id` already ties the row to this parent, so scoping the lookup by
+    # `wanted` too only makes it miss the rows written under the previous value:
+    # the parent flips, a second set is created, and the first is stranded with
+    # a stale flag that then reaches fleets.
+    existing_loaner = Vehicle.where(loaner: true, vehicle_id: id, model_id: model_loaner.id, user_id:).first
 
     if existing_loaner.present?
-      existing_loaner.update(hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, wanted:, user_id:, hidden: false))
+      existing_loaner.update(
+        wanted:,
+        hidden: Vehicle.where(loaner: true, model_id: model_loaner.id, wanted:, user_id:, hidden: false)
+          .where.not(id: existing_loaner.id).exists?
+      )
 
       return
     end
