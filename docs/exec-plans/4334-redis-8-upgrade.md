@@ -96,6 +96,32 @@ RDB compatibility, both directions:
 - 8.2.9 writes `REDIS0012`; 7.2.15 refuses it with `# Can't handle RDB format version 12` / `# Fatal error loading the DB` and exits. D4's rollback step is required, not precautionary.
 - `MODULE LIST` on 8.2.9 with a custom `cmd`: `timeseries`, `search`, `bf`, `vectorset`, `ReJSON` — loaded, as the issue found.
 
+## Compatibility, verified against the installed gems
+
+`rails 8.1.3.1` / `actioncable 8.1.3.1`, `redis 5.4.1`, `redis-client 0.30.1`, `sidekiq 8.1.7`, `sidekiq-scheduler 6.0.2`, `redis-store 1.12.0`, `redis-actionpack 5.5.0`.
+
+No gem gates on the server version except Sidekiq, and only from below: `sidekiq/cli.rb:78` raises for anything under 7.0.0 and has no upper bound. `redis` and `redis-client` do not inspect the version at all.
+
+Rather than infer support from that, every Redis consumer in the app was exercised against a real `redis:8.2.9-alpine` started with the production `cmd` — 13 checks, all passing:
+
+- **Sidekiq** — enqueue / read back / delete on `queue:*`, `perform_in` onto the scheduled set, a retry-set round-trip, `Sidekiq::Stats` and the process set
+- **Sidekiq's keys carry no TTL** — asserted directly, since that is the premise `volatile-lru` rests on
+- **Rails cache** — `write`/`read`/`fetch`/`increment`/`delete_matched`, plus an assertion that a written key really does get a TTL
+- **Sessions** — `Redis::Store` round-trip with `expire_after`, TTL confirmed
+- **Action Cable** — redis pubsub across two connections with a `channel_prefix`
+- **Rack::Attack** — throttle counter through its Redis-backed store
+- **`ApiUsageTracker`** — `scan_each` over the namespaced keyspace
+- **RESP3** — explicit `HELLO 3` handshake and round-trip
+
+And a real `sidekiq` server booted against it, picked up a job and shut down cleanly. Its boot output is exactly D3's prediction, reproduced verbatim:
+
+```
+WARNING: Your Redis instance will evict Sidekiq data under heavy load.
+The 'noeviction' maxmemory policy is recommended (current policy: 'volatile-lru').
+```
+
+Followed, in the same run, by `class=ProbeJob: start` / `elapsed=0.0: done`.
+
 ## Intent Verification
 
 - [ ] **CI runs against 8.2.9** — all four workflows show the new image and pass, including the full Ruby suite
