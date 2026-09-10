@@ -158,4 +158,146 @@ class InventoryTest < ActiveSupport::TestCase
 
     assert_equal "Port Olisar", inventory.reload.location
   end
+  # `update_stock_item` moves a whole position in one `update_all`, which runs no
+  # callbacks and so filed no version -- the widest-reaching change on the
+  # ledger was the only one that left no trace.
+  test "update_stock_item files a version for every entry it moves" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+
+    assert_difference -> { versions_for(@inventory).count }, 2 do
+      @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+    end
+  end
+
+  test "update_stock_item records the old and the new name" do
+    stock_item = stock_position(quantity: 100)
+
+    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    version = versions_for(@inventory).last
+
+    assert_equal "update", version.event
+    assert_equal ["Quantanium", "Quantanium Ore"], version.changeset["name"]
+  end
+
+  test "update_stock_item records a category and unit move as well" do
+    stock_item = stock_position(quantity: 100)
+
+    @inventory.update_stock_item(stock_item, {category: "component", unit: "units"})
+
+    changeset = versions_for(@inventory).last.changeset
+
+    assert_equal ["commodity", "component"], changeset["category"]
+    assert_equal ["scu", "units"], changeset["unit"]
+  end
+
+  # The whole point of a version here is to answer what the position used to be,
+  # so `object` has to hold the state before the change rather than after it.
+  test "update_stock_item versions reify to the position as it was" do
+    stock_item = stock_position(quantity: 100)
+
+    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore", category: "component", unit: "units"})
+
+    was = versions_for(@inventory).last.reify
+
+    assert_equal "Quantanium", was.name
+    assert_equal "commodity", was.category
+    assert_equal "scu", was.unit
+  end
+
+  test "update_stock_item attributes the move to the acting user" do
+    stock_item = stock_position(quantity: 100)
+    PaperTrail.request.whodunnit = @user.id
+
+    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    assert_equal @user.id, versions_for(@inventory).last.whodunnit
+  end
+
+  test "update_stock_item files nothing for a rejected change" do
+    stock_item = stock_position(quantity: 100)
+
+    assert_no_difference -> { versions_for(@inventory).count } do
+      changed = @inventory.update_stock_item(stock_item, {name: "  "})
+
+      assert_predicate changed, :invalid?
+    end
+
+    assert_equal ["Quantanium"], @inventory.inventory_items.reload.pluck(:name)
+  end
+
+  # Re-submitting the name a position already has moves nothing but `updated_at`,
+  # and a version whose changeset says only that is the noise
+  # `Maintenance::DropChangelessVersionsTask` exists to clear out again.
+  test "update_stock_item files nothing when the position does not move" do
+    stock_item = stock_position(quantity: 100)
+
+    assert_no_difference -> { versions_for(@inventory).count } do
+      @inventory.update_stock_item(stock_item, {name: "Quantanium"})
+    end
+  end
+
+  # The rename and its versions are one transaction, so the failure mode the
+  # fix has to avoid -- a position that moved with nothing recording it -- is
+  # not reachable by a recording that blows up half way.
+  test "update_stock_item rolls the rename back when the versions cannot be written" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+    ::Versions::BulkUpdateRecorder.stubs(:record).raises(ActiveRecord::StatementInvalid, "versions gone")
+
+    assert_raises(ActiveRecord::StatementInvalid) do
+      @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+    end
+
+    assert_equal ["Quantanium"], @inventory.inventory_items.reload.pluck(:name).uniq
+    assert_empty versions_for(@inventory)
+  end
+
+  # What separates these versions from an edit to a single entry, which the
+  # inventory offers on purpose and which stays revertable on its own.
+  test "update_stock_item marks the versions as a whole-position move" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+
+    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    assert_equal [InventoryStock::POSITION_MOVE_REASON], versions_for(@inventory).pluck(:reason).uniq
+  end
+
+  # The bulk statement skips validations, which is what lets a position move
+  # while the per-entry rule refuses to move one entry out of it.
+  test "update_stock_item moves a shared position the entries could not move themselves" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+
+    changed = @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    assert_predicate changed, :valid?
+    assert_equal ["Quantanium Ore"], @inventory.inventory_items.reload.pluck(:name).uniq
+  end
+
+  test "update_stock_item leaves other positions unversioned" do
+    stock_item = stock_position(quantity: 100)
+    create(:inventory_item, inventory: @inventory, name: "Titanium", category: :commodity, unit: :scu, quantity: 5)
+    titanium = @inventory.inventory_items.find_by(name: "Titanium")
+
+    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    assert_empty PaperTrail::Version.where(item_type: "InventoryItem", item_id: titanium.id, event: "update")
+  end
+
+  private def stock_position(quantity:, withdrawn: nil)
+    create(:inventory_item, inventory: @inventory,
+      name: "Quantanium", category: :commodity, unit: :scu, quantity:)
+
+    if withdrawn.present?
+      create(:inventory_item, :withdrawal, inventory: @inventory,
+        name: "Quantanium", category: :commodity, unit: :scu, quantity: withdrawn)
+    end
+
+    PaperTrail::Version.where(item_type: "InventoryItem").delete_all
+
+    @inventory.stock_item(InventoryStockItem.slug_for(name: "Quantanium", category: "commodity", unit: "scu"))
+  end
+
+  private def versions_for(inventory)
+    PaperTrail::Version.where(item_type: "InventoryItem", item_id: inventory.inventory_items.select(:id)).order(:created_at)
+  end
 end

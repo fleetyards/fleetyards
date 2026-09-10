@@ -3,6 +3,11 @@
 module InventoryStock
   extend ActiveSupport::Concern
 
+  # Stamped on the versions a position move files, because the only thing that
+  # separates them from an edit to one entry is that they were written as a
+  # group -- and what may be done to one of them afterwards depends on that.
+  POSITION_MOVE_REASON = "stock_position_move"
+
   DEFAULT_SORTING_PARAMS = ["name asc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
@@ -98,13 +103,29 @@ module InventoryStock
   # Every entry of a position moves together, so the ledger stays balanced. That
   # rules out saving them one by one: a withdrawal validated against the new
   # name before its deposits have been renamed would see no stock at all.
+  #
+  # Which leaves the versions to be written alongside the statement, because
+  # `update_all` runs no callbacks and so files none by itself. This is the one
+  # correction to an existing entry that paper_trail is here for -- who
+  # deposited or withdrew is already in the row -- and it used to be the only
+  # write on these tables that left no trace at all. The entries are re-selected
+  # by id so the rows that get versioned are exactly the rows that moved, and
+  # both happen in one transaction: a rename that cannot be recorded does not
+  # happen.
   def update_stock_item(stock_item, attributes)
     target = attributes.symbolize_keys.slice(:name, :category, :unit)
     changed = InventoryStockItemChange.new(stock_item, target)
 
     return changed unless changed.valid?
 
-    entries_for_stock_item(stock_item).update_all(changed.column_values)
+    column_values = changed.column_values
+    entries = entries_for_stock_item(stock_item).to_a
+
+    transaction do
+      inventory_items.where(id: entries.map(&:id)).update_all(column_values)
+      ::Versions::BulkUpdateRecorder.record(entries, column_values, reason: POSITION_MOVE_REASON)
+    end
+
     touch
 
     changed

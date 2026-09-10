@@ -90,6 +90,22 @@ class Api::V1::VehicleInventoryStockUpdateTest < ActionDispatch::IntegrationTest
     assert_equal ["Quantainium"], @inventory.inventory_items.pluck(:name).uniq
   end
 
+  test "PATCH records the rename against the signed-in user" do
+    sign_in @user
+
+    assert_api_response :patch, 200,
+      path_params: {vehicle_id: @vehicle.id, slug: @slug},
+      body: {name: "Quantainium"}
+
+    versions = PaperTrail::Version.where(
+      item_type: "InventoryItem", item_id: @inventory.inventory_items.select(:id), event: "update"
+    )
+
+    assert_equal 2, versions.count
+    assert_equal [@user.id], versions.pluck(:whodunnit).uniq
+    assert_equal [["Quantanium", "Quantainium"]], versions.map { |version| version.changeset["name"] }.uniq
+  end
+
   test "PATCH rejects a unit the new category is not measured in" do
     sign_in @user
 

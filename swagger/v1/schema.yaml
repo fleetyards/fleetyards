@@ -2787,6 +2787,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetInventoryItem"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
@@ -2799,8 +2805,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock":
     parameters:
     - name: fleetSlug
@@ -5988,6 +5992,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarInventoryItem"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
@@ -6000,8 +6010,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/inventories/{hangarInventorySlug}/stock":
     parameters:
     - name: hangarInventorySlug

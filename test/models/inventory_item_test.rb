@@ -209,4 +209,50 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
       create(:inventory_item, inventory: @inventory)
     end
   end
+  # A position is only the entries that share a name, category and unit, so
+  # renaming one of several moves it out and strands the rest.
+  test "an entry cannot be renamed out of a position it shares" do
+    inventory = create(:inventory)
+    base = {inventory:, name: "Quantanium", category: :commodity, unit: :scu}
+    deposit = create(:inventory_item, base.merge(quantity: 100))
+    create(:inventory_item, :withdrawal, base.merge(quantity: 30))
+
+    refute deposit.update(name: "Quantanium Ore")
+    assert_includes deposit.errors.full_messages.to_s, "update the whole position instead"
+    assert_equal "Quantanium", deposit.reload.name
+  end
+
+  test "a shared position refuses a category or unit move on one entry" do
+    inventory = create(:inventory)
+    base = {inventory:, name: "Quantanium", category: :commodity, unit: :scu}
+    deposit = create(:inventory_item, base.merge(quantity: 100))
+    create(:inventory_item, base.merge(quantity: 5))
+
+    refute deposit.update(category: :component, unit: :units)
+    assert_equal %w[category unit], deposit.errors.attribute_names.map(&:to_s).sort
+  end
+
+  # Alone in its position, an entry is the position, so it moves itself.
+  test "an entry alone in its position can be renamed" do
+    entry = create(:inventory_item, name: "Quantaniumm", category: :commodity, unit: :scu, quantity: 100)
+
+    assert entry.update(name: "Quantanium")
+    assert_equal "Quantanium", entry.reload.name
+  end
+
+  test "an entry in another inventory does not count as sharing the position" do
+    entry = create(:inventory_item, name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+    create(:inventory_item, name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+
+    assert entry.update(name: "Quantanium Ore")
+  end
+
+  test "a shared position still allows notes on one entry" do
+    inventory = create(:inventory)
+    base = {inventory:, name: "Quantanium", category: :commodity, unit: :scu}
+    deposit = create(:inventory_item, base.merge(quantity: 100))
+    create(:inventory_item, :withdrawal, base.merge(quantity: 30))
+
+    assert deposit.update(notes: "moved to hold 2")
+  end
 end

@@ -187,6 +187,52 @@ class Admin::Api::V1::VersionsTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 400, path_params: {id: creation.id}, body: {field: "name"}
   end
 
+  # Reverting `name` on one entry of a position moves that entry out of it,
+  # stranding the rest -- the ledger refuses it, so the reverter reports it.
+  test "PUT /versions/:id/revert returns 400 for a name another entry shares" do
+    version = renamed_position_version
+    sign_in create(:admin_user, resource_access: [:users])
+
+    assert_api_response :put, 400, path_params: {id: version.id}, body: {field: "name"} do
+      assert_equal "Quantanium Ore", version.item.reload.name
+    end
+  end
+
+  # An entry alone in its position is the whole position, so putting its name
+  # back moves nothing out of anything.
+  test "PUT /versions/:id/revert reverts a name no other entry shares" do
+    entry = create(:inventory_item, name: "Quantaniumm", category: :commodity, unit: :scu, quantity: 100)
+    entry.update!(name: "Quantanium")
+    sign_in create(:admin_user, resource_access: [:users])
+
+    assert_api_response :put, 204, path_params: {id: entry.versions.last.id}, body: {field: "name"} do
+      assert_equal "Quantaniumm", entry.reload.name
+    end
+  end
+
+  test "PUT /versions/:id/revert still reverts a field the position does not share" do
+    entry = renamed_position_version.item
+    entry.update!(notes: "Second run")
+    sign_in create(:admin_user, resource_access: [:users])
+
+    assert_api_response :put, 204,
+      path_params: {id: entry.versions.last.id}, body: {field: "notes"} do
+      assert_nil entry.reload.notes
+    end
+  end
+
+  def renamed_position_version
+    inventory = create(:inventory)
+    base = {inventory:, name: "Quantanium", category: :commodity, unit: :scu}
+    create(:inventory_item, base.merge(quantity: 100))
+    create(:inventory_item, :withdrawal, base.merge(quantity: 30))
+    slug = InventoryStockItem.slug_for(name: "Quantanium", category: "commodity", unit: "scu")
+
+    inventory.update_stock_item(inventory.stock_item(slug), {name: "Quantanium Ore"})
+
+    PaperTrail::Version.where(item_type: "InventoryItem").order(:created_at).last
+  end
+
   test "PUT /versions/:id/revert returns 404 for a missing id" do
     sign_in @user
 

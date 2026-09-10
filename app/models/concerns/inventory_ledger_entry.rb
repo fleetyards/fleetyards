@@ -34,6 +34,11 @@ module InventoryLedgerEntry
 
   ENTRY_TYPES = {deposit: 0, withdrawal: 1}.freeze
 
+  # What makes two entries the same stock position, and so the columns no single
+  # entry may move on its own -- `InventoryStock#update_stock_item` moves all of
+  # them together or none.
+  POSITION_COLUMNS = %w[name category unit].freeze
+
   DEFAULT_SORTING_PARAMS = ["created_at desc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
@@ -64,6 +69,17 @@ module InventoryLedgerEntry
     # of it have to satisfy it.
     validate :unit_fits_category, if: -> {
       new_record? || will_save_change_to_unit? || will_save_change_to_category?
+    }
+
+    # A position is nothing but the entries that share a name, category and
+    # unit, so changing one of those on a single entry moves it out of the
+    # position it was in -- and any withdrawals left behind land in a group with
+    # no deposits, at a negative net that `current_stock` hides. An entry that
+    # is alone in its position *is* the position, so it may move itself.
+    # Anything else goes through `InventoryStock#update_stock_item`, which moves
+    # every entry at once.
+    validate :position_is_moved_as_a_whole, if: -> {
+      persisted? && POSITION_COLUMNS.any? { |column| will_save_change_to_attribute?(column) }
     }
 
     before_validation :set_name_from_item
@@ -171,6 +187,31 @@ module InventoryLedgerEntry
     return unless item_type.in?(ITEM_TYPES)
 
     errors.add(:item_id, :blank) if item.blank?
+  end
+
+  private def position_is_moved_as_a_whole
+    return unless position_shared?
+
+    POSITION_COLUMNS.each do |column|
+      next unless will_save_change_to_attribute?(column)
+
+      errors.add(column, :position_shared,
+        message: "cannot move one entry out of a position -- update the whole position instead")
+    end
+  end
+
+  # Against the values still in the database, not the ones being written: the
+  # position an entry is leaving is the one it is still grouped under.
+  private def position_shared?
+    self.class
+      .where(self.class.inventory_foreign_key => inventory_id)
+      .where(
+        name: attribute_in_database("name"),
+        category: attribute_in_database("category"),
+        unit: attribute_in_database("unit")
+      )
+      .where.not(id: id)
+      .exists?
   end
 
   private def unit_fits_category

@@ -102,6 +102,24 @@ class Api::V1::FleetsInventoryStockUpdateTest < ActionDispatch::IntegrationTest
     assert_empty @inventory.fleet_inventory_items.where(name: "Quantanium")
   end
 
+  # A fleet entry says who deposited it in the row itself; what it cannot say is
+  # who renamed the position afterwards, which is what the version is for.
+  test "PATCH records the rename against the signed-in officer" do
+    sign_in @admin
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug},
+      body: {name: "Quantanium Ore"}
+
+    versions = PaperTrail::Version.where(
+      item_type: "FleetInventoryItem", item_id: @inventory.fleet_inventory_items.select(:id), event: "update"
+    )
+
+    assert_equal 2, versions.count
+    assert_equal [@admin.id], versions.pluck(:whodunnit).uniq
+    assert_equal [["Quantanium", "Quantanium Ore"]], versions.map { |version| version.changeset["name"] }.uniq
+  end
+
   test "PATCH moves the position to a new category and unit together" do
     sign_in @admin
 

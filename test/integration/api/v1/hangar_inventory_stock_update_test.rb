@@ -93,6 +93,24 @@ class Api::V1::HangarInventoryStockUpdateTest < ActionDispatch::IntegrationTest
     assert_empty @inventory.inventory_items.where(name: "Quantanium")
   end
 
+  # `update_all` runs no callbacks, so this rename -- the widest change the
+  # ledger takes -- used to be the only one that left nothing behind.
+  test "PATCH records the rename against the signed-in user" do
+    sign_in @user
+
+    assert_api_response :patch, 200,
+      path_params: {hangarInventorySlug: @inventory.slug, slug: @slug},
+      body: {name: "Quantanium Ore"}
+
+    versions = PaperTrail::Version.where(
+      item_type: "InventoryItem", item_id: @inventory.inventory_items.select(:id), event: "update"
+    )
+
+    assert_equal 2, versions.count
+    assert_equal [@user.id], versions.pluck(:whodunnit).uniq
+    assert_equal [["Quantanium", "Quantanium Ore"]], versions.map { |version| version.changeset["name"] }.uniq
+  end
+
   test "PATCH moves the position to a new category and unit together" do
     sign_in @user
 

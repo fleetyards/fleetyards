@@ -30,6 +30,10 @@ class Api::V1::FleetsInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Logistics::FleetInventoryItem
       end
 
+      response(400, "validation error") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
