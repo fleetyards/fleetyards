@@ -24,7 +24,7 @@ module Versions
 
       return failure(:unknown_field) unless reversible?
 
-      return failure(:position_moves_together) if bulk_managed_field?
+      return failure(:position_moves_together) if moved_with_its_position?
 
       before, after = @version.changeset.fetch(@field)
       before = cast(before)
@@ -49,14 +49,17 @@ module Versions
         record.class.column_names.include?(@field)
     end
 
-    # A ledger entry's name, category and unit are only ever moved for the whole
-    # stock position at once, which is what keeps a withdrawal from being checked
-    # against a name half the position has already left. Those versions look
-    # revertable -- an update whose changeset names the field -- but putting one
-    # entry back by itself splits the position in two and takes the stock behind
-    # its withdrawals with it. The stock endpoint is the only way to move them.
-    private def bulk_managed_field?
-      record.class.include?(::InventoryLedgerEntry) &&
+    # A version that moved a whole stock position, and one of the columns that
+    # defines the position. Reverting it puts one entry back on its own, which
+    # splits the position in two and strands the stock behind its withdrawals.
+    #
+    # Only those. Renaming a single entry is a correction the inventory itself
+    # offers -- the item policies permit `name`, `category` and `unit` on a
+    # persisted entry -- and undoing one has always been the reverter's job. It
+    # is the versions written as a group that cannot be taken apart one row at a
+    # time, so the reason they carry is what decides rather than the field alone.
+    private def moved_with_its_position?
+      @version.reason == ::InventoryStock::POSITION_MOVE_REASON &&
         ::InventoryLedgerEntry::POSITION_COLUMNS.include?(@field)
     end
 

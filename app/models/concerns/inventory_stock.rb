@@ -3,6 +3,11 @@
 module InventoryStock
   extend ActiveSupport::Concern
 
+  # Stamped on the versions a position move files, because the only thing that
+  # separates them from an edit to one entry is that they were written as a
+  # group -- and what may be done to one of them afterwards depends on that.
+  POSITION_MOVE_REASON = "stock_position_move"
+
   DEFAULT_SORTING_PARAMS = ["name asc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
@@ -118,7 +123,7 @@ module InventoryStock
 
     transaction do
       inventory_items.where(id: entries.map(&:id)).update_all(column_values)
-      ::Versions::BulkUpdateRecorder.record(entries, column_values)
+      ::Versions::BulkUpdateRecorder.record(entries, column_values, reason: POSITION_MOVE_REASON)
     end
 
     touch

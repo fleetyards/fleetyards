@@ -221,6 +221,19 @@ class Admin::Api::V1::VersionsTest < ActionDispatch::IntegrationTest
     PaperTrail::Version.where(item_type: "InventoryItem").order(:created_at).last
   end
 
+  # Renaming one entry is a correction the inventory offers -- the item policies
+  # permit it on a persisted entry -- so undoing one stays the reverter's job.
+  # Only the versions written as a group cannot be taken apart a row at a time.
+  test "PUT /versions/:id/revert still reverts a name a single entry changed on its own" do
+    entry = create(:inventory_item, name: "Quantaniumm", category: :commodity, unit: :scu, quantity: 100)
+    entry.update!(name: "Quantanium")
+    sign_in create(:admin_user, resource_access: [:users])
+
+    assert_api_response :put, 204, path_params: {id: entry.versions.last.id}, body: {field: "name"} do
+      assert_equal "Quantaniumm", entry.reload.name
+    end
+  end
+
   test "PUT /versions/:id/revert returns 404 for a missing id" do
     sign_in @user
 

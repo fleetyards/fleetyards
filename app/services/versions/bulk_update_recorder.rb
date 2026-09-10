@@ -17,13 +17,14 @@ module Versions
   # `paper_trail.update_columns` looks like the shortcut for this and is not; it
   # clears dirty state first, so its `object` describes the row afterwards.
   class BulkUpdateRecorder
-    def self.record(records, column_values)
-      new(records, column_values).record
+    def self.record(records, column_values, reason: nil)
+      new(records, column_values, reason:).record
     end
 
-    def initialize(records, column_values)
+    def initialize(records, column_values, reason: nil)
       @records = records
       @column_values = column_values
+      @reason = reason
     end
 
     def record
@@ -59,6 +60,9 @@ module Versions
         whodunnit: data[:whodunnit],
         object: data[:object],
         object_changes: data[:object_changes],
+        # What wrote the version, so a reader can tell one row of a group apart
+        # from a change somebody made to that row alone.
+        reason: @reason,
         # Matched to the row's own `updated_at`, the way paper_trail lines a
         # version up with the save that produced it.
         created_at: record.updated_at

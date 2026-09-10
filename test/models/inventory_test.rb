@@ -252,6 +252,16 @@ class InventoryTest < ActiveSupport::TestCase
     assert_empty versions_for(@inventory)
   end
 
+  # What separates these versions from an edit to a single entry, which the
+  # inventory offers on purpose and which stays revertable on its own.
+  test "update_stock_item marks the versions as a whole-position move" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+
+    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    assert_equal [InventoryStock::POSITION_MOVE_REASON], versions_for(@inventory).pluck(:reason).uniq
+  end
+
   test "update_stock_item leaves other positions unversioned" do
     stock_item = stock_position(quantity: 100)
     create(:inventory_item, inventory: @inventory, name: "Titanium", category: :commodity, unit: :scu, quantity: 5)
