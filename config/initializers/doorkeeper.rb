@@ -305,6 +305,15 @@ Doorkeeper.configure do
   #   Doorkeeper::Errors::TokenForbidden, Doorkeeper::Errors::TokenExpired,
   #   Doorkeeper::Errors::TokenRevoked, Doorkeeper::Errors::TokenUnknown
   #
+  # An application a user registered is inert until an admin approves it.
+  # Doorkeeper answers :unauthorized_client and stops the request, and this hook
+  # sees the token exchange and the refresh as well as the authorization -- which
+  # is why the check lives here rather than in the endpoints, where one forgotten
+  # guard would be a working client for a stranger.
+  allow_grant_flow_for_client do |_grant_flow, client|
+    client.usable_as_client?
+  end
+
   handle_auth_errors :raise
 
   # Customize token introspection response.

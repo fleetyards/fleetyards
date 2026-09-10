@@ -67,7 +67,7 @@ module Api
 
       private def application_params
         @application_params ||= params.transform_keys(&:underscore)
-          .permit(:name, :redirect_uri, :confidential, scopes: [])
+          .permit(:name, :redirect_uri, :confidential, :logo, scopes: [])
       end
 
       private def check_feature_flag

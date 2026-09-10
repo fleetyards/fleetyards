@@ -84,6 +84,8 @@ de:
       update: OAuth-Anwendung konnte nicht aktualisiert werden.
       destroy: OAuth-Anwendung konnte nicht gelöscht werden.
       regenerate_secret: Secret konnte nicht neu erzeugt werden.
+      approve: OAuth-Anwendung konnte nicht freigegeben werden.
+      reject: OAuth-Anwendung konnte nicht abgelehnt werden.
     user:
       destroy: Benutzer konnte nicht gelöscht werden.
       update: Benutzer konnte nicht aktualisiert werden.

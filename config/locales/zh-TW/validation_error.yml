@@ -75,6 +75,8 @@ zh-TW:
       update: OAuth 應用程式無法更新。
       destroy: OAuth 應用程式無法刪除。
       regenerate_secret: 無法重新產生密鑰。
+      approve: OAuth 應用程式無法核准。
+      reject: OAuth 應用程式無法拒絕。
     user:
       destroy: 無法刪除使用者。
       update: 無法更新使用者。

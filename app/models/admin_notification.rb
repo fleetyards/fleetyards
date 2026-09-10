@@ -54,7 +54,8 @@ class AdminNotification < ApplicationRecord
     ship_matrix_import: "ship_matrix_import",
     sc_data_import: "sc_data_import",
     sc_data_unlisted_models: "sc_data_unlisted_models",
-    import_run: "import_run"
+    import_run: "import_run",
+    oauth_application_review: "oauth_application_review"
   }
 
   enum :severity, {
@@ -129,6 +130,11 @@ class AdminNotification < ApplicationRecord
     },
     # The status line every other import leaves behind, at info when it
     # finished and at error when it did not.
+    oauth_application_review: {
+      retention: 90.days,
+      access: [:oauth_applications],
+      icon: "fa-duotone fa-key"
+    },
     import_run: {
       retention: 30.days,
       access: [:imports],

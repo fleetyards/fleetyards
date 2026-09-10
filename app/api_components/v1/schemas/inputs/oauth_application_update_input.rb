@@ -12,6 +12,7 @@ module V1
             name: {type: [:string, :null]},
             redirectUri: {type: [:string, :null]},
             confidential: {type: :boolean},
+            logo: {type: [:string, :null]},
             scopes: {type: [:array, :null], items: {type: :string}}
           },
           additionalProperties: false

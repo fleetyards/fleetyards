@@ -79,6 +79,8 @@ es:
       update: La aplicación OAuth no pudo ser actualizada.
       destroy: La aplicación OAuth no pudo ser eliminada.
       regenerate_secret: No se pudo regenerar el secreto.
+      approve: La aplicación OAuth no pudo ser aprobada.
+      reject: La aplicación OAuth no pudo ser rechazada.
     user:
       destroy: El usuario no pudo ser eliminado.
       update: No se pudo actualizar el usuario.

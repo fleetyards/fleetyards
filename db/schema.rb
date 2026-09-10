@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1404,17 +1404,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_170000) do
   end
 
   create_table "oauth_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "pending", null: false
+    t.datetime "approved_at"
     t.boolean "confidential", default: true, null: false
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.uuid "owner_id"
     t.string "owner_type"
     t.text "redirect_uri"
+    t.datetime "rejected_at"
+    t.text "rejection_reason"
+    t.uuid "reviewed_by_id"
     t.string "scopes", default: "", null: false
     t.string "secret", limit: 512, null: false
     t.string "uid", null: false
     t.datetime "updated_at", null: false
+    t.index ["aasm_state"], name: "index_oauth_applications_on_aasm_state"
     t.index ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type"
+    t.index ["reviewed_by_id"], name: "index_oauth_applications_on_reviewed_by_id"
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 

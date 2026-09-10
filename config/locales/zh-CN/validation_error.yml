@@ -75,6 +75,8 @@ zh-CN:
       update: OAuth 应用无法更新。
       destroy: OAuth 应用无法删除。
       regenerate_secret: 无法重新生成密钥。
+      approve: OAuth 应用无法批准。
+      reject: OAuth 应用无法拒绝。
     user:
       destroy: 无法删除用户。
       update: 无法更新用户。

@@ -19451,6 +19451,18 @@ components:
           type: string
         scopes:
           type: string
+        state:
+          type: string
+          enum:
+          - pending
+          - approved
+          - rejected
+        rejectionReason:
+          type:
+          - string
+          - 'null'
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time
@@ -19465,6 +19477,7 @@ components:
       - confidential
       - redirectUri
       - scopes
+      - state
       - createdAt
       - updatedAt
       title: OauthApplication
@@ -19477,6 +19490,10 @@ components:
           type: string
         confidential:
           type: boolean
+        logo:
+          type:
+          - string
+          - 'null'
         scopes:
           type: array
           items:
@@ -19499,6 +19516,10 @@ components:
           - 'null'
         confidential:
           type: boolean
+        logo:
+          type:
+          - string
+          - 'null'
         scopes:
           type:
           - array
@@ -19525,6 +19546,18 @@ components:
           type: string
         scopes:
           type: string
+        state:
+          type: string
+          enum:
+          - pending
+          - approved
+          - rejected
+        rejectionReason:
+          type:
+          - string
+          - 'null'
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time
@@ -19540,6 +19573,7 @@ components:
       - confidential
       - redirectUri
       - scopes
+      - state
       - createdAt
       - updatedAt
       title: OauthApplicationWithSecret
