@@ -29,6 +29,10 @@ class Api::V1::HangarInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Hangar::Logistics::HangarInventoryItem
       end
 
+      response(400, "validation error") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -56,6 +60,24 @@ class Api::V1::HangarInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
       assert_equal "Renamed Cargo", parsed_body["name"]
       assert_equal "moved to hold 2", parsed_body["notes"]
     end
+  end
+
+  # Renaming one entry of a shared position moves it out and strands the rest,
+  # so the whole position has to move instead -- PATCH /stock/:slug does that.
+  test "PUT /hangar/inventories/:slug/items/:id refuses a name another entry shares" do
+    sign_in @user
+
+    base = {inventory: @inventory, name: "Quantanium", category: :commodity, unit: :scu}
+    entry = create(:inventory_item, base.merge(quantity: 100))
+    create(:inventory_item, :withdrawal, base.merge(quantity: 30))
+
+    assert_api_response :put, 400,
+      path_params: {hangarInventorySlug: @inventory.slug, id: entry.id},
+      body: {name: "Quantanium Ore"} do
+      assert_includes parsed_body["errors"].to_s, "update the whole position instead"
+    end
+
+    assert_equal "Quantanium", entry.reload.name
   end
 
   test "PUT /hangar/inventories/:slug/items/:id returns 404 for another user's item" do

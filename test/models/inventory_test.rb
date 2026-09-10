@@ -262,6 +262,17 @@ class InventoryTest < ActiveSupport::TestCase
     assert_equal [InventoryStock::POSITION_MOVE_REASON], versions_for(@inventory).pluck(:reason).uniq
   end
 
+  # The bulk statement skips validations, which is what lets a position move
+  # while the per-entry rule refuses to move one entry out of it.
+  test "update_stock_item moves a shared position the entries could not move themselves" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+
+    changed = @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    assert_predicate changed, :valid?
+    assert_equal ["Quantanium Ore"], @inventory.inventory_items.reload.pluck(:name).uniq
+  end
+
   test "update_stock_item leaves other positions unversioned" do
     stock_item = stock_position(quantity: 100)
     create(:inventory_item, inventory: @inventory, name: "Titanium", category: :commodity, unit: :scu, quantity: 5)
