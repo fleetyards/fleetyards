@@ -3,6 +3,7 @@
 module Api
   module V1
     class ModelsController < ::Api::BaseController
+      include WillItFitConcern
       include ViteRails::TagHelpers
       include ModelCargoFiltersConcern
 
@@ -466,27 +467,7 @@ module Api
       end
 
       private def will_it_fit?(scope)
-        slug = model_query_params.delete("will_it_fit")&.downcase
-        parent = Model.visible.active
-          .where(slug:)
-          .or(Model.where(rsi_slug: slug))
-          .or(Model.where(legacy_slug: slug))
-          .first
-
-        return scope if parent.blank? || parent.docks.blank?
-
-        # `dock.length || 1` turned a dock nobody measured into a half-metre one,
-        # so a carrier with no measurements answered "nothing fits" instead of
-        # saying it did not know.
-        measured = parent.docks.select(&:measured?)
-
-        return scope if measured.blank?
-
-        query = measured.map do |dock|
-          "(length <= #{dock.length - 0.5} and beam <= #{dock.beam - 0.5} and height <= #{dock.height - 0.5})"
-        end
-
-        scope.where(query.join(" or "))
+        will_it_fit_scope(scope, will_it_fit_carrier(model_query_params.delete("will_it_fit")&.downcase))
       end
 
       private def pledge_price_in

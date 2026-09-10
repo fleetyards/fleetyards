@@ -104,6 +104,49 @@ class Dock < ApplicationRecord
     end
   end
 
+  # What a dock takes and how much room it wants. Both settled by the hangar
+  # filter, which is the rule that survived: it is the one that tells a garage
+  # from a landing pad. A docking port is in neither list -- it is a connection,
+  # not a place a hull is set down.
+  SHIP_DOCK_TYPES = %w[landingpad hangar].freeze
+  VEHICLE_DOCK_TYPES = %w[vehiclepad garage].freeze
+
+  SHIP_CLEARANCE = {length: 2.0, beam: 2.0, height: 1.0}.freeze
+  VEHICLE_CLEARANCE = {length: 1.0, beam: 1.0, height: 0.5}.freeze
+
+  # The largest of a kind is the only one worth asking: docks of a kind nest by
+  # size, so nothing that misses the biggest fits a smaller one.
+  def self.largest_ship_dock(docks)
+    docks.select { |dock| dock.for_ships? && dock.measured? }.max_by(&:length)
+  end
+
+  def self.largest_vehicle_dock(docks)
+    docks.select { |dock| dock.for_vehicles? && dock.measured? }.max_by(&:length)
+  end
+
+  def for_ships?
+    SHIP_DOCK_TYPES.include?(dock_type)
+  end
+
+  def for_vehicles?
+    VEHICLE_DOCK_TYPES.include?(dock_type)
+  end
+
+  def clearance
+    for_vehicles? ? VEHICLE_CLEARANCE : SHIP_CLEARANCE
+  end
+
+  # A ground vehicle belongs in a garage and a ship on a pad; asking the wrong
+  # kind is not a near miss, it is a different question.
+  def fits?(model)
+    return false unless measured?
+    return false if model.ground? != for_vehicles?
+
+    model.length.to_f <= length - clearance[:length] &&
+      model.beam.to_f <= beam - clearance[:beam] &&
+      model.height.to_f <= height - clearance[:height]
+  end
+
   def measured?
     length.present? && beam.present? && height.present?
   end
