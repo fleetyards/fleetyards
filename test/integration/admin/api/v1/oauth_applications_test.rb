@@ -127,6 +127,33 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/oauth-applications/reject-bulk" do
+    put("Reject OAuth Applications in bulk") do
+      operationId "rejectOauthApplicationsBulk"
+      tags "OauthApplications"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::OauthApplicationRejectBulkInput
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::OauthApplicationBulkResult
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
   api_path "/oauth-applications/{id}/approve" do
     parameter name: "id", in: :path, description: "OAuth Application id", schema: {type: :string, format: :uuid}
 
@@ -189,6 +216,66 @@ class Admin::Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
   setup do
     @user = create(:admin_user, resource_access: [:oauth_applications])
   end
+  # REJECT BULK
+  test "PUT /oauth-applications/reject-bulk refuses the named applications" do
+    pending_applications = create_list(:oauth_application, 3, :pending)
+    untouched = create(:oauth_application, :pending)
+    sign_in @user
+
+    body = {ids: pending_applications.map(&:id), rejectionReason: "Bulk refusal"}
+    assert_api_response :put, 200, api_path: "/oauth-applications/reject-bulk", body: body do
+      assert_equal 3, parsed_body["count"]
+    end
+
+    pending_applications.each do |application|
+      assert_predicate application.reload, :rejected?
+      assert_equal "Bulk refusal", application.rejection_reason
+      assert_not application.usable_as_client?
+    end
+
+    assert_predicate untouched.reload, :pending?
+  end
+
+  # The other reading of a body naming neither is `update_all` over the table.
+  test "PUT /oauth-applications/reject-bulk selects nothing when given neither ids nor all" do
+    application = create(:oauth_application, :pending)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: "/oauth-applications/reject-bulk", body: {rejectionReason: "Bulk refusal"} do
+      assert_equal 0, parsed_body["count"]
+    end
+
+    assert_predicate application.reload, :pending?
+  end
+
+  test "PUT /oauth-applications/reject-bulk takes everything the filter matches when asked" do
+    create_list(:oauth_application, 2, :pending)
+    approved = create(:oauth_application)
+    sign_in @user
+
+    body = {all: true, q: {aasmStateEq: "pending"}, rejectionReason: "Bulk refusal"}
+    assert_api_response :put, 200, api_path: "/oauth-applications/reject-bulk", body: body do
+      assert_equal 2, parsed_body["count"]
+    end
+
+    assert_predicate approved.reload, :approved?
+  end
+
+  test "PUT /oauth-applications/reject-bulk without a reason is refused" do
+    application = create(:oauth_application, :pending)
+    sign_in @user
+
+    assert_api_response :put, 400, api_path: "/oauth-applications/reject-bulk", body: {ids: [application.id], rejectionReason: ""}
+
+    assert_predicate application.reload, :pending?
+  end
+
+  test "PUT /oauth-applications/reject-bulk returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :put, 403, api_path: "/oauth-applications/reject-bulk", body: {ids: [], rejectionReason: "x"}
+  end
+
   # APPROVE
   test "PUT /oauth-applications/:id/approve makes the application usable" do
     application = create(:oauth_application, :pending)

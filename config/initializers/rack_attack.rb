@@ -27,6 +27,18 @@ Rack::Attack.throttle("api", limit: limit_proc, period: 1.hour) do |req|
   end
 end
 
+# Registering an OAuth application is a deliberate act nobody performs in bulk,
+# and the blanket API throttle above allows thousands an hour. This does not stop
+# somebody signing up for fresh accounts -- nothing here would -- it stops one
+# account or one address producing a review queue in a single burst.
+Rack::Attack.throttle("oauth-application-registration", limit: 5, period: 1.hour) do |req|
+  if req.post? &&
+      req.path.match?(%r{^/v\d+/oauth-applications/?$}) &&
+      req.host.split(".").first == "api"
+    (req.get_header("action_dispatch.remote_ip") || req.ip).to_s
+  end
+end
+
 Rack::Attack.throttled_response_retry_after_header = true
 
 Rack::Attack.throttled_responder = lambda do |request|

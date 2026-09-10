@@ -113,7 +113,8 @@
         "create": "新增應用程式",
         "regenerateSecret": "重新產生密鑰",
         "approve": "核准",
-        "reject": "拒絕"
+        "reject": "拒絕",
+        "rejectSelected": "拒絕所選"
       },
       "oauthAuthorize": {
         "authorize": "授權",

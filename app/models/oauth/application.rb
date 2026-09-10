@@ -75,6 +75,13 @@ module Oauth
       end
     end
 
+    # Deliberately not what ransack suggests, which includes `secret`. Only the
+    # columns the admin list actually filters on: the list took `q` before this
+    # existed, so any real filter raised.
+    def self.ransackable_attributes(auth_object = nil)
+      %w[aasm_state created_at name owner_id updated_at]
+    end
+
     def self.policy_class
       OauthApplicationPolicy
     end
@@ -97,17 +104,24 @@ module Oauth
     end
 
     # The operator finds out from the notification center rather than by
-    # happening to open the admin page. `dedupe_key` on the record keeps a
-    # re-edited application to one row in the inbox.
+    # happening to open the admin page.
+    #
+    # One row for the whole queue, not one per application: the dedupe key is
+    # per recipient rather than per record, so the existing unread row is
+    # rewritten with the new count. Keying it on the id instead would turn a
+    # registration spree into an inbox nobody can read — and since anyone can
+    # sign up, a per-user cap would not prevent that.
     private def report_for_review
+      waiting = self.class.pending_review.count
+
       AdminNotification.notify!(
         type: :oauth_application_review,
-        title: "OAuth application awaiting review: #{name}",
-        body: owner.is_a?(User) ? "Registered by #{owner.username}" : nil,
+        title: "#{waiting} OAuth #{"application".pluralize(waiting)} awaiting review",
+        body: owner.is_a?(User) ? "Most recent: #{name}, registered by #{owner.username}" : "Most recent: #{name}",
         severity: :info,
-        link: "/oauth-applications/#{id}",
+        link: "/oauth-applications?q[aasm_state_eq]=pending",
         record: self,
-        dedupe_key: "oauth_application_review:#{id}"
+        dedupe_key: "oauth_application_review"
       )
     end
   end

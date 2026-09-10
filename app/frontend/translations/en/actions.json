@@ -113,7 +113,8 @@
         "create": "New Application",
         "regenerateSecret": "Regenerate Secret",
         "approve": "Approve",
-        "reject": "Refuse"
+        "reject": "Refuse",
+        "rejectSelected": "Refuse selected"
       },
       "oauthAuthorize": {
         "authorize": "Authorize",

@@ -11,7 +11,8 @@ module Admin
             type: :object,
             properties: {
               nameCont: {type: :string},
-              ownerIdEq: {type: :string, format: :uuid}
+              ownerIdEq: {type: :string, format: :uuid},
+              aasmStateEq: {type: :string, enum: %w[pending approved rejected]}
             },
             additionalProperties: false,
             example: {}

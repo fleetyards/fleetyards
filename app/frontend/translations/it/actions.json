@@ -113,7 +113,8 @@
         "create": "Nuova applicazione",
         "regenerateSecret": "Rigenera segreto",
         "approve": "Approva",
-        "reject": "Rifiuta"
+        "reject": "Rifiuta",
+        "rejectSelected": "Rifiuta selezionate"
       },
       "oauthAuthorize": {
         "authorize": "Autorizza",

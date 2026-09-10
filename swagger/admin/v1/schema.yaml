@@ -6033,6 +6033,43 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/oauth-applications/reject-bulk":
+    put:
+      summary: Reject OAuth Applications in bulk
+      tags:
+      - OauthApplications
+      operationId: rejectOauthApplicationsBulk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthApplicationRejectBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OauthApplicationBulkResult"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/oauth-applications/{id}":
     parameters:
     - name: id
@@ -15037,6 +15074,15 @@ components:
       - createdAt
       - updatedAt
       title: OauthApplication
+    OauthApplicationBulkResult:
+      type: object
+      properties:
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - count
+      title: OauthApplicationBulkResult
     OauthApplicationInput:
       type: object
       properties:
@@ -15063,9 +15109,36 @@ components:
         ownerIdEq:
           type: string
           format: uuid
+        aasmStateEq:
+          type: string
+          enum:
+          - pending
+          - approved
+          - rejected
       additionalProperties: false
       example: {}
       title: OauthApplicationQuery
+    OauthApplicationRejectBulkInput:
+      type: object
+      properties:
+        rejectionReason:
+          type: string
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        all:
+          type: boolean
+          default: false
+          description: Apply to every application matching `q` instead of `ids`.
+        q:
+          "$ref": "#/components/schemas/OauthApplicationQuery"
+      additionalProperties: false
+      required:
+      - rejectionReason
+      description: Naming neither `ids` nor `all` selects nothing.
+      title: OauthApplicationRejectBulkInput
     OauthApplicationRejectInput:
       type: object
       properties:

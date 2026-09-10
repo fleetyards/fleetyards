@@ -66,10 +66,51 @@ module Admin
           render json: ValidationError.new("oauth_application.reject", errors: @oauth_application.errors), status: :bad_request
         end
 
+        # Clearing a spree has to be one action rather than fifty. `update_all`
+        # skips validations and callbacks, so every column the reject event
+        # would have written is named here -- a state without its reason is the
+        # unexplained refusal this whole feature exists to avoid.
+        def reject_bulk
+          authorize! with: ::Admin::OauthApplicationPolicy
+
+          reason = params[:rejectionReason].presence || params[:rejection_reason].presence
+
+          if reason.blank?
+            render json: ValidationError.new("oauth_application.reject", message: I18n.t("validation_error.oauth_application.reject")), status: :bad_request
+            return
+          end
+
+          @count = bulk_selection.update_all(
+            aasm_state: "rejected",
+            rejected_at: Time.current,
+            approved_at: nil,
+            rejection_reason: reason,
+            reviewed_by_id: current_admin_user.id,
+            updated_at: Time.current
+          )
+
+          render :reject_bulk
+        end
+
         def destroy
           return if @oauth_application.destroy
 
           render json: ValidationError.new("oauth_application.destroy", errors: @oauth_application.errors), status: :bad_request
+        end
+
+        # The reader either ticked rows or asked for everything the current filter
+        # matches, and `all` has to say so out loud. A body naming neither
+        # selects nothing rather than everything.
+        private def bulk_selection
+          return filtered_scope if ActiveModel::Type::Boolean.new.cast(params[:all])
+
+          Oauth::Application.where(id: Array(params[:ids]))
+        end
+
+        # The list the index would return, without paging and without ordering --
+        # PostgreSQL refuses an ORDER BY in an UPDATE.
+        private def filtered_scope
+          Oauth::Application.ransack(oauth_application_query_params.except("sorts")).result.reorder(nil)
         end
 
         private def set_application

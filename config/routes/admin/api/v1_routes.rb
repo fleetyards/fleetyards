@@ -194,6 +194,10 @@ v1_admin_api_routes = lambda do
   end
 
   resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy] do
+    collection do
+      put "reject-bulk", to: "oauth_applications#reject_bulk"
+    end
+
     member do
       put :approve
       put :reject

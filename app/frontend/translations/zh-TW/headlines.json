@@ -129,7 +129,8 @@
           "index": "OAuth 應用程式",
           "new": "新增 OAuth 應用程式",
           "edit": "編輯 OAuth 應用程式",
-          "reject": "拒絕 %{name}"
+          "reject": "拒絕 %{name}",
+          "rejectBulk": "拒絕 %{count} 個應用程式"
         },
         "features": {
           "index": "功能標誌",

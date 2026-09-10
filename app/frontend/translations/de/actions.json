@@ -113,7 +113,8 @@
         "create": "Neue Anwendung",
         "regenerateSecret": "Schlüssel neu generieren",
         "approve": "Freigeben",
-        "reject": "Ablehnen"
+        "reject": "Ablehnen",
+        "rejectSelected": "Auswahl ablehnen"
       },
       "oauthAuthorize": {
         "authorize": "Autorisieren",
