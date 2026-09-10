@@ -13,6 +13,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import type { Vehicle, Model, VehiclePublic } from "@/services/fyApi";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { FleetchartModes } from "@/shared/stores/fleetchart";
@@ -26,12 +27,19 @@ type Props = {
   myShip?: boolean;
   downloadName?: string;
   loading?: boolean;
+  /** Offers a share control in the chart's own controls. The chart covers the
+   *  app header, so a share button teleported there is unreachable while it is
+   *  open. */
+  shareUrl?: string;
+  shareTitle?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   myShip: false,
   downloadName: undefined,
   loading: false,
+  shareUrl: undefined,
+  shareTitle: undefined,
 });
 
 const { t } = useI18n();
@@ -41,6 +49,8 @@ const fleetchartStore = useFleetchartStore();
 const innerItems = ref<(Vehicle | Model | VehiclePublic)[]>([]);
 
 const isOpen = ref(false);
+
+const root = ref<HTMLElement | undefined>();
 
 const isShow = ref(false);
 
@@ -267,6 +277,7 @@ const closeFleetchart = async () => {
 <template>
   <div
     v-if="isShow"
+    ref="root"
     class="fleetchart-app fade"
     :class="{
       in: isOpen,
@@ -314,6 +325,14 @@ const closeFleetchart = async () => {
         >
           <i class="fa-duotone fa-arrows-from-line" />
         </Btn>
+
+        <ShareBtn
+          v-if="shareUrl"
+          :url="shareUrl"
+          :title="shareTitle || ''"
+          :container="root"
+          no-label
+        />
       </div>
 
       <Btn class="fleetchart-app-close" @click="hide" size="lg" variant="bare">
