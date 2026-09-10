@@ -24,6 +24,8 @@ module Versions
 
       return failure(:unknown_field) unless reversible?
 
+      return failure(:position_moves_together) if bulk_managed_field?
+
       before, after = @version.changeset.fetch(@field)
       before = cast(before)
 
@@ -45,6 +47,17 @@ module Versions
       @version.event == "update" &&
         @version.changeset.key?(@field) &&
         record.class.column_names.include?(@field)
+    end
+
+    # A ledger entry's name, category and unit are only ever moved for the whole
+    # stock position at once, which is what keeps a withdrawal from being checked
+    # against a name half the position has already left. Those versions look
+    # revertable -- an update whose changeset names the field -- but putting one
+    # entry back by itself splits the position in two and takes the stock behind
+    # its withdrawals with it. The stock endpoint is the only way to move them.
+    private def bulk_managed_field?
+      record.class.include?(::InventoryLedgerEntry) &&
+        ::InventoryLedgerEntry::POSITION_COLUMNS.include?(@field)
     end
 
     # A changeset is JSON, so a decimal comes back as a string and would never

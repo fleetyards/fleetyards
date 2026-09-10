@@ -187,6 +187,40 @@ class Admin::Api::V1::VersionsTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 400, path_params: {id: creation.id}, body: {field: "name"}
   end
 
+  # Now that a rename of a whole stock position files a version per entry, those
+  # versions carry `name` in their changeset and look revertable one at a time.
+  # Putting a single entry back splits the position in two, and the stock the
+  # withdrawals were checked against goes with it.
+  test "PUT /versions/:id/revert returns 400 for a stock position field" do
+    version = renamed_stock_entry_version
+    sign_in create(:admin_user, resource_access: [:users])
+
+    assert_api_response :put, 400, path_params: {id: version.id}, body: {field: "name"} do
+      assert_equal "Quantanium Ore", version.item.reload.name
+    end
+  end
+
+  test "PUT /versions/:id/revert still reverts a field the position does not share" do
+    entry = renamed_stock_entry_version.item
+    entry.update!(notes: "Second run")
+    sign_in create(:admin_user, resource_access: [:users])
+
+    assert_api_response :put, 204,
+      path_params: {id: entry.versions.last.id}, body: {field: "notes"} do
+      assert_nil entry.reload.notes
+    end
+  end
+
+  def renamed_stock_entry_version
+    inventory = create(:inventory)
+    create(:inventory_item, inventory:, name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+    slug = InventoryStockItem.slug_for(name: "Quantanium", category: "commodity", unit: "scu")
+
+    inventory.update_stock_item(inventory.stock_item(slug), {name: "Quantanium Ore"})
+
+    PaperTrail::Version.where(item_type: "InventoryItem").order(:created_at).last
+  end
+
   test "PUT /versions/:id/revert returns 404 for a missing id" do
     sign_in @user
 

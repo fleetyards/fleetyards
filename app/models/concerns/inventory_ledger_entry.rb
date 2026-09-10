@@ -34,6 +34,11 @@ module InventoryLedgerEntry
 
   ENTRY_TYPES = {deposit: 0, withdrawal: 1}.freeze
 
+  # What makes two entries the same stock position, and so the columns no single
+  # entry may move on its own -- `InventoryStock#update_stock_item` moves all of
+  # them together or none.
+  POSITION_COLUMNS = %w[name category unit].freeze
+
   DEFAULT_SORTING_PARAMS = ["created_at desc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",

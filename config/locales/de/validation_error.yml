@@ -5,6 +5,7 @@ de:
       revert: Feld konnte nicht zurückgesetzt werden.
       unknown_field: Diese Version hat dieses Feld nicht geändert.
       already_reverted: Das Feld hat bereits den Wert, den diese Version ersetzt hat.
+      position_moves_together: Eine Lagerposition wird als Ganzes über das zugehörige Inventar verschoben.
     sc_data_unlisted_model:
       link: Schiff konnte nicht mit dem Katalog verknüpft werden.
       create_model: Schiff konnte nicht aus den Spieldateien angelegt werden.
