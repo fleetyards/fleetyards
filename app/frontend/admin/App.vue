@@ -212,7 +212,7 @@ const setNoScroll = () => {
     <BackgroundImage />
 
     <div class="app-content">
-      <transition name="fade" mode="out-in">
+      <transition name="nav-panel">
         <AdminNavigation v-if="navigationVisible" />
       </transition>
       <div class="main-wrapper">
