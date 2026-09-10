@@ -170,4 +170,27 @@ class ScData::SourceTest < ActiveSupport::TestCase
   test "the environment may be named as a symbol" do
     assert_equal 2, ScData::Source.builds_retained(:ptu)
   end
+  # A cached fragment names the source so two environments cannot share an
+  # entry, and `ActiveSupport::Cache` reads that off the object itself.
+  test "two environments never stamp a cache key the same way" do
+    live = ScData::Source.new(environment: "live", version: "1.0.0")
+    ptu = ScData::Source.new(environment: "ptu", version: "1.0.0")
+
+    assert_not_equal live.cache_key, ptu.cache_key
+  end
+
+  # The version is in the stamp because a load will stop touching the record's
+  # own row once the dual-held columns are gone, and `cache_version` with it.
+  test "a new build of the same environment stamps differently" do
+    before = ScData::Source.new(environment: "live", version: "1.0.0")
+    after = ScData::Source.new(environment: "live", version: "1.1.0")
+
+    assert_not_equal before.cache_key, after.cache_key
+  end
+
+  test "the stamp is what a cache key array expands to" do
+    source = ScData::Source.new(environment: "ptu", version: "1.1.0")
+
+    assert_includes ActiveSupport::Cache.expand_cache_key([source]), source.cache_key
+  end
 end

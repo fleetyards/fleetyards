@@ -171,5 +171,25 @@ module ScData
     def to_s
       "#{version} (#{environment})"
     end
+
+    # What a cached fragment names so two environments cannot share an entry.
+    # `json.cache!` keys on the record, and a record backed by a build says
+    # something different per source -- so every public fragment that renders a
+    # fact has to carry this, or the first source to warm an entry answers for
+    # both.
+    #
+    # The version is in it as well as the environment, because the record's own
+    # `cache_version` is about to stop moving: while the dual-held columns are
+    # still there a load rewrites the row too and `updated_at` covers a new
+    # build by accident. Once those columns are dropped a load writes only the
+    # build row, and an environment-only stamp would go on serving the previous
+    # build's numbers.
+    #
+    # Named `cache_key` so `ActiveSupport::Cache` picks it up from the key array
+    # on its own -- a fragment names the source itself rather than a stringified
+    # detail of it.
+    def cache_key
+      "sc-data/#{environment}/#{version}"
+    end
   end
 end
