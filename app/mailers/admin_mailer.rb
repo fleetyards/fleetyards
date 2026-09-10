@@ -3,6 +3,12 @@
 class AdminMailer < ApplicationMailer
   helper AdminReportHelper
 
+  # Every mail in here goes to an AdminUser, so it comes from the same place the
+  # admin app does and wears the same accent. See themes.scss for why that is a
+  # violet: it was chosen for distance from every colour the app already assigns
+  # a meaning to, and its contrast profile matches the blue it stands in for.
+  self.mail_theme = :admin
+
   OPEN_NOTIFICATIONS_LIMIT = 10
 
   # Sent per admin rather than to the whole super-admin list at once: the digest

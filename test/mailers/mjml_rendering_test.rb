@@ -19,6 +19,10 @@ require "test_helper"
 #   reconfiguring premailer-rails silently makes every mail HTML-only.
 # - premailer drops the backdrop image, in two different ways, and strips the
 #   border-radius off the element MJML puts the panel's frame on.
+# - The button's hover state is the one part of it that cannot be inlined, so it
+#   is the one part premailer could throw away.
+# - The accent is per theme, and a mail resolves it in Ruby because no client
+#   resolves a custom property - so a mail can silently wear the wrong one.
 class MjmlRenderingTest < ActionMailer::TestCase
   MJML_LAYOUT = "mailer"
 
@@ -122,9 +126,91 @@ class MjmlRenderingTest < ActionMailer::TestCase
         "#{preview.name}##{email} has no #{MailerTheme::ENDCAP} anywhere - the panel's " \
         "end-cap is the app's signature and it did not survive compilation."
     end
+
+    # Hover is the only part of the button that cannot be an inline style, so it
+    # is the only part that depends on premailer leaving a rule alone. It does
+    # keep selectors containing a pseudo-class and re-emits them into a style
+    # block, but nothing in the pipeline states that, and a button whose hover
+    # quietly stopped resolving looks exactly like one that never had it.
+    test "#{preview.name}##{email} keeps the button's hover rules unmerged" do
+      html = html_part_for(preview, email)
+      next unless html.include?('class="mail-btn')
+
+      {
+        "the hovered surface" =>
+          /\.mail-btn:hover\s*\{\s*background-color:\s*#{MailerTheme::CONTROL_HOVER}\s*!important/io,
+        "the lifted label" =>
+          /\.mail-btn:hover \.mail-btn__label\s*\{\s*color:\s*#{MailerTheme::LIFTED}\s*!important/io,
+        "the lit end-cap" =>
+          /\.mail-btn--neutral:hover \.mail-btn__cap\s*\{\s*background-color:\s*#{accent_for(preview)}\s*!important/i
+      }.each do |what, pattern|
+        assert_match pattern, html,
+          "#{preview.name}##{email} lost #{what}. premailer is supposed to leave a " \
+          "selector containing :hover out of its inlining pass and re-emit it into a " \
+          "style block - check it still does, and that the rule still carries " \
+          "!important, without which the inline resting value wins."
+      end
+
+      # The pointer area and the click area are the same rectangle only while
+      # the padding is on the anchor. Back on the cell, an 18px strip down each
+      # side lights up and does nothing.
+      assert_match(/<a class="mail-btn__label"[^>]*style="[^"]*padding:\s*12px 18px/, html,
+        "#{preview.name}##{email} moved the button's padding off the anchor, so the " \
+        "hover area is now wider than the link.")
+    end
+
+    # The admin app is a violet place and its mails are sent from it, so they
+    # carry the violet too. Nothing else about them changes - a theme touches
+    # the accent and only the accent - which is exactly what makes the wrong one
+    # hard to notice: the mail still looks right, just like the other app.
+    test "#{preview.name}##{email} wears its mailer's accent and no other" do
+      html = html_part_for(preview, email).downcase
+      accent = accent_for(preview)
+
+      assert_includes html, accent,
+        "#{preview.name}##{email} contains no #{accent} anywhere. " \
+        "#{self.class.mailer_for(preview)}.mail_theme is " \
+        "#{self.class.mailer_for(preview).mail_theme.inspect}, so that is the accent " \
+        "every link and end-cap in it should resolve to."
+
+      [*MailerTheme::ACCENTS.values, MailerTheme::PRIMARY].each do |other|
+        next if other.downcase == accent
+
+        refute_includes html, other.downcase,
+          "#{preview.name}##{email} still contains #{other}, which belongs to a " \
+          "different theme. A call site is reading MailerTheme::PRIMARY directly " \
+          "instead of going through mail_accent."
+      end
+    end
+  end
+
+  # A theme that no mailer selects is dead weight, and an accent asserted only
+  # against mails that never use it proves nothing.
+  test "every declared accent is selected by some mailer" do
+    selected = self.class.mjml_emails.map { |preview, _| self.class.mailer_for(preview).mail_theme }.uniq
+
+    unused = MailerTheme::ACCENTS.keys - selected
+    assert_empty unused,
+      "MailerTheme::ACCENTS declares #{unused.join(", ")}, which no mailer with a preview " \
+      "selects - so nothing above checks that theme renders."
+  end
+
+  # The hover assertions above are guarded on a button being present, so this
+  # keeps them from passing vacuously if the partial is ever renamed.
+  test "at least one preview renders a button" do
+    with_button = self.class.mjml_emails.count do |preview, email|
+      html_part_for(preview, email).include?('class="mail-btn')
+    end
+
+    refute_equal 0, with_button,
+      "No preview renders shared/mailer/_btn, so every hover assertion above is vacuous."
   end
 
   private
+
+  def accent_for(preview)
+    MailerTheme.accent(self.class.mailer_for(preview).mail_theme).downcase
+  end
 
   # premailer generates the text part in its delivery hook, so the multipart
   # message only exists after the hook has run. Calling the hook directly keeps
