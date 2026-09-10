@@ -54,7 +54,7 @@ ARG NODE_MAJOR=24
 RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_MAJOR}.x | bash - && \
     apt-get install --no-install-recommends -y nodejs && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
-RUN corepack enable && corepack prepare pnpm@10.31.0 --activate
+RUN corepack enable && corepack prepare pnpm@10.34.5 --activate
 
 # Install Ruby gems
 COPY Gemfile Gemfile.lock .tool-versions ./
