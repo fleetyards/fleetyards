@@ -25,6 +25,10 @@ type Props = {
   block?: boolean;
   mobileIconOnly?: boolean;
   noLabel?: boolean;
+  /** Where clipboard.js may put its scratch element. Copying from inside a
+   *  fixed overlay reports success and copies nothing unless this names a node
+   *  inside that overlay. */
+  container?: Element;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
   block: false,
   mobileIconOnly: false,
   noLabel: false,
+  container: undefined,
 });
 
 const { t } = useI18n();
@@ -66,7 +71,7 @@ const copyShareUrl = () => {
     });
   }
 
-  copyText(props.url).then(
+  copyText(props.url, props.container).then(
     () => {
       displaySuccess({
         text: t("messages.copyShareUrl.success", {
