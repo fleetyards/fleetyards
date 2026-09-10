@@ -103,6 +103,24 @@ module InventoryLedgerEntry
       @inventory_foreign_key
     end
 
+    # The position an entry belongs to. Optional for now: the previous release
+    # is still inserting entries that know nothing about it while the migration
+    # runs, so the column cannot be `null: false` until its own deploy.
+    def position_association(association_name)
+      belongs_to association_name, optional: true
+
+      if association_name != :position
+        alias_method :position, association_name
+        alias_attribute :position_id, :"#{association_name}_id"
+      end
+
+      @position_foreign_key = :"#{association_name}_id"
+    end
+
+    def position_foreign_key
+      @position_foreign_key
+    end
+
     def units_for_category(category)
       UNITS_BY_CATEGORY.fetch(category.to_s, UNITS.keys.map(&:to_s))
     end

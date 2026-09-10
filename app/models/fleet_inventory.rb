@@ -38,6 +38,7 @@ class FleetInventory < ApplicationRecord
   belongs_to :manager, class_name: "User", foreign_key: :managed_by, optional: true
 
   inventory_items_association :fleet_inventory_items
+  positions_association :fleet_inventory_positions
 
   has_one_attached :image
   validates :image, no_vector_image: true

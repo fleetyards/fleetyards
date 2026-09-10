@@ -25,6 +25,14 @@ module InventoryStock
 
       alias_method :inventory_items, association_name if association_name != :inventory_items
     end
+
+    # The positions of this inventory, under one name whichever table they are
+    # in -- the same trick `inventory_items_association` plays for the entries.
+    def positions_association(association_name)
+      has_many association_name, dependent: :destroy
+
+      alias_method :positions, association_name if association_name != :positions
+    end
   end
 
   def ledger_attributes_for(_user)

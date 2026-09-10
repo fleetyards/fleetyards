@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_10_230000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -595,6 +595,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
     t.datetime "created_at", null: false
     t.integer "entry_type", default: 0, null: false
     t.uuid "fleet_inventory_id", null: false
+    t.uuid "fleet_inventory_position_id"
     t.uuid "item_id"
     t.string "item_type"
     t.uuid "member_id"
@@ -605,7 +606,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
     t.integer "unit", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["fleet_inventory_id"], name: "index_fleet_inventory_items_on_fleet_inventory_id"
+    t.index ["fleet_inventory_position_id"], name: "index_fleet_inventory_items_on_fleet_inventory_position_id"
     t.index ["member_id"], name: "index_fleet_inventory_items_on_member_id"
+  end
+
+  create_table "fleet_inventory_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.uuid "fleet_inventory_id", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.integer "unit", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_inventory_id", "name", "category", "unit"], name: "index_fleet_inventory_positions_on_inventory_and_identity", unique: true
+    t.index ["fleet_inventory_id", "slug"], name: "index_fleet_inventory_positions_on_inventory_and_slug", unique: true
+    t.index ["fleet_inventory_id"], name: "index_fleet_inventory_positions_on_fleet_inventory_id"
   end
 
   create_table "fleet_invite_urls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -861,6 +876,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
     t.datetime "created_at", null: false
     t.integer "entry_type", default: 0, null: false
     t.uuid "inventory_id", null: false
+    t.uuid "inventory_position_id"
     t.uuid "item_id"
     t.string "item_type"
     t.string "name", null: false
@@ -870,6 +886,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
     t.integer "unit", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
+    t.index ["inventory_position_id"], name: "index_inventory_items_on_inventory_position_id"
+  end
+
+  create_table "inventory_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.uuid "inventory_id", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.integer "unit", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_id", "name", "category", "unit"], name: "index_inventory_positions_on_inventory_and_identity", unique: true
+    t.index ["inventory_id", "slug"], name: "index_inventory_positions_on_inventory_and_slug", unique: true
+    t.index ["inventory_id"], name: "index_inventory_positions_on_inventory_id"
   end
 
   create_table "item_price_snapshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1718,8 +1748,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
   add_foreign_key "fleet_inventories", "fleets"
   add_foreign_key "fleet_inventories", "users", column: "managed_by"
   add_foreign_key "fleet_inventory_items", "fleet_inventories"
+  add_foreign_key "fleet_inventory_items", "fleet_inventory_positions", on_delete: :restrict
   add_foreign_key "fleet_inventory_items", "users", column: "added_by"
   add_foreign_key "fleet_inventory_items", "users", column: "member_id"
+  add_foreign_key "fleet_inventory_positions", "fleet_inventories", on_delete: :cascade
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
@@ -1728,6 +1760,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_151520) do
   add_foreign_key "imports", "admin_users"
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"
+  add_foreign_key "inventory_items", "inventory_positions", on_delete: :restrict
+  add_foreign_key "inventory_positions", "inventories", on_delete: :cascade
   add_foreign_key "mission_ship_models", "mission_ships", on_delete: :cascade
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade
   add_foreign_key "mission_ships", "mission_teams"
