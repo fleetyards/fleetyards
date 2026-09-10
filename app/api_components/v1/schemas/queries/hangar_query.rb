@@ -42,7 +42,7 @@ module V1
             boughtViaEq: ::Shared::V1::Schemas::Enums::BoughtViaEnum,
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},
-            willItFit: {type: :string, format: :uuid},
+            willItFit: {type: :string},
             withCargo: {type: :boolean},
             s: {anyOf: [{
               type: :array, items: ::Shared::V1::Schemas::Sorts::VehicleSortEnum

@@ -475,15 +475,18 @@ module Api
 
         return scope if parent.blank? || parent.docks.blank?
 
-        query = []
-        parent.docks.each do |dock|
-          query << "length <= #{(dock.length || 1) - 0.5} and beam <= #{(dock.beam || 1) - 0.5} and height <= #{(dock.height || 1) - 0.5}"
-          query << "or" unless dock == parent.docks.last
+        # `dock.length || 1` turned a dock nobody measured into a half-metre one,
+        # so a carrier with no measurements answered "nothing fits" instead of
+        # saying it did not know.
+        measured = parent.docks.select(&:measured?)
+
+        return scope if measured.blank?
+
+        query = measured.map do |dock|
+          "(length <= #{dock.length - 0.5} and beam <= #{dock.beam - 0.5} and height <= #{dock.height - 0.5})"
         end
 
-        scope = scope.where(query.join(" ")) if query.present?
-
-        scope
+        scope.where(query.join(" or "))
       end
 
       private def pledge_price_in
@@ -524,7 +527,10 @@ module Api
             :s, :sorts, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
             :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :search_cont,
             :with_dock, :with_cargo, :with_cargo_grids, :in_hangar, :in_game_eq,
-            will_it_fit: [], name_in: [], slug_in: [], manufacturer_in: [], classification_in: [],
+            # A slug, not a list -- permitted as an array it was dropped outright,
+            # so this filter never ran even when a request got past validation.
+            :will_it_fit,
+            name_in: [], slug_in: [], manufacturer_in: [], classification_in: [],
             focus_in: [], production_status_in: [], price_in: [], pledge_price_in: [], size_in: [],
             sorts: [], id_not_in: [], id_in: []
           ]

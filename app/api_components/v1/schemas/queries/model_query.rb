@@ -38,7 +38,7 @@ module V1
             productionStatusIn: {type: :array, items: {type: :string}},
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
-            willItFit: {type: :string, format: :uuid},
+            willItFit: {type: :string},
             withCargo: {type: :boolean},
             withCargoGrids: {type: :boolean},
             inHangar: {type: :boolean},
