@@ -2,7 +2,7 @@
 
 json.items do
   json.array! @model_modules do |model_module|
-    json.cache! ["v1", model_module, Manufacturer.artwork_version] do
+    json.cache! ["v1", model_module, ::ScData::Source.current, Manufacturer.artwork_version] do
       json.partial!("api/v1/model_modules/base", model_module:)
     end
     json.slot @module_slots[model_module.id]

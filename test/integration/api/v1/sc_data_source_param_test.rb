@@ -53,11 +53,80 @@ class Api::V1::ScDataSourceParamTest < ActionDispatch::IntegrationTest
       "the next request went back to the default"
   end
 
+  # A cached fragment must not be shared between the two sources. `json.cache!`
+  # keys on the record, and a record backed by a build says something different
+  # per source -- so without the source in the key the first request to warm an
+  # entry answers for both. Both orders, because the bug is whichever source
+  # got there first.
+  test "a cached fragment is not shared between sources" do
+    with_fragment_caching do
+      get "/api/v1/commodities"
+      assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] }
+
+      get "/api/v1/commodities", params: {source: "ptu"}
+      assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] },
+        "the ptu request was served the live build's cached fragment"
+    end
+  end
+
+  test "a cached fragment warmed by ptu does not answer for the default" do
+    with_fragment_caching do
+      get "/api/v1/commodities", params: {source: "ptu"}
+      assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] }
+
+      get "/api/v1/commodities"
+      assert_equal ["Live Name"], response.parsed_body["items"].map { |item| item["name"] },
+        "the default was served the ptu build's cached fragment"
+    end
+  end
+
+  # The model fragment is the one every ships list renders, and its facts come
+  # from the build.
+  test "a cached model fragment is not shared between sources" do
+    model_with_builds
+
+    with_fragment_caching do
+      get "/api/v1/models"
+      assert_equal [100.0], response.parsed_body["items"].map { |item| item.dig("speeds", "scmSpeed") }
+
+      get "/api/v1/models", params: {source: "ptu"}
+      assert_equal [200.0], response.parsed_body["items"].map { |item| item.dig("speeds", "scmSpeed") },
+        "the ptu request was served the live build's cached model"
+    end
+  end
+
+  # The vehicle fragments key on `vehicle.model` rather than on a record of
+  # their own, which is the shape a grep for the catalogues would miss.
+  test "a cached vehicle fragment is not shared between sources" do
+    user = create(:user)
+    vehicle = create(:vehicle, model: model_with_builds, user:)
+
+    sign_in user
+
+    with_fragment_caching do
+      get "/api/v1/vehicles/#{vehicle.id}"
+      assert_equal 100.0, response.parsed_body.dig("model", "speeds", "scmSpeed")
+
+      get "/api/v1/vehicles/#{vehicle.id}", params: {source: "ptu"}
+      assert_equal 200.0, response.parsed_body.dig("model", "speeds", "scmSpeed"),
+        "the ptu request was served the live build's cached vehicle"
+    end
+  end
+
   test "the source reaches a filter, not just a reader" do
     get "/api/v1/commodities", params: {source: "ptu", q: {nameCont: "PTU"}}
     assert_equal ["PTU Name"], response.parsed_body["items"].map { |item| item["name"] }
 
     get "/api/v1/commodities", params: {source: "ptu", q: {nameCont: "Live"}}
     assert_empty response.parsed_body["items"]
+  end
+
+  # The column is deliberately a value neither build carries, so a payload that
+  # fell through to it cannot be mistaken for either side.
+  private def model_with_builds
+    model = create(:model, scm_speed: 1)
+    model.builds.create!(environment: "live", version: "1.0.0", scm_speed: 100)
+    model.builds.create!(environment: "ptu", version: "1.1.0", scm_speed: 200)
+    model
   end
 end
