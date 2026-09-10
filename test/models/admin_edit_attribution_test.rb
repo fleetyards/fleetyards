@@ -13,7 +13,6 @@ class AdminEditAttributionTest < ActiveSupport::TestCase
     Commodity => {name: "Renamed by an admin"},
     Manufacturer => {known_for: "Renamed by an admin"},
     ModelPaint => {production_note: "Noted by an admin"},
-    Vehicle => {serial: "SN-ADMIN-1"},
     User => {rsi_handle: "renamed_by_admin"},
     FundingGoal => {title: "Renamed by an admin"},
     SupporterContribution => {note: "Noted by an admin"}
@@ -69,6 +68,27 @@ class AdminEditAttributionTest < ActiveSupport::TestCase
       PaperTrail::Version.where(item_type: "Component").order(created_at: :desc).first.author_id
   end
 
+  # A ship records what its owner does to it, so it has no author guard either.
+  # The author is what separates an admin's edit from the owner's, not what
+  # decides whether the edit is filed.
+  test "Vehicle records a change with no author, and carries one when given" do
+    vehicle = create(:vehicle)
+
+    assert_difference -> { PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id).count }, 1 do
+      vehicle.update!(serial: "SN-OWNER-1")
+    end
+
+    assert_nil PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
+      .order(created_at: :desc).first.author_id
+
+    vehicle.author_id = @admin.id
+    vehicle.update!(serial: "SN-ADMIN-1")
+
+    assert_equal @admin.id,
+      PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
+        .order(created_at: :desc).first.author_id
+  end
+
   # devise is `reconfirmable`, so an admin retyping a confirmed user's address
   # writes `unconfirmed_email` and leaves `email` where it was. Versioning
   # `email` alone would have recorded this nowhere.
@@ -106,7 +126,9 @@ class AdminEditAttributionTest < ActiveSupport::TestCase
     vehicle.author_id = @admin.id
     vehicle.update!(serial: "SN-ADMIN-2")
 
-    assert_equal 1, PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id).count
+    # The create is recorded too, so the ship starts its history rather than
+    # having its first version be an edit to a state nothing filed.
+    assert_equal 2, PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id).count
 
     vehicle.destroy!
 

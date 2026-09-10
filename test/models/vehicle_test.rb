@@ -214,3 +214,120 @@ class VehicleScheduleFleetVehicleUpdateTest < ActiveSupport::TestCase
     assert_equal 0, Updater::FleetVehicleUpdateJob.jobs.size
   end
 end
+
+# Nothing a user did to their own ship was recorded: the old guard needed an
+# `author_id`, which is an `attr_accessor` only an admin action sets. Recording
+# the owner's edits means the machine writes have to be held out by something
+# else, and these are the paths that would otherwise bury them.
+class VehicleVersioningTest < ActiveSupport::TestCase
+  def versions_for(vehicle)
+    PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
+  end
+
+  test "a rename records a version carrying the change" do
+    vehicle = create(:vehicle)
+
+    assert_difference -> { versions_for(vehicle).count }, 1 do
+      vehicle.update!(name: "Renamed by its owner")
+    end
+
+    assert_equal [nil, "Renamed by its owner"],
+      versions_for(vehicle).order(created_at: :desc).first.changeset["name"]
+  end
+
+  test "a repaint records a version" do
+    vehicle = create(:vehicle)
+    paint = create(:model_paint, model: vehicle.model)
+
+    assert_difference -> { versions_for(vehicle).count }, 1 do
+      vehicle.update!(model_paint_id: paint.id)
+    end
+
+    assert_equal paint.id,
+      versions_for(vehicle).order(created_at: :desc).first.changeset["model_paint_id"].last
+  end
+
+  test "a retrofit records a version" do
+    vehicle = create(:vehicle)
+    other_model = create(:model)
+
+    assert_difference -> { versions_for(vehicle).count }, 1 do
+      vehicle.update!(model_id: other_model.id)
+    end
+  end
+
+  test "adding a ship records its first version" do
+    vehicle = create(:vehicle)
+
+    assert_equal ["create"], versions_for(vehicle).pluck(:event)
+  end
+
+  test "a loaner records nothing of its own" do
+    user = create(:user)
+    loaner_model = create(:model)
+    parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+
+    parent = create(:vehicle, user:, model: parent_model, wanted: false)
+    loaner = Vehicle.find_by!(loaner: true, vehicle_id: parent.id)
+
+    assert_empty versions_for(loaner)
+
+    # The parent save recomputes the loaner's `wanted`, which is in `only:`.
+    assert_no_difference -> { versions_for(loaner).count } do
+      parent.update!(wanted: true)
+    end
+  end
+
+  test "a bundled snub craft records nothing of its own" do
+    user = create(:user)
+    snub_model = create(:model)
+    parent_model = create(:model).tap { |model| model.snub_crafts << snub_model }
+
+    parent = create(:vehicle, user:, model: parent_model, wanted: false)
+    bundled = Vehicle.find_by!(bundled: true, vehicle_id: parent.id)
+
+    assert_empty versions_for(bundled)
+
+    assert_no_difference -> { versions_for(bundled).count } do
+      parent.update!(wanted: true)
+    end
+  end
+
+  test "a write inside a disabled block records nothing" do
+    vehicle = create(:vehicle)
+
+    assert_no_difference -> { versions_for(vehicle).count } do
+      PaperTrail.request(enabled: false) do
+        vehicle.update!(name: "Renamed by a sync")
+      end
+    end
+  end
+
+  test "update_columns records nothing" do
+    vehicle = create(:vehicle)
+
+    assert_no_difference -> { versions_for(vehicle).count } do
+      vehicle.update_columns(wanted: true, updated_at: Time.zone.now)
+    end
+  end
+
+  test "a destroyed ship keeps no versions" do
+    vehicle = create(:vehicle)
+    vehicle.update!(name: "Renamed by its owner")
+
+    vehicle.destroy!
+
+    assert_empty versions_for(vehicle)
+  end
+
+  # Modules and upgrades are destroyed and recreated wholesale on every PATCH
+  # that names them, so versioning them would record churn, not change.
+  test "a module change records nothing" do
+    vehicle = create(:vehicle)
+    model_module = create(:model_module)
+
+    assert_no_difference -> { PaperTrail::Version.where(item_type: "VehicleModule").count } do
+      vehicle.vehicle_modules.create!(model_module:)
+    end
+  end
+end

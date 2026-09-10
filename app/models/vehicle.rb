@@ -46,16 +46,26 @@ class Vehicle < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
-  # Only an admin action sets `author_id`, so a loader write files nothing. The
-  # gate is not tidiness: the UEX sync rewrites all 232 commodities and 1,526 of
-  # 4,830 equipment rows a week, and versioning those unconditionally would bury
-  # the handful of real edits the way Fleet's touch versions already do.
-  has_paper_trail on: %i[update],
+  # A loaner and a bundled snub craft are derived rows: `wanted` and `hidden`
+  # are recomputed from the parent on every parent save, so a version on one
+  # records a calculation rather than a decision.
+  #
+  # That predicate cannot tell a machine write from a user's: the hangar sync
+  # writes `name` and `wanted` on the same non-loaner rows a rename does. The
+  # importers are held out at their entry points instead, with
+  # `PaperTrail.request(enabled: false)`.
+  #
+  # `:destroy` is deliberately absent rather than taken from
+  # `VersionedItem::RECORDED_EVENTS`. `ErasableVersionsConcern` above registers
+  # its `after_destroy` first, and rails runs `after_*` in reverse definition
+  # order, so paper_trail's destroy version would be written and then deleted in
+  # the same transaction.
+  has_paper_trail on: %i[create update],
     only: %i[
       name serial wanted flagship public name_visible sale_notify hidden
-      loaner bought_via
+      loaner bought_via model_id model_paint_id alternative_names
     ],
-    if: ->(record) { record.author_id.present? },
+    if: ->(record) { !record.loaner? && !record.bundled? },
     meta: {
       author_id: :author_id,
       reason: :update_reason,
