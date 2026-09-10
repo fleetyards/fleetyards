@@ -97,6 +97,54 @@
   transition-delay: 0.5s;
 }
 
+// nav-panel
+//
+// The sidebar's own box is `position: fixed`, so the `nav` around it is nothing
+// but a spacer for the main column to flex against. Fading alone held that
+// spacer at full width for the whole transition and then dropped it in a single
+// frame, which slid the page sideways — at login the form is still on screen for
+// that jump. So the spacer collapses along with the panel, and the panel leaves
+// to its own side rather than being slid under. Below the desktop breakpoint the
+// panel is off-canvas and the `nav` reserves no room, so only the fade applies.
+.nav-panel-enter-active,
+.nav-panel-leave-active {
+  transition: opacity $transition-base-speed ease;
+}
+
+.nav-panel-enter-from,
+.nav-panel-leave-to {
+  opacity: 0;
+}
+
+@media (min-width: $desktop-breakpoint) {
+  // The width these override is `.app-navigation` from a scoped component
+  // stylesheet, so it reaches the browser as `.app-navigation[data-v-x]` and
+  // already carries two selectors' worth of specificity. A two-class selector
+  // here only ties it and then loses on source order, which is not ours to
+  // pick — hence the `.app-content` ancestor.
+  .app-content .app-navigation.nav-panel-enter-active,
+  .app-content .app-navigation.nav-panel-leave-active {
+    transition:
+      width $transition-base-speed ease,
+      min-width $transition-base-speed ease,
+      opacity $transition-base-speed ease;
+
+    .app-navigation__wrapper {
+      transition: transform $transition-base-speed ease;
+    }
+  }
+
+  .app-content .app-navigation.nav-panel-enter-from,
+  .app-content .app-navigation.nav-panel-leave-to {
+    width: 0;
+    min-width: 0;
+
+    .app-navigation__wrapper {
+      transform: translateX(-100%);
+    }
+  }
+}
+
 // fade-nav
 .fade-nav-enter-active {
   transition: opacity 0.3s;
