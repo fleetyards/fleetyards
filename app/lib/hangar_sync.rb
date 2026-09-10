@@ -55,9 +55,16 @@ class HangarSync < HangarImporter
 
     user_id = import.user_id
 
-    imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models = sync_vehicles(user_id)
-    imported_components, found_components, missing_components, missing_component_vehicles = sync_components(user_id)
-    imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles = sync_upgrades(user_id)
+    # A sync rewrites `name` and `wanted` on rows a user also edits by hand, so
+    # nothing in here is a change the user made. Held out here rather than at
+    # each `update!` so a write added later is silent by default.
+    vehicles, components, upgrades = PaperTrail.request(enabled: false) do
+      [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
+    end
+
+    imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models = vehicles
+    imported_components, found_components, missing_components, missing_component_vehicles = components
+    imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles = upgrades
 
     output = {
       imported_vehicles:,

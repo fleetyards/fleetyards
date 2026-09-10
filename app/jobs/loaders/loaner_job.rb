@@ -7,13 +7,17 @@ module Loaders
 
       model_ids = ModelLoaner.pluck(:model_id).uniq
 
-      model_ids.each do |model_id|
-        Vehicle.where(model_id:, loaner: false).find_each(&:add_loaners)
+      # `add_loaners` runs over every vehicle of every loaner-bearing model, so
+      # this is the widest machine write there is against the hangar.
+      PaperTrail.request(enabled: false) do
+        model_ids.each do |model_id|
+          Vehicle.where(model_id:, loaner: false).find_each(&:add_loaners)
+        end
+
+        loaner_model_ids = ModelLoaner.pluck(:loaner_model_id).uniq
+
+        Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
       end
-
-      loaner_model_ids = ModelLoaner.pluck(:loaner_model_id).uniq
-
-      Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
 
       actionable = missing_loaners.present? || missing_models.present?
 

@@ -17,4 +17,14 @@ class HangarImporterTest < ActiveSupport::TestCase
     result = ::HangarImporter.new(@import).run
     assert_equal({missing: [], imported: HangarImportFixtures::IMPORTED_SHIPS, success: true}, result)
   end
+
+  # An import runs inline in the request, so the user is the `whodunnit` -- no
+  # actor-based guard excludes it. It builds the hangar rather than editing it.
+  test "records no versions" do
+    assert_no_difference -> { PaperTrail::Version.where(item_type: "Vehicle").count } do
+      ::HangarImporter.new(@import).run
+    end
+
+    assert_predicate Vehicle.where(user_id: @user.id), :any?
+  end
 end

@@ -334,8 +334,12 @@ module Rsi
         model = Model.find_by(rsi_id: paint.rsi_id)
         next if model.blank?
 
-        Vehicle.where(model_id: model.id).find_each do |vehicle|
-          vehicle.update(model_id: paint.model_id, model_paint_id: paint.id)
+        # Repointing a vehicle at the paint it should always have been is a
+        # correction to our own catalogue, not a repaint the owner chose.
+        PaperTrail.request(enabled: false) do
+          Vehicle.where(model_id: model.id).find_each do |vehicle|
+            vehicle.update(model_id: paint.model_id, model_paint_id: paint.id)
+          end
         end
 
         model.destroy
@@ -351,19 +355,22 @@ module Rsi
 
         replacements = item[:replacements].map { |replacement| replacement.merge(model: Model.find_by!(rsi_id: replacement[:rsi_id])) }
 
-        Vehicle.where(model_id: model.id, loaner: false).find_each do |vehicle|
-          next if replacements.first[:model].blank?
+        # A blocked model is replaced under the owner without them asking.
+        PaperTrail.request(enabled: false) do
+          Vehicle.where(model_id: model.id, loaner: false).find_each do |vehicle|
+            next if replacements.first[:model].blank?
 
-          vehicle.update(model_id: replacements.first[:model].id)
-          replacements.each_with_index do |replacement, index|
-            next if index.zero?
+            vehicle.update(model_id: replacements.first[:model].id)
+            replacements.each_with_index do |replacement, index|
+              next if index.zero?
 
-            replacement_model = replacement[:model]
-            next if replacement_model.blank?
+              replacement_model = replacement[:model]
+              next if replacement_model.blank?
 
-            paint = ModelPaint.find_by!(rsi_id: replacement[:paint_rsi_id]) if replacement[:paint_rsi_id].present?
+              paint = ModelPaint.find_by!(rsi_id: replacement[:paint_rsi_id]) if replacement[:paint_rsi_id].present?
 
-            Vehicle.create(model_id: replacement_model.id, user_id: vehicle.user_id, model_paint_id: paint&.id)
+              Vehicle.create(model_id: replacement_model.id, user_id: vehicle.user_id, model_paint_id: paint&.id)
+            end
           end
         end
 

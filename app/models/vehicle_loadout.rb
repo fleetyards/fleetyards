@@ -21,6 +21,19 @@
 #  fk_rails_...  (vehicle_id => vehicles.id)
 #
 class VehicleLoadout < ApplicationRecord
+  # `name` is whatever the owner typed and `url` is their build, and a vehicle's
+  # loadouts are destroyed with the vehicle, which goes with the account.
+  include ErasableVersionsConcern
+
+  # Written only by `Api::V1::VehicleLoadoutsController`, one save per user
+  # action, so every version here is a change somebody chose to make.
+  #
+  # `:touch` is left out for the reason `VersionedItem::RECORDED_EVENTS`
+  # documents -- `touch: true` below makes this that trap in miniature -- and
+  # `:destroy` for the reason `Vehicle` leaves it out: the concern above erases
+  # the row in the same transaction paper_trail writes it.
+  has_paper_trail on: %i[create update]
+
   belongs_to :vehicle, touch: true
 
   before_validation :set_default_name, if: -> { name.blank? }
@@ -30,9 +43,16 @@ class VehicleLoadout < ApplicationRecord
 
   scope :active, -> { where(active: true) }
 
+  # Iterated rather than `update_all` so the loadout that stops being active
+  # files a version too: a history saying only what was switched on would not
+  # say what it replaced. Scoped to the active ones, which the switch itself
+  # keeps to at most one, so this is one write rather than one per sibling.
   def activate!
     transaction do
-      vehicle.vehicle_loadouts.where.not(id: id).update_all(active: false)
+      vehicle.vehicle_loadouts.active.where.not(id: id).find_each do |loadout|
+        loadout.update!(active: false)
+      end
+
       update!(active: true)
     end
   end

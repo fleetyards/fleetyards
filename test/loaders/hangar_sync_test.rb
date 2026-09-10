@@ -42,6 +42,20 @@ class HangarSyncTest < ActiveSupport::TestCase
         assert_equal "Enterprise", @pirate_ship.reload.name
       end
     end
+
+    # The sync renames the corsair and moves the javelin to wanted -- both
+    # columns a user edits by hand, so nothing about the row says which of the
+    # two wrote it. It is held out at the entry point instead.
+    test "records no versions, though it writes columns a user's edit would" do
+      travel_to 1.minute.from_now do
+        assert_no_difference -> { PaperTrail::Version.where(item_type: "Vehicle").count } do
+          ::HangarSync.new(@input).run(@user.id)
+        end
+      end
+
+      assert_equal "Enterprise", @pirate_ship.reload.name
+      assert @jav_ship.reload.wanted
+    end
   end
 
   class WithBundledSnubCraftsTest < HangarSyncTest
