@@ -66,6 +66,31 @@ class VehicleLoadoutVersioningTest < ActiveSupport::TestCase
       "a build the owner named would outlive the account it belonged to"
   end
 
+  test "activating a loadout records the one it replaced too" do
+    first = @vehicle.vehicle_loadouts.create!(url: "https://www.erkul.games/loadout/one")
+    first.activate!
+    second = @vehicle.vehicle_loadouts.create!(url: "https://www.erkul.games/loadout/two")
+
+    second.activate!
+
+    assert_equal [false, true], versions_for(second).order(created_at: :desc).first.changeset["active"]
+    assert_equal [true, false], versions_for(first).order(created_at: :desc).first.changeset["active"],
+      "a history saying only what was switched on would not say what it replaced"
+
+    assert_predicate second.reload, :active?
+    refute_predicate first.reload, :active?
+  end
+
+  test "activating a loadout leaves the already-inactive siblings alone" do
+    @vehicle.vehicle_loadouts.create!(url: "https://www.erkul.games/loadout/one")
+    idle = @vehicle.vehicle_loadouts.create!(url: "https://www.erkul.games/loadout/two")
+    target = @vehicle.vehicle_loadouts.create!(url: "https://www.erkul.games/loadout/three")
+
+    assert_no_difference -> { versions_for(idle).count } do
+      target.activate!
+    end
+  end
+
   test "the vehicle touch it causes records no vehicle version" do
     assert_no_difference -> { PaperTrail::Version.where(item_type: "Vehicle", item_id: @vehicle.id).count } do
       @vehicle.vehicle_loadouts.create!(url: "https://www.erkul.games/loadout/def")
