@@ -121,6 +121,14 @@ Found while implementing, not in the research. `Vehicle has_many :vehicle_loadou
 
 So `VehicleLoadout` includes the concern. That makes `:destroy` dead weight for the same reason as D1, so it takes `on: %i[create update]` and removing a loadout is not recorded — the same trade `Vehicle` already makes for deleting a ship. Consistency with that decision beats keeping one more event, and the alternative — erasing a loadout's versions when the *vehicle* dies but not when the loadout does — needs ids captured before destroy and is more machinery than this issue warrants.
 
+### D11 — `activate!` records both sides of the switch
+
+Raised in review, and it was a real gap rather than a deferred one. `update_all` skips paper_trail, so activating B filed a version for B and nothing for the A it replaced — a history that says what was switched on but not what it displaced.
+
+Fixing it turned out cheaper than the original deferral assumed. The old `update_all` wrote `active: false` to *every* non-self sibling, nearly all of them already false. Scoping to `.active` and iterating writes at most one row, because that is the invariant `activate!` itself maintains — confirmed against production: 273 loadouts, 221 vehicles with an active one, **max 1 active per vehicle, 0 violations**, and only 5 vehicles hold more than one loadout at all.
+
+So the change records strictly more history while doing strictly fewer writes.
+
 ## What changed
 
 ### Phase 1 — Record user edits on `Vehicle`
@@ -133,7 +141,7 @@ So `VehicleLoadout` includes the concern. That makes `:destroy` dead weight for 
 ### Phase 3 — Record loadout changes
 4. `app/models/vehicle_loadout.rb` — `include ErasableVersionsConcern` and `has_paper_trail on: %i[create update]` (D10).
 5. `app/lib/versioned_item.rb` — add `"VehicleLoadout" => [:vehicle]` to `ROOTS`.
-6. Note `activate!`'s `update_all` (`vehicle_loadout.rb:34`) leaves the deactivation of the previous loadout unrecorded — asymmetric, accepted, called out in Not in scope.
+6. `activate!` iterates the active siblings instead of `update_all`, so the loadout that stops being active files a version too (D11).
 7. `./bin/generate-schema`.
 
 ### Phase 4 — Tests
@@ -160,7 +168,7 @@ So `VehicleLoadout` includes the concern. That makes `:destroy` dead weight for 
 | File | Role |
 |------|------|
 | `app/models/vehicle.rb` | The `has_paper_trail` call (`:53-63`), the cascades (`:275`, `:323`, `:412`) |
-| `app/models/vehicle_loadout.rb` | Gains recording; `activate!`'s `update_all` is the gap |
+| `app/models/vehicle_loadout.rb` | Gains recording; `activate!` records both sides of the switch |
 | `app/models/vehicle_module.rb`, `vehicle_upgrade.rb` | Deliberately untouched (D7) |
 | `app/lib/versioned_item.rb` | `ROOTS`, and the `RECORDED_EVENTS` comment that explains the touch trap |
 | `app/lib/hangar_sync.rb` | ~8 `update!` sites writing `name` and `wanted` |
@@ -177,7 +185,6 @@ So `VehicleLoadout` includes the concern. That makes `:destroy` dead weight for 
 
 - **The user-facing history tab.** Per the issue. Worth seeing the recorded shape first.
 - **`VehicleModule` / `VehicleUpgrade` recording** — needs the controller to diff rather than rebuild (D7).
-- **`VehicleLoadout#activate!`'s unrecorded deactivation** — `update_all` at `vehicle_loadout.rb:34` skips paper_trail, so activating B records B but not that A stopped being active. Fixing it means iterating instead of a bulk update.
 - **Attribution on screen.** The admin views resolve the author from `AdminUser` via `author_id` (`_version.jbuilder:13-22`) and never render `whodunnit`, so every user edit shows `author: null`. The data is attributed; the view cannot read it. That is a read-path change and the issue scopes the read path out.
 - **An index for user history by time.** The `created_at` index is partial on `author_id IS NOT NULL` (`schema.rb:1673`); user versions fall outside it. Nothing queries user history by time until the tab exists.
 
@@ -191,6 +198,7 @@ So `VehicleLoadout` includes the concern. That makes `:destroy` dead weight for 
 - **2026-09-10** `VehicleModule`/`VehicleUpgrade` are destroy-and-rebuild on every PATCH — resolved the issue's open decision as "no" for those two.
 - **2026-09-10** Implemented. The two `PaperTrail.request(enabled: false)` wrappers are pinned end to end: a real `HangarSync` over three existing vehicles and a real `HangarImporter` run each file zero versions while still renaming and wishlisting. `Rsi::ModelsLoader` is wrapped around the vehicle writes only, so `model.destroy` keeps filing its `Model` version.
 - **2026-09-10** A loadout's versions would have outlived a deleted account — led to D10.
+- **2026-09-10** Review raised `activate!`'s `update_all`, which the plan had deferred. Measuring it showed the deferral was wrong: scoping to the active siblings records both sides of the switch *and* writes fewer rows. D11, no longer deferred.
 
 ## Progress
 - [x] Phase 1 — Record user edits on `Vehicle`
