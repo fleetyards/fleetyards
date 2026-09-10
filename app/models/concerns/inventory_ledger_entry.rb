@@ -83,6 +83,8 @@ module InventoryLedgerEntry
     }
 
     before_validation :set_name_from_item
+
+    before_save :assign_position
   end
 
   class_methods do
@@ -110,7 +112,9 @@ module InventoryLedgerEntry
       belongs_to association_name, optional: true
 
       if association_name != :position
+        # Both directions: `assign_position` writes it, everything else reads it.
         alias_method :position, association_name
+        alias_method :"position=", :"#{association_name}="
         alias_attribute :position_id, :"#{association_name}_id"
       end
 
@@ -205,6 +209,40 @@ module InventoryLedgerEntry
     return unless item_type.in?(ITEM_TYPES)
 
     errors.add(:item_id, :blank) if item.blank?
+  end
+
+  # Resolved on the entry rather than at each call site, because there are five
+  # of them -- three controllers, the CSV import, and the fleet restore -- plus
+  # the console and the factories, and every one already carries the name,
+  # category and unit that decide which position this is.
+  #
+  # `before_save` rather than `before_validation`: an entry that fails
+  # validation must not leave a position behind.
+  private def assign_position
+    return if inventory.blank?
+    return if position_id.present? && POSITION_COLUMNS.none? { |column| will_save_change_to_attribute?(column) }
+
+    self.position = resolve_position
+  end
+
+  private def resolve_position
+    identity = {name:, category:, unit:}
+    scope = inventory.positions
+
+    scope.find_by(identity) || create_position(scope, identity)
+  end
+
+  # The savepoint is what keeps the caller's transaction usable when a concurrent
+  # deposit of the same position wins the race -- the shape `Inventory.create_for`
+  # already uses for provisioning an inventory.
+  #
+  # Resolving happens before `withdrawal_does_not_exceed_stock` takes its lock on
+  # the inventory, and that order is the same on every path, which is what keeps a
+  # deposit and a withdrawal from deadlocking against each other.
+  private def create_position(scope, identity)
+    self.class.transaction(requires_new: true) { scope.create!(identity) }
+  rescue ActiveRecord::RecordNotUnique
+    scope.find_by!(identity)
   end
 
   private def position_is_moved_as_a_whole

@@ -80,20 +80,16 @@ class InventoryPositionTest < ActiveSupport::TestCase
     assert_equal "quantanium-ore--commodity--scu", position.reload.slug
   end
 
-  test "a unit the category is not measured in is refused" do
-    position = build(:inventory_position, inventory: @inventory, category: :component, unit: :scu)
-
-    assert_predicate position, :invalid?
-    assert_includes position.errors.full_messages.to_s, "must be units for component entries"
-  end
-
   test "a name is required" do
     assert_predicate build(:inventory_position, inventory: @inventory, name: " "), :invalid?
   end
 
+  # The entry's own identity is what decides its position while both still carry
+  # name, category and unit -- an entry cannot be pointed at a position that
+  # disagrees with it. That inverts once the columns are dropped.
   test "a position holding entries is not destroyed out from under them" do
-    position = create(:inventory_position, inventory: @inventory)
-    create(:inventory_item, inventory: @inventory, inventory_position: position)
+    entry = create(:inventory_item, inventory: @inventory, name: "Quantanium", category: :commodity, unit: :scu)
+    position = entry.position
 
     refute position.destroy
     assert_predicate position.reload, :persisted?

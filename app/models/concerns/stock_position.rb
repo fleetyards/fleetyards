@@ -4,6 +4,13 @@
 # position, held in a row of its own rather than derived from the labels on the
 # entries.
 #
+# The unit-fits-category rule is deliberately *not* repeated here. A position
+# has to be able to represent every entry that already exists, and entries
+# predating that rule are grandfathered by it (`unit_fits_category` on the entry
+# only fires when a unit or category is touched). Duplicating the check would
+# give a legitimate backfill a way to fail. `InventoryStockItemChange` still
+# enforces it where a user asks for a move.
+#
 # It carries only the identity. The quantities a position appears to have --
 # `net_quantity`, the quality range, the entry count, the last entry -- are sums
 # over the ledger and stay derived there. Storing them would let them drift from
@@ -20,7 +27,6 @@ module StockPosition
     before_save :update_slugs
 
     validates :name, presence: true
-    validate :unit_fits_category
   end
 
   class_methods do
@@ -64,14 +70,5 @@ module StockPosition
       suffix += 1
       self.slug = "#{base}-#{suffix}"
     end
-  end
-
-  private def unit_fits_category
-    return if category.blank? || unit.blank?
-
-    allowed = ::InventoryLedgerEntry::UNITS_BY_CATEGORY.fetch(category, [])
-    return if allowed.include?(unit)
-
-    errors.add(:unit, :inclusion, message: "must be #{allowed.join(" or ")} for #{category} entries")
   end
 end
