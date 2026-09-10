@@ -55,13 +55,16 @@ So the machine paths are silenced **at their entry points**, with `PaperTrail.re
 ### D3 — `PaperTrail.request(enabled: false)` at four entry points
 
 ```
-HangarSync#run_with_import          app/lib/hangar_sync.rb
-HangarImporter#run                  app/lib/hangar_importer.rb
-Loaders::LoanerJob#perform          app/jobs/loaders/loaner_job.rb
-Rsi::ModelsLoader (cleanup paths)   app/lib/rsi/models_loader.rb:337,354
+HangarSync#run_with_import       the three sync_* calls        app/lib/hangar_sync.rb
+HangarImporter#run               the item loop                 app/lib/hangar_importer.rb
+Loaders::LoanerJob#perform       the add_loaners sweep         app/jobs/loaders/loaner_job.rb
+Rsi::ModelsLoader#cleanup_paints    the vehicle writes only    app/lib/rsi/models_loader.rb
+Rsi::ModelsLoader#cleanup_blocked   the vehicle writes only    app/lib/rsi/models_loader.rb
 ```
 
-Wrapping the entry point rather than each write site means a new `update!` inside `HangarSync` is silent by default — the failure mode is a missing version, not a flood. It also silences the in-request cascades those paths trigger, which a per-site guard would not.
+Wrapping the writing portion rather than each write site means a new `update!` inside `HangarSync` is silent by default — the failure mode is a missing version, not a flood. It also silences the in-request cascades those paths trigger, which a per-site guard would not.
+
+In the models loader the block stops short of `model.destroy`: `Model` is versioned and records `:destroy`, and that version is one somebody should still be able to read.
 
 This is a new mechanism in this codebase: `PaperTrail.request(` appears nowhere today except `whodunnit` assignment (`api/base_controller.rb:145`, `admin/api/base_controller.rb:39`). No local precedent to copy.
 
@@ -100,7 +103,7 @@ This answers the issue's open decision, and the answer is not symmetrical.
 
 Any PATCH that merely *includes* `modelModuleIds` would file a destroy and a create for every module on the ship, changed or not. That records churn, not change. Making it meaningful requires the controller to diff the set instead of rebuilding it — a separate change, and beyond this issue's `size/S`.
 
-All three declare `belongs_to :vehicle, touch: true`, which is the exact Fleet trap `VersionedItem::RECORDED_EVENTS` documents. It is defused only because `RECORDED_EVENTS` omits `:touch` — so `VehicleLoadout` must take `on:` from that constant and never spell the events out.
+All three declare `belongs_to :vehicle, touch: true`, which is the exact Fleet trap `VersionedItem::RECORDED_EVENTS` documents — so whatever `VehicleLoadout` records, `:touch` must not be in it. It ends up spelling `on:` out rather than taking the constant, for the reason in D10; the model comment says why `:touch` is absent so a later edit does not reintroduce it.
 
 ### D8 — `VehicleLoadout` joins `ROOTS`, and the schema is regenerated
 
@@ -141,16 +144,16 @@ So `VehicleLoadout` includes the concern. That makes `:destroy` dead weight for 
 
 ## Intent Verification
 
-- [ ] **A user rename files a version** — `PATCH /api/v1/vehicles/:id` with a new `name` produces one `Vehicle` version whose `changeset` names `name`.
-- [ ] **A repaint and a retrofit file a version** — `model_paint_id` and `model_id` appear in a changeset.
-- [ ] **A hangar sync files nothing** — `HangarSync` over a user with vehicles produces zero `Vehicle` versions.
-- [ ] **A loaner-bearing save files nothing on the loaner** — saving a parent whose model has loaners produces no version on any `loaner: true` row.
-- [ ] **The loaner job files nothing** — `Loaders::LoanerJob` produces zero versions.
-- [ ] **A loadout change files a version** — creating and renaming a `VehicleLoadout` each produce one; deleting one erases its history (D10).
-- [ ] **A module PATCH files nothing** — per D7, `VehicleModule` records nothing at all.
-- [ ] **A destroyed vehicle keeps no versions** — `admin_edit_attribution_test.rb:103-114` still passes.
-- [ ] **The admin history reads a user edit** — `GET` the per-record history for an edited vehicle and see the version. It will show `author: null` — a known read-path limitation, listed under Not in scope, not a recording bug.
-- [ ] **`api-schema-check` is green** after `./bin/generate-schema`.
+- [x] **A user rename files a version** — `PATCH /api/v1/vehicles/:id` with a new `name` produces one `Vehicle` version whose `changeset` names `name`.
+- [x] **A repaint and a retrofit file a version** — `model_paint_id` and `model_id` appear in a changeset.
+- [x] **A hangar sync files nothing** — `HangarSync` over a user with vehicles produces zero `Vehicle` versions.
+- [x] **A loaner-bearing save files nothing on the loaner** — saving a parent whose model has loaners produces no version on any `loaner: true` row.
+- [x] **The loaner job files nothing** — `Loaders::LoanerJob` produces zero versions.
+- [x] **A loadout change files a version** — creating and renaming a `VehicleLoadout` each produce one; deleting one erases its history (D10).
+- [x] **A module PATCH files nothing** — per D7, `VehicleModule` records nothing at all.
+- [x] **A destroyed vehicle keeps no versions** — `admin_edit_attribution_test.rb:103-114` still passes.
+- [~] **The admin history reads a user edit** — verified by reading the controller rather than by a test: `#index` filters only `.where.not(object_changes: nil)`, so an author-less user edit is returned, while `#recent` filters `.where.not(author_id: nil)` and excludes it. It renders `author: null` — a known read-path limitation, listed under Not in scope, not a recording bug.
+- [x] **`api-schema-check` is green** after `./bin/generate-schema`.
 
 ## Key files
 
