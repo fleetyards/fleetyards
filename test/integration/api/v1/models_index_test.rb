@@ -83,6 +83,37 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The picker sends a slug and the controller resolves one, but the schema asked
+  # for a uuid — so every real request was rejected before reaching the action.
+  test "GET /models accepts a slug for willItFit" do
+    carrier = create(:model, slug: "fitting-carrier")
+    create(:dock, :with_dimensions, model: carrier, dock_type: :hangar)
+
+    fits = create(:model, length: 20.0, beam: 10.0, height: 5.0)
+    too_big = create(:model, length: 300.0, beam: 100.0, height: 60.0)
+
+    assert_api_response :get, 200, params: {q: {willItFit: carrier.slug}} do
+      slugs = parsed_body["items"].map { |item| item["slug"] }
+
+      assert_includes slugs, fits.slug
+      assert_not_includes slugs, too_big.slug
+    end
+  end
+
+  # An unmeasured dock used to become half a metre, so a carrier nobody measured
+  # answered "nothing fits" rather than declining to answer.
+  test "GET /models does not empty the list for a carrier with unmeasured docks" do
+    carrier = create(:model, slug: "unmeasured-carrier")
+    create(:dock, model: carrier, dock_type: :hangar)
+    other = create(:model, length: 20.0, beam: 10.0, height: 5.0)
+
+    assert_api_response :get, 200, params: {q: {willItFit: carrier.slug}} do
+      slugs = parsed_body["items"].map { |item| item["slug"] }
+
+      assert_includes slugs, other.slug
+    end
+  end
+
   test "GET /models honours perPage" do
     create_list(:model, 6)
 

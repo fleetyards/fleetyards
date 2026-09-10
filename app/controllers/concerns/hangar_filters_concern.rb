@@ -11,8 +11,12 @@ module HangarFiltersConcern
 
     return scope if parent.blank? || parent.docks.blank?
 
-    vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).order(length: :desc).first
-    ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).order(length: :desc).first
+    # Only measured docks: the metrics below subtract clearance from a missing
+    # length, which made an unmeasured dock exclude everything.
+    vehicle_dock = parent.docks.where(dock_type: %i[vehiclepad garage]).select(&:measured?).max_by(&:length)
+    ship_dock = parent.docks.where(dock_type: %i[landingpad hangar]).select(&:measured?).max_by(&:length)
+
+    return scope if ship_dock.blank? && vehicle_dock.blank?
 
     dock_metrics = extract_dock_metrics(ship_dock, vehicle_dock)
 
@@ -36,22 +40,12 @@ module HangarFiltersConcern
     }
   end
 
+  # Both sides are built from `scope`, because `or` takes a relation of the same
+  # class and refuses a Hash outright -- which is what this used to hand it, so a
+  # carrier holding a dock of each kind answered with a 500 rather than a list.
   private def will_it_fit_ship_or_vehicle_dock?(scope, dock_metrics)
-    scope.where(
-      models: {
-        ground: [false, nil],
-        length: ..dock_metrics[:ship_length],
-        beam: ..dock_metrics[:ship_beam],
-        height: ..dock_metrics[:ship_height]
-      }
-    ).or(
-      models: {
-        ground: true,
-        length: ..dock_metrics[:vehicle_length],
-        beam: ..dock_metrics[:vehicle_beam],
-        height: ..dock_metrics[:vehicle_height]
-      }
-    )
+    will_it_fit_ship_dock?(scope, dock_metrics)
+      .or(will_it_fit_vehicle_dock?(scope, dock_metrics))
   end
 
   private def will_it_fit_ship_dock?(scope, dock_metrics)

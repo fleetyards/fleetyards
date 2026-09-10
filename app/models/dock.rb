@@ -104,6 +104,10 @@ class Dock < ApplicationRecord
     end
   end
 
+  def measured?
+    length.present? && beam.present? && height.present?
+  end
+
   def dock_type_label
     Dock.human_enum_name(:dock_type, dock_type)
   end
