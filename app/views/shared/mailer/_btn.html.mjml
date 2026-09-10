@@ -15,12 +15,25 @@
 
   :primary has no counterpart in BtnTonesEnum, which is neutral | danger |
   warning. It is the cap the app shows when a neutral button is hovered or
-  active. Email cannot hover, so that treatment is unused there and is borrowed
-  here to mark the one action a mail is asking for. Nothing in the app changes.
+  active, borrowed here at rest to mark the one action a mail is asking for.
+  Nothing in the app changes.
+
+  Hover is real, in the clients that have a pointer and keep an embedded
+  stylesheet - Apple Mail, Gmail's web client, Outlook.com, Yahoo. The rules
+  live in the layout's mj-style under .mail-btn, because a pseudo-class cannot
+  be expressed inline; premailer leaves them there rather than inlining them,
+  and they carry !important so they outrank the inline resting style. Every
+  resting style is still inline, so the button a client without hover renders is
+  the button that was here before.
+
+  Padding sits on the <a>, not on its cell, so the pointer area and the click
+  area are the same rectangle. With it on the cell, an 18px strip down each side
+  lit up without being clickable.
 
   Every style is inline. Gmail strips <style> in a forwarded message and the
   frame is not something that may vanish - only the cap's corner radius, which
-  lives in the layout's mj-style, is allowed to degrade.
+  lives in the layout's mj-style, and the hover treatment, which is by
+  definition something a reader can do without.
 
   The width is fixed because a 12% inset needs a width to be 12% of, and
   Outlook's Word engine gives a shrink-to-fit table none. A long locale wraps
@@ -42,11 +55,14 @@
     warning: MailerTheme::WARNING
   }.fetch(tone)
   cap_cell = "font-size:0;line-height:0;height:#{MailerTheme::CAP_HEIGHT_BTN};"
+  # 150ms ease-in-out, the same curve Btn transitions on. A client that has no
+  # hover drops the declaration and loses nothing.
+  ease = "transition:background-color 150ms ease-in-out,border-color 150ms ease-in-out,color 150ms ease-in-out;"
   bar = ->(radius) do
     <<~HTML
       <tr>
         <td width="#{MailerTheme::CAP_INSET}" style="#{cap_cell}">&nbsp;</td>
-        <td width="#{MailerTheme::CAP_WIDTH}" style="#{cap_cell}background-color:#{cap_color};border-radius:#{radius};">&nbsp;</td>
+        <td class="mail-btn__cap" width="#{MailerTheme::CAP_WIDTH}" style="#{cap_cell}#{ease}background-color:#{cap_color};border-radius:#{radius};">&nbsp;</td>
         <td width="#{MailerTheme::CAP_INSET}" style="#{cap_cell}">&nbsp;</td>
       </tr>
     HTML
@@ -58,12 +74,12 @@
     <td style="padding:0;">
       <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;width:<%= width %>px;">
         <tr>
-          <td style="background-color:<%= MailerTheme::CONTROL %>;border:1px solid <%= MailerTheme::EDGE %>;border-radius:<%= MailerTheme::RADIUS_CONTROL %>;padding:0;">
+          <td class="mail-btn mail-btn--<%= tone %>" style="<%= ease %>background-color:<%= MailerTheme::CONTROL %>;border:1px solid <%= MailerTheme::EDGE %>;border-radius:<%= MailerTheme::RADIUS_CONTROL %>;padding:0;">
             <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;">
               <%= bar.call("0 0 #{btn_r} #{btn_r}").html_safe %>
               <tr>
-                <td colspan="3" align="center" style="padding:12px 18px;">
-                  <a href="<%= href %>" style="color:<%= MailerTheme::TEXT %>;font-family:<%= MailerTheme::BODY_FONT %>;font-size:16px;line-height:20px;text-decoration:none;display:block;"><%= label %></a>
+                <td colspan="3" align="center" style="padding:0;">
+                  <a class="mail-btn__label" href="<%= href %>" style="<%= ease %>color:<%= MailerTheme::TEXT %>;font-family:<%= MailerTheme::BODY_FONT %>;font-size:16px;line-height:20px;text-decoration:none;display:block;padding:12px 18px;"><%= label %></a>
                 </td>
               </tr>
               <%= bar.call("#{btn_r} #{btn_r} 0 0").html_safe %>

@@ -102,6 +102,44 @@
       .cap-top p { border-radius: 0 0 <%= MailerTheme::CAP_RADIUS %> <%= MailerTheme::CAP_RADIUS %> !important; }
       .cap-bottom p { border-radius: <%= MailerTheme::CAP_RADIUS %> <%= MailerTheme::CAP_RADIUS %> 0 0 !important; }
 
+      /*
+        Hover, on the button. Btn lights the end-cap and lifts the surface and
+        the label, and leaves the frame alone for every tone but the two that
+        flood - a recoloured border reads as the control changing shape. These
+        rules restate that, and only that.
+
+        They have to live here rather than inline because no style attribute can
+        carry a pseudo-class, and they need !important because the resting value
+        they replace IS an inline style. premailer keeps a selector containing
+        :hover out of its inlining pass and re-emits it into a style block, so
+        the rules survive the delivery hook - but Gmail drops this block in a
+        forwarded message and Outlook's Word engine has no hover at all, which
+        is the same floor the cap radius above accepts.
+      */
+      .mail-btn:hover { background-color: <%= MailerTheme::CONTROL_HOVER %> !important; }
+      .mail-btn:hover .mail-btn__label { color: <%= MailerTheme::LIFTED %> !important; }
+
+      /*
+        Neutral borrows the primary cap while hovered, which is the treatment
+        the :primary tone already wears at rest - so a primary button lifts its
+        surface and its label and keeps the cap it had.
+      */
+      .mail-btn--neutral:hover .mail-btn__cap { background-color: <%= MailerTheme::PRIMARY %> !important; }
+
+      .mail-btn--danger:hover {
+        background-color: <%= MailerTheme::DANGER %> !important;
+        border-color: <%= MailerTheme::DANGER %> !important;
+      }
+      .mail-btn--danger:hover .mail-btn__label { color: <%= MailerTheme::FLOOD_TEXT %> !important; }
+      .mail-btn--danger:hover .mail-btn__cap { background-color: <%= MailerTheme::DANGER_CAP_HOVER %> !important; }
+
+      .mail-btn--warning:hover {
+        background-color: <%= MailerTheme::WARNING %> !important;
+        border-color: <%= MailerTheme::WARNING %> !important;
+      }
+      .mail-btn--warning:hover .mail-btn__label { color: <%= MailerTheme::FLOOD_TEXT %> !important; }
+      .mail-btn--warning:hover .mail-btn__cap { background-color: <%= MailerTheme::WARNING_CAP_HOVER %> !important; }
+
       .mail-panel > table {
         border: 2px solid <%= MailerTheme::EDGE %> !important;
         border-radius: <%= MailerTheme::RADIUS_SURFACE %> !important;

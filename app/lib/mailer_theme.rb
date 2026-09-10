@@ -20,6 +20,7 @@ module MailerTheme
   # --color-control is byte-identical to --color-surface; see the panel-redesign
   # plan's F10 for why that is worth knowing rather than deduplicating.
   CONTROL = "#23272b"         # --color-control, over BACKGROUND
+  CONTROL_HOVER = "#31373d"   # --color-control-hover, over BACKGROUND
 
   # Drawn on the surface.
   EDGE = "#4f555a"            # --color-edge, over SURFACE
@@ -30,6 +31,7 @@ module MailerTheme
 
   # Opaque already.
   TEXT = "#c8c8c8"            # --color-text
+  LIFTED = "#eeeeee"          # --color-lifted
   MUTED = "#7a8288"           # --color-muted
   ENDCAP = "#7a8288"          # --color-endcap
   PRIMARY = "#428bca"         # --color-primary
@@ -38,10 +40,22 @@ module MailerTheme
   SUCCESS = "#5cb85c"         # --color-success
   GOLD = "#d4af37"            # --color-gold
 
+  # The cap a flooded tone wears while hovered. Btn writes it as
+  # rgb(255 255 255 / .65) rather than as a token, because on a red or orange
+  # surface the primary cap the neutral states borrow is unreadable and the cap
+  # has to follow the label to white instead. Resolved here against the flood it
+  # is drawn on, which is the tone's own colour - so these two are the only
+  # values in this file with no --color-* to mirror, and MailerThemeTest checks
+  # them by recomputing the composite instead.
+  DANGER_CAP_HOVER = "#f3b8be"
+  WARNING_CAP_HOVER = "#fdcaa6"
+  FLOOD_TEXT = "#ffffff"
+
   # Which surface each translucent token composites against. Read by the test.
   BASES = {
     "surface" => :background,
     "control" => :background,
+    "control-hover" => :background,
     "edge" => :surface,
     "edge-soft" => :surface,
     "edge-faint" => :surface

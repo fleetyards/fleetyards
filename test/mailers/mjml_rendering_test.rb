@@ -19,6 +19,8 @@ require "test_helper"
 #   reconfiguring premailer-rails silently makes every mail HTML-only.
 # - premailer drops the backdrop image, in two different ways, and strips the
 #   border-radius off the element MJML puts the panel's frame on.
+# - The button's hover state is the one part of it that cannot be inlined, so it
+#   is the one part premailer could throw away.
 class MjmlRenderingTest < ActionMailer::TestCase
   MJML_LAYOUT = "mailer"
 
@@ -122,6 +124,49 @@ class MjmlRenderingTest < ActionMailer::TestCase
         "#{preview.name}##{email} has no #{MailerTheme::ENDCAP} anywhere - the panel's " \
         "end-cap is the app's signature and it did not survive compilation."
     end
+
+    # Hover is the only part of the button that cannot be an inline style, so it
+    # is the only part that depends on premailer leaving a rule alone. It does
+    # keep selectors containing a pseudo-class and re-emits them into a style
+    # block, but nothing in the pipeline states that, and a button whose hover
+    # quietly stopped resolving looks exactly like one that never had it.
+    test "#{preview.name}##{email} keeps the button's hover rules unmerged" do
+      html = html_part_for(preview, email)
+      next unless html.include?('class="mail-btn')
+
+      {
+        "the hovered surface" =>
+          /\.mail-btn:hover\s*\{\s*background-color:\s*#{MailerTheme::CONTROL_HOVER}\s*!important/io,
+        "the lifted label" =>
+          /\.mail-btn:hover \.mail-btn__label\s*\{\s*color:\s*#{MailerTheme::LIFTED}\s*!important/io,
+        "the lit end-cap" =>
+          /\.mail-btn--neutral:hover \.mail-btn__cap\s*\{\s*background-color:\s*#{MailerTheme::PRIMARY}\s*!important/io
+      }.each do |what, pattern|
+        assert_match pattern, html,
+          "#{preview.name}##{email} lost #{what}. premailer is supposed to leave a " \
+          "selector containing :hover out of its inlining pass and re-emit it into a " \
+          "style block - check it still does, and that the rule still carries " \
+          "!important, without which the inline resting value wins."
+      end
+
+      # The pointer area and the click area are the same rectangle only while
+      # the padding is on the anchor. Back on the cell, an 18px strip down each
+      # side lights up and does nothing.
+      assert_match(/<a class="mail-btn__label"[^>]*style="[^"]*padding:\s*12px 18px/, html,
+        "#{preview.name}##{email} moved the button's padding off the anchor, so the " \
+        "hover area is now wider than the link.")
+    end
+  end
+
+  # The hover assertions above are guarded on a button being present, so this
+  # keeps them from passing vacuously if the partial is ever renamed.
+  test "at least one preview renders a button" do
+    with_button = self.class.mjml_emails.count do |preview, email|
+      html_part_for(preview, email).include?('class="mail-btn')
+    end
+
+    refute_equal 0, with_button,
+      "No preview renders shared/mailer/_btn, so every hover assertion above is vacuous."
   end
 
   private
