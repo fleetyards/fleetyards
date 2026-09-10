@@ -51,6 +51,39 @@ module MailerTheme
   WARNING_CAP_HOVER = "#fdcaa6"
   FLOOD_TEXT = "#ffffff"
 
+  # The accent, per theme.
+  #
+  # stylesheets/shared/themes.scss gives the app a theme layer: a theme is a set
+  # of tokens components read through var(), selected by data-theme on <html>,
+  # and the admin layout sets data-theme="admin". A mail has no <html> we
+  # control per recipient and no var() any client would resolve, so the
+  # selection happens in Ruby instead - ApplicationMailer.mail_theme is the
+  # attribute, and the layout interpolates the literal.
+  #
+  # The default theme is absent here for the same reason it is absent from
+  # themes.scss: PRIMARY above is what a mail that names no theme gets, so it
+  # cannot drift out from under one.
+  #
+  # Only the accent is themed. themes.scss also derives three tones from it -
+  # shade, shade-soft, tint - for a rail glow, a hovered toggle border and pill
+  # label text, none of which a mail has. Add one here when a mail grows the
+  # element that needs it, not before.
+  ACCENTS = {
+    admin: "#a855f7" # --color-primary under [data-theme="admin"]
+  }.freeze
+
+  # Raises rather than falling back, because a mistyped theme that quietly
+  # renders the frontend blue is exactly the bug this indirection exists to
+  # make impossible.
+  def self.accent(theme)
+    return PRIMARY if theme.nil?
+
+    ACCENTS.fetch(theme.to_sym) do
+      raise ArgumentError,
+        "unknown mail theme #{theme.inspect}; MailerTheme::ACCENTS has #{ACCENTS.keys.join(", ")}"
+    end
+  end
+
   # Which surface each translucent token composites against. Read by the test.
   BASES = {
     "surface" => :background,
