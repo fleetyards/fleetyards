@@ -29,61 +29,65 @@ class HangarImporter
     missing_models = []
     imported_models = []
 
-    (@import.import_data || []).each do |item|
-      name = item[:name]
-      name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
-      name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
-      name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
+    # An import creates the user's hangar wholesale; none of it is an edit the
+    # user made to a ship that already existed.
+    PaperTrail.request(enabled: false) do
+      (@import.import_data || []).each do |item|
+        name = item[:name]
+        name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
+        name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
+        name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
 
-      normalized_name = normalize(name)
-      slug = item[:slug].downcase if item[:slug].present?
-      slug = item[:paint_slug].downcase if item[:paint_slug].present?
+        normalized_name = normalize(name)
+        slug = item[:slug].downcase if item[:slug].present?
+        slug = item[:paint_slug].downcase if item[:paint_slug].present?
 
-      query = [
-        MODEL_FIND_QUERY.join(" OR "),
-        {
-          name: name.downcase,
-          slug:,
-          normalized_name:,
-          search: "%#{normalized_name}%"
+        query = [
+          MODEL_FIND_QUERY.join(" OR "),
+          {
+            name: name.downcase,
+            slug:,
+            normalized_name:,
+            search: "%#{normalized_name}%"
+          }
+        ]
+
+        params = {
+          notify: false,
+          user_id: @import.user_id,
+          name: item[:ship_name] || item[:custom_name],
+          serial: item[:ship_serial],
+          flagship: item[:flagship] || false,
+          wanted: item[:wanted] || !item[:purchased] || true,
+          bought_via: item[:bought_via] || :pledge_store,
+          public: item[:public] || false,
+          name_visible: item[:name_visible] || false,
+          sale_notify: item[:sale_notify] || false,
+          hangar_group_ids: HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id),
+          model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item["name"]] || [])).pluck(:id),
+          model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
         }
-      ]
 
-      params = {
-        notify: false,
-        user_id: @import.user_id,
-        name: item[:ship_name] || item[:custom_name],
-        serial: item[:ship_serial],
-        flagship: item[:flagship] || false,
-        wanted: item[:wanted] || !item[:purchased] || true,
-        bought_via: item[:bought_via] || :pledge_store,
-        public: item[:public] || false,
-        name_visible: item[:name_visible] || false,
-        sale_notify: item[:sale_notify] || false,
-        hangar_group_ids: HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id),
-        model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item["name"]] || [])).pluck(:id),
-        model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
-      }
+        model_query = [
+          (MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "),
+          query[1]
+        ]
+        model = Model.where(model_query).first
+        if model.present?
+          Vehicle.create(params.merge(model_id: model.id))
+          imported_models << model.name
+          next
+        end
 
-      model_query = [
-        (MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "),
-        query[1]
-      ]
-      model = Model.where(model_query).first
-      if model.present?
-        Vehicle.create(params.merge(model_id: model.id))
-        imported_models << model.name
-        next
+        model_paint = ModelPaint.where(query).first
+        if model_paint.present?
+          Vehicle.create(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
+          imported_models << model_paint.name
+          next
+        end
+
+        missing_models << item[:name]
       end
-
-      model_paint = ModelPaint.where(query).first
-      if model_paint.present?
-        Vehicle.create(params.merge(model_id: model_paint.model_id, model_paint_id: model_paint.id))
-        imported_models << model_paint.name
-        next
-      end
-
-      missing_models << item[:name]
     end
 
     # rubocop:disable Rails/SkipsModelValidations
