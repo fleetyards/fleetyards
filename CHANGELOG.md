@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.15.0](https://github.com/fleetyards/fleetyards/compare/v7.14.0...v7.15.0) (2026-09-10)
+
+
+### Features
+
+* **fleets:** show an error page for a bad invite link ([#4840](https://github.com/fleetyards/fleetyards/issues/4840)) ([a59c5f3](https://github.com/fleetyards/fleetyards/commit/a59c5f3be9571bc36cac81fcb8174a25299bcba1)), closes [#3481](https://github.com/fleetyards/fleetyards/issues/3481)
+* **mailer:** give the mail button the app's hover state ([#4835](https://github.com/fleetyards/fleetyards/issues/4835)) ([d4c8294](https://github.com/fleetyards/fleetyards/commit/d4c8294717f46706703d4679399a36ccb0427b86))
+* **oauth:** open application registration, gated by admin approval ([#4843](https://github.com/fleetyards/fleetyards/issues/4843)) ([a375d06](https://github.com/fleetyards/fleetyards/commit/a375d06e1c19d7840baf8c79136a56a50ffcca75))
+
+
+### Bug Fixes
+
+* **admin:** drop the empty navigation from the login page ([#4830](https://github.com/fleetyards/fleetyards/issues/4830)) ([74ba69a](https://github.com/fleetyards/fleetyards/commit/74ba69a078f1fd4eb99e005659cb828514727b16))
+* **admin:** slide the navigation in and out ([#4834](https://github.com/fleetyards/fleetyards/issues/4834)) ([11d9730](https://github.com/fleetyards/fleetyards/commit/11d9730fb8d01519c7802570e16c63945ac7dc05))
+* **admin:** stop the navigation flashing on the login page ([#4833](https://github.com/fleetyards/fleetyards/issues/4833)) ([655e169](https://github.com/fleetyards/fleetyards/commit/655e169355edbf2013221a00f387f6d45dbb4a9b))
+* **appsignal:** stop reporting the nightly Sidekiq Redis read timeout ([#4828](https://github.com/fleetyards/fleetyards/issues/4828)) ([adac158](https://github.com/fleetyards/fleetyards/commit/adac1584927a035fa37cb99cdb65acdf576b83b6))
+* **hangar:** keep a loaner in step with the ship it belongs to ([#4841](https://github.com/fleetyards/fleetyards/issues/4841)) ([dd0a012](https://github.com/fleetyards/fleetyards/commit/dd0a012b86b0d4d7bc12a50da875bb6ff8125319))
+* **sc_data:** two ways a reader saw the wrong build ([#4832](https://github.com/fleetyards/fleetyards/issues/4832)) ([01d604e](https://github.com/fleetyards/fleetyards/commit/01d604e5e4eddf5ff464464260f007d96de81979))
+
+
+### Chores
+
+* **deps-dev:** bump eslint-plugin-vue from 10.10.0 to 10.11.0 ([#4826](https://github.com/fleetyards/fleetyards/issues/4826)) ([5463bec](https://github.com/fleetyards/fleetyards/commit/5463beca493e5ee179997935779b7c1d68cc1b72))
+* **deps-dev:** bump orval from 8.28.1 to 8.29.0 ([#4825](https://github.com/fleetyards/fleetyards/issues/4825)) ([cd5528b](https://github.com/fleetyards/fleetyards/commit/cd5528bc7c66569c06233f77c260e63c15800767))
+* **deps:** bump bundler and pnpm ([#4838](https://github.com/fleetyards/fleetyards/issues/4838)) ([6319132](https://github.com/fleetyards/fleetyards/commit/6319132d70527b1d0fb562af330035229f2e1272))
+* **redis:** upgrade to 8.2.9 and stop evicting Sidekiq's keyspace ([#4829](https://github.com/fleetyards/fleetyards/issues/4829)) ([cdb0619](https://github.com/fleetyards/fleetyards/commit/cdb06194e0fcc765038bcf8b7e1e02a7f0d41602))
+
 ## [7.14.0](https://github.com/fleetyards/fleetyards/compare/v7.13.0...v7.14.0) (2026-09-09)
 
 
