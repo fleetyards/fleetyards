@@ -643,7 +643,8 @@
           "flight-ready": "Pronto al volo",
           "announced": "Annunciato"
         },
-        "scIdentifier": "SC Identifier"
+        "scIdentifier": "SC Identifier",
+        "carriedBy": "Può essere trasportata da"
       },
       "models": {
         "extraColumns": "Colonne",
@@ -2225,6 +2226,13 @@
           "commodities": "Merci",
           "models": "Navi"
         }
+      },
+      "dockTypes": {
+        "vehiclepad": "Piazzola per veicoli",
+        "garage": "Garage",
+        "landingpad": "Piazzola di atterraggio",
+        "dockingport": "Porta di attracco",
+        "hangar": "Hangar"
       }
     }
   }

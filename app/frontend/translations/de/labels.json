@@ -643,7 +643,8 @@
           "flight-ready": "Flugbereit",
           "announced": "Angekündigt"
         },
-        "scIdentifier": "SC Identifier"
+        "scIdentifier": "SC Identifier",
+        "carriedBy": "Wird getragen von"
       },
       "models": {
         "extraColumns": "Spalten",
@@ -2225,6 +2226,13 @@
           "commodities": "Waren",
           "models": "Schiffe"
         }
+      },
+      "dockTypes": {
+        "vehiclepad": "Fahrzeugstellplatz",
+        "garage": "Garage",
+        "landingpad": "Landeplatz",
+        "dockingport": "Andockstutzen",
+        "hangar": "Hangar"
       }
     }
   }

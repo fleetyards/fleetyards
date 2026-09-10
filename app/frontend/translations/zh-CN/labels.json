@@ -643,7 +643,8 @@
           "flight-ready": "可飞行",
           "announced": "已公布"
         },
-        "scIdentifier": "SC Identifier"
+        "scIdentifier": "SC Identifier",
+        "carriedBy": "可被搭载于"
       },
       "models": {
         "extraColumns": "列",
@@ -2221,6 +2222,13 @@
           "commodities": "商品",
           "models": "舰船"
         }
+      },
+      "dockTypes": {
+        "vehiclepad": "载具停放位",
+        "garage": "车库",
+        "landingpad": "停机坪",
+        "dockingport": "对接口",
+        "hangar": "机库"
       }
     }
   }

@@ -167,6 +167,9 @@
         "pendingReview": "This application has been registered and is waiting to be reviewed. It cannot request access until it is approved.",
         "rejected": "This application was refused and cannot request access. Correcting what the reason names puts it back in the queue.",
         "returnedToReview": "Changing the redirect URI or the scopes returns an approved application to review."
+      },
+      "model": {
+        "carriedByHint": "Based on the measured berths of each ship, with clearance allowed around the hull."
       }
     }
   }

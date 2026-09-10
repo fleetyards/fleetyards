@@ -12,9 +12,25 @@ module V1
               type: :array,
               items: ::Shared::V1::Schemas::DockCount
             },
-            links: Shared::V1::Schemas::ModelExtendedLinks
+            links: Shared::V1::Schemas::ModelExtendedLinks,
+            # The ships this one can be carried by. Absent rather than empty when
+            # the model has no dimensions of its own -- there is a difference
+            # between "nothing takes it" and "nobody measured it".
+            carriedBy: {
+              type: :array,
+              items: {
+                type: :object,
+                properties: {
+                  slug: {type: :string},
+                  name: {type: :string},
+                  dockType: {type: :string}
+                },
+                additionalProperties: false,
+                required: %w[slug name dockType]
+              }
+            }
           },
-          required: %w[dockCounts links]
+          required: %w[dockCounts links carriedBy]
         })
       end
     end

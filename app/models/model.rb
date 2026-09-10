@@ -747,6 +747,28 @@ class Model < ApplicationRecord
     item_prices.select(&:rental?).sort_by(&:price).uniq(&:location)
   end
 
+  # The ships this one can be carried by. Twenty-odd models hold every dock that
+  # belongs to a ship, so this walks a handful of rows rather than the catalogue.
+  #
+  # A ship without dimensions of its own is not compared at all: zeroes fit
+  # everywhere, and the answer would be confident and wrong.
+  # Each carrier paired with the dock that takes this ship, so the reader is told
+  # whether it is a hangar or a garage rather than only that it fits somewhere.
+  def carried_by_with_docks
+    return [] if length.to_f <= 0 || beam.to_f <= 0 || height.to_f <= 0
+
+    Model.visible.active.with_dock.where.not(id:)
+      .filter_map do |carrier|
+        dock = carrier.docks.find { |candidate| candidate.fits?(self) }
+        {carrier:, dock:} if dock
+      end
+      .sort_by { |entry| entry[:carrier].name }
+  end
+
+  def carried_by
+    carried_by_with_docks.map { |entry| entry[:carrier] }
+  end
+
   def dock_counts
     docks.to_a.group_by(&:ship_size).map do |size, docks_by_size|
       docks_by_size.group_by(&:dock_type).map do |dock_type, docks_by_type|
