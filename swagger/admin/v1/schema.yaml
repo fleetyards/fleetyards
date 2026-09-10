@@ -16384,6 +16384,7 @@ components:
       - Commodity
       - Manufacturer
       - Vehicle
+      - VehicleLoadout
       - User
       - FundingGoal
       - SupporterContribution
@@ -16403,6 +16404,7 @@ components:
       - COMMODITY
       - MANUFACTURER
       - VEHICLE
+      - VEHICLE_LOADOUT
       - USER
       - FUNDING_GOAL
       - SUPPORTER_CONTRIBUTION

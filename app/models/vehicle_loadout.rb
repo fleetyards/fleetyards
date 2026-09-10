@@ -21,6 +21,19 @@
 #  fk_rails_...  (vehicle_id => vehicles.id)
 #
 class VehicleLoadout < ApplicationRecord
+  # `name` is whatever the owner typed and `url` is their build, and a vehicle's
+  # loadouts are destroyed with the vehicle, which goes with the account.
+  include ErasableVersionsConcern
+
+  # Written only by `Api::V1::VehicleLoadoutsController`, one save per user
+  # action, so every version here is a change somebody chose to make.
+  #
+  # `:touch` is left out for the reason `VersionedItem::RECORDED_EVENTS`
+  # documents -- `touch: true` below makes this that trap in miniature -- and
+  # `:destroy` for the reason `Vehicle` leaves it out: the concern above erases
+  # the row in the same transaction paper_trail writes it.
+  has_paper_trail on: %i[create update]
+
   belongs_to :vehicle, touch: true
 
   before_validation :set_default_name, if: -> { name.blank? }

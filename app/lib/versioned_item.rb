@@ -7,11 +7,12 @@
 # -- and revert -- a row in any table paper_trail ever touched, so the list is
 # explicit rather than derived from the class name it was handed.
 #
-# Six of the ten have no admin page and no policy of their own. They are
-# authorised through the record that does: a fleet's roles, memberships and
-# inventories through the fleet, an inventory through whoever holds it. That
-# holder is polymorphic, which is why the policy is looked up from the record
-# the walk lands on rather than from the item type it started at.
+# Seven have no admin page and no policy of their own. They are authorised
+# through the record that does: a fleet's roles, memberships and inventories
+# through the fleet, an inventory through whoever holds it, a loadout through
+# the ship it belongs to. That holder is polymorphic, which is why the policy is
+# looked up from the record the walk lands on rather than from the item type it
+# started at.
 class VersionedItem
   # paper_trail 17 defaults `on` to %i[create update destroy touch], and a touch
   # can never record `object_changes` -- rails' `touch` skips dirty-tracking, so
@@ -39,6 +40,7 @@ class VersionedItem
     "Commodity" => [],
     "Manufacturer" => [],
     "Vehicle" => [],
+    "VehicleLoadout" => [:vehicle],
     "User" => [],
     "FundingGoal" => [],
     "SupporterContribution" => []
