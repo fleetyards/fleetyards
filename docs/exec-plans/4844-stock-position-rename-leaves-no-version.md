@@ -54,13 +54,24 @@ The trade is that `Events::Update` is paper_trail's `@api private`. It is contai
 
 Attribution comes for free: both API base controllers already set `PaperTrail.request.whodunnit` (`app/controllers/api/base_controller.rb:144`, `app/controllers/admin/api/base_controller.rb:38`). The inventory models declare no paper_trail `meta`, so `author_id` stays nil by design — `whodunnit` is the actor column for these tables. The version's `created_at` is set to the row's new `updated_at`, the way paper_trail lines a version up with the save that produced it.
 
-### D3 — Block a single-entry revert of the position identity
+### D3 — Refuse a single-entry revert of a *bulk* position move, and only that
 
-`Versions::FieldReverter` (`app/services/versions/field_reverter.rb:44`) accepts any `event == "update"` version with the field in its changeset and calls `record.update(...)`. Before this fix, `name`/`category`/`unit` never appeared in an `inventory_items` changeset, so they were never revertable. After it, they do — and reverting *one* entry of a position would split it in two, breaking the exact invariant the bulk update exists to protect.
+`Versions::FieldReverter` (`app/services/versions/field_reverter.rb:44`) accepts any `event == "update"` version with the field in its changeset and calls `record.update(...)`. Reverting one entry of a moved position splits it in two and strands the stock behind its withdrawals. Measured, on a 100 SCU deposit and a 30 SCU withdrawal:
 
-The fix therefore has to close that door as part of the same change, not after it. The narrow guard is to refuse these three fields on the two inventory item types in the reverter, pointing the admin at the stock endpoint instead. This is a consequence of the fix, so it belongs in the fix.
+```
+revert `name` on the deposit's version only
+  "Quantanium"      → net  -30.0
+  "Quantanium Ore"  → net  100.0
+current_stock (HAVING net > 0) → only "Quantanium Ore"
+```
 
-The columns are named once, as `InventoryLedgerEntry::POSITION_COLUMNS` — they are already the definition of a stock position, so the reverter asks the concern rather than carrying its own list. The refusal is the existing `ValidationError` shape with a new code, `position_moves_together`, so the response body does not change.
+The first pass at this guard was wrong, and the way it was wrong is worth recording. It refused `name`, `category` and `unit` for **anything** including `InventoryLedgerEntry`, on the belief that this fix was what first put those columns into an inventory-item changeset. It was not: `HangarInventoryItemPolicy` and `FleetInventoryItemPolicy` both permit `:name, :notes, :category, :unit` on a *persisted* entry (`hangar_inventory_item_policy.rb:16`), so a single-entry `PATCH` has always been able to rename one entry out of a position, files a version carrying `name`, and produces exactly the -30 split above with no involvement from this change. The broad guard therefore closed nothing the fix opened, and took away something that worked: an admin could no longer undo a user's single-entry typo correction, while the user could still make it. The admin path was stricter than the user path.
+
+What actually distinguishes the dangerous case is not the field, it is that the version was **written as part of a group**. So `BulkUpdateRecorder` stamps `reason` — a free-form string column the loaders already use for `rsi_loader`, `sc_data_loader` and `custom` — with `InventoryStock::POSITION_MOVE_REASON`, and the reverter refuses only a position column on a version carrying that reason. Single-entry corrections stay revertable.
+
+Worth knowing: the model already defends the half of this it can. Renaming a lone *withdrawal* out of a position fails on `withdrawal_does_not_exceed_stock` with `exceeds current stock (0)`. Only a deposit can strand things, which is why the guard is still needed rather than being left to validation.
+
+The remaining hole is the user-facing endpoint, which can still produce the split directly. That is pre-existing and larger than this issue — see "Not in scope".
 
 ### D4 — No migration, no schema change
 
@@ -78,9 +89,10 @@ The `versions` table already has every column used. The response body is unchang
 
 ### Phase 2 — Guard the revert path
 
-1. `InventoryLedgerEntry::POSITION_COLUMNS` names the three columns that define a stock position.
-2. `Versions::FieldReverter` refuses those columns for anything including `InventoryLedgerEntry`, failing with `position_moves_together` — the same 400 `ValidationError` shape the other two refusals use.
-3. The message is added to `en` and `de` only, matching the two locales that carry the other `validation_error.version.*` keys — this is an admin-only surface.
+1. `InventoryLedgerEntry::POSITION_COLUMNS` names the three columns that define a stock position; `InventoryStock::POSITION_MOVE_REASON` names what a whole-position move stamps on the versions it files.
+2. `BulkUpdateRecorder` takes a `reason:` and writes it to the version rows.
+3. `Versions::FieldReverter` refuses a position column on a version carrying that reason, failing with `position_moves_together` — the same 400 `ValidationError` shape the other two refusals use. A `name` a single entry changed on its own still reverts.
+4. The message is added to `en` and `de` only, matching the two locales that carry the other `validation_error.version.*` keys — this is an admin-only surface.
 
 ### Phase 3 — Tests
 
@@ -99,7 +111,7 @@ The `versions` table already has every column used. The response body is unchang
 - [x] **The actor is recorded** — each version's `whodunnit` is the id of the user who called the endpoint.
 - [x] **Atomicity survives** — a failure while recording leaves the entries unrenamed; the position is never half-moved, and never moved without a record.
 - [x] **Rejections stay silent** — an invalid change still returns 400 and files no version.
-- [x] **A position cannot be split by a revert** — reverting `name` on a single inventory item version is refused.
+- [x] **A position cannot be split by a revert** — reverting `name` on one version of a whole-position move is refused, while a single-entry correction still reverts.
 - [x] **Nothing else regressed** — `destroy_stock_item` versions as before, `InventoryStockItem` still has no paper_trail, and `bin/generate-schema` produces no diff.
 
 ## Key files
@@ -126,10 +138,12 @@ The `versions` table already has every column used. The response body is unchang
 - **Versioning `touch`** — deliberately excluded by `VersionedItem::RECORDED_EVENTS`; `Maintenance::DropChangelessVersionsTask` exists to clean up exactly these.
 - **An actor column on `inventory_items`** — unnecessary; the inventory has a single holder, and `whodunnit` covers the correction case.
 - **Backfilling versions for past renames** — no record exists to reconstruct them from.
+- **The user endpoint that can split a position** — the item policies permit `name`, `category` and `unit` on a persisted entry, so a single-entry `PATCH` can rename one entry out of a position and leave it at a negative net that `current_stock` hides. Pre-existing, reachable without any of this change, and the question there is whether that correction should be allowed at all — a different decision from this one, and its own issue.
 
 ## Discovery Log
 
-- **2026-09-10** Built. All three phases landed; `bin/generate-schema` confirmed a no-op, so no swagger or generated-client changes. Tests: `test/models/inventory_test.rb` (21), the three stock update integration files (32), `test/integration/admin/api/v1/versions_test.rb` (17), and the related model/service files (82) all green. One thing the plan got wrong: hand-assembling the version rows was unnecessary and worse — paper_trail's own update event produces them correctly if the records arrive assigned but unsaved, and that inherits its serialization. See the table in D2 for what each mechanism actually writes.
+- **2026-09-10** Corrected the D3 guard after finding the premise wrong: the item policies already permit `name` on a persisted entry, so single-entry renames — and reverts of them — long predate this change. Narrowed the refusal to versions stamped with the position-move reason. Recorded the pre-existing endpoint hole as out of scope.
+- **2026-09-10** Built. All three phases landed; `bin/generate-schema` confirmed a no-op, so no swagger or generated-client changes. Tests: `test/models/inventory_test.rb` (22), the three stock update integration files (32), `test/integration/admin/api/v1/versions_test.rb` (18), and the related model/service files (82) all green. One thing the plan got wrong: hand-assembling the version rows was unnecessary and worse — paper_trail's own update event produces them correctly if the records arrive assigned but unsaved, and that inherits its serialization. See the table in D2 for what each mechanism actually writes.
 - **2026-09-10** Initial research and plan creation. Confirmed `update_all` is the only untraced write on this path (`destroy_stock_item` uses `destroy_all` and versions correctly), that no precedent exists in the repo for hand-writing versions after a bulk update, and that direction (b) is blocked by two validations rather than one. Found the `FieldReverter` consequence, which the issue does not mention and which the fix has to close.
 
 ## Progress
