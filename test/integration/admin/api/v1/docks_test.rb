@@ -160,6 +160,19 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A class name that is not a berth would reach `belongs_to :parent` and be
+  # constantized there, so an unknown one raises rather than answering. The
+  # schema enum turns that into a 400 before the model is asked.
+  test "POST /docks returns 400 for a parent that is not a berth" do
+    sign_in @user
+
+    body = {
+      name: "x", dockType: "landingpad", shipSize: "medium",
+      parentId: SecureRandom.uuid, parentType: "User"
+    }
+    assert_api_response :post, 400, body: body
+  end
+
   test "POST /docks returns 400 for missing required fields" do
     sign_in @user
 

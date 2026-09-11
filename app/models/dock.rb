@@ -25,7 +25,15 @@
 #  index_docks_on_parent_type_and_parent_id  (parent_type,parent_id)
 #
 class Dock < ApplicationRecord
+  # A hull or a module, and nothing else. `parent_type` is a plain string
+  # column, so without this the admin API would take any class name at all and
+  # a dock could end up hanging off a User -- a new way to grow the orphans
+  # #4864 had to delete.
+  PARENT_TYPES = %w[Model ModelModule].freeze
+
   belongs_to :parent, polymorphic: true, touch: true
+
+  validates :parent_type, inclusion: {in: PARENT_TYPES}
 
   enum :dock_type,
     {vehiclepad: 0, garage: 1, landingpad: 2, dockingport: 3, hangar: 4}

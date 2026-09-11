@@ -20,7 +20,7 @@ module Admin
               minShipSize: {type: [:integer, :null]},
               maxShipSize: {type: [:integer, :null]},
               parentId: {type: :string, format: :uuid},
-              parentType: {type: :string}
+              parentType: {type: :string, enum: ::Dock::PARENT_TYPES}
             },
             additionalProperties: false
           })

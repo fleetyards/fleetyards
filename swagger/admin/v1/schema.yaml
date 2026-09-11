@@ -10559,6 +10559,9 @@ components:
           format: uuid
         parentType:
           type: string
+          enum:
+          - Model
+          - ModelModule
       additionalProperties: false
       title: DockInput
     DockQuery:
