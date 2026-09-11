@@ -13,6 +13,7 @@ export type AsyncStatus = {
 };
 
 export enum ErrorTypesEnum {
+  OFFLINE = "OFFLINE",
   NOT_FOUND = "NOT_FOUND",
   FORBIDDEN = "FORBIDDEN",
   ERROR = "ERROR",

@@ -10,6 +10,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
+import Offline from "@/shared/components/Offline/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { usePaginationStore } from "@/shared/stores/pagination";
 import { provideListGeometry } from "@/shared/composables/useListGeometry";
@@ -186,12 +187,14 @@ const error = computed(() => {
   return props.asyncStatus.isError.value;
 });
 
+const errorType = computed(() => errorTypeFrom(props.asyncStatus.error?.value));
+
 // A list behind a flag that is not on yet, or a record belonging to somebody
 // else, comes back 403 — which is an answer, not an outage.
-const forbidden = computed(
-  () =>
-    errorTypeFrom(props.asyncStatus.error?.value) === ErrorTypesEnum.FORBIDDEN,
-);
+const forbidden = computed(() => errorType.value === ErrorTypesEnum.FORBIDDEN);
+
+// A request that never reached the server is not an outage either.
+const offline = computed(() => errorType.value === ErrorTypesEnum.OFFLINE);
 
 const emptyVisible = computed(() => {
   return !!(
@@ -331,6 +334,7 @@ const toggleFilter = () => {
           <slot v-if="error" name="error">
             <transition name="fade">
               <Forbidden v-if="forbidden" />
+              <Offline v-else-if="offline" :retry="asyncStatus.refetch" />
               <ServerError v-else />
             </transition>
           </slot>

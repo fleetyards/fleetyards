@@ -185,6 +185,7 @@
       "inviteInvalid": "Invalid Invite Link",
       "accessDenied": "Access Denied",
       "serverError": "Server Error",
+      "offline": "Connection Lost",
       "comments": "Comments",
       "login": "Login",
       "hangar": {

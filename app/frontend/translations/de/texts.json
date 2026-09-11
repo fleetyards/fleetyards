@@ -24,6 +24,7 @@
       "inviteInvalid": "Dieser Einladungslink ist nicht gültig. Möglicherweise wurde er falsch übertragen, er ist abgelaufen oder er hat sein Nutzungslimit erreicht. Bitte lass dir von der Person, die dich eingeladen hat, einen neuen Link geben.",
       "accessDenied": "Sie sind nicht berechtigt, diese Seite anzuzeigen.",
       "serverError": "Der Server hat derzeit technische Probleme. Bitte versuchen Sie es später erneut.",
+      "offline": "Die Anfrage hat den Server nicht erreicht. Dein Gerät scheint offline zu sein oder der Server war nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

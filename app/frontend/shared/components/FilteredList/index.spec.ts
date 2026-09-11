@@ -83,6 +83,20 @@ const mountOnRoute = async (
   });
 };
 
+// A request that never got an answer: no response, which is what axios reports
+// for a device that is offline or a host it could not reach.
+function unanswered() {
+  return {
+    fetchStatus: ref("idle"),
+    isError: ref(true),
+    isPending: ref(false),
+    isLoading: ref(false),
+    isFetching: ref(false),
+    isRefetching: ref(false),
+    error: ref({ isAxiosError: true, code: "ERR_NETWORK" }),
+  } as unknown as AsyncStatus;
+}
+
 const mount = (status: number) =>
   mountWithDefaults<typeof ListComponent>(ListComponent, {
     props: { name: "test-list", records: [], asyncStatus: failedWith(status) },
@@ -113,6 +127,18 @@ describe("FilteredList", () => {
 
     expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(false);
+  });
+
+  it("blames the connection, not the server, when nothing answered", async () => {
+    const wrapper = await mountWithDefaults<typeof ListComponent>(
+      ListComponent,
+      {
+        props: { name: "test-list", records: [], asyncStatus: unanswered() },
+      },
+    );
+
+    expect(wrapper.findComponent({ name: "Offline" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(false);
   });
 
   // A flex line breaks on a child's unwrapped width, so the paginator only

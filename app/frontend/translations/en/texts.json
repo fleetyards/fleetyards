@@ -24,6 +24,7 @@
       "inviteInvalid": "This invite link is not valid. It may have been mistyped, it may have expired, or it may have already reached its limit of uses. Ask whoever invited you for a new link.",
       "accessDenied": "You are not authorized to view this page.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
+      "offline": "The request never reached the server. Your device appears to be offline, or the server could not be reached. Check your connection and try again.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

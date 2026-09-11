@@ -24,6 +24,7 @@
       "inviteInvalid": "此邀请链接无效。可能是输入有误、已过期，或已达到使用次数上限。请向邀请你的人索取新的链接。",
       "accessDenied": "您无权查看此页面。",
       "serverError": "服务器当前遇到技术问题。请稍后再试。",
+      "offline": "请求未能到达服务器。你的设备似乎已离线，或者无法连接到服务器。请检查网络连接后重试。",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."
