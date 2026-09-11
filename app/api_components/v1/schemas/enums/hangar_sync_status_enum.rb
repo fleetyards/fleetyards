@@ -6,7 +6,9 @@ module V1
       class HangarSyncStatusEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = %w[created started finished failed].freeze
+        # Read off the model so a state added to `Import` cannot drift from
+        # what the sync reports.
+        VALUES = ::Import.aasm.states.map { |state| state.name.to_s }.freeze
 
         schema({
           type: :string,

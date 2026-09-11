@@ -32,5 +32,6 @@ end
 json.started_at import.started_at
 json.finished_at import.finished_at
 json.failed_at import.failed_at
+json.cancelled_at import.cancelled_at
 
 json.partial! "api/shared/dates", record: import

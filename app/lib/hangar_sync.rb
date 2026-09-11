@@ -51,6 +51,9 @@ class HangarSync < HangarImporter
   end
 
   def run_with_import(import)
+    # Cancelled while it was still queued.
+    return if import.cancelled?
+
     @import = import
     import.start!
 
@@ -83,6 +86,17 @@ class HangarSync < HangarImporter
     }
 
     import.update!(output:)
+
+    # Stopped at a checkpoint, or cancelled inside the window between the
+    # transition and the last one. Either way the state has already moved and
+    # `finish` has no transition out of `cancelled`.
+    if import.reload.cancelled?
+      camel_case_output = output.transform_keys { |key| key.to_s.camelize(:lower) }
+      HangarSyncChannel.broadcast_to(import.user, {status: "cancelled", result: camel_case_output})
+
+      return output
+    end
+
     import.finish!
 
     camel_case_output = output.transform_keys { |key| key.to_s.camelize(:lower) }
@@ -98,7 +112,9 @@ class HangarSync < HangarImporter
 
     output
   rescue => e
-    import&.fail!
+    # `fail` has no transition out of `cancelled`, and raising over the original
+    # exception would hide what actually went wrong.
+    import.fail! if import&.may_fail?
     import&.update!(info: e.message)
 
     if import&.user
@@ -157,7 +173,9 @@ class HangarSync < HangarImporter
     missing_models = []
     vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, bundled: false, hidden: false, bought_via: :pledge_store).order(model_paint_id: :desc, created_at: :asc)
 
-    @ships.each do |item|
+    @ships.each_with_index do |item, index|
+      break if stop_requested?(index)
+
       model_query = generate_model_query(item[:name])
       paint_query = generate_paint_query(item[:name])
       params = default_params(user_id, item)
@@ -284,12 +302,17 @@ class HangarSync < HangarImporter
       unmatched_vehicle_ids.delete(match)
     end
 
-    vehicle_scope.where.not(id: vehicle_ids).find_each do |vehicle|
-      initial_updated_at = vehicle.updated_at
-      vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
+    # A cancelled run never saw the rest of the pledge list, so every vehicle it
+    # had not reached yet still looks unmatched. Moving those to the wishlist
+    # would make stopping the sync far more destructive than letting it run.
+    unless @cancelled
+      vehicle_scope.where.not(id: vehicle_ids).find_each do |vehicle|
+        initial_updated_at = vehicle.updated_at
+        vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
 
-      if initial_updated_at != vehicle.updated_at
-        moved_vehicles_to_wanted << vehicle.id
+        if initial_updated_at != vehicle.updated_at
+          moved_vehicles_to_wanted << vehicle.id
+        end
       end
     end
 
@@ -307,7 +330,9 @@ class HangarSync < HangarImporter
 
     user = User.find(user_id)
 
-    @components.each do |item|
+    @components.each_with_index do |item, index|
+      break if stop_requested?(index)
+
       mapped = component_mapping(item[:name])
       next if mapped.blank?
 
@@ -373,7 +398,9 @@ class HangarSync < HangarImporter
 
     user = User.find(user_id)
 
-    @upgrades.each do |item|
+    @upgrades.each_with_index do |item, index|
+      break if stop_requested?(index)
+
       upgrade_query = generate_upgrade_query(item[:name])
       upgrade = ModelUpgrade.where(upgrade_query).first
       if upgrade.blank?
@@ -503,6 +530,13 @@ class HangarSync < HangarImporter
     # rather than rejected -- the read above is what keeps a re-sync from
     # stacking rows.
     TaskForce.insert_all(rows) if rows.any?
+  end
+
+  private def stop_requested?(index)
+    return false unless (index % ::HangarImporter::CANCEL_CHECK_INTERVAL).zero?
+    return false unless @import&.cancel_requested?
+
+    @cancelled = true
   end
 
   private def default_params(user_id, item)

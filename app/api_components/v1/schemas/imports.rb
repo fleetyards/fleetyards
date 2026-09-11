@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    class Imports < ::Shared::V1::Schemas::BaseList
+      include OpenapiRuby::Components::Base
+
+      schema({
+        properties: {
+          items: {type: :array, items: ::V1::Schemas::Import}
+        },
+        required: %w[items]
+      })
+    end
+  end
+end

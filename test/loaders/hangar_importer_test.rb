@@ -76,6 +76,37 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_equal ["RSI"], vehicle_group_names
   end
 
+  test "does not start an import that was cancelled while queued" do
+    import = import_for([{name: @model.name, slug: @model.slug}])
+    import.request_cancel!
+
+    assert_nil ::HangarImporter.new(import).run
+
+    assert_empty Vehicle.where(user_id: @user.id)
+    assert_predicate import.reload, :cancelled?
+  end
+
+  test "keeps what it already created when cancelled mid-run" do
+    interval = ::HangarImporter::CANCEL_CHECK_INTERVAL
+    import = import_for(Array.new(interval * 3) { {name: @model.name, slug: @model.slug} })
+
+    importer = ::HangarImporter.new(import)
+    checks = 0
+    importer.define_singleton_method(:stop_requested?) do |index|
+      next false unless (index % interval).zero?
+
+      checks += 1
+      import.request_cancel! if checks == 2
+      import.reload.cancel_requested_at.present?
+    end
+
+    result = importer.run
+
+    assert_equal interval, Vehicle.where(user_id: @user.id).count
+    assert_predicate import.reload, :cancelled?
+    refute result[:success]
+  end
+
   def create_group(name)
     HangarGroup.create!(user_id: @user.id, name:, color: "#ffffff")
   end

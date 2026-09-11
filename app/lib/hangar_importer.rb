@@ -17,6 +17,11 @@ class HangarImporter
     "legacy_slug = :normalized_name"
   ].freeze
 
+  # How often the run looks up whether the user has asked it to stop. A single
+  # column read, not a `reload`: reloading would fetch the whole `import_data`
+  # YAML blob back from the database on every check.
+  CANCEL_CHECK_INTERVAL = 25
+
   def initialize(import)
     @import = import
   end
@@ -24,6 +29,10 @@ class HangarImporter
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/CyclomaticComplexity
   def run
+    # Cancelled while it was still queued -- there is nothing to start, and
+    # `start` has no transition out of `cancelled`.
+    return if @import.cancelled?
+
     @import.start!
 
     missing_models = []
@@ -31,8 +40,15 @@ class HangarImporter
 
     # An import creates the user's hangar wholesale; none of it is an edit the
     # user made to a ship that already existed.
+    cancelled = false
+
     PaperTrail.request(enabled: false) do
-      (@import.import_data || []).each do |item|
+      (@import.import_data || []).each_with_index do |item, index|
+        if stop_requested?(index)
+          cancelled = true
+          break
+        end
+
         name = item[:name]
         name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
         name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
@@ -97,15 +113,22 @@ class HangarImporter
     output = {
       missing: missing_models.sort,
       imported: imported_models.sort,
-      success: missing_models.size < @import.import_data.size
+      success: !cancelled && missing_models.size < @import.import_data.size
     }
 
     @import.update!(output: output)
-    @import.finish!
+
+    # A run that finishes inside the window between the transition and the next
+    # checkpoint would otherwise fire `finish` from `cancelled` and raise
+    # `AASM::InvalidTransition`. The state has already moved; there is nothing
+    # left to transition.
+    @import.finish! unless cancelled || @import.reload.cancelled?
 
     output
   rescue => e
-    @import.fail!
+    # `fail` has no transition out of `cancelled`, and raising over the original
+    # exception would hide what actually went wrong.
+    @import.fail! if @import.may_fail?
     @import.update!(info: e.message)
 
     raise e
@@ -120,6 +143,12 @@ class HangarImporter
     return [@import.hangar_group_id] if @import.hangar_group_id.present?
 
     HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id)
+  end
+
+  private def stop_requested?(index)
+    return false unless (index % CANCEL_CHECK_INTERVAL).zero?
+
+    @import.cancel_requested?
   end
 
   # rubocop:disable Metrics/MethodLength
