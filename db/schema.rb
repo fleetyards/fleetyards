@@ -595,7 +595,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_230000) do
     t.datetime "created_at", null: false
     t.integer "entry_type", default: 0, null: false
     t.uuid "fleet_inventory_id", null: false
-    t.uuid "fleet_inventory_position_id"
+    t.uuid "fleet_inventory_position_id", null: false
     t.uuid "item_id"
     t.string "item_type"
     t.uuid "member_id"
@@ -876,7 +876,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_10_230000) do
     t.datetime "created_at", null: false
     t.integer "entry_type", default: 0, null: false
     t.uuid "inventory_id", null: false
-    t.uuid "inventory_position_id"
+    t.uuid "inventory_position_id", null: false
     t.uuid "item_id"
     t.string "item_type"
     t.string "name", null: false

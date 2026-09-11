@@ -105,9 +105,11 @@ module InventoryLedgerEntry
       @inventory_foreign_key
     end
 
-    # The position an entry belongs to. Optional for now: the previous release
-    # is still inserting entries that know nothing about it while the migration
-    # runs, so the column cannot be `null: false` until its own deploy.
+    # The position an entry belongs to. The column is `null: false`, but presence
+    # cannot be a validation: `assign_position` fills it in `before_save`, which
+    # runs after validations, and it runs there deliberately so a rejected entry
+    # leaves no position behind. The database is what enforces it, and a save
+    # that bypassed the callback would fail loudly there.
     def position_association(association_name)
       belongs_to association_name, optional: true
 

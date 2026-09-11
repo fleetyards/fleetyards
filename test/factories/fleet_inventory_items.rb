@@ -17,7 +17,7 @@
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #  fleet_inventory_id          :uuid             not null
-#  fleet_inventory_position_id :uuid
+#  fleet_inventory_position_id :uuid             not null
 #  item_id                     :uuid
 #  member_id                   :uuid
 #

@@ -16,7 +16,7 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  inventory_id          :uuid             not null
-#  inventory_position_id :uuid
+#  inventory_position_id :uuid             not null
 #  item_id               :uuid
 #
 # Indexes

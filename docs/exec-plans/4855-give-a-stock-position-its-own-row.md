@@ -67,20 +67,26 @@ The slug becomes a stored column on `inventory_positions`, unique per inventory,
 
 **The backfill has to disambiguate.** `slug_for` parameterizes the name (`inventory_stock_item.rb:11`), so `"Med Pens"` and `"med-pens"` are two positions today — the `GROUP BY` is case-sensitive — sharing one slug, and `stock_item` resolves whichever `.detect` reaches first. A name containing `--` collides the same way. There is also **no unique index** on the triple today (`db/schema.rb:859`), so identity is currently unenforced. The backfill must detect these and disambiguate rather than assume uniqueness.
 
-### D5 — Two deploys, forced by the pre-deploy hook
+### D5 — One deploy, because splitting it protects nothing
 
-`.kamal/hooks/pre-deploy:22` runs `bin/deploy-release`, which is `db:migrate data:migrate` — **before the new containers boot**, retried up to three times. So while the migration runs, the *old* release is still serving writes and knows nothing about `inventory_position_id`. A `NOT NULL` FK cannot land in the same deploy as the code that populates it: the old code's `INSERT` would violate it. Same shape as the column-drop hazard, in the other direction.
+`.kamal/hooks/pre-deploy:22` runs `bin/deploy-release` — `db:migrate data:migrate` — **before the new containers boot**, so the previous release is serving writes throughout. The first version of this decision concluded two deploys: nullable foreign key and backfill first, `NOT NULL` second, on the reasoning that the old release's inserts would violate the constraint.
 
-1. **Deploy A** — create the table; add `inventory_position_id` **nullable** with a FK; ship find-or-create on every write path and the dual read; backfill.
-2. **Deploy B** — `change_column_null false` on the entry foreign keys, once the backfill has run everywhere.
+That reasoning was wrong, and measuring the reads is what showed it. Phase 4 reads stock through an **inner join** on the position, so an entry the old release inserts during the window has no position and is invisible to the new release *whether the column is nullable or not*. The split does not protect the window. It only chooses how a write inside it fails:
 
-The unique indexes on the *positions* do not wait: the table is new and the previous release never writes to it, so identity can be enforced from the first migration. Only the column on the existing entry tables has to be nullable first.
+| | a window insert from the previous release |
+|---|---|
+| nullable now, `NOT NULL` later | succeeds, reports success, and the entry cannot be found afterwards |
+| `NOT NULL` in one migration | 500 — visible, and the user can retry once the deploy lands |
 
-CI never runs `db:migrate` or `data:migrate` — every job does `db:create db:schema:load` — so a broken migration passes CI and fails in the hook. `db/schema.rb` must be committed with the migration or the column is missing in CI.
+Silent loss is the worse of the two, so the constraint goes in with the table. The backfill moves into the schema migration, inside `up_only` — the idiom `20260910151520_add_approval_to_oauth_applications.rb:23` already establishes — so creating the table, pointing every entry at a position and enforcing the column all happen in one `db:migrate` run, before anything serves the new code. The `db/data/` migration is gone.
 
-### D6 — Backfill as a data migration, with the reason recorded
+The exposure that remains is unchanged by any of this and worth stating: a write landing inside the deploy window fails. Measured against the feature's actual use — no `boolean` gate on any of the three flags, `hangar_inventories` and `ship_inventories` at one actor each, `fleet_logistics` at 252, and 24 entries written in 180 days — that is roughly one write every 7½ days against a window of a minute or two.
 
-Production holds **1** `inventory_item` and **11** `fleet_inventory_items`, so this is milliseconds and belongs in `db/data/` next to `20260827150100_backfill_component_builds.rb`. The threshold is documented in the repo: `backfill_hardpoint_builds_task.rb:8` chose a maintenance task instead *because* `data:migrate` runs inside the pre-deploy hook and 22,561 rows would block every deploy behind it. This is four orders of magnitude smaller. The migration header records that measurement, so a future reader knows the choice was made against a number rather than by habit.
+### D6 — The backfill is raw SQL
+
+Inside a schema migration, and reading and writing SQL directly rather than through the models. Two reasons: an enum column read through a model comes back as its label rather than the stored integer — `pluck` does this even through `Arel.sql`, which is how the first version of this failed — and a schema migration should not need any model to be loadable to run.
+
+The threshold that would have sent this to a maintenance task instead is documented in `backfill_hardpoint_builds_task.rb:8`: `data:migrate` runs inside the pre-deploy hook, so a long backfill blocks every deploy behind it and a retried hook re-scans the table. That task walks 22,561 rows. This walks the 12 in production, and measured 0.10s against the real dump.
 
 ### D7 — find-or-create takes the inventory lock first
 
@@ -129,8 +135,8 @@ Dropping them is a third deploy, after Deploy B, and it is a real piece of work 
 3. `destroy_stock_item` destroys the position and cascades its entries.
 
 ### Phase 3 — Backfill
-1. `db/data/` migration: one position per distinct triple per inventory, disambiguating slug collisions, then point every entry at its position.
-2. Verify no entry is left unpointed before Phase 7.
+1. Inside the schema migration, in `up_only`: one position per distinct identity per inventory, disambiguating slug collisions, then every entry pointed at its position, then `change_column_null false`.
+2. Verified against the real dump — 18 positions from 24 entries, nothing unpointed.
 
 ### Phase 4 — Reads
 1. `stock_positions`, `current_stock`, `stock_item`, `stock_volume`, `entries_for_stock_item` and `reference_entry_for` group by and join on the position.
@@ -147,10 +153,7 @@ Everything in D8, once this branch sits on a main that has #4849.
 3. The three ransack triples (`nameEq`/`categoryEq`/`unitEq`) become one `positionIdEq` — declared in the three query schemas *and* added to the controller permit lists, or it 400s.
 4. The three identical "the rename moved the address" blocks can go: an id does not move.
 
-### Phase 7 — Deploy B
-`change_column_null false` on `inventory_position_id` and `fleet_inventory_position_id`, in its own migration and its own deploy.
-
-### Phase 8 — Tests
+### Phase 7 — Tests
 ~120 Ruby tests across 12 stock-specific files and 4 model files, plus two frontend specs. Includes a gap worth closing while in there: `fleet_inventory_item_test.rb` never mirrored the five position-move tests from `inventory_item_test.rb:212`, though the behaviour lives in the shared concern.
 
 ## Intent Verification
@@ -161,7 +164,7 @@ Everything in D8, once this branch sits on a main that has #4849.
 - [ ] **Quantities still come from the ledger** — no stored net, and no test passes by reading a cached total.
 - [ ] **The slug still resolves** — every existing position URL keeps working, including the collision cases the backfill disambiguated.
 - [ ] **The withdrawal guard is unchanged in effect** — a withdrawal exceeding its position's stock is still refused, and concurrent withdrawals still serialise.
-- [ ] **The old release survives Deploy A** — `inventory_position_id` is nullable until Deploy B, so an insert from the previous release cannot violate it.
+- [x] **The constraint and the data land together** — the table, the backfill and `NOT NULL` are one `db:migrate` run, so there is no window in which an entry can exist without a position.
 - [ ] **#4849's machinery is gone** — the recorder, the reason, the validation and the ignore entries are deleted, and the suite is green without them.
 - [ ] **No breaking schema change** — `oasdiff` 1.18.1 against main reports nothing new, with no added ignore entries.
 
@@ -194,6 +197,8 @@ Everything in D8, once this branch sits on a main that has #4849.
 
 ## Discovery Log
 
+- **2026-09-11** Collapsed to a single deploy and rewrote D5. The two-deploy split was protecting nothing: Phase 4's reads inner-join the position, so an entry inserted during the window is invisible either way, and nullable only turns a visible 500 into a silent disappearance. The backfill moved into the schema migration under `up_only` and `NOT NULL` lands with the table. Measured the feature's real use to size the remaining exposure: no `boolean` gate on any of the three flags, one actor each on hangar and ship inventories, 252 on fleet logistics, 24 entries in 180 days.
+- **2026-09-11** A consequence of `NOT NULL`: the backfill's own state cannot be built in a test any more, so its test covers the slug derivation as a pure function instead of running it. Real data supplied a case worth pinning — a fleet position named `"Adp mk4 "`, with a trailing space.
 - **2026-09-11** Phase 4 landed, behaviour-preserving: 351 tests green with no test rewritten for it. Three traps. The select alias `position_id` collides with the `alias_attribute` of the same name on the entry, so a grouped row raised `MissingAttributeError` on the unselected original — the alias is the real foreign key column instead. `withdrawal_does_not_exceed_stock` still checks the triple rather than the position, and has to: it runs during validation, while `assign_position` is a `before_save`, so a new entry has no position yet. And renaming onto an existing identity merges the two positions, which the old group-key behaviour did implicitly and the row has to do explicitly.
 - **2026-09-11** Ran the backfill against the real dump in the worktree: 18 positions from 24 entries, nothing unpointed, no slug collisions. It also turned up a live `component`/`scu` position, which `UNITS_BY_CATEGORY` forbids — the grandfathered mismatch D-for-`unit_fits_category` predicted, and proof that repeating the rule on the position would have failed the backfill on real data.
 - **2026-09-11** Phases 2 and 3 landed. Three things worth recording. The resolution went on the entry as a `before_save` rather than into the five call sites, which made the fleet restore work for free — it re-resolves from the identity instead of copying a foreign key pointing at a position destroyed with the fleet. The unit-fits-category rule is deliberately *not* repeated on the position: entries predating it are grandfathered, so duplicating it would give the backfill a way to fail on exactly the rows it exists for. And `pluck` casts an enum to its label even through `Arel.sql`, so the backfill reads raw rows — integers are what a migration should see.
@@ -205,9 +210,8 @@ Everything in D8, once this branch sits on a main that has #4849.
 
 - [x] Phase 1 — The table
 - [x] Phase 2 — Writes (find-or-create; `update_stock_item` moves with Phase 4)
-- [x] Phase 3 — Backfill
+- [x] Phase 3 — Backfill (folded into the migration)
 - [x] Phase 4 — Reads
 - [ ] Phase 5 — Retire the fences
 - [ ] Phase 6 — Frontend
-- [ ] Phase 7 — Deploy B
-- [ ] Phase 8 — Tests
+- [ ] Phase 7 — Tests
