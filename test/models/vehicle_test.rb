@@ -407,6 +407,33 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     assert_equal [nil, nil], inventories.pluck(:vehicle_id)
   end
 
+  # An inventory left invalid by something else entirely must not be what stops
+  # somebody deleting a ship, and the label still has to land.
+  test "detaches an inventory that no longer validates" do
+    vehicle = create(:vehicle, user: @user)
+    inventory = Inventory.provision_for(vehicle, holder: @user)
+    inventory.update_column(:name, "")
+    assert_not inventory.reload.valid?
+
+    Vehicle.find(vehicle.id).destroy!
+
+    assert_nil Vehicle.find_by(id: vehicle.id)
+    assert_equal vehicle.display_name, inventory.reload.location
+  end
+
+  # What keeps two inventories detaching at once from choosing the same suffix:
+  # the read is locked, and ordered so neither waits on a row the other holds.
+  test "claims the name under a lock taken in a fixed order" do
+    vehicle = create(:vehicle, user: @user)
+    Inventory.provision_for(vehicle, holder: @user)
+
+    claim = statements_for { Vehicle.find(vehicle.id).destroy! }
+      .find { |sql| sql.include?("inventories") && sql.include?("FOR UPDATE") }
+
+    assert claim, "the name claim takes no lock"
+    assert_includes claim, %(ORDER BY "inventories"."id")
+  end
+
   test "detaches a ship inventory on a single destroy too" do
     model = create(:model)
     first = create(:vehicle, user: @user, model: model)
@@ -418,5 +445,17 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     Vehicle.find(second.id).destroy!
 
     assert_equal 2, Inventory.where(holder: @user).pluck(:name).uniq.size
+  end
+
+  private def statements_for
+    statements = []
+    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+      statements << payload[:sql] unless payload[:name] == "SCHEMA"
+    end
+
+    yield
+    statements
+  ensure
+    ActiveSupport::Notifications.unsubscribe(subscriber)
   end
 end

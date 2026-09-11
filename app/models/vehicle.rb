@@ -317,7 +317,7 @@ class Vehicle < ApplicationRecord
     Inventory.where(vehicle_id: vehicle_ids)
       .includes(vehicle: :model)
       .find_each do |inventory|
-        inventory.update(location: inventory.vehicle.display_name) if inventory.location.blank?
+        inventory.freeze_location!(inventory.vehicle.display_name) if inventory.location.blank?
         inventory.claim_free_name!
       end
   end
@@ -574,10 +574,16 @@ class Vehicle < ApplicationRecord
   # A ship inventory outlives its ship -- the foreign key nullifies rather than
   # cascades -- so it leaves carrying the ship's name as its location, and a name
   # nothing else of this holder's has claimed.
+  #
+  # Written past validation: both values are derived rather than entered, and an
+  # inventory left invalid by something else entirely -- an image the vector
+  # validator now rejects, say -- must not be what stops somebody deleting a
+  # ship. `update` would have been worse than either: it returns false and the
+  # delete carries on, nulling `vehicle_id` on a row whose label never landed.
   private def detach_inventory
     return if inventory.blank?
 
-    inventory.update(location: display_name) if inventory.location.blank?
+    inventory.freeze_location!(display_name) if inventory.location.blank?
     inventory.claim_free_name!
   end
 

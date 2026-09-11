@@ -84,6 +84,20 @@ module Maintenance
       assert TaskForce.exists?(task_force.id)
     end
 
+    # `where.missing` is a left join tested for no match, which a row naming no
+    # vehicle at all satisfies too. It was not stranded by a delete, so it stays.
+    test "#process keeps a row that names no vehicle at all" do
+      fleet_vehicle = orphan_fleet_vehicle
+      task_force = orphan_task_force
+      FleetVehicle.where(id: fleet_vehicle.id).update_all(vehicle_id: nil)
+      TaskForce.where(id: task_force.id).update_all(vehicle_id: nil)
+
+      run_task(dry_run: false)
+
+      assert FleetVehicle.exists?(fleet_vehicle.id)
+      assert TaskForce.exists?(task_force.id)
+    end
+
     test "#process drops every orphan, not just the first batch" do
       3.times { orphan_vehicle }
       3.times { orphan_fleet_vehicle }

@@ -99,6 +99,13 @@ class Inventory < ApplicationRecord
   # holding its `vehicle_id`, pick the same suffix, and collide when Postgres
   # nullifies them. Taking the row being excluded as well is what keeps the two
   # from locking each other's row first and deadlocking.
+  # The label the ship leaves behind. `update_column` rather than `update` for the
+  # reason `Vehicle#detach_inventory` gives: it is derived, not entered, and the
+  # delete behind it must not turn on whether this row validates.
+  def freeze_location!(label)
+    update_column(:location, label)
+  end
+
   def claim_free_name!
     taken = self.class.where(holder_type:, holder_id:).order(:id).lock
       .pluck(:id, :name, :slug)
@@ -113,6 +120,12 @@ class Inventory < ApplicationRecord
         slugs.exclude?(self.class.slug_for("#{name} (#{candidate})"))
     end
 
-    update!(name: "#{name} (#{suffix})")
+    claimed = "#{name} (#{suffix})"
+
+    # Past validation for the same reason, and the slug alongside the name rather
+    # than left to `before_save`: skipping the callback would strand the old slug,
+    # which is one of the two indexes this exists to keep clear. `slug_for` is the
+    # derivation that callback uses.
+    update_columns(name: claimed, slug: self.class.slug_for(claimed), updated_at: Time.zone.now)
   end
 end

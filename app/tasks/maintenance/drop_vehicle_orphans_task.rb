@@ -45,19 +45,21 @@ module Maintenance
     # still finishes as "succeeded", so a real run has to pass `dry_run => "0"`.
     attribute :dry_run, :boolean, default: true
 
-    # `vehicle_id` is nowhere null in any of the three, so "missing" and "dangling"
-    # are the same set -- but `where.missing` states the one that matters, and a
-    # null arriving later is not this task's row to delete.
+    # `where.missing` is a left join tested for no match, which a null foreign key
+    # satisfies as readily as a dangling one. All three columns are nullable and
+    # none of them is null today, but a row that names no vehicle at all was not
+    # stranded by a delete and is not this task's to remove -- so each scope says
+    # so rather than relying on that staying true.
     def self.orphaned_vehicles
       Vehicle.where.not(vehicle_id: nil).where.missing(:parent_vehicle)
     end
 
     def self.orphaned_fleet_vehicles
-      FleetVehicle.where.missing(:vehicle)
+      FleetVehicle.where.not(vehicle_id: nil).where.missing(:vehicle)
     end
 
     def self.orphaned_task_forces
-      TaskForce.where.missing(:vehicle)
+      TaskForce.where.not(vehicle_id: nil).where.missing(:vehicle)
     end
 
     def process
