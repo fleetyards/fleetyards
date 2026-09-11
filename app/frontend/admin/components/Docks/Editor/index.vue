@@ -11,6 +11,7 @@ import InlineEditableList from "@/shared/components/InlineEditableList/index.vue
 import {
   type Dock,
   type DockInput,
+  type DockInputParentType,
   type FilterOption,
   useDocks as useDocksQuery,
   useCreateDock as useCreateDockMutation,
@@ -19,15 +20,20 @@ import {
   getDocksQueryKey,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
+import {
+  InputAlignmentsEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 
 // A dock hangs off whatever carries it -- a ship, or a module such as the
 // Galaxy's medic bay with its vehicle lift. Both admin pages render this.
 type Props = {
   parentId: string;
-  parentType: string;
+  parentType: DockInputParentType;
   headline: string;
 };
 
@@ -35,6 +41,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const queryClient = useQueryClient();
+const { displayAlert } = useAppNotifications();
 
 const editableList = ref<{
   editingId: string | null;
@@ -91,6 +98,9 @@ const onStartEdit = (record: Dock) => {
     name: record.name,
     dockType: record.dockType,
     shipSize: record.shipSize,
+    length: record.length,
+    beam: record.beam,
+    height: record.height,
   };
 };
 
@@ -104,10 +114,12 @@ const onSaveEdit = async () => {
   const id = editableList.value?.editingId;
   if (!id) return;
 
-  await updateMutation.mutateAsync({
-    id,
-    data: editForm.value,
-  });
+  try {
+    await updateMutation.mutateAsync({ id, data: editForm.value });
+  } catch {
+    displayAlert({ text: t("messages.dock.update.failure") });
+    return;
+  }
 
   editableList.value?.finishEdit();
 };
@@ -127,16 +139,12 @@ const onDestroy = async (record: Dock) => {
 const createForm = ref<DockInput>({
   parentId: props.parentId,
   parentType: props.parentType,
-  dockType: "landingpad",
-  shipSize: "medium",
 });
 
 const onStartCreate = () => {
   createForm.value = {
     parentId: props.parentId,
     parentType: props.parentType,
-    dockType: "landingpad",
-    shipSize: "medium",
   };
 };
 
@@ -147,9 +155,12 @@ const createMutation = useCreateDockMutation({
 });
 
 const onSaveCreate = async () => {
-  await createMutation.mutateAsync({
-    data: createForm.value,
-  });
+  try {
+    await createMutation.mutateAsync({ data: createForm.value });
+  } catch {
+    displayAlert({ text: t("messages.dock.create.failure") });
+    return;
+  }
 
   editableList.value?.finishCreate();
 };
@@ -183,6 +194,16 @@ const onSaveCreate = async () => {
       <BasePill uppercase margin-right>{{ item.dockTypeLabel }}</BasePill>
       <BasePill margin-right>{{ item.shipSizeLabel }}</BasePill>
       <span v-if="item.name">{{ item.name }}</span>
+      <!-- An unmeasured berth answers nothing, so say so rather than leaving
+           the row looking complete. -->
+      <span class="docks-editor__dimensions">
+        <template v-if="item.length && item.beam && item.height">
+          {{ item.length }} × {{ item.beam }} × {{ item.height }} m
+        </template>
+        <template v-else>
+          {{ t("labels.dock.unmeasured") }}
+        </template>
+      </span>
     </template>
 
     <template #edit>
@@ -190,20 +211,42 @@ const onSaveCreate = async () => {
         v-model="editForm.dockType"
         name="edit-dock-type"
         :options="dockTypeOptions"
-        :nullable="false"
         label="Dock Type"
       />
       <BaseSelect
         v-model="editForm.shipSize"
         name="edit-ship-size"
         :options="shipSizeOptions"
-        :nullable="false"
         label="Ship Size"
       />
       <FormInput
         v-model="editForm.name"
         name="edit-name"
         translation-key="dock.name"
+      />
+      <FormInput
+        v-model="editForm.length"
+        :type="InputTypesEnum.NUMBER"
+        :alignment="InputAlignmentsEnum.RIGHT"
+        name="edit-length"
+        translation-key="dock.length"
+        :step="0.1"
+      />
+      <FormInput
+        v-model="editForm.beam"
+        :type="InputTypesEnum.NUMBER"
+        :alignment="InputAlignmentsEnum.RIGHT"
+        name="edit-beam"
+        translation-key="dock.beam"
+        :step="0.1"
+      />
+      <FormInput
+        v-model="editForm.height"
+        :type="InputTypesEnum.NUMBER"
+        :alignment="InputAlignmentsEnum.RIGHT"
+        name="edit-height"
+        translation-key="dock.height"
+        :step="0.1"
       />
     </template>
 
@@ -212,20 +255,42 @@ const onSaveCreate = async () => {
         v-model="createForm.dockType"
         name="create-dock-type"
         :options="dockTypeOptions"
-        :nullable="false"
         label="Dock Type"
       />
       <BaseSelect
         v-model="createForm.shipSize"
         name="create-ship-size"
         :options="shipSizeOptions"
-        :nullable="false"
         label="Ship Size"
       />
       <FormInput
         v-model="createForm.name"
         name="create-name"
         translation-key="dock.name"
+      />
+      <FormInput
+        v-model="createForm.length"
+        :type="InputTypesEnum.NUMBER"
+        :alignment="InputAlignmentsEnum.RIGHT"
+        name="create-length"
+        translation-key="dock.length"
+        :step="0.1"
+      />
+      <FormInput
+        v-model="createForm.beam"
+        :type="InputTypesEnum.NUMBER"
+        :alignment="InputAlignmentsEnum.RIGHT"
+        name="create-beam"
+        translation-key="dock.beam"
+        :step="0.1"
+      />
+      <FormInput
+        v-model="createForm.height"
+        :type="InputTypesEnum.NUMBER"
+        :alignment="InputAlignmentsEnum.RIGHT"
+        name="create-height"
+        translation-key="dock.height"
+        :step="0.1"
       />
     </template>
   </InlineEditableList>
@@ -236,3 +301,11 @@ const onSaveCreate = async () => {
     :update-per-page="updatePerPage"
   />
 </template>
+
+<style lang="scss" scoped>
+.docks-editor__dimensions {
+  margin-left: 0.5rem;
+  opacity: 0.6;
+  font-size: 0.875rem;
+}
+</style>

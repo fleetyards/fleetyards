@@ -971,7 +971,11 @@
       "dock": {
         "name": "Nom",
         "dockType": "Type de quai",
-        "shipSize": "Taille du vaisseau"
+        "shipSize": "Taille du vaisseau",
+        "length": "Longueur",
+        "beam": "Largeur",
+        "height": "Hauteur",
+        "unmeasured": "non mesuré"
       },
       "modelPosition": {
         "name": "Nom",

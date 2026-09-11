@@ -971,7 +971,11 @@
       "dock": {
         "name": "名称",
         "dockType": "停靠类型",
-        "shipSize": "飞船尺寸"
+        "shipSize": "飞船尺寸",
+        "length": "长度",
+        "beam": "宽度",
+        "height": "高度",
+        "unmeasured": "未测量"
       },
       "modelPosition": {
         "name": "名称",

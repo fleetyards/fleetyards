@@ -2,6 +2,30 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: docks
+#
+#  id            :uuid             not null, primary key
+#  beam          :decimal(15, 2)
+#  dock_type     :integer
+#  group         :string
+#  height        :decimal(15, 2)
+#  length        :decimal(15, 2)
+#  max_ship_size :integer
+#  min_ship_size :integer
+#  name          :string
+#  parent_type   :string           not null
+#  ship_size     :integer
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  model_id      :uuid
+#  parent_id     :uuid             not null
+#
+# Indexes
+#
+#  index_docks_on_parent_type_and_parent_id  (parent_type,parent_id)
+#
 class DockTest < ActiveSupport::TestCase
   test "a dock belongs to a ship" do
     model = create(:model)
@@ -35,6 +59,13 @@ class DockTest < ActiveSupport::TestCase
     dock = build(:dock, parent: nil)
 
     assert_not dock.valid?
+  end
+
+  # The create form no longer preselects a type, so nothing else may either: a
+  # berth saved without one would be a landing pad or a garage by accident.
+  test "a dock needs a type and a size" do
+    assert_not build(:dock, dock_type: nil).valid?
+    assert_not build(:dock, ship_size: nil).valid?
   end
 
   # Destroying the carrier takes its berths, whichever side they hang off.

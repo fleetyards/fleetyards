@@ -967,7 +967,11 @@
       "dock": {
         "name": "Name",
         "dockType": "Dock Type",
-        "shipSize": "Ship Size"
+        "shipSize": "Ship Size",
+        "length": "Length",
+        "beam": "Beam",
+        "height": "Height",
+        "unmeasured": "not measured"
       },
       "modelPosition": {
         "name": "Name",
