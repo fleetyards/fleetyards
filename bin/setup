@@ -26,7 +26,7 @@ trap("INT") do
 end
 
 def format_duration(seconds) = CliHelpers.format_duration(seconds)
-def run_step(label, cmd = nil, async: false, &block) = CliHelpers.run_step(label, cmd, verbose: VERBOSE, async:, &block)
+def run_step(label, cmd = nil, async: false, after: [], &block) = CliHelpers.run_step(label, cmd, verbose: VERBOSE, async:, after:, &block)
 def run_step_wait(*steps) = CliHelpers.run_step_wait(*steps, verbose: VERBOSE)
 
 WORKTREE_MARKER = "# -- worktree-managed --"
@@ -319,7 +319,7 @@ if ARGV.include?("--help") || ARGV.include?("-h")
 end
 
 FileUtils.chdir APP_ROOT do
-  total_start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  total_start = CliHelpers.monotonic_now
 
   wt_name = detect_worktree
   port = 8270
@@ -384,31 +384,30 @@ FileUtils.chdir APP_ROOT do
     run_step "Wiping application state", "docker compose down -v"
   end
 
-  # Group A: Install dependencies and start Docker (all independent)
+  # One dependency graph instead of lock-step groups: every step starts as soon
+  # as what it actually needs is done, so Docker startup and pnpm install no
+  # longer gate the databases, and the Vite build overlaps everything else.
+  db_env = "DB_PORT=#{db_port} WORKTREE_SUFFIX=#{db_suffix}"
   ruby_deps = run_step "Installing Ruby dependencies", "bundle check || bundle install", async: true
   node_deps = run_step "Installing Node dependencies", "pnpm install", async: true
   docker = run_step "Starting Docker services", "docker compose up -d --wait --wait-timeout 30", async: true
-  run_step_wait(ruby_deps, node_deps, docker)
-
-  # Group B: Prepare databases and build Vite assets (need deps + Docker)
-  # db:prepare rewrites db/schema.rb after migrating, so the dev and test runs
-  # must be sequential: a dump from one truncates the file the other is reading.
-  db_env = "DB_PORT=#{db_port} WORKTREE_SUFFIX=#{db_suffix}"
-  databases = run_step "Preparing databases (dev + test)",
-    "#{db_env} bin/rails db:prepare && #{db_env} RAILS_ENV=test bin/rails db:prepare", async: true
-  vite_build = run_step "Building email assets (test)", "bin/build-email-assets", async: true
+  dev_db = run_step "Preparing database (dev)", "#{db_env} bin/rails db:prepare",
+    async: true, after: [ruby_deps, docker]
+  # After dev, not alongside: a fresh test database loads db/schema.rb, which
+  # the dev run may be dumping at that moment.
+  test_db = run_step "Preparing database (test)", "#{db_env} RAILS_ENV=test bin/rails db:prepare",
+    async: true, after: [dev_db]
+  email_assets = run_step "Building email assets (test)", "bin/build-email-assets", async: true
   # auto-imports.d.ts and components.d.ts are gitignored and only written by the
   # Vite plugins, so vue-tsc reports every auto-imported symbol as undefined
   # until a build has run at least once. Builds to vite-dev, so it does not race
   # the email assets build over the vite-test manifest.
-  frontend_types = run_step "Generating frontend type declarations", "bin/vite build", async: true
-  run_step_wait(databases, vite_build, frontend_types)
+  frontend_types = run_step "Generating frontend type declarations", "bin/vite build",
+    async: true, after: [ruby_deps, node_deps]
+  clean = run_step "Cleaning logs and temp files", "bin/rails log:clear tmp:clear", async: true, after: [ruby_deps]
+  run_step_wait(ruby_deps, node_deps, docker, dev_db, test_db, email_assets, frontend_types, clean)
 
-  # Group C: Clean logs/tmp (need databases)
-  clean = run_step "Cleaning logs and temp files", "bin/rails log:clear tmp:clear", async: true
-  run_step_wait(clean)
-
-  total_elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - total_start
+  total_elapsed = CliHelpers.monotonic_now - total_start
   puts "\n== Setup complete in #{format_duration(total_elapsed)} =="
 
   start_server = ARGV.include?("--dev") || ARGV.any? { |arg| arg.start_with?("--dev-") }
