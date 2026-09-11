@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
+require "open3"
+
 module CliHelpers
   SPINNER = %w[⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏].freeze
+  STATUS_LABELS = {ok: "OK", failed: "FAILED", skipped: "skipped"}.freeze
 
   $stdout.sync = true
 
@@ -14,10 +17,30 @@ module CliHelpers
     end
   end
 
+  def self.monotonic_now
+    Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  end
+
+  def self.result_line(status, elapsed)
+    "#{STATUS_LABELS.fetch(status)} (#{elapsed ? format_duration(elapsed) : "-"})"
+  end
+
+  # Runs a step's block or shell command; returns [status, output].
+  def self.execute_step(cmd, block)
+    if block
+      block.call
+      [:ok, ""]
+    else
+      output, status = Open3.capture2e(cmd)
+      [status.success? ? :ok : :failed, output]
+    end
+  end
+
   def self.with_spinner(label)
-    start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    start_time = monotonic_now
 
     spinning = true
+    spin_thread = nil
     if $stdout.tty?
       frame = 0
       spin_thread = Thread.new do
@@ -32,7 +55,7 @@ module CliHelpers
     end
 
     begin
-      success, output = yield
+      status, output = yield
     rescue Interrupt
       spinning = false
       spin_thread&.join
@@ -43,38 +66,30 @@ module CliHelpers
     spinning = false
     spin_thread&.join
 
-    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
-    time_str = format_duration(elapsed)
+    line = result_line(status, monotonic_now - start_time)
+    print $stdout.tty? ? "\r  #{label}...#{line}#{" " * 20}\n" : "#{line}\n"
+    return if status == :ok
 
-    if success
-      if $stdout.tty?
-        print "\r  #{label}...OK (#{time_str})#{" " * 20}\n"
-      else
-        puts "OK (#{time_str})"
-      end
-    else
-      if $stdout.tty?
-        print "\r  #{label}...FAILED (#{time_str})#{" " * 20}\n\n"
-      else
-        puts "FAILED (#{time_str})\n"
-      end
-      warn output
-      abort
-    end
+    print "\n"
+    warn output
+    abort
   end
 
-  def self.run_step(label, cmd = nil, verbose: false, async: false, &block)
+  # `async: true` returns a step handle whose thread runs once every step in
+  # `after:` finished :ok; otherwise the step is :skipped, so one failure
+  # surfaces once instead of cascading. The thread returns
+  # [status, output, elapsed]; collect the handles with run_step_wait.
+  def self.run_step(label, cmd = nil, verbose: false, async: false, after: [], &block)
     if async
-      thread = Thread.new do
-        if block
-          block.call
-          [true, ""]
-        else
-          output, status = Open3.capture2e(cmd)
-          [status.success?, output]
-        end
+      step = {label: label}
+      step[:thread] = Thread.new do
+        next [:skipped, "", nil] unless after.all? { |dep| dep[:thread].value.first == :ok }
+
+        step[:start_time] = monotonic_now
+        status, output = execute_step(cmd, block)
+        [status, output, monotonic_now - step[:start_time]]
       end
-      return {label: label, thread: thread, start_time: Process.clock_gettime(Process::CLOCK_MONOTONIC)}
+      return step
     end
 
     if verbose
@@ -87,81 +102,52 @@ module CliHelpers
       abort "\n  #{label} failed!"
     end
 
-    with_spinner(label) do
-      if block
-        block.call
-        [true, ""]
-      else
-        output, status = Open3.capture2e(cmd)
-        [status.success?, output]
-      end
-    end
+    with_spinner(label) { execute_step(cmd, block) }
   end
 
   def self.run_step_wait(*steps, verbose: false)
-    if verbose
-      steps.each do |step|
-        puts "\n== #{step[:label]} =="
-        success, output = step[:thread].value
-        elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - step[:start_time]
-        puts "  (#{format_duration(elapsed)})"
-        next if success
-        warn output
-        abort "\n  #{step[:label]} failed!"
-      end
-      return
-    end
+    results = Array.new(steps.size)
 
-    if $stdout.tty?
-      steps.each { |_| print "\n" }
-
-      finished = Array.new(steps.size)
+    if $stdout.tty? && !verbose
+      # Reserve one line per step
+      steps.each { print "\n" }
       frame = 0
 
       loop do
         print "\033[#{steps.size}A"
 
         steps.each_with_index do |step, i|
-          if finished[i]
-            f = finished[i]
-            status = f[:success] ? "OK" : "FAILED"
-            print "\r  #{step[:label]}...#{status} (#{f[:time_str]})#{" " * 20}\n"
-          elsif step[:thread].alive?
-            print "\r  #{step[:label]}...#{SPINNER[frame % SPINNER.size]} #{" " * 20}\n"
-          else
-            success, output = step[:thread].value
-            elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - step[:start_time]
-            time_str = format_duration(elapsed)
-            finished[i] = {success: success, output: output, time_str: time_str}
-            status = success ? "OK" : "FAILED"
-            print "\r  #{step[:label]}...#{status} (#{time_str})#{" " * 20}\n"
-          end
+          results[i] ||= step[:thread].value unless step[:thread].alive?
+          indicator =
+            if results[i]
+              result_line(results[i][0], results[i][2])
+            elsif step[:start_time]
+              SPINNER[frame % SPINNER.size]
+            else
+              "waiting"
+            end
+          print "\r  #{step[:label]}...#{indicator}#{" " * 20}\n"
         end
 
-        break if finished.all?
+        break if results.all?
         frame += 1
         sleep 0.08
       end
-
-      failed = steps.each_with_index.filter_map { |step, i| [step, finished[i]] unless finished[i][:success] }
-      unless failed.empty?
-        print "\n"
-        warn failed.map { |step, f| "== #{step[:label]} ==\n#{f[:output]}" }.join("\n")
-        abort
-      end
     else
-      results = steps.map { |s| [s, s[:thread].value] }
-      results.each do |step, (success, output)|
-        elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - step[:start_time]
-        time_str = format_duration(elapsed)
-        if success
-          puts "  #{step[:label]}...OK (#{time_str})"
-        else
-          puts "  #{step[:label]}...FAILED (#{time_str})\n"
-          warn output
-          abort
-        end
+      # No spinner: report each step as it finishes, in list order
+      steps.each_with_index do |step, i|
+        puts "\n== #{step[:label]} ==" if verbose
+        results[i] = step[:thread].value
+        line = result_line(results[i][0], results[i][2])
+        puts verbose ? "  #{line}" : "  #{step[:label]}...#{line}"
       end
     end
+
+    failed = steps.zip(results).select { |_, (status, _, _)| status == :failed }
+    return if failed.empty?
+
+    print "\n"
+    warn failed.map { |step, (_, output, _)| "== #{step[:label]} ==\n#{output}" }.join("\n")
+    abort
   end
 end
