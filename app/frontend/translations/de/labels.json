@@ -128,7 +128,16 @@
         "formats": {
           "fleetyards": "Ein FleetYards-Hangar-Export — nutze dafür den Export-Button.",
           "hangarXplor": "Ein hangarXPLOR-Export."
-        }
+        },
+        "details": {
+          "imported": "Hinzugefügt",
+          "found": "Zugeordnet",
+          "movedToWanted": "Auf die Wunschliste verschoben",
+          "missing": "Schiffe nicht gefunden",
+          "missingComponents": "Komponenten nicht gefunden",
+          "missingUpgrades": "Upgrades nicht gefunden"
+        },
+        "noDetails": "Dieser Lauf hat keine Details aufgezeichnet."
       },
       "oauthApplications": {
         "settingsIntro": "Verwalten Sie Ihre OAuth-Anwendungen. Diese Anwendungen können im Namen von Benutzern auf die FleetYards-API zugreifen.",

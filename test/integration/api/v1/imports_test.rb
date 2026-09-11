@@ -160,6 +160,54 @@ class Api::V1::ImportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /imports/{id} names the ships a sync touched" do
+    user = create(:user)
+    vehicle = create(:vehicle, user:, name: "USS Troi")
+    import = create_import(user, state: "finished")
+    import.update!(output: {
+      "imported_vehicles" => [vehicle.id],
+      "found_vehicles" => [],
+      "moved_vehicles_to_wanted" => [],
+      "missing_models" => ["Mystery Ship"],
+      "missing_components" => [],
+      "missing_upgrades" => []
+    })
+    sign_in user
+
+    assert_api_response :get, 200, params: {id: import.id} do
+      assert_equal ["USS Troi"], parsed_body["details"]["imported"]
+      assert_equal ["Mystery Ship"], parsed_body["details"]["missing"]
+      # Empty lists are omitted rather than sent as [].
+      assert_nil parsed_body["details"]["found"]
+    end
+  end
+
+  # The ids are a record of what the run did, not a live association, so a
+  # vehicle deleted since simply drops out of the list.
+  test "GET /imports/{id} drops a vehicle deleted since the run" do
+    user = create(:user)
+    vehicle = create(:vehicle, user:, name: "USS Troi")
+    import = create_import(user, state: "finished")
+    import.update!(output: {"imported_vehicles" => [vehicle.id]})
+    vehicle.destroy!
+    sign_in user
+
+    assert_api_response :get, 200, params: {id: import.id} do
+      assert_nil parsed_body["details"]["imported"]
+    end
+  end
+
+  test "GET /imports does not carry the details" do
+    user = create(:user)
+    import = create_import(user, state: "finished")
+    import.update!(output: {"missing_models" => ["Mystery Ship"]})
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_nil parsed_body["items"].first["details"]
+    end
+  end
+
   test "GET /imports/{id} returns 404 for somebody else's import" do
     user = create(:user)
     import = create_import(create(:user))

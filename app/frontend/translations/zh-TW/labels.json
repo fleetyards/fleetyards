@@ -128,7 +128,16 @@
         "formats": {
           "fleetyards": "FleetYards 機庫匯出檔 —— 使用匯出按鈕即可產生。",
           "hangarXplor": "hangarXPLOR 匯出檔。"
-        }
+        },
+        "details": {
+          "imported": "已新增",
+          "found": "已配對",
+          "movedToWanted": "已移至願望清單",
+          "missing": "未找到的艦船",
+          "missingComponents": "未找到的元件",
+          "missingUpgrades": "未找到的升級"
+        },
+        "noDetails": "本次執行未記錄詳情。"
       },
       "oauthApplications": {
         "settingsIntro": "管理您的 OAuth 應用程式。這些應用程式可以代表使用者存取 FleetYards API。",

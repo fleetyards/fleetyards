@@ -128,7 +128,16 @@
         "formats": {
           "fleetyards": "Una exportación de hangar de FleetYards: usa el botón Exportar para crearla.",
           "hangarXplor": "Una exportación de hangarXPLOR."
-        }
+        },
+        "details": {
+          "imported": "Añadidas",
+          "found": "Coincidentes",
+          "movedToWanted": "Movidas a la lista de deseos",
+          "missing": "Naves no encontradas",
+          "missingComponents": "Componentes no encontrados",
+          "missingUpgrades": "Mejoras no encontradas"
+        },
+        "noDetails": "Esta ejecución no registró detalles."
       },
       "oauthApplications": {
         "settingsIntro": "Administre sus aplicaciones OAuth. Estas aplicaciones pueden acceder a la API de FleetYards en nombre de los usuarios.",

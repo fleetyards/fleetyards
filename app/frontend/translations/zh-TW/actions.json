@@ -369,7 +369,8 @@
       "exportAllCsv": "全部匯出為 CSV",
       "imports": {
         "cancel": "取消",
-        "downloadExample": "範例檔案"
+        "downloadExample": "範例檔案",
+        "toggleDetails": "查看詳情"
       },
       "selectFile": "選擇檔案"
     }

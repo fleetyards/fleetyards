@@ -17,6 +17,7 @@ module V1
           hangarGroup: ::V1::Schemas::Hangar::Groups::HangarGroup,
 
           output: {type: :object, additionalProperties: true},
+          details: ::V1::Schemas::ImportDetails,
 
           startedAt: {type: :string, format: "date-time"},
           finishedAt: {type: :string, format: "date-time"},

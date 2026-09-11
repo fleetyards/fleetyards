@@ -128,7 +128,16 @@
         "formats": {
           "fleetyards": "A FleetYards hangar export — use the Export button to create one.",
           "hangarXplor": "A hangarXPLOR export."
-        }
+        },
+        "details": {
+          "imported": "Added",
+          "found": "Matched",
+          "movedToWanted": "Moved to wishlist",
+          "missing": "Ships not found",
+          "missingComponents": "Components not found",
+          "missingUpgrades": "Upgrades not found"
+        },
+        "noDetails": "This run recorded no details."
       },
       "oauthApplications": {
         "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",

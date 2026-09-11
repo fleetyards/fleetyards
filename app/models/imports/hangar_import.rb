@@ -73,6 +73,14 @@ module Imports
       nil
     end
 
+    # Both lists are already model names -- this type never records ids.
+    def result_details
+      {
+        imported: Array(output&.dig("imported")),
+        missing: Array(output&.dig("missing"))
+      }.reject { |_key, names| names.empty? }
+    end
+
     def notify_admin
       # don't notify on hangar imports
     end

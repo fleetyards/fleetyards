@@ -16,7 +16,10 @@ json.cache! ["v1-user", import, local_assigns.fetch(:extended, false)] do
     end
   end
 
-  json.output import.output if local_assigns.fetch(:extended, false)
+  if local_assigns.fetch(:extended, false)
+    json.output import.output
+    json.details import.result_details
+  end
 
   json.started_at import.started_at
   json.finished_at import.finished_at

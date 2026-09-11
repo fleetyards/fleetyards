@@ -156,6 +156,13 @@ class Import < ApplicationRecord
     type.to_s.demodulize.underscore.humanize
   end
 
+  # What the run actually did, as lists a person can read. `output` is shaped
+  # per type and half of it is ids, so each user-facing subclass says how its
+  # own run reads; anything else has nothing to show.
+  def result_details
+    {}
+  end
+
   # Nothing here reaches the job. A Sidekiq process that turns out to be alive
   # after all carries on working and then raises on its own `finish!`, because
   # the transition it expects is no longer there -- which is why this is the

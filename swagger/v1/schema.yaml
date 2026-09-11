@@ -16782,6 +16782,8 @@ components:
         output:
           type: object
           additionalProperties: true
+        details:
+          "$ref": "#/components/schemas/ImportDetails"
         startedAt:
           type: string
           format: date-time
@@ -16808,6 +16810,35 @@ components:
       - createdAt
       - updatedAt
       title: Import
+    ImportDetails:
+      type: object
+      properties:
+        imported:
+          type: array
+          items:
+            type: string
+        found:
+          type: array
+          items:
+            type: string
+        movedToWanted:
+          type: array
+          items:
+            type: string
+        missing:
+          type: array
+          items:
+            type: string
+        missingComponents:
+          type: array
+          items:
+            type: string
+        missingUpgrades:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ImportDetails
     ImportInput:
       type: object
       properties:
