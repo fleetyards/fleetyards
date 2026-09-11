@@ -28,7 +28,11 @@ class HoloDimensions
   # `sorted` is the honest default. A hull is longer than it is wide and wider
   # than it is tall, which holds for everything except a ship rendered with its
   # wings vertical -- the Reliant. Those need naming, not guessing.
-  Result = Data.define(:x, :y, :z) do
+  # `exact` is false when a node's rotation does not map axes onto axes. The box
+  # is then an upper bound: transforming the eight corners of an axis-aligned box
+  # gives the box around the rotated *box*, and the corners in between belong to
+  # no vertex. Settling it would need the vertex data, which is Draco-compressed.
+  Result = Data.define(:x, :y, :z, :exact) do
     def to_a
       [x, y, z]
     end
@@ -56,16 +60,31 @@ class HoloDimensions
     0.0, 0.0, 0.0, 1.0
   ].freeze
 
+  # A binary GLB opens with "glTF" and carries its JSON as the first chunk.
+  # Four of the holos on production are GLB, so handing the raw bytes to
+  # JSON.parse would raise on exactly those.
+  GLB_MAGIC = "glTF"
+
   def self.from_file(path)
-    new(JSON.parse(File.read(path))).call
+    new(parse(File.binread(path))).call
   end
 
   def self.from_blob(blob)
-    blob.open { |file| new(JSON.parse(file.read)).call }
+    blob.open { |file| new(parse(file.read)).call }
+  end
+
+  def self.parse(bytes)
+    return JSON.parse(bytes) unless bytes[0, 4] == GLB_MAGIC
+
+    # header is magic, version, total length; then chunk length, chunk type,
+    # chunk data. The JSON chunk is required to come first.
+    length = bytes[12, 4].unpack1("V")
+    JSON.parse(bytes[20, length])
   end
 
   def initialize(gltf)
     @gltf = gltf
+    @exact = true
   end
 
   def call
@@ -77,7 +96,8 @@ class HoloDimensions
     Result.new(
       x: (xs.max - xs.min).round(4),
       y: (ys.max - ys.min).round(4),
-      z: (zs.max - zs.min).round(4)
+      z: (zs.max - zs.min).round(4),
+      exact: @exact
     )
   end
 
@@ -96,6 +116,7 @@ class HoloDimensions
     return [] if node.nil?
 
     matrix = multiply(parent_matrix, local_matrix(node))
+    @exact &&= axis_aligned?(matrix) unless node["mesh"].nil?
 
     corners = []
     corners += mesh_corners(node["mesh"]).map { |corner| transform(matrix, corner) } if node["mesh"]
@@ -114,7 +135,10 @@ class HoloDimensions
     return [] if mesh.nil?
 
     Array(mesh["primitives"]).flat_map do |primitive|
-      accessor = @gltf.dig("accessors", primitive.dig("attributes", "POSITION"))
+      position = primitive.dig("attributes", "POSITION")
+      next [] if position.nil?
+
+      accessor = @gltf.dig("accessors", position)
       min = accessor&.dig("min")
       max = accessor&.dig("max")
       next [] unless min.is_a?(Array) && max.is_a?(Array) && min.size == 3 && max.size == 3
@@ -174,6 +198,16 @@ class HoloDimensions
         (0..3).sum { |k| left[(row * 4) + k] * right[(k * 4) + column] }
       end
     end
+  end
+
+  # Whether the linear part maps each axis onto an axis, give or take a sign.
+  # Then the transformed corners are the real extrema and the box is exact; a
+  # rotation at any other angle makes it an upper bound.
+  private def axis_aligned?(matrix, epsilon = 1e-6)
+    rows = (0..2).map { |row| (0..2).map { |column| matrix[(row * 4) + column].abs } }
+
+    rows.all? { |row| row.count { |value| value > epsilon } == 1 } &&
+      (0..2).all? { |column| rows.count { |row| row[column] > epsilon } == 1 }
   end
 
   private def transform(matrix, point)

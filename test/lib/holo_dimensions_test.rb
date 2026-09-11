@@ -3,8 +3,8 @@
 require "test_helper"
 
 class HoloDimensionsTest < ActiveSupport::TestCase
-  def fixture(name)
-    Rails.root.join("test/fixtures/holo/#{name}.gltf")
+  def fixture(name, extension = "gltf")
+    Rails.root.join("test/fixtures/holo/#{name}.#{extension}")
   end
 
   test "reads the box straight off the accessor" do
@@ -43,6 +43,37 @@ class HoloDimensionsTest < ActiveSupport::TestCase
 
   test "answers nothing when no accessor states its bounds" do
     assert_nil HoloDimensions.from_file(fixture("no_bounds"))
+  end
+
+  # Four of the holos on production are binary GLB, which opens with "glTF" and
+  # carries its JSON as the first chunk. Handing those bytes to JSON.parse raised.
+  test "reads a binary GLB" do
+    result = HoloDimensions.from_file(fixture("plain", "glb"))
+
+    assert_in_delta 2.0, result.x
+    assert_in_delta 1.0, result.y
+    assert_in_delta 6.0, result.z
+  end
+
+  # A primitive with no POSITION used to reach Array#dig as nil and raise,
+  # taking the whole file down with it even though another primitive was fine.
+  test "skips a primitive with no POSITION and keeps the rest" do
+    result = HoloDimensions.from_file(fixture("missing_position"))
+
+    assert_in_delta 6.0, result.z
+  end
+
+  test "an axis-permuting rotation is exact" do
+    assert_predicate HoloDimensions.from_file(fixture("rotated")), :exact
+  end
+
+  # 22.5 degrees about y maps no axis onto an axis, so the eight transformed
+  # corners bound the rotated box rather than the geometry inside it.
+  test "a rotation off the axes is an upper bound" do
+    result = HoloDimensions.from_file(fixture("skewed"))
+
+    assert_not result.exact
+    assert_operator result.x, :>, 2.0
   end
 
   test "sorts largest first and states proportions against it" do

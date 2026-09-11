@@ -20,6 +20,9 @@ def report(label, result, model = nil)
   puts format("  achsen     x %.3f   y %.3f   z %.3f", *result.to_a)
   puts format("  sortiert     %.3f     %.3f     %.3f   (größte zuerst)", *result.sorted)
   puts format("  proportion   %.4f     %.4f     %.4f", *result.proportions)
+  unless result.exact
+    puts "  ! eine node-rotation liegt nicht auf den achsen: die maße sind eine obergrenze"
+  end
 
   return if model.nil? || model.length.blank?
 
