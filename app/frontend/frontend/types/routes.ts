@@ -35,6 +35,7 @@ type FrontendSimpleRoutes =
   | "hangar-preview"
   | "hangar-fleetchart"
   | "hangar-stats"
+  | "hangar-imports"
   | "hangar-inventories"
   | "hangar-inventory"
   // Fleets

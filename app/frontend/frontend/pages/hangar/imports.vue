@@ -10,6 +10,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
+import Paginator from "@/shared/components/Paginator/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -20,6 +21,7 @@ import {
   type Import,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { usePagination } from "@/shared/composables/usePagination";
 
 const { t, l } = useI18n();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
@@ -32,7 +34,18 @@ const RUNNING_STATES: ImportStatusEnum[] = [
 
 const isRunning = (item: Import) => RUNNING_STATES.includes(item.status);
 
-const { data, isLoading } = useImports(undefined, {
+// Declared before the pagination it reads: both sides are computed, so the
+// forward reference resolves on first access rather than at definition.
+const queryKey = computed(() => getImportsQueryKey(queryParams.value));
+
+const { perPage, page, updatePerPage } = usePagination(queryKey);
+
+const queryParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
+}));
+
+const { data, isLoading } = useImports(queryParams, {
   query: {
     // A running import reports through the database, not a socket. Polling
     // stops as soon as nothing on the page is still working, so an idle
@@ -47,8 +60,10 @@ const { data, isLoading } = useImports(undefined, {
 
 const items = computed<Import[]>(() => data.value?.items ?? []);
 
+// Keyed on nothing: a cancel has to invalidate whichever page the user is on,
+// and the list is small enough that refetching every cached page is cheap.
 const invalidateImports = () =>
-  queryClient.invalidateQueries({ queryKey: getImportsQueryKey() });
+  queryClient.invalidateQueries({ queryKey: ["imports"] });
 
 const confirmCancel = (item: Import) => {
   displayConfirm({
@@ -160,6 +175,12 @@ const summary = (item: Import) => {
       </Btn>
     </template>
   </ListGroup>
+
+  <Paginator
+    :query-result-ref="data"
+    :per-page="perPage"
+    :update-per-page="updatePerPage"
+  />
 </template>
 
 <style lang="scss" scoped>
