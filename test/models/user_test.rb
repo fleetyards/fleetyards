@@ -273,3 +273,35 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 end
+
+# `counter_cache: true` belongs on a `belongs_to`, and `Vehicle belongs_to :user`
+# never declared it -- so on these two scoped `has_many`s it maintained nothing,
+# while still making the reflection claim a cached counter with no column behind
+# it. `size` then raised `NoMethodError` inside `counter_cache_column`, where
+# `count` and `length` answered correctly.
+class UserVehicleCountingTest < ActiveSupport::TestCase
+  setup do
+    @user = create(:user)
+    create_list(:vehicle, 3, user: @user, wanted: false)
+    create(:vehicle, user: @user, wanted: true)
+  end
+
+  test "counts the hangar and the wishlist every way of asking" do
+    user = User.find(@user.id)
+
+    assert_equal 3, user.purchased_vehicles.size
+    assert_equal 3, user.purchased_vehicles.count
+    assert_equal 3, user.purchased_vehicles.length
+
+    assert_equal 1, user.wanted_vehicles.size
+    assert_equal 1, user.wanted_vehicles.count
+    assert_equal 1, user.wanted_vehicles.length
+  end
+
+  test "claims no cached counter for either association" do
+    %i[purchased_vehicles wanted_vehicles].each do |association|
+      assert_not User.reflect_on_association(association).has_cached_counter?,
+        "#{association} claims a cached counter, which has no column behind it"
+    end
+  end
+end
