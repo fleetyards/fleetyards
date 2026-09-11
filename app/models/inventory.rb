@@ -83,4 +83,29 @@ class Inventory < ApplicationRecord
   def vehicle?
     vehicle_id.present?
   end
+
+  # Losing the ship puts this row into the two unique indexes that only cover
+  # `vehicle_id IS NULL`, on `lower(name)` and on `slug`. A ship inventory is
+  # named after its ship, so a user with two of the same model holds two rows
+  # with the same name and the second one to be detached collides. Postgres does
+  # the detaching itself, through `on_delete: :nullify`, so nothing on that path
+  # validates anything -- the name has to be free before the ship goes.
+  #
+  # Free among every other inventory of this holder rather than among the
+  # hand-made ones: the sibling detached in the same breath is still holding its
+  # `vehicle_id` while this runs, and would be invisible to the narrower check.
+  def claim_free_name!
+    taken = self.class.where(holder_type:, holder_id:).where.not(id:).pluck(:name, :slug)
+    names = taken.map { |taken_name, _| taken_name.downcase }
+    slugs = taken.map { |_, taken_slug| taken_slug }
+
+    return if names.exclude?(name.downcase) && slugs.exclude?(self.class.slug_for(name))
+
+    suffix = (2..).find do |candidate|
+      names.exclude?("#{name} (#{candidate})".downcase) &&
+        slugs.exclude?(self.class.slug_for("#{name} (#{candidate})"))
+    end
+
+    update!(name: "#{name} (#{suffix})")
+  end
 end

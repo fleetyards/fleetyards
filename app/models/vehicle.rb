@@ -146,7 +146,7 @@ class Vehicle < ApplicationRecord
   before_save :reset_pledge_id_if_wanted
   before_save :update_slugs
 
-  before_destroy :freeze_inventory_location
+  before_destroy :detach_inventory
 
   after_create :broadcast_create
   after_destroy :remove_loaners, :remove_bundled_snub_crafts, :broadcast_destroy
@@ -240,7 +240,7 @@ class Vehicle < ApplicationRecord
     vehicle_ids |= descendants_of(vehicle_ids)
     loaner_groups = where(id: vehicle_ids, loaner: true).distinct.pluck(:user_id, :model_id)
 
-    freeze_inventory_locations(vehicle_ids)
+    detach_inventories(vehicle_ids)
 
     loadout_ids = VehicleLoadout.where(vehicle_id: vehicle_ids).pluck(:id)
     erase_versions("VehicleLoadout", loadout_ids)
@@ -297,15 +297,16 @@ class Vehicle < ApplicationRecord
       end
   end
 
-  # What `Vehicle#freeze_inventory_location` does on a single destroy. Iterated
-  # rather than expressed as one `UPDATE`, because the label is `display_name`
-  # and the set is bounded by the vehicles carrying an inventory, not by the
-  # vehicles being deleted.
-  private_class_method def self.freeze_inventory_locations(vehicle_ids)
-    Inventory.where(vehicle_id: vehicle_ids, location: nil)
+  # What `Vehicle#detach_inventory` does on a single destroy. Iterated rather
+  # than expressed as one `UPDATE`, because both the label and the free name are
+  # per row, and the set is bounded by the vehicles carrying an inventory rather
+  # than by the vehicles being deleted.
+  private_class_method def self.detach_inventories(vehicle_ids)
+    Inventory.where(vehicle_id: vehicle_ids)
       .includes(vehicle: :model)
       .find_each do |inventory|
-        inventory.update_column(:location, inventory.vehicle.display_name)
+        inventory.update(location: inventory.vehicle.display_name) if inventory.location.blank?
+        inventory.claim_free_name!
       end
   end
 
@@ -558,11 +559,14 @@ class Vehicle < ApplicationRecord
 
   # The foreign key nullifies `vehicle_id`, which would otherwise leave the stock
   # with no hint of where it came from.
-  private def freeze_inventory_location
+  # A ship inventory outlives its ship -- the foreign key nullifies rather than
+  # cascades -- so it leaves carrying the ship's name as its location, and a name
+  # nothing else of this holder's has claimed.
+  private def detach_inventory
     return if inventory.blank?
-    return if inventory.location.present?
 
-    inventory.update(location: display_name)
+    inventory.update(location: display_name) if inventory.location.blank?
+    inventory.claim_free_name!
   end
 
   private def model_must_be_player_ownable

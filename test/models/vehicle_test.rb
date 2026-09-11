@@ -383,4 +383,34 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     assert_equal 1, remaining.count
     assert_equal 1, remaining.where(hidden: false).count
   end
+
+  test "detaches a ship inventory under a name no sibling holds" do
+    model = create(:model)
+    first = create(:vehicle, user: @user, model: model)
+    second = create(:vehicle, user: @user, model: model)
+    Inventory.provision_for(first, holder: @user)
+    Inventory.provision_for(second, holder: @user)
+
+    Vehicle.delete_with_dependents([first.id, second.id])
+
+    inventories = Inventory.where(holder: @user)
+    assert_equal 2, inventories.count
+    assert_equal 2, inventories.pluck(:name).uniq.size
+    assert_equal 2, inventories.pluck(:slug).uniq.size
+    assert_equal [model.name, model.name], inventories.pluck(:location)
+    assert_equal [nil, nil], inventories.pluck(:vehicle_id)
+  end
+
+  test "detaches a ship inventory on a single destroy too" do
+    model = create(:model)
+    first = create(:vehicle, user: @user, model: model)
+    second = create(:vehicle, user: @user, model: model)
+    Inventory.provision_for(first, holder: @user)
+    Inventory.provision_for(second, holder: @user)
+
+    Vehicle.find(first.id).destroy!
+    Vehicle.find(second.id).destroy!
+
+    assert_equal 2, Inventory.where(holder: @user).pluck(:name).uniq.size
+  end
 end
