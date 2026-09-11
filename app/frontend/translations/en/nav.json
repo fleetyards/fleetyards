@@ -279,7 +279,8 @@
           "system": "System"
         }
       },
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "scDataSource": "Data source"
     }
   }
 }

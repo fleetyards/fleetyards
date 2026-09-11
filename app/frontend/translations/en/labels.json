@@ -2215,10 +2215,6 @@
           "units": "units"
         }
       },
-      "scDataSource": {
-        "dataSource": "Data source",
-        "notLive": "Not the live build"
-      },
       "shipHistory": {
         "sales": "Sale History",
         "salesCount": "Recorded sales",

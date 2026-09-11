@@ -1,0 +1,63 @@
+/*
+ * The row's own inner, because the navigation's carries an icon and this row
+ * carries the build's name instead. Geometry is the one NavItemInner sets - a
+ * 30px column and 15px to the text, 6px of it once the navigation collapses -
+ * so this row lines up with the ones above it rather than sitting a few pixels
+ * off on its own.
+ */
+.sc-data-source-switch {
+  &__inner {
+    min-height: 30px;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+  }
+
+  /*
+   * Holds the icon column's 30px and 15px gap as *layout* -- NavItemInner's
+   * geometry, so this row's label starts where every other row's does -- but the
+   * name itself is allowed out of that box. A fixed, unshrinkable width means
+   * what spills is painted, not measured, so the label stays put however long
+   * the environment's name is. Centred, so the spill is halved either side and
+   * lands in the 25px of padding on the left and the gap on the right.
+   */
+  &__build {
+    width: 30px;
+    margin-inline-end: 15px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary, #428bca);
+    /*
+     * Orbitron, the face the app uses wherever a value is read rather than a
+     * sentence. It is wide, which is what made it push the label out of line
+     * while the column still measured its content -- now that the name is only
+     * painted past the box, the width costs nothing but the spill.
+     */
+    font-family: "Orbitron", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  &__label {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  &.nav-item--slim .sc-data-source-switch__build {
+    margin-inline-end: 6px;
+  }
+
+  /*
+   * Reading a build that is not live: the name leaves the primary the rest of
+   * the navigation accents with and takes the warning colour. It carries that
+   * on its own, so nothing else in the row has to -- a rail here would say
+   * "this is the open page", which is what it means on every other row.
+   */
+  &--preview .sc-data-source-switch__build {
+    color: $warning;
+  }
+}

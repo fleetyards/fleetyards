@@ -2214,10 +2214,6 @@
           "units": "unidades"
         }
       },
-      "scDataSource": {
-        "dataSource": "Fuente de datos",
-        "notLive": "No es la compilación live"
-      },
       "erkul": {
         "prefix": "Tryout Loadouts with",
         "link": "Erkul's DPS Calculator"

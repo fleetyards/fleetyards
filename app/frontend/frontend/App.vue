@@ -10,7 +10,6 @@ import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.
 import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
-import ScDataSourceBar from "@/frontend/components/ScDataSource/index.vue";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
 import OffCanvas from "@/shared/components/OffCanvas/index.vue";
@@ -285,8 +284,6 @@ const setLocale = (locale: string) => {
           }"
         >
           <AppNavigationHeader />
-
-          <ScDataSourceBar />
 
           <router-view v-slot="{ Component, route: viewRoute }">
             <transition name="fade" mode="out-in">

@@ -10,6 +10,12 @@
     align-items: center;
     padding: 10px 10px 10px 25px;
     color: darken($text-color, 10%);
+    /*
+     * A button does not inherit the page's face -- the UA sets the whole `font`
+     * shorthand on it -- so without this a row rendered as a button reads in the
+     * default sans while the rows either side of it read in Open Sans.
+     */
+    font: inherit;
     font-size: 18px;
     white-space: nowrap;
     text-transform: uppercase;
