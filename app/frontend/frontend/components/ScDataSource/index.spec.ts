@@ -129,6 +129,23 @@ describe("ScDataSourceSwitch", () => {
     expect(useScDataSourceStore().requestParam).toBe("eptu");
   });
 
+  // The switch reads against the build it offers, not against "is this the
+  // default one". A reader left on a preview that is no longer the newest --
+  // restored from a previous session, or passed by a second channel -- would
+  // otherwise be sent to live first and need a second press to arrive.
+  it("offers the newest preview from an older one in a single press", async () => {
+    sources.value = { items: [live, ptu, eptu] };
+    const wrapper = await mountSwitch();
+
+    useScDataSourceStore().select("ptu");
+    await nextTick();
+
+    await press(wrapper);
+
+    expect(useScDataSourceStore().requestParam).toBe("eptu");
+    expect(wrapper.find(BUILD).text()).toBe("eptu");
+  });
+
   // The name is the marker and it takes the warning colour through this class.
   // No rail: on every other row that means "this is the open page".
   it("marks the row while the build is not the default one", async () => {

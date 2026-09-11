@@ -50,7 +50,15 @@ const slim = computed(() => navSlim.value && !mobile.value);
 // label until each query happened to refetch.
 const toggle = async () => {
   // Two states, never a list: the live build and the newest preview of it.
-  store.select(onPreview.value ? undefined : previewSource.value?.environment);
+  // Read against that preview rather than against "is this the default", so a
+  // reader left on a preview the server has since passed -- a second channel
+  // configured, or an older choice restored -- is one press from the build the
+  // switch offers, not one press from live and a second one back out.
+  store.select(
+    selected.value?.environment === previewSource.value?.environment
+      ? undefined
+      : previewSource.value?.environment,
+  );
 
   // Invalidated rather than cleared. `clear()` removes every query, so the
   // mounted observers have nothing left to refetch and the page keeps showing
