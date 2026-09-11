@@ -136,7 +136,7 @@ Dropping them is a third deploy, after Deploy B, and it is a real piece of work 
 1. `stock_positions`, `current_stock`, `stock_item`, `stock_volume`, `entries_for_stock_item` and `reference_entry_for` group by and join on the position.
 2. The two `*_all_inventory_stock` controllers' raw SQL (`hangar_all_inventory_stock_controller.rb:20`, `fleet_all_inventory_stock_controller.rb:18`).
 3. `net_quantity_for` and `withdrawal_does_not_exceed_stock` take a position instead of a triple.
-4. Jbuilder: `id` on every position payload, `positionId` beside `stockSlug` on entries. Note `fleet_inventory_stock/index.jbuilder:3` inlines a copy of the shared partial and has to change twice.
+4. Jbuilder: `id` on every position payload, `positionId` beside `stockSlug` on entries, and `stockSlug` read from the position's own column with the derivation as a fallback for an unbackfilled row. The inlined copy in `fleet_inventory_stock/index.jbuilder` renders the shared partial instead — it had to change identically, so converging it was the smaller edit.
 
 ### Phase 5 — Retire the fences
 Everything in D8, once this branch sits on a main that has #4849.
@@ -189,11 +189,13 @@ Everything in D8, once this branch sits on a main that has #4849.
 
 - **The #4718 stock chart.** A stable key is what phase 11 needs, and this provides it, but the chart itself stays there. Note a position row still does not answer "what was it called in January" — that comes from the version trail on the position, which is what #4844 filed.
 - **Converging the two legacy list schemas** — D9.
-- **The duplicated fleet stock controller, the inlined jbuilder, and the dead `Fleets/Logistics/InventoryCard`** — real cleanups, all adjacent, none of them this change. AGENTS.md is explicit about scope creep.
+- **The duplicated fleet stock controller and the dead `Fleets/Logistics/InventoryCard`** — real cleanups, adjacent, neither of them this change. (The inlined jbuilder went in Phase 4: it had to change identically to the partial, so replacing it was smaller than editing both.)
 - **Moving the stock list filter server-side.** Phase 6 reconsiders it because the reason it was client-side disappears, but it is a behaviour change and can follow.
 
 ## Discovery Log
 
+- **2026-09-11** Phase 4 landed, behaviour-preserving: 351 tests green with no test rewritten for it. Three traps. The select alias `position_id` collides with the `alias_attribute` of the same name on the entry, so a grouped row raised `MissingAttributeError` on the unselected original — the alias is the real foreign key column instead. `withdrawal_does_not_exceed_stock` still checks the triple rather than the position, and has to: it runs during validation, while `assign_position` is a `before_save`, so a new entry has no position yet. And renaming onto an existing identity merges the two positions, which the old group-key behaviour did implicitly and the row has to do explicitly.
+- **2026-09-11** Ran the backfill against the real dump in the worktree: 18 positions from 24 entries, nothing unpointed, no slug collisions. It also turned up a live `component`/`scu` position, which `UNITS_BY_CATEGORY` forbids — the grandfathered mismatch D-for-`unit_fits_category` predicted, and proof that repeating the rule on the position would have failed the backfill on real data.
 - **2026-09-11** Phases 2 and 3 landed. Three things worth recording. The resolution went on the entry as a `before_save` rather than into the five call sites, which made the fleet restore work for free — it re-resolves from the identity instead of copying a foreign key pointing at a position destroyed with the fleet. The unit-fits-category rule is deliberately *not* repeated on the position: entries predating it are grandfathered, so duplicating it would give the backfill a way to fail on exactly the rows it exists for. And `pluck` casts an enum to its label even through `Arel.sql`, so the backfill reads raw rows — integers are what a migration should see.
 - **2026-09-11** Two environment notes. `bin/rails data:migrate` cannot be run in a fresh worktree: `db:prepare` stamps no `data_migrations` rows, so it tries all 21 from scratch and dies on an unrelated 2026-03 feature-flags one. Use `data:migrate:up VERSION=`. And `annotaterb` runs on `db:migrate` here, re-annotating one unrelated file left by #4843 each time.
 - **2026-09-10** Phase 1 landed: both tables, the `StockPosition` concern, the nullable foreign keys, and 15 tests. Settled three things the plan had left open — two tables rather than one polymorphic one (D3), the position unique indexes can land in Deploy A rather than waiting for Deploy B (D5), and the duplicated identity columns on the entries need a third deploy of their own (D10). Also found that `annotaterb` runs automatically on `db:migrate` here, contrary to the research, and that it re-annotates one unrelated file left behind by #4843 — reverted each time rather than carried in this diff.
@@ -204,7 +206,7 @@ Everything in D8, once this branch sits on a main that has #4849.
 - [x] Phase 1 — The table
 - [x] Phase 2 — Writes (find-or-create; `update_stock_item` moves with Phase 4)
 - [x] Phase 3 — Backfill
-- [ ] Phase 4 — Reads
+- [x] Phase 4 — Reads
 - [ ] Phase 5 — Retire the fences
 - [ ] Phase 6 — Frontend
 - [ ] Phase 7 — Deploy B
