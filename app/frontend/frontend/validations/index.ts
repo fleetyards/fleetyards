@@ -13,6 +13,7 @@ import {
   numeric,
   between,
   min,
+  max,
   min_value,
   confirmed,
   regex,
@@ -25,6 +26,7 @@ export const setupRules = () => {
   defineRule("confirmed", confirmed);
   defineRule("regex", regex);
   defineRule("min", min);
+  defineRule("max", max);
   defineRule("min_value", min_value);
   defineRule("numeric", numeric);
   defineRule("between", between);
