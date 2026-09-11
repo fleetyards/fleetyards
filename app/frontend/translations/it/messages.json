@@ -149,7 +149,8 @@
         "onSale": "%{model} è ora in vendita!",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
-        "importPaintsStarted": "Importazione delle verniciature avviata. Riceverai una notifica al termine."
+        "importPaintsStarted": "Importazione delle verniciature avviata. Riceverai una notifica al termine.",
+        "dimensionsDrifted": "Queste dimensioni differiscono dai file di gioco."
       },
       "fundingGoal": {
         "created": "Obiettivo di finanziamento creato.",

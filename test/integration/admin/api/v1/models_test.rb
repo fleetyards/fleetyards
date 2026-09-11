@@ -176,6 +176,20 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by dimensionsDrifted" do
+    create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 10.0, sc_beam: 5.0, sc_height: 3.0)
+    drifted = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 12.0, sc_beam: 5.0, sc_height: 3.0)
+    # No game-file values at all is not a difference; it is silence.
+    create(:model, length: 10.0, beam: 5.0, height: 3.0)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"dimensionsDrifted" => true}} do
+      assert_equal [drifted.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /models honours perPage and totals" do
     create_list(:model, 10)
     sign_in @user

@@ -618,6 +618,33 @@ class Model < ApplicationRecord
     where(active: true)
   end
 
+  # Where the curated dimensions disagree with what the loader read from the game
+  # files. `sc_*` is rewritten on every load; `length`/`beam`/`height` are what
+  # `Dock#fits?` and the public payload use, and nothing keeps the two in step --
+  # 111 of the 216 models carrying both had drifted when this was added.
+  #
+  # Not every difference is a mistake: the Hull C is recorded expanded at 125 m
+  # against 91 m in the files, which is a deliberate curation. So this finds them
+  # to look at, and the taking-over happens one field at a time.
+  #
+  # `IS DISTINCT FROM` rather than `<>`, which is NULL when either side is, and
+  # would drop a model whose curated height was never filled in.
+  scope :dimensions_drifted, ->(flag = true) {
+    unless ActiveModel::Type::Boolean.new.cast(flag)
+      next all
+    end
+
+    where.not(sc_length: nil).where(
+      "models.length IS DISTINCT FROM models.sc_length" \
+      " OR models.beam IS DISTINCT FROM models.sc_beam" \
+      " OR models.height IS DISTINCT FROM models.sc_height"
+    )
+  }
+
+  def self.ransackable_scopes(auth_object = nil)
+    ["dimensions_drifted"]
+  end
+
   def self.with_dock
     includes(:docks).where.not(docks: {model_id: nil})
   end

@@ -83,6 +83,42 @@ const [extendedFleetchartOffsetBeam, extendedFleetchartOffsetBeamProps] =
   defineField("extendedFleetchartOffsetBeam");
 const [beam, beamProps] = defineField("beam");
 const [height, heightProps] = defineField("height");
+
+// `sc_*` is what the loader read from the game files and rewrites on every
+// import; the fields above are what `Dock#fits?` and the public payload use,
+// and nothing keeps the two in step. A difference is worth looking at but not
+// automatically wrong -- the Hull C is deliberately recorded expanded -- so it
+// is shown and taken over one field at a time.
+const drifted = (current: unknown, source?: number | null) =>
+  source !== null &&
+  source !== undefined &&
+  current !== null &&
+  current !== undefined &&
+  Number(current) !== Number(source);
+
+const lengthDrifted = computed(() =>
+  drifted(length.value, props.model.scLength),
+);
+const beamDrifted = computed(() => drifted(beam.value, props.model.scBeam));
+const heightDrifted = computed(() =>
+  drifted(height.value, props.model.scHeight),
+);
+
+const anyDrifted = computed(
+  () => lengthDrifted.value || beamDrifted.value || heightDrifted.value,
+);
+
+const applyScDimensions = () => {
+  if (props.model.scLength !== null && props.model.scLength !== undefined) {
+    length.value = props.model.scLength;
+  }
+  if (props.model.scBeam !== null && props.model.scBeam !== undefined) {
+    beam.value = props.model.scBeam;
+  }
+  if (props.model.scHeight !== null && props.model.scHeight !== undefined) {
+    height.value = props.model.scHeight;
+  }
+};
 const [mass, massProps] = defineField("mass");
 const [minCrew, minCrewProps] = defineField("minCrew");
 const [maxCrew, maxCrewProps] = defineField("maxCrew");
@@ -134,6 +170,13 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
       </div>
     </div>
     <hr />
+    <div v-if="anyDrifted" class="metrics__drift-notice">
+      <i class="fa-duotone fa-triangle-exclamation" />
+      <span>{{ t("messages.model.dimensionsDrifted") }}</span>
+      <button type="button" class="metrics__apply" @click="applyScDimensions">
+        {{ t("actions.applyAllGameFileValues") }}
+      </button>
+    </div>
     <div class="row">
       <div class="col-12 col-md-4">
         <FormInput
@@ -144,7 +187,19 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           translation-key="model.length"
           :suffix="t('number.units.distance')"
         >
-          <template #subline>SC Length: {{ model.scLength }}</template>
+          <template #subline>
+            <span :class="{ 'metrics__sc--drifted': lengthDrifted }">
+              SC Length: {{ model.scLength ?? "—" }}
+            </span>
+            <button
+              v-if="lengthDrifted"
+              type="button"
+              class="metrics__apply"
+              @click="length = model.scLength"
+            >
+              {{ t("actions.applyGameFileValue") }}
+            </button>
+          </template>
         </FormInput>
       </div>
       <div class="col-12 col-md-4">
@@ -156,7 +211,19 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           translation-key="model.beam"
           :suffix="t('number.units.distance')"
         >
-          <template #subline>SC Beam: {{ model.scBeam }}</template>
+          <template #subline>
+            <span :class="{ 'metrics__sc--drifted': beamDrifted }">
+              SC Beam: {{ model.scBeam ?? "—" }}
+            </span>
+            <button
+              v-if="beamDrifted"
+              type="button"
+              class="metrics__apply"
+              @click="beam = model.scBeam"
+            >
+              {{ t("actions.applyGameFileValue") }}
+            </button>
+          </template>
         </FormInput>
       </div>
       <div class="col-12 col-md-4">
@@ -168,7 +235,19 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           translation-key="model.height"
           :suffix="t('number.units.distance')"
         >
-          <template #subline>SC Height: {{ model.scHeight }}</template>
+          <template #subline>
+            <span :class="{ 'metrics__sc--drifted': heightDrifted }">
+              SC Height: {{ model.scHeight ?? "—" }}
+            </span>
+            <button
+              v-if="heightDrifted"
+              type="button"
+              class="metrics__apply"
+              @click="height = model.scHeight"
+            >
+              {{ t("actions.applyGameFileValue") }}
+            </button>
+          </template>
         </FormInput>
       </div>
     </div>
@@ -394,3 +473,27 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
     </div>
   </ModelForm>
 </template>
+
+<style lang="scss" scoped>
+.metrics__drift-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.metrics__sc--drifted {
+  font-weight: 600;
+}
+
+.metrics__apply {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  font: inherit;
+  color: inherit;
+}
+</style>

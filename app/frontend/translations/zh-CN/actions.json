@@ -372,7 +372,9 @@
         "downloadExample": "示例文件",
         "toggleDetails": "查看详情"
       },
-      "selectFile": "选择文件"
+      "selectFile": "选择文件",
+      "applyGameFileValue": "采用",
+      "applyAllGameFileValues": "全部采用"
     }
   }
 }

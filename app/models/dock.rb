@@ -13,7 +13,6 @@
 #  max_ship_size :integer
 #  min_ship_size :integer
 #  name          :string
-#  ramp          :boolean          default(FALSE), not null
 #  ship_size     :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

@@ -1458,7 +1458,8 @@
           "holoBlank": "Without Holo?",
           "frontViewBlank": "Without Front View Image?",
           "topViewColoredBlank": "Without Top View Colored Image?",
-          "vehicleSize": "Vehicle Size"
+          "vehicleSize": "Vehicle Size",
+          "dimensionsDrifted": "Dimensions differ from game files"
         },
         "modelModules": {
           "name": "Name"
