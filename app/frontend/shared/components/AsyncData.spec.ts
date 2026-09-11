@@ -25,11 +25,12 @@ const statusOf = (error: AsyncStatus["error"]["value"]) =>
 
 // A request that never got an answer: no response, which is what axios reports
 // for a device that is offline or a host it could not reach.
-const unanswered = () =>
-  ({
+function unanswered() {
+  return {
     isAxiosError: true,
     code: "ERR_NETWORK",
-  }) as unknown as AsyncStatus["error"]["value"];
+  } as unknown as AsyncStatus["error"]["value"];
+}
 
 const mount = (status: number) =>
   mountWithDefaults<typeof Component>(Component, {

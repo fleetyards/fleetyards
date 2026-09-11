@@ -9,8 +9,11 @@ const statusOf = (error: unknown) =>
 // response, which is the only thing that separates them from a server that
 // answered with a failure. A cancelled request is not one of them - nothing
 // went wrong, the caller walked away.
-const unanswered = (error: unknown) =>
-  isAxiosError(error) && !error.response && error.code !== "ERR_CANCELED";
+function unanswered(error: unknown) {
+  return (
+    isAxiosError(error) && !error.response && error.code !== "ERR_CANCELED"
+  );
+}
 
 /**
  * Which screen a failed request deserves. Shared so every surface answers the

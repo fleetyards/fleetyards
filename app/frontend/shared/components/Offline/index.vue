@@ -12,9 +12,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 
-type Props = {
+interface Props {
   retry?: () => void;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   retry: undefined,
