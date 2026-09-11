@@ -125,12 +125,10 @@ class User < ApplicationRecord
   has_many :purchased_vehicles,
     -> { where(wanted: false) },
     class_name: "Vehicle",
-    counter_cache: true,
     inverse_of: false
   has_many :wanted_vehicles,
     -> { where(wanted: true) },
     class_name: "Vehicle",
-    counter_cache: true,
     inverse_of: false
   has_many :models,
     through: :vehicles
