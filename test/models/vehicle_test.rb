@@ -331,3 +331,131 @@ class VehicleVersioningTest < ActiveSupport::TestCase
     end
   end
 end
+
+class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
+  setup do
+    @user = create(:user)
+  end
+
+  test "takes the loadouts and the rows hanging off the vehicle" do
+    vehicle = create(:vehicle, user: @user)
+    create(:vehicle_loadout, vehicle: vehicle)
+    TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))
+    FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)
+
+    Vehicle.delete_with_dependents([vehicle.id])
+
+    assert_empty Vehicle.where(id: vehicle.id)
+    assert_empty VehicleLoadout.where(vehicle_id: vehicle.id)
+    assert_empty TaskForce.where(vehicle_id: vehicle.id)
+    assert_empty FleetVehicle.where(vehicle_id: vehicle.id)
+    assert_empty PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
+  end
+
+  test "takes the loaners and bundled snub crafts of the vehicles it deletes" do
+    loaner_model = create(:model)
+    snub_craft_model = create(:model)
+    parent_model = create(:model).tap do |model|
+      model.loaners << loaner_model
+      model.snub_crafts << snub_craft_model
+    end
+    parent = create(:vehicle, user: @user, model: parent_model)
+
+    assert_equal 2, Vehicle.where(vehicle_id: parent.id).count
+
+    Vehicle.delete_with_dependents([parent.id])
+
+    assert_empty Vehicle.where(vehicle_id: parent.id)
+  end
+
+  test "leaves a visible loaner behind when the visible one is deleted" do
+    loaner_model = create(:model)
+    parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+    other_parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+    create(:vehicle, user: @user, model: parent_model)
+    create(:vehicle, user: @user, model: other_parent_model)
+
+    visible = Vehicle.find_by(loaner: true, user_id: @user.id, model_id: loaner_model.id, hidden: false)
+
+    Sidekiq::Worker.clear_all
+
+    Vehicle.delete_with_dependents([visible.parent_vehicle.id])
+
+    remaining = Vehicle.where(loaner: true, user_id: @user.id, model_id: loaner_model.id)
+    assert_equal 1, remaining.count
+    assert_equal 1, remaining.where(hidden: false).count
+
+    # Queued from `after_all_transactions_commit`, so a worker cannot read the
+    # hangar as it was before the delete.
+    assert_equal [remaining.first.id], Updater::FleetVehicleUpdateJob.jobs.map { |job| job["args"].first }
+  end
+
+  test "detaches a ship inventory under a name no sibling holds" do
+    model = create(:model)
+    first = create(:vehicle, user: @user, model: model)
+    second = create(:vehicle, user: @user, model: model)
+    Inventory.provision_for(first, holder: @user)
+    Inventory.provision_for(second, holder: @user)
+
+    Vehicle.delete_with_dependents([first.id, second.id])
+
+    inventories = Inventory.where(holder: @user)
+    assert_equal 2, inventories.count
+    assert_equal 2, inventories.pluck(:name).uniq.size
+    assert_equal 2, inventories.pluck(:slug).uniq.size
+    assert_equal [model.name, model.name], inventories.pluck(:location)
+    assert_equal [nil, nil], inventories.pluck(:vehicle_id)
+  end
+
+  # An inventory left invalid by something else entirely must not be what stops
+  # somebody deleting a ship, and the label still has to land.
+  test "detaches an inventory that no longer validates" do
+    vehicle = create(:vehicle, user: @user)
+    inventory = Inventory.provision_for(vehicle, holder: @user)
+    inventory.update_column(:name, "")
+    assert_not inventory.reload.valid?
+
+    Vehicle.find(vehicle.id).destroy!
+
+    assert_nil Vehicle.find_by(id: vehicle.id)
+    assert_equal vehicle.display_name, inventory.reload.location
+  end
+
+  # What keeps two inventories detaching at once from choosing the same suffix:
+  # the read is locked, and ordered so neither waits on a row the other holds.
+  test "claims the name under a lock taken in a fixed order" do
+    vehicle = create(:vehicle, user: @user)
+    Inventory.provision_for(vehicle, holder: @user)
+
+    claim = statements_for { Vehicle.find(vehicle.id).destroy! }
+      .find { |sql| sql.include?("inventories") && sql.include?("FOR UPDATE") }
+
+    assert claim, "the name claim takes no lock"
+    assert_includes claim, %(ORDER BY "inventories"."id")
+  end
+
+  test "detaches a ship inventory on a single destroy too" do
+    model = create(:model)
+    first = create(:vehicle, user: @user, model: model)
+    second = create(:vehicle, user: @user, model: model)
+    Inventory.provision_for(first, holder: @user)
+    Inventory.provision_for(second, holder: @user)
+
+    Vehicle.find(first.id).destroy!
+    Vehicle.find(second.id).destroy!
+
+    assert_equal 2, Inventory.where(holder: @user).pluck(:name).uniq.size
+  end
+
+  private def statements_for
+    statements = []
+    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |*, payload|
+      statements << payload[:sql] unless payload[:name] == "SCHEMA"
+    end
+
+    yield
+    statements
+  ensure
+    ActiveSupport::Notifications.unsubscribe(subscriber)
+  end
+end
