@@ -3,11 +3,6 @@
 module InventoryStock
   extend ActiveSupport::Concern
 
-  # Stamped on the versions a position move files, because the only thing that
-  # separates them from an edit to one entry is that they were written as a
-  # group -- and what may be done to one of them afterwards depends on that.
-  POSITION_MOVE_REASON = "stock_position_move"
-
   DEFAULT_SORTING_PARAMS = ["name asc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
@@ -181,10 +176,11 @@ module InventoryStock
       position = destination
     end
 
-    entries = inventory_items.where(position_key => position.id).to_a
-
-    inventory_items.where(id: entries.map(&:id)).update_all(changed.column_values)
-    ::Versions::BulkUpdateRecorder.record(entries, changed.column_values, reason: POSITION_MOVE_REASON)
+    # The entries' own copies of the identity, which the previous release reads
+    # and `withdrawal_does_not_exceed_stock` still checks. No versions for them:
+    # the position's own version is the record of the move now, and one per
+    # entry beside it would say the same thing N more times.
+    inventory_items.where(position_key => position.id).update_all(changed.column_values)
   end
 
   # The newest entry that carries something worth showing: an uploaded image or

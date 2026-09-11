@@ -98,19 +98,23 @@ Two write paths need more than a call: a **ship** inventory may be unsaved until
 
 `Fleets::PurgedFleetRestorer` needs care of its own: `INVENTORY_ITEM_COLUMNS` (`purged_fleet_restorer.rb:23`) is an allowlist copied from a reified version, and `inventory_position_id` must **not** be copied verbatim — it would point at a destroyed position. It has to be re-resolved from the reified name, category and unit.
 
-### D8 — What #4849's machinery becomes
+### D8 — What #4849's machinery becomes, corrected
 
-All of it retires, which is the measure of whether this refactor is the right shape:
+The plan claimed all five pieces retire, as the measure of whether this refactor is the right shape. Two of them do. Three cannot yet, and the reason is worth recording because it was checked rather than assumed:
 
-| #4849 added | why it goes |
+| #4849 added | outcome |
 |---|---|
-| `Versions::BulkUpdateRecorder` | one row moves, so paper_trail files one version by itself |
-| `InventoryStock::POSITION_MOVE_REASON` | nothing needs marking as part of a group any more |
-| `position_is_moved_as_a_whole` validation | an entry cannot leave its position by being relabelled |
-| `InventoryLedgerEntry::POSITION_COLUMNS` | only the validation and the reverter read it |
-| the four `oasdiff` ignore entries | the 400 they cover stops being reachable |
+| `Versions::BulkUpdateRecorder` | **gone** — one row moves, so paper_trail files one version by itself |
+| `InventoryStock::POSITION_MOVE_REASON` | **gone** — nothing needs marking as part of a group any more |
+| `position_is_moved_as_a_whole` | **stays** — see below |
+| `InventoryLedgerEntry::POSITION_COLUMNS` | **stays** — the validation and `assign_position` both read it |
+| the four `oasdiff` ignore entries | **stay** — they cover the 400 that validation produces |
 
-**Sequencing.** This branch is cut from `main`, which does not have #4849 yet, so none of the above exists here. #4849 is `CLEAN` and green; it should merge first, then this branch rebases and Phase 5 has something to delete. Built the other way round, the removal has nothing to remove and the conflict surfaces at rebase time instead. `main` has also moved twice since the branch was cut (`#4851`, `#4854`), so a rebase is due regardless.
+A position having a row did not make the split unreachable. It changed the mechanism. An entry used to leave its position by no longer matching the group key; it now leaves because `assign_position` re-resolves it from those same columns and repoints the foreign key. Stubbing the validation out and renaming one entry of a shared position reproduces the stranded `-30` exactly as before.
+
+So the validation is load-bearing for as long as the entries carry their own identity. It stops being reachable when D10 drops those columns and the foreign key is the only way to say which position an entry is in — and it goes with them, in that deploy.
+
+Per-entry versions for a position move do go, though, and nothing is lost: the position's own version is the record of the move, and one per entry beside it would repeat it N times. The reverter tests had to be rebuilt for that — the version they read was a `create` afterwards, so they were passing on `unknown_field` rather than on the rule they claimed to check.
 
 ### D10 — The entries keep their own name, category and unit for now
 
@@ -144,8 +148,10 @@ Dropping them is a third deploy, after Deploy B, and it is a real piece of work 
 3. `net_quantity_for` and `withdrawal_does_not_exceed_stock` take a position instead of a triple.
 4. Jbuilder: `id` on every position payload, `positionId` beside `stockSlug` on entries, and `stockSlug` read from the position's own column with the derivation as a fallback for an unbackfilled row. The inlined copy in `fleet_inventory_stock/index.jbuilder` renders the shared partial instead — it had to change identically, so converging it was the smaller edit.
 
-### Phase 5 — Retire the fences
-Everything in D8, once this branch sits on a main that has #4849.
+### Phase 5 — Retire what the position makes redundant
+1. `Versions::BulkUpdateRecorder` and `POSITION_MOVE_REASON` are deleted; `update_stock_item` files one version on the position and moves the entries' label copies without versioning them.
+2. The `update_stock_item` version tests move from the entries to the position, and gain the merge and destroy cases.
+3. `position_is_moved_as_a_whole`, `POSITION_COLUMNS` and the `oasdiff` entries stay, per the corrected D8, with the comment rewritten to say what the validation now guards.
 
 ### Phase 6 — Frontend
 1. `id` on the local `StockItem` types, replacing the `\|\|\|` key at all nine sites across the two near-duplicate modals.
@@ -197,6 +203,7 @@ Everything in D8, once this branch sits on a main that has #4849.
 
 ## Discovery Log
 
+- **2026-09-11** Phase 5 corrected D8. Only two of the five pieces retire: the recorder and the reason. `position_is_moved_as_a_whole` is still load-bearing, because the position row changed the *mechanism* of the split rather than removing it — an entry now leaves by having its foreign key re-resolved from the same columns. Verified by stubbing the validation out: the stranded `-30` comes straight back. Also found the reverter tests had started passing for the wrong reason once per-entry versions stopped being filed.
 - **2026-09-11** Collapsed to a single deploy and rewrote D5. The two-deploy split was protecting nothing: Phase 4's reads inner-join the position, so an entry inserted during the window is invisible either way, and nullable only turns a visible 500 into a silent disappearance. The backfill moved into the schema migration under `up_only` and `NOT NULL` lands with the table. Measured the feature's real use to size the remaining exposure: no `boolean` gate on any of the three flags, one actor each on hangar and ship inventories, 252 on fleet logistics, 24 entries in 180 days.
 - **2026-09-11** A consequence of `NOT NULL`: the backfill's own state cannot be built in a test any more, so its test covers the slug derivation as a pure function instead of running it. Real data supplied a case worth pinning — a fleet position named `"Adp mk4 "`, with a trailing space.
 - **2026-09-11** Phase 4 landed, behaviour-preserving: 351 tests green with no test rewritten for it. Three traps. The select alias `position_id` collides with the `alias_attribute` of the same name on the entry, so a grouped row raised `MissingAttributeError` on the unselected original — the alias is the real foreign key column instead. `withdrawal_does_not_exceed_stock` still checks the triple rather than the position, and has to: it runs during validation, while `assign_position` is a `before_save`, so a new entry has no position yet. And renaming onto an existing identity merges the two positions, which the old group-key behaviour did implicitly and the row has to do explicitly.
@@ -212,6 +219,6 @@ Everything in D8, once this branch sits on a main that has #4849.
 - [x] Phase 2 — Writes (find-or-create; `update_stock_item` moves with Phase 4)
 - [x] Phase 3 — Backfill (folded into the migration)
 - [x] Phase 4 — Reads
-- [ ] Phase 5 — Retire the fences
+- [x] Phase 5 — Retire what the position makes redundant
 - [ ] Phase 6 — Frontend
 - [ ] Phase 7 — Tests

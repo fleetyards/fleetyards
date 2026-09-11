@@ -158,13 +158,20 @@ class InventoryTest < ActiveSupport::TestCase
 
     assert_equal "Port Olisar", inventory.reload.location
   end
-  # `update_stock_item` moves a whole position in one `update_all`, which runs no
-  # callbacks and so filed no version -- the widest-reaching change on the
-  # ledger was the only one that left no trace.
-  test "update_stock_item files a version for every entry it moves" do
+  # A rename used to rewrite every entry of a position and file nothing, which
+  # is what #4844 was about. It moves one row now, so one version records it.
+  test "update_stock_item files one version, on the position" do
     stock_item = stock_position(quantity: 100, withdrawn: 30)
 
-    assert_difference -> { versions_for(@inventory).count }, 2 do
+    assert_difference -> { position_versions(stock_item).count }, 1 do
+      @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+    end
+  end
+
+  test "update_stock_item files nothing on the entries themselves" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+
+    assert_no_difference -> { entry_versions.count } do
       @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
     end
   end
@@ -174,7 +181,7 @@ class InventoryTest < ActiveSupport::TestCase
 
     @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
 
-    version = versions_for(@inventory).last
+    version = position_versions(stock_item).last
 
     assert_equal "update", version.event
     assert_equal ["Quantanium", "Quantanium Ore"], version.changeset["name"]
@@ -185,24 +192,37 @@ class InventoryTest < ActiveSupport::TestCase
 
     @inventory.update_stock_item(stock_item, {category: "component", unit: "units"})
 
-    changeset = versions_for(@inventory).last.changeset
+    changeset = position_versions(stock_item).last.changeset
 
     assert_equal ["commodity", "component"], changeset["category"]
     assert_equal ["scu", "units"], changeset["unit"]
   end
 
-  # The whole point of a version here is to answer what the position used to be,
-  # so `object` has to hold the state before the change rather than after it.
+  # The point of the version is to answer what the position used to be, so
+  # `object` has to hold the state before the change rather than after it.
   test "update_stock_item versions reify to the position as it was" do
     stock_item = stock_position(quantity: 100)
 
     @inventory.update_stock_item(stock_item, {name: "Quantanium Ore", category: "component", unit: "units"})
 
-    was = versions_for(@inventory).last.reify
+    was = position_versions(stock_item).last.reify
 
     assert_equal "Quantanium", was.name
     assert_equal "commodity", was.category
     assert_equal "scu", was.unit
+  end
+
+  # The address moves with the identity, and the version records that too, so
+  # an old link can be traced to where it went.
+  test "update_stock_item records the address it moved to" do
+    stock_item = stock_position(quantity: 100)
+
+    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
+
+    assert_equal(
+      ["quantanium--commodity--scu", "quantanium-ore--commodity--scu"],
+      position_versions(stock_item).last.changeset["slug"]
+    )
   end
 
   test "update_stock_item attributes the move to the acting user" do
@@ -211,13 +231,13 @@ class InventoryTest < ActiveSupport::TestCase
 
     @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
 
-    assert_equal @user.id, versions_for(@inventory).last.whodunnit
+    assert_equal @user.id, position_versions(stock_item).last.whodunnit
   end
 
   test "update_stock_item files nothing for a rejected change" do
     stock_item = stock_position(quantity: 100)
 
-    assert_no_difference -> { versions_for(@inventory).count } do
+    assert_no_difference -> { position_versions(stock_item).count } do
       changed = @inventory.update_stock_item(stock_item, {name: "  "})
 
       assert_predicate changed, :invalid?
@@ -226,44 +246,19 @@ class InventoryTest < ActiveSupport::TestCase
     assert_equal ["Quantanium"], @inventory.inventory_items.reload.pluck(:name)
   end
 
-  # Re-submitting the name a position already has moves nothing but `updated_at`,
-  # and a version whose changeset says only that is the noise
+  # Re-submitting the name a position already has moves nothing, and a version
+  # whose changeset says only `updated_at` is the noise
   # `Maintenance::DropChangelessVersionsTask` exists to clear out again.
   test "update_stock_item files nothing when the position does not move" do
     stock_item = stock_position(quantity: 100)
 
-    assert_no_difference -> { versions_for(@inventory).count } do
+    assert_no_difference -> { position_versions(stock_item).count } do
       @inventory.update_stock_item(stock_item, {name: "Quantanium"})
     end
   end
 
-  # The rename and its versions are one transaction, so the failure mode the
-  # fix has to avoid -- a position that moved with nothing recording it -- is
-  # not reachable by a recording that blows up half way.
-  test "update_stock_item rolls the rename back when the versions cannot be written" do
-    stock_item = stock_position(quantity: 100, withdrawn: 30)
-    ::Versions::BulkUpdateRecorder.stubs(:record).raises(ActiveRecord::StatementInvalid, "versions gone")
-
-    assert_raises(ActiveRecord::StatementInvalid) do
-      @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
-    end
-
-    assert_equal ["Quantanium"], @inventory.inventory_items.reload.pluck(:name).uniq
-    assert_empty versions_for(@inventory)
-  end
-
-  # What separates these versions from an edit to a single entry, which the
-  # inventory offers on purpose and which stays revertable on its own.
-  test "update_stock_item marks the versions as a whole-position move" do
-    stock_item = stock_position(quantity: 100, withdrawn: 30)
-
-    @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
-
-    assert_equal [InventoryStock::POSITION_MOVE_REASON], versions_for(@inventory).pluck(:reason).uniq
-  end
-
-  # The bulk statement skips validations, which is what lets a position move
-  # while the per-entry rule refuses to move one entry out of it.
+  # The entries' own copies of the identity still move with it: the previous
+  # release reads them and `withdrawal_does_not_exceed_stock` checks them.
   test "update_stock_item moves a shared position the entries could not move themselves" do
     stock_item = stock_position(quantity: 100, withdrawn: 30)
 
@@ -273,14 +268,40 @@ class InventoryTest < ActiveSupport::TestCase
     assert_equal ["Quantanium Ore"], @inventory.inventory_items.reload.pluck(:name).uniq
   end
 
-  test "update_stock_item leaves other positions unversioned" do
+  # Renaming onto an identity that already exists merges the two, which the old
+  # group-key behaviour did implicitly and a row has to do on purpose.
+  test "update_stock_item merges into a position that already holds that identity" do
     stock_item = stock_position(quantity: 100)
     create(:inventory_item, inventory: @inventory, name: "Titanium", category: :commodity, unit: :scu, quantity: 5)
-    titanium = @inventory.inventory_items.find_by(name: "Titanium")
+
+    assert_difference "InventoryPosition.count", -1 do
+      @inventory.update_stock_item(stock_item, {name: "Titanium"})
+    end
+
+    merged = @inventory.stock_item(InventoryStockItem.slug_for(name: "Titanium", category: "commodity", unit: "scu"))
+
+    assert_equal 105, merged.net_quantity
+    assert_equal 2, merged.entries_count
+  end
+
+  test "update_stock_item leaves other positions alone" do
+    stock_item = stock_position(quantity: 100)
+    create(:inventory_item, inventory: @inventory, name: "Titanium", category: :commodity, unit: :scu, quantity: 5)
+    titanium = @inventory.positions.find_by(name: "Titanium")
 
     @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"})
 
-    assert_empty PaperTrail::Version.where(item_type: "InventoryItem", item_id: titanium.id, event: "update")
+    assert_empty PaperTrail::Version.where(item_type: "InventoryPosition", item_id: titanium.id, event: "update")
+  end
+
+  test "destroy_stock_item takes the position with the entries" do
+    stock_item = stock_position(quantity: 100, withdrawn: 30)
+
+    assert_difference "InventoryItem.count", -2 do
+      assert_difference "InventoryPosition.count", -1 do
+        @inventory.destroy_stock_item(stock_item)
+      end
+    end
   end
 
   private def stock_position(quantity:, withdrawn: nil)
@@ -292,12 +313,16 @@ class InventoryTest < ActiveSupport::TestCase
         name: "Quantanium", category: :commodity, unit: :scu, quantity: withdrawn)
     end
 
-    PaperTrail::Version.where(item_type: "InventoryItem").delete_all
+    PaperTrail::Version.delete_all
 
     @inventory.stock_item(InventoryStockItem.slug_for(name: "Quantanium", category: "commodity", unit: "scu"))
   end
 
-  private def versions_for(inventory)
-    PaperTrail::Version.where(item_type: "InventoryItem", item_id: inventory.inventory_items.select(:id)).order(:created_at)
+  private def position_versions(stock_item)
+    PaperTrail::Version.where(item_type: "InventoryPosition", item_id: stock_item.position_id).order(:created_at)
+  end
+
+  private def entry_versions
+    PaperTrail::Version.where(item_type: "InventoryItem", item_id: @inventory.inventory_items.select(:id))
   end
 end

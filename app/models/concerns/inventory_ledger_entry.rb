@@ -71,13 +71,22 @@ module InventoryLedgerEntry
       new_record? || will_save_change_to_unit? || will_save_change_to_category?
     }
 
-    # A position is nothing but the entries that share a name, category and
-    # unit, so changing one of those on a single entry moves it out of the
-    # position it was in -- and any withdrawals left behind land in a group with
-    # no deposits, at a negative net that `current_stock` hides. An entry that
-    # is alone in its position *is* the position, so it may move itself.
-    # Anything else goes through `InventoryStock#update_stock_item`, which moves
-    # every entry at once.
+    # Changing one of these on a single entry moves it out of the position it was
+    # in, and any withdrawals left behind land in a position with no deposits, at
+    # a negative net that `current_stock` hides.
+    #
+    # A position having a row did not remove this. It changed the mechanism: the
+    # entry used to leave by no longer matching the group key, and now leaves
+    # because `assign_position` re-resolves it from these same columns and
+    # repoints the foreign key. The outcome is identical, which is easy to
+    # confirm by stubbing this out -- the stranded position comes straight back.
+    #
+    # It stops being reachable when the columns are dropped from the entries and
+    # the foreign key is the only way to say which position one is in. That is
+    # its own deploy, and this goes with it.
+    #
+    # An entry alone in its position *is* the position, so it may move itself.
+    # Anything else goes through `InventoryStock#update_stock_item`.
     validate :position_is_moved_as_a_whole, if: -> {
       persisted? && POSITION_COLUMNS.any? { |column| will_save_change_to_attribute?(column) }
     }
