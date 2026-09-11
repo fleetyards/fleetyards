@@ -31,7 +31,7 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     too_small = create(:model, name: "Small Carrier")
     create(:dock, model: too_small, dock_type: :hangar, length: 8.0, beam: 6.0, height: 4.0)
 
-    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, ground: false)
+    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
       names = parsed_body["carriedBy"].map { |entry| entry["name"] }
@@ -42,14 +42,27 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # A ground vehicle belongs in a garage, not on a landing pad.
-  test "GET /models/:slug does not offer a ship dock to a ground vehicle" do
+  # A hover bike is size vehicle and ground false, so `ground` would have sent it
+  # to a hangar instead of a bay.
+  test "GET /models/:slug offers a bay to a hover bike" do
+    carrier = create(:model, name: "Bay Carrier")
+    create(:dock, :with_dimensions, model: carrier, dock_type: :garage)
+
+    bike = create(:model, length: 4.0, beam: 2.0, height: 2.0, size: "vehicle", ground: false)
+
+    assert_api_response :get, 200, path_params: {slug: bike.slug} do
+      assert_includes parsed_body["carriedBy"].map { |entry| entry["name"] }, carrier.name
+    end
+  end
+
+  # A ship in a garage is the case that stays impossible.
+  test "GET /models/:slug does not offer a garage to a ship" do
     carrier = create(:model)
-    create(:dock, :with_dimensions, model: carrier, dock_type: :hangar)
+    create(:dock, :with_dimensions, model: carrier, dock_type: :garage)
 
-    buggy = create(:model, length: 4.0, beam: 2.0, height: 2.0, ground: true)
+    ship = create(:model, length: 4.0, beam: 2.0, height: 2.0, size: "small")
 
-    assert_api_response :get, 200, path_params: {slug: buggy.slug} do
+    assert_api_response :get, 200, path_params: {slug: ship.slug} do
       assert_empty parsed_body["carriedBy"]
     end
   end

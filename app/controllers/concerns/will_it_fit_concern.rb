@@ -39,17 +39,22 @@ module WillItFitConcern
     return if dock.blank?
 
     clearance = dock.clearance
-    # `ground` is nullable, so "not a ground vehicle" is two values.
-    ground = dock.for_vehicles? ? [true] : [false, nil]
 
-    scope.where(
-      models: {
-        ground: ground,
-        length: ..(dock.length - clearance[:length]),
-        beam: ..(dock.beam - clearance[:beam]),
-        height: ..(dock.height - clearance[:height])
-      }
-    )
+    dimensions = {
+      length: ..(dock.length - clearance[:length]),
+      beam: ..(dock.beam - clearance[:beam]),
+      height: ..(dock.height - clearance[:height])
+    }
+
+    # `size`, not `ground`: the latter means "cannot reach space", so a hover bike
+    # is ground: false while still berthing as a vehicle. See Dock#fits?.
+    if dock.for_vehicles?
+      return scope.where(models: {size: ::Dock::VEHICLE_SIZE}.merge(dimensions))
+    end
+
+    # `where.not` drops a null size along with the vehicles, which is what we
+    # want: the two models without one are planetary beacons.
+    scope.where(models: dimensions).where.not(models: {size: ::Dock::VEHICLE_SIZE})
   end
 
   private def will_it_fit_carrier(slug)

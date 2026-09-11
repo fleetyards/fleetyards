@@ -13,6 +13,7 @@
 #  max_ship_size :integer
 #  min_ship_size :integer
 #  name          :string
+#  ramp          :boolean          default(FALSE), not null
 #  ship_size     :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -111,6 +112,9 @@ class Dock < ApplicationRecord
   SHIP_DOCK_TYPES = %w[landingpad hangar].freeze
   VEHICLE_DOCK_TYPES = %w[vehiclepad garage].freeze
 
+  # What `models.size` calls a ground vehicle.
+  VEHICLE_SIZE = "vehicle"
+
   SHIP_CLEARANCE = {length: 2.0, beam: 2.0, height: 1.0}.freeze
   VEHICLE_CLEARANCE = {length: 1.0, beam: 1.0, height: 0.5}.freeze
 
@@ -136,15 +140,28 @@ class Dock < ApplicationRecord
     for_vehicles? ? VEHICLE_CLEARANCE : SHIP_CLEARANCE
   end
 
-  # A ground vehicle belongs in a garage and a ship on a pad; asking the wrong
-  # kind is not a near miss, it is a different question.
+  # A bay takes vehicles, a pad takes ships, and asking the wrong one is not a
+  # near miss but a different question.
+  #
+  # `size` decides, never `ground`. The latter means "cannot reach space", which
+  # is why every hover bike — Nox, Dragonfly, X1, Pulse — is `ground: false`
+  # while still berthing as a vehicle: eleven of the forty-four.
+  #
+  # Deliberately the strict reading for now. A vehicle can in fact be got into a
+  # hangar, by ramp or lift or in the last resort a tractor beam, but which dock
+  # offers which is not recorded — see the follow-up. Saying nothing is better
+  # than claiming a fit nobody can achieve.
   def fits?(model)
     return false unless measured?
-    return false if model.ground? != for_vehicles?
+    return false unless accepts?(model)
 
     model.length.to_f <= length - clearance[:length] &&
       model.beam.to_f <= beam - clearance[:beam] &&
       model.height.to_f <= height - clearance[:height]
+  end
+
+  private def accepts?(model)
+    (model.size == VEHICLE_SIZE) == for_vehicles?
   end
 
   def measured?
