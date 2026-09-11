@@ -9,6 +9,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
+// Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
+// without this and every dropdown below renders as an empty comment.
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   type AdminHardpoint,
   type AdminHardpointInput,

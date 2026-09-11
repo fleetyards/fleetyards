@@ -27,6 +27,9 @@ import {
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+// Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
+// without this and every dropdown below renders as an empty comment.
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 
 interface ItemPriceFormData extends ItemPriceInput {
   timeRange?: (typeof ItemPriceTimeRangeEnum)[keyof typeof ItemPriceTimeRangeEnum];
