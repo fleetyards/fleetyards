@@ -368,7 +368,8 @@
       "exportCsv": "Export CSV",
       "exportAllCsv": "Export all as CSV",
       "imports": {
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "downloadExample": "Example file"
       },
       "selectFile": "Select File"
     }

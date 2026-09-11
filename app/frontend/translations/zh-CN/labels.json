@@ -123,6 +123,11 @@
           "imported": "已导入",
           "missing": "未找到",
           "found": "已匹配"
+        },
+        "formatHint": "支持两种文件格式：",
+        "formats": {
+          "fleetyards": "FleetYards 机库导出文件 —— 使用导出按钮即可生成。",
+          "hangarXplor": "hangarXPLOR 导出文件。"
         }
       },
       "oauthApplications": {

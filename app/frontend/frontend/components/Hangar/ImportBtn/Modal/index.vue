@@ -75,6 +75,24 @@ const onUploadDone = async (files: FileUpload[]) => {
   <Modal :title="t('headlines.hangar.import')">
     <p class="hint">
       <i class="fa-light fa-info-circle" />
+      {{ t("labels.imports.formatHint") }}
+    </p>
+
+    <ul class="import-formats">
+      <li>
+        {{ t("labels.imports.formats.fleetyards") }}
+      </li>
+      <li>
+        {{ t("labels.imports.formats.hangarXplor") }}
+        <a href="/examples/hangar-xplor-example.json" download>
+          <i class="fa-light fa-download" />
+          {{ t("actions.imports.downloadExample") }}
+        </a>
+      </li>
+    </ul>
+
+    <p class="hint">
+      <i class="fa-light fa-info-circle" />
       {{ t("labels.imports.targetGroupHint") }}
     </p>
 
@@ -107,5 +125,22 @@ const onUploadDone = async (files: FileUpload[]) => {
         </Btn>
       </div>
     </template>
+
+    <style lang="scss" scoped>
+      .import-formats {
+        margin: 0 0 1rem;
+        padding-left: 1.25rem;
+        color: var(--text-muted);
+
+        li + li {
+          margin-top: 0.25rem;
+        }
+
+        a {
+          margin-left: 0.5rem;
+          white-space: nowrap;
+        }
+      }
+    </style>
   </Modal>
 </template>

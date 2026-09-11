@@ -123,6 +123,11 @@
           "imported": "Importadas",
           "missing": "No encontradas",
           "found": "Coincidentes"
+        },
+        "formatHint": "Se aceptan dos formatos de archivo:",
+        "formats": {
+          "fleetyards": "Una exportación de hangar de FleetYards: usa el botón Exportar para crearla.",
+          "hangarXplor": "Una exportación de hangarXPLOR."
         }
       },
       "oauthApplications": {

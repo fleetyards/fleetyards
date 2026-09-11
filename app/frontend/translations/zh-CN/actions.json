@@ -368,7 +368,8 @@
       "exportCsv": "导出 CSV",
       "exportAllCsv": "全部导出为 CSV",
       "imports": {
-        "cancel": "取消"
+        "cancel": "取消",
+        "downloadExample": "示例文件"
       },
       "selectFile": "选择文件"
     }
