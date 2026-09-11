@@ -173,9 +173,6 @@
         "pendingReview": "Cette application est enregistrée et attend son examen. Elle ne peut demander aucun accès avant d'être approuvée.",
         "rejected": "Cette application a été refusée et ne peut demander aucun accès. Corriger ce que le motif indique la remet dans la file.",
         "returnedToReview": "Modifier l'URI de redirection ou les portées renvoie une application approuvée à l'examen."
-      },
-      "model": {
-        "carriedByHint": "Calculé à partir des emplacements mesurés de chaque vaisseau, avec du dégagement autour de la coque."
       }
     }
   }

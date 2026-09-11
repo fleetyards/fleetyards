@@ -173,9 +173,6 @@
         "pendingReview": "Esta aplicación está registrada y espera revisión. No puede solicitar acceso hasta que sea aprobada.",
         "rejected": "Esta aplicación fue rechazada y no puede solicitar acceso. Corregir lo que indica el motivo la devuelve a la cola.",
         "returnedToReview": "Cambiar la URI de redirección o los permisos devuelve a revisión una aplicación aprobada."
-      },
-      "model": {
-        "carriedByHint": "Calculado a partir de los atraques medidos de cada nave, dejando holgura alrededor del casco."
       }
     }
   }

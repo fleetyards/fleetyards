@@ -5,33 +5,45 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
 import { type ModelExtendedCarriedByItem } from "@/services/fyApi";
 
 type Props = {
   carriedBy: ModelExtendedCarriedByItem[];
 };
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 const { t } = useI18n();
 
-// Grouped by the kind of berth, because "it fits in a garage" and "it fits in a
-// hangar" are different answers and a flat list of names hides which is which.
-const groups = computed(() => {
-  const byDockType = new Map<string, ModelExtendedCarriedByItem[]>();
+const mobile = useMobile();
 
-  props.carriedBy.forEach((item) => {
-    const entries = byDockType.get(item.dockType) || [];
-    entries.push(item);
-    byDockType.set(item.dockType, entries);
-  });
+const { supported: webpSupported } = useWebpCheck();
 
-  return [...byDockType.entries()].map(([dockType, items]) => ({
-    dockType,
-    items,
-  }));
-});
+// The same ladder the paints panels walk: the smaller picture on a phone, the
+// larger one otherwise, and a fallback in the format the browser can read.
+const storeImage = (item: ModelExtendedCarriedByItem) => {
+  if (mobile.value && item.storeImage?.mediumUrl) {
+    return item.storeImage.mediumUrl;
+  }
+
+  if (item.storeImage?.largeUrl) {
+    return item.storeImage.largeUrl;
+  }
+
+  return webpSupported.value ? fallbackImage : fallbackImageJpg;
+};
 </script>
 
 <template>
@@ -39,47 +51,59 @@ const groups = computed(() => {
     <hr />
     <div id="carried-by" class="row">
       <div class="col-12">
-        <h2 class="text-uppercase">
+        <Heading :level="HeadingLevelEnum.H2" hero>
           {{ t("labels.model.carriedBy") }}
-        </h2>
-        <p class="carried-by__hint">
-          {{ t("texts.model.carriedByHint") }}
-        </p>
+        </Heading>
 
-        <div v-for="group in groups" :key="`carried-by-${group.dockType}`">
-          <h3 class="carried-by__dock-type">
-            {{ t(`labels.dockTypes.${group.dockType}`) }}
-          </h3>
-          <ul class="carried-by__list">
-            <li v-for="item in group.items" :key="`carried-by-${item.slug}`">
-              <router-link :to="{ name: 'ship', params: { slug: item.slug } }">
-                {{ item.name }}
-              </router-link>
-            </li>
-          </ul>
-        </div>
+        <transition-group name="fade-list" class="row" tag="div" appear>
+          <div
+            v-for="item in carriedBy"
+            :key="`carried-by-${item.slug}`"
+            class="col-12 col-md-6 col-lg-3 col-xl-2 fade-list-item"
+          >
+            <router-link
+              class="carried-by__link"
+              :to="{ name: 'ship', params: { slug: item.slug } }"
+            >
+              <Panel :bg-image="storeImage(item)">
+                <PanelHeading
+                  :shadow="PanelHeadingShadowEnum.TOP"
+                  :level="HeadingLevelEnum.H3"
+                >
+                  {{ item.name }}
+                </PanelHeading>
+                <template #footer>
+                  <div class="carried-by__dock-type">
+                    <Pill :variant="PillVariantsEnum.NEUTRAL" uppercase>
+                      {{ t(`labels.dockTypes.${item.dockType}`) }}
+                    </Pill>
+                  </div>
+                </template>
+              </Panel>
+            </router-link>
+          </div>
+        </transition-group>
       </div>
     </div>
   </template>
 </template>
 
 <style lang="scss" scoped>
-.carried-by__hint {
-  margin-bottom: 1rem;
-}
-
+// The dock type belongs under the photo, not on it: the body slot is
+// transparent, so a pill over a bright hull is unreadable. This is where the
+// model panel carries its production status too.
 .carried-by__dock-type {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  text-transform: uppercase;
+  padding: 9px 16px;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
 }
 
-.carried-by__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.5rem;
-  padding: 0;
-  margin: 0 0 1.5rem;
-  list-style: none;
+.carried-by__link {
+  // The documented knob for the image region's floor, which is 286px by
+  // default. A carrier list runs to three figures on a big ship, so a full-size
+  // card per entry would be a wall. 160px matches the mission ShipCard.
+  --panel-image-height: 160px;
+
+  display: block;
+  text-decoration: none;
 }
 </style>

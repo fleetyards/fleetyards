@@ -17961,6 +17961,8 @@ components:
                 type: string
               dockType:
                 type: string
+              storeImage:
+                "$ref": "#/components/schemas/MediaFile"
             additionalProperties: false
             required:
             - slug

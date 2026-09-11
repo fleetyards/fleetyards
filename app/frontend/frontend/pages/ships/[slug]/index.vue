@@ -473,9 +473,9 @@ const adiMap = computed(() => {
   <PaintsList :model-slug="model.slug" />
   <ModulesList :model-slug="model.slug" :modules="modelModules" />
   <UpgradesList :model-slug="model.slug" />
-  <VariantsList :model-slug="model.slug" />
   <CarriedByList :carried-by="model.carriedBy" />
   <LoanersList :model-slug="model.slug" />
+  <VariantsList :model-slug="model.slug" />
 </template>
 
 <style lang="scss" scoped>

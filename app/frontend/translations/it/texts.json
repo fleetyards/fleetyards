@@ -173,9 +173,6 @@
         "pendingReview": "Questa applicazione è registrata e attende la revisione. Non può richiedere accessi finché non è approvata.",
         "rejected": "Questa applicazione è stata rifiutata e non può richiedere accessi. Correggere quanto indicato nel motivo la rimette in coda.",
         "returnedToReview": "Modificare l'URI di reindirizzamento o gli ambiti riporta in revisione un'applicazione approvata."
-      },
-      "model": {
-        "carriedByHint": "Calcolato dalle piazzole misurate di ciascuna nave, con spazio libero attorno allo scafo."
       }
     }
   }

@@ -23,7 +23,8 @@ module V1
                 properties: {
                   slug: {type: :string},
                   name: {type: :string},
-                  dockType: {type: :string}
+                  dockType: {type: :string},
+                  storeImage: ::Shared::V1::Schemas::MediaFile
                 },
                 additionalProperties: false,
                 required: %w[slug name dockType]

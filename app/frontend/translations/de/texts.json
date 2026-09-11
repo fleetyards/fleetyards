@@ -173,9 +173,6 @@
         "pendingReview": "Diese Anwendung ist registriert und wartet auf die Prüfung. Bis zur Freigabe kann sie keinen Zugriff anfragen.",
         "rejected": "Diese Anwendung wurde abgelehnt und kann keinen Zugriff anfragen. Wer behebt, was im Grund steht, landet wieder in der Warteschlange.",
         "returnedToReview": "Wird die Redirect-URI oder werden die Scopes geändert, geht eine freigegebene Anwendung zurück in die Prüfung."
-      },
-      "model": {
-        "carriedByHint": "Ermittelt aus den vermessenen Stellplätzen der jeweiligen Schiffe, mit Freiraum um den Rumpf."
       }
     }
   }
