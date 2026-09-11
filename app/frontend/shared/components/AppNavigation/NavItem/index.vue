@@ -180,9 +180,12 @@ const toggleMenu = () => {
     }"
     :data-test="`nav-${navKey}`"
     class="nav-item"
-    @click="action"
   >
-    <a v-tooltip="tooltip">
+    <!-- A button rather than an anchor with a click handler on the row: an
+         anchor with no href is not a tab stop and answers to no key, so a row
+         built this way -- logout, the collapse toggle, the build switch -- could
+         only ever be reached with a pointer. -->
+    <button v-tooltip="tooltip" type="button" @click="action">
       <slot>
         <NavItemInner
           :label="label"
@@ -193,7 +196,7 @@ const toggleMenu = () => {
           :badge="badge"
         />
       </slot>
-    </a>
+    </button>
   </li>
   <router-link
     v-else-if="to"
