@@ -118,11 +118,20 @@ module InventoryLedgerEntry
         alias_attribute :position_id, :"#{association_name}_id"
       end
 
+      @position_association_name = association_name
       @position_foreign_key = :"#{association_name}_id"
     end
 
     def position_foreign_key
       @position_foreign_key
+    end
+
+    def position_association_name
+      @position_association_name
+    end
+
+    def position_class
+      reflect_on_association(position_association_name).klass
     end
 
     def units_for_category(category)

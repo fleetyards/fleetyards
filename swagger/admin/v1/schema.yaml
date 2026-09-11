@@ -16373,10 +16373,12 @@ components:
       - Fleet
       - FleetInventory
       - FleetInventoryItem
+      - FleetInventoryPosition
       - FleetMembership
       - FleetRole
       - Inventory
       - InventoryItem
+      - InventoryPosition
       - Model
       - ModelModule
       - ModelPaint
@@ -16393,10 +16395,12 @@ components:
       - FLEET
       - FLEET_INVENTORY
       - FLEET_INVENTORY_ITEM
+      - FLEET_INVENTORY_POSITION
       - FLEET_MEMBERSHIP
       - FLEET_ROLE
       - INVENTORY
       - INVENTORY_ITEM
+      - INVENTORY_POSITION
       - MODEL
       - MODEL_MODULE
       - MODEL_PAINT

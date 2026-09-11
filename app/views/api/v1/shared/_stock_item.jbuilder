@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.id stock_item.position_id
 json.slug stock_item.slug
 json.name stock_item.name
 json.category stock_item.category

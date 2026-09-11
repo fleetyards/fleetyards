@@ -8,6 +8,7 @@ module V1
       schema({
         type: :object,
         properties: {
+          id: {type: :string, format: :uuid},
           slug: {type: :string},
           name: {type: :string},
           category: ::V1::Schemas::Enums::InventoryCategoryEnum,
@@ -31,7 +32,7 @@ module V1
           inventory: ::V1::Schemas::InventoryRef
         },
         additionalProperties: false,
-        required: %w[slug name category unit netQuantity entriesCount]
+        required: %w[id slug name category unit netQuantity entriesCount]
       })
     end
   end

@@ -19,11 +19,13 @@ module Api
 
         @stock = InventoryItem
           .where(inventory_id: inventory_ids)
-          .joins(:inventory)
+          .joins(:inventory, :inventory_position)
           .select(
-            "inventory_items.name",
-            "inventory_items.category",
-            "inventory_items.unit",
+            "inventory_positions.id AS inventory_position_id",
+            "inventory_positions.name",
+            "inventory_positions.category",
+            "inventory_positions.unit",
+            "inventory_positions.slug",
             "MIN(inventory_items.quality) AS quality_min",
             "MAX(inventory_items.quality) AS quality_max",
             "inventories.name AS inventory_name",
@@ -31,14 +33,16 @@ module Api
             "SUM(CASE WHEN inventory_items.entry_type = 0 THEN inventory_items.quantity ELSE -inventory_items.quantity END) AS net_quantity"
           )
           .group(
-            "inventory_items.name",
-            "inventory_items.category",
-            "inventory_items.unit",
+            "inventory_positions.id",
+            "inventory_positions.name",
+            "inventory_positions.category",
+            "inventory_positions.unit",
+            "inventory_positions.slug",
             "inventories.name",
             "inventories.slug"
           )
           .having("SUM(CASE WHEN inventory_items.entry_type = 0 THEN inventory_items.quantity ELSE -inventory_items.quantity END) > 0")
-          .order("inventory_items.name")
+          .order("inventory_positions.name")
 
         render "api/v1/hangar_inventory_stock/index"
       end

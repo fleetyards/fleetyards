@@ -10,6 +10,7 @@ module V1
           schema({
             type: :object,
             properties: {
+              id: {type: :string, format: :uuid},
               slug: {type: :string},
               name: {type: :string},
               category: {type: :string},

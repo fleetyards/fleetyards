@@ -2,7 +2,12 @@
 
 json.id fleet_inventory_item.id
 json.name fleet_inventory_item.name
-json.stock_slug InventoryStockItem.slug_for(name: fleet_inventory_item.name, category: fleet_inventory_item.category, unit: fleet_inventory_item.unit)
+json.position_id fleet_inventory_item.position_id
+# The position's own slug, which carries a disambiguating suffix where two names
+# compete for one address. Derived as a fallback only for a row the previous
+# release inserted before the backfill reached it.
+json.stock_slug fleet_inventory_item.position&.slug ||
+  InventoryStockItem.slug_for(name: fleet_inventory_item.name, category: fleet_inventory_item.category, unit: fleet_inventory_item.unit)
 json.category fleet_inventory_item.category
 json.quantity fleet_inventory_item.quantity.to_f
 json.unit fleet_inventory_item.unit

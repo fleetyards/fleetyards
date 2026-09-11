@@ -14180,6 +14180,11 @@ components:
           format: uuid
         name:
           type: string
+        positionId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         stockSlug:
           type: string
         category:
@@ -14337,6 +14342,9 @@ components:
     FleetInventoryStockItem:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         slug:
           type: string
         name:
@@ -15708,6 +15716,11 @@ components:
           format: uuid
         name:
           type: string
+        positionId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         stockSlug:
           type: string
         category:
@@ -15851,6 +15864,9 @@ components:
     HangarInventoryStockItem:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         slug:
           type: string
         name:
@@ -16653,6 +16669,11 @@ components:
           format: uuid
         name:
           type: string
+        positionId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         stockSlug:
           type: string
         category:
@@ -16818,6 +16839,9 @@ components:
     InventoryStockPosition:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         slug:
           type: string
         name:
@@ -16865,6 +16889,7 @@ components:
           "$ref": "#/components/schemas/InventoryRef"
       additionalProperties: false
       required:
+      - id
       - slug
       - name
       - category
