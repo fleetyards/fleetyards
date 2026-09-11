@@ -39,6 +39,26 @@ describe("scDataSource store", () => {
     expect(store.hasChoice).toBe(true);
   });
 
+  // The switch has two states and stays that way: a second preview channel
+  // makes it offer the newer of them rather than turn into a list.
+  it("offers the newest preview build", () => {
+    const store = useScDataSourceStore();
+    store.setAvailable([
+      live,
+      { environment: "eptu", version: "1.9.0", default: false },
+      { environment: "ptu", version: "1.10.0", default: false },
+    ]);
+
+    expect(store.previewSource?.environment).toBe("ptu");
+  });
+
+  it("has no preview when the server offers the default alone", () => {
+    const store = useScDataSourceStore();
+    store.setAvailable([live]);
+
+    expect(store.previewSource).toBeUndefined();
+  });
+
   // A source that has gone away must not stay selected, or every request would
   // carry a parameter the server ignores while the switch claims otherwise.
   it("drops a selection the server stopped offering", () => {

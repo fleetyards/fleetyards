@@ -36,9 +36,22 @@ export const useScDataSourceStore = defineStore("scDataSource", {
       );
     },
 
+    // The one build the switch offers next to the default. The server only ever
+    // offers a preview that is ahead of the default, so any non-default source
+    // here is one -- and if a second channel is ever configured, the switch
+    // still stays a switch: the newest of them wins.
+    previewSource(state): ScDataSourceOption | undefined {
+      return state.available
+        .filter((source) => !source.default)
+        .sort((a, b) =>
+          a.version.localeCompare(b.version, undefined, { numeric: true }),
+        )
+        .at(-1);
+    },
+
     // Only worth a switch when there is something to switch to.
-    hasChoice(state): boolean {
-      return state.available.length > 1;
+    hasChoice(): boolean {
+      return !!this.defaultSource && !!this.previewSource;
     },
 
     // What the axios client puts on a request. Nothing for the default, so a
