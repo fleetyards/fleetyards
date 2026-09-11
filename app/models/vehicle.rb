@@ -234,30 +234,35 @@ class Vehicle < ApplicationRecord
   # the last edit is one nobody cleans up. Missing one used to mean an orphaned
   # row nobody noticed; `vehicle_loadouts` has a foreign key, so missing that one
   # raises `ActiveRecord::InvalidForeignKey` and the whole delete rolls back.
+  # Wraps itself rather than leaving it to the caller: it is a dozen statements
+  # that only make sense together, and a caller already inside a transaction
+  # joins this one rather than opening a second.
   def self.delete_with_dependents(vehicle_ids)
     return 0 if vehicle_ids.blank?
 
-    vehicle_ids |= descendants_of(vehicle_ids)
-    loaner_groups = where(id: vehicle_ids, loaner: true).distinct.pluck(:user_id, :model_id)
+    transaction do
+      vehicle_ids |= descendants_of(vehicle_ids)
+      loaner_groups = where(id: vehicle_ids, loaner: true).distinct.pluck(:user_id, :model_id)
 
-    detach_inventories(vehicle_ids)
+      detach_inventories(vehicle_ids)
 
-    loadout_ids = VehicleLoadout.where(vehicle_id: vehicle_ids).pluck(:id)
-    erase_versions("VehicleLoadout", loadout_ids)
-    VehicleLoadout.where(id: loadout_ids).delete_all
+      loadout_ids = VehicleLoadout.where(vehicle_id: vehicle_ids).pluck(:id)
+      erase_versions("VehicleLoadout", loadout_ids)
+      VehicleLoadout.where(id: loadout_ids).delete_all
 
-    VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
-    VehicleModule.where(vehicle_id: vehicle_ids).delete_all
-    TaskForce.where(vehicle_id: vehicle_ids).delete_all
-    FleetVehicle.where(vehicle_id: vehicle_ids).delete_all
+      VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+      VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+      TaskForce.where(vehicle_id: vehicle_ids).delete_all
+      FleetVehicle.where(vehicle_id: vehicle_ids).delete_all
 
-    erase_versions("Vehicle", vehicle_ids)
+      erase_versions("Vehicle", vehicle_ids)
 
-    deleted = where(id: vehicle_ids).delete_all
+      deleted = where(id: vehicle_ids).delete_all
 
-    revisit_loaner_visibility(loaner_groups)
+      revisit_loaner_visibility(loaner_groups)
 
-    deleted
+      deleted
+    end
   end
 
   # The loaners and bundled snub crafts `after_destroy` would have taken with
@@ -276,25 +281,32 @@ class Vehicle < ApplicationRecord
   #
   # `update_columns` skips the `after_commit` that keeps the fleet side in step,
   # and that callback returns early for a hidden vehicle anyway, so the job is
-  # queued from here.
+  # queued from here -- after the outermost transaction commits, so a worker
+  # picking it up cannot read the hangar as it was before the delete.
   private_class_method def self.revisit_loaner_visibility(loaner_groups)
     return if loaner_groups.blank?
 
     user_ids, model_ids = loaner_groups.transpose
 
-    where(loaner: true, user_id: user_ids, model_id: model_ids)
+    flipped = where(loaner: true, user_id: user_ids, model_id: model_ids)
       .group_by { |loaner| [loaner.user_id, loaner.model_id, loaner.wanted] }
-      .each do |_group_key, group|
+      .flat_map do |_group_key, group|
         visible = group.find { |loaner| !loaner.hidden? } || group.first
 
-        group.each do |loaner|
+        group.select do |loaner|
           should_hide = !loaner.equal?(visible)
-          next if loaner.hidden? == should_hide
+          next false if loaner.hidden? == should_hide
 
           loaner.update_columns(hidden: should_hide, updated_at: Time.zone.now)
-          Updater::FleetVehicleUpdateJob.perform_async(loaner.id)
+          true
         end
       end
+
+    return if flipped.empty?
+
+    ActiveRecord.after_all_transactions_commit do
+      flipped.each { |loaner| Updater::FleetVehicleUpdateJob.perform_async(loaner.id) }
+    end
   end
 
   # What `Vehicle#detach_inventory` does on a single destroy. Iterated rather

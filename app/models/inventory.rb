@@ -94,10 +94,17 @@ class Inventory < ApplicationRecord
   # Free among every other inventory of this holder rather than among the
   # hand-made ones: the sibling detached in the same breath is still holding its
   # `vehicle_id` while this runs, and would be invisible to the narrower check.
+  # Locked and ordered by id, including this row: two of the holder's
+  # inventories detaching at once would otherwise each read the other still
+  # holding its `vehicle_id`, pick the same suffix, and collide when Postgres
+  # nullifies them. Taking the row being excluded as well is what keeps the two
+  # from locking each other's row first and deadlocking.
   def claim_free_name!
-    taken = self.class.where(holder_type:, holder_id:).where.not(id:).pluck(:name, :slug)
-    names = taken.map { |taken_name, _| taken_name.downcase }
-    slugs = taken.map { |_, taken_slug| taken_slug }
+    taken = self.class.where(holder_type:, holder_id:).order(:id).lock
+      .pluck(:id, :name, :slug)
+      .reject { |taken_id, _, _| taken_id == id }
+    names = taken.map { |_, taken_name, _| taken_name.downcase }
+    slugs = taken.map { |_, _, taken_slug| taken_slug }
 
     return if names.exclude?(name.downcase) && slugs.exclude?(self.class.slug_for(name))
 

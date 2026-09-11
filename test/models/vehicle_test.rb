@@ -377,11 +377,17 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
 
     visible = Vehicle.find_by(loaner: true, user_id: @user.id, model_id: loaner_model.id, hidden: false)
 
+    Sidekiq::Worker.clear_all
+
     Vehicle.delete_with_dependents([visible.parent_vehicle.id])
 
     remaining = Vehicle.where(loaner: true, user_id: @user.id, model_id: loaner_model.id)
     assert_equal 1, remaining.count
     assert_equal 1, remaining.where(hidden: false).count
+
+    # Queued from `after_all_transactions_commit`, so a worker cannot read the
+    # hangar as it was before the delete.
+    assert_equal [remaining.first.id], Updater::FleetVehicleUpdateJob.jobs.map { |job| job["args"].first }
   end
 
   test "detaches a ship inventory under a name no sibling holds" do
