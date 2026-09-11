@@ -31,6 +31,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import CarriedByList from "@/frontend/components/Models/CarriedByList/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
@@ -38,13 +39,13 @@ import { storeToRefs } from "pinia";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import { type Model } from "@/services/fyApi";
+import { type ModelExtended } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import starcitizenToolsLogo from "@/images/icons/starcitizentools.svg";
 import adiIcon from "@/images/adi_icon.png";
 
 type Props = {
-  model: Model;
+  model: ModelExtended;
 };
 
 const props = defineProps<Props>();
@@ -472,8 +473,9 @@ const adiMap = computed(() => {
   <PaintsList :model-slug="model.slug" />
   <ModulesList :model-slug="model.slug" :modules="modelModules" />
   <UpgradesList :model-slug="model.slug" />
-  <VariantsList :model-slug="model.slug" />
+  <CarriedByList :carried-by="model.carriedBy" />
   <LoanersList :model-slug="model.slug" />
+  <VariantsList :model-slug="model.slug" />
 </template>
 
 <style lang="scss" scoped>

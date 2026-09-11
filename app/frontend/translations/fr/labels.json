@@ -643,7 +643,8 @@
           "flight-ready": "Le vol est prêt",
           "announced": "Annoncée"
         },
-        "scIdentifier": "SC Identifier"
+        "scIdentifier": "SC Identifier",
+        "carriedBy": "Peut être transporté par"
       },
       "models": {
         "extraColumns": "Colonnes",
@@ -2229,6 +2230,13 @@
           "commodities": "Marchandises",
           "models": "Vaisseaux"
         }
+      },
+      "dockTypes": {
+        "vehiclepad": "Plateforme véhicule",
+        "garage": "Garage",
+        "landingpad": "Aire d'atterrissage",
+        "dockingport": "Port d'amarrage",
+        "hangar": "Hangar"
       }
     }
   }

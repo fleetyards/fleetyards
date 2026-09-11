@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModulePanel from "@/frontend/components/Modules/Panel/index.vue";
@@ -39,9 +41,9 @@ const { t } = useI18n();
       <hr />
       <div id="modules" class="row">
         <div class="col-12">
-          <h2 class="text-uppercase">
+          <Heading :level="HeadingLevelEnum.H2" hero>
             {{ t(`labels.model.modules`) }}
-          </h2>
+          </Heading>
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
               v-for="item in modules"

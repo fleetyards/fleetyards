@@ -17994,6 +17994,24 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/DockCount"
+        carriedBy:
+          type: array
+          items:
+            type: object
+            properties:
+              slug:
+                type: string
+              name:
+                type: string
+              dockType:
+                type: string
+              storeImage:
+                "$ref": "#/components/schemas/MediaFile"
+            additionalProperties: false
+            required:
+            - slug
+            - name
+            - dockType
       additionalProperties: false
       required:
       - id
@@ -18019,6 +18037,7 @@ components:
       - updatedAt
       - dockCounts
       - links
+      - carriedBy
       title: ModelExtended
     ModelExtendedLinks:
       type: object

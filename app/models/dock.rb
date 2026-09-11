@@ -13,6 +13,7 @@
 #  max_ship_size :integer
 #  min_ship_size :integer
 #  name          :string
+#  ramp          :boolean          default(FALSE), not null
 #  ship_size     :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -102,6 +103,73 @@ class Dock < ApplicationRecord
         value: item
       )
     end
+  end
+
+  # What a dock takes and how much room it wants. Both settled by the hangar
+  # filter, which is the rule that survived: it is the one that tells a garage
+  # from a landing pad. A docking port is in neither list -- it is a connection,
+  # not a place a hull is set down.
+  SHIP_DOCK_TYPES = %w[landingpad hangar].freeze
+  VEHICLE_DOCK_TYPES = %w[vehiclepad garage].freeze
+
+  # What `models.size` calls a ground vehicle.
+  VEHICLE_SIZE = "vehicle"
+
+  SHIP_CLEARANCE = {length: 2.0, beam: 2.0, height: 1.0}.freeze
+  VEHICLE_CLEARANCE = {length: 1.0, beam: 1.0, height: 0.5}.freeze
+
+  # The largest of a kind is the only one worth asking: docks of a kind nest by
+  # size, so nothing that misses the biggest fits a smaller one.
+  def self.largest_ship_dock(docks)
+    docks.select { |dock| dock.for_ships? && dock.measured? }.max_by(&:length)
+  end
+
+  def self.largest_vehicle_dock(docks)
+    docks.select { |dock| dock.for_vehicles? && dock.measured? }.max_by(&:length)
+  end
+
+  def for_ships?
+    SHIP_DOCK_TYPES.include?(dock_type)
+  end
+
+  def for_vehicles?
+    VEHICLE_DOCK_TYPES.include?(dock_type)
+  end
+
+  # A docking port is neither: it is a connection, not a berth, so nothing is
+  # ever measured against it.
+  def berth?
+    for_ships? || for_vehicles?
+  end
+
+  def clearance
+    for_vehicles? ? VEHICLE_CLEARANCE : SHIP_CLEARANCE
+  end
+
+  # A bay takes vehicles, a pad takes ships, and asking the wrong one is not a
+  # near miss but a different question.
+  #
+  # `size` decides, never `ground`. The latter means "cannot reach space", which
+  # is why every hover bike — Nox, Dragonfly, X1, Pulse — is `ground: false`
+  # while still berthing as a vehicle: eleven of the forty-four.
+  #
+  # Deliberately the strict reading for now. A vehicle can in fact be got into a
+  # hangar, by ramp or lift or in the last resort a tractor beam, but which dock
+  # offers which is not recorded — see the follow-up. Saying nothing is better
+  # than claiming a fit nobody can achieve.
+  def fits?(model)
+    return false unless measured?
+    return false unless accepts?(model)
+
+    model.length.to_f <= length - clearance[:length] &&
+      model.beam.to_f <= beam - clearance[:beam] &&
+      model.height.to_f <= height - clearance[:height]
+  end
+
+  private def accepts?(model)
+    return false unless for_ships? || for_vehicles?
+
+    (model.size == VEHICLE_SIZE) == for_vehicles?
   end
 
   def measured?

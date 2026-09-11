@@ -640,7 +640,8 @@
           "ready": "Hangar Ready",
           "flight-ready": "Flight Ready",
           "announced": "Announced"
-        }
+        },
+        "carriedBy": "Can be carried by"
       },
       "models": {
         "extraColumns": "Columns",
@@ -2222,6 +2223,13 @@
           "commodities": "Commodities",
           "models": "Ships"
         }
+      },
+      "dockTypes": {
+        "vehiclepad": "Vehicle pad",
+        "garage": "Garage",
+        "landingpad": "Landing pad",
+        "dockingport": "Docking port",
+        "hangar": "Hangar"
       }
     }
   }
