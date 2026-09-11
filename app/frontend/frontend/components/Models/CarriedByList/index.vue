@@ -71,14 +71,13 @@ const storeImage = (item: ModelExtendedCarriedByItem) => {
                   :level="HeadingLevelEnum.H3"
                 >
                   {{ item.name }}
-                </PanelHeading>
-                <template #footer>
-                  <div class="carried-by__dock-type">
+
+                  <template #actions>
                     <Pill :variant="PillVariantsEnum.NEUTRAL" uppercase>
                       {{ t(`labels.dockTypes.${item.dockType}`) }}
                     </Pill>
-                  </div>
-                </template>
+                  </template>
+                </PanelHeading>
               </Panel>
             </router-link>
           </div>
@@ -89,14 +88,6 @@ const storeImage = (item: ModelExtendedCarriedByItem) => {
 </template>
 
 <style lang="scss" scoped>
-// The dock type belongs under the photo, not on it: the body slot is
-// transparent, so a pill over a bright hull is unreadable. This is where the
-// model panel carries its production status too.
-.carried-by__dock-type {
-  padding: 9px 16px;
-  border-top: 1px solid rgb(255 255 255 / 0.08);
-}
-
 .carried-by__link {
   // The documented knob for the image region's floor, which is 286px by
   // default. A carrier list runs to three figures on a big ship, so a full-size
