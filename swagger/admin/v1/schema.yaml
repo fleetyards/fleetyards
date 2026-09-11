@@ -12079,6 +12079,9 @@ components:
         failedAt:
           type: string
           format: date-time
+        cancelledAt:
+          type: string
+          format: date-time
         createdAt:
           type: string
           format: date-time
@@ -12152,11 +12155,13 @@ components:
       - started
       - finished
       - failed
+      - cancelled
       x-enumNames:
       - CREATED
       - STARTED
       - FINISHED
       - FAILED
+      - CANCELLED
       title: ImportStatusEnum
     ImportTypeEnum:
       type: string
