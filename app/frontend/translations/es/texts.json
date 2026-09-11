@@ -24,6 +24,7 @@
       "inviteInvalid": "Este enlace de invitación no es válido. Puede que se haya copiado mal, que haya caducado o que ya haya alcanzado su límite de usos. Pide un enlace nuevo a quien te invitó.",
       "accessDenied": "No está autorizado para ver esta página.",
       "serverError": "El servidor está experimentando dificultades técnicas. Inténtelo más tarde.",
+      "offline": "La solicitud no ha llegado al servidor. Tu dispositivo parece estar sin conexión o no se ha podido contactar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

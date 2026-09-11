@@ -24,6 +24,7 @@
       "inviteInvalid": "Ce lien d'invitation n'est pas valide. Il a peut-être été mal recopié, il a peut-être expiré, ou il a peut-être déjà atteint sa limite d'utilisations. Demandez un nouveau lien à la personne qui vous a invité.",
       "accessDenied": "Vous n'êtes pas autorisé à consulter cette page.",
       "serverError": "Le serveur rencontre actuellement des difficultés techniques. Veuillez réessayer plus tard.",
+      "offline": "La requête n'a pas atteint le serveur. Votre appareil semble hors ligne ou le serveur est injoignable. Vérifiez votre connexion et réessayez.",
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."

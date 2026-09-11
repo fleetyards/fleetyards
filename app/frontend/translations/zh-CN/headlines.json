@@ -193,6 +193,7 @@
       "inviteInvalid": "邀请链接无效",
       "accessDenied": "拒绝访问",
       "serverError": "服务器错误",
+      "offline": "连接已断开",
       "comments": "评论",
       "login": "登录",
       "hangar": {

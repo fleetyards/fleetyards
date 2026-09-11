@@ -193,6 +193,7 @@
       "inviteInvalid": "邀請連結無效",
       "accessDenied": "拒絕存取",
       "serverError": "伺服器錯誤",
+      "offline": "連線已中斷",
       "comments": "評論",
       "login": "登入",
       "hangar": {

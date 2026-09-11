@@ -23,6 +23,14 @@ const statusOf = (error: AsyncStatus["error"]["value"]) =>
     error: ref(error),
   }) as unknown as AsyncStatus;
 
+// A request that never got an answer: no response, which is what axios reports
+// for a device that is offline or a host it could not reach.
+const unanswered = () =>
+  ({
+    isAxiosError: true,
+    code: "ERR_NETWORK",
+  }) as unknown as AsyncStatus["error"]["value"];
+
 const mount = (status: number) =>
   mountWithDefaults<typeof Component>(Component, {
     props: { asyncStatus: statusOf(failedWith(status)) },
@@ -47,5 +55,14 @@ describe("AsyncData", () => {
 
     expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: "Forbidden" }).exists()).toBe(false);
+  });
+
+  it("blames the connection, not the server, when nothing answered", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: { asyncStatus: statusOf(unanswered()) },
+    });
+
+    expect(wrapper.findComponent({ name: "Offline" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "ServerError" }).exists()).toBe(false);
   });
 });

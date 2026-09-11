@@ -8,6 +8,7 @@ export default {
 import NotFound from "@/shared/components/NotFound/index.vue";
 import Forbidden from "@/shared/components/Forbidden/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
+import Offline from "@/shared/components/Offline/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import {
   type AsyncStatus,
@@ -46,6 +47,10 @@ const loading = computed(() => {
   <slot v-if="error && !hideError" name="error">
     <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
     <Forbidden v-else-if="errorType === ErrorTypesEnum.FORBIDDEN" />
+    <Offline
+      v-else-if="errorType === ErrorTypesEnum.OFFLINE"
+      :retry="asyncStatus.refetch"
+    />
     <ServerError v-else />
   </slot>
   <slot v-else-if="loading" name="loading">

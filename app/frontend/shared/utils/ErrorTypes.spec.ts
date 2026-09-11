@@ -21,7 +21,19 @@ describe("errorTypeFrom", () => {
     expect(errorTypeFrom(failedWith(422))).toBe(ErrorTypesEnum.ERROR);
   });
 
-  it("has no verdict without a response", () => {
+  it("reads a request that got no answer as a lost connection", () => {
+    expect(errorTypeFrom({ isAxiosError: true, code: "ERR_NETWORK" })).toBe(
+      ErrorTypesEnum.OFFLINE,
+    );
+  });
+
+  it("keeps a cancelled request off the error screens", () => {
+    expect(
+      errorTypeFrom({ isAxiosError: true, code: "ERR_CANCELED" }),
+    ).toBeUndefined();
+  });
+
+  it("has no verdict on something that is not a failed request", () => {
     expect(errorTypeFrom(new Error("boom"))).toBeUndefined();
     expect(errorTypeFrom(undefined)).toBeUndefined();
   });

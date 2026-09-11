@@ -193,6 +193,7 @@
       "inviteInvalid": "Link di invito non valido",
       "accessDenied": "Accesso negato",
       "serverError": "Errore del server",
+      "offline": "Connessione persa",
       "comments": "Commenti",
       "login": "Accedi",
       "hangar": {

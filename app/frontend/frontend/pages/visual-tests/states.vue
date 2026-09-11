@@ -25,6 +25,7 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import UploadProgress from "@/shared/components/UploadProgress/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
+import Offline from "@/shared/components/Offline/index.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
@@ -375,17 +376,21 @@ const updatePerPage = (value: number | string) => {
 
   <Heading :level="HeadingLevelEnum.H2">Error Pages</Heading>
   <p>
-    The five full-page error blocks. They are normally rendered as a whole
-    route, so they bring their own heading. <code>Forbidden</code> is the one
-    for a resource that exists and is not yours, as against
+    The six full-page error blocks. They are normally rendered as a whole route,
+    so they bring their own heading. <code>Forbidden</code> is the one for a
+    resource that exists and is not yours, as against
     <code>NotAuthorized</code> for not being signed in at all.
-    <code>InviteInvalid</code> names the token it was given, which is opaque and
-    long enough to run out of the box if it does not break.
+    <code>Offline</code> is for a request that never got an answer, as against
+    <code>ServerError</code> for one the server failed; it only shows its retry
+    button where the caller hands it one. <code>InviteInvalid</code> names the
+    token it was given, which is opaque and long enough to run out of the box if
+    it does not break.
   </p>
   <NotFound />
   <NotAuthorized />
   <Forbidden />
   <ServerError />
+  <Offline :retry="() => {}" />
   <InviteInvalid token="8f14e45fceea167a5a36dedd4bea2543" />
 
   <Heading :level="HeadingLevelEnum.H2">FetchProgressBar</Heading>
