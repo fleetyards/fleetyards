@@ -52,6 +52,7 @@ en:
           infrared: infrared
       dock:
         dock_types:
+          cargogrid: Cargo Grid
           dockingport: Dockingport
           garage: Garage
           hangar: Hangar

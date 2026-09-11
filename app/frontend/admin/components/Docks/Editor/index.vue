@@ -75,22 +75,27 @@ const invalidateDocks = () =>
   });
 
 // Dropdown options
+// Labels match `activerecord.dock.dock_types`, which is what the payload's
+// dockTypeLabel renders. `vehiclepad` is deliberately absent: every row that
+// had it moved to the cargo grid, and nothing new should become one.
 const dockTypeOptions: FilterOption[] = [
-  { label: "Vehicle Pad", value: "vehiclepad" },
-  { label: "Garage", value: "garage" },
-  { label: "Landing Pad", value: "landingpad" },
-  { label: "Docking Port", value: "dockingport" },
   { label: "Hangar", value: "hangar" },
+  { label: "Landingpad", value: "landingpad" },
+  { label: "Cargo Grid", value: "cargogrid" },
+  { label: "Garage", value: "garage" },
+  { label: "Dockingport", value: "dockingport" },
 ];
 
+// A ladder, so the order is the point -- alphabetical put Capital first and
+// Extra Large between the two smallest. Hence `unsorted` on the select.
 const shipSizeOptions: FilterOption[] = [
-  { label: "Extra Extra Small", value: "extra_extra_small" },
-  { label: "Extra Small", value: "extra_small" },
-  { label: "Small", value: "small" },
-  { label: "Medium", value: "medium" },
-  { label: "Large", value: "large" },
-  { label: "Extra Large", value: "extra_large" },
-  { label: "Capital", value: "capital" },
+  { label: "Snubcraft (XXS)", value: "extra_extra_small" },
+  { label: "Extra Small (XS)", value: "extra_small" },
+  { label: "Small (S)", value: "small" },
+  { label: "Medium (M)", value: "medium" },
+  { label: "Large (L)", value: "large" },
+  { label: "Extra Large (XL)", value: "extra_large" },
+  { label: "Capital (C)", value: "capital" },
 ];
 
 // Edit
@@ -220,6 +225,7 @@ const onSaveCreate = async () => {
         v-model="editForm.shipSize"
         name="edit-ship-size"
         :options="shipSizeOptions"
+        unsorted
         :label="t('labels.dock.shipSize')"
       />
       <FormInput
@@ -264,6 +270,7 @@ const onSaveCreate = async () => {
         v-model="createForm.shipSize"
         name="create-ship-size"
         :options="shipSizeOptions"
+        unsorted
         :label="t('labels.dock.shipSize')"
       />
       <FormInput

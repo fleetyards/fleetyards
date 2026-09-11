@@ -35,8 +35,16 @@ class Dock < ApplicationRecord
 
   validates :parent_type, inclusion: {in: PARENT_TYPES}
 
+  # `cargogrid` is the berth that costs cargo capacity -- the Hammerhead's
+  # cargo lift, the Polaris, the Hercules cargo bay -- as opposed to a garage
+  # built for vehicles and nothing else, which is what the Carrack has.
+  #
+  # `vehiclepad` is what it replaces. Every one of the five that existed was
+  # named "Cargo" or "Cargolift", so the split it was meant to express was
+  # already being carried by the name. It stays in the enum because the public
+  # schema exposes these values and a row anywhere still has to read.
   enum :dock_type,
-    {vehiclepad: 0, garage: 1, landingpad: 2, dockingport: 3, hangar: 4}
+    {vehiclepad: 0, garage: 1, landingpad: 2, dockingport: 3, hangar: 4, cargogrid: 5}
   ransacker :dock_type, formatter: proc { |v| Dock.dock_types[v] } do |parent|
     parent.table[:dock_type]
   end
@@ -131,7 +139,7 @@ class Dock < ApplicationRecord
   # from a landing pad. A docking port is in neither list -- it is a connection,
   # not a place a hull is set down.
   SHIP_DOCK_TYPES = %w[landingpad hangar].freeze
-  VEHICLE_DOCK_TYPES = %w[vehiclepad garage].freeze
+  VEHICLE_DOCK_TYPES = %w[vehiclepad garage cargogrid].freeze
 
   SHIP_CLEARANCE = {length: 2.0, beam: 2.0, height: 1.0}.freeze
   VEHICLE_CLEARANCE = {length: 1.0, beam: 1.0, height: 0.5}.freeze

@@ -52,6 +52,7 @@ de:
           infrared: Infrarot
       dock:
         dock_types:
+          cargogrid: Frachtgitter
           dockingport: Andockport
           garage: Garage
           hangar: Hangar

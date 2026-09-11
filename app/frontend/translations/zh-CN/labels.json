@@ -2256,7 +2256,8 @@
         "garage": "车库",
         "landingpad": "停机坪",
         "dockingport": "对接口",
-        "hangar": "机库"
+        "hangar": "机库",
+        "cargogrid": "货运格栅"
       }
     }
   }

@@ -10608,12 +10608,14 @@ components:
       - landingpad
       - dockingport
       - hangar
+      - cargogrid
       x-enumNames:
       - VEHICLEPAD
       - GARAGE
       - LANDINGPAD
       - DOCKINGPORT
       - HANGAR
+      - CARGOGRID
       title: DockTypeEnum
     Docks:
       type: object

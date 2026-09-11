@@ -2264,7 +2264,8 @@
         "garage": "Garage",
         "landingpad": "Aire d'atterrissage",
         "dockingport": "Port d'amarrage",
-        "hangar": "Hangar"
+        "hangar": "Hangar",
+        "cargogrid": "Grille de fret"
       }
     }
   }

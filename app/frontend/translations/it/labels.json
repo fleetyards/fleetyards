@@ -2260,7 +2260,8 @@
         "garage": "Garage",
         "landingpad": "Piazzola di atterraggio",
         "dockingport": "Porta di attracco",
-        "hangar": "Hangar"
+        "hangar": "Hangar",
+        "cargogrid": "Griglia di carico"
       }
     }
   }

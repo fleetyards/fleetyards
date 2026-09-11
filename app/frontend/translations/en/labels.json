@@ -2257,7 +2257,8 @@
         "garage": "Garage",
         "landingpad": "Landing pad",
         "dockingport": "Docking port",
-        "hangar": "Hangar"
+        "hangar": "Hangar",
+        "cargogrid": "Cargo grid"
       }
     }
   }

@@ -68,6 +68,26 @@ class DockTest < ActiveSupport::TestCase
     assert_not build(:dock, ship_size: nil).valid?
   end
 
+  # A cargo grid costs cargo capacity and a garage does not, but both take a
+  # vehicle -- so the new type has to be classified with the vehicle berths or
+  # it would silently be offered to ships.
+  test "a cargo grid is a vehicle berth" do
+    dock = build(:dock, dock_type: :cargogrid)
+
+    assert dock.for_vehicles?
+    assert_not dock.for_ships?
+    assert dock.berth?
+  end
+
+  test "a cargo grid takes a vehicle and refuses a ship" do
+    dock = create(:dock, :with_dimensions, dock_type: :cargogrid)
+    vehicle = create(:model, length: 8.0, beam: 5.0, height: 3.0, size: "vehicle")
+    ship = create(:model, length: 8.0, beam: 5.0, height: 3.0, size: "small")
+
+    assert dock.fits?(vehicle)
+    assert_not dock.fits?(ship)
+  end
+
   # Destroying the carrier takes its berths, whichever side they hang off.
   test "a module takes its docks with it" do
     model_module = create(:model_module)

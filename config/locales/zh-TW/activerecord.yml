@@ -52,6 +52,7 @@ zh-TW:
           infrared: 紅外
       dock:
         dock_types:
+          cargogrid: 貨運格柵
           dockingport: 對接口
           garage: 車庫
           hangar: 機庫

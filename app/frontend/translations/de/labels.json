@@ -2260,7 +2260,8 @@
         "garage": "Garage",
         "landingpad": "Landeplatz",
         "dockingport": "Andockstutzen",
-        "hangar": "Hangar"
+        "hangar": "Hangar",
+        "cargogrid": "Frachtgitter"
       }
     }
   }
