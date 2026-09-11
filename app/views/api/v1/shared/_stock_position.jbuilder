@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-json.slug InventoryStockItem.slug_for(name: position.name, category: position.category, unit: position.unit)
+json.id position.position_id
+json.slug position.slug
 json.name position.name
 json.category position.category
 json.unit position.unit

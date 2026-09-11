@@ -4,31 +4,34 @@
 #
 # Table name: fleet_inventory_items
 #
-#  id                 :uuid             not null, primary key
-#  added_by           :uuid
-#  category           :integer          default(0), not null
-#  entry_type         :integer          default(0), not null
-#  item_type          :string
-#  name               :string           not null
-#  notes              :text
-#  quality            :integer          default(0)
-#  quantity           :decimal(15, 2)   default(0.0), not null
-#  unit               :integer          default(0), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  fleet_inventory_id :uuid             not null
-#  item_id            :uuid
-#  member_id          :uuid
+#  id                          :uuid             not null, primary key
+#  added_by                    :uuid
+#  category                    :integer          default(0), not null
+#  entry_type                  :integer          default(0), not null
+#  item_type                   :string
+#  name                        :string           not null
+#  notes                       :text
+#  quality                     :integer          default(0)
+#  quantity                    :decimal(15, 2)   default(0.0), not null
+#  unit                        :integer          default(0), not null
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  fleet_inventory_id          :uuid             not null
+#  fleet_inventory_position_id :uuid             not null
+#  item_id                     :uuid
+#  member_id                   :uuid
 #
 # Indexes
 #
-#  index_fleet_inventory_items_on_fleet_inventory_id  (fleet_inventory_id)
-#  index_fleet_inventory_items_on_member_id           (member_id)
+#  index_fleet_inventory_items_on_fleet_inventory_id           (fleet_inventory_id)
+#  index_fleet_inventory_items_on_fleet_inventory_position_id  (fleet_inventory_position_id)
+#  index_fleet_inventory_items_on_member_id                    (member_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (added_by => users.id)
 #  fk_rails_...  (fleet_inventory_id => fleet_inventories.id)
+#  fk_rails_...  (fleet_inventory_position_id => fleet_inventory_positions.id) ON DELETE => restrict
 #  fk_rails_...  (member_id => users.id)
 #
 class FleetInventoryItem < ApplicationRecord
@@ -39,6 +42,7 @@ class FleetInventoryItem < ApplicationRecord
   paginates_per 30
 
   inventory_association :fleet_inventory
+  position_association :fleet_inventory_position
 
   belongs_to :added_by_user, class_name: "User", foreign_key: :added_by, optional: true
   belongs_to :member, class_name: "User", optional: true
@@ -46,7 +50,7 @@ class FleetInventoryItem < ApplicationRecord
   after_create_commit :notify_inventory_entry
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name category unit entry_type quality fleet_inventory_id created_at updated_at]
+    %w[name category unit entry_type quality fleet_inventory_id created_at updated_at position_id fleet_inventory_position_id]
   end
 
   def self.ransackable_associations(_auth_object = nil)

@@ -6,31 +6,34 @@ require "test_helper"
 #
 # Table name: fleet_inventory_items
 #
-#  id                 :uuid             not null, primary key
-#  added_by           :uuid
-#  category           :integer          default(0), not null
-#  entry_type         :integer          default(0), not null
-#  item_type          :string
-#  name               :string           not null
-#  notes              :text
-#  quality            :integer          default(0)
-#  quantity           :decimal(15, 2)   default(0.0), not null
-#  unit               :integer          default(0), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  fleet_inventory_id :uuid             not null
-#  item_id            :uuid
-#  member_id          :uuid
+#  id                          :uuid             not null, primary key
+#  added_by                    :uuid
+#  category                    :integer          default(0), not null
+#  entry_type                  :integer          default(0), not null
+#  item_type                   :string
+#  name                        :string           not null
+#  notes                       :text
+#  quality                     :integer          default(0)
+#  quantity                    :decimal(15, 2)   default(0.0), not null
+#  unit                        :integer          default(0), not null
+#  created_at                  :datetime         not null
+#  updated_at                  :datetime         not null
+#  fleet_inventory_id          :uuid             not null
+#  fleet_inventory_position_id :uuid             not null
+#  item_id                     :uuid
+#  member_id                   :uuid
 #
 # Indexes
 #
-#  index_fleet_inventory_items_on_fleet_inventory_id  (fleet_inventory_id)
-#  index_fleet_inventory_items_on_member_id           (member_id)
+#  index_fleet_inventory_items_on_fleet_inventory_id           (fleet_inventory_id)
+#  index_fleet_inventory_items_on_fleet_inventory_position_id  (fleet_inventory_position_id)
+#  index_fleet_inventory_items_on_member_id                    (member_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (added_by => users.id)
 #  fk_rails_...  (fleet_inventory_id => fleet_inventories.id)
+#  fk_rails_...  (fleet_inventory_position_id => fleet_inventory_positions.id) ON DELETE => restrict
 #  fk_rails_...  (member_id => users.id)
 #
 class FleetInventoryItemTest < ActiveSupport::TestCase
@@ -221,5 +224,50 @@ class FleetInventoryItemTest < ActiveSupport::TestCase
     assert_no_difference "Notification.where(user: member).count" do
       create(:fleet_inventory_item, fleet_inventory: inventory)
     end
+  end
+  # The rule lives in `InventoryLedgerEntry`, so it applies here too -- these
+  # were never mirrored from `inventory_item_test.rb` when it was added.
+  test "an entry cannot be renamed out of a position it shares" do
+    inventory = create(:fleet_inventory)
+    base = {fleet_inventory: inventory, name: "Quantanium", category: :commodity, unit: :scu}
+    deposit = create(:fleet_inventory_item, base.merge(quantity: 100))
+    create(:fleet_inventory_item, :withdrawal, base.merge(quantity: 30))
+
+    refute deposit.update(name: "Quantanium Ore")
+    assert_includes deposit.errors.full_messages.to_s, "update the whole position instead"
+    assert_equal "Quantanium", deposit.reload.name
+  end
+
+  test "a shared position refuses a category or unit move on one entry" do
+    inventory = create(:fleet_inventory)
+    base = {fleet_inventory: inventory, name: "Quantanium", category: :commodity, unit: :scu}
+    deposit = create(:fleet_inventory_item, base.merge(quantity: 100))
+    create(:fleet_inventory_item, base.merge(quantity: 5))
+
+    refute deposit.update(category: :component, unit: :units)
+    assert_equal %w[category unit], deposit.errors.attribute_names.map(&:to_s).sort
+  end
+
+  test "an entry alone in its position can be renamed" do
+    entry = create(:fleet_inventory_item, name: "Quantaniumm", category: :commodity, unit: :scu, quantity: 100)
+
+    assert entry.update(name: "Quantanium")
+    assert_equal "Quantanium", entry.reload.name
+  end
+
+  test "an entry in another inventory does not count as sharing the position" do
+    entry = create(:fleet_inventory_item, name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+    create(:fleet_inventory_item, name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+
+    assert entry.update(name: "Quantanium Ore")
+  end
+
+  test "a shared position still allows notes on one entry" do
+    inventory = create(:fleet_inventory)
+    base = {fleet_inventory: inventory, name: "Quantanium", category: :commodity, unit: :scu}
+    deposit = create(:fleet_inventory_item, base.merge(quantity: 100))
+    create(:fleet_inventory_item, :withdrawal, base.merge(quantity: 30))
+
+    assert deposit.update(notes: "moved to hold 2")
   end
 end

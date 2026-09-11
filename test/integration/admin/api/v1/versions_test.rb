@@ -187,14 +187,19 @@ class Admin::Api::V1::VersionsTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 400, path_params: {id: creation.id}, body: {field: "name"}
   end
 
-  # Reverting `name` on one entry of a position moves that entry out of it,
-  # stranding the rest -- the ledger refuses it, so the reverter reports it.
+  # Reverting `name` on an entry that shares its position would move that one
+  # entry out, stranding the rest -- the ledger refuses it, so the reverter
+  # reports it. Renaming a whole position no longer files a version on the
+  # entries at all, so the version this needs is the one a single-entry
+  # correction leaves behind, made while the entry was still alone.
   test "PUT /versions/:id/revert returns 400 for a name another entry shares" do
-    version = renamed_position_version
+    entry, = renamed_then_shared
+    version = entry.versions.where(event: "update").last
     sign_in create(:admin_user, resource_access: [:users])
 
     assert_api_response :put, 400, path_params: {id: version.id}, body: {field: "name"} do
-      assert_equal "Quantanium Ore", version.item.reload.name
+      assert_includes parsed_body["errors"].to_s, "update the whole position instead"
+      assert_equal "Quantanium", entry.reload.name
     end
   end
 
@@ -211,26 +216,27 @@ class Admin::Api::V1::VersionsTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /versions/:id/revert still reverts a field the position does not share" do
-    entry = renamed_position_version.item
+    entry, = renamed_then_shared
     entry.update!(notes: "Second run")
     sign_in create(:admin_user, resource_access: [:users])
 
     assert_api_response :put, 204,
-      path_params: {id: entry.versions.last.id}, body: {field: "notes"} do
+      path_params: {id: entry.versions.where(event: "update").last.id}, body: {field: "notes"} do
       assert_nil entry.reload.notes
     end
   end
 
-  def renamed_position_version
+  # An entry renamed while it was the only one in its position -- which files an
+  # `update` version carrying `name` -- and then joined by a second entry, so
+  # the name it would be reverted to is one it now shares.
+  def renamed_then_shared
     inventory = create(:inventory)
-    base = {inventory:, name: "Quantanium", category: :commodity, unit: :scu}
-    create(:inventory_item, base.merge(quantity: 100))
-    create(:inventory_item, :withdrawal, base.merge(quantity: 30))
-    slug = InventoryStockItem.slug_for(name: "Quantanium", category: "commodity", unit: "scu")
+    entry = create(:inventory_item, inventory:, name: "Quantaniumm", category: :commodity, unit: :scu, quantity: 100)
+    entry.update!(name: "Quantanium")
+    sibling = create(:inventory_item, :withdrawal, inventory:, name: "Quantanium",
+      category: :commodity, unit: :scu, quantity: 30)
 
-    inventory.update_stock_item(inventory.stock_item(slug), {name: "Quantanium Ore"})
-
-    PaperTrail::Version.where(item_type: "InventoryItem").order(:created_at).last
+    [entry, sibling]
   end
 
   test "PUT /versions/:id/revert returns 404 for a missing id" do

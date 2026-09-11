@@ -14,6 +14,7 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
+              positionId: {type: [:string, :null], format: :uuid},
               stockSlug: {type: :string},
               category: {type: :string},
               quantity: {type: :number},

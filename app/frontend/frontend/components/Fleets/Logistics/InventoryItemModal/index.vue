@@ -41,6 +41,7 @@ import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 
 type StockItem = {
+  id: string;
   name: string;
   category: string;
   unit: string;
@@ -145,7 +146,7 @@ const loadStockItems = async () => {
 
 const stockItemOptions = computed<FilterOption[]>(() =>
   stockItems.value.map((item) => ({
-    value: `${item.name}|||${item.category}|||${item.unit}`,
+    value: item.id,
     label: `${item.name} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`,
   })),
 );
@@ -157,7 +158,7 @@ onMounted(() => {
 
 const existingItemOptions = computed<FilterOption[]>(() =>
   stockItems.value.map((item) => ({
-    value: `${item.name}|||${item.category}|||${item.unit}`,
+    value: item.id,
     label: `${item.name} (${t(`labels.logistics.categories.${item.category}`)})`,
   })),
 );
@@ -170,11 +171,13 @@ const pickedItem = ref<PickedItem | undefined>(undefined);
 watch(selectedExistingItem, (val) => {
   if (!val) return;
 
-  const [itemName, itemCategory, itemUnit] = val.split("|||");
-  setFieldValue("name", itemName);
+  const picked = stockItems.value.find((item) => item.id === val);
+  if (!picked) return;
+
+  setFieldValue("name", picked.name);
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  setFieldValue("category", itemCategory as any);
-  setFieldValue("unit", itemUnit as any);
+  setFieldValue("category", picked.category as any);
+  setFieldValue("unit", picked.unit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
   pickedItem.value = undefined;
 });
@@ -244,23 +247,20 @@ watch(entryType, (val) => {
 watch(selectedStockItem, (val) => {
   if (!val) return;
 
-  const [itemName, itemCategory, itemUnit] = val.split("|||");
-  setFieldValue("name", itemName);
+  const picked = stockItems.value.find((item) => item.id === val);
+  if (!picked) return;
+
+  setFieldValue("name", picked.name);
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  setFieldValue("category", itemCategory as any);
-  setFieldValue("unit", itemUnit as any);
+  setFieldValue("category", picked.category as any);
+  setFieldValue("unit", picked.unit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
 });
 
 const selectedStockMax = computed(() => {
   if (!selectedStockItem.value) return undefined;
-  const [itemName, itemCategory, itemUnit] =
-    selectedStockItem.value.split("|||");
-  const match = stockItems.value.find(
-    (s) =>
-      s.name === itemName && s.category === itemCategory && s.unit === itemUnit,
-  );
-  return match?.netQuantity;
+  return stockItems.value.find((item) => item.id === selectedStockItem.value)
+    ?.netQuantity;
 });
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {

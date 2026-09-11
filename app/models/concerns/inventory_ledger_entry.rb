@@ -71,18 +71,29 @@ module InventoryLedgerEntry
       new_record? || will_save_change_to_unit? || will_save_change_to_category?
     }
 
-    # A position is nothing but the entries that share a name, category and
-    # unit, so changing one of those on a single entry moves it out of the
-    # position it was in -- and any withdrawals left behind land in a group with
-    # no deposits, at a negative net that `current_stock` hides. An entry that
-    # is alone in its position *is* the position, so it may move itself.
-    # Anything else goes through `InventoryStock#update_stock_item`, which moves
-    # every entry at once.
+    # Changing one of these on a single entry moves it out of the position it was
+    # in, and any withdrawals left behind land in a position with no deposits, at
+    # a negative net that `current_stock` hides.
+    #
+    # A position having a row did not remove this. It changed the mechanism: the
+    # entry used to leave by no longer matching the group key, and now leaves
+    # because `assign_position` re-resolves it from these same columns and
+    # repoints the foreign key. The outcome is identical, which is easy to
+    # confirm by stubbing this out -- the stranded position comes straight back.
+    #
+    # It stops being reachable when the columns are dropped from the entries and
+    # the foreign key is the only way to say which position one is in. That is
+    # its own deploy, and this goes with it.
+    #
+    # An entry alone in its position *is* the position, so it may move itself.
+    # Anything else goes through `InventoryStock#update_stock_item`.
     validate :position_is_moved_as_a_whole, if: -> {
       persisted? && POSITION_COLUMNS.any? { |column| will_save_change_to_attribute?(column) }
     }
 
     before_validation :set_name_from_item
+
+    before_save :assign_position
   end
 
   class_methods do
@@ -101,6 +112,45 @@ module InventoryLedgerEntry
 
     def inventory_foreign_key
       @inventory_foreign_key
+    end
+
+    # The position an entry belongs to. The column is `null: false`, but presence
+    # cannot be a validation: `assign_position` fills it in `before_save`, which
+    # runs after validations, and it runs there deliberately so a rejected entry
+    # leaves no position behind. The database is what enforces it, and a save
+    # that bypassed the callback would fail loudly there.
+    def position_association(association_name)
+      belongs_to association_name, optional: true
+
+      if association_name != :position
+        # Both directions: `assign_position` writes it, everything else reads it.
+        alias_method :position, association_name
+        alias_method :"position=", :"#{association_name}="
+        alias_attribute :position_id, :"#{association_name}_id"
+      end
+
+      # One filter name for both tables, so the ledger history of a position is
+      # fetched the same way whichever kind of inventory it is in. Both names
+      # have to be in `ransackable_attributes`: ransack checks the allowlist for
+      # the alias while parsing the key, then resolves it and checks again for
+      # the column it lands on. Only `positionIdEq` is reachable through the API
+      # -- the query schemas set `additionalProperties: false`.
+      ransack_alias :position_id, :"#{association_name}_id"
+
+      @position_association_name = association_name
+      @position_foreign_key = :"#{association_name}_id"
+    end
+
+    def position_foreign_key
+      @position_foreign_key
+    end
+
+    def position_association_name
+      @position_association_name
+    end
+
+    def position_class
+      reflect_on_association(position_association_name).klass
     end
 
     def units_for_category(category)
@@ -187,6 +237,40 @@ module InventoryLedgerEntry
     return unless item_type.in?(ITEM_TYPES)
 
     errors.add(:item_id, :blank) if item.blank?
+  end
+
+  # Resolved on the entry rather than at each call site, because there are five
+  # of them -- three controllers, the CSV import, and the fleet restore -- plus
+  # the console and the factories, and every one already carries the name,
+  # category and unit that decide which position this is.
+  #
+  # `before_save` rather than `before_validation`: an entry that fails
+  # validation must not leave a position behind.
+  private def assign_position
+    return if inventory.blank?
+    return if position_id.present? && POSITION_COLUMNS.none? { |column| will_save_change_to_attribute?(column) }
+
+    self.position = resolve_position
+  end
+
+  private def resolve_position
+    identity = {name:, category:, unit:}
+    scope = inventory.positions
+
+    scope.find_by(identity) || create_position(scope, identity)
+  end
+
+  # The savepoint is what keeps the caller's transaction usable when a concurrent
+  # deposit of the same position wins the race -- the shape `Inventory.create_for`
+  # already uses for provisioning an inventory.
+  #
+  # Resolving happens before `withdrawal_does_not_exceed_stock` takes its lock on
+  # the inventory, and that order is the same on every path, which is what keeps a
+  # deposit and a withdrawal from deadlocking against each other.
+  private def create_position(scope, identity)
+    self.class.transaction(requires_new: true) { scope.create!(identity) }
+  rescue ActiveRecord::RecordNotUnique
+    scope.find_by!(identity)
   end
 
   private def position_is_moved_as_a_whole

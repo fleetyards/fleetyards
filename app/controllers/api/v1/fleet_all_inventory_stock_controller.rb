@@ -17,11 +17,13 @@ module Api
 
         @stock = FleetInventoryItem
           .where(fleet_inventory_id: inventory_ids)
-          .joins(:fleet_inventory)
+          .joins(:fleet_inventory, :fleet_inventory_position)
           .select(
-            "fleet_inventory_items.name",
-            "fleet_inventory_items.category",
-            "fleet_inventory_items.unit",
+            "fleet_inventory_positions.id AS fleet_inventory_position_id",
+            "fleet_inventory_positions.name",
+            "fleet_inventory_positions.category",
+            "fleet_inventory_positions.unit",
+            "fleet_inventory_positions.slug",
             "MIN(fleet_inventory_items.quality) AS quality_min",
             "MAX(fleet_inventory_items.quality) AS quality_max",
             "fleet_inventories.name AS inventory_name",
@@ -29,14 +31,16 @@ module Api
             "SUM(CASE WHEN fleet_inventory_items.entry_type = 0 THEN fleet_inventory_items.quantity ELSE -fleet_inventory_items.quantity END) AS net_quantity"
           )
           .group(
-            "fleet_inventory_items.name",
-            "fleet_inventory_items.category",
-            "fleet_inventory_items.unit",
+            "fleet_inventory_positions.id",
+            "fleet_inventory_positions.name",
+            "fleet_inventory_positions.category",
+            "fleet_inventory_positions.unit",
+            "fleet_inventory_positions.slug",
             "fleet_inventories.name",
             "fleet_inventories.slug"
           )
           .having("SUM(CASE WHEN fleet_inventory_items.entry_type = 0 THEN fleet_inventory_items.quantity ELSE -fleet_inventory_items.quantity END) > 0")
-          .order("fleet_inventory_items.name")
+          .order("fleet_inventory_positions.name")
 
         render "api/v1/fleet_inventory_stock/index"
       end

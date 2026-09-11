@@ -14180,6 +14180,11 @@ components:
           format: uuid
         name:
           type: string
+        positionId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         stockSlug:
           type: string
         category:
@@ -14274,6 +14279,9 @@ components:
           type: string
         nameEq:
           type: string
+        positionIdEq:
+          type: string
+          format: uuid
         unitEq:
           "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
@@ -14337,6 +14345,9 @@ components:
     FleetInventoryStockItem:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         slug:
           type: string
         name:
@@ -14356,6 +14367,7 @@ components:
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
+      - id
       - name
       - category
       - unit
@@ -15708,6 +15720,11 @@ components:
           format: uuid
         name:
           type: string
+        positionId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         stockSlug:
           type: string
         category:
@@ -15793,6 +15810,9 @@ components:
           type: string
         nameEq:
           type: string
+        positionIdEq:
+          type: string
+          format: uuid
         unitEq:
           "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
@@ -15851,6 +15871,9 @@ components:
     HangarInventoryStockItem:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         slug:
           type: string
         name:
@@ -15870,6 +15893,7 @@ components:
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
+      - id
       - name
       - category
       - unit
@@ -16653,6 +16677,11 @@ components:
           format: uuid
         name:
           type: string
+        positionId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         stockSlug:
           type: string
         category:
@@ -16738,6 +16767,9 @@ components:
           type: string
         nameEq:
           type: string
+        positionIdEq:
+          type: string
+          format: uuid
         unitEq:
           "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
@@ -16818,6 +16850,9 @@ components:
     InventoryStockPosition:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         slug:
           type: string
         name:
@@ -16865,6 +16900,7 @@ components:
           "$ref": "#/components/schemas/InventoryRef"
       additionalProperties: false
       required:
+      - id
       - slug
       - name
       - category

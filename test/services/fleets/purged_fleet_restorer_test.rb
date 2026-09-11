@@ -33,6 +33,13 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
 
     assert_equal ["Main Hangar"], restored.fleet_inventories.pluck(:name)
     assert_equal ["Quantum Fuel"], restored.fleet_inventories.first.fleet_inventory_items.pluck(:name)
+
+    # The reified attributes carry no position -- the one the entry pointed at
+    # was destroyed with the fleet -- so it is resolved again from the identity
+    # the entry still holds.
+    restored_item = restored.fleet_inventories.first.fleet_inventory_items.first
+    assert_equal "Quantum Fuel", restored_item.position.name
+    assert_equal restored.fleet_inventories.first, restored_item.position.inventory
   end
 
   test "preserves discarded memberships instead of reactivating ex-members" do

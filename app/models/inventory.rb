@@ -38,6 +38,7 @@ class Inventory < ApplicationRecord
   belongs_to :vehicle, optional: true
 
   inventory_items_association :inventory_items
+  positions_association :inventory_positions
 
   has_one_attached :image
   validates :image, no_vector_image: true

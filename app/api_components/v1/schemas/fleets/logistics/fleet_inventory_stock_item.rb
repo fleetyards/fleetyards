@@ -10,6 +10,7 @@ module V1
           schema({
             type: :object,
             properties: {
+              id: {type: :string, format: :uuid},
               slug: {type: :string},
               name: {type: :string},
               category: {type: :string},
@@ -20,7 +21,7 @@ module V1
               netQuantity: {type: :number},
               inventory: ::V1::Schemas::InventoryRef
             },
-            required: %w[name category unit netQuantity]
+            required: %w[id name category unit netQuantity]
           })
         end
       end

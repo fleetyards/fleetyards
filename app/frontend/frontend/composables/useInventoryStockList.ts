@@ -1,24 +1,18 @@
 import type { Ref } from "vue";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 
-type StockItem = Omit<InventoryStockRecord, "id">;
-
 /**
- * The stock endpoints return aggregates rather than records, so they have no
- * id to key rows on and no server-side filtering. This derives both from the
- * current route query.
+ * The stock endpoints carry a position id to key rows on, but still take no
+ * filter parameters, so the filtering is derived from the current route query
+ * here.
  */
 export const useInventoryStockList = (
-  stockData: Ref<StockItem[] | undefined>,
+  stockData: Ref<InventoryStockRecord[] | undefined>,
 ) => {
   const route = useRoute();
 
   const stockRecords = computed<InventoryStockRecord[]>(
-    () =>
-      stockData.value?.map((item, index) => ({
-        ...item,
-        id: `${item.name}-${item.category}-${item.unit}-${index}`,
-      })) ?? [],
+    () => stockData.value ?? [],
   );
 
   const filteredStockRecords = computed<InventoryStockRecord[]>(() => {

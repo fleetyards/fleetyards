@@ -11,6 +11,7 @@ module V1
           properties: {
             nameCont: {type: :string},
             nameEq: {type: :string},
+            positionIdEq: {type: :string, format: :uuid},
             unitEq: ::V1::Schemas::Enums::InventoryUnitEnum,
             categoryEq: ::V1::Schemas::Enums::InventoryCategoryEnum,
             qualityGteq: {type: :integer},
