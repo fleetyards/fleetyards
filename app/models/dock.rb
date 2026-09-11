@@ -13,13 +13,19 @@
 #  max_ship_size :integer
 #  min_ship_size :integer
 #  name          :string
+#  parent_type   :string           not null
 #  ship_size     :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  model_id      :uuid
+#  parent_id     :uuid             not null
+#
+# Indexes
+#
+#  index_docks_on_parent_type_and_parent_id  (parent_type,parent_id)
 #
 class Dock < ApplicationRecord
-  belongs_to :model, optional: true
+  belongs_to :parent, polymorphic: true, touch: true
 
   enum :dock_type,
     {vehiclepad: 0, garage: 1, landingpad: 2, dockingport: 3, hangar: 4}
@@ -39,7 +45,8 @@ class Dock < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "beam", "created_at", "dock_type", "group", "height", "id", "id_value", "length",
-      "max_ship_size", "min_ship_size", "model_id", "name", "ship_size", "station_id", "updated_at"
+      "max_ship_size", "min_ship_size", "name", "parent_id", "parent_type", "ship_size",
+      "updated_at"
     ]
   end
 

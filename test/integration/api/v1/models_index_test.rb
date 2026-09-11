@@ -87,7 +87,7 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
   # for a uuid — so every real request was rejected before reaching the action.
   test "GET /models accepts a slug for willItFit" do
     carrier = create(:model, slug: "fitting-carrier")
-    create(:dock, :with_dimensions, model: carrier, dock_type: :hangar)
+    create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)
 
     fits = create(:model, length: 20.0, beam: 10.0, height: 5.0)
     too_big = create(:model, length: 300.0, beam: 100.0, height: 60.0)
@@ -104,7 +104,7 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
   # answered "nothing fits" rather than declining to answer.
   test "GET /models does not empty the list for a carrier with unmeasured docks" do
     carrier = create(:model, slug: "unmeasured-carrier")
-    create(:dock, model: carrier, dock_type: :hangar)
+    create(:dock, parent: carrier, dock_type: :hangar)
     other = create(:model, length: 20.0, beam: 10.0, height: 5.0)
 
     assert_api_response :get, 200, params: {q: {willItFit: carrier.slug}} do

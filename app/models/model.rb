@@ -382,7 +382,7 @@ class Model < ApplicationRecord
 
   has_many :model_positions, dependent: :destroy
 
-  has_many :docks, dependent: :destroy
+  has_many :docks, as: :parent, dependent: :destroy
 
   has_many :cargo_holds_db, class_name: "CargoHold", as: :parent, dependent: :destroy
   has_many :cargo_hold_container_capacities, through: :cargo_holds_db
@@ -655,7 +655,7 @@ class Model < ApplicationRecord
   end
 
   def self.with_dock
-    includes(:docks).where.not(docks: {model_id: nil})
+    includes(:docks).where.not(docks: {id: nil})
   end
 
   def update_from_hardpoints

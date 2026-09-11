@@ -77,6 +77,10 @@ So `docks` wants `parent_type` / `parent_id`, **not optional**: a dock always be
 
 Sequenced after #4864 and #4856: the orphans have to go first — they would have no parent — and `Model.with_dock` is what #4856 builds on, so reshaping under it would mean rebasing seven commits against a schema change.
 
+**Done.** `model_id` stays on the table for one release: the pre-deploy migration runs against the containers still serving the old code, and that code selects the column. Dropping it in the same deploy 500s every dock read in the window between. A follow-up removes it.
+
+The admin API moved with it — `modelId` became `parentId` + `parentType` on the payload, the input and the query — and the docks editor is now one component both the model and the module pages render, so a module dock can actually be created rather than merely expressed.
+
 Touches `Model.with_dock`, the dock associations on `Model` and newly on `ModelModule`, `docks_controller` (`model_id_eq` and the create params), `dock_input` and `dock_query`, and three places in `admin/pages/models/[id]/edit/docks.vue`.
 
 ### D2 — `size`, never `ground`
@@ -119,12 +123,13 @@ Letting players record what a specific berth holds — "the garage on my Carrack
 
 ## Discovery Log
 
+- **2026-09-11** D1 built. Two columns turned out not to exist at all: `dock.rb` annotated a `ramp` boolean, and `ransackable_attributes` offered `station_id` — the same 2021 station era that left the 391 orphans. Neither was reachable, both are gone.
 - **2026-09-11** Written after #4856. The polymorphic parent (D1) came out of a question about modules mid-review, and stopped that PR from shipping a `NOT NULL model_id` that would have had to be undone.
 - **2026-09-10/11** Measurements taken while building #4856. Two of them corrected earlier conclusions of mine: the dock data is healthy once the 391 orphans are excluded, and `ground` is not what distinguishes a vehicle.
 
 ## Progress
 
-- [ ] D1 — polymorphic parent, after #4864 and #4856
+- [x] D1 — polymorphic parent, after #4864 and #4856
 - [ ] Vehicle class ladder, curated
 - [ ] Pads: count and size per berth
 - [ ] Access: ramp / lift / tractor beam, on the label

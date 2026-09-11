@@ -265,6 +265,7 @@
             "models": "%{name} Modelle bearbeiten",
             "prices": "%{name} Preise bearbeiten",
             "hardpoints": "%{name} Hardpoints bearbeiten",
+            "docks": "%{name} Andockplätze bearbeiten",
             "cargoHolds": "%{name} Frachträume bearbeiten",
             "history": "Modul-Verlauf"
           }

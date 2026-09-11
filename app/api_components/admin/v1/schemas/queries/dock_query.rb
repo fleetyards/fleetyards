@@ -10,7 +10,8 @@ module Admin
           schema({
             type: :object,
             properties: {
-              modelIdEq: {type: :string, format: :uuid},
+              parentIdEq: {type: :string, format: :uuid},
+              parentTypeEq: {type: :string},
               dockTypeEq: {type: :string},
               shipSizeEq: {type: :string},
               nameCont: {type: :string}

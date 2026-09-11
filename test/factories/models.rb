@@ -240,7 +240,7 @@ FactoryBot.define do
 
     trait :with_docks do
       after(:create) do |model|
-        create_list(:dock, 3, model: model)
+        create_list(:dock, 3, parent: model)
       end
     end
 

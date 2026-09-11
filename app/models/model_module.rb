@@ -50,6 +50,7 @@ class ModelModule < ApplicationRecord
   has_many :item_prices, as: :item, dependent: :destroy
 
   has_many :cargo_holds_db, class_name: "CargoHold", as: :parent, dependent: :destroy
+  has_many :docks, as: :parent, dependent: :destroy
 
   serialize :cargo_holds, coder: YAML
 

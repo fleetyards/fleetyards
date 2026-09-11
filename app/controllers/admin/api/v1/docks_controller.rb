@@ -56,13 +56,13 @@ module Admin
         private def dock_params
           @dock_params ||= params.permit(
             :name, :dock_type, :ship_size, :group,
-            :length, :beam, :height, :min_ship_size, :max_ship_size, :model_id
+            :length, :beam, :height, :min_ship_size, :max_ship_size, :parent_id, :parent_type
           )
         end
 
         private def dock_query_params
           @dock_query_params ||= params.permit(q: [
-            :model_id_eq, :dock_type_eq, :ship_size_eq, :name_cont, :sorts
+            :parent_id_eq, :parent_type_eq, :dock_type_eq, :ship_size_eq, :name_cont, :sorts
           ]).fetch(:q, {})
         end
       end

@@ -68,8 +68,8 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
   test "GET /hangar filters by a carrier that takes both ships and vehicles" do
     user = create(:user)
     carrier = create(:model, slug: "carrier-with-both")
-    create(:dock, :with_dimensions, model: carrier, dock_type: :hangar)
-    create(:dock, :with_dimensions, model: carrier, dock_type: :garage)
+    create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)
+    create(:dock, :with_dimensions, parent: carrier, dock_type: :garage)
 
     fits = create(:model, ground: false, length: 20.0, beam: 10.0, height: 5.0)
     too_big = create(:model, ground: false, length: 200.0, beam: 100.0, height: 50.0)

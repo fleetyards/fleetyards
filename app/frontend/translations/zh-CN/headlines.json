@@ -72,6 +72,7 @@
           "models": "关联型号",
           "prices": "价格",
           "hardpoints": "挂载点",
+          "docks": "停靠点",
           "cargoHolds": "货舱",
           "history": "修改历史"
         },

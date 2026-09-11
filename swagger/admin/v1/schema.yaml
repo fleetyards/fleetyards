@@ -10478,9 +10478,11 @@ components:
           type: integer
         maxShipSize:
           type: integer
-        modelId:
+        parentId:
           type: string
           format: uuid
+        parentType:
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -10494,6 +10496,8 @@ components:
       - dockTypeLabel
       - shipSize
       - shipSizeLabel
+      - parentId
+      - parentType
       - createdAt
       - updatedAt
       title: Dock
@@ -10550,19 +10554,21 @@ components:
           type:
           - integer
           - 'null'
-        modelId:
-          type:
-          - string
-          - 'null'
+        parentId:
+          type: string
           format: uuid
+        parentType:
+          type: string
       additionalProperties: false
       title: DockInput
     DockQuery:
       type: object
       properties:
-        modelIdEq:
+        parentIdEq:
           type: string
           format: uuid
+        parentTypeEq:
+          type: string
         dockTypeEq:
           type: string
         shipSizeEq:

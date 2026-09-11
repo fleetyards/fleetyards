@@ -66,6 +66,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "docks/",
+    name: "admin-model-module-edit-docks",
+    component: () => import("@/admin/pages/models/modules/[id]/edit/docks.vue"),
+    meta: {
+      title: "admin.modelModules.edit.docks",
+      customTitle: true,
+      needsAuthentication: true,
+      nav: "editTabs",
+      activeRoute: "admin-model-modules",
+    },
+  },
+  {
     path: "history/",
     name: "admin-model-module-edit-history",
     component: () =>

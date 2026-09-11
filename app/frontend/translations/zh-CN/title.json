@@ -265,6 +265,7 @@
             "models": "编辑 %{name} 模型",
             "prices": "编辑 %{name} 价格",
             "hardpoints": "编辑 %{name} 挂载点",
+            "docks": "编辑 %{name} 停靠点",
             "cargoHolds": "编辑 %{name} 货舱",
             "history": "编辑模块修改历史"
           }
