@@ -28,6 +28,10 @@ Rails.application.configure do
   # loading is working properly before deploying your code.
   config.eager_load = ENV["CI"].present?
 
+  # db/schema.rb is dumped from development only; a test-env db:migrate must not
+  # rewrite it (it raced the dev dump when bin/setup prepared both databases).
+  config.active_record.dump_schema_after_migration = false
+
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {"Cache-Control" => "public, max-age=#{1.hour.to_i}"}
