@@ -124,7 +124,7 @@ Dropping them is a third deploy, after Deploy B, and it is a real piece of work 
 3. `inventory_position_id` added **nullable** to both item tables, with a FK and an index.
 
 ### Phase 2 — Writes
-1. find-or-create on the three `create` paths, the CSV importer (memoized) and the restorer, per D7.
+1. find-or-create as a `before_save` on `InventoryLedgerEntry`, which covers all five paths at once — three controllers, the CSV import, the fleet restore — plus the console and the factories. No memoization: the lookup is one hit on a unique index per entry, against the insert it accompanies.
 2. `update_stock_item` becomes an update of the position row.
 3. `destroy_stock_item` destroys the position and cascades its entries.
 
@@ -194,14 +194,16 @@ Everything in D8, once this branch sits on a main that has #4849.
 
 ## Discovery Log
 
+- **2026-09-11** Phases 2 and 3 landed. Three things worth recording. The resolution went on the entry as a `before_save` rather than into the five call sites, which made the fleet restore work for free — it re-resolves from the identity instead of copying a foreign key pointing at a position destroyed with the fleet. The unit-fits-category rule is deliberately *not* repeated on the position: entries predating it are grandfathered, so duplicating it would give the backfill a way to fail on exactly the rows it exists for. And `pluck` casts an enum to its label even through `Arel.sql`, so the backfill reads raw rows — integers are what a migration should see.
+- **2026-09-11** Two environment notes. `bin/rails data:migrate` cannot be run in a fresh worktree: `db:prepare` stamps no `data_migrations` rows, so it tries all 21 from scratch and dies on an unrelated 2026-03 feature-flags one. Use `data:migrate:up VERSION=`. And `annotaterb` runs on `db:migrate` here, re-annotating one unrelated file left by #4843 each time.
 - **2026-09-10** Phase 1 landed: both tables, the `StockPosition` concern, the nullable foreign keys, and 15 tests. Settled three things the plan had left open — two tables rather than one polymorphic one (D3), the position unique indexes can land in Deploy A rather than waiting for Deploy B (D5), and the duplicated identity columns on the entries need a third deploy of their own (D10). Also found that `annotaterb` runs automatically on `db:migrate` here, contrary to the research, and that it re-annotates one unrelated file left behind by #4843 — reverted each time rather than carried in this diff.
 - **2026-09-10** Research and plan creation. Two findings changed the shape: `current_stock` groups by four columns including `quality`, so "what is a position" had two answers in the codebase and D1 has to pick one; and the pre-deploy hook migrates before the new containers boot, which forces the nullable-then-not-null split in D5. Also confirmed the identity is unenforced today — no unique index on the triple — and that the slug is lossy enough to collide, so the backfill cannot assume uniqueness.
 
 ## Progress
 
 - [x] Phase 1 — The table
-- [ ] Phase 2 — Writes
-- [ ] Phase 3 — Backfill
+- [x] Phase 2 — Writes (find-or-create; `update_stock_item` moves with Phase 4)
+- [x] Phase 3 — Backfill
 - [ ] Phase 4 — Reads
 - [ ] Phase 5 — Retire the fences
 - [ ] Phase 6 — Frontend
