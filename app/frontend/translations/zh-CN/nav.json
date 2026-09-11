@@ -19,7 +19,8 @@
         "index": "我的机库",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
-        "vehicleCargo": "货物"
+        "vehicleCargo": "货物",
+        "imports": "导入记录"
       },
       "login": "登录",
       "logout": "登出",

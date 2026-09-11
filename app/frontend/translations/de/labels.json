@@ -110,7 +110,19 @@
           "created": "Wartend",
           "started": "Läuft",
           "finished": "Abgeschlossen",
-          "failed": "Fehlgeschlagen"
+          "failed": "Fehlgeschlagen",
+          "cancelled": "Abgebrochen"
+        },
+        "intro": "Alle Hangar-Importe und RSI-Syncs, die du ausgeführt hast, neueste zuerst.",
+        "targetGroupHint": "Wähle eine Hangar-Gruppe, dann landet jedes importierte Schiff darin. Leer lassen, um die Gruppen aus der Datei zu verwenden.",
+        "types": {
+          "Imports::HangarImport": "Hangar-Import",
+          "Imports::HangarSync": "RSI-Hangar-Sync"
+        },
+        "summary": {
+          "imported": "Importiert",
+          "missing": "Nicht gefunden",
+          "found": "Zugeordnet"
         }
       },
       "oauthApplications": {

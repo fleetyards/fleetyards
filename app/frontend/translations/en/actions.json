@@ -366,7 +366,11 @@
       },
       "revert": "Revert",
       "exportCsv": "Export CSV",
-      "exportAllCsv": "Export all as CSV"
+      "exportAllCsv": "Export all as CSV",
+      "imports": {
+        "cancel": "Cancel"
+      },
+      "selectFile": "Select File"
     }
   }
 }

@@ -114,7 +114,8 @@
       "hangarImport": {
         "success": "Importazione completata",
         "partialSuccess": "Importazione parzialmente completata.<br><br>Navi non trovate: <br>%{missing}",
-        "failure": "Importazione fallita"
+        "failure": "Importazione fallita",
+        "queued": "Importazione in coda. Puoi seguirla qui."
       },
       "hangarExport": {
         "failure": "Esportazione fallita. Per favore riprova più tardi."
@@ -463,7 +464,8 @@
         },
         "import": {
           "cleanup": "Segnare questa importazione come fallita? Fallo solo se il job è davvero sparito: un'esecuzione ancora attiva darà errore al termine.",
-          "cleanupSelected": "Segnare come fallite le importazioni selezionate? Riguarda solo quelle ancora in corso, e un'esecuzione davvero ancora attiva darà errore al termine."
+          "cleanupSelected": "Segnare come fallite le importazioni selezionate? Riguarda solo quelle ancora in corso, e un'esecuzione davvero ancora attiva darà errore al termine.",
+          "cancel": "Interrompere questa importazione? Le navi già aggiunte vengono mantenute."
         },
         "hardpoint": {
           "destroy": "Sei sicuro di voler eliminare questo punto di montaggio? Questa azione non può essere annullata."
@@ -860,6 +862,12 @@
             "one": "%{count} notifica eliminata",
             "other": "%{count} notifiche eliminate"
           }
+        }
+      },
+      "imports": {
+        "cancel": {
+          "success": "Importazione annullata",
+          "error": "Impossibile annullare questa importazione"
         }
       }
     }

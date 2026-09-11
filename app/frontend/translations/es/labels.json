@@ -110,7 +110,19 @@
           "created": "En cola",
           "started": "En ejecución",
           "finished": "Finalizada",
-          "failed": "Fallida"
+          "failed": "Fallida",
+          "cancelled": "Cancelado"
+        },
+        "intro": "Todas las importaciones de hangar y sincronizaciones RSI que has ejecutado, las más recientes primero.",
+        "targetGroupHint": "Elige un grupo de hangar y cada nave importada se archivará allí. Déjalo vacío para usar los grupos indicados en el archivo.",
+        "types": {
+          "Imports::HangarImport": "Importación de hangar",
+          "Imports::HangarSync": "Sincronización de hangar RSI"
+        },
+        "summary": {
+          "imported": "Importadas",
+          "missing": "No encontradas",
+          "found": "Coincidentes"
         }
       },
       "oauthApplications": {

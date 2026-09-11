@@ -508,7 +508,7 @@ const openDisplayOptionsModal = () => {
           <span>{{ t("actions.exportHangarLink") }}</span>
         </Btn>
 
-        <HangarImportBtn :size="BtnSizesEnum.SM" @finished="fetch" />
+        <HangarImportBtn :size="BtnSizesEnum.SM" />
 
         <Btn
           :aria-label="t('actions.hangar.resetIngame.openModal')"

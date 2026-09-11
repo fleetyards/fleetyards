@@ -114,7 +114,8 @@
       "hangarImport": {
         "success": "匯入完成",
         "partialSuccess": "匯入部分完成。<br><br>未找到的飛船：<br>%{missing}",
-        "failure": "匯入失敗"
+        "failure": "匯入失敗",
+        "queued": "匯入已排入佇列。你可以在此追蹤進度。"
       },
       "hangarExport": {
         "failure": "匯出失敗，請稍後再試。"
@@ -463,7 +464,8 @@
         },
         "import": {
           "cleanup": "將此匯入標記為失敗？僅在工作確實已經消失時才這樣做——仍在執行的工作會在結束時報錯。",
-          "cleanupSelected": "將所選匯入標記為失敗？只影響仍在執行的那些，確實仍在執行的工作會在結束時報錯。"
+          "cleanupSelected": "將所選匯入標記為失敗？只影響仍在執行的那些，確實仍在執行的工作會在結束時報錯。",
+          "cancel": "要停止這次匯入嗎？已新增的艦船會保留。"
         },
         "hardpoint": {
           "destroy": "確定要刪除此掛載點嗎？此操作無法復原。"
@@ -860,6 +862,12 @@
             "one": "%{count} 則通知已刪除",
             "other": "%{count} 則通知已刪除"
           }
+        }
+      },
+      "imports": {
+        "cancel": {
+          "success": "匯入已取消",
+          "error": "無法取消這次匯入"
         }
       }
     }

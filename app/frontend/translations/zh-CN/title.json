@@ -40,7 +40,8 @@
         "vehicleLoadouts": "飞船配装",
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
-        "vehicleCargo": "飞船货物"
+        "vehicleCargo": "飞船货物",
+        "imports": "导入记录"
       },
       "requestPassword": "请求密码",
       "changePassword": "更改密码",

@@ -115,7 +115,8 @@
       "hangarImport": {
         "success": "Importation terminée",
         "partialSuccess": "Importation partiellement terminée.<br><br>Vaisseaux non trouvés : <br>%{missing}",
-        "failure": "Échec de l'importation"
+        "failure": "Échec de l'importation",
+        "queued": "Import mis en file. Vous pouvez le suivre ici."
       },
       "hangarExport": {
         "failure": "Échec de l'exportation, veuillez réessayer plus tard."
@@ -464,7 +465,8 @@
         },
         "import": {
           "cleanup": "Marquer cet import comme échoué ? À ne faire que si le job a vraiment disparu : une exécution encore active échouera à la fin.",
-          "cleanupSelected": "Marquer les imports sélectionnés comme échoués ? Seuls ceux encore en cours sont concernés, et une exécution réellement encore active échouera à la fin."
+          "cleanupSelected": "Marquer les imports sélectionnés comme échoués ? Seuls ceux encore en cours sont concernés, et une exécution réellement encore active échouera à la fin.",
+          "cancel": "Arrêter cet import ? Les vaisseaux déjà ajoutés sont conservés."
         },
         "hardpoint": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce point d'attache ? Cette action est irréversible."
@@ -861,6 +863,12 @@
             "one": "%{count} notification supprimée",
             "other": "%{count} notifications supprimées"
           }
+        }
+      },
+      "imports": {
+        "cancel": {
+          "success": "Import annulé",
+          "error": "Impossible d'annuler cet import"
         }
       }
     }

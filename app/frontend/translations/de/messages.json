@@ -115,7 +115,8 @@
       "hangarImport": {
         "success": "Import abgeschlossen",
         "partialSuccess": "Import teilweise abgeschlossen.<br><br>Nicht gefundene Schiffe: <br>%{missing}",
-        "failure": "Import fehlgeschlagen"
+        "failure": "Import fehlgeschlagen",
+        "queued": "Import eingereiht. Du kannst ihn hier verfolgen."
       },
       "hangarExport": {
         "failure": "Export fehlgeschlagen. Bitte versuche es später erneut."
@@ -464,7 +465,8 @@
         },
         "import": {
           "cleanup": "Diesen Import als fehlgeschlagen markieren? Nur wenn der Job wirklich weg ist — ein noch laufender Durchlauf bricht am Ende mit einem Fehler ab.",
-          "cleanupSelected": "Die ausgewählten Importe als fehlgeschlagen markieren? Betroffen sind nur die noch laufenden, und ein tatsächlich noch laufender Durchlauf bricht am Ende mit einem Fehler ab."
+          "cleanupSelected": "Die ausgewählten Importe als fehlgeschlagen markieren? Betroffen sind nur die noch laufenden, und ein tatsächlich noch laufender Durchlauf bricht am Ende mit einem Fehler ab.",
+          "cancel": "Diesen Import abbrechen? Bereits hinzugefügte Schiffe bleiben erhalten."
         },
         "hardpoint": {
           "destroy": "Bist du sicher, dass du diesen Aufhängungspunkt löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
@@ -861,6 +863,12 @@
             "one": "%{count} Benachrichtigung gelöscht",
             "other": "%{count} Benachrichtigungen gelöscht"
           }
+        }
+      },
+      "imports": {
+        "cancel": {
+          "success": "Import abgebrochen",
+          "error": "Import konnte nicht abgebrochen werden"
         }
       }
     }

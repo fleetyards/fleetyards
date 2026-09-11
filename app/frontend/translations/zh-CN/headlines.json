@@ -210,7 +210,8 @@
         "wishlist": "愿望清单",
         "publicStats": "统计",
         "publicWishlist": "%{user} 的愿望清单",
-        "resetIngame": "数据重置后重置游戏内飞船"
+        "resetIngame": "数据重置后重置游戏内飞船",
+        "imports": "导入记录"
       },
       "syncExtension": "同步 RSI 机库",
       "editMyVehicle": "Edit my %{vehicle}",

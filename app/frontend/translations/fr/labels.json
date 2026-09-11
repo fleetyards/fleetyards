@@ -110,7 +110,19 @@
           "created": "En file d'attente",
           "started": "En cours",
           "finished": "Terminé",
-          "failed": "Échoué"
+          "failed": "Échoué",
+          "cancelled": "Annulé"
+        },
+        "intro": "Tous les imports de hangar et synchronisations RSI que vous avez lancés, les plus récents en premier.",
+        "targetGroupHint": "Choisissez un groupe de hangar et chaque vaisseau importé y sera classé. Laissez vide pour utiliser les groupes indiqués dans le fichier.",
+        "types": {
+          "Imports::HangarImport": "Import de hangar",
+          "Imports::HangarSync": "Synchronisation du hangar RSI"
+        },
+        "summary": {
+          "imported": "Importés",
+          "missing": "Introuvables",
+          "found": "Associés"
         }
       },
       "oauthApplications": {

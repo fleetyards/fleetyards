@@ -110,7 +110,19 @@
           "created": "排队中",
           "started": "运行中",
           "finished": "已完成",
-          "failed": "已失败"
+          "failed": "已失败",
+          "cancelled": "已取消"
+        },
+        "intro": "你运行过的所有机库导入和 RSI 同步，最新的在前。",
+        "targetGroupHint": "选择一个机库分组，所有导入的舰船都会归入其中。留空则使用文件中指定的分组。",
+        "types": {
+          "Imports::HangarImport": "机库导入",
+          "Imports::HangarSync": "RSI 机库同步"
+        },
+        "summary": {
+          "imported": "已导入",
+          "missing": "未找到",
+          "found": "已匹配"
         }
       },
       "oauthApplications": {

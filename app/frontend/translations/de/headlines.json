@@ -210,7 +210,8 @@
         "wishlist": "Wunschliste",
         "publicStats": "Statistiken",
         "publicWishlist": "%{user} Wunschliste",
-        "resetIngame": "Ingame-Schiffe nach Wipe zurücksetzen"
+        "resetIngame": "Ingame-Schiffe nach Wipe zurücksetzen",
+        "imports": "Importe"
       },
       "syncExtension": "RSI-Hangar synchronisieren",
       "editMyVehicle": "Edit my %{vehicle}",

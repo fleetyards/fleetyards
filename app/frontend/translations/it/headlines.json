@@ -210,7 +210,8 @@
         "wishlist": "Lista dei desideri",
         "publicStats": "Statistiche",
         "publicWishlist": "Lista dei desideri di %{user}",
-        "resetIngame": "Resetta le navi in gioco dopo il wipe"
+        "resetIngame": "Resetta le navi in gioco dopo il wipe",
+        "imports": "Importazioni"
       },
       "syncExtension": "Sincronizza hangar RSI",
       "editMyVehicle": "Modifica il mio %{vehicle}",

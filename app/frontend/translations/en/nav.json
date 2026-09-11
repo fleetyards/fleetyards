@@ -19,7 +19,8 @@
         "index": "My Hangar",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
-        "vehicleCargo": "Cargo"
+        "vehicleCargo": "Cargo",
+        "imports": "Imports"
       },
       "login": "Login",
       "logout": "Logout",

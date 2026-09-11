@@ -110,7 +110,19 @@
           "created": "排隊中",
           "started": "執行中",
           "finished": "已完成",
-          "failed": "失敗"
+          "failed": "失敗",
+          "cancelled": "已取消"
+        },
+        "intro": "你執行過的所有機庫匯入與 RSI 同步，最新的在前。",
+        "targetGroupHint": "選擇一個機庫分組，所有匯入的艦船都會歸入其中。留空則使用檔案中指定的分組。",
+        "types": {
+          "Imports::HangarImport": "機庫匯入",
+          "Imports::HangarSync": "RSI 機庫同步"
+        },
+        "summary": {
+          "imported": "已匯入",
+          "missing": "未找到",
+          "found": "已配對"
         }
       },
       "oauthApplications": {
