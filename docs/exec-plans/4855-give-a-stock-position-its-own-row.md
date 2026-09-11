@@ -154,25 +154,25 @@ Dropping them is a third deploy, after Deploy B, and it is a real piece of work 
 3. `position_is_moved_as_a_whole`, `POSITION_COLUMNS` and the `oasdiff` entries stay, per the corrected D8, with the comment rewritten to say what the validation now guards.
 
 ### Phase 6 — Frontend
-1. `id` on the local `StockItem` types, replacing the `\|\|\|` key at all nine sites across the two near-duplicate modals.
-2. `useInventoryStockList.ts`: drop the synthetic id; reconsider whether the client-side filter can move to the server now that a position is addressable.
-3. The three ransack triples (`nameEq`/`categoryEq`/`unitEq`) become one `positionIdEq` — declared in the three query schemas *and* added to the controller permit lists, or it 400s.
-4. The three identical "the rename moved the address" blocks can go: an id does not move.
+1. `id` on the local `StockItem` types, replacing the `\|\|\|` key at all nine sites across the two near-duplicate modals. None left in the codebase.
+2. `useInventoryStockList.ts`: the synthetic id is gone. The client-side filter stays — the stock endpoints still take no filter parameters, and moving that is its own behaviour change.
+3. The three ransack triples become one `positionIdEq`, through a ransack alias so one name serves both tables. Both the alias and the column it resolves to must be in `ransackable_attributes`: ransack checks the allowlist twice, once parsing the key and once for the attribute it lands on. Only `positionIdEq` is publicly reachable — the query schemas are `additionalProperties: false`.
+4. **The three rename-chase blocks stay.** A position row makes the identity stable, not the address: D4 keeps the slug because three published endpoints take it as a path segment, so renaming still moves the URL and something has to follow it.
 
 ### Phase 7 — Tests
-~120 Ruby tests across 12 stock-specific files and 4 model files, plus two frontend specs. Includes a gap worth closing while in there: `fleet_inventory_item_test.rb` never mirrored the five position-move tests from `inventory_item_test.rb:212`, though the behaviour lives in the shared concern.
+Written alongside each phase rather than at the end. The position models, the entry resolution across every write path, the migration's slug derivation, the rollups, the merge and destroy cases, `positionIdEq`, and the reverter rebuild. The gap the research found is closed: `fleet_inventory_item_test.rb` now mirrors the five position-move tests, since the rule lives in the shared concern.
 
 ## Intent Verification
 
-- [ ] **A rename moves one row** — renaming a position files one version on the position, not one per entry, and no entry row is written.
-- [ ] **A position cannot be split** — no write path can move an entry out of its position by changing a label; the entry's FK is the only way.
-- [ ] **Emptied and broken are different states** — a position with entries netting to zero still resolves; a position with no entries at all is distinguishable from it.
-- [ ] **Quantities still come from the ledger** — no stored net, and no test passes by reading a cached total.
-- [ ] **The slug still resolves** — every existing position URL keeps working, including the collision cases the backfill disambiguated.
-- [ ] **The withdrawal guard is unchanged in effect** — a withdrawal exceeding its position's stock is still refused, and concurrent withdrawals still serialise.
+- [x] **A rename moves one row** — renaming a position files one version on the position, not one per entry, and no entry row is written.
+- [x] **A position cannot be split** — no write path can move an entry out of its position by changing a label; the entry's FK is the only way.
+- [x] **Emptied and broken are different states** — a position with entries netting to zero still resolves; a position with no entries at all is distinguishable from it.
+- [x] **Quantities still come from the ledger** — no stored net, and no test passes by reading a cached total.
+- [x] **The slug still resolves** — every existing position URL keeps working, including the collision cases the backfill disambiguated.
+- [x] **The withdrawal guard is unchanged in effect** — a withdrawal exceeding its position's stock is still refused, and concurrent withdrawals still serialise.
 - [x] **The constraint and the data land together** — the table, the backfill and `NOT NULL` are one `db:migrate` run, so there is no window in which an entry can exist without a position.
-- [ ] **#4849's machinery is gone** — the recorder, the reason, the validation and the ignore entries are deleted, and the suite is green without them.
-- [ ] **No breaking schema change** — `oasdiff` 1.18.1 against main reports nothing new, with no added ignore entries.
+- [x] **What the position makes redundant is gone** — the recorder and the reason are deleted. The validation, `POSITION_COLUMNS` and the ignore entries stay, per the corrected D8, because the split is still reachable while the entries carry their own identity.
+- [x] **No breaking schema change** — `oasdiff` 1.18.1 against main reports nothing new, with no added ignore entries.
 
 ## Key files
 
@@ -203,6 +203,7 @@ Dropping them is a third deploy, after Deploy B, and it is a real piece of work 
 
 ## Discovery Log
 
+- **2026-09-11** Phases 6 and 7. Two more things the plan expected to delete are staying, for the same reason as D8: the row makes the identity stable, not the address. The slug still moves on a rename, so the three blocks that follow it to the new URL are what keep a page from going dead. Also: `ransack_alias` needs *both* names in `ransackable_attributes` — the allowlist is checked once while parsing the key and again for the resolved attribute, which cost a while to find. And a narrow test run after Phase 5 missed three integration tests still asserting per-entry versions; the broad run caught them.
 - **2026-09-11** Phase 5 corrected D8. Only two of the five pieces retire: the recorder and the reason. `position_is_moved_as_a_whole` is still load-bearing, because the position row changed the *mechanism* of the split rather than removing it — an entry now leaves by having its foreign key re-resolved from the same columns. Verified by stubbing the validation out: the stranded `-30` comes straight back. Also found the reverter tests had started passing for the wrong reason once per-entry versions stopped being filed.
 - **2026-09-11** Collapsed to a single deploy and rewrote D5. The two-deploy split was protecting nothing: Phase 4's reads inner-join the position, so an entry inserted during the window is invisible either way, and nullable only turns a visible 500 into a silent disappearance. The backfill moved into the schema migration under `up_only` and `NOT NULL` lands with the table. Measured the feature's real use to size the remaining exposure: no `boolean` gate on any of the three flags, one actor each on hangar and ship inventories, 252 on fleet logistics, 24 entries in 180 days.
 - **2026-09-11** A consequence of `NOT NULL`: the backfill's own state cannot be built in a test any more, so its test covers the slug derivation as a pure function instead of running it. Real data supplied a case worth pinning — a fleet position named `"Adp mk4 "`, with a trailing space.
@@ -220,5 +221,5 @@ Dropping them is a third deploy, after Deploy B, and it is a real piece of work 
 - [x] Phase 3 — Backfill (folded into the migration)
 - [x] Phase 4 — Reads
 - [x] Phase 5 — Retire what the position makes redundant
-- [ ] Phase 6 — Frontend
-- [ ] Phase 7 — Tests
+- [x] Phase 6 — Frontend
+- [x] Phase 7 — Tests
