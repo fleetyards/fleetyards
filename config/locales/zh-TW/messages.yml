@@ -67,8 +67,11 @@ zh-TW:
     confirmAccessEmail:
       sent: 確認連結已傳送到您的電子郵件。
       notAllowed: 電子郵件確認僅適用於 OAuth 帳戶。
+    import:
+      not_running: 只能取消正在進行的匯入。
     hangar_import:
       no_data: 未找到要匯入的資料
+      already_running: 機庫匯入正在進行中
     hangar_sync:
       no_data: 未找到要同步的資料
       already_running: 機庫同步已在進行中

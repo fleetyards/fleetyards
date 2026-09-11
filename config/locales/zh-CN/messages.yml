@@ -67,8 +67,11 @@ zh-CN:
     confirmAccessEmail:
       sent: 确认链接已发送到您的电子邮件。
       notAllowed: 电子邮件确认仅适用于 OAuth 账户。
+    import:
+      not_running: 只能取消正在进行的导入。
     hangar_import:
       no_data: 未找到要导入的数据
+      already_running: 机库导入正在进行中
     hangar_sync:
       no_data: 未找到要同步的数据
       already_running: 机库同步已在进行中
