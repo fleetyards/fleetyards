@@ -18,6 +18,7 @@ import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
 import ModelSizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
 import ModelDockSizeSelect from "@/admin/components/base/ModelDockSizeSelect/index.vue";
 import ModelVehicleSizeSelect from "@/admin/components/base/ModelVehicleSizeSelect/index.vue";
+import { hasDrifted, isAppliable } from "@/admin/utils/DimensionDrift";
 
 type Props = {
   model: ModelExtended;
@@ -89,19 +90,26 @@ const [height, heightProps] = defineField("height");
 // and nothing keeps the two in step. A difference is worth looking at but not
 // automatically wrong -- the Hull C is deliberately recorded expanded -- so it
 // is shown and taken over one field at a time.
-const drifted = (current: unknown, source?: number | null) =>
-  source !== null &&
-  source !== undefined &&
-  current !== null &&
-  current !== undefined &&
-  Number(current) !== Number(source);
-
 const lengthDrifted = computed(() =>
-  drifted(length.value, props.model.scLength),
+  hasDrifted(length.value, props.model.scLength),
 );
-const beamDrifted = computed(() => drifted(beam.value, props.model.scBeam));
+const beamDrifted = computed(() => hasDrifted(beam.value, props.model.scBeam));
 const heightDrifted = computed(() =>
-  drifted(height.value, props.model.scHeight),
+  hasDrifted(height.value, props.model.scHeight),
+);
+
+const lengthAppliable = computed(() =>
+  isAppliable(length.value, props.model.scLength),
+);
+const beamAppliable = computed(() =>
+  isAppliable(beam.value, props.model.scBeam),
+);
+const heightAppliable = computed(() =>
+  isAppliable(height.value, props.model.scHeight),
+);
+
+const anyAppliable = computed(
+  () => lengthAppliable.value || beamAppliable.value || heightAppliable.value,
 );
 
 const anyDrifted = computed(
@@ -173,7 +181,12 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
     <div v-if="anyDrifted" class="metrics__drift-notice">
       <i class="fa-duotone fa-triangle-exclamation" />
       <span>{{ t("messages.model.dimensionsDrifted") }}</span>
-      <button type="button" class="metrics__apply" @click="applyScDimensions">
+      <button
+        v-if="anyAppliable"
+        type="button"
+        class="metrics__apply"
+        @click="applyScDimensions"
+      >
         {{ t("actions.applyAllGameFileValues") }}
       </button>
     </div>
@@ -192,7 +205,7 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
               SC Length: {{ model.scLength ?? "—" }}
             </span>
             <button
-              v-if="lengthDrifted"
+              v-if="lengthAppliable"
               type="button"
               class="metrics__apply"
               @click="length = model.scLength"
@@ -216,7 +229,7 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
               SC Beam: {{ model.scBeam ?? "—" }}
             </span>
             <button
-              v-if="beamDrifted"
+              v-if="beamAppliable"
               type="button"
               class="metrics__apply"
               @click="beam = model.scBeam"
@@ -240,7 +253,7 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
               SC Height: {{ model.scHeight ?? "—" }}
             </span>
             <button
-              v-if="heightDrifted"
+              v-if="heightAppliable"
               type="button"
               class="metrics__apply"
               @click="height = model.scHeight"

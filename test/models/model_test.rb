@@ -159,10 +159,20 @@ class ModelTest < ActiveSupport::TestCase
     assert_includes Model.dimensions_drifted, partial
   end
 
-  test "#dimensions_drifted passed false is every model" do
-    create(:model, length: 10.0, sc_length: 12.0)
+  # "No" on the filter has to answer the opposite question. Falling through to
+  # everything would make it indistinguishable from clearing the filter.
+  test "#dimensions_drifted passed false is the models that agree" do
+    same = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 10.0, sc_beam: 5.0, sc_height: 3.0)
+    drifted = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 12.0, sc_beam: 5.0, sc_height: 3.0)
+    untouched = create(:model, length: 10.0, beam: 5.0, height: 3.0, sc_length: nil)
 
-    assert_equal Model.count, Model.dimensions_drifted(false).count
+    results = Model.dimensions_drifted(false)
+
+    assert_includes results, same
+    assert_not_includes results, drifted
+    assert_not_includes results, untouched
   end
 
   test "#hangar_link_slug returns the legacy_slug when present" do

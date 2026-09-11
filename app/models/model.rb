@@ -628,17 +628,26 @@ class Model < ApplicationRecord
   # to look at, and the taking-over happens one field at a time.
   #
   # `IS DISTINCT FROM` rather than `<>`, which is NULL when either side is, and
-  # would drop a model whose curated height was never filled in.
-  scope :dimensions_drifted, ->(flag = true) {
-    unless ActiveModel::Type::Boolean.new.cast(flag)
-      next all
-    end
+  # would drop a model whose game-file height the loader never wrote.
+  #
+  # The filter offers yes and no, so `false` answers the opposite question --
+  # the models the loader described and whose dimensions match it -- rather than
+  # falling through to everything, which would have made "no" indistinguishable
+  # from clearing the filter.
+  DIMENSION_DRIFT_SQL = <<~SQL.squish
+    models.length IS DISTINCT FROM models.sc_length
+    OR models.beam IS DISTINCT FROM models.sc_beam
+    OR models.height IS DISTINCT FROM models.sc_height
+  SQL
 
-    where.not(sc_length: nil).where(
-      "models.length IS DISTINCT FROM models.sc_length" \
-      " OR models.beam IS DISTINCT FROM models.sc_beam" \
-      " OR models.height IS DISTINCT FROM models.sc_height"
-    )
+  scope :dimensions_drifted, ->(flag = true) {
+    described = where.not(sc_length: nil)
+
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      described.where(DIMENSION_DRIFT_SQL)
+    else
+      described.where.not(DIMENSION_DRIFT_SQL)
+    end
   }
 
   def self.ransackable_scopes(auth_object = nil)
