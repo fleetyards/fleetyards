@@ -34,6 +34,8 @@ module ScData
         "rsi_scorpius_antares" => %i[x y z],
         "rsi_hermes" => %i[x y z],
         "tmbl_cyclone" => %i[x y z],
+        "xian_nox" => %i[z x y],
+        "xian_nox_kue" => %i[z x y],
         "tmbl_storm_aa" => %i[x y z]
       }.freeze
 
