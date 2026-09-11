@@ -366,7 +366,13 @@
       },
       "revert": "还原",
       "exportCsv": "导出 CSV",
-      "exportAllCsv": "全部导出为 CSV"
+      "exportAllCsv": "全部导出为 CSV",
+      "imports": {
+        "cancel": "取消",
+        "downloadExample": "示例文件",
+        "toggleDetails": "查看详情"
+      },
+      "selectFile": "选择文件"
     }
   }
 }

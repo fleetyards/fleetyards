@@ -7,7 +7,8 @@
         "hangar": "Votre hangar est vide",
         "wishlist": "Votre liste de souhaits est vide",
         "features": "Aucune fonctionnalité disponible",
-        "fleetFeatures": "Aucune fonctionnalité de flotte disponible"
+        "fleetFeatures": "Aucune fonctionnalité de flotte disponible",
+        "imports": "Aucun import trouvé"
       },
       "actions": {
         "reset": "Réinitialiser les filtres/pages",

@@ -110,8 +110,34 @@
           "created": "排隊中",
           "started": "執行中",
           "finished": "已完成",
-          "failed": "失敗"
-        }
+          "failed": "失敗",
+          "cancelled": "已取消"
+        },
+        "intro": "你執行過的所有機庫匯入與 RSI 同步，最新的在前。",
+        "targetGroupHint": "選擇一個機庫分組，所有匯入的艦船都會歸入其中。留空則使用檔案中指定的分組。",
+        "types": {
+          "Imports::HangarImport": "機庫匯入",
+          "Imports::HangarSync": "RSI 機庫同步"
+        },
+        "summary": {
+          "imported": "已匯入",
+          "missing": "未找到",
+          "found": "已配對"
+        },
+        "formatHint": "支援兩種檔案格式：",
+        "formats": {
+          "fleetyards": "FleetYards 機庫匯出檔 —— 使用匯出按鈕即可產生。",
+          "hangarXplor": "hangarXPLOR 匯出檔。"
+        },
+        "details": {
+          "imported": "已新增",
+          "found": "已配對",
+          "movedToWanted": "已移至願望清單",
+          "missing": "未找到的艦船",
+          "missingComponents": "未找到的元件",
+          "missingUpgrades": "未找到的升級"
+        },
+        "noDetails": "本次執行未記錄詳情。"
       },
       "oauthApplications": {
         "settingsIntro": "管理您的 OAuth 應用程式。這些應用程式可以代表使用者存取 FleetYards API。",

@@ -19,7 +19,8 @@
         "index": "Il Mio Hangar",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
-        "vehicleCargo": "Carico"
+        "vehicleCargo": "Carico",
+        "imports": "Importazioni"
       },
       "login": "Accedi",
       "logout": "Esci",

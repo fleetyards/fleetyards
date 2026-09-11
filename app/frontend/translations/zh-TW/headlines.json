@@ -210,7 +210,8 @@
         "wishlist": "願望清單",
         "publicStats": "統計",
         "publicWishlist": "%{user} 的願望清單",
-        "resetIngame": "資料重置後重設遊戲內飛船"
+        "resetIngame": "資料重置後重設遊戲內飛船",
+        "imports": "匯入記錄"
       },
       "syncExtension": "同步 RSI 機庫",
       "editMyVehicle": "Edit my %{vehicle}",

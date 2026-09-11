@@ -110,8 +110,34 @@
           "created": "En cola",
           "started": "En ejecución",
           "finished": "Finalizada",
-          "failed": "Fallida"
-        }
+          "failed": "Fallida",
+          "cancelled": "Cancelado"
+        },
+        "intro": "Todas las importaciones de hangar y sincronizaciones RSI que has ejecutado, las más recientes primero.",
+        "targetGroupHint": "Elige un grupo de hangar y cada nave importada se archivará allí. Déjalo vacío para usar los grupos indicados en el archivo.",
+        "types": {
+          "Imports::HangarImport": "Importación de hangar",
+          "Imports::HangarSync": "Sincronización de hangar RSI"
+        },
+        "summary": {
+          "imported": "Importadas",
+          "missing": "No encontradas",
+          "found": "Coincidentes"
+        },
+        "formatHint": "Se aceptan dos formatos de archivo:",
+        "formats": {
+          "fleetyards": "Una exportación de hangar de FleetYards: usa el botón Exportar para crearla.",
+          "hangarXplor": "Una exportación de hangarXPLOR."
+        },
+        "details": {
+          "imported": "Añadidas",
+          "found": "Coincidentes",
+          "movedToWanted": "Movidas a la lista de deseos",
+          "missing": "Naves no encontradas",
+          "missingComponents": "Componentes no encontrados",
+          "missingUpgrades": "Mejoras no encontradas"
+        },
+        "noDetails": "Esta ejecución no registró detalles."
       },
       "oauthApplications": {
         "settingsIntro": "Administre sus aplicaciones OAuth. Estas aplicaciones pueden acceder a la API de FleetYards en nombre de los usuarios.",

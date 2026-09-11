@@ -11,6 +11,7 @@ class HangarImporterTest < ActiveSupport::TestCase
     @user = create(:user)
     @import_file = Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/export.json"))
     @import = ::Imports::HangarImport.create!(user_id: @user.id, import: @import_file)
+    @model = Model.order(:name).first
   end
 
   test "imports all data" do
@@ -26,5 +27,98 @@ class HangarImporterTest < ActiveSupport::TestCase
     end
 
     assert_predicate Vehicle.where(user_id: @user.id), :any?
+  end
+
+  # Neither of these was asserted, which is how `wanted: item[:wanted] ||
+  # !item[:purchased] || true` survived: every import landed on the wishlist,
+  # and `Vehicle#reset_hangar_groups` then destroyed any group assignment the
+  # importer had just made.
+  test "imports owned ships as owned, not onto the wishlist" do
+    ::HangarImporter.new(@import).run
+
+    assert_predicate Vehicle.where(user_id: @user.id).purchased, :any?
+    assert_empty Vehicle.where(user_id: @user.id).wanted
+  end
+
+  test "keeps an explicit wishlist entry on the wishlist" do
+    file = Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/export.json"))
+    import = ::Imports::HangarImport.create!(user_id: @user.id, import: file)
+    import.update!(import_data: [{name: @model.name, slug: @model.slug, wanted: true}])
+
+    ::HangarImporter.new(import).run
+
+    assert_predicate Vehicle.find_by(user_id: @user.id), :wanted?
+  end
+
+  test "assigns the groups named in the file when no target group is set" do
+    create_group("Main")
+    import = import_for([{name: @model.name, slug: @model.slug, groups: ["Main"]}])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal ["Main"], vehicle_group_names
+  end
+
+  test "a target group overrides the groups named in the file" do
+    create_group("Main")
+    import = import_for([{name: @model.name, slug: @model.slug, groups: ["Main"]}], group: create_group("RSI"))
+
+    ::HangarImporter.new(import).run
+
+    assert_equal ["RSI"], vehicle_group_names
+  end
+
+  test "a target group reaches an item that names no group of its own" do
+    import = import_for([{name: @model.name, slug: @model.slug}], group: create_group("RSI"))
+
+    ::HangarImporter.new(import).run
+
+    assert_equal ["RSI"], vehicle_group_names
+  end
+
+  test "does not start an import that was cancelled while queued" do
+    import = import_for([{name: @model.name, slug: @model.slug}])
+    import.request_cancel!
+
+    assert_nil ::HangarImporter.new(import).run
+
+    assert_empty Vehicle.where(user_id: @user.id)
+    assert_predicate import.reload, :cancelled?
+  end
+
+  test "keeps what it already created when cancelled mid-run" do
+    interval = ::HangarImporter::CANCEL_CHECK_INTERVAL
+    import = import_for(Array.new(interval * 3) { {name: @model.name, slug: @model.slug} })
+
+    importer = ::HangarImporter.new(import)
+    checks = 0
+    importer.define_singleton_method(:stop_requested?) do |index|
+      next false unless (index % interval).zero?
+
+      checks += 1
+      import.request_cancel! if checks == 2
+      import.reload.cancel_requested_at.present?
+    end
+
+    result = importer.run
+
+    assert_equal interval, Vehicle.where(user_id: @user.id).count
+    assert_predicate import.reload, :cancelled?
+    refute result[:success]
+  end
+
+  def create_group(name)
+    HangarGroup.create!(user_id: @user.id, name:, color: "#ffffff")
+  end
+
+  def vehicle_group_names
+    Vehicle.find_by(user_id: @user.id).hangar_groups.pluck(:name)
+  end
+
+  def import_for(items, group: nil)
+    file = Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/export.json"))
+    import = ::Imports::HangarImport.create!(user_id: @user.id, import: file, hangar_group_id: group&.id)
+    import.update!(import_data: items)
+    import
   end
 end

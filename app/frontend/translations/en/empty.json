@@ -7,7 +7,8 @@
         "hangar": "Your Hangar is empty",
         "wishlist": "Your Wishlist is empty",
         "features": "No features available",
-        "fleetFeatures": "No fleet features available"
+        "fleetFeatures": "No fleet features available",
+        "imports": "No imports found"
       },
       "actions": {
         "reset": "Reset Filters/Pages",

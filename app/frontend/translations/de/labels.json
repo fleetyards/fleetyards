@@ -110,8 +110,34 @@
           "created": "Wartend",
           "started": "Läuft",
           "finished": "Abgeschlossen",
-          "failed": "Fehlgeschlagen"
-        }
+          "failed": "Fehlgeschlagen",
+          "cancelled": "Abgebrochen"
+        },
+        "intro": "Alle Hangar-Importe und RSI-Syncs, die du ausgeführt hast, neueste zuerst.",
+        "targetGroupHint": "Wähle eine Hangar-Gruppe, dann landet jedes importierte Schiff darin. Leer lassen, um die Gruppen aus der Datei zu verwenden.",
+        "types": {
+          "Imports::HangarImport": "Hangar-Import",
+          "Imports::HangarSync": "RSI-Hangar-Sync"
+        },
+        "summary": {
+          "imported": "Importiert",
+          "missing": "Nicht gefunden",
+          "found": "Zugeordnet"
+        },
+        "formatHint": "Zwei Dateiformate werden akzeptiert:",
+        "formats": {
+          "fleetyards": "Ein FleetYards-Hangar-Export — nutze dafür den Export-Button.",
+          "hangarXplor": "Ein hangarXPLOR-Export."
+        },
+        "details": {
+          "imported": "Hinzugefügt",
+          "found": "Zugeordnet",
+          "movedToWanted": "Auf die Wunschliste verschoben",
+          "missing": "Schiffe nicht gefunden",
+          "missingComponents": "Komponenten nicht gefunden",
+          "missingUpgrades": "Upgrades nicht gefunden"
+        },
+        "noDetails": "Dieser Lauf hat keine Details aufgezeichnet."
       },
       "oauthApplications": {
         "settingsIntro": "Verwalten Sie Ihre OAuth-Anwendungen. Diese Anwendungen können im Namen von Benutzern auf die FleetYards-API zugreifen.",

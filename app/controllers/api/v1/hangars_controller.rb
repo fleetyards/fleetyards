@@ -69,7 +69,14 @@ module Api
       def import
         authorize! to: :update?, with: ::HangarPolicy
 
-        import = Imports::HangarImport.new(import_params.merge(user_id: current_resource_owner.id))
+        if running_hangar_import?(Imports::HangarImport)
+          render json: ValidationError.new("hangar.import", message: I18n.t("messages.hangar_import.already_running")), status: :conflict
+          return
+        end
+
+        import = Imports::HangarImport.new(
+          import_params.merge(user_id: current_resource_owner.id, hangar_group_id: target_hangar_group_id)
+        )
 
         unless import.save
           render json: ValidationError.new("hangar.import", errors: import.errors), status: :bad_request
@@ -77,11 +84,17 @@ module Api
         end
 
         if import.import_data.blank?
+          # Nothing was enqueued, so the row would sit in `created` forever and
+          # the already-running guard would refuse every later attempt.
+          import.destroy
+
           render json: {code: "hangar.import", message: I18n.t("errors.messages.hangar.import.no_data")}, status: :bad_request
           return
         end
 
-        @response = ::HangarImporter.new(import).run
+        HangarImportJob.perform_async(import.id)
+
+        render json: {id: import.id, status: import.aasm_state}
       rescue JSON::ParserError => e
         render json: ValidationError.new("hangar.import", message: e), status: :bad_request
       end
@@ -106,7 +119,7 @@ module Api
           return
         end
 
-        if Imports::HangarSync.where(user_id: current_resource_owner.id, aasm_state: %w[created started]).exists?
+        if running_hangar_import?(Imports::HangarSync)
           render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.already_running")), status: :conflict
           return
         end
@@ -115,6 +128,7 @@ module Api
 
         import = Imports::HangarSync.create!(
           user_id: current_resource_owner.id,
+          hangar_group_id: target_hangar_group_id,
           input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
         )
 
@@ -197,7 +211,21 @@ module Api
       end
 
       private def sync_params
-        @sync_params ||= params.permit(items: [:id, :name, :image, :type, :custom_name])
+        @sync_params ||= params.permit(:hangar_group_id, items: [:id, :name, :image, :type, :custom_name])
+      end
+
+      private def running_hangar_import?(klass)
+        klass.where(user_id: current_resource_owner.id, aasm_state: %w[created started]).exists?
+      end
+
+      # Scoped to the user's own groups: the id arrives from the client, and an
+      # id belonging to somebody else would otherwise file their ships under a
+      # group they cannot see.
+      private def target_hangar_group_id
+        id = params[:hangar_group_id].presence
+        return if id.blank?
+
+        HangarGroup.where(user_id: current_resource_owner.id, id:).pick(:id)
       end
     end
   end

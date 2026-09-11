@@ -19,7 +19,8 @@
         "index": "我的機庫",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
-        "vehicleCargo": "貨物"
+        "vehicleCargo": "貨物",
+        "imports": "匯入記錄"
       },
       "login": "登入",
       "logout": "登出",

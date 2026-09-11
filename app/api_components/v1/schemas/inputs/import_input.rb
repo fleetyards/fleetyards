@@ -9,7 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            import: {type: :string}
+            import: {type: :string},
+            hangarGroupId: {type: :string, format: :uuid}
           },
           additionalProperties: false
         })

@@ -40,7 +40,8 @@
         "vehicleLoadouts": "Vehicle Loadouts",
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
-        "vehicleCargo": "Vehicle Cargo"
+        "vehicleCargo": "Vehicle Cargo",
+        "imports": "Imports"
       },
       "requestPassword": "Request Password",
       "changePassword": "Change Password",

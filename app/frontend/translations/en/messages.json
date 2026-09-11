@@ -114,7 +114,8 @@
       "hangarImport": {
         "success": "Import completed",
         "partialSuccess": "Import partially completed.<br><br>Not found Ships: <br>%{missing}",
-        "failure": "Import failed"
+        "failure": "Import failed",
+        "queued": "Import queued. You can follow it here."
       },
       "hangarExport": {
         "failure": "Export failed, Please try again later."
@@ -463,7 +464,8 @@
         },
         "import": {
           "cleanup": "Mark this import as failed? Do this only if the job is really gone — a run that is still working will error out when it finishes.",
-          "cleanupSelected": "Mark the selected imports as failed? Only the ones still running are affected, and a run that is genuinely still working will error out when it finishes."
+          "cleanupSelected": "Mark the selected imports as failed? Only the ones still running are affected, and a run that is genuinely still working will error out when it finishes.",
+          "cancel": "Stop this import? Ships it has already added are kept."
         },
         "hardpoint": {
           "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
@@ -860,6 +862,12 @@
             "one": "%{count} notification deleted",
             "other": "%{count} notifications deleted"
           }
+        }
+      },
+      "imports": {
+        "cancel": {
+          "success": "Import cancelled",
+          "error": "Could not cancel this import"
         }
       }
     }

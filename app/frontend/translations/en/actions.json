@@ -366,7 +366,13 @@
       },
       "revert": "Revert",
       "exportCsv": "Export CSV",
-      "exportAllCsv": "Export all as CSV"
+      "exportAllCsv": "Export all as CSV",
+      "imports": {
+        "cancel": "Cancel",
+        "downloadExample": "Example file",
+        "toggleDetails": "Show what happened"
+      },
+      "selectFile": "Select File"
     }
   }
 }

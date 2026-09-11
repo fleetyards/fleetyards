@@ -837,9 +837,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_133041) do
   create_table "imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "aasm_state"
     t.uuid "admin_user_id"
+    t.datetime "cancel_requested_at"
+    t.datetime "cancelled_at"
     t.datetime "created_at", null: false
     t.datetime "failed_at", precision: nil
     t.datetime "finished_at", precision: nil
+    t.uuid "hangar_group_id"
     t.text "import_data"
     t.text "info"
     t.jsonb "input"
@@ -851,6 +854,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_133041) do
     t.string "version"
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
+    t.index ["hangar_group_id"], name: "index_imports_on_hangar_group_id"
     t.index ["type", "id"], name: "index_imports_on_type_and_id"
     t.index ["type"], name: "index_imports_on_type"
     t.index ["user_id"], name: "index_imports_on_user_id"
@@ -1760,6 +1764,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_133041) do
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"
+  add_foreign_key "imports", "hangar_groups", on_delete: :nullify
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "inventory_items", "inventory_positions", on_delete: :restrict

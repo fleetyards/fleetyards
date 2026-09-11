@@ -5790,7 +5790,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/HangarImportResult"
+                "$ref": "#/components/schemas/ImportSubmitResult"
         '401':
           description: unauthorized
           content:
@@ -5799,6 +5799,12 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '409':
+          description: conflict
           content:
             application/json:
               schema:
@@ -6752,6 +6758,136 @@ paths:
                 "$ref": "#/components/schemas/ImagesList"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/imports":
+    get:
+      summary: List your own imports
+      tags:
+      - Imports
+      operationId: imports
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ImportQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Imports"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/imports/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Show one of your imports
+      tags:
+      - Imports
+      operationId: import
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Import"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/imports/{id}/cancel":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Cancel a running import
+      tags:
+      - Imports
+      operationId: cancelImport
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Import"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -15693,25 +15829,6 @@ components:
       items:
         "$ref": "#/components/schemas/HangarGroup"
       title: HangarGroupsList
-    HangarImportResult:
-      type: object
-      properties:
-        success:
-          type: boolean
-        missing:
-          type: array
-          items:
-            type: string
-        imported:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      required:
-      - success
-      - missing
-      - imported
-      title: HangarImportResult
     HangarInventoriesList:
       type: object
       properties:
@@ -16361,11 +16478,13 @@ components:
       - started
       - finished
       - failed
+      - cancelled
       x-enumNames:
       - CREATED
       - STARTED
       - FINISHED
       - FAILED
+      - CANCELLED
       title: HangarSyncStatusEnum
     HangarSyncSubmitResult:
       type: object
@@ -16659,13 +16778,172 @@ components:
       items:
         "$ref": "#/components/schemas/Image"
       title: ImagesList
+    Import:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          "$ref": "#/components/schemas/ImportTypeEnum"
+        status:
+          "$ref": "#/components/schemas/ImportStatusEnum"
+        info:
+          type: string
+        hangarGroup:
+          "$ref": "#/components/schemas/HangarGroup"
+        output:
+          type: object
+          additionalProperties: true
+        details:
+          "$ref": "#/components/schemas/ImportDetails"
+        startedAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+        failedAt:
+          type: string
+          format: date-time
+        cancelledAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - status
+      - createdAt
+      - updatedAt
+      title: Import
+    ImportDetails:
+      type: object
+      properties:
+        imported:
+          type: array
+          items:
+            type: string
+        found:
+          type: array
+          items:
+            type: string
+        movedToWanted:
+          type: array
+          items:
+            type: string
+        missing:
+          type: array
+          items:
+            type: string
+        missingComponents:
+          type: array
+          items:
+            type: string
+        missingUpgrades:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      title: ImportDetails
     ImportInput:
       type: object
       properties:
         import:
           type: string
+        hangarGroupId:
+          type: string
+          format: uuid
       additionalProperties: false
       title: ImportInput
+    ImportQuery:
+      type: object
+      properties:
+        typeEq:
+          "$ref": "#/components/schemas/ImportTypeEnum"
+        aasmStateEq:
+          "$ref": "#/components/schemas/ImportStatusEnum"
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ImportSortEnum"
+          - "$ref": "#/components/schemas/ImportSortEnum"
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ImportSortEnum"
+          - "$ref": "#/components/schemas/ImportSortEnum"
+      additionalProperties: false
+      example: {}
+      title: ImportQuery
+    ImportSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ImportSortEnum
+    ImportStatusEnum:
+      type: string
+      enum:
+      - created
+      - started
+      - finished
+      - failed
+      - cancelled
+      x-enumNames:
+      - CREATED
+      - STARTED
+      - FINISHED
+      - FAILED
+      - CANCELLED
+      title: ImportStatusEnum
+    ImportSubmitResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          "$ref": "#/components/schemas/ImportStatusEnum"
+      additionalProperties: false
+      required:
+      - id
+      - status
+      title: ImportSubmitResult
+    ImportTypeEnum:
+      type: string
+      enum:
+      - Imports::HangarImport
+      - Imports::HangarSync
+      x-enumNames:
+      - IMPORTS_HANGAR_IMPORT
+      - IMPORTS_HANGAR_SYNC
+      title: ImportTypeEnum
+    Imports:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Import"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Imports
     Inventory:
       type: object
       properties:
@@ -20501,6 +20779,9 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/RsiHangarItemInput"
+        hangarGroupId:
+          type: string
+          format: uuid
       title: SyncRsiHangarInput
     ThrusterClassEnum:
       type: string

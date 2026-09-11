@@ -210,7 +210,8 @@
         "wishlist": "Liste de souhaits",
         "publicStats": "Statistiques",
         "publicWishlist": "Liste de souhaits de %{user}",
-        "resetIngame": "Réinitialiser les vaisseaux obtenus dans le jeu"
+        "resetIngame": "Réinitialiser les vaisseaux obtenus dans le jeu",
+        "imports": "Imports"
       },
       "syncExtension": "Synchroniser le hangar RSI",
       "editMyVehicle": "Éditer mon %{vehicle}",

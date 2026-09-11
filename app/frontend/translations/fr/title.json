@@ -40,7 +40,8 @@
         "vehicleLoadouts": "Loadouts du vaisseau",
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
-        "vehicleCargo": "Cargaison du vaisseau"
+        "vehicleCargo": "Cargaison du vaisseau",
+        "imports": "Imports"
       },
       "requestPassword": "Demander un mot de passe",
       "changePassword": "Modifier le mot de passe",

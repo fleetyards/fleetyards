@@ -110,8 +110,34 @@
           "created": "排队中",
           "started": "运行中",
           "finished": "已完成",
-          "failed": "已失败"
-        }
+          "failed": "已失败",
+          "cancelled": "已取消"
+        },
+        "intro": "你运行过的所有机库导入和 RSI 同步，最新的在前。",
+        "targetGroupHint": "选择一个机库分组，所有导入的舰船都会归入其中。留空则使用文件中指定的分组。",
+        "types": {
+          "Imports::HangarImport": "机库导入",
+          "Imports::HangarSync": "RSI 机库同步"
+        },
+        "summary": {
+          "imported": "已导入",
+          "missing": "未找到",
+          "found": "已匹配"
+        },
+        "formatHint": "支持两种文件格式：",
+        "formats": {
+          "fleetyards": "FleetYards 机库导出文件 —— 使用导出按钮即可生成。",
+          "hangarXplor": "hangarXPLOR 导出文件。"
+        },
+        "details": {
+          "imported": "已添加",
+          "found": "已匹配",
+          "movedToWanted": "已移至愿望单",
+          "missing": "未找到的舰船",
+          "missingComponents": "未找到的组件",
+          "missingUpgrades": "未找到的升级"
+        },
+        "noDetails": "本次运行未记录详情。"
       },
       "oauthApplications": {
         "settingsIntro": "管理您的 OAuth 应用。这些应用可以代表用户访问 FleetYards API。",

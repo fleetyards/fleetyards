@@ -77,6 +77,8 @@ channels:
         "$ref": "#/components/messages/HangarSyncFinishedMessage"
       HangarSyncFailedMessage:
         "$ref": "#/components/messages/HangarSyncFailedMessage"
+      HangarSyncCancelledMessage:
+        "$ref": "#/components/messages/HangarSyncCancelledMessage"
   Models:
     address: models
     x-actioncable-channel: ModelsChannel
@@ -195,6 +197,7 @@ operations:
     messages:
     - "$ref": "#/channels/HangarSync/messages/HangarSyncFinishedMessage"
     - "$ref": "#/channels/HangarSync/messages/HangarSyncFailedMessage"
+    - "$ref": "#/channels/HangarSync/messages/HangarSyncCancelledMessage"
     summary: Outcome of an RSI hangar sync run
   receiveHangarUpdate:
     action: receive
@@ -1592,6 +1595,23 @@ components:
       additionalProperties: false
       required:
       - hangarGroupId
+    HangarSyncCancelledMessage:
+      type: object
+      properties:
+        status:
+          "$ref": "#/components/schemas/HangarSyncCancelledStatusEnum"
+        result:
+          "$ref": "#/components/schemas/HangarSyncResult"
+      additionalProperties: false
+      required:
+      - status
+      - result
+    HangarSyncCancelledStatusEnum:
+      type: string
+      enum:
+      - cancelled
+      x-enumNames:
+      - CANCELLED
     HangarSyncFailedMessage:
       type: object
       properties:
@@ -3149,6 +3169,9 @@ components:
     HangarGroupChangedMessage:
       payload:
         "$ref": "#/components/schemas/HangarGroupChangedMessage"
+    HangarSyncCancelledMessage:
+      payload:
+        "$ref": "#/components/schemas/HangarSyncCancelledMessage"
     HangarSyncFailedMessage:
       payload:
         "$ref": "#/components/schemas/HangarSyncFailedMessage"

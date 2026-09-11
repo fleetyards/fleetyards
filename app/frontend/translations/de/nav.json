@@ -19,7 +19,8 @@
         "index": "Mein Hangar",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventare",
-        "vehicleCargo": "Fracht"
+        "vehicleCargo": "Fracht",
+        "imports": "Importe"
       },
       "login": "Anmelden",
       "logout": "Abmelden",

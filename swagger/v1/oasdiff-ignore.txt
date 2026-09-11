@@ -1005,3 +1005,7 @@ PUT /hangar/inventories/{hangarInventorySlug}/items/{id} removed the required pr
 PUT /hangar/inventories/{hangarInventorySlug}/items/{id} removed the required property `error` from the response with the `400` status
 PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} removed the required property `details` from the response with the `400` status
 PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} removed the required property `error` from the response with the `400` status
+PUT /hangar/import removed the required property `imported` from the response with the `200` status
+PUT /hangar/import removed the required property `missing` from the response with the `200` status
+PUT /hangar/import removed the required property `success` from the response with the `200` status
+GET /hangar/sync-rsi-hangar/status added the new `cancelled` enum value to the `status` response property for the response status `200`

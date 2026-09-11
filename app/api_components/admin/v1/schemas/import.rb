@@ -27,6 +27,7 @@ module Admin
             startedAt: {type: :string, format: "date-time"},
             finishedAt: {type: :string, format: "date-time"},
             failedAt: {type: :string, format: "date-time"},
+            cancelledAt: {type: :string, format: "date-time"},
 
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

@@ -73,8 +73,11 @@ fr:
       sent: Un lien de confirmation a été envoyé à votre e-mail.
       notAllowed: La confirmation par e-mail n'est disponible que pour les comptes
         OAuth.
+    import:
+      not_running: Seul un import en cours peut être annulé.
     hangar_import:
       no_data: Aucune donnée trouvée à importer
+      already_running: Un import de hangar est déjà en cours
     hangar_sync:
       no_data: Aucune donnée trouvée à synchroniser
       already_running: Une synchronisation du hangar est déjà en cours

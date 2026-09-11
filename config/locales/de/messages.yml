@@ -76,8 +76,11 @@ de:
     confirmAccessEmail:
       sent: Ein Bestätigungslink wurde an Ihre E-Mail gesendet.
       notAllowed: E-Mail-Bestätigung ist nur für OAuth-Konten verfügbar.
+    import:
+      not_running: Nur ein laufender Import kann abgebrochen werden.
     hangar_import:
       no_data: Keine Daten zum Importieren gefunden
+      already_running: Ein Hangar-Import läuft bereits
     hangar_sync:
       no_data: Keine Daten zum Synchronisieren gefunden
       already_running: Eine Hangar-Synchronisierung läuft bereits

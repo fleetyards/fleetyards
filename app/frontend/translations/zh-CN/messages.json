@@ -114,7 +114,8 @@
       "hangarImport": {
         "success": "导入完成",
         "partialSuccess": "导入部分完成。<br><br>未找到的飞船：<br>%{missing}",
-        "failure": "导入失败"
+        "failure": "导入失败",
+        "queued": "导入已排队。你可以在此查看进度。"
       },
       "hangarExport": {
         "failure": "导出失败，请稍后再试。"
@@ -463,7 +464,8 @@
         },
         "import": {
           "cleanup": "将此导入标记为失败？仅在任务确实已经消失时才这样做——仍在运行的任务会在结束时报错。",
-          "cleanupSelected": "将所选导入标记为失败？只影响仍在运行的那些，确实仍在运行的任务会在结束时报错。"
+          "cleanupSelected": "将所选导入标记为失败？只影响仍在运行的那些，确实仍在运行的任务会在结束时报错。",
+          "cancel": "要停止此次导入吗？已添加的舰船会保留。"
         },
         "hardpoint": {
           "destroy": "确定要删除此挂载点吗? 此操作无法撤销。"
@@ -860,6 +862,12 @@
             "one": "%{count} 条通知已删除",
             "other": "%{count} 条通知已删除"
           }
+        }
+      },
+      "imports": {
+        "cancel": {
+          "success": "导入已取消",
+          "error": "无法取消此次导入"
         }
       }
     }

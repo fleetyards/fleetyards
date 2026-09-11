@@ -73,8 +73,11 @@ en:
     confirmAccessEmail:
       sent: A confirmation link has been sent to your email.
       notAllowed: Email confirmation is only available for OAuth accounts.
+    import:
+      not_running: Only a running import can be cancelled.
     hangar_import:
       no_data: No Data found to import
+      already_running: A Hangar Import is already in progress
     hangar_sync:
       no_data: No Data found to sync
       already_running: A Hangar Sync is already in progress

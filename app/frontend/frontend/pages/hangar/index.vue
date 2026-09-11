@@ -508,7 +508,15 @@ const openDisplayOptionsModal = () => {
           <span>{{ t("actions.exportHangarLink") }}</span>
         </Btn>
 
-        <HangarImportBtn :size="BtnSizesEnum.SM" @finished="fetch" />
+        <HangarImportBtn :size="BtnSizesEnum.SM" />
+
+        <Btn
+          :aria-label="t('nav.hangar.imports')"
+          :to="{ name: 'hangar-imports' }"
+        >
+          <i class="fa-light fa-clock-rotate-left" />
+          <span>{{ t("nav.hangar.imports") }}</span>
+        </Btn>
 
         <Btn
           :aria-label="t('actions.hangar.resetIngame.openModal')"

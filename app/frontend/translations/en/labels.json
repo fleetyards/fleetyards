@@ -110,8 +110,34 @@
           "created": "Queued",
           "started": "Running",
           "finished": "Finished",
-          "failed": "Failed"
-        }
+          "failed": "Failed",
+          "cancelled": "Cancelled"
+        },
+        "intro": "Every hangar import and RSI sync you have run, newest first.",
+        "targetGroupHint": "Pick a hangar group and every imported ship is filed there. Leave it empty to use the groups named in the file.",
+        "types": {
+          "Imports::HangarImport": "Hangar Import",
+          "Imports::HangarSync": "RSI Hangar Sync"
+        },
+        "summary": {
+          "imported": "Imported",
+          "missing": "Not found",
+          "found": "Matched"
+        },
+        "formatHint": "Two file formats are accepted:",
+        "formats": {
+          "fleetyards": "A FleetYards hangar export — use the Export button to create one.",
+          "hangarXplor": "A hangarXPLOR export."
+        },
+        "details": {
+          "imported": "Added",
+          "found": "Matched",
+          "movedToWanted": "Moved to wishlist",
+          "missing": "Ships not found",
+          "missingComponents": "Components not found",
+          "missingUpgrades": "Upgrades not found"
+        },
+        "noDetails": "This run recorded no details."
       },
       "oauthApplications": {
         "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",

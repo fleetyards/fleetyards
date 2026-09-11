@@ -1,0 +1,32 @@
+[
+  {
+    "manufacturer": "Aegis",
+    "name": "Avenger Titan",
+    "lti": false,
+    "warbond": false,
+    "package_id": "00000001",
+    "pledge": "Standalone Ship - Avenger Titan",
+    "pledge_date": "January 1, 2020",
+    "cost": "$70.00 USD"
+  },
+  {
+    "manufacturer": "Drake",
+    "name": "Cutlass Black",
+    "lti": false,
+    "warbond": false,
+    "package_id": "00000002",
+    "pledge": "Standalone Ship - Cutlass Black",
+    "pledge_date": "January 1, 2020",
+    "cost": "$110.00 USD"
+  },
+  {
+    "manufacturer": "Origin",
+    "name": "325a",
+    "lti": true,
+    "warbond": true,
+    "package_id": "00000003",
+    "pledge": "Standalone Ship - 325a Warbond",
+    "pledge_date": "January 1, 2020",
+    "cost": "$140.00 USD"
+  }
+]

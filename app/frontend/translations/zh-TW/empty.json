@@ -7,7 +7,8 @@
         "hangar": "您的機庫是空的",
         "wishlist": "您的願望清單是空的",
         "features": "沒有可用功能",
-        "fleetFeatures": "沒有可用的艦隊功能"
+        "fleetFeatures": "沒有可用的艦隊功能",
+        "imports": "未找到匯入記錄"
       },
       "actions": {
         "reset": "Reset Filters/Pages",
