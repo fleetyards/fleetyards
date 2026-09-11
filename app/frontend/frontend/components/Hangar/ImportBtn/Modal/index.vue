@@ -125,22 +125,22 @@ const onUploadDone = async (files: FileUpload[]) => {
         </Btn>
       </div>
     </template>
-
-    <style lang="scss" scoped>
-      .import-formats {
-        margin: 0 0 1rem;
-        padding-left: 1.25rem;
-        color: var(--text-muted);
-
-        li + li {
-          margin-top: 0.25rem;
-        }
-
-        a {
-          margin-left: 0.5rem;
-          white-space: nowrap;
-        }
-      }
-    </style>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.import-formats {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+
+  li + li {
+    margin-top: 0.25rem;
+  }
+
+  a {
+    margin-left: 0.5rem;
+    white-space: nowrap;
+  }
+}
+</style>
