@@ -46,9 +46,7 @@ const {
 
 const historyQuery = computed(() => ({
   q: {
-    nameEq: stockItem.value?.name,
-    categoryEq: stockItem.value?.category,
-    unitEq: stockItem.value?.unit,
+    positionIdEq: stockItem.value?.id,
     sorts: "createdAt desc",
   },
 }));

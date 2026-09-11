@@ -112,10 +112,14 @@ class Api::V1::FleetsInventoryStockUpdateTest < ActionDispatch::IntegrationTest
       body: {name: "Quantanium Ore"}
 
     versions = PaperTrail::Version.where(
-      item_type: "FleetInventoryItem", item_id: @inventory.fleet_inventory_items.select(:id), event: "update"
+      item_type: "FleetInventoryPosition", item_id: @inventory.positions.select(:id), event: "update"
     )
 
-    assert_equal 2, versions.count
+    # One version, on the position, rather than one per entry it holds.
+    assert_equal 1, versions.count
+    assert_empty PaperTrail::Version.where(
+      item_type: "FleetInventoryItem", item_id: @inventory.fleet_inventory_items.select(:id), event: "update"
+    )
     assert_equal [@admin.id], versions.pluck(:whodunnit).uniq
     assert_equal [["Quantanium", "Quantanium Ore"]], versions.map { |version| version.changeset["name"] }.uniq
   end

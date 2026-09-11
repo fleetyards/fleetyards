@@ -40,7 +40,7 @@ class InventoryItem < ApplicationRecord
   position_association :inventory_position
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name category unit entry_type quality inventory_id created_at updated_at]
+    %w[name category unit entry_type quality inventory_id created_at updated_at position_id inventory_position_id]
   end
 
   def self.ransackable_associations(_auth_object = nil)

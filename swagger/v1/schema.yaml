@@ -14279,6 +14279,9 @@ components:
           type: string
         nameEq:
           type: string
+        positionIdEq:
+          type: string
+          format: uuid
         unitEq:
           "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
@@ -14364,6 +14367,7 @@ components:
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
+      - id
       - name
       - category
       - unit
@@ -15806,6 +15810,9 @@ components:
           type: string
         nameEq:
           type: string
+        positionIdEq:
+          type: string
+          format: uuid
         unitEq:
           "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:
@@ -15886,6 +15893,7 @@ components:
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
+      - id
       - name
       - category
       - unit
@@ -16759,6 +16767,9 @@ components:
           type: string
         nameEq:
           type: string
+        positionIdEq:
+          type: string
+          format: uuid
         unitEq:
           "$ref": "#/components/schemas/InventoryUnitEnum"
         categoryEq:

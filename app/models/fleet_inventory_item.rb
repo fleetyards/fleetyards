@@ -50,7 +50,7 @@ class FleetInventoryItem < ApplicationRecord
   after_create_commit :notify_inventory_entry
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name category unit entry_type quality fleet_inventory_id created_at updated_at]
+    %w[name category unit entry_type quality fleet_inventory_id created_at updated_at position_id fleet_inventory_position_id]
   end
 
   def self.ransackable_associations(_auth_object = nil)

@@ -100,4 +100,21 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
       path_params: {hangarInventorySlug: @inventory.slug},
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:read"])
   end
+  # A position's ledger history is fetched by its id rather than by matching the
+  # three labels, so it survives a rename and cannot pick up a second position
+  # whose name happens to parameterize the same way.
+  test "GET /hangar/inventories/:slug/items filters by position" do
+    sign_in @user
+
+    quantanium = create(:inventory_item, inventory: @inventory, name: "Quantanium",
+      category: :commodity, unit: :scu, quantity: 100)
+    create(:inventory_item, inventory: @inventory, name: "Titanium",
+      category: :commodity, unit: :scu, quantity: 5)
+
+    assert_api_response :get, 200,
+      path_params: {hangarInventorySlug: @inventory.slug},
+      params: {q: {positionIdEq: quantanium.position_id}} do
+      assert_equal ["Quantanium"], parsed_body["items"].map { |item| item["name"] }.uniq
+    end
+  end
 end

@@ -7,7 +7,7 @@ module InventoryScoped
     extend ActiveSupport::Concern
     include InventoryScoped
 
-    QUERY_PARAMS = %i[name_cont name_eq unit_eq category_eq quality_gteq quality_lteq s].freeze
+    QUERY_PARAMS = %i[name_cont name_eq unit_eq category_eq quality_gteq quality_lteq position_id_eq s].freeze
 
     included do
       after_action -> { pagination_header(:inventory_items) }, only: %i[index]

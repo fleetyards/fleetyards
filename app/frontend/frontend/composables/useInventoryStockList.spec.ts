@@ -14,6 +14,7 @@ vi.mock("vue-router", () => ({
 const { useInventoryStockList } = await import("./useInventoryStockList");
 
 type StockItem = {
+  id: string;
   name: string;
   category: string;
   unit: string;
@@ -23,9 +24,12 @@ type StockItem = {
   netQuantity: number;
 };
 
+let nextId = 0;
+
 const stock = (
   attributes: Partial<StockItem> & { name: string },
 ): StockItem => ({
+  id: `position-${(nextId += 1)}`,
   category: "commodity",
   unit: "scu",
   netQuantity: 10,

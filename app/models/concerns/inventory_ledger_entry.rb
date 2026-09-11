@@ -129,6 +129,14 @@ module InventoryLedgerEntry
         alias_attribute :position_id, :"#{association_name}_id"
       end
 
+      # One filter name for both tables, so the ledger history of a position is
+      # fetched the same way whichever kind of inventory it is in. Both names
+      # have to be in `ransackable_attributes`: ransack checks the allowlist for
+      # the alias while parsing the key, then resolves it and checks again for
+      # the column it lands on. Only `positionIdEq` is reachable through the API
+      # -- the query schemas set `additionalProperties: false`.
+      ransack_alias :position_id, :"#{association_name}_id"
+
       @position_association_name = association_name
       @position_foreign_key = :"#{association_name}_id"
     end
