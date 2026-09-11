@@ -24,6 +24,9 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
+// Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
+// without this and the two dropdowns render as empty comments.
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   InputAlignmentsEnum,
   InputTypesEnum,
@@ -211,13 +214,13 @@ const onSaveCreate = async () => {
         v-model="editForm.dockType"
         name="edit-dock-type"
         :options="dockTypeOptions"
-        label="Dock Type"
+        :label="t('labels.dock.dockType')"
       />
       <BaseSelect
         v-model="editForm.shipSize"
         name="edit-ship-size"
         :options="shipSizeOptions"
-        label="Ship Size"
+        :label="t('labels.dock.shipSize')"
       />
       <FormInput
         v-model="editForm.name"
@@ -255,13 +258,13 @@ const onSaveCreate = async () => {
         v-model="createForm.dockType"
         name="create-dock-type"
         :options="dockTypeOptions"
-        label="Dock Type"
+        :label="t('labels.dock.dockType')"
       />
       <BaseSelect
         v-model="createForm.shipSize"
         name="create-ship-size"
         :options="shipSizeOptions"
-        label="Ship Size"
+        :label="t('labels.dock.shipSize')"
       />
       <FormInput
         v-model="createForm.name"

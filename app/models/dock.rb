@@ -35,12 +35,6 @@ class Dock < ApplicationRecord
 
   validates :parent_type, inclusion: {in: PARENT_TYPES}
 
-  # The admin form used to preselect landingpad/medium for anyone who did not
-  # touch the dropdowns, so a garage could be saved as a landing pad and offered
-  # to ships. The form now starts empty, which only works if a berth with no
-  # type cannot be stored. All 28 ship docks carry both today.
-  validates :dock_type, :ship_size, presence: true
-
   enum :dock_type,
     {vehiclepad: 0, garage: 1, landingpad: 2, dockingport: 3, hangar: 4}
   ransacker :dock_type, formatter: proc { |v| Dock.dock_types[v] } do |parent|

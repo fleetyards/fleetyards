@@ -195,7 +195,10 @@
         "description": "Descripción"
       },
       "dock": {
-        "name": "Nombre del muelle"
+        "name": "Nombre del muelle",
+        "length": "Longitud en m",
+        "beam": "Manga en m",
+        "height": "Altura en m"
       },
       "modelPosition": {
         "name": "Nombre de la posición",
