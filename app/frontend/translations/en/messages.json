@@ -877,6 +877,9 @@
         },
         "update": {
           "failure": "Could not save the dock."
+        },
+        "destroy": {
+          "failure": "Could not delete the dock."
         }
       }
     }

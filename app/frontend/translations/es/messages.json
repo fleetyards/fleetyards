@@ -878,6 +878,9 @@
         },
         "update": {
           "failure": "No se pudo guardar el muelle."
+        },
+        "destroy": {
+          "failure": "No se pudo eliminar el muelle."
         }
       }
     }

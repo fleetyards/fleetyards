@@ -877,6 +877,9 @@
         },
         "update": {
           "failure": "Impossibile salvare il dock."
+        },
+        "destroy": {
+          "failure": "Impossibile eliminare il dock."
         }
       }
     }

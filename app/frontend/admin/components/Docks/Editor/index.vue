@@ -140,7 +140,11 @@ const destroyMutation = useDestroyDockMutation({
 });
 
 const onDestroy = async (record: Dock) => {
-  await destroyMutation.mutateAsync({ id: record.id });
+  try {
+    await destroyMutation.mutateAsync({ id: record.id });
+  } catch {
+    displayAlert({ text: t("messages.dock.destroy.failure") });
+  }
 };
 
 // Create

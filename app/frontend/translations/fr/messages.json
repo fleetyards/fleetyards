@@ -878,6 +878,9 @@
         },
         "update": {
           "failure": "Impossible d'enregistrer le quai."
+        },
+        "destroy": {
+          "failure": "Impossible de supprimer le quai."
         }
       }
     }

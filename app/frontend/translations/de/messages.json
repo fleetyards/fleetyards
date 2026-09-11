@@ -878,6 +878,9 @@
         },
         "update": {
           "failure": "Andockplatz konnte nicht gespeichert werden."
+        },
+        "destroy": {
+          "failure": "Andockplatz konnte nicht gelöscht werden."
         }
       }
     }

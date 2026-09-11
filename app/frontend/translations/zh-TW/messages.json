@@ -877,6 +877,9 @@
         },
         "update": {
           "failure": "無法儲存停靠點。"
+        },
+        "destroy": {
+          "failure": "無法刪除停靠點。"
         }
       }
     }
