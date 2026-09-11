@@ -85,6 +85,25 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
 
   # The picker sends a slug and the controller resolves one, but the schema asked
   # for a uuid — so every real request was rejected before reaching the action.
+  # The filter and the detail page answer from the same berths, so a module's
+  # lift has to count here too or the two disagree again.
+  test "GET /models counts a module's berth for willItFit" do
+    carrier = create(:model, slug: "modular-carrier")
+    model_module = create(:model_module)
+    create(:module_hardpoint, model: carrier, model_module: model_module)
+    create(:dock, :with_dimensions, parent: model_module, dock_type: :hangar)
+
+    fits = create(:model, length: 20.0, beam: 10.0, height: 5.0)
+    too_big = create(:model, length: 300.0, beam: 100.0, height: 60.0)
+
+    assert_api_response :get, 200, params: {q: {willItFit: carrier.slug}} do
+      slugs = parsed_body["items"].map { |item| item["slug"] }
+
+      assert_includes slugs, fits.slug
+      assert_not_includes slugs, too_big.slug
+    end
+  end
+
   test "GET /models accepts a slug for willItFit" do
     carrier = create(:model, slug: "fitting-carrier")
     create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)

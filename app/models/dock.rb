@@ -42,6 +42,13 @@ class Dock < ApplicationRecord
     parent.table[:ship_size]
   end
 
+  # The module this berth arrives with, and nil when it is built into the hull.
+  # A module berth is conditional -- whether the ship is carrying that module is
+  # the player's choice -- so it is named rather than presented as a fixture.
+  def model_module_name
+    parent.name if parent_type == "ModelModule"
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "beam", "created_at", "dock_type", "group", "height", "id", "id_value", "length",

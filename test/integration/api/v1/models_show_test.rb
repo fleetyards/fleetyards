@@ -42,6 +42,39 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The Galaxy's med bay carries a vehicle lift and its refinery does not, so a
+  # berth that arrives with a module counts -- and says which module, because
+  # the carrier is conditional on the owner having mounted it.
+  test "GET /models/:slug names a carrier whose berth comes with a module" do
+    carrier = create(:model, name: "Modular Carrier")
+    model_module = create(:model_module, name: "Med Bay Module")
+    create(:module_hardpoint, model: carrier, model_module: model_module)
+    create(:dock, :with_dimensions, parent: model_module, dock_type: :hangar)
+
+    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      entry = parsed_body["carriedBy"].find { |item| item["name"] == carrier.name }
+
+      assert_not_nil entry
+      assert_equal "Med Bay Module", entry["moduleName"]
+    end
+  end
+
+  test "GET /models/:slug leaves moduleName off a berth built into the hull" do
+    carrier = create(:model, name: "Fixed Carrier")
+    create(:dock, :with_dimensions, parent: carrier, dock_type: :hangar)
+
+    model = create(:model, length: 20.0, beam: 10.0, height: 5.0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      entry = parsed_body["carriedBy"].find { |item| item["name"] == carrier.name }
+
+      assert_not_nil entry
+      assert_nil entry["moduleName"]
+    end
+  end
+
   # A hover bike is size vehicle and ground false, so `ground` would have sent it
   # to a hangar instead of a bay.
   test "GET /models/:slug offers a bay to a hover bike" do

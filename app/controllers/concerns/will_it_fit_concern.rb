@@ -20,7 +20,7 @@ module WillItFitConcern
     # dominate, so a 90x40 dock takes what a 100x20 cannot and picking by length
     # made the filter disagree with `Model#carried_by_with_docks`, which walks
     # them all.
-    docks = carrier.docks.select { |dock| dock.berth? && dock.measured? }
+    docks = carrier.berths.select { |dock| dock.berth? && dock.measured? }
 
     # A carrier nobody measured cannot answer, and filtering everything away
     # would state that nothing fits.
