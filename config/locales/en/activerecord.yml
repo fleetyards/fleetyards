@@ -138,6 +138,7 @@ en:
           admin: Admin
           member: Member
           officer: Officer
+        nickname: Nickname
         user_id: Member
       habitation:
         habitation_types:

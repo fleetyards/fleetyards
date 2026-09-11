@@ -30,6 +30,13 @@ class FleetMembershipPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
   end
 
+  # Distinct from `update?`, which is the self-service rule the membership
+  # endpoint uses. A nickname is set on someone else, so it is gated on the
+  # same privilege as promote/demote rather than on owning the record.
+  def update_nickname?
+    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
+  end
+
   def update?
     record.try(:user_id) && record.user_id == user.id
   end
@@ -37,6 +44,10 @@ class FleetMembershipPolicy < FleetBasePolicy
   def destroy?
     (accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:destroy"]) && record.id != fleet_membership&.id) ||
       (record.id == fleet_membership&.id && !fleet_membership&.fleet_role&.permanent?)
+  end
+
+  params_filter(:update_nickname) do |params|
+    params.permit(:nickname)
   end
 
   params_filter do |params|

@@ -22,6 +22,16 @@ const { t } = useI18n();
 const hasContactOptions = computed(
   () => !!props.member.rsiHandle || !!props.member.discordProfileUrl,
 );
+
+const displayName = computed(
+  () => props.member.nickname || props.member.username,
+);
+
+// The username never goes away, only moves to second place: it is what every
+// link and lookup resolves on, and a nickname the fleet chose is not identity.
+const secondaryName = computed(() =>
+  props.member.nickname ? props.member.username : undefined,
+);
 </script>
 
 <template>
@@ -29,7 +39,10 @@ const hasContactOptions = computed(
     <template v-if="hasContactOptions">
       <BtnDropdown :variant="BtnVariantsEnum.BARE">
         <template #label>
-          <span>{{ member.username }}</span>
+          <span>{{ displayName }}</span>
+          <span v-if="secondaryName" class="member-name__username">
+            {{ secondaryName }}
+          </span>
           <span
             v-if="member.citizenidProfileUrl"
             v-tooltip="t('labels.user.rsiHandleVerified')"
@@ -42,7 +55,10 @@ const hasContactOptions = computed(
       </BtnDropdown>
     </template>
     <template v-else>
-      <span>{{ member.username }}</span>
+      <span>{{ displayName }}</span>
+      <span v-if="secondaryName" class="member-name__username">
+        {{ secondaryName }}
+      </span>
     </template>
   </span>
 </template>
@@ -55,6 +71,12 @@ const hasContactOptions = computed(
   &__badge {
     font-size: 0.85em;
     line-height: 1;
+  }
+
+  &__username {
+    margin-left: 0.35em;
+    font-size: 0.85em;
+    opacity: 0.8;
   }
 }
 </style>

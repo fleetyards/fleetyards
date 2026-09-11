@@ -201,7 +201,8 @@
           "accept": "Akzeptieren",
           "decline": "Ablehnen",
           "remove": "Entfernen",
-          "editRole": "Rolle bearbeiten"
+          "editRole": "Rolle bearbeiten",
+          "editNickname": "Spitzname bearbeiten"
         },
         "inviteUrls": {
           "create": "Neue Einladungs-URL erstellen"

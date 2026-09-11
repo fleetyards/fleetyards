@@ -12,6 +12,7 @@
 #  hide_ships        :boolean          default(FALSE)
 #  invited_at        :datetime
 #  invited_by        :uuid
+#  nickname          :string
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
 #  ships_filter      :integer          default(0)
@@ -73,7 +74,7 @@ class FleetMembership < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
-      "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "primary", "requested_at",
+      "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "nickname", "primary", "requested_at",
       "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
@@ -85,6 +86,8 @@ class FleetMembership < ApplicationRecord
   validate_enum_attributes :ships_filter
 
   validates :user_id, uniqueness: {scope: :fleet_id, conditions: -> { where(discarded_at: nil) }}
+
+  validates :nickname, length: {maximum: 255}, allow_blank: true
 
   DEFAULT_SORTING_PARAMS = ["created_at desc", "accepted_at desc"]
   ALLOWED_SORTING_PARAMS = [
@@ -101,6 +104,7 @@ class FleetMembership < ApplicationRecord
   ransack_alias :state, :aasm_state
 
   before_validation :set_default_ships_filter
+  before_validation :normalize_nickname
   after_create :broadcast_create
   after_destroy :broadcast_destroy, :remove_fleet_vehicles
   after_save :set_primary
@@ -185,6 +189,12 @@ class FleetMembership < ApplicationRecord
     return if ships_filter.present?
 
     self.ships_filter = "all"
+  end
+
+  def normalize_nickname
+    return if nickname.nil?
+
+    self.nickname = nickname.strip.presence
   end
 
   def schedule_setup_fleet_vehicles

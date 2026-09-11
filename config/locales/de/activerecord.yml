@@ -138,6 +138,7 @@ de:
           admin: Admin
           member: Mitglied
           officer: Offizier
+        nickname: Spitzname
         user_id: Mitglied
       habitation:
         habitation_types:

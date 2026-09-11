@@ -299,7 +299,8 @@
           "addShip": "Ajouter un vaisseau",
           "assignSlotFor": "Attribuer une place à %{username}",
           "reassignSlotFor": "Réattribuer une place à %{username}"
-        }
+        },
+        "memberNickname": "Surnom du membre"
       },
       "hangarGroup": {
         "create": "Créer un groupe",

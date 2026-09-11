@@ -1266,6 +1266,10 @@ components:
           format: uuid
         username:
           type: string
+        nickname:
+          type:
+          - string
+          - 'null'
         fleetRole:
           "$ref": "#/components/schemas/FleetRole"
         status:

@@ -10,6 +10,7 @@
 #  hide_ships        :boolean          default(FALSE)
 #  invited_at        :datetime
 #  invited_by        :uuid
+#  nickname          :string
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
 #  ships_filter      :integer          default(0)
@@ -65,6 +66,10 @@ FactoryBot.define do
     trait :hide_ships do
       hide_ships { true }
       ships_filter { :hide }
+    end
+
+    trait :with_nickname do
+      nickname { "Wingman" }
     end
 
     trait :as_admin do

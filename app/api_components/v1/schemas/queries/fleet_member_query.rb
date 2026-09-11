@@ -10,6 +10,7 @@ module V1
           type: :object,
           properties: {
             usernameCont: {type: :string},
+            nicknameCont: {type: :string},
             nameCont: {type: :string, deprecated: true, description: "Use usernameCont instead"},
             roleIn: {type: :array, items: {type: :string}},
             stateIn: {type: :array, items: {type: :string}},

@@ -3,7 +3,7 @@
 module FleetMemberFiltersConcern
   private def member_query_params
     @member_query_params ||= params.permit(q: [
-      :username_cont, :name_cont, :s, :sorts,
+      :username_cont, :nickname_cont, :name_cont, :s, :sorts,
       :accepted_at_gteq, :accepted_at_lteq,
       :invited_at_gteq, :invited_at_lteq,
       :requested_at_gteq, :requested_at_lteq,

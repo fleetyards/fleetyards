@@ -138,6 +138,7 @@ es:
           admin: Admin
           member: Miembro
           officer: Oficial
+        nickname: Apodo
         user_id: Miembro
       habitation:
         habitation_types:

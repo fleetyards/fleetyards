@@ -291,7 +291,8 @@
           "addShip": "Add ship",
           "assignSlotFor": "Assign slot for %{username}",
           "reassignSlotFor": "Reassign slot for %{username}"
-        }
+        },
+        "memberNickname": "Member Nickname"
       },
       "hangarGroup": {
         "create": "Create Group",

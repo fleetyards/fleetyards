@@ -12,6 +12,7 @@
 #  hide_ships        :boolean          default(FALSE)
 #  invited_at        :datetime
 #  invited_by        :uuid
+#  nickname          :string
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
 #  ships_filter      :integer          default(0)
@@ -46,6 +47,39 @@ class FleetMembershipTest < ActiveSupport::TestCase
     @fleet = create(:fleet, admins: [@admin_user], members: [@member_user])
     @admin_membership = @fleet.fleet_memberships.find_by(user: @admin_user)
     @member_membership = @fleet.fleet_memberships.find_by(user: @member_user)
+  end
+
+  test "nickname is trimmed of surrounding whitespace" do
+    @member_membership.update!(nickname: "  Wingman  ")
+
+    assert_equal "Wingman", @member_membership.reload.nickname
+  end
+
+  test "a blank nickname is stored as nil" do
+    @member_membership.update!(nickname: "Wingman")
+    @member_membership.update!(nickname: "   ")
+
+    assert_nil @member_membership.reload.nickname
+  end
+
+  test "nickname is rejected beyond 255 characters" do
+    @member_membership.nickname = "a" * 256
+
+    refute @member_membership.valid?
+    assert_includes @member_membership.errors.attribute_names, :nickname
+  end
+
+  test "nickname accepts 255 characters" do
+    @member_membership.nickname = "a" * 255
+
+    assert @member_membership.valid?
+  end
+
+  test "two members of one fleet may share a nickname" do
+    @admin_membership.update!(nickname: "Wingman")
+    @member_membership.update!(nickname: "Wingman")
+
+    assert_equal "Wingman", @member_membership.reload.nickname
   end
 
   test "#has_access? delegates to fleet_role when present" do
