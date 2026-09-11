@@ -305,8 +305,8 @@ if ARGV.include?("--help") || ARGV.include?("-h")
     Set up or update the development environment. Idempotent.
 
     Options:
-      --fresh         Wipe application state (Docker volumes) before setup
-                      WARNING: affects all worktrees (shared Docker services)
+      --fresh         Wipe application state (Docker volumes, tmp/) before setup
+                      WARNING: the volumes are shared by all worktrees
       --name=NAME     Override the worktree name used for the DB suffix, cookies, etc.
       --port=N        Override the Rails port (default: derived from the slot)
       --vite-port=N   Override the Vite dev server port (default: derived from the slot)
@@ -381,7 +381,10 @@ FileUtils.chdir APP_ROOT do
   end
 
   if FRESH
-    run_step "Wiping application state", "docker compose down -v"
+    run_step "Wiping Docker volumes", "docker compose down -v"
+    # Everything untracked under tmp/: caches, pids, sockets, test uploads.
+    # Nothing under tmp/ is tracked, so the clean takes the directory with it.
+    run_step "Wiping tmp/", "git clean -fdx -- tmp && mkdir -p tmp"
   end
 
   # One dependency graph instead of lock-step groups: every step starts as soon
@@ -404,8 +407,10 @@ FileUtils.chdir APP_ROOT do
   # the email assets build over the vite-test manifest.
   frontend_types = run_step "Generating frontend type declarations", "bin/vite build",
     async: true, after: [ruby_deps, node_deps]
-  clean = run_step "Cleaning logs and temp files", "bin/rails log:clear tmp:clear", async: true, after: [ruby_deps]
-  run_step_wait(ruby_deps, node_deps, docker, dev_db, test_db, email_assets, frontend_types, clean)
+  # Only the logs: tmp:clear would also wipe tmp/cache, and with it the Bootsnap
+  # cache and the vite_ruby build markers that let the next build skip.
+  logs = run_step "Clearing logs", "bin/rails log:clear", async: true, after: [ruby_deps]
+  run_step_wait(ruby_deps, node_deps, docker, dev_db, test_db, email_assets, frontend_types, logs)
 
   total_elapsed = CliHelpers.monotonic_now - total_start
   puts "\n== Setup complete in #{format_duration(total_elapsed)} =="
