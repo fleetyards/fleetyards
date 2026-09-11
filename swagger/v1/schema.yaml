@@ -20731,6 +20731,9 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/RsiHangarItemInput"
+        hangarGroupId:
+          type: string
+          format: uuid
       title: SyncRsiHangarInput
     ThrusterClassEnum:
       type: string

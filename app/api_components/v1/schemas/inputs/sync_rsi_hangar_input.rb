@@ -12,7 +12,8 @@ module V1
             items: {
               type: :array,
               items: ::V1::Schemas::Inputs::RsiHangarItemInput
-            }
+            },
+            hangarGroupId: {type: :string, format: :uuid}
           }
         })
       end

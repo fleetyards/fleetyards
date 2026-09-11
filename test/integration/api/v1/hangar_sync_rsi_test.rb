@@ -44,6 +44,30 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, body: body
   end
 
+  test "PUT /hangar/sync-rsi-hangar records the target group" do
+    user = create(:user)
+    group = HangarGroup.create!(user_id: user.id, name: "RSI", color: "#ffffff")
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], hangarGroupId: group.id}
+    assert_api_response :put, 200, body: body
+
+    assert_equal group.id, Imports::HangarSync.find_by(user_id: user.id).hangar_group_id
+  end
+
+  # The id arrives from the client, so an id belonging to somebody else must not
+  # file this user's ships under a group they cannot see.
+  test "PUT /hangar/sync-rsi-hangar ignores a group owned by somebody else" do
+    user = create(:user)
+    other = HangarGroup.create!(user_id: create(:user).id, name: "Theirs", color: "#ffffff")
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], hangarGroupId: other.id}
+    assert_api_response :put, 200, body: body
+
+    assert_nil Imports::HangarSync.find_by(user_id: user.id).hangar_group_id
+  end
+
   test "PUT /hangar/sync-rsi-hangar returns 400 for missing body" do
     user = create(:user)
     sign_in user

@@ -56,6 +56,54 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal "Enterprise", @pirate_ship.reload.name
       assert @jav_ship.reload.wanted
     end
+
+    test "files every vehicle it touched into the target group" do
+      group = HangarGroup.create!(user_id: @user.id, name: "RSI", color: "#ffffff")
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, hangar_group_id: group.id)
+
+      ::HangarSync.new(@input).run_with_import(import)
+
+      # Matched and newly created alike -- an RSI hangar carries no group
+      # information, so filing only the new ones would leave the list split.
+      assert_includes group.reload.vehicles.pluck(:id), @andromeda_ship.id
+      assert_predicate group.vehicles.count, :positive?
+    end
+
+    test "does not stack a duplicate task force on a re-sync" do
+      group = HangarGroup.create!(user_id: @user.id, name: "RSI", color: "#ffffff")
+
+      2.times do
+        import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, hangar_group_id: group.id)
+        ::HangarSync.new(@input).run_with_import(import)
+      end
+
+      counts = TaskForce.where(hangar_group_id: group.id).group(:vehicle_id).count
+
+      assert_equal [1], counts.values.uniq
+    end
+
+    test "a cancelled sync leaves unreached vehicles alone" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input)
+
+      sync = ::HangarSync.new(@input)
+      # Stop on the first checkpoint, with the state already moved the way
+      # `request_cancel!` moves it -- so the run breaks out mid-list rather
+      # than refusing to start.
+      sync.define_singleton_method(:stop_requested?) do |index|
+        next false unless index.zero?
+
+        import.request_cancel!
+        @cancelled = true
+      end
+
+      sync.run_with_import(import)
+
+      # The run never saw the rest of the pledge list, so nothing it had not
+      # reached may be treated as unmatched and pushed onto the wishlist.
+      refute_predicate @jav_ship.reload, :wanted?
+      refute_predicate @andromeda_ship.reload, :wanted?
+      assert_predicate import.reload, :cancelled?
+    end
   end
 
   class WithBundledSnubCraftsTest < HangarSyncTest
