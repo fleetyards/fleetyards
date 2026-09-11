@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Reads the bounding box out of a holo glTF, or out of the holo attached to a
+# model. Meant for checking an unscaled export against a known hull before
+# anything is loaded from it.
+#
+#   bin/measure-holo path/to/ship.gltf
+#   bin/measure-holo --model "C8 Pisces"
+
+require_relative "../config/environment"
+
+def report(label, result, model = nil)
+  if result.nil?
+    puts "#{label}: keine POSITION-accessoren mit min/max"
+    return
+  end
+
+  puts label
+  puts format("  achsen     x %.3f   y %.3f   z %.3f", *result.to_a)
+  puts format("  sortiert     %.3f     %.3f     %.3f   (größte zuerst)", *result.sorted)
+  puts format("  proportion   %.4f     %.4f     %.4f", *result.proportions)
+
+  return if model.nil? || model.length.blank?
+
+  recorded = [model.length.to_f, model.beam.to_f, model.height.to_f].sort.reverse
+  puts format("  erfasst      %.3f     %.3f     %.3f   (ebenso sortiert)", *recorded)
+
+  factors = result.sorted.zip(recorded).map { |measured, known| known.zero? ? 0.0 : measured / known }
+  puts format("  faktor       %.4f     %.4f     %.4f", *factors)
+
+  spread = factors.reject(&:zero?)
+  if spread.size > 1
+    drift = (spread.max - spread.min) / spread.max * 100
+    note = (drift < 2) ? " (uniform: die datei ist maßhaltig)" : " (nicht uniform)"
+    puts format("  -> faktoren liegen %.1f%% auseinander%s", drift, note)
+  end
+end
+
+if ARGV.first == "--model"
+  name = ARGV[1].to_s
+  abort("usage: bin/measure-holo --model \"Ship Name\"") if name.empty?
+
+  model = Model.find_by(name:) || Model.find_by(slug: name)
+  abort("kein modell namens #{name.inspect}") if model.nil?
+  abort("#{model.name} hat kein holo") unless model.holo.attached?
+
+  report(model.name, HoloDimensions.from_blob(model.holo.blob), model)
+else
+  path = ARGV.first
+  abort("usage: bin/measure-holo <file.gltf> | --model \"Ship Name\"") if path.nil?
+  abort("nicht gefunden: #{path}") unless File.exist?(path)
+
+  report(File.basename(path), HoloDimensions.from_file(path))
+end
