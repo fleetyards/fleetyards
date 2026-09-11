@@ -5,9 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelPaint } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
@@ -40,7 +43,7 @@ const storeImage = (paint: ModelPaint) => {
     return paint.media.storeImage?.largeUrl;
   }
 
-  if (webpSupported) {
+  if (webpSupported.value) {
     return fallbackImage;
   }
 
@@ -51,21 +54,32 @@ const storeImage = (paint: ModelPaint) => {
 <template>
   <AsyncData :async-status="asyncStatus" hide-error>
     <template #resolved>
+      <hr v-if="paints?.length" />
       <div v-if="paints?.length" id="paints" class="row">
-        <hr />
         <div class="col-12">
-          <h2 v-if="paints?.length" id="paints" class="text-uppercase">
+          <Heading
+            v-if="paints?.length"
+            id="paints"
+            :level="HeadingLevelEnum.H2"
+            hero
+          >
             {{ t("labels.model.paints") }}
-          </h2>
+          </Heading>
 
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
               v-for="item in paints"
               :key="`paints-${item.id}`"
-              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+              class="col-12 col-md-6 col-lg-3 col-xl-2 fade-list-item"
             >
-              <Panel :bg-image="storeImage(item)">
-                <PanelHeading :level="HeadingLevelEnum.H3">
+              <Panel
+                :bg-image="storeImage(item)"
+                :variant="PanelVariantsEnum.SLIM"
+              >
+                <PanelHeading
+                  :shadow="PanelHeadingShadowEnum.TOP"
+                  :level="HeadingLevelEnum.H3"
+                >
                   {{ item.name }}
                 </PanelHeading>
               </Panel>

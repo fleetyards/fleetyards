@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Heading from "@/shared/components/base/Heading/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
@@ -30,14 +31,14 @@ const { t } = useI18n();
       <hr />
       <div id="variants" class="row">
         <div class="col-12 variants">
-          <h2 class="text-uppercase">
+          <Heading :level="HeadingLevelEnum.H2" hero>
             {{ t(`labels.model.variants`) }}
-          </h2>
+          </Heading>
           <transition-group name="fade-list" class="row" tag="div" appear>
             <div
               v-for="item in variants.items"
               :key="`variants-${item.slug}`"
-              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+              class="col-12 col-md-6 col-lg-3 col-xl-2 fade-list-item"
             >
               <ModelPanel
                 :model="item"
