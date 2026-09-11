@@ -78,20 +78,24 @@ module ScData
       # default it came out 1.45 m long and 5.15 m tall, which is a bike stood on
       # its end -- and both columns agreed on it, because both come from the same
       # bounding box.
-      test "#load_model uses the curated order for the Nox" do
-        loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Nox", sc_key: "xian_nox")
+      # Both keys, because the Kue is a separate entry and a typo in it would
+      # restore the bad dimensions for that one variant without failing anything.
+      {"Nox" => "xian_nox", "Nox Kue" => "xian_nox_kue"}.each do |name, key|
+        test "#load_model uses the curated order for the #{name}" do
+          loader = ::ScData::Loader::ModelsLoader.new
+          model = create(:model, name:, sc_key: key)
 
-        loader.stubs(:load_model_data).returns(
-          {"mass" => 1000.0, "loadout" => [], "metrics" => {"x" => 1.32, "y" => 1.45, "z" => 5.15}}
-        )
+          loader.stubs(:load_model_data).returns(
+            {"mass" => 1000.0, "loadout" => [], "metrics" => {"x" => 1.32, "y" => 1.45, "z" => 5.15}}
+          )
 
-        loader.load_model(model)
-        model.reload
+          loader.load_model(model)
+          model.reload
 
-        assert_in_delta 5.15, model.sc_length.to_f
-        assert_in_delta 1.32, model.sc_beam.to_f
-        assert_in_delta 1.45, model.sc_height.to_f
+          assert_in_delta 5.15, model.sc_length.to_f
+          assert_in_delta 1.32, model.sc_beam.to_f
+          assert_in_delta 1.45, model.sc_height.to_f
+        end
       end
 
       # The Cyclone is the case that shows why the renders decide this and not the
