@@ -136,6 +136,12 @@ class Dock < ApplicationRecord
     VEHICLE_DOCK_TYPES.include?(dock_type)
   end
 
+  # A docking port is neither: it is a connection, not a berth, so nothing is
+  # ever measured against it.
+  def berth?
+    for_ships? || for_vehicles?
+  end
+
   def clearance
     for_vehicles? ? VEHICLE_CLEARANCE : SHIP_CLEARANCE
   end
@@ -161,6 +167,8 @@ class Dock < ApplicationRecord
   end
 
   private def accepts?(model)
+    return false unless for_ships? || for_vehicles?
+
     (model.size == VEHICLE_SIZE) == for_vehicles?
   end
 

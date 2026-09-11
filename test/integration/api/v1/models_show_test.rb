@@ -55,6 +55,19 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # An unmeasured hull is not compared at all: zeroes would satisfy every upper
+  # bound and the answer would be confident and wrong.
+  test "GET /models/:slug carries nothing for a model without dimensions" do
+    carrier = create(:model)
+    create(:dock, :with_dimensions, model: carrier, dock_type: :hangar)
+
+    unmeasured = create(:model, length: 0, beam: 0, height: 0, size: "small")
+
+    assert_api_response :get, 200, path_params: {slug: unmeasured.slug} do
+      assert_empty parsed_body["carriedBy"]
+    end
+  end
+
   # A ship in a garage is the case that stays impossible.
   test "GET /models/:slug does not offer a garage to a ship" do
     carrier = create(:model)

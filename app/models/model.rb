@@ -757,7 +757,7 @@ class Model < ApplicationRecord
   def carried_by_with_docks
     return [] if length.to_f <= 0 || beam.to_f <= 0 || height.to_f <= 0
 
-    Model.visible.active.with_dock.where.not(id:)
+    Model.visible.active.with_dock.with_attached_store_image.where.not(id:)
       .filter_map do |carrier|
         dock = carrier.docks.find { |candidate| candidate.fits?(self) }
         {carrier:, dock:} if dock

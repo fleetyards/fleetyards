@@ -13,9 +13,9 @@ module V1
               items: ::Shared::V1::Schemas::DockCount
             },
             links: Shared::V1::Schemas::ModelExtendedLinks,
-            # The ships this one can be carried by. Absent rather than empty when
-            # the model has no dimensions of its own -- there is a difference
-            # between "nothing takes it" and "nobody measured it".
+            # The ships this one can be carried by. Always present; empty when
+            # nothing takes it and equally empty when the model has no
+            # dimensions of its own, since an unmeasured hull is not compared.
             carriedBy: {
               type: :array,
               items: {

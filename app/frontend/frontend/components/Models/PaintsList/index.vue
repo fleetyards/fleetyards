@@ -57,12 +57,7 @@ const storeImage = (paint: ModelPaint) => {
       <hr v-if="paints?.length" />
       <div v-if="paints?.length" id="paints" class="row">
         <div class="col-12">
-          <Heading
-            v-if="paints?.length"
-            id="paints"
-            :level="HeadingLevelEnum.H2"
-            hero
-          >
+          <Heading v-if="paints?.length" :level="HeadingLevelEnum.H2" hero>
             {{ t("labels.model.paints") }}
           </Heading>
 

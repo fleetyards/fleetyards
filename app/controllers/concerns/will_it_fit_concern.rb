@@ -16,34 +16,33 @@ module WillItFitConcern
   private def will_it_fit_scope(scope, carrier)
     return scope if carrier.blank?
 
-    docks = carrier.docks.to_a
-    ship_dock = ::Dock.largest_ship_dock(docks)
-    vehicle_dock = ::Dock.largest_vehicle_dock(docks)
+    # Every measured berth, not the longest of each kind: length alone does not
+    # dominate, so a 90x40 dock takes what a 100x20 cannot and picking by length
+    # made the filter disagree with `Model#carried_by_with_docks`, which walks
+    # them all.
+    docks = carrier.docks.select { |dock| dock.berth? && dock.measured? }
 
     # A carrier nobody measured cannot answer, and filtering everything away
     # would state that nothing fits.
-    return scope if ship_dock.blank? && vehicle_dock.blank?
+    return scope if docks.blank?
 
     # Both branches are built from `scope` so they stay the same class and stay
     # structurally compatible. `or` demands both and refuses a bare Hash, which
     # is what the hangar used to hand it.
-    branches = [
-      dock_branch(scope, ship_dock),
-      dock_branch(scope, vehicle_dock)
-    ].compact
-
-    branches.reduce { |combined, branch| combined.or(branch) }
+    docks.map { |dock| dock_branch(scope, dock) }
+      .reduce { |combined, branch| combined.or(branch) }
   end
 
   private def dock_branch(scope, dock)
-    return if dock.blank?
-
     clearance = dock.clearance
 
+    # Ranges open at the bottom would let a model with no dimensions through as
+    # a fit, which is what a zero means here. `carried_by_with_docks` refuses
+    # those too.
     dimensions = {
-      length: ..(dock.length - clearance[:length]),
-      beam: ..(dock.beam - clearance[:beam]),
-      height: ..(dock.height - clearance[:height])
+      length: 0.001..(dock.length - clearance[:length]),
+      beam: 0.001..(dock.beam - clearance[:beam]),
+      height: 0.001..(dock.height - clearance[:height])
     }
 
     # `size`, not `ground`: the latter means "cannot reach space", so a hover bike
@@ -60,10 +59,15 @@ module WillItFitConcern
   private def will_it_fit_carrier(slug)
     return if slug.blank?
 
-    Model.visible.active
-      .where(slug: slug)
-      .or(Model.where(rsi_slug: slug))
-      .or(Model.where(legacy_slug: slug))
+    # Each branch is built from the same scoped relation. Written as
+    # `Model.visible.active.where(slug:).or(Model.where(rsi_slug:))`, only the
+    # first branch carried visible/active and a hidden model could be resolved
+    # through its rsi or legacy slug.
+    scoped = Model.visible.active
+
+    scoped.where(slug: slug)
+      .or(scoped.where(rsi_slug: slug))
+      .or(scoped.where(legacy_slug: slug))
       .first
   end
 end
