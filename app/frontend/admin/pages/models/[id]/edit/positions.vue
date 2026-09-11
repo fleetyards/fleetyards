@@ -24,6 +24,9 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
+// Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
+// without this and every dropdown below renders as an empty comment.
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 
 type Props = {
   model: ModelExtended;
