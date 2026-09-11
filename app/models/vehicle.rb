@@ -227,6 +227,97 @@ class Vehicle < ApplicationRecord
     where(public: true)
   end
 
+  # The hangar's bulk deletions go around `destroy`: a wishlist wipe is a few
+  # thousand rows and every callback on the way out queries, broadcasts and
+  # queues a job per vehicle. What `destroy` would have taken with it has to be
+  # cleared here instead, and the list is hand-maintained -- a table added since
+  # the last edit is one nobody cleans up. Missing one used to mean an orphaned
+  # row nobody noticed; `vehicle_loadouts` has a foreign key, so missing that one
+  # raises `ActiveRecord::InvalidForeignKey` and the whole delete rolls back.
+  def self.delete_with_dependents(vehicle_ids)
+    return 0 if vehicle_ids.blank?
+
+    vehicle_ids |= descendants_of(vehicle_ids)
+    loaner_groups = where(id: vehicle_ids, loaner: true).distinct.pluck(:user_id, :model_id)
+
+    freeze_inventory_locations(vehicle_ids)
+
+    loadout_ids = VehicleLoadout.where(vehicle_id: vehicle_ids).pluck(:id)
+    erase_versions("VehicleLoadout", loadout_ids)
+    VehicleLoadout.where(id: loadout_ids).delete_all
+
+    VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
+    VehicleModule.where(vehicle_id: vehicle_ids).delete_all
+    TaskForce.where(vehicle_id: vehicle_ids).delete_all
+    FleetVehicle.where(vehicle_id: vehicle_ids).delete_all
+
+    erase_versions("Vehicle", vehicle_ids)
+
+    deleted = where(id: vehicle_ids).delete_all
+
+    revisit_loaner_visibility(loaner_groups)
+
+    deleted
+  end
+
+  # The loaners and bundled snub crafts `after_destroy` would have taken with
+  # the parent. One level is enough: neither is given loaners or snub crafts of
+  # its own, and nothing else ever sets `vehicle_id`.
+  private_class_method def self.descendants_of(vehicle_ids)
+    where(vehicle_id: vehicle_ids).where(loaner: true)
+      .or(where(vehicle_id: vehicle_ids).where(bundled: true))
+      .pluck(:id)
+  end
+
+  # `hidden` is a property of a whole (model, wanted) group rather than of a row
+  # -- exactly one visible -- so deleting a loaner can leave its group with none.
+  # The survivor is one already visible where there is one, so a group that was
+  # correct apart from the rows that just went keeps the loaner its user sees.
+  #
+  # `update_columns` skips the `after_commit` that keeps the fleet side in step,
+  # and that callback returns early for a hidden vehicle anyway, so the job is
+  # queued from here.
+  private_class_method def self.revisit_loaner_visibility(loaner_groups)
+    return if loaner_groups.blank?
+
+    user_ids, model_ids = loaner_groups.transpose
+
+    where(loaner: true, user_id: user_ids, model_id: model_ids)
+      .group_by { |loaner| [loaner.user_id, loaner.model_id, loaner.wanted] }
+      .each do |_group_key, group|
+        visible = group.find { |loaner| !loaner.hidden? } || group.first
+
+        group.each do |loaner|
+          should_hide = !loaner.equal?(visible)
+          next if loaner.hidden? == should_hide
+
+          loaner.update_columns(hidden: should_hide, updated_at: Time.zone.now)
+          Updater::FleetVehicleUpdateJob.perform_async(loaner.id)
+        end
+      end
+  end
+
+  # What `Vehicle#freeze_inventory_location` does on a single destroy. Iterated
+  # rather than expressed as one `UPDATE`, because the label is `display_name`
+  # and the set is bounded by the vehicles carrying an inventory, not by the
+  # vehicles being deleted.
+  private_class_method def self.freeze_inventory_locations(vehicle_ids)
+    Inventory.where(vehicle_id: vehicle_ids, location: nil)
+      .includes(vehicle: :model)
+      .find_each do |inventory|
+        inventory.update_column(:location, inventory.vehicle.display_name)
+      end
+  end
+
+  # `ErasableVersionsConcern` is an `after_destroy`, and these rows never see
+  # one. Leaving the versions behind would leave the names and serials somebody
+  # deleted sitting in a table no erasure path reaches.
+  private_class_method def self.erase_versions(item_type, item_ids)
+    return if item_ids.blank?
+
+    PaperTrail::Version.where(item_type:, item_id: item_ids).delete_all
+  end
+
   def reset_pledge_id_if_wanted
     return unless wanted?
 

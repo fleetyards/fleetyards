@@ -58,9 +58,7 @@ module Api
 
           vehicle_ids = authorized_scope(Vehicle.all).wanted.pluck(:id)
 
-          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
-          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
-          Vehicle.where(id: vehicle_ids).delete_all
+          Vehicle.delete_with_dependents(vehicle_ids)
         end
       end
 

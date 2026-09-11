@@ -97,9 +97,7 @@ module Api
 
           vehicle_ids = scope.pluck(:id)
 
-          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
-          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
-          Vehicle.where(id: vehicle_ids).delete_all
+          Vehicle.delete_with_dependents(vehicle_ids)
         end
       end
 
@@ -113,9 +111,7 @@ module Api
 
           vehicle_ids = current_resource_owner.vehicles.purchased.where(bought_via: :ingame).pluck(:id)
 
-          VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
-          VehicleModule.where(vehicle_id: vehicle_ids).delete_all
-          Vehicle.where(id: vehicle_ids).delete_all
+          Vehicle.delete_with_dependents(vehicle_ids)
         end
       end
 

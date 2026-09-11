@@ -331,3 +331,56 @@ class VehicleVersioningTest < ActiveSupport::TestCase
     end
   end
 end
+
+class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
+  setup do
+    @user = create(:user)
+  end
+
+  test "takes the loadouts and the rows hanging off the vehicle" do
+    vehicle = create(:vehicle, user: @user)
+    create(:vehicle_loadout, vehicle: vehicle)
+    TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))
+    FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)
+
+    Vehicle.delete_with_dependents([vehicle.id])
+
+    assert_empty Vehicle.where(id: vehicle.id)
+    assert_empty VehicleLoadout.where(vehicle_id: vehicle.id)
+    assert_empty TaskForce.where(vehicle_id: vehicle.id)
+    assert_empty FleetVehicle.where(vehicle_id: vehicle.id)
+    assert_empty PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
+  end
+
+  test "takes the loaners and bundled snub crafts of the vehicles it deletes" do
+    loaner_model = create(:model)
+    snub_craft_model = create(:model)
+    parent_model = create(:model).tap do |model|
+      model.loaners << loaner_model
+      model.snub_crafts << snub_craft_model
+    end
+    parent = create(:vehicle, user: @user, model: parent_model)
+
+    assert_equal 2, Vehicle.where(vehicle_id: parent.id).count
+
+    Vehicle.delete_with_dependents([parent.id])
+
+    assert_empty Vehicle.where(vehicle_id: parent.id)
+  end
+
+  test "leaves a visible loaner behind when the visible one is deleted" do
+    loaner_model = create(:model)
+    parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+    other_parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+    create(:vehicle, user: @user, model: parent_model)
+    create(:vehicle, user: @user, model: other_parent_model)
+
+    visible = Vehicle.find_by(loaner: true, user_id: @user.id, model_id: loaner_model.id, hidden: false)
+
+    Vehicle.delete_with_dependents([visible.parent_vehicle.id])
+
+    remaining = Vehicle.where(loaner: true, user_id: @user.id, model_id: loaner_model.id)
+    assert_equal 1, remaining.count
+    assert_equal 1, remaining.where(hidden: false).count
+  end
+end
