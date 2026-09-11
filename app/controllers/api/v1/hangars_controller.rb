@@ -115,6 +115,7 @@ module Api
 
         import = Imports::HangarSync.create!(
           user_id: current_resource_owner.id,
+          hangar_group_id: target_hangar_group_id,
           input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
         )
 
@@ -197,7 +198,17 @@ module Api
       end
 
       private def sync_params
-        @sync_params ||= params.permit(items: [:id, :name, :image, :type, :custom_name])
+        @sync_params ||= params.permit(:hangar_group_id, items: [:id, :name, :image, :type, :custom_name])
+      end
+
+      # Scoped to the user's own groups: the id arrives from the client, and an
+      # id belonging to somebody else would otherwise file their ships under a
+      # group they cannot see.
+      private def target_hangar_group_id
+        id = params[:hangar_group_id].presence
+        return if id.blank?
+
+        HangarGroup.where(user_id: current_resource_owner.id, id:).pick(:id)
       end
     end
   end

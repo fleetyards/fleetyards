@@ -51,6 +51,7 @@ class HangarSync < HangarImporter
   end
 
   def run_with_import(import)
+    @import = import
     import.start!
 
     user_id = import.user_id
@@ -292,6 +293,8 @@ class HangarSync < HangarImporter
       end
     end
 
+    assign_target_group(vehicle_ids)
+
     [imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models]
   end
 
@@ -479,6 +482,27 @@ class HangarSync < HangarImporter
         search: "%#{normalized_name}%"
       }
     ]
+  end
+
+  # Every vehicle the sync touches, not only the ones it creates: an RSI hangar
+  # carries no group information, so "sync into this group" is only useful if it
+  # files the whole pledge list there. Additive -- a vehicle keeps any group the
+  # user had already put it in.
+  private def assign_target_group(vehicle_ids)
+    group_id = @import&.hangar_group_id
+    return if group_id.blank? || vehicle_ids.blank?
+
+    existing = TaskForce.where(hangar_group_id: group_id, vehicle_id: vehicle_ids).pluck(:vehicle_id)
+    now = Time.current
+
+    rows = (vehicle_ids.uniq - existing).map do |vehicle_id|
+      {vehicle_id:, hangar_group_id: group_id, created_at: now, updated_at: now}
+    end
+
+    # `task_forces` carries no unique index, so a duplicate would be accepted
+    # rather than rejected -- the read above is what keeps a re-sync from
+    # stacking rows.
+    TaskForce.insert_all(rows) if rows.any?
   end
 
   private def default_params(user_id, item)

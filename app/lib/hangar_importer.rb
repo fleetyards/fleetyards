@@ -63,7 +63,7 @@ class HangarImporter
           public: item[:public] || false,
           name_visible: item[:name_visible] || false,
           sale_notify: item[:sale_notify] || false,
-          hangar_group_ids: HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id),
+          hangar_group_ids: hangar_group_ids_for(item),
           model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item["name"]] || [])).pluck(:id),
           model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
         }
@@ -112,6 +112,15 @@ class HangarImporter
   end
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/MethodLength
+
+  # The group the user aimed this run at overrides whatever the file says: they
+  # picked it while starting the import, and the per-item names are the
+  # fallback for a plain re-import that expressed no preference.
+  private def hangar_group_ids_for(item)
+    return [@import.hangar_group_id] if @import.hangar_group_id.present?
+
+    HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id)
+  end
 
   # rubocop:disable Metrics/MethodLength
   private def legacy_mapping
