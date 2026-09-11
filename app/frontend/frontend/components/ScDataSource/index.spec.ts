@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { mount } from "@vue/test-utils";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { setActivePinia, createPinia } from "pinia";
 import { ref, nextTick } from "vue";
 
@@ -51,6 +51,13 @@ const press = async (wrapper: Awaited<ReturnType<typeof mountSwitch>>) => {
   await wrapper.findComponent({ name: "NavItem" }).props("action")();
   await nextTick();
 };
+
+// `sources` is a module ref every mounted switch watches, so a wrapper left
+// standing keeps answering later tests: it writes the new list into the pinia it
+// was mounted with, and whichever store wrote last is the one the test's own
+// `useScDataSourceStore()` no longer holds. That made assertions pass against a
+// component that had never seen the state under test.
+enableAutoUnmount(afterEach);
 
 describe("ScDataSourceSwitch", () => {
   beforeEach(() => {
