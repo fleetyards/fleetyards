@@ -74,6 +74,26 @@ module ScData
         assert_in_delta 13.4, model.sc_height.to_f
       end
 
+      # A hover bike, and the third ship authored with its length on z. Left on the
+      # default it came out 1.45 m long and 5.15 m tall, which is a bike stood on
+      # its end -- and both columns agreed on it, because both come from the same
+      # bounding box.
+      test "#load_model uses the curated order for the Nox" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Nox", sc_key: "xian_nox")
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "metrics" => {"x" => 1.32, "y" => 1.45, "z" => 5.15}}
+        )
+
+        loader.load_model(model)
+        model.reload
+
+        assert_in_delta 5.15, model.sc_length.to_f
+        assert_in_delta 1.32, model.sc_beam.to_f
+        assert_in_delta 1.45, model.sc_height.to_f
+      end
+
       # The Cyclone is the case that shows why the renders decide this and not the
       # matrix: the matrix has it 6.0 m long and 8.8 m wide, and the render says
       # the opposite. So the curated order deliberately disagrees with the matrix.
