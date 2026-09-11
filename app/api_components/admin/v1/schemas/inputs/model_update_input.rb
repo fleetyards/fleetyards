@@ -40,6 +40,7 @@ module Admin
               focus: {type: :string},
               size: {type: :string},
               dockSize: {type: :string},
+              vehicleSize: {type: [:string, :null]},
               length: {type: [:number, :null]},
               beam: {type: [:number, :null]},
               height: {type: [:number, :null]},

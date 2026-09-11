@@ -1436,7 +1436,8 @@
           "holoBlank": "沒有 Holo?",
           "frontViewBlank": "沒有前視圖圖片?",
           "topViewColoredBlank": "沒有彩色俯視圖圖片?",
-          "scIdentifierBlank": "沒有 SC 標識?"
+          "scIdentifierBlank": "沒有 SC 標識?",
+          "vehicleSize": "載具尺寸"
         },
         "modelModules": {
           "name": "名稱"

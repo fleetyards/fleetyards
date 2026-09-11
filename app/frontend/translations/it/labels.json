@@ -1436,7 +1436,8 @@
           "holoBlank": "Senza Holo?",
           "frontViewBlank": "Senza immagine vista frontale?",
           "topViewColoredBlank": "Senza immagine vista dall'alto a colori?",
-          "scIdentifierBlank": "Senza identificatore SC?"
+          "scIdentifierBlank": "Senza identificatore SC?",
+          "vehicleSize": "Dimensione del veicolo"
         },
         "modelModules": {
           "name": "Nome"

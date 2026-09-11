@@ -166,6 +166,7 @@ json.metrics do
   json.size model.size
   json.size_label model.size&.humanize
   json.dock_size model.dock_size
+  json.vehicle_size model.vehicle_size
 end
 
 json.cargo_holds model.cargo_holds_with_offsets

@@ -104,6 +104,7 @@
 #  store_images_updated_at           :datetime
 #  store_url                         :string(255)
 #  upgrade_kits_count                :integer          default(0)
+#  vehicle_size                      :string
 #  videos_count                      :integer          default(0)
 #  weapon_pool_size                  :integer
 #  yaw                               :decimal(15, 2)
@@ -462,6 +463,14 @@ class Model < ApplicationRecord
   after_save :send_new_model_notification, if: :saved_change_to_rsi_id?
 
   validates :name, presence: true, uniqueness: {scope: :manufacturer_id}
+  VEHICLE_SIZE = "vehicle"
+
+  VEHICLE_SIZES = %w[
+    extra_extra_small extra_small small medium large extra_large extra_extra_large
+  ].freeze
+
+  validates :vehicle_size, inclusion: {in: VEHICLE_SIZES}, allow_nil: true
+  validate :vehicle_size_belongs_to_a_vehicle
 
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = [
@@ -565,6 +574,22 @@ class Model < ApplicationRecord
     scope.order(:focus).distinct.pluck(:focus).compact_blank.map do |item|
       Filter.new(
         category: "focus",
+        label: item.humanize,
+        value: item
+      )
+    end
+  end
+
+  # The ladder a berth is measured against, smallest first. Only meaningful
+  # where `size` is "vehicle"; a ship has none.
+  #
+  # Curated, not derived. Volume orders most of them correctly but not the
+  # Cyclone, whose recorded beam of 8.75m is wider than an Ursa and puts it a
+  # class too high.
+  def self.vehicle_size_filters
+    VEHICLE_SIZES.map do |item|
+      Filter.new(
+        category: "vehicle_size",
         label: item.humanize,
         value: item
       )
@@ -1021,6 +1046,14 @@ class Model < ApplicationRecord
     else
       sales.ongoing.update_all(ended_at: Time.current, updated_at: Time.current)
     end
+  end
+
+  # A ship has no place on this ladder, so carrying a value there is a mistake
+  # rather than extra information.
+  private def vehicle_size_belongs_to_a_vehicle
+    return if vehicle_size.blank? || size == VEHICLE_SIZE
+
+    errors.add(:vehicle_size, :not_a_vehicle)
   end
 
   private def send_on_sale_notification

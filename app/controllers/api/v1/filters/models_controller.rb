@@ -32,6 +32,12 @@ module Api
           render "api/v1/shared/filters"
         end
 
+        def vehicle_sizes
+          @filters = Model.vehicle_size_filters
+
+          render "api/v1/shared/filters"
+        end
+
         def dock_sizes
           @filters = Model.dock_size_filters
 

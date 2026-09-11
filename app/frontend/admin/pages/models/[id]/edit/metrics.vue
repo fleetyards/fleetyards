@@ -17,6 +17,7 @@ import ModelForm from "@/admin/components/Models/Form/index.vue";
 import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
 import ModelSizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
 import ModelDockSizeSelect from "@/admin/components/base/ModelDockSizeSelect/index.vue";
+import ModelVehicleSizeSelect from "@/admin/components/base/ModelVehicleSizeSelect/index.vue";
 
 type Props = {
   model: ModelExtended;
@@ -64,6 +65,7 @@ const { defineField, handleSubmit, meta } = useForm<ModelUpdateInput>({
 });
 
 const [size, sizeProps] = defineField("size");
+const [vehicleSize, vehicleSizeProps] = defineField("vehicleSize");
 const [dockSize, dockSizeProps] = defineField("dockSize");
 const [length, lengthProps] = defineField("length");
 const [fleetchartOffsetLength, fleetchartOffsetLengthProps] = defineField(
@@ -109,6 +111,15 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           :no-label="false"
           :multiple="false"
           name="size"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <ModelVehicleSizeSelect
+          v-model="vehicleSize"
+          v-bind="vehicleSizeProps"
+          :no-label="false"
+          :multiple="false"
+          name="vehicleSize"
         />
       </div>
       <div class="col-12 col-md-4">

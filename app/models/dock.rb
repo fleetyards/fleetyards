@@ -112,9 +112,6 @@ class Dock < ApplicationRecord
   SHIP_DOCK_TYPES = %w[landingpad hangar].freeze
   VEHICLE_DOCK_TYPES = %w[vehiclepad garage].freeze
 
-  # What `models.size` calls a ground vehicle.
-  VEHICLE_SIZE = "vehicle"
-
   SHIP_CLEARANCE = {length: 2.0, beam: 2.0, height: 1.0}.freeze
   VEHICLE_CLEARANCE = {length: 1.0, beam: 1.0, height: 0.5}.freeze
 
@@ -169,7 +166,7 @@ class Dock < ApplicationRecord
   private def accepts?(model)
     return false unless for_ships? || for_vehicles?
 
-    (model.size == VEHICLE_SIZE) == for_vehicles?
+    (model.size == ::Model::VEHICLE_SIZE) == for_vehicles?
   end
 
   def measured?

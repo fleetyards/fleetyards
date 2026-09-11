@@ -106,6 +106,7 @@ require "test_helper"
 #  store_images_updated_at           :datetime
 #  store_url                         :string(255)
 #  upgrade_kits_count                :integer          default(0)
+#  vehicle_size                      :string
 #  videos_count                      :integer          default(0)
 #  weapon_pool_size                  :integer
 #  yaw                               :decimal(15, 2)
@@ -630,5 +631,42 @@ class ModelTest < ActiveSupport::TestCase
 
     assert_not_predicate sale, :valid?
     assert_predicate sale.errors[:ended_at], :present?
+  end
+end
+
+# The ladder a berth is measured against. Curated rather than derived — the
+# Cyclone's recorded beam is wider than an Ursa's and would place it a class too
+# high — so the only guards are that a value is on the ladder and that a ship
+# does not carry one.
+class ModelVehicleSizeTest < ActiveSupport::TestCase
+  test "a vehicle may carry a size from the ladder" do
+    model = build(:model, size: "vehicle", vehicle_size: "large")
+
+    assert_predicate model, :valid?
+  end
+
+  test "a value off the ladder is refused" do
+    model = build(:model, size: "vehicle", vehicle_size: "enormous")
+
+    assert_not model.valid?
+    assert_includes model.errors.attribute_names, :vehicle_size
+  end
+
+  test "a ship carries none" do
+    model = build(:model, size: "small", vehicle_size: "large")
+
+    assert_not model.valid?
+    assert_includes model.errors.attribute_names, :vehicle_size
+  end
+
+  test "a vehicle without one is fine" do
+    model = build(:model, size: "vehicle", vehicle_size: nil)
+
+    assert_predicate model, :valid?
+  end
+
+  test "the ladder runs smallest first" do
+    assert_equal "extra_extra_small", Model::VEHICLE_SIZES.first
+    assert_equal "extra_extra_large", Model::VEHICLE_SIZES.last
   end
 end
