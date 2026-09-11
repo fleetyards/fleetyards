@@ -201,7 +201,8 @@
           "accept": "Accept",
           "decline": "Decline",
           "remove": "移除",
-          "editRole": "编辑角色"
+          "editRole": "编辑角色",
+          "editNickname": "编辑昵称"
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

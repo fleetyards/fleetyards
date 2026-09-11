@@ -299,7 +299,8 @@
           "addShip": "新增飛船",
           "assignSlotFor": "為 %{username} 分配席位",
           "reassignSlotFor": "為 %{username} 重新分配席位"
-        }
+        },
+        "memberNickname": "成員暱稱"
       },
       "hangarGroup": {
         "create": "Create Group",

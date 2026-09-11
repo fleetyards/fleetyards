@@ -61,6 +61,23 @@ const canUpdateMembers = computed(() => {
   return false;
 });
 
+// Unlike promote/demote, this is not self-excluded: the server lets anyone with
+// membership-update access set a nickname, their own included.
+const canUpdateNickname = computed(
+  () => props.capabilities?.updateMembers ?? false,
+);
+
+const openNicknameModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/MemberNicknameModal/index.vue"),
+    props: {
+      fleetSlug: String(route.params.slug),
+      member: props.member,
+    },
+  });
+};
+
 const canDeleteMembers = computed(() => {
   if (props.member && currentUser?.value) {
     return (
@@ -262,6 +279,15 @@ const declineRequest = async () => {
   >
     <i class="fa-light fa-chevron-down" />
     <span v-if="withLabels">{{ t("actions.fleet.members.demote") }}</span>
+  </Btn>
+  <Btn
+    v-if="member.status === 'accepted'"
+    v-tooltip="canUpdateNickname && t('actions.fleet.members.editNickname')"
+    :disabled="!canUpdateNickname || updating"
+    @click="openNicknameModal"
+  >
+    <i class="fa-light fa-signature" />
+    <span v-if="withLabels">{{ t("actions.fleet.members.editNickname") }}</span>
   </Btn>
   <Btn
     v-tooltip="canDeleteMembers && t('actions.fleet.members.remove')"

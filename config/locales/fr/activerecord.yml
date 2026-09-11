@@ -138,6 +138,7 @@ fr:
           admin: Admin
           member: Membre
           officer: Officier
+        nickname: Surnom
         user_id: Membre
       habitation:
         habitation_types:

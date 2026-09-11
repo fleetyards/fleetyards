@@ -17,9 +17,9 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create accept_request decline_request promote demote destroy]
+        only: %i[create update accept_request decline_request promote demote destroy]
 
-      before_action :set_fleet, only: %i[index show create accept_request decline_request promote demote destroy]
+      before_action :set_fleet, only: %i[index show create update accept_request decline_request promote demote destroy]
       before_action :set_member, only: %i[show accept_request decline_request promote demote destroy]
 
       def index
@@ -95,6 +95,20 @@ module Api
         render json: ValidationError.new("fleet_members.destroy", errors: @member.errors), status: :bad_request
       end
 
+      # Not covered by `set_member`: that authorizes the rule matching the
+      # action name, and `update?` is the self-service rule the membership
+      # endpoint owns. Setting a nickname acts on someone else, so it asks for
+      # `update_nickname?` instead.
+      def update
+        @member = find_member!
+
+        authorize! @member, to: :update_nickname?
+
+        return if @member.update(member_nickname_params)
+
+        render json: ValidationError.new("fleet_members.update", errors: @member.errors), status: :bad_request
+      end
+
       private def set_fleet
         @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
 
@@ -102,12 +116,20 @@ module Api
       end
 
       private def set_member
-        @member = @fleet.fleet_memberships.kept
+        @member = find_member!
+
+        authorize! @member
+      end
+
+      private def find_member!
+        @fleet.fleet_memberships.kept
           .includes(:user)
           .joins(:user)
           .find_by!(users: {normalized_username: params[:username].downcase})
+      end
 
-        authorize! @member
+      private def member_nickname_params
+        authorized(params, as: :update_nickname, with: FleetMembershipPolicy, context: {fleet: @fleet})
       end
     end
   end

@@ -1,6 +1,7 @@
 json.id member.id
 json.user_id member.user_id
 json.username member.user.username
+json.nickname member.nickname
 if member.fleet_role.present?
   json.fleet_role do
     json.partial! "api/v1/fleet_roles/base", fleet_role: member.fleet_role

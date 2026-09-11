@@ -299,7 +299,8 @@
           "addShip": "Schiff hinzufügen",
           "assignSlotFor": "Slot für %{username} zuweisen",
           "reassignSlotFor": "Slot für %{username} neu zuweisen"
-        }
+        },
+        "memberNickname": "Spitzname des Mitglieds"
       },
       "hangarGroup": {
         "create": "Create Group",

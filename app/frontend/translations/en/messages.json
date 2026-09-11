@@ -280,6 +280,10 @@
           "decline": {
             "success": "Member declined.",
             "failure": "Member could not be declined."
+          },
+          "nickname": {
+            "success": "Nickname saved.",
+            "failure": "Nickname could not be saved."
           }
         },
         "calendarSubscription": {

@@ -281,6 +281,10 @@
           "decline": {
             "success": "Membre décliné.",
             "failure": "Le membre n'a pas pu être décliné."
+          },
+          "nickname": {
+            "success": "Surnom enregistré.",
+            "failure": "Le surnom n'a pas pu être enregistré."
           }
         },
         "calendarSubscription": {

@@ -201,7 +201,8 @@
           "accept": "Accept",
           "decline": "Decline",
           "remove": "Remove",
-          "editRole": "Edit Role"
+          "editRole": "Edit Role",
+          "editNickname": "Edit Nickname"
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

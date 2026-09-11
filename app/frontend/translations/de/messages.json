@@ -281,6 +281,10 @@
           "decline": {
             "success": "Mitglied abgelehnt.",
             "failure": "Mitglied konnte nicht abgelehnt werden."
+          },
+          "nickname": {
+            "success": "Spitzname gespeichert.",
+            "failure": "Spitzname konnte nicht gespeichert werden."
           }
         },
         "calendarSubscription": {

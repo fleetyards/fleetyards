@@ -3552,6 +3552,57 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Member
+      tags:
+      - FleetMembers
+      operationId: updateFleetMember
+      description: Set the nickname a fleet knows a member by
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMemberUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members/{username}/accept":
     parameters:
     - name: fleetSlug
@@ -14482,6 +14533,10 @@ components:
           format: uuid
         username:
           type: string
+        nickname:
+          type:
+          - string
+          - 'null'
         fleetRole:
           "$ref": "#/components/schemas/FleetRole"
         status:
@@ -14585,6 +14640,8 @@ components:
       properties:
         usernameCont:
           type: string
+        nicknameCont:
+          type: string
         nameCont:
           type: string
           deprecated: true
@@ -14636,6 +14693,15 @@ components:
       additionalProperties: false
       example: {}
       title: FleetMemberQuery
+    FleetMemberUpdateInput:
+      type: object
+      properties:
+        nickname:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: FleetMemberUpdateInput
     FleetMembersList:
       type: object
       properties:

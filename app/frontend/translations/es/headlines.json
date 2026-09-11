@@ -299,7 +299,8 @@
           "addShip": "Agregar nave",
           "assignSlotFor": "Asignar plaza para %{username}",
           "reassignSlotFor": "Reasignar plaza para %{username}"
-        }
+        },
+        "memberNickname": "Apodo del miembro"
       },
       "hangarGroup": {
         "create": "Create Group",

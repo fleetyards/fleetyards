@@ -201,7 +201,8 @@
           "accept": "Accetta",
           "decline": "Rifiuta",
           "remove": "Rimuovi",
-          "editRole": "Modifica ruolo"
+          "editRole": "Modifica ruolo",
+          "editNickname": "Modifica soprannome"
         },
         "inviteUrls": {
           "create": "Crea nuovo URL per invito"

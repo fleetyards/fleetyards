@@ -281,6 +281,10 @@
           "decline": {
             "success": "Miembro rechazado.",
             "failure": "El miembro no pudo ser rechazado."
+          },
+          "nickname": {
+            "success": "Apodo guardado.",
+            "failure": "No se pudo guardar el apodo."
           }
         },
         "calendarSubscription": {

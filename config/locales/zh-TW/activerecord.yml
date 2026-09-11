@@ -138,6 +138,7 @@ zh-TW:
           admin: 管理員
           member: 成員
           officer: 軍官
+        nickname: 暱稱
         user_id: 成員
       habitation:
         habitation_types:

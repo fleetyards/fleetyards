@@ -280,6 +280,10 @@
           "decline": {
             "success": "成員已拒絕。",
             "failure": "成員無法拒絕。"
+          },
+          "nickname": {
+            "success": "暱稱已儲存。",
+            "failure": "無法儲存暱稱。"
           }
         },
         "calendarSubscription": {

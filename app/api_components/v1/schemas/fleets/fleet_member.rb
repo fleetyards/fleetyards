@@ -12,6 +12,7 @@ module V1
             id: {type: :string, format: :uuid},
             userId: {type: :string, format: :uuid},
             username: {type: :string},
+            nickname: {type: [:string, :null]},
             fleetRole: ::V1::Schemas::Fleets::FleetRole,
             status: ::V1::Schemas::Enums::FleetMembershipStatusEnum,
             avatar: ::Shared::V1::Schemas::MediaFile,

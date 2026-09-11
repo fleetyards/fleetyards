@@ -138,6 +138,7 @@ it:
           admin: Admin
           member: Membro
           officer: Ufficiale
+        nickname: Soprannome
         user_id: Membro
       habitation:
         habitation_types:

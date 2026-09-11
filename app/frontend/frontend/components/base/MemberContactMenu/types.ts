@@ -3,6 +3,7 @@
 // same handles under their own payload shapes.
 export interface MemberContact {
   username?: string;
+  nickname?: string | null;
   rsiHandle?: string;
   discordProfileUrl?: string;
   citizenidProfileUrl?: string;

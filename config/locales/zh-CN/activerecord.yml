@@ -138,6 +138,7 @@ zh-CN:
           admin: 管理员
           member: 成员
           officer: 军官
+        nickname: 昵称
         user_id: 成员
       habitation:
         habitation_types:

@@ -280,6 +280,10 @@
           "decline": {
             "success": "Membro respinto.",
             "failure": "Il membro non può essere respinto."
+          },
+          "nickname": {
+            "success": "Soprannome salvato.",
+            "failure": "Impossibile salvare il soprannome."
           }
         },
         "calendarSubscription": {
