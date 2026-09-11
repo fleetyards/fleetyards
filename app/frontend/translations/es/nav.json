@@ -278,7 +278,8 @@
           "system": "Sistema"
         }
       },
-      "notifications": "Notificaciones"
+      "notifications": "Notificaciones",
+      "scDataSource": "Fuente de datos"
     }
   }
 }

@@ -278,7 +278,8 @@
           "system": "系统"
         }
       },
-      "notifications": "通知"
+      "notifications": "通知",
+      "scDataSource": "数据来源"
     }
   }
 }

@@ -11,6 +11,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 
+import ScDataSourceSwitch from "@/frontend/components/ScDataSource/index.vue";
+
 import FleetNav from "./FleetNav/index.vue";
 import NotificationsNav from "./NotificationsNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
@@ -191,6 +193,7 @@ const settingsActive = computed(() => {
       </template>
     </template>
     <template #footer>
+      <ScDataSourceSwitch />
       <template v-if="isAuthenticated && currentUser">
         <NotificationsNav />
         <NavItem

@@ -2188,10 +2188,6 @@
           "units": "Stück"
         }
       },
-      "scDataSource": {
-        "dataSource": "Datenquelle",
-        "notLive": "Nicht der Live-Build"
-      },
       "erkul": {
         "prefix": "Tryout Loadouts with",
         "link": "Erkul's DPS Calculator"

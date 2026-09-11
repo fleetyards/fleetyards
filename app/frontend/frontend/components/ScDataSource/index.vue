@@ -1,24 +1,28 @@
 <script lang="ts">
 export default {
-  name: "ScDataSourceBar",
+  name: "ScDataSourceSwitch",
 };
 </script>
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { useQueryClient } from "@tanstack/vue-query";
+import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useNavStore } from "@/shared/stores/nav";
 import { useScDataSourceStore } from "@/shared/stores/scDataSource";
 import { useScDataSources } from "@/services/fyApi";
-import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 const queryClient = useQueryClient();
 const store = useScDataSourceStore();
-const { available, hasChoice } = storeToRefs(store);
+const { hasChoice, previewSource } = storeToRefs(store);
 
 // The switch is also what tells the store which builds exist, so the two cannot
 // disagree: a source the server stopped offering is dropped from the choice.
+// That is what closes a ptu cycle on its own -- once live catches up the server
+// stops offering the preview, and this item goes away without anyone editing it.
 const { data } = useScDataSources();
 
 watch(
@@ -31,31 +35,22 @@ watch(
 
 const selected = computed(() => store.selected);
 
-// The header is a sibling in this same tree, so its target is not in the
-// document while this mounts -- Vue would fail to locate it and render nothing.
-// Route components teleport into it fine because they mount after the layout.
-const mounted = ref(false);
-onMounted(() => {
-  mounted.value = true;
-});
+const onPreview = computed(() => !!selected.value && !selected.value.default);
 
-const hint = computed(() =>
-  selected.value && !selected.value.default
-    ? t("labels.scDataSource.notLive")
-    : t("labels.scDataSource.dataSource"),
-);
+const label = computed(() => t("nav.scDataSource"));
+
+// The same two conditions NavItem collapses on, because the item's own slot is
+// what carries the build here and the slot is handed no state.
+const mobile = useMobile();
+const { slim: navSlim } = storeToRefs(useNavStore());
+const slim = computed(() => navSlim.value && !mobile.value);
 
 // Everything cached was fetched against another build, so it all goes. Sending
 // the new source without this would show the old build's data under the new
 // label until each query happened to refetch.
-const select = async (environment: string) => {
-  if (selected.value?.environment === environment) return;
-
-  const option = available.value.find(
-    (source) => source.environment === environment,
-  );
-
-  store.select(option?.default ? undefined : environment);
+const toggle = async () => {
+  // Two states, never a list: the live build and the newest preview of it.
+  store.select(onPreview.value ? undefined : previewSource.value?.environment);
 
   // Invalidated rather than cleared. `clear()` removes every query, so the
   // mounted observers have nothing left to refetch and the page keeps showing
@@ -66,29 +61,38 @@ const select = async (environment: string) => {
 </script>
 
 <template>
-  <!-- Into the header rather than a row of its own: this is a global control
-       like Compare and Fleetchart beside it, and a full-width bar of its own
-       pushed every page's toolbar down and lined up with nothing. -->
-  <Teleport v-if="mounted" to="#header-right">
-    <BtnGroup
-      v-if="hasChoice"
-      v-tooltip="hint"
-      segmented
-      :size="BtnSizesEnum.MD"
-      data-test="sc-data-source-switch"
-    >
-      <!-- The tone sits on the source rather than on the group: it is this
-           particular choice that is worth flagging, so the thumb only colours
-           once it is parked on one. -->
-      <Btn
-        v-for="source in available"
-        :key="source.environment"
-        :tone="source.default ? undefined : BtnTonesEnum.WARNING"
-        :active="source.environment === selected?.environment"
-        @click="select(source.environment)"
-      >
-        {{ source.environment }}
-      </Btn>
-    </BtnGroup>
-  </Teleport>
+  <!-- A row of the navigation rather than a control on the page: it belongs to
+       the app the way the collapse toggle does. It stood in the header first,
+       where it fought the page's own toolbar for the same slot and had to be
+       kept off the pages that had no room for it -- here it costs a row, so it
+       is offered wherever the choice exists at all.
+       `label` is still handed over for the tooltip the item shows once the
+       navigation is collapsed. -->
+  <NavItem
+    v-if="hasChoice"
+    :action="() => void toggle()"
+    menu-key="sc-data-source"
+    :label="label"
+    class="sc-data-source-switch"
+    :class="{ 'sc-data-source-switch--preview': onPreview }"
+  >
+    <span class="sc-data-source-switch__inner">
+      <!-- The build stands where every other row has its icon. One glyph cannot
+           say which of two builds is being read, and this is the one row whose
+           whole point is which -- so it says it in words, and it is all that is
+           left once the navigation collapses to the icon column. -->
+      <!-- On one line: a newline either side of the interpolation leaves text
+           nodes in the box, and the name stops sitting centred in it. -->
+      <span class="sc-data-source-switch__build">{{
+        selected?.environment
+      }}</span>
+      <span v-if="!slim" class="sc-data-source-switch__label">
+        {{ label }}
+      </span>
+    </span>
+  </NavItem>
 </template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

@@ -2188,10 +2188,6 @@
           "units": "unités"
         }
       },
-      "scDataSource": {
-        "dataSource": "Source des données",
-        "notLive": "Pas la version live"
-      },
       "erkul": {
         "prefix": "Essayer la configuration avec",
         "link": "Calculatrice de DPS d'Erkul"

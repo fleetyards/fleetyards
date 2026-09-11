@@ -2184,10 +2184,6 @@
           "units": "件"
         }
       },
-      "scDataSource": {
-        "dataSource": "数据来源",
-        "notLive": "不是 live 版本"
-      },
       "erkul": {
         "prefix": "Tryout Loadouts with",
         "link": "Erkul's DPS Calculator"
