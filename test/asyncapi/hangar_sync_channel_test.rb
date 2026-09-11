@@ -14,6 +14,7 @@ class HangarSyncChannelTest < AsyncapiTestCase
       operationId "receiveHangarSyncResult"
       message ::Cable::V1::Schemas::HangarSyncFinishedMessage
       message ::Cable::V1::Schemas::HangarSyncFailedMessage
+      message ::Cable::V1::Schemas::HangarSyncCancelledMessage
     end
   end
 
