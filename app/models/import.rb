@@ -4,26 +4,30 @@
 #
 # Table name: imports
 #
-#  id            :uuid             not null, primary key
-#  aasm_state    :string
-#  failed_at     :datetime
-#  finished_at   :datetime
-#  import_data   :text
-#  info          :text
-#  input         :jsonb
-#  output        :jsonb
-#  started_at    :datetime
-#  type          :string
-#  version       :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  admin_user_id :uuid
-#  user_id       :uuid
+#  id                  :uuid             not null, primary key
+#  aasm_state          :string
+#  cancel_requested_at :datetime
+#  cancelled_at        :datetime
+#  failed_at           :datetime
+#  finished_at         :datetime
+#  import_data         :text
+#  info                :text
+#  input               :jsonb
+#  output              :jsonb
+#  started_at          :datetime
+#  type                :string
+#  version             :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  admin_user_id       :uuid
+#  hangar_group_id     :uuid
+#  user_id             :uuid
 #
 # Indexes
 #
 #  index_imports_on_aasm_state_and_type  (aasm_state,type)
 #  index_imports_on_admin_user_id        (admin_user_id)
+#  index_imports_on_hangar_group_id      (hangar_group_id)
 #  index_imports_on_type                 (type)
 #  index_imports_on_type_and_id          (type,id)
 #  index_imports_on_user_id              (user_id)
@@ -31,12 +35,17 @@
 # Foreign Keys
 #
 #  fk_rails_...  (admin_user_id => admin_users.id)
+#  fk_rails_...  (hangar_group_id => hangar_groups.id) ON DELETE => nullify
 #
 class Import < ApplicationRecord
   include AASM
 
   belongs_to :admin_user, optional: true
   belongs_to :user, optional: true
+
+  # The group a hangar import or sync was aimed at. Optional on every type --
+  # only the two user-facing ones ever set it.
+  belongs_to :hangar_group, optional: true
 
   validates :type, presence: true
 
@@ -50,6 +59,9 @@ class Import < ApplicationRecord
 
   scope :stuck, -> { where(aasm_state: "started").where(started_at: ...STUCK_AFTER.ago) }
 
+  DEFAULT_SORTING_PARAMS = "created_at desc"
+  ALLOWED_SORTING_PARAMS = ["createdAt asc", "createdAt desc"].freeze
+
   # Set while an admin clears a stuck import by hand. Neither half of
   # `notify_admin` belongs to that: the broadcast raises a red "import failed"
   # toast on the page the admin is looking at, once per row they just cleared,
@@ -59,14 +71,14 @@ class Import < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "aasm_state", "admin_user_id", "created_at", "failed_at", "finished_at", "id", "id_value",
-      "import", "import_data", "info", "input", "output", "started_at", "type", "updated_at",
-      "user_id", "version"
+      "aasm_state", "admin_user_id", "cancel_requested_at", "cancelled_at", "created_at",
+      "failed_at", "finished_at", "hangar_group_id", "id", "id_value", "import", "import_data",
+      "info", "input", "output", "started_at", "type", "updated_at", "user_id", "version"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["admin_user", "user"]
+    ["admin_user", "hangar_group", "user"]
   end
 
   aasm timestamps: true do
@@ -74,6 +86,7 @@ class Import < ApplicationRecord
     state :started
     state :finished
     state :failed
+    state :cancelled
 
     event :start, after_commit: :notify_admin do
       transitions from: :created, to: :started
@@ -87,6 +100,34 @@ class Import < ApplicationRecord
       transitions from: :created, to: :failed
       transitions from: :started, to: :failed
     end
+
+    # The state moves at once so the user gets an answer and the
+    # already-running guard lets them start again. A job that is still alive
+    # stops at its next checkpoint; one that is already gone leaves a row that
+    # has stopped claiming to run, which is the same outcome `cleanup!` gives
+    # an admin.
+    event :cancel, after_commit: :notify_admin do
+      transitions from: :created, to: :cancelled
+      transitions from: :started, to: :cancelled
+    end
+  end
+
+  # Set in the same write as the transition. The running job polls this column
+  # rather than the state because it is the flag that means "stop", and reading
+  # one column avoids dragging the whole `import_data` blob back on every check.
+  def request_cancel!
+    return false unless may_cancel?
+
+    self.cancel_requested_at = Time.current
+    cancel!
+  end
+
+  def cancel_requested?
+    self.class.where(id:).pick(:cancel_requested_at).present?
+  end
+
+  def running?
+    created? || started?
   end
 
   # Imports whose job files its own report, with the detail a status line
