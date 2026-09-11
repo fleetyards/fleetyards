@@ -149,7 +149,8 @@
         "onSale": "%{model} 现在特价销售！",
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
-        "importPaintsStarted": "涂装导入已开始。完成后将通知您。"
+        "importPaintsStarted": "涂装导入已开始。完成后将通知您。",
+        "dimensionsDrifted": "这些尺寸与游戏文件不一致。"
       },
       "fundingGoal": {
         "created": "筹款目标已创建。",

@@ -1463,7 +1463,8 @@
           "frontViewBlank": "Ohne Frontansicht-Bild?",
           "topViewColoredBlank": "Ohne farbige Draufsicht?",
           "scIdentifierBlank": "Ohne SC-Kennung?",
-          "vehicleSize": "Fahrzeuggröße"
+          "vehicleSize": "Fahrzeuggröße",
+          "dimensionsDrifted": "Maße weichen von den Spieldateien ab"
         },
         "modelModules": {
           "name": "Name"

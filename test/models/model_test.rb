@@ -128,6 +128,53 @@ require "test_helper"
 #  index_models_on_size                      (size)
 #
 class ModelTest < ActiveSupport::TestCase
+  # The loader rewrites sc_* on every import while the curated columns -- the
+  # ones fits? and the public payload read -- stay put. Nothing kept them in
+  # step, so this is how the drift becomes findable.
+  test "#dimensions_drifted finds a curated value that disagrees with the game files" do
+    same = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 10.0, sc_beam: 5.0, sc_height: 3.0)
+    drifted = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 12.0, sc_beam: 5.0, sc_height: 3.0)
+
+    results = Model.dimensions_drifted
+
+    assert_includes results, drifted
+    assert_not_includes results, same
+  end
+
+  test "#dimensions_drifted ignores a model the loader never touched" do
+    untouched = create(:model, length: 10.0, beam: 5.0, height: 3.0, sc_length: nil)
+
+    assert_not_includes Model.dimensions_drifted, untouched
+  end
+
+  # The game files can describe a hull without giving every axis. A curated
+  # height against no game-file height is still a difference worth seeing, and
+  # `<>` would be NULL there and drop the row.
+  test "#dimensions_drifted sees a null on the game-file side" do
+    partial = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 10.0, sc_beam: 5.0, sc_height: nil)
+
+    assert_includes Model.dimensions_drifted, partial
+  end
+
+  # "No" on the filter has to answer the opposite question. Falling through to
+  # everything would make it indistinguishable from clearing the filter.
+  test "#dimensions_drifted passed false is the models that agree" do
+    same = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 10.0, sc_beam: 5.0, sc_height: 3.0)
+    drifted = create(:model, length: 10.0, beam: 5.0, height: 3.0,
+      sc_length: 12.0, sc_beam: 5.0, sc_height: 3.0)
+    untouched = create(:model, length: 10.0, beam: 5.0, height: 3.0, sc_length: nil)
+
+    results = Model.dimensions_drifted(false)
+
+    assert_includes results, same
+    assert_not_includes results, drifted
+    assert_not_includes results, untouched
+  end
+
   test "#hangar_link_slug returns the legacy_slug when present" do
     manufacturer = create(:manufacturer, code: "DRAK")
     model = create(:model, name: "Corsair", manufacturer:)

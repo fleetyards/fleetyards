@@ -372,7 +372,9 @@
         "downloadExample": "Beispieldatei",
         "toggleDetails": "Details anzeigen"
       },
-      "selectFile": "Datei auswählen"
+      "selectFile": "Datei auswählen",
+      "applyGameFileValue": "Übernehmen",
+      "applyAllGameFileValues": "Alle übernehmen"
     }
   }
 }
