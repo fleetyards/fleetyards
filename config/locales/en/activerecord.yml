@@ -228,6 +228,10 @@ en:
               must_be_in_game: is not in the game yet
             allowed_model_ids:
               must_be_in_game: name a ship that is not in the game yet
+        model:
+          attributes:
+            vehicle_size:
+              not_a_vehicle: only applies to a ground vehicle
         fleet_role:
           attributes:
             base:

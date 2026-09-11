@@ -102,6 +102,7 @@
 #  store_images_updated_at           :datetime
 #  store_url                         :string(255)
 #  upgrade_kits_count                :integer          default(0)
+#  vehicle_size                      :string
 #  videos_count                      :integer          default(0)
 #  weapon_pool_size                  :integer
 #  yaw                               :decimal(15, 2)

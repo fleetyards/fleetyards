@@ -434,6 +434,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/models/vehicle-sizes":
+    get:
+      summary: Model Vehicle Sizes Filters
+      tags:
+      - ModelsFilters
+      operationId: modelVehicleSizesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/vehicles/bought-via":
     get:
       summary: Vehicles Bought Via Filters
@@ -18305,6 +18318,10 @@ components:
           type: string
         dockSize:
           type: string
+        vehicleSize:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: ModelMetrics
     ModelModule:

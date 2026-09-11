@@ -13020,6 +13020,10 @@ components:
           type: string
         dockSize:
           type: string
+        vehicleSize:
+          type:
+          - string
+          - 'null'
         length:
           type: number
         beam:
@@ -13457,6 +13461,10 @@ components:
           type: string
         dockSize:
           type: string
+        vehicleSize:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: ModelMetrics
     ModelModule:
@@ -14643,6 +14651,10 @@ components:
           type: string
         dockSize:
           type: string
+        vehicleSize:
+          type:
+          - string
+          - 'null'
         length:
           type:
           - number

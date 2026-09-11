@@ -176,7 +176,7 @@ module Admin
             :scm_speed, :scm_speed_boosted, :max_speed, :reverse_speed_boosted, :yaw, :yaw_boosted,
             :pitch, :pitch_boosted, :roll, :roll_boosted, :erkul_identifier, :sc_key,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
-            :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale, :player_ownable,
+            :classification, :focus, :size, :dock_size, :vehicle_size, :length, :beam, :height, :on_sale, :player_ownable,
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
             :fleetchart_offset_beam, :extended_length, :extended_beam, :extended_height,
             :extended_fleetchart_offset_length, :extended_fleetchart_offset_beam,

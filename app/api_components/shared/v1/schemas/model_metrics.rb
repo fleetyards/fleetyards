@@ -47,7 +47,8 @@ module Shared
             signatureCrossSection: Shared::V1::Schemas::ModelSignatureCrossSection,
             size: {type: :string},
             sizeLabel: {type: :string},
-            dockSize: {type: :string}
+            dockSize: {type: :string},
+            vehicleSize: {type: [:string, :null]}
           },
           additionalProperties: false
 

@@ -40,6 +40,7 @@ namespace :filters do
       get :focus
       get :sizes
       get "dock-sizes" => "models#dock_sizes"
+      get "vehicle-sizes" => "models#vehicle_sizes"
       get "cargo-options" => "models#cargo_options"
     end
   end
