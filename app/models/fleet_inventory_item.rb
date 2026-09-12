@@ -18,6 +18,7 @@
 #  updated_at                  :datetime         not null
 #  fleet_inventory_id          :uuid             not null
 #  fleet_inventory_position_id :uuid             not null
+#  inventory_transfer_id       :uuid
 #  item_id                     :uuid
 #  member_id                   :uuid
 #
@@ -25,6 +26,7 @@
 #
 #  index_fleet_inventory_items_on_fleet_inventory_id           (fleet_inventory_id)
 #  index_fleet_inventory_items_on_fleet_inventory_position_id  (fleet_inventory_position_id)
+#  index_fleet_inventory_items_on_inventory_transfer_id        (inventory_transfer_id)
 #  index_fleet_inventory_items_on_member_id                    (member_id)
 #
 # Foreign Keys
@@ -32,6 +34,7 @@
 #  fk_rails_...  (added_by => users.id)
 #  fk_rails_...  (fleet_inventory_id => fleet_inventories.id)
 #  fk_rails_...  (fleet_inventory_position_id => fleet_inventory_positions.id) ON DELETE => restrict
+#  fk_rails_...  (inventory_transfer_id => inventory_transfers.id) ON DELETE => nullify
 #  fk_rails_...  (member_id => users.id)
 #
 class FleetInventoryItem < ApplicationRecord
@@ -47,7 +50,7 @@ class FleetInventoryItem < ApplicationRecord
   belongs_to :added_by_user, class_name: "User", foreign_key: :added_by, optional: true
   belongs_to :member, class_name: "User", optional: true
 
-  after_create_commit :notify_inventory_entry
+  after_create_commit :notify_inventory_entry, unless: :from_transfer?
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[name category unit entry_type quality fleet_inventory_id created_at updated_at position_id fleet_inventory_position_id]

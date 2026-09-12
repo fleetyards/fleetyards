@@ -209,9 +209,25 @@ es:
           class8: Class 8
     errors:
       messages:
+        inventory_goods_in_transit: "no se puede eliminar mientras una transferencia enviada siga sin respuesta"
+        position_goods_in_transit: "no se puede eliminar mientras una transferencia que lo contiene siga sin respuesta"
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        inventory_transfer:
+          attributes:
+            base:
+              invalid_source: "necesita exactamente un inventario de origen"
+              invalid_destination: "no puede tener dos destinos"
+              invalid_recipient: "no puede tener dos destinatarios"
+              no_target: "necesita un destino o un destinatario"
+              destination_is_source: "no puede transferirse al inventario del que procede"
+              already_resolved: "ya ha sido respondida"
+              forbidden: "no está permitido"
+        inventory_transfer_rule:
+          attributes:
+            base:
+              invalid_holder: "necesita exactamente un propietario"
         fleet_role:
           attributes:
             base:

@@ -55,7 +55,8 @@ class AdminNotification < ApplicationRecord
     sc_data_import: "sc_data_import",
     sc_data_unlisted_models: "sc_data_unlisted_models",
     import_run: "import_run",
-    oauth_application_review: "oauth_application_review"
+    oauth_application_review: "oauth_application_review",
+    inventory_transfer_reports: "inventory_transfer_reports"
   }
 
   enum :severity, {
@@ -139,6 +140,14 @@ class AdminNotification < ApplicationRecord
       retention: 30.days,
       access: [:imports],
       icon: "fa-duotone fa-file-import"
+    },
+    # One row for the whole queue rather than one per report, for the reason
+    # `oauth_application_review` already records: anyone can sign up, so a
+    # per-record notification turns a spree into an inbox nobody reads.
+    inventory_transfer_reports: {
+      retention: 90.days,
+      access: [:inventory_transfer_reports],
+      icon: "fa-duotone fa-flag"
     }
   }.freeze
 

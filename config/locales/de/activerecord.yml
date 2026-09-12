@@ -209,9 +209,25 @@ de:
           class8: Class 8
     errors:
       messages:
+        inventory_goods_in_transit: "kann nicht gelöscht werden, solange ein gesendeter Transfer noch unbeantwortet ist"
+        position_goods_in_transit: "kann nicht gelöscht werden, solange ein Transfer damit noch unbeantwortet ist"
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        inventory_transfer:
+          attributes:
+            base:
+              invalid_source: "braucht genau ein Quell-Inventar"
+              invalid_destination: "kann nicht zwei Ziele haben"
+              invalid_recipient: "kann nicht zwei Empfänger haben"
+              no_target: "braucht ein Ziel oder einen Empfänger"
+              destination_is_source: "kann nicht in das Inventar übertragen werden, aus dem er stammt"
+              already_resolved: "wurde bereits beantwortet"
+              forbidden: "ist nicht erlaubt"
+        inventory_transfer_rule:
+          attributes:
+            base:
+              invalid_holder: "braucht genau einen Besitzer"
         fleet_role:
           attributes:
             base:

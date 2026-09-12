@@ -39,6 +39,13 @@ fleet_starmap:
 fleet_worldmap:
   description: "Member worldmap on the fleet page"
 
+# Moving stock between two inventories. Rides on top of the three gates above
+# rather than replacing them: a transfer touching a fleet inventory still needs
+# fleet_logistics, and one touching a ship still needs ship_inventories.
+# Otherwise this would be a way around them.
+inventory_transfers:
+  description: "Transfers — moving stock between two inventories"
+
 hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"
 

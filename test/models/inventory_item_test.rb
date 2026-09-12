@@ -19,17 +19,20 @@ require "test_helper"
 #  updated_at            :datetime         not null
 #  inventory_id          :uuid             not null
 #  inventory_position_id :uuid             not null
+#  inventory_transfer_id :uuid
 #  item_id               :uuid
 #
 # Indexes
 #
 #  index_inventory_items_on_inventory_id           (inventory_id)
 #  index_inventory_items_on_inventory_position_id  (inventory_position_id)
+#  index_inventory_items_on_inventory_transfer_id  (inventory_transfer_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (inventory_id => inventories.id)
 #  fk_rails_...  (inventory_position_id => inventory_positions.id) ON DELETE => restrict
+#  fk_rails_...  (inventory_transfer_id => inventory_transfers.id) ON DELETE => nullify
 #
 class HangarInventoryItemTest < ActiveSupport::TestCase
   setup do

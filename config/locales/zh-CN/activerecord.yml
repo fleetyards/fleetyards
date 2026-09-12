@@ -212,9 +212,25 @@ zh-CN:
         sell: 出售？
     errors:
       messages:
+        inventory_goods_in_transit: "在已发送的转移得到答复之前无法删除"
+        position_goods_in_transit: "在包含它的转移得到答复之前无法删除"
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        inventory_transfer:
+          attributes:
+            base:
+              invalid_source: "需要且仅需要一个来源库存"
+              invalid_destination: "不能有两个目的地"
+              invalid_recipient: "不能有两个接收方"
+              no_target: "需要一个目的地或接收方"
+              destination_is_source: "不能转移到其来源库存"
+              already_resolved: "已经被答复"
+              forbidden: "不被允许"
+        inventory_transfer_rule:
+          attributes:
+            base:
+              invalid_holder: "需要且仅需要一个所有者"
         fleet_role:
           attributes:
             base:

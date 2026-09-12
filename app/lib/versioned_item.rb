@@ -35,6 +35,7 @@ class VersionedItem
     "Inventory" => [:holder],
     "InventoryItem" => [:inventory, :holder],
     "InventoryPosition" => [:inventory, :holder],
+    "InventoryTransfer" => [],
     "Model" => [],
     "ModelModule" => [],
     "ModelPaint" => [],

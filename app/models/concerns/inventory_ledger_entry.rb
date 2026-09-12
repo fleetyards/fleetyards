@@ -51,6 +51,13 @@ module InventoryLedgerEntry
   included do
     belongs_to :item, polymorphic: true, optional: true
 
+    # The transfer that wrote this entry, if one did. Both ledger tables point
+    # at the same `inventory_transfers`, because a transfer may have one end in
+    # each of them.
+    belongs_to :inventory_transfer, optional: true
+
+    scope :from_transfers, -> { where.not(inventory_transfer_id: nil) }
+
     has_one_attached :image
 
     enum :category, CATEGORIES
@@ -161,6 +168,14 @@ module InventoryLedgerEntry
       where(inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit)
         .sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
     end
+  end
+
+  # Whether this entry was written by a transfer rather than typed by hand.
+  # `FleetInventoryItem` reads it to stay quiet: a transfer announces itself
+  # once, and a ten-line shipment must not also send ten "item added"
+  # notifications.
+  def from_transfer?
+    inventory_transfer_id.present?
   end
 
   # Falls back to the referenced game item's artwork, so an entry pointing at a

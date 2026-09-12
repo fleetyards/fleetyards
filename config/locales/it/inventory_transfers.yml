@@ -1,0 +1,9 @@
+---
+it:
+  inventory_transfers:
+    refusals:
+      unavailable: "non può ricevere trasferimenti"
+      sender_blocked: "Non sei autorizzato a inviare trasferimenti"
+      policy_closed: "Questo destinatario non può accettare trasferimenti"
+      policy_restricted: "Questo destinatario accetta trasferimenti solo da persone con cui condivide già una flotta"
+      cap_reached: "Questo destinatario ha troppi trasferimenti in attesa. Riprova più tardi"

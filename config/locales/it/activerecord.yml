@@ -209,9 +209,25 @@ it:
           class8: Class 8
     errors:
       messages:
+        inventory_goods_in_transit: "non può essere eliminato finché un trasferimento inviato è ancora in attesa di risposta"
+        position_goods_in_transit: "non può essere eliminato finché un trasferimento che lo contiene è ancora in attesa di risposta"
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        inventory_transfer:
+          attributes:
+            base:
+              invalid_source: "richiede esattamente un inventario di origine"
+              invalid_destination: "non può avere due destinazioni"
+              invalid_recipient: "non può avere due destinatari"
+              no_target: "richiede una destinazione o un destinatario"
+              destination_is_source: "non può essere trasferito nell'inventario da cui proviene"
+              already_resolved: "ha già ricevuto una risposta"
+              forbidden: "non è consentito"
+        inventory_transfer_rule:
+          attributes:
+            base:
+              invalid_holder: "richiede esattamente un proprietario"
         fleet_role:
           attributes:
             base:
