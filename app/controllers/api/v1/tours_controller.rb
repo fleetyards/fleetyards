@@ -72,8 +72,16 @@ module Api
         end
       end
 
+      # Guarded rather than idempotent: settling again would run
+      # PayoutLedger#settle!, whose first statement deletes the transfers --
+      # taking every confirmation people had already ticked off with them.
       def settle
         authorize! @tour, to: :settle?
+
+        unless @tour.may_settle?
+          render json: {code: "cannot_settle", message: "This tour cannot be settled"}, status: :conflict
+          return
+        end
 
         @tour.payout_ledger&.settle!(current_resource_owner)
         @tour.settle!
@@ -84,6 +92,11 @@ module Api
       def reopen
         authorize! @tour, to: :reopen?
 
+        unless @tour.may_reopen?
+          render json: {code: "cannot_reopen", message: "This tour is not settled"}, status: :conflict
+          return
+        end
+
         @tour.payout_ledger&.reopen!
         @tour.reopen!
 
@@ -92,6 +105,11 @@ module Api
 
       def cancel
         authorize! @tour, to: :cancel?
+
+        unless @tour.may_cancel?
+          render json: {code: "cannot_cancel", message: "This tour cannot be cancelled"}, status: :conflict
+          return
+        end
 
         @tour.cancel!
         render :show
@@ -134,6 +152,10 @@ module Api
         else
           render json: ValidationError.new("tours.join", errors: participant.errors), status: :bad_request
         end
+      rescue ActiveRecord::RecordNotUnique
+        # Two tabs raced the uniqueness check; the other one already added them,
+        # which is the outcome this asked for.
+        render :show
       end
 
       # The invite token is only rendered for the organiser, and a jbuilder view
