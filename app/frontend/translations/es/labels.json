@@ -2362,7 +2362,8 @@
         "even": "en paz",
         "title": "Título",
         "startsAt": "Comienza el",
-        "inviteLink": "Enlace de invitación"
+        "inviteLink": "Enlace de invitación",
+        "participants": "Personas"
       }
     }
   }

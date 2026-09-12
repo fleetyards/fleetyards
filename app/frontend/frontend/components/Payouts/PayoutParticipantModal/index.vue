@@ -45,7 +45,7 @@ const onSubmit = handleSubmit(async (values) => {
   const guestName = String(values.name ?? "").trim();
 
   if (!handle && !guestName) {
-    displayAlert({ text: t("labels.payouts.username") });
+    displayAlert({ text: t("messages.payouts.participantNeedsName") });
     return;
   }
 

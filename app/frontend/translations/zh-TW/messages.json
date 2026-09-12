@@ -884,7 +884,8 @@
         "tourJoined": "你已加入該行程",
         "inviteCopied": "邀請連結已複製",
         "settleConfirm": "計算分帳並鎖定帳簿？在重新開啟之前將無法修改紀錄。",
-        "reopenConfirm": "重新開啟帳簿？目前的分帳清單將被捨棄。"
+        "reopenConfirm": "重新開啟帳簿？目前的分帳清單將被捨棄。",
+        "participantNeedsName": "請輸入使用者名稱或名稱"
       },
       "dock": {
         "create": {

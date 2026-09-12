@@ -2362,7 +2362,8 @@
         "even": "in pari",
         "title": "Titolo",
         "startsAt": "Inizia il",
-        "inviteLink": "Link d'invito"
+        "inviteLink": "Link d'invito",
+        "participants": "Persone"
       }
     }
   }
