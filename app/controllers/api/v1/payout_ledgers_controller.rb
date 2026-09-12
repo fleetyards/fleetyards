@@ -42,8 +42,7 @@ module Api
 
         authorize! @payout_ledger, with: PayoutLedgerPolicy, context: {payout_ledger: @payout_ledger, fleet: subject_fleet}
 
-        if @payout_ledger.save
-          @payout_ledger.seed_participants_from_subject!
+        if ApplicationRecord.transaction { @payout_ledger.save && @payout_ledger.seed_participants_from_subject! }
           render :show, status: :created
         else
           render json: ValidationError.new("payout_ledgers.create", errors: @payout_ledger.errors), status: :bad_request

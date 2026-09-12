@@ -148,4 +148,21 @@ class Api::V1::ToursShowTest < ActionDispatch::IntegrationTest
   test "DELETE returns 401 when not signed in" do
     assert_api_response :delete, 401, path_params: {slug: @tour.slug}
   end
+
+  test "DELETE removes a tour whose ledger is settled" do
+    ledger = @tour.payout_ledger
+    organiser_participant = create(:payout_participant, payout_ledger: ledger, user: @organiser)
+    other = create(:payout_participant, payout_ledger: ledger)
+    create(:payout_entry, :income, payout_ledger: ledger,
+      payout_participant: other, amount: 900)
+    ledger.settle!(@organiser)
+
+    sign_in @organiser
+
+    assert_api_response :delete, 200, path_params: {slug: @tour.slug} do
+      assert_not Tour.exists?(@tour.id)
+      assert_not PayoutLedger.exists?(ledger.id)
+      assert_not PayoutParticipant.exists?(organiser_participant.id)
+    end
+  end
 end
