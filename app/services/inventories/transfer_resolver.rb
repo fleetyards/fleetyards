@@ -22,17 +22,23 @@ module Inventories
     # party recorded when it was sent. The two are the same in every legitimate
     # case, and checking the acceptor is what stops a stale recipient from being
     # a way to write into somebody else's inventory.
+    # `destination` may be something callable, which is how a ship inventory is
+    # accepted into: it does not exist until its first deposit, so it has to be
+    # brought into existence *inside* this transaction -- a rejected acceptance
+    # must not leave an empty inventory behind.
     def accept(destination)
       return false unless pending?
       return false unless may_answer?
 
-      unless @authorizer.may_deposit_into?(destination)
-        errors.add(:base, :forbidden)
-        return false
-      end
-
       apply do
-        @transfer.destination = destination
+        resolved = destination.respond_to?(:call) ? destination.call : destination
+
+        unless @authorizer.may_deposit_into?(resolved)
+          errors.add(:base, :forbidden)
+          raise ::ActiveRecord::Rollback
+        end
+
+        @transfer.destination = resolved
         TransferExecutor.new(@transfer, actor: @actor).deliver
         @transfer.accept!
       end
@@ -71,7 +77,7 @@ module Inventories
         yield
       end
 
-      true
+      errors.empty?
     rescue TransferExecutor::Rejected => e
       errors.merge!(e.record.errors)
       false
