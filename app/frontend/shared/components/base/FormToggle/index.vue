@@ -8,6 +8,7 @@ export default {
 import { v4 as uuidv4 } from "uuid";
 import { useField } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
+import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 
 type Props = {
   name: string;
@@ -26,6 +27,11 @@ type Props = {
   slim?: boolean;
   inline?: boolean;
   noLabel?: boolean;
+  /*
+   * Sits beside the label rather than inside it: a focusable element inside a
+   * `<label>` still toggles the control when it is clicked.
+   */
+  info?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -38,6 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   slim: true,
   inline: false,
   noLabel: false,
+  info: undefined,
 });
 
 const { t } = useI18n();
@@ -129,6 +136,7 @@ const innerPlaceholder = computed(() => {
         {{ innerLabel }}
       </span>
     </label>
+    <HintIcon v-if="info" :text="info" class="form-toggle-hint" />
     <!-- See the note in FormCheckbox: below the control, and always present. -->
 
     <!--

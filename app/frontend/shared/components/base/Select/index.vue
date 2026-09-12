@@ -9,6 +9,7 @@ import Collapsed from "@/shared/components/Collapsed.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 import debounce from "lodash.debounce";
 import { v4 as uuidv4 } from "uuid";
 import { BaseSelectSizesEnum, BaseSelectVariantsEnum } from "./types";
@@ -64,6 +65,8 @@ type Props = {
   searchable?: boolean;
   nullable?: boolean;
   paginated?: boolean;
+  // Rendered beside the label, so it is absent when the label is.
+  info?: string;
   noLabel?: boolean;
   // Options that carry their own order -- a size ladder, a ranking -- where
   // alphabetical says nothing. Off by default: every existing caller sorts.
@@ -91,6 +94,7 @@ const props = withDefaults(defineProps<Props>(), {
   searchable: false,
   nullable: true,
   paginated: false,
+  info: undefined,
   noLabel: false,
   unsorted: false,
   bigIcon: false,
@@ -1009,13 +1013,20 @@ defineExpose({
     @focusout="onFocusout"
   >
     <transition name="fade">
-      <label
+      <div
         v-show="labelVisible"
         v-if="innerLabel && !noLabel"
-        :for="labelFor"
+        class="field-label"
       >
-        {{ innerLabel }}
-      </label>
+        <label :for="labelFor">
+          {{ innerLabel }}
+        </label>
+        <!--
+          Beside the label, not inside it: a focusable element inside a
+          `<label>` hands its click to the control the label points at.
+        -->
+        <HintIcon v-if="info" :text="info" />
+      </div>
     </transition>
     <button
       :id="triggerId"

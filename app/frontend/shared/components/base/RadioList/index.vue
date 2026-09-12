@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 import { useField } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 
@@ -18,6 +19,8 @@ type Props = {
   label: string;
   options: FormRadioListOption[];
   resetLabel?: string;
+  // Rendered beside the group label, so it is absent when the label is empty.
+  info?: string;
   modelValue?: string | number | boolean;
   inline?: boolean;
   disabled?: boolean;
@@ -25,6 +28,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   resetLabel: undefined,
+  info: undefined,
   modelValue: undefined,
   inline: true,
   disabled: false,
@@ -92,8 +96,11 @@ defineExpose({
       no element had, so it named nothing at all; the group is what it names,
       and aria-labelledby is how a radiogroup says so.
     -->
-    <div :id="labelId" class="radio-list__label">
-      {{ label }}
+    <div class="field-label">
+      <div :id="labelId" class="radio-list__label">
+        {{ label }}
+      </div>
+      <HintIcon v-if="info" :text="info" />
     </div>
     <div class="radio-list__wrapper">
       <div
@@ -142,4 +149,10 @@ defineExpose({
 
 <style lang="scss" scoped>
 @import "./index.scss";
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 </style>

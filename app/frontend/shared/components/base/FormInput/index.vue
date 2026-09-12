@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 import { type MaybeRef } from "vue";
 import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
@@ -31,6 +32,8 @@ type Props = {
   min?: number;
   max?: number;
   step?: number;
+  // Rendered beside the label, so it is absent when the label is.
+  info?: string;
   noLabel?: boolean;
   noPlaceholder?: boolean;
   placeholder?: string;
@@ -58,6 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
   min: undefined,
   max: undefined,
   step: 0.01,
+  info: undefined,
   noLabel: false,
   noPlaceholder: false,
   placeholder: undefined,
@@ -268,14 +272,21 @@ defineExpose({
     :data-test="`input-wrapper-${name}`"
   >
     <transition name="fade">
-      <label
+      <div
         v-show="!hideLabelOnEmpty || inputValue"
         v-if="innerLabel && !noLabel"
-        :for="internalId"
+        class="field-label"
       >
-        <i v-if="icon" :class="icon" />
-        {{ innerLabel }}
-      </label>
+        <label :for="internalId">
+          <i v-if="icon" :class="icon" />
+          {{ innerLabel }}
+        </label>
+        <!--
+          Beside the label, not inside it: a focusable element inside a
+          `<label>` hands its click to the control the label points at.
+        -->
+        <HintIcon v-if="info" :text="info" />
+      </div>
     </transition>
     <div
       class="base-input__wrapper"

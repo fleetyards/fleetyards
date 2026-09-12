@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -34,6 +35,8 @@ type Props = {
   modelValue?: string | null;
   translationKey?: string;
   label?: string;
+  // Rendered beside the label, so it is absent when the label is.
+  info?: string;
   noLabel?: boolean;
   placeholder?: string;
   noPlaceholder?: boolean;
@@ -51,6 +54,7 @@ const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   translationKey: undefined,
   label: undefined,
+  info: undefined,
   noLabel: false,
   placeholder: undefined,
   noPlaceholder: false,
@@ -149,10 +153,17 @@ defineExpose({ clear });
     }"
     :data-test="`input-wrapper-${name}`"
   >
-    <label v-if="innerLabel && !noLabel" :for="internalId">
-      <i v-if="icon" :class="icon" />
-      {{ innerLabel }}
-    </label>
+    <div v-if="innerLabel && !noLabel" class="field-label">
+      <label :for="internalId">
+        <i v-if="icon" :class="icon" />
+        {{ innerLabel }}
+      </label>
+      <!--
+        Beside the label, not inside it: a focusable element inside a
+        `<label>` hands its click to the control the label points at.
+      -->
+      <HintIcon v-if="info" :text="info" />
+    </div>
     <div class="base-input__wrapper">
       <VueDatePicker
         v-model="pickerValue"
@@ -385,6 +396,18 @@ defineExpose({ clear });
     @media (prefers-reduced-motion: reduce) {
       transition: none;
     }
+  }
+}
+
+/* The label keeps its own bottom gap, so the row adds none of its own and the
+   icon takes the same one -- otherwise it sits below the line it belongs to. */
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .hint-icon {
+    margin-bottom: var(--field-label-gap, 5px);
   }
 }
 </style>

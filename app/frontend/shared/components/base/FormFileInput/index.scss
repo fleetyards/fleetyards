@@ -238,3 +238,15 @@
     }
   }
 }
+
+/* The label keeps its own bottom gap, so the row adds none of its own and the
+   icon takes the same one -- otherwise it sits below the line it belongs to. */
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .hint-icon {
+    margin-bottom: var(--field-label-gap, 5px);
+  }
+}

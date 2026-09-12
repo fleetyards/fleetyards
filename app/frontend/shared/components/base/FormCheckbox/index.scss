@@ -174,3 +174,9 @@
 .base-checkbox--with-error input + label::before {
   border-color: var(--color-danger, #dc3545);
 }
+
+.base-checkbox__info {
+  /* On the label's line, ahead of the message the wrapper reserves below it. */
+  align-self: center;
+  margin-left: 8px;
+}
