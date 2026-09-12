@@ -75,6 +75,13 @@ class PayoutEntry < ApplicationRecord
   # longer exists.
   private def ledger_is_open
     return if payout_ledger.blank?
+
+    # Locked before the status is read, the same way
+    # InventoryLedgerEntry#withdrawal_does_not_exceed_stock locks its inventory:
+    # without it this check and PayoutLedger#settle! can both pass on the same
+    # ledger, and the entry lands after the transfers were frozen.
+    payout_ledger.lock! if payout_ledger.persisted?
+
     return if payout_ledger.open?
 
     errors.add(:base, :ledger_settled)

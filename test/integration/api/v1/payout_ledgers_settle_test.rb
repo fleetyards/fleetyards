@@ -88,4 +88,31 @@ class Api::V1::PayoutLedgersSettleTest < ActionDispatch::IntegrationTest
   test "PUT returns 401 when not signed in" do
     assert_api_response :put, 401, path_params: {id: @ledger.id}
   end
+
+  # The UI settles through this endpoint, not the tour's, so the tour's own
+  # status has to come along -- otherwise its page reads "Open" forever and
+  # PUT /tours/:slug/settle stays live and wipes the confirmations.
+  test "PUT carries the tour's own status across" do
+    sign_in @organiser
+
+    assert_api_response :put, 200, path_params: {id: @ledger.id} do
+      assert_equal "settled", @tour.reload.status
+      assert_not_nil @tour.settled_at
+    end
+  end
+
+  test "PUT leaves a fleet event's own lifecycle alone" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    event = create(:fleet_event, :active, fleet: fleet, created_by: admin)
+    ledger = create(:payout_ledger, subject: event)
+    create(:payout_participant, payout_ledger: ledger, user: admin)
+
+    Flipper.enable("fleet_mission_builder")
+    sign_in admin
+
+    assert_api_response :put, 200, path_params: {id: ledger.id} do
+      assert_equal "active", event.reload.status
+    end
+  end
 end
