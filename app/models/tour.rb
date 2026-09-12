@@ -63,6 +63,11 @@ class Tour < ApplicationRecord
 
     event :reopen do
       transitions from: :settled, to: :open
+
+      # aasm's `timestamps: true` only writes `#{state}_at` where the column
+      # exists, and there is no `open_at` here -- so without this the tour goes
+      # back to open still carrying the date it was settled on.
+      after { update_column(:settled_at, nil) }
     end
 
     event :cancel do
@@ -84,8 +89,13 @@ class Tour < ApplicationRecord
     update!(invite_token: self.class.generate_invite_token)
   end
 
+  # The token is the whole credential -- TourPolicy#join? admits anyone holding
+  # it -- and a guessed one buys a share of the profit, so this is deliberately
+  # far longer than the 8 characters a fleet invite uses. It also removes the
+  # birthday collision that the unique index would otherwise surface as an
+  # unrescued RecordNotUnique.
   def self.generate_invite_token
-    SecureRandom.hex(4)
+    SecureRandom.hex(16)
   end
 
   # A tour has no owning fleet to scope its slug to, so the whole site shares

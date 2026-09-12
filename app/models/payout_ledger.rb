@@ -49,9 +49,14 @@ class PayoutLedger < ApplicationRecord
   belongs_to :subject, polymorphic: true, touch: true
   belongs_to :settled_by, class_name: "User", optional: true
 
-  has_many :payout_participants, dependent: :destroy
-  has_many :payout_entries, dependent: :destroy
-  has_many :payout_transfers, dependent: :destroy
+  # Order matters. Rails runs dependent callbacks in declaration order, and both
+  # entries and transfers hold a FK to a participant -- transfers at the
+  # database level, entries additionally through the before_destroy guard that
+  # refuses while a participant still has any. Destroying participants first
+  # therefore raises InvalidForeignKey and leaves the ledger undeletable.
+  has_many :payout_transfers, dependent: :delete_all
+  has_many :payout_entries, dependent: :delete_all
+  has_many :payout_participants, dependent: :delete_all
 
   validates :subject_type, inclusion: {in: SUBJECT_TYPES}
   validates :status, inclusion: {in: STATUSES}
@@ -119,8 +124,12 @@ class PayoutLedger < ApplicationRecord
   private def seed_user_ids_from_subject
     case subject
     when FleetEvent
+      # Confirmed only. "interested" and "tentative" are expressions of maybe,
+      # and "pending" is still awaiting approval -- seeding those would divide
+      # the take among people who never turned up, and an event with four
+      # attendees and thirty maybes would default to a thirty-four way split.
       subject.fleet_event_signups
-        .where.not(status: "withdrawn")
+        .where(status: "confirmed")
         .includes(:fleet_membership)
         .filter_map { |signup| signup.fleet_membership&.user_id }
     when Tour
