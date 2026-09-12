@@ -82,6 +82,31 @@ module Inventories
       assert_equal 100, delivered + returned
     end
 
+    # A report is evidence first and a decline second. Losing the race to
+    # accept must not lose the report, the deny rule, or the protection they
+    # give the person who filed it.
+    test "a report racing an acceptance is still filed" do
+      transfer = send_pending(40)
+
+      race(2) do |index|
+        if index.zero?
+          TransferResolver.new(InventoryTransfer.find(transfer.id), actor: @recipient).accept(@target)
+        else
+          TransferReporter.new(InventoryTransfer.find(transfer.id), actor: @recipient, reason: :spam).call
+        end
+      end
+
+      assert_equal 1, InventoryTransferReport.where(inventory_transfer_id: transfer.id).count,
+        "the report was rolled back by the lost race"
+      assert InventoryTransferRule.between(holder: @recipient, subject: @sender)&.deny?,
+        "the sender was left unblocked"
+
+      delivered = @target.reload.stock_positions.sum { |row| row.net_quantity.to_i }
+      returned = @source.reload.stock_positions.sole.net_quantity.to_i
+
+      assert_equal 100, delivered + returned
+    end
+
     private def send_pending(quantity)
       builder = TransferBuilder.new(
         source: @source, actor: @sender, recipient: @recipient,

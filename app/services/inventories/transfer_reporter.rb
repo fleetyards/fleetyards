@@ -35,6 +35,15 @@ module Inventories
       return false unless may_report?
 
       ::ActiveRecord::Base.transaction do
+        # The same row lock the resolver takes, and for the same reason -- but
+        # here it is what keeps a *lost race from losing the report*. Without
+        # it the state is read before the report is written and again inside
+        # the resolver: if somebody accepts in between, the decline fails and
+        # takes the report and the deny rule down with it, even though a report
+        # on an already-answered transfer is exactly what this supports.
+        # Reading the state under the lock makes the decision below final.
+        @transfer.lock!
+
         @report = build_report
 
         unless @report.save
@@ -79,7 +88,8 @@ module Inventories
     end
 
     # A report on an answered transfer is still worth filing -- the evidence is
-    # the point -- but there is nothing left to decline.
+    # the point -- but there is nothing left to decline. Read under the lock
+    # taken above, so this cannot change between here and the resolver.
     private def decline_the_transfer
       return unless @transfer.pending?
 
