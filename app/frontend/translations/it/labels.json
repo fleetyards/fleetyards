@@ -1602,6 +1602,8 @@
         },
         "sessionStatus": "Stato sessione RSI",
         "checkIdentity": "Verifica sessione RSI",
+        "addBundledVehicles": "Aggiungi gli snub craft inclusi",
+        "addBundledVehiclesHint": "Aggiunge lo snub craft incluso con una nave. Quelli già nel tuo hangar restano.",
         "identityStatus": {
           "pending": "Verifica...",
           "notFound": "non trovato",

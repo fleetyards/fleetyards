@@ -134,6 +134,48 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal true, bundled.reload.bundled
       assert_equal false, bundled.wanted
     end
+
+    test "creates no bundled child vehicles when the run opted out" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, add_bundled_vehicles: false)
+
+      ::HangarSync.new(@input).run_with_import(import)
+
+      assert_empty Vehicle.where(bundled: true, user_id: @user.id)
+    end
+
+    # The option prevents new rows; it does not orphan the ones the user already
+    # has. A parent the sync pushes onto the wishlist still takes its snub craft
+    # with it, or the two would disagree about whether the ship is owned.
+    test "keeps an existing bundled child following its parent when opted out" do
+      javelin_model = Model.find_by!(slug: "aegs-javelin")
+      javelin_model.snub_crafts << @snub_model
+
+      # Absent from the pledge list, so the sync pushes it onto the wishlist --
+      # and the snub craft it carries has to go with it, or the two disagree
+      # about whether the ship is owned.
+      javelin = create(:vehicle, user: @user, model: javelin_model, wanted: false)
+      bundled = Vehicle.find_by!(bundled: true, vehicle_id: javelin.id)
+      refute_predicate bundled, :wanted?
+
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, add_bundled_vehicles: false)
+      ::HangarSync.new(@input).run_with_import(import)
+
+      assert_predicate javelin.reload, :wanted?
+      assert_predicate bundled.reload, :wanted?
+    end
+
+    test "restores the switch once the run is over" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, add_bundled_vehicles: false)
+
+      ::HangarSync.new(@input).run_with_import(import)
+
+      refute Vehicle.skip_bundled_snub_crafts
+
+      other_user = create(:user)
+      create(:vehicle, user: other_user, model: @andromeda_model, wanted: false)
+
+      assert_predicate Vehicle.where(bundled: true, user_id: other_user.id).count, :positive?
+    end
   end
 
   class WhenRsiPledgeIdChangesTest < HangarSyncTest

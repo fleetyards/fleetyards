@@ -31,7 +31,7 @@ const trigger = (context: SupportPromptContext) => {
 const openSyncModalPreview = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Hangar/SyncBtn/Result/visual/StatePreview.vue"),
+      import("@/frontend/components/Hangar/SyncBtn/visual/StatePreview.vue"),
     props: {
       title: "Hangar Sync",
       processSteps: [

@@ -11,6 +11,7 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
 import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useHangarStore } from "@/frontend/stores/hangar";
 
 type State = {
   key: string;
@@ -146,10 +147,59 @@ const states: State[] = [
 
 const comlink = useComlink();
 
+const hangarStore = useHangarStore();
+
+/*
+ * The real modal, not a stand-in: the options on its start screen are the point
+ * of this card, and a copy of the markup here would drift from the one users
+ * see.
+ *
+ * The modal talks to the browser extension, which is not installed on a demo
+ * page, so this stands in for it and answers the two probes the start screen
+ * waits on. It deliberately does not answer `sync`: pressing Start would then
+ * submit to the real endpoint, and the cards below already cover every state
+ * that follows.
+ */
+const extensionStub = (event: MessageEvent) => {
+  if (event.data?.direction !== "fy") {
+    return;
+  }
+
+  const { action } = JSON.parse(event.data.message);
+
+  const reply = (payload?: unknown) =>
+    window.postMessage({
+      direction: "fy-sync",
+      message: JSON.stringify({ action, code: 200, payload }),
+    });
+
+  if (action === "health") {
+    reply();
+  }
+
+  if (action === "identify") {
+    reply({ handle: "VisualTester" });
+  }
+};
+
+onMounted(() => window.addEventListener("message", extensionStub));
+onBeforeUnmount(() => window.removeEventListener("message", extensionStub));
+
+const openStartScreen = () => {
+  hangarStore.extensionReady = true;
+  hangarStore.syncRunning = false;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Hangar/SyncBtn/Modal/index.vue"),
+    fixed: true,
+  });
+};
+
 const openState = (state: State) => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Hangar/SyncBtn/Result/visual/StatePreview.vue"),
+      import("@/frontend/components/Hangar/SyncBtn/visual/StatePreview.vue"),
     props: {
       title: `Hangar Sync — ${state.label}`,
       processSteps: state.processSteps,
@@ -170,6 +220,16 @@ const openState = (state: State) => {
     <code>AppModal</code> with mocked input — same layout as production.
   </p>
   <div class="row">
+    <div class="col-12 col-md-6 col-lg-4 sync-state-card">
+      <h4>Before start</h4>
+      <p class="text-muted">
+        The real modal before a sync runs: target group and the bundled snub
+        craft option. Start does nothing here.
+      </p>
+      <Btn data-test="open-sync-modal-start" @click="openStartScreen">
+        Open
+      </Btn>
+    </div>
     <div
       v-for="state in states"
       :key="state.key"

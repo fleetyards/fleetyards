@@ -129,6 +129,7 @@ module Api
         import = Imports::HangarSync.create!(
           user_id: current_resource_owner.id,
           hangar_group_id: target_hangar_group_id,
+          add_bundled_vehicles: add_bundled_vehicles?,
           input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
         )
 
@@ -211,7 +212,17 @@ module Api
       end
 
       private def sync_params
-        @sync_params ||= params.permit(:hangar_group_id, items: [:id, :name, :image, :type, :custom_name])
+        @sync_params ||= params.permit(:hangar_group_id, :add_bundled_vehicles, items: [:id, :name, :image, :type, :custom_name])
+      end
+
+      # Absent means on: every sync before the option existed created the snub
+      # craft a ship comes with, and a client that does not know about the flag
+      # must keep behaving that way.
+      private def add_bundled_vehicles?
+        value = sync_params[:add_bundled_vehicles]
+        return true if value.nil?
+
+        ActiveModel::Type::Boolean.new.cast(value) || false
       end
 
       private def running_hangar_import?(klass)

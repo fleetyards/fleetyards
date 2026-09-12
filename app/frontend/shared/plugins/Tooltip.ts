@@ -5,6 +5,7 @@ interface TooltipOptions {
   placement: string;
   popperClass?: string;
   html?: boolean;
+  multiline?: boolean;
 }
 
 function parseBinding(binding: DirectiveBinding): TooltipOptions {
@@ -17,6 +18,7 @@ function parseBinding(binding: DirectiveBinding): TooltipOptions {
       placement: binding.value.placement || placement,
       popperClass: binding.value.popperClass,
       html: binding.value.html,
+      multiline: binding.value.multiline,
     };
   }
 
@@ -40,6 +42,16 @@ function setContent(el: HTMLElement, options: TooltipOptions) {
 
 const ARROW_SIZE = 6;
 const FADE_DURATION = 150;
+const MULTILINE_MAX_WIDTH = 280;
+
+// A tooltip labels its anchor, so it stays on one line and the box is whatever
+// the label needs. `multiline` is for the few that carry a sentence instead:
+// nothing here ever shrinks a tooltip to fit, it only slides it back inside the
+// viewport, so a long one runs off the side of the window rather than wrapping.
+function applyLineLayout(el: HTMLElement, options: TooltipOptions) {
+  el.style.whiteSpace = options.multiline ? "normal" : "nowrap";
+  el.style.maxWidth = options.multiline ? `${MULTILINE_MAX_WIDTH}px` : "";
+}
 
 function createTooltipEl(options: TooltipOptions): HTMLElement {
   const el = document.createElement("div");
@@ -54,11 +66,11 @@ function createTooltipEl(options: TooltipOptions): HTMLElement {
     "border-radius:6px",
     "font-size:14px",
     "line-height:1.4",
-    "white-space:nowrap",
     "opacity:0",
     "display:none",
     `transition:opacity ${FADE_DURATION}ms ease`,
   ].join(";");
+  applyLineLayout(el, options);
   setContent(el, options);
 
   const arrow = document.createElement("div");
@@ -282,6 +294,7 @@ function show(el: HTMLElement) {
 
   // Update text (keep arrow element)
   const arrow = tip.querySelector("[data-tooltip-arrow]");
+  applyLineLayout(tip, state.options);
   setContent(tip, state.options);
   if (arrow) tip.appendChild(arrow);
 

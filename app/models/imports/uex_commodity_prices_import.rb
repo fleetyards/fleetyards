@@ -4,24 +4,25 @@
 #
 # Table name: imports
 #
-#  id                  :uuid             not null, primary key
-#  aasm_state          :string
-#  cancel_requested_at :datetime
-#  cancelled_at        :datetime
-#  failed_at           :datetime
-#  finished_at         :datetime
-#  import_data         :text
-#  info                :text
-#  input               :jsonb
-#  output              :jsonb
-#  started_at          :datetime
-#  type                :string
-#  version             :string
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  admin_user_id       :uuid
-#  hangar_group_id     :uuid
-#  user_id             :uuid
+#  id                   :uuid             not null, primary key
+#  aasm_state           :string
+#  add_bundled_vehicles :boolean          default(TRUE), not null
+#  cancel_requested_at  :datetime
+#  cancelled_at         :datetime
+#  failed_at            :datetime
+#  finished_at          :datetime
+#  import_data          :text
+#  info                 :text
+#  input                :jsonb
+#  output               :jsonb
+#  started_at           :datetime
+#  type                 :string
+#  version              :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  admin_user_id        :uuid
+#  hangar_group_id      :uuid
+#  user_id              :uuid
 #
 # Indexes
 #

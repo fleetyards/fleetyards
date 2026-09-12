@@ -9,6 +9,18 @@
     white-space: nowrap;
   }
 
+  /* The label keeps its own bottom gap, so the row adds none of its own and
+     the icon takes the same one. */
+  .field-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .hint-icon {
+      margin-bottom: var(--field-label-gap, 5px);
+    }
+  }
+
   .base-select-title {
     display: flex;
     align-items: center;

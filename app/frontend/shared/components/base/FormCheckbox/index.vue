@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import HintIcon from "@/shared/components/base/HintIcon/index.vue";
 import { v4 as uuidv4 } from "uuid";
 import { useField } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -27,6 +28,11 @@ type Props = {
   slim?: boolean;
   inline?: boolean;
   partial?: boolean;
+  /*
+   * Sits beside the label rather than inside it: a focusable element inside a
+   * `<label>` still toggles the control when it is clicked.
+   */
+  info?: string;
   noLabel?: boolean;
 };
 
@@ -41,6 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   slim: true,
   inline: false,
   partial: false,
+  info: undefined,
   noLabel: false,
 });
 
@@ -156,6 +163,7 @@ const innerPlaceholder = computed(() => {
     <label :for="uuid">
       {{ innerLabel }}
     </label>
+    <HintIcon v-if="info" :text="info" class="base-checkbox__info" />
     <!--
       Below the control rather than trailing the label as a bare text node, and
       present whether or not it has anything to say: the line is reserved so that

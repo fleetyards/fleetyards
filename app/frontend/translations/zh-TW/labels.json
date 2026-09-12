@@ -1602,6 +1602,8 @@
         },
         "sessionStatus": "RSI 工作階段狀態",
         "checkIdentity": "檢查 RSI 工作階段",
+        "addBundledVehicles": "新增附帶的小型飛船",
+        "addBundledVehiclesHint": "新增飛船附帶的小型飛船。已在機庫中的會保留。",
         "identityStatus": {
           "pending": "檢查中...",
           "notFound": "未找到",

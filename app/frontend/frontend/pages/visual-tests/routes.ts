@@ -113,8 +113,7 @@ export const routes = [
   {
     path: "sync-modal/",
     name: "visual-tests-sync-modal",
-    component: () =>
-      import("@/frontend/components/Hangar/SyncBtn/Result/visual.vue"),
+    component: () => import("@/frontend/components/Hangar/SyncBtn/visual.vue"),
     meta: {
       title: "visualTests.syncModal",
       backgroundImage: "bg-7",

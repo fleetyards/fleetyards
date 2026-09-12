@@ -13,7 +13,8 @@ module V1
               type: :array,
               items: ::V1::Schemas::Inputs::RsiHangarItemInput
             },
-            hangarGroupId: {type: :string, format: :uuid}
+            hangarGroupId: {type: :string, format: :uuid},
+            addBundledVehicles: {type: :boolean, default: true}
           }
         })
       end

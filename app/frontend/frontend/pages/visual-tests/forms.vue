@@ -583,6 +583,71 @@ const powerMarks = (value: number) => ({ label: String(value) });
     </div>
   </div>
 
+  <Heading :level="HeadingLevelEnum.H2">Info hints</Heading>
+  <p>
+    <code>info</code> puts an icon beside a control's label carrying a sentence
+    the label has no room for. It opens on keyboard focus as well as hover, and
+    repeats itself as the icon's label, so the hint is never mouse-only.
+  </p>
+  <div class="row" data-test="info-hints">
+    <div class="col-12 col-md-6">
+      <FormInput
+        v-model="text"
+        name="infoText"
+        label="Text"
+        info="A sentence long enough to wrap, so the tooltip has to cap its width instead of running off the side of the window."
+      />
+      <FormCheckbox
+        v-model="checkbox"
+        name="infoCheckbox"
+        label="Checkbox"
+        info="Clicking the icon must not tick the box, so it sits beside the label rather than inside it."
+      />
+      <FormToggle
+        v-model="toggleField"
+        name="infoToggle"
+        label="Toggle"
+        info="Same hint, on the control the hangar sync uses for its bundled snub craft option."
+      />
+    </div>
+    <div class="col-12 col-md-6">
+      <BaseSelect
+        v-model="filterSingle"
+        name="infoSelect"
+        label="Select"
+        :options="sizeOptions"
+        info="A select's label sits above its field, so the icon shares the label's line rather than the field's."
+      />
+      <RadioList
+        v-model="radio"
+        name="infoRadio"
+        label="Radio list"
+        :options="radioOptions"
+        info="Names the group, which is what the label names here -- a radio list has no single control to point at."
+      />
+      <Toggle
+        :active="toggleActive"
+        label="Toggle (button)"
+        info="Outside the button rather than beside the label: this control keeps its label inside itself."
+        @toggle="toggleActive = !toggleActive"
+      />
+    </div>
+  </div>
+  <p>
+    Slider takes the same prop but spends it on a line under the rail. A hint
+    that can only be hovered is no use on a control you read while dragging it.
+  </p>
+  <div class="row" data-test="info-hint-slider">
+    <div class="col-12 col-md-6">
+      <Slider
+        v-model="sliderValue"
+        :min="0"
+        :max="100"
+        info="Distance in millions of kilometres. Drag, or use the arrow keys once the rail has focus."
+      />
+    </div>
+  </div>
+
   <Heading :level="HeadingLevelEnum.H2">Error States</Heading>
   <p>
     Fields validated on mount, so the invalid styling shows without interaction.

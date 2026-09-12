@@ -20,12 +20,14 @@ type Props = {
   modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
+  info?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   multiple: true,
   noLabel: true,
+  info: undefined,
 });
 
 const { t } = useI18n();
@@ -75,5 +77,6 @@ const formatter = (groups: HangarGroup[]) => {
     :searchable="false"
     :multiple="multiple"
     :no-label="noLabel"
+    :info="info"
   />
 </template>

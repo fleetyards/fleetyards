@@ -63,7 +63,9 @@ class HangarSync < HangarImporter
     # nothing in here is a change the user made. Held out here rather than at
     # each `update!` so a write added later is silent by default.
     vehicles, components, upgrades = PaperTrail.request(enabled: false) do
-      [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
+      Vehicle.with_bundled_snub_crafts(import.add_bundled_vehicles?) do
+        [sync_vehicles(user_id), sync_components(user_id), sync_upgrades(user_id)]
+      end
     end
 
     imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models = vehicles

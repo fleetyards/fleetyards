@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { v4 as uuidv4 } from "uuid";
+
 type MarkResult = { label: string } | false;
 
 type Props = {
@@ -17,6 +19,12 @@ type Props = {
   tooltipFormatter?: (value: number) => string;
   process?: boolean;
   lazy?: boolean;
+  /*
+   * A line under the rail rather than the icon the other controls carry: a
+   * slider's hint is read while dragging, and a tooltip cannot be hovered and
+   * dragged at once.
+   */
+  info?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,12 +37,15 @@ const props = withDefaults(defineProps<Props>(), {
   tooltipFormatter: undefined,
   process: false,
   lazy: false,
+  info: undefined,
 });
 
 const emit = defineEmits<{
   "update:modelValue": [value: number];
   change: [value: number];
 }>();
+
+const infoId = `base-slider-info-${uuidv4()}`;
 
 const currentValue = ref(props.modelValue);
 const isDragging = ref(false);
@@ -178,60 +189,66 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    class="base-slider"
-    :class="{ 'base-slider--dragging': isDragging }"
-    role="slider"
-    :aria-valuemin="props.min"
-    :aria-valuemax="props.max"
-    :aria-valuenow="currentValue"
-    :aria-valuetext="tooltipText || String(currentValue)"
-    tabindex="0"
-    @keydown="onKeydown"
-  >
+  <div class="base-slider-field">
     <div
-      ref="railRef"
-      class="base-slider__rail"
-      @mousedown="onDragStart"
-      @touchstart="onDragStart"
+      class="base-slider"
+      :class="{ 'base-slider--dragging': isDragging }"
+      role="slider"
+      :aria-valuemin="props.min"
+      :aria-valuemax="props.max"
+      :aria-valuenow="currentValue"
+      :aria-valuetext="tooltipText || String(currentValue)"
+      :aria-describedby="info ? infoId : undefined"
+      tabindex="0"
+      @keydown="onKeydown"
     >
       <div
-        v-if="props.process"
-        class="base-slider__process"
-        :style="{ width: `${dotPercent}%` }"
-      />
-
-      <div
-        v-for="mark in computedMarks"
-        :key="mark.value"
-        class="base-slider__mark"
-        :class="{
-          'base-slider__mark--first': mark.percent === 0,
-          'base-slider__mark--last': mark.percent === 100,
-        }"
-        :style="{ left: `${mark.percent}%` }"
+        ref="railRef"
+        class="base-slider__rail"
+        @mousedown="onDragStart"
+        @touchstart="onDragStart"
       >
-        <div class="base-slider__mark-label">
-          {{ mark.label }}
+        <div
+          v-if="props.process"
+          class="base-slider__process"
+          :style="{ width: `${dotPercent}%` }"
+        />
+
+        <div
+          v-for="mark in computedMarks"
+          :key="mark.value"
+          class="base-slider__mark"
+          :class="{
+            'base-slider__mark--first': mark.percent === 0,
+            'base-slider__mark--last': mark.percent === 100,
+          }"
+          :style="{ left: `${mark.percent}%` }"
+        >
+          <div class="base-slider__mark-label">
+            {{ mark.label }}
+          </div>
         </div>
-      </div>
 
-      <div
-        class="base-slider__dot"
-        :style="{
-          left: `${dotPercent}%`,
-          width: `${props.dotSize}px`,
-          height: `${props.dotSize}px`,
-        }"
-      >
-        <div class="base-slider__dot-handle" />
-        <div v-if="tooltipText" class="base-slider__tooltip">
-          <div class="base-slider__tooltip-inner">
-            {{ tooltipText }}
+        <div
+          class="base-slider__dot"
+          :style="{
+            left: `${dotPercent}%`,
+            width: `${props.dotSize}px`,
+            height: `${props.dotSize}px`,
+          }"
+        >
+          <div class="base-slider__dot-handle" />
+          <div v-if="tooltipText" class="base-slider__tooltip">
+            <div class="base-slider__tooltip-inner">
+              {{ tooltipText }}
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <p v-if="info" :id="infoId" class="base-slider-field__info">
+      {{ info }}
+    </p>
   </div>
 </template>
 

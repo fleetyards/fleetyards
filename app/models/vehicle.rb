@@ -46,6 +46,11 @@ class Vehicle < ApplicationRecord
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
+  # Scoped to the thread so a Sidekiq worker running one user's hangar sync
+  # cannot switch the callback off for every other job in the process. Set
+  # through `.with_bundled_snub_crafts`, which restores it.
+  thread_mattr_accessor :skip_bundled_snub_crafts, instance_accessor: false, default: false
+
   # A loaner and a bundled snub craft are derived rows: `wanted` and `hidden`
   # are recomputed from the parent on every parent save, so a version on one
   # records a calculation rather than a decision.
@@ -225,6 +230,20 @@ class Vehicle < ApplicationRecord
 
   def self.public
     where(public: true)
+  end
+
+  # Run-wide rather than an attribute on each row: `update_bundled_snub_crafts`
+  # fires on every save, not only on the ones that create a ship, so a hangar
+  # sync that threaded a flag through its writes would leave the next write
+  # somebody adds silently back on. Only creation is suppressed -- a snub craft
+  # the user already has still follows its parent's `wanted`.
+  def self.with_bundled_snub_crafts(enabled)
+    previous = skip_bundled_snub_crafts
+    self.skip_bundled_snub_crafts = !enabled
+
+    yield
+  ensure
+    self.skip_bundled_snub_crafts = previous
   end
 
   # The hangar's bulk deletions go around `destroy`: a wishlist wipe is a few
@@ -443,6 +462,8 @@ class Vehicle < ApplicationRecord
       existing.update(wanted:) if existing.wanted != wanted
       return
     end
+
+    return if self.class.skip_bundled_snub_crafts
 
     Vehicle.create(
       bundled: true,
