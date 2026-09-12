@@ -1,6 +1,6 @@
 import { mount, flushPromises } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import Component from "./index.vue";
@@ -61,6 +61,11 @@ const extensionReplies = (action: string, payload?: unknown) => {
   );
 };
 
+// The modal listens on `window` for as long as it is mounted, so one left
+// behind would answer the next test's extension replies as well -- and submit a
+// second sync carrying its own store's value.
+let mounted: ReturnType<typeof mount> | undefined;
+
 const mountModal = async () => {
   const wrapper = mount(Component, {
     global: {
@@ -74,6 +79,8 @@ const mountModal = async () => {
       directives: { Tooltip: {} },
     },
   });
+
+  mounted = wrapper;
 
   const hangarStore = useHangarStore();
   hangarStore.extensionReady = true;
@@ -100,6 +107,11 @@ const submitEmptyHangar = async (
 describe("HangarSyncModal", () => {
   beforeEach(() => {
     mutateAsync.mockClear();
+  });
+
+  afterEach(() => {
+    mounted?.unmount();
+    mounted = undefined;
   });
 
   it("adds bundled snub crafts by default", async () => {
