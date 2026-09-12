@@ -2966,6 +2966,8 @@ components:
       - fleet_event_signup_confirmed
       - fleet_event_signup_assigned
       - fleet_event_signup_kicked
+      - inventory_transfer_received
+      - inventory_transfer_resolved
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -2991,6 +2993,8 @@ components:
       - FLEET_EVENT_SIGNUP_CONFIRMED
       - FLEET_EVENT_SIGNUP_ASSIGNED
       - FLEET_EVENT_SIGNUP_KICKED
+      - INVENTORY_TRANSFER_RECEIVED
+      - INVENTORY_TRANSFER_RESOLVED
     RefuelBoom:
       type: object
       properties:

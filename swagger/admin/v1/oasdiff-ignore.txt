@@ -122,16 +122,8 @@ POST /model-hardpoints api path removed without deprecation
 DELETE /model-hardpoints/{id} api path removed without deprecation
 GET /model-hardpoints/{id} api path removed without deprecation
 PUT /model-hardpoints/{id} api path removed without deprecation
-GET /admin_users added the new `inventory_transfer_reports` enum value to the `items/items/resourceAccess/items/` response property for the response status `200`
-POST /admin_users added the new `inventory_transfer_reports` enum value to the `resourceAccess/items/` response property for the response status `200`
-GET /admin_users/me added the new `inventory_transfer_reports` enum value to the `resourceAccess/items/` response property for the response status `200`
-DELETE /admin_users/{id} added the new `inventory_transfer_reports` enum value to the `resourceAccess/items/` response property for the response status `200`
-GET /admin_users/{id} added the new `inventory_transfer_reports` enum value to the `resourceAccess/items/` response property for the response status `200`
-PUT /admin_users/{id} added the new `inventory_transfer_reports` enum value to the `resourceAccess/items/` response property for the response status `200`
 GET /notifications added the new `inventory_transfer_reports` enum value to the `items/items/notificationType` response property for the response status `200`
 PUT /notifications/{id}/archive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/read added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
-GET /resource-access-catalog added the new `inventory_transfer_reports` enum value to the `items/privileges/items/` response property for the response status `200`
-POST /sessions added the new `inventory_transfer_reports` enum value to the `resourceAccess/items/` response property for the response status `200`

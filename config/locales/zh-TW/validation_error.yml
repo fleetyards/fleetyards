@@ -49,6 +49,10 @@ zh-TW:
       create: 無法建立庫存。
       update: 無法更新庫存。
       destroy: 無法刪除庫存。
+    inventory_transfers:
+      create: 無法傳送轉移。
+      update: 無法更新轉移。
+      report: 無法檢舉轉移。
     hangar_inventory_items:
       create: 無法建立庫存記錄。
       update: 無法更新庫存記錄。

@@ -8946,7 +8946,6 @@ components:
       - fleets
       - users
       - supporters
-      - inventory_transfer_reports
       - admins
       - oauth_applications
       - maintenance
@@ -8978,7 +8977,6 @@ components:
       - FLEETS
       - USERS
       - SUPPORTERS
-      - INVENTORY_TRANSFER_REPORTS
       - ADMINS
       - OAUTH_APPLICATIONS
       - MAINTENANCE

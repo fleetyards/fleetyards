@@ -146,7 +146,10 @@ class AdminNotification < ApplicationRecord
     # per-record notification turns a spree into an inbox nobody reads.
     inventory_transfer_reports: {
       retention: 90.days,
-      access: [:inventory_transfer_reports],
+      # Sits with `users` rather than carrying a privilege of its own: a
+      # grantable privilege with no policy behind it would reveal a section
+      # nobody can open. It gets one when the review page lands.
+      access: [:users],
       icon: "fa-duotone fa-flag"
     }
   }.freeze
