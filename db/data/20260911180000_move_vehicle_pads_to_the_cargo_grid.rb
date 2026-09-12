@@ -13,29 +13,26 @@
 # or Cargobay and six are dedicated bays, and only somebody who knows the ships
 # can say which is which. That is a curation pass, not a migration.
 class MoveVehiclePadsToTheCargoGrid < ActiveRecord::Migration[8.1]
-  # What identified the five in the first place, and the only thing that can
-  # identify them again afterwards. `up` moves every vehicle pad; every one of
-  # them happens to be named this way, which is the evidence the move rests on.
-  MOVED_NAMES = "Cargo%"
-
   def up
     moved = Dock.where(dock_type: :vehiclepad).update_all(dock_type: Dock.dock_types[:cargogrid])
 
     say("moved #{moved} vehicle pad(s) to the cargo grid")
   end
 
+  # Not reversible, and no heuristic makes it so. Nothing on a dock records
+  # which type it used to carry, and the editor offers `cargogrid` now -- so
+  # after this runs, a row curated by hand is indistinguishable from one this
+  # migration moved. Scoping the reverse to the names the five happened to have
+  # was the first attempt and is no better: an admin can name a new one "Cargo"
+  # too.
+  #
+  # Turning somebody's curation back into a legacy type is worse than refusing,
+  # and the forward direction is five rows. Undo it by hand if it ever needs
+  # undoing.
   def down
-    # Not every cargo grid came from here. The admin can create one now, and
-    # turning those back into vehicle pads would undo curation this migration
-    # never touched -- so the reverse is scoped to the names that identified the
-    # original five, and says what it left alone.
-    scope = Dock.where(dock_type: :cargogrid)
-    revertible = scope.where("docks.name ILIKE ?", MOVED_NAMES)
-
-    kept = scope.count - revertible.count
-    moved = revertible.update_all(dock_type: Dock.dock_types[:vehiclepad])
-
-    say("moved #{moved} cargo grid(s) back to vehicle pads")
-    say("left #{kept} cargo grid(s) alone: they were not named by this migration") if kept.positive?
+    raise ActiveRecord::IrreversibleMigration,
+      "nothing records which docks were vehicle pads before this ran, and the " \
+      "admin can create a cargo grid now -- reverting would take hand-curated " \
+      "rows with it. Set the types back by hand if this really has to go."
   end
 end

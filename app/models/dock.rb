@@ -41,6 +41,13 @@ class Dock < ApplicationRecord
   validates :parent_id, presence: true
   validates :parent_type, inclusion: {in: PARENT_TYPES}
 
+  # And the row has to be there. Making the association optional took that check
+  # away with the constantizing, so a known type and any UUID at all would have
+  # saved a dock pointing at nothing -- the orphans #4864 deleted, by a new
+  # route. Guarded on the type, so this is the only place that resolves the
+  # association and it only does so for a name that is safe to constantize.
+  validates :parent, presence: true, if: -> { parent_type.in?(PARENT_TYPES) }
+
   # `cargogrid` is the berth that costs cargo capacity -- the Hammerhead's
   # cargo lift, the Polaris, the Hercules cargo bay -- as opposed to a garage
   # built for vehicles and nothing else, which is what the Carrack has.

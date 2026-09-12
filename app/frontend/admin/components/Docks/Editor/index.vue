@@ -75,28 +75,27 @@ const invalidateDocks = () =>
   });
 
 // Dropdown options
-// Labels match `activerecord.dock.dock_types`, which is what the payload's
-// dockTypeLabel renders. `vehiclepad` is deliberately absent: every row that
-// had it moved to the cargo grid, and nothing new should become one.
-const dockTypeOptions: FilterOption[] = [
-  { label: "Hangar", value: "hangar" },
-  { label: "Landingpad", value: "landingpad" },
-  { label: "Cargo Grid", value: "cargogrid" },
-  { label: "Garage", value: "garage" },
-  { label: "Dockingport", value: "dockingport" },
-];
+// `vehiclepad` is deliberately absent: every row that had it moved to the cargo
+// grid, and nothing new should become one.
+const dockTypeOptions = computed<FilterOption[]>(() =>
+  ["hangar", "landingpad", "cargogrid", "garage", "dockingport"].map(
+    (value) => ({ label: t(`labels.dockTypes.${value}`), value }),
+  ),
+);
 
 // A ladder, so the order is the point -- alphabetical put Capital first and
 // Extra Large between the two smallest. Hence `unsorted` on the select.
-const shipSizeOptions: FilterOption[] = [
-  { label: "Snubcraft (XXS)", value: "extra_extra_small" },
-  { label: "Extra Small (XS)", value: "extra_small" },
-  { label: "Small (S)", value: "small" },
-  { label: "Medium (M)", value: "medium" },
-  { label: "Large (L)", value: "large" },
-  { label: "Extra Large (XL)", value: "extra_large" },
-  { label: "Capital (C)", value: "capital" },
-];
+const shipSizeOptions = computed<FilterOption[]>(() =>
+  [
+    "extra_extra_small",
+    "extra_small",
+    "small",
+    "medium",
+    "large",
+    "extra_large",
+    "capital",
+  ].map((value) => ({ label: t(`labels.shipSizes.${value}`), value })),
+);
 
 // Edit
 const editForm = ref<DockInput>({});
@@ -191,7 +190,7 @@ const onSaveCreate = async () => {
   </div>
 
   <InlineEditableList
-    empty-name="Docks"
+    :empty-name="t('headlines.admin.models.edit.docks')"
     :loading="isLoading"
     ref="editableList"
     :items="(data?.items as Dock[]) || []"

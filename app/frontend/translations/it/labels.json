@@ -2262,6 +2262,15 @@
         "dockingport": "Porta di attracco",
         "hangar": "Hangar",
         "cargogrid": "Griglia di carico"
+      },
+      "shipSizes": {
+        "extra_extra_small": "Snubcraft (XXS)",
+        "extra_small": "Extra piccolo (XS)",
+        "small": "Piccolo (S)",
+        "medium": "Medio (M)",
+        "large": "Grande (L)",
+        "extra_large": "Extra grande (XL)",
+        "capital": "Capitale (C)"
       }
     }
   }

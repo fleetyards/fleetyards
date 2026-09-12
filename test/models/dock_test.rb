@@ -61,6 +61,16 @@ class DockTest < ActiveSupport::TestCase
     assert_not dock.valid?
   end
 
+  # Making the association optional removed the check that the row exists along
+  # with the constantizing. A known type plus any UUID would have saved a dock
+  # hanging off nothing.
+  test "a dock refuses a parent that does not exist" do
+    dock = build(:dock, parent_type: "Model", parent_id: SecureRandom.uuid)
+
+    assert_not dock.valid?
+    assert_includes dock.errors[:parent], "can't be blank"
+  end
+
   # `belongs_to`'s own presence check would constantize `parent_type` and raise
   # NameError out of validation, which is a 500 where an invalid record belongs.
   test "a dock refuses a class that does not exist, without raising" do

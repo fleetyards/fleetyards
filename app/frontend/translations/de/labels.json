@@ -2262,6 +2262,15 @@
         "dockingport": "Andockstutzen",
         "hangar": "Hangar",
         "cargogrid": "Frachtgitter"
+      },
+      "shipSizes": {
+        "extra_extra_small": "Snubcraft (XXS)",
+        "extra_small": "Extra klein (XS)",
+        "small": "Klein (S)",
+        "medium": "Mittel (M)",
+        "large": "Groß (L)",
+        "extra_large": "Extra groß (XL)",
+        "capital": "Kapital (C)"
       }
     }
   }

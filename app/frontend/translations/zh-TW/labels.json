@@ -2258,6 +2258,15 @@
         "dockingport": "對接口",
         "hangar": "機庫",
         "cargogrid": "貨運格柵"
+      },
+      "shipSizes": {
+        "extra_extra_small": "小型飛船 (XXS)",
+        "extra_small": "超小型 (XS)",
+        "small": "小型 (S)",
+        "medium": "中型 (M)",
+        "large": "大型 (L)",
+        "extra_large": "超大型 (XL)",
+        "capital": "主力艦 (C)"
       }
     }
   }

@@ -2258,6 +2258,15 @@
         "dockingport": "对接口",
         "hangar": "机库",
         "cargogrid": "货运格栅"
+      },
+      "shipSizes": {
+        "extra_extra_small": "斯努布克拉夫特 (XXS)",
+        "extra_small": "特小号 (XS)",
+        "small": "小型(S)",
+        "medium": "中号 (M)",
+        "large": "大号（L）",
+        "extra_large": "特大号 (XL)",
+        "capital": "资本（C）"
       }
     }
   }
