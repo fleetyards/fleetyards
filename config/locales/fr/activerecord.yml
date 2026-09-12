@@ -209,6 +209,7 @@ fr:
           class8: Class 8
     errors:
       messages:
+        entry_goods_in_transit: "ne peut pas être supprimé tant que le transfert auquel il appartient est en attente de réponse"
         inventory_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert envoyé est encore en attente de réponse"
         position_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert le contenant est encore en attente de réponse"
         blank: ne peut pas être vide

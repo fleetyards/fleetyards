@@ -212,6 +212,7 @@ en:
         blank: can't be blank
         record_invalid: Bad Data
         svg_not_supported: must not be an SVG image
+        entry_goods_in_transit: "cannot be deleted while the transfer it belongs to is still waiting to be answered"
         inventory_goods_in_transit: "cannot be deleted while a transfer it sent is still waiting to be answered"
         position_goods_in_transit: "cannot be deleted while a transfer it was sent in is still waiting to be answered"
       models:

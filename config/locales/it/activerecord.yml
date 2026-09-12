@@ -209,6 +209,7 @@ it:
           class8: Class 8
     errors:
       messages:
+        entry_goods_in_transit: "non può essere eliminato finché il trasferimento a cui appartiene è ancora in attesa di risposta"
         inventory_goods_in_transit: "non può essere eliminato finché un trasferimento inviato è ancora in attesa di risposta"
         position_goods_in_transit: "non può essere eliminato finché un trasferimento che lo contiene è ancora in attesa di risposta"
         blank: non può essere vuoto

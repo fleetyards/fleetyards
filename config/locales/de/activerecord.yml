@@ -209,6 +209,7 @@ de:
           class8: Class 8
     errors:
       messages:
+        entry_goods_in_transit: "kann nicht gelöscht werden, solange der zugehörige Transfer noch unbeantwortet ist"
         inventory_goods_in_transit: "kann nicht gelöscht werden, solange ein gesendeter Transfer noch unbeantwortet ist"
         position_goods_in_transit: "kann nicht gelöscht werden, solange ein Transfer damit noch unbeantwortet ist"
         blank: darf nicht leer sein

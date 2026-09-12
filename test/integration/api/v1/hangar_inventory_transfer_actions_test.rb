@@ -242,6 +242,20 @@ class Api::V1::HangarInventoryTransferActionsTest < ActionDispatch::IntegrationT
     assert_api_response :get, 403, path_params: {id: @transfer.id}
   end
 
+  # The items endpoint will delete any entry its holder owns, including the
+  # withdrawal that represents goods already promised to somebody else.
+  test "DELETE on the withdrawal a pending transfer wrote is refused" do
+    sign_in @sender
+    withdrawal = @transfer.dispatched_entries.sole
+
+    delete "/api/v1/hangar/inventories/#{@source.slug}/items/#{withdrawal.id}",
+      headers: {"Accept" => "application/json"}
+
+    assert_response :bad_request
+    assert InventoryItem.exists?(withdrawal.id)
+    assert_equal 60, @source.reload.stock_positions.sole.net_quantity
+  end
+
   test "GET needs a signed-in user" do
     assert_api_response :get, 401, path_params: {id: @transfer.id}
   end

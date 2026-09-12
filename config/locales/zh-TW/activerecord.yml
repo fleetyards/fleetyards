@@ -209,6 +209,7 @@ zh-TW:
           class8: Class 8
     errors:
       messages:
+        entry_goods_in_transit: "在其所屬的轉移得到回覆之前無法刪除"
         inventory_goods_in_transit: "在已傳送的轉移得到回覆之前無法刪除"
         position_goods_in_transit: "在包含它的轉移得到回覆之前無法刪除"
         blank: 不能為空

@@ -101,6 +101,18 @@ module InventoryLedgerEntry
     before_validation :set_name_from_item
 
     before_save :assign_position
+
+    # The third door onto goods in flight. `InventoryStock` refuses to destroy
+    # an inventory or a position holding them; this one is the entry itself,
+    # which every inventory's own `items` endpoint will happily delete.
+    #
+    # Deleting the withdrawal a pending transfer wrote un-withdraws the stock --
+    # the sender has it back -- while the transfer still promises it. Accepting
+    # afterwards delivers nothing and still reports success, which is the worst
+    # of the three outcomes: measured, a 40 SCU shipment left the source at 60,
+    # the delete put it back to 100, and the recipient's inventory ended at 0
+    # against a transfer reading `completed`.
+    before_destroy :refuse_while_in_transit, prepend: true
   end
 
   class_methods do
@@ -239,6 +251,17 @@ module InventoryLedgerEntry
     micro_scu = item.inventory_consumption.try(:[], "micro_scu").to_f
 
     micro_scu / 1_000_000 if micro_scu > 1.0
+  end
+
+  # Only while the transfer is unanswered. Once it is completed, declined,
+  # cancelled or expired the entry is history and deleting it is the ordinary
+  # act of tidying a ledger.
+  private def refuse_while_in_transit
+    return unless inventory_transfer&.pending?
+
+    errors.add(:base, :goods_in_transit,
+      message: I18n.t("activerecord.errors.messages.entry_goods_in_transit"))
+    throw(:abort)
   end
 
   private def set_name_from_item

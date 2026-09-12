@@ -212,6 +212,7 @@ zh-CN:
         sell: 出售？
     errors:
       messages:
+        entry_goods_in_transit: "在其所属的转移得到答复之前无法删除"
         inventory_goods_in_transit: "在已发送的转移得到答复之前无法删除"
         position_goods_in_transit: "在包含它的转移得到答复之前无法删除"
         blank: 不能为空字符
