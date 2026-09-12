@@ -51,6 +51,7 @@ class FleetRole < ApplicationRecord
     "inventories" => FleetInventory::AVAILABLE_PRIVILEGES,
     "missions" => Mission::AVAILABLE_PRIVILEGES,
     "events" => FleetEvent::AVAILABLE_PRIVILEGES,
+    "payouts" => PayoutLedger::AVAILABLE_PRIVILEGES,
     "notifications" => FleetNotificationSetting::AVAILABLE_PRIVILEGES
   }.freeze
 
@@ -95,7 +96,8 @@ class FleetRole < ApplicationRecord
         FleetRole::DEFAULT_PRIVILEGES[:admin],
         FleetInventory::DEFAULT_PRIVILEGES[:admin],
         Mission::DEFAULT_PRIVILEGES[:admin],
-        FleetEvent::DEFAULT_PRIVILEGES[:admin]
+        FleetEvent::DEFAULT_PRIVILEGES[:admin],
+        PayoutLedger::DEFAULT_PRIVILEGES[:admin]
       ].flatten.uniq,
       officer: [
         Fleet::DEFAULT_PRIVILEGES[:officer],
@@ -105,7 +107,8 @@ class FleetRole < ApplicationRecord
         FleetRole::DEFAULT_PRIVILEGES[:officer],
         FleetInventory::DEFAULT_PRIVILEGES[:officer],
         Mission::DEFAULT_PRIVILEGES[:officer],
-        FleetEvent::DEFAULT_PRIVILEGES[:officer]
+        FleetEvent::DEFAULT_PRIVILEGES[:officer],
+        PayoutLedger::DEFAULT_PRIVILEGES[:officer]
       ].flatten.uniq,
       member: [
         Fleet::DEFAULT_PRIVILEGES[:member],
@@ -115,7 +118,8 @@ class FleetRole < ApplicationRecord
         FleetRole::DEFAULT_PRIVILEGES[:member],
         FleetInventory::DEFAULT_PRIVILEGES[:member],
         Mission::DEFAULT_PRIVILEGES[:member],
-        FleetEvent::DEFAULT_PRIVILEGES[:member]
+        FleetEvent::DEFAULT_PRIVILEGES[:member],
+        PayoutLedger::DEFAULT_PRIVILEGES[:member]
       ].flatten.uniq
     }
   end

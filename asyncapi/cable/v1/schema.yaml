@@ -1502,6 +1502,11 @@ components:
       - fleet:events:update
       - fleet:events:delete
       - fleet:events:manage
+      - fleet:payouts:read
+      - fleet:payouts:create
+      - fleet:payouts:update
+      - fleet:payouts:delete
+      - fleet:payouts:manage
       - fleet:notifications:manage
       x-enumNames:
       - FLEET_UPDATE
@@ -1544,6 +1549,11 @@ components:
       - FLEET_EVENTS_UPDATE
       - FLEET_EVENTS_DELETE
       - FLEET_EVENTS_MANAGE
+      - FLEET_PAYOUTS_READ
+      - FLEET_PAYOUTS_CREATE
+      - FLEET_PAYOUTS_UPDATE
+      - FLEET_PAYOUTS_DELETE
+      - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
     FuelTank:
       type: object
