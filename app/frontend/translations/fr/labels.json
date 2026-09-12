@@ -1603,7 +1603,7 @@
         "sessionStatus": "Statut de session RSI",
         "checkIdentity": "Vérifier la session RSI",
         "addBundledVehicles": "Ajouter les snub crafts inclus",
-        "addBundledVehiclesHint": "Les vaisseaux équipés d'un snub craft l'ajoutent à votre hangar comme vaisseau inclus. Désactivez cette option et une synchronisation les ignore — ceux que vous avez déjà sont conservés.",
+        "addBundledVehiclesHint": "Ajoute le snub craft fourni avec un vaisseau. Ceux déjà dans votre hangar sont conservés.",
         "identityStatus": {
           "pending": "Vérification...",
           "notFound": "non trouvé",

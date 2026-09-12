@@ -1603,7 +1603,7 @@
         "sessionStatus": "RSI-Sitzungsstatus",
         "checkIdentity": "RSI-Sitzung prüfen",
         "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",
-        "addBundledVehiclesHint": "Schiffe mit einem Snub Craft fügen dieses als mitgeliefertes Schiff zum Hangar hinzu. Ist die Option aus, lässt eine Synchronisation sie weg — bereits vorhandene bleiben erhalten.",
+        "addBundledVehiclesHint": "Fügt den Snub Craft hinzu, der zu einem Schiff gehört. Bereits vorhandene bleiben in jedem Fall erhalten.",
         "identityStatus": {
           "pending": "Prüfe...",
           "notFound": "nicht gefunden",

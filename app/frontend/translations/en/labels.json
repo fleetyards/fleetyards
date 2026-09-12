@@ -1598,7 +1598,7 @@
         "sessionStatus": "RSI Session status",
         "checkIdentity": "Check RSI Session",
         "addBundledVehicles": "Add bundled snub crafts",
-        "addBundledVehiclesHint": "Ships that carry a snub craft add it to your hangar as a bundled ship. Turn this off and a sync leaves them out — the ones you already have stay.",
+        "addBundledVehiclesHint": "Adds the snub craft a ship comes with. Ones already in your hangar are kept either way.",
         "identityStatus": {
           "pending": "Checking...",
           "notFound": "not found",
