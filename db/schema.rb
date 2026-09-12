@@ -1481,6 +1481,59 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_130000) do
     t.index ["user_id"], name: "index_omniauth_connections_on_user_id"
   end
 
+  create_table "payout_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "amount", precision: 15, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.string "description", null: false
+    t.integer "entry_type", default: 0, null: false
+    t.text "notes"
+    t.datetime "occurred_at"
+    t.uuid "payout_ledger_id", null: false
+    t.uuid "payout_participant_id", null: false
+    t.uuid "recorded_by_id"
+    t.datetime "updated_at", null: false
+    t.index ["payout_ledger_id", "entry_type"], name: "index_payout_entries_on_payout_ledger_id_and_entry_type"
+    t.index ["payout_ledger_id"], name: "index_payout_entries_on_payout_ledger_id"
+    t.index ["payout_participant_id"], name: "index_payout_entries_on_payout_participant_id"
+  end
+
+  create_table "payout_ledgers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "notes"
+    t.datetime "settled_at"
+    t.uuid "settled_by_id"
+    t.string "status", default: "open", null: false
+    t.uuid "subject_id", null: false
+    t.string "subject_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subject_type", "subject_id"], name: "index_payout_ledgers_on_subject_type_and_subject_id", unique: true
+  end
+
+  create_table "payout_participants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "added_by_id"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.uuid "payout_ledger_id", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id"
+    t.index ["payout_ledger_id", "user_id"], name: "index_payout_participants_unique_user_per_ledger", unique: true, where: "(user_id IS NOT NULL)"
+    t.index ["payout_ledger_id"], name: "index_payout_participants_on_payout_ledger_id"
+  end
+
+  create_table "payout_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "amount", precision: 15, scale: 2, null: false
+    t.datetime "confirmed_at"
+    t.uuid "confirmed_by_id"
+    t.datetime "created_at", null: false
+    t.uuid "from_participant_id", null: false
+    t.uuid "payout_ledger_id", null: false
+    t.uuid "to_participant_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_participant_id"], name: "index_payout_transfers_on_from_participant_id"
+    t.index ["payout_ledger_id"], name: "index_payout_transfers_on_payout_ledger_id"
+    t.index ["to_participant_id"], name: "index_payout_transfers_on_to_participant_id"
+  end
+
   create_table "rollups", force: :cascade do |t|
     t.jsonb "dimensions", default: {}, null: false
     t.string "interval", null: false
@@ -1557,6 +1610,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_130000) do
     t.uuid "vehicle_id"
     t.index ["hangar_group_id"], name: "index_task_forces_on_hangar_group_id"
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
+  end
+
+  create_table "tours", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "cancelled_at"
+    t.datetime "created_at", null: false
+    t.uuid "created_by_id", null: false
+    t.text "description"
+    t.string "invite_token", null: false
+    t.datetime "settled_at"
+    t.string "slug", null: false
+    t.datetime "starts_at"
+    t.string "status", default: "open", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id", "status"], name: "index_tours_on_created_by_id_and_status"
+    t.index ["invite_token"], name: "index_tours_on_invite_token", unique: true
+    t.index ["slug"], name: "index_tours_on_slug", unique: true
   end
 
   create_table "upgrade_kits", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1796,8 +1866,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_130000) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
   add_foreign_key "omniauth_connections", "users"
+  add_foreign_key "payout_entries", "payout_ledgers"
+  add_foreign_key "payout_entries", "payout_participants"
+  add_foreign_key "payout_entries", "users", column: "recorded_by_id"
+  add_foreign_key "payout_ledgers", "users", column: "settled_by_id"
+  add_foreign_key "payout_participants", "payout_ledgers"
+  add_foreign_key "payout_participants", "users"
+  add_foreign_key "payout_participants", "users", column: "added_by_id"
+  add_foreign_key "payout_transfers", "payout_ledgers"
+  add_foreign_key "payout_transfers", "payout_participants", column: "from_participant_id"
+  add_foreign_key "payout_transfers", "payout_participants", column: "to_participant_id"
+  add_foreign_key "payout_transfers", "users", column: "confirmed_by_id"
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
+  add_foreign_key "tours", "users", column: "created_by_id"
   add_foreign_key "vehicle_loadouts", "vehicles"
 end
