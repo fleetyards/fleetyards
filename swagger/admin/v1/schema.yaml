@@ -8526,6 +8526,24 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         extendedAngledViewColored:
           "$ref": "#/components/schemas/MediaFile"
+        landedHolo:
+          "$ref": "#/components/schemas/MediaFile"
+        landedTopView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedTopViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedSideView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedSideViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedFrontView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedFrontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
         frontView:
           "$ref": "#/components/schemas/MediaFile"
         frontViewColored:
@@ -13435,6 +13453,18 @@ components:
           type: number
         extendedHeightLabel:
           type: string
+        landedLength:
+          type: number
+        landedLengthLabel:
+          type: string
+        landedBeam:
+          type: number
+        landedBeamLabel:
+          type: string
+        landedHeight:
+          type: number
+        landedHeightLabel:
+          type: string
         extendedFleetchartOffsetLength:
           type: number
         extendedFleetchartOffsetBeam:
@@ -14713,6 +14743,18 @@ components:
           type:
           - number
           - 'null'
+        landedLength:
+          type:
+          - number
+          - 'null'
+        landedBeam:
+          type:
+          - number
+          - 'null'
+        landedHeight:
+          type:
+          - number
+          - 'null'
         onSale:
           type: boolean
         playerOwnable:
@@ -14838,6 +14880,42 @@ components:
           - string
           - 'null'
         extendedAngledViewColored:
+          type:
+          - string
+          - 'null'
+        landedHolo:
+          type:
+          - string
+          - 'null'
+        landedTopView:
+          type:
+          - string
+          - 'null'
+        landedSideView:
+          type:
+          - string
+          - 'null'
+        landedFrontView:
+          type:
+          - string
+          - 'null'
+        landedAngledView:
+          type:
+          - string
+          - 'null'
+        landedTopViewColored:
+          type:
+          - string
+          - 'null'
+        landedSideViewColored:
+          type:
+          - string
+          - 'null'
+        landedFrontViewColored:
+          type:
+          - string
+          - 'null'
+        landedAngledViewColored:
           type:
           - string
           - 'null'

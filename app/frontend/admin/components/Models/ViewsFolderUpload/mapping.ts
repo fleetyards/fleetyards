@@ -17,11 +17,20 @@ export const VIEW_FIELDS = [
   "extendedSideViewColored",
   "extendedFrontViewColored",
   "extendedAngledViewColored",
+  "landedTopView",
+  "landedSideView",
+  "landedFrontView",
+  "landedAngledView",
+  "landedTopViewColored",
+  "landedSideViewColored",
+  "landedFrontViewColored",
+  "landedAngledViewColored",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
 export const HOLO_FIELDS = [
   "holo",
   "extendedHolo",
+  "landedHolo",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
 export type ViewField = (typeof VIEW_FIELDS)[number];
@@ -39,17 +48,27 @@ export type MappedFile = {
   filename: string;
 };
 
-// top.png, angled_colored.png, extended-side.png, holo.gltf. The separator, the
-// case and a spelled-out "view" are all optional, so a folder named by hand
-// lands where one named by a script does.
+// top.png, angled_colored.png, extended-side.png, landed-holo.glb. The
+// separator, the case and a spelled-out "view" are all optional, so a folder
+// named by hand lands where one named by a script does.
 const VIEW_NAME =
-  /^(extended[-_ ]?)?(top|side|front|angled)([-_ ]?view)?([-_ ]?colored)?$/i;
-const HOLO_NAME = /^(extended[-_ ]?)?holo$/i;
+  /^(extended[-_ ]?|landed[-_ ]?)?(top|side|front|angled)([-_ ]?view)?([-_ ]?colored)?$/i;
+const HOLO_NAME = /^(extended[-_ ]?|landed[-_ ]?)?holo$/i;
 
 // The name alone is not enough: a Blender export drops holo.blend, holo.obj and
 // holo.mtl beside the glTF, and every one of them answers to "holo".
 const VIEW_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "gif"];
 const HOLO_EXTENSIONS = ["gltf", "glb"];
+
+// The regex accepts either state, so the prefix decides which family the file
+// belongs to rather than a bare "is it prefixed at all".
+const prefixFor = (raw?: string): "extended" | "landed" | undefined => {
+  if (!raw) {
+    return undefined;
+  }
+
+  return raw.toLowerCase().startsWith("landed") ? "landed" : "extended";
+};
 
 const capitalize = (word: string) =>
   `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`;
@@ -67,7 +86,9 @@ export const fieldFor = (filename: string): FolderField | undefined => {
       return undefined;
     }
 
-    return holo[1] ? "extendedHolo" : "holo";
+    const prefix = prefixFor(holo[1]);
+
+    return (prefix ? `${prefix}Holo` : "holo") as HoloField;
   }
 
   const view = VIEW_NAME.exec(stem);
@@ -76,10 +97,11 @@ export const fieldFor = (filename: string): FolderField | undefined => {
     return undefined;
   }
 
-  const [, extended, viewpoint, , colored] = view;
+  const [, state, viewpoint, , colored] = view;
+  const prefix = prefixFor(state);
 
-  const base = extended
-    ? `extended${capitalize(viewpoint)}View`
+  const base = prefix
+    ? `${prefix}${capitalize(viewpoint)}View`
     : `${viewpoint.toLowerCase()}View`;
 
   return (colored ? `${base}Colored` : base) as ViewField;

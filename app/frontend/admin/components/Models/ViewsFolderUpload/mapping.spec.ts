@@ -122,3 +122,26 @@ describe("mapFolderFiles", () => {
     expect(ignored).toEqual(["holo.blend"]);
   });
 });
+
+describe("the landed family", () => {
+  it("maps a landed holo", () => {
+    expect(fieldFor("landed-holo.glb")).toBe("landedHolo");
+    expect(fieldFor("landed_holo.gltf")).toBe("landedHolo");
+    expect(fieldFor("LandedHolo.glb")).toBe("landedHolo");
+  });
+
+  it("maps landed views, coloured and not", () => {
+    expect(fieldFor("landed-side.png")).toBe("landedSideView");
+    expect(fieldFor("landed_top_view.png")).toBe("landedTopView");
+    expect(fieldFor("landed angled colored.png")).toBe(
+      "landedAngledViewColored",
+    );
+  });
+
+  // The two prefixes share a regex, so the one that matched has to decide.
+  it("keeps the two states apart", () => {
+    expect(fieldFor("extended-side.png")).toBe("extendedSideView");
+    expect(fieldFor("landed-side.png")).toBe("landedSideView");
+    expect(fieldFor("side.png")).toBe("sideView");
+  });
+});

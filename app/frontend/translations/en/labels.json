@@ -667,7 +667,10 @@
           "flight-ready": "Flight Ready",
           "announced": "Announced"
         },
-        "carriedBy": "Can be carried by"
+        "carriedBy": "Can be carried by",
+        "landedLength": "Landed length",
+        "landedBeam": "Landed beam",
+        "landedHeight": "Landed height"
       },
       "models": {
         "extraColumns": "Columns",

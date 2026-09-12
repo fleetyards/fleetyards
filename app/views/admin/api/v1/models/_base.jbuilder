@@ -98,6 +98,42 @@ json.media do
   json.extended_angled_view_colored do
     json.partial! "api/v1/shared/file", record: model, attr: :extended_angled_view_colored
   end
+
+  json.landed_holo do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_holo
+  end
+
+  json.landed_top_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_top_view
+  end
+
+  json.landed_top_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_top_view_colored
+  end
+
+  json.landed_side_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_side_view
+  end
+
+  json.landed_side_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_side_view_colored
+  end
+
+  json.landed_front_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_front_view
+  end
+
+  json.landed_front_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_front_view_colored
+  end
+
+  json.landed_angled_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_angled_view
+  end
+
+  json.landed_angled_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :landed_angled_view_colored
+  end
   json.front_view do
     json.partial! "api/v1/shared/file", record: model, attr: :front_view
   end
@@ -146,6 +182,12 @@ json.metrics do
   json.extended_beam_label model.extended_beam_label
   json.extended_height model.extended_height&.to_f
   json.extended_height_label model.extended_height_label
+  json.landed_length model.landed_length&.to_f
+  json.landed_length_label model.landed_length_label
+  json.landed_beam model.landed_beam&.to_f
+  json.landed_beam_label model.landed_beam_label
+  json.landed_height model.landed_height&.to_f
+  json.landed_height_label model.landed_height_label
   json.extended_fleetchart_offset_length model.extended_fleetchart_offset_length&.to_f
   json.extended_fleetchart_offset_beam model.extended_fleetchart_offset_beam&.to_f
   json.height model.height.to_f

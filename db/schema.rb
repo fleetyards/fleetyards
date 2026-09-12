@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_12_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_010000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1286,6 +1286,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_12_130000) do
     t.string "hydrogen_fuel_tanks"
     t.integer "images_count", default: 0
     t.boolean "in_game", default: false, null: false
+    t.decimal "landed_beam", precision: 15, scale: 2
+    t.decimal "landed_height", precision: 15, scale: 2
+    t.decimal "landed_length", precision: 15, scale: 2
     t.datetime "last_updated_at", precision: nil
     t.string "legacy_slug"
     t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false

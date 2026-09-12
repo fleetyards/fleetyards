@@ -670,7 +670,10 @@
           "announced": "已公布"
         },
         "scIdentifier": "SC Identifier",
-        "carriedBy": "可被搭载于"
+        "carriedBy": "可被搭载于",
+        "landedLength": "着陆长度",
+        "landedBeam": "着陆宽度",
+        "landedHeight": "着陆高度"
       },
       "models": {
         "extraColumns": "列",
