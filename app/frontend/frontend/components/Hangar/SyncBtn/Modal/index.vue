@@ -420,16 +420,26 @@ const refreshPage = async () => {
           :multiple="false"
           :no-label="false"
         />
-        <p class="hint">
-          <i class="fa-light fa-info-circle" />
-          {{ t("labels.syncExtension.addBundledVehiclesHint") }}
-        </p>
-        <FormToggle
-          v-model="hangarStore.syncAddBundledVehicles"
-          name="syncAddBundledVehicles"
-          :label="t('labels.syncExtension.addBundledVehicles')"
-          no-placeholder
-        />
+        <div class="sync-option">
+          <FormToggle
+            v-model="hangarStore.syncAddBundledVehicles"
+            name="syncAddBundledVehicles"
+            :label="t('labels.syncExtension.addBundledVehicles')"
+            no-placeholder
+          />
+          <!--
+            Focusable so the explanation is not mouse-only: floating-vue opens
+            on focus as well as hover, and the label carries the same text for
+            anything that reads the tree rather than pointing at it.
+          -->
+          <i
+            v-tooltip="t('labels.syncExtension.addBundledVehiclesHint')"
+            class="fa-light fa-info-circle sync-option__hint"
+            :aria-label="t('labels.syncExtension.addBundledVehiclesHint')"
+            tabindex="0"
+            data-test="sync-bundled-vehicles-hint"
+          />
+        </div>
         <p v-if="hangarStore.syncRunning" class="text-warning">
           {{ t("texts.syncExtension.alreadyRunning") }}
         </p>

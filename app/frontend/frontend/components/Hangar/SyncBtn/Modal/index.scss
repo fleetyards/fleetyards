@@ -5,3 +5,16 @@
 .check-identity-btn {
   margin-left: 10px;
 }
+
+.sync-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sync-option__hint {
+  /* FormToggle carries a bottom margin of its own, so the icon takes the same
+     one -- centred against the row, the icon would sit above the switch. */
+  margin-bottom: 1rem;
+  cursor: help;
+}
