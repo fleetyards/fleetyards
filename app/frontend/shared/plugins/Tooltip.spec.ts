@@ -18,7 +18,7 @@ let anchorRect = { top: 10, left: 10, width: 100, height: 20 };
 
 const Anchor = defineComponent({
   props: {
-    content: { type: [String, Boolean], default: "Delete" },
+    content: { type: [String, Boolean, Object], default: "Delete" },
   },
   template: `<button v-tooltip="content">x</button>`,
 });
@@ -164,5 +164,38 @@ describe("v-tooltip", () => {
     await nextFrame();
 
     expect(visibleTooltips()).toHaveLength(0);
+  });
+
+  /*
+   * Nothing in here shrinks a tooltip to fit -- positioning only slides it back
+   * inside the viewport -- so a sentence on one line runs off the side of the
+   * window. The hangar sync hint measures 959px unwrapped, wider than the modal
+   * it explains.
+   */
+  it("keeps a label on one line", async () => {
+    const { el } = mountAnchor({ content: "Delete" });
+
+    el.dispatchEvent(new Event("mouseenter"));
+    await nextFrame();
+
+    const [tooltip] = visibleTooltips();
+    expect(tooltip.style.whiteSpace).toBe("nowrap");
+    expect(tooltip.style.maxWidth).toBe("");
+  });
+
+  it("wraps a sentence when asked to", async () => {
+    const { el } = mountAnchor({
+      content: {
+        content: "A whole sentence about snub crafts",
+        multiline: true,
+      },
+    });
+
+    el.dispatchEvent(new Event("mouseenter"));
+    await nextFrame();
+
+    const [tooltip] = visibleTooltips();
+    expect(tooltip.style.whiteSpace).toBe("normal");
+    expect(tooltip.style.maxWidth).toBe("280px");
   });
 });
