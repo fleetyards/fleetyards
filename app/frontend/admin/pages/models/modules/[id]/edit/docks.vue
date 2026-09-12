@@ -9,9 +9,9 @@ import DocksEditor from "@/admin/components/Docks/Editor/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelModule } from "@/services/fyAdminApi";
 
-type Props = {
+interface Props {
   modelModule: ModelModule;
-};
+}
 
 defineProps<Props>();
 

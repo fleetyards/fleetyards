@@ -34,11 +34,11 @@ import {
 
 // A dock hangs off whatever carries it -- a ship, or a module such as the
 // Galaxy's medic bay with its vehicle lift. Both admin pages render this.
-type Props = {
+interface Props {
   parentId: string;
   parentType: DockInputParentType;
   headline: string;
-};
+}
 
 const props = defineProps<Props>();
 
