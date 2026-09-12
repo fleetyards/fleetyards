@@ -173,6 +173,19 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, body: body
   end
 
+  # A class name that does not exist raises out of `belongs_to :parent` when it
+  # is constantized, which would be a 500. The schema enum has to catch it
+  # first, and this is the proof rather than the assumption.
+  test "POST /docks returns 400 for a parent class that does not exist" do
+    sign_in @user
+
+    body = {
+      name: "x", dockType: "landingpad", shipSize: "medium",
+      parentId: SecureRandom.uuid, parentType: "NoSuchClass"
+    }
+    assert_api_response :post, 400, body: body
+  end
+
   test "POST /docks returns 400 for missing required fields" do
     sign_in @user
 

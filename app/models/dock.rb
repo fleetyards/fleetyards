@@ -26,13 +26,19 @@
 #
 class Dock < ApplicationRecord
   # A hull or a module, and nothing else. `parent_type` is a plain string
-  # column, so without this the admin API would take any class name at all and
-  # a dock could end up hanging off a User -- a new way to grow the orphans
-  # #4864 had to delete.
+  # column, so without this a dock could end up hanging off a User -- a new way
+  # to grow the orphans #4864 had to delete -- and `touch: true` would keep
+  # updating that unrelated row.
   PARENT_TYPES = %w[Model ModelModule].freeze
 
-  belongs_to :parent, polymorphic: true, touch: true
+  # `optional` and then required by hand, rather than letting `belongs_to` do
+  # it. Its presence check resolves the association, which constantizes
+  # `parent_type` -- so a class name that does not exist raises NameError out of
+  # validation instead of coming back as an invalid record. The two validations
+  # below answer the same question without ever touching the association.
+  belongs_to :parent, polymorphic: true, touch: true, optional: true
 
+  validates :parent_id, presence: true
   validates :parent_type, inclusion: {in: PARENT_TYPES}
 
   # `cargogrid` is the berth that costs cargo capacity -- the Hammerhead's

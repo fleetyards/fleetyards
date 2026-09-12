@@ -61,6 +61,15 @@ class DockTest < ActiveSupport::TestCase
     assert_not dock.valid?
   end
 
+  # `belongs_to`'s own presence check would constantize `parent_type` and raise
+  # NameError out of validation, which is a 500 where an invalid record belongs.
+  test "a dock refuses a class that does not exist, without raising" do
+    dock = build(:dock, parent_type: "NoSuchClass", parent_id: SecureRandom.uuid)
+
+    assert_not dock.valid?
+    assert_includes dock.errors[:parent_type], "is not included in the list"
+  end
+
   # The create form no longer preselects a type, so nothing else may either: a
   # berth saved without one would be a landing pad or a garage by accident.
   test "a dock needs a type and a size" do
