@@ -79,6 +79,8 @@ class FleetEvent < ApplicationRecord
   has_many :event_admin_users, through: :fleet_event_admins, source: :user
   has_many :fleet_event_occurrence_states, dependent: :destroy
 
+  has_one :payout_ledger, as: :subject, dependent: :destroy
+
   has_one_attached :cover_image
 
   enum :category, {
