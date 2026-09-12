@@ -15,19 +15,7 @@ module V1
             totalExpenses: {type: :string},
             profit: {type: :string},
             balances: {type: :array, items: PayoutBalance},
-            transfers: {
-              type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  from: PayoutParticipant,
-                  to: PayoutParticipant,
-                  amount: {type: :string}
-                },
-                required: %w[from to amount],
-                additionalProperties: false
-              }
-            }
+            transfers: {type: :array, items: PayoutSettlementTransfer}
           },
           required: %w[totalIncome totalExpenses profit balances transfers],
           additionalProperties: false

@@ -52,7 +52,17 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       feature: FeatureFlagName.TOUR_PAYOUTS,
       featureScope: "fleet",
-      access: ["fleet:payouts:read", "fleet:payouts:manage", "fleet:manage"],
+      // Event privileges are in the list because the ledger's own policy lets
+      // an event's creator, admins and moderators manage it, and none of that
+      // is expressible as a fleet privilege. The API is still the gate; this
+      // only decides who may open the page.
+      access: [
+        "fleet:payouts:read",
+        "fleet:payouts:manage",
+        "fleet:events:read",
+        "fleet:events:manage",
+        "fleet:manage",
+      ],
       customTitle: true,
     },
   },
