@@ -16,6 +16,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { checkAccess } from "@/shared/utils/Access";
 import {
+  useFleetEvent,
   useFleetEventPayoutLedger,
   useCreateFleetEventPayoutLedger as useCreateFleetEventPayoutLedgerMutation,
 } from "@/services/fyApi";
@@ -45,16 +46,32 @@ const { data: ledger, refetch } = useFleetEventPayoutLedger(
   { query: { retry: false } },
 );
 
-const canManage = computed(() =>
-  checkAccess(props.resourceAccess, ["fleet:manage", "fleet:payouts:manage"]),
+const { data: event } = useFleetEvent(fleetSlug, eventSlug);
+
+// PayoutLedgerPolicy also lets the event's own creator, admins and moderators
+// manage the ledger, and none of that is expressible as a fleet privilege --
+// so without this an organiser who holds no fleet:payouts:* is shown a
+// read-only page the API would happily let them settle.
+const managesEvent = computed(() =>
+  ["creator", "admin", "moderator"].includes(
+    String(event.value?.viewerEventRole ?? ""),
+  ),
 );
 
-const canContribute = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:payouts:manage",
-    "fleet:payouts:create",
-  ]),
+const canManage = computed(
+  () =>
+    managesEvent.value ||
+    checkAccess(props.resourceAccess, ["fleet:manage", "fleet:payouts:manage"]),
+);
+
+const canContribute = computed(
+  () =>
+    managesEvent.value ||
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:payouts:manage",
+      "fleet:payouts:create",
+    ]),
 );
 
 const opening = ref(false);
