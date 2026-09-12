@@ -87,6 +87,12 @@ class PayoutLedger < ApplicationRecord
   # people pay against this list, so it has to stop moving.
   def settle!(user = nil)
     transaction do
+      # Taken before anything is read. PayoutEntry#ledger_is_open takes the same
+      # lock, so an entry racing this either lands before the snapshot or finds
+      # the ledger already settled -- rather than committing money into a payout
+      # list that was computed without it and can no longer be edited.
+      lock!
+
       payout_transfers.delete_all
 
       settlement.transfers.each do |transfer|
@@ -98,14 +104,35 @@ class PayoutLedger < ApplicationRecord
       end
 
       update!(status: "settled", settled_at: Time.current, settled_by: user)
+
+      carry_status_to_subject(:settle)
     end
   end
 
   def reopen!
     transaction do
+      lock!
+
       payout_transfers.delete_all
       update!(status: "open", settled_at: nil, settled_by: nil)
+
+      carry_status_to_subject(:reopen)
     end
+  end
+
+  # A tour has a status of its own, and its page is what people read to know
+  # whether the money is settled. Two endpoints reach this ledger -- the tour's
+  # and the ledger's own, which is the one the UI actually calls -- so the
+  # transition is carried here rather than in either controller, or the two
+  # paths disagree about whether the tour is settled.
+  #
+  # A fleet event has its own lifecycle that means something else entirely, so
+  # only a tour follows.
+  private def carry_status_to_subject(event)
+    return unless subject.is_a?(Tour)
+    return unless subject.public_send(:"may_#{event}?")
+
+    subject.public_send(:"#{event}!")
   end
 
   # Seeds the participant list from whoever the subject already knows about.

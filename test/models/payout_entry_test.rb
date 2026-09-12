@@ -52,4 +52,18 @@ class PayoutEntryTest < ActiveSupport::TestCase
 
     assert_equal BigDecimal("1200.55"), entry.reload.amount
   end
+
+  # The lock is what makes this deterministic: without it the entry's
+  # open-ledger check and PayoutLedger#settle! can both pass on the same
+  # ledger, and money lands in a payout list that was already frozen.
+  test "an entry written against a ledger settled in the meantime is refused" do
+    other = PayoutLedger.find(@ledger.id)
+    other.settle!
+
+    entry = PayoutEntry.new(payout_ledger: @ledger, payout_participant: @participant,
+      amount: 10, description: "Late")
+
+    assert_not entry.valid?
+    assert_equal 0, @ledger.reload.payout_entries.count
+  end
 end

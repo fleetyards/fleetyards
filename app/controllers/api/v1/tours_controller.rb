@@ -39,13 +39,14 @@ module Api
 
         authorize! @tour
 
-        if @tour.save
-          # A tour with no ledger has nowhere to record anything, and its
-          # organiser is its first participant, so both are part of creating it
-          # rather than a second step the frontend has to remember.
-          ledger = @tour.create_payout_ledger!
-          ledger.seed_participants_from_subject!
+        # A tour with no ledger has nowhere to record anything, and its organiser
+        # is its first participant, so all three happen together rather than
+        # leaving a half-built tour the UI cannot repair.
+        created = ApplicationRecord.transaction do
+          @tour.save && @tour.create_payout_ledger!.seed_participants_from_subject!
+        end
 
+        if created
           render :show, status: :created
         else
           render json: ValidationError.new("tours.create", errors: @tour.errors), status: :bad_request
@@ -78,13 +79,18 @@ module Api
       def settle
         authorize! @tour, to: :settle?
 
-        unless @tour.may_settle?
+        ledger = @tour.payout_ledger
+
+        unless @tour.may_settle? && ledger&.open?
           render json: {code: "cannot_settle", message: "This tour cannot be settled"}, status: :conflict
           return
         end
 
-        @tour.payout_ledger&.settle!(current_resource_owner)
-        @tour.settle!
+        # Carries the tour's own transition with it, so this and
+        # PUT /payouts/:id/settle end in the same place. It moves the ledger's
+        # own `subject` instance, which is not the one loaded here.
+        ledger.settle!(current_resource_owner)
+        @tour.reload
 
         render :show
       end
@@ -92,13 +98,15 @@ module Api
       def reopen
         authorize! @tour, to: :reopen?
 
-        unless @tour.may_reopen?
+        ledger = @tour.payout_ledger
+
+        unless @tour.may_reopen? && ledger&.settled?
           render json: {code: "cannot_reopen", message: "This tour is not settled"}, status: :conflict
           return
         end
 
-        @tour.payout_ledger&.reopen!
-        @tour.reopen!
+        ledger.reopen!
+        @tour.reload
 
         render :show
       end

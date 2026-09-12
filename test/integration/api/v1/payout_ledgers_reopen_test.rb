@@ -77,4 +77,31 @@ class Api::V1::PayoutLedgersReopenTest < ActionDispatch::IntegrationTest
   test "PUT returns 401 when not signed in" do
     assert_api_response :put, 401, path_params: {id: @ledger.id}
   end
+
+  test "PUT carries the tour back to open" do
+    @ledger.settle!(@organiser)
+
+    assert_equal "settled", @tour.reload.status
+
+    sign_in @organiser
+
+    assert_api_response :put, 200, path_params: {id: @ledger.id} do
+      assert_equal "open", @tour.reload.status
+      assert_nil @tour.settled_at
+    end
+  end
+
+  # With the tour left open behind a settled ledger, this used to be reachable
+  # and deleted every confirmation people had ticked off.
+  test "a tour settled through the ledger cannot then be settled again" do
+    @ledger.settle!(@organiser)
+    transfer = @ledger.payout_transfers.first
+    transfer.confirm!(@organiser)
+
+    sign_in @organiser
+    put "/api/v1/tours/#{@tour.slug}/settle"
+
+    assert_response :conflict
+    assert_predicate transfer.reload, :confirmed?
+  end
 end
