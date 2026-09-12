@@ -222,6 +222,7 @@ zh-TW:
               invalid_destination: "不能有兩個目的地"
               invalid_recipient: "不能有兩個接收方"
               no_target: "需要一個目的地或接收方"
+              destination_is_not_the_recipients: "必須是接收方持有的庫存"
               destination_is_source: "不能轉移到其來源庫存"
               already_resolved: "已經被回覆"
               forbidden: "不被允許"

@@ -222,6 +222,7 @@ de:
               invalid_destination: "kann nicht zwei Ziele haben"
               invalid_recipient: "kann nicht zwei Empfänger haben"
               no_target: "braucht ein Ziel oder einen Empfänger"
+              destination_is_not_the_recipients: "muss ein Inventar des Empfängers sein"
               destination_is_source: "kann nicht in das Inventar übertragen werden, aus dem er stammt"
               already_resolved: "wurde bereits beantwortet"
               forbidden: "ist nicht erlaubt"

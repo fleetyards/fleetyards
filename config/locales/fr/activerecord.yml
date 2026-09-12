@@ -222,6 +222,7 @@ fr:
               invalid_destination: "ne peut pas avoir deux destinations"
               invalid_recipient: "ne peut pas avoir deux destinataires"
               no_target: "doit avoir une destination ou un destinataire"
+              destination_is_not_the_recipients: "doit être un inventaire appartenant au destinataire"
               destination_is_source: "ne peut pas être transféré vers l'inventaire dont il provient"
               already_resolved: "a déjà reçu une réponse"
               forbidden: "n'est pas autorisé"

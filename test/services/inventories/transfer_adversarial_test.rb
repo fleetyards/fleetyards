@@ -137,6 +137,67 @@ module Inventories
         "two lines over the same position drove it negative"
     end
 
+    # --- goods land where they were addressed ----------------------------
+
+    # Authorising the two ends independently is not enough: a fleet officer may
+    # deposit into their own hangar as well as answer for the fleet, so naming
+    # it would walk a fleet-addressed shipment into a personal inventory with
+    # the fleet's ledger never seeing it.
+    test "a fleet officer cannot accept a fleet's transfer into their own hangar" do
+      fleet = create(:fleet)
+      officer = create(:user)
+      create(:fleet_membership, :accepted, :as_officer, fleet:, user: officer)
+      Flipper.enable_actor(:inventory_transfers, fleet)
+      Flipper.enable_actor(:fleet_logistics, fleet)
+      Flipper.enable_actor(:inventory_transfers, officer)
+      Flipper.enable_actor(:hangar_inventories, officer)
+
+      builder = TransferBuilder.new(
+        source: @source, actor: @sender, recipient: fleet,
+        lines: [{position_id: @entry.position.id, quantity: 40}]
+      )
+
+      assert builder.call, builder.errors.full_messages.to_sentence
+
+      personal = create(:inventory, holder: officer)
+      resolver = TransferResolver.new(builder.transfer, actor: officer)
+
+      refute resolver.accept(personal)
+      assert builder.transfer.reload.pending?
+      assert_equal 0, personal.reload.inventory_items.count
+
+      depot = create(:fleet_inventory, fleet:)
+
+      assert TransferResolver.new(builder.transfer, actor: officer).accept(depot)
+      assert_equal 40, depot.reload.stock_positions.sole.net_quantity
+    end
+
+    test "a user cannot accept their own transfer into somebody else's inventory" do
+      transfer = send_pending(40)
+      stranger = create(:inventory, holder: create(:user))
+
+      refute TransferResolver.new(transfer, actor: @recipient).accept(stranger)
+      assert transfer.reload.pending?
+    end
+
+    # --- the cap holds under a burst --------------------------------------
+
+    test "the cap is enforced against the count as it stands, not as it was read" do
+      InventoryTransfer::OUTSTANDING_LIMIT.times do
+        create(:inventory_transfer, recipient: @recipient)
+      end
+
+      builder = TransferBuilder.new(
+        source: @source, actor: @sender, recipient: @recipient,
+        lines: [{position_id: @entry.position.id, quantity: 1}]
+      )
+
+      refute builder.call
+      assert_equal 100, @source.reload.stock_positions.sole.net_quantity
+      assert_equal InventoryTransfer::OUTSTANDING_LIMIT,
+        InventoryTransfer.pending_for_user(@recipient).count
+    end
+
     private def send_pending(quantity)
       builder = TransferBuilder.new(
         source: @source, actor: @sender, recipient: @recipient,

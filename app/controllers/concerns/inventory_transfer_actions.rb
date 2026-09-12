@@ -95,8 +95,7 @@ module InventoryTransferActions
       @inventory_transfer,
       actor: current_resource_owner,
       reason: params[:reason],
-      note: params[:note],
-      on_behalf_of: acting_party
+      note: params[:note]
     )
 
     unless reporter.call
@@ -213,7 +212,11 @@ module InventoryTransferActions
     render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
   end
 
+  # Scoped to the party this mount acts for, so a transfer can only be acted on
+  # through one of its own ends. Without it an actor authorised for several
+  # parties could answer a fleet-addressed transfer through their hangar, and
+  # the side effects would be filed against the wrong one.
   private def set_inventory_transfer
-    @inventory_transfer = InventoryTransfer.find(params[:id])
+    @inventory_transfer = incoming_scope.or(outgoing_scope).find(params[:id])
   end
 end

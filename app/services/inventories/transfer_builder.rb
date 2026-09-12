@@ -27,9 +27,22 @@ module Inventories
       return false unless authorized_to_send?
       return false unless lines_resolve?
       return false unless target_resolves?
-      return false unless permitted_by_gate?
 
       ::ActiveRecord::Base.transaction do
+        # The recipient row is taken before the gate counts what is waiting for
+        # them. The cap is a check-then-insert, so without this two sends near
+        # the limit both read the same count and both write a row -- which is
+        # precisely the burst the cap exists to stop. Locking the party makes
+        # the second wait and re-read what the first left.
+        #
+        # Before the inventory lock `withdrawal_does_not_exceed_stock` takes,
+        # keeping one lock order across every path.
+        @recipient.lock! if @recipient.present?
+
+        unless permitted_by_gate?
+          raise ::ActiveRecord::Rollback
+        end
+
         @transfer = build_transfer
 
         unless @transfer.save

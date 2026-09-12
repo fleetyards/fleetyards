@@ -223,6 +223,7 @@ en:
               invalid_destination: "cannot have two destinations"
               invalid_recipient: "cannot have two recipients"
               no_target: "needs a destination or a recipient"
+              destination_is_not_the_recipients: "must be an inventory the recipient holds"
               destination_is_source: "cannot be transferred to the inventory it came from"
               already_resolved: "has already been answered"
               forbidden: "is not allowed"

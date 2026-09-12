@@ -173,11 +173,25 @@ class Api::V1::HangarInventoryTransferActionsTest < ActionDispatch::IntegrationT
     assert @transfer.reload.pending?
   end
 
-  test "PUT accept by somebody else is forbidden" do
+  # A stranger gets a 404 rather than a 403: the lookup is scoped to the party
+  # this mount acts for, so a transfer they are no end of does not exist to
+  # them and the response does not confirm that it does.
+  test "PUT accept by somebody else is a 404" do
     sign_in create(:user)
+
+    assert_api_response :put, 404, path_params: {id: @transfer.id},
+      api_path: ACCEPT_PATH, body: {inventoryId: @target.id}
+  end
+
+  # 403 is what an end of the transfer gets when the action is not theirs to
+  # take -- here the sender trying to accept their own shipment.
+  test "PUT accept by the sender is forbidden" do
+    sign_in @sender
 
     assert_api_response :put, 403, path_params: {id: @transfer.id},
       api_path: ACCEPT_PATH, body: {inventoryId: @target.id}
+
+    assert @transfer.reload.pending?
   end
 
   test "PUT decline sends the goods home" do
@@ -239,7 +253,7 @@ class Api::V1::HangarInventoryTransferActionsTest < ActionDispatch::IntegrationT
     assert_api_response :get, 200, path_params: {id: @transfer.id}
 
     sign_in create(:user)
-    assert_api_response :get, 403, path_params: {id: @transfer.id}
+    assert_api_response :get, 404, path_params: {id: @transfer.id}
   end
 
   # The items endpoint will delete any entry its holder owns, including the

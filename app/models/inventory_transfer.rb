@@ -89,6 +89,16 @@ class InventoryTransfer < ApplicationRecord
     []
   end
 
+  # Whose inventory this is. A fleet's belongs to the fleet whoever moved it;
+  # a user's to its holder. One definition, because both the sender side and the
+  # destination check ask it.
+  def self.party_of(inventory)
+    case inventory
+    when ::FleetInventory then inventory.fleet
+    when ::Inventory then inventory.holder
+    end
+  end
+
   def source
     source_inventory || source_fleet_inventory
   end
@@ -121,7 +131,7 @@ class InventoryTransfer < ApplicationRecord
   # Who is sending, which is the party holding the source rather than the person
   # who pressed the button. A fleet's stock is the fleet's, whoever moved it.
   def sender_party
-    source_fleet_inventory&.fleet || source_inventory&.holder
+    self.class.party_of(source)
   end
 
   # A transfer nobody has to answer: its initiator was allowed to deposit at the

@@ -18,10 +18,15 @@ module Inventories
       @authorizer = TransferAuthorizer.new(actor)
     end
 
-    # The destination is validated against the person accepting, not against the
-    # party recorded when it was sent. The two are the same in every legitimate
-    # case, and checking the acceptor is what stops a stale recipient from being
-    # a way to write into somebody else's inventory.
+    # The destination has to clear **two** checks, not one.
+    #
+    # The acceptor must be allowed to deposit there -- that is the obvious one,
+    # and on its own it is not enough. A fleet officer answering for their fleet
+    # may also deposit into their own hangar, so authorising the two ends
+    # independently lets them name it and walk a fleet-addressed shipment
+    # straight into a personal inventory, with the fleet's ledger never seeing
+    # it. Goods addressed to a party land in that party's inventory.
+    #
     # `destination` may be something callable, which is how a ship inventory is
     # accepted into: it does not exist until its first deposit, so it has to be
     # brought into existence *inside* this transaction -- a rejected acceptance
@@ -35,6 +40,11 @@ module Inventories
 
         unless @authorizer.may_deposit_into?(resolved)
           errors.add(:base, :forbidden)
+          raise ::ActiveRecord::Rollback
+        end
+
+        unless ::InventoryTransfer.party_of(resolved) == @transfer.recipient_party
+          errors.add(:base, :destination_is_not_the_recipients)
           raise ::ActiveRecord::Rollback
         end
 
@@ -71,8 +81,25 @@ module Inventories
       apply { return_goods_and(:expire!) }
     end
 
+    # The row is locked and the state re-read *inside* the transaction. The
+    # `pending?` checks above are a cheap early exit; on their own they leave a
+    # window in which two requests both read `pending` and both write their
+    # ledger effects before either transition lands -- two deposits for one
+    # shipment, or a decline that returns goods an accept has already delivered.
+    # `whiny_transitions: false` hides it, because the losing transition simply
+    # returns false after its side effects are already written.
+    #
+    # Taken before the inventory lock `withdrawal_does_not_exceed_stock` uses,
+    # which is the same order every other path takes.
     private def apply
       ::ActiveRecord::Base.transaction do
+        @transfer.lock!
+
+        unless @transfer.pending?
+          errors.add(:base, :already_resolved)
+          raise ::ActiveRecord::Rollback
+        end
+
         @transfer.resolved_by = @actor if @actor.present?
         yield
       end

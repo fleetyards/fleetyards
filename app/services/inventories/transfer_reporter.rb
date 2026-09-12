@@ -17,12 +17,17 @@ module Inventories
 
     attr_reader :report
 
-    def initialize(transfer, actor:, reason:, note: nil, on_behalf_of: nil)
+    # The party is the transfer's own recipient, never one the caller names.
+    # The deny rule and the report belong to whoever was actually written to;
+    # taking it from the route would let an actor authorised for several parties
+    # decline a fleet's transfer while the protection landed on their own
+    # account, leaving the fleet exposed and corrupting a third party's rules.
+    def initialize(transfer, actor:, reason:, note: nil)
       @transfer = transfer
       @actor = actor
       @reason = reason
       @note = note
-      @party = on_behalf_of || transfer.recipient_party
+      @party = transfer.recipient_party
       @authorizer = TransferAuthorizer.new(actor)
     end
 
