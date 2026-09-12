@@ -1,7 +1,6 @@
 import { mount, flushPromises } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import Component from "./index.vue";
 
