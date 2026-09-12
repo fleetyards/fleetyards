@@ -208,3 +208,17 @@ de:
       update: Event-Team konnte nicht aktualisiert werden.
     fleet_notification_settings:
       update: Benachrichtigungseinstellungen konnten nicht aktualisiert werden.
+    tours:
+      create: Tour konnte nicht erstellt werden.
+      update: Tour konnte nicht aktualisiert werden.
+      destroy: Tour konnte nicht gelöscht werden.
+      join: Du konntest dieser Tour nicht hinzugefügt werden.
+    payout_ledgers:
+      create: Auszahlungsbuch konnte nicht geöffnet werden.
+    payout_entries:
+      create: Eintrag konnte nicht erfasst werden.
+      update: Eintrag konnte nicht aktualisiert werden.
+      destroy: Eintrag konnte nicht entfernt werden.
+    payout_participants:
+      create: Teilnehmer konnte nicht hinzugefügt werden.
+      destroy: Teilnehmer konnte nicht entfernt werden.

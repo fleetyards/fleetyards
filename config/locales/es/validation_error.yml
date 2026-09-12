@@ -205,3 +205,17 @@ es:
       update: No se pudieron actualizar los ajustes de notificación.
     version:
       revert: No se pudo restaurar el campo.
+    tours:
+      create: No se pudo crear la expedición.
+      update: No se pudo actualizar la expedición.
+      destroy: No se pudo eliminar la expedición.
+      join: No se te pudo añadir a esta expedición.
+    payout_ledgers:
+      create: No se pudo abrir el libro de pagos.
+    payout_entries:
+      create: No se pudo registrar el movimiento.
+      update: No se pudo actualizar el movimiento.
+      destroy: No se pudo eliminar el movimiento.
+    payout_participants:
+      create: No se pudo añadir al participante.
+      destroy: No se pudo eliminar al participante.

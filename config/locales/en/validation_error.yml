@@ -208,3 +208,17 @@ en:
     video:
       create: Video could not be created.
       update: Video could not be updated.
+    tours:
+      create: Tour could not be created.
+      update: Tour could not be updated.
+      destroy: Tour could not be deleted.
+      join: You could not be added to this tour.
+    payout_ledgers:
+      create: Payout ledger could not be opened.
+    payout_entries:
+      create: Entry could not be recorded.
+      update: Entry could not be updated.
+      destroy: Entry could not be removed.
+    payout_participants:
+      create: Participant could not be added.
+      destroy: Participant could not be removed.
