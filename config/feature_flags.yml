@@ -80,3 +80,9 @@ tools_cargo_grids:
 
 tools_travel_times:
   description: "Travel time calculator tool"
+
+# One flag, two surfaces: the fleet toggle gates the ledger on a fleet event,
+# the user toggle gates the standalone tour under /tools. They roll out
+# together because it is one feature with two owners.
+tour_payouts:
+  description: "Tour payouts — a shared expense/income ledger with a settlement list, on fleet events and standalone tours"
