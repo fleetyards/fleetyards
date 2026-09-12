@@ -142,7 +142,12 @@ class ModelTest < ActiveSupport::TestCase
       )
     end
 
-    assert_equal [model.id, "landed_holo"], MeasureHoloJob.jobs.last["args"]
+    # The blob comes along so a later upload cannot be measured from the older
+    # file, whichever job finishes last.
+    assert_equal(
+      [model.id, "landed_holo", model.landed_holo.blob.id],
+      MeasureHoloJob.jobs.last["args"]
+    )
   end
 
   # The concern reads the names in `after_commit`, where `attachment_changes` is

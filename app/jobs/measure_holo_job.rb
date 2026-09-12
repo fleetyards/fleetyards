@@ -9,13 +9,18 @@ class MeasureHoloJob
 
   sidekiq_options queue: "preprocessing", retry: 3
 
-  def perform(model_id, name)
+  # The blob the attachment carried when this was queued. A second upload while
+  # the first is still in the queue would otherwise let the older file's
+  # measurements land on the newer holo, and whichever job finished last would
+  # decide.
+  def perform(model_id, name, blob_id = nil)
     columns = ::Model::HOLO_DIMENSIONS[name]
     return if columns.blank?
 
     model = ::Model.find_by(id: model_id)
     attachment = model&.send(name)
     return unless attachment&.attached?
+    return if blob_id.present? && attachment.blob.id != blob_id
 
     result = ::HoloDimensions.from_blob(attachment.blob)
     return if result.nil?
@@ -30,6 +35,10 @@ class MeasureHoloJob
       )
       return
     end
+
+    # Still the same blob after the read, which for a large file is not
+    # instant. Re-read rather than trusting the attachment loaded above.
+    return if blob_id.present? && model.reload.send(name).blob&.id != blob_id
 
     model.update_columns(columns.zip(result.sorted).to_h)
   rescue ActiveStorage::FileNotFoundError

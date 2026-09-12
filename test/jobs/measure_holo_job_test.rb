@@ -70,6 +70,38 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_in_delta 42.0, model.reload.length.to_f
   end
 
+  # A second upload while the first is still queued: the older file's numbers
+  # must not land on the newer holo.
+  test "#perform writes nothing once the holo has been replaced" do
+    model = create(:model, length: 42.0)
+    attach(model, :holo, "plain.gltf")
+    stale = model.holo.blob.id
+
+    attach(model, :holo, "plain.glb")
+
+    MeasureHoloJob.new.perform(model.id, "holo", stale)
+
+    assert_in_delta 42.0, model.reload.length.to_f
+  end
+
+  test "#perform measures when the blob is still the one it was queued for" do
+    model = attach(create(:model), :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo", model.holo.blob.id)
+
+    assert_in_delta 6.0, model.reload.length.to_f
+  end
+
+  # A file that opens with the GLB magic and stops short would otherwise come
+  # back as NoMethodError and be retried three times as dead work.
+  test "#perform survives a truncated GLB" do
+    model = create(:model, length: 42.0)
+    model.holo.attach(io: StringIO.new("glTF\x02\x00"), filename: "broken.glb")
+
+    assert_nothing_raised { MeasureHoloJob.new.perform(model.id, "holo") }
+    assert_in_delta 42.0, model.reload.length.to_f
+  end
+
   test "#perform ignores a model that is gone" do
     assert_nothing_raised { MeasureHoloJob.new.perform(SecureRandom.uuid, "holo") }
   end

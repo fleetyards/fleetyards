@@ -704,7 +704,9 @@ class Model < ApplicationRecord
   # the catalogue is today, and a wrong assignment is visible and editable
   # rather than silent.
   def measure_attached_holos
-    new_holo_names.each { |name| MeasureHoloJob.perform_async(id, name) }
+    new_holo_names.each do |name|
+      MeasureHoloJob.perform_async(id, name, send(name).blob&.id)
+    end
   end
 
   # `new_attachment_names` comes from ActiveStorageVariants, which captures them
