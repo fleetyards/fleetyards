@@ -20,15 +20,7 @@ module V1
             lines: {
               type: :array,
               minItems: 1,
-              items: {
-                type: :object,
-                properties: {
-                  positionId: {type: :string, format: :uuid},
-                  quantity: {type: :number, exclusiveMinimum: 0}
-                },
-                additionalProperties: false,
-                required: %w[positionId quantity]
-              }
+              items: ::V1::Schemas::Inputs::InventoryTransferLineInput
             },
             inventoryId: {type: :string, format: :uuid},
             fleetInventoryId: {type: :string, format: :uuid},

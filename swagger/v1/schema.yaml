@@ -17957,18 +17957,7 @@ components:
           type: array
           minItems: 1
           items:
-            type: object
-            properties:
-              positionId:
-                type: string
-                format: uuid
-              quantity:
-                type: number
-                exclusiveMinimum: 0
-            additionalProperties: false
-            required:
-            - positionId
-            - quantity
+            "$ref": "#/components/schemas/InventoryTransferLineInput"
         inventoryId:
           type: string
           format: uuid
@@ -18045,6 +18034,20 @@ components:
       - positionId
       - itemAvailable
       title: InventoryTransferLine
+    InventoryTransferLineInput:
+      type: object
+      properties:
+        positionId:
+          type: string
+          format: uuid
+        quantity:
+          type: number
+          exclusiveMinimum: 0
+      additionalProperties: false
+      required:
+      - positionId
+      - quantity
+      title: InventoryTransferLineInput
     InventoryTransferPartyKindEnum:
       type: string
       enum:
