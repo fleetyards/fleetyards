@@ -22568,19 +22568,7 @@ components:
         transfers:
           type: array
           items:
-            type: object
-            properties:
-              from:
-                "$ref": "#/components/schemas/PayoutParticipant"
-              to:
-                "$ref": "#/components/schemas/PayoutParticipant"
-              amount:
-                type: string
-            required:
-            - from
-            - to
-            - amount
-            additionalProperties: false
+            "$ref": "#/components/schemas/PayoutSettlementTransfer"
       required:
       - totalIncome
       - totalExpenses
@@ -22589,6 +22577,21 @@ components:
       - transfers
       additionalProperties: false
       title: PayoutSettlement
+    PayoutSettlementTransfer:
+      type: object
+      properties:
+        from:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        to:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        amount:
+          type: string
+      required:
+      - from
+      - to
+      - amount
+      additionalProperties: false
+      title: PayoutSettlementTransfer
     PayoutTransfer:
       type: object
       properties:
