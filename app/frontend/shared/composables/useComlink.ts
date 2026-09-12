@@ -9,6 +9,7 @@ type Events = {
   "show-confirm": (options: AppConfirmOptions) => void | Promise<unknown>;
   "hide-confirm": () => void | Promise<unknown>;
   "close-modal": (force?: boolean) => void | Promise<unknown>;
+  "payout-ledger-changed": () => void | Promise<unknown>;
   "open-off-canvas": (options: OffCanvasOptions) => void | Promise<unknown>;
   "close-off-canvas": () => void | Promise<unknown>;
   "off-canvas-closed": () => void | Promise<unknown>;

@@ -65,7 +65,8 @@
             "basic": "Basis",
             "description": "Beschreibung",
             "teams": "Teams & Slots"
-          }
+          },
+          "payouts": "Auszahlungen"
         },
         "settings": {
           "index": "Einstellungen",
@@ -83,7 +84,8 @@
       "tools": {
         "index": "Werkzeuge",
         "travelTimes": "Reisezeiten",
-        "cargoGrids": "Frachtgitter"
+        "cargoGrids": "Frachtgitter",
+        "tours": "Touren"
       },
       "api": "API-Dokumentation",
       "stats": "Statistiken",

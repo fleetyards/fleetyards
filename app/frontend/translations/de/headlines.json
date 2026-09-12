@@ -403,6 +403,22 @@
       },
       "notifications": {
         "index": "Benachrichtigungen"
+      },
+      "payouts": {
+        "index": "Auszahlungen",
+        "summary": "Übersicht",
+        "participants": "Teilnehmer",
+        "entries": "Einträge",
+        "balances": "Salden",
+        "transfers": "Auszahlungsliste",
+        "addEntry": "Geld erfassen",
+        "editEntry": "Eintrag bearbeiten",
+        "addParticipant": "Teilnehmer hinzufügen",
+        "tours": {
+          "index": "Touren",
+          "create": "Tour erstellen",
+          "join": "Dieser Tour beitreten"
+        }
       }
     }
   }

@@ -2333,6 +2333,36 @@
         "large": "Groß (L)",
         "extra_large": "Extra groß (XL)",
         "capital": "Kapital (C)"
+      },
+      "payouts": {
+        "amount": "Betrag",
+        "description": "Beschreibung",
+        "entryType": "Art",
+        "expense": "Ausgegeben",
+        "income": "Eingenommen",
+        "participant": "Wer",
+        "notes": "Notizen",
+        "occurredAt": "Wann",
+        "paid": "Ausgegeben",
+        "held": "Hält",
+        "share": "Anteil",
+        "net": "Saldo",
+        "profit": "Gewinn",
+        "totalIncome": "Eingenommen",
+        "totalExpenses": "Ausgegeben",
+        "guest": "Gast",
+        "username": "Benutzername",
+        "name": "Name",
+        "sends": "sendet",
+        "receives": "erhält",
+        "settled": "Abgerechnet",
+        "open": "Offen",
+        "owes": "schuldet",
+        "isOwed": "bekommt",
+        "even": "ausgeglichen",
+        "title": "Titel",
+        "startsAt": "Beginnt am",
+        "inviteLink": "Einladungslink"
       }
     }
   }

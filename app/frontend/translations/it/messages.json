@@ -871,6 +871,21 @@
           "error": "Impossibile annullare questa importazione"
         }
       },
+      "payouts": {
+        "entryCreated": "Movimento registrato",
+        "entryUpdated": "Movimento aggiornato",
+        "entryDestroyed": "Movimento rimosso",
+        "participantAdded": "Partecipante aggiunto",
+        "participantRemoved": "Partecipante rimosso",
+        "participantHasEntries": "Rimuovi prima i suoi movimenti",
+        "settled": "Pagamenti calcolati",
+        "reopened": "Registro riaperto",
+        "tourCreated": "Spedizione creata",
+        "tourJoined": "Ti sei unito alla spedizione",
+        "inviteCopied": "Link d'invito copiato",
+        "settleConfirm": "Calcolare i pagamenti e bloccare il registro? I movimenti non saranno più modificabili fino alla riapertura.",
+        "reopenConfirm": "Riaprire il registro? L'elenco pagamenti attuale verrà scartato."
+      },
       "dock": {
         "create": {
           "failure": "Impossibile creare il dock."

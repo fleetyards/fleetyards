@@ -871,6 +871,21 @@
           "error": "无法取消此次导入"
         }
       },
+      "payouts": {
+        "entryCreated": "已记录",
+        "entryUpdated": "已更新",
+        "entryDestroyed": "已删除",
+        "participantAdded": "已添加参与者",
+        "participantRemoved": "已移除参与者",
+        "participantHasEntries": "请先删除该参与者的记录",
+        "settled": "分账已计算",
+        "reopened": "已重新打开",
+        "tourCreated": "行程已创建",
+        "tourJoined": "你已加入该行程",
+        "inviteCopied": "邀请链接已复制",
+        "settleConfirm": "计算分账并锁定账簿？在重新打开之前将无法修改记录。",
+        "reopenConfirm": "重新打开账簿？当前的分账清单将被丢弃。"
+      },
       "dock": {
         "create": {
           "failure": "无法创建停靠点。"

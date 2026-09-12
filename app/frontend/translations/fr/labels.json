@@ -2333,6 +2333,36 @@
         "large": "Grand (L)",
         "extra_large": "Très grand (XL)",
         "capital": "Capital (C)"
+      },
+      "payouts": {
+        "amount": "Montant",
+        "description": "Description",
+        "entryType": "Type",
+        "expense": "Dépensé",
+        "income": "Gagné",
+        "participant": "Qui",
+        "notes": "Notes",
+        "occurredAt": "Quand",
+        "paid": "Dépensé",
+        "held": "Détient",
+        "share": "Part",
+        "net": "Solde",
+        "profit": "Bénéfice",
+        "totalIncome": "Gagné",
+        "totalExpenses": "Dépensé",
+        "guest": "Invité",
+        "username": "Nom d'utilisateur",
+        "name": "Nom",
+        "sends": "envoie",
+        "receives": "reçoit",
+        "settled": "Clôturé",
+        "open": "Ouvert",
+        "owes": "doit",
+        "isOwed": "doit recevoir",
+        "even": "à jour",
+        "title": "Titre",
+        "startsAt": "Commence le",
+        "inviteLink": "Lien d'invitation"
       }
     }
   }
