@@ -885,7 +885,8 @@
         "tourJoined": "Vous avez rejoint l'expédition",
         "inviteCopied": "Lien d'invitation copié",
         "settleConfirm": "Calculer la répartition et verrouiller le registre ? Les écritures ne seront plus modifiables jusqu'à réouverture.",
-        "reopenConfirm": "Rouvrir le registre ? La liste de versements actuelle sera abandonnée."
+        "reopenConfirm": "Rouvrir le registre ? La liste de versements actuelle sera abandonnée.",
+        "participantNeedsName": "Saisissez un nom d'utilisateur ou un nom"
       },
       "dock": {
         "create": {

@@ -2297,7 +2297,8 @@
         "even": "à jour",
         "title": "Titre",
         "startsAt": "Commence le",
-        "inviteLink": "Lien d'invitation"
+        "inviteLink": "Lien d'invitation",
+        "participants": "Personnes"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

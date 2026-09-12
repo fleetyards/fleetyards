@@ -2289,7 +2289,8 @@
         "even": "已结清",
         "title": "标题",
         "startsAt": "开始于",
-        "inviteLink": "邀请链接"
+        "inviteLink": "邀请链接",
+        "participants": "人数"
       },
       "shipSizes": {
         "extra_extra_small": "斯努布克拉夫特 (XXS)",

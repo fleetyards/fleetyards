@@ -18,13 +18,9 @@ const { t, toUEC } = useI18n();
 
 const profit = computed(() => Number(props.ledger.profit ?? 0));
 
-// What one participant is entitled to once costs are reimbursed. Shown up
-// front because it is the number everyone actually wants from the page.
-const perHead = computed(() => {
-  const count = props.ledger.participantsCount ?? 0;
-
-  return count ? profit.value / count : 0;
-});
+// Deliberately no per-head tile here. profit / count in JS floats disagrees
+// with the server's largest-remainder share by a hundredth, and the balances
+// table below already gives every participant their exact share.
 </script>
 
 <template>
@@ -62,9 +58,11 @@ const perHead = computed(() => {
     </div>
     <div class="payout-summary__item">
       <span class="payout-summary__label">
-        {{ t("labels.payouts.share") }}
+        {{ t("labels.payouts.participants") }}
       </span>
-      <span class="payout-summary__value" v-html="toUEC(perHead)" />
+      <span class="payout-summary__value">
+        {{ ledger.participantsCount ?? 0 }}
+      </span>
     </div>
   </div>
 </template>

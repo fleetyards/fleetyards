@@ -56,14 +56,20 @@ const rows = computed(() =>
       <span v-html="toUEC(Number(row.balance.paid ?? 0))" />
       <span v-html="toUEC(Number(row.balance.held ?? 0))" />
       <span v-html="toUEC(Number(row.balance.share ?? 0))" />
+      <!-- The sign carries owe-vs-owed on its own; the colour only
+           reinforces it, so the column still reads in print or to someone who
+           cannot separate the two hues. -->
       <span
         class="payout-balances__net"
         :class="{
           'payout-balances__net--owes': row.owes,
           'payout-balances__net--owed': row.owed,
         }"
-        v-html="toUEC(Math.abs(row.net))"
-      />
+      >
+        <template v-if="row.owes">−</template>
+        <template v-else-if="row.owed">+</template>
+        <span v-html="toUEC(Math.abs(row.net))" />
+      </span>
     </div>
   </div>
 </template>

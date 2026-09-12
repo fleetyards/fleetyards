@@ -2289,7 +2289,8 @@
         "even": "已結清",
         "title": "標題",
         "startsAt": "開始於",
-        "inviteLink": "邀請連結"
+        "inviteLink": "邀請連結",
+        "participants": "人數"
       },
       "shipSizes": {
         "extra_extra_small": "小型飛船 (XXS)",

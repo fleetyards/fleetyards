@@ -885,7 +885,8 @@
         "tourJoined": "Te has unido a la expedición",
         "inviteCopied": "Enlace de invitación copiado",
         "settleConfirm": "¿Calcular los pagos y bloquear el libro? Los movimientos no se podrán cambiar hasta reabrirlo.",
-        "reopenConfirm": "¿Reabrir el libro? Se descartará la lista de pagos actual."
+        "reopenConfirm": "¿Reabrir el libro? Se descartará la lista de pagos actual.",
+        "participantNeedsName": "Introduce un usuario o un nombre"
       },
       "dock": {
         "create": {

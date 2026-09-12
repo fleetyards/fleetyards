@@ -2290,7 +2290,8 @@
         "even": "settled up",
         "title": "Title",
         "startsAt": "Starts at",
-        "inviteLink": "Invite link"
+        "inviteLink": "Invite link",
+        "participants": "People"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

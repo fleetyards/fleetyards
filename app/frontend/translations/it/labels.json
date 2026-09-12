@@ -2293,7 +2293,8 @@
         "even": "in pari",
         "title": "Titolo",
         "startsAt": "Inizia il",
-        "inviteLink": "Link d'invito"
+        "inviteLink": "Link d'invito",
+        "participants": "Persone"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",
