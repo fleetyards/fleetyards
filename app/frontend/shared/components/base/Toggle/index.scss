@@ -73,3 +73,11 @@
     margin-bottom: 0;
   }
 }
+
+/* Inline-flex so the wrapper sits where the bare button used to: every call
+   site placed it in a row, and a block would have broken each of them. */
+.base-toggle-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

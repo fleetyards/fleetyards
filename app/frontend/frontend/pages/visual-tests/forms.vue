@@ -625,6 +625,26 @@ const powerMarks = (value: number) => ({ label: String(value) });
         :options="radioOptions"
         info="Names the group, which is what the label names here -- a radio list has no single control to point at."
       />
+      <Toggle
+        :active="toggleActive"
+        label="Toggle (button)"
+        info="Outside the button rather than beside the label: this control keeps its label inside itself."
+        @toggle="toggleActive = !toggleActive"
+      />
+    </div>
+  </div>
+  <p>
+    Slider takes the same prop but spends it on a line under the rail. A hint
+    that can only be hovered is no use on a control you read while dragging it.
+  </p>
+  <div class="row" data-test="info-hint-slider">
+    <div class="col-12 col-md-6">
+      <Slider
+        v-model="sliderValue"
+        :min="0"
+        :max="100"
+        info="Distance in millions of kilometres. Drag, or use the arrow keys once the rail has focus."
+      />
     </div>
   </div>
 

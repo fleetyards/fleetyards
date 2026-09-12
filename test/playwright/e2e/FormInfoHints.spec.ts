@@ -21,6 +21,7 @@ const CONTROLS = [
   "infoToggle",
   "infoSelect",
   "infoRadio",
+  "toggleButton",
 ];
 
 const rig = (page: Page) => page.getByTestId("info-hints");
@@ -55,6 +56,34 @@ test.describe("Form info hints", () => {
       .click({ force: true });
 
     expect(await checkbox.isChecked()).toBe(before);
+  });
+
+  // The label lives inside the button on this one, so the icon has to sit
+  // outside it -- anything focusable in a `<button>` is a second way to fire it.
+  test("reading the button toggle's hint does not flip it", async ({ page }) => {
+    const toggle = rig(page).locator(".base-toggle");
+    const before = await toggle.getAttribute("class");
+
+    await rig(page).locator(".base-toggle-field .hint-icon").click();
+
+    expect(await toggle.getAttribute("class")).toBe(before);
+  });
+
+  // A hint read while dragging cannot live behind a hover, so the slider spends
+  // the prop on a line under the rail instead.
+  test("the slider states its hint in the page", async ({ page }) => {
+    const rail = page.getByTestId("info-hint-slider");
+    const line = rail.locator(".base-slider-field__info");
+
+    await expect(line).toBeVisible();
+    await expect(rail.locator(".hint-icon")).toHaveCount(0);
+
+    // Described, not merely adjacent: the rail is what carries the role.
+    const id = await line.getAttribute("id");
+    await expect(rail.locator(".base-slider")).toHaveAttribute(
+      "aria-describedby",
+      id!,
+    );
   });
 
   test("a hint wraps instead of running off the window", async ({ page }) => {
