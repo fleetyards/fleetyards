@@ -55,6 +55,28 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_equal group.id, Imports::HangarSync.find_by(user_id: user.id).hangar_group_id
   end
 
+  test "PUT /hangar/sync-rsi-hangar records the bundled vehicle choice" do
+    user = create(:user)
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], addBundledVehicles: false}
+    assert_api_response :put, 200, body: body
+
+    refute_predicate Imports::HangarSync.find_by(user_id: user.id), :add_bundled_vehicles?
+  end
+
+  # Every sync before the option existed created the snub craft a ship comes
+  # with, and a client that does not know about the flag keeps doing so.
+  test "PUT /hangar/sync-rsi-hangar adds bundled vehicles when the flag is absent" do
+    user = create(:user)
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}]}
+    assert_api_response :put, 200, body: body
+
+    assert_predicate Imports::HangarSync.find_by(user_id: user.id), :add_bundled_vehicles?
+  end
+
   # The id arrives from the client, so an id belonging to somebody else must not
   # file this user's ships under a group they cannot see.
   test "PUT /hangar/sync-rsi-hangar ignores a group owned by somebody else" do

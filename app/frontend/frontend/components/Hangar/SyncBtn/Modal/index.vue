@@ -17,6 +17,7 @@ import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
@@ -345,6 +346,7 @@ const finishSync = async () => {
       data: {
         items: pledges.value,
         hangarGroupId: hangarGroupId.value,
+        addBundledVehicles: hangarStore.syncAddBundledVehicles,
       },
     })
     .catch((error) => {
@@ -417,6 +419,16 @@ const refreshPage = async () => {
           name="hangarGroupId"
           :multiple="false"
           :no-label="false"
+        />
+        <p class="hint">
+          <i class="fa-light fa-info-circle" />
+          {{ t("labels.syncExtension.addBundledVehiclesHint") }}
+        </p>
+        <FormToggle
+          v-model="hangarStore.syncAddBundledVehicles"
+          name="syncAddBundledVehicles"
+          :label="t('labels.syncExtension.addBundledVehicles')"
+          no-placeholder
         />
         <p v-if="hangarStore.syncRunning" class="text-warning">
           {{ t("texts.syncExtension.alreadyRunning") }}

@@ -20784,6 +20784,9 @@ components:
         hangarGroupId:
           type: string
           format: uuid
+        addBundledVehicles:
+          type: boolean
+          default: true
       title: SyncRsiHangarInput
     ThrusterClassEnum:
       type: string

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_11_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_12_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -839,6 +839,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_150000) do
 
   create_table "imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "aasm_state"
+    t.boolean "add_bundled_vehicles", default: true, null: false
     t.uuid "admin_user_id"
     t.datetime "cancel_requested_at"
     t.datetime "cancelled_at"

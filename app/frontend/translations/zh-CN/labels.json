@@ -1602,6 +1602,8 @@
         },
         "sessionStatus": "RSI 会话状态",
         "checkIdentity": "检查 RSI 会话",
+        "addBundledVehicles": "添加附带的小型飞船",
+        "addBundledVehiclesHint": "配备小型飞船的飞船会将其作为附带飞船添加到你的机库。关闭此选项后，同步将不再添加它们——已有的飞船会保留。",
         "identityStatus": {
           "pending": "检查中...",
           "notFound": "未找到",

@@ -34,6 +34,7 @@ interface HangarState extends ShipListState {
   extensionReady: boolean;
   syncModalOpen: boolean;
   syncRunning: boolean;
+  syncAddBundledVehicles: boolean;
   tableViewImageCols: HangarTableViewImageColsEnum[];
   tableViewCols: HangarTableViewColsEnum[];
 }
@@ -50,6 +51,7 @@ export const useHangarStore = defineStore("hangar", {
     extensionReady: false,
     syncModalOpen: false,
     syncRunning: false,
+    syncAddBundledVehicles: true,
     tableViewImageCols: [
       HangarTableViewImageColsEnum.STORE_IMAGE,
       HangarTableViewImageColsEnum.ANGLED_VIEW,
@@ -114,6 +116,7 @@ export const useHangarStore = defineStore("hangar", {
       "gridView",
       "tableViewImageCols",
       "tableViewCols",
+      "syncAddBundledVehicles",
     ],
   },
 });
