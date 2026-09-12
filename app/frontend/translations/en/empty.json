@@ -27,6 +27,12 @@
       },
       "admin": {
         "recentEdits": "No admin has changed anything yet"
+      },
+      "payouts": {
+        "entries": "Nothing recorded yet",
+        "participants": "Nobody on this tour yet",
+        "transfers": "Settle the ledger to see who pays whom",
+        "tours": "No tours yet"
       }
     }
   }

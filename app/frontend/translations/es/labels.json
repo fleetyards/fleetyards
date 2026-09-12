@@ -1602,8 +1602,6 @@
         },
         "sessionStatus": "Estado de sesión RSI",
         "checkIdentity": "Verificar sesión RSI",
-        "addBundledVehicles": "Añadir snub crafts incluidas",
-        "addBundledVehiclesHint": "Añade la snub craft que viene con una nave. Las que ya están en tu hangar se conservan.",
         "identityStatus": {
           "pending": "Comprobando...",
           "notFound": "no encontrado",
@@ -1640,7 +1638,9 @@
           "updated": "Updated",
           "movedToWanted": "Moved to Wishlist",
           "missing": "Unable to Import"
-        }
+        },
+        "addBundledVehicles": "Añadir snub crafts incluidas",
+        "addBundledVehiclesHint": "Añade la snub craft que viene con una nave. Las que ya están en tu hangar se conservan."
       },
       "cargoGridViewer": {
         "capacity": "Capacidad",
@@ -2264,6 +2264,36 @@
         "dockingport": "Puerto de atraque",
         "hangar": "Hangar",
         "cargogrid": "Rejilla de carga"
+      },
+      "payouts": {
+        "amount": "Importe",
+        "description": "Descripción",
+        "entryType": "Tipo",
+        "expense": "Gastado",
+        "income": "Ganado",
+        "participant": "Quién",
+        "notes": "Notas",
+        "occurredAt": "Cuándo",
+        "paid": "Gastado",
+        "held": "Tiene",
+        "share": "Parte",
+        "net": "Saldo",
+        "profit": "Beneficio",
+        "totalIncome": "Ganado",
+        "totalExpenses": "Gastado",
+        "guest": "Invitado",
+        "username": "Usuario",
+        "name": "Nombre",
+        "sends": "envía",
+        "receives": "recibe",
+        "settled": "Liquidado",
+        "open": "Abierto",
+        "owes": "debe",
+        "isOwed": "se le debe",
+        "even": "en paz",
+        "title": "Título",
+        "startsAt": "Comienza el",
+        "inviteLink": "Enlace de invitación"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

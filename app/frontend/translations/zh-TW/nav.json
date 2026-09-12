@@ -64,7 +64,8 @@
             "basic": "基本",
             "description": "描述",
             "teams": "小隊與席位"
-          }
+          },
+          "payouts": "分帳"
         },
         "settings": {
           "index": "設定",
@@ -82,7 +83,8 @@
       "tools": {
         "index": "工具",
         "travelTimes": "旅行時間",
-        "cargoGrids": "貨物網格"
+        "cargoGrids": "貨物網格",
+        "tours": "行程"
       },
       "api": "API 文件",
       "stats": "統計",

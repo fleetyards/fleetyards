@@ -374,7 +374,20 @@
       },
       "selectFile": "Datei auswählen",
       "applyGameFileValue": "Übernehmen",
-      "applyAllGameFileValues": "Alle übernehmen"
+      "applyAllGameFileValues": "Alle übernehmen",
+      "payouts": {
+        "openLedger": "Auszahlungsbuch öffnen",
+        "addEntry": "Geld erfassen",
+        "addParticipant": "Teilnehmer hinzufügen",
+        "settle": "Abrechnen & Auszahlungen berechnen",
+        "reopen": "Wieder öffnen",
+        "confirm": "Als bezahlt markieren",
+        "unconfirm": "Als unbezahlt markieren",
+        "createTour": "Tour erstellen",
+        "joinTour": "Tour beitreten",
+        "copyInvite": "Einladungslink kopieren",
+        "rotateInvite": "Neuen Link erzeugen"
+      }
     }
   }
 }

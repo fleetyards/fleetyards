@@ -79,7 +79,8 @@
             "description": "Editar descripción - %{fleet}",
             "teams": "Editar equipos y plazas - %{fleet}"
           },
-          "show": "Evento de %{fleet}"
+          "show": "Evento de %{fleet}",
+          "payouts": "Pagos del evento de %{fleet}"
         },
         "settings": {
           "index": "Configuración de %{fleet}",
@@ -122,7 +123,13 @@
       "tools": {
         "index": "Herramientas",
         "travelTimes": "Tiempos de Viaje",
-        "cargoGrids": "Grillas de carga"
+        "cargoGrids": "Grillas de carga",
+        "tours": {
+          "index": "Expediciones",
+          "add": "Crear una expedición",
+          "show": "%{tour}",
+          "join": "Unirse a la expedición"
+        }
       },
       "impressum": "Aviso legal",
       "privacyPolicy": "Política de privacidad",

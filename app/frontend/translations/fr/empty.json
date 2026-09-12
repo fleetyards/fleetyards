@@ -24,6 +24,12 @@
         "wishlist": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
         "features": "Il n'y a actuellement aucune fonctionnalité libre-service disponible. Revenez plus tard car de nouvelles fonctionnalités sont ajoutées régulièrement.",
         "fleetFeatures": "Il n'y a actuellement aucune fonctionnalité qu'une flotte peut activer elle-même. Revenez plus tard car de nouvelles fonctionnalités sont ajoutées régulièrement."
+      },
+      "payouts": {
+        "entries": "Rien d'enregistré pour l'instant",
+        "participants": "Personne sur cette expédition",
+        "transfers": "Clôturez pour voir qui paie qui",
+        "tours": "Aucune expédition"
       }
     }
   }

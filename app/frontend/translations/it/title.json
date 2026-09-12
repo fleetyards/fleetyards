@@ -79,7 +79,8 @@
             "description": "Modifica Descrizione - %{fleet}",
             "teams": "Modifica Team e Slot - %{fleet}"
           },
-          "show": "Evento di %{fleet}"
+          "show": "Evento di %{fleet}",
+          "payouts": "Pagamenti dell'evento di %{fleet}"
         },
         "settings": {
           "index": "Impostazioni di %{fleet}",
@@ -122,7 +123,13 @@
       "tools": {
         "index": "Strumenti",
         "travelTimes": "Tempi di Viaggio",
-        "cargoGrids": "Griglie di carico"
+        "cargoGrids": "Griglie di carico",
+        "tours": {
+          "index": "Spedizioni",
+          "add": "Crea una spedizione",
+          "show": "%{tour}",
+          "join": "Unisciti alla spedizione"
+        }
       },
       "impressum": "Info legali",
       "privacyPolicy": "Informativa sulla privacy",

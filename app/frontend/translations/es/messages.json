@@ -872,6 +872,21 @@
           "error": "No se pudo cancelar esta importación"
         }
       },
+      "payouts": {
+        "entryCreated": "Movimiento registrado",
+        "entryUpdated": "Movimiento actualizado",
+        "entryDestroyed": "Movimiento eliminado",
+        "participantAdded": "Participante añadido",
+        "participantRemoved": "Participante eliminado",
+        "participantHasEntries": "Elimina antes sus movimientos",
+        "settled": "Pagos calculados",
+        "reopened": "Libro reabierto",
+        "tourCreated": "Expedición creada",
+        "tourJoined": "Te has unido a la expedición",
+        "inviteCopied": "Enlace de invitación copiado",
+        "settleConfirm": "¿Calcular los pagos y bloquear el libro? Los movimientos no se podrán cambiar hasta reabrirlo.",
+        "reopenConfirm": "¿Reabrir el libro? Se descartará la lista de pagos actual."
+      },
       "dock": {
         "create": {
           "failure": "No se pudo crear el muelle."

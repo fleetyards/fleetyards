@@ -79,7 +79,8 @@
             "description": "编辑描述 - %{fleet}",
             "teams": "编辑小队与席位 - %{fleet}"
           },
-          "show": "%{fleet} 活动"
+          "show": "%{fleet} 活动",
+          "payouts": "%{fleet} 活动分账"
         },
         "settings": {
           "index": "%{fleet} 设置",
@@ -122,7 +123,13 @@
       "tools": {
         "index": "工具",
         "travelTimes": "旅行时间",
-        "cargoGrids": "货物网格"
+        "cargoGrids": "货物网格",
+        "tours": {
+          "index": "行程",
+          "add": "创建新行程",
+          "show": "%{tour}",
+          "join": "加入行程"
+        }
       },
       "impressum": "版权声明",
       "privacyPolicy": "隐私政策",

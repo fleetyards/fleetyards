@@ -374,7 +374,20 @@
       },
       "selectFile": "Select File",
       "applyGameFileValue": "Apply",
-      "applyAllGameFileValues": "Apply all"
+      "applyAllGameFileValues": "Apply all",
+      "payouts": {
+        "openLedger": "Open payout ledger",
+        "addEntry": "Record money",
+        "addParticipant": "Add participant",
+        "settle": "Settle & calculate payouts",
+        "reopen": "Reopen",
+        "confirm": "Mark as paid",
+        "unconfirm": "Mark as unpaid",
+        "createTour": "Create Tour",
+        "joinTour": "Join Tour",
+        "copyInvite": "Copy invite link",
+        "rotateInvite": "Generate a new link"
+      }
     }
   }
 }

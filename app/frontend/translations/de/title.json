@@ -79,7 +79,8 @@
             "description": "Beschreibung bearbeiten - %{fleet}",
             "teams": "Teams & Slots bearbeiten - %{fleet}"
           },
-          "show": "%{fleet} Event"
+          "show": "%{fleet} Event",
+          "payouts": "%{fleet} Event-Auszahlungen"
         },
         "settings": {
           "index": "%{fleet} Einstellungen",
@@ -122,7 +123,13 @@
       "tools": {
         "index": "Werkzeuge",
         "travelTimes": "Reisezeiten",
-        "cargoGrids": "Frachtgitter"
+        "cargoGrids": "Frachtgitter",
+        "tours": {
+          "index": "Touren",
+          "add": "Neue Tour erstellen",
+          "show": "%{tour}",
+          "join": "Tour beitreten"
+        }
       },
       "impressum": "Impressum",
       "privacyPolicy": "Datenschutzrichtlinie",

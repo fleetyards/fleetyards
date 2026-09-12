@@ -871,6 +871,21 @@
           "error": "無法取消這次匯入"
         }
       },
+      "payouts": {
+        "entryCreated": "已紀錄",
+        "entryUpdated": "已更新",
+        "entryDestroyed": "已刪除",
+        "participantAdded": "已新增參與者",
+        "participantRemoved": "已移除參與者",
+        "participantHasEntries": "請先刪除該參與者的紀錄",
+        "settled": "分帳已計算",
+        "reopened": "已重新開啟",
+        "tourCreated": "行程已建立",
+        "tourJoined": "你已加入該行程",
+        "inviteCopied": "邀請連結已複製",
+        "settleConfirm": "計算分帳並鎖定帳簿？在重新開啟之前將無法修改紀錄。",
+        "reopenConfirm": "重新開啟帳簿？目前的分帳清單將被捨棄。"
+      },
       "dock": {
         "create": {
           "failure": "無法建立停靠點。"
