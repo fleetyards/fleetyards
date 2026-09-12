@@ -265,6 +265,7 @@
             "models": "Modifica %{name} Modelli",
             "prices": "Modifica %{name} Prezzi",
             "hardpoints": "Modifica Hardpoint di %{name}",
+            "docks": "Modifica dock di %{name}",
             "cargoHolds": "Modifica stive di carico di %{name}",
             "history": "Modifica cronologia del modulo"
           }

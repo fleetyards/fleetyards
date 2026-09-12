@@ -871,6 +871,17 @@
           "success": "Importación cancelada",
           "error": "No se pudo cancelar esta importación"
         }
+      },
+      "dock": {
+        "create": {
+          "failure": "No se pudo crear el muelle."
+        },
+        "update": {
+          "failure": "No se pudo guardar el muelle."
+        },
+        "destroy": {
+          "failure": "No se pudo eliminar el muelle."
+        }
       }
     }
   }

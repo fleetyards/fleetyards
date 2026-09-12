@@ -52,6 +52,7 @@ zh-CN:
           infrared: 红外
       dock:
         dock_types:
+          cargogrid: 货运格栅
           dockingport: 对接端口
           garage: 车库
           hangar: 机库

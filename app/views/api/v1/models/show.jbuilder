@@ -11,6 +11,11 @@ json.carried_by @model.carried_by_with_docks do |entry|
   json.name carrier.name
   json.dock_type entry[:dock].dock_type
 
+  # Present only for a berth a module brings, which is what makes the carrier
+  # conditional rather than a fixture.
+  module_name = entry[:dock].model_module_name
+  json.module_name module_name if module_name.present?
+
   # Absent rather than empty when the carrier has no picture: MediaFile requires
   # four fields, and the panel falls back on its own.
   if carrier.store_image.attached?

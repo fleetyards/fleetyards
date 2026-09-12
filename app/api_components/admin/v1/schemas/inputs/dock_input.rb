@@ -19,7 +19,8 @@ module Admin
               height: {type: [:number, :null]},
               minShipSize: {type: [:integer, :null]},
               maxShipSize: {type: [:integer, :null]},
-              modelId: {type: [:string, :null], format: :uuid}
+              parentId: {type: :string, format: :uuid},
+              parentType: {type: :string, enum: ::Dock::PARENT_TYPES}
             },
             additionalProperties: false
           })

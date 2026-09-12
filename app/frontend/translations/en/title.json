@@ -265,6 +265,7 @@
             "models": "Edit %{name} Models",
             "prices": "Edit %{name} Prices",
             "hardpoints": "Edit %{name} Hardpoints",
+            "docks": "Edit %{name} Docks",
             "cargoHolds": "Edit %{name} Cargo Holds",
             "history": "Edit Module History"
           }

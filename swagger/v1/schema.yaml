@@ -18362,6 +18362,8 @@ components:
                 type: string
               dockType:
                 type: string
+              moduleName:
+                type: string
               storeImage:
                 "$ref": "#/components/schemas/MediaFile"
             additionalProperties: false

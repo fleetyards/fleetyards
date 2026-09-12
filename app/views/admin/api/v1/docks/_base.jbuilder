@@ -12,6 +12,7 @@ json.beam dock.beam&.to_f
 json.height dock.height&.to_f
 json.min_ship_size dock.min_ship_size
 json.max_ship_size dock.max_ship_size
-json.model_id dock.model_id
+json.parent_id dock.parent_id
+json.parent_type dock.parent_type
 
 json.partial! "api/shared/dates", record: dock

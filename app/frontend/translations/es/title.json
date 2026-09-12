@@ -265,6 +265,7 @@
             "models": "Editar %{name} Modelos",
             "prices": "Editar %{name} Precios",
             "hardpoints": "Editar puntos de montaje de %{name}",
+            "docks": "Editar muelles de %{name}",
             "cargoHolds": "Editar bodegas de carga de %{name}",
             "history": "Editar historial del módulo"
           }

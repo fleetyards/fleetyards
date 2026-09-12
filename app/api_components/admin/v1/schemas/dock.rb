@@ -21,12 +21,16 @@ module Admin
             height: {type: :number},
             minShipSize: {type: :integer},
             maxShipSize: {type: :integer},
-            modelId: {type: :string, format: :uuid},
+            parentId: {type: :string, format: :uuid},
+            parentType: {type: :string},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id dockType dockTypeLabel shipSize shipSizeLabel createdAt updatedAt]
+          required: %w[
+            id dockType dockTypeLabel shipSize shipSizeLabel parentId parentType
+            createdAt updatedAt
+          ]
         })
       end
     end

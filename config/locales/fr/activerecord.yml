@@ -52,6 +52,7 @@ fr:
           infrared: infrarouge
       dock:
         dock_types:
+          cargogrid: Grille de fret
           dockingport: Port d'amarrage
           garage: Garage
           hangar: Hangar

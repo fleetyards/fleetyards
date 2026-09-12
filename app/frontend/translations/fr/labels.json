@@ -971,7 +971,11 @@
       "dock": {
         "name": "Nom",
         "dockType": "Type de quai",
-        "shipSize": "Taille du vaisseau"
+        "shipSize": "Taille du vaisseau",
+        "length": "Longueur",
+        "beam": "Largeur",
+        "height": "Hauteur",
+        "unmeasured": "non mesuré"
       },
       "modelPosition": {
         "name": "Nom",
@@ -2260,7 +2264,17 @@
         "garage": "Garage",
         "landingpad": "Aire d'atterrissage",
         "dockingport": "Port d'amarrage",
-        "hangar": "Hangar"
+        "hangar": "Hangar",
+        "cargogrid": "Grille de fret"
+      },
+      "shipSizes": {
+        "extra_extra_small": "Snubcraft (XXS)",
+        "extra_small": "Très petit (XS)",
+        "small": "Petit (S)",
+        "medium": "Moyen (M)",
+        "large": "Grand (L)",
+        "extra_large": "Très grand (XL)",
+        "capital": "Capital (C)"
       }
     }
   }

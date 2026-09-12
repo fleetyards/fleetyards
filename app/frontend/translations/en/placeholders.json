@@ -194,7 +194,10 @@
         "description": "Description"
       },
       "dock": {
-        "name": "Dock Name"
+        "name": "Dock Name",
+        "length": "Length in m",
+        "beam": "Beam in m",
+        "height": "Height in m"
       },
       "modelPosition": {
         "name": "Position Name",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_11_133041) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_11_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -315,8 +315,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_133041) do
     t.integer "min_ship_size"
     t.uuid "model_id"
     t.string "name"
+    t.uuid "parent_id", null: false
+    t.string "parent_type", null: false
     t.integer "ship_size"
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["parent_type", "parent_id"], name: "index_docks_on_parent_type_and_parent_id"
   end
 
   create_table "email_rejections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

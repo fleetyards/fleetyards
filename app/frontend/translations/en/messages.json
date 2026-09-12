@@ -870,6 +870,17 @@
           "success": "Import cancelled",
           "error": "Could not cancel this import"
         }
+      },
+      "dock": {
+        "create": {
+          "failure": "Could not create the dock."
+        },
+        "update": {
+          "failure": "Could not save the dock."
+        },
+        "destroy": {
+          "failure": "Could not delete the dock."
+        }
       }
     }
   }

@@ -870,6 +870,17 @@
           "success": "Importazione annullata",
           "error": "Impossibile annullare questa importazione"
         }
+      },
+      "dock": {
+        "create": {
+          "failure": "Impossibile creare il dock."
+        },
+        "update": {
+          "failure": "Impossibile salvare il dock."
+        },
+        "destroy": {
+          "failure": "Impossibile eliminare il dock."
+        }
       }
     }
   }

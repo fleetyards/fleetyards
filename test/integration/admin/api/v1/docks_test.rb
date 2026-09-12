@@ -143,8 +143,47 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
     model = create(:model)
     sign_in @user
 
-    body = {name: "Pad 01", dockType: "landingpad", shipSize: "medium", modelId: model.id}
+    body = {name: "Pad 01", dockType: "landingpad", shipSize: "medium", parentId: model.id, parentType: "Model"}
     assert_api_response :post, 201, body: body
+  end
+
+  test "POST /docks creates a dock on a module" do
+    model_module = create(:model_module)
+    sign_in @user
+
+    body = {
+      name: "Vehicle Lift", dockType: "garage", shipSize: "small",
+      parentId: model_module.id, parentType: "ModelModule"
+    }
+    assert_api_response :post, 201, body: body do
+      assert_equal 1, model_module.docks.count
+    end
+  end
+
+  # A class name that is not a berth would reach `belongs_to :parent` and be
+  # constantized there, so an unknown one raises rather than answering. The
+  # schema enum turns that into a 400 before the model is asked.
+  test "POST /docks returns 400 for a parent that is not a berth" do
+    sign_in @user
+
+    body = {
+      name: "x", dockType: "landingpad", shipSize: "medium",
+      parentId: SecureRandom.uuid, parentType: "User"
+    }
+    assert_api_response :post, 400, body: body
+  end
+
+  # A class name that does not exist raises out of `belongs_to :parent` when it
+  # is constantized, which would be a 500. The schema enum has to catch it
+  # first, and this is the proof rather than the assumption.
+  test "POST /docks returns 400 for a parent class that does not exist" do
+    sign_in @user
+
+    body = {
+      name: "x", dockType: "landingpad", shipSize: "medium",
+      parentId: SecureRandom.uuid, parentType: "NoSuchClass"
+    }
+    assert_api_response :post, 400, body: body
   end
 
   test "POST /docks returns 400 for missing required fields" do
@@ -156,7 +195,7 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
   test "POST /docks returns 401 when not signed in" do
     model = create(:model)
 
-    body = {name: "x", dockType: "landingpad", shipSize: "medium", modelId: model.id}
+    body = {name: "x", dockType: "landingpad", shipSize: "medium", parentId: model.id, parentType: "Model"}
     assert_api_response :post, 401, body: body
   end
 
@@ -164,7 +203,7 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
     model = create(:model)
     sign_in create(:admin_user, resource_access: [])
 
-    body = {name: "x", dockType: "landingpad", shipSize: "medium", modelId: model.id}
+    body = {name: "x", dockType: "landingpad", shipSize: "medium", parentId: model.id, parentType: "Model"}
     assert_api_response :post, 403, body: body
   end
 
@@ -175,6 +214,18 @@ class Admin::Api::V1::DocksTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200 do
       assert_equal 3, parsed_body["items"].count
+    end
+  end
+
+  test "GET /docks filters by parent" do
+    model = create(:model)
+    model_module = create(:model_module)
+    create(:dock, parent: model)
+    create_list(:dock, 2, parent: model_module)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {parentTypeEq: "ModelModule"}} do
+      assert_equal 2, parsed_body["items"].count
     end
   end
 

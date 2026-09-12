@@ -13,16 +13,51 @@
 #  max_ship_size :integer
 #  min_ship_size :integer
 #  name          :string
+#  parent_type   :string           not null
 #  ship_size     :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  model_id      :uuid
+#  parent_id     :uuid             not null
+#
+# Indexes
+#
+#  index_docks_on_parent_type_and_parent_id  (parent_type,parent_id)
 #
 class Dock < ApplicationRecord
-  belongs_to :model, optional: true
+  # A hull or a module, and nothing else. `parent_type` is a plain string
+  # column, so without this a dock could end up hanging off a User -- a new way
+  # to grow the orphans #4864 had to delete -- and `touch: true` would keep
+  # updating that unrelated row.
+  PARENT_TYPES = %w[Model ModelModule].freeze
 
+  # `optional` and then required by hand, rather than letting `belongs_to` do
+  # it. Its presence check resolves the association, which constantizes
+  # `parent_type` -- so a class name that does not exist raises NameError out of
+  # validation instead of coming back as an invalid record. The two validations
+  # below answer the same question without ever touching the association.
+  belongs_to :parent, polymorphic: true, touch: true, optional: true
+
+  validates :parent_id, presence: true
+  validates :parent_type, inclusion: {in: PARENT_TYPES}
+
+  # And the row has to be there. Making the association optional took that check
+  # away with the constantizing, so a known type and any UUID at all would have
+  # saved a dock pointing at nothing -- the orphans #4864 deleted, by a new
+  # route. Guarded on the type, so this is the only place that resolves the
+  # association and it only does so for a name that is safe to constantize.
+  validates :parent, presence: true, if: -> { parent_type.in?(PARENT_TYPES) }
+
+  # `cargogrid` is the berth that costs cargo capacity -- the Hammerhead's
+  # cargo lift, the Polaris, the Hercules cargo bay -- as opposed to a garage
+  # built for vehicles and nothing else, which is what the Carrack has.
+  #
+  # `vehiclepad` is what it replaces. Every one of the five that existed was
+  # named "Cargo" or "Cargolift", so the split it was meant to express was
+  # already being carried by the name. It stays in the enum because the public
+  # schema exposes these values and a row anywhere still has to read.
   enum :dock_type,
-    {vehiclepad: 0, garage: 1, landingpad: 2, dockingport: 3, hangar: 4}
+    {vehiclepad: 0, garage: 1, landingpad: 2, dockingport: 3, hangar: 4, cargogrid: 5}
   ransacker :dock_type, formatter: proc { |v| Dock.dock_types[v] } do |parent|
     parent.table[:dock_type]
   end
@@ -36,10 +71,18 @@ class Dock < ApplicationRecord
     parent.table[:ship_size]
   end
 
+  # The module this berth arrives with, and nil when it is built into the hull.
+  # A module berth is conditional -- whether the ship is carrying that module is
+  # the player's choice -- so it is named rather than presented as a fixture.
+  def model_module_name
+    parent.name if parent_type == "ModelModule"
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "beam", "created_at", "dock_type", "group", "height", "id", "id_value", "length",
-      "max_ship_size", "min_ship_size", "model_id", "name", "ship_size", "station_id", "updated_at"
+      "max_ship_size", "min_ship_size", "name", "parent_id", "parent_type", "ship_size",
+      "updated_at"
     ]
   end
 
@@ -109,7 +152,7 @@ class Dock < ApplicationRecord
   # from a landing pad. A docking port is in neither list -- it is a connection,
   # not a place a hull is set down.
   SHIP_DOCK_TYPES = %w[landingpad hangar].freeze
-  VEHICLE_DOCK_TYPES = %w[vehiclepad garage].freeze
+  VEHICLE_DOCK_TYPES = %w[vehiclepad garage cargogrid].freeze
 
   SHIP_CLEARANCE = {length: 2.0, beam: 2.0, height: 1.0}.freeze
   VEHICLE_CLEARANCE = {length: 1.0, beam: 1.0, height: 0.5}.freeze

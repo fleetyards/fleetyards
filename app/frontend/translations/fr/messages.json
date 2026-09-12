@@ -871,6 +871,17 @@
           "success": "Import annulé",
           "error": "Impossible d'annuler cet import"
         }
+      },
+      "dock": {
+        "create": {
+          "failure": "Impossible de créer le quai."
+        },
+        "update": {
+          "failure": "Impossible d'enregistrer le quai."
+        },
+        "destroy": {
+          "failure": "Impossible de supprimer le quai."
+        }
       }
     }
   }

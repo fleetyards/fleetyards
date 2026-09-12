@@ -195,7 +195,10 @@
         "description": "Descrizione"
       },
       "dock": {
-        "name": "Nome dock"
+        "name": "Nome dock",
+        "length": "Lunghezza in m",
+        "beam": "Larghezza in m",
+        "height": "Altezza in m"
       },
       "modelPosition": {
         "name": "Nome posizione",

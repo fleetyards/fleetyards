@@ -64,6 +64,7 @@
           "models": "Linked Models",
           "prices": "Prices",
           "hardpoints": "Hardpoints",
+          "docks": "Docks",
           "cargoHolds": "Cargo Holds",
           "history": "History"
         },

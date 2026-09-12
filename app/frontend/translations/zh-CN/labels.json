@@ -971,7 +971,11 @@
       "dock": {
         "name": "名称",
         "dockType": "停靠类型",
-        "shipSize": "飞船尺寸"
+        "shipSize": "飞船尺寸",
+        "length": "长度",
+        "beam": "宽度",
+        "height": "高度",
+        "unmeasured": "未测量"
       },
       "modelPosition": {
         "name": "名称",
@@ -2252,7 +2256,17 @@
         "garage": "车库",
         "landingpad": "停机坪",
         "dockingport": "对接口",
-        "hangar": "机库"
+        "hangar": "机库",
+        "cargogrid": "货运格栅"
+      },
+      "shipSizes": {
+        "extra_extra_small": "斯努布克拉夫特 (XXS)",
+        "extra_small": "特小号 (XS)",
+        "small": "小型(S)",
+        "medium": "中号 (M)",
+        "large": "大号（L）",
+        "extra_large": "特大号 (XL)",
+        "capital": "资本（C）"
       }
     }
   }

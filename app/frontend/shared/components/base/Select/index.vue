@@ -65,6 +65,9 @@ type Props = {
   nullable?: boolean;
   paginated?: boolean;
   noLabel?: boolean;
+  // Options that carry their own order -- a size ladder, a ranking -- where
+  // alphabetical says nothing. Off by default: every existing caller sorts.
+  unsorted?: boolean;
   bigIcon?: boolean;
   hideSelected?: boolean;
   inline?: boolean;
@@ -89,6 +92,7 @@ const props = withDefaults(defineProps<Props>(), {
   nullable: true,
   paginated: false,
   noLabel: false,
+  unsorted: false,
   bigIcon: false,
   hideSelected: false,
   inline: false,
@@ -306,6 +310,10 @@ const searchLabelFallback = computed(() => {
  * "Cannot access 'sort' before initialization" and nothing mounted.
  */
 const sort = (options: FilterOption[]) => {
+  if (props.unsorted) {
+    return options;
+  }
+
   const sortedOptions = JSON.parse(JSON.stringify(options));
   return sortedOptions.sort((a: FilterOption, b: FilterOption) => {
     if (a.label < b.label) {

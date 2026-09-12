@@ -871,6 +871,17 @@
           "success": "Import abgebrochen",
           "error": "Import konnte nicht abgebrochen werden"
         }
+      },
+      "dock": {
+        "create": {
+          "failure": "Andockplatz konnte nicht angelegt werden."
+        },
+        "update": {
+          "failure": "Andockplatz konnte nicht gespeichert werden."
+        },
+        "destroy": {
+          "failure": "Andockplatz konnte nicht gelöscht werden."
+        }
       }
     }
   }

@@ -24,6 +24,10 @@ module V1
                   slug: {type: :string},
                   name: {type: :string},
                   dockType: {type: :string},
+                  # Set when the berth arrives with a module rather than being
+                  # built into the hull, so the carrier is conditional on
+                  # actually mounting it.
+                  moduleName: {type: :string},
                   storeImage: ::Shared::V1::Schemas::MediaFile
                 },
                 additionalProperties: false,

@@ -870,6 +870,17 @@
           "success": "导入已取消",
           "error": "无法取消此次导入"
         }
+      },
+      "dock": {
+        "create": {
+          "failure": "无法创建停靠点。"
+        },
+        "update": {
+          "failure": "无法保存停靠点。"
+        },
+        "destroy": {
+          "failure": "无法删除停靠点。"
+        }
       }
     }
   }

@@ -870,6 +870,17 @@
           "success": "匯入已取消",
           "error": "無法取消這次匯入"
         }
+      },
+      "dock": {
+        "create": {
+          "failure": "無法建立停靠點。"
+        },
+        "update": {
+          "failure": "無法儲存停靠點。"
+        },
+        "destroy": {
+          "failure": "無法刪除停靠點。"
+        }
       }
     }
   }

@@ -265,6 +265,7 @@
             "models": "編輯 %{name} 模型",
             "prices": "編輯 %{name} 價格",
             "hardpoints": "編輯 %{name} 掛載點",
+            "docks": "編輯 %{name} 停靠點",
             "cargoHolds": "編輯 %{name} 貨艙",
             "history": "編輯模組歷史記錄"
           }

@@ -195,7 +195,10 @@
         "description": "描述"
       },
       "dock": {
-        "name": "停靠口名稱"
+        "name": "停靠口名稱",
+        "length": "長度（公尺）",
+        "beam": "寬度（公尺）",
+        "height": "高度（公尺）"
       },
       "modelPosition": {
         "name": "職位名稱",

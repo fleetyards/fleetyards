@@ -195,7 +195,10 @@
         "description": "Description"
       },
       "dock": {
-        "name": "Nom du quai"
+        "name": "Nom du quai",
+        "length": "Longueur en m",
+        "beam": "Largeur en m",
+        "height": "Hauteur en m"
       },
       "modelPosition": {
         "name": "Nom du poste",

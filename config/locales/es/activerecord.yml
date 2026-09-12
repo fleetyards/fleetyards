@@ -52,6 +52,7 @@ es:
           infrared: infrarrojo
       dock:
         dock_types:
+          cargogrid: Rejilla de carga
           dockingport: Puerto de acoplamiento
           garage: Garaje
           hangar: Hangar

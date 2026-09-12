@@ -1,16 +1,16 @@
 <script lang="ts">
 export default {
-  name: "AdminModelEditDocksPage",
+  name: "AdminModelModuleEditDocksPage",
 };
 </script>
 
 <script lang="ts" setup>
 import DocksEditor from "@/admin/components/Docks/Editor/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type ModelExtended } from "@/services/fyAdminApi";
+import { type ModelModule } from "@/services/fyAdminApi";
 
 interface Props {
-  model: ModelExtended;
+  modelModule: ModelModule;
 }
 
 defineProps<Props>();
@@ -20,8 +20,8 @@ const { t } = useI18n();
 
 <template>
   <DocksEditor
-    :parent-id="model.id"
-    parent-type="Model"
-    :headline="t('headlines.admin.models.edit.docks')"
+    :parent-id="modelModule.id"
+    parent-type="ModelModule"
+    :headline="t('headlines.admin.modelModules.docks')"
   />
 </template>

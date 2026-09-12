@@ -330,6 +330,10 @@ class Model < ApplicationRecord
     through: :module_hardpoints,
     source: :model_module
 
+  # Berths that arrive with a module rather than being built into the hull --
+  # the Galaxy's med bay carries a vehicle lift, its refinery does not.
+  has_many :module_docks, through: :modules, source: :docks
+
   has_many :module_packages,
     class_name: "ModelModulePackage",
     dependent: :destroy
@@ -382,7 +386,7 @@ class Model < ApplicationRecord
 
   has_many :model_positions, dependent: :destroy
 
-  has_many :docks, dependent: :destroy
+  has_many :docks, as: :parent, dependent: :destroy
 
   has_many :cargo_holds_db, class_name: "CargoHold", as: :parent, dependent: :destroy
   has_many :cargo_hold_container_capacities, through: :cargo_holds_db
@@ -654,8 +658,16 @@ class Model < ApplicationRecord
     ["dimensions_drifted"]
   end
 
+  # A ship offers a berth either because one is built into it or because a
+  # module it can mount brings one. Two subqueries rather than a join: a model
+  # with several docks would otherwise come back several times.
   def self.with_dock
-    includes(:docks).where.not(docks: {model_id: nil})
+    own = Dock.where(parent_type: "Model").select(:parent_id)
+    through_modules = ModuleHardpoint
+      .where(model_module_id: Dock.where(parent_type: "ModelModule").select(:parent_id))
+      .select(:model_id)
+
+    where(id: own).or(where(id: through_modules))
   end
 
   def update_from_hardpoints
@@ -819,11 +831,19 @@ class Model < ApplicationRecord
     return [] if length.to_f <= 0 || beam.to_f <= 0 || height.to_f <= 0
 
     Model.visible.active.with_dock.with_attached_store_image.where.not(id:)
+      .preload(:docks, module_docks: :parent)
       .filter_map do |carrier|
-        dock = carrier.docks.find { |candidate| candidate.fits?(self) }
+        dock = carrier.berths.find { |candidate| candidate.fits?(self) }
         {carrier:, dock:} if dock
       end
       .sort_by { |entry| entry[:carrier].name }
+  end
+
+  # Every berth this ship can offer, whichever side it comes from. A module
+  # berth is conditional -- the Galaxy takes a med bay or a refinery, never both
+  # -- and `Dock#model_module_name` is what says so on the way out.
+  def berths
+    docks.to_a + module_docks.to_a
   end
 
   def carried_by
