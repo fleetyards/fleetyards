@@ -1875,7 +1875,32 @@
         "cargoGrid": "Griglia di carico",
         "shipInventory": "Inventario della nave",
         "remaining": "Rimanente",
-        "unmeasured": "%{count} non ancora misurati"
+        "unmeasured": "%{count} non ancora misurati",
+        "transferTarget": "Invia a",
+        "transferNote": "Nota",
+        "positions": "Posizioni",
+        "noStock": "Niente da spostare",
+        "overStock": "Più di quanto contenga questa posizione",
+        "inTransit": "In transito",
+        "incoming": "In arrivo",
+        "outgoing": "In uscita",
+        "transferStates": {
+          "pending": "In attesa",
+          "completed": "Consegnato",
+          "declined": "Rifiutato",
+          "cancelled": "Annullato",
+          "expired": "Scaduto"
+        },
+        "noTransfers": "Nessun trasferimento",
+        "acceptInto": "Accetta in",
+        "reportReason": "Motivo",
+        "reportReasons": {
+          "spam": "Spam",
+          "harassment": "Molestie",
+          "scam": "Truffa",
+          "other": "Altro"
+        },
+        "transferToFleet": "{fleet} (flotta)"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1930,7 +1955,8 @@
         "withdraw": "Ritirati",
         "syncAgain": "Sincronizza di nuovo",
         "markAsBought": "Segna come acquistata",
-        "unavailable": "Non è più disponibile."
+        "unavailable": "Non è più disponibile.",
+        "openTransfers": "Apri trasferimenti"
       },
       "notificationTypes": {
         "channels": {

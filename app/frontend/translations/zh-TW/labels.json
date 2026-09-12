@@ -1871,7 +1871,32 @@
         "cargoGrid": "貨艙網格",
         "shipInventory": "飛船庫存",
         "remaining": "剩餘",
-        "unmeasured": "%{count} 項尚未測量"
+        "unmeasured": "%{count} 項尚未測量",
+        "transferTarget": "傳送至",
+        "transferNote": "備註",
+        "positions": "條目",
+        "noStock": "沒有可移動的物品",
+        "overStock": "超過該條目的庫存",
+        "inTransit": "運送中",
+        "incoming": "接收",
+        "outgoing": "發出",
+        "transferStates": {
+          "pending": "等待中",
+          "completed": "已送達",
+          "declined": "已拒絕",
+          "cancelled": "已撤回",
+          "expired": "已過期"
+        },
+        "noTransfers": "暫無轉移",
+        "acceptInto": "接收至",
+        "reportReason": "原因",
+        "reportReasons": {
+          "spam": "垃圾訊息",
+          "harassment": "騷擾",
+          "scam": "詐騙",
+          "other": "其他"
+        },
+        "transferToFleet": "{fleet}（艦隊）"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1926,7 +1951,8 @@
         "withdraw": "取消報名",
         "syncAgain": "再次同步",
         "markAsBought": "標示為已購買",
-        "unavailable": "這項內容已無法使用。"
+        "unavailable": "這項內容已無法使用。",
+        "openTransfers": "開啟轉移"
       },
       "notificationTypes": {
         "channels": {

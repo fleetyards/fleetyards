@@ -1871,7 +1871,32 @@
         "cargoGrid": "货舱网格",
         "shipInventory": "飞船库存",
         "remaining": "剩余",
-        "unmeasured": "%{count} 项尚未测量"
+        "unmeasured": "%{count} 项尚未测量",
+        "transferTarget": "发送至",
+        "transferNote": "备注",
+        "positions": "条目",
+        "noStock": "没有可移动的物品",
+        "overStock": "超过该条目的库存",
+        "inTransit": "运送中",
+        "incoming": "接收",
+        "outgoing": "发出",
+        "transferStates": {
+          "pending": "等待中",
+          "completed": "已送达",
+          "declined": "已拒绝",
+          "cancelled": "已撤回",
+          "expired": "已过期"
+        },
+        "noTransfers": "暂无转移",
+        "acceptInto": "接收至",
+        "reportReason": "原因",
+        "reportReasons": {
+          "spam": "垃圾信息",
+          "harassment": "骚扰",
+          "scam": "诈骗",
+          "other": "其他"
+        },
+        "transferToFleet": "{fleet}（舰队）"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1926,7 +1951,8 @@
         "withdraw": "取消报名",
         "syncAgain": "再次同步",
         "markAsBought": "标记为已购买",
-        "unavailable": "此内容已不再可用。"
+        "unavailable": "此内容已不再可用。",
+        "openTransfers": "打开转移"
       },
       "notificationTypes": {
         "channels": {

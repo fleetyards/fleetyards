@@ -1876,7 +1876,32 @@
         "cargoGrid": "Cargo Grid",
         "shipInventory": "Ship Inventory",
         "remaining": "Remaining",
-        "unmeasured": "%{count} not measured yet"
+        "unmeasured": "%{count} not measured yet",
+        "transferTarget": "Send to",
+        "transferNote": "Note",
+        "positions": "Positions",
+        "noStock": "Nothing to move",
+        "overStock": "More than this position holds",
+        "inTransit": "In transit",
+        "incoming": "Incoming",
+        "outgoing": "Outgoing",
+        "transferStates": {
+          "pending": "Waiting",
+          "completed": "Delivered",
+          "declined": "Declined",
+          "cancelled": "Withdrawn",
+          "expired": "Expired"
+        },
+        "noTransfers": "No transfers",
+        "acceptInto": "Accept into",
+        "reportReason": "Reason",
+        "reportReasons": {
+          "spam": "Spam",
+          "harassment": "Harassment",
+          "scam": "Scam",
+          "other": "Something else"
+        },
+        "transferToFleet": "{fleet} (fleet)"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1931,7 +1956,8 @@
         "withdraw": "Withdraw",
         "syncAgain": "Sync again",
         "markAsBought": "Mark as bought",
-        "unavailable": "This is no longer available."
+        "unavailable": "This is no longer available.",
+        "openTransfers": "Open transfers"
       },
       "notificationTypes": {
         "channels": {

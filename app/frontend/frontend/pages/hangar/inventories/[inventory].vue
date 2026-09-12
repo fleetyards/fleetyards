@@ -19,6 +19,8 @@ import {
   useHangarInventoryItems,
   useHangarInventoryStock,
   useDestroyHangarInventoryItem,
+  useCreateHangarInventoryTransfer,
+  FeatureFlagName,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
@@ -31,6 +33,8 @@ import type {
 } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useTransferTargets } from "@/frontend/composables/useTransferTargets";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -135,6 +139,38 @@ const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
   });
 };
 
+const { isFeatureEnabled } = useFeatures();
+
+const transfersEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
+);
+
+const { targets: transferTargets } = useTransferTargets(inventory);
+
+const { mutateAsync: createTransfer } = useCreateHangarInventoryTransfer();
+
+const openTransferModal = () => {
+  if (!inventory.value) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Logistics/TransferModal/index.vue"),
+    props: {
+      source: { id: inventory.value.id, name: inventory.value.name },
+      positions: stockData.value ?? [],
+      targets: transferTargets.value,
+      onSend: async (data: Parameters<typeof createTransfer>[0]["data"]) => {
+        await createTransfer({ data });
+        await Promise.all([
+          refetchStock(),
+          refetchLogItems(),
+          refetchInventory(),
+        ]);
+      },
+    },
+  });
+};
+
 const openCsvImportModal = () => {
   if (!inventory.value) return;
 
@@ -207,6 +243,16 @@ const crumbs = computed<Crumb[]>(() => [
           >
             <i class="fa-duotone fa-arrow-up-from-square" />
             {{ t("actions.logistics.withdraw") }}
+          </Btn>
+          <Btn
+            v-if="transfersEnabled"
+            :size="BtnSizesEnum.MD"
+            data-test="inventory-transfer"
+            mobile-icon-only
+            @click="openTransferModal"
+          >
+            <i class="fa-duotone fa-right-left" />
+            {{ t("actions.logistics.transfer") }}
           </Btn>
           <Btn
             :size="BtnSizesEnum.MD"

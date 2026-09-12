@@ -41,7 +41,8 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "飞船货物",
-        "imports": "导入记录"
+        "imports": "导入记录",
+        "transfers": "转移"
       },
       "requestPassword": "请求密码",
       "changePassword": "更改密码",

@@ -590,6 +590,16 @@
             "success": "貨物已清空。",
             "failure": "無法清空貨物。"
           }
+        },
+        "transfer": {
+          "needsAnswer": "對方需要先接受。庫存現在即離開你的倉庫，若被拒絕則會退回。",
+          "create": {
+            "failure": "無法傳送轉移"
+          },
+          "resolve": {
+            "failure": "無法更新轉移"
+          },
+          "reportHint": "檢舉會拒絕該轉移並退回貨物，同時阻止該傳送者再次聯絡你。"
         }
       },
       "adminNotifications": {

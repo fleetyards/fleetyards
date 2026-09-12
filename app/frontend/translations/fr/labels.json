@@ -1875,7 +1875,32 @@
         "cargoGrid": "Grille de fret",
         "shipInventory": "Inventaire du vaisseau",
         "remaining": "Restant",
-        "unmeasured": "%{count} pas encore mesurés"
+        "unmeasured": "%{count} pas encore mesurés",
+        "transferTarget": "Envoyer à",
+        "transferNote": "Note",
+        "positions": "Positions",
+        "noStock": "Rien à déplacer",
+        "overStock": "Plus que ce que contient cette position",
+        "inTransit": "En transit",
+        "incoming": "Entrants",
+        "outgoing": "Sortants",
+        "transferStates": {
+          "pending": "En attente",
+          "completed": "Livré",
+          "declined": "Refusé",
+          "cancelled": "Annulé",
+          "expired": "Expiré"
+        },
+        "noTransfers": "Aucun transfert",
+        "acceptInto": "Accepter dans",
+        "reportReason": "Motif",
+        "reportReasons": {
+          "spam": "Spam",
+          "harassment": "Harcèlement",
+          "scam": "Arnaque",
+          "other": "Autre chose"
+        },
+        "transferToFleet": "{fleet} (flotte)"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1930,7 +1955,8 @@
         "withdraw": "Se désinscrire",
         "syncAgain": "Synchroniser à nouveau",
         "markAsBought": "Marquer comme acheté",
-        "unavailable": "Ceci n'est plus disponible."
+        "unavailable": "Ceci n'est plus disponible.",
+        "openTransfers": "Ouvrir les transferts"
       },
       "notificationTypes": {
         "channels": {

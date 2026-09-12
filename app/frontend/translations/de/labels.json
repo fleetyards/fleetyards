@@ -1875,7 +1875,32 @@
         "cargoGrid": "Frachtraster",
         "shipInventory": "Schiffsinventar",
         "remaining": "Verbleibend",
-        "unmeasured": "%{count} noch nicht vermessen"
+        "unmeasured": "%{count} noch nicht vermessen",
+        "transferTarget": "Senden an",
+        "transferNote": "Notiz",
+        "positions": "Positionen",
+        "noStock": "Nichts zu verschieben",
+        "overStock": "Mehr als diese Position enthält",
+        "inTransit": "Unterwegs",
+        "incoming": "Eingehend",
+        "outgoing": "Ausgehend",
+        "transferStates": {
+          "pending": "Wartet",
+          "completed": "Zugestellt",
+          "declined": "Abgelehnt",
+          "cancelled": "Zurückgezogen",
+          "expired": "Abgelaufen"
+        },
+        "noTransfers": "Keine Transfers",
+        "acceptInto": "Annehmen in",
+        "reportReason": "Grund",
+        "reportReasons": {
+          "spam": "Spam",
+          "harassment": "Belästigung",
+          "scam": "Betrug",
+          "other": "Etwas anderes"
+        },
+        "transferToFleet": "{fleet} (Flotte)"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {
@@ -1930,7 +1955,8 @@
         "withdraw": "Abmelden",
         "syncAgain": "Erneut synchronisieren",
         "markAsBought": "Als gekauft markieren",
-        "unavailable": "Das ist nicht mehr verfügbar."
+        "unavailable": "Das ist nicht mehr verfügbar.",
+        "openTransfers": "Transfers öffnen"
       },
       "notificationTypes": {
         "channels": {

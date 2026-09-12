@@ -590,6 +590,16 @@
             "success": "Cargo cleared.",
             "failure": "Could not clear the cargo."
           }
+        },
+        "transfer": {
+          "needsAnswer": "They have to accept this before it arrives. The stock leaves your inventory now and comes back if they decline.",
+          "create": {
+            "failure": "Could not send the transfer"
+          },
+          "resolve": {
+            "failure": "Could not update the transfer"
+          },
+          "reportHint": "Reporting this declines it and sends the goods back, and stops this sender reaching you again."
         }
       },
       "adminNotifications": {

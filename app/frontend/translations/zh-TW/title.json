@@ -41,7 +41,8 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "飛船貨物",
-        "imports": "匯入記錄"
+        "imports": "匯入記錄",
+        "transfers": "轉移"
       },
       "requestPassword": "請求密碼",
       "changePassword": "更改密碼",

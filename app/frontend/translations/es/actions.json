@@ -271,7 +271,15 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "Vaciar carga",
-        "viewCargoGrid": "Ver cuadrícula de carga"
+        "viewCargoGrid": "Ver cuadrícula de carga",
+        "selectAll": "Seleccionar todo",
+        "sendTransfer": "Enviar",
+        "moveStock": "Mover",
+        "transfer": "Transferir",
+        "acceptTransfer": "Aceptar",
+        "declineTransfer": "Rechazar",
+        "cancelTransfer": "Cancelar",
+        "reportTransfer": "Denunciar"
       },
       "adminNotifications": {
         "unread": "Marcar como no leída",

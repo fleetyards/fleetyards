@@ -271,7 +271,15 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "Fracht leeren",
-        "viewCargoGrid": "Frachtraster ansehen"
+        "viewCargoGrid": "Frachtraster ansehen",
+        "selectAll": "Alle auswählen",
+        "sendTransfer": "Senden",
+        "moveStock": "Verschieben",
+        "transfer": "Transfer",
+        "acceptTransfer": "Annehmen",
+        "declineTransfer": "Ablehnen",
+        "cancelTransfer": "Zurückziehen",
+        "reportTransfer": "Melden"
       },
       "adminNotifications": {
         "unread": "Als ungelesen markieren",

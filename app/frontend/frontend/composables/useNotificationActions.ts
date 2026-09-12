@@ -44,6 +44,8 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_event_signup_withdrawn: "openRoster",
   fleet_event_signup_confirmed: "openEvent",
   fleet_event_signup_assigned: "openEvent",
+  inventory_transfer_received: "openTransfers",
+  inventory_transfer_resolved: "openTransfers",
   fleet_event_signup_kicked: "openEvent",
 };
 
@@ -56,6 +58,7 @@ const ACTION_ICONS: Record<string, string> = {
   openMembers: "fa-duotone fa-users",
   openFleet: "fa-duotone fa-shield",
   openInventory: "fa-duotone fa-boxes-stacked",
+  openTransfers: "fa-duotone fa-right-left",
   openEvent: "fa-duotone fa-calendar-day",
   openRoster: "fa-duotone fa-list-check",
   addToCalendar: "fa-duotone fa-calendar-plus",

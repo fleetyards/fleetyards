@@ -41,7 +41,8 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "Carico della nave",
-        "imports": "Importazioni"
+        "imports": "Importazioni",
+        "transfers": "Trasferimenti"
       },
       "requestPassword": "Richiedi la password",
       "changePassword": "Cambia la password",

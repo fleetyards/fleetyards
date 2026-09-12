@@ -591,6 +591,16 @@
             "success": "Fracht geleert.",
             "failure": "Fracht konnte nicht geleert werden."
           }
+        },
+        "transfer": {
+          "needsAnswer": "Sie müssen dies annehmen, bevor es ankommt. Der Bestand verlässt dein Inventar jetzt und kommt zurück, wenn sie ablehnen.",
+          "create": {
+            "failure": "Transfer konnte nicht gesendet werden"
+          },
+          "resolve": {
+            "failure": "Transfer konnte nicht aktualisiert werden"
+          },
+          "reportHint": "Eine Meldung lehnt den Transfer ab, sendet die Waren zurück und verhindert, dass dich dieser Absender erneut erreicht."
         }
       },
       "adminNotifications": {
