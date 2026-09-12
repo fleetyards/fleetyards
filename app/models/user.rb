@@ -120,6 +120,7 @@ class User < ApplicationRecord
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
   before_destroy :check_fleet_memberships
+  before_destroy :preserve_payout_participant_names, prepend: true
 
   has_many :vehicles, dependent: :destroy
   has_many :purchased_vehicles,
@@ -171,6 +172,33 @@ class User < ApplicationRecord
   # Nullify, never destroy: a deleted account must not erase the bookkeeping for
   # money that was actually received.
   has_many :supporter_contributions, dependent: :nullify
+
+  # Every one of these is an unqualified FK to users, so without a dependent
+  # rule deleting an account raises InvalidForeignKey rather than going
+  # through. check_fleet_memberships does not cover them -- a tour needs no
+  # fleet at all.
+  has_many :tours, foreign_key: :created_by_id, inverse_of: :created_by, dependent: :destroy
+  has_many :payout_participants, dependent: :nullify
+  has_many :added_payout_participants,
+    class_name: "PayoutParticipant",
+    foreign_key: :added_by_id,
+    inverse_of: :added_by,
+    dependent: :nullify
+  has_many :recorded_payout_entries,
+    class_name: "PayoutEntry",
+    foreign_key: :recorded_by_id,
+    inverse_of: :recorded_by,
+    dependent: :nullify
+  has_many :settled_payout_ledgers,
+    class_name: "PayoutLedger",
+    foreign_key: :settled_by_id,
+    inverse_of: :settled_by,
+    dependent: :nullify
+  has_many :confirmed_payout_transfers,
+    class_name: "PayoutTransfer",
+    foreign_key: :confirmed_by_id,
+    inverse_of: :confirmed_by,
+    dependent: :nullify
 
   has_many :access_grants,
     class_name: "Oauth::AccessGrant",
@@ -526,6 +554,13 @@ class User < ApplicationRecord
   }.freeze
 
   attr_accessor :destroy_fleets
+
+  # A ledger this account recorded money in still has to add up after they
+  # leave, so their participant row stays and keeps the handle it was settled
+  # under instead of becoming a nameless guest.
+  private def preserve_payout_participant_names
+    payout_participants.where(name: nil).update_all(name: username)
+  end
 
   private def check_fleet_memberships
     permanent_memberships = fleet_memberships.kept.joins(:fleet_role).where(fleet_roles: {permanent: true})

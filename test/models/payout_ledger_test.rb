@@ -96,4 +96,61 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     assert_equal fleet, create(:payout_ledger, subject: event).fleet
     assert_nil create(:payout_ledger, subject: create(:tour)).fleet
   end
+
+  # Rails runs dependent callbacks in declaration order, and both entries and
+  # transfers FK a participant row. Destroying participants first raised
+  # InvalidForeignKey and left the ledger -- and its tour -- undeletable.
+  test "is destroyed along with everything hanging off it" do
+    ledger = create(:payout_ledger)
+    alice = create(:payout_participant, payout_ledger: ledger)
+    bob = create(:payout_participant, payout_ledger: ledger)
+    create(:payout_entry, :income, payout_ledger: ledger, payout_participant: bob, amount: 100)
+    ledger.settle!
+
+    assert_difference "PayoutParticipant.count", -2 do
+      assert_difference ["PayoutEntry.count", "PayoutTransfer.count"], -1 do
+        assert ledger.destroy
+      end
+    end
+
+    assert_not PayoutParticipant.exists?(alice.id)
+  end
+
+  test "a tour with a settled ledger can still be deleted" do
+    tour = create(:tour)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger)
+    bob = create(:payout_participant, payout_ledger: ledger)
+    create(:payout_entry, payout_ledger: ledger, payout_participant: bob, amount: 40)
+    ledger.settle!
+
+    assert tour.destroy
+    assert_not PayoutLedger.exists?(ledger.id)
+  end
+
+  test "seeds only the members who confirmed" do
+    admin = create(:user)
+    fleet = create(:fleet, admins: [admin])
+    event = create(:fleet_event, fleet: fleet, created_by: admin)
+    team = create(:fleet_event_team, fleet_event: event)
+
+    statuses = {"confirmed" => nil, "tentative" => nil, "interested" => nil}
+    statuses.each_key do |status|
+      member = create(:user)
+      create(:fleet_membership, fleet: fleet, user: member,
+        fleet_role: fleet.fleet_roles.ranked.last, aasm_state: :accepted)
+      membership = fleet.fleet_memberships.find_by(user_id: member.id)
+
+      slot = (status == "confirmed") ? create(:fleet_event_slot, slottable: team) : nil
+      create(:fleet_event_signup, fleet_event: event, fleet_event_slot: slot,
+        fleet_membership: membership, status: status)
+
+      statuses[status] = member
+    end
+
+    ledger = create(:payout_ledger, subject: event)
+    ledger.seed_participants_from_subject!
+
+    assert_equal [statuses["confirmed"].id], ledger.payout_participants.pluck(:user_id)
+  end
 end

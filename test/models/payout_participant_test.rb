@@ -58,4 +58,41 @@ class PayoutParticipantTest < ActiveSupport::TestCase
 
     assert participant.destroy
   end
+
+  test "keeps a departed user's handle so the ledger still reads" do
+    user = create(:user)
+    username = user.username
+    participant = create(:payout_participant, payout_ledger: @ledger, user: user)
+
+    user.destroy
+
+    participant.reload
+
+    assert_nil participant.user_id
+    assert_equal username, participant.display_name
+  end
+
+  test "a user who organised a tour can still delete their account" do
+    user = create(:user)
+    tour = create(:tour, created_by: user)
+    ledger = create(:payout_ledger, subject: tour)
+    create(:payout_participant, payout_ledger: ledger, user: user)
+
+    assert user.destroy
+    assert_not Tour.exists?(tour.id)
+  end
+
+  test "a user who only joined someone else's tour can delete their account" do
+    organiser = create(:user)
+    joiner = create(:user)
+    tour = create(:tour, created_by: organiser)
+    ledger = create(:payout_ledger, subject: tour)
+    participant = create(:payout_participant, payout_ledger: ledger, user: joiner)
+    create(:payout_entry, payout_ledger: ledger, payout_participant: participant,
+      recorded_by: joiner, amount: 25)
+
+    assert joiner.destroy
+    assert Tour.exists?(tour.id), "the organiser's tour must survive"
+    assert PayoutEntry.exists?(payout_participant_id: participant.id)
+  end
 end
