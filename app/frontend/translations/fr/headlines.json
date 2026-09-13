@@ -422,7 +422,11 @@
         "importCsv": "Import from CSV",
         "hangarInventories": "Hangar Inventories",
         "editItem": "Edit Entry",
-        "editStockItem": "Edit Item"
+        "editStockItem": "Edit Item",
+        "transfer": "Transférer du stock",
+        "transfers": "Transferts",
+        "acceptTransfer": "Accepter le transfert",
+        "reportTransfer": "Signaler le transfert"
       },
       "notifications": {
         "index": "Notifications"

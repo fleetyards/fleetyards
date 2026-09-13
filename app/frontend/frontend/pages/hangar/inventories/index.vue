@@ -25,17 +25,29 @@ import {
   useHangarInventories,
   useHangarAllInventoryStock,
   useHangarAllInventoryItems,
+  FeatureFlagName,
 } from "@/services/fyApi";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 const { t } = useI18n();
 const comlink = useComlink();
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "hangar-inventories",
+  log: "hangar-transactions",
+});
+
+const { isFeatureEnabled } = useFeatures();
+
+const transfersEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
+);
 
 const {
   data: inventories,
@@ -133,6 +145,16 @@ onMounted(() => {
   </Heading>
 
   <Teleport to="#header-right">
+    <Btn
+      v-if="transfersEnabled"
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-transfers' }"
+      data-test="hangar-transfers-link"
+      mobile-icon-only
+    >
+      <i class="fa-duotone fa-right-left" />
+      {{ t("nav.hangar.transfers") }}
+    </Btn>
     <Btn
       :size="BtnSizesEnum.MD"
       data-test="hangar-inventory-create"

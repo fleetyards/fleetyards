@@ -1,0 +1,9 @@
+---
+fr:
+  inventory_transfers:
+    refusals:
+      unavailable: "ne peut pas recevoir de transferts"
+      sender_blocked: "Vous n'êtes pas autorisé à envoyer des transferts"
+      policy_closed: "Ce destinataire ne peut pas accepter de transferts"
+      policy_restricted: "Ce destinataire n'accepte que les transferts de personnes avec qui il partage déjà une flotte"
+      cap_reached: "Ce destinataire a trop de transferts en attente. Réessayez plus tard"

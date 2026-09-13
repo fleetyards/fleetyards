@@ -27,6 +27,8 @@ type Props = {
   showMember?: boolean;
   showAddedBy?: boolean;
   showNotes?: boolean;
+  // Ticking stock rows, for an action that works on several positions at once.
+  stockSelectable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,9 +38,10 @@ const props = withDefaults(defineProps<Props>(), {
   showMember: false,
   showAddedBy: false,
   showNotes: false,
+  stockSelectable: false,
 });
 
-const { t } = useI18n();
+const { t, l } = useI18n();
 
 const stockColumns = computed<BaseTableCol<InventoryStockRecord>[]>(() => [
   {
@@ -167,6 +170,26 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
         },
       ]
     : []),
+  {
+    // A deposit somebody typed and one that arrived from another inventory are
+    // the same row otherwise -- and "it came from a transfer" is not the
+    // question the ledger is being asked. Which one is.
+    name: "origin",
+    label: t("labels.logistics.origin"),
+    sortable: false,
+    width: "200px",
+    mobile: false,
+  },
+  {
+    // A ledger without times is a list of things that happened in no
+    // particular order.
+    name: "createdAt",
+    label: t("labels.logistics.recordedAt"),
+    sortable: true,
+    attributeKey: "createdAt",
+    width: "170px",
+    mobile: false,
+  },
 ]);
 </script>
 
@@ -177,8 +200,16 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     :columns="stockColumns"
     primary-key="id"
     :loading="stockLoading"
+    :selectable="stockSelectable"
     :empty-visible="!stockLoading && !stockRecords.length"
   >
+    <template
+      v-if="$slots['stock-selected-actions']"
+      #selected-actions="{ selected }"
+    >
+      <slot name="stock-selected-actions" :selected="selected" />
+    </template>
+
     <template #col-name="{ record }">
       <slot name="stock-name" :record="record">{{ record.name }}</slot>
     </template>
@@ -225,6 +256,31 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
         {{ t(`labels.logistics.entryTypes.${record.entryType}`) }}
       </span>
     </template>
+
+    <template #col-origin="{ record }">
+      <span v-if="record.transfer" class="ledger-origin">
+        <i
+          class="fa-duotone ledger-origin-mark"
+          :class="
+            record.transfer.direction === 'in'
+              ? 'fa-arrow-right-to-bracket'
+              : 'fa-arrow-right-from-bracket'
+          "
+        />
+        <span :data-test="`ledger-origin-${record.id}`">
+          {{ record.transfer.counterparty?.name }}
+          <span v-if="record.transfer.inventory" class="ledger-origin-place">
+            {{ record.transfer.inventory.name }}
+          </span>
+        </span>
+      </span>
+    </template>
+
+    <template #col-createdAt="{ record }">
+      <span v-if="record.createdAt" class="ledger-date">
+        {{ l(record.createdAt, "datetime.formats.short") }}
+      </span>
+    </template>
     <template #col-name="{ record }">
       <slot name="log-name" :record="record">{{ record.name }}</slot>
       <BasePill
@@ -259,3 +315,29 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
   </BaseTable>
 </template>
+
+<style lang="scss" scoped>
+.ledger-origin {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.ledger-origin-mark {
+  opacity: 0.6;
+}
+
+.ledger-origin-place {
+  font-size: 0.85em;
+  opacity: 0.7;
+
+  &::before {
+    padding-right: 0.3rem;
+    content: "·";
+  }
+}
+
+.ledger-date {
+  white-space: nowrap;
+}
+</style>

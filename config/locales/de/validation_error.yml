@@ -57,6 +57,10 @@ de:
       create: Inventar konnte nicht erstellt werden.
       update: Inventar konnte nicht aktualisiert werden.
       destroy: Inventar konnte nicht gelöscht werden.
+    inventory_transfers:
+      create: Transfer konnte nicht gesendet werden.
+      update: Transfer konnte nicht aktualisiert werden.
+      report: Transfer konnte nicht gemeldet werden.
     hangar_inventory_items:
       create: Inventareintrag konnte nicht erstellt werden.
       update: Inventareintrag konnte nicht aktualisiert werden.

@@ -8,7 +8,8 @@
         "wishlist": "Your Wishlist is empty",
         "features": "No features available",
         "fleetFeatures": "No fleet features available",
-        "imports": "No imports found"
+        "imports": "No imports found",
+        "transfers": "No transfers yet"
       },
       "actions": {
         "reset": "Reset Filters/Pages",

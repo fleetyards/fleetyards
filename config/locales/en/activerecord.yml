@@ -212,7 +212,25 @@ en:
         blank: can't be blank
         record_invalid: Bad Data
         svg_not_supported: must not be an SVG image
+        entry_goods_in_transit: "cannot be deleted while the transfer it belongs to is still waiting to be answered"
+        inventory_goods_in_transit: "cannot be deleted while a transfer it sent is still waiting to be answered"
+        position_goods_in_transit: "cannot be deleted while a transfer it was sent in is still waiting to be answered"
       models:
+        inventory_transfer:
+          attributes:
+            base:
+              invalid_source: "needs exactly one source inventory"
+              invalid_destination: "cannot have two destinations"
+              invalid_recipient: "cannot have two recipients"
+              no_target: "needs a destination or a recipient"
+              destination_is_not_the_recipients: "must be an inventory the recipient holds"
+              destination_is_source: "cannot be transferred to the inventory it came from"
+              already_resolved: "has already been answered"
+              forbidden: "is not allowed"
+        inventory_transfer_rule:
+          attributes:
+            base:
+              invalid_holder: "needs exactly one owner"
         mission_ship:
           attributes:
             base:

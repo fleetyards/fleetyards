@@ -1,0 +1,9 @@
+---
+en:
+  inventory_transfers:
+    refusals:
+      unavailable: "cannot receive transfers"
+      sender_blocked: "You are not allowed to send transfers"
+      policy_closed: "This recipient cannot accept transfers"
+      policy_restricted: "This recipient only accepts transfers from people they already share a fleet with"
+      cap_reached: "This recipient has too many transfers waiting. Try again later"

@@ -271,7 +271,16 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "清空货物",
-        "viewCargoGrid": "查看货物网格"
+        "viewCargoGrid": "查看货物网格",
+        "sendTransfer": "发送",
+        "moveStock": "移动",
+        "transfer": "转移",
+        "acceptTransfer": "接受",
+        "declineTransfer": "拒绝",
+        "cancelTransfer": "撤回",
+        "reportTransfer": "举报",
+        "resetToMax": "重置为最大值",
+        "removeLine": "移除"
       },
       "adminNotifications": {
         "unread": "标记为未读",

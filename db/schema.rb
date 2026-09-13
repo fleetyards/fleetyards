@@ -599,6 +599,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.integer "entry_type", default: 0, null: false
     t.uuid "fleet_inventory_id", null: false
     t.uuid "fleet_inventory_position_id", null: false
+    t.uuid "inventory_transfer_id"
     t.uuid "item_id"
     t.string "item_type"
     t.uuid "member_id"
@@ -610,6 +611,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.datetime "updated_at", null: false
     t.index ["fleet_inventory_id"], name: "index_fleet_inventory_items_on_fleet_inventory_id"
     t.index ["fleet_inventory_position_id"], name: "index_fleet_inventory_items_on_fleet_inventory_position_id"
+    t.index ["inventory_transfer_id"], name: "index_fleet_inventory_items_on_inventory_transfer_id"
     t.index ["member_id"], name: "index_fleet_inventory_items_on_member_id"
   end
 
@@ -709,6 +711,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.string "fid"
     t.string "guilded"
     t.string "homepage"
+    t.integer "inventory_transfer_policy", default: 0, null: false
     t.string "name"
     t.string "normalized_fid"
     t.boolean "public_fleet", default: false
@@ -716,6 +719,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.string "rsi_sid"
     t.string "sid"
     t.string "slug"
+    t.datetime "transfers_blocked_at"
+    t.text "transfers_blocked_reason"
     t.string "ts"
     t.string "twitch"
     t.datetime "updated_at", precision: nil, null: false
@@ -889,6 +894,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.integer "entry_type", default: 0, null: false
     t.uuid "inventory_id", null: false
     t.uuid "inventory_position_id", null: false
+    t.uuid "inventory_transfer_id"
     t.uuid "item_id"
     t.string "item_type"
     t.string "name", null: false
@@ -899,6 +905,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.datetime "updated_at", null: false
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
     t.index ["inventory_position_id"], name: "index_inventory_items_on_inventory_position_id"
+    t.index ["inventory_transfer_id"], name: "index_inventory_items_on_inventory_transfer_id"
   end
 
   create_table "inventory_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -912,6 +919,84 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.index ["inventory_id", "name", "category", "unit"], name: "index_inventory_positions_on_inventory_and_identity", unique: true
     t.index ["inventory_id", "slug"], name: "index_inventory_positions_on_inventory_and_slug", unique: true
     t.index ["inventory_id"], name: "index_inventory_positions_on_inventory_id"
+  end
+
+  create_table "inventory_transfer_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "open", null: false
+    t.datetime "created_at", null: false
+    t.uuid "fleet_id"
+    t.uuid "inventory_transfer_id", null: false
+    t.text "note"
+    t.integer "reason", default: 0, null: false
+    t.uuid "reporter_id"
+    t.text "resolution_note"
+    t.datetime "reviewed_at"
+    t.uuid "reviewed_by_id"
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_transfer_reports_on_open_created_at", where: "((aasm_state)::text = 'open'::text)"
+    t.index ["fleet_id"], name: "index_inventory_transfer_reports_on_fleet_id"
+    t.index ["inventory_transfer_id", "reporter_id"], name: "index_transfer_reports_on_transfer_and_reporter", unique: true, where: "(reporter_id IS NOT NULL)"
+    t.index ["inventory_transfer_id"], name: "index_inventory_transfer_reports_on_inventory_transfer_id"
+    t.index ["reporter_id"], name: "index_inventory_transfer_reports_on_reporter_id"
+    t.index ["reviewed_by_id"], name: "index_inventory_transfer_reports_on_reviewed_by_id"
+  end
+
+  create_table "inventory_transfer_rules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "created_by_id"
+    t.integer "effect", default: 0, null: false
+    t.uuid "fleet_id"
+    t.text "note"
+    t.uuid "subject_fleet_id"
+    t.uuid "subject_user_id"
+    t.datetime "updated_at", null: false
+    t.uuid "user_id"
+    t.index ["created_by_id"], name: "index_inventory_transfer_rules_on_created_by_id"
+    t.index ["fleet_id", "subject_fleet_id"], name: "index_transfer_rules_on_fleet_and_subject_fleet", unique: true, where: "((fleet_id IS NOT NULL) AND (subject_fleet_id IS NOT NULL))"
+    t.index ["fleet_id", "subject_user_id"], name: "index_transfer_rules_on_fleet_and_subject_user", unique: true, where: "((fleet_id IS NOT NULL) AND (subject_user_id IS NOT NULL))"
+    t.index ["fleet_id"], name: "index_inventory_transfer_rules_on_fleet_id"
+    t.index ["subject_fleet_id"], name: "index_inventory_transfer_rules_on_subject_fleet_id"
+    t.index ["subject_user_id"], name: "index_inventory_transfer_rules_on_subject_user_id"
+    t.index ["user_id", "subject_fleet_id"], name: "index_transfer_rules_on_user_and_subject_fleet", unique: true, where: "((user_id IS NOT NULL) AND (subject_fleet_id IS NOT NULL))"
+    t.index ["user_id", "subject_user_id"], name: "index_transfer_rules_on_user_and_subject_user", unique: true, where: "((user_id IS NOT NULL) AND (subject_user_id IS NOT NULL))"
+    t.index ["user_id"], name: "index_inventory_transfer_rules_on_user_id"
+    t.check_constraint "((subject_user_id IS NOT NULL)::integer + (subject_fleet_id IS NOT NULL)::integer) = 1", name: "inventory_transfer_rules_exactly_one_subject"
+    t.check_constraint "((user_id IS NOT NULL)::integer + (fleet_id IS NOT NULL)::integer) = 1", name: "inventory_transfer_rules_exactly_one_holder"
+  end
+
+  create_table "inventory_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "pending", null: false
+    t.datetime "cancelled_at"
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.datetime "declined_at"
+    t.uuid "destination_fleet_inventory_id"
+    t.uuid "destination_inventory_id"
+    t.datetime "expired_at"
+    t.datetime "expires_at"
+    t.uuid "initiated_by_id"
+    t.text "note"
+    t.uuid "recipient_fleet_id"
+    t.uuid "recipient_id"
+    t.uuid "resolved_by_id"
+    t.uuid "source_fleet_inventory_id"
+    t.uuid "source_inventory_id"
+    t.datetime "updated_at", null: false
+    t.index ["destination_fleet_inventory_id"], name: "index_inventory_transfers_on_destination_fleet_inventory_id"
+    t.index ["destination_inventory_id"], name: "index_inventory_transfers_on_destination_inventory_id"
+    t.index ["expires_at"], name: "index_inventory_transfers_on_pending_expires_at", where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["initiated_by_id"], name: "index_inventory_transfers_on_initiated_by_id"
+    t.index ["recipient_fleet_id"], name: "index_inventory_transfers_on_pending_recipient_fleet", where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["recipient_fleet_id"], name: "index_inventory_transfers_on_recipient_fleet_id"
+    t.index ["recipient_id"], name: "index_inventory_transfers_on_pending_recipient", where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["recipient_id"], name: "index_inventory_transfers_on_recipient_id"
+    t.index ["resolved_by_id"], name: "index_inventory_transfers_on_resolved_by_id"
+    t.index ["source_fleet_inventory_id"], name: "index_inventory_transfers_on_source_fleet_inventory_id"
+    t.index ["source_inventory_id"], name: "index_inventory_transfers_on_source_inventory_id"
+    t.check_constraint "((destination_inventory_id IS NOT NULL)::integer + (destination_fleet_inventory_id IS NOT NULL)::integer) <= 1", name: "inventory_transfers_at_most_one_destination"
+    t.check_constraint "((recipient_id IS NOT NULL)::integer + (recipient_fleet_id IS NOT NULL)::integer) <= 1", name: "inventory_transfers_at_most_one_recipient"
+    t.check_constraint "destination_fleet_inventory_id IS NULL OR destination_fleet_inventory_id <> source_fleet_inventory_id", name: "inventory_transfers_not_to_itself_fleet"
+    t.check_constraint "destination_inventory_id IS NULL OR destination_inventory_id <> source_inventory_id", name: "inventory_transfers_not_to_itself"
   end
 
   create_table "item_price_snapshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1595,6 +1680,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.datetime "hangar_updated_at", precision: nil
     t.boolean "hide_owner", default: false, null: false
     t.string "homepage"
+    t.integer "inventory_transfer_policy", default: 0, null: false
     t.datetime "last_active_at"
     t.datetime "last_sign_in_at", precision: nil
     t.string "last_sign_in_ip", limit: 255
@@ -1623,6 +1709,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
     t.integer "sign_in_count", default: 0, null: false
     t.boolean "tester", default: false
     t.boolean "tracking", default: true
+    t.datetime "transfers_blocked_at"
+    t.text "transfers_blocked_reason"
     t.string "twitch"
     t.string "unconfirmed_email", limit: 255
     t.string "unlock_token", limit: 255
@@ -1765,6 +1853,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
   add_foreign_key "fleet_inventories", "users", column: "managed_by"
   add_foreign_key "fleet_inventory_items", "fleet_inventories"
   add_foreign_key "fleet_inventory_items", "fleet_inventory_positions", on_delete: :restrict
+  add_foreign_key "fleet_inventory_items", "inventory_transfers", on_delete: :nullify
   add_foreign_key "fleet_inventory_items", "users", column: "added_by"
   add_foreign_key "fleet_inventory_items", "users", column: "member_id"
   add_foreign_key "fleet_inventory_positions", "fleet_inventories", on_delete: :cascade
@@ -1779,7 +1868,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "inventory_items", "inventory_positions", on_delete: :restrict
+  add_foreign_key "inventory_items", "inventory_transfers", on_delete: :nullify
   add_foreign_key "inventory_positions", "inventories", on_delete: :cascade
+  add_foreign_key "inventory_transfer_reports", "admin_users", column: "reviewed_by_id", on_delete: :nullify
+  add_foreign_key "inventory_transfer_reports", "fleets", on_delete: :cascade
+  add_foreign_key "inventory_transfer_reports", "inventory_transfers", on_delete: :cascade
+  add_foreign_key "inventory_transfer_reports", "users", column: "reporter_id", on_delete: :nullify
+  add_foreign_key "inventory_transfer_rules", "fleets", column: "subject_fleet_id", on_delete: :cascade
+  add_foreign_key "inventory_transfer_rules", "fleets", on_delete: :cascade
+  add_foreign_key "inventory_transfer_rules", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "inventory_transfer_rules", "users", column: "subject_user_id", on_delete: :cascade
+  add_foreign_key "inventory_transfer_rules", "users", on_delete: :cascade
+  add_foreign_key "inventory_transfers", "fleet_inventories", column: "destination_fleet_inventory_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "fleet_inventories", column: "source_fleet_inventory_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "fleets", column: "recipient_fleet_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "inventories", column: "destination_inventory_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "inventories", column: "source_inventory_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "users", column: "initiated_by_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
   add_foreign_key "mission_ship_models", "mission_ships", on_delete: :cascade
   add_foreign_key "mission_ship_models", "models", on_delete: :cascade
   add_foreign_key "mission_ships", "mission_teams"

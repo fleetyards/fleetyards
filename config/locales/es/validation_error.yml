@@ -53,6 +53,10 @@ es:
       create: No se pudo crear el inventario.
       update: No se pudo actualizar el inventario.
       destroy: No se pudo eliminar el inventario.
+    inventory_transfers:
+      create: No se pudo enviar la transferencia.
+      update: No se pudo actualizar la transferencia.
+      report: No se pudo denunciar la transferencia.
     hangar_inventory_items:
       create: No se pudo crear la entrada de inventario.
       update: No se pudo actualizar la entrada de inventario.

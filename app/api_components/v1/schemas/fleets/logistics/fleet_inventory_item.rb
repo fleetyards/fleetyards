@@ -20,6 +20,22 @@ module V1
               entryType: ::V1::Schemas::Enums::InventoryEntryTypeEnum,
               quality: {type: :integer, minimum: 0, maximum: 1000},
               notes: {type: :string},
+              transferId: {type: [:string, :null], format: :uuid},
+              transfer: {
+                type: [:object, :null],
+                properties: {
+                  id: {type: :string, format: :uuid},
+                  direction: {type: :string, enum: %w[in out]},
+                  counterparty: ::V1::Schemas::Transfers::TransferParty,
+                  inventory: {
+                    type: [:object, :null],
+                    properties: {
+                      name: {type: :string},
+                      kind: ::V1::Schemas::Enums::InventoryTransferPartyKindEnum
+                    }
+                  }
+                }
+              },
               image: ::Shared::V1::Schemas::MediaFile,
               item: ::V1::Schemas::InventoryItemRef,
               inventory: ::V1::Schemas::InventoryRef,

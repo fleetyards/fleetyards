@@ -19,6 +19,7 @@ import {
   useHangarInventoryItems,
   useHangarInventoryStock,
   useDestroyHangarInventoryItem,
+  FeatureFlagName,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
@@ -29,8 +30,11 @@ import type {
   InventoryStockRecord,
   InventoryTarget,
 } from "@/frontend/types/logistics";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useTransferModal } from "@/frontend/composables/useTransferModal";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -39,7 +43,10 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const inventorySlug = computed(() => route.params.inventory as string);
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "hangar-inventory",
+  log: "hangar-inventory-transactions",
+});
 
 const {
   data: inventory,
@@ -135,6 +142,18 @@ const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
   });
 };
 
+const { isFeatureEnabled } = useFeatures();
+
+const transfersEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
+);
+
+const { openTransferModal, openTransferForSelection } = useTransferModal({
+  source: () => inventory.value,
+  records: () => stockRecords.value,
+  onSent: () =>
+    Promise.all([refetchStock(), refetchLogItems(), refetchInventory()]),
+});
 const openCsvImportModal = () => {
   if (!inventory.value) return;
 
@@ -270,8 +289,33 @@ const crumbs = computed<Crumb[]>(() => [
               :log-records="itemsList"
               :stock-loading="stockLoading"
               :log-loading="logLoading"
+              :stock-selectable="transfersEnabled"
               show-notes
             >
+              <template v-if="transfersEnabled" #stock-actions="{ record }">
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  :aria-label="t('actions.logistics.transfer')"
+                  :title="t('actions.logistics.transfer')"
+                  :data-test="`stock-transfer-${record.slug}`"
+                  @click="openTransferModal([record as InventoryStockRecord])"
+                >
+                  <i class="fa-duotone fa-right-left" />
+                </Btn>
+              </template>
+              <template
+                v-if="transfersEnabled"
+                #stock-selected-actions="{ selected }"
+              >
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  data-test="stock-transfer-selected"
+                  @click="openTransferForSelection(selected)"
+                >
+                  <i class="fa-duotone fa-right-left" />
+                  {{ t("actions.logistics.transfer") }}
+                </Btn>
+              </template>
               <template #stock-name="{ record }">
                 <router-link :to="stockItemRoute(record.slug)">
                   {{ record.name }}

@@ -1,0 +1,9 @@
+---
+de:
+  inventory_transfers:
+    refusals:
+      unavailable: "kann keine Transfers empfangen"
+      sender_blocked: "Du darfst keine Transfers senden"
+      policy_closed: "Dieser Empfänger kann keine Transfers annehmen"
+      policy_restricted: "Dieser Empfänger nimmt nur Transfers von Personen an, mit denen er bereits eine Flotte teilt"
+      cap_reached: "Dieser Empfänger hat zu viele offene Transfers. Versuche es später erneut"

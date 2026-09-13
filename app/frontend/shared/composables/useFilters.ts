@@ -11,8 +11,18 @@ export const useFilters = <T>({
 
   const defaultIgnoreKeys = ["s", "sorts"];
   const paginationKeys = ["page", "perPage"];
+  // View state that lives in the URL so a reload restores it, and that no
+  // endpoint has ever been asked to filter on. `getQuery` spreads the whole
+  // route query into `q`, and the query schemas are `additionalProperties:
+  // false` -- so a key like this reaches the API as an unknown filter and comes
+  // back a 400, which reads as a server error.
+  const viewStateKeys = ["tab"];
 
-  const excludeKeys = [...defaultIgnoreKeys, ...paginationKeys];
+  const excludeKeys = [
+    ...defaultIgnoreKeys,
+    ...paginationKeys,
+    ...viewStateKeys,
+  ];
 
   const filters = computed<T>(() => {
     const query = { ...(route.query || {}) };
@@ -45,7 +55,7 @@ export const useFilters = <T>({
       .forEach((key) => delete query[key]);
 
     Object.keys(query)
-      .filter((key) => paginationKeys.includes(key))
+      .filter((key) => [...paginationKeys, ...viewStateKeys].includes(key))
       .forEach((key) => delete query[key]);
 
     return query;

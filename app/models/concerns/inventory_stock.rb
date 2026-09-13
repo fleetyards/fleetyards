@@ -12,6 +12,16 @@ module InventoryStock
 
   included do
     before_save :update_slugs
+
+    # Goods a pending transfer dispatched are represented by an ordinary
+    # withdrawal on this inventory. Destroying it would take that withdrawal
+    # with it -- `dependent: :destroy` on the entries -- leaving a shipment that
+    # never left anywhere, which acceptance would then happily deliver.
+    #
+    # Refused rather than auto-cancelled: cancelling returns the goods to the
+    # inventory being destroyed, which is a contradiction, and doing it silently
+    # is the worst of the three.
+    before_destroy :refuse_while_goods_are_in_transit, prepend: true
   end
 
   class_methods do
@@ -151,13 +161,52 @@ module InventoryStock
     changed
   end
 
+  # Pending transfers are counted through the entries rather than through the
+  # transfer's own columns, because either end of one may be in either ledger.
+  def entries_in_transit
+    inventory_items
+      .joins(:inventory_transfer)
+      .where(inventory_transfers: {aasm_state: "pending"})
+  end
+
+  # What this inventory has out on transfers nobody has answered. Summed per
+  # unit, because SCU and pieces do not add up together.
+  def in_transit_totals
+    entries_in_transit.where(entry_type: :withdrawal).group(:unit).sum(:quantity)
+      .transform_keys(&:to_s)
+      .then { |totals| {scu: totals["scu"].to_f, units: totals["units"].to_f} }
+  end
+
+  def goods_in_transit?
+    return false unless persisted?
+
+    entries_in_transit.exists?
+  end
+
   def destroy_stock_item(stock_item)
+    in_transit = entries_for_stock_item(stock_item).joins(:inventory_transfer)
+      .where(inventory_transfers: {aasm_state: "pending"})
+
+    if in_transit.exists?
+      errors.add(:base, :goods_in_transit,
+        message: I18n.t("activerecord.errors.messages.position_goods_in_transit"))
+      return false
+    end
+
     transaction do
       entries_for_stock_item(stock_item).destroy_all
       positions.where(id: stock_item.position_id).destroy_all
     end
 
     touch
+  end
+
+  private def refuse_while_goods_are_in_transit
+    return unless goods_in_transit?
+
+    errors.add(:base, :goods_in_transit,
+      message: I18n.t("activerecord.errors.messages.inventory_goods_in_transit"))
+    throw(:abort)
   end
 
   private def move_position(stock_item, changed)

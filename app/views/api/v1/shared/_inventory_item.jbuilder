@@ -15,6 +15,35 @@ json.entry_type inventory_item.entry_type
 json.quality inventory_item.quality
 json.notes inventory_item.notes
 
+# The transfer that wrote this entry, if one did. A deposit somebody typed and
+# a deposit that arrived from another inventory are the same row otherwise, and
+# the ledger is where you go to find out which.
+json.transfer_id inventory_item.inventory_transfer_id
+
+# Where the goods came from, or went to. A marker alone says an entry was not
+# typed by hand; this says what the ledger is actually being asked.
+if inventory_item.inventory_transfer.present?
+  json.transfer do
+    inventory, party = inventory_item.inventory_transfer.counterpart_for(inventory_item.inventory)
+
+    json.id inventory_item.inventory_transfer_id
+    json.direction inventory_item.deposit? ? "in" : "out"
+    json.counterparty do
+      json.partial! "api/v1/shared/transfer_party", party: party
+    end
+    json.inventory do
+      if inventory.blank?
+        json.null!
+      else
+        json.name inventory.name
+        json.kind inventory.is_a?(::FleetInventory) ? "fleet" : "user"
+      end
+    end
+  end
+else
+  json.transfer nil
+end
+
 json.image do
   json.partial! "api/v1/shared/inventory_image", entry: inventory_item
 end

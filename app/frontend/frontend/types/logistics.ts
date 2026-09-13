@@ -54,6 +54,10 @@ export type InventoryPanelRecord = {
   entriesCount: number;
   totalScu?: number;
   totalUnits?: number;
+  // Out on a transfer nobody has answered. Gone from the totals above, so
+  // without this the goods simply vanish from the page that sent them.
+  inTransitScu?: number;
+  inTransitUnits?: number;
   totalVolumeScu?: number;
   image?: { mediumUrl?: string };
   vehicle?: InventoryVehicleReference | null;
@@ -77,6 +81,19 @@ export type InventoryLedgerRecord = {
   quality?: number;
   quantity: number;
   notes?: string;
+  // Set when a transfer wrote this entry rather than a person.
+  transferId?: string | null;
+  // Structural, and no stricter than the generated shapes: the three entry
+  // kinds each get their own `…ItemTransfer` type and all of them have to
+  // satisfy this one record.
+  transfer?: {
+    id?: string;
+    // From this entry's point of view: a deposit arrived, a withdrawal left.
+    direction?: string;
+    counterparty?: { kind: string; name: string; slug: string } | null;
+    inventory?: { name?: string; kind?: string } | null;
+  } | null;
+  createdAt?: string | null;
   inventory?: InventoryReference;
   item?: InventoryItemReference | null;
 };

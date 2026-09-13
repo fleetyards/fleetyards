@@ -50,6 +50,10 @@ it:
       create: Impossibile creare l'inventario.
       update: Impossibile aggiornare l'inventario.
       destroy: Impossibile eliminare l'inventario.
+    inventory_transfers:
+      create: Impossibile inviare il trasferimento.
+      update: Impossibile aggiornare il trasferimento.
+      report: Impossibile segnalare il trasferimento.
     hangar_inventory_items:
       create: Impossibile creare la voce di inventario.
       update: Impossibile aggiornare la voce di inventario.

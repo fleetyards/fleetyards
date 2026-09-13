@@ -3205,6 +3205,433 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventory-transfers":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Inventory Transfers
+      tags:
+      - FleetInventoryTransfers
+      operationId: fleetInventoryTransfers
+      parameters:
+      - name: direction
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - incoming
+          - outgoing
+        description: Limit to transfers this fleet has to answer, or to ones it sent
+      - name: q
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/InventoryTransferQuery"
+        description: Filters
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfersList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Create Fleet Inventory Transfer
+      tags:
+      - FleetInventoryTransfers
+      operationId: createFleetInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryTransferCreateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventory-transfers/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    get:
+      summary: Fleet Inventory Transfer
+      tags:
+      - FleetInventoryTransfers
+      operationId: fleetInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventory-transfers/{id}/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    put:
+      summary: Accept Fleet Inventory Transfer
+      tags:
+      - FleetInventoryTransfers
+      operationId: acceptFleetInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryTransferAcceptInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventory-transfers/{id}/cancel":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    put:
+      summary: Cancel Fleet Inventory Transfer
+      tags:
+      - FleetInventoryTransfers
+      operationId: cancelFleetInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventory-transfers/{id}/decline":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    put:
+      summary: Decline Fleet Inventory Transfer
+      tags:
+      - FleetInventoryTransfers
+      operationId: declineFleetInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventory-transfers/{id}/report":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    post:
+      summary: Report Fleet Inventory Transfer
+      tags:
+      - FleetInventoryTransfers
+      operationId: reportFleetInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryTransferReportInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/invite-urls":
     parameters:
     - name: fleetSlug
@@ -6437,6 +6864,390 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventory-transfers":
+    get:
+      summary: Hangar Inventory Transfers
+      tags:
+      - HangarInventoryTransfers
+      operationId: hangarInventoryTransfers
+      parameters:
+      - name: direction
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - incoming
+          - outgoing
+        description: Limit to transfers this user has to answer, or to ones they sent
+      - name: q
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/InventoryTransferQuery"
+        description: Filters
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfersList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Create Hangar Inventory Transfer
+      tags:
+      - HangarInventoryTransfers
+      operationId: createHangarInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryTransferCreateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/inventory-transfers/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    get:
+      summary: Hangar Inventory Transfer
+      tags:
+      - HangarInventoryTransfers
+      operationId: hangarInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventory-transfers/{id}/accept":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    put:
+      summary: Accept Hangar Inventory Transfer
+      tags:
+      - HangarInventoryTransfers
+      operationId: acceptHangarInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryTransferAcceptInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/inventory-transfers/{id}/cancel":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    put:
+      summary: Cancel Hangar Inventory Transfer
+      tags:
+      - HangarInventoryTransfers
+      operationId: cancelHangarInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/inventory-transfers/{id}/decline":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    put:
+      summary: Decline Hangar Inventory Transfer
+      tags:
+      - HangarInventoryTransfers
+      operationId: declineHangarInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/inventory-transfers/{id}/report":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Transfer id
+      required: true
+    post:
+      summary: Report Hangar Inventory Transfer
+      tags:
+      - HangarInventoryTransfers
+      operationId: reportHangarInventoryTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryTransferReportInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryTransfer"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/items":
     get:
       summary: Your personal Hangar items
@@ -13089,6 +13900,7 @@ components:
       - fleet_starmap
       - fleet_worldmap
       - hangar_inventories
+      - inventory_transfers
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -13107,6 +13919,7 @@ components:
       - FLEET_STARMAP
       - FLEET_WORLDMAP
       - HANGAR_INVENTORIES
+      - INVENTORY_TRANSFERS
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID
@@ -14322,6 +15135,10 @@ components:
           type: number
         totalUnits:
           type: number
+        inTransitScu:
+          type: number
+        inTransitUnits:
+          type: number
         manager:
           "$ref": "#/components/schemas/FleetInventoryManager"
         image:
@@ -14401,6 +15218,35 @@ components:
           maximum: 1000
         notes:
           type: string
+        transferId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        transfer:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            direction:
+              type: string
+              enum:
+              - in
+              - out
+            counterparty:
+              "$ref": "#/components/schemas/TransferParty"
+            inventory:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type: string
+                kind:
+                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -15862,6 +16708,10 @@ components:
           type: number
         totalUnits:
           type: number
+        inTransitScu:
+          type: number
+        inTransitUnits:
+          type: number
         totalVolumeScu:
           type: number
         unmeasuredCount:
@@ -15937,6 +16787,35 @@ components:
           maximum: 1000
         notes:
           type: string
+        transferId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        transfer:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            direction:
+              type: string
+              enum:
+              - in
+              - out
+            counterparty:
+              "$ref": "#/components/schemas/TransferParty"
+            inventory:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type: string
+                kind:
+                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -17014,6 +17893,10 @@ components:
           type: number
         totalUnits:
           type: number
+        inTransitScu:
+          type: number
+        inTransitUnits:
+          type: number
         totalVolumeScu:
           type: number
         unmeasuredCount:
@@ -17097,6 +17980,35 @@ components:
           maximum: 1000
         notes:
           type: string
+        transferId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        transfer:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            direction:
+              type: string
+              enum:
+              - in
+              - out
+            counterparty:
+              "$ref": "#/components/schemas/TransferParty"
+            inventory:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type: string
+                kind:
+                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -17332,6 +18244,307 @@ components:
       additionalProperties: false
       example: {}
       title: InventoryStockQuery
+    InventoryTransfer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          "$ref": "#/components/schemas/InventoryTransferStateEnum"
+        note:
+          type:
+          - string
+          - 'null'
+        immediate:
+          type: boolean
+        source:
+          "$ref": "#/components/schemas/InventoryTransferEndpoint"
+        destination:
+          "$ref": "#/components/schemas/InventoryTransferEndpoint"
+        sender:
+          "$ref": "#/components/schemas/TransferParty"
+        recipient:
+          "$ref": "#/components/schemas/TransferParty"
+        destinationParty:
+          "$ref": "#/components/schemas/TransferParty"
+        initiatedBy:
+          type:
+          - string
+          - 'null'
+        resolvedBy:
+          type:
+          - string
+          - 'null'
+        lines:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InventoryTransferLine"
+        expiresAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        completedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        declinedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        cancelledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - state
+      - immediate
+      - source
+      - destination
+      - sender
+      - recipient
+      - lines
+      title: InventoryTransfer
+    InventoryTransferAcceptInput:
+      type: object
+      properties:
+        inventoryId:
+          type: string
+          format: uuid
+        fleetInventoryId:
+          type: string
+          format: uuid
+        vehicleId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: InventoryTransferAcceptInput
+    InventoryTransferCreateInput:
+      type: object
+      properties:
+        sourceInventoryId:
+          type: string
+          format: uuid
+        lines:
+          type: array
+          minItems: 1
+          items:
+            "$ref": "#/components/schemas/InventoryTransferLineInput"
+        inventoryId:
+          type: string
+          format: uuid
+        fleetInventoryId:
+          type: string
+          format: uuid
+        vehicleId:
+          type: string
+          format: uuid
+        recipientUsername:
+          type: string
+        recipientFleetSlug:
+          type: string
+        note:
+          type: string
+      additionalProperties: false
+      required:
+      - sourceInventoryId
+      - lines
+      title: InventoryTransferCreateInput
+    InventoryTransferEndpoint:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - kind
+      title: InventoryTransferEndpoint
+    InventoryTransferLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
+        unit:
+          "$ref": "#/components/schemas/InventoryUnitEnum"
+        quantity:
+          type: number
+        quality:
+          type:
+          - integer
+          - 'null'
+        positionId:
+          type: string
+          format: uuid
+        itemAvailable:
+          type: boolean
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - category
+      - unit
+      - quantity
+      - positionId
+      - itemAvailable
+      title: InventoryTransferLine
+    InventoryTransferLineInput:
+      type: object
+      properties:
+        positionId:
+          type: string
+          format: uuid
+        quantity:
+          type: number
+          exclusiveMinimum: 0
+      additionalProperties: false
+      required:
+      - positionId
+      - quantity
+      title: InventoryTransferLineInput
+    InventoryTransferPartyKindEnum:
+      type: string
+      enum:
+      - user
+      - fleet
+      x-enumNames:
+      - USER
+      - FLEET
+      title: InventoryTransferPartyKindEnum
+    InventoryTransferPolicyEnum:
+      type: string
+      enum:
+      - everyone
+      - known
+      - nobody
+      x-enumNames:
+      - EVERYONE
+      - KNOWN
+      - NOBODY
+      title: InventoryTransferPolicyEnum
+    InventoryTransferQuery:
+      type: object
+      properties:
+        stateEq:
+          "$ref": "#/components/schemas/InventoryTransferStateEnum"
+        stateIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InventoryTransferStateEnum"
+        createdAtGteq:
+          type: string
+          format: date-time
+        createdAtLteq:
+          type: string
+          format: date-time
+        s:
+          "$ref": "#/components/schemas/InventoryTransferSortEnum"
+      additionalProperties: false
+      title: InventoryTransferQuery
+    InventoryTransferReportInput:
+      type: object
+      properties:
+        reason:
+          "$ref": "#/components/schemas/InventoryTransferReportReasonEnum"
+        note:
+          type: string
+      additionalProperties: false
+      required:
+      - reason
+      title: InventoryTransferReportInput
+    InventoryTransferReportReasonEnum:
+      type: string
+      enum:
+      - spam
+      - harassment
+      - scam
+      - other
+      x-enumNames:
+      - SPAM
+      - HARASSMENT
+      - SCAM
+      - OTHER
+      title: InventoryTransferReportReasonEnum
+    InventoryTransferSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      - state asc
+      - state desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - STATE_ASC
+      - STATE_DESC
+      title: InventoryTransferSortEnum
+    InventoryTransferStateEnum:
+      type: string
+      enum:
+      - pending
+      - completed
+      - declined
+      - cancelled
+      - expired
+      x-enumNames:
+      - PENDING
+      - COMPLETED
+      - DECLINED
+      - CANCELLED
+      - EXPIRED
+      title: InventoryTransferStateEnum
+    InventoryTransfersList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InventoryTransfer"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: InventoryTransfersList
     InventoryUnitEnum:
       type: string
       enum:
@@ -19837,6 +21050,8 @@ components:
       - fleet_event_signup_confirmed
       - fleet_event_signup_assigned
       - fleet_event_signup_kicked
+      - inventory_transfer_received
+      - inventory_transfer_resolved
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -19862,6 +21077,8 @@ components:
       - FLEET_EVENT_SIGNUP_CONFIRMED
       - FLEET_EVENT_SIGNUP_ASSIGNED
       - FLEET_EVENT_SIGNUP_KICKED
+      - INVENTORY_TRANSFER_RECEIVED
+      - INVENTORY_TRANSFER_RESOLVED
       title: NotificationTypeEnum
     NotificationUnreadCount:
       type: object
@@ -20878,6 +22095,23 @@ components:
       - VTOL
       - MAV
       title: ThrusterClassEnum
+    TransferParty:
+      type:
+      - object
+      - 'null'
+      properties:
+        kind:
+          "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - kind
+      - name
+      - slug
+      title: TransferParty
     User:
       type: object
       properties:

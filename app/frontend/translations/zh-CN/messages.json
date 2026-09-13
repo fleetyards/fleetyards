@@ -590,6 +590,16 @@
             "success": "货物已清空。",
             "failure": "无法清空货物。"
           }
+        },
+        "transfer": {
+          "needsAnswer": "对方需要先接受。库存现在即离开你的仓库，若被拒绝则会退回。",
+          "create": {
+            "failure": "无法发送转移"
+          },
+          "resolve": {
+            "failure": "无法更新转移"
+          },
+          "reportHint": "举报会拒绝该转移并退回货物，同时阻止该发送者再次联系你。"
         }
       },
       "adminNotifications": {

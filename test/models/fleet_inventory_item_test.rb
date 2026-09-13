@@ -20,6 +20,7 @@ require "test_helper"
 #  updated_at                  :datetime         not null
 #  fleet_inventory_id          :uuid             not null
 #  fleet_inventory_position_id :uuid             not null
+#  inventory_transfer_id       :uuid
 #  item_id                     :uuid
 #  member_id                   :uuid
 #
@@ -27,6 +28,7 @@ require "test_helper"
 #
 #  index_fleet_inventory_items_on_fleet_inventory_id           (fleet_inventory_id)
 #  index_fleet_inventory_items_on_fleet_inventory_position_id  (fleet_inventory_position_id)
+#  index_fleet_inventory_items_on_inventory_transfer_id        (inventory_transfer_id)
 #  index_fleet_inventory_items_on_member_id                    (member_id)
 #
 # Foreign Keys
@@ -34,6 +36,7 @@ require "test_helper"
 #  fk_rails_...  (added_by => users.id)
 #  fk_rails_...  (fleet_inventory_id => fleet_inventories.id)
 #  fk_rails_...  (fleet_inventory_position_id => fleet_inventory_positions.id) ON DELETE => restrict
+#  fk_rails_...  (inventory_transfer_id => inventory_transfers.id) ON DELETE => nullify
 #  fk_rails_...  (member_id => users.id)
 #
 class FleetInventoryItemTest < ActiveSupport::TestCase

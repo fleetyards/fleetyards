@@ -19,6 +19,16 @@ resource :hangar, only: %i[show destroy] do
     put :sort, on: :collection
   end
 
+  resources :hangar_inventory_transfers, path: "inventory-transfers",
+    controller: "hangar_inventory_transfers", only: %i[index show create] do
+    member do
+      put :accept
+      put :decline
+      put :cancel
+      post :report
+    end
+  end
+
   get "inventory-items", to: "hangar_all_inventory_items#index"
   get "inventory-stock", to: "hangar_all_inventory_stock#index"
 

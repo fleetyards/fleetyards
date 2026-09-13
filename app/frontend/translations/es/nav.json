@@ -20,7 +20,8 @@
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "vehicleCargo": "Carga",
-        "imports": "Importaciones"
+        "imports": "Importaciones",
+        "transfers": "Transferencias"
       },
       "login": "Iniciar sesión",
       "logout": "Cerrar sesión",

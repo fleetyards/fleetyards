@@ -422,7 +422,11 @@
         "importCsv": "Import from CSV",
         "hangarInventories": "Hangar Inventories",
         "editItem": "Edit Entry",
-        "editStockItem": "Edit Item"
+        "editStockItem": "Edit Item",
+        "transfer": "轉移庫存",
+        "transfers": "轉移",
+        "acceptTransfer": "接受轉移",
+        "reportTransfer": "檢舉轉移"
       },
       "notifications": {
         "index": "通知"

@@ -41,7 +41,8 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "Cargaison du vaisseau",
-        "imports": "Imports"
+        "imports": "Imports",
+        "transfers": "Transferts"
       },
       "requestPassword": "Demander un mot de passe",
       "changePassword": "Modifier le mot de passe",
@@ -58,7 +59,8 @@
         "stats": "Statistiques sur %{fleet}",
         "logistics": {
           "index": "%{fleet} Logistics",
-          "inventories": "%{fleet} Inventories"
+          "inventories": "%{fleet} Inventories",
+          "transfers": "Transferts de %{fleet}"
         },
         "missions": {
           "index": "Missions de %{fleet}",

@@ -590,6 +590,16 @@
             "success": "Carico svuotato.",
             "failure": "Impossibile svuotare il carico."
           }
+        },
+        "transfer": {
+          "needsAnswer": "Devono accettarlo prima che arrivi. Le scorte lasciano il tuo inventario ora e tornano se rifiutano.",
+          "create": {
+            "failure": "Impossibile inviare il trasferimento"
+          },
+          "resolve": {
+            "failure": "Impossibile aggiornare il trasferimento"
+          },
+          "reportHint": "Segnalare lo rifiuta, restituisce le merci e impedisce a questo mittente di ricontattarti."
         }
       },
       "adminNotifications": {
