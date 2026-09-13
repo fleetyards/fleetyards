@@ -65,7 +65,8 @@
             "basic": "Basic",
             "description": "Description",
             "teams": "Teams & slots"
-          }
+          },
+          "payouts": "Payouts"
         },
         "settings": {
           "index": "Settings",
@@ -83,7 +84,8 @@
       "tools": {
         "index": "Tools",
         "travelTimes": "Travel Times",
-        "cargoGrids": "Cargo Grids"
+        "cargoGrids": "Cargo Grids",
+        "tours": "Tours"
       },
       "api": "API Docs",
       "stats": "Stats",

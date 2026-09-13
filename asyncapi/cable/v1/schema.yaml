@@ -107,6 +107,16 @@ channels:
     messages:
       Vehicle:
         "$ref": "#/components/messages/Vehicle"
+  PayoutLedger:
+    address: payout_ledger:{user_gid}
+    x-actioncable-channel: PayoutLedgerChannel
+    parameters:
+      user_gid:
+        description: GlobalID param of the subscribed user, derived from the connection
+        x-client-supplied: false
+    messages:
+      PayoutLedger:
+        "$ref": "#/components/messages/PayoutLedger"
   UserNotifications:
     address: user_notifications:{user_gid}
     x-actioncable-channel: UserNotificationsChannel
@@ -228,6 +238,13 @@ operations:
     messages:
     - "$ref": "#/channels/OnSaleHangar/messages/Vehicle"
     summary: A vehicle the user owns went on sale
+  receivePayoutLedgerUpdate:
+    action: receive
+    channel:
+      "$ref": "#/channels/PayoutLedger"
+    messages:
+    - "$ref": "#/channels/PayoutLedger/messages/PayoutLedger"
+    summary: A payout ledger the user takes part in changed
   receiveUserNotification:
     action: receive
     channel:
@@ -1502,6 +1519,11 @@ components:
       - fleet:events:update
       - fleet:events:delete
       - fleet:events:manage
+      - fleet:payouts:read
+      - fleet:payouts:create
+      - fleet:payouts:update
+      - fleet:payouts:delete
+      - fleet:payouts:manage
       - fleet:notifications:manage
       x-enumNames:
       - FLEET_UPDATE
@@ -1544,6 +1566,11 @@ components:
       - FLEET_EVENTS_UPDATE
       - FLEET_EVENTS_DELETE
       - FLEET_EVENTS_MANAGE
+      - FLEET_PAYOUTS_READ
+      - FLEET_PAYOUTS_CREATE
+      - FLEET_PAYOUTS_UPDATE
+      - FLEET_PAYOUTS_DELETE
+      - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
     FuelTank:
       type: object
@@ -3046,6 +3073,97 @@ components:
       - FLEET_EVENT_SIGNUP_KICKED
       - INVENTORY_TRANSFER_RECEIVED
       - INVENTORY_TRANSFER_RESOLVED
+    PayoutLedger:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        subjectType:
+          "$ref": "#/components/schemas/PayoutLedgerSubjectTypeEnum"
+        subjectId:
+          type: string
+          format: uuid
+        status:
+          "$ref": "#/components/schemas/PayoutLedgerStatusEnum"
+        notes:
+          type:
+          - string
+          - 'null'
+        settledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        participantsCount:
+          type: integer
+        entriesCount:
+          type: integer
+        totalIncome:
+          type: string
+        totalExpenses:
+          type: string
+        profit:
+          type: string
+        participants:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PayoutParticipant"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - subjectType
+      - subjectId
+      - status
+      additionalProperties: false
+    PayoutLedgerStatusEnum:
+      type: string
+      enum:
+      - open
+      - settled
+      x-enumNames:
+      - OPEN
+      - SETTLED
+    PayoutLedgerSubjectTypeEnum:
+      type: string
+      enum:
+      - FleetEvent
+      - Tour
+      x-enumNames:
+      - FLEET_EVENT
+      - TOUR
+    PayoutParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        payoutLedgerId:
+          type: string
+          format: uuid
+        displayName:
+          type: string
+        guest:
+          type: boolean
+        user:
+          "$ref": "#/components/schemas/UserRef"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - payoutLedgerId
+      - displayName
+      - guest
+      additionalProperties: false
     RefuelBoom:
       type: object
       properties:
@@ -3082,6 +3200,14 @@ components:
       - RETRO
       - VTOL
       - MAV
+    UserRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
     Vehicle:
       type: object
       properties:
@@ -3239,6 +3365,9 @@ components:
     Notification:
       payload:
         "$ref": "#/components/schemas/Notification"
+    PayoutLedger:
+      payload:
+        "$ref": "#/components/schemas/PayoutLedger"
     Vehicle:
       payload:
         "$ref": "#/components/schemas/Vehicle"

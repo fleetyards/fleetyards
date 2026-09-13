@@ -155,7 +155,7 @@
         "enable": " To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy."
       },
       "oauthAuthorize": {
-        "requestingAccess": "{clientName} 正在請求存取您的帳戶。",
+        "requestingAccess": "%{clientName} 正在請求存取您的帳戶。",
         "scopesIntro": "此應用程式將能夠："
       },
       "syncExtension": {
@@ -168,6 +168,9 @@
         "pendingReview": "此應用程式已註冊，正在等待審核。在獲得核准前無法請求存取權限。",
         "rejected": "此應用程式已被拒絕，無法請求存取權限。依照原因所述修改後會重新進入審核佇列。",
         "returnedToReview": "修改重新導向 URI 或權限範圍會使已核准的應用程式重新進入審核。"
+      },
+      "payouts": {
+        "tourInvite": "%{username} 邀請你加入此行程。"
       }
     }
   }

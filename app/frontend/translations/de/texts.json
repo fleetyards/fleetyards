@@ -155,7 +155,7 @@
         "enable": " To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy."
       },
       "oauthAuthorize": {
-        "requestingAccess": "{clientName} fordert Zugriff auf Ihr Konto an.",
+        "requestingAccess": "%{clientName} fordert Zugriff auf Ihr Konto an.",
         "scopesIntro": "Diese Anwendung wird in der Lage sein:"
       },
       "syncExtension": {
@@ -168,6 +168,9 @@
         "pendingReview": "Diese Anwendung ist registriert und wartet auf die Prüfung. Bis zur Freigabe kann sie keinen Zugriff anfragen.",
         "rejected": "Diese Anwendung wurde abgelehnt und kann keinen Zugriff anfragen. Wer behebt, was im Grund steht, landet wieder in der Warteschlange.",
         "returnedToReview": "Wird die Redirect-URI oder werden die Scopes geändert, geht eine freigegebene Anwendung zurück in die Prüfung."
+      },
+      "payouts": {
+        "tourInvite": "%{username} lädt dich zu dieser Tour ein."
       }
     }
   }

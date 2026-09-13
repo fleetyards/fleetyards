@@ -16,7 +16,15 @@ const { isFeatureEnabled } = useFeatures();
 const route = useRoute();
 
 const active = computed(() => {
-  return ["tools", "travel-times", "cargo-grids"].includes(String(route.name));
+  return [
+    "tools",
+    "travel-times",
+    "cargo-grids",
+    "tours",
+    "tour",
+    "tour-add",
+    "tour-join",
+  ].includes(String(route.name));
 });
 </script>
 
@@ -39,6 +47,12 @@ const active = computed(() => {
         :to="{ name: 'travel-times' }"
         :label="t('nav.tools.travelTimes')"
         icon="fa-duotone fa-gauge-high"
+      />
+      <NavItem
+        v-if="isFeatureEnabled(FeatureFlagName.TOUR_PAYOUTS)"
+        :to="{ name: 'tours' }"
+        :label="t('nav.tools.tours')"
+        icon="fa-duotone fa-coins"
       />
       <NavItem
         v-if="isFeatureEnabled(FeatureFlagName.TOOLS_CARGO_GRIDS)"

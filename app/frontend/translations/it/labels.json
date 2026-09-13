@@ -2333,6 +2333,37 @@
         "large": "Grande (L)",
         "extra_large": "Extra grande (XL)",
         "capital": "Capitale (C)"
+      },
+      "payouts": {
+        "amount": "Importo",
+        "description": "Descrizione",
+        "entryType": "Tipo",
+        "expense": "Speso",
+        "income": "Guadagnato",
+        "participant": "Chi",
+        "notes": "Note",
+        "occurredAt": "Quando",
+        "paid": "Speso",
+        "held": "Detiene",
+        "share": "Quota",
+        "net": "Saldo",
+        "profit": "Profitto",
+        "totalIncome": "Guadagnato",
+        "totalExpenses": "Speso",
+        "guest": "Ospite",
+        "username": "Nome utente",
+        "name": "Nome",
+        "sends": "invia",
+        "receives": "riceve",
+        "settled": "Chiuso",
+        "open": "Aperto",
+        "owes": "deve",
+        "isOwed": "deve ricevere",
+        "even": "in pari",
+        "title": "Titolo",
+        "startsAt": "Inizia il",
+        "inviteLink": "Link d'invito",
+        "participants": "Persone"
       }
     }
   }

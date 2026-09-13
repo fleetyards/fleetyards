@@ -65,7 +65,8 @@
             "basic": "Básico",
             "description": "Descripción",
             "teams": "Equipos y plazas"
-          }
+          },
+          "payouts": "Pagos"
         },
         "settings": {
           "index": "Configuración",
@@ -83,7 +84,8 @@
       "tools": {
         "index": "Herramientas",
         "travelTimes": "Tiempos de Viaje",
-        "cargoGrids": "Grillas de Carga"
+        "cargoGrids": "Grillas de Carga",
+        "tours": "Expediciones"
       },
       "api": "Documentación API",
       "stats": "Estadísticas",

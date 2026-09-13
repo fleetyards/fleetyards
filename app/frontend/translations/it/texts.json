@@ -155,7 +155,7 @@
         "enable": " Per proteggere il tuo account FleetYards.net puoi generare Token per l'autenticazione a due fattori con Google Authenticator, 1Password o Authy."
       },
       "oauthAuthorize": {
-        "requestingAccess": "{clientName} sta richiedendo l'accesso al tuo account.",
+        "requestingAccess": "%{clientName} sta richiedendo l'accesso al tuo account.",
         "scopesIntro": "Questa applicazione potrà:"
       },
       "syncExtension": {
@@ -168,6 +168,9 @@
         "pendingReview": "Questa applicazione è registrata e attende la revisione. Non può richiedere accessi finché non è approvata.",
         "rejected": "Questa applicazione è stata rifiutata e non può richiedere accessi. Correggere quanto indicato nel motivo la rimette in coda.",
         "returnedToReview": "Modificare l'URI di reindirizzamento o gli ambiti riporta in revisione un'applicazione approvata."
+      },
+      "payouts": {
+        "tourInvite": "%{username} ti invita a unirti a questa spedizione."
       }
     }
   }

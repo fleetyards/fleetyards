@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 import { routes as eventEditRoutes } from "@/frontend/pages/fleets/[slug]/events/[event]/edit/routes";
 
 export const routes: RouteRecordRaw[] = [
@@ -37,6 +38,31 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.events.edit",
       needsAuthentication: true,
       access: ["fleet:events:update", "fleet:events:manage", "fleet:manage"],
+      customTitle: true,
+    },
+  },
+  {
+    path: ":event/payouts/",
+    name: "fleet-event-payouts",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/events/[event]/payouts.vue"),
+    meta: {
+      backgroundImage: "bg-8",
+      title: "fleets.events.payouts",
+      needsAuthentication: true,
+      feature: FeatureFlagName.TOUR_PAYOUTS,
+      featureScope: "fleet",
+      // Event privileges are in the list because the ledger's own policy lets
+      // an event's creator, admins and moderators manage it, and none of that
+      // is expressible as a fleet privilege. The API is still the gate; this
+      // only decides who may open the page.
+      access: [
+        "fleet:payouts:read",
+        "fleet:payouts:manage",
+        "fleet:events:read",
+        "fleet:events:manage",
+        "fleet:manage",
+      ],
       customTitle: true,
     },
   },
