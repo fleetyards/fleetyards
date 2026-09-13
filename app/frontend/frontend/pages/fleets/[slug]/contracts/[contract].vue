@@ -10,6 +10,7 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
@@ -234,29 +235,77 @@ const crumbs = computed<Crumb[]>(() => [
       <span v-if="contract.deadline">{{ l(contract.deadline) }}</span>
     </div>
 
-    <div class="contract-detail__actions">
-      <Btn v-if="canPublish" data-test="publish-contract" @click="onPublish">
+    <!-- A page's main actions live in the global header, not on the page. -->
+    <Teleport to="#header-right">
+      <Btn
+        v-if="canPublish"
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.fleets.contracts.publish')"
+        data-test="publish-contract"
+        mobile-icon-only
+        @click="onPublish"
+      >
+        <i class="fa-duotone fa-paper-plane" />
         {{ t("actions.fleets.contracts.publish") }}
       </Btn>
-      <Btn v-if="canClaim" data-test="claim-contract" @click="onClaim">
+      <Btn
+        v-if="canClaim"
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.fleets.contracts.claim')"
+        data-test="claim-contract"
+        mobile-icon-only
+        @click="onClaim"
+      >
+        <i class="fa-duotone fa-hand" />
         {{ t("actions.fleets.contracts.claim") }}
       </Btn>
-      <Btn v-if="canJoin" data-test="join-contract" @click="onJoin">
+      <Btn
+        v-if="canJoin"
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.fleets.contracts.join')"
+        data-test="join-contract"
+        mobile-icon-only
+        @click="onJoin"
+      >
+        <i class="fa-duotone fa-user-plus" />
         {{ t("actions.fleets.contracts.join") }}
       </Btn>
-      <Btn v-if="canRelease" @click="onRelease">
+      <Btn
+        v-if="canRelease"
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.fleets.contracts.release')"
+        mobile-icon-only
+        @click="onRelease"
+      >
+        <i class="fa-duotone fa-hand-wave" />
         {{ t("actions.fleets.contracts.release") }}
       </Btn>
-      <Btn v-if="canFulfil" data-test="fulfil-contract" @click="onFulfil">
+      <Btn
+        v-if="canFulfil"
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.fleets.contracts.fulfil')"
+        data-test="fulfil-contract"
+        mobile-icon-only
+        @click="onFulfil"
+      >
+        <i class="fa-duotone fa-circle-check" />
         {{ t("actions.fleets.contracts.fulfil") }}
       </Btn>
-      <Btn v-if="canEdit" @click="goToEdit">
+      <Btn
+        v-if="canEdit"
+        :size="BtnSizesEnum.MD"
+        :aria-label="t('actions.fleets.contracts.edit')"
+        mobile-icon-only
+        @click="goToEdit"
+      >
+        <i class="fa-duotone fa-pen" />
         {{ t("actions.fleets.contracts.edit") }}
       </Btn>
-      <BtnConfirm v-if="canCancel" @confirm="onCancel">
+      <BtnConfirm v-if="canCancel" :size="BtnSizesEnum.MD" @confirm="onCancel">
+        <i class="fa-duotone fa-ban" />
         {{ t("actions.fleets.contracts.cancel") }}
       </BtnConfirm>
-    </div>
+    </Teleport>
 
     <p v-if="contract.description" class="contract-detail__description">
       {{ contract.description }}
@@ -315,13 +364,6 @@ const crumbs = computed<Crumb[]>(() => [
     flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 16px;
-  }
-
-  &__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 24px;
   }
 
   &__description {

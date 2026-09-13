@@ -9,6 +9,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -118,6 +119,19 @@ const crumbs = computed<Crumb[]>(() => [
     {{ t("headlines.fleets.contracts.index") }}
   </Heading>
 
+  <Teleport v-if="canCreate" to="#header-right">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('actions.fleets.contracts.create')"
+      data-test="create-contract"
+      mobile-icon-only
+      @click="goToCreate"
+    >
+      <i class="fa-duotone fa-plus" />
+      {{ t("actions.fleets.contracts.create") }}
+    </Btn>
+  </Teleport>
+
   <FilteredList
     key="fleet-contracts-index"
     :name="route.name?.toString() || ''"
@@ -125,13 +139,6 @@ const crumbs = computed<Crumb[]>(() => [
     :async-status="asyncStatus"
     hide-empty
   >
-    <template v-if="canCreate" #actions-right>
-      <Btn data-test="create-contract" @click="goToCreate">
-        <i class="fa-light fa-plus" />
-        <span>{{ t("actions.fleets.contracts.create") }}</span>
-      </Btn>
-    </template>
-
     <template #actions-left>
       <BtnGroup segmented>
         <Btn :active="!showClosed" mobile-icon-only @click="showClosed = false">
