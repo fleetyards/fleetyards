@@ -185,7 +185,7 @@ interface TooltipState {
   showHandler: () => void;
   hideHandler: () => void;
   leaveHandler: () => void;
-  clickHandler: () => void;
+  clickHandler: (event: MouseEvent) => void;
   focusHandler: () => void;
   pointerOverHandler: (event: PointerEvent) => void;
   // What last arrived over the anchor: "mouse", "touch", "pen", or "" where the
@@ -428,10 +428,18 @@ const vTooltip: Directive = {
 
         hide(el);
       },
-      clickHandler: () => {
+      clickHandler: (event: MouseEvent) => {
+        /*
+         * `detail` is the click count, and a keyboard activation has none. It
+         * crosses no pointer over the anchor either, so without this it would
+         * inherit whatever last did -- and Enter after a tap would reopen the
+         * tooltip the tap had closed. Focus is what shows it for the keyboard.
+         */
+        const fromPointer = event.detail > 0;
+
         // A click from a mouse closes, the way it always has -- clicking a
         // control should not leave its tooltip sitting over the result.
-        if (!tapDriven(state)) {
+        if (!fromPointer || !tapDriven(state)) {
           hide(el);
           return;
         }

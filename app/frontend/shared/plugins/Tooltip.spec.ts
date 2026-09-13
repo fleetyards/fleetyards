@@ -203,7 +203,7 @@ describe("v-tooltip", () => {
       // press here, which is what CI does and what broke the previous attempt.
       el.dispatchEvent(new Event("mouseenter"));
       el.dispatchEvent(new Event("pointerdown"));
-      el.dispatchEvent(new Event("click"));
+      el.dispatchEvent(new MouseEvent("click", { detail: 1 }));
     };
 
     it("opens on a tap and closes on the next one", async () => {
@@ -224,6 +224,28 @@ describe("v-tooltip", () => {
 
       arrive(el, "touch");
       el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    /*
+     * Enter on a focused anchor produces a click with no click count and no
+     * pointer crossing the anchor. Without saying so it would inherit the mode
+     * of the finger that was last here and reopen what it just closed; focus is
+     * what shows the tooltip for the keyboard.
+     */
+    it("does not lend its mode to the keyboard", async () => {
+      const { el } = mountAnchor();
+
+      // Tapped open and tapped shut again: the toggle's next move would be to
+      // open it, which is what the keyboard must not inherit.
+      tap(el);
+      await nextFrame();
+      tap(el);
+      expect(visibleTooltips()).toHaveLength(0);
+
+      el.dispatchEvent(new MouseEvent("click", { detail: 0 }));
       await nextFrame();
 
       expect(visibleTooltips()).toHaveLength(0);
@@ -254,7 +276,7 @@ describe("v-tooltip", () => {
       await nextFrame();
       expect(visibleTooltips()).toHaveLength(1);
 
-      el.dispatchEvent(new Event("click"));
+      el.dispatchEvent(new MouseEvent("click", { detail: 1 }));
       expect(visibleTooltips()).toHaveLength(0);
 
       // No `mouseleave` -- the mouse has not moved.
