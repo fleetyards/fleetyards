@@ -35,8 +35,10 @@ class PayoutParticipant < ApplicationRecord
   # SupporterContribution carries the same pair for the same reason.
   validates :name, presence: true, if: -> { user_id.blank? }
   validates :user_id, uniqueness: {scope: :payout_ledger_id}, allow_nil: true
+  validate :ledger_is_open, on: :create
 
   before_destroy :check_for_entries, prepend: true
+  before_destroy :ledger_must_be_open, prepend: true
 
   def guest? = user_id.blank?
 
@@ -55,6 +57,25 @@ class PayoutParticipant < ApplicationRecord
   # Removing someone re-divides the profit across everyone who is left, so a
   # participant who has already recorded money cannot just disappear -- their
   # entries would be orphaned and every other balance would silently move.
+  # Adding or removing someone changes the head count the profit is divided by,
+  # so both take the same lock settling does -- a participant joining while the
+  # transfers are being computed would otherwise be left out of a list that can
+  # no longer be changed.
+  private def ledger_is_open
+    return if payout_ledger.blank?
+    return if payout_ledger.open_for_edits?
+
+    errors.add(:base, :ledger_settled)
+  end
+
+  private def ledger_must_be_open
+    return if payout_ledger.blank?
+    return if payout_ledger.open_for_edits?
+
+    errors.add(:base, :ledger_settled)
+    throw :abort
+  end
+
   private def check_for_entries
     return if payout_entries.empty?
 

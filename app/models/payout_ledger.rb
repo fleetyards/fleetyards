@@ -85,13 +85,21 @@ class PayoutLedger < ApplicationRecord
   # Freezes the computed transfers into rows. While the ledger is open they are
   # derived on every read so they cannot drift from the entries; from here on
   # people pay against this list, so it has to stop moving.
+  # Returns false rather than raising when the ledger is not in a state to be
+  # settled, so the caller can answer 409.
   def settle!(user = nil)
     transaction do
-      # Taken before anything is read. PayoutEntry#ledger_is_open takes the same
-      # lock, so an entry racing this either lands before the snapshot or finds
-      # the ledger already settled -- rather than committing money into a payout
-      # list that was computed without it and can no longer be edited.
+      # Taken before anything is read. Every path that changes a participant or
+      # an entry takes the same lock, so one racing this either lands before the
+      # snapshot or finds the ledger already settled -- rather than moving money
+      # that the frozen payout list was computed without.
       lock!
+
+      # Re-checked after the lock, and not only by the controller: that guard
+      # runs outside this transaction, so two simultaneous requests can both
+      # pass it and the second would delete and recreate the first's transfers,
+      # dropping any confirmation already ticked off against them.
+      next false if settled?
 
       payout_transfers.delete_all
 
@@ -106,6 +114,8 @@ class PayoutLedger < ApplicationRecord
       update!(status: "settled", settled_at: Time.current, settled_by: user)
 
       carry_status_to_subject(:settle)
+
+      true
     end
   end
 
@@ -113,11 +123,25 @@ class PayoutLedger < ApplicationRecord
     transaction do
       lock!
 
+      next false unless settled?
+
       payout_transfers.delete_all
       update!(status: "open", settled_at: nil, settled_by: nil)
 
       carry_status_to_subject(:reopen)
+
+      true
     end
+  end
+
+  # Takes the same row lock settle! does, so a caller about to change something
+  # the settlement reads either gets in first or sees the settled ledger.
+  # Returns false when the ledger is closed for edits.
+  def open_for_edits?
+    return false if new_record?
+
+    lock!
+    open?
   end
 
   # A tour has a status of its own, and its page is what people read to know

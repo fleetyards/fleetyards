@@ -66,4 +66,14 @@ class PayoutEntryTest < ActiveSupport::TestCase
     assert_not entry.valid?
     assert_equal 0, @ledger.reload.payout_entries.count
   end
+
+  # Validations do not run on destroy, so this needed a callback of its own --
+  # money must not leave a ledger whose payout list was frozen around it.
+  test "cannot be destroyed once the ledger is settled" do
+    entry = create(:payout_entry, payout_ledger: @ledger, payout_participant: @participant)
+    @ledger.update!(status: "settled", settled_at: Time.current)
+
+    assert_not entry.destroy
+    assert PayoutEntry.exists?(entry.id)
+  end
 end

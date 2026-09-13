@@ -237,6 +237,7 @@ en:
           attributes:
             base:
               has_entries: still has entries recorded against them
+              ledger_settled: cannot be changed once the payouts are settled
         payout_entry:
           attributes:
             base:

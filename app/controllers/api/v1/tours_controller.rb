@@ -88,8 +88,13 @@ module Api
 
         # Carries the tour's own transition with it, so this and
         # PUT /payouts/:id/settle end in the same place. It moves the ledger's
-        # own `subject` instance, which is not the one loaded here.
-        ledger.settle!(current_resource_owner)
+        # own `subject` instance, which is not the one loaded here, and answers
+        # false if another request settled it between the guard and the lock.
+        unless ledger.settle!(current_resource_owner)
+          render json: {code: "cannot_settle", message: "This tour cannot be settled"}, status: :conflict
+          return
+        end
+
         @tour.reload
 
         render :show
@@ -105,7 +110,11 @@ module Api
           return
         end
 
-        ledger.reopen!
+        unless ledger.reopen!
+          render json: {code: "cannot_reopen", message: "This tour is not settled"}, status: :conflict
+          return
+        end
+
         @tour.reload
 
         render :show

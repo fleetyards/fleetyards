@@ -95,4 +95,22 @@ class PayoutParticipantTest < ActiveSupport::TestCase
     assert Tour.exists?(tour.id), "the organiser's tour must survive"
     assert PayoutEntry.exists?(payout_participant_id: participant.id)
   end
+
+  # Both change the head count the profit is divided by, and the frozen payout
+  # list was computed from the one that existed at settle time.
+  test "cannot be added once the ledger is settled" do
+    @ledger.update!(status: "settled", settled_at: Time.current)
+
+    participant = PayoutParticipant.new(payout_ledger: @ledger, user: create(:user))
+
+    assert_not participant.valid?
+  end
+
+  test "cannot be removed once the ledger is settled" do
+    participant = create(:payout_participant, payout_ledger: @ledger)
+    @ledger.update!(status: "settled", settled_at: Time.current)
+
+    assert_not participant.destroy
+    assert PayoutParticipant.exists?(participant.id)
+  end
 end
