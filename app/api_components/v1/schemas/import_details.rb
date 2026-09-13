@@ -14,6 +14,9 @@ module V1
           imported: {type: :array, items: {type: :string}},
           found: {type: :array, items: {type: :string}},
           movedToWanted: {type: :array, items: {type: :string}},
+          deleted: {type: :array, items: {type: :string}},
+          grouped: {type: :array, items: {type: :string}},
+          unchanged: {type: :array, items: {type: :string}},
           missing: {type: :array, items: {type: :string}},
           missingComponents: {type: :array, items: {type: :string}},
           missingUpgrades: {type: :array, items: {type: :string}}

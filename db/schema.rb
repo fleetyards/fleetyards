@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_010000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -853,6 +853,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_010000) do
     t.jsonb "output"
     t.datetime "started_at", precision: nil
     t.string "type"
+    t.uuid "unmatched_hangar_group_id"
+    t.string "unmatched_vehicles_action", default: "wishlist", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.string "version"
@@ -861,6 +863,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_010000) do
     t.index ["hangar_group_id"], name: "index_imports_on_hangar_group_id"
     t.index ["type", "id"], name: "index_imports_on_type_and_id"
     t.index ["type"], name: "index_imports_on_type"
+    t.index ["unmatched_hangar_group_id"], name: "index_imports_on_unmatched_hangar_group_id"
     t.index ["user_id"], name: "index_imports_on_user_id"
   end
 
@@ -1771,6 +1774,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_010000) do
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"
+  add_foreign_key "imports", "hangar_groups", column: "unmatched_hangar_group_id", on_delete: :nullify
   add_foreign_key "imports", "hangar_groups", on_delete: :nullify
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"

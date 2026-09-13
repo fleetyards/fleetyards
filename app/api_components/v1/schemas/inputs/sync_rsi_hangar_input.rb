@@ -14,7 +14,9 @@ module V1
               items: ::V1::Schemas::Inputs::RsiHangarItemInput
             },
             hangarGroupId: {type: :string, format: :uuid},
-            addBundledVehicles: {type: :boolean, default: true}
+            addBundledVehicles: {type: :boolean, default: true},
+            unmatchedVehiclesAction: ::V1::Schemas::Enums::HangarSyncUnmatchedActionEnum,
+            unmatchedHangarGroupId: {type: :string, format: :uuid}
           }
         })
       end

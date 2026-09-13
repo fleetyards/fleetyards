@@ -16,6 +16,9 @@ class HangarSync < HangarImporter
     imported_vehicles
     found_vehicles
     moved_vehicles_to_wanted
+    deleted_vehicles
+    grouped_vehicles
+    unchanged_vehicles
     imported_components
     found_components
     imported_upgrades
@@ -68,15 +71,14 @@ class HangarSync < HangarImporter
       end
     end
 
-    imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models = vehicles
     imported_components, found_components, missing_components, missing_component_vehicles = components
     imported_upgrades, found_upgrades, missing_upgrades, missing_upgrade_vehicles = upgrades
 
+    # A hash rather than a tuple: the vehicle half of a run reports seven lists,
+    # four of which are the outcome the user picked for the ships it could not
+    # find, and positional unpacking stopped being readable somewhere before that.
     output = {
-      imported_vehicles:,
-      found_vehicles:,
-      moved_vehicles_to_wanted:,
-      missing_models:,
+      **vehicles,
       imported_components:,
       found_components:,
       missing_components:,
@@ -171,7 +173,6 @@ class HangarSync < HangarImporter
     vehicle_ids = []
     imported_vehicles = []
     found_vehicles = []
-    moved_vehicles_to_wanted = []
     missing_models = []
     vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, bundled: false, hidden: false, bought_via: :pledge_store).order(model_paint_id: :desc, created_at: :asc)
 
@@ -304,23 +305,97 @@ class HangarSync < HangarImporter
       unmatched_vehicle_ids.delete(match)
     end
 
-    # A cancelled run never saw the rest of the pledge list, so every vehicle it
-    # had not reached yet still looks unmatched. Moving those to the wishlist
-    # would make stopping the sync far more destructive than letting it run.
-    unless @cancelled
-      vehicle_scope.where.not(id: vehicle_ids).find_each do |vehicle|
-        initial_updated_at = vehicle.updated_at
-        vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
-
-        if initial_updated_at != vehicle.updated_at
-          moved_vehicles_to_wanted << vehicle.id
-        end
-      end
-    end
-
     assign_target_group(vehicle_ids)
 
-    [imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models]
+    {
+      imported_vehicles:,
+      found_vehicles:,
+      missing_models:,
+      **handle_unmatched_vehicles(vehicle_scope.purchased.where.not(id: vehicle_ids))
+    }
+  end
+
+  # Every vehicle the run did not find in the pledge list. What happens to them
+  # is the user's choice, carried on the import; `wishlist` is what every sync
+  # did before the choice existed, and is what a client that does not send one
+  # still gets.
+  #
+  # The scope is `purchased` -- a wishlisted ship is one the user does not own,
+  # so it was never going to be in an RSI hangar and is unmatched every single
+  # run. `delete` would empty the whole wishlist on the first sync. The wishlist
+  # move never touched those rows either: `reset_pledge_id_if_wanted` has
+  # already cleared what it writes, so the `update!` was a no-op that the
+  # `updated_at` check below kept out of the report.
+  private def handle_unmatched_vehicles(scope)
+    outcome = {
+      moved_vehicles_to_wanted: [],
+      deleted_vehicles: [],
+      grouped_vehicles: [],
+      unchanged_vehicles: []
+    }
+
+    # A cancelled run never saw the rest of the pledge list, so every vehicle it
+    # had not reached yet still looks unmatched. Acting on those would make
+    # stopping a sync worse than letting it finish -- and under `delete` it
+    # would take the hangar with it.
+    return outcome if @cancelled
+
+    case @import&.unmatched_vehicles_action
+    when "keep" then outcome.merge(unchanged_vehicles: scope.pluck(:id))
+    when "delete" then outcome.merge(deleted_vehicles: delete_unmatched(scope))
+    when "group" then outcome.merge(grouped_vehicles: group_unmatched(scope))
+    else outcome.merge(moved_vehicles_to_wanted: move_unmatched_to_wanted(scope))
+    end
+  end
+
+  private def move_unmatched_to_wanted(scope)
+    moved = []
+
+    scope.find_each do |vehicle|
+      initial_updated_at = vehicle.updated_at
+      vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
+
+      moved << vehicle.id if initial_updated_at != vehicle.updated_at
+    end
+
+    moved
+  end
+
+  # Names rather than ids, and read before the delete: nothing is left to
+  # resolve an id from afterwards, and the notification and the imports page
+  # both say what a run did in ships rather than in uuids.
+  #
+  # `delete_with_dependents` rather than `destroy_all`: it takes the loaners and
+  # bundled snub crafts hanging off each row with it, and `vehicle_loadouts`
+  # carries a foreign key that a plain delete would raise on.
+  private def delete_unmatched(scope)
+    vehicles = scope.includes(:model).to_a
+    return [] if vehicles.empty?
+
+    names = vehicles.map { |vehicle| vehicle.name.presence || vehicle.model&.name }.compact.sort
+
+    Vehicle.delete_with_dependents(vehicles.map(&:id))
+
+    names
+  end
+
+  # The vehicles themselves are left exactly as they were. The point of the
+  # option is to collect what the sync could not find somewhere the user can
+  # work through by hand, not to decide anything about those ships -- and
+  # `wanted` is not available to it either way, because a wishlisted vehicle
+  # drops its groups on save.
+  private def group_unmatched(scope)
+    group_id = @import&.unmatched_hangar_group_id
+    vehicle_ids = scope.pluck(:id)
+
+    # `Import` validates the pairing, so a missing group is a guard rather than
+    # a path -- and reporting ships as filed when nothing was filed would be a
+    # worse answer than reporting none.
+    return [] if group_id.blank?
+
+    file_into_group(vehicle_ids, group_id)
+
+    vehicle_ids
   end
 
   private def sync_components(user_id)
@@ -518,7 +593,10 @@ class HangarSync < HangarImporter
   # files the whole pledge list there. Additive -- a vehicle keeps any group the
   # user had already put it in.
   private def assign_target_group(vehicle_ids)
-    group_id = @import&.hangar_group_id
+    file_into_group(vehicle_ids, @import&.hangar_group_id)
+  end
+
+  private def file_into_group(vehicle_ids, group_id)
     return if group_id.blank? || vehicle_ids.blank?
 
     existing = TaskForce.where(hangar_group_id: group_id, vehicle_id: vehicle_ids).pluck(:vehicle_id)

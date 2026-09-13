@@ -16403,6 +16403,20 @@ components:
           items:
             type: string
             format: uuid
+        deletedVehicles:
+          type: array
+          items:
+            type: string
+        groupedVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        unchangedVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
         missingModels:
           type: array
           items:
@@ -16448,6 +16462,9 @@ components:
       - importedVehicles
       - foundVehicles
       - movedVehiclesToWanted
+      - deletedVehicles
+      - groupedVehicles
+      - unchangedVehicles
       - missingModels
       - importedComponents
       - foundComponents
@@ -16506,6 +16523,19 @@ components:
       x-enumNames:
       - PENDING
       title: HangarSyncSubmitStatusEnum
+    HangarSyncUnmatchedActionEnum:
+      type: string
+      enum:
+      - wishlist
+      - delete
+      - keep
+      - group
+      x-enumNames:
+      - WISHLIST
+      - DELETE
+      - KEEP
+      - GROUP
+      title: HangarSyncUnmatchedActionEnum
     Hardpoint:
       type: object
       properties:
@@ -16835,6 +16865,18 @@ components:
           items:
             type: string
         movedToWanted:
+          type: array
+          items:
+            type: string
+        deleted:
+          type: array
+          items:
+            type: string
+        grouped:
+          type: array
+          items:
+            type: string
+        unchanged:
           type: array
           items:
             type: string
@@ -20817,6 +20859,11 @@ components:
         addBundledVehicles:
           type: boolean
           default: true
+        unmatchedVehiclesAction:
+          "$ref": "#/components/schemas/HangarSyncUnmatchedActionEnum"
+        unmatchedHangarGroupId:
+          type: string
+          format: uuid
       title: SyncRsiHangarInput
     ThrusterClassEnum:
       type: string
