@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useSessionStore } from "@/frontend/stores/session";
+import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
 import { type UserUpdateInput } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -81,11 +82,10 @@ const [friendsHangarStats, friendsHangarStatsProps] =
 const [friendsWishlist, friendsWishlistProps] = defineField("friendsWishlist");
 const [hideOwner, hideOwnerProps] = defineField("hideOwner");
 
-// The one place the "public wins" rule has to be visible rather than merely
-// true. A friend is a member of the public, so while the public switch is on
-// the friend one is not consulted at all -- leaving it live would invite
-// somebody to turn it off and expect that to mean something.
-const friendsDisabled = (isPublic: unknown) => submitting.value || !!isPublic;
+// See `narrowerAudienceDisabled`: a friend is a member of the public, so while
+// the public switch is on the friend one is not consulted at all.
+const friendsDisabled = (isPublic: unknown) =>
+  narrowerAudienceDisabled(isPublic, submitting.value);
 
 const mutation = useUpdateProfileMutation();
 

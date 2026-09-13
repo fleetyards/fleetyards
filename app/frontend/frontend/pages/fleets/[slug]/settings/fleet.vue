@@ -25,6 +25,7 @@ import {
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
 
 type Props = {
   fleet: Fleet;
@@ -99,10 +100,10 @@ const [alliesFleetMembers, alliesFleetMembersProps] =
   defineField("alliesFleetMembers");
 const [logo, logoProps] = defineField("logo");
 
-// Public wins, so while a surface is published the allies switch for it is not
-// consulted. The roster has no public form at all, which is why the third one
-// is never disabled.
-const alliesDisabled = (isPublic: unknown) => submitting.value || !!isPublic;
+// See `narrowerAudienceDisabled`. The roster has no public form at all, which
+// is why the third toggle is never passed one.
+const alliesDisabled = (isPublic: unknown) =>
+  narrowerAudienceDisabled(isPublic, submitting.value);
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;

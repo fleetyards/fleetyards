@@ -315,14 +315,77 @@ Written per phase. The state machine including all three answers; a table test o
 
 ## Discovery Log
 
-- **2026-09-13** Initial research and plan creation. Confirmed `TransferGate#shares_a_fleet?` is the single definition of `known`, and that `useTransferTargets` already documents a friends list as its intended extension. Measured the ally-roster problem against `fleet_members/_base.jbuilder`, which renders coordinates, current system and four contact handles per member — the reason D8 builds a second partial rather than reusing it. Found three `public_hangar` checks outside the policies, one of them a bulk filter. Confirmed `ApplicationPolicy` authorizes an optional `user`, so the public policies can already ask who is reading.
+- **2026-09-13** Initial research and plan creation.
+
+- **2026-09-13** Built, all eight phases. Nine things the plan did not say, each
+  found by building it:
+
+  **The two tables use the same column names.** D1 sketched
+  `requester_fleet_id`/`addressee_fleet_id` for alliances. They are
+  `requester_id`/`addressee_id` in both tables instead: the table already says
+  which type each end is, and same-named columns are what let `PartyRelationship`
+  own the handshake outright rather than through a mapping.
+
+  **One requester service, not two.** With the columns identical, D4's four cases
+  are the same code for both relationships, so `Relationships::Requester` takes
+  the relation class as an argument.
+
+  **`Friendship` is not versioned.** Phase 1 said `has_paper_trail` for both. A
+  version of a friendship holds both user ids -- a record of who knew whom,
+  surviving one of them deleting their account, which is the thing
+  `ErasableVersionsConcern` exists on `User` to prevent. `FleetAlliance` keeps it:
+  an alliance is a governance act. Neither gets a `VersionedItem::ROOTS` entry,
+  because an alliance has two fleets with equal claim to being its root --
+  `InventoryTransfer` has no entry either, for a similar reason.
+
+  **Ignoring had a second tell, and then a third.** `state_for` hides an ignored
+  request from its sender, and two things gave it away anyway. A list filtered on
+  the column would omit it from the sender's pending list, so listing goes through
+  `in_state_for(state, party)` rather than ransack. And `cancellable_by?`,
+  asked of the real state, refused to withdraw it -- so it is asked of the state
+  the requester can see, and `Answerer#cancel` answers success and leaves an
+  ignored row standing. Destroying it would have made withdraw-and-ask-again a
+  way back into an inbox that turned you away.
+
+  **A hidden member keeps their row.** D8 said `hide_owner` omits a member from an
+  ally's list; the payload carries `hidden: true` and drops the name instead. It
+  is what `_vehicle.jbuilder` already does, and it keeps the roster honest about
+  how large the fleet is.
+
+  **Ally visibility settings ride the existing fleet-update privilege.** D12's new
+  privileges govern *alliances*; the three visibility columns sit with
+  `public_fleet` under `fleet:manage`/`fleet:update`, where every other visibility
+  switch already is.
+
+  **Notification call-to-actions, for friendships only.** A notification's record
+  reference is computed from the record, and for a friendship the reader is
+  unambiguously one of the two parties -- so it can be addressed by the other
+  one. An alliance cannot: the reference would have to guess which of the two
+  fleets the reader is acting for. Its notification links to the allies page,
+  which is where it is answered.
+
+  **`api-schema-breaking` needed 85 ignore lines, and five have no precedent.**
+  Four `fleet:allies:*` privileges and four notification types are enum values on
+  published responses, which `oasdiff` fails on; the file already carries 907 such
+  lines. 80 of the new ones match an existing line except for the value. The five
+  for `record/type` are the first notification *record* type added since the file
+  was written, so their wording has no counterpart to check against -- written
+  with oasdiff 1.31.0 against CI's pinned 1.18.1. The rule and its message are the
+  same in both; the property path comes from the schema. Worth a glance at the CI
+  job.
+
+  **Two things adjacent to this are left alone.** `de`/`es`/`fr`/`it`/`zh-*`
+  `notifications.yml` lack the `inventory_transfer_*` titles #4881 added to `en`
+  -- a parity gap on the branch below this one, not this branch's to close. And
+  there is no Playwright pass: the plan asked for one over request → accept → the
+  newly visible hangar, and it is the one item not delivered. Confirmed `TransferGate#shares_a_fleet?` is the single definition of `known`, and that `useTransferTargets` already documents a friends list as its intended extension. Measured the ally-roster problem against `fleet_members/_base.jbuilder`, which renders coordinates, current system and four contact handles per member — the reason D8 builds a second partial rather than reusing it. Found three `public_hangar` checks outside the policies, one of them a bulk filter. Confirmed `ApplicationPolicy` authorizes an optional `user`, so the public policies can already ask who is reading.
 
 ## Progress
-- [ ] Phase 1 — The two relationships and the handshake
-- [ ] Phase 2 — What a friend can see
-- [ ] Phase 3 — What an ally can see
-- [ ] Phase 4 — Transfers
-- [ ] Phase 5 — API
-- [ ] Phase 6 — Notifications
-- [ ] Phase 7 — Frontend
-- [ ] Phase 8 — Tests
+- [x] Phase 1 — The two relationships and the handshake
+- [x] Phase 2 — What a friend can see
+- [x] Phase 3 — What an ally can see
+- [x] Phase 4 — Transfers
+- [x] Phase 5 — API
+- [x] Phase 6 — Notifications
+- [x] Phase 7 — Frontend
+- [x] Phase 8 — Tests *(except the Playwright pass — see the Discovery Log)*
