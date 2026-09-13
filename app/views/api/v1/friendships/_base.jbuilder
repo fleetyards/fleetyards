@@ -8,7 +8,7 @@ other = friendship.other_party_for(party)
 
 json.id friendship.id
 json.state friendship.state_for(party)
-json.direction friendship.requester_id == party&.id ? "outgoing" : "incoming"
+json.direction (friendship.requester_id == party&.id) ? "outgoing" : "incoming"
 
 json.user do
   json.id other&.id

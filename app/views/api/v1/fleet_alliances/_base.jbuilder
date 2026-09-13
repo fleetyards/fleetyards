@@ -6,7 +6,7 @@ other = alliance.other_party_for(party)
 
 json.id alliance.id
 json.state alliance.state_for(party)
-json.direction alliance.requester_id == party&.id ? "outgoing" : "incoming"
+json.direction (alliance.requester_id == party&.id) ? "outgoing" : "incoming"
 
 json.fleet do
   json.id other&.id
