@@ -71,9 +71,13 @@ module Relationships
         # Checked rather than assumed: `whiny_transitions: false` returns
         # false from a refused transition instead of raising, so an unchecked
         # call reports success for an answer that never landed.
-        next if @relationship.public_send(event)
+        unless @relationship.public_send(event)
+          errors.add(:base, :already_resolved)
+          next
+        end
 
-        errors.add(:base, :already_resolved)
+        # Only acceptance is announced. See `Relationships::Notifier`.
+        Notifier.new(@relationship).accepted if event == :accept!
       end
     end
 

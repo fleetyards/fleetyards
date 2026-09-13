@@ -52,3 +52,11 @@ zh-TW:
       title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:
       title: 您已被 %{fleet} 接受
+    friend_request_received:
+      title: "%{username} 向你發送了好友請求"
+    friend_request_accepted:
+      title: "%{username} 接受了你的好友請求"
+    fleet_ally_request_received:
+      title: "%{fleet} 希望與 %{own_fleet} 結盟"
+    fleet_ally_request_accepted:
+      title: "%{fleet} 現已與 %{own_fleet} 結盟"

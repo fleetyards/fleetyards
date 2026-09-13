@@ -75,6 +75,7 @@ module Relationships
         return false
       end
 
+      Notifier.new(@relationship).requested
       @outcome = :created
       true
     rescue ::ActiveRecord::RecordNotUnique
@@ -93,6 +94,7 @@ module Relationships
         return false
       end
 
+      Notifier.new(@relationship).accepted
       @outcome = :accepted
       true
     end
@@ -107,6 +109,7 @@ module Relationships
         return false
       end
 
+      Notifier.new(@relationship).requested
       @outcome = :created
       true
     end

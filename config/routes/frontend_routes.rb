@@ -31,6 +31,7 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/ships", to: "fleets#show"
   get "fleets/:slug/fleetchart", to: "fleets#show"
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
+  get "fleets/:slug/allies", to: "fleets#show", as: :fleet_allies
   get "fleets/:slug/members/invites", to: "fleets#members", as: :fleet_member_invites
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
@@ -48,6 +49,7 @@ namespace :frontend, **frontend_options do
   get "embed-v2-username-test", to: "embed#test_v2_username"
   get "embed-v2-fleet-test", to: "embed#test_v2_fleet"
 
+  get "friends", to: "base#index", as: :friends
   get "notifications", to: "base#index", as: :notifications
   get "settings", to: "base#index", as: :settings_account
   get "settings/notifications", to: "base#index"

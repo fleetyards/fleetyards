@@ -52,3 +52,11 @@ it:
       title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:
       title: Sei stato accettato in %{fleet}
+    friend_request_received:
+      title: "%{username} ti ha inviato una richiesta di amicizia"
+    friend_request_accepted:
+      title: "%{username} ha accettato la tua richiesta di amicizia"
+    fleet_ally_request_received:
+      title: "%{fleet} vuole allearsi con %{own_fleet}"
+    fleet_ally_request_accepted:
+      title: "%{fleet} è ora alleata con %{own_fleet}"
