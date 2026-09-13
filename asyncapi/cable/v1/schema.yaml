@@ -3038,12 +3038,14 @@ components:
       - fleet_membership
       - fleet_event
       - fleet_inventory
+      - friendship
       - vehicle
       - hangar_sync
       x-enumNames:
       - FLEET_MEMBERSHIP
       - FLEET_EVENT
       - FLEET_INVENTORY
+      - FRIENDSHIP
       - VEHICLE
       - HANGAR_SYNC
     NotificationTypeEnum:
@@ -3075,6 +3077,10 @@ components:
       - fleet_event_signup_kicked
       - inventory_transfer_received
       - inventory_transfer_resolved
+      - friend_request_received
+      - friend_request_accepted
+      - fleet_ally_request_received
+      - fleet_ally_request_accepted
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -3102,6 +3108,10 @@ components:
       - FLEET_EVENT_SIGNUP_KICKED
       - INVENTORY_TRANSFER_RECEIVED
       - INVENTORY_TRANSFER_RESOLVED
+      - FRIEND_REQUEST_RECEIVED
+      - FRIEND_REQUEST_ACCEPTED
+      - FLEET_ALLY_REQUEST_RECEIVED
+      - FLEET_ALLY_REQUEST_ACCEPTED
     PayoutLedger:
       type: object
       properties:

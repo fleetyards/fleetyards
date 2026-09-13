@@ -59,7 +59,7 @@ module RelationshipActions
     requester = ::Relationships::Requester.new(relation_class, requester: acting_party, addressee: requested_party)
 
     unless requester.call
-      render json: ValidationError.new("create", errors: requester.errors), status: :bad_request
+      render json: ValidationError.new("relationships.create", errors: requester.errors), status: :bad_request
       return
     end
 
@@ -67,11 +67,22 @@ module RelationshipActions
     render :show, status: :created
   end
 
-  def accept = answer(:accept)
+  # The three answers, spelled out rather than generated. `ValidationErrorTest`
+  # scans the app for literal `ValidationError.new("...")` codes and checks each
+  # one is translated in every locale; a code built at runtime is invisible to
+  # that scan and renders "translation missing" in production, which is the hole
+  # the check exists to close.
+  def accept
+    answer(:accept) { |errors| ValidationError.new("relationships.accept", errors:) }
+  end
 
-  def decline = answer(:decline)
+  def decline
+    answer(:decline) { |errors| ValidationError.new("relationships.decline", errors:) }
+  end
 
-  def ignore = answer(:ignore)
+  def ignore
+    answer(:ignore) { |errors| ValidationError.new("relationships.ignore", errors:) }
+  end
 
   # Calling back a request, or ending a relationship. One endpoint because from
   # the outside both are "remove this", and which one it is follows from the
@@ -82,14 +93,14 @@ module RelationshipActions
 
     return head :no_content if outcome
 
-    render json: ValidationError.new("destroy", errors: answerer.errors), status: :bad_request
+    render json: ValidationError.new("relationships.destroy", errors: answerer.errors), status: :bad_request
   end
 
   private def answer(event)
     answerer = ::Relationships::Answerer.new(@relationship, actor: current_resource_owner)
 
     unless answerer.public_send(event, acting_party)
-      render json: ValidationError.new(event.to_s, errors: answerer.errors), status: :bad_request
+      render json: yield(answerer.errors), status: :bad_request
       return
     end
 

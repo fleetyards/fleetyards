@@ -1,6 +1,12 @@
 ---
 zh-TW:
   validation_error:
+    relationships:
+      create: "無法發送請求。"
+      destroy: "無法移除請求。"
+      accept: "無法接受請求。"
+      decline: "無法拒絕請求。"
+      ignore: "無法忽略請求。"
     change_pasword: 密碼變更失敗。
     confirmation: 確認失敗。
     vehicle:

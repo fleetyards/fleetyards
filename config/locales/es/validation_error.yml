@@ -1,6 +1,12 @@
 ---
 es:
   validation_error:
+    relationships:
+      create: "No se ha podido enviar la solicitud."
+      destroy: "No se ha podido eliminar la solicitud."
+      accept: "No se ha podido aceptar la solicitud."
+      decline: "No se ha podido rechazar la solicitud."
+      ignore: "No se ha podido ignorar la solicitud."
     sc_data_unlisted_model:
       link: No se pudo vincular la nave con el catálogo.
       create_model: No se pudo crear la nave a partir de los archivos del juego.
