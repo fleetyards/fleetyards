@@ -1898,7 +1898,12 @@
           "scam": "Truffa",
           "other": "Altro"
         },
-        "transferToFleet": "%{fleet} (flotta)"
+        "transferToFleet": "%{fleet} (flotta)",
+        "sender": "Da",
+        "recipient": "A",
+        "contents": "Contenuto",
+        "state": "Stato",
+        "sentAt": "Inviato"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

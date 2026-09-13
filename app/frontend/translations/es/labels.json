@@ -1898,7 +1898,12 @@
           "scam": "Estafa",
           "other": "Otra cosa"
         },
-        "transferToFleet": "%{fleet} (flota)"
+        "transferToFleet": "%{fleet} (flota)",
+        "sender": "De",
+        "recipient": "Para",
+        "contents": "Contenido",
+        "state": "Estado",
+        "sentAt": "Enviado"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

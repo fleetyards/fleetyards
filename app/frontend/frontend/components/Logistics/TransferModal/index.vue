@@ -189,7 +189,7 @@ const onSubmit = async () => {
         {{ t("labels.logistics.noStock") }}
       </p>
 
-      <template v-else>
+      <div v-else class="transfer-lines">
         <div
           v-for="position in chosen"
           :key="position.id"
@@ -250,7 +250,7 @@ const onSubmit = async () => {
             {{ t("labels.logistics.overStock") }}
           </p>
         </div>
-      </template>
+      </div>
 
       <FormInput
         v-model="note"
@@ -284,6 +284,10 @@ const onSubmit = async () => {
 .transfer-hint {
   margin-bottom: 1rem;
   opacity: 0.75;
+}
+
+.transfer-lines {
+  margin-bottom: 1.5rem;
 }
 
 .transfer-line {

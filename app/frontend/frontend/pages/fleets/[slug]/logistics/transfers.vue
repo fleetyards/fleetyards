@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -12,14 +14,13 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import Grid from "@/shared/components/base/Grid/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
-import Empty from "@/shared/components/Empty/index.vue";
-import TransferPanel from "@/frontend/components/Logistics/TransferPanel/index.vue";
+import TransferTable from "@/frontend/components/Logistics/TransferTable/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
+  type Fleet,
+  type FleetMember,
   type InventoryTransfer,
   useFleetInventoryTransfers,
   useFleetInventories,
@@ -29,12 +30,32 @@ import {
   useReportFleetInventoryTransfer,
 } from "@/services/fyApi";
 
+// Handed down by `logistics.vue`, which also gates the whole branch on
+// `fleet_logistics` -- so this page never renders for a fleet that cannot use
+// it.
+type Props = {
+  fleet: Fleet;
+  membership: FleetMember;
+};
+
+const props = defineProps<Props>();
+
 const { t } = useI18n();
-const route = useRoute();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
 
-const fleetSlug = computed(() => route.params.slug as string);
+const fleetSlug = computed(() => props.fleet.slug);
+
+const crumbs = computed<Crumb[]>(() => [
+  {
+    to: { name: "fleet", params: { slug: fleetSlug.value } },
+    label: props.fleet.name,
+  },
+  {
+    to: { name: "fleet-logistics", params: { slug: fleetSlug.value } },
+    label: t("nav.fleets.logistics.index"),
+  },
+]);
 
 const direction = ref<"incoming" | "outgoing">("incoming");
 
@@ -71,25 +92,12 @@ const run = async (action: () => Promise<unknown>) => {
 // Where it lands is this side's choice -- the sender never named an inventory.
 // With one to land in there is nothing to ask about.
 const onAccept = (transfer: InventoryTransfer) => {
-  const options = inventories.value?.items ?? [];
-
-  if (options.length === 1) {
-    void run(() =>
-      accept({
-        fleetSlug: fleetSlug.value,
-        id: transfer.id,
-        data: { fleetInventoryId: options[0].id },
-      }),
-    );
-    return;
-  }
-
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Logistics/TransferAcceptModal/index.vue"),
     props: {
       transfer,
-      inventories: options,
+      inventories: inventories.value?.items ?? [],
       onAccept: (inventoryId: string) =>
         run(() =>
           accept({
@@ -128,59 +136,55 @@ const onReport = (transfer: InventoryTransfer) => {
 </script>
 
 <template>
-  <Heading>
-    {{ t("headlines.logistics.transfers") }}
+  <BreadCrumbs :crumbs="crumbs" />
 
-    <template #right>
-      <BtnGroup>
-        <Btn
-          :size="BtnSizesEnum.SM"
-          :variant="
-            direction === 'incoming'
-              ? BtnVariantsEnum.SOLID
-              : BtnVariantsEnum.BARE
-          "
-          data-test="fleet-transfers-incoming"
-          @click="direction = 'incoming'"
-        >
-          {{ t("labels.logistics.incoming") }}
-        </Btn>
-        <Btn
-          :size="BtnSizesEnum.SM"
-          :variant="
-            direction === 'outgoing'
-              ? BtnVariantsEnum.SOLID
-              : BtnVariantsEnum.BARE
-          "
-          data-test="fleet-transfers-outgoing"
-          @click="direction = 'outgoing'"
-        >
-          {{ t("labels.logistics.outgoing") }}
-        </Btn>
-      </BtnGroup>
-    </template>
-  </Heading>
+  <div class="row">
+    <div class="col-12">
+      <Heading size="hero" hero>
+        {{ t("headlines.logistics.transfers") }}
+      </Heading>
+    </div>
+  </div>
 
-  <Loader :loading="isLoading" />
+  <!-- `Heading` takes only `default` and `subHeading`, so controls belong in
+       the page header the way every other list does it. -->
+  <Teleport to="#header-right">
+    <BtnGroup>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :variant="
+          direction === 'incoming'
+            ? BtnVariantsEnum.SOLID
+            : BtnVariantsEnum.BARE
+        "
+        data-test="fleet-transfers-incoming"
+        @click="direction = 'incoming'"
+      >
+        {{ t("labels.logistics.incoming") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :variant="
+          direction === 'outgoing'
+            ? BtnVariantsEnum.SOLID
+            : BtnVariantsEnum.BARE
+        "
+        data-test="fleet-transfers-outgoing"
+        @click="direction = 'outgoing'"
+      >
+        {{ t("labels.logistics.outgoing") }}
+      </Btn>
+    </BtnGroup>
+  </Teleport>
 
-  <Empty
-    v-if="!isLoading && transfers.length === 0"
-    variant="box"
-    hide-actions
-    name="transfers"
+  <TransferTable
+    :transfers="transfers"
+    :direction="direction"
+    :loading="isLoading"
+    :busy="busy"
+    @accept="onAccept"
+    @decline="onDecline"
+    @cancel="onCancel"
+    @report="onReport"
   />
-
-  <Grid v-else :records="transfers" primary-key="id">
-    <template #default="{ record }">
-      <TransferPanel
-        :transfer="record"
-        :direction="direction"
-        :busy="busy"
-        @accept="onAccept"
-        @decline="onDecline"
-        @cancel="onCancel"
-        @report="onReport"
-      />
-    </template>
-  </Grid>
 </template>

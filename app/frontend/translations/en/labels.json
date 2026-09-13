@@ -1899,7 +1899,12 @@
           "scam": "Scam",
           "other": "Something else"
         },
-        "transferToFleet": "%{fleet} (fleet)"
+        "transferToFleet": "%{fleet} (fleet)",
+        "sender": "From",
+        "recipient": "To",
+        "contents": "Contents",
+        "state": "Status",
+        "sentAt": "Sent"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

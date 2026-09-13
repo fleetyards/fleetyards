@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -13,10 +14,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import Grid from "@/shared/components/base/Grid/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
-import Empty from "@/shared/components/Empty/index.vue";
-import TransferPanel from "@/frontend/components/Logistics/TransferPanel/index.vue";
+import TransferTable from "@/frontend/components/Logistics/TransferTable/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -33,6 +31,11 @@ import {
 const { t } = useI18n();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
+
+const crumbs = computed<Crumb[]>(() => [
+  { to: { name: "hangar" }, label: t("nav.hangar.index") },
+  { to: { name: "hangar-inventories" }, label: t("nav.hangar.inventories") },
+]);
 
 const direction = ref<"incoming" | "outgoing">("incoming");
 
@@ -66,21 +69,12 @@ const run = async (action: () => Promise<unknown>) => {
 // Accepting needs a destination, which is this side's choice -- the sender
 // never named one. With a single inventory there is nothing to ask about.
 const onAccept = (transfer: InventoryTransfer) => {
-  const options = inventories.value?.items ?? [];
-
-  if (options.length === 1) {
-    void run(() =>
-      accept({ id: transfer.id, data: { inventoryId: options[0].id } }),
-    );
-    return;
-  }
-
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Logistics/TransferAcceptModal/index.vue"),
     props: {
       transfer,
-      inventories: options,
+      inventories: inventories.value?.items ?? [],
       onAccept: (inventoryId: string) =>
         run(() => accept({ id: transfer.id, data: { inventoryId } })),
     },
@@ -113,62 +107,52 @@ const onReport = (transfer: InventoryTransfer) => {
 
 <template>
   <section class="container">
-    <BreadCrumbs />
+    <BreadCrumbs :crumbs="crumbs" />
 
-    <Heading>
+    <Heading size="hero" hero>
       {{ t("headlines.logistics.transfers") }}
-
-      <template #right>
-        <BtnGroup>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            :variant="
-              direction === 'incoming'
-                ? BtnVariantsEnum.SOLID
-                : BtnVariantsEnum.BARE
-            "
-            data-test="transfers-incoming"
-            @click="direction = 'incoming'"
-          >
-            {{ t("labels.logistics.incoming") }}
-          </Btn>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            :variant="
-              direction === 'outgoing'
-                ? BtnVariantsEnum.SOLID
-                : BtnVariantsEnum.BARE
-            "
-            data-test="transfers-outgoing"
-            @click="direction = 'outgoing'"
-          >
-            {{ t("labels.logistics.outgoing") }}
-          </Btn>
-        </BtnGroup>
-      </template>
     </Heading>
 
-    <Loader :loading="isLoading" />
+    <!-- `Heading` takes only `default` and `subHeading`, so controls belong in
+         the page header the way every other list does it. -->
+    <Teleport to="#header-right">
+      <BtnGroup>
+        <Btn
+          :size="BtnSizesEnum.MD"
+          :variant="
+            direction === 'incoming'
+              ? BtnVariantsEnum.SOLID
+              : BtnVariantsEnum.BARE
+          "
+          data-test="transfers-incoming"
+          @click="direction = 'incoming'"
+        >
+          {{ t("labels.logistics.incoming") }}
+        </Btn>
+        <Btn
+          :size="BtnSizesEnum.MD"
+          :variant="
+            direction === 'outgoing'
+              ? BtnVariantsEnum.SOLID
+              : BtnVariantsEnum.BARE
+          "
+          data-test="transfers-outgoing"
+          @click="direction = 'outgoing'"
+        >
+          {{ t("labels.logistics.outgoing") }}
+        </Btn>
+      </BtnGroup>
+    </Teleport>
 
-    <Empty
-      v-if="!isLoading && transfers.length === 0"
-      variant="box"
-      hide-actions
-      name="transfers"
+    <TransferTable
+      :transfers="transfers"
+      :direction="direction"
+      :loading="isLoading"
+      :busy="busy"
+      @accept="onAccept"
+      @decline="onDecline"
+      @cancel="onCancel"
+      @report="onReport"
     />
-
-    <Grid v-else :records="transfers" primary-key="id">
-      <template #default="{ record }">
-        <TransferPanel
-          :transfer="record"
-          :direction="direction"
-          :busy="busy"
-          @accept="onAccept"
-          @decline="onDecline"
-          @cancel="onCancel"
-          @report="onReport"
-        />
-      </template>
-    </Grid>
   </section>
 </template>

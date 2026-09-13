@@ -1898,7 +1898,12 @@
           "scam": "Arnaque",
           "other": "Autre chose"
         },
-        "transferToFleet": "%{fleet} (flotte)"
+        "transferToFleet": "%{fleet} (flotte)",
+        "sender": "De",
+        "recipient": "À",
+        "contents": "Contenu",
+        "state": "Statut",
+        "sentAt": "Envoyé"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

@@ -1894,7 +1894,12 @@
           "scam": "诈骗",
           "other": "其他"
         },
-        "transferToFleet": "%{fleet}（舰队）"
+        "transferToFleet": "%{fleet}（舰队）",
+        "sender": "来自",
+        "recipient": "发往",
+        "contents": "内容",
+        "state": "状态",
+        "sentAt": "发送时间"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
