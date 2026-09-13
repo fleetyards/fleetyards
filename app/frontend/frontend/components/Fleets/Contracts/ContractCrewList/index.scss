@@ -1,0 +1,33 @@
+.contract-crew {
+  &__list {
+    list-style: none;
+    margin: 0 0 12px;
+    padding: 0;
+  }
+
+  &__member {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+  }
+
+  &__avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__name {
+    flex: 1 1 auto;
+  }
+
+  &__pending-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $gray-lighter;
+    margin: 0 0 4px;
+  }
+}

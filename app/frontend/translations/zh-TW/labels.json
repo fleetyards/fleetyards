@@ -1673,9 +1673,7 @@
           "foundUpgrades": "找到的升級",
           "missingUpgrades": "未找到升級",
           "missingUpgradeVehicles": "未找到匹配的飛船用於升級"
-        },
-        "addBundledVehicles": "新增附帶的小型飛船",
-        "addBundledVehiclesHint": "新增飛船附帶的小型飛船。已在機庫中的會保留。"
+        }
       },
       "cargoGridViewer": {
         "capacity": "容量",
@@ -2007,7 +2005,8 @@
         "openTransfers": "開啟轉移",
         "openFriends": "開啟好友",
         "openAllies": "開啟盟友",
-        "openTour": "開啟行程"
+        "openTour": "開啟行程",
+        "openContract": "開啟合約"
       },
       "notificationTypes": {
         "channels": {
@@ -2238,6 +2237,54 @@
             "weekTitle": "%{date} 當週"
           },
           "repeats": "重複"
+        },
+        "contracts": {
+          "title": "標題",
+          "description": "描述",
+          "reward": "報酬",
+          "deadline": "截止時間",
+          "crewLimit": "隊伍上限",
+          "reimburseExpenses": "報銷開支",
+          "from": "取貨地點",
+          "to": "交付地點",
+          "lead": "負責人",
+          "pendingCrew": "等待加入",
+          "minQuality": "最低品質 %{value}",
+          "pickedUp": "已取 %{quantity}",
+          "openTab": "進行中",
+          "closedTab": "已結束",
+          "itemName": "物品",
+          "itemCategory": "類別",
+          "itemUnit": "單位",
+          "itemQuantity": "數量",
+          "itemMinQuality": "最低品質",
+          "kind": {
+            "label": "類型",
+            "transport": "運輸",
+            "procurement": "採購",
+            "crafting": "製造"
+          },
+          "state": {
+            "draft": "草稿",
+            "open": "開放",
+            "in_progress": "進行中",
+            "fulfilled": "已完成",
+            "cancelled": "已取消",
+            "expired": "已過期"
+          },
+          "unit": {
+            "scu": "SCU",
+            "units": "件"
+          },
+          "category": {
+            "commodity": "商品",
+            "component": "部件",
+            "weapon": "武器",
+            "equipment": "裝備",
+            "ammunition": "彈藥",
+            "consumable": "消耗品",
+            "other": "其他"
+          }
         }
       },
       "commodity": {

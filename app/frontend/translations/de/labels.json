@@ -2005,7 +2005,8 @@
         "openTransfers": "Transfers öffnen",
         "openFriends": "Freunde öffnen",
         "openAllies": "Verbündete öffnen",
-        "openTour": "Tour öffnen"
+        "openTour": "Tour öffnen",
+        "openContract": "Auftrag öffnen"
       },
       "notificationTypes": {
         "channels": {
@@ -2236,6 +2237,54 @@
             "weekTitle": "Woche vom %{date}"
           },
           "repeats": "Wiederholung"
+        },
+        "contracts": {
+          "title": "Titel",
+          "description": "Beschreibung",
+          "reward": "Belohnung",
+          "deadline": "Frist",
+          "crewLimit": "Crew-Limit",
+          "reimburseExpenses": "Auslagen erstatten",
+          "from": "Abholen bei",
+          "to": "Liefern an",
+          "lead": "Leitung",
+          "pendingCrew": "Wartet auf Aufnahme",
+          "minQuality": "min. Qualität %{value}",
+          "pickedUp": "%{quantity} abgeholt",
+          "openTab": "Offen",
+          "closedTab": "Abgeschlossen",
+          "itemName": "Ware",
+          "itemCategory": "Kategorie",
+          "itemUnit": "Einheit",
+          "itemQuantity": "Menge",
+          "itemMinQuality": "Mindestqualität",
+          "kind": {
+            "label": "Art",
+            "transport": "Transport",
+            "procurement": "Beschaffung",
+            "crafting": "Herstellung"
+          },
+          "state": {
+            "draft": "Entwurf",
+            "open": "Offen",
+            "in_progress": "In Arbeit",
+            "fulfilled": "Erfüllt",
+            "cancelled": "Abgebrochen",
+            "expired": "Abgelaufen"
+          },
+          "unit": {
+            "scu": "SCU",
+            "units": "Stück"
+          },
+          "category": {
+            "commodity": "Handelsware",
+            "component": "Komponente",
+            "weapon": "Waffe",
+            "equipment": "Ausrüstung",
+            "ammunition": "Munition",
+            "consumable": "Verbrauchsgut",
+            "other": "Sonstiges"
+          }
         }
       },
       "commodity": {

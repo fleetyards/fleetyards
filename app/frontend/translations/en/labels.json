@@ -1673,9 +1673,7 @@
           "foundUpgrades": "Found Upgrades",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
-        },
-        "addBundledVehicles": "Add bundled snub crafts",
-        "addBundledVehiclesHint": "Adds the snub craft a ship comes with. Ones already in your hangar are kept either way."
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacity",
@@ -2021,7 +2019,8 @@
         "openTransfers": "Open transfers",
         "openFriends": "Open friends",
         "openAllies": "Open allies",
-        "openTour": "Open tour"
+        "openTour": "Open tour",
+        "openContract": "Open contract"
       },
       "notificationTypes": {
         "channels": {
@@ -2252,6 +2251,54 @@
             "weekTitle": "Week of %{date}"
           },
           "repeats": "Repeats"
+        },
+        "contracts": {
+          "title": "Title",
+          "description": "Description",
+          "reward": "Reward",
+          "deadline": "Deadline",
+          "crewLimit": "Crew limit",
+          "reimburseExpenses": "Reimburse expenses",
+          "from": "Collect from",
+          "to": "Deliver to",
+          "lead": "Lead",
+          "pendingCrew": "Waiting to join",
+          "minQuality": "min. quality %{value}",
+          "pickedUp": "%{quantity} picked up",
+          "openTab": "Open",
+          "closedTab": "Closed",
+          "itemName": "Item",
+          "itemCategory": "Category",
+          "itemUnit": "Unit",
+          "itemQuantity": "Quantity",
+          "itemMinQuality": "Minimum quality",
+          "kind": {
+            "label": "Type",
+            "transport": "Transport",
+            "procurement": "Procurement",
+            "crafting": "Crafting"
+          },
+          "state": {
+            "draft": "Draft",
+            "open": "Open",
+            "in_progress": "In progress",
+            "fulfilled": "Fulfilled",
+            "cancelled": "Cancelled",
+            "expired": "Expired"
+          },
+          "unit": {
+            "scu": "SCU",
+            "units": "units"
+          },
+          "category": {
+            "commodity": "Commodity",
+            "component": "Component",
+            "weapon": "Weapon",
+            "equipment": "Equipment",
+            "ammunition": "Ammunition",
+            "consumable": "Consumable",
+            "other": "Other"
+          }
         }
       },
       "commodity": {

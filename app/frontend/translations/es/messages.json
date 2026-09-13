@@ -830,6 +830,27 @@
             "success": "Slot eliminado.",
             "failure": "No se pudo eliminar el slot."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Contrato creado",
+            "failure": "No se pudo crear el contrato"
+          },
+          "update": {
+            "success": "Contrato guardado",
+            "failure": "No se pudo guardar el contrato"
+          },
+          "item": {
+            "create": {
+              "failure": "No se pudieron añadir las mercancías"
+            },
+            "destroy": {
+              "failure": "No se pudieron quitar las mercancías"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Envía las mercancías desde uno de tus inventarios y elige este contrato para que la entrega cuente."
         }
       },
       "notifications": {

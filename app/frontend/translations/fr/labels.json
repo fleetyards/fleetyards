@@ -2005,7 +2005,8 @@
         "openTransfers": "Ouvrir les transferts",
         "openFriends": "Ouvrir les amis",
         "openAllies": "Ouvrir les alliés",
-        "openTour": "Ouvrir l'expédition"
+        "openTour": "Ouvrir l'expédition",
+        "openContract": "Ouvrir le contrat"
       },
       "notificationTypes": {
         "channels": {
@@ -2236,6 +2237,54 @@
             "weekTitle": "Semaine du %{date}"
           },
           "repeats": "Répétition"
+        },
+        "contracts": {
+          "title": "Titre",
+          "description": "Description",
+          "reward": "Récompense",
+          "deadline": "Échéance",
+          "crewLimit": "Limite d'équipage",
+          "reimburseExpenses": "Rembourser les frais",
+          "from": "Récupérer à",
+          "to": "Livrer à",
+          "lead": "Responsable",
+          "pendingCrew": "En attente",
+          "minQuality": "qualité min. %{value}",
+          "pickedUp": "%{quantity} récupéré",
+          "openTab": "Ouverts",
+          "closedTab": "Clos",
+          "itemName": "Article",
+          "itemCategory": "Catégorie",
+          "itemUnit": "Unité",
+          "itemQuantity": "Quantité",
+          "itemMinQuality": "Qualité minimale",
+          "kind": {
+            "label": "Type",
+            "transport": "Transport",
+            "procurement": "Approvisionnement",
+            "crafting": "Fabrication"
+          },
+          "state": {
+            "draft": "Brouillon",
+            "open": "Ouvert",
+            "in_progress": "En cours",
+            "fulfilled": "Rempli",
+            "cancelled": "Annulé",
+            "expired": "Expiré"
+          },
+          "unit": {
+            "scu": "SCU",
+            "units": "unités"
+          },
+          "category": {
+            "commodity": "Marchandise",
+            "component": "Composant",
+            "weapon": "Arme",
+            "equipment": "Équipement",
+            "ammunition": "Munitions",
+            "consumable": "Consommable",
+            "other": "Autre"
+          }
         }
       },
       "commodity": {

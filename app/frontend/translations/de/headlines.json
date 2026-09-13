@@ -292,7 +292,15 @@
           "assignSlotFor": "Slot für %{username} zuweisen",
           "reassignSlotFor": "Slot für %{username} neu zuweisen"
         },
-        "memberNickname": "Spitzname des Mitglieds"
+        "memberNickname": "Spitzname des Mitglieds",
+        "contracts": {
+          "index": "Aufträge",
+          "create": "Auftrag erstellen",
+          "edit": "Auftrag bearbeiten",
+          "progress": "Fortschritt",
+          "crew": "Crew",
+          "items": "Waren"
+        }
       },
       "hangarGroup": {
         "create": "Create Group",

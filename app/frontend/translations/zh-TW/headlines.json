@@ -292,7 +292,15 @@
           "assignSlotFor": "為 %{username} 分配席位",
           "reassignSlotFor": "為 %{username} 重新分配席位"
         },
-        "memberNickname": "成員暱稱"
+        "memberNickname": "成員暱稱",
+        "contracts": {
+          "index": "合約",
+          "create": "建立合約",
+          "edit": "編輯合約",
+          "progress": "進度",
+          "crew": "隊伍",
+          "items": "貨物"
+        }
       },
       "hangarGroup": {
         "create": "Create Group",

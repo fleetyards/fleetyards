@@ -2005,7 +2005,8 @@
         "openTransfers": "Apri trasferimenti",
         "openFriends": "Apri gli amici",
         "openAllies": "Apri gli alleati",
-        "openTour": "Apri spedizione"
+        "openTour": "Apri spedizione",
+        "openContract": "Apri contratto"
       },
       "notificationTypes": {
         "channels": {
@@ -2236,6 +2237,54 @@
             "weekTitle": "Settimana del %{date}"
           },
           "repeats": "Ricorrente"
+        },
+        "contracts": {
+          "title": "Titolo",
+          "description": "Descrizione",
+          "reward": "Ricompensa",
+          "deadline": "Scadenza",
+          "crewLimit": "Limite equipaggio",
+          "reimburseExpenses": "Rimborsa le spese",
+          "from": "Ritira da",
+          "to": "Consegna a",
+          "lead": "Responsabile",
+          "pendingCrew": "In attesa",
+          "minQuality": "qualità min. %{value}",
+          "pickedUp": "%{quantity} ritirato",
+          "openTab": "Aperti",
+          "closedTab": "Chiusi",
+          "itemName": "Articolo",
+          "itemCategory": "Categoria",
+          "itemUnit": "Unità",
+          "itemQuantity": "Quantità",
+          "itemMinQuality": "Qualità minima",
+          "kind": {
+            "label": "Tipo",
+            "transport": "Trasporto",
+            "procurement": "Approvvigionamento",
+            "crafting": "Fabbricazione"
+          },
+          "state": {
+            "draft": "Bozza",
+            "open": "Aperto",
+            "in_progress": "In corso",
+            "fulfilled": "Completato",
+            "cancelled": "Annullato",
+            "expired": "Scaduto"
+          },
+          "unit": {
+            "scu": "SCU",
+            "units": "unità"
+          },
+          "category": {
+            "commodity": "Merce",
+            "component": "Componente",
+            "weapon": "Arma",
+            "equipment": "Equipaggiamento",
+            "ammunition": "Munizioni",
+            "consumable": "Consumabile",
+            "other": "Altro"
+          }
         }
       },
       "commodity": {

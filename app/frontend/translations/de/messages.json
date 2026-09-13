@@ -830,6 +830,27 @@
             "success": "Slot entfernt.",
             "failure": "Slot konnte nicht entfernt werden."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Auftrag erstellt",
+            "failure": "Auftrag konnte nicht erstellt werden"
+          },
+          "update": {
+            "success": "Auftrag gespeichert",
+            "failure": "Auftrag konnte nicht gespeichert werden"
+          },
+          "item": {
+            "create": {
+              "failure": "Waren konnten nicht hinzugefügt werden"
+            },
+            "destroy": {
+              "failure": "Waren konnten nicht entfernt werden"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Sende die Waren aus einem deiner Inventare und wähle diesen Auftrag aus, damit die Lieferung zählt."
         }
       },
       "notifications": {

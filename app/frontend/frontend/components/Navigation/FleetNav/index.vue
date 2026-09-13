@@ -69,6 +69,16 @@ const hasAlliesAccess = computed(
   () => membership.value?.capabilities?.readAllies ?? false,
 );
 
+const hasContractsAccess = computed(() => {
+  const access = membership.value?.fleetRole?.resourceAccess;
+  if (!access) return false;
+  return access.some((a: string) =>
+    ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:read"].includes(
+      a,
+    ),
+  );
+});
+
 const hasMissionsAccess = computed(() => {
   const access = membership.value?.fleetRole?.resourceAccess;
   if (!access) return false;
@@ -174,6 +184,20 @@ onMounted(() => {
         />
         <NavItem
           v-if="
+            hasContractsAccess &&
+            isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_CONTRACTS)
+          "
+          :to="{
+            name: 'fleet-contracts',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.contracts.index')"
+          :active="String(route.name).startsWith('fleet-contract')"
+          icon="fa-duotone fa-clipboard-list"
+          prefix="06"
+        />
+        <NavItem
+          v-if="
             (hasEventsAccess || hasMissionsAccess) &&
             isFleetFeatureEnabled(
               currentFleet,
@@ -187,7 +211,7 @@ onMounted(() => {
           :label="t('nav.fleets.events.index')"
           :active="eventsNavActive"
           icon="fa-duotone fa-calendar-day"
-          prefix="06"
+          prefix="07"
         />
         <NavItem
           v-if="

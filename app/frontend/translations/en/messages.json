@@ -840,6 +840,27 @@
             "success": "Slot removed.",
             "failure": "Could not remove slot."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Contract created",
+            "failure": "Contract could not be created"
+          },
+          "update": {
+            "success": "Contract saved",
+            "failure": "Contract could not be saved"
+          },
+          "item": {
+            "create": {
+              "failure": "Goods could not be added"
+            },
+            "destroy": {
+              "failure": "Goods could not be removed"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Send the goods from one of your own inventories and pick this contract, so the delivery counts towards it."
         }
       },
       "notifications": {

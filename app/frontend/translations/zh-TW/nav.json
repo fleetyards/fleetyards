@@ -79,7 +79,10 @@
           "calendar": "行事曆",
           "features": "功能"
         },
-        "allies": "盟友"
+        "allies": "盟友",
+        "contracts": {
+          "index": "合約"
+        }
       },
       "rsiProfile": "RSI 檔案",
       "rsiHangar": "RSI 機庫",

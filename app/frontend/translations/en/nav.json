@@ -79,7 +79,10 @@
           "calendar": "Calendar",
           "features": "Features"
         },
-        "allies": "Allies"
+        "allies": "Allies",
+        "contracts": {
+          "index": "Contracts"
+        }
       },
       "rsiProfile": "RSI Profile",
       "rsiHangar": "RSI Hangar",

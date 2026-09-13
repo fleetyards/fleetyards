@@ -98,6 +98,12 @@
           "discord": "Paramètres Discord de %{fleet}",
           "calendar": "Paramètres de calendrier de %{fleet}",
           "features": "Fonctionnalités de %{fleet}"
+        },
+        "contracts": {
+          "index": "Contrats",
+          "create": "Créer un contrat",
+          "edit": "Modifier le contrat",
+          "show": "Contrat"
         }
       },
       "roadmap": {

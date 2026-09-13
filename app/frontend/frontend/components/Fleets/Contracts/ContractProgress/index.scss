@@ -1,0 +1,27 @@
+.contract-progress {
+  &__overall {
+    margin-bottom: 24px;
+  }
+
+  &__line {
+    margin-bottom: 16px;
+  }
+
+  &__name {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  &__quality {
+    font-size: 0.8em;
+    color: $gray-lighter;
+  }
+
+  &__pickup {
+    margin: 0;
+    font-size: 0.85em;
+    color: $gray-lighter;
+  }
+}

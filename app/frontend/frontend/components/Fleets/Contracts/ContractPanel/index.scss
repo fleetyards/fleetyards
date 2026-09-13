@@ -1,0 +1,38 @@
+.contract-panel {
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__kind {
+    font-size: 0.85em;
+    color: $gray-lighter;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__description {
+    margin-bottom: 12px;
+  }
+
+  &__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px 16px;
+    margin: 0;
+
+    dt {
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: $gray-lighter;
+      margin: 0;
+    }
+
+    dd {
+      margin: 0;
+    }
+  }
+}

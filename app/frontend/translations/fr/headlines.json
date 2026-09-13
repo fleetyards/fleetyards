@@ -292,7 +292,15 @@
           "assignSlotFor": "Attribuer une place à %{username}",
           "reassignSlotFor": "Réattribuer une place à %{username}"
         },
-        "memberNickname": "Surnom du membre"
+        "memberNickname": "Surnom du membre",
+        "contracts": {
+          "index": "Contrats",
+          "create": "Créer un contrat",
+          "edit": "Modifier le contrat",
+          "progress": "Progression",
+          "crew": "Équipage",
+          "items": "Marchandises"
+        }
       },
       "hangarGroup": {
         "create": "Créer un groupe",

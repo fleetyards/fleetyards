@@ -830,6 +830,27 @@
             "success": "Slot rimosso.",
             "failure": "Non è stato possibile rimuovere lo slot."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Contratto creato",
+            "failure": "Impossibile creare il contratto"
+          },
+          "update": {
+            "success": "Contratto salvato",
+            "failure": "Impossibile salvare il contratto"
+          },
+          "item": {
+            "create": {
+              "failure": "Impossibile aggiungere le merci"
+            },
+            "destroy": {
+              "failure": "Impossibile rimuovere le merci"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Invia le merci da uno dei tuoi inventari e scegli questo contratto, così la consegna viene conteggiata."
         }
       },
       "notifications": {

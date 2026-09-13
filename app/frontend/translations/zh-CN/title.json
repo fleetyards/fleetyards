@@ -98,6 +98,12 @@
           "discord": "%{fleet} Discord 设置",
           "calendar": "%{fleet} 日历设置",
           "features": "%{fleet} 功能"
+        },
+        "contracts": {
+          "index": "合约",
+          "create": "创建合约",
+          "edit": "编辑合约",
+          "show": "合约"
         }
       },
       "roadmap": {

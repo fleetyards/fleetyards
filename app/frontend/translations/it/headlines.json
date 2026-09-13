@@ -292,7 +292,15 @@
           "assignSlotFor": "Assegna slot a %{username}",
           "reassignSlotFor": "Riassegna slot a %{username}"
         },
-        "memberNickname": "Soprannome del membro"
+        "memberNickname": "Soprannome del membro",
+        "contracts": {
+          "index": "Contratti",
+          "create": "Crea contratto",
+          "edit": "Modifica contratto",
+          "progress": "Avanzamento",
+          "crew": "Equipaggio",
+          "items": "Merci"
+        }
       },
       "hangarGroup": {
         "create": "Crea Gruppo",
