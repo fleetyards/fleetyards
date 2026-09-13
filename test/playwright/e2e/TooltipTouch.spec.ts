@@ -14,11 +14,17 @@ import { test, expect, devices } from "@playwright/test";
  */
 test.use({ ...devices["Pixel 5"] });
 
+/*
+ * Display rather than opacity: the fade-in runs in a `requestAnimationFrame`,
+ * and what the bug did was take the element back to `display: none` -- which is
+ * the part worth asserting and the part that does not depend on a frame having
+ * been painted.
+ */
 const tooltipState = (page: import("@playwright/test").Page) =>
   page.evaluate(() => {
     const el = document.querySelector("[data-tooltip]") as HTMLElement | null;
     if (!el) return "absent";
-    return `${el.style.display}/${el.style.opacity}`;
+    return el.style.display;
   });
 
 test.describe("Tooltip on touch", () => {
@@ -32,14 +38,14 @@ test.describe("Tooltip on touch", () => {
     await icon.tap();
     await expect
       .poll(() => tooltipState(page), { timeout: 2000 })
-      .toBe("block/1");
+      .toBe("block");
 
     // Still up after the fade would have finished -- the bug hid it ~150ms in.
     await page.waitForTimeout(600);
-    expect(await tooltipState(page)).toBe("block/1");
+    expect(await tooltipState(page)).toBe("block");
 
     await icon.tap();
-    await expect.poll(() => tooltipState(page)).toBe("none/0");
+    await expect.poll(() => tooltipState(page)).toBe("none");
   });
 
   test("tapping elsewhere dismisses it", async ({ page }) => {
@@ -51,10 +57,10 @@ test.describe("Tooltip on touch", () => {
     await icon.tap();
     await expect
       .poll(() => tooltipState(page), { timeout: 2000 })
-      .toBe("block/1");
+      .toBe("block");
 
     await page.locator("[data-test='info-hints']").tap({ position: { x: 5, y: 5 } });
 
-    await expect.poll(() => tooltipState(page)).toBe("none/0");
+    await expect.poll(() => tooltipState(page)).toBe("none");
   });
 });
