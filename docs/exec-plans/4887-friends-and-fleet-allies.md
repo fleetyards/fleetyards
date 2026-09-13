@@ -380,6 +380,37 @@ Written per phase. The state machine including all three answers; a table test o
   there is no Playwright pass: the plan asked for one over request → accept → the
   newly visible hangar, and it is the one item not delivered. Confirmed `TransferGate#shares_a_fleet?` is the single definition of `known`, and that `useTransferTargets` already documents a friends list as its intended extension. Measured the ally-roster problem against `fleet_members/_base.jbuilder`, which renders coordinates, current system and four contact handles per member — the reason D8 builds a second partial rather than reusing it. Found three `public_hangar` checks outside the policies, one of them a bulk filter. Confirmed `ApplicationPolicy` authorizes an optional `user`, so the public policies can already ask who is reading.
 
+- **2026-09-13** Review (PR #4889) found four things, three of them real
+  boundaries:
+
+  **Withdrawing an ignored request was the one place the ignore showed.** Every
+  surface hid it and the *absence* of a surface did not: a real withdrawal
+  destroys the row, an ignored one had to survive to keep absorbing, so it came
+  back in the sender's next list. `withdrawn_at` on both tables fixes it — hidden
+  from `in_state_for`, 404 on a direct read, still absorbing, cleared by a fresh
+  request. The test asserts withdraw → read → list → re-request answers
+  identically for an ignored row and a plain one.
+
+  **`POST` could accept an alliance with only the create privilege.** D4 makes a
+  crossing request an acceptance, which means the create endpoint can complete a
+  relationship rather than only propose one — so it authorizes `accept?` on that
+  path as well.
+
+  **D7 was right and the code did not follow it.** The plan says folding the ally
+  clauses together would let `allies_fleet_stats` open the fleet page; it was
+  added to `show?` anyway, reasoning from `public_fleet_stats?` already being
+  there. What that missed is that `show?` guards
+  `Public::FleetVehiclesController` too, so "share our numbers" also handed over
+  the ship list with loadouts, modules and owner avatars. Now one switch, one
+  surface. The pre-existing `public_fleet_stats?` clause is left alone — same
+  shape, but changing it alters published behaviour and belongs in its own
+  change.
+
+  **Existing-row transitions were not serialized**, so two simultaneous
+  re-requests could both reopen a declined relationship and both notify. They run
+  under a row lock now, and notifications moved outside the transaction: a
+  broadcast must not be able to roll back a relationship that was agreed to.
+
 ## Progress
 - [x] Phase 1 — The two relationships and the handshake
 - [x] Phase 2 — What a friend can see
