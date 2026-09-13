@@ -411,6 +411,38 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal 80, locker.reload.stock_positions.sole.net_quantity
   end
 
+  # The schema declared `transferId` on all three entry shapes while the fleet
+  # view never rendered it, so a fleet's ledger could not tell an entry a person
+  # typed from one a transfer wrote.
+  test "the fleet ledger says which entries a transfer wrote" do
+    Flipper.enable("inventory_transfers")
+    locker = create(:inventory, holder: @officer)
+
+    sign_in @officer
+
+    post "/api/v1/fleets/#{@fleet.slug}/inventory-transfers",
+      params: {
+        sourceInventoryId: @depot.id,
+        inventoryId: locker.id,
+        lines: [{positionId: @entry.position.id, quantity: 5}]
+      }.to_json,
+      headers: {"Content-Type" => "application/json", "Accept" => "application/json"}
+
+    assert_response :created
+
+    get "/api/v1/fleets/#{@fleet.slug}/inventories/#{@depot.slug}/items",
+      headers: {"Accept" => "application/json"}
+
+    assert_response :success
+
+    entries = response.parsed_body["items"]
+    withdrawal = entries.find { |entry| entry["entryType"] == "withdrawal" }
+    typed = entries.find { |entry| entry["entryType"] == "deposit" }
+
+    assert_not_nil withdrawal["transferId"], "a transfer's own entry is unmarked"
+    assert_nil typed["transferId"], "an entry somebody typed is marked as a transfer's"
+  end
+
   private def donation_to_fleet
     donor = create(:user)
     donor_inventory = create(:inventory, holder: donor)

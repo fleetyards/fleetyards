@@ -199,6 +199,30 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "the hangar ledger says which entries a transfer wrote" do
+    sign_in @user
+
+    post "/api/v1/hangar/inventory-transfers",
+      params: {
+        sourceInventoryId: @source.id,
+        inventoryId: @destination.id,
+        lines: [{positionId: @entry.position.id, quantity: 5}]
+      }.to_json,
+      headers: {"Content-Type" => "application/json", "Accept" => "application/json"}
+
+    assert_response :created
+
+    get "/api/v1/hangar/inventories/#{@destination.slug}/items",
+      headers: {"Accept" => "application/json"}
+
+    assert_response :success
+
+    deposit = response.parsed_body["items"].sole
+
+    assert_not_nil deposit["transferId"]
+    assert_not_nil deposit["createdAt"], "a ledger without times has no order"
+  end
+
   test "GET needs a signed-in user" do
     assert_api_response :get, 401
   end
