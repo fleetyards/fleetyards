@@ -196,7 +196,6 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
         />
       </div>
       <div class="col-12 col-md-4">
-        {{ model.metrics.dockSize }}
         <ModelDockSizeSelect
           v-model="dockSize"
           v-bind="dockSizeProps"
