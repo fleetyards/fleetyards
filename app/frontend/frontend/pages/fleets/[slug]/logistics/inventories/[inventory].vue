@@ -20,7 +20,6 @@ import {
   useFleetInventory,
   useFleetInventoryItems,
   useFleetInventoryStock,
-  useCreateFleetInventoryTransfer,
   FeatureFlagName,
   useDestroyFleetInventoryItem,
 } from "@/services/fyApi";
@@ -33,7 +32,7 @@ import { useInventoryStockList } from "@/frontend/composables/useInventoryStockL
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useFleetTransferTargets } from "@/frontend/composables/useFleetTransferTargets";
+import { useTransferModal } from "@/frontend/composables/useTransferModal";
 
 type Props = {
   fleet: Fleet;
@@ -109,38 +108,12 @@ const transfersEnabled = computed(
       false),
 );
 
-const { targets: transferTargets } = useFleetTransferTargets(
-  fleetSlug,
-  () => inventory.value,
-);
-
-const { mutateAsync: createTransfer } = useCreateFleetInventoryTransfer();
-
-// A transfer starts from the rows the reader chose -- one, or a ticked set --
-// rather than from the whole inventory.
-const openTransferModal = (positions: InventoryStockRecord[]) => {
-  if (!inventory.value?.id || positions.length === 0) return;
-
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Logistics/TransferModal/index.vue"),
-    props: {
-      source: { id: inventory.value.id, name: inventory.value.name },
-      positions,
-      targets: transferTargets.value,
-      onSend: async (data: Parameters<typeof createTransfer>[0]["data"]) => {
-        await createTransfer({ fleetSlug: fleetSlug.value, data });
-        await Promise.all([refetchStock(), refetchAll(), refetchInventory()]);
-      },
-    },
-  });
-};
-
-const openTransferForSelection = (selected: string[]) => {
-  openTransferModal(
-    stockRecords.value.filter((record) => selected.includes(record.id)),
-  );
-};
+const { openTransferModal, openTransferForSelection } = useTransferModal({
+  source: () => inventory.value,
+  records: () => stockRecords.value,
+  fleetSlug: () => fleetSlug.value,
+  onSent: () => Promise.all([refetchStock(), refetchAll(), refetchInventory()]),
+});
 
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 

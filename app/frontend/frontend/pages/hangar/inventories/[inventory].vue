@@ -19,7 +19,6 @@ import {
   useHangarInventoryItems,
   useHangarInventoryStock,
   useDestroyHangarInventoryItem,
-  useCreateHangarInventoryTransfer,
   FeatureFlagName,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -33,8 +32,8 @@ import type {
 } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useTransferModal } from "@/frontend/composables/useTransferModal";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import { useTransferTargets } from "@/frontend/composables/useTransferTargets";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -145,40 +144,12 @@ const transfersEnabled = computed(() =>
   isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
 );
 
-const { targets: transferTargets } = useTransferTargets(() => inventory.value);
-
-const { mutateAsync: createTransfer } = useCreateHangarInventoryTransfer();
-
-// A transfer starts from the rows the reader chose -- one, or a ticked set --
-// rather than from the whole inventory. `stockRecords` is per quality, so a
-// position can be several rows; the modal collapses them.
-const openTransferModal = (positions: InventoryStockRecord[]) => {
-  if (!inventory.value?.id || positions.length === 0) return;
-
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Logistics/TransferModal/index.vue"),
-    props: {
-      source: { id: inventory.value.id, name: inventory.value.name },
-      positions,
-      targets: transferTargets.value,
-      onSend: async (data: Parameters<typeof createTransfer>[0]["data"]) => {
-        await createTransfer({ data });
-        await Promise.all([
-          refetchStock(),
-          refetchLogItems(),
-          refetchInventory(),
-        ]);
-      },
-    },
-  });
-};
-
-const openTransferForSelection = (selected: string[]) => {
-  openTransferModal(
-    stockRecords.value.filter((record) => selected.includes(record.id)),
-  );
-};
+const { openTransferModal, openTransferForSelection } = useTransferModal({
+  source: () => inventory.value,
+  records: () => stockRecords.value,
+  onSent: () =>
+    Promise.all([refetchStock(), refetchLogItems(), refetchInventory()]),
+});
 const openCsvImportModal = () => {
   if (!inventory.value) return;
 

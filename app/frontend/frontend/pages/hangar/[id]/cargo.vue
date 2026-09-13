@@ -19,7 +19,6 @@ import {
   useVehicleInventory,
   useVehicleInventoryItems,
   useVehicleInventoryStock,
-  useCreateHangarInventoryTransfer,
   useDestroyVehicleInventory,
   useDestroyVehicleInventoryItem,
 } from "@/services/fyApi";
@@ -34,10 +33,10 @@ import type {
   InventoryTarget,
 } from "@/frontend/types/logistics";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import { useTransferTargets } from "@/frontend/composables/useTransferTargets";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useTransferModal } from "@/frontend/composables/useTransferModal";
 import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
@@ -152,10 +151,6 @@ const showCargoGridsLink = computed(
 // A ship's cargo moves the same way a locker's does. The transfer itself is a
 // hangar-mount call either way: what decides the source is the inventory id,
 // and a ship inventory is one of the user's own.
-const { targets: transferTargets } = useTransferTargets(() => inventory.value);
-
-const { mutateAsync: createTransfer } = useCreateHangarInventoryTransfer();
-
 const transfersEnabled = computed(() =>
   isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
 );
@@ -166,32 +161,11 @@ const canTransfer = computed(
   () => transfersEnabled.value && !!inventory.value?.id && hasCargo.value,
 );
 
-// A transfer starts from the rows the reader chose -- one, or a ticked set --
-// rather than from the whole inventory. `stockRecords` is per quality, so a
-// position can be several rows; the modal collapses them.
-const openTransferModal = (positions: InventoryStockRecord[]) => {
-  if (!inventory.value?.id || positions.length === 0) return;
-
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Logistics/TransferModal/index.vue"),
-    props: {
-      source: { id: inventory.value.id, name: inventory.value.name },
-      positions,
-      targets: transferTargets.value,
-      onSend: async (data: Parameters<typeof createTransfer>[0]["data"]) => {
-        await createTransfer({ data });
-        await Promise.all([refetchStock(), refetchAll(), refetchInventory()]);
-      },
-    },
-  });
-};
-
-const openTransferForSelection = (selected: string[]) => {
-  openTransferModal(
-    stockRecords.value.filter((record) => selected.includes(record.id)),
-  );
-};
+const { openTransferModal, openTransferForSelection } = useTransferModal({
+  source: () => inventory.value,
+  records: () => stockRecords.value,
+  onSent: () => Promise.all([refetchStock(), refetchAll(), refetchInventory()]),
+});
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
   comlink.emit("open-modal", {
     component: () =>

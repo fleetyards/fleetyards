@@ -2,37 +2,43 @@ import { describe, expect, it, vi } from "vitest";
 import { computed, ref } from "vue";
 import type { Fleet, HangarInventory } from "@/services/fyApi";
 
-const inventories = ref<{ items: Partial<HangarInventory>[] } | undefined>();
+const hangarInventories = ref<
+  { items: Partial<HangarInventory>[] } | undefined
+>();
+const fleetInventories = ref<
+  { items: Partial<HangarInventory>[] } | undefined
+>();
 const fleets = ref<Partial<Fleet>[] | undefined>();
+const members = ref<{ items: { username: string }[] }[]>([]);
 
-// The two query hooks are mocked at their own modules rather than at the
-// barrel: mocking `@/services/fyApi` replaces the re-export that carries
-// `FeatureFlagName`, and the composable reads the enum from it.
 vi.mock(
   "@/services/fyApi/services/hangar-inventories/hangar-inventories",
   () => ({
-    useHangarInventories: () => ({ data: inventories }),
+    useHangarInventories: () => ({ data: hangarInventories }),
   }),
 );
 
-vi.mock("./useKnownTransferParties", () => ({
-  useKnownTransferParties: () => ({
-    people: computed(() => []),
-    fleetTargets: computed(() =>
-      (fleets.value ?? [])
-        .filter(
-          (fleet) =>
-            fleet.features?.includes("inventory_transfers") &&
-            fleet.features?.includes("fleet_logistics"),
-        )
-        .map((fleet) => ({
-          value: `fleet:${fleet.slug}`,
-          label: fleet.name,
-          needsAnswer: true,
-          payload: { recipientFleetSlug: fleet.slug },
-        })),
-    ),
+vi.mock(
+  "@/services/fyApi/services/fleet-inventories/fleet-inventories",
+  () => ({
+    useFleetInventories: () => ({ data: fleetInventories }),
   }),
+);
+
+vi.mock("@/services/fyApi/services/fleets/fleets", () => ({
+  useMyFleets: () => ({ data: fleets }),
+}));
+
+vi.mock("@/services/fyApi/services/fleet-members/fleet-members", () => ({
+  fleetMembers: vi.fn(),
+}));
+
+vi.mock("@tanstack/vue-query", () => ({
+  useQueries: () => computed(() => members.value.map((data) => ({ data }))),
+}));
+
+vi.mock("@/frontend/stores/session", () => ({
+  useSessionStore: () => ({ currentUser: { username: "me" } }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -50,39 +56,94 @@ const fleet = (overrides: Partial<Fleet> = {}): Partial<Fleet> => ({
 
 describe("useTransferTargets", () => {
   it("offers the holder's other inventories, never the one being emptied", () => {
-    inventories.value = {
+    hangarInventories.value = {
       items: [
         { id: "src", name: "Caterpillar" },
         { id: "other", name: "Locker" },
       ],
     };
     fleets.value = [];
+    members.value = [];
 
-    const { targets } = useTransferTargets(() => ({ id: "src" }));
+    const { targets } = useTransferTargets({ source: () => ({ id: "src" }) });
 
-    expect(targets.value.map((target) => target.payload)).toEqual([
-      { inventoryId: "other" },
+    expect(targets.value).toEqual([
+      expect.objectContaining({
+        kind: "inventory",
+        payload: { inventoryId: "other" },
+        needsAnswer: false,
+      }),
     ]);
-    expect(targets.value[0].needsAnswer).toBe(false);
+  });
+
+  // Acting for a fleet, "mine" means the fleet's own inventories, and the
+  // payload names them with the key that mount expects.
+  it("offers the fleet's inventories when acting for one", () => {
+    hangarInventories.value = { items: [{ id: "mine", name: "Locker" }] };
+    fleetInventories.value = {
+      items: [
+        { id: "src", name: "Depot" },
+        { id: "forward", name: "Forward" },
+      ],
+    };
+    fleets.value = [];
+    members.value = [];
+
+    const { targets } = useTransferTargets({
+      source: () => ({ id: "src" }),
+      fleetSlug: () => "crew",
+    });
+
+    expect(targets.value).toEqual([
+      expect.objectContaining({ payload: { fleetInventoryId: "forward" } }),
+    ]);
   });
 
   // A fleet whose logistics are switched off cannot receive, and offering it
-  // would mean finding out by being refused. The filtering itself lives in
-  // `useKnownTransferParties`; this checks the list it feeds reaches the caller.
-  it("drops a fleet that is missing either flag", () => {
-    inventories.value = { items: [] };
+  // would mean finding out by being refused.
+  it("drops a fleet that is missing either flag, and the one it acts for", () => {
+    hangarInventories.value = { items: [] };
+    fleetInventories.value = { items: [] };
     fleets.value = [
       fleet(),
+      fleet({ slug: "self", name: "Self" }),
       fleet({ slug: "no-transfers", features: ["fleet_logistics"] }),
       fleet({ slug: "no-logistics", features: ["inventory_transfers"] }),
-      fleet({ slug: "nothing", features: [] }),
     ];
+    members.value = [];
 
-    const { targets } = useTransferTargets(() => undefined);
+    const { targets } = useTransferTargets({
+      source: () => undefined,
+      fleetSlug: () => "self",
+    });
 
     expect(targets.value.map((target) => target.payload)).toEqual([
       { recipientFleetSlug: "crew" },
     ]);
-    expect(targets.value[0].needsAnswer).toBe(true);
+  });
+
+  // "Known" means shares a fleet with you, which is what a `known` transfer
+  // policy means server-side.
+  it("offers fleet-mates once, sorted, and never the reader themselves", () => {
+    hangarInventories.value = { items: [] };
+    fleets.value = [];
+    members.value = [
+      { items: [{ username: "zara" }, { username: "me" }] },
+      { items: [{ username: "alice" }, { username: "zara" }] },
+    ];
+
+    const { people } = useTransferTargets({ source: () => undefined });
+
+    expect(people.value.map((person) => person.label)).toEqual([
+      "alice",
+      "zara",
+    ]);
+    expect(people.value[0]).toEqual(
+      expect.objectContaining({
+        kind: "user",
+        needsAnswer: true,
+        payload: { recipientUsername: "alice" },
+      }),
+    );
   });
 });
