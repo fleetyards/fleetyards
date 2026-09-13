@@ -5812,6 +5812,383 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_slug}/allies":
+    parameters:
+    - name: fleet_slug
+      in: path
+      schema:
+        type: string
+      description: The acting fleet's slug
+      required: true
+    get:
+      summary: Fleet Allies
+      tags:
+      - FleetAllies
+      operationId: fleetAllies
+      parameters:
+      - name: state
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/RelationshipStateEnum"
+        description: Which state to list, as this fleet sees it. Defaults to accepted.
+      - name: direction
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/RelationshipDirectionEnum"
+        description: Limit to requests this fleet sent, or ones it was sent
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAlliancesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Send Alliance Request
+      tags:
+      - FleetAllies
+      operationId: createFleetAlliance
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetAllianceCreateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAlliance"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleet_slug}/allies/{ally_slug}":
+    parameters:
+    - name: fleet_slug
+      in: path
+      schema:
+        type: string
+      description: The acting fleet's slug
+      required: true
+    - name: ally_slug
+      in: path
+      schema:
+        type: string
+      description: The other fleet's slug
+      required: true
+    get:
+      summary: Fleet Alliance
+      tags:
+      - FleetAllies
+      operationId: fleetAlliance
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAlliance"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Withdraw a request, or end an alliance
+      tags:
+      - FleetAllies
+      operationId: destroyFleetAlliance
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: removed
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleet_slug}/allies/{ally_slug}/accept":
+    parameters:
+    - name: fleet_slug
+      in: path
+      schema:
+        type: string
+      description: The acting fleet's slug
+      required: true
+    - name: ally_slug
+      in: path
+      schema:
+        type: string
+      description: The other fleet's slug
+      required: true
+    put:
+      summary: Accept Alliance Request
+      tags:
+      - FleetAllies
+      operationId: acceptFleetAlliance
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAlliance"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_slug}/allies/{ally_slug}/decline":
+    parameters:
+    - name: fleet_slug
+      in: path
+      schema:
+        type: string
+      description: The acting fleet's slug
+      required: true
+    - name: ally_slug
+      in: path
+      schema:
+        type: string
+      description: The other fleet's slug
+      required: true
+    put:
+      summary: Decline Alliance Request
+      tags:
+      - FleetAllies
+      operationId: declineFleetAlliance
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAlliance"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_slug}/allies/{ally_slug}/ignore":
+    parameters:
+    - name: fleet_slug
+      in: path
+      schema:
+        type: string
+      description: The acting fleet's slug
+      required: true
+    - name: ally_slug
+      in: path
+      schema:
+        type: string
+      description: The other fleet's slug
+      required: true
+    put:
+      summary: Ignore Alliance Request
+      tags:
+      - FleetAllies
+      operationId: ignoreFleetAlliance
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetAlliance"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{slug}":
     parameters:
     - name: slug
@@ -5936,6 +6313,320 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: You are not an Admin or Officer of this Fleet
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/friends":
+    get:
+      summary: Friends
+      tags:
+      - Friends
+      operationId: friends
+      parameters:
+      - name: state
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/RelationshipStateEnum"
+        description: Which state to list, as this user sees it. Defaults to accepted.
+      - name: direction
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/RelationshipDirectionEnum"
+        description: Limit to requests this user sent, or ones they were sent
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:read
+      - OpenId:
+        - profile:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FriendshipsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Send Friend Request
+      tags:
+      - Friends
+      operationId: createFriendship
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FriendshipCreateInput"
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Friendship"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/friends/{username}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: The other user's username
+      required: true
+    get:
+      summary: Friendship
+      tags:
+      - Friends
+      operationId: friendship
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:read
+      - OpenId:
+        - profile:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Friendship"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Withdraw a request, or end a friendship
+      tags:
+      - Friends
+      operationId: destroyFriendship
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
+      responses:
+        '204':
+          description: removed
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/friends/{username}/accept":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: The other user's username
+      required: true
+    put:
+      summary: Accept Friend Request
+      tags:
+      - Friends
+      operationId: acceptFriendship
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Friendship"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/friends/{username}/decline":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: The other user's username
+      required: true
+    put:
+      summary: Decline Friend Request
+      tags:
+      - Friends
+      operationId: declineFriendship
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Friendship"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/friends/{username}/ignore":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: The other user's username
+      required: true
+    put:
+      summary: Ignore Friend Request
+      tags:
+      - Friends
+      operationId: ignoreFriendship
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Friendship"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -13307,6 +13998,24 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
+    AlliedFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: AlliedFleet
     AlliedFleetMember:
       type: object
       properties:
@@ -14906,10 +15615,12 @@ components:
       enum:
       - discord_commands
       - discord_fleet_commands
+      - fleet_allies
       - fleet_logistics
       - fleet_mission_builder
       - fleet_starmap
       - fleet_worldmap
+      - friends
       - hangar_inventories
       - inventory_transfers
       - oauth-applications
@@ -14926,10 +15637,12 @@ components:
       x-enumNames:
       - DISCORD_COMMANDS
       - DISCORD_FLEET_COMMANDS
+      - FLEET_ALLIES
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_STARMAP
       - FLEET_WORLDMAP
+      - FRIENDS
       - HANGAR_INVENTORIES
       - INVENTORY_TRANSFERS
       - OAUTH_APPLICATIONS
@@ -15066,6 +15779,61 @@ components:
       - createdAt
       - updatedAt
       title: Fleet
+    FleetAlliance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          "$ref": "#/components/schemas/RelationshipStateEnum"
+        direction:
+          "$ref": "#/components/schemas/RelationshipDirectionEnum"
+        fleet:
+          "$ref": "#/components/schemas/AlliedFleet"
+        acceptedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - state
+      - direction
+      - fleet
+      - createdAt
+      - updatedAt
+      title: FleetAlliance
+    FleetAllianceCreateInput:
+      type: object
+      properties:
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - slug
+      title: FleetAllianceCreateInput
+    FleetAlliancesList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetAlliance"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetAlliancesList
     FleetCalendar:
       type: object
       properties:
@@ -16768,6 +17536,14 @@ components:
           type: boolean
         destroyInventories:
           type: boolean
+        readAllies:
+          type: boolean
+        createAllies:
+          type: boolean
+        destroyAllies:
+          type: boolean
+        manageAllies:
+          type: boolean
         readVehicles:
           type: boolean
         readRoles:
@@ -16791,6 +17567,10 @@ components:
       - createInventories
       - updateInventories
       - destroyInventories
+      - readAllies
+      - createAllies
+      - destroyAllies
+      - manageAllies
       - readVehicles
       - readRoles
       - manageFleet
@@ -17094,6 +17874,10 @@ components:
       - fleet:inventories:update
       - fleet:inventories:delete
       - fleet:inventories:manage
+      - fleet:allies:read
+      - fleet:allies:create
+      - fleet:allies:delete
+      - fleet:allies:manage
       - fleet:missions:read
       - fleet:missions:create
       - fleet:missions:update
@@ -17141,6 +17925,10 @@ components:
       - FLEET_INVENTORIES_UPDATE
       - FLEET_INVENTORIES_DELETE
       - FLEET_INVENTORIES_MANAGE
+      - FLEET_ALLIES_READ
+      - FLEET_ALLIES_CREATE
+      - FLEET_ALLIES_DELETE
+      - FLEET_ALLIES_MANAGE
       - FLEET_MISSIONS_READ
       - FLEET_MISSIONS_CREATE
       - FLEET_MISSIONS_UPDATE
@@ -17496,6 +18284,61 @@ components:
       items:
         "$ref": "#/components/schemas/Fleet"
       title: FleetsList
+    Friendship:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          "$ref": "#/components/schemas/RelationshipStateEnum"
+        direction:
+          "$ref": "#/components/schemas/RelationshipDirectionEnum"
+        user:
+          "$ref": "#/components/schemas/RelationshipUser"
+        acceptedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - state
+      - direction
+      - user
+      - createdAt
+      - updatedAt
+      title: Friendship
+    FriendshipCreateInput:
+      type: object
+      properties:
+        username:
+          type: string
+      additionalProperties: false
+      required:
+      - username
+      title: FriendshipCreateInput
+    FriendshipsList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Friendship"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FriendshipsList
     FuelTank:
       type: object
       properties:
@@ -22767,6 +23610,43 @@ components:
           type: number
       additionalProperties: false
       title: RefuelBoom
+    RelationshipDirectionEnum:
+      type: string
+      enum:
+      - incoming
+      - outgoing
+      x-enumNames:
+      - INCOMING
+      - OUTGOING
+      title: RelationshipDirectionEnum
+    RelationshipStateEnum:
+      type: string
+      enum:
+      - pending
+      - accepted
+      - declined
+      - ignored
+      x-enumNames:
+      - PENDING
+      - ACCEPTED
+      - DECLINED
+      - IGNORED
+      title: RelationshipStateEnum
+    RelationshipUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - username
+      title: RelationshipUser
     RsiHangarItemInput:
       type: object
       properties:

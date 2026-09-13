@@ -36,6 +36,8 @@ es:
       base: No se encontró entrada
       fleet: No se encontró flota
       fleet_membership: No se encontró miembro de flota
+      friendship: No se ha encontrado ningún amigo
+      fleet_alliance: No se ha encontrado ninguna flota aliada
       user: No se encontró usuario
       invite: No se encontró invitación
       model: No se encontró modelo

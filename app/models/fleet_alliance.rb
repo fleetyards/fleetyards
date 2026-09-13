@@ -43,6 +43,22 @@
 class FleetAlliance < ApplicationRecord
   include PartyRelationship
 
+  # An alliance commits the fleet's ships, its stats and its roster to another
+  # organisation, so it is an admin act by default rather than an officer one.
+  # Officers can see who the fleet is allied with; members see nothing.
+  AVAILABLE_PRIVILEGES = [
+    "fleet:allies:read",
+    "fleet:allies:create",
+    "fleet:allies:delete",
+    "fleet:allies:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: [],
+    officer: ["fleet:allies:read"],
+    member: []
+  }.freeze
+
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
   belongs_to :requester, class_name: "Fleet"

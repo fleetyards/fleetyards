@@ -27,6 +27,9 @@ discord_commands:
 discord_fleet_commands:
   description: "Discord commands that create or change something in a fleet"
 
+fleet_allies:
+  description: "Fleet alliances — a fleet sharing its ships, stats and roster with another fleet"
+
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
 
@@ -45,6 +48,9 @@ fleet_worldmap:
 # Otherwise this would be a way around them.
 inventory_transfers:
   description: "Transfers — moving stock between two inventories"
+
+friends:
+  description: "Friends — a user sharing a hangar, wishlist or stats with people they know"
 
 hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"

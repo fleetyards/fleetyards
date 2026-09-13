@@ -36,6 +36,23 @@ module PartyRelationship
     scope :involving, ->(party) { where(requester_id: party).or(where(addressee_id: party)) }
     scope :awaiting, ->(party) { pending.where(addressee_id: party) }
     scope :sent_by, ->(party) { where(requester_id: party) }
+    scope :received_by, ->(party) { where(addressee_id: party) }
+
+    # Rows in a state *as this party sees it*, which is not the same as rows in
+    # that state. A request the other side ignored is still pending to whoever
+    # sent it, so it has to be listed as pending too -- an ignore that is
+    # invisible in `state_for` but visible by its absence from a list is not
+    # invisible.
+    scope :in_state_for, ->(state, party) {
+      case state.to_s
+      when "pending"
+        where(aasm_state: "pending").or(where(aasm_state: "ignored", requester_id: party&.id))
+      when "ignored"
+        where(aasm_state: "ignored", addressee_id: party&.id)
+      else
+        where(aasm_state: state)
+      end
+    }
 
     # `ignored` is deliberately absent from what the requester is shown, and
     # present for the addressee -- the whole of D3 is that these two views of
@@ -125,8 +142,14 @@ module PartyRelationship
     pending? && addressee_id == party&.id
   end
 
+  # Asked of the state the requester can see, not the real one: an ignored row
+  # reads as pending to them, so refusing to cancel it would be the tell that
+  # `state_for` exists to prevent. What actually happens to the row is
+  # `Relationships::Answerer`'s business.
   def cancellable_by?(party)
-    pending? && requester_id == party&.id
+    return false unless requester_id == party&.id
+
+    pending? || ignored?
   end
 
   private def not_between_a_party_and_itself

@@ -80,6 +80,39 @@ class Relationships::AnswererTest < ActiveSupport::TestCase
     assert relationship.reload.accepted?
   end
 
+  # Cancelling has to answer the same way whether or not the other side ignored
+  # it, and must not clear the ignore -- otherwise cancel-and-ask-again is a way
+  # straight back into an inbox that turned you away.
+  test "cancelling an ignored request succeeds and leaves it standing" do
+    ignored = create(:friendship, :ignored)
+
+    assert answerer(ignored, actor: ignored.requester).cancel(ignored.requester)
+    assert ignored.reload.ignored?
+  end
+
+  test "asking again after cancelling an ignored request still goes nowhere" do
+    ignored = create(:friendship, :ignored)
+    sender = ignored.requester
+    target = ignored.addressee
+    answerer(ignored, actor: sender).cancel(sender)
+
+    requester = Relationships::Requester.new(Friendship, requester: sender, addressee: target).tap(&:call)
+
+    assert requester.success?
+    assert ignored.reload.ignored?
+    assert_equal 1, Friendship.where(requester: sender, addressee: target).count
+  end
+
+  test "cancelling answers identically whether or not it was ignored" do
+    plain = create(:friendship)
+    ignored = create(:friendship, :ignored)
+
+    plain_result = answerer(plain, actor: plain.requester).cancel(plain.requester)
+    ignored_result = answerer(ignored, actor: ignored.requester).cancel(ignored.requester)
+
+    assert_equal plain_result, ignored_result
+  end
+
   test "ending one makes the pair requestable again" do
     @relationship.accept!
     answerer(actor: @requester).end_relationship(@requester)

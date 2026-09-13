@@ -37,6 +37,8 @@ en:
       base: No Entry found
       fleet: No Fleet found
       fleet_membership: No Fleet Member found
+      friendship: No Friend found
+      fleet_alliance: No Allied Fleet found
       user: No User found
       invite: No Invite found
       model: No Model found

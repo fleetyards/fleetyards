@@ -39,6 +39,11 @@ module Relationships
           next
         end
 
+        # An ignored row answers as though it were cancelled and is left
+        # standing. Destroying it would hand the requester a way to clear an
+        # ignore and ask again, which is the one thing ignoring is for.
+        next if @relationship.ignored?
+
         @relationship.destroy!
       end
     end
