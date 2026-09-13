@@ -1909,7 +1909,8 @@
           "fleet": "Una flotta",
           "user": "Una persona"
         },
-        "transferTargetKind": "Invia a"
+        "transferTargetKind": "Invia a",
+        "transferFromFleet": "Dalla flotta"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

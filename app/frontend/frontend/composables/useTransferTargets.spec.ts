@@ -122,28 +122,21 @@ describe("useTransferTargets", () => {
     ]);
   });
 
-  // "Known" means shares a fleet with you, which is what a `known` transfer
-  // policy means server-side.
-  it("offers fleet-mates once, sorted, and never the reader themselves", () => {
+  // A person is picked out of a fleet rather than from one flat list, so the
+  // composable offers the fleets and the modal fetches that fleet's members.
+  it("offers every fleet a person can be picked out of, flags or not", () => {
     hangarInventories.value = { items: [] };
-    fleets.value = [];
-    members.value = [
-      { items: [{ username: "zara" }, { username: "me" }] },
-      { items: [{ username: "alice" }, { username: "zara" }] },
+    fleets.value = [
+      fleet(),
+      fleet({ slug: "quiet", name: "Quiet", features: [] }),
     ];
+    members.value = [];
 
-    const { people } = useTransferTargets({ source: () => undefined });
+    const { memberFleets } = useTransferTargets({ source: () => undefined });
 
-    expect(people.value.map((person) => person.label)).toEqual([
-      "alice",
-      "zara",
+    expect(memberFleets.value).toEqual([
+      { value: "crew", label: "Crew" },
+      { value: "quiet", label: "Quiet" },
     ]);
-    expect(people.value[0]).toEqual(
-      expect.objectContaining({
-        kind: "user",
-        needsAnswer: true,
-        payload: { recipientUsername: "alice" },
-      }),
-    );
   });
 });

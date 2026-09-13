@@ -1910,7 +1910,8 @@
           "fleet": "A fleet",
           "user": "A person"
         },
-        "transferTargetKind": "Send to"
+        "transferTargetKind": "Send to",
+        "transferFromFleet": "From fleet"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

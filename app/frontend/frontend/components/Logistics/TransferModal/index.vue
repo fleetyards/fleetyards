@@ -22,6 +22,8 @@ import {
   type InventoryStockPosition,
   type InventoryTransferCreateInput,
 } from "@/services/fyApi";
+import { useFleetMembers } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
 import type {
   TransferSource,
   TransferTargetKind,
@@ -34,12 +36,16 @@ type Props = {
   // whole inventory: a hold with fifty positions made a modal nobody could use.
   positions: InventoryStockPosition[];
   targets: TransferTargetOption[];
+  // Where a person can be picked out of -- a fleet today, and whatever else
+  // comes to mean "known" later, which lands here rather than as a new branch.
+  memberFleets: { value: string; label: string }[];
   onSend: (payload: InventoryTransferCreateInput) => Promise<unknown>;
 };
 
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const sessionStore = useSessionStore();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
 
@@ -103,8 +109,14 @@ watchEffect(() => {
 // accept and are not offered here yet.
 const KINDS: TransferTargetKind[] = ["inventory", "fleet", "user"];
 
+// A person is picked out of a fleet, so the kind is offered whenever the reader
+// is in one -- there is no flat list of people to be empty.
 const availableKinds = computed(() =>
-  KINDS.filter((kind) => props.targets.some((target) => target.kind === kind)),
+  KINDS.filter((kind) =>
+    kind === "user"
+      ? props.memberFleets.length > 0
+      : props.targets.some((target) => target.kind === kind),
+  ),
 );
 
 const targetKind = ref<TransferTargetKind | undefined>();
@@ -116,6 +128,31 @@ watchEffect(() => {
   targetKind.value = availableKinds.value[0];
 });
 
+const memberFleet = ref<string | undefined>(props.memberFleets[0]?.value);
+
+const { data: members, isLoading: membersLoading } = useFleetMembers(
+  computed(() => memberFleet.value ?? ""),
+  { perPage: "100" },
+  {
+    query: {
+      enabled: computed(
+        () => targetKind.value === "user" && !!memberFleet.value,
+      ),
+    },
+  },
+);
+
+const memberOptions = computed<FilterOption[]>(() =>
+  (members.value?.items ?? [])
+    .filter((member) => member.username !== sessionStore.currentUser?.username)
+    .map((member) => ({
+      value: `user:${member.username}`,
+      label: member.nickname
+        ? `${member.username} (${member.nickname})`
+        : member.username,
+    })),
+);
+
 const kindOptions = computed<FilterOption[]>(() =>
   availableKinds.value.map((kind) => ({
     value: kind,
@@ -124,9 +161,11 @@ const kindOptions = computed<FilterOption[]>(() =>
 );
 
 const targetOptions = computed<FilterOption[]>(() =>
-  props.targets
-    .filter((target) => target.kind === targetKind.value)
-    .map((target) => ({ value: target.value, label: target.label })),
+  targetKind.value === "user"
+    ? memberOptions.value
+    : props.targets
+        .filter((target) => target.kind === targetKind.value)
+        .map((target) => ({ value: target.value, label: target.label })),
 );
 
 // Picks the first option, and re-picks when a kind change leaves the old
@@ -143,9 +182,23 @@ watch(
   { immediate: true },
 );
 
-const selectedTarget = computed(() =>
-  props.targets.find((target) => target.value === targetValue.value),
-);
+const selectedTarget = computed<TransferTargetOption | undefined>(() => {
+  if (targetKind.value === "user") {
+    const username = targetValue.value?.replace(/^user:/, "");
+
+    if (!username) return undefined;
+
+    return {
+      kind: "user",
+      value: targetValue.value as string,
+      label: username,
+      needsAnswer: true,
+      payload: { recipientUsername: username },
+    };
+  }
+
+  return props.targets.find((target) => target.value === targetValue.value);
+});
 
 // What the receiving side will see. A target the sender may write to is carried
 // out on the spot; anything else has to be answered first.
@@ -228,8 +281,19 @@ const onSubmit = async () => {
       />
 
       <BaseSelect
+        v-if="targetKind === 'user' && memberFleets.length > 1"
+        v-model="memberFleet"
+        name="memberFleet"
+        searchable
+        :options="memberFleets"
+        :label="t('labels.logistics.transferFromFleet')"
+        data-test="transfer-member-fleet"
+      />
+
+      <BaseSelect
         v-model="targetValue"
         name="target"
+        :loading="membersLoading"
         searchable
         :options="targetOptions"
         :label="t('labels.logistics.transferTarget')"

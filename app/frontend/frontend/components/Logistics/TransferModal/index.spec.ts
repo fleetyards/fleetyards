@@ -1,8 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { mount, flushPromises } from "@vue/test-utils";
+import { ref } from "vue";
 import { createTestingPinia } from "@pinia/testing";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import TransferModal from "./index.vue";
+
+vi.mock("@/services/fyApi/services/fleet-members/fleet-members", () => ({
+  useFleetMembers: () => ({ data: ref(undefined), isLoading: ref(false) }),
+}));
 import type { InventoryStockPosition } from "@/services/fyApi";
 import type { TransferTargetOption } from "./types";
 
@@ -49,12 +54,14 @@ const build = async (
   positions: InventoryStockPosition[],
   targets: TransferTargetOption[] = [immediateTarget],
   onSend = vi.fn().mockResolvedValue(undefined),
+  memberFleets: { value: string; label: string }[] = [],
 ) => {
   wrapper = mount(TransferModal, {
     props: {
       source: { id: "src", name: "Caterpillar" },
       positions,
       targets,
+      memberFleets,
       onSend,
     },
     global: {
@@ -240,6 +247,18 @@ describe("TransferModal", () => {
 
   it("offers a kind picker once there are both", async () => {
     await build([position()], [immediateTarget, pendingTarget]);
+
+    expect(wrapper!.find('[data-test="transfer-target-kind"]').exists()).toBe(
+      true,
+    );
+  });
+
+  // People are reached through a fleet, so the kind is offered whenever the
+  // reader is in one -- there is no flat list of people that could be empty.
+  it("offers the person kind on fleet membership alone", async () => {
+    await build([position()], [immediateTarget], vi.fn(), [
+      { value: "crew", label: "Crew" },
+    ]);
 
     expect(wrapper!.find('[data-test="transfer-target-kind"]').exists()).toBe(
       true,

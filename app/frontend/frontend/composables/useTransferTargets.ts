@@ -1,16 +1,11 @@
 import type { MaybeRefOrGetter } from "vue";
-import { useQueries } from "@tanstack/vue-query";
-import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Fleet,
-  type FleetMember,
   FeatureFlagName,
-  fleetMembers,
   useFleetInventories,
   useHangarInventories,
   useMyFleets,
 } from "@/services/fyApi";
-import { useSessionStore } from "@/frontend/stores/session";
 import type { TransferTargetOption } from "@/frontend/components/Logistics/TransferModal/types";
 
 type Options = {
@@ -21,8 +16,6 @@ type Options = {
   fleetSlug?: MaybeRefOrGetter<string | undefined>;
 };
 
-const MEMBER_PARAMS = { perPage: "100" };
-
 // Where stock can be sent, for either side. One composable rather than one per
 // mount: the only thing that differs is whose inventories count as "mine", and
 // the backend answers both through a single controller concern for exactly the
@@ -32,7 +25,8 @@ const MEMBER_PARAMS = { perPage: "100" };
 //
 //   inventory  another of your own -- carried out on the spot
 //   fleet      a fleet you belong to -- has to accept
-//   user       somebody you share a fleet with -- has to accept
+//   user       somebody you share a fleet with -- has to accept, and is
+//              picked out of that fleet rather than from one flat list
 //
 // This iteration reaches only what the reader already shares a fleet with,
 // which is what a `known` transfer policy means server-side, so the picker and
@@ -43,9 +37,6 @@ const MEMBER_PARAMS = { perPage: "100" };
 // not be readable from an option going missing. People are not filtered --
 // another user's flags are not ours to read.
 export const useTransferTargets = (options: Options) => {
-  const { t } = useI18n();
-  const sessionStore = useSessionStore();
-
   const actingFleet = computed(() => toValue(options.fleetSlug));
   const sourceId = computed(() => toValue(options.source)?.id);
 
@@ -96,47 +87,24 @@ export const useTransferTargets = (options: Options) => {
     })),
   );
 
-  // One request per fleet, because nothing answers "everyone I share a fleet
-  // with" in one call. Plain options rather than the generated ones: those
-  // unwrap refs for `useQuery`, and `useQueries` wants a settled key.
-  const memberQueries = useQueries({
-    queries: computed(() =>
-      fleetList.value.map((fleet) => ({
-        queryKey: ["fleets", fleet.slug, "members", MEMBER_PARAMS],
-        queryFn: () => fleetMembers(fleet.slug, MEMBER_PARAMS),
-      })),
-    ),
-  });
-
-  const people = computed<TransferTargetOption[]>(() => {
-    const seen = new Set<string>();
-    const me = sessionStore.currentUser?.username;
-
-    return memberQueries.value
-      .flatMap((query) => (query.data?.items ?? []) as FleetMember[])
-      .filter((member) => {
-        if (!member.username || member.username === me) return false;
-        if (seen.has(member.username)) return false;
-
-        seen.add(member.username);
-
-        return true;
-      })
-      .sort((a, b) => a.username.localeCompare(b.username))
-      .map((member) => ({
-        kind: "user" as const,
-        value: `user:${member.username}`,
-        label: member.username,
-        needsAnswer: true,
-        payload: { recipientUsername: member.username },
-      }));
-  });
+  // Where a person can be picked out of. Not filtered on transfer flags the way
+  // `fleetTargets` is: those gate sending to the *fleet*, and this is about
+  // finding a person who happens to be in it.
+  //
+  // This list is the grouping, and it is the extension point: a friends list,
+  // or any other way of knowing somebody, becomes another entry here rather
+  // than another branch in the modal.
+  const memberFleets = computed(() =>
+    fleetList.value.map((fleet) => ({
+      value: fleet.slug,
+      label: fleet.name,
+    })),
+  );
 
   const targets = computed<TransferTargetOption[]>(() => [
     ...ownInventories.value,
     ...fleetTargets.value,
-    ...people.value,
   ]);
 
-  return { targets, ownInventories, fleetTargets, people, t };
+  return { targets, ownInventories, fleetTargets, memberFleets };
 };

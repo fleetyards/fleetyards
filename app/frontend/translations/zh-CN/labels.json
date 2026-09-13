@@ -1905,7 +1905,8 @@
           "fleet": "舰队",
           "user": "某人"
         },
-        "transferTargetKind": "发送至"
+        "transferTargetKind": "发送至",
+        "transferFromFleet": "来自舰队"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
