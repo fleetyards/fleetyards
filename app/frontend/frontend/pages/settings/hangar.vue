@@ -134,6 +134,7 @@ const onSubmit = handleSubmit(async (values) => {
           name="friendsHangar"
           v-bind="friendsHangarProps"
           :disabled="friendsDisabled(publicHangar)"
+          :implied="!!publicHangar"
           :label="t('labels.user.friendsHangar')"
         />
       </div>
@@ -159,6 +160,7 @@ const onSubmit = handleSubmit(async (values) => {
           name="friendsHangarStats"
           v-bind="friendsHangarStatsProps"
           :disabled="friendsDisabled(publicHangarStats)"
+          :implied="!!publicHangarStats"
           :label="t('labels.user.friendsHangarStats')"
         />
       </div>
@@ -176,6 +178,7 @@ const onSubmit = handleSubmit(async (values) => {
           name="friendsWishlist"
           v-bind="friendsWishlistProps"
           :disabled="friendsDisabled(publicWishlist)"
+          :implied="!!publicWishlist"
           :label="t('labels.user.friendsWishlist')"
         />
       </div>

@@ -259,6 +259,7 @@ const onDestroy = async () => {
           translation-key="fleet.allies"
           v-bind="alliesFleetProps"
           :disabled="alliesDisabled(publicFleet)"
+          :implied="!!publicFleet"
         />
       </div>
       <div class="col-12 col-md-6">
@@ -268,6 +269,7 @@ const onDestroy = async () => {
           translation-key="fleet.alliesStats"
           v-bind="alliesFleetStatsProps"
           :disabled="alliesDisabled(publicFleetStats)"
+          :implied="!!publicFleetStats"
         />
       </div>
       <div class="col-12 col-md-6">
