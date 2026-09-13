@@ -58,6 +58,11 @@ class PayoutLedger < ApplicationRecord
   has_many :payout_entries, dependent: :delete_all
   has_many :payout_participants, dependent: :delete_all
 
+  # Only the ledger's own changes. A child touches this row, which commits an
+  # update here too, and broadcasting on that as well would send every entry
+  # twice -- the children broadcast for themselves.
+  after_commit :broadcast_own_change, on: :update
+
   validates :subject_type, inclusion: {in: SUBJECT_TYPES}
   validates :status, inclusion: {in: STATUSES}
   validates :subject_id, uniqueness: {scope: :subject_type}
@@ -170,6 +175,24 @@ class PayoutLedger < ApplicationRecord
 
       payout_participants.create!(user_id: user_id)
     end
+  end
+
+  # Everyone on the ledger is reading the same numbers, so a change has to reach
+  # all of them rather than only whoever made it. Guests have no account to
+  # address, which is why this walks the participants' users rather than the
+  # participants.
+  def broadcast_change
+    payload = to_jbuilder_hash
+
+    User.where(id: payout_participants.where.not(user_id: nil).select(:user_id)).find_each do |user|
+      PayoutLedgerChannel.broadcast_to(user, payload)
+    end
+  end
+
+  private def broadcast_own_change
+    return unless saved_change_to_status? || saved_change_to_notes?
+
+    broadcast_change
   end
 
   private def seed_user_ids_from_subject

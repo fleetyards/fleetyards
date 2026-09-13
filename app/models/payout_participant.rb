@@ -40,6 +40,10 @@ class PayoutParticipant < ApplicationRecord
   before_destroy :check_for_entries, prepend: true
   before_destroy :ledger_must_be_open, prepend: true
 
+  # Every participant's page is showing figures derived from this row, so a
+  # change here has to reach all of them, not only the tab that made it.
+  after_commit :broadcast_ledger_change
+
   def guest? = user_id.blank?
 
   def display_name
@@ -81,5 +85,9 @@ class PayoutParticipant < ApplicationRecord
 
     errors.add(:base, :has_entries)
     throw :abort
+  end
+
+  private def broadcast_ledger_change
+    payout_ledger&.broadcast_change
   end
 end

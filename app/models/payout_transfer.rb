@@ -39,6 +39,12 @@ class PayoutTransfer < ApplicationRecord
   scope :confirmed, -> { where.not(confirmed_at: nil) }
   scope :outstanding, -> { where(confirmed_at: nil) }
 
+  # Updates only -- confirming and unconfirming a payment. The rows themselves
+  # are created and deleted by PayoutLedger#settle!, whose own status broadcast
+  # already covers that; broadcasting here too would send one message per
+  # transfer on every settle.
+  after_commit :broadcast_ledger_change, on: :update
+
   def confirmed? = confirmed_at.present?
 
   def confirm!(user = nil)
@@ -62,5 +68,9 @@ class PayoutTransfer < ApplicationRecord
     return if from_participant_id != to_participant_id
 
     errors.add(:to_participant_id, :same_as_sender)
+  end
+
+  private def broadcast_ledger_change
+    payout_ledger&.broadcast_change
   end
 end

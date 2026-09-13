@@ -13437,6 +13437,7 @@ components:
       - NotificationsChannel
       - OnSaleChannel
       - OnSaleHangarChannel
+      - PayoutLedgerChannel
       - UserNotificationsChannel
       - WishlistChannel
       - WishlistCreateChannel
@@ -13455,6 +13456,7 @@ components:
       - NOTIFICATIONS_CHANNEL
       - ON_SALE_CHANNEL
       - ON_SALE_HANGAR_CHANNEL
+      - PAYOUT_LEDGER_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
       - WISHLIST_CHANNEL
       - WISHLIST_CREATE_CHANNEL

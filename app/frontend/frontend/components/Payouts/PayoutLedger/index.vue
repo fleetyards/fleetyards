@@ -20,6 +20,11 @@ import PayoutBalances from "@/frontend/components/Payouts/PayoutBalances/index.v
 import PayoutTransferList from "@/frontend/components/Payouts/PayoutTransferList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import {
+  useSubscription,
+  ChannelsEnum,
+} from "@/shared/composables/useSubscription";
+import { type PayoutLedger as PayoutLedgerMessage } from "@/services/fyCable/models/PayoutLedger";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   usePayoutLedger,
@@ -75,6 +80,20 @@ const refetchAll = () => {
   void refetchEntries();
   void refetchTransfers();
 };
+
+// The channel is per-user, not per-ledger, so a viewer taking part in more than
+// one ledger hears about all of them on the same stream -- hence the id check
+// rather than a subscription scoped to this ledger.
+useSubscription<PayoutLedgerMessage>({
+  channelName: ChannelsEnum.PAYOUT_LEDGER_CHANNEL,
+  received: (message) => {
+    if (message?.id !== props.payoutLedgerId) {
+      return;
+    }
+
+    refetchAll();
+  },
+});
 
 const ledgerChangedComlink = ref();
 

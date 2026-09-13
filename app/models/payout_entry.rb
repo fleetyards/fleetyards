@@ -49,6 +49,10 @@ class PayoutEntry < ApplicationRecord
 
   before_destroy :ledger_must_be_open, prepend: true
 
+  # Every participant's page is showing figures derived from this row, so a
+  # change here has to reach all of them, not only the tab that made it.
+  after_commit :broadcast_ledger_change
+
   DEFAULT_SORTING_PARAMS = ["createdAt desc"]
   ALLOWED_SORTING_PARAMS = [
     "amount asc", "amount desc",
@@ -95,5 +99,9 @@ class PayoutEntry < ApplicationRecord
 
     errors.add(:base, :ledger_settled)
     throw :abort
+  end
+
+  private def broadcast_ledger_change
+    payout_ledger&.broadcast_change
   end
 end
