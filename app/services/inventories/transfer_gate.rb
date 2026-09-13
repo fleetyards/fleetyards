@@ -105,23 +105,33 @@ module Inventories
     private def policy_admits?
       case @recipient.inventory_transfer_policy
       when "everyone" then true
-      when "known" then shares_a_fleet?
+      when "known" then known_to_each_other?
       else false
       end
     end
 
-    # "Known" means there is already a relationship between the two parties: a
-    # fleet in common for two users, membership for a user and a fleet.
-    private def shares_a_fleet?
+    # "Known" means there is already a relationship between the two parties.
+    # There are two ways to have one, and which two depends on the pair:
+    #
+    #   user + user     a fleet in common, or an accepted friendship
+    #   user + fleet    membership -- there is no user-to-fleet relationship
+    #   fleet + user    to add, because that is what membership already is
+    #   fleet + fleet   the same fleet, or an accepted alliance
+    #
+    # This is the whole of what friends and allies change about transfers, and
+    # deliberately so. A relationship widens this stance and nothing else: it
+    # does not reach `check_rule`, where a standing denial still refuses, and it
+    # does not soften `nobody`.
+    private def known_to_each_other?
       case [@recipient, @sender]
       in [::User => recipient, ::User => sender]
-        (fleet_ids_for(recipient) & fleet_ids_for(sender)).any?
+        (fleet_ids_for(recipient) & fleet_ids_for(sender)).any? || recipient.friend_of?(sender)
       in [::User => recipient, ::Fleet => sender]
         fleet_ids_for(recipient).include?(sender.id)
       in [::Fleet => recipient, ::User => sender]
         fleet_ids_for(sender).include?(recipient.id)
       in [::Fleet => recipient, ::Fleet => sender]
-        recipient == sender
+        recipient == sender || recipient.allied_with?(sender)
       else
         false
       end
