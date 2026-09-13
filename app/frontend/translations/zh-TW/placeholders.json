@@ -296,7 +296,13 @@
         "fleet": {
           "handle": "對方的艦隊識別碼"
         }
-      }
+      },
+      "reward": "報酬（aUEC）",
+      "crewLimit": "不限",
+      "deadline": "無截止時間",
+      "itemName": "需要交付的物品",
+      "itemQuantity": "數量",
+      "itemMinQuality": "任意品質"
     }
   }
 }

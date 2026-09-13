@@ -296,7 +296,13 @@
         "fleet": {
           "handle": "Slug der Flotte"
         }
-      }
+      },
+      "reward": "Belohnung in aUEC",
+      "crewLimit": "Kein Limit",
+      "deadline": "Keine Frist",
+      "itemName": "Was geliefert wird",
+      "itemQuantity": "Wie viel",
+      "itemMinQuality": "Beliebige Qualität"
     }
   }
 }

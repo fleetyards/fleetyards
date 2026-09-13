@@ -296,7 +296,13 @@
         "fleet": {
           "handle": "Their fleet slug"
         }
-      }
+      },
+      "reward": "Reward in aUEC",
+      "crewLimit": "No limit",
+      "deadline": "No deadline",
+      "itemName": "What to deliver",
+      "itemQuantity": "How much",
+      "itemMinQuality": "Any quality"
     }
   }
 }

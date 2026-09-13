@@ -296,7 +296,13 @@
         "fleet": {
           "handle": "对方的舰队标识"
         }
-      }
+      },
+      "reward": "报酬（aUEC）",
+      "crewLimit": "不限",
+      "deadline": "无截止时间",
+      "itemName": "需要交付的物品",
+      "itemQuantity": "数量",
+      "itemMinQuality": "任意品质"
     }
   }
 }
