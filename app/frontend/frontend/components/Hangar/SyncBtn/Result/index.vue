@@ -56,6 +56,9 @@ const foundVehicles = computed(() => props.result?.foundVehicles || []);
 const movedVehiclesToWanted = computed(
   () => props.result?.movedVehiclesToWanted || [],
 );
+const deletedVehicles = computed(() => props.result?.deletedVehicles || []);
+const groupedVehicles = computed(() => props.result?.groupedVehicles || []);
+const unchangedVehicles = computed(() => props.result?.unchangedVehicles || []);
 const missingModels = computed(() => props.result?.missingModels || []);
 const importedComponents = computed(
   () => props.result?.importedComponents || [],
@@ -183,6 +186,30 @@ const hasWarnings = computed(
               </dt>
               <dd class="col-sm-4 text-right">
                 {{ movedVehiclesToWanted.length }}
+              </dd>
+            </template>
+            <template v-if="deletedVehicles.length">
+              <dt class="col-sm-8">
+                {{ t("labels.syncExtension.importedItems.deletedVehicles") }}:
+              </dt>
+              <dd class="col-sm-4 text-right">
+                {{ deletedVehicles.length }}
+              </dd>
+            </template>
+            <template v-if="groupedVehicles.length">
+              <dt class="col-sm-8">
+                {{ t("labels.syncExtension.importedItems.groupedVehicles") }}:
+              </dt>
+              <dd class="col-sm-4 text-right">
+                {{ groupedVehicles.length }}
+              </dd>
+            </template>
+            <template v-if="unchangedVehicles.length">
+              <dt class="col-sm-8">
+                {{ t("labels.syncExtension.importedItems.unchangedVehicles") }}:
+              </dt>
+              <dd class="col-sm-4 text-right">
+                {{ unchangedVehicles.length }}
               </dd>
             </template>
             <template v-if="importedComponents.length">

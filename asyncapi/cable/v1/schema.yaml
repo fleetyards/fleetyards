@@ -1664,6 +1664,20 @@ components:
           items:
             type: string
             format: uuid
+        deletedVehicles:
+          type: array
+          items:
+            type: string
+        groupedVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        unchangedVehicles:
+          type: array
+          items:
+            type: string
+            format: uuid
         missingModels:
           type: array
           items:
@@ -1709,6 +1723,9 @@ components:
       - importedVehicles
       - foundVehicles
       - movedVehiclesToWanted
+      - deletedVehicles
+      - groupedVehicles
+      - unchangedVehicles
       - missingModels
       - importedComponents
       - foundComponents

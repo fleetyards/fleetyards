@@ -21,6 +21,9 @@ es:
         imported_vehicles: Naves agregadas
         found_vehicles: Naves encontradas
         moved_vehicles_to_wanted: Naves movidas a la lista de deseos
+        deleted_vehicles: Naves eliminadas
+        grouped_vehicles: Naves archivadas en un grupo
+        unchanged_vehicles: Naves sin cambios
         imported_components: Componentes agregados
         found_components: Componentes encontrados
         imported_upgrades: Mejoras agregadas

@@ -17,6 +17,10 @@ module V1
             importedVehicles: {type: :array, items: {type: :string, format: :uuid}},
             foundVehicles: {type: :array, items: {type: :string, format: :uuid}},
             movedVehiclesToWanted: {type: :array, items: {type: :string, format: :uuid}},
+            # Names rather than ids: the rows are gone by the time a run reports.
+            deletedVehicles: {type: :array, items: {type: :string}},
+            groupedVehicles: {type: :array, items: {type: :string, format: :uuid}},
+            unchangedVehicles: {type: :array, items: {type: :string, format: :uuid}},
             missingModels: {type: :array, items: {type: :string}},
             importedComponents: {type: :array, items: {type: :string, format: :uuid}},
             foundComponents: {type: :array, items: {type: :string, format: :uuid}},
@@ -29,9 +33,10 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            importedVehicles foundVehicles movedVehiclesToWanted missingModels importedComponents
-            foundComponents missingComponents missingComponentVehicles importedUpgrades foundUpgrades
-            missingUpgrades missingUpgradeVehicles
+            importedVehicles foundVehicles movedVehiclesToWanted deletedVehicles groupedVehicles
+            unchangedVehicles missingModels importedComponents foundComponents missingComponents
+            missingComponentVehicles importedUpgrades foundUpgrades missingUpgrades
+            missingUpgradeVehicles
           ]
         })
       end

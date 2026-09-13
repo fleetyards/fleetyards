@@ -21,6 +21,9 @@ fr:
         imported_vehicles: Vaisseaux ajoutés
         found_vehicles: Vaisseaux trouvés
         moved_vehicles_to_wanted: Vaisseaux déplacés vers la liste de souhaits
+        deleted_vehicles: Vaisseaux supprimés
+        grouped_vehicles: Vaisseaux classés dans un groupe
+        unchanged_vehicles: Vaisseaux laissés inchangés
         imported_components: Composants ajoutés
         found_components: Composants trouvés
         imported_upgrades: Améliorations ajoutées

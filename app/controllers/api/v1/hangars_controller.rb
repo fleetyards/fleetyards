@@ -130,6 +130,8 @@ module Api
           user_id: current_resource_owner.id,
           hangar_group_id: target_hangar_group_id,
           add_bundled_vehicles: add_bundled_vehicles?,
+          unmatched_vehicles_action: unmatched_vehicles_action,
+          unmatched_hangar_group_id: unmatched_hangar_group_id,
           input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
         )
 
@@ -212,7 +214,10 @@ module Api
       end
 
       private def sync_params
-        @sync_params ||= params.permit(:hangar_group_id, :add_bundled_vehicles, items: [:id, :name, :image, :type, :custom_name])
+        @sync_params ||= params.permit(
+          :hangar_group_id, :add_bundled_vehicles, :unmatched_vehicles_action,
+          :unmatched_hangar_group_id, items: [:id, :name, :image, :type, :custom_name]
+        )
       end
 
       # Absent means on: every sync before the option existed created the snub
@@ -223,6 +228,23 @@ module Api
         return true if value.nil?
 
         ActiveModel::Type::Boolean.new.cast(value) || false
+      end
+
+      # What to do with the ships the sync does not find. Anything unrecognised
+      # -- including a client that predates the option -- falls back to the
+      # wishlist move every sync did before, rather than to a 400 that would
+      # cost the user the whole scrape.
+      private def unmatched_vehicles_action
+        value = sync_params[:unmatched_vehicles_action].to_s
+
+        return "wishlist" unless ::Import::UNMATCHED_VEHICLES_ACTIONS.include?(value)
+
+        # `group` without a group of its own is not that action, and the import
+        # would refuse to save. Nothing the user picked is lost by leaving the
+        # ships alone instead.
+        return "keep" if value == "group" && unmatched_hangar_group_id.blank?
+
+        value
       end
 
       private def running_hangar_import?(klass)
@@ -237,6 +259,16 @@ module Api
         return if id.blank?
 
         HangarGroup.where(user_id: current_resource_owner.id, id:).pick(:id)
+      end
+
+      # Scoped the same way, and for the same reason.
+      private def unmatched_hangar_group_id
+        return @unmatched_hangar_group_id if defined?(@unmatched_hangar_group_id)
+
+        id = sync_params[:unmatched_hangar_group_id].presence
+
+        @unmatched_hangar_group_id =
+          id.blank? ? nil : HangarGroup.where(user_id: current_resource_owner.id, id:).pick(:id)
       end
     end
   end

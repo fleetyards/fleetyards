@@ -21,6 +21,10 @@ type Props = {
   multiple?: boolean;
   noLabel?: boolean;
   info?: string;
+  // The filter label is what a group picker means almost everywhere; the sync
+  // modal asks the same question about two different sets of ships and has to
+  // say which is which.
+  label?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: true,
   noLabel: true,
   info: undefined,
+  label: undefined,
 });
 
 const { t } = useI18n();
@@ -69,7 +74,7 @@ const formatter = (groups: HangarGroup[]) => {
 <template>
   <BaseSelect
     v-model="internalValue"
-    :label="t('labels.filters.vehicles.group')"
+    :label="label || t('labels.filters.vehicles.group')"
     :query-fn="fetch"
     :query-response-formatter="formatter"
     :name="name"

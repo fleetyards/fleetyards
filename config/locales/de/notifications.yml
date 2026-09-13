@@ -21,6 +21,9 @@ de:
         imported_vehicles: Schiffe hinzugefügt
         found_vehicles: Schiffe gefunden
         moved_vehicles_to_wanted: Schiffe zur Wunschliste verschoben
+        deleted_vehicles: Gelöschte Schiffe
+        grouped_vehicles: In eine Gruppe einsortierte Schiffe
+        unchanged_vehicles: Unverändert gelassene Schiffe
         imported_components: Komponenten hinzugefügt
         found_components: Komponenten gefunden
         imported_upgrades: Upgrades hinzugefügt

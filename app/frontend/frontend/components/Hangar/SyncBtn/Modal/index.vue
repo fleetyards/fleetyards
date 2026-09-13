@@ -18,10 +18,12 @@ import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
+import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
 import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
   useSyncRsiHangarStatus,
@@ -61,6 +63,33 @@ const hangarStore = useHangarStore();
 const pledges = ref<RsiHangarItemInput[]>([]);
 
 const hangarGroupId = ref<string | undefined>(undefined);
+
+// Declared order rather than alphabetical: it runs from the least destructive
+// answer to the most, and "wishlist" first is what a sync has always done.
+const unmatchedActionOptions = computed(() =>
+  [
+    HangarSyncUnmatchedActionEnum.WISHLIST,
+    HangarSyncUnmatchedActionEnum.DELETE,
+    HangarSyncUnmatchedActionEnum.KEEP,
+    HangarSyncUnmatchedActionEnum.GROUP,
+  ].map((value) => ({
+    value,
+    label: t(`labels.syncExtension.unmatchedVehiclesActions.${value}`),
+  })),
+);
+
+const filesUnmatchedIntoGroup = computed(
+  () =>
+    hangarStore.syncUnmatchedVehiclesAction ===
+    HangarSyncUnmatchedActionEnum.GROUP,
+);
+
+// `group` with no group is not that action: the endpoint falls back to leaving
+// the ships alone, which is not what the modal would be showing the user.
+const missingUnmatchedGroup = computed(
+  () =>
+    filesUnmatchedIntoGroup.value && !hangarStore.syncUnmatchedHangarGroupId,
+);
 
 const seenPledgeIds = new Set<string>();
 
@@ -347,6 +376,10 @@ const finishSync = async () => {
         items: pledges.value,
         hangarGroupId: hangarGroupId.value,
         addBundledVehicles: hangarStore.syncAddBundledVehicles,
+        unmatchedVehiclesAction: hangarStore.syncUnmatchedVehiclesAction,
+        unmatchedHangarGroupId: filesUnmatchedIntoGroup.value
+          ? hangarStore.syncUnmatchedHangarGroupId
+          : undefined,
       },
     })
     .catch((error) => {
@@ -416,6 +449,7 @@ const refreshPage = async () => {
           name="hangarGroupId"
           :multiple="false"
           :no-label="false"
+          :label="t('labels.syncExtension.targetGroup')"
           :info="t('labels.imports.targetGroupHint')"
         />
         <FormToggle
@@ -424,6 +458,26 @@ const refreshPage = async () => {
           :label="t('labels.syncExtension.addBundledVehicles')"
           :info="t('labels.syncExtension.addBundledVehiclesHint')"
           no-placeholder
+        />
+        <BaseSelect
+          v-model="hangarStore.syncUnmatchedVehiclesAction"
+          name="syncUnmatchedVehiclesAction"
+          :options="unmatchedActionOptions"
+          :label="t('labels.syncExtension.unmatchedVehiclesAction')"
+          :info="t('labels.syncExtension.unmatchedVehiclesActionHint')"
+          :searchable="false"
+          :paginated="false"
+          :no-label="false"
+          unsorted
+        />
+        <HangarGroupsSelect
+          v-if="filesUnmatchedIntoGroup"
+          v-model="hangarStore.syncUnmatchedHangarGroupId"
+          name="syncUnmatchedHangarGroupId"
+          :multiple="false"
+          :no-label="false"
+          :label="t('labels.syncExtension.unmatchedHangarGroup')"
+          :info="t('labels.syncExtension.unmatchedHangarGroupHint')"
         />
         <p v-if="hangarStore.syncRunning" class="text-warning">
           {{ t("texts.syncExtension.alreadyRunning") }}
@@ -461,7 +515,11 @@ const refreshPage = async () => {
           v-else-if="hangarStore.extensionReady"
           data-test="start-sync"
           :loading="started || loadingIdentity"
-          :disabled="identityStatus !== 'connected' || hangarStore.syncRunning"
+          :disabled="
+            identityStatus !== 'connected' ||
+            hangarStore.syncRunning ||
+            missingUnmatchedGroup
+          "
           @click="start"
         >
           {{ t("actions.syncExtension.start") }}

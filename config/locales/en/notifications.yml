@@ -21,6 +21,9 @@ en:
         imported_vehicles: Added ships
         found_vehicles: Found ships
         moved_vehicles_to_wanted: Ships moved to wishlist
+        deleted_vehicles: Deleted ships
+        grouped_vehicles: Ships filed into a group
+        unchanged_vehicles: Ships left unchanged
         imported_components: Added components
         found_components: Found components
         imported_upgrades: Added upgrades

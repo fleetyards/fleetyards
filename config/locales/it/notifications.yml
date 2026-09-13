@@ -21,6 +21,9 @@ it:
         imported_vehicles: Navi aggiunte
         found_vehicles: Navi trovate
         moved_vehicles_to_wanted: Navi spostate nella lista dei desideri
+        deleted_vehicles: Navi eliminate
+        grouped_vehicles: Navi archiviate in un gruppo
+        unchanged_vehicles: Navi lasciate invariate
         imported_components: Componenti aggiunti
         found_components: Componenti trovati
         imported_upgrades: Upgrade aggiunti

@@ -106,6 +106,150 @@ class HangarSyncTest < ActiveSupport::TestCase
     end
   end
 
+  # The javelin is the one existing ship the pledge list does not carry, so it
+  # is what every action below is about.
+  class UnmatchedVehiclesTest < HangarSyncTest
+    setup do
+      @javelin_model = Model.find_by!(slug: "aegs-javelin")
+      @jav_ship = create(:vehicle, user: @user, model: @javelin_model, name: "Ozymandias", wanted: false)
+    end
+
+    def run_with(**attributes)
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, **attributes)
+
+      ::HangarSync.new(@input).run_with_import(import)
+    end
+
+    test "moves what it did not find to the wishlist by default" do
+      result = run_with
+
+      assert_equal [@jav_ship.id], result[:moved_vehicles_to_wanted]
+      assert_equal [], result[:deleted_vehicles]
+      assert_predicate @jav_ship.reload, :wanted?
+    end
+
+    test "deletes what it did not find, and names it" do
+      result = run_with(unmatched_vehicles_action: "delete")
+
+      assert_equal ["Ozymandias"], result[:deleted_vehicles]
+      assert_equal [], result[:moved_vehicles_to_wanted]
+      refute Vehicle.exists?(@jav_ship.id)
+    end
+
+    test "takes what hangs off a deleted vehicle with it" do
+      task_force = TaskForce.create!(
+        vehicle: @jav_ship,
+        hangar_group: HangarGroup.create!(user_id: @user.id, name: "Capitals", color: "#ffffff")
+      )
+
+      run_with(unmatched_vehicles_action: "delete")
+
+      refute TaskForce.exists?(task_force.id)
+    end
+
+    test "leaves what it did not find alone, and still reports it" do
+      result = run_with(unmatched_vehicles_action: "keep")
+
+      assert_equal [@jav_ship.id], result[:unchanged_vehicles]
+      assert_equal [], result[:moved_vehicles_to_wanted]
+
+      @jav_ship.reload
+      refute_predicate @jav_ship, :wanted?
+      assert_equal "Ozymandias", @jav_ship.name
+    end
+
+    test "files what it did not find into its own group, without touching the ship" do
+      group = HangarGroup.create!(user_id: @user.id, name: "Sort me out", color: "#ffffff")
+
+      result = run_with(unmatched_vehicles_action: "group", unmatched_hangar_group_id: group.id)
+
+      assert_equal [@jav_ship.id], result[:grouped_vehicles]
+      assert_equal [@jav_ship.id], group.reload.vehicles.pluck(:id)
+      refute_predicate @jav_ship.reload, :wanted?
+    end
+
+    test "does not stack a task force when the same run is repeated" do
+      group = HangarGroup.create!(user_id: @user.id, name: "Sort me out", color: "#ffffff")
+
+      2.times { run_with(unmatched_vehicles_action: "group", unmatched_hangar_group_id: group.id) }
+
+      assert_equal 1, TaskForce.where(hangar_group_id: group.id, vehicle_id: @jav_ship.id).count
+    end
+
+    # A wishlisted ship is one the user does not own, so it is absent from every
+    # RSI hangar and unmatched on every single run. Under `delete` that would
+    # empty the whole wishlist on the first sync.
+    test "never reaches a ship that is already on the wishlist" do
+      wishlisted = create(:vehicle, user: @user, model: Model.find_by!(slug: "aegs-idris-p"), wanted: true)
+
+      result = run_with(unmatched_vehicles_action: "delete")
+
+      assert Vehicle.exists?(wishlisted.id)
+      refute_includes result[:deleted_vehicles], wishlisted.name
+    end
+
+    # The group can go between queueing a sync and running one -- the foreign key
+    # nullifies rather than cascading. The run has to stay harmless and the
+    # import has to still finish, rather than sticking in a state that blocks
+    # every later sync.
+    test "leaves them alone when the group has gone since the run was queued" do
+      group = HangarGroup.create!(user_id: @user.id, name: "Sort me out", color: "#ffffff")
+      import = ::Imports::HangarSync.create!(
+        user_id: @user.id, input: @input,
+        unmatched_vehicles_action: "group", unmatched_hangar_group_id: group.id
+      )
+
+      group.destroy!
+
+      assert_nil import.reload.unmatched_hangar_group_id
+
+      result = ::HangarSync.new(@input).run_with_import(import)
+
+      assert_equal [@jav_ship.id], result[:unchanged_vehicles]
+      assert_equal [], result[:grouped_vehicles]
+      refute_predicate @jav_ship.reload, :wanted?
+      assert_predicate import.reload, :finished?
+    end
+
+    # Stopping a sync is how a user gets out of a scrape that came back short.
+    # Under `delete` an unreached vehicle is not recoverable, so the guard that
+    # already covered the wishlist move has to cover this too.
+    test "a cancelled run deletes nothing" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, unmatched_vehicles_action: "delete")
+
+      sync = ::HangarSync.new(@input)
+      sync.define_singleton_method(:stop_requested?) do |index|
+        next false unless index.zero?
+
+        import.request_cancel!
+        @cancelled = true
+      end
+
+      sync.run_with_import(import)
+
+      assert Vehicle.exists?(@jav_ship.id)
+    end
+
+    # `@cancelled` is only set at the ship loop's checkpoints, so a cancel that
+    # lands after the last one leaves it false while the row already says
+    # cancelled. Simulated by cancelling from the call immediately before
+    # reconciliation, which is the one window no checkpoint covers.
+    test "a cancel landing after the last checkpoint still deletes nothing" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, unmatched_vehicles_action: "delete")
+
+      sync = ::HangarSync.new(@input)
+      sync.define_singleton_method(:assign_target_group) do |vehicle_ids|
+        import.request_cancel!
+
+        super(vehicle_ids)
+      end
+
+      sync.run_with_import(import)
+
+      assert Vehicle.exists?(@jav_ship.id)
+    end
+  end
+
   class WithBundledSnubCraftsTest < HangarSyncTest
     setup do
       @andromeda_model = Model.find_by!(slug: "rsi-constellation-andromeda")

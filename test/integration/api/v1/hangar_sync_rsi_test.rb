@@ -77,6 +77,67 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     assert_predicate Imports::HangarSync.find_by(user_id: user.id), :add_bundled_vehicles?
   end
 
+  test "PUT /hangar/sync-rsi-hangar records what to do with the ships it does not find" do
+    user = create(:user)
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], unmatchedVehiclesAction: "delete"}
+    assert_api_response :put, 200, body: body
+
+    assert_equal "delete", Imports::HangarSync.find_by(user_id: user.id).unmatched_vehicles_action
+  end
+
+  # Every sync before the option existed moved them to the wishlist, and so does
+  # a client that does not know about it.
+  test "PUT /hangar/sync-rsi-hangar moves them to the wishlist when no action is sent" do
+    user = create(:user)
+    sign_in user
+
+    body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}]}
+    assert_api_response :put, 200, body: body
+
+    assert_equal "wishlist", Imports::HangarSync.find_by(user_id: user.id).unmatched_vehicles_action
+  end
+
+  test "PUT /hangar/sync-rsi-hangar records the group to file them into" do
+    user = create(:user)
+    group = HangarGroup.create!(user_id: user.id, name: "Sort me out", color: "#ffffff")
+    sign_in user
+
+    body = {
+      items: [{id: "1", name: "Constellation Andromeda", type: "ship"}],
+      unmatchedVehiclesAction: "group",
+      unmatchedHangarGroupId: group.id
+    }
+    assert_api_response :put, 200, body: body
+
+    import = Imports::HangarSync.find_by(user_id: user.id)
+
+    assert_equal "group", import.unmatched_vehicles_action
+    assert_equal group.id, import.unmatched_hangar_group_id
+  end
+
+  # `group` without a group of its own is not that action, and the import would
+  # refuse to save. Leaving the ships alone costs the user nothing they picked;
+  # a 400 would cost them the whole scrape.
+  test "PUT /hangar/sync-rsi-hangar falls back to keeping them when the group is somebody else's" do
+    user = create(:user)
+    other = HangarGroup.create!(user_id: create(:user).id, name: "Theirs", color: "#ffffff")
+    sign_in user
+
+    body = {
+      items: [{id: "1", name: "Constellation Andromeda", type: "ship"}],
+      unmatchedVehiclesAction: "group",
+      unmatchedHangarGroupId: other.id
+    }
+    assert_api_response :put, 200, body: body
+
+    import = Imports::HangarSync.find_by(user_id: user.id)
+
+    assert_equal "keep", import.unmatched_vehicles_action
+    assert_nil import.unmatched_hangar_group_id
+  end
+
   # The id arrives from the client, so an id belonging to somebody else must not
   # file this user's ships under a group they cannot see.
   test "PUT /hangar/sync-rsi-hangar ignores a group owned by somebody else" do

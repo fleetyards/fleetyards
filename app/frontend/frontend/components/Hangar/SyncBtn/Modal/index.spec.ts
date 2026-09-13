@@ -2,6 +2,7 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const mutateAsync = vi.fn(() => Promise.resolve());
@@ -72,6 +73,9 @@ const mountModal = async () => {
       stubs: {
         Modal: { template: "<div><slot /><slot name='footer' /></div>" },
         HangarGroupsSelect: true,
+        // Mounts a `useQuery` of its own, which needs a QueryClient this spec
+        // has no reason to stand up: every assertion below drives the store.
+        BaseSelect: true,
         SyncResultPanel: true,
         SmallLoader: true,
       },
@@ -122,6 +126,84 @@ describe("HangarSyncModal", () => {
 
     expect(mutateAsync).toHaveBeenCalledWith({
       data: expect.objectContaining({ addBundledVehicles: true }),
+    });
+  });
+
+  it("moves what it does not find to the wishlist by default", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    expect(hangarStore.syncUnmatchedVehiclesAction).toBe(
+      HangarSyncUnmatchedActionEnum.WISHLIST,
+    );
+
+    await submitEmptyHangar(wrapper);
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        unmatchedVehiclesAction: HangarSyncUnmatchedActionEnum.WISHLIST,
+        unmatchedHangarGroupId: undefined,
+      }),
+    });
+  });
+
+  it("passes the chosen action on to the sync", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    hangarStore.syncUnmatchedVehiclesAction =
+      HangarSyncUnmatchedActionEnum.DELETE;
+    await flushPromises();
+
+    await submitEmptyHangar(wrapper);
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        unmatchedVehiclesAction: HangarSyncUnmatchedActionEnum.DELETE,
+      }),
+    });
+  });
+
+  it("sends the group only when that is the action", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    // Left over from an earlier run that did pick `group`. Sending it under an
+    // action that ignores it would file ships nobody asked to file.
+    hangarStore.syncUnmatchedHangarGroupId = "group-1";
+    hangarStore.syncUnmatchedVehiclesAction =
+      HangarSyncUnmatchedActionEnum.KEEP;
+    await flushPromises();
+
+    await submitEmptyHangar(wrapper);
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({ unmatchedHangarGroupId: undefined }),
+    });
+  });
+
+  it("asks for a group before it will sync into one", async () => {
+    const { wrapper, hangarStore } = await mountModal();
+
+    hangarStore.syncUnmatchedVehiclesAction =
+      HangarSyncUnmatchedActionEnum.GROUP;
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='start-sync']").attributes("disabled"),
+    ).toBeDefined();
+
+    hangarStore.syncUnmatchedHangarGroupId = "group-1";
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='start-sync']").attributes("disabled"),
+    ).toBeUndefined();
+
+    await submitEmptyHangar(wrapper);
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        unmatchedVehiclesAction: HangarSyncUnmatchedActionEnum.GROUP,
+        unmatchedHangarGroupId: "group-1",
+      }),
     });
   });
 

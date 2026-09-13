@@ -4,39 +4,43 @@
 #
 # Table name: imports
 #
-#  id                   :uuid             not null, primary key
-#  aasm_state           :string
-#  add_bundled_vehicles :boolean          default(TRUE), not null
-#  cancel_requested_at  :datetime
-#  cancelled_at         :datetime
-#  failed_at            :datetime
-#  finished_at          :datetime
-#  import_data          :text
-#  info                 :text
-#  input                :jsonb
-#  output               :jsonb
-#  started_at           :datetime
-#  type                 :string
-#  version              :string
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  admin_user_id        :uuid
-#  hangar_group_id      :uuid
-#  user_id              :uuid
+#  id                        :uuid             not null, primary key
+#  aasm_state                :string
+#  add_bundled_vehicles      :boolean          default(TRUE), not null
+#  cancel_requested_at       :datetime
+#  cancelled_at              :datetime
+#  failed_at                 :datetime
+#  finished_at               :datetime
+#  import_data               :text
+#  info                      :text
+#  input                     :jsonb
+#  output                    :jsonb
+#  started_at                :datetime
+#  type                      :string
+#  unmatched_vehicles_action :string           default("wishlist"), not null
+#  version                   :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  admin_user_id             :uuid
+#  hangar_group_id           :uuid
+#  unmatched_hangar_group_id :uuid
+#  user_id                   :uuid
 #
 # Indexes
 #
-#  index_imports_on_aasm_state_and_type  (aasm_state,type)
-#  index_imports_on_admin_user_id        (admin_user_id)
-#  index_imports_on_hangar_group_id      (hangar_group_id)
-#  index_imports_on_type                 (type)
-#  index_imports_on_type_and_id          (type,id)
-#  index_imports_on_user_id              (user_id)
+#  index_imports_on_aasm_state_and_type        (aasm_state,type)
+#  index_imports_on_admin_user_id              (admin_user_id)
+#  index_imports_on_hangar_group_id            (hangar_group_id)
+#  index_imports_on_type                       (type)
+#  index_imports_on_type_and_id                (type,id)
+#  index_imports_on_unmatched_hangar_group_id  (unmatched_hangar_group_id)
+#  index_imports_on_user_id                    (user_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (admin_user_id => admin_users.id)
 #  fk_rails_...  (hangar_group_id => hangar_groups.id) ON DELETE => nullify
+#  fk_rails_...  (unmatched_hangar_group_id => hangar_groups.id) ON DELETE => nullify
 #
 class Import < ApplicationRecord
   include AASM
@@ -48,7 +52,31 @@ class Import < ApplicationRecord
   # only the two user-facing ones ever set it.
   belongs_to :hangar_group, optional: true
 
+  # Where a sync files the ships it did not find, under the `group` action.
+  # Separate from `hangar_group` above, which is where it files the ones it did:
+  # one group for both would tip the matched and the unmatched into one bucket.
+  belongs_to :unmatched_hangar_group,
+    class_name: "HangarGroup",
+    optional: true
+
   validates :type, presence: true
+
+  # What a hangar sync does with a vehicle it did not find in the pledge list.
+  # A string column rather than an integer one: the value is read back in the
+  # admin imports table and in `output`, where `2` would say nothing.
+  UNMATCHED_VEHICLES_ACTIONS = %w[wishlist delete keep group].freeze
+
+  validates :unmatched_vehicles_action, inclusion: {in: UNMATCHED_VEHICLES_ACTIONS}
+
+  # `unmatched_hangar_group_id` is deliberately not validated against the action
+  # that uses it. The foreign key nullifies rather than cascading, so deleting
+  # the group between queueing a sync and running one would leave a `group`
+  # import that no longer validates -- and every lifecycle write goes through
+  # one: `start!` would refuse, leaving the row in `created` where
+  # `running_hangar_import?` blocks every later sync, and the rescue path's
+  # `fail!` would refuse for the same reason. The request boundary normalises
+  # the pairing instead, and the run treats a vanished group as "leave them
+  # alone".
 
   # An import that entered `started` and is still there long after any run would
   # have finished. Not a state of its own: the job died without ever reaching
@@ -74,12 +102,13 @@ class Import < ApplicationRecord
     [
       "aasm_state", "admin_user_id", "cancel_requested_at", "cancelled_at", "created_at",
       "failed_at", "finished_at", "hangar_group_id", "id", "id_value", "import", "import_data",
-      "info", "input", "output", "started_at", "type", "updated_at", "user_id", "version"
+      "info", "input", "output", "started_at", "type", "unmatched_hangar_group_id",
+      "unmatched_vehicles_action", "updated_at", "user_id", "version"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["admin_user", "hangar_group", "user"]
+    ["admin_user", "hangar_group", "unmatched_hangar_group", "user"]
   end
 
   aasm timestamps: true do
