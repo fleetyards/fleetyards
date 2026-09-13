@@ -85,7 +85,7 @@ const canEnd = (row: RelationshipRow) => row.state === "accepted";
     </template>
 
     <template #col-createdAt="{ record }">
-      {{ l((record as RelationshipRow).createdAt, "short") }}
+      {{ l((record as RelationshipRow).createdAt, "datetime.formats.short") }}
     </template>
 
     <template #col-actions="{ record }">
