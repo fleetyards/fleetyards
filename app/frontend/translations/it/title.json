@@ -116,7 +116,8 @@
           "enable": "Attiva Autenticazione A Due Fattori",
           "disable": "Disattiva Autenticazione A Due Fattori",
           "backupCodes": "Genera Codici Di Backup Autenticazione a Due Fattori"
-        }
+        },
+        "friends": "Amici"
       },
       "compare": {
         "ships": "Confronta Navi"
@@ -305,8 +306,7 @@
           "notifications": "Notifiche - Test Visivi"
         }
       },
-      "notifications": "Notifiche",
-      "friends": "Amici"
+      "notifications": "Notifiche"
     }
   }
 }

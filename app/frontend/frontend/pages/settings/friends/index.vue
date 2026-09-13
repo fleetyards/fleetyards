@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "FriendsPage",
+  name: "SettingsFriendsPage",
 };
 </script>
 
@@ -14,10 +14,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 const { t } = useI18n();
 
 const { tab, tabs, state, direction } = useRelationshipTab({
-  accepted: "friends",
-  incoming: "friends-incoming",
-  outgoing: "friends-outgoing",
-  ignored: "friends-ignored",
+  accepted: "settings-friends",
+  incoming: "settings-friends-incoming",
+  outgoing: "settings-friends-outgoing",
+  ignored: "settings-friends-ignored",
 });
 
 const {
@@ -33,7 +33,7 @@ const {
 } = useFriendships(state, direction);
 
 const crumbs = computed<Crumb[]>(() => [
-  { to: { name: "hangar" }, label: t("nav.hangar.index") },
+  { to: { name: "settings" }, label: t("nav.settings.index") },
 ]);
 </script>
 

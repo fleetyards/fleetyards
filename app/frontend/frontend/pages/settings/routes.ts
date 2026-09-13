@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as securityRoutes } from "./security/routes";
+import { routes as friendsRoutes } from "./friends/routes";
 import { routes as oauthApplicationRoutes } from "./oauth-applications/routes";
 import { FeatureFlagName } from "@/services/fyApi";
 
@@ -49,6 +50,19 @@ export const routes: RouteRecordRaw[] = [
       title: "settings.hangar",
       needsAuthentication: true,
     },
+  },
+  {
+    path: "friends/",
+    component: () => import("@/frontend/pages/settings/friends.vue"),
+    meta: {
+      title: "settings.friends",
+      needsAuthentication: true,
+      feature: FeatureFlagName.FRIENDS,
+    },
+    redirect: {
+      name: "settings-friends",
+    },
+    children: friendsRoutes,
   },
   {
     path: "privacy/",

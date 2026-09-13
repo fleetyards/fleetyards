@@ -49,10 +49,10 @@ namespace :frontend, **frontend_options do
   get "embed-v2-username-test", to: "embed#test_v2_username"
   get "embed-v2-fleet-test", to: "embed#test_v2_fleet"
 
-  get "friends", to: "base#index", as: :friends
   get "notifications", to: "base#index", as: :notifications
   get "settings", to: "base#index", as: :settings_account
   get "settings/notifications", to: "base#index"
+  get "settings/friends", to: "base#index", as: :friends
   get "settings/connections", to: "base#index", as: :connections_settings
   get "settings/security", to: "base#index", as: :security_settings
 

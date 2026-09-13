@@ -116,7 +116,8 @@
           "enable": "Enable Two-factor Authentication",
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
-        }
+        },
+        "friends": "Amigos"
       },
       "compare": {
         "ships": "Comparar naves"
@@ -305,8 +306,7 @@
           "notifications": "Notificaciones - Pruebas Visuales"
         }
       },
-      "notifications": "Notificaciones",
-      "friends": "Amigos"
+      "notifications": "Notificaciones"
     }
   }
 }

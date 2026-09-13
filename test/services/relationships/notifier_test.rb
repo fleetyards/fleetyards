@@ -31,7 +31,7 @@ class Relationships::NotifierTest < ActiveSupport::TestCase
     notification = notifications_for(@target).sole
 
     assert_includes notification.title, @sender.username
-    assert_equal "/friends/", notification.link
+    assert_equal "/settings/friends/", notification.link
     assert_equal Friendship.between(@sender, @target), notification.record
   end
 

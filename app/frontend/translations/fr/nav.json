@@ -111,7 +111,8 @@
         "features": "Fonctionnalités",
         "connections": "Connexions",
         "oauthApplications": "Apps OAuth",
-        "verify": "Vérification du compte RSI"
+        "verify": "Vérification du compte RSI",
+        "friends": "Amis"
       },
       "reload": "Mise à jour disponible!",
       "visualTests": {
@@ -285,8 +286,7 @@
         }
       },
       "notifications": "Notifications",
-      "scDataSource": "Source des données",
-      "friends": "Amis"
+      "scDataSource": "Source des données"
     }
   }
 }

@@ -116,7 +116,8 @@
           "enable": "啟用雙因素認證",
           "disable": "停用雙因素認證",
           "backupCodes": "產生雙因素備份代碼"
-        }
+        },
+        "friends": "好友"
       },
       "compare": {
         "ships": "比較艦船"
@@ -305,8 +306,7 @@
           "notifications": "通知 - 視覺測試"
         }
       },
-      "notifications": "通知",
-      "friends": "好友"
+      "notifications": "通知"
     }
   }
 }

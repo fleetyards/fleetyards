@@ -116,7 +116,8 @@
           "enable": "Activer l'authentification à deux étapes",
           "disable": "Désactiver l'authentification en deux étapes",
           "backupCodes": "Générer des codes de sauvegarde"
-        }
+        },
+        "friends": "Amis"
       },
       "compare": {
         "ships": "Comparer les vaisseaux"
@@ -305,8 +306,7 @@
           "notifications": "Notifications - Tests Visuels"
         }
       },
-      "notifications": "Notifications",
-      "friends": "Amis"
+      "notifications": "Notifications"
     }
   }
 }

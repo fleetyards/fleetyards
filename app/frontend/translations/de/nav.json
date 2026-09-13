@@ -111,7 +111,8 @@
         "features": "Funktionen",
         "connections": "Verbindungen",
         "oauthApplications": "OAuth-Apps",
-        "verify": "RSI-Kontoverifizierung"
+        "verify": "RSI-Kontoverifizierung",
+        "friends": "Freunde"
       },
       "reload": "Update verfügbar!",
       "visualTests": {
@@ -285,8 +286,7 @@
         }
       },
       "notifications": "Benachrichtigungen",
-      "scDataSource": "Datenquelle",
-      "friends": "Freunde"
+      "scDataSource": "Datenquelle"
     }
   }
 }

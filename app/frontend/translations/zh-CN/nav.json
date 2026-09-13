@@ -111,7 +111,8 @@
         "features": "功能",
         "connections": "连接",
         "oauthApplications": "OAuth 应用",
-        "verify": "RSI 账户验证"
+        "verify": "RSI 账户验证",
+        "friends": "好友"
       },
       "reload": "有可用更新！",
       "visualTests": {
@@ -285,8 +286,7 @@
         }
       },
       "notifications": "通知",
-      "scDataSource": "数据来源",
-      "friends": "好友"
+      "scDataSource": "数据来源"
     }
   }
 }
