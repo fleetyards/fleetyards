@@ -419,6 +419,16 @@
           "create": "Créer une expédition",
           "join": "Rejoindre cette expédition"
         }
+      },
+      "relationships": {
+        "user": {
+          "index": "Amis",
+          "add": "Ajouter un ami"
+        },
+        "fleet": {
+          "index": "Alliés",
+          "add": "Ajouter un allié"
+        }
       }
     }
   }

@@ -898,6 +898,58 @@
         "destroy": {
           "failure": "无法删除停靠点。"
         }
+      },
+      "relationships": {
+        "user": {
+          "addHint": "输入你想添加的用户名。对方需要同意。"
+        },
+        "fleet": {
+          "addHint": "输入你想结盟的舰队标识。对方管理员需要同意。"
+        }
+      },
+      "friends": {
+        "request": {
+          "success": "请求已发送",
+          "failure": "无法发送请求"
+        },
+        "accept": {
+          "success": "请求已接受",
+          "failure": "无法接受请求"
+        },
+        "decline": {
+          "success": "请求已拒绝",
+          "failure": "无法拒绝请求"
+        },
+        "ignore": {
+          "success": "请求已忽略",
+          "failure": "无法忽略请求"
+        },
+        "remove": {
+          "success": "已移除",
+          "failure": "无法移除"
+        }
+      },
+      "fleetAllies": {
+        "request": {
+          "success": "请求已发送",
+          "failure": "无法发送请求"
+        },
+        "accept": {
+          "success": "请求已接受",
+          "failure": "无法接受请求"
+        },
+        "decline": {
+          "success": "请求已拒绝",
+          "failure": "无法拒绝请求"
+        },
+        "ignore": {
+          "success": "请求已忽略",
+          "failure": "无法忽略请求"
+        },
+        "remove": {
+          "success": "已移除",
+          "failure": "无法移除"
+        }
       }
     }
   }

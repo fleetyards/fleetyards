@@ -556,7 +556,10 @@
             "members_only": "Members only",
             "officers_only": "Officers only"
           }
-        }
+        },
+        "allies": "Ships visible to allies",
+        "alliesStats": "Stats visible to allies",
+        "alliesMembers": "Member list visible to allies"
       },
       "hangarGroup": {
         "name": "Name",
@@ -1307,7 +1310,10 @@
           "dmy_slash": "31/12/2026",
           "mdy_slash": "12/31/2026",
           "ymd_dash": "2026-12-31"
-        }
+        },
+        "friendsHangar": "Hangar visible to friends",
+        "friendsHangarStats": "Hangar stats visible to friends",
+        "friendsWishlist": "Wishlist visible to friends"
       },
       "adminUser": {
         "superAdmin": "Super Admin",
@@ -1951,7 +1957,8 @@
         "recordedAt": "Recorded",
         "origin": "From / To",
         "inTransitAmount": "%{amount} in transit",
-        "inTransitHint": "Sent on a transfer nobody has answered yet. It is already out of the totals."
+        "inTransitHint": "Sent on a transfer nobody has answered yet. It is already out of the totals.",
+        "transferFromFriends": "My friends"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -2007,7 +2014,9 @@
         "syncAgain": "Sync again",
         "markAsBought": "Mark as bought",
         "unavailable": "This is no longer available.",
-        "openTransfers": "Open transfers"
+        "openTransfers": "Open transfers",
+        "openFriends": "Open friends",
+        "openAllies": "Open allies"
       },
       "notificationTypes": {
         "channels": {
@@ -2380,6 +2389,22 @@
         "large": "Large (L)",
         "extra_large": "Extra Large (XL)",
         "capital": "Capital (C)"
+      },
+      "relationships": {
+        "party": "Name",
+        "since": "Since",
+        "tabs": {
+          "accepted": "Active",
+          "incoming": "Incoming",
+          "outgoing": "Sent",
+          "ignored": "Ignored"
+        },
+        "user": {
+          "handle": "Username"
+        },
+        "fleet": {
+          "handle": "Fleet slug"
+        }
       }
     }
   }

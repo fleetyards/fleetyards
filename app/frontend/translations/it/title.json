@@ -305,7 +305,8 @@
           "notifications": "Notifiche - Test Visivi"
         }
       },
-      "notifications": "Notifiche"
+      "notifications": "Notifiche",
+      "friends": "Amici"
     }
   }
 }

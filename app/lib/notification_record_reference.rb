@@ -23,7 +23,7 @@ class NotificationRecordReference
     "FleetInventory" => %i[fleet]
   }.freeze
 
-  TYPES = %w[fleet_membership fleet_event fleet_inventory vehicle hangar_sync].freeze
+  TYPES = %w[fleet_membership fleet_event fleet_inventory friendship vehicle hangar_sync].freeze
 
   def self.for(notification)
     new(notification).to_h
@@ -43,6 +43,7 @@ class NotificationRecordReference
 
   def initialize(notification)
     @record = notification.record
+    @reader = notification.user
   end
 
   def to_h
@@ -53,6 +54,12 @@ class NotificationRecordReference
       {type: "fleet_event", id: record.id, fleet_slug: record.fleet&.slug, event_slug: record.slug}
     when FleetInventory
       {type: "fleet_inventory", id: record.id, fleet_slug: record.fleet&.slug, inventory_slug: record.slug}
+    when Friendship
+      # Addressed by the other person, because that is how every friendship
+      # endpoint is addressed -- the row's own id appears in no route. Which of
+      # the two is "the other" depends on who is reading, which is why this is
+      # the one reference that needs the notification's user.
+      {type: "friendship", id: record.id, username: record.other_party_for(@reader)&.username}
     when Vehicle
       {type: "vehicle", id: record.id}
     when Imports::HangarSync
@@ -60,5 +67,5 @@ class NotificationRecordReference
     end
   end
 
-  private attr_reader :record
+  private attr_reader :record, :reader
 end

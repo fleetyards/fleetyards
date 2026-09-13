@@ -556,7 +556,10 @@
             "members_only": "Membres uniquement",
             "officers_only": "Officiers uniquement"
           }
-        }
+        },
+        "allies": "Vaisseaux visibles par les alliés",
+        "alliesStats": "Statistiques visibles par les alliés",
+        "alliesMembers": "Liste des membres visible par les alliés"
       },
       "hangarGroup": {
         "name": "Nom",
@@ -1307,7 +1310,10 @@
           "dmy_slash": "31/12/2026",
           "mdy_slash": "12/31/2026",
           "ymd_dash": "2026-12-31"
-        }
+        },
+        "friendsHangar": "Hangar visible par les amis",
+        "friendsHangarStats": "Statistiques du hangar visibles par les amis",
+        "friendsWishlist": "Liste de souhaits visible par les amis"
       },
       "adminUser": {
         "superAdmin": "Super administrateur",
@@ -1935,7 +1941,8 @@
         "recordedAt": "Enregistré",
         "origin": "De / À",
         "inTransitAmount": "%{amount} en transit",
-        "inTransitHint": "Envoyé par un transfert auquel personne n'a répondu. Déjà retiré des totaux."
+        "inTransitHint": "Envoyé par un transfert auquel personne n'a répondu. Déjà retiré des totaux.",
+        "transferFromFriends": "Mes amis"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1991,7 +1998,9 @@
         "syncAgain": "Synchroniser à nouveau",
         "markAsBought": "Marquer comme acheté",
         "unavailable": "Ceci n'est plus disponible.",
-        "openTransfers": "Ouvrir les transferts"
+        "openTransfers": "Ouvrir les transferts",
+        "openFriends": "Ouvrir les amis",
+        "openAllies": "Ouvrir les alliés"
       },
       "notificationTypes": {
         "channels": {
@@ -2364,6 +2373,22 @@
         "startsAt": "Commence le",
         "inviteLink": "Lien d'invitation",
         "participants": "Personnes"
+      },
+      "relationships": {
+        "party": "Nom",
+        "since": "Depuis",
+        "tabs": {
+          "accepted": "Actifs",
+          "incoming": "Entrantes",
+          "outgoing": "Envoyées",
+          "ignored": "Ignorées"
+        },
+        "user": {
+          "handle": "Nom d'utilisateur"
+        },
+        "fleet": {
+          "handle": "Identifiant de la flotte"
+        }
       }
     }
   }

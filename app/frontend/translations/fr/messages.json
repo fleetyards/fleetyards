@@ -898,6 +898,58 @@
         "destroy": {
           "failure": "Impossible de supprimer le quai."
         }
+      },
+      "relationships": {
+        "user": {
+          "addHint": "Saisissez le nom d'utilisateur de la personne à ajouter. Elle devra accepter."
+        },
+        "fleet": {
+          "addHint": "Saisissez l'identifiant de la flotte avec laquelle vous voulez vous allier. Ses administrateurs devront accepter."
+        }
+      },
+      "friends": {
+        "request": {
+          "success": "Demande envoyée",
+          "failure": "Impossible d'envoyer la demande"
+        },
+        "accept": {
+          "success": "Demande acceptée",
+          "failure": "Impossible d'accepter la demande"
+        },
+        "decline": {
+          "success": "Demande refusée",
+          "failure": "Impossible de refuser la demande"
+        },
+        "ignore": {
+          "success": "Demande ignorée",
+          "failure": "Impossible d'ignorer la demande"
+        },
+        "remove": {
+          "success": "Supprimé",
+          "failure": "Impossible de supprimer"
+        }
+      },
+      "fleetAllies": {
+        "request": {
+          "success": "Demande envoyée",
+          "failure": "Impossible d'envoyer la demande"
+        },
+        "accept": {
+          "success": "Demande acceptée",
+          "failure": "Impossible d'accepter la demande"
+        },
+        "decline": {
+          "success": "Demande refusée",
+          "failure": "Impossible de refuser la demande"
+        },
+        "ignore": {
+          "success": "Demande ignorée",
+          "failure": "Impossible d'ignorer la demande"
+        },
+        "remove": {
+          "success": "Supprimé",
+          "failure": "Impossible de supprimer"
+        }
       }
     }
   }

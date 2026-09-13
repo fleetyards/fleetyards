@@ -77,7 +77,8 @@
           "discord": "Discord",
           "calendar": "Calendario",
           "features": "Funciones"
-        }
+        },
+        "allies": "Aliados"
       },
       "rsiProfile": "Perfil RSI",
       "rsiHangar": "Hangar RSI",
@@ -284,7 +285,8 @@
         }
       },
       "notifications": "Notificaciones",
-      "scDataSource": "Fuente de datos"
+      "scDataSource": "Fuente de datos",
+      "friends": "Amigos"
     }
   }
 }

@@ -908,6 +908,58 @@
         "destroy": {
           "failure": "Could not delete the dock."
         }
+      },
+      "relationships": {
+        "user": {
+          "addHint": "Enter the username of the person you want to add. They will be asked to accept."
+        },
+        "fleet": {
+          "addHint": "Enter the slug of the fleet you want to ally with. Its admins will be asked to accept."
+        }
+      },
+      "friends": {
+        "request": {
+          "success": "Request sent",
+          "failure": "Could not send the request"
+        },
+        "accept": {
+          "success": "Request accepted",
+          "failure": "Could not accept the request"
+        },
+        "decline": {
+          "success": "Request declined",
+          "failure": "Could not decline the request"
+        },
+        "ignore": {
+          "success": "Request ignored",
+          "failure": "Could not ignore the request"
+        },
+        "remove": {
+          "success": "Removed",
+          "failure": "Could not remove it"
+        }
+      },
+      "fleetAllies": {
+        "request": {
+          "success": "Request sent",
+          "failure": "Could not send the request"
+        },
+        "accept": {
+          "success": "Request accepted",
+          "failure": "Could not accept the request"
+        },
+        "decline": {
+          "success": "Request declined",
+          "failure": "Could not decline the request"
+        },
+        "ignore": {
+          "success": "Request ignored",
+          "failure": "Could not ignore the request"
+        },
+        "remove": {
+          "success": "Removed",
+          "failure": "Could not remove it"
+        }
       }
     }
   }

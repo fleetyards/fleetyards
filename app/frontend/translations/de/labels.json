@@ -556,7 +556,10 @@
             "members_only": "Nur Mitglieder",
             "officers_only": "Nur Offiziere"
           }
-        }
+        },
+        "allies": "Schiffe für Verbündete sichtbar",
+        "alliesStats": "Statistiken für Verbündete sichtbar",
+        "alliesMembers": "Mitgliederliste für Verbündete sichtbar"
       },
       "hangarGroup": {
         "name": "Name",
@@ -1307,7 +1310,10 @@
           "dmy_slash": "31/12/2026",
           "mdy_slash": "12/31/2026",
           "ymd_dash": "2026-12-31"
-        }
+        },
+        "friendsHangar": "Hangar für Freunde sichtbar",
+        "friendsHangarStats": "Hangar-Statistiken für Freunde sichtbar",
+        "friendsWishlist": "Wunschliste für Freunde sichtbar"
       },
       "adminUser": {
         "superAdmin": "Super-Admin",
@@ -1935,7 +1941,8 @@
         "recordedAt": "Erfasst",
         "origin": "Von / An",
         "inTransitAmount": "%{amount} unterwegs",
-        "inTransitHint": "Auf einem Transfer, den noch niemand beantwortet hat. Bereits aus den Summen heraus."
+        "inTransitHint": "Auf einem Transfer, den noch niemand beantwortet hat. Bereits aus den Summen heraus.",
+        "transferFromFriends": "Meine Freunde"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {
@@ -1991,7 +1998,9 @@
         "syncAgain": "Erneut synchronisieren",
         "markAsBought": "Als gekauft markieren",
         "unavailable": "Das ist nicht mehr verfügbar.",
-        "openTransfers": "Transfers öffnen"
+        "openTransfers": "Transfers öffnen",
+        "openFriends": "Freunde öffnen",
+        "openAllies": "Verbündete öffnen"
       },
       "notificationTypes": {
         "channels": {
@@ -2364,6 +2373,22 @@
         "startsAt": "Beginnt am",
         "inviteLink": "Einladungslink",
         "participants": "Personen"
+      },
+      "relationships": {
+        "party": "Name",
+        "since": "Seit",
+        "tabs": {
+          "accepted": "Aktiv",
+          "incoming": "Eingehend",
+          "outgoing": "Gesendet",
+          "ignored": "Ignoriert"
+        },
+        "user": {
+          "handle": "Benutzername"
+        },
+        "fleet": {
+          "handle": "Flotten-Slug"
+        }
       }
     }
   }

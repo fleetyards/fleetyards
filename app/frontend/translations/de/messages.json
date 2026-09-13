@@ -898,6 +898,58 @@
         "destroy": {
           "failure": "Andockplatz konnte nicht gelöscht werden."
         }
+      },
+      "relationships": {
+        "user": {
+          "addHint": "Gib den Benutzernamen der Person ein, die du hinzufügen möchtest. Sie wird gefragt, ob sie annimmt."
+        },
+        "fleet": {
+          "addHint": "Gib den Slug der Flotte ein, mit der du dich verbünden möchtest. Ihre Admins werden gefragt."
+        }
+      },
+      "friends": {
+        "request": {
+          "success": "Anfrage gesendet",
+          "failure": "Anfrage konnte nicht gesendet werden"
+        },
+        "accept": {
+          "success": "Anfrage angenommen",
+          "failure": "Anfrage konnte nicht angenommen werden"
+        },
+        "decline": {
+          "success": "Anfrage abgelehnt",
+          "failure": "Anfrage konnte nicht abgelehnt werden"
+        },
+        "ignore": {
+          "success": "Anfrage ignoriert",
+          "failure": "Anfrage konnte nicht ignoriert werden"
+        },
+        "remove": {
+          "success": "Entfernt",
+          "failure": "Konnte nicht entfernt werden"
+        }
+      },
+      "fleetAllies": {
+        "request": {
+          "success": "Anfrage gesendet",
+          "failure": "Anfrage konnte nicht gesendet werden"
+        },
+        "accept": {
+          "success": "Anfrage angenommen",
+          "failure": "Anfrage konnte nicht angenommen werden"
+        },
+        "decline": {
+          "success": "Anfrage abgelehnt",
+          "failure": "Anfrage konnte nicht abgelehnt werden"
+        },
+        "ignore": {
+          "success": "Anfrage ignoriert",
+          "failure": "Anfrage konnte nicht ignoriert werden"
+        },
+        "remove": {
+          "success": "Entfernt",
+          "failure": "Konnte nicht entfernt werden"
+        }
       }
     }
   }

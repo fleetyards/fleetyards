@@ -22866,12 +22866,14 @@ components:
       - fleet_membership
       - fleet_event
       - fleet_inventory
+      - friendship
       - vehicle
       - hangar_sync
       x-enumNames:
       - FLEET_MEMBERSHIP
       - FLEET_EVENT
       - FLEET_INVENTORY
+      - FRIENDSHIP
       - VEHICLE
       - HANGAR_SYNC
       title: NotificationRecordTypeEnum

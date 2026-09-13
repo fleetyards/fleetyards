@@ -305,7 +305,8 @@
           "notifications": "通知 - 视觉测试"
         }
       },
-      "notifications": "通知"
+      "notifications": "通知",
+      "friends": "好友"
     }
   }
 }

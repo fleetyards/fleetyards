@@ -25,7 +25,7 @@ type Options = {
 export const useTransferModal = (options: Options) => {
   const comlink = useComlink();
 
-  const { targets, memberFleets } = useTransferTargets({
+  const { targets, memberFleets, friendOptions } = useTransferTargets({
     source: options.source,
     fleetSlug: options.fleetSlug,
   });
@@ -63,6 +63,7 @@ export const useTransferModal = (options: Options) => {
         positions,
         targets: targets.value,
         memberFleets: memberFleets.value,
+        friendOptions: friendOptions.value,
         onSend: send,
       },
     });
@@ -74,5 +75,11 @@ export const useTransferModal = (options: Options) => {
     );
   };
 
-  return { targets, memberFleets, openTransferModal, openTransferForSelection };
+  return {
+    targets,
+    memberFleets,
+    friendOptions,
+    openTransferModal,
+    openTransferForSelection,
+  };
 };

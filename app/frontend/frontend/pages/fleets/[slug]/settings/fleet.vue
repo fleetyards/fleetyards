@@ -65,6 +65,9 @@ const initialValues = ref<FleetUpdateInput>({
   guilded: props.fleet.guilded,
   publicFleet: props.fleet.publicFleet,
   publicFleetStats: props.fleet.publicFleetStats,
+  alliesFleet: props.fleet.alliesFleet,
+  alliesFleetStats: props.fleet.alliesFleetStats,
+  alliesFleetMembers: props.fleet.alliesFleetMembers,
 });
 
 const validationSchema = {
@@ -89,7 +92,17 @@ const [guilded, guildedProps] = defineField("guilded");
 const [publicFleet, publicFleetProps] = defineField("publicFleet");
 const [publicFleetStats, publicFleetStatsProps] =
   defineField("publicFleetStats");
+const [alliesFleet, alliesFleetProps] = defineField("alliesFleet");
+const [alliesFleetStats, alliesFleetStatsProps] =
+  defineField("alliesFleetStats");
+const [alliesFleetMembers, alliesFleetMembersProps] =
+  defineField("alliesFleetMembers");
 const [logo, logoProps] = defineField("logo");
+
+// Public wins, so while a surface is published the allies switch for it is not
+// consulted. The roster has no public form at all, which is why the third one
+// is never disabled.
+const alliesDisabled = (isPublic: unknown) => submitting.value || !!isPublic;
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -236,6 +249,33 @@ const onDestroy = async () => {
           name="publicFleetStats"
           translation-key="fleet.publicStats"
           v-bind="publicFleetStatsProps"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="alliesFleet"
+          name="alliesFleet"
+          translation-key="fleet.allies"
+          v-bind="alliesFleetProps"
+          :disabled="alliesDisabled(publicFleet)"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="alliesFleetStats"
+          name="alliesFleetStats"
+          translation-key="fleet.alliesStats"
+          v-bind="alliesFleetStatsProps"
+          :disabled="alliesDisabled(publicFleetStats)"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="alliesFleetMembers"
+          name="alliesFleetMembers"
+          translation-key="fleet.alliesMembers"
+          v-bind="alliesFleetMembersProps"
+          :disabled="submitting"
         />
       </div>
     </div>

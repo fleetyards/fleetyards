@@ -305,7 +305,8 @@
           "notifications": "Benachrichtigungen - Visuelle Tests"
         }
       },
-      "notifications": "Benachrichtigungen"
+      "notifications": "Benachrichtigungen",
+      "friends": "Freunde"
     }
   }
 }

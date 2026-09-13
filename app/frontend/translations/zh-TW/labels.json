@@ -556,7 +556,10 @@
             "members_only": "僅限成員",
             "officers_only": "僅限軍官"
           }
-        }
+        },
+        "allies": "盟友可見艦船",
+        "alliesStats": "盟友可見統計",
+        "alliesMembers": "盟友可見成員列表"
       },
       "hangarGroup": {
         "name": "名稱",
@@ -1307,7 +1310,10 @@
           "dmy_slash": "31/12/2026",
           "mdy_slash": "12/31/2026",
           "ymd_dash": "2026-12-31"
-        }
+        },
+        "friendsHangar": "好友可見機庫",
+        "friendsHangarStats": "好友可見機庫統計",
+        "friendsWishlist": "好友可見願望清單"
       },
       "adminUser": {
         "superAdmin": "超級管理員",
@@ -1937,7 +1943,8 @@
         "recordedAt": "記錄時間",
         "origin": "來自 / 傳往",
         "inTransitAmount": "%{amount} 運送中",
-        "inTransitHint": "已隨一筆尚未被回覆的轉移送出，已不計入上方總數。"
+        "inTransitHint": "已隨一筆尚未被回覆的轉移送出，已不計入上方總數。",
+        "transferFromFriends": "我的好友"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1993,7 +2000,9 @@
         "syncAgain": "再次同步",
         "markAsBought": "標示為已購買",
         "unavailable": "這項內容已無法使用。",
-        "openTransfers": "開啟轉移"
+        "openTransfers": "開啟轉移",
+        "openFriends": "開啟好友",
+        "openAllies": "開啟盟友"
       },
       "notificationTypes": {
         "channels": {
@@ -2366,6 +2375,22 @@
         "large": "大型 (L)",
         "extra_large": "超大型 (XL)",
         "capital": "主力艦 (C)"
+      },
+      "relationships": {
+        "party": "名稱",
+        "since": "自",
+        "tabs": {
+          "accepted": "已建立",
+          "incoming": "收到的",
+          "outgoing": "已發送",
+          "ignored": "已忽略"
+        },
+        "user": {
+          "handle": "使用者名稱"
+        },
+        "fleet": {
+          "handle": "艦隊識別碼"
+        }
       }
     }
   }

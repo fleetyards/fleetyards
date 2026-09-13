@@ -1168,3 +1168,8 @@ PUT /notifications/{id}/unread added the new `fleet_ally_request_accepted` enum 
 PUT /notifications/{id}/unread added the new `fleet_ally_request_received` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `friend_request_accepted` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `friend_request_received` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `friendship` enum value to the `items/items/record/type` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `friendship` enum value to the `record/type` response property for the response status `200`
+PUT /notifications/{id}/read added the new `friendship` enum value to the `record/type` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `friendship` enum value to the `record/type` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `friendship` enum value to the `record/type` response property for the response status `200`

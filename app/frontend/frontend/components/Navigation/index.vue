@@ -19,6 +19,8 @@ import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { FeatureFlagName } from "@/services/fyApi";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { storeToRefs } from "pinia";
 import rsiLogo from "@/images/rsi_logo.png";
@@ -31,6 +33,8 @@ const sessionStore = useSessionStore();
 const { isAuthenticated, currentUser } = storeToRefs(sessionStore);
 
 const hangarStore = useHangarStore();
+
+const { isFeatureEnabled } = useFeatures();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
@@ -196,6 +200,13 @@ const settingsActive = computed(() => {
       <ScDataSourceSwitch />
       <template v-if="isAuthenticated && currentUser">
         <NotificationsNav />
+        <NavItem
+          v-if="isFeatureEnabled(FeatureFlagName.FRIENDS)"
+          :to="{ name: 'friends' }"
+          :active="String(route.name).startsWith('friends')"
+          :label="t('nav.friends')"
+          icon="fa-duotone fa-user-group"
+        />
         <NavItem
           :to="{ name: 'settings' }"
           :active="settingsActive"

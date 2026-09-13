@@ -47,6 +47,10 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   inventory_transfer_received: "openTransfers",
   inventory_transfer_resolved: "openTransfers",
   fleet_event_signup_kicked: "openEvent",
+  friend_request_received: "openFriends",
+  friend_request_accepted: "openFriends",
+  fleet_ally_request_received: "openAllies",
+  fleet_ally_request_accepted: "openAllies",
 };
 
 const ACTION_ICONS: Record<string, string> = {
@@ -58,6 +62,8 @@ const ACTION_ICONS: Record<string, string> = {
   openMembers: "fa-duotone fa-users",
   openFleet: "fa-duotone fa-shield",
   openInventory: "fa-duotone fa-boxes-stacked",
+  openFriends: "fa-duotone fa-user-group",
+  openAllies: "fa-duotone fa-handshake",
   openTransfers: "fa-duotone fa-right-left",
   openEvent: "fa-duotone fa-calendar-day",
   openRoster: "fa-duotone fa-list-check",

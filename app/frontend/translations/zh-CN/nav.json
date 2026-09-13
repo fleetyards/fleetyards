@@ -77,7 +77,8 @@
           "discord": "Discord",
           "calendar": "日历",
           "features": "功能"
-        }
+        },
+        "allies": "盟友"
       },
       "rsiProfile": "RSI 档案",
       "rsiHangar": "RSI 机库",
@@ -284,7 +285,8 @@
         }
       },
       "notifications": "通知",
-      "scDataSource": "数据来源"
+      "scDataSource": "数据来源",
+      "friends": "好友"
     }
   }
 }
