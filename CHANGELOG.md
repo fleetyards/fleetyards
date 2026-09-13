@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0](https://github.com/fleetyards/fleetyards/compare/v7.15.0...v8.0.0) (2026-09-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* **imports:** PUT /hangar/import returns the queued import rather than the import result. Poll GET /imports/{id} for the outcome.
+
+### Features
+
+* **admin:** find and take over dimensions the game files disagree with ([#4872](https://github.com/fleetyards/fleetyards/issues/4872)) ([35e3313](https://github.com/fleetyards/fleetyards/commit/35e33131650f283af9ca9223ca3cd16c748f32eb))
+* **docks:** let a dock belong to a module as well as a ship ([#4869](https://github.com/fleetyards/fleetyards/issues/4869)) ([a8d5b5d](https://github.com/fleetyards/fleetyards/commit/a8d5b5de7fa285837472f0174f189d27fea8835d))
+* **fleetchart:** share the chart from its own controls ([#4848](https://github.com/fleetyards/fleetyards/issues/4848)) ([20f2c4b](https://github.com/fleetyards/fleetyards/commit/20f2c4b61069cb52e8030c61eba0d3c1113214e9)), closes [#1203](https://github.com/fleetyards/fleetyards/issues/1203)
+* **fleets:** let admins nickname a member ([#4867](https://github.com/fleetyards/fleetyards/issues/4867)) ([8ddddd5](https://github.com/fleetyards/fleetyards/commit/8ddddd5b85466fa63de942c3d448af9ed877de15)), closes [#2586](https://github.com/fleetyards/fleetyards/issues/2586)
+* **hangar:** let a sync decide what happens to ships it cannot find ([#4886](https://github.com/fleetyards/fleetyards/issues/4886)) ([91b6d65](https://github.com/fleetyards/fleetyards/commit/91b6d65c5edac4436a155ed8bc4e1e5fe4b92c35))
+* **hangar:** let a sync leave bundled snub crafts out ([#4880](https://github.com/fleetyards/fleetyards/issues/4880)) ([44528ab](https://github.com/fleetyards/fleetyards/commit/44528abd60f1e68117eee516bd5a165326519a7c))
+* **hangar:** record what a user changes on their own ship ([#4851](https://github.com/fleetyards/fleetyards/issues/4851)) ([671ca44](https://github.com/fleetyards/fleetyards/commit/671ca44aeedcb46b8f0577848ae18fa86012ed14))
+* **holo:** measure a holo export's bounding box ([#4877](https://github.com/fleetyards/fleetyards/issues/4877)) ([4d262b3](https://github.com/fleetyards/fleetyards/commit/4d262b3fe7d2fc6008664ec567ffe687168f3154))
+* **imports:** visible, cancellable, group-aware hangar imports ([#4866](https://github.com/fleetyards/fleetyards/issues/4866)) ([402cfa8](https://github.com/fleetyards/fleetyards/commit/402cfa811651299781565d20f57ee392d6019bf5))
+* **models:** give ground vehicles a size ladder ([#4868](https://github.com/fleetyards/fleetyards/issues/4868)) ([1e83b16](https://github.com/fleetyards/fleetyards/commit/1e83b16de76a2245a1d578172edc87c7270aa9e0))
+* **models:** record what a ship measures while it is standing ([#4883](https://github.com/fleetyards/fleetyards/issues/4883)) ([2da5464](https://github.com/fleetyards/fleetyards/commit/2da5464f1f8757223fb9f2d5014a54bc6a0264e7))
+* **ships:** name the ships that can carry this one ([#4856](https://github.com/fleetyards/fleetyards/issues/4856)) ([ee03d4e](https://github.com/fleetyards/fleetyards/commit/ee03d4ee66ea2617b4a5d97b3242ffe4f9cca11d))
+
+
+### Bug Fixes
+
+* **admin:** render the dropdowns in four more forms ([#4875](https://github.com/fleetyards/fleetyards/issues/4875)) ([14a7944](https://github.com/fleetyards/fleetyards/commit/14a7944fdb603642b25b70a6b4cdb420e5b1c336))
+* **docks:** remove the 391 docks that belong to nothing ([#4864](https://github.com/fleetyards/fleetyards/issues/4864)) ([15c52ec](https://github.com/fleetyards/fleetyards/commit/15c52ec6dbcbca3cbc3262a4c3ef4698edd38484)), closes [#4852](https://github.com/fleetyards/fleetyards/issues/4852)
+* **errors:** tell an offline client the connection is gone, not the server ([#4860](https://github.com/fleetyards/fleetyards/issues/4860)) ([f00552e](https://github.com/fleetyards/fleetyards/commit/f00552eefabc0df3c2e48197b574a36d6d7ea1e9))
+* **hangar:** clear what hangs off a vehicle on a bulk delete ([#4871](https://github.com/fleetyards/fleetyards/issues/4871)) ([e1c4d48](https://github.com/fleetyards/fleetyards/commit/e1c4d48a8f3d7069212ac6ec90614a1d36ea6894))
+* **inventories:** record who renamed a stock position ([#4849](https://github.com/fleetyards/fleetyards/issues/4849)) ([a3a6bd3](https://github.com/fleetyards/fleetyards/commit/a3a6bd3514dde7050f55eb73204d2a04ab9775b2))
+* **sc-data:** read the Nox with its length on z ([#4874](https://github.com/fleetyards/fleetyards/issues/4874)) ([a2b4c76](https://github.com/fleetyards/fleetyards/commit/a2b4c76ead2330d029935d372cd81cf846d01978))
+* the will-it-fit filter is broken four ways ([#4854](https://github.com/fleetyards/fleetyards/issues/4854)) ([debe44a](https://github.com/fleetyards/fleetyards/commit/debe44a5a4e86fa948ae30ed80054ff4a1b861a6)), closes [#4853](https://github.com/fleetyards/fleetyards/issues/4853)
+* **tooltip:** let a tap open a tooltip on touch ([#4885](https://github.com/fleetyards/fleetyards/issues/4885)) ([81969be](https://github.com/fleetyards/fleetyards/commit/81969bebfdbfb097a942e3fe15f4bada1a147805))
+* **users:** drop the counter_cache that made .size raise ([#4876](https://github.com/fleetyards/fleetyards/issues/4876)) ([9629303](https://github.com/fleetyards/fleetyards/commit/9629303858e71a2fdd0f5d457b2c773b41d24207))
+
+
+### Refactorings
+
+* **inventories:** give a stock position its own row ([#4862](https://github.com/fleetyards/fleetyards/issues/4862)) ([b656ee3](https://github.com/fleetyards/fleetyards/commit/b656ee3d7c4c9a03313a78d91e30df6d83203102))
+* **sc-data:** move the source switch into the navigation ([#4870](https://github.com/fleetyards/fleetyards/issues/4870)) ([4acb7a2](https://github.com/fleetyards/fleetyards/commit/4acb7a202b11741a81b1a5f54a19c7e05b9cc26f))
+
+
+### Chores
+
+* **deps-dev:** bump @types/node from 26.4.1 to 26.5.0 ([#4857](https://github.com/fleetyards/fleetyards/issues/4857)) ([81c2580](https://github.com/fleetyards/fleetyards/commit/81c2580cd3fa4efcfec9349ebc6216a570b4e8ef))
+* **deps-dev:** bump @typescript-eslint/parser from 8.69.0 to 8.70.0 ([#4859](https://github.com/fleetyards/fleetyards/issues/4859)) ([4dd9748](https://github.com/fleetyards/fleetyards/commit/4dd97482e3e74e97f94546b0c6ecba3dfd46fc3b))
+* **deps-dev:** bump orval from 8.29.0 to 8.30.0 ([#4858](https://github.com/fleetyards/fleetyards/issues/4858)) ([9dc8071](https://github.com/fleetyards/fleetyards/commit/9dc8071a85ab34a166c7af1d2dff4528e5489bb9))
+* **setup:** schedule bin/setup steps as a dependency graph ([#4861](https://github.com/fleetyards/fleetyards/issues/4861)) ([a9953af](https://github.com/fleetyards/fleetyards/commit/a9953afe80ecb02ff50d92ddc6a2127af518484f))
+
 ## [7.15.0](https://github.com/fleetyards/fleetyards/compare/v7.14.0...v7.15.0) (2026-09-10)
 
 

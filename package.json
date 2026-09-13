@@ -1,7 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
-  "version": "7.15.0",
+  "version": "8.0.0",
   "packageManager": "pnpm@10.34.5",
   "scripts": {
     "test": "vitest run",
