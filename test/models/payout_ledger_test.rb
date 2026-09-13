@@ -2,6 +2,28 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: payout_ledgers
+#
+#  id            :uuid             not null, primary key
+#  notes         :text
+#  settled_at    :datetime
+#  status        :string           default("open"), not null
+#  subject_type  :string           not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  settled_by_id :uuid
+#  subject_id    :uuid             not null
+#
+# Indexes
+#
+#  index_payout_ledgers_on_subject_type_and_subject_id  (subject_type,subject_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (settled_by_id => users.id)
+#
 class PayoutLedgerTest < ActiveSupport::TestCase
   test "refuses a subject type it does not know" do
     ledger = PayoutLedger.new(subject_type: "User", subject_id: create(:user).id)
