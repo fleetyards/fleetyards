@@ -9,7 +9,7 @@ type NavStoreState = {
 export const useNavStore = defineStore("nav", {
   state: (): NavStoreState => ({
     collapsed: true,
-    slim: false,
+    slim: true,
   }),
   getters: {
     slimNavigation(state) {
