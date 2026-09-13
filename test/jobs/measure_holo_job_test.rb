@@ -102,6 +102,28 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_in_delta 42.0, model.reload.length.to_f
   end
 
+  # Somebody correcting a figure while an 18 MB file is being fetched would
+  # otherwise lose it without being told.
+  test "#perform writes nothing once somebody has corrected the columns" do
+    model = attach(create(:model, length: 42.0), :holo, "plain.gltf")
+    snapshot = MeasureHoloJob.snapshot(model, %i[length beam height])
+
+    model.update!(length: 7.5)
+
+    MeasureHoloJob.new.perform(model.id, "holo", model.holo.blob.id, snapshot)
+
+    assert_in_delta 7.5, model.reload.length.to_f
+  end
+
+  test "#perform measures when nobody has touched the columns" do
+    model = attach(create(:model, length: 42.0), :holo, "plain.gltf")
+    snapshot = MeasureHoloJob.snapshot(model, %i[length beam height])
+
+    MeasureHoloJob.new.perform(model.id, "holo", model.holo.blob.id, snapshot)
+
+    assert_in_delta 6.0, model.reload.length.to_f
+  end
+
   test "#perform ignores a model that is gone" do
     assert_nothing_raised { MeasureHoloJob.new.perform(SecureRandom.uuid, "holo") }
   end

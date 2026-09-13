@@ -705,7 +705,11 @@ class Model < ApplicationRecord
   # rather than silent.
   def measure_attached_holos
     new_holo_names.each do |name|
-      MeasureHoloJob.perform_async(id, name, send(name).blob&.id)
+      columns = HOLO_DIMENSIONS.fetch(name)
+
+      MeasureHoloJob.perform_async(
+        id, name, send(name).blob&.id, MeasureHoloJob.snapshot(self, columns)
+      )
     end
   end
 

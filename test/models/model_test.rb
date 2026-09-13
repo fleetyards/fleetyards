@@ -144,8 +144,11 @@ class ModelTest < ActiveSupport::TestCase
 
     # The blob comes along so a later upload cannot be measured from the older
     # file, whichever job finishes last.
+    # The blob and the columns as they stood: a later upload must not be
+    # measured from the older file, and a correction made meanwhile must not be
+    # overwritten.
     assert_equal(
-      [model.id, "landed_holo", model.landed_holo.blob.id],
+      [model.id, "landed_holo", model.landed_holo.blob.id, [nil, nil, nil]],
       MeasureHoloJob.jobs.last["args"]
     )
   end
