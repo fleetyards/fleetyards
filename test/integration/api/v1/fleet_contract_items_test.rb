@@ -143,9 +143,24 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
       body: {name: component.name, category: "component", unit: "units", quantity: "12",
-             minQuality: 750, itemType: "Component", itemId: component.id} do
+             quality: 750, itemType: "Component", itemId: component.id} do
       assert_equal "Component", parsed_body["item"]["type"]
-      assert_equal 750, parsed_body["minQuality"]
+      assert_equal 750, parsed_body["quality"]
+      assert_equal "at_least", parsed_body["qualityMatch"]
+    end
+  end
+
+  test "POST records a grade that has to be matched exactly" do
+    @contract.update!(kind: :crafting)
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: "Tuned Cooler", category: "component", unit: "units", quantity: "4",
+             quality: 500, qualityMatch: "exact"} do
+      assert_equal "exact", parsed_body["qualityMatch"]
+      assert_equal 500, parsed_body["quality"]
     end
   end
 

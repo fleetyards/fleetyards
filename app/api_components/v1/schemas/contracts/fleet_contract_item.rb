@@ -14,14 +14,15 @@ module V1
             category: ::V1::Schemas::Enums::InventoryCategoryEnum,
             unit: ::V1::Schemas::Enums::InventoryUnitEnum,
             quantity: {type: :string},
-            minQuality: {type: [:integer, :null]},
+            quality: {type: [:integer, :null]},
+            qualityMatch: ::V1::Schemas::Enums::FleetContractQualityMatchEnum,
             position: {type: :integer},
             item: ::V1::Schemas::Contracts::FleetContractItemRef,
             createdAt: {type: [:string, :null], format: "date-time"},
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name category unit quantity position]
+          required: %w[id name category unit quantity position qualityMatch]
         })
       end
     end

@@ -19,9 +19,10 @@
 #  id                :uuid             not null, primary key
 #  category          :integer          default(0), not null
 #  item_type         :string
-#  min_quality       :integer
 #  name              :string           not null
 #  position          :integer          default(0), not null
+#  quality           :integer
+#  quality_match     :integer          default(0), not null
 #  quantity          :decimal(15, 2)   default(0.0), not null
 #  unit              :integer          default(0), not null
 #  created_at        :datetime         not null
@@ -44,12 +45,17 @@ class FleetContractItem < ApplicationRecord
   belongs_to :fleet_contract, touch: true
   belongs_to :item, polymorphic: true, optional: true
 
+  # How the grade on this line is read. `at_least` is the ordinary case; a
+  # crafting job that wants exactly 500 and no better cannot say so otherwise.
+  QUALITY_MATCHES = {at_least: 0, exact: 1}.freeze
+
   enum :category, ::InventoryLedgerEntry::CATEGORIES
   enum :unit, ::InventoryLedgerEntry::UNITS
+  enum :quality_match, QUALITY_MATCHES, prefix: :quality
 
   validates :name, presence: true
   validates :quantity, numericality: {greater_than: 0}
-  validates :min_quality,
+  validates :quality,
     numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000},
     allow_nil: true
   validates :item_type, inclusion: {in: ::InventoryLedgerEntry::ITEM_TYPES}, allow_blank: true
@@ -67,7 +73,18 @@ class FleetContractItem < ApplicationRecord
   # silently stop counting deposits that came out of the fleet's own inventory
   # at whatever quality they were recorded with.
   def required_quality
-    min_quality if fleet_contract&.crafting?
+    quality if fleet_contract&.crafting?
+  end
+
+  # Whether a deposit recorded at `grade` answers what this line asked for. A
+  # line with no grade takes any, including the entries that carry none --
+  # quality is optional on a ledger entry, and most rows have none.
+  def quality_satisfied_by?(grade)
+    required = required_quality
+    return true if required.blank?
+    return false if grade.blank?
+
+    quality_exact? ? grade == required : grade >= required
   end
 
   # What `Contracts::Progress` groups deposits by. Downcased because a position

@@ -13,7 +13,7 @@ class FleetContractItemPolicy < FleetBasePolicy
   alias_rule :update?, :destroy?, to: :create?
 
   params_filter do |params|
-    params.permit(:name, :category, :unit, :quantity, :min_quality, :item_type, :item_id, :position)
+    params.permit(:name, :category, :unit, :quantity, :quality, :quality_match, :item_type, :item_id, :position)
   end
 
   private def contract

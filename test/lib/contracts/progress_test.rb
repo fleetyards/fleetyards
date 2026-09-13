@@ -64,13 +64,26 @@ module Contracts
 
     test "a crafting line ignores deposits under its required quality" do
       @contract.update!(kind: :crafting, source_fleet_inventory: nil)
-      @item.update!(min_quality: 500)
+      @item.update!(quality: 500)
 
       deliver(quantity: 100, quality: 400)
       deliver(quantity: 300, quality: 500)
       deliver(quantity: 200, quality: 900)
 
       assert_equal 500.to_d, progress.lines.first.delivered
+    end
+
+    # "At least" and "exactly" are different requests, and an over-grade
+    # delivery answers only the first.
+    test "an exact grade refuses anything above it as well as below" do
+      @contract.update!(kind: :crafting, source_fleet_inventory: nil)
+      @item.update!(quality: 500, quality_match: :exact)
+
+      deliver(quantity: 100, quality: 400)
+      deliver(quantity: 300, quality: 500)
+      deliver(quantity: 200, quality: 900)
+
+      assert_equal 300.to_d, progress.lines.first.delivered
     end
 
     test "a line with no threshold counts every grade" do

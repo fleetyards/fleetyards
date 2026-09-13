@@ -464,9 +464,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.uuid "fleet_contract_id", null: false
     t.uuid "item_id"
     t.string "item_type"
-    t.integer "min_quality"
     t.string "name", null: false
     t.integer "position", default: 0, null: false
+    t.integer "quality"
+    t.integer "quality_match", default: 0, null: false
     t.decimal "quantity", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "unit", default: 0, null: false
     t.datetime "updated_at", null: false
@@ -474,7 +475,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.index ["fleet_contract_id", "position"], name: "index_fleet_contract_items_on_fleet_contract_id_and_position"
     t.index ["fleet_contract_id"], name: "index_fleet_contract_items_on_fleet_contract_id"
     t.index ["item_type", "item_id"], name: "index_fleet_contract_items_on_item_type_and_item_id"
-    t.check_constraint "min_quality IS NULL OR min_quality >= 0 AND min_quality <= 1000", name: "fleet_contract_items_min_quality_range"
+    t.check_constraint "quality IS NULL OR quality >= 0 AND quality <= 1000", name: "fleet_contract_items_quality_range"
     t.check_constraint "quantity > 0::numeric", name: "fleet_contract_items_quantity_positive"
   end
 

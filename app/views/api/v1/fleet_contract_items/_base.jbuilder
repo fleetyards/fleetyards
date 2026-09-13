@@ -5,7 +5,8 @@ json.name fleet_contract_item.name
 json.category fleet_contract_item.category
 json.unit fleet_contract_item.unit
 json.quantity fleet_contract_item.quantity
-json.min_quality fleet_contract_item.min_quality
+json.quality fleet_contract_item.quality
+json.quality_match fleet_contract_item.quality_match
 json.position fleet_contract_item.position
 
 if fleet_contract_item.item.present?

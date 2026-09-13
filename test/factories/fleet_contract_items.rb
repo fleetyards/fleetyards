@@ -7,9 +7,10 @@
 #  id                :uuid             not null, primary key
 #  category          :integer          default(0), not null
 #  item_type         :string
-#  min_quality       :integer
 #  name              :string           not null
 #  position          :integer          default(0), not null
+#  quality           :integer
+#  quality_match     :integer          default(0), not null
 #  quantity          :decimal(15, 2)   default(0.0), not null
 #  unit              :integer          default(0), not null
 #  created_at        :datetime         not null
@@ -42,7 +43,7 @@ FactoryBot.define do
     end
 
     trait :graded do
-      min_quality { 500 }
+      quality { 500 }
     end
   end
 end

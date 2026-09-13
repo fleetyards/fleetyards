@@ -73,9 +73,10 @@ module Contracts
     private def build_line(item)
       identity = item.position_identity
       delivered_rows = deposits.fetch(identity, [])
-      threshold = item.required_quality
 
-      counted = delivered_rows.select { |row| meets_quality?(row, threshold) }
+      # The line decides, because it also decides *how* -- at or above the
+      # grade, or exactly it.
+      counted = delivered_rows.select { |row| item.quality_satisfied_by?(row[:quality]) }
 
       LineProgress.new(
         item: item,
@@ -84,15 +85,6 @@ module Contracts
         picked_up: withdrawals.fetch(identity, []).sum(0.to_d) { |row| row[:quantity] },
         contributions: contributions_for(item, counted)
       )
-    end
-
-    # A line with no threshold counts every grade, including entries recorded
-    # with no quality at all -- which is most of them, since quality is optional
-    # on a ledger entry.
-    private def meets_quality?(row, threshold)
-      return true if threshold.blank?
-
-      row[:quality].present? && row[:quality] >= threshold
     end
 
     private def contributions_for(item, rows)

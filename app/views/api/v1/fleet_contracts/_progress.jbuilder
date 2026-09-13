@@ -11,7 +11,8 @@ json.lines do
     json.name line.item.name
     json.category line.item.category
     json.unit line.item.unit
-    json.min_quality line.item.min_quality
+    json.quality line.item.quality
+    json.quality_match line.item.quality_match
     json.requested line.requested
     json.delivered line.delivered
     json.picked_up line.picked_up

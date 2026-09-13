@@ -13,7 +13,8 @@ module V1
             name: {type: :string},
             category: ::V1::Schemas::Enums::InventoryCategoryEnum,
             unit: ::V1::Schemas::Enums::InventoryUnitEnum,
-            minQuality: {type: [:integer, :null]},
+            quality: {type: [:integer, :null]},
+            qualityMatch: ::V1::Schemas::Enums::FleetContractQualityMatchEnum,
             requested: {type: :string},
             delivered: {type: :string},
             # Out of the source inventory and into the contractor's hold. Always
