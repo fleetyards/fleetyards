@@ -150,7 +150,12 @@ const onSubmit = handleSubmit(async (values) => {
       const targetSlug = isEdit.value ? props.contract!.slug : response?.slug;
       if (targetSlug) {
         void router.push({
-          name: "fleet-contract",
+          // A new contract goes to its edit page rather than its detail page:
+          // the goods are what it is for, they need a saved contract to hang
+          // off, and `publish` refuses a contract with none. Landing on the
+          // detail page leaves that step to be discovered behind an Edit
+          // button.
+          name: isEdit.value ? "fleet-contract" : "fleet-contract-edit",
           params: { slug: props.fleet.slug, contract: targetSlug },
         });
       }

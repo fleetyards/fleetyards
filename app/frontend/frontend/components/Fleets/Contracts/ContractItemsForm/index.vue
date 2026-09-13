@@ -210,7 +210,13 @@ const removeItem = async (item: FleetContractItem) => {
 
 <template>
   <div class="contract-items" data-test="contract-items">
-    <ul class="contract-items__list">
+    <!-- Publishing refuses a contract with nothing to deliver, so an empty list
+         has to say what it is waiting for rather than just being empty. -->
+    <p v-if="!props.contract.items.length" class="contract-items__empty">
+      {{ t("empty.fleets.contracts.items") }}
+    </p>
+
+    <ul v-else class="contract-items__list">
       <li
         v-for="item in props.contract.items"
         :key="item.id"

@@ -31,6 +31,11 @@
         "participants": "Nadie en esta expedición todavía",
         "transfers": "Liquida para ver quién paga a quién",
         "tours": "Aún no hay expediciones"
+      },
+      "fleets": {
+        "contracts": {
+          "items": "Aún no hay mercancías. Añade lo que pide este contrato: vacío no se puede publicar."
+        }
       }
     }
   }

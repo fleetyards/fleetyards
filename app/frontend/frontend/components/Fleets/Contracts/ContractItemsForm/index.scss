@@ -1,4 +1,9 @@
 .contract-items {
+  &__empty {
+    margin: 0 0 16px;
+    color: $gray-lighter;
+  }
+
   &__list {
     list-style: none;
     margin: 0 0 16px;
