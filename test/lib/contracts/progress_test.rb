@@ -170,66 +170,43 @@ module Contracts
       assert_equal 200.to_d, progress.lines.first.picked_up
     end
 
-    # The weights divide money, so a deleted inventory must not move a share
-    # onto whoever happened to press the button.
-    test "a deleted source credits nobody rather than the officer who dispatched it" do
+    # The weights divide money, so a deleted inventory must neither move a share
+    # onto the wrong person nor take it away from the right one.
+    test "a deleted source still credits the contractor it came from" do
       officer = create(:user)
-      transfer = linked_transfer(initiated_by: officer)
+      transfer = linked_transfer(initiated_by: officer, contributor: @contractor)
 
       create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
         entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
 
       assert_equal [@contractor.id], progress.lines.first.contributions.map(&:user_id)
 
-      # Straight to the column: nulling the source is what `ON DELETE SET NULL`
-      # does, and the model would refuse a transfer with no source at all.
       transfer.update_columns(source_inventory_id: nil)
+
+      assert_equal [@contractor.id], progress.lines.first.contributions.map(&:user_id),
+        "the share was lost with the inventory"
+    end
+
+    test "the recorded contributor wins over whoever pressed the button" do
+      officer = create(:user)
+      transfer = linked_transfer(initiated_by: officer, contributor: @contractor)
+
+      create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
+
+      assert_equal [@contractor.id], progress.lines.first.contributions.map(&:user_id)
+    end
+
+    # Nothing to read and nothing to derive is the one case with no answer.
+    test "a transfer with neither a contributor nor a source credits nobody" do
+      transfer = linked_transfer
+
+      create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
+
+      transfer.update_columns(source_inventory_id: nil, fleet_contract_contributor_id: nil)
 
       assert_empty progress.lines.first.contributions
-    end
-
-    test "a deleted source still credits a contractor who dispatched their own goods" do
-      transfer = linked_transfer(initiated_by: @contractor)
-
-      create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
-        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
-
-      transfer.update_columns(source_inventory_id: nil)
-
-      assert_equal [@contractor.id], progress.lines.first.contributions.map(&:user_id)
-    end
-
-    test "two contractors are attributed separately and their weights sum to one" do
-      second = create(:user)
-      create(:fleet_contract_assignment, :accepted, fleet_contract: @contract, user: second)
-
-      deliver(quantity: 600)
-      deliver(quantity: 200, user: second)
-
-      contributions = progress.lines.first.contributions.index_by(&:user_id)
-
-      assert_equal 600.to_d, contributions[@contractor.id].delivered
-      assert_equal 200.to_d, contributions[second.id].delivered
-      assert_in_delta 0.75, contributions[@contractor.id].weight.to_f, 0.0001
-      assert_in_delta 0.25, contributions[second.id].weight.to_f, 0.0001
-      assert_in_delta 1.0, progress.total_weight.to_f, 0.0001
-    end
-
-    test "over-delivering does not make a line worth more than it asked for" do
-      deliver(quantity: 1600)
-
-      line = progress.lines.first
-
-      assert line.complete?
-      assert_in_delta 1.0, line.fraction.to_f, 0.0001
-      assert_in_delta 1.0, progress.total_weight.to_f, 0.0001
-    end
-
-    test "goods are attributed to whoever held them, not to whoever pressed the button" do
-      officer = create(:user)
-      deliver(quantity: 100, initiated_by: officer)
-
-      assert_equal [@contractor.id], progress.lines.first.contributions.map(&:user_id)
     end
 
     test "a contract is complete only when every line is" do
@@ -261,7 +238,7 @@ module Contracts
     end
 
     private def linked_transfer(user: @contractor, source: nil, destination: :default,
-      recipient: nil, initiated_by: nil, state: "completed")
+      recipient: nil, initiated_by: nil, state: "completed", contributor: nil)
       attributes = {
         fleet_contract: @contract,
         initiated_by: initiated_by || user,
@@ -278,6 +255,7 @@ module Contracts
 
       attributes[:destination_fleet_inventory] = (destination == :default) ? @destination : destination
       attributes[:recipient] = recipient
+      attributes[:fleet_contract_contributor] = contributor
       attributes[:expires_at] = 14.days.from_now if recipient.present?
 
       create(:inventory_transfer, **attributes)

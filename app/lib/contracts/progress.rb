@@ -119,27 +119,21 @@ module Contracts
       end
     end
 
-    # Whose goods these were, which is the party the transfer's source belongs
-    # to rather than whoever pressed the button -- an officer dispatching on a
-    # member's behalf must not be paid for it.
+    # Whose goods these were. Read from the column the link wrote at creation,
+    # which is the only record that survives the source inventory being deleted
+    # -- and never from `initiated_by`, because an officer dispatching on a
+    # member's behalf is not the contributor.
     #
-    # A source inventory deleted after the transfer finished nulls the column,
-    # and then the only thing left is who pressed the button. That is accepted
-    # *only* when they are a contractor on this contract: otherwise deleting an
-    # inventory would quietly move a share onto the officer who dispatched it.
-    # Crediting nobody is the safe answer, because these weights divide money.
+    # The live source is still consulted as a fallback, for any transfer linked
+    # before the column existed.
     private def contractor_for(transfer_id)
       transfer = transfers_by_id[transfer_id]
       return if transfer.blank?
+      return transfer.fleet_contract_contributor_id if transfer.fleet_contract_contributor_id.present?
 
       party = ::InventoryTransfer.party_of(transfer.source)
-      return party.id if party.is_a?(::User)
 
-      transfer.initiated_by_id if contractor_ids.include?(transfer.initiated_by_id)
-    end
-
-    private def contractor_ids
-      @contractor_ids ||= @contract.contractor_assignments.pluck(:user_id)
+      party.id if party.is_a?(::User)
     end
 
     private def transfers_by_id

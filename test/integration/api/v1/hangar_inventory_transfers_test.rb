@@ -337,6 +337,34 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal 0.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
   end
 
+  # Attribution is certain only while the source still exists, so the link
+  # writes it down there and then.
+  test "a contract delivery records who its goods came from" do
+    contract, _depot = contract_for(@user)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientFleetSlug: contract.fleet.slug,
+             contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+
+    transfer = InventoryTransfer.find(parsed_body["id"])
+
+    assert_equal @user.id, transfer.fleet_contract_contributor_id
+  end
+
+  test "a transfer with no contract records no contributor" do
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientUsername: @recipient.username,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+
+    assert_nil InventoryTransfer.find(parsed_body["id"]).fleet_contract_contributor_id
+  end
+
   test "POST naming a contract from a fleet the caller is not in is refused" do
     outsiders_fleet = create(:fleet)
     depot = create(:fleet_inventory, fleet: outsiders_fleet)

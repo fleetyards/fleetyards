@@ -82,6 +82,14 @@ module Inventories
       transfer = ::InventoryTransfer.new(initiated_by: @actor, note: @note, fleet_contract: @contract)
       transfer.source = @source
 
+      # Whose goods these are, written down while the source still exists --
+      # deleting it later nulls the only other record of it. Never the actor: an
+      # officer dispatching on a member's behalf is not the contributor.
+      if @contract.present?
+        party = ::InventoryTransfer.party_of(@source)
+        transfer.fleet_contract_contributor_id = party.id if party.is_a?(::User)
+      end
+
       if immediate?
         transfer.destination = @destination
       else

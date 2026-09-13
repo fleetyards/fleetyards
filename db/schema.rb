@@ -1086,6 +1086,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.uuid "destination_inventory_id"
     t.datetime "expired_at"
     t.datetime "expires_at"
+    t.uuid "fleet_contract_contributor_id"
     t.uuid "fleet_contract_id"
     t.uuid "initiated_by_id"
     t.text "note"
@@ -1098,6 +1099,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.index ["destination_fleet_inventory_id"], name: "index_inventory_transfers_on_destination_fleet_inventory_id"
     t.index ["destination_inventory_id"], name: "index_inventory_transfers_on_destination_inventory_id"
     t.index ["expires_at"], name: "index_inventory_transfers_on_pending_expires_at", where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["fleet_contract_contributor_id"], name: "index_inventory_transfers_on_contract_contributor", where: "(fleet_contract_contributor_id IS NOT NULL)"
     t.index ["fleet_contract_id"], name: "index_inventory_transfers_on_fleet_contract_id", where: "(fleet_contract_id IS NOT NULL)"
     t.index ["initiated_by_id"], name: "index_inventory_transfers_on_initiated_by_id"
     t.index ["recipient_fleet_id"], name: "index_inventory_transfers_on_pending_recipient_fleet", where: "((aasm_state)::text = 'pending'::text)"
@@ -2107,6 +2109,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
   add_foreign_key "inventory_transfers", "fleets", column: "recipient_fleet_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "inventories", column: "destination_inventory_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "inventories", column: "source_inventory_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "users", column: "fleet_contract_contributor_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "initiated_by_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify
