@@ -63,6 +63,7 @@ const openAdd = () => {
     props: {
       title: t(`headlines.relationships.${props.kind}.add`),
       label: t(`labels.relationships.${props.kind}.handle`),
+      placeholder: t(`placeholders.relationships.${props.kind}.handle`),
       hint: t(`messages.relationships.${props.kind}.addHint`),
       submitLabel: t("actions.relationships.send"),
       onSubmit: props.onAdd,

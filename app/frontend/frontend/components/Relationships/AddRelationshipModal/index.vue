@@ -14,6 +14,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 type Props = {
   title: string;
   label: string;
+  placeholder: string;
   hint: string;
   submitLabel: string;
   onSubmit: (handle: string) => Promise<boolean>;
@@ -57,6 +58,7 @@ const submit = async () => {
         v-model="handle"
         name="handle"
         :label="label"
+        :placeholder="placeholder"
         data-test="relationship-handle"
       />
     </form>

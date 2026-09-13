@@ -287,6 +287,14 @@
         "grade": "Grade",
         "scKey": "SC Key",
         "scRef": "SC Ref"
+      },
+      "relationships": {
+        "user": {
+          "handle": "对方的用户名"
+        },
+        "fleet": {
+          "handle": "对方的舰队标识"
+        }
       }
     }
   }
