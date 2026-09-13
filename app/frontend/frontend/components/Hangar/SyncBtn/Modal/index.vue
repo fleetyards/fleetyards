@@ -33,8 +33,6 @@ import {
   HangarSyncChannel,
   type HangarSyncData,
 } from "@/services/fyCable/channels/HangarSyncChannel";
-import { HangarSyncFailedStatusEnum } from "@/services/fyCable/models/HangarSyncFailedStatusEnum";
-import { HangarSyncFinishedStatusEnum } from "@/services/fyCable/models/HangarSyncFinishedStatusEnum";
 import { differenceInMinutes } from "date-fns";
 import {
   type FleetyardsSyncMessage,
@@ -333,14 +331,14 @@ watch(syncStatusData, (statusData) => {
 });
 
 const onSyncResult = (message: HangarSyncData) => {
-  if (message.status === HangarSyncFinishedStatusEnum.FINISHED) {
+  if (message.status === "finished") {
     result.value = message.result;
     hangarStore.syncRunning = false;
 
     displaySuccess({ text: t("messages.syncExtension.success") });
     updateStep("submitData", "success");
     comlink.emit("hangar-sync-finished");
-  } else if (message.status === HangarSyncFailedStatusEnum.FAILED) {
+  } else if (message.status === "failed") {
     hangarStore.syncRunning = false;
     updateStep("submitData", "backendFailure");
     console.error("Hangar sync failed:", message.error);

@@ -123,6 +123,14 @@ const refresh = useDebouncedRefresh(fetch);
 useSubscription({
   channel: FleetMembersChannel,
   received: refresh,
+  // The channel replays nothing it broadcast while the socket was down, so
+  // the member list is read again on the way back rather than waiting for whatever
+  // changes next.
+  connected: ({ reconnect }) => {
+    if (reconnect) {
+      refresh();
+    }
+  },
 });
 
 const crumbs = computed<Crumb[]>(() => {

@@ -22,20 +22,18 @@ import { UserNotificationsChannel } from "@/services/fyCable/channels/UserNotifi
 import { WishlistCreateChannel } from "@/services/fyCable/channels/WishlistCreateChannel";
 import { WishlistDestroyChannel } from "@/services/fyCable/channels/WishlistDestroyChannel";
 import { type AnnouncementMessage } from "@/services/fyCable/models/AnnouncementMessage";
-import { AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
+import { type AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
 import { type AppVersionMessage } from "@/services/fyCable/models/AppVersionMessage";
-import { HangarSyncFailedStatusEnum } from "@/services/fyCable/models/HangarSyncFailedStatusEnum";
-import { HangarSyncFinishedStatusEnum } from "@/services/fyCable/models/HangarSyncFinishedStatusEnum";
 import { type Model } from "@/services/fyCable/models/Model";
 import { type Notification } from "@/services/fyCable/models/Notification";
 import { type Vehicle } from "@/services/fyCable/models/Vehicle";
 import { useSyncRsiHangarStatus } from "@/services/fyApi";
 
 const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
-  [AnnouncementTypeEnum.SUCCESS]: MessageTypesEnum.SUCCESS,
-  [AnnouncementTypeEnum.INFO]: MessageTypesEnum.INFO,
-  [AnnouncementTypeEnum.WARNING]: MessageTypesEnum.WARNING,
-  [AnnouncementTypeEnum.RESERVED_ALERT]: MessageTypesEnum.ALERT,
+  success: MessageTypesEnum.SUCCESS,
+  info: MessageTypesEnum.INFO,
+  warning: MessageTypesEnum.WARNING,
+  alert: MessageTypesEnum.ALERT,
 };
 
 export const useUpdates = () => {
@@ -190,8 +188,8 @@ export const useUpdates = () => {
   });
 
   const handleHangarSyncUpdate = (message: HangarSyncData) => {
-    const finished = message.status === HangarSyncFinishedStatusEnum.FINISHED;
-    const failed = message.status === HangarSyncFailedStatusEnum.FAILED;
+    const finished = message.status === "finished";
+    const failed = message.status === "failed";
 
     if (finished || failed) {
       hangarStore.syncRunning = false;

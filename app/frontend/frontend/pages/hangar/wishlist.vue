@@ -156,6 +156,14 @@ const refresh = useDebouncedRefresh(fetch);
 useSubscription({
   channel: HangarChannel,
   received: refresh,
+  // The channel replays nothing it broadcast while the socket was down, so
+  // the wishlist is read again on the way back rather than waiting for whatever
+  // changes next.
+  connected: ({ reconnect }) => {
+    if (reconnect) {
+      refresh();
+    }
+  },
 });
 
 const exportJson = async () => {
