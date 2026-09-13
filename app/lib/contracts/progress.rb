@@ -177,8 +177,16 @@ module Contracts
         returned_rows = returned.fetch(identity, [])
 
         result[identity] = rows.map do |row|
+          # Matched per grade, not per transfer. `TransferExecutor#dispatch`
+          # writes one withdrawal per quality the line is spent across and
+          # `return_to_source` mirrors each of them, so a transfer that took two
+          # grades has a return for each -- subtracting the transfer's whole
+          # return from every grade would count it once per grade.
           refund = returned_rows
-            .select { |other| other[:inventory_transfer_id] == row[:inventory_transfer_id] }
+            .select do |other|
+              other[:inventory_transfer_id] == row[:inventory_transfer_id] &&
+                other[:quality] == row[:quality]
+            end
             .sum(0.to_d) { |other| other[:quantity] }
 
           row.merge(quantity: [row[:quantity] - refund, 0.to_d].max)

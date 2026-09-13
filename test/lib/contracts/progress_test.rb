@@ -141,6 +141,35 @@ module Contracts
       assert_equal 250.to_d, progress.lines.first.picked_up
     end
 
+    # A pickup spent across two grades has a return per grade, so subtracting
+    # the transfer's whole return from each of them counts it twice.
+    test "a return is netted against its own quality grade" do
+      source = create(:fleet_inventory, fleet: @fleet)
+      @contract.update!(kind: :transport, source_fleet_inventory: source)
+
+      create(:fleet_inventory_item, fleet_inventory: source, entry_type: :deposit,
+        name: "Titanium", category: :commodity, unit: :scu, quantity: 800, quality: 100)
+      create(:fleet_inventory_item, fleet_inventory: source, entry_type: :deposit,
+        name: "Titanium", category: :commodity, unit: :scu, quantity: 800, quality: 900)
+
+      pickup = linked_transfer(source: source, destination: nil, recipient: @contractor)
+
+      [100, 900].each do |grade|
+        create(:fleet_inventory_item, fleet_inventory: source, inventory_transfer: pickup,
+          entry_type: :withdrawal, name: "Titanium", category: :commodity, unit: :scu,
+          quantity: 200, quality: grade)
+      end
+
+      assert_equal 400.to_d, progress.lines.first.picked_up
+
+      # Only the low grade comes home.
+      create(:fleet_inventory_item, fleet_inventory: source, inventory_transfer: pickup,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu,
+        quantity: 200, quality: 100)
+
+      assert_equal 200.to_d, progress.lines.first.picked_up
+    end
+
     # The weights divide money, so a deleted inventory must not move a share
     # onto whoever happened to press the button.
     test "a deleted source credits nobody rather than the officer who dispatched it" do
