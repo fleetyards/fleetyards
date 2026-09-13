@@ -1909,7 +1909,9 @@
         },
         "transferTargetKind": "傳送至",
         "transferFromFleet": "來自艦隊",
-        "noTransferTargets": "這裡沒有可傳送的目標"
+        "noTransferTargets": "這裡沒有可傳送的目標",
+        "recordedAt": "記錄時間",
+        "fromTransfer": "透過轉移抵達"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

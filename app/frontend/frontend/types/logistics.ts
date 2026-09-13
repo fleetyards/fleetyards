@@ -77,6 +77,9 @@ export type InventoryLedgerRecord = {
   quality?: number;
   quantity: number;
   notes?: string;
+  // Set when a transfer wrote this entry rather than a person.
+  transferId?: string | null;
+  createdAt?: string | null;
   inventory?: InventoryReference;
   item?: InventoryItemReference | null;
 };

@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   stockSelectable: false,
 });
 
-const { t } = useI18n();
+const { t, l } = useI18n();
 
 const stockColumns = computed<BaseTableCol<InventoryStockRecord>[]>(() => [
   {
@@ -170,6 +170,16 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
         },
       ]
     : []),
+  {
+    // A ledger without times is a list of things that happened in no
+    // particular order.
+    name: "createdAt",
+    label: t("labels.logistics.recordedAt"),
+    sortable: true,
+    attributeKey: "createdAt",
+    width: "170px",
+    mobile: false,
+  },
 ]);
 </script>
 
@@ -235,6 +245,21 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       >
         {{ t(`labels.logistics.entryTypes.${record.entryType}`) }}
       </span>
+      <!-- A deposit somebody typed and one that arrived from another inventory
+           are the same row otherwise, and the ledger is where you go to find
+           out which. -->
+      <i
+        v-if="record.transferId"
+        v-tooltip="t('labels.logistics.fromTransfer')"
+        class="fa-duotone fa-right-left ledger-transfer-mark"
+        :data-test="`ledger-transfer-${record.id}`"
+      />
+    </template>
+
+    <template #col-createdAt="{ record }">
+      <span v-if="record.createdAt" class="ledger-date">
+        {{ l(record.createdAt, "datetime.formats.short") }}
+      </span>
     </template>
     <template #col-name="{ record }">
       <slot name="log-name" :record="record">{{ record.name }}</slot>
@@ -270,3 +295,14 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
   </BaseTable>
 </template>
+
+<style lang="scss" scoped>
+.ledger-transfer-mark {
+  margin-left: 0.4rem;
+  opacity: 0.6;
+}
+
+.ledger-date {
+  white-space: nowrap;
+}
+</style>

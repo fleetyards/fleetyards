@@ -15,6 +15,11 @@ json.entry_type inventory_item.entry_type
 json.quality inventory_item.quality
 json.notes inventory_item.notes
 
+# The transfer that wrote this entry, if one did. A deposit somebody typed and
+# a deposit that arrived from another inventory are the same row otherwise, and
+# the ledger is where you go to find out which.
+json.transfer_id inventory_item.inventory_transfer_id
+
 json.image do
   json.partial! "api/v1/shared/inventory_image", entry: inventory_item
 end

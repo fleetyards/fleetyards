@@ -1909,7 +1909,9 @@
         },
         "transferTargetKind": "发送至",
         "transferFromFleet": "来自舰队",
-        "noTransferTargets": "这里没有可发送的目标"
+        "noTransferTargets": "这里没有可发送的目标",
+        "recordedAt": "记录时间",
+        "fromTransfer": "通过转移到达"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

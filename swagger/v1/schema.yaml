@@ -15202,6 +15202,11 @@ components:
           maximum: 1000
         notes:
           type: string
+        transferId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -16738,6 +16743,11 @@ components:
           maximum: 1000
         notes:
           type: string
+        transferId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -17856,6 +17866,11 @@ components:
           maximum: 1000
         notes:
           type: string
+        transferId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:

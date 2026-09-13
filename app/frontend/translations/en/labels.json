@@ -1914,7 +1914,9 @@
         },
         "transferTargetKind": "Send to",
         "transferFromFleet": "From fleet",
-        "noTransferTargets": "Nothing to send to here"
+        "noTransferTargets": "Nothing to send to here",
+        "recordedAt": "Recorded",
+        "fromTransfer": "Arrived by transfer"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

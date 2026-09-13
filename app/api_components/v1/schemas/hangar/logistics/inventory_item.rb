@@ -22,6 +22,7 @@ module V1
               entryType: ::V1::Schemas::Enums::InventoryEntryTypeEnum,
               quality: {type: :integer, minimum: 0, maximum: 1000},
               notes: {type: :string},
+              transferId: {type: [:string, :null], format: :uuid},
               image: ::Shared::V1::Schemas::MediaFile,
               item: ::V1::Schemas::InventoryItemRef,
               inventory: ::V1::Schemas::InventoryRef,

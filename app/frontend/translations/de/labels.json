@@ -1913,7 +1913,9 @@
         },
         "transferTargetKind": "Senden an",
         "transferFromFleet": "Aus Flotte",
-        "noTransferTargets": "Hier gibt es kein Ziel"
+        "noTransferTargets": "Hier gibt es kein Ziel",
+        "recordedAt": "Erfasst",
+        "fromTransfer": "Per Transfer eingegangen"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {

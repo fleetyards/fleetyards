@@ -1913,7 +1913,9 @@
         },
         "transferTargetKind": "Invia a",
         "transferFromFleet": "Dalla flotta",
-        "noTransferTargets": "Nessuna destinazione qui"
+        "noTransferTargets": "Nessuna destinazione qui",
+        "recordedAt": "Registrato",
+        "fromTransfer": "Arrivato per trasferimento"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
