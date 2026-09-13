@@ -207,9 +207,6 @@ zh-CN:
           class6: Class 6
           class7: Class 7
           class8: Class 8
-      trade_commodity:
-        buy: 购买
-        sell: 出售？
     errors:
       messages:
         entry_goods_in_transit: "在其所属的转移得到答复之前无法删除"

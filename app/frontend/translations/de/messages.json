@@ -101,17 +101,6 @@
         "copyError": "Konnte nicht in die Zwischenablage kopiert werden.",
         "secretWarning": "Kopieren Sie jetzt Ihren Client-Secret. Sie werden ihn nicht erneut sehen können."
       },
-      "avatarUpload": {
-        "create": {
-          "success": "Avatar uploaded",
-          "failure": "Could not upload Avatar"
-        },
-        "destroy": {
-          "success": "Avatar removed",
-          "failure": "Could not remove Avatar"
-        },
-        "success": "Avatar hochgeladen"
-      },
       "hangarImport": {
         "success": "Import abgeschlossen",
         "partialSuccess": "Import teilweise abgeschlossen.<br><br>Nicht gefundene Schiffe: <br>%{missing}",

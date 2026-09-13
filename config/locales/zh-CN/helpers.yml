@@ -48,9 +48,6 @@ zh-CN:
         ground: 地面?
         map: Map?
         on_sale: 在售?
-      trade_commodity:
-        buy: 购买
-        sell: 出售？
     prompt:
       component:
         component_class: 请选择组件类别

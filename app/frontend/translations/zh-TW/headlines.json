@@ -4,20 +4,10 @@
       "admin": {
         "dashboard": {
           "title": "儀表板",
-          "modelsByClassification": "按分類整理",
-          "models": "已重新載入型號",
-          "modelsByManufacturer": "按製造商分類",
-          "manufacturers": "製造商",
-          "modelsByStatus": "按狀態分類型號",
-          "modelsBySize": "按尺寸分類",
-          "modelsPerMonth": "每月型號",
-          "componentsByClass": "按類別分組件",
-          "components": "組件",
           "visitsPerDay": "每日訪問",
           "visitsPerMonth": "每月訪問",
           "mostViewedPages": "瀏覽最多的頁面",
-          "registrationsPerMonth": "每月註冊數",
-          "users": "使用者"
+          "registrationsPerMonth": "每月註冊數"
         },
         "models": {
           "index": "型號",
@@ -340,14 +330,7 @@
       "tools": {
         "index": "工具",
         "travelTimes": "旅行時間",
-        "cargoGrids": "貨物網格",
-        "profitCalculator": {
-          "index": "Profit Calculator"
-        },
-        "tradeRoutes": {
-          "index": "Trade Routes",
-          "withShip": "Trade Routes for %{name} (%{cargo})"
-        }
+        "cargoGrids": "貨物網格"
       },
       "rsiVerification": "Verify your RSI-Account",
       "hangarGuideEmpty": "Not much to see here?",
@@ -373,16 +356,6 @@
       "modals": {
         "models": {
           "displayOptions": "顯示選項"
-        },
-        "shopCommodity": {
-          "update": "Update Commodity %{shopCommodity}",
-          "create": "Add Commodity",
-          "sellPrices": "%{shopCommodity} Sell Prices",
-          "buyPrices": "%{shopCommodity} Buy Prices",
-          "rentalPrices": "%{shopCommodity} Rental Prices"
-        },
-        "commodityPrice": {
-          "create": "Submit Price"
         }
       },
       "visualTests": {
@@ -430,20 +403,7 @@
       },
       "notifications": {
         "index": "通知"
-      },
-      "filterCargoRoutes": "Filter Cargo routes",
-      "filterCommodities": "Filter Commodities",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObjects": "Celestial Objects",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "moons": "Moons",
-      "stations": "Stations",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shops": "Shops",
-      "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      }
     }
   }
 }

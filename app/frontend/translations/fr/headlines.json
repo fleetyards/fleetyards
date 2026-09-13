@@ -4,20 +4,10 @@
       "admin": {
         "dashboard": {
           "title": "Tableau de bord",
-          "modelsByClassification": "Modèles par classification",
-          "models": "Modèles rechargés",
-          "modelsByManufacturer": "Modèles par fabricant",
-          "manufacturers": "Fabricants",
-          "modelsByStatus": "Modèles par statut",
-          "modelsBySize": "Modèles par taille",
-          "modelsPerMonth": "Modèles par mois",
-          "componentsByClass": "Composants par classe",
-          "components": "Composants",
           "visitsPerDay": "Visites par jour",
           "visitsPerMonth": "Visites par mois",
           "mostViewedPages": "Pages les plus vues",
-          "registrationsPerMonth": "Inscriptions par mois",
-          "users": "Utilisateurs"
+          "registrationsPerMonth": "Inscriptions par mois"
         },
         "models": {
           "index": "Modèles",
@@ -340,14 +330,7 @@
       "tools": {
         "index": "Outils",
         "travelTimes": "Temps de trajet",
-        "cargoGrids": "Grilles de cargaison",
-        "profitCalculator": {
-          "index": "Calculatrice de profits"
-        },
-        "tradeRoutes": {
-          "index": "Routes commerciales",
-          "withShip": "Routes commerciales pour %{name} (%{cargo})"
-        }
+        "cargoGrids": "Grilles de cargaison"
       },
       "rsiVerification": "Vérifier votre compte RSI",
       "hangarGuideEmpty": "Rien à voir ici.",
@@ -373,16 +356,6 @@
       "modals": {
         "models": {
           "displayOptions": "Options d'affichage"
-        },
-        "shopCommodity": {
-          "update": "Mettre à jour la marchandise %{shopCommodity}",
-          "create": "Ajouter une marchandise",
-          "sellPrices": "Prix de vente de %{shopCommodity}",
-          "buyPrices": "%{shopCommodity} Prix d'achat",
-          "rentalPrices": "Prix de vente de %{shopCommodity}"
-        },
-        "commodityPrice": {
-          "create": "Soumettre le prix"
         }
       },
       "visualTests": {
@@ -430,20 +403,7 @@
       },
       "notifications": {
         "index": "Notifications"
-      },
-      "filterCargoRoutes": "Filtrer les routes de fret",
-      "filterCommodities": "Filtrer les marchandises",
-      "starsystems": "Systèmes planétaires",
-      "starsystem": "Le système %{starsystem}",
-      "celestialObjects": "Objets célestes",
-      "celestialObject": "%{celestialObject} dans le système %{starsystem}",
-      "moons": "Lunes",
-      "stations": "Stations",
-      "station": "%{station} à proximité de %{celestialObject}",
-      "stationImages": "%{station} à proximité de %{celestialObject}",
-      "shops": "Points de vente",
-      "shop": "%{shop} sur %{station}",
-      "commodities": "Marchandises"
+      }
     }
   }
 }

@@ -96,8 +96,7 @@
         "landedFleetchartOffsetLength": "着陆舰队图长度偏移",
         "landedFleetchartOffsetBeam": "着陆舰队图宽度偏移",
         "cargo": "货物",
-        "baseModel": "基础型号",
-        "scIdentifier": "SC Identifier"
+        "baseModel": "基础型号"
       },
       "cargoHold": {
         "offsetX": "偏移 X",

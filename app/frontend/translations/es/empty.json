@@ -27,20 +27,5 @@
         "fleetFeatures": "Actualmente no hay funciones que una flota pueda activar por sí misma. Vuelva más tarde, ya que se agregan nuevas funciones regularmente."
       }
     }
-  },
-  "en": {
-    "empty": {
-      "headlines": {
-        "default": "There's nothing to see here..."
-      },
-      "actions": {
-        "reset": "Reset Filters/Pages",
-        "resetPage": "Go to First Page"
-      },
-      "texts": {
-        "info": "We could not find any Records.",
-        "query": "It seems like you have some Filters active or visited a Page without any Records."
-      }
-    }
   }
 }

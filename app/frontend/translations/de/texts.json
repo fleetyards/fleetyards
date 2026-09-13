@@ -164,12 +164,6 @@
         "alreadyRunning": "Eine Hangar-Synchronisierung läuft bereits. Bitte warten Sie, bis sie abgeschlossen ist."
       },
       "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung.",
-      "empty": {
-        "hangar": {
-          "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
-          "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
-        }
-      },
       "oauthApplications": {
         "pendingReview": "Diese Anwendung ist registriert und wartet auf die Prüfung. Bis zur Freigabe kann sie keinen Zugriff anfragen.",
         "rejected": "Diese Anwendung wurde abgelehnt und kann keinen Zugriff anfragen. Wer behebt, was im Grund steht, landet wieder in der Warteschlange.",

@@ -228,9 +228,7 @@
         "lastVersion": {
           "active": {
             "false": "Elemento rimosso dalla roadmap",
-            "true": "Elemento riaggiunto alla roadmap",
-            "decreased": "L'Elemento é stato rimosso dalla Roadmap",
-            "increased": "L'Elemento è stato ri-aggiunto alla Roadmap"
+            "true": "Elemento riaggiunto alla roadmap"
           },
           "released": "L'Elemento rilasciato nel PU",
           "release": "L'Elemento è stato spostato dalla versione %{old} alla %{new}"
@@ -681,7 +679,6 @@
           "flight-ready": "Pronto al volo",
           "announced": "Annunciato"
         },
-        "scIdentifier": "SC Identifier",
         "carriedBy": "Può essere trasportata da",
         "landedLength": "Lunghezza a terra",
         "landedBeam": "Larghezza a terra",
@@ -733,8 +730,7 @@
         "speed": "Velocità",
         "cargo": "Carico",
         "combat": "Combattimento",
-        "hardpoints": "Punti di montaggio",
-        "topView": "Vista dall'Alto"
+        "hardpoints": "Punti di montaggio"
       },
       "flight": {
         "title": "Volo",
@@ -1483,7 +1479,6 @@
           "holoBlank": "Senza Holo?",
           "frontViewBlank": "Senza immagine vista frontale?",
           "topViewColoredBlank": "Senza immagine vista dall'alto a colori?",
-          "scIdentifierBlank": "Senza identificatore SC?",
           "vehicleSize": "Dimensione del veicolo",
           "dimensionsDrifted": "Dimensioni diverse dai file di gioco",
           "dimensionsMeasuredAtNull": "Senza dimensioni misurate?"
@@ -1667,11 +1662,7 @@
           "importedUpgrades": "Upgrade aggiunti",
           "foundUpgrades": "Upgrade trovati",
           "missingUpgrades": "Upgrade non trovati",
-          "missingUpgradeVehicles": "Nessuna nave corrispondente trovata per gli upgrade",
-          "new": "New",
-          "updated": "Updated",
-          "movedToWanted": "Moved to Wishlist",
-          "missing": "Unable to Import"
+          "missingUpgradeVehicles": "Nessuna nave corrispondente trovata per gli upgrade"
         }
       },
       "cargoGridViewer": {
@@ -1713,11 +1704,7 @@
       "admin": {
         "dashboard": {
           "quickStats": {
-            "onlineUsers": "Utenti online",
-            "totalUsers": "Utenti totali",
-            "totalShips": "Navi totali",
-            "newShipsInYear": "Nuove navi nel %{year}",
-            "totalFleets": "Flotte totali"
+            "onlineUsers": "Utenti online"
           }
         },
         "supporterContributions": {
@@ -2297,10 +2284,6 @@
           "scu": "SCU",
           "units": "unità"
         }
-      },
-      "erkul": {
-        "prefix": "Prova Loadouts con",
-        "link": "Calcolatore DPS Di Erkul"
       },
       "shipHistory": {
         "sales": "Storico delle offerte",

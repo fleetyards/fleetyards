@@ -101,16 +101,6 @@
         "copyError": "无法复制到剪贴板。",
         "secretWarning": "请立即复制客户端密钥。您将无法再次查看。"
       },
-      "avatarUpload": {
-        "create": {
-          "success": "头像已上传",
-          "failure": "无法上传头像"
-        },
-        "destroy": {
-          "success": "头像已移除",
-          "failure": "无法移除头像"
-        }
-      },
       "hangarImport": {
         "success": "导入完成",
         "partialSuccess": "导入部分完成。<br><br>未找到的飞船：<br>%{missing}",

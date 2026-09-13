@@ -228,9 +228,7 @@
         "lastVersion": {
           "active": {
             "false": "Élément retiré de la feuille de route",
-            "true": "Élément réajouté à la feuille de route",
-            "decreased": "L'élément a été retiré de la roadmap",
-            "increased": "L'élément a été rajouté à la roadmap"
+            "true": "Élément réajouté à la feuille de route"
           },
           "released": "L'élément a été publié dans le PU",
           "release": "Élément déplacé de la version %{old} à %{new}"
@@ -681,7 +679,6 @@
           "flight-ready": "Le vol est prêt",
           "announced": "Annoncée"
         },
-        "scIdentifier": "SC Identifier",
         "carriedBy": "Peut être transporté par",
         "landedLength": "Longueur au sol",
         "landedBeam": "Largeur au sol",
@@ -733,8 +730,7 @@
         "speed": "Vitesse",
         "cargo": "Cargaison",
         "combat": "Combat",
-        "hardpoints": "Points d'attache",
-        "topView": "Vue de dessus"
+        "hardpoints": "Points d'attache"
       },
       "flight": {
         "title": "Vol",
@@ -1483,7 +1479,6 @@
           "holoBlank": "Sans Holo ?",
           "frontViewBlank": "Sans image de vue de face ?",
           "topViewColoredBlank": "Sans image de vue de dessus colorée ?",
-          "scIdentifierBlank": "Sans identifiant SC ?",
           "vehicleSize": "Taille de véhicule",
           "dimensionsDrifted": "Dimensions différentes des fichiers de jeu",
           "dimensionsMeasuredAtNull": "Sans dimensions mesurées ?"
@@ -1667,11 +1662,7 @@
           "importedUpgrades": "Améliorations ajoutées",
           "foundUpgrades": "Améliorations trouvées",
           "missingUpgrades": "Améliorations non trouvées",
-          "missingUpgradeVehicles": "Aucun vaisseau correspondant trouvé pour les améliorations",
-          "new": "Nouveau",
-          "updated": "Mis à jour",
-          "movedToWanted": "Déplacé vers la liste de souhaits",
-          "missing": "Impossible d'importer"
+          "missingUpgradeVehicles": "Aucun vaisseau correspondant trouvé pour les améliorations"
         }
       },
       "cargoGridViewer": {
@@ -1713,11 +1704,7 @@
       "admin": {
         "dashboard": {
           "quickStats": {
-            "onlineUsers": "Utilisateurs en ligne",
-            "totalUsers": "Utilisateurs totaux",
-            "totalShips": "Vaisseaux totaux",
-            "newShipsInYear": "Nouveaux vaisseaux en %{year}",
-            "totalFleets": "Flottes totales"
+            "onlineUsers": "Utilisateurs en ligne"
           }
         },
         "supporterContributions": {
@@ -2297,14 +2284,6 @@
           "scu": "SCU",
           "units": "unités"
         }
-      },
-      "erkul": {
-        "prefix": "Essayer la configuration avec",
-        "link": "Calculatrice de DPS d'Erkul"
-      },
-      "pagination": {
-        "perPage": "Par Page",
-        "pages": "%{page} sur %{total}"
       },
       "shipHistory": {
         "sales": "Historique des soldes",

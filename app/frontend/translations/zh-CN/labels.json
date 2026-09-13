@@ -228,9 +228,7 @@
         "lastVersion": {
           "active": {
             "false": "条目已从路线图移除",
-            "true": "条目已重新添加到路线图",
-            "decreased": "Item was removed from the Roadmap",
-            "increased": "Item was readded to the Roadmap"
+            "true": "条目已重新添加到路线图"
           },
           "released": "Item was released to PU",
           "release": "Item moved from release %{old} to %{new}"
@@ -681,7 +679,6 @@
           "flight-ready": "可飞行",
           "announced": "已公布"
         },
-        "scIdentifier": "SC Identifier",
         "carriedBy": "可被搭载于",
         "landedLength": "着陆长度",
         "landedBeam": "着陆宽度",
@@ -733,8 +730,7 @@
         "speed": "速度",
         "cargo": "货物",
         "combat": "战斗",
-        "hardpoints": "挂载点",
-        "topView": "Top View"
+        "hardpoints": "挂载点"
       },
       "flight": {
         "title": "飞行",
@@ -1483,7 +1479,6 @@
           "holoBlank": "没有 Holo?",
           "frontViewBlank": "没有前视图图片?",
           "topViewColoredBlank": "没有彩色俯视图图片?",
-          "scIdentifierBlank": "没有 SC 标识?",
           "vehicleSize": "载具尺寸",
           "dimensionsDrifted": "尺寸与游戏文件不一致",
           "dimensionsMeasuredAtNull": "没有实测尺寸?"
@@ -1709,11 +1704,7 @@
       "admin": {
         "dashboard": {
           "quickStats": {
-            "onlineUsers": "在线用户",
-            "totalUsers": "总用户数",
-            "totalShips": "总飞船数",
-            "newShipsInYear": "%{year} 新飞船",
-            "totalFleets": "总舰队数"
+            "onlineUsers": "在线用户"
           }
         },
         "supporterContributions": {
@@ -2293,10 +2284,6 @@
           "scu": "SCU",
           "units": "件"
         }
-      },
-      "erkul": {
-        "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
       },
       "shipHistory": {
         "sales": "促销历史",

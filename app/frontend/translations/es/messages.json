@@ -101,17 +101,6 @@
         "copyError": "No se pudo copiar al portapapeles.",
         "secretWarning": "Copie su secreto de cliente ahora. No podrá verlo de nuevo."
       },
-      "avatarUpload": {
-        "create": {
-          "success": "Avatar uploaded",
-          "failure": "Could not upload Avatar"
-        },
-        "destroy": {
-          "success": "Avatar removed",
-          "failure": "Could not remove Avatar"
-        },
-        "success": "Avatar subido"
-      },
       "hangarImport": {
         "success": "Importación completada",
         "partialSuccess": "Importación parcialmente completada.<br><br>Naves no encontradas: <br>%{missing}",

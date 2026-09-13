@@ -2,14 +2,6 @@
   "de": {
     "filteredList": {
       "actions": {
-        "showFilter": "Show Filters",
-        "hideFilter": "Hide Filters"
-      }
-    }
-  },
-  "en": {
-    "filteredList": {
-      "actions": {
         "showFilter": "Filter anzeigen",
         "hideFilter": "Filter ausblenden"
       }

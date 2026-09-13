@@ -96,8 +96,7 @@
         "landedFleetchartOffsetLength": "Desplazamiento de longitud aterrizado",
         "landedFleetchartOffsetBeam": "Desplazamiento de manga aterrizado",
         "cargo": "Carga",
-        "baseModel": "Modelo base",
-        "scIdentifier": "SC Identifier"
+        "baseModel": "Modelo base"
       },
       "cargoHold": {
         "offsetX": "Desfase X",

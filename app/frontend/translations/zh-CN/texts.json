@@ -164,15 +164,6 @@
         "alreadyRunning": "机库同步已在进行中。请等待完成。"
       },
       "setEmail": "要设置密码、启用双重认证或接收邮件通知，您需要为账户添加电子邮件地址。您将收到一封确认邮件来验证该地址。",
-      "empty": {
-        "hangar": {
-          "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
-          "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
-        },
-        "wishlist": {
-          "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
-        }
-      },
       "oauthApplications": {
         "pendingReview": "此应用已注册，正在等待审核。在获得批准前无法请求访问权限。",
         "rejected": "此应用已被拒绝，无法请求访问权限。按照原因中所述修改后会重新进入审核队列。",

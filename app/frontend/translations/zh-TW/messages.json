@@ -101,16 +101,6 @@
         "copyError": "無法複製到剪貼簿。",
         "secretWarning": "請立即複製客戶端密鑰。您將無法再次檢視。"
       },
-      "avatarUpload": {
-        "create": {
-          "success": "頭像已上傳",
-          "failure": "無法上傳頭像"
-        },
-        "destroy": {
-          "success": "頭像已移除",
-          "failure": "無法移除頭像"
-        }
-      },
       "hangarImport": {
         "success": "匯入完成",
         "partialSuccess": "匯入部分完成。<br><br>未找到的飛船：<br>%{missing}",

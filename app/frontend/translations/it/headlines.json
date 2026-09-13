@@ -4,20 +4,10 @@
       "admin": {
         "dashboard": {
           "title": "Pannello di controllo",
-          "modelsByClassification": "Modelli per classificazione",
-          "models": "Modelli ricaricati",
-          "modelsByManufacturer": "Modelli per produttore",
-          "manufacturers": "Produttori",
-          "modelsByStatus": "Modelli per stato",
-          "modelsBySize": "Modelli per dimensione",
-          "modelsPerMonth": "Modelli al mese",
-          "componentsByClass": "Componenti per classe",
-          "components": "Componenti",
           "visitsPerDay": "Visite al giorno",
           "visitsPerMonth": "Visite al mese",
           "mostViewedPages": "Pagine più visitate",
-          "registrationsPerMonth": "Registrazioni al mese",
-          "users": "Utenti"
+          "registrationsPerMonth": "Registrazioni al mese"
         },
         "models": {
           "index": "Modelli",
@@ -340,14 +330,7 @@
       "tools": {
         "index": "Strumenti",
         "travelTimes": "Tempi di viaggio",
-        "cargoGrids": "Griglie di carico",
-        "profitCalculator": {
-          "index": "Calcolatore Dei Profitti"
-        },
-        "tradeRoutes": {
-          "index": "Rotte Commerciali",
-          "withShip": "Rotte Commerciali per %{name} (%{cargo})"
-        }
+        "cargoGrids": "Griglie di carico"
       },
       "rsiVerification": "Verifica il tuo account RSI",
       "hangarGuideEmpty": "Non c'è molto da vedere qui?",
@@ -373,16 +356,6 @@
       "modals": {
         "models": {
           "displayOptions": "Opzioni di visualizzazione"
-        },
-        "shopCommodity": {
-          "update": "Aggiorna Merce %{shopCommodity}",
-          "create": "Aggiungi Merce",
-          "sellPrices": "Prezzi di vendita di %{shopCommodity}",
-          "buyPrices": "Prezzi di Acquisto %{shopCommodity}",
-          "rentalPrices": "Prezzi di Noleggio %{shopCommodity}"
-        },
-        "commodityPrice": {
-          "create": "Invia Prezzo"
         }
       },
       "visualTests": {
@@ -430,20 +403,7 @@
       },
       "notifications": {
         "index": "Notifiche"
-      },
-      "filterCargoRoutes": "Filtra rotte di carico",
-      "filterCommodities": "Filtra Merci",
-      "starsystems": "Sistemi Stellari",
-      "starsystem": "Sistema Stellare %{starsystem}",
-      "celestialObjects": "Oggetto Celeste",
-      "celestialObject": "%{celestialObject} nel Sistema di %{starsystem}",
-      "moons": "Lune",
-      "stations": "Stazioni Spaziali",
-      "station": "%{station} vicino a %{celestialObject}",
-      "stationImages": "Immagini di %{station} vicino a %{celestialObject}",
-      "shops": "Negozi",
-      "shop": "%{shop} su %{station}",
-      "commodities": "Merci"
+      }
     }
   }
 }

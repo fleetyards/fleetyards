@@ -101,16 +101,6 @@
         "copyError": "Impossibile copiare negli appunti.",
         "secretWarning": "Copia il tuo segreto client ora. Non potrai vederlo di nuovo."
       },
-      "avatarUpload": {
-        "create": {
-          "success": "Avatar caricato",
-          "failure": "Impossibile caricare l'Avatar"
-        },
-        "destroy": {
-          "success": "Avatar rimosso",
-          "failure": "Impossibile rimuovere l'Avatar"
-        }
-      },
       "hangarImport": {
         "success": "Importazione completata",
         "partialSuccess": "Importazione parzialmente completata.<br><br>Navi non trovate: <br>%{missing}",

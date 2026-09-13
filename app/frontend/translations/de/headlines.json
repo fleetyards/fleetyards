@@ -4,20 +4,10 @@
       "admin": {
         "dashboard": {
           "title": "Dashboard",
-          "modelsByClassification": "Modelle nach Klassifizierung",
-          "models": "Neu geladene Modelle",
-          "modelsByManufacturer": "Modelle nach Hersteller",
-          "manufacturers": "Hersteller",
-          "modelsByStatus": "Modelle nach Status",
-          "modelsBySize": "Modelle nach Größe",
-          "modelsPerMonth": "Modelle pro Monat",
-          "componentsByClass": "Komponenten nach Klasse",
-          "components": "Komponenten",
           "visitsPerDay": "Besuche pro Tag",
           "visitsPerMonth": "Besuche pro Monat",
           "mostViewedPages": "Meistbesuchte Seiten",
-          "registrationsPerMonth": "Registrierungen pro Monat",
-          "users": "Benutzer"
+          "registrationsPerMonth": "Registrierungen pro Monat"
         },
         "models": {
           "index": "Modelle",
@@ -340,14 +330,7 @@
       "tools": {
         "index": "Werkzeuge",
         "travelTimes": "Reisezeiten",
-        "cargoGrids": "Frachtraster",
-        "profitCalculator": {
-          "index": "Profit Calculator"
-        },
-        "tradeRoutes": {
-          "index": "Trade Routes",
-          "withShip": "Trade Routes for %{name} (%{cargo})"
-        }
+        "cargoGrids": "Frachtraster"
       },
       "rsiVerification": "Verify your RSI-Account",
       "hangarGuideEmpty": "Not much to see here?",
@@ -373,16 +356,6 @@
       "modals": {
         "models": {
           "displayOptions": "Anzeigeoptionen"
-        },
-        "shopCommodity": {
-          "update": "Update Commodity %{shopCommodity}",
-          "create": "Add Commodity",
-          "sellPrices": "%{shopCommodity} Sell Prices",
-          "buyPrices": "%{shopCommodity} Buy Prices",
-          "rentalPrices": "%{shopCommodity} Rental Prices"
-        },
-        "commodityPrice": {
-          "create": "Submit Price"
         }
       },
       "visualTests": {
@@ -430,20 +403,7 @@
       },
       "notifications": {
         "index": "Benachrichtigungen"
-      },
-      "filterCargoRoutes": "Filter Cargo routes",
-      "filterCommodities": "Filter Commodities",
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObjects": "Celestial Objects",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "moons": "Moons",
-      "stations": "Stations",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shops": "Shops",
-      "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      }
     }
   }
 }

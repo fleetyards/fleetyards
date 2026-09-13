@@ -228,9 +228,7 @@
         "lastVersion": {
           "active": {
             "false": "Element wurde von der Roadmap entfernt",
-            "true": "Element wurde wieder zur Roadmap hinzugefügt",
-            "decreased": "Item was removed from the Roadmap",
-            "increased": "Item was readded to the Roadmap"
+            "true": "Element wurde wieder zur Roadmap hinzugefügt"
           },
           "released": "Item was released to PU",
           "release": "Item moved from release %{old} to %{new}"
@@ -681,7 +679,6 @@
           "flight-ready": "Flugbereit",
           "announced": "Angekündigt"
         },
-        "scIdentifier": "SC Identifier",
         "carriedBy": "Wird getragen von",
         "landedLength": "Länge gelandet",
         "landedBeam": "Breite gelandet",
@@ -733,8 +730,7 @@
         "speed": "Geschwindigkeit",
         "cargo": "Fracht",
         "combat": "Kampf",
-        "hardpoints": "Aufhängungspunkte",
-        "topView": "Top View"
+        "hardpoints": "Aufhängungspunkte"
       },
       "flight": {
         "title": "Flug",
@@ -1483,7 +1479,6 @@
           "holoBlank": "Ohne Holo?",
           "frontViewBlank": "Ohne Frontansicht-Bild?",
           "topViewColoredBlank": "Ohne farbige Draufsicht?",
-          "scIdentifierBlank": "Ohne SC-Kennung?",
           "vehicleSize": "Fahrzeuggröße",
           "dimensionsDrifted": "Maße weichen von den Spieldateien ab",
           "dimensionsMeasuredAtNull": "Ohne gemessene Maße?"
@@ -1667,11 +1662,7 @@
           "importedUpgrades": "Hinzugefügte Upgrades",
           "foundUpgrades": "Gefundene Upgrades",
           "missingUpgrades": "Upgrades nicht gefunden",
-          "missingUpgradeVehicles": "Kein passendes Schiff für Upgrades gefunden",
-          "new": "New",
-          "updated": "Updated",
-          "movedToWanted": "Moved to Wishlist",
-          "missing": "Unable to Import"
+          "missingUpgradeVehicles": "Kein passendes Schiff für Upgrades gefunden"
         }
       },
       "cargoGridViewer": {
@@ -1713,11 +1704,7 @@
       "admin": {
         "dashboard": {
           "quickStats": {
-            "onlineUsers": "Online-Benutzer",
-            "totalUsers": "Benutzer gesamt",
-            "totalShips": "Schiffe gesamt",
-            "newShipsInYear": "Neue Schiffe in %{year}",
-            "totalFleets": "Flotten gesamt"
+            "onlineUsers": "Online-Benutzer"
           }
         },
         "supporterContributions": {
@@ -2297,10 +2284,6 @@
           "scu": "SCU",
           "units": "Stück"
         }
-      },
-      "erkul": {
-        "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
       },
       "shipHistory": {
         "sales": "Sale-Historie",

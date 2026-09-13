@@ -101,17 +101,6 @@
         "copyError": "Impossible de copier dans le presse-papiers.",
         "secretWarning": "Copiez votre secret client maintenant. Vous ne pourrez plus le voir."
       },
-      "avatarUpload": {
-        "create": {
-          "success": "Avatar uploaded",
-          "failure": "Could not upload Avatar"
-        },
-        "destroy": {
-          "success": "Avatar removed",
-          "failure": "Could not remove Avatar"
-        },
-        "success": "Avatar chargé"
-      },
       "hangarImport": {
         "success": "Importation terminée",
         "partialSuccess": "Importation partiellement terminée.<br><br>Vaisseaux non trouvés : <br>%{missing}",

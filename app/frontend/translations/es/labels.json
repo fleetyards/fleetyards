@@ -228,9 +228,7 @@
         "lastVersion": {
           "active": {
             "false": "Elemento eliminado de la hoja de ruta",
-            "true": "Elemento re-agregado a la hoja de ruta",
-            "decreased": "Item was removed from the Roadmap",
-            "increased": "Item was readded to the Roadmap"
+            "true": "Elemento re-agregado a la hoja de ruta"
           },
           "released": "Item was released to PU",
           "release": "Item moved from release %{old} to %{new}"
@@ -681,7 +679,6 @@
           "flight-ready": "Listo para volar",
           "announced": "Anunciado"
         },
-        "scIdentifier": "SC Identifier",
         "carriedBy": "Puede ser transportada por",
         "landedLength": "Longitud aterrizado",
         "landedBeam": "Manga aterrizado",
@@ -733,8 +730,7 @@
         "speed": "Velocidad",
         "cargo": "Carga",
         "combat": "Combate",
-        "hardpoints": "Puntos de montaje",
-        "topView": "Top View"
+        "hardpoints": "Puntos de montaje"
       },
       "flight": {
         "title": "Vuelo",
@@ -1483,7 +1479,6 @@
           "holoBlank": "¿Sin Holo?",
           "frontViewBlank": "¿Sin imagen de vista frontal?",
           "topViewColoredBlank": "¿Sin imagen de vista superior a color?",
-          "scIdentifierBlank": "¿Sin identificador SC?",
           "vehicleSize": "Tamaño de vehículo",
           "dimensionsDrifted": "Dimensiones difieren de los archivos del juego",
           "dimensionsMeasuredAtNull": "¿Sin dimensiones medidas?"
@@ -1667,11 +1662,7 @@
           "importedUpgrades": "Mejoras agregadas",
           "foundUpgrades": "Mejoras encontradas",
           "missingUpgrades": "Mejoras no encontradas",
-          "missingUpgradeVehicles": "No se encontró nave coincidente para mejoras",
-          "new": "New",
-          "updated": "Updated",
-          "movedToWanted": "Moved to Wishlist",
-          "missing": "Unable to Import"
+          "missingUpgradeVehicles": "No se encontró nave coincidente para mejoras"
         }
       },
       "cargoGridViewer": {
@@ -1713,11 +1704,7 @@
       "admin": {
         "dashboard": {
           "quickStats": {
-            "onlineUsers": "Usuarios en línea",
-            "totalUsers": "Usuarios totales",
-            "totalShips": "Naves totales",
-            "newShipsInYear": "Naves nuevas en %{year}",
-            "totalFleets": "Flotas totales"
+            "onlineUsers": "Usuarios en línea"
           }
         },
         "supporterContributions": {
@@ -2297,10 +2284,6 @@
           "scu": "SCU",
           "units": "unidades"
         }
-      },
-      "erkul": {
-        "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
       },
       "shipHistory": {
         "sales": "Historial de ofertas",

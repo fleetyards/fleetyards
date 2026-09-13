@@ -96,8 +96,7 @@
         "landedFleetchartOffsetLength": "Scostamento lunghezza atterrato",
         "landedFleetchartOffsetBeam": "Scostamento larghezza atterrato",
         "cargo": "Carico",
-        "baseModel": "Modello base",
-        "scIdentifier": "SC Identifier"
+        "baseModel": "Modello base"
       },
       "cargoHold": {
         "offsetX": "Offset X",
