@@ -272,14 +272,15 @@
         "editInventory": "Edit Inventory",
         "clearCargo": "Vider la cargaison",
         "viewCargoGrid": "Voir la grille de cargaison",
-        "selectAll": "Tout sélectionner",
         "sendTransfer": "Envoyer",
         "moveStock": "Déplacer",
         "transfer": "Transférer",
         "acceptTransfer": "Accepter",
         "declineTransfer": "Refuser",
         "cancelTransfer": "Annuler",
-        "reportTransfer": "Signaler"
+        "reportTransfer": "Signaler",
+        "resetToMax": "Remettre au maximum",
+        "removeLine": "Retirer"
       },
       "adminNotifications": {
         "unread": "Marquer comme non lu",

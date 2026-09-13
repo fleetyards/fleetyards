@@ -9,6 +9,7 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
+  BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -71,20 +72,18 @@ const movable = computed(() => {
   );
 });
 
-const selected = ref<Record<string, boolean>>({});
+// Trimming a bulk selection is removing a line, not unticking a box: the
+// reader already chose these rows, so every one of them is going unless they
+// say otherwise.
+const removed = ref<Set<string>>(new Set());
 const quantities = ref<Record<string, string>>({});
 
-// Every chosen line starts ticked and at its whole quantity: the reader picked
-// these rows to move them, and moving all of it is the common case. The tick
-// stays so a bulk selection can be trimmed without going back to the list.
+// Every line starts at its whole quantity: the reader picked these rows to move
+// them, and moving all of it is the common case.
 watchEffect(() => {
   movable.value.forEach((position) => {
     if (quantities.value[position.id] === undefined) {
       quantities.value[position.id] = String(position.netQuantity);
-    }
-
-    if (selected.value[position.id] === undefined) {
-      selected.value[position.id] = true;
     }
   });
 });
@@ -105,8 +104,10 @@ const selectedTarget = computed(() =>
 const needsAnswer = computed(() => selectedTarget.value?.needsAnswer ?? false);
 
 const chosen = computed(() =>
-  movable.value.filter((position) => selected.value[position.id]),
+  movable.value.filter((position) => !removed.value.has(position.id)),
 );
+
+const multiple = computed(() => chosen.value.length > 1);
 
 const quantityFor = (position: InventoryStockPosition) =>
   Number(quantities.value[position.id] ?? 0);
@@ -125,12 +126,18 @@ const invalid = computed(
     ),
 );
 
-const toggleAll = () => {
-  const turningOn = chosen.value.length < movable.value.length;
+const maxFor = (position: InventoryStockPosition) =>
+  Number(position.netQuantity);
 
-  movable.value.forEach((position) => {
-    selected.value[position.id] = turningOn;
-  });
+const atMax = (position: InventoryStockPosition) =>
+  quantityFor(position) === maxFor(position);
+
+const resetToMax = (position: InventoryStockPosition) => {
+  quantities.value[position.id] = String(maxFor(position));
+};
+
+const remove = (position: InventoryStockPosition) => {
+  removed.value = new Set(removed.value).add(position.id);
 };
 
 const onSubmit = async () => {
@@ -183,55 +190,65 @@ const onSubmit = async () => {
       </p>
 
       <template v-else>
-        <div class="transfer-lines-head">
-          <span>{{ t("labels.logistics.positions") }}</span>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            :variant="BtnVariantsEnum.BARE"
-            data-test="transfer-toggle-all"
-            @click="toggleAll"
-          >
-            {{ t("actions.logistics.selectAll") }}
-          </Btn>
-        </div>
-
         <div
-          v-for="position in movable"
+          v-for="position in chosen"
           :key="position.id"
           class="transfer-line"
           :data-test="`transfer-line-${position.slug}`"
         >
-          <label class="transfer-line-label">
-            <input
-              v-model="selected[position.id]"
-              type="checkbox"
-              :data-test="`transfer-select-${position.slug}`"
-            />
-            <span class="transfer-line-name">{{ position.name }}</span>
-            <span class="transfer-line-stock">
-              {{ position.netQuantity }}
-              {{ t(`labels.logistics.units.${position.unit}`) }}
-            </span>
-          </label>
+          <span class="transfer-line-name">{{ position.name }}</span>
 
-          <template v-if="selected[position.id]">
+          <div class="transfer-line-amount">
             <FormInput
               v-model="quantities[position.id]"
               type="number"
               no-placeholder
+              inline
               :min="0"
-              :max="Number(position.netQuantity)"
+              :max="maxFor(position)"
               :name="`quantity-${position.id}`"
               :label="t('labels.logistics.quantity')"
             />
-            <p
-              v-if="overStock(position)"
-              class="transfer-line-error"
-              :data-test="`transfer-over-stock-${position.slug}`"
+            <span class="transfer-line-unit">
+              {{ t(`labels.logistics.units.${position.unit}`) }}
+            </span>
+            <span class="transfer-line-max">
+              / {{ position.netQuantity }}
+            </span>
+
+            <Btn
+              v-if="!atMax(position)"
+              :size="BtnSizesEnum.SM"
+              :variant="BtnVariantsEnum.BARE"
+              :aria-label="t('actions.logistics.resetToMax')"
+              :title="t('actions.logistics.resetToMax')"
+              :data-test="`transfer-reset-${position.slug}`"
+              @click="resetToMax(position)"
             >
-              {{ t("labels.logistics.overStock") }}
-            </p>
-          </template>
+              <i class="fa-duotone fa-arrow-rotate-left" />
+            </Btn>
+
+            <Btn
+              v-if="multiple"
+              :size="BtnSizesEnum.SM"
+              :variant="BtnVariantsEnum.BARE"
+              :tone="BtnTonesEnum.DANGER"
+              :aria-label="t('actions.logistics.removeLine')"
+              :title="t('actions.logistics.removeLine')"
+              :data-test="`transfer-remove-${position.slug}`"
+              @click="remove(position)"
+            >
+              <i class="fa fa-times" />
+            </Btn>
+          </div>
+
+          <p
+            v-if="overStock(position)"
+            class="transfer-line-error"
+            :data-test="`transfer-over-stock-${position.slug}`"
+          >
+            {{ t("labels.logistics.overStock") }}
+          </p>
         </div>
       </template>
 
@@ -269,30 +286,29 @@ const onSubmit = async () => {
   opacity: 0.75;
 }
 
-.transfer-lines-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-
 .transfer-line {
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgb(255 255 255 / 8%);
-}
 
-.transfer-line-label {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  cursor: pointer;
+  &:not(:last-child) {
+    border-bottom: 1px solid rgb(255 255 255 / 8%);
+  }
 }
 
 .transfer-line-name {
-  flex: 1;
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
 }
 
-.transfer-line-stock {
+.transfer-line-amount {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.transfer-line-unit,
+.transfer-line-max {
+  white-space: nowrap;
   opacity: 0.7;
 }
 

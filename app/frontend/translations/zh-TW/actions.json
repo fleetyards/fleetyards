@@ -272,14 +272,15 @@
         "editInventory": "Edit Inventory",
         "clearCargo": "清空貨物",
         "viewCargoGrid": "檢視貨艙網格",
-        "selectAll": "全選",
         "sendTransfer": "傳送",
         "moveStock": "移動",
         "transfer": "轉移",
         "acceptTransfer": "接受",
         "declineTransfer": "拒絕",
         "cancelTransfer": "撤回",
-        "reportTransfer": "檢舉"
+        "reportTransfer": "檢舉",
+        "resetToMax": "重設為最大值",
+        "removeLine": "移除"
       },
       "adminNotifications": {
         "unread": "標示為未讀",

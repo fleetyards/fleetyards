@@ -272,14 +272,15 @@
         "editInventory": "Edit Inventory",
         "clearCargo": "Clear Cargo",
         "viewCargoGrid": "View Cargo Grid",
-        "selectAll": "Select all",
         "sendTransfer": "Send",
         "moveStock": "Move",
         "transfer": "Transfer",
         "acceptTransfer": "Accept",
         "declineTransfer": "Decline",
         "cancelTransfer": "Cancel",
-        "reportTransfer": "Report"
+        "reportTransfer": "Report",
+        "resetToMax": "Reset to maximum",
+        "removeLine": "Remove"
       },
       "adminNotifications": {
         "unread": "Mark as unread",

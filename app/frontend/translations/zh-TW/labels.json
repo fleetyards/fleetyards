@@ -1874,7 +1874,6 @@
         "unmeasured": "%{count} 項尚未測量",
         "transferTarget": "傳送至",
         "transferNote": "備註",
-        "positions": "條目",
         "noStock": "沒有可移動的物品",
         "overStock": "超過該條目的庫存",
         "inTransit": "運送中",

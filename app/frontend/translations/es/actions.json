@@ -272,14 +272,15 @@
         "editInventory": "Edit Inventory",
         "clearCargo": "Vaciar carga",
         "viewCargoGrid": "Ver cuadrícula de carga",
-        "selectAll": "Seleccionar todo",
         "sendTransfer": "Enviar",
         "moveStock": "Mover",
         "transfer": "Transferir",
         "acceptTransfer": "Aceptar",
         "declineTransfer": "Rechazar",
         "cancelTransfer": "Cancelar",
-        "reportTransfer": "Denunciar"
+        "reportTransfer": "Denunciar",
+        "resetToMax": "Restablecer al máximo",
+        "removeLine": "Quitar"
       },
       "adminNotifications": {
         "unread": "Marcar como no leída",

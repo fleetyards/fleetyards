@@ -97,13 +97,9 @@ describe("TransferModal", () => {
     ).toBe(false);
   });
 
-  // The reader already chose these rows in the list, so they arrive ticked.
-  it("starts every chosen line ticked and at its full quantity", async () => {
+  // The reader already chose these rows in the list, so they are going.
+  it("starts every chosen line at its full quantity", async () => {
     const { onSend } = await build([position()]);
-
-    expect(
-      wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
-    ).toBeUndefined();
 
     await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
     await flushPromises();
@@ -115,18 +111,6 @@ describe("TransferModal", () => {
         inventoryId: "other",
       }),
     );
-  });
-
-  it("cannot send once every line is unticked", async () => {
-    await build([position()]);
-
-    await wrapper!
-      .find('[data-test="transfer-select-titanium--commodity--scu"]')
-      .setValue(false);
-
-    expect(
-      wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
-    ).toBeDefined();
   });
 
   // One position can arrive as several rows -- `current_stock` groups per
@@ -149,13 +133,71 @@ describe("TransferModal", () => {
     );
   });
 
-  // All-or-nothing, the same rule the API applies: the button does not offer to
-  // send a partly valid shipment.
+  it("offers a reset only once the amount has moved off the maximum", async () => {
+    await build([position()]);
+
+    expect(
+      wrapper!
+        .find('[data-test="transfer-reset-titanium--commodity--scu"]')
+        .exists(),
+    ).toBe(false);
+
+    await wrapper!.find('[data-test="input-quantity-pos-1"]').setValue("10");
+
+    const reset = wrapper!.find(
+      '[data-test="transfer-reset-titanium--commodity--scu"]',
+    );
+
+    expect(reset.exists()).toBe(true);
+
+    await reset.trigger("click");
+
+    expect(
+      (
+        wrapper!.find('[data-test="input-quantity-pos-1"]')
+          .element as HTMLInputElement
+      ).value,
+    ).toBe("96");
+  });
+
+  // Trimming a bulk selection is removing a line; a single line has nothing to
+  // trim down to, so it carries no remove.
+  it("removes a line only when several are in play", async () => {
+    const { onSend } = await build([
+      position(),
+      position({
+        id: "pos-2",
+        slug: "medpen--consumable--units",
+        name: "Medpen",
+        netQuantity: 5,
+      }),
+    ]);
+
+    await wrapper!
+      .find('[data-test="transfer-remove-medpen--consumable--units"]')
+      .trigger("click");
+
+    expect(
+      wrapper!
+        .find('[data-test="transfer-remove-titanium--commodity--scu"]')
+        .exists(),
+    ).toBe(false);
+
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        lines: [{ positionId: "pos-1", quantity: 96 }],
+      }),
+    );
+  });
+
+  // All-or-nothing, the same rule the API applies.
   it("refuses to send when a line asks for more than the position holds", async () => {
     const { onSend } = await build([position()]);
 
     await wrapper!.find('[data-test="input-quantity-pos-1"]').setValue("500");
-    await flushPromises();
 
     expect(
       wrapper!

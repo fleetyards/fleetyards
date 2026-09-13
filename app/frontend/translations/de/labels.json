@@ -1878,7 +1878,6 @@
         "unmeasured": "%{count} noch nicht vermessen",
         "transferTarget": "Senden an",
         "transferNote": "Notiz",
-        "positions": "Positionen",
         "noStock": "Nichts zu verschieben",
         "overStock": "Mehr als diese Position enthält",
         "inTransit": "Unterwegs",
