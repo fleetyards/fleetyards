@@ -183,6 +183,64 @@ describe("v-tooltip", () => {
     expect(tooltip.style.maxWidth).toBe("");
   });
 
+  /*
+   * A phone has nothing to hover with, so the tap has to open the tooltip. It
+   * used to do the opposite: `click` was wired straight to hide, so the text
+   * was unreachable on touch.
+   */
+  describe("on a device that cannot hover", () => {
+    const hoverless = (matches: boolean) => {
+      window.matchMedia = ((query: string) =>
+        ({
+          matches: query.includes("hover: none") && matches,
+          media: query,
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+        }) as unknown as MediaQueryList) as typeof window.matchMedia;
+    };
+
+    afterEach(() => {
+      // @ts-expect-error jsdom ships without it, which is the desktop path.
+      delete window.matchMedia;
+    });
+
+    it("opens on a tap and closes on the next one", async () => {
+      hoverless(true);
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(new Event("click"));
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+
+      el.dispatchEvent(new Event("click"));
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    // The synthetic mouse events a tap fires would otherwise open it just
+    // before the tap closes it again.
+    it("ignores hover", async () => {
+      hoverless(true);
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    it("still closes on click where hover works", async () => {
+      hoverless(false);
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+
+      el.dispatchEvent(new Event("click"));
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+  });
+
   it("wraps a sentence when asked to", async () => {
     const { el } = mountAnchor({
       content: {

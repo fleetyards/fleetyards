@@ -184,6 +184,8 @@ interface TooltipState {
   options: TooltipOptions;
   showHandler: () => void;
   hideHandler: () => void;
+  leaveHandler: () => void;
+  clickHandler: () => void;
   focusHandler: () => void;
   fadeFrame: number;
   hideTimer: number;
@@ -350,9 +352,9 @@ function cleanup(el: HTMLElement) {
   if (activeEl === el) deactivate();
 
   el.removeEventListener("mouseenter", state.showHandler);
-  el.removeEventListener("mouseleave", state.hideHandler);
-  el.removeEventListener("pointerleave", state.hideHandler);
-  el.removeEventListener("click", state.hideHandler);
+  el.removeEventListener("mouseleave", state.leaveHandler);
+  el.removeEventListener("pointerleave", state.leaveHandler);
+  el.removeEventListener("click", state.clickHandler);
   el.removeEventListener("focus", state.focusHandler);
   el.removeEventListener("blur", state.hideHandler);
 
@@ -361,6 +363,25 @@ function cleanup(el: HTMLElement) {
 
   state.tooltipEl?.remove();
   stateMap.delete(el);
+}
+
+/*
+ * A touch device has nothing to hover with, so a tap is the only way to open a
+ * tooltip -- and `click` used to do nothing but close, which left the text
+ * unreachable on a phone.
+ *
+ * Hover is ignored there rather than left to the synthetic mouse events a tap
+ * fires, because they arrive in an order that cancels itself out: the pointer
+ * leaves while the finger is still down, so `pointerleave` lands before
+ * `mouseenter`, and `click` then toggles off what `mouseenter` had just opened.
+ *
+ * Guarded for jsdom, which has no `matchMedia`.
+ */
+function hoverless() {
+  return (
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(hover: none)").matches
+  );
 }
 
 // Pointer focus already gets the tooltip from `mouseenter`; showing it on every
@@ -383,8 +404,25 @@ const vTooltip: Directive = {
     const state: TooltipState = {
       tooltipEl: null,
       options,
-      showHandler: () => show(el),
+      showHandler: () => {
+        if (!hoverless()) show(el);
+      },
       hideHandler: () => hide(el),
+      leaveHandler: () => {
+        if (!hoverless()) hide(el);
+      },
+      clickHandler: () => {
+        if (!hoverless()) {
+          hide(el);
+          return;
+        }
+
+        if (activeEl === el) {
+          hide(el);
+        } else {
+          show(el);
+        }
+      },
       focusHandler: () => {
         if (isKeyboardFocus(el)) show(el);
       },
@@ -396,9 +434,9 @@ const vTooltip: Directive = {
     stateMap.set(el, state);
 
     el.addEventListener("mouseenter", state.showHandler);
-    el.addEventListener("mouseleave", state.hideHandler);
-    el.addEventListener("pointerleave", state.hideHandler);
-    el.addEventListener("click", state.hideHandler);
+    el.addEventListener("mouseleave", state.leaveHandler);
+    el.addEventListener("pointerleave", state.leaveHandler);
+    el.addEventListener("click", state.clickHandler);
     el.addEventListener("focus", state.focusHandler);
     el.addEventListener("blur", state.hideHandler);
   },
