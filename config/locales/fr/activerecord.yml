@@ -215,6 +215,24 @@ fr:
         blank: ne peut pas être vide
         record_invalid: Données incorrectes
       models:
+        fleet_alliance:
+          attributes:
+            base:
+              not_to_self: "Une flotte ne peut pas s'allier avec elle-même"
+              already_related: "Ces flottes sont déjà alliées"
+              at_capacity: "Cette flotte a trop de demandes en attente pour le moment"
+              not_found: "Cette flotte est introuvable"
+              already_resolved: "Cette demande a déjà reçu une réponse"
+              forbidden: "Vous n'êtes pas autorisé à répondre à cette demande"
+        friendship:
+          attributes:
+            base:
+              not_to_self: "Vous ne pouvez pas vous envoyer une demande d'ami"
+              already_related: "Vous êtes déjà amis"
+              at_capacity: "Cet utilisateur a trop de demandes en attente pour le moment"
+              not_found: "Cet utilisateur est introuvable"
+              already_resolved: "Cette demande a déjà reçu une réponse"
+              forbidden: "Vous n'êtes pas autorisé à répondre à cette demande"
         inventory_transfer:
           attributes:
             base:

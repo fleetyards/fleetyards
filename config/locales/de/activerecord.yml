@@ -215,6 +215,24 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        fleet_alliance:
+          attributes:
+            base:
+              not_to_self: "Eine Flotte kann sich nicht mit sich selbst verbünden"
+              already_related: "Diese Flotten sind bereits verbündet"
+              at_capacity: "Diese Flotte hat derzeit zu viele offene Anfragen"
+              not_found: "Diese Flotte konnte nicht gefunden werden"
+              already_resolved: "Diese Anfrage wurde bereits beantwortet"
+              forbidden: "Du darfst diese Anfrage nicht beantworten"
+        friendship:
+          attributes:
+            base:
+              not_to_self: "Du kannst dir selbst keine Freundschaftsanfrage senden"
+              already_related: "Ihr seid bereits befreundet"
+              at_capacity: "Dieser Nutzer hat derzeit zu viele offene Anfragen"
+              not_found: "Dieser Nutzer konnte nicht gefunden werden"
+              already_resolved: "Diese Anfrage wurde bereits beantwortet"
+              forbidden: "Du darfst diese Anfrage nicht beantworten"
         inventory_transfer:
           attributes:
             base:

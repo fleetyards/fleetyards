@@ -215,6 +215,24 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        fleet_alliance:
+          attributes:
+            base:
+              not_to_self: "Una flota no puede aliarse consigo misma"
+              already_related: "Estas flotas ya están aliadas"
+              at_capacity: "Esta flota tiene demasiadas solicitudes pendientes en este momento"
+              not_found: "No se ha encontrado esta flota"
+              already_resolved: "Esta solicitud ya ha sido respondida"
+              forbidden: "No tienes permiso para responder a esta solicitud"
+        friendship:
+          attributes:
+            base:
+              not_to_self: "No puedes enviarte una solicitud de amistad a ti mismo"
+              already_related: "Ya sois amigos"
+              at_capacity: "Este usuario tiene demasiadas solicitudes pendientes en este momento"
+              not_found: "No se ha encontrado a este usuario"
+              already_resolved: "Esta solicitud ya ha sido respondida"
+              forbidden: "No tienes permiso para responder a esta solicitud"
         inventory_transfer:
           attributes:
             base:

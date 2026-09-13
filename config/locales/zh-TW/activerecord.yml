@@ -215,6 +215,24 @@ zh-TW:
         blank: 不能為空
         record_invalid: 無效資料
       models:
+        fleet_alliance:
+          attributes:
+            base:
+              not_to_self: "艦隊不能與自身結盟"
+              already_related: "這些艦隊已經結盟"
+              at_capacity: "該艦隊目前的待處理請求過多"
+              not_found: "找不到該艦隊"
+              already_resolved: "該請求已被處理"
+              forbidden: "你無權處理該請求"
+        friendship:
+          attributes:
+            base:
+              not_to_self: "不能向自己發送好友請求"
+              already_related: "你們已經是好友了"
+              at_capacity: "該使用者目前的待處理請求過多"
+              not_found: "找不到該使用者"
+              already_resolved: "該請求已被處理"
+              forbidden: "你無權處理該請求"
         inventory_transfer:
           attributes:
             base:

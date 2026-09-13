@@ -420,6 +420,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
     t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
   end
 
+  create_table "fleet_alliances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "pending", null: false
+    t.datetime "accepted_at"
+    t.uuid "addressee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "declined_at"
+    t.datetime "ignored_at"
+    t.uuid "requester_id", null: false
+    t.datetime "updated_at", null: false
+    t.index "LEAST(requester_id, addressee_id), GREATEST(requester_id, addressee_id)", name: "index_fleet_alliances_on_pair", unique: true
+    t.index ["addressee_id"], name: "index_fleet_alliances_on_addressee_id"
+    t.index ["addressee_id"], name: "index_fleet_alliances_on_pending_addressee", where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["requester_id"], name: "index_fleet_alliances_on_requester_id"
+    t.check_constraint "requester_id <> addressee_id", name: "fleet_alliances_not_to_self"
+  end
+
   create_table "fleet_event_admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "fleet_event_id", null: false
@@ -744,6 +760,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
     t.datetime "updated_at", null: false
     t.text "value"
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
+  create_table "friendships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "pending", null: false
+    t.datetime "accepted_at"
+    t.uuid "addressee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "declined_at"
+    t.datetime "ignored_at"
+    t.uuid "requester_id", null: false
+    t.datetime "updated_at", null: false
+    t.index "LEAST(requester_id, addressee_id), GREATEST(requester_id, addressee_id)", name: "index_friendships_on_pair", unique: true
+    t.index ["addressee_id"], name: "index_friendships_on_addressee_id"
+    t.index ["addressee_id"], name: "index_friendships_on_pending_addressee", where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["requester_id"], name: "index_friendships_on_requester_id"
+    t.check_constraint "requester_id <> addressee_id", name: "friendships_not_to_self"
   end
 
   create_table "funding_goals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1903,6 +1935,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
+  add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade
+  add_foreign_key "fleet_alliances", "fleets", column: "requester_id", on_delete: :cascade
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"
@@ -1933,6 +1967,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
+  add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"

@@ -175,6 +175,20 @@ class User < ApplicationRecord
 
   has_many :inventories, as: :holder, dependent: :destroy
 
+  # Both directions of the same table, because a friendship is one row per
+  # unordered pair -- see `PartyRelationship`. Nothing outside the inbox should
+  # use either of these; `#friends` and `#friend_of?` read over both columns.
+  has_many :sent_friend_requests,
+    class_name: "Friendship",
+    foreign_key: :requester_id,
+    dependent: :destroy,
+    inverse_of: :requester
+  has_many :received_friend_requests,
+    class_name: "Friendship",
+    foreign_key: :addressee_id,
+    dependent: :destroy,
+    inverse_of: :addressee
+
   has_many :notifications, dependent: :delete_all
   has_many :notification_preferences, dependent: :delete_all
 
@@ -327,6 +341,21 @@ class User < ApplicationRecord
     return false if warden.nil?
 
     warden.winning_strategy.is_a?(Devise::Strategies::Rememberable)
+  end
+
+  # Everyone this user has an accepted friendship with, as a relation over a
+  # subquery rather than an array of ids -- the bulk visibility filters compose
+  # it into their own queries.
+  def friends
+    ::User.where(id: ::Friendship.partner_ids_for(self))
+  end
+
+  def friend_of?(other)
+    ::Friendship.accepted_between?(self, other)
+  end
+
+  def friendship_with(other)
+    ::Friendship.between(self, other)
   end
 
   def set_normalized_login_fields
