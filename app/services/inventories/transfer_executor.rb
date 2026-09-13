@@ -34,8 +34,15 @@ module Inventories
     # Stock leaves the source. This is what makes a pending transfer escrow
     # rather than a promise: the withdrawal is checked against live stock here
     # and now, so acceptance later can never fail for want of it.
+    # One withdrawal per quality grade the line is spent across, so a
+    # withdrawal never lands in a grade the stock does not hold -- see
+    # `TransferLine`.
     def dispatch(lines)
-      lines.map { |line| write(@transfer.source, line.attributes, :withdrawal) }
+      lines.flat_map do |line|
+        line.allocations.map do |allocation|
+          write(@transfer.source, line.attributes_for(allocation), :withdrawal)
+        end
+      end
     end
 
     # The far end of an accepted transfer.

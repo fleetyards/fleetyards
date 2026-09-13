@@ -1,39 +1,68 @@
 # frozen_string_literal: true
 
 module Inventories
-  # One position, and how much of it is moving.
+  # One position, how much of it is moving, and which quality grades that comes
+  # out of.
   #
-  # `quality` is the one thing a line cannot carry faithfully. A position rolls
-  # up entries at several qualities -- `quality_min` and `quality_max` exist
-  # because mined ore comes in grades -- and "32 of 96 SCU" cannot say which 32.
-  # So it is copied when the position holds only one grade and left unset
-  # otherwise: guessing a grade would be worse than not recording one, and null
-  # is already the common case in the data.
+  # A position holds entries at several grades -- mined ore comes that way -- so
+  # "5 of 105 SCU" has to say *which* 5. Taking the amount and leaving the grade
+  # unset, which is what this did first, writes a withdrawal into a quality
+  # group no deposit occupies. `current_stock` groups by quality and hides any
+  # group that is not positive, so those withdrawals became invisible: the list
+  # kept showing the original 105 while the position's real net fell to 60, and
+  # the same 5 SCU could be sent again and again against a number that never
+  # moved.
+  #
+  # So a line is spent across the grades that are actually there, one withdrawal
+  # per grade, and the deposits mirror them -- which keeps the grades rather
+  # than losing them.
   class TransferLine
-    attr_reader :position, :stock_item, :quantity
+    Allocation = Struct.new(:quality, :quantity)
 
-    def initialize(position:, stock_item:, quantity:)
+    attr_reader :position, :stock_item, :quantity, :grades
+
+    # `grades` is [[quality, available], ...]. Lowest first, and nil -- stock
+    # nobody graded -- ahead of everything: a transfer ships what is least
+    # valuable unless it is shipping the lot.
+    def initialize(position:, stock_item:, quantity:, grades: [])
       @position = position
       @stock_item = stock_item
       @quantity = quantity
+      @grades = grades.sort_by { |quality, _| [quality.nil? ? 0 : 1, quality.to_i] }
     end
 
-    def attributes
+    def available
+      grades.sum { |_, amount| amount.to_d }
+    end
+
+    # `each_with_object` rather than `filter_map`, because a `break` inside
+    # `filter_map` returns nil for the whole call rather than the entries
+    # gathered so far.
+    def allocations
+      remaining = quantity.to_d
+
+      grades.each_with_object([]) do |(quality, amount), taken|
+        next if remaining <= 0
+
+        amount = [remaining, amount.to_d].min
+        next if amount <= 0
+
+        remaining -= amount
+
+        taken << Allocation.new(quality, amount)
+      end
+    end
+
+    def attributes_for(allocation)
       {
         name: position.name,
         category: position.category,
         unit: position.unit,
-        quantity: quantity,
-        quality: uniform_quality,
+        quantity: allocation.quantity,
+        quality: allocation.quality,
         item_type: reference&.item_type,
         item_id: reference&.item_id
       }
-    end
-
-    private def uniform_quality
-      return unless stock_item.quality_min.present? && stock_item.quality_min == stock_item.quality_max
-
-      stock_item.quality_min
     end
 
     # The entry the position borrows its catalogue link -- and therefore its

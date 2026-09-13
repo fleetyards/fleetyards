@@ -382,6 +382,35 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal 100, @depot.reload.stock_positions.sole.net_quantity
   end
 
+  # Sending the same amount again and again, the way a person would: each one
+  # has to come out of the fleet, and the fleet has to run out.
+  test "repeated sends to my own inventory deplete the fleet" do
+    Flipper.enable("inventory_transfers")
+    locker = create(:inventory, holder: @officer)
+
+    sign_in @officer
+
+    2.times do
+      assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {
+        sourceInventoryId: @depot.id,
+        inventoryId: locker.id,
+        lines: [{positionId: @entry.position.id, quantity: 40}]
+      }
+    end
+
+    assert_equal 20, @depot.reload.stock_positions.sole.net_quantity
+    assert_equal 80, locker.reload.stock_positions.sole.net_quantity
+
+    assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {
+      sourceInventoryId: @depot.id,
+      inventoryId: locker.id,
+      lines: [{positionId: @entry.position.id, quantity: 40}]
+    }
+
+    assert_equal 20, @depot.reload.stock_positions.sole.net_quantity
+    assert_equal 80, locker.reload.stock_positions.sole.net_quantity
+  end
+
   private def donation_to_fleet
     donor = create(:user)
     donor_inventory = create(:inventory, holder: donor)

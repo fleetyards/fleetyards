@@ -11,7 +11,12 @@ module Inventories
   class TransferBuilder
     include ActiveModel::Model
 
-    attr_reader :transfer, :refusal
+    # `quantity` is an attribute this reports errors on, and `ActiveModel::Error`
+    # reads it to build the message. Without it every over-quantity refusal
+    # raised `NoMethodError` inside `ValidationError`, so a request that should
+    # have been a clean 400 came back a 500 -- and the reason the caller needed
+    # never reached them.
+    attr_reader :transfer, :refusal, :quantity
 
     def initialize(source:, actor:, lines:, destination: nil, recipient: nil, note: nil)
       @source = source
@@ -118,10 +123,12 @@ module Inventories
         return false
       end
 
-      return true if line.quantity <= line.stock_item.net_quantity.to_d
+      # Checked against the grades the line can actually be spent across, which
+      # is the same number `stock_positions` reports.
+      return true if line.quantity <= line.available
 
       errors.add(:quantity, :insufficient_stock,
-        message: "exceeds current stock of #{line.position.name} (#{line.stock_item.net_quantity})")
+        message: "exceeds current stock of #{line.position.name} (#{line.available.to_f})")
       false
     end
 
@@ -172,6 +179,15 @@ module Inventories
       end
     end
 
+    # What the position holds, per quality grade. `current_stock` is the same
+    # rollup the list renders, so a line can only be spent on grades the reader
+    # can see.
+    private def grades_for(position)
+      @grades ||= @source.current_stock.group_by { |row| row.position_id }
+
+      (@grades[position.id] || []).map { |row| [row.quality, row.net_quantity] }
+    end
+
     private def resolve_line(line)
       attributes = line.respond_to?(:to_unsafe_h) ? line.to_unsafe_h : line
       attributes = attributes.symbolize_keys
@@ -182,7 +198,8 @@ module Inventories
       stock_item = @source.stock_item(position.slug)
       return if stock_item.blank?
 
-      TransferLine.new(position:, stock_item:, quantity: attributes[:quantity].to_d)
+      TransferLine.new(position:, stock_item:, quantity: attributes[:quantity].to_d,
+        grades: grades_for(position))
     end
   end
 end

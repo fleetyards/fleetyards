@@ -86,27 +86,49 @@ module Inventories
       assert_equal component.id, deposit.item_id
     end
 
-    test "quality is carried only when the position holds one grade" do
-      entry = create(:inventory_item, inventory: @hangar, name: "Quantanium",
-        category: :commodity, unit: :scu, quantity: 10, quality: 700)
-
-      builder = TransferBuilder.new(source: @hangar, actor: @user, recipient: @fleet,
-        lines: [{position_id: entry.position.id, quantity: 5}])
-      builder.call
-      TransferResolver.new(builder.transfer, actor: @officer).accept(@depot)
-
-      assert_equal 700, @depot.fleet_inventory_items.sole.quality
-
-      # A second grade in the same position makes "which five" unanswerable.
+    # A position holding several grades is spent across them, lowest first, and
+    # the deposits carry the grades they came from. Leaving the grade unset put
+    # the withdrawal in a quality group no deposit occupied, which
+    # `current_stock` then hid -- so the list never moved and the same stock
+    # could be sent over and over.
+    test "a line is spent across the grades the position holds" do
       create(:inventory_item, inventory: @hangar, name: "Quantanium",
+        category: :commodity, unit: :scu, quantity: 4, quality: 700)
+      entry = create(:inventory_item, inventory: @hangar, name: "Quantanium",
         category: :commodity, unit: :scu, quantity: 10, quality: 300)
 
-      second = TransferBuilder.new(source: @hangar, actor: @user, recipient: @fleet,
-        lines: [{position_id: entry.reload.position.id, quantity: 5}])
-      second.call
-      TransferResolver.new(second.transfer, actor: @officer).accept(@depot)
+      # 12 of the 14 held: the whole 300 grade, then the rest out of the 700.
+      builder = TransferBuilder.new(source: @hangar, actor: @user, recipient: @fleet,
+        lines: [{position_id: entry.position.id, quantity: 12}])
 
-      assert_nil @depot.fleet_inventory_items.order(:created_at).last.quality
+      assert builder.call, builder.errors.full_messages.to_sentence
+
+      assert_equal [[300, 10], [700, 2]],
+        builder.transfer.dispatched_entries.map { |e| [e.quality, e.quantity.to_i] }.sort
+
+      TransferResolver.new(builder.transfer, actor: @officer).accept(@depot)
+
+      assert_equal [[300, 10], [700, 2]],
+        @depot.fleet_inventory_items.map { |e| [e.quality, e.quantity.to_i] }.sort
+    end
+
+    # The whole point: what the list shows has to fall by what was sent.
+    test "the per-quality rollup the list renders depletes" do
+      create(:inventory_item, inventory: @hangar, name: "Agricium",
+        category: :commodity, unit: :scu, quantity: 100, quality: 600)
+      entry = create(:inventory_item, inventory: @hangar, name: "Agricium",
+        category: :commodity, unit: :scu, quantity: 5, quality: 0)
+
+      assert_equal 105, visible_stock
+
+      3.times do
+        builder = TransferBuilder.new(source: @hangar.reload, actor: @user, recipient: @fleet,
+          lines: [{position_id: entry.reload.position.id, quantity: 5}])
+
+        assert builder.call, builder.errors.full_messages.to_sentence
+      end
+
+      assert_equal 90, visible_stock
     end
 
     test "accepting a shipment into a fleet announces it once, not once per line" do
@@ -165,6 +187,12 @@ module Inventories
       assert builder.call, builder.errors.full_messages.to_sentence
       assert builder.transfer.completed?, "an initiator who could deposit by hand is not made to ask"
       assert_equal 5, @depot.reload.stock_positions.sole.net_quantity
+    end
+
+    # What `current_stock` adds up to -- the rollup the stock list renders,
+    # grouped per quality and dropping any group that is not positive.
+    private def visible_stock
+      @hangar.reload.current_stock.sum { |row| row.net_quantity.to_i }
     end
 
     private def enable_transfers(actor)
