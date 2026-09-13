@@ -90,6 +90,9 @@
         "extendedHeight": "展開高度",
         "extendedFleetchartOffsetLength": "展開艦隊圖表長度偏移",
         "extendedFleetchartOffsetBeam": "展開艦隊圖表寬度偏移",
+        "landedLength": "著陸長度",
+        "landedBeam": "著陸寬度",
+        "landedHeight": "著陸高度",
         "cargo": "貨物",
         "baseModel": "基礎型號",
         "scIdentifier": "SC Identifier"

@@ -90,6 +90,9 @@
         "extendedHeight": "Altura extendida",
         "extendedFleetchartOffsetLength": "Desplazamiento de longitud extendida del diagrama de flota",
         "extendedFleetchartOffsetBeam": "Desplazamiento de manga extendida del diagrama de flota",
+        "landedLength": "Longitud aterrizado",
+        "landedBeam": "Manga aterrizado",
+        "landedHeight": "Altura aterrizado",
         "cargo": "Carga",
         "baseModel": "Modelo base",
         "scIdentifier": "SC Identifier"

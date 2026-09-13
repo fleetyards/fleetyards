@@ -90,6 +90,9 @@
         "extendedHeight": "Altezza estesa",
         "extendedFleetchartOffsetLength": "Offset lunghezza grafico flotta esteso",
         "extendedFleetchartOffsetBeam": "Offset larghezza grafico flotta esteso",
+        "landedLength": "Lunghezza atterrato",
+        "landedBeam": "Larghezza atterrato",
+        "landedHeight": "Altezza atterrato",
         "cargo": "Carico",
         "baseModel": "Modello base",
         "scIdentifier": "SC Identifier"

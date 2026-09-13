@@ -90,6 +90,9 @@
         "extendedHeight": "Hauteur étendue",
         "extendedFleetchartOffsetLength": "Décalage longueur étendue du diagramme de flotte",
         "extendedFleetchartOffsetBeam": "Décalage largeur étendue du diagramme de flotte",
+        "landedLength": "Longueur posé",
+        "landedBeam": "Largeur posé",
+        "landedHeight": "Hauteur posé",
         "cargo": "Cargaison",
         "baseModel": "Modèle de base",
         "scIdentifier": "SC Identifier"

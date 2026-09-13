@@ -90,6 +90,9 @@
         "extendedHeight": "Ausgefahrene Höhe",
         "extendedFleetchartOffsetLength": "Ausgefahrener Flottenkarten-Versatz Länge",
         "extendedFleetchartOffsetBeam": "Ausgefahrener Flottenkarten-Versatz Breite",
+        "landedLength": "Länge gelandet",
+        "landedBeam": "Breite gelandet",
+        "landedHeight": "Höhe gelandet",
         "cargo": "Fracht",
         "baseModel": "Basismodell"
       },
