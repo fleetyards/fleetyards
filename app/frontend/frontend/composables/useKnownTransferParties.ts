@@ -58,6 +58,7 @@ export const useKnownTransferParties = (options?: {
       })
       .sort((a, b) => a.username.localeCompare(b.username))
       .map((member) => ({
+        kind: "user",
         value: `user:${member.username}`,
         label: member.username,
         needsAnswer: true,
@@ -72,6 +73,7 @@ export const useKnownTransferParties = (options?: {
 
   const fleetTargets = computed<TransferTargetOption[]>(() =>
     fleetList.value.filter(canReceive).map((fleet) => ({
+      kind: "fleet",
       value: `fleet:${fleet.slug}`,
       label: t("labels.logistics.transferToFleet", { fleet: fleet.name }),
       needsAnswer: true,

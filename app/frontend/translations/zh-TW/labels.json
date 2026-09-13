@@ -1872,7 +1872,7 @@
         "shipInventory": "飛船庫存",
         "remaining": "剩餘",
         "unmeasured": "%{count} 項尚未測量",
-        "transferTarget": "傳送至",
+        "transferTarget": "接收方",
         "transferNote": "備註",
         "noStock": "沒有可移動的物品",
         "overStock": "超過該條目的庫存",
@@ -1900,10 +1900,12 @@
         "contents": "內容",
         "state": "狀態",
         "sentAt": "傳送時間",
-        "transferToUser": "其他使用者…",
-        "transferToOtherFleet": "其他艦隊…",
-        "username": "使用者名稱",
-        "fleetSlug": "艦隊識別碼"
+        "transferKinds": {
+          "inventory": "我的庫存",
+          "fleet": "艦隊",
+          "user": "某人"
+        },
+        "transferTargetKind": "傳送至"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

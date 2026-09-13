@@ -1876,7 +1876,7 @@
         "shipInventory": "Schiffsinventar",
         "remaining": "Verbleibend",
         "unmeasured": "%{count} noch nicht vermessen",
-        "transferTarget": "Senden an",
+        "transferTarget": "Empfänger",
         "transferNote": "Notiz",
         "noStock": "Nichts zu verschieben",
         "overStock": "Mehr als diese Position enthält",
@@ -1904,10 +1904,12 @@
         "contents": "Inhalt",
         "state": "Status",
         "sentAt": "Gesendet",
-        "transferToUser": "Anderer Benutzer …",
-        "transferToOtherFleet": "Andere Flotte …",
-        "username": "Benutzername",
-        "fleetSlug": "Flotten-Kürzel"
+        "transferKinds": {
+          "inventory": "Meine Inventare",
+          "fleet": "Eine Flotte",
+          "user": "Eine Person"
+        },
+        "transferTargetKind": "Senden an"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {

@@ -24,6 +24,7 @@ export const useTransferTargets = (
     (inventories.value?.items ?? [])
       .filter((inventory) => inventory.id !== toValue(source)?.id)
       .map((inventory) => ({
+        kind: "inventory",
         value: `inventory:${inventory.id}`,
         label: inventory.name,
         needsAnswer: false,

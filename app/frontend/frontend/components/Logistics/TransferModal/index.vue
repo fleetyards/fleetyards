@@ -22,7 +22,11 @@ import {
   type InventoryStockPosition,
   type InventoryTransferCreateInput,
 } from "@/services/fyApi";
-import type { TransferSource, TransferTargetOption } from "./types";
+import type {
+  TransferSource,
+  TransferTargetKind,
+  TransferTargetOption,
+} from "./types";
 
 type Props = {
   source: TransferSource;
@@ -41,9 +45,7 @@ const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 const note = ref("");
-const targetValue = ref<string | undefined>(
-  props.targets[0]?.value ?? "handle:user",
-);
+const targetValue = ref<string | undefined>();
 
 // The stock list is grouped per quality, so one position can arrive as several
 // rows -- mined ore at two grades is two rows carrying one `id`. They are one
@@ -90,51 +92,60 @@ watchEffect(() => {
   });
 });
 
-// Any user and any fleet are reachable, not only the ones already on this
-// reader's list. There is no user or fleet search in the API, and the handles
-// are how invites and public pages already address them, so the sender types
-// one and the server's gate is the arbiter -- including whether it exists.
-const BY_HANDLE = {
-  user: "handle:user",
-  fleet: "handle:fleet",
-} as const;
+// Users and fleets are separate choices, not one mixed list: they are different
+// kinds of address, and a list holding both makes the reader scan for which is
+// which. The kind picks the list; the list is searchable, because a fleet can
+// have hundreds of members.
+//
+// This iteration reaches only what the reader already shares a fleet with --
+// which is also what a `known` transfer policy means server-side, so the picker
+// and the gate agree on who counts. Arbitrary users and fleets are the API's to
+// accept and are not offered here yet.
+const KINDS: TransferTargetKind[] = ["inventory", "fleet", "user"];
 
-const handle = ref("");
-
-const handleTarget = computed(() =>
-  targetValue.value === BY_HANDLE.user || targetValue.value === BY_HANDLE.fleet
-    ? targetValue.value
-    : undefined,
+const availableKinds = computed(() =>
+  KINDS.filter((kind) => props.targets.some((target) => target.kind === kind)),
 );
 
-const targetOptions = computed<FilterOption[]>(() => [
-  ...props.targets.map((target) => ({
-    value: target.value,
-    label: target.label,
-  })),
-  { value: BY_HANDLE.user, label: t("labels.logistics.transferToUser") },
-  { value: BY_HANDLE.fleet, label: t("labels.logistics.transferToOtherFleet") },
-]);
+const targetKind = ref<TransferTargetKind | undefined>();
 
-const selectedTarget = computed<TransferTargetOption | undefined>(() => {
-  if (handleTarget.value) {
-    const trimmed = handle.value.trim();
+watchEffect(() => {
+  if (targetKind.value && availableKinds.value.includes(targetKind.value))
+    return;
 
-    if (!trimmed) return undefined;
-
-    return {
-      value: handleTarget.value,
-      label: trimmed,
-      needsAnswer: true,
-      payload:
-        handleTarget.value === BY_HANDLE.user
-          ? { recipientUsername: trimmed }
-          : { recipientFleetSlug: trimmed },
-    };
-  }
-
-  return props.targets.find((target) => target.value === targetValue.value);
+  targetKind.value = availableKinds.value[0];
 });
+
+const kindOptions = computed<FilterOption[]>(() =>
+  availableKinds.value.map((kind) => ({
+    value: kind,
+    label: t(`labels.logistics.transferKinds.${kind}`),
+  })),
+);
+
+const targetOptions = computed<FilterOption[]>(() =>
+  props.targets
+    .filter((target) => target.kind === targetKind.value)
+    .map((target) => ({ value: target.value, label: target.label })),
+);
+
+// Picks the first option, and re-picks when a kind change leaves the old
+// selection pointing into a list it is no longer part of. `immediate`, because
+// the first list is exactly that case -- without it nothing is selected until
+// the reader touches the kind picker.
+watch(
+  targetOptions,
+  (options) => {
+    if (options.some((option) => option.value === targetValue.value)) return;
+
+    targetValue.value = options[0]?.value as string | undefined;
+  },
+  { immediate: true },
+);
+
+const selectedTarget = computed(() =>
+  props.targets.find((target) => target.value === targetValue.value),
+);
 
 // What the receiving side will see. A target the sender may write to is carried
 // out on the spot; anything else has to be answered first.
@@ -207,28 +218,22 @@ const onSubmit = async () => {
   <Modal :title="t('headlines.logistics.transfer')">
     <form id="transfer-form" @submit.prevent="onSubmit">
       <BaseSelect
+        v-if="kindOptions.length > 1"
+        v-model="targetKind"
+        name="targetKind"
+        :options="kindOptions"
+        :searchable="false"
+        :label="t('labels.logistics.transferTargetKind')"
+        data-test="transfer-target-kind"
+      />
+
+      <BaseSelect
         v-model="targetValue"
         name="target"
+        searchable
         :options="targetOptions"
         :label="t('labels.logistics.transferTarget')"
         data-test="transfer-target"
-      />
-
-      <FormInput
-        v-if="handleTarget"
-        v-model="handle"
-        no-placeholder
-        :name="
-          handleTarget === BY_HANDLE.user
-            ? 'recipientUsername'
-            : 'recipientFleetSlug'
-        "
-        :label="
-          handleTarget === BY_HANDLE.user
-            ? t('labels.logistics.username')
-            : t('labels.logistics.fleetSlug')
-        "
-        data-test="transfer-handle"
       />
 
       <p v-if="needsAnswer" class="transfer-hint" data-test="transfer-hint">

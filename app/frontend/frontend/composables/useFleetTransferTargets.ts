@@ -20,6 +20,7 @@ export const useFleetTransferTargets = (
     (inventories.value?.items ?? [])
       .filter((inventory) => inventory.id !== toValue(source)?.id)
       .map((inventory) => ({
+        kind: "inventory",
         value: `fleet-inventory:${inventory.id}`,
         label: inventory.name,
         needsAnswer: false,

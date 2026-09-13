@@ -1872,7 +1872,7 @@
         "shipInventory": "飞船库存",
         "remaining": "剩余",
         "unmeasured": "%{count} 项尚未测量",
-        "transferTarget": "发送至",
+        "transferTarget": "接收方",
         "transferNote": "备注",
         "noStock": "没有可移动的物品",
         "overStock": "超过该条目的库存",
@@ -1900,10 +1900,12 @@
         "contents": "内容",
         "state": "状态",
         "sentAt": "发送时间",
-        "transferToUser": "其他用户…",
-        "transferToOtherFleet": "其他舰队…",
-        "username": "用户名",
-        "fleetSlug": "舰队标识"
+        "transferKinds": {
+          "inventory": "我的库存",
+          "fleet": "舰队",
+          "user": "某人"
+        },
+        "transferTargetKind": "发送至"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

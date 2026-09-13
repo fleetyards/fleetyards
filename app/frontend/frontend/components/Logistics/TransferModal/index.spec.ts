@@ -21,6 +21,7 @@ const position = (
   }) as InventoryStockPosition;
 
 const immediateTarget: TransferTargetOption = {
+  kind: "inventory",
   value: "inventory:other",
   label: "Locker",
   needsAnswer: false,
@@ -28,6 +29,7 @@ const immediateTarget: TransferTargetOption = {
 };
 
 const pendingTarget: TransferTargetOption = {
+  kind: "fleet",
   value: "fleet:crew",
   label: "Crew (fleet)",
   needsAnswer: true,
@@ -226,28 +228,21 @@ describe("TransferModal", () => {
     expect(wrapper!.find('[data-test="transfer-hint"]').exists()).toBe(false);
   });
 
-  // Any user and any fleet are reachable, not only the ones already on this
-  // reader's list -- and with no other inventory and no eligible fleet, typing
-  // a handle is the only way to send at all.
-  it("can address a user who is on no list, with nothing else to pick", async () => {
-    const { onSend } = await build([position()], []);
+  // Users and fleets are separate choices; the kind picker only appears when
+  // there is more than one kind to choose between.
+  it("hides the kind picker when only one kind is available", async () => {
+    await build([position()], [immediateTarget]);
 
-    await wrapper!
-      .find('[data-test="transfer-handle"] input')
-      .setValue("hauler");
-    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
-    await flushPromises();
-
-    expect(onSend).toHaveBeenCalledWith(
-      expect.objectContaining({ recipientUsername: "hauler" }),
+    expect(wrapper!.find('[data-test="transfer-target-kind"]').exists()).toBe(
+      false,
     );
   });
 
-  it("cannot send on a blank handle", async () => {
-    await build([position()], []);
+  it("offers a kind picker once there are both", async () => {
+    await build([position()], [immediateTarget, pendingTarget]);
 
-    expect(
-      wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
-    ).toBeDefined();
+    expect(wrapper!.find('[data-test="transfer-target-kind"]').exists()).toBe(
+      true,
+    );
   });
 });

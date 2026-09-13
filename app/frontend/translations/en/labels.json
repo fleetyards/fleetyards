@@ -1877,7 +1877,7 @@
         "shipInventory": "Ship Inventory",
         "remaining": "Remaining",
         "unmeasured": "%{count} not measured yet",
-        "transferTarget": "Send to",
+        "transferTarget": "Recipient",
         "transferNote": "Note",
         "noStock": "Nothing to move",
         "overStock": "More than this position holds",
@@ -1905,10 +1905,12 @@
         "contents": "Contents",
         "state": "Status",
         "sentAt": "Sent",
-        "transferToUser": "Another user…",
-        "transferToOtherFleet": "Another fleet…",
-        "username": "Username",
-        "fleetSlug": "Fleet handle"
+        "transferKinds": {
+          "inventory": "My inventories",
+          "fleet": "A fleet",
+          "user": "A person"
+        },
+        "transferTargetKind": "Send to"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
