@@ -51,6 +51,24 @@ de:
       create: Gruppe konnte nicht erstellt werden
       destroy: Gruppe konnte nicht gelöscht werden
       update: Gruppe konnte nicht aktualisiert werden
+    fleet_contracts:
+      create: Auftrag konnte nicht erstellt werden.
+      update: Auftrag konnte nicht aktualisiert werden.
+      destroy: Auftrag konnte nicht gelöscht werden.
+      publish: Auftrag konnte nicht veröffentlicht werden.
+      claim: Auftrag konnte nicht übernommen werden.
+      release: Auftrag konnte nicht abgegeben werden.
+      fulfil: Auftrag konnte nicht als erfüllt markiert werden.
+      cancel: Auftrag konnte nicht abgebrochen werden.
+    fleet_contract_items:
+      create: Waren konnten nicht hinzugefügt werden.
+      update: Waren konnten nicht aktualisiert werden.
+      destroy: Waren konnten nicht entfernt werden.
+    fleet_contract_assignments:
+      create: Anfrage konnte nicht gesendet werden.
+      accept: Crew-Mitglied konnte nicht angenommen werden.
+      decline: Crew-Mitglied konnte nicht abgelehnt werden.
+      destroy: Crew-Mitglied konnte nicht entfernt werden.
     fleet_inventories:
       create: Inventar konnte nicht erstellt werden.
       update: Inventar konnte nicht aktualisiert werden.

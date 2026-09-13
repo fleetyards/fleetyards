@@ -76,9 +76,14 @@ module Api
       def publish
         authorize! @fleet_contract
 
-        return unless transition("publish") { @fleet_contract.publish! }
+        unless @fleet_contract.publish!
+          return render json: ValidationError.new("fleet_contracts.publish", errors: @fleet_contract.errors),
+            status: :bad_request
+        end
 
         ActiveSupport::Notifications.instrument("fleet_contract.published", contract: @fleet_contract)
+
+        render :show
       end
 
       def claim
@@ -112,15 +117,25 @@ module Api
       def fulfil
         authorize! @fleet_contract
 
-        return unless transition("fulfil") { @fleet_contract.fulfil! }
+        unless @fleet_contract.fulfil!
+          return render json: ValidationError.new("fleet_contracts.fulfil", errors: @fleet_contract.errors),
+            status: :bad_request
+        end
 
         ActiveSupport::Notifications.instrument("fleet_contract.fulfilled", contract: @fleet_contract)
+
+        render :show
       end
 
       def cancel
         authorize! @fleet_contract
 
-        transition("cancel") { @fleet_contract.cancel! }
+        unless @fleet_contract.cancel!
+          return render json: ValidationError.new("fleet_contracts.cancel", errors: @fleet_contract.errors),
+            status: :bad_request
+        end
+
+        render :show
       end
 
       def progress
@@ -136,17 +151,6 @@ module Api
         return scope if allowed_to?(:manage?, @fleet, with: FleetContractPolicy)
 
         scope.where.not(aasm_state: "draft")
-      end
-
-      private def transition(action)
-        if yield
-          render :show
-          true
-        else
-          render json: ValidationError.new("fleet_contracts.#{action}", errors: @fleet_contract.errors),
-            status: :bad_request
-          false
-        end
       end
 
       private def fleet_contract_params

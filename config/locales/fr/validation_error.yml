@@ -44,6 +44,24 @@ fr:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit
       update: Le groupe n'a pas pu être mise à jour
+    fleet_contracts:
+      create: Le contrat n'a pas pu être créé.
+      update: Le contrat n'a pas pu être mis à jour.
+      destroy: Le contrat n'a pas pu être supprimé.
+      publish: Le contrat n'a pas pu être publié.
+      claim: Le contrat n'a pas pu être pris.
+      release: Le contrat n'a pas pu être abandonné.
+      fulfil: Le contrat n'a pas pu être marqué comme rempli.
+      cancel: Le contrat n'a pas pu être annulé.
+    fleet_contract_items:
+      create: Les marchandises n'ont pas pu être ajoutées.
+      update: Les marchandises n'ont pas pu être mises à jour.
+      destroy: Les marchandises n'ont pas pu être retirées.
+    fleet_contract_assignments:
+      create: La demande n'a pas pu être envoyée.
+      accept: Le membre d'équipage n'a pas pu être accepté.
+      decline: Le membre d'équipage n'a pas pu être refusé.
+      destroy: Le membre d'équipage n'a pas pu être retiré.
     fleet_inventories:
       create: L'inventaire n'a pas pu être créé.
       update: L'inventaire n'a pas pu être mis à jour.

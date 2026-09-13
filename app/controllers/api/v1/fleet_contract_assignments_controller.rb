@@ -57,7 +57,12 @@ module Api
 
         @fleet_contract_assignment.approved_by = current_resource_owner
 
-        answer("accept") { @fleet_contract_assignment.accept! }
+        unless @fleet_contract_assignment.accept!
+          return render json: ValidationError.new("fleet_contract_assignments.accept",
+            errors: @fleet_contract_assignment.errors), status: :bad_request
+        end
+
+        announce_answer
       end
 
       def decline
@@ -66,7 +71,12 @@ module Api
 
         @fleet_contract_assignment.approved_by = current_resource_owner
 
-        answer("decline") { @fleet_contract_assignment.decline! }
+        unless @fleet_contract_assignment.decline!
+          return render json: ValidationError.new("fleet_contract_assignments.decline",
+            errors: @fleet_contract_assignment.errors), status: :bad_request
+        end
+
+        announce_answer
       end
 
       # Leaving, or being taken off. Which of the two it was is the state, not
@@ -87,12 +97,7 @@ module Api
         render :show
       end
 
-      private def answer(action)
-        unless yield
-          return render json: ValidationError.new("fleet_contract_assignments.#{action}",
-            errors: @fleet_contract_assignment.errors), status: :bad_request
-        end
-
+      private def announce_answer
         ActiveSupport::Notifications.instrument("fleet_contract_assignment.answered",
           assignment: @fleet_contract_assignment)
 

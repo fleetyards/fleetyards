@@ -44,6 +44,24 @@ it:
       create: Impossibile creare il gruppo
       destroy: Impossibile eliminare il gruppo
       update: Impossibile aggiornare il gruppo
+    fleet_contracts:
+      create: Impossibile creare il contratto.
+      update: Impossibile aggiornare il contratto.
+      destroy: Impossibile eliminare il contratto.
+      publish: Impossibile pubblicare il contratto.
+      claim: Impossibile prendere il contratto.
+      release: Impossibile abbandonare il contratto.
+      fulfil: Impossibile segnare il contratto come completato.
+      cancel: Impossibile annullare il contratto.
+    fleet_contract_items:
+      create: Impossibile aggiungere le merci.
+      update: Impossibile aggiornare le merci.
+      destroy: Impossibile rimuovere le merci.
+    fleet_contract_assignments:
+      create: Impossibile inviare la richiesta.
+      accept: Impossibile accettare il membro dell'equipaggio.
+      decline: Impossibile rifiutare il membro dell'equipaggio.
+      destroy: Impossibile rimuovere il membro dell'equipaggio.
     fleet_inventories:
       create: Impossibile creare l'inventario.
       update: Impossibile aggiornare l'inventario.
