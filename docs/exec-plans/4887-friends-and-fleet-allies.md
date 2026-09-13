@@ -411,6 +411,66 @@ Written per phase. The state machine including all three answers; a table test o
   under a row lock now, and notifications moved outside the transaction: a
   broadcast must not be able to roll back a relationship that was agreed to.
 
+- **2026-09-14** Using it found five things, and one of them was a crash.
+
+  **The friends list moved under settings.** It was a top-level sidebar entry of
+  its own; it is a settings tab now, between Hangar and Privacy — which is where
+  the switches it governs already live, `friends_hangar` and its two siblings.
+  The four tab routes moved with it (`settings-friends*`), `/friends/:tab*`
+  redirects to the new one because notifications written before the move carry
+  `/friends` as their link and those rows outlive it, and the Rails helper moved
+  rather than being renamed, so `Relationships::Notifier` is untouched.
+
+  **A request can be sent from a public hangar.** Asking somebody to be a friend
+  meant knowing their username well enough to type it, which is the one thing
+  somebody reading their hangar already has. The button reads the existing
+  `GET /friendships/:username` — a 404 is "no relationship", which is precisely
+  when it has something to do — so nothing was added to the public user payload,
+  whose partial is cached per user and would have had to render per reader. Four
+  states, and two of them are not buttons: a request sent says so, a friendship
+  says so, an incoming request is answered rather than crossed with another, and
+  a request this reader *ignored* offers nothing at all, because a further
+  request from them is absorbed and the button would go nowhere.
+
+  **`l(createdAt, "short")` crashed the list.** The helper takes a full key path,
+  so the format string handed to `date-fns` was
+  `[missing "en.short" translation]` — a `RangeError` on the first unescaped
+  letter, which unmounted the allies table mid-render. Every other caller in the
+  app passes `datetime.formats.short`.
+
+  **Four notification types had no label in any locale.** `friend_request_*` and
+  `fleet_ally_request_*` render their own key in the notification list and had no
+  row in the notification settings at all — the groups there are a hand-kept list
+  and nothing had been added to it. They are a fifth group now, "Friends &
+  allies", and the labels are written in all seven locales. `FormInput` falls
+  back to `placeholders.<name>` when it is given none, so the add-a-friend field
+  showed `[missing "en.placeholders.handle" translation]` inside the box; the
+  modal takes a placeholder now, per kind.
+
+  Confirmed while reading: `alliesFleetMembers` is deliberately the one ally
+  switch with no `narrowerAudienceDisabled` guard. The roster has no public
+  counterpart to be overridden by — `Public::FleetPolicy#show_members?` says so
+  — so there is nothing for it to sit under.
+
+  **And a sixth: disabling the narrower switch was only half of saying so.** Off
+  and greyed reads as "allies cannot see the ships", which is the opposite of
+  what a public fleet means — the five switches under a public one were all
+  showing the negative of what was true. `FormToggle` takes `implied` now: it
+  reads as on while the wider switch covers it and keeps its own value
+  underneath, so turning public off again restores the choice that was made
+  rather than the one it was shown as. That meant replacing the element's
+  `v-model` — which is where the `update:modelValue` emit rode, the only path a
+  parent's own `v-model` has. The hangar sync modal's test caught it; the emit is
+  explicit now, and has its own case.
+
+  **Add-an-ally moved into the app header**, where a fleet page's actions already
+  live — its members, events and logistics pages all teleport there. Add-a-friend
+  stays over its list: a settings tab has no header of its own, and nothing under
+  `/settings` teleports into that one. So `RelationshipView` takes `headerAction`
+  rather than reading its `kind`, and the toolbar slot goes away with the button
+  instead of rendering empty — `FilteredList` reserves the right-hand column for
+  a slot that merely exists, which on a phone decides whether the paginator wraps.
+
 ## Progress
 - [x] Phase 1 — The two relationships and the handshake
 - [x] Phase 2 — What a friend can see
