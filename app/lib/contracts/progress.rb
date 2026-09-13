@@ -22,7 +22,7 @@ module Contracts
       :item, :requested, :delivered, :picked_up, :contributions
     ) do
       def remaining
-        [requested - delivered, 0].max
+        [requested - delivered, 0.to_d].max
       end
 
       def complete?
@@ -55,7 +55,7 @@ module Contracts
     def fraction
       return 0.to_d if lines.empty?
 
-      lines.sum(&:fraction) / lines.size
+      lines.sum(0.to_d, &:fraction) / lines.size
     end
 
     # D6. Each line contributes at most 1, split between the contractors in
@@ -67,7 +67,7 @@ module Contracts
     end
 
     def total_weight
-      weights.values.sum
+      weights.values.sum(0.to_d)
     end
 
     private def build_line(item)
@@ -80,8 +80,8 @@ module Contracts
       LineProgress.new(
         item: item,
         requested: item.quantity,
-        delivered: counted.sum { |row| row[:quantity] },
-        picked_up: withdrawals.fetch(identity, []).sum { |row| row[:quantity] },
+        delivered: counted.sum(0.to_d) { |row| row[:quantity] },
+        picked_up: withdrawals.fetch(identity, []).sum(0.to_d) { |row| row[:quantity] },
         contributions: contributions_for(item, counted)
       )
     end
@@ -103,7 +103,7 @@ module Contracts
         result[user_id] += row[:quantity]
       end
 
-      total = by_user.values.sum
+      total = by_user.values.sum(0.to_d)
       return [] if total.zero?
 
       # The line is worth 1 however much was delivered into it, so an

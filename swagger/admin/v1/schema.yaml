@@ -16503,6 +16503,7 @@ components:
       enum:
       - Component
       - Fleet
+      - FleetContract
       - FleetInventory
       - FleetInventoryItem
       - FleetInventoryPosition
@@ -16525,6 +16526,7 @@ components:
       x-enumNames:
       - COMPONENT
       - FLEET
+      - FLEET_CONTRACT
       - FLEET_INVENTORY
       - FLEET_INVENTORY_ITEM
       - FLEET_INVENTORY_POSITION

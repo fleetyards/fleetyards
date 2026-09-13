@@ -195,6 +195,64 @@ class FleetContract < ApplicationRecord
     [source_fleet_inventory_id, destination_fleet_inventory_id].compact
   end
 
+  # Claiming is a race: two members pressing the button at once both read an
+  # open contract. The row lock orders them, and the partial unique index on the
+  # accepted lead is the backstop if one ever gets past it.
+  #
+  # `raise ActiveRecord::Rollback` rather than returning out of the block --
+  # since Rails 7 a `return` inside a transaction *commits* it, which would
+  # leave a lead row on a contract that never moved.
+  def claim_by(user)
+    claimed = false
+
+    transaction do
+      lock!
+
+      if open?
+        assignment = fleet_contract_assignments.find_or_initialize_by(user: user)
+        assignment.role = :lead
+        assignment.approved_by = user
+        assignment.aasm_state = "accepted"
+        assignment.accepted_at = Time.current
+
+        claimed = assignment.save && claim!
+      else
+        errors.add(:base, :not_open)
+      end
+
+      raise ActiveRecord::Rollback unless claimed
+    end
+
+    claimed
+  rescue ActiveRecord::RecordNotUnique
+    errors.add(:base, :already_claimed)
+    false
+  end
+
+  # The lead walking away, or a manager taking it off them. The whole crew goes
+  # with them -- they signed up to work under that lead -- but their deliveries
+  # stay in the ledger and still count. Who did it is paper_trail's to record,
+  # so this takes no actor.
+  def release_to_board!
+    released = false
+
+    transaction do
+      lock!
+
+      if in_progress?
+        fleet_contract_assignments.accepted.find_each { |assignment| assignment.withdraw! }
+        fleet_contract_assignments.requested.find_each { |assignment| assignment.decline! }
+        released = release!
+      else
+        errors.add(:base, :not_in_progress)
+      end
+
+      raise ActiveRecord::Rollback unless released
+    end
+
+    released
+  end
+
   private def inventories_belong_to_the_fleet
     [source_fleet_inventory, destination_fleet_inventory].compact.each do |inventory|
       next if inventory.fleet_id == fleet_id

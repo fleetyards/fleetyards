@@ -27,6 +27,10 @@ module V1
             vehicleId: {type: :string, format: :uuid},
             recipientUsername: {type: :string},
             recipientFleetSlug: {type: :string},
+            # Files this transfer under a fleet contract, so its deposits count
+            # towards it. Refused unless the caller works that contract and the
+            # transfer touches one of the ends it names.
+            contractId: {type: :string, format: :uuid},
             note: {type: :string}
           },
           additionalProperties: false,
