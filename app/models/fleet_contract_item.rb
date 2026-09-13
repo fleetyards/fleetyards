@@ -12,6 +12,33 @@
 # The enums, the unit/category pairing and the reference check are taken from
 # `InventoryLedgerEntry` rather than re-typed, so a category added there cannot
 # be asked for here without also being depositable.
+# == Schema Information
+#
+# Table name: fleet_contract_items
+#
+#  id                :uuid             not null, primary key
+#  category          :integer          default(0), not null
+#  item_type         :string
+#  min_quality       :integer
+#  name              :string           not null
+#  position          :integer          default(0), not null
+#  quantity          :decimal(15, 2)   default(0.0), not null
+#  unit              :integer          default(0), not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  fleet_contract_id :uuid             not null
+#  item_id           :uuid
+#
+# Indexes
+#
+#  index_fleet_contract_items_on_fleet_contract_id               (fleet_contract_id)
+#  index_fleet_contract_items_on_fleet_contract_id_and_position  (fleet_contract_id,position)
+#  index_fleet_contract_items_on_item_type_and_item_id           (item_type,item_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (fleet_contract_id => fleet_contracts.id) ON DELETE => cascade
+#
 class FleetContractItem < ApplicationRecord
   belongs_to :fleet_contract, touch: true
   belongs_to :item, polymorphic: true, optional: true

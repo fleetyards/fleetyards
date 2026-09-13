@@ -2,6 +2,49 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: fleet_contracts
+#
+#  id                             :uuid             not null, primary key
+#  aasm_state                     :string           default("draft"), not null
+#  cancelled_at                   :datetime
+#  claimed_at                     :datetime
+#  crew_limit                     :integer
+#  deadline                       :datetime
+#  description                    :text
+#  expired_at                     :datetime
+#  fulfilled_at                   :datetime
+#  kind                           :integer          default(0), not null
+#  published_at                   :datetime
+#  reimburse_expenses             :boolean          default(TRUE), not null
+#  reward                         :decimal(15, 2)   default(0.0), not null
+#  slug                           :string           not null
+#  title                          :string           not null
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  created_by_id                  :uuid
+#  destination_fleet_inventory_id :uuid
+#  fleet_id                       :uuid             not null
+#  source_fleet_inventory_id      :uuid
+#
+# Indexes
+#
+#  index_fleet_contracts_on_created_by_id                   (created_by_id)
+#  index_fleet_contracts_on_destination_fleet_inventory_id  (destination_fleet_inventory_id)
+#  index_fleet_contracts_on_fleet_id                        (fleet_id)
+#  index_fleet_contracts_on_fleet_id_and_aasm_state         (fleet_id,aasm_state)
+#  index_fleet_contracts_on_fleet_id_and_kind               (fleet_id,kind)
+#  index_fleet_contracts_on_fleet_id_and_slug               (fleet_id,slug) UNIQUE
+#  index_fleet_contracts_on_source_fleet_inventory_id       (source_fleet_inventory_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
+#  fk_rails_...  (destination_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
+#  fk_rails_...  (fleet_id => fleets.id)
+#  fk_rails_...  (source_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
+#
 class FleetContractTest < ActiveSupport::TestCase
   test "a transport contract needs a source inventory and the others must not have one" do
     fleet = create(:fleet)
