@@ -532,7 +532,7 @@ class Model < ApplicationRecord
     [
       "active", "base_model_id",
       "beam", "cargo", "cargo_holds", "classification", "created_at", "description",
-      "dock_size", "erkul_identifier", "fleetchart_image",
+      "dimensions_measured_at", "dock_size", "erkul_identifier", "fleetchart_image",
       "fleetchart_offset_length", "focus", "front_view",
       "ground", "ground_acceleration",
       "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",

@@ -25,6 +25,7 @@ module Admin
               frontViewBlank: {type: :boolean},
               positionsNeedCurationEq: {type: :boolean},
               dimensionsDrifted: {type: :boolean},
+              dimensionsMeasuredAtNull: {type: :boolean},
               s: {anyOf: [{
                 type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
               }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]},

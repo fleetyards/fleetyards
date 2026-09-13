@@ -1480,7 +1480,8 @@
           "frontViewBlank": "Without Front View Image?",
           "topViewColoredBlank": "Without Top View Colored Image?",
           "vehicleSize": "Vehicle Size",
-          "dimensionsDrifted": "Dimensions differ from game files"
+          "dimensionsDrifted": "Dimensions differ from game files",
+          "dimensionsMeasuredAtNull": "Without Measured Dimensions?"
         },
         "modelModules": {
           "name": "Name"

@@ -1485,7 +1485,8 @@
           "topViewColoredBlank": "沒有彩色俯視圖圖片?",
           "scIdentifierBlank": "沒有 SC 標識?",
           "vehicleSize": "載具尺寸",
-          "dimensionsDrifted": "尺寸與遊戲檔案不一致"
+          "dimensionsDrifted": "尺寸與遊戲檔案不一致",
+          "dimensionsMeasuredAtNull": "沒有實測尺寸?"
         },
         "modelModules": {
           "name": "名稱"

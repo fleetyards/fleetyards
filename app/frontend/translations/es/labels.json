@@ -1485,7 +1485,8 @@
           "topViewColoredBlank": "¿Sin imagen de vista superior a color?",
           "scIdentifierBlank": "¿Sin identificador SC?",
           "vehicleSize": "Tamaño de vehículo",
-          "dimensionsDrifted": "Dimensiones difieren de los archivos del juego"
+          "dimensionsDrifted": "Dimensiones difieren de los archivos del juego",
+          "dimensionsMeasuredAtNull": "¿Sin dimensiones medidas?"
         },
         "modelModules": {
           "name": "Nombre"

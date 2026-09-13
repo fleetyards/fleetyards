@@ -190,6 +190,30 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by dimensionsMeasuredAtNull" do
+    measured = create(:model, dimensions_measured_at: Time.current)
+    unmeasured = create(:model, dimensions_measured_at: nil)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"dimensionsMeasuredAtNull" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, unmeasured.name
+      assert_not_includes names, measured.name
+    end
+  end
+
+  test "GET /models filters by dimensionsMeasuredAtNull false" do
+    measured = create(:model, dimensions_measured_at: Time.current)
+    unmeasured = create(:model, dimensions_measured_at: nil)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"dimensionsMeasuredAtNull" => false}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, measured.name
+      assert_not_includes names, unmeasured.name
+    end
+  end
+
   test "GET /models honours perPage and totals" do
     create_list(:model, 10)
     sign_in @user

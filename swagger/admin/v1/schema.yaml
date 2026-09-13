@@ -14382,6 +14382,8 @@ components:
           type: boolean
         dimensionsDrifted:
           type: boolean
+        dimensionsMeasuredAtNull:
+          type: boolean
         s:
           anyOf:
           - type: array
