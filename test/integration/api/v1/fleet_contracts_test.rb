@@ -332,6 +332,35 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The date field the schema declares as `format: date-time`. Sent explicitly
+  # because a create test that omits it leaves the form free to submit a value
+  # the API rejects, with the suite still green.
+  test "POST accepts a deadline in RFC3339" do
+    sign_in @officer
+
+    deadline = 3.days.from_now.utc.change(usec: 0)
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {title: "Haul titanium", kind: "procurement",
+             destinationFleetInventoryId: @depot.id,
+             deadline: deadline.iso8601} do
+      assert_equal deadline, Time.zone.parse(parsed_body["deadline"])
+    end
+  end
+
+  test "POST refuses a deadline that is not a timestamp" do
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {title: "Haul titanium", kind: "procurement",
+             destinationFleetInventoryId: @depot.id,
+             deadline: "2026-09-16T18:30"}
+  end
+
   test "POST refuses a transport contract with no source" do
     sign_in @officer
 

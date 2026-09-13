@@ -117,7 +117,10 @@ const onSubmit = handleSubmit(async (values) => {
     reward: String(values.reward ?? "0"),
     reimburseExpenses: values.reimburseExpenses,
     crewLimit: values.crewLimit ? Number(values.crewLimit) : null,
-    deadline: values.deadline || null,
+    // FormDateTime emits a local "YYYY-MM-DDTHH:MM" with no seconds and no
+    // offset, which `format: date-time` rejects outright. Parsing it as local
+    // and re-emitting ISO is the conversion, not a timezone shift.
+    deadline: values.deadline ? new Date(values.deadline).toISOString() : null,
     sourceFleetInventoryId: requiresSource.value
       ? values.sourceFleetInventoryId
       : null,
