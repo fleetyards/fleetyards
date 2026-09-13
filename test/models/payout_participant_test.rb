@@ -2,6 +2,29 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: payout_participants
+#
+#  id               :uuid             not null, primary key
+#  name             :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  added_by_id      :uuid
+#  payout_ledger_id :uuid             not null
+#  user_id          :uuid
+#
+# Indexes
+#
+#  index_payout_participants_on_payout_ledger_id     (payout_ledger_id)
+#  index_payout_participants_unique_user_per_ledger  (payout_ledger_id,user_id) UNIQUE WHERE (user_id IS NOT NULL)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (added_by_id => users.id)
+#  fk_rails_...  (payout_ledger_id => payout_ledgers.id)
+#  fk_rails_...  (user_id => users.id)
+#
 class PayoutParticipantTest < ActiveSupport::TestCase
   setup do
     @ledger = create(:payout_ledger)

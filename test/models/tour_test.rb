@@ -2,6 +2,33 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: tours
+#
+#  id            :uuid             not null, primary key
+#  cancelled_at  :datetime
+#  description   :text
+#  invite_token  :string           not null
+#  settled_at    :datetime
+#  slug          :string           not null
+#  starts_at     :datetime
+#  status        :string           default("open"), not null
+#  title         :string           not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  created_by_id :uuid             not null
+#
+# Indexes
+#
+#  index_tours_on_created_by_id_and_status  (created_by_id,status)
+#  index_tours_on_invite_token              (invite_token) UNIQUE
+#  index_tours_on_slug                      (slug) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (created_by_id => users.id)
+#
 class TourTest < ActiveSupport::TestCase
   test "requires a title" do
     assert_not Tour.new(created_by: create(:user)).valid?
