@@ -16,7 +16,7 @@ module V1
             status: ::V1::Schemas::Enums::TourStatusEnum,
             startsAt: {type: [:string, :null], format: "date-time"},
             settledAt: {type: [:string, :null], format: "date-time"},
-            createdBy: ::V1::Schemas::UserRef,
+            createdBy: ::V1::Schemas::UserRefWithAvatar,
             # Only ever present for the organiser; it is the credential the
             # invite link carries.
             inviteToken: {type: [:string, :null]},

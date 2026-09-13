@@ -52,6 +52,20 @@ class Api::V1::ToursFindByInviteTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The invite page names and pictures whoever is inviting, so the organiser
+  # travels with the tour rather than needing a second request.
+  test "GET carries the organiser and their avatar" do
+    organiser = create(:user, :with_avatar)
+    tour = create(:tour, created_by: organiser)
+
+    sign_in @outsider
+
+    assert_api_response :get, 200, path_params: {token: tour.invite_token} do
+      assert_equal organiser.username, parsed_body.dig("createdBy", "username")
+      assert parsed_body.dig("createdBy", "avatar", "smallUrl").present?
+    end
+  end
+
   test "GET withholds the invite token from the viewer" do
     sign_in @outsider
 

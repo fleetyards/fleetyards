@@ -23407,7 +23407,7 @@ components:
           - 'null'
           format: date-time
         createdBy:
-          "$ref": "#/components/schemas/UserRef"
+          "$ref": "#/components/schemas/UserRefWithAvatar"
         inviteToken:
           type:
           - string
@@ -23759,6 +23759,17 @@ components:
       - id
       - username
       title: UserRefRequired
+    UserRefWithAvatar:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+      title: UserRefWithAvatar
     UserResourceAccessEnum:
       type: string
       enum: []

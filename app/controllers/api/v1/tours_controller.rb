@@ -24,7 +24,7 @@ module Api
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(Tour, query_params["sorts"])
 
-        @q = authorized_scope(Tour.all).includes(:created_by).ransack(query_params)
+        @q = authorized_scope(Tour.all).includes(created_by: {avatar_attachment: :blob}).ransack(query_params)
 
         @tours = result_with_pagination(@q.result(distinct: true), per_page(Tour))
       end
@@ -143,7 +143,7 @@ module Api
       # joining. Deliberately outside the relation scope -- someone who has not
       # joined yet is not on the tour, and could not see it otherwise.
       def find_by_invite
-        @tour = Tour.active.find_by!(invite_token: params[:token])
+        @tour = invite_scope.find_by!(invite_token: params[:token])
 
         authorize! @tour, to: :find_by_invite?
 
@@ -151,7 +151,7 @@ module Api
       end
 
       def join
-        @tour = Tour.active.find_by!(invite_token: params[:token])
+        @tour = invite_scope.find_by!(invite_token: params[:token])
 
         authorize! @tour, to: :join?
 
@@ -175,6 +175,12 @@ module Api
         render :show
       end
 
+      # The invite page names and pictures whoever is inviting, so the organiser
+      # and their avatar come along with the lookup.
+      private def invite_scope
+        Tour.active.includes(created_by: {avatar_attachment: :blob})
+      end
+
       # The invite token is only rendered for the organiser, and a jbuilder view
       # cannot reach current_resource_owner on its own.
       private def set_viewer
@@ -186,7 +192,9 @@ module Api
       end
 
       private def set_tour
-        @tour = Tour.includes(payout_ledger: :payout_participants).find_by!(slug: params[:slug])
+        @tour = Tour
+          .includes(created_by: {avatar_attachment: :blob}, payout_ledger: :payout_participants)
+          .find_by!(slug: params[:slug])
       end
 
       private def check_tour_payouts_feature

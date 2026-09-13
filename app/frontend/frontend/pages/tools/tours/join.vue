@@ -65,7 +65,7 @@ const onJoin = async () => {
     <!-- Who is asking comes before what they are asking for, the way the
          authorize page names the application above its scopes. -->
     <div class="tour-join__organiser">
-      <Avatar size="large" />
+      <Avatar :avatar="tour.createdBy?.avatar?.smallUrl" size="large" />
     </div>
 
     <Text class="tour-join__info">
