@@ -8,13 +8,17 @@ class PayoutEntryPolicy < FleetBasePolicy
 
   def index? = ledger_policy.read?
 
-  def create? = ledger_policy.contribute?
+  def create?
+    return false unless ledger_policy.contribute?
+
+    ledger_policy.manage? || own_participant?
+  end
 
   def update?
     return false unless ledger&.open?
     return true if ledger_policy.manage?
 
-    own_entry? && ledger_policy.contribute?
+    own_entry? && own_participant? && ledger_policy.contribute?
   end
 
   alias_rule :destroy?, to: :update?
@@ -35,5 +39,22 @@ class PayoutEntryPolicy < FleetBasePolicy
   # an organiser recording a guest's spending still owns that row.
   private def own_entry?
     user.present? && record.respond_to?(:recorded_by_id) && record.recorded_by_id == user.id
+  end
+
+  # Everyone accounts for their own money. Without the manage right a
+  # participant may only put an amount against their own row -- otherwise one
+  # person could move everyone else's balance, and a guest, who has no account
+  # to object with, is entirely at their mercy. An organiser records for
+  # anyone, which is the only way a guest's spending reaches the ledger at all.
+  private def own_participant?
+    return false if user.blank?
+
+    participant = record.try(:payout_participant)
+
+    # A missing participant is a validation error rather than an authorization
+    # one, so it falls through to the 400 the client knows how to render.
+    return true if participant.blank?
+
+    participant.user_id == user.id
   end
 end

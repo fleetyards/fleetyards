@@ -23,6 +23,19 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), { editable: false });
 
+// The same rule the API applies: a row may only be corrected by someone who
+// may record against the participant it names. `participants` is already
+// narrowed to that set by the ledger, so offering a pen on every entry would
+// only hand out 403s.
+const editableParticipantIds = computed(
+  () => new Set(props.participants.map((participant) => participant.id)),
+);
+
+const editableEntry = (entry: PayoutEntry) =>
+  props.editable &&
+  !!entry.payoutParticipantId &&
+  editableParticipantIds.value.has(entry.payoutParticipantId);
+
 const { t, toUEC, l } = useI18n();
 const comlink = useComlink();
 
@@ -74,7 +87,7 @@ const onEdit = (entry: PayoutEntry) => {
       />
 
       <Btn
-        v-if="editable"
+        v-if="editableEntry(entry)"
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.BARE"
         :aria-label="t('headlines.payouts.editEntry')"

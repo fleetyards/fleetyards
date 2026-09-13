@@ -118,14 +118,47 @@ class Api::V1::PayoutEntriesCreateTest < ActionDispatch::IntegrationTest
   end
 
   # A participant id from a different ledger would otherwise let one tour's
-  # money be booked against another tour's member.
+  # money be booked against another tour's member. Asked as the organiser: a
+  # member naming anyone but themselves is refused a step earlier, which would
+  # never reach the validation this covers.
   test "POST rejects a participant from another ledger" do
     other = create(:payout_participant)
-    sign_in @member
+    sign_in @organiser
 
     assert_api_response :post, 400,
       path_params: {payoutLedgerId: @ledger.id},
       body: entry_body(payoutParticipantId: other.id)
+  end
+
+  # Everyone accounts for their own money: one member booking an expense
+  # against another moves both their balances.
+  test "POST refuses a member recording against someone else's row" do
+    sign_in @member
+
+    assert_api_response :post, 403,
+      path_params: {payoutLedgerId: @ledger.id},
+      body: entry_body(payoutParticipantId: @organiser_participant.id)
+  end
+
+  test "POST refuses a member recording against a guest" do
+    guest = create(:payout_participant, :guest, payout_ledger: @ledger)
+    sign_in @member
+
+    assert_api_response :post, 403,
+      path_params: {payoutLedgerId: @ledger.id},
+      body: entry_body(payoutParticipantId: guest.id)
+  end
+
+  # The organiser is the only way a guest's spending reaches the ledger at all.
+  test "POST lets the organiser record against a guest" do
+    guest = create(:payout_participant, :guest, payout_ledger: @ledger)
+    sign_in @organiser
+
+    assert_api_response :post, 201,
+      path_params: {payoutLedgerId: @ledger.id},
+      body: entry_body(payoutParticipantId: guest.id) do
+      assert_equal guest.id, parsed_body["payoutParticipantId"]
+    end
   end
 
   test "POST refuses once the ledger is settled" do

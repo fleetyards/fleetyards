@@ -26,6 +26,7 @@ import {
 } from "@/shared/composables/useSubscription";
 import { type PayoutLedger as PayoutLedgerMessage } from "@/services/fyCable/models/PayoutLedger";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useSessionStore } from "@/frontend/stores/session";
 import {
   usePayoutLedger,
   usePayoutLedgerBalances,
@@ -65,6 +66,22 @@ const { data: transfers, refetch: refetchTransfers } =
 const settled = computed(() => ledger.value?.status === "settled");
 
 const participants = computed(() => ledger.value?.participants ?? []);
+
+const sessionStore = useSessionStore();
+
+// Everyone accounts for their own money, so without the manage right the
+// picker offers only the viewer's own row -- the API refuses the rest, and a
+// list of names none of them may be booked against reads as a bug. A guest is
+// only ever recorded for by whoever manages the ledger.
+const recordableParticipants = computed(() => {
+  if (props.manageable) {
+    return participants.value;
+  }
+
+  return participants.value.filter(
+    (participant) => participant.user?.id === sessionStore.currentUser?.id,
+  );
+});
 
 // While the ledger is open the transfer list is a live preview recomputed from
 // the entries; once settled it is the frozen rows people pay against.
@@ -117,7 +134,7 @@ const onAddEntry = () => {
       import("@/frontend/components/Payouts/PayoutEntryModal/index.vue"),
     props: {
       payoutLedgerId: props.payoutLedgerId,
-      participants: participants.value,
+      participants: recordableParticipants.value,
     },
   });
 };
@@ -193,7 +210,7 @@ const onReopen = async () => {
           <PayoutEntryList
             :payout-ledger-id="payoutLedgerId"
             :entries="entries?.items ?? []"
-            :participants="participants"
+            :participants="recordableParticipants"
             :editable="contributable && !settled"
           />
         </PanelBody>

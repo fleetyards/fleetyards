@@ -102,6 +102,26 @@ class Api::V1::PayoutEntriesUpdateTest < ActionDispatch::IntegrationTest
     assert_api_response :patch, 403, path_params: path_params, body: {amount: "1"}
   end
 
+  # Correcting your own entry must not become a way to book it against someone
+  # else; the row it names is what moves their balance.
+  test "PATCH refuses moving an entry onto another participant" do
+    sign_in @member
+
+    assert_api_response :patch, 403,
+      path_params: path_params,
+      body: {payoutParticipantId: @other_p.id}
+  end
+
+  test "PATCH lets the organiser move an entry onto another participant" do
+    sign_in @organiser
+
+    assert_api_response :patch, 200,
+      path_params: path_params,
+      body: {payoutParticipantId: @other_p.id} do
+      assert_equal @other_p.id, parsed_body["payoutParticipantId"]
+    end
+  end
+
   test "PATCH is refused once the ledger is settled" do
     @ledger.update!(status: "settled", settled_at: Time.current)
     sign_in @member

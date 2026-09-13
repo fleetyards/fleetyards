@@ -46,10 +46,16 @@ module Api
         end
       end
 
+      # Assigned before the check, the way create builds the record first: the
+      # participant an entry names is exactly what the policy has to weigh, and
+      # authorizing the row as it stands would wave through a move onto someone
+      # else.
       def update
+        @payout_entry.assign_attributes(payout_entry_params)
+
         authorize! @payout_entry, with: PayoutEntryPolicy, context: ledger_context
 
-        if @payout_entry.update(payout_entry_params)
+        if @payout_entry.save
           render :show
         else
           render json: ValidationError.new("payout_entries.update", errors: @payout_entry.errors), status: :bad_request
