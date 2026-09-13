@@ -881,6 +881,7 @@
         "settled": "Pagos calculados",
         "reopened": "Libro reabierto",
         "tourCreated": "Expedición creada",
+        "tourCreateFailure": "No se pudo crear la expedición.",
         "tourJoined": "Te has unido a la expedición",
         "inviteCopied": "Enlace de invitación copiado",
         "settleConfirm": "¿Calcular los pagos y bloquear el libro? Los movimientos no se podrán cambiar hasta reabrirlo.",

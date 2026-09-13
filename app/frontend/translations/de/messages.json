@@ -881,6 +881,7 @@
         "settled": "Auszahlungen berechnet",
         "reopened": "Buch wieder geöffnet",
         "tourCreated": "Tour erstellt",
+        "tourCreateFailure": "Tour konnte nicht erstellt werden.",
         "tourJoined": "Du bist der Tour beigetreten",
         "inviteCopied": "Einladungslink kopiert",
         "settleConfirm": "Auszahlungen berechnen und das Buch sperren? Einträge lassen sich dann bis zum Wiederöffnen nicht mehr ändern.",

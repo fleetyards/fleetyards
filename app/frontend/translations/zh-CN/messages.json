@@ -881,6 +881,7 @@
         "settled": "分账已计算",
         "reopened": "已重新打开",
         "tourCreated": "行程已创建",
+        "tourCreateFailure": "无法创建行程。",
         "tourJoined": "你已加入该行程",
         "inviteCopied": "邀请链接已复制",
         "settleConfirm": "计算分账并锁定账簿？在重新打开之前将无法修改记录。",

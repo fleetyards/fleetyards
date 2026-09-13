@@ -881,6 +881,7 @@
         "settled": "Répartition calculée",
         "reopened": "Registre rouvert",
         "tourCreated": "Expédition créée",
+        "tourCreateFailure": "Impossible de créer l'expédition.",
         "tourJoined": "Vous avez rejoint l'expédition",
         "inviteCopied": "Lien d'invitation copié",
         "settleConfirm": "Calculer la répartition et verrouiller le registre ? Les écritures ne seront plus modifiables jusqu'à réouverture.",

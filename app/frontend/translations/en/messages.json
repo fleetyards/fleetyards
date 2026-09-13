@@ -891,6 +891,7 @@
         "settled": "Payouts calculated",
         "reopened": "Ledger reopened",
         "tourCreated": "Tour created",
+        "tourCreateFailure": "Tour could not be created.",
         "tourJoined": "You joined the tour",
         "inviteCopied": "Invite link copied",
         "settleConfirm": "Calculate the payouts and lock the ledger? Entries can no longer be changed until it is reopened.",

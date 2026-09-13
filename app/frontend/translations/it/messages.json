@@ -881,6 +881,7 @@
         "settled": "Pagamenti calcolati",
         "reopened": "Registro riaperto",
         "tourCreated": "Spedizione creata",
+        "tourCreateFailure": "Impossibile creare la spedizione.",
         "tourJoined": "Ti sei unito alla spedizione",
         "inviteCopied": "Link d'invito copiato",
         "settleConfirm": "Calcolare i pagamenti e bloccare il registro? I movimenti non saranno più modificabili fino alla riapertura.",

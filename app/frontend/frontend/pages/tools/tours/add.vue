@@ -37,6 +37,16 @@ const [startsAt, startsAtProps] = defineField("startsAt");
 
 const createMutation = useCreateTourMutation();
 
+// FormDateTime emits a local "YYYY-MM-DDTHH:MM", which the schema's date-time
+// format rejects.
+const toIsoOrNull = (value: unknown) => {
+  if (!value) return null;
+
+  const parsed = new Date(value as string);
+
+  return isNaN(parsed.getTime()) ? null : parsed.toISOString();
+};
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -45,7 +55,7 @@ const onSubmit = handleSubmit(async (values) => {
       data: {
         title: values.title as string,
         description: (values.description as string) || null,
-        startsAt: (values.startsAt as string | null) || null,
+        startsAt: toIsoOrNull(values.startsAt),
       },
     })
     .then((tour) => {
@@ -53,7 +63,11 @@ const onSubmit = handleSubmit(async (values) => {
       void router.push({ name: "tour", params: { slug: tour.slug } });
     })
     .catch((error: ApiError) => {
-      displayAlert({ text: error.response?.data?.message });
+      displayAlert({
+        text:
+          error.response?.data?.message ??
+          t("messages.payouts.tourCreateFailure"),
+      });
     })
     .finally(() => {
       submitting.value = false;
