@@ -33,6 +33,7 @@ import type {
   InventoryTarget,
 } from "@/frontend/types/logistics";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -53,7 +54,10 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const vehicleId = computed(() => props.vehicle.id);
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "hangar-vehicle-cargo",
+  log: "hangar-vehicle-cargo-transactions",
+});
 
 const target = computed<InventoryTarget>(() => ({
   kind: "vehicle",

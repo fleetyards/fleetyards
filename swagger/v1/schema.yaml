@@ -15207,6 +15207,30 @@ components:
           - string
           - 'null'
           format: uuid
+        transfer:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            direction:
+              type: string
+              enum:
+              - in
+              - out
+            counterparty:
+              "$ref": "#/components/schemas/TransferParty"
+            inventory:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type: string
+                kind:
+                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -16748,6 +16772,30 @@ components:
           - string
           - 'null'
           format: uuid
+        transfer:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            direction:
+              type: string
+              enum:
+              - in
+              - out
+            counterparty:
+              "$ref": "#/components/schemas/TransferParty"
+            inventory:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type: string
+                kind:
+                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -17871,6 +17919,30 @@ components:
           - string
           - 'null'
           format: uuid
+        transfer:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            direction:
+              type: string
+              enum:
+              - in
+              - out
+            counterparty:
+              "$ref": "#/components/schemas/TransferParty"
+            inventory:
+              type:
+              - object
+              - 'null'
+              properties:
+                name:
+                  type: string
+                kind:
+                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:

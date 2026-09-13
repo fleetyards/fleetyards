@@ -221,6 +221,11 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
 
     assert_not_nil deposit["transferId"]
     assert_not_nil deposit["createdAt"], "a ledger without times has no order"
+
+    # A deposit wants to know where the goods came from.
+    assert_equal "in", deposit["transfer"]["direction"]
+    assert_equal @source.name, deposit["transfer"]["inventory"]["name"]
+    assert_equal @user.username, deposit["transfer"]["counterparty"]["name"]
   end
 
   test "GET needs a signed-in user" do

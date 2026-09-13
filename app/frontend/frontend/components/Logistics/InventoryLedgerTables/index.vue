@@ -171,6 +171,16 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       ]
     : []),
   {
+    // A deposit somebody typed and one that arrived from another inventory are
+    // the same row otherwise -- and "it came from a transfer" is not the
+    // question the ledger is being asked. Which one is.
+    name: "origin",
+    label: t("labels.logistics.origin"),
+    sortable: false,
+    width: "200px",
+    mobile: false,
+  },
+  {
     // A ledger without times is a list of things that happened in no
     // particular order.
     name: "createdAt",
@@ -245,15 +255,25 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       >
         {{ t(`labels.logistics.entryTypes.${record.entryType}`) }}
       </span>
-      <!-- A deposit somebody typed and one that arrived from another inventory
-           are the same row otherwise, and the ledger is where you go to find
-           out which. -->
-      <i
-        v-if="record.transferId"
-        v-tooltip="t('labels.logistics.fromTransfer')"
-        class="fa-duotone fa-right-left ledger-transfer-mark"
-        :data-test="`ledger-transfer-${record.id}`"
-      />
+    </template>
+
+    <template #col-origin="{ record }">
+      <span v-if="record.transfer" class="ledger-origin">
+        <i
+          class="fa-duotone ledger-origin-mark"
+          :class="
+            record.transfer.direction === 'in'
+              ? 'fa-arrow-right-to-bracket'
+              : 'fa-arrow-right-from-bracket'
+          "
+        />
+        <span :data-test="`ledger-origin-${record.id}`">
+          {{ record.transfer.counterparty?.name }}
+          <span v-if="record.transfer.inventory" class="ledger-origin-place">
+            {{ record.transfer.inventory.name }}
+          </span>
+        </span>
+      </span>
     </template>
 
     <template #col-createdAt="{ record }">
@@ -297,9 +317,24 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
 </template>
 
 <style lang="scss" scoped>
-.ledger-transfer-mark {
-  margin-left: 0.4rem;
+.ledger-origin {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+
+.ledger-origin-mark {
   opacity: 0.6;
+}
+
+.ledger-origin-place {
+  font-size: 0.85em;
+  opacity: 0.7;
+
+  &::before {
+    padding-right: 0.3rem;
+    content: "·";
+  }
 }
 
 .ledger-date {

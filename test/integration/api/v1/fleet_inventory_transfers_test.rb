@@ -441,6 +441,13 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
 
     assert_not_nil withdrawal["transferId"], "a transfer's own entry is unmarked"
     assert_nil typed["transferId"], "an entry somebody typed is marked as a transfer's"
+
+    # "It came from a transfer" is not the question the ledger is asked. Which
+    # one is.
+    assert_equal "out", withdrawal["transfer"]["direction"]
+    assert_equal @officer.username, withdrawal["transfer"]["counterparty"]["name"]
+    assert_equal locker.name, withdrawal["transfer"]["inventory"]["name"]
+    assert_nil typed["transfer"]
   end
 
   private def donation_to_fleet

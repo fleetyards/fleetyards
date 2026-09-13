@@ -30,6 +30,7 @@ import {
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -37,7 +38,10 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 const { t } = useI18n();
 const comlink = useComlink();
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "hangar-inventories",
+  log: "hangar-transactions",
+});
 
 const { isFeatureEnabled } = useFeatures();
 

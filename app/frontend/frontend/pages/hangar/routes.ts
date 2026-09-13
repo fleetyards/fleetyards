@@ -66,8 +66,34 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // Not `inventories/transactions`: an inventory slugged "transactions" would
+    // shadow it.
+    path: "transactions/",
+    name: "hangar-transactions",
+    component: () => import("@/frontend/pages/hangar/inventories/index.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.inventories",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
+    },
+  },
+  {
     path: "inventories/:inventory/",
     name: "hangar-inventory",
+    component: () =>
+      import("@/frontend/pages/hangar/inventories/[inventory].vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.inventories",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
+    },
+  },
+  {
+    // The ledger is a place you can link somebody to, so it is a route.
+    path: "inventories/:inventory/transactions/",
+    name: "hangar-inventory-transactions",
     component: () =>
       import("@/frontend/pages/hangar/inventories/[inventory].vue"),
     meta: {

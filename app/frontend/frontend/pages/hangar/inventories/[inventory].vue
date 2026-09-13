@@ -30,6 +30,7 @@ import type {
   InventoryStockRecord,
   InventoryTarget,
 } from "@/frontend/types/logistics";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
@@ -42,7 +43,10 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const inventorySlug = computed(() => route.params.inventory as string);
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "hangar-inventory",
+  log: "hangar-inventory-transactions",
+});
 
 const {
   data: inventory,

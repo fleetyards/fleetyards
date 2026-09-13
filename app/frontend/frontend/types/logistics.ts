@@ -79,6 +79,16 @@ export type InventoryLedgerRecord = {
   notes?: string;
   // Set when a transfer wrote this entry rather than a person.
   transferId?: string | null;
+  // Structural, and no stricter than the generated shapes: the three entry
+  // kinds each get their own `…ItemTransfer` type and all of them have to
+  // satisfy this one record.
+  transfer?: {
+    id?: string;
+    // From this entry's point of view: a deposit arrived, a withdrawal left.
+    direction?: string;
+    counterparty?: { kind: string; name: string; slug: string } | null;
+    inventory?: { name?: string; kind?: string } | null;
+  } | null;
   createdAt?: string | null;
   inventory?: InventoryReference;
   item?: InventoryItemReference | null;

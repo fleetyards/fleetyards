@@ -1915,7 +1915,7 @@
         "transferFromFleet": "De la flota",
         "noTransferTargets": "Aquí no hay destino",
         "recordedAt": "Registrado",
-        "fromTransfer": "Llegó por transferencia"
+        "origin": "De / A"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

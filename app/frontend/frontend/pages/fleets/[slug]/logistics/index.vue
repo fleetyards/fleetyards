@@ -34,6 +34,7 @@ import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedg
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -66,7 +67,10 @@ const canSeeTransfers = computed(
       false),
 );
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "fleet-logistics",
+  log: "fleet-logistics-transactions",
+});
 
 const {
   data: inventories,

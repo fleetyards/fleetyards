@@ -192,6 +192,16 @@ class InventoryTransfer < ApplicationRecord
     pending?
   end
 
+  # The other end, seen from one of the entries this transfer wrote. A deposit
+  # wants to know where the goods came from; the withdrawal that paid for it
+  # wants to know where they went -- and a transfer still waiting has a party
+  # for an answer rather than an inventory.
+  def counterpart_for(inventory)
+    return [destination, self.class.party_of(destination) || recipient_party] if inventory == source
+
+    [source, sender_party]
+  end
+
   # The entries that left the source. These are the shipment: what a recipient
   # is being offered, and what is mirrored at the far end on acceptance.
   def dispatched_entries

@@ -25,4 +25,16 @@ export const routes: RouteRecordRaw[] = [
       feature: FeatureFlagName.SHIP_INVENTORIES,
     },
   },
+  {
+    path: "cargo/transactions/",
+    name: "hangar-vehicle-cargo-transactions",
+    component: () => import("@/frontend/pages/hangar/[id]/cargo.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.vehicleCargo",
+      backgroundImage: "bg-5",
+      customTitle: true,
+      feature: FeatureFlagName.SHIP_INVENTORIES,
+    },
+  },
 ];

@@ -30,6 +30,7 @@ import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedg
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
@@ -48,7 +49,10 @@ const comlink = useComlink();
 const fleetSlug = computed(() => props.fleet.slug);
 const inventorySlug = computed(() => route.params.inventory as string);
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "fleet-logistics-inventory",
+  log: "fleet-logistics-inventory-transactions",
+});
 
 const {
   data: inventory,
