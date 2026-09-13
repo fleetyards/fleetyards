@@ -79,7 +79,7 @@ describe("SpeedMetrics", () => {
             groundMaxSpeed: 60,
             groundReverseSpeed: 20,
             groundAcceleration: 5,
-            groundDecceleration: 8,
+            groundDeceleration: 8,
           },
           metrics: { isGroundVehicle: true },
         } as never,

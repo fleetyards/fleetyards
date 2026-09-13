@@ -76,9 +76,9 @@ const hasAcceleration = computed(
           </div>
         </div>
         <div class="col-6">
-          <div class="metrics-label">{{ t("model.groundDecceleration") }}:</div>
+          <div class="metrics-label">{{ t("model.groundDeceleration") }}:</div>
           <div class="metrics-value">
-            {{ toNumber(model.speeds.groundDecceleration, "speed") }}
+            {{ toNumber(model.speeds.groundDeceleration, "speed") }}
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@ const hasAcceleration = computed(
           </div>
           <div class="col-6 col-lg-3">
             <div class="metrics-label">
-              {{ t("model.scmSpeedDecceleration") }}:
+              {{ t("model.scmSpeedDeceleration") }}:
             </div>
             <div class="metrics-value">
               {{ toNumber(model.speeds.secondsToStopFromScmSpeed, "seconds") }}

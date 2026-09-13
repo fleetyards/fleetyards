@@ -32,14 +32,14 @@
       "rollBoosted": "Rollio Potenziato",
       "price": "Prezzo",
       "groundAcceleration": "Accelerazione",
-      "groundDecceleration": "Decelerazione",
+      "groundDeceleration": "Decelerazione",
       "scmSpeedAcceleration": "Zero a SCM",
-      "scmSpeedDecceleration": "SCM a Zero",
+      "scmSpeedDeceleration": "SCM a Zero",
       "compare": {
         "groundMaxSpeed": "Velocità Massima a Terra",
         "groundReverseSpeed": "Velocità Indietro a Terra",
         "groundAcceleration": "Accelerazione a Terra",
-        "groundDecceleration": "Decelerazione a Terra"
+        "groundDeceleration": "Decelerazione a Terra"
       },
       "pledgePrice": "Prezzo del Pledge",
       "quantumFuelTankSize": "Carburante Quantum",

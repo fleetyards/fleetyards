@@ -32,14 +32,14 @@
       "rollBoosted": "Roll verstärkt",
       "price": "Preis",
       "groundAcceleration": "Beschleunigung",
-      "groundDecceleration": "Abbremsung",
+      "groundDeceleration": "Abbremsung",
       "scmSpeedAcceleration": "Null zu SCM",
-      "scmSpeedDecceleration": "SCM zu Null",
+      "scmSpeedDeceleration": "SCM zu Null",
       "compare": {
         "groundMaxSpeed": "Max-Geschwindigkeit am Boden",
         "groundReverseSpeed": "Rückwärts-Geschwindigkeit am Boden",
         "groundAcceleration": "Beschleunigung am Boden",
-        "groundDecceleration": "Abbremsung am Boden"
+        "groundDeceleration": "Abbremsung am Boden"
       },
       "quantumFuelTankSize": "Quantum Treibstoff",
       "hydrogenFuelTankSize": "Treibstoff",

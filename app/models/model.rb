@@ -27,7 +27,7 @@
 #  fuel_consumption                  :decimal(15, 2)
 #  ground                            :boolean          default(FALSE)
 #  ground_acceleration               :decimal(15, 2)
-#  ground_decceleration              :decimal(15, 2)
+#  ground_deceleration               :decimal(15, 2)
 #  ground_max_speed                  :decimal(15, 2)
 #  ground_reverse_speed              :decimal(15, 2)
 #  height                            :decimal(15, 2)   default(0.0), not null
@@ -157,7 +157,7 @@ class Model < ApplicationRecord
     rsi_scm_speed rsi_max_speed rsi_pitch rsi_yaw rsi_roll
     classification production_status production_note focus pledge_price length beam height mass
     cargo personal_inventory size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
-    ground_acceleration ground_decceleration pitch yaw roll price
+    ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
     quantum_fuel_tanks external_fuel_tanks refuel_boom sales_page_url
   ], meta: {
@@ -535,7 +535,7 @@ class Model < ApplicationRecord
       "dimensions_measured_at", "dock_size", "erkul_identifier", "fleetchart_image",
       "fleetchart_offset_length", "focus", "front_view",
       "ground", "ground_acceleration",
-      "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
+      "ground_deceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game",
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "min_crew", "model_paints_count", "module_hardpoints_count",

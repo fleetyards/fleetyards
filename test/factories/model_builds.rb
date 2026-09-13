@@ -11,7 +11,7 @@
 #  fuel_consumption        :decimal(15, 2)
 #  ground                  :boolean          default(FALSE)
 #  ground_acceleration     :decimal(15, 2)
-#  ground_decceleration    :decimal(15, 2)
+#  ground_deceleration     :decimal(15, 2)
 #  ground_max_speed        :decimal(15, 2)
 #  ground_reverse_speed    :decimal(15, 2)
 #  hull_doors              :jsonb

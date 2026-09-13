@@ -10,7 +10,7 @@ module Shared
           type: :object,
           properties: {
             groundAcceleration: {type: :number},
-            groundDecceleration: {type: :number},
+            groundDeceleration: {type: :number},
             groundMaxSpeed: {type: :number},
             groundReverseSpeed: {type: :number},
             maxSpeed: {type: :number},

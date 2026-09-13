@@ -332,7 +332,7 @@ module ScData
         update_params[:ground_max_speed] = speeds.dig("max").to_f if speeds.dig("max").present?
         update_params[:ground_reverse_speed] = speeds.dig("reverse").to_f if speeds.dig("reverse").present?
         update_params[:ground_acceleration] = speeds.dig("acceleration").to_f if speeds.dig("acceleration").present?
-        update_params[:ground_decceleration] = speeds.dig("decceleration").to_f if speeds.dig("decceleration").present?
+        update_params[:ground_deceleration] = speeds.dig("decceleration").to_f if speeds.dig("decceleration").present?
 
         update_params
       end

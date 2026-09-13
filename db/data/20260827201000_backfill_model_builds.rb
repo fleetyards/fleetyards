@@ -25,7 +25,7 @@ class BackfillModelBuilds < ActiveRecord::Migration[8.1]
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom
     scm_speed scm_speed_boosted reverse_speed_boosted max_speed
     pitch pitch_boosted yaw yaw_boosted roll roll_boosted
-    ground_max_speed ground_reverse_speed ground_acceleration ground_decceleration
+    ground_max_speed ground_reverse_speed ground_acceleration ground_deceleration
   ].freeze
 
   def up

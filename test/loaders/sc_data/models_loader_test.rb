@@ -154,7 +154,7 @@ module ScData
         assert_equal 24.0, model.ground_max_speed.to_f
         assert_equal 12.0, model.ground_reverse_speed.to_f
         assert_equal 8.0, model.ground_acceleration.to_f
-        assert_equal 12.0, model.ground_decceleration.to_f
+        assert_equal 12.0, model.ground_deceleration.to_f
       end
 
       test "#load_model keeps the ground speeds a vehicle does not declare" do

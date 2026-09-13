@@ -32,14 +32,14 @@
       "rollBoosted": "翻滚增强",
       "price": "价格",
       "groundAcceleration": "加速度",
-      "groundDecceleration": "减速度",
+      "groundDeceleration": "减速度",
       "scmSpeedAcceleration": "零到SCM",
-      "scmSpeedDecceleration": "SCM到零",
+      "scmSpeedDeceleration": "SCM到零",
       "compare": {
         "groundMaxSpeed": "最大地面速度",
         "groundReverseSpeed": "倒车地面速度",
         "groundAcceleration": "地面加速度",
-        "groundDecceleration": "地面减速度"
+        "groundDeceleration": "地面减速度"
       },
       "quantumFuelTankSize": "量子燃料",
       "hydrogenFuelTankSize": "燃料",

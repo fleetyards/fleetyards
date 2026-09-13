@@ -32,14 +32,14 @@
       "rollBoosted": "Roll Boosté",
       "price": "Prix",
       "groundAcceleration": "Accélération",
-      "groundDecceleration": "Décélération",
+      "groundDeceleration": "Décélération",
       "scmSpeedAcceleration": "Zéro vers SCM",
-      "scmSpeedDecceleration": "SCM vers Zéro",
+      "scmSpeedDeceleration": "SCM vers Zéro",
       "compare": {
         "groundMaxSpeed": "Vitesse Sol Max",
         "groundReverseSpeed": "Vitesse Sol Marche Arrière",
         "groundAcceleration": "Accélération Sol",
-        "groundDecceleration": "Décélération Sol"
+        "groundDeceleration": "Décélération Sol"
       },
       "pledgePrice": "Prix réel",
       "quantumFuelTankSize": "Carburant Quantum",

@@ -234,7 +234,7 @@ json.rsi_slug model.rsi_slug
 json.speeds({})
 json.speeds do
   json.ground_acceleration model.ground_acceleration&.to_f
-  json.ground_decceleration model.ground_decceleration&.to_f
+  json.ground_deceleration model.ground_deceleration&.to_f
   json.ground_max_speed model.ground_max_speed&.to_f
   json.ground_reverse_speed model.ground_reverse_speed&.to_f
   json.max_speed model.max_speed&.to_f

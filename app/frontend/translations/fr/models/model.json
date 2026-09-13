@@ -30,14 +30,14 @@
         "roll": "Roll",
         "price": "Prix",
         "groundAcceleration": "Accélération",
-        "groundDecceleration": "Décélération",
+        "groundDeceleration": "Décélération",
         "scmSpeedAcceleration": "Zéro à SCM",
-        "scmSpeedDecceleration": "SCM à Zéro",
+        "scmSpeedDeceleration": "SCM à Zéro",
         "compare": {
           "groundMaxSpeed": "Vitesse au sol max.",
           "groundReverseSpeed": "Vitesse de recul au sol",
           "groundAcceleration": "Accélération au sol",
-          "groundDecceleration": "Décélération au sol"
+          "groundDeceleration": "Décélération au sol"
         },
         "quantumFuelTankSize": "Carburant Quantum",
         "hydrogenFuelTankSize": "Carburant",

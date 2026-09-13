@@ -25,7 +25,7 @@
 #  fuel_consumption                  :decimal(15, 2)
 #  ground                            :boolean          default(FALSE)
 #  ground_acceleration               :decimal(15, 2)
-#  ground_decceleration              :decimal(15, 2)
+#  ground_deceleration               :decimal(15, 2)
 #  ground_max_speed                  :decimal(15, 2)
 #  ground_reverse_speed              :decimal(15, 2)
 #  height                            :decimal(15, 2)   default(0.0), not null
@@ -262,7 +262,7 @@ FactoryBot.define do
       ground { true }
       ground_max_speed { 50.0 }
       ground_acceleration { 5.0 }
-      ground_decceleration { 10.0 }
+      ground_deceleration { 10.0 }
       ground_reverse_speed { 25.0 }
     end
 

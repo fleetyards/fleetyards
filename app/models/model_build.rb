@@ -17,7 +17,7 @@
 #  fuel_consumption        :decimal(15, 2)
 #  ground                  :boolean          default(FALSE)
 #  ground_acceleration     :decimal(15, 2)
-#  ground_decceleration    :decimal(15, 2)
+#  ground_deceleration     :decimal(15, 2)
 #  ground_max_speed        :decimal(15, 2)
 #  ground_reverse_speed    :decimal(15, 2)
 #  hull_doors              :jsonb
@@ -70,7 +70,7 @@ class ModelBuild < ApplicationRecord
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks external_fuel_tanks refuel_boom
     scm_speed scm_speed_boosted reverse_speed_boosted max_speed
     pitch pitch_boosted yaw yaw_boosted roll roll_boosted
-    ground_max_speed ground_reverse_speed ground_acceleration ground_decceleration
+    ground_max_speed ground_reverse_speed ground_acceleration ground_deceleration
   ].freeze
 
   # All five of Model's serialized columns that a build carries, declared
@@ -103,7 +103,7 @@ class ModelBuild < ApplicationRecord
   FILTERABLE = %i[
     mass scm_speed max_speed personal_inventory ground
     pitch yaw roll
-    ground_max_speed ground_reverse_speed ground_acceleration ground_decceleration
+    ground_max_speed ground_reverse_speed ground_acceleration ground_deceleration
     cargo_holds quantum_fuel_tanks hydrogen_fuel_tanks
   ].freeze
 

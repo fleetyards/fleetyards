@@ -14566,7 +14566,7 @@ components:
       properties:
         groundAcceleration:
           type: number
-        groundDecceleration:
+        groundDeceleration:
           type: number
         groundMaxSpeed:
           type: number
