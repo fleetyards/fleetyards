@@ -308,3 +308,35 @@ class UserVehicleCountingTest < ActiveSupport::TestCase
     end
   end
 end
+
+# The two counter columns are still in the schema but retired: ignored a release
+# ahead of the migration that drops them, so the release the pre-deploy hook
+# migrates out from under has already stopped selecting them.
+class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
+  RETIRED_COLUMNS = %w[purchased_vehicles_count wanted_vehicles_count]
+
+  test "does not select the retired columns" do
+    RETIRED_COLUMNS.each do |column|
+      assert_not_includes User.column_names, column
+    end
+
+    assert_not_includes User.all.to_sql, "purchased_vehicles_count"
+  end
+
+  test "still writes a row the columns are not null on" do
+    user = create(:user)
+
+    row = ActiveRecord::Base.connection.select_one(
+      "SELECT purchased_vehicles_count, wanted_vehicles_count FROM users WHERE id = '#{user.id}'"
+    )
+
+    assert_equal 0, row["purchased_vehicles_count"]
+    assert_equal 0, row["wanted_vehicles_count"]
+  end
+
+  test "does not offer a retired column as a filter" do
+    RETIRED_COLUMNS.each do |column|
+      assert_not_includes User.ransackable_attributes, column
+    end
+  end
+end

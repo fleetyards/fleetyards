@@ -86,6 +86,14 @@ class User < ApplicationRecord
   # has to go when the account does.
   include ErasableVersionsConcern
 
+  # Both columns were only ever written by the migration that added them -- the
+  # `counter_cache: true` meant to maintain them sat on the `has_many` side,
+  # where it does nothing. They are ignored here a release ahead of the
+  # migration that drops them: the pre-deploy hook migrates before any new
+  # container boots, so the release still serving traffic must already have
+  # stopped selecting them.
+  self.ignored_columns += %w[purchased_vehicles_count wanted_vehicles_count]
+
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   # Only an admin action sets `author_id`, so a change a user makes to their own
@@ -260,7 +268,7 @@ class User < ApplicationRecord
     [
       "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
-      "id", "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube",
+      "id", "rsi_handle", "twitch", "updated_at", "username", "youtube",
       "search"
     ]
   end
