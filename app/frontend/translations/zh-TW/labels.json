@@ -2015,7 +2015,8 @@
           "account": "帳戶與機庫",
           "fleetMembership": "艦隊成員資格",
           "fleetEvents": "艦隊活動",
-          "logistics": "物流"
+          "logistics": "物流",
+          "relationships": "好友與盟友"
         },
         "hangar_create": "機庫已建立",
         "hangar_destroy": "機庫已移除",
@@ -2043,7 +2044,11 @@
         "fleet_event_signup_kicked": "已從席位移除",
         "allInGroup": "這個群組的全部項目",
         "inventory_transfer_received": "收到轉移",
-        "inventory_transfer_resolved": "轉移已回覆"
+        "inventory_transfer_resolved": "轉移已回覆",
+        "friend_request_received": "收到好友請求",
+        "friend_request_accepted": "好友請求已接受",
+        "fleet_ally_request_received": "收到結盟請求",
+        "fleet_ally_request_accepted": "結盟請求已接受"
       },
       "fleets": {
         "missions": {

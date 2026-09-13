@@ -2013,7 +2013,8 @@
           "account": "Account e hangar",
           "fleetMembership": "Iscrizione alla flotta",
           "fleetEvents": "Eventi della flotta",
-          "logistics": "Logistica"
+          "logistics": "Logistica",
+          "relationships": "Amici e alleati"
         },
         "hangar_create": "Hangar creato",
         "hangar_destroy": "Hangar rimosso",
@@ -2041,7 +2042,11 @@
         "fleet_event_signup_kicked": "Rimosso da uno slot",
         "allInGroup": "Tutto in questo gruppo",
         "inventory_transfer_received": "Trasferimento ricevuto",
-        "inventory_transfer_resolved": "Trasferimento gestito"
+        "inventory_transfer_resolved": "Trasferimento gestito",
+        "friend_request_received": "Richiesta di amicizia ricevuta",
+        "friend_request_accepted": "Richiesta di amicizia accettata",
+        "fleet_ally_request_received": "Richiesta di alleanza ricevuta",
+        "fleet_ally_request_accepted": "Richiesta di alleanza accettata"
       },
       "fleets": {
         "missions": {

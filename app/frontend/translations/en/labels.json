@@ -2029,7 +2029,8 @@
           "account": "Account & hangar",
           "fleetMembership": "Fleet membership",
           "fleetEvents": "Fleet events",
-          "logistics": "Logistics"
+          "logistics": "Logistics",
+          "relationships": "Friends & allies"
         },
         "hangar_create": "Hangar created",
         "hangar_destroy": "Hangar removed",
@@ -2057,7 +2058,11 @@
         "fleet_event_signup_kicked": "Removed from a slot",
         "allInGroup": "Everything in this group",
         "inventory_transfer_received": "Transfer received",
-        "inventory_transfer_resolved": "Transfer answered"
+        "inventory_transfer_resolved": "Transfer answered",
+        "friend_request_received": "Friend request received",
+        "friend_request_accepted": "Friend request accepted",
+        "fleet_ally_request_received": "Ally request received",
+        "fleet_ally_request_accepted": "Ally request accepted"
       },
       "fleets": {
         "missions": {
