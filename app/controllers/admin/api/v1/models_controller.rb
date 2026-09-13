@@ -165,7 +165,7 @@ module Admin
           @model_query_params ||= params.permit(q: [
             :search_cont, :name_cont, :id_eq, :front_view_blank, :fleetchart_image_blank,
             :top_view_colored_blank, :holo_blank, :sc_key_blank, :dimensions_drifted,
-            :dimensions_measured_at_null, :s, :sorts,
+            :dimensions_measured_at_null, :positions_need_curation_eq, :s, :sorts,
             name_in: [], id_in: [], id_not_in: [], production_status_in: [],
             manufacturer_in: [], s: [], sorts: []
           ]).fetch(:q, {})

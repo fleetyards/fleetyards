@@ -214,6 +214,18 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by positionsNeedCurationEq" do
+    needs = create(:model, positions_need_curation: true)
+    fine = create(:model, positions_need_curation: false)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"positionsNeedCurationEq" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, needs.name
+      assert_not_includes names, fine.name
+    end
+  end
+
   test "GET /models honours perPage and totals" do
     create_list(:model, 10)
     sign_in @user
