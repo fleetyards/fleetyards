@@ -24,6 +24,20 @@ describe("frontend routes", () => {
     expect(router.currentRoute.value.name).toBe(name);
   });
 
+  // Every list is its own page: a tab is somewhere a reader can be sent and
+  // somewhere a reload lands, which is also what lets a notification point at
+  // the one list its request is in.
+  it.each([
+    ["/settings/friends/", "settings-friends"],
+    ["/settings/friends/incoming/", "settings-friends-incoming"],
+    ["/settings/friends/outgoing/", "settings-friends-outgoing"],
+    ["/settings/friends/ignored/", "settings-friends-ignored"],
+  ])("opens %s as %s", async (path, name) => {
+    await router.push(path);
+
+    expect(router.currentRoute.value.name).toBe(name);
+  });
+
   it("keeps what the link carried", async () => {
     await router.push("/friends/incoming/?page=2");
 

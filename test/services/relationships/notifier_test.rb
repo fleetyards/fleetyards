@@ -25,14 +25,23 @@ class Relationships::NotifierTest < ActiveSupport::TestCase
     assert_empty notifications_for(@sender)
   end
 
-  test "the notification names the sender and points at the friends page" do
+  test "the notification names the sender and points at the list it is answered on" do
     request
 
     notification = notifications_for(@target).sole
 
     assert_includes notification.title, @sender.username
-    assert_equal "/settings/friends/", notification.link
+    assert_equal "/settings/friends/incoming/", notification.link
     assert_equal Friendship.between(@sender, @target), notification.record
+  end
+
+  # The other half of the same rule: an acceptance is news about a relationship
+  # that now exists, and the accepted list is the one holding it.
+  test "an acceptance points at the friends themselves" do
+    friendship = request.relationship
+    Relationships::Answerer.new(friendship, actor: @target).accept(@target)
+
+    assert_equal "/settings/friends/", notifications_for(@sender, type: :friend_request_accepted).sole.link
   end
 
   test "accepting tells the person who asked" do
@@ -127,6 +136,6 @@ class Relationships::NotifierTest < ActiveSupport::TestCase
 
     assert_includes notification.title, other_fleet.name
     assert_includes notification.title, fleet.name
-    assert_equal "/fleets/#{fleet.slug}/allies/", notification.link
+    assert_equal "/fleets/#{fleet.slug}/allies/incoming/", notification.link
   end
 end

@@ -34,7 +34,7 @@ module Relationships
           user: user,
           type: type,
           title: I18n.t("notifications.#{type}.title", **title_args(about, party)),
-          link: link_for(party),
+          link: link_for(party, event),
           record: @relationship
         )
       end
@@ -61,10 +61,18 @@ module Relationships
       {fleet: about.name, own_fleet: party.name}
     end
 
-    private def link_for(party)
+    # The list the reader has something to do on. A request is answered on the
+    # incoming one and is in no other list; an acceptance is news about a
+    # relationship that now exists, which is the list it is in.
+    private def link_for(party, event)
       helpers = ::Rails.application.routes.url_helpers
+      waiting = event == :received
 
-      return helpers.frontend_friends_path if party.is_a?(::User)
+      if party.is_a?(::User)
+        return waiting ? helpers.frontend_incoming_friends_path : helpers.frontend_friends_path
+      end
+
+      return helpers.frontend_incoming_fleet_allies_path(party.slug) if waiting
 
       helpers.frontend_fleet_allies_path(party.slug)
     end
