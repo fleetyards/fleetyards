@@ -101,6 +101,75 @@ module Contracts
       assert_equal 150.to_d, line.delivered
     end
 
+    # A refused pickup keeps its withdrawal and compensates back into the
+    # source, so counting withdrawals alone reports goods as still being in a
+    # courier's hold after they came home.
+    test "a returned pickup stops counting as picked up" do
+      source = create(:fleet_inventory, fleet: @fleet)
+      @contract.update!(kind: :transport, source_fleet_inventory: source)
+
+      create(:fleet_inventory_item, fleet_inventory: source, entry_type: :deposit,
+        name: "Titanium", category: :commodity, unit: :scu, quantity: 800)
+
+      pickup = linked_transfer(source: source, destination: nil, recipient: @contractor,
+        state: "declined")
+
+      create(:fleet_inventory_item, fleet_inventory: source, inventory_transfer: pickup,
+        entry_type: :withdrawal, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
+
+      assert_equal 400.to_d, progress.lines.first.picked_up
+
+      create(:fleet_inventory_item, fleet_inventory: source, inventory_transfer: pickup,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
+
+      assert_equal 0.to_d, progress.lines.first.picked_up
+    end
+
+    test "a partly returned pickup counts only what stayed out" do
+      source = create(:fleet_inventory, fleet: @fleet)
+      @contract.update!(kind: :transport, source_fleet_inventory: source)
+
+      create(:fleet_inventory_item, fleet_inventory: source, entry_type: :deposit,
+        name: "Titanium", category: :commodity, unit: :scu, quantity: 800)
+
+      pickup = linked_transfer(source: source, destination: nil, recipient: @contractor)
+      create(:fleet_inventory_item, fleet_inventory: source, inventory_transfer: pickup,
+        entry_type: :withdrawal, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
+      create(:fleet_inventory_item, fleet_inventory: source, inventory_transfer: pickup,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 150)
+
+      assert_equal 250.to_d, progress.lines.first.picked_up
+    end
+
+    # The weights divide money, so a deleted inventory must not move a share
+    # onto whoever happened to press the button.
+    test "a deleted source credits nobody rather than the officer who dispatched it" do
+      officer = create(:user)
+      transfer = linked_transfer(initiated_by: officer)
+
+      create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
+
+      assert_equal [@contractor.id], progress.lines.first.contributions.map(&:user_id)
+
+      # Straight to the column: nulling the source is what `ON DELETE SET NULL`
+      # does, and the model would refuse a transfer with no source at all.
+      transfer.update_columns(source_inventory_id: nil)
+
+      assert_empty progress.lines.first.contributions
+    end
+
+    test "a deleted source still credits a contractor who dispatched their own goods" do
+      transfer = linked_transfer(initiated_by: @contractor)
+
+      create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
+        entry_type: :deposit, name: "Titanium", category: :commodity, unit: :scu, quantity: 400)
+
+      transfer.update_columns(source_inventory_id: nil)
+
+      assert_equal [@contractor.id], progress.lines.first.contributions.map(&:user_id)
+    end
+
     test "two contractors are attributed separately and their weights sum to one" do
       second = create(:user)
       create(:fleet_contract_assignment, :accepted, fleet_contract: @contract, user: second)

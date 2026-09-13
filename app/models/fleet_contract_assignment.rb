@@ -95,6 +95,21 @@ class FleetContractAssignment < ApplicationRecord
     %w[fleet_contract user]
   end
 
+  # The crew limit is a check-then-insert, so two accepts on *different* rows
+  # both read the same count and both write. The contract row is what orders
+  # them: with it held, the second re-reads what the first committed.
+  #
+  # The same reasoning as `FleetContract#claim_by`, and the reason the limit
+  # cannot simply be a unique index -- it counts rows rather than forbidding a
+  # second one.
+  def approve!(actor)
+    fleet_contract.with_lock do
+      self.approved_by = actor
+
+      accept!
+    end
+  end
+
   private def stamp_requested_at
     self.requested_at ||= Time.current
   end

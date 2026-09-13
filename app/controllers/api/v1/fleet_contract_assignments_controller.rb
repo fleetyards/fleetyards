@@ -34,6 +34,8 @@ module Api
         authorize! @fleet_contract_assignment, to: :create?,
           context: {fleet: @fleet, fleet_contract: @fleet_contract}
 
+        return if refuse_touching_the_lead
+
         # Asking again after being turned down is a new request, not a second
         # row -- the unique index would refuse one anyway.
         @fleet_contract_assignment.role = :crew
@@ -55,9 +57,7 @@ module Api
         authorize! @fleet_contract_assignment, to: :accept?,
           context: {fleet: @fleet, fleet_contract: @fleet_contract}
 
-        @fleet_contract_assignment.approved_by = current_resource_owner
-
-        unless @fleet_contract_assignment.accept!
+        unless @fleet_contract_assignment.approve!(current_resource_owner)
           return render json: ValidationError.new("fleet_contract_assignments.accept",
             errors: @fleet_contract_assignment.errors), status: :bad_request
         end
@@ -86,6 +86,8 @@ module Api
         authorize! @fleet_contract_assignment, to: :destroy?,
           context: {fleet: @fleet, fleet_contract: @fleet_contract}
 
+        return if refuse_touching_the_lead
+
         own = @fleet_contract_assignment.user_id == current_resource_owner&.id
         moved = own ? @fleet_contract_assignment.withdraw! : @fleet_contract_assignment.remove!
 
@@ -95,6 +97,26 @@ module Api
         end
 
         render :show
+      end
+
+      # The lead does not leave through the crew endpoints. Withdrawing their own
+      # row would leave the contract `in_progress` with nobody leading it, and
+      # the create path -- which find-or-initializes by user -- would happily
+      # rewrite that same row into a `requested` crew member. Both go through
+      # `release`, which puts the contract back on the board and takes the crew
+      # with it.
+      private def refuse_touching_the_lead
+        return false unless @fleet_contract_assignment.persisted?
+        return false unless @fleet_contract_assignment.lead?
+        return false unless @fleet_contract_assignment.accepted?
+
+        errors = ::ActiveModel::Errors.new(@fleet_contract_assignment)
+        errors.add(:base, :lead_must_release)
+
+        render json: ValidationError.new("fleet_contract_assignments.destroy", errors: errors),
+          status: :bad_request
+
+        true
       end
 
       private def announce_answer

@@ -33,6 +33,7 @@
 #
 #  index_fleet_contract_items_on_fleet_contract_id               (fleet_contract_id)
 #  index_fleet_contract_items_on_fleet_contract_id_and_position  (fleet_contract_id,position)
+#  index_fleet_contract_items_on_identity                        (fleet_contract_id, lower((name)::text), category, unit) UNIQUE
 #  index_fleet_contract_items_on_item_type_and_item_id           (item_type,item_id)
 #
 # Foreign Keys
@@ -55,6 +56,7 @@ class FleetContractItem < ApplicationRecord
   validates :item_type, presence: true, if: :item_id?
   validate :referenced_item_exists, if: :item_id?
   validate :unit_fits_category
+  validate :identity_is_not_already_asked_for
 
   before_validation :set_name_from_item
   before_create :set_position
@@ -73,6 +75,22 @@ class FleetContractItem < ApplicationRecord
   # contract written as "Titanium" must count a deposit entered as "titanium".
   def position_identity
     [name.to_s.downcase, category, unit]
+  end
+
+  # Two lines with the same identity would both match the same deposits, so one
+  # delivery would satisfy both and fulfil the contract at half the goods. The
+  # unique index is the backstop; this is what makes it a readable 400.
+  private def identity_is_not_already_asked_for
+    return if fleet_contract.blank? || name.blank?
+
+    twin = fleet_contract.fleet_contract_items
+      .where.not(id: id)
+      .where(category: category, unit: unit)
+      .where("LOWER(name) = ?", name.to_s.downcase)
+
+    return unless twin.exists?
+
+    errors.add(:name, :taken)
   end
 
   private def set_name_from_item

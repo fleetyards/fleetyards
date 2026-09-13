@@ -117,6 +117,49 @@ module Contracts
       User.where.not(id: @known_user_ids).destroy_all
     end
 
+    # The crew limit counts rows rather than forbidding a second one, so no index
+    # can hold it: two accepts on *different* rows both read the same count and
+    # both write.
+    #
+    # `belongs_to :fleet_contract, touch: true` already serializes the *write*
+    # on the contract row, which is why a plain two-thread race passes with the
+    # lock removed — and why it is not a guard. The touch blocks after the
+    # count, so both accepts still count zero. What discriminates is holding the
+    # row while both workers reach their blocking point: without the explicit
+    # lock they have already counted and both go through; with it they block
+    # before counting, and the second one sees the first.
+    test "the crew limit holds when two accepts arrive together" do
+      @contract.update!(crew_limit: 1)
+      officer = create(:user)
+
+      rows = 2.times.map do
+        create(:fleet_contract_assignment, fleet_contract: @contract, user: create(:user))
+      end
+
+      workers = nil
+
+      @contract.with_lock do
+        workers = rows.map do |row|
+          Thread.new do
+            ActiveRecord::Base.connection_pool.with_connection do
+              FleetContractAssignment.find(row.id).approve!(officer)
+            end
+          rescue => e
+            e
+          end
+        end
+
+        # Long enough for both to reach whatever they block on, which is the
+        # count in the unlocked version and the row itself in the locked one.
+        sleep 0.5
+      end
+
+      workers.each { |worker| worker.join(5) }
+
+      assert_equal 1, @contract.fleet_contract_assignments.accepted.crew.count,
+        "the crew went over its limit"
+    end
+
     test "two final deliveries fulfil the contract once" do
       2.times { |index| deposit(400, index) }
 

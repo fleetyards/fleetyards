@@ -51,6 +51,10 @@ class Api::V1::FleetContractCrewTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Contracts::FleetContractCrewMember
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(403, "forbidden") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -131,6 +135,10 @@ class Api::V1::FleetContractCrewTest < ActionDispatch::IntegrationTest
 
       response(200, "successful") do
         schema ::V1::Schemas::Contracts::FleetContractCrewMember
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
       end
 
       response(403, "forbidden") do
@@ -251,6 +259,44 @@ class Api::V1::FleetContractCrewTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug, id: assignment.id} do
       assert_equal "removed", parsed_body["state"]
     end
+  end
+
+  # The lead leaves through `release`, which puts the contract back on the board
+  # and takes the crew with it. Going out through the crew endpoint would leave
+  # it in progress with nobody leading.
+  test "the lead cannot withdraw their own row" do
+    lead_row = @contract.fleet_contract_assignments.accepted.lead.sole
+    sign_in @lead
+
+    assert_api_response :delete, 400,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug, id: lead_row.id}
+
+    assert lead_row.reload.accepted?
+    assert @contract.reload.in_progress?
+  end
+
+  test "a manager cannot remove the lead through the crew endpoint either" do
+    lead_row = @contract.fleet_contract_assignments.accepted.lead.sole
+    sign_in @officer
+
+    assert_api_response :delete, 400,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug, id: lead_row.id}
+  end
+
+  # `create` find-or-initializes by user, so without the guard the lead asking
+  # to join would rewrite their own row into a requested crew member.
+  test "the lead asking to join does not demote their own row" do
+    sign_in @lead
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug}
+
+    lead_row = @contract.fleet_contract_assignments.accepted.lead.sole
+
+    assert_equal @lead.id, lead_row.user_id
   end
 
   test "GET needs a signed-in user" do

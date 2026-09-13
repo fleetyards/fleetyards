@@ -121,8 +121,13 @@ module Contracts
 
     # Whose goods these were, which is the party the transfer's source belongs
     # to rather than whoever pressed the button -- an officer dispatching on a
-    # member's behalf must not be paid for it. `initiated_by` is the fallback
-    # for a source row nulled by a deleted account.
+    # member's behalf must not be paid for it.
+    #
+    # A source inventory deleted after the transfer finished nulls the column,
+    # and then the only thing left is who pressed the button. That is accepted
+    # *only* when they are a contractor on this contract: otherwise deleting an
+    # inventory would quietly move a share onto the officer who dispatched it.
+    # Crediting nobody is the safe answer, because these weights divide money.
     private def contractor_for(transfer_id)
       transfer = transfers_by_id[transfer_id]
       return if transfer.blank?
@@ -130,7 +135,11 @@ module Contracts
       party = ::InventoryTransfer.party_of(transfer.source)
       return party.id if party.is_a?(::User)
 
-      transfer.initiated_by_id
+      transfer.initiated_by_id if contractor_ids.include?(transfer.initiated_by_id)
+    end
+
+    private def contractor_ids
+      @contractor_ids ||= @contract.contractor_assignments.pluck(:user_id)
     end
 
     private def transfers_by_id
@@ -143,11 +152,37 @@ module Contracts
       @deposits ||= rollup(@contract.destination_fleet_inventory_id, :deposit)
     end
 
+    # Netted, not summed. A refused pickup keeps its withdrawal and adds a
+    # compensating deposit back into the source (#4878 D2), so counting
+    # withdrawals alone would keep reporting goods as being in a courier's hold
+    # after they were returned.
     private def withdrawals
       @withdrawals ||= if @contract.requires_pickup?
-        rollup(@contract.source_fleet_inventory_id, :withdrawal)
+        net_rollup(@contract.source_fleet_inventory_id)
       else
         {}
+      end
+    end
+
+    # The same shape as `rollup`, with deposits subtracting rather than being a
+    # separate bucket: at the source of a contract a deposit can only be goods
+    # coming back.
+    private def net_rollup(inventory_id)
+      return {} if inventory_id.blank?
+
+      dispatched = rollup(inventory_id, :withdrawal)
+      returned = rollup(inventory_id, :deposit)
+
+      dispatched.each_with_object({}) do |(identity, rows), result|
+        returned_rows = returned.fetch(identity, [])
+
+        result[identity] = rows.map do |row|
+          refund = returned_rows
+            .select { |other| other[:inventory_transfer_id] == row[:inventory_transfer_id] }
+            .sum(0.to_d) { |other| other[:quantity] }
+
+          row.merge(quantity: [row[:quantity] - refund, 0.to_d].max)
+        end
       end
     end
 

@@ -470,6 +470,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.decimal "quantity", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "unit", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.index "fleet_contract_id, lower((name)::text), category, unit", name: "index_fleet_contract_items_on_identity", unique: true
     t.index ["fleet_contract_id", "position"], name: "index_fleet_contract_items_on_fleet_contract_id_and_position"
     t.index ["fleet_contract_id"], name: "index_fleet_contract_items_on_fleet_contract_id"
     t.index ["item_type", "item_id"], name: "index_fleet_contract_items_on_item_type_and_item_id"

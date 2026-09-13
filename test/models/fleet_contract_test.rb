@@ -128,6 +128,42 @@ class FleetContractTest < ActiveSupport::TestCase
     end
   end
 
+  # Two lines with the same identity would both match the same deposits, so one
+  # delivery would satisfy both.
+  test "a contract cannot ask for the same position twice" do
+    contract = create(:fleet_contract)
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 100)
+
+    twin = build(:fleet_contract_item, fleet_contract: contract,
+      name: "titanium", category: :commodity, unit: :scu, quantity: 50)
+
+    assert_not twin.valid?
+    assert_includes twin.errors.details[:name].map { |error| error[:error] }, :taken
+  end
+
+  test "the database refuses a duplicate identity that slips past the validation" do
+    contract = create(:fleet_contract)
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 100)
+
+    assert_raises ActiveRecord::RecordNotUnique do
+      FleetContractItem.insert_all!(
+        [{
+          fleet_contract_id: contract.id, name: "TITANIUM",
+          category: 0, unit: 0, quantity: 5, position: 9,
+          created_at: Time.current, updated_at: Time.current
+        }]
+      )
+    end
+  end
+
+  test "the same position in another contract is fine" do
+    create(:fleet_contract_item, name: "Titanium", category: :commodity, unit: :scu)
+
+    assert build(:fleet_contract_item, name: "Titanium", category: :commodity, unit: :scu).valid?
+  end
+
   test "the crew limit is counted over the other accepted rows" do
     contract = create(:fleet_contract, :in_progress, crew_limit: 1)
     create(:fleet_contract_assignment, :accepted, fleet_contract: contract)
