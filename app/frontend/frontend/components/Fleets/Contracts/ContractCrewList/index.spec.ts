@@ -1,12 +1,19 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
+import {
+  type FleetContractCrewMember,
+  FleetContractCrewRoleEnum,
+  FleetContractCrewStateEnum,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
-const member = (overrides = {}) => ({
+const member = (
+  overrides: Partial<FleetContractCrewMember> = {},
+): FleetContractCrewMember => ({
   id: "11111111-1111-4111-8111-111111111111",
-  role: "crew",
-  state: "accepted",
+  role: FleetContractCrewRoleEnum.CREW,
+  state: FleetContractCrewStateEnum.ACCEPTED,
   user: { id: "aaaa", username: "hauler" },
   requestedAt: null,
   acceptedAt: null,
@@ -33,7 +40,11 @@ describe("FleetContractsCrewList", () => {
     const subject = await mount({
       crew: [
         member(),
-        member({ id: "2", state: "withdrawn", user: { id: "b", username: "gone" } }),
+        member({
+          id: "2",
+          state: FleetContractCrewStateEnum.WITHDRAWN,
+          user: { id: "b", username: "gone" },
+        }),
       ],
     });
 
@@ -45,7 +56,7 @@ describe("FleetContractsCrewList", () => {
 
   it("hides the pending requests from somebody who cannot answer them", async () => {
     const subject = await mount({
-      crew: [member({ id: "3", state: "requested" })],
+      crew: [member({ id: "3", state: FleetContractCrewStateEnum.REQUESTED })],
       canAnswer: false,
     });
 
@@ -56,7 +67,7 @@ describe("FleetContractsCrewList", () => {
 
   it("shows the pending requests to the lead", async () => {
     const subject = await mount({
-      crew: [member({ id: "3", state: "requested" })],
+      crew: [member({ id: "3", state: FleetContractCrewStateEnum.REQUESTED })],
       canAnswer: true,
     });
 
@@ -67,7 +78,7 @@ describe("FleetContractsCrewList", () => {
 
   it("emits accept with the assignment id", async () => {
     const subject = await mount({
-      crew: [member({ id: "3", state: "requested" })],
+      crew: [member({ id: "3", state: FleetContractCrewStateEnum.REQUESTED })],
       canAnswer: true,
     });
 

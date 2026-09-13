@@ -1,13 +1,21 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
+import {
+  type FleetContractProgress,
+  type FleetContractProgressLine,
+  InventoryCategoryEnum,
+  InventoryUnitEnum,
+} from "@/services/fyApi";
 import Component from "./index.vue";
 
-const line = (overrides = {}) => ({
+const line = (
+  overrides: Partial<FleetContractProgressLine> = {},
+): FleetContractProgressLine => ({
   itemId: "11111111-1111-4111-8111-111111111111",
   name: "Titanium",
-  category: "commodity",
-  unit: "scu",
+  category: InventoryCategoryEnum.COMMODITY,
+  unit: InventoryUnitEnum.SCU,
   minQuality: null,
   requested: "800.0",
   delivered: "240.0",
@@ -19,7 +27,9 @@ const line = (overrides = {}) => ({
   ...overrides,
 });
 
-const progress = (overrides = {}) => ({
+const progress = (
+  overrides: Partial<FleetContractProgress> = {},
+): FleetContractProgress => ({
   complete: false,
   fraction: 0.3,
   lines: [line()],
@@ -46,13 +56,16 @@ describe("FleetContractsProgress", () => {
   it("renders one row per line", async () => {
     const subject = await mount({
       progress: progress({
-        lines: [line(), line({ itemId: "22222222-2222-4222-8222-222222222222" })],
+        lines: [
+          line(),
+          line({ itemId: "22222222-2222-4222-8222-222222222222" }),
+        ],
       }),
     });
 
-    expect(subject.findAll("[data-test='contract-progress-line']")).toHaveLength(
-      2,
-    );
+    expect(
+      subject.findAll("[data-test='contract-progress-line']"),
+    ).toHaveLength(2);
   });
 
   it("labels the bar with the quantities, not the percentage", async () => {
