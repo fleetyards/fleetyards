@@ -471,6 +471,32 @@ Written per phase. The state machine including all three answers; a table test o
   instead of rendering empty — `FilteredList` reserves the right-hand column for
   a slot that merely exists, which on a phone decides whether the paginator wraps.
 
+- **2026-09-14** A badge, and the one piece of review feedback that was not
+  already fixed.
+
+  **A request waiting on you had nowhere to show.** It arrives as a
+  notification, and a notification is read once -- archive it and nothing is
+  left, while the request goes on waiting behind two levels of navigation. The
+  count now rides on the settings row in the footer and on the Friends tab
+  inside it. The tab strip had no badge at all, so `TabNavView` takes counts by
+  route name; a tab that is a redirect to its first child is addressed by that
+  child's name, which is what `routeName` already resolves.
+
+  **`GET /friends/pending-count` rather than the list.** The list answers the
+  same question through its pagination, but this is polled by every signed-in
+  client and would have carried a page of rows to count them -- the reason
+  `notifications#unread_count` exists beside its own list. It counts `awaiting`
+  rather than the listing scope: a request this user ignored is not waiting on
+  them, and a badge they could never clear is worse than no badge. Declaring a
+  second collection path made every bare `assert_api_response :get` in the
+  schema test ambiguous, so each one names its path now.
+
+  **Greptile's five comments were four stale ones and a real one.** The four
+  describe the tree as it stood before the review fixes -- it reviews at run
+  start, not at the latest push. The fifth was right: the compatibility route
+  for `/friends` captured the tab and threw it away, answering a link to the
+  incoming list with the accepted one.
+
 ## Progress
 - [x] Phase 1 — The two relationships and the handshake
 - [x] Phase 2 — What a friend can see
