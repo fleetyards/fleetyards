@@ -47,6 +47,8 @@ class PayoutEntry < ApplicationRecord
   validate :participant_belongs_to_ledger
   validate :ledger_is_open
 
+  before_destroy :ledger_must_be_open, prepend: true
+
   DEFAULT_SORTING_PARAMS = ["createdAt desc"]
   ALLOWED_SORTING_PARAMS = [
     "amount asc", "amount desc",
@@ -73,17 +75,25 @@ class PayoutEntry < ApplicationRecord
   # A settled ledger has transfers people are paying against. Letting an entry
   # move underneath them would leave the frozen list describing a split that no
   # longer exists.
+  # Locked before the status is read, the same way
+  # InventoryLedgerEntry#withdrawal_does_not_exceed_stock locks its inventory:
+  # without it this check and PayoutLedger#settle! can both pass on the same
+  # ledger, and the entry lands after the transfers were frozen.
   private def ledger_is_open
     return if payout_ledger.blank?
-
-    # Locked before the status is read, the same way
-    # InventoryLedgerEntry#withdrawal_does_not_exceed_stock locks its inventory:
-    # without it this check and PayoutLedger#settle! can both pass on the same
-    # ledger, and the entry lands after the transfers were frozen.
-    payout_ledger.lock! if payout_ledger.persisted?
-
-    return if payout_ledger.open?
+    return if payout_ledger.open_for_edits?
 
     errors.add(:base, :ledger_settled)
+  end
+
+  # Validations do not run on destroy, so removing an entry needed its own
+  # guard -- otherwise money could leave a ledger whose payout list was already
+  # frozen around it.
+  private def ledger_must_be_open
+    return if payout_ledger.blank?
+    return if payout_ledger.open_for_edits?
+
+    errors.add(:base, :ledger_settled)
+    throw :abort
   end
 end

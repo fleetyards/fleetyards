@@ -153,4 +153,30 @@ class PayoutLedgerTest < ActiveSupport::TestCase
 
     assert_equal [statuses["confirmed"].id], ledger.payout_participants.pluck(:user_id)
   end
+
+  # The controller's guard runs outside settle!'s transaction, so the model has
+  # to re-check once it holds the lock. Without that, the second of two
+  # simultaneous requests deletes and recreates the first one's transfers and
+  # every confirmation ticked off against them goes with it.
+  test "settling an already settled ledger answers false and changes nothing" do
+    ledger = create(:payout_ledger)
+    create(:payout_participant, payout_ledger: ledger)
+    bob = create(:payout_participant, payout_ledger: ledger)
+    create(:payout_entry, :income, payout_ledger: ledger, payout_participant: bob, amount: 100)
+
+    assert ledger.settle!
+    transfer = ledger.payout_transfers.first
+    transfer.confirm!
+
+    assert_not PayoutLedger.find(ledger.id).settle!
+
+    assert_equal 1, ledger.reload.payout_transfers.count
+    assert_predicate transfer.reload, :confirmed?
+  end
+
+  test "reopening an open ledger answers false" do
+    ledger = create(:payout_ledger)
+
+    assert_not ledger.reopen!
+  end
 end

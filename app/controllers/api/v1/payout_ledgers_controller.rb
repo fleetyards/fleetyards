@@ -58,24 +58,24 @@ module Api
       def settle
         authorize! @payout_ledger, with: PayoutLedgerPolicy, to: :settle?
 
-        if @payout_ledger.settled?
+        # settle! re-checks under its own lock and answers false, which is what
+        # catches two simultaneous requests -- this check alone runs outside it.
+        unless @payout_ledger.settle!(current_resource_owner)
           render json: {code: "already_settled", message: "This ledger is already settled"}, status: :conflict
           return
         end
 
-        @payout_ledger.settle!(current_resource_owner)
         render :show
       end
 
       def reopen
         authorize! @payout_ledger, with: PayoutLedgerPolicy, to: :reopen?
 
-        unless @payout_ledger.settled?
+        unless @payout_ledger.reopen!
           render json: {code: "not_settled", message: "This ledger is not settled"}, status: :conflict
           return
         end
 
-        @payout_ledger.reopen!
         render :show
       end
 
