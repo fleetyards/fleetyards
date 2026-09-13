@@ -27,6 +27,7 @@
 #  updated_at                     :datetime         not null
 #  destination_fleet_inventory_id :uuid
 #  destination_inventory_id       :uuid
+#  fleet_contract_id              :uuid
 #  initiated_by_id                :uuid
 #  recipient_fleet_id             :uuid
 #  recipient_id                   :uuid
@@ -38,6 +39,7 @@
 #
 #  index_inventory_transfers_on_destination_fleet_inventory_id  (destination_fleet_inventory_id)
 #  index_inventory_transfers_on_destination_inventory_id        (destination_inventory_id)
+#  index_inventory_transfers_on_fleet_contract_id               (fleet_contract_id) WHERE (fleet_contract_id IS NOT NULL)
 #  index_inventory_transfers_on_initiated_by_id                 (initiated_by_id)
 #  index_inventory_transfers_on_pending_expires_at              (expires_at) WHERE ((aasm_state)::text = 'pending'::text)
 #  index_inventory_transfers_on_pending_recipient               (recipient_id) WHERE ((aasm_state)::text = 'pending'::text)
@@ -52,6 +54,7 @@
 #
 #  fk_rails_...  (destination_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
 #  fk_rails_...  (destination_inventory_id => inventories.id) ON DELETE => nullify
+#  fk_rails_...  (fleet_contract_id => fleet_contracts.id) ON DELETE => nullify
 #  fk_rails_...  (initiated_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (recipient_fleet_id => fleets.id) ON DELETE => nullify
 #  fk_rails_...  (recipient_id => users.id) ON DELETE => nullify
@@ -82,6 +85,11 @@ class InventoryTransfer < ApplicationRecord
   belongs_to :recipient, class_name: "User", optional: true
   belongs_to :recipient_fleet, class_name: "Fleet", optional: true
 
+  # The contract this transfer counts towards, if it was filed under one.
+  # Optional, because the overwhelming majority of transfers are not contract
+  # work -- see `Contracts::TransferLink` for what earns the link.
+  belongs_to :fleet_contract, optional: true
+
   belongs_to :initiated_by, class_name: "User", optional: true
   belongs_to :resolved_by, class_name: "User", optional: true
 
@@ -94,6 +102,12 @@ class InventoryTransfer < ApplicationRecord
   validate :at_most_one_recipient
   validate :has_a_target
   validate :destination_is_not_the_source
+
+  # A contract is fulfilled by goods arriving, and goods only arrive when a
+  # transfer completes. Run after the commit rather than inside the resolver's
+  # transaction so the deposits it is about to count are already visible; the
+  # transition itself takes its own lock (`Contracts::Fulfilment`).
+  after_commit :check_contract_fulfilment, if: :fleet_contract_id?
 
   scope :pending_for_user, ->(user) { pending.where(recipient: user) }
   scope :pending_for_fleet, ->(fleet) { pending.where(recipient_fleet: fleet) }
@@ -226,6 +240,13 @@ class InventoryTransfer < ApplicationRecord
     return if inventory.blank?
 
     inventory.inventory_items.where(inventory_transfer_id: id)
+  end
+
+  private def check_contract_fulfilment
+    return unless completed?
+    return unless previous_changes.key?("aasm_state") || previously_new_record?
+
+    ::Contracts::Fulfilment.new(fleet_contract).call
   end
 
   # Compared as records rather than as ids: an association assigned but not yet

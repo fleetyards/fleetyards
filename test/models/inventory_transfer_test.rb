@@ -18,6 +18,7 @@ require "test_helper"
 #  updated_at                     :datetime         not null
 #  destination_fleet_inventory_id :uuid
 #  destination_inventory_id       :uuid
+#  fleet_contract_id              :uuid
 #  initiated_by_id                :uuid
 #  recipient_fleet_id             :uuid
 #  recipient_id                   :uuid
@@ -29,6 +30,7 @@ require "test_helper"
 #
 #  index_inventory_transfers_on_destination_fleet_inventory_id  (destination_fleet_inventory_id)
 #  index_inventory_transfers_on_destination_inventory_id        (destination_inventory_id)
+#  index_inventory_transfers_on_fleet_contract_id               (fleet_contract_id) WHERE (fleet_contract_id IS NOT NULL)
 #  index_inventory_transfers_on_initiated_by_id                 (initiated_by_id)
 #  index_inventory_transfers_on_pending_expires_at              (expires_at) WHERE ((aasm_state)::text = 'pending'::text)
 #  index_inventory_transfers_on_pending_recipient               (recipient_id) WHERE ((aasm_state)::text = 'pending'::text)
@@ -43,6 +45,7 @@ require "test_helper"
 #
 #  fk_rails_...  (destination_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
 #  fk_rails_...  (destination_inventory_id => inventories.id) ON DELETE => nullify
+#  fk_rails_...  (fleet_contract_id => fleet_contracts.id) ON DELETE => nullify
 #  fk_rails_...  (initiated_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (recipient_fleet_id => fleets.id) ON DELETE => nullify
 #  fk_rails_...  (recipient_id => users.id) ON DELETE => nullify
