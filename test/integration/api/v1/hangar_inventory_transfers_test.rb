@@ -275,6 +275,23 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # An array permitted as a scalar is dropped outright, so the caller gets the
+  # whole unfiltered list back rather than an error.
+  test "GET filters by several states at once" do
+    create(:inventory_transfer, source_inventory: @source, recipient: @recipient, initiated_by: @user)
+    create(:inventory_transfer, :completed, source_inventory: @source,
+      recipient: @recipient, initiated_by: @user)
+    create(:inventory_transfer, source_inventory: @source, recipient: @recipient,
+      initiated_by: @user, aasm_state: "declined")
+
+    sign_in @user
+
+    assert_api_response :get, 200,
+      params: {direction: "outgoing", q: {stateIn: %w[pending completed]}} do
+      assert_equal %w[completed pending], parsed_body["items"].map { |t| t["state"] }.uniq.sort
+    end
+  end
+
   test "GET needs a signed-in user" do
     assert_api_response :get, 401
   end

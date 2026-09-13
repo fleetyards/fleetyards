@@ -22,7 +22,8 @@ import {
   type InventoryStockPosition,
   type InventoryTransferCreateInput,
 } from "@/services/fyApi";
-import { useFleetMembers } from "@/services/fyApi";
+import { type FleetMember, fleetMembers } from "@/services/fyApi";
+import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import type {
   TransferSource,
@@ -130,31 +131,24 @@ watchEffect(() => {
 
 const memberFleet = ref<string | undefined>(props.memberFleets[0]?.value);
 
-const { data: members, isLoading: membersLoading } = useFleetMembers(
-  computed(() => memberFleet.value ?? ""),
-  { perPage: "100" },
-  {
-    query: {
-      enabled: computed(
-        () => targetKind.value === "user" && !!memberFleet.value,
-      ),
-    },
-  },
-);
+// Searched on the server, not filtered out of one fixed page. A fleet can hold
+// hundreds of members, and fetching the first hundred made everybody after them
+// unreachable -- they could not be found because they were never fetched.
+const fetchMembers = (params: BaseSelectParams<FilterOption>) =>
+  fleetMembers(memberFleet.value ?? "", {
+    q: { usernameCont: params.search || undefined },
+  });
 
-const memberOptions = computed<FilterOption[]>(() =>
-  (members.value?.items ?? [])
+const formatMembers = (response: { items: FleetMember[] }) =>
+  (response.items || [])
     .filter((member) => member.username !== sessionStore.currentUser?.username)
     .map((member) => ({
-      value: `user:${member.username}`,
       label: member.nickname
         ? `${member.username} (${member.nickname})`
         : member.username,
-    })),
-);
+      value: `user:${member.username}`,
+    }));
 
-// Acting for a fleet, "inventory" means that fleet's -- which only needs saying
-// when the reader's own are on offer beside them.
 const kindOptions = computed<FilterOption[]>(() =>
   availableKinds.value.map((kind) => ({
     value: kind,
@@ -169,11 +163,9 @@ const kindOptions = computed<FilterOption[]>(() =>
 );
 
 const targetOptions = computed<FilterOption[]>(() =>
-  targetKind.value === "user"
-    ? memberOptions.value
-    : props.targets
-        .filter((target) => target.kind === targetKind.value)
-        .map((target) => ({ value: target.value, label: target.label })),
+  props.targets
+    .filter((target) => target.kind === targetKind.value)
+    .map((target) => ({ value: target.value, label: target.label })),
 );
 
 // Picks the first option, and re-picks when a kind change leaves the old
@@ -309,9 +301,20 @@ const onSubmit = async () => {
       />
 
       <BaseSelect
+        v-if="targetKind === 'user'"
         v-model="targetValue"
         name="target"
-        :loading="membersLoading"
+        searchable
+        :query-fn="fetchMembers"
+        :query-response-formatter="formatMembers"
+        :label="t('labels.logistics.transferTarget')"
+        data-test="transfer-target"
+      />
+
+      <BaseSelect
+        v-else
+        v-model="targetValue"
+        name="target"
         searchable
         :options="targetOptions"
         :label="t('labels.logistics.transferTarget')"
@@ -319,7 +322,7 @@ const onSubmit = async () => {
       />
 
       <p
-        v-if="targetOptions.length === 0 && !membersLoading"
+        v-if="targetKind !== 'user' && targetOptions.length === 0"
         class="transfer-empty"
         data-test="transfer-no-targets"
       >

@@ -15224,29 +15224,7 @@ components:
           - 'null'
           format: uuid
         transfer:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-            direction:
-              type: string
-              enum:
-              - in
-              - out
-            counterparty:
-              "$ref": "#/components/schemas/TransferParty"
-            inventory:
-              type:
-              - object
-              - 'null'
-              properties:
-                name:
-                  type: string
-                kind:
-                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
+          "$ref": "#/components/schemas/InventoryEntryTransfer"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -16793,29 +16771,7 @@ components:
           - 'null'
           format: uuid
         transfer:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-            direction:
-              type: string
-              enum:
-              - in
-              - out
-            counterparty:
-              "$ref": "#/components/schemas/TransferParty"
-            inventory:
-              type:
-              - object
-              - 'null'
-              properties:
-                name:
-                  type: string
-                kind:
-                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
+          "$ref": "#/components/schemas/InventoryEntryTransfer"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:
@@ -17900,6 +17856,48 @@ components:
       - CONSUMABLE
       - OTHER
       title: InventoryCategoryEnum
+    InventoryEntryTransfer:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        direction:
+          "$ref": "#/components/schemas/InventoryEntryTransferDirectionEnum"
+        counterparty:
+          "$ref": "#/components/schemas/TransferParty"
+        inventory:
+          "$ref": "#/components/schemas/InventoryEntryTransferInventory"
+      additionalProperties: false
+      required:
+      - id
+      - direction
+      title: InventoryEntryTransfer
+    InventoryEntryTransferDirectionEnum:
+      type: string
+      enum:
+      - in
+      - out
+      x-enumNames:
+      - IN
+      - OUT
+      title: InventoryEntryTransferDirectionEnum
+    InventoryEntryTransferInventory:
+      type:
+      - object
+      - 'null'
+      properties:
+        name:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
+      additionalProperties: false
+      required:
+      - name
+      - kind
+      title: InventoryEntryTransferInventory
     InventoryEntryTypeEnum:
       type: string
       enum:
@@ -17944,29 +17942,7 @@ components:
           - 'null'
           format: uuid
         transfer:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-            direction:
-              type: string
-              enum:
-              - in
-              - out
-            counterparty:
-              "$ref": "#/components/schemas/TransferParty"
-            inventory:
-              type:
-              - object
-              - 'null'
-              properties:
-                name:
-                  type: string
-                kind:
-                  "$ref": "#/components/schemas/InventoryTransferPartyKindEnum"
+          "$ref": "#/components/schemas/InventoryEntryTransfer"
         image:
           "$ref": "#/components/schemas/MediaFile"
         item:

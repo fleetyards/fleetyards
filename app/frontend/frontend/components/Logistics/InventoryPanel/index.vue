@@ -60,6 +60,18 @@ const hasInTransit = computed(
   () => inTransit.value.scu > 0 || inTransit.value.units > 0,
 );
 
+// A shipment can carry bulk cargo and counted gear at once, and the two do not
+// add up -- so both are named. Showing one and dropping the other would report
+// less in transit than there is.
+const inTransitLabel = computed(() =>
+  [
+    inTransit.value.scu > 0 ? `${inTransit.value.scu} SCU` : undefined,
+    inTransit.value.units > 0 ? `${inTransit.value.units} Units` : undefined,
+  ]
+    .filter(Boolean)
+    .join(" + "),
+);
+
 // A ship says where its inventory is far better than a free-text location does.
 const subtitle = computed(
   () => props.inventory.vehicle?.name || props.inventory.location,
@@ -192,14 +204,7 @@ const image = computed(
         data-test="inventory-panel-in-transit"
       >
         <i class="fa-duotone fa-truck-fast" />
-        {{
-          t("labels.logistics.inTransitAmount", {
-            amount:
-              inTransit.scu > 0
-                ? `${inTransit.scu} SCU`
-                : `${inTransit.units} Units`,
-          })
-        }}
+        {{ t("labels.logistics.inTransitAmount", { amount: inTransitLabel }) }}
       </p>
     </PanelBody>
   </Panel>

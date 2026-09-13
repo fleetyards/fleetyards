@@ -9,7 +9,10 @@ module InventoryTransferActions
   extend ActiveSupport::Concern
   include InventoryTransfersFeatureConcern
 
-  QUERY_PARAMS = %i[state_eq state_in created_at_gteq created_at_lteq s].freeze
+  # `state_in` is declared as an array and has to be permitted as one: a scalar
+  # permit silently drops a multi-state request, and the caller gets the whole
+  # unfiltered list back rather than an error.
+  QUERY_PARAMS = [:state_eq, :created_at_gteq, :created_at_lteq, :s, {state_in: []}].freeze
 
   included do
     after_action -> { pagination_header(:inventory_transfers) }, only: %i[index]

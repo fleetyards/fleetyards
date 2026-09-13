@@ -1,12 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { mount, flushPromises } from "@vue/test-utils";
-import { ref } from "vue";
 import { createTestingPinia } from "@pinia/testing";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import TransferModal from "./index.vue";
 
 vi.mock("@/services/fyApi/services/fleet-members/fleet-members", () => ({
-  useFleetMembers: () => ({ data: ref(undefined), isLoading: ref(false) }),
+  fleetMembers: vi.fn().mockResolvedValue({ items: [] }),
 }));
 import type { InventoryStockPosition } from "@/services/fyApi";
 import type { TransferTargetOption } from "./types";
