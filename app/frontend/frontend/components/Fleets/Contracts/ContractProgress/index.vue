@@ -8,7 +8,11 @@ export default {
 import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import { type FleetContractProgress } from "@/services/fyApi";
+import {
+  type FleetContractProgress,
+  type FleetContractProgressLine,
+  FleetContractQualityMatchEnum,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -25,6 +29,16 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 const percent = (fraction: number) => Math.round(fraction * 100);
+
+// "at least 500" or "exactly 500" — the line decides which, and the reader has
+// to see which, because an over-grade delivery counts for one and not the other.
+const qualityLabel = (line: FleetContractProgressLine) =>
+  t(
+    line.qualityMatch === FleetContractQualityMatchEnum.EXACT
+      ? "labels.fleets.contracts.exactQuality"
+      : "labels.fleets.contracts.minQuality",
+    { value: line.quality as number },
+  );
 
 const quantity = (value: string) => {
   const parsed = Number(value);
@@ -48,10 +62,8 @@ const quantity = (value: string) => {
     >
       <Heading :level="HeadingLevelEnum.H4" class="contract-progress__name">
         {{ line.name }}
-        <span v-if="line.minQuality" class="contract-progress__quality">
-          {{
-            t("labels.fleets.contracts.minQuality", { value: line.minQuality })
-          }}
+        <span v-if="line.quality != null" class="contract-progress__quality">
+          {{ qualityLabel(line) }}
         </span>
       </Heading>
 

@@ -299,7 +299,8 @@
           "edit": "Auftrag bearbeiten",
           "progress": "Fortschritt",
           "crew": "Crew",
-          "items": "Waren"
+          "items": "Waren",
+          "addItem": "Waren hinzufügen"
         }
       },
       "hangarGroup": {

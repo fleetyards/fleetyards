@@ -299,7 +299,8 @@
           "edit": "Editar contrato",
           "progress": "Progreso",
           "crew": "Tripulación",
-          "items": "Mercancías"
+          "items": "Mercancías",
+          "addItem": "Añadir mercancías"
         }
       },
       "hangarGroup": {

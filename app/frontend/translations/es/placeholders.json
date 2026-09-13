@@ -302,7 +302,7 @@
       "deadline": "Sin fecha límite",
       "itemName": "Qué entregar",
       "itemQuantity": "Cuánto",
-      "itemMinQuality": "Cualquier calidad"
+      "itemQuality": "Cualquier calidad"
     }
   }
 }

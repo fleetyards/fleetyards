@@ -302,7 +302,7 @@
       "deadline": "Keine Frist",
       "itemName": "Was geliefert wird",
       "itemQuantity": "Wie viel",
-      "itemMinQuality": "Beliebige Qualität"
+      "itemQuality": "Beliebige Qualität"
     }
   }
 }

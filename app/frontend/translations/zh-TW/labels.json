@@ -2257,7 +2257,6 @@
           "itemCategory": "類別",
           "itemUnit": "單位",
           "itemQuantity": "數量",
-          "itemMinQuality": "最低品質",
           "kind": {
             "label": "類型",
             "transport": "運輸",
@@ -2276,7 +2275,14 @@
             "Commodity": "商品",
             "Component": "部件",
             "Equipment": "裝備"
-          }
+          },
+          "qualityMatch": "匹配方式",
+          "exactQuality": "正好 %{value}",
+          "qualityMatches": {
+            "at_least": "至少",
+            "exact": "正好"
+          },
+          "itemQuality": "品質"
         }
       },
       "commodity": {

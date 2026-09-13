@@ -299,7 +299,8 @@
           "edit": "Modifica contratto",
           "progress": "Avanzamento",
           "crew": "Equipaggio",
-          "items": "Merci"
+          "items": "Merci",
+          "addItem": "Aggiungi merci"
         }
       },
       "hangarGroup": {

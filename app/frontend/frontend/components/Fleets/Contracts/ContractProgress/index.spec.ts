@@ -6,6 +6,7 @@ import {
   type FleetContractProgressLine,
   InventoryCategoryEnum,
   InventoryUnitEnum,
+  FleetContractQualityMatchEnum,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -16,7 +17,8 @@ const line = (
   name: "Titanium",
   category: InventoryCategoryEnum.COMMODITY,
   unit: InventoryUnitEnum.SCU,
-  minQuality: null,
+  quality: null,
+  qualityMatch: FleetContractQualityMatchEnum.AT_LEAST,
   requested: "800.0",
   delivered: "240.0",
   pickedUp: "0.0",
@@ -91,9 +93,36 @@ describe("FleetContractsProgress", () => {
 
   it("shows the required grade when a line has one", async () => {
     const subject = await mount({
-      progress: progress({ lines: [line({ minQuality: 500 })] }),
+      progress: progress({ lines: [line({ quality: 500 })] }),
     });
 
     expect(subject.find(".contract-progress__quality").text()).toContain("500");
+  });
+
+  // An over-grade delivery counts for "at least" and not for "exactly", so the
+  // reader has to be able to tell the two apart.
+  it("says whether the grade is a floor or an exact figure", async () => {
+    const atLeast = await mount({
+      progress: progress({ lines: [line({ quality: 500 })] }),
+    });
+
+    expect(atLeast.find(".contract-progress__quality").text()).toContain("min");
+
+    atLeast.unmount();
+
+    const exact = await mount({
+      progress: progress({
+        lines: [
+          line({
+            quality: 500,
+            qualityMatch: FleetContractQualityMatchEnum.EXACT,
+          }),
+        ],
+      }),
+    });
+
+    expect(exact.find(".contract-progress__quality").text()).toContain(
+      "exactly",
+    );
   });
 });

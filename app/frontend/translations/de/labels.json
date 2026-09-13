@@ -2257,7 +2257,6 @@
           "itemCategory": "Kategorie",
           "itemUnit": "Einheit",
           "itemQuantity": "Menge",
-          "itemMinQuality": "Mindestqualität",
           "kind": {
             "label": "Art",
             "transport": "Transport",
@@ -2276,7 +2275,14 @@
             "Commodity": "Handelsware",
             "Component": "Komponente",
             "Equipment": "Ausrüstung"
-          }
+          },
+          "qualityMatch": "Abgleich",
+          "exactQuality": "genau %{value}",
+          "qualityMatches": {
+            "at_least": "Mindestens",
+            "exact": "Genau"
+          },
+          "itemQuality": "Qualität"
         }
       },
       "commodity": {

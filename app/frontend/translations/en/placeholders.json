@@ -302,7 +302,7 @@
       "deadline": "No deadline",
       "itemName": "What to deliver",
       "itemQuantity": "How much",
-      "itemMinQuality": "Any quality"
+      "itemQuality": "Any quality"
     }
   }
 }

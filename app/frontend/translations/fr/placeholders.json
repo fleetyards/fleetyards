@@ -302,7 +302,7 @@
       "deadline": "Sans échéance",
       "itemName": "Ce qu'il faut livrer",
       "itemQuantity": "Combien",
-      "itemMinQuality": "Toute qualité"
+      "itemQuality": "Toute qualité"
     }
   }
 }

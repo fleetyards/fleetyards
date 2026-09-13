@@ -302,7 +302,7 @@
       "deadline": "無截止時間",
       "itemName": "需要交付的物品",
       "itemQuantity": "數量",
-      "itemMinQuality": "任意品質"
+      "itemQuality": "任意品質"
     }
   }
 }
