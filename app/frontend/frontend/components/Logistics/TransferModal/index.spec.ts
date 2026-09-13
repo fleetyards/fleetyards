@@ -254,6 +254,33 @@ describe("TransferModal", () => {
 
   // People are reached through a fleet, so the kind is offered whenever the
   // reader is in one -- there is no flat list of people that could be empty.
+  // The person list lives in the select, so nothing in `targetOptions` reacts
+  // to a fleet change: a stale username would send the goods to the wrong
+  // person entirely.
+  it("clears the chosen person when the fleet they were picked from changes", async () => {
+    const { wrapper: w } = await build([position()], [], vi.fn(), [
+      { value: "crew", label: "Crew" },
+      { value: "other", label: "Other" },
+    ]);
+
+    const target = w.findComponent({
+      name: "BaseSelect",
+      props: { name: "target" },
+    });
+
+    await w.vm.$nextTick();
+    (w.vm as unknown as { targetValue?: string }).targetValue = "user:alice";
+    await w.vm.$nextTick();
+
+    (w.vm as unknown as { memberFleet?: string }).memberFleet = "other";
+    await w.vm.$nextTick();
+
+    expect(
+      (w.vm as unknown as { targetValue?: string }).targetValue,
+    ).toBeUndefined();
+    expect(target).toBeDefined();
+  });
+
   it("offers the person kind on fleet membership alone", async () => {
     await build([position()], [immediateTarget], vi.fn(), [
       { value: "crew", label: "Crew" },

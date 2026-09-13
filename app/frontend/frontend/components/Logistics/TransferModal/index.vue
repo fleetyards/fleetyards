@@ -139,6 +139,16 @@ const fetchMembers = (params: BaseSelectParams<FilterOption>) =>
     q: { usernameCont: params.search || undefined },
   });
 
+// The person list lives in the select rather than in `targetOptions`, so the
+// watcher that re-picks when the kind changes never sees a fleet change.
+// Without this, choosing somebody in fleet A and then switching to fleet B
+// keeps A's username selected and sends the goods to them.
+watch(memberFleet, () => {
+  if (targetKind.value !== "user") return;
+
+  targetValue.value = undefined;
+});
+
 const formatMembers = (response: { items: FleetMember[] }) =>
   (response.items || [])
     .filter((member) => member.username !== sessionStore.currentUser?.username)

@@ -56,11 +56,19 @@ module InventoryTransferActions
     return not_found if source.blank?
     return feature_closed unless inventory_feature_enabled?(source)
 
+    # Both ends, not just the one the request came in through. An immediate
+    # transfer never reaches `TransferGate`, which is what checks the recipient's
+    # flags on the waiting path -- so without this a fleet officer could write
+    # into their own hangar or ship inventory while that feature is switched
+    # off, which is exactly the way round the new flag is not allowed to be.
+    destination = find_destination
+    return feature_closed if destination.present? && !inventory_feature_enabled?(destination)
+
     builder = ::Inventories::TransferBuilder.new(
       source:,
       actor: current_resource_owner,
       lines: transfer_params[:lines],
-      destination: find_destination,
+      destination:,
       recipient: find_recipient,
       note: transfer_params[:note]
     )
