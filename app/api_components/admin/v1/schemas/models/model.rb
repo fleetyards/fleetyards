@@ -16,6 +16,7 @@ module Admin
               scLength: {type: :number},
               scBeam: {type: :number},
               scHeight: {type: :number},
+              dimensionsMeasuredAt: {type: :string, format: :"date-time"},
               media: AdminModelMedia
             },
             required: %w[hidden active media]

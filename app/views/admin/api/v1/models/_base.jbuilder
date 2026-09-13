@@ -227,6 +227,7 @@ json.rsi_slug model.rsi_slug
 json.sc_length model.sc_length&.to_f
 json.sc_beam model.sc_beam&.to_f
 json.sc_height model.sc_height&.to_f
+json.dimensions_measured_at model.dimensions_measured_at
 
 json.speeds({})
 json.speeds do

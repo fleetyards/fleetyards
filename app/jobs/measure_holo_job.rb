@@ -46,11 +46,21 @@ class MeasureHoloJob
     return if stale_blob?(model.send(name), blob_id)
     return if overtaken?(model, columns, previous)
 
-    model.update_columns(columns.zip(result.sorted).to_h)
+    model.update_columns(columns.zip(result.sorted).to_h.merge(measured_at_for(name)))
   rescue ActiveStorage::FileNotFoundError
     Rails.logger.warn("MeasureHoloJob: blob for #{name} on model #{model_id} not found, skipping")
   rescue JSON::ParserError => error
     Rails.logger.warn("MeasureHoloJob: #{name} on model #{model_id} is not readable glTF: #{error.message}")
+  end
+
+  # Only reached once a measurement is actually being written, which is the
+  # whole value of the stamp: a refused export or an overtaken correction
+  # returns above and leaves the previous one standing.
+  private def measured_at_for(name)
+    column = ::Model::HOLO_MEASURED_AT[name]
+    return {} if column.nil?
+
+    {column => Time.current}
   end
 
   # A second upload while this one was queued: the older file's numbers must not

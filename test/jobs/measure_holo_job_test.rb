@@ -36,6 +36,43 @@ class MeasureHoloJobTest < ActiveJob::TestCase
     assert_in_delta 99.0, model.length.to_f
   end
 
+  # What the metrics page reads to stop offering the game-file figure as a
+  # correction to a number that came off a mesh.
+  test "#perform stamps when the flying columns were measured" do
+    model = attach(create(:model), :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_not_nil model.reload.dimensions_measured_at
+  end
+
+  # Only the flying set has an `sc_*` counterpart, so only that holo stamps.
+  test "#perform does not stamp for a landed holo" do
+    model = attach(create(:model), :landed_holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "landed_holo")
+
+    assert_nil model.reload.dimensions_measured_at
+  end
+
+  # The stamp has to mean "these numbers are the holo's". A refused export
+  # leaves an attachment behind and must not claim the columns with it.
+  test "#perform does not stamp an upper bound it refused" do
+    model = attach(create(:model), :holo, "skewed.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo")
+
+    assert_nil model.reload.dimensions_measured_at
+  end
+
+  test "#perform does not stamp a measurement somebody overtook" do
+    model = attach(create(:model, length: 42.0), :holo, "plain.gltf")
+
+    MeasureHoloJob.new.perform(model.id, "holo", model.holo.blob.id, ["1.0", "2.0", "3.0"])
+
+    assert_nil model.reload.dimensions_measured_at
+  end
+
   test "#perform reads a binary GLB" do
     model = attach(create(:model), :holo, "plain.glb")
 

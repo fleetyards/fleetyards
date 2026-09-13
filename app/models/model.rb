@@ -12,6 +12,7 @@
 #  cargo_holds                       :string
 #  classification                    :string(255)
 #  description                       :text
+#  dimensions_measured_at            :datetime
 #  dock_size                         :integer
 #  erkul_identifier                  :string
 #  extended_beam                     :decimal(15, 2)
@@ -484,6 +485,11 @@ class Model < ApplicationRecord
     "landed_holo" => %i[landed_length landed_beam landed_height],
     "extended_holo" => %i[extended_length extended_beam extended_height]
   }.freeze
+
+  # Stamped when a measurement lands, so the metrics page can stop offering the
+  # game-file figure as a correction to a number read off a mesh. Only the
+  # flying set has an `sc_*` counterpart, so only that holo records one.
+  HOLO_MEASURED_AT = {"holo" => :dimensions_measured_at}.freeze
 
   after_commit :measure_attached_holos, if: :has_new_holos?
 

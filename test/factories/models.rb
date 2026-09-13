@@ -10,6 +10,7 @@
 #  cargo_holds                       :string
 #  classification                    :string(255)
 #  description                       :text
+#  dimensions_measured_at            :datetime
 #  dock_size                         :integer
 #  erkul_identifier                  :string
 #  extended_beam                     :decimal(15, 2)

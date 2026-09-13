@@ -12946,6 +12946,9 @@ components:
           type: number
         scHeight:
           type: number
+        dimensionsMeasuredAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
       - id
@@ -13236,6 +13239,9 @@ components:
           type: number
         scHeight:
           type: number
+        dimensionsMeasuredAt:
+          type: string
+          format: date-time
         baseModelId:
           type: string
           format: uuid
