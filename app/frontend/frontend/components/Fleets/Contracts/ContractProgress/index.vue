@@ -58,7 +58,7 @@ const quantity = (value: string) => {
       <ProgressBar
         :progress="percent(line.fraction)"
         :label="`${quantity(line.delivered)} / ${quantity(line.requested)} ${t(
-          `labels.fleets.contracts.unit.${line.unit}`,
+          `labels.logistics.units.${line.unit}`,
         )}`"
       />
 

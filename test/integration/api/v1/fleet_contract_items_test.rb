@@ -115,6 +115,63 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The contract records *which* commodity or item it wants, not just a name --
+  # picked out of the same catalogues the inventory ledger references.
+  test "POST stores the commodity the contract asks for" do
+    commodity = create(:commodity)
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: commodity.name, category: "commodity", unit: "scu", quantity: "800",
+             itemType: "Commodity", itemId: commodity.id} do
+      assert_equal "Commodity", parsed_body["item"]["type"]
+      assert_equal commodity.id, parsed_body["item"]["id"]
+      assert_equal commodity.name, parsed_body["item"]["name"]
+    end
+
+    assert_equal commodity, @contract.fleet_contract_items.sole.item
+  end
+
+  test "POST stores a component, and a crafting grade beside it" do
+    component = create(:component)
+    @contract.update!(kind: :crafting)
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: component.name, category: "component", unit: "units", quantity: "12",
+             minQuality: 750, itemType: "Component", itemId: component.id} do
+      assert_equal "Component", parsed_body["item"]["type"]
+      assert_equal 750, parsed_body["minQuality"]
+    end
+  end
+
+  # Asking for something no catalogue carries stays allowed; it just is not a
+  # reference. The ledger is matched by name, category and unit either way.
+  test "POST without a reference stores the line all the same" do
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: "Salvaged hull plating", category: "other", unit: "scu", quantity: "40"} do
+      assert_nil parsed_body["item"]
+    end
+  end
+
+  test "POST refuses a reference to something that is not there" do
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: "Titanium", category: "commodity", unit: "scu", quantity: "800",
+             itemType: "Commodity", itemId: SecureRandom.uuid}
+  end
+
   test "POST refuses a unit the category does not use" do
     sign_in @officer
 

@@ -2272,18 +2272,10 @@
             "cancelled": "已取消",
             "expired": "已过期"
           },
-          "unit": {
-            "scu": "SCU",
-            "units": "件"
-          },
-          "category": {
-            "commodity": "商品",
-            "component": "部件",
-            "weapon": "武器",
-            "equipment": "装备",
-            "ammunition": "弹药",
-            "consumable": "消耗品",
-            "other": "其他"
+          "itemTypes": {
+            "Commodity": "商品",
+            "Component": "部件",
+            "Equipment": "装备"
           }
         }
       },

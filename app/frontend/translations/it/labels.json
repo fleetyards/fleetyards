@@ -2272,18 +2272,10 @@
             "cancelled": "Annullato",
             "expired": "Scaduto"
           },
-          "unit": {
-            "scu": "SCU",
-            "units": "unità"
-          },
-          "category": {
-            "commodity": "Merce",
-            "component": "Componente",
-            "weapon": "Arma",
-            "equipment": "Equipaggiamento",
-            "ammunition": "Munizioni",
-            "consumable": "Consumabile",
-            "other": "Altro"
+          "itemTypes": {
+            "Commodity": "Merce",
+            "Component": "Componente",
+            "Equipment": "Equipaggiamento"
           }
         }
       },

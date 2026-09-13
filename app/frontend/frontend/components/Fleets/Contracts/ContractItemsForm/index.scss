@@ -8,6 +8,7 @@
   &__row {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
     padding: 6px 0;
   }
@@ -16,8 +17,16 @@
     flex: 1 1 auto;
   }
 
+  &__category,
+  &__reference,
   &__quality {
     font-size: 0.85em;
     color: $gray-lighter;
+  }
+
+  &__reference {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
 }
