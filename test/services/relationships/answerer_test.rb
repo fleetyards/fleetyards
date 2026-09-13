@@ -88,6 +88,44 @@ class Relationships::AnswererTest < ActiveSupport::TestCase
 
     assert answerer(ignored, actor: ignored.requester).cancel(ignored.requester)
     assert ignored.reload.ignored?
+    assert ignored.withdrawn?
+  end
+
+  # The row survives so that asking again still goes nowhere, and that is the
+  # only reason. It must be gone from every list the sender reads, or the
+  # withdrawal itself becomes the tell: a real one takes the row with it.
+  test "a withdrawn request leaves the sender's pending list" do
+    ignored = create(:friendship, :ignored)
+    sender = ignored.requester
+
+    assert_includes Friendship.in_state_for("pending", sender), ignored
+
+    answerer(ignored, actor: sender).cancel(sender)
+
+    assert_not_includes Friendship.in_state_for("pending", sender), ignored.reload
+  end
+
+  test "the recipient still sees a withdrawn request under ignored" do
+    ignored = create(:friendship, :ignored)
+    answerer(ignored, actor: ignored.requester).cancel(ignored.requester)
+
+    assert_includes Friendship.in_state_for("ignored", ignored.addressee), ignored.reload
+  end
+
+  test "asking again after withdrawing an ignored request puts it back and tells nobody" do
+    ignored = create(:friendship, :ignored)
+    sender = ignored.requester
+    target = ignored.addressee
+    answerer(ignored, actor: sender).cancel(sender)
+    Notification.delete_all
+
+    requester = Relationships::Requester.new(Friendship, requester: sender, addressee: target).tap(&:call)
+
+    assert requester.success?
+    assert ignored.reload.ignored?
+    refute ignored.withdrawn?
+    assert_includes Friendship.in_state_for("pending", sender), ignored
+    assert_empty Notification.all
   end
 
   test "asking again after cancelling an ignored request still goes nowhere" do

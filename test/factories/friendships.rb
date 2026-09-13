@@ -9,6 +9,7 @@
 #  accepted_at  :datetime
 #  declined_at  :datetime
 #  ignored_at   :datetime
+#  withdrawn_at :datetime
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  addressee_id :uuid             not null

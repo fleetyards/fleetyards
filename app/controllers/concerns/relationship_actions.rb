@@ -46,6 +46,16 @@ module RelationshipActions
   def create
     authorize! relation_class, to: :create?, with: relationship_policy, **policy_context
 
+    # A request that meets one from the other side accepts it, so this endpoint
+    # can complete a relationship rather than only propose one. Accepting is the
+    # consequential half -- for a fleet it commits the org's data -- and must not
+    # be reachable with the create privilege alone.
+    crossing = relation_class.between(acting_party, requested_party)
+
+    if crossing&.pending? && crossing.addressee_id == acting_party.id
+      authorize! crossing, to: :accept?, with: relationship_policy, **policy_context
+    end
+
     requester = ::Relationships::Requester.new(relation_class, requester: acting_party, addressee: requested_party)
 
     unless requester.call
@@ -90,6 +100,12 @@ module RelationshipActions
     @relationship = relation_class.between(acting_party, requested_party)
 
     raise ActiveRecord::RecordNotFound if @relationship.blank?
+
+    # A request the sender withdrew is gone as far as they are concerned; the
+    # row survives only to keep absorbing. Answering anything but 404 here would
+    # tell them apart from a withdrawal that really did destroy the row.
+    raise ActiveRecord::RecordNotFound if @relationship.withdrawn? &&
+      @relationship.requester_id == acting_party&.id
 
     authorize! @relationship, to: :"#{action_name}?", with: relationship_policy, **policy_context
   end

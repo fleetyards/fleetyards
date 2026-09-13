@@ -224,6 +224,31 @@ class Api::V1::FleetAlliancesTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 403, path_params: {fleet_slug: @fleet.slug}, body: {slug: @other_fleet.slug}
   end
 
+  # POST accepts an inbound request when it finds one, so it can complete an
+  # alliance rather than only propose one. Accepting is the consequential half
+  # and must not be reachable with the create privilege alone.
+  test "a create-only role cannot accept an inbound request by posting" do
+    creator = create(:user)
+    role = create(:fleet_role, fleet: @fleet, name: "Recruiter",
+      resource_access: ["fleet:allies:create"])
+    create(:fleet_membership, :accepted, fleet: @fleet, user: creator, fleet_role: role)
+    alliance = create(:fleet_alliance, requester: @other_fleet, addressee: @fleet)
+    sign_in creator
+
+    assert_api_response :post, 403, path_params: {fleet_slug: @fleet.slug}, body: {slug: @other_fleet.slug}
+    assert alliance.reload.pending?
+  end
+
+  test "a create-only role can still send a request of its own" do
+    creator = create(:user)
+    role = create(:fleet_role, fleet: @fleet, name: "Recruiter",
+      resource_access: ["fleet:allies:create"])
+    create(:fleet_membership, :accepted, fleet: @fleet, user: creator, fleet_role: role)
+    sign_in creator
+
+    assert_api_response :post, 201, path_params: {fleet_slug: @fleet.slug}, body: {slug: @other_fleet.slug}
+  end
+
   test "somebody outside the fleet gets nothing" do
     sign_in create(:user)
 

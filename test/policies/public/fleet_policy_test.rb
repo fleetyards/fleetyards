@@ -47,20 +47,24 @@ class Public::FleetPolicyTest < ActiveSupport::TestCase
     end
   end
 
-  # allies_fleet_stats admits show? as well, exactly as public_fleet_stats has
-  # always done -- a fleet sharing only its numbers still needs a page to put
-  # them on. allies_fleet_members must not.
-  test "the stats switch opens the page, and the roster switch does not" do
-    @fleet.update!(allies_fleet_stats: true)
+  # `show?` is not only the fleet's profile -- the vehicles endpoint authorizes
+  # against it too -- so neither the stats switch nor the roster switch may
+  # satisfy it. Sharing the numbers must not also hand over the ship list.
+  test "only the ships switch opens the page" do
+    {allies_fleet_stats: :show_stats?, allies_fleet_members: :show_members?}.each do |column, rule|
+      @fleet.update!(column => true)
+
+      assert allowed?(rule, @ally_member), "#{rule} stayed closed with #{column} on"
+      refute allowed?(:show?, @ally_member), "#{column} opened the fleet page"
+
+      @fleet.update!(column => false)
+    end
+
+    @fleet.update!(allies_fleet: true)
 
     assert allowed?(:show?, @ally_member)
-    refute allowed?(:show_members?, @ally_member)
-
-    @fleet.update!(allies_fleet_stats: false, allies_fleet_members: true)
-
-    refute allowed?(:show?, @ally_member)
     refute allowed?(:show_stats?, @ally_member)
-    assert allowed?(:show_members?, @ally_member)
+    refute allowed?(:show_members?, @ally_member)
   end
 
   test "the fleet's own members read everything without any ally switch" do

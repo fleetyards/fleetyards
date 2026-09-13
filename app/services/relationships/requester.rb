@@ -46,15 +46,24 @@ module Relationships
       return false unless both_parties_present?
       return false if between_a_party_and_itself?
 
-      @relationship = @relation_class.between(@requester, @addressee)
+      existing = @relation_class.between(@requester, @addressee)
 
-      return absorb if @relationship&.ignored?
-      return already_related if @relationship&.accepted?
-      return accept_theirs if crossing_request?
-      return resend if @relationship&.pending?
-      return reopen if @relationship&.declined?
+      return create if existing.blank?
 
-      create
+      # Everything below transitions a row that is already there, so the state
+      # is re-read under a lock rather than trusted from the read above. Two
+      # simultaneous re-requests of a declined relationship would otherwise both
+      # find it declined, both reopen it, and both notify.
+      ::ActiveRecord::Base.transaction do
+        @relationship = @relation_class.lock.find(existing.id)
+
+        next absorb if @relationship.ignored?
+        next already_related if @relationship.accepted?
+        next accept_theirs if crossing_request?
+        next resend if @relationship.pending?
+
+        reopen
+      end.tap { deliver_notification }
     end
 
     def success? = errors.empty?
@@ -75,8 +84,9 @@ module Relationships
         return false
       end
 
-      Notifier.new(@relationship).requested
+      @notify = :requested
       @outcome = :created
+      deliver_notification
       true
     rescue ::ActiveRecord::RecordNotUnique
       # Two requests for the same pair landed at once and the unordered unique
@@ -85,7 +95,7 @@ module Relationships
       @relationship = @relation_class.between(@requester, @addressee)
       return false if @relationship.blank?
 
-      crossing_request? ? accept_theirs : resend
+      (crossing_request? ? accept_theirs : resend).tap { deliver_notification }
     end
 
     private def accept_theirs
@@ -94,7 +104,7 @@ module Relationships
         return false
       end
 
-      Notifier.new(@relationship).accepted
+      @notify = :accepted
       @outcome = :accepted
       true
     end
@@ -104,12 +114,12 @@ module Relationships
 
       # Back to the start rather than a new row: the unordered pair is unique,
       # and the timestamps of the refusal it replaces are no longer true of it.
-      unless @relationship.update(aasm_state: "pending", declined_at: nil)
+      unless @relationship.update(aasm_state: "pending", declined_at: nil, withdrawn_at: nil)
         errors.merge!(@relationship.errors)
         return false
       end
 
-      Notifier.new(@relationship).requested
+      @notify = :requested
       @outcome = :created
       true
     end
@@ -121,9 +131,25 @@ module Relationships
       true
     end
 
+    # Answers exactly as a fresh request does and delivers nothing. Clearing
+    # `withdrawn_at` is part of that: the sender withdrew this once, so asking
+    # again has to put it back in their outgoing list the way re-sending any
+    # withdrawn request would.
     private def absorb
+      @relationship.update!(withdrawn_at: nil) if @relationship.withdrawn?
+
       @outcome = :created
       true
+    end
+
+    # Fired after the transaction rather than inside it. A notification writes a
+    # row and broadcasts, and neither should be able to roll back a relationship
+    # that was legitimately agreed to.
+    private def deliver_notification
+      return if @notify.blank? || @relationship.blank?
+
+      Notifier.new(@relationship).public_send(@notify)
+      @notify = nil
     end
 
     private def already_related

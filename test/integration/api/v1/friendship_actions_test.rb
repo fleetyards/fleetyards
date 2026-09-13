@@ -233,6 +233,41 @@ class Api::V1::FriendshipActionsTest < ActionDispatch::IntegrationTest
     assert ignored.reload.ignored?
   end
 
+  # Withdrawing is only invisible if what follows it is too: the row must be
+  # gone from the sender's list and 404 on a direct read, exactly as a real
+  # withdrawal leaves things.
+  test "a withdrawn request is gone from the sender's view, ignored or not" do
+    create(:friendship, :ignored, requester: @user, addressee: @other)
+    plain_target = create(:user)
+    create(:friendship, requester: @user, addressee: plain_target)
+    sign_in @user
+
+    [@other, plain_target].each do |target|
+      assert_api_response :delete, 204, path_params: {username: target.username}
+      assert_api_response :get, 404, path_params: {username: target.username}
+    end
+
+    get "/api/v1/friends?state=pending&direction=outgoing"
+
+    assert_empty parsed_body["items"]
+  end
+
+  test "asking again after withdrawing answers the same either way" do
+    create(:friendship, :ignored, requester: @user, addressee: @other)
+    plain_target = create(:user)
+    create(:friendship, requester: @user, addressee: plain_target)
+    sign_in @user
+
+    answers = [@other, plain_target].map do |target|
+      delete "/api/v1/friends/#{target.username}"
+      post "/api/v1/friends", params: {username: target.username}, as: :json
+
+      [response.status, parsed_body.except("id", "user", "createdAt", "updatedAt")]
+    end
+
+    assert_equal answers.first, answers.last
+  end
+
   test "GET without a session is unauthorized" do
     create(:friendship, :accepted, requester: @user, addressee: @other)
 

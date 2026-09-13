@@ -39,10 +39,12 @@ module Relationships
           next
         end
 
-        # An ignored row answers as though it were cancelled and is left
-        # standing. Destroying it would hand the requester a way to clear an
-        # ignore and ask again, which is the one thing ignoring is for.
-        next if @relationship.ignored?
+        # An ignored row is marked withdrawn rather than destroyed. Destroying
+        # it would hand the requester a way to clear an ignore and ask again,
+        # which is the one thing ignoring is for -- and leaving it untouched
+        # made the withdrawal observable, because the row came back in their
+        # next list while a real withdrawal takes the row with it.
+        next if @relationship.ignored? && @relationship.update!(withdrawn_at: Time.current)
 
         @relationship.destroy!
       end

@@ -429,6 +429,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
     t.datetime "ignored_at"
     t.uuid "requester_id", null: false
     t.datetime "updated_at", null: false
+    t.datetime "withdrawn_at"
     t.index "LEAST(requester_id, addressee_id), GREATEST(requester_id, addressee_id)", name: "index_fleet_alliances_on_pair", unique: true
     t.index ["addressee_id"], name: "index_fleet_alliances_on_addressee_id"
     t.index ["addressee_id"], name: "index_fleet_alliances_on_pending_addressee", where: "((aasm_state)::text = 'pending'::text)"
@@ -774,6 +775,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
     t.datetime "ignored_at"
     t.uuid "requester_id", null: false
     t.datetime "updated_at", null: false
+    t.datetime "withdrawn_at"
     t.index "LEAST(requester_id, addressee_id), GREATEST(requester_id, addressee_id)", name: "index_friendships_on_pair", unique: true
     t.index ["addressee_id"], name: "index_friendships_on_addressee_id"
     t.index ["addressee_id"], name: "index_friendships_on_pending_addressee", where: "((aasm_state)::text = 'pending'::text)"

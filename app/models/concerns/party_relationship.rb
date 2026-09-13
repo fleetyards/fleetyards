@@ -43,10 +43,15 @@ module PartyRelationship
     # sent it, so it has to be listed as pending too -- an ignore that is
     # invisible in `state_for` but visible by its absence from a list is not
     # invisible.
+    #
+    # Unless they withdrew it. Then it is gone as far as they are concerned, and
+    # the row survives only to keep absorbing; listing it would be the same tell
+    # from the other direction.
     scope :in_state_for, ->(state, party) {
       case state.to_s
       when "pending"
-        where(aasm_state: "pending").or(where(aasm_state: "ignored", requester_id: party&.id))
+        where(aasm_state: "pending", withdrawn_at: nil)
+          .or(where(aasm_state: "ignored", requester_id: party&.id, withdrawn_at: nil))
       when "ignored"
         where(aasm_state: "ignored", addressee_id: party&.id)
       else
@@ -124,6 +129,12 @@ module PartyRelationship
     aasm_state
   end
 
+  # An ignored request its sender has since withdrawn. Kept only so that asking
+  # again still goes nowhere; it is not a request any more, to anybody.
+  def withdrawn?
+    withdrawn_at.present?
+  end
+
   def other_party_for(party)
     return addressee if requester_id == party&.id
 
@@ -148,6 +159,7 @@ module PartyRelationship
   # `Relationships::Answerer`'s business.
   def cancellable_by?(party)
     return false unless requester_id == party&.id
+    return false if withdrawn?
 
     pending? || ignored?
   end

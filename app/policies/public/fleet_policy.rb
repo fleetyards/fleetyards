@@ -1,15 +1,22 @@
 module Public
   # What somebody outside a fleet may read of it.
   #
-  # Three surfaces, each asked independently. `show?` admitting on
-  # `public_fleet_stats?` is deliberate and predates this -- a fleet that
-  # publishes only its numbers still has a page -- which is exactly why the ally
-  # clause has to be added to each rule rather than to a shared helper: folding
-  # them together would let `allies_fleet_stats` quietly open the fleet page too.
+  # Three surfaces, each asked independently.
+  #
+  # `show?` admitting on `public_fleet_stats?` predates this and is left alone,
+  # but the ally side deliberately does *not* copy it. `show?` is not only the
+  # fleet's profile -- `Public::FleetVehiclesController` authorizes against it
+  # too -- so admitting the stats switch here would make "share our numbers"
+  # also hand over the ship list with its loadouts, modules, upgrades, groups
+  # and owner avatars. One switch, one surface:
+  #
+  #   allies_fleet          the fleet page and its ships
+  #   allies_fleet_stats    the numbers
+  #   allies_fleet_members  the roster
   class FleetPolicy < FleetBasePolicy
     def show?
       member? || record.public_fleet? || record.public_fleet_stats? ||
-        open_to_allies?(:allies_fleet) || open_to_allies?(:allies_fleet_stats)
+        open_to_allies?(:allies_fleet)
     end
 
     def show_stats?

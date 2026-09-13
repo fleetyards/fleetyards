@@ -90,6 +90,18 @@ class Relationships::NotifierTest < ActiveSupport::TestCase
     assert_equal 1, notifications_for(@target, type: :friend_request_received).count
   end
 
+  # Existing-row transitions are serialized, so a re-request that loses the race
+  # finds the row already pending and resends rather than reopening it a second
+  # time.
+  test "reopening a declined request twice notifies once" do
+    create(:friendship, :declined, requester: @sender, addressee: @target)
+
+    request
+    request
+
+    assert_equal 1, notifications_for(@target, type: :friend_request_received).count
+  end
+
   test "an alliance request reaches only the members who could answer it" do
     admin = create(:user)
     officer = create(:user)
