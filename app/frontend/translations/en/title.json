@@ -59,7 +59,8 @@
         "stats": "%{fleet} Stats",
         "logistics": {
           "index": "%{fleet} Logistics",
-          "inventories": "%{fleet} Inventories"
+          "inventories": "%{fleet} Inventories",
+          "transfers": "%{fleet} Transfers"
         },
         "missions": {
           "index": "%{fleet} Missions",

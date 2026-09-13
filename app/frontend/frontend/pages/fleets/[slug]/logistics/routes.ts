@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -15,6 +16,25 @@ export const routes: RouteRecordRaw[] = [
         "fleet:inventories:manage",
         "fleet:manage",
       ],
+      customTitle: true,
+    },
+  },
+  {
+    // Where `TransferNotifier` sends a fleet's inventory managers.
+    path: "transfers/",
+    name: "fleet-logistics-transfers",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/logistics/transfers.vue"),
+    meta: {
+      backgroundImage: "bg-8",
+      title: "fleets.logistics.transfers",
+      needsAuthentication: true,
+      access: [
+        "fleet:inventories:update",
+        "fleet:inventories:manage",
+        "fleet:manage",
+      ],
+      feature: FeatureFlagName.INVENTORY_TRANSFERS,
       customTitle: true,
     },
   },

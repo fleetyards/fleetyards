@@ -59,7 +59,8 @@
         "stats": "%{fleet} 統計",
         "logistics": {
           "index": "%{fleet} Logistics",
-          "inventories": "%{fleet} Inventories"
+          "inventories": "%{fleet} Inventories",
+          "transfers": "%{fleet} 轉移"
         },
         "missions": {
           "index": "%{fleet} 任務",

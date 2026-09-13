@@ -1966,7 +1966,8 @@
         "groups": {
           "account": "Account e hangar",
           "fleetMembership": "Iscrizione alla flotta",
-          "fleetEvents": "Eventi della flotta"
+          "fleetEvents": "Eventi della flotta",
+          "logistics": "Logistica"
         },
         "hangar_create": "Hangar creato",
         "hangar_destroy": "Hangar rimosso",
@@ -1992,7 +1993,9 @@
         "fleet_event_signup_confirmed": "Iscrizione confermata",
         "fleet_event_signup_assigned": "Assegnato a uno slot",
         "fleet_event_signup_kicked": "Rimosso da uno slot",
-        "allInGroup": "Tutto in questo gruppo"
+        "allInGroup": "Tutto in questo gruppo",
+        "inventory_transfer_received": "Trasferimento ricevuto",
+        "inventory_transfer_resolved": "Trasferimento gestito"
       },
       "fleets": {
         "missions": {

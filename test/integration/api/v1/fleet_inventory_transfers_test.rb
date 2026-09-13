@@ -81,6 +81,100 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  FLEET_WRITE_SECURITY = [
+    {SessionCookie: []},
+    {Oauth2: ["fleet", "fleet:write"]},
+    {OpenId: ["fleet", "fleet:write"]}
+  ].freeze
+
+  # Three of these share the PUT verb, so every PUT assertion names the one it
+  # means -- openapi-ruby matches on verb, path params and status.
+  ACCEPT_PATH = "/fleets/{fleetSlug}/inventory-transfers/{id}/accept"
+  DECLINE_PATH = "/fleets/{fleetSlug}/inventory-transfers/{id}/decline"
+  CANCEL_PATH = "/fleets/{fleetSlug}/inventory-transfers/{id}/cancel"
+
+  api_path "/fleets/{fleetSlug}/inventory-transfers/{id}" do
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Transfer id"
+
+    get("Fleet Inventory Transfer") do
+      operationId "fleetInventoryTransfer"
+      tags "FleetInventoryTransfers"
+      produces "application/json"
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
+      ]
+
+      response(200, "successful") { schema ::V1::Schemas::Transfers::InventoryTransfer }
+      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
+      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
+  api_path "/fleets/{fleetSlug}/inventory-transfers/{id}/decline" do
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Transfer id"
+
+    put("Decline Fleet Inventory Transfer") do
+      operationId "declineFleetInventoryTransfer"
+      tags "FleetInventoryTransfers"
+      produces "application/json"
+
+      security FLEET_WRITE_SECURITY
+
+      response(200, "successful") { schema ::V1::Schemas::Transfers::InventoryTransfer }
+      response(400, "bad request") { schema ::Shared::V1::Schemas::ValidationError }
+      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
+      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
+  api_path "/fleets/{fleetSlug}/inventory-transfers/{id}/cancel" do
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Transfer id"
+
+    put("Cancel Fleet Inventory Transfer") do
+      operationId "cancelFleetInventoryTransfer"
+      tags "FleetInventoryTransfers"
+      produces "application/json"
+
+      security FLEET_WRITE_SECURITY
+
+      response(200, "successful") { schema ::V1::Schemas::Transfers::InventoryTransfer }
+      response(400, "bad request") { schema ::Shared::V1::Schemas::ValidationError }
+      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
+      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
+  api_path "/fleets/{fleetSlug}/inventory-transfers/{id}/report" do
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "id", in: :path, schema: {type: :string, format: :uuid}, description: "Transfer id"
+
+    post("Report Fleet Inventory Transfer") do
+      operationId "reportFleetInventoryTransfer"
+      tags "FleetInventoryTransfers"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::V1::Schemas::Inputs::InventoryTransferReportInput
+
+      security FLEET_WRITE_SECURITY
+
+      response(200, "successful") { schema ::V1::Schemas::Transfers::InventoryTransfer }
+      response(400, "bad request") { schema ::Shared::V1::Schemas::ValidationError }
+      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
+      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
   setup do
     Flipper.enable("hangar_inventories")
     Flipper.enable("fleet_logistics")
@@ -153,7 +247,7 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug, id: builder.transfer.id},
-      body: {fleetInventoryId: @depot.id} do
+      api_path: ACCEPT_PATH, body: {fleetInventoryId: @depot.id} do
       assert_equal "completed", parsed_body["state"]
       assert_equal "fleet", parsed_body["destination"]["kind"]
     end
@@ -191,5 +285,79 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
 
   test "GET needs a signed-in user" do
     assert_api_response :get, 401, path_params: {fleetSlug: @fleet.slug}
+  end
+
+  test "an officer declines a transfer addressed to the fleet, and the goods go home" do
+    transfer = donation_to_fleet
+
+    sign_in @officer
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, id: transfer.id},
+      api_path: DECLINE_PATH do
+      assert_equal "declined", parsed_body["state"]
+    end
+
+    assert_equal 50, transfer.source.reload.stock_positions.sole.net_quantity
+  end
+
+  test "an officer cancels a transfer the fleet sent" do
+    sign_in @officer
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {
+      sourceInventoryId: @depot.id,
+      recipientUsername: @outsider.username,
+      lines: [{positionId: @entry.position.id, quantity: 25}]
+    }
+
+    transfer = InventoryTransfer.sole
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, id: transfer.id},
+      api_path: CANCEL_PATH do
+      assert_equal "cancelled", parsed_body["state"]
+    end
+
+    assert_equal 100, @depot.reload.stock_positions.sole.net_quantity
+  end
+
+  test "reporting on the fleet's behalf files the rule against the fleet" do
+    transfer = donation_to_fleet
+
+    sign_in @officer
+
+    assert_api_response :post, 200,
+      path_params: {fleetSlug: @fleet.slug, id: transfer.id},
+      body: {reason: "spam"} do
+      assert_equal "declined", parsed_body["state"]
+    end
+
+    assert InventoryTransferRule.between(holder: @fleet, subject: transfer.sender_party).deny?
+  end
+
+  test "GET one is readable by the fleet it is addressed to" do
+    transfer = donation_to_fleet
+
+    sign_in @officer
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, id: transfer.id}
+
+    sign_in @member
+    assert_api_response :get, 403, path_params: {fleetSlug: @fleet.slug, id: transfer.id}
+  end
+
+  private def donation_to_fleet
+    donor = create(:user)
+    donor_inventory = create(:inventory, holder: donor)
+    donation = create(:inventory_item, inventory: donor_inventory,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 50)
+
+    builder = Inventories::TransferBuilder.new(
+      source: donor_inventory, actor: donor, recipient: @fleet,
+      lines: [{position_id: donation.position.id, quantity: 20}]
+    )
+
+    assert builder.call, builder.errors.full_messages.to_sentence
+
+    builder.transfer
   end
 end

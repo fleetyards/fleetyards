@@ -1,6 +1,7 @@
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Fleet,
+  FeatureFlagName,
   useHangarInventories,
   useMyFleets,
 } from "@/services/fyApi";
@@ -39,8 +40,21 @@ export const useTransferTargets = (
       })),
   );
 
+  // Both flags, because a transfer into a fleet inventory rides on the gate
+  // that already governs them: the new flag does not open a fleet whose
+  // logistics are switched off. The fleet payload carries its own enabled
+  // features, so this needs nothing from the server that is not already here.
+  const canReceive = (fleet: Fleet) =>
+    fleet.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) &&
+    fleet.features?.includes(FeatureFlagName.FLEET_LOGISTICS);
+
+  // Filtered on whether the feature is *available* to that fleet -- never on
+  // whether the gate would admit this particular sender. A policy or a standing
+  // denial must not be readable from an option going missing: that is the same
+  // fact `TransferGate` refuses to distinguish in its wording, and hiding the
+  // option would say it louder. Those are refused at send time instead.
   const fleetTargets = computed<TransferTargetOption[]>(() =>
-    (fleets.value ?? []).map((fleet: Fleet) => ({
+    (fleets.value ?? []).filter(canReceive).map((fleet: Fleet) => ({
       value: `fleet:${fleet.slug}`,
       label: t("labels.logistics.transferToFleet", { fleet: fleet.name }),
       needsAnswer: true,

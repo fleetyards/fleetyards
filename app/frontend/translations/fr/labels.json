@@ -1966,7 +1966,8 @@
         "groups": {
           "account": "Compte et hangar",
           "fleetMembership": "Adhésion à une flotte",
-          "fleetEvents": "Événements de flotte"
+          "fleetEvents": "Événements de flotte",
+          "logistics": "Logistique"
         },
         "hangar_create": "Vaisseau ajouté au hangar",
         "hangar_destroy": "Vaisseau retiré du hangar",
@@ -1992,7 +1993,9 @@
         "fleet_event_signup_confirmed": "Inscription confirmée",
         "fleet_event_signup_assigned": "Assigné à un poste",
         "fleet_event_signup_kicked": "Retiré d'un poste",
-        "allInGroup": "Tout dans ce groupe"
+        "allInGroup": "Tout dans ce groupe",
+        "inventory_transfer_received": "Transfert reçu",
+        "inventory_transfer_resolved": "Transfert traité"
       },
       "fleets": {
         "missions": {

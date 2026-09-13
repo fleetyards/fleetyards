@@ -1962,7 +1962,8 @@
         "groups": {
           "account": "帳戶與機庫",
           "fleetMembership": "艦隊成員資格",
-          "fleetEvents": "艦隊活動"
+          "fleetEvents": "艦隊活動",
+          "logistics": "物流"
         },
         "hangar_create": "機庫已建立",
         "hangar_destroy": "機庫已移除",
@@ -1988,7 +1989,9 @@
         "fleet_event_signup_confirmed": "報名已確認",
         "fleet_event_signup_assigned": "已指派席位",
         "fleet_event_signup_kicked": "已從席位移除",
-        "allInGroup": "這個群組的全部項目"
+        "allInGroup": "這個群組的全部項目",
+        "inventory_transfer_received": "收到轉移",
+        "inventory_transfer_resolved": "轉移已回覆"
       },
       "fleets": {
         "missions": {

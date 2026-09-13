@@ -19,6 +19,7 @@ import Empty from "@/shared/components/Empty/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import {
+  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetInventory,
@@ -54,6 +55,15 @@ const canCreateInventories = computed(
 
 const canUpdateInventories = computed(
   () => props.membership?.capabilities?.updateInventories ?? false,
+);
+
+// The fleet's own flags decide, not the reader's: the transfers page acts for
+// the fleet.
+const canSeeTransfers = computed(
+  () =>
+    canUpdateInventories.value &&
+    (props.fleet?.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) ??
+      false),
 );
 
 const activeTab = ref<"stock" | "log">("stock");
@@ -182,8 +192,23 @@ const crumbs = computed<Crumb[]>(() => [
     </div>
   </div>
 
-  <Teleport v-if="canCreateInventories" to="#header-right">
-    <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openInventoryModal()">
+  <Teleport to="#header-right">
+    <Btn
+      v-if="canSeeTransfers"
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'fleet-logistics-transfers' }"
+      data-test="fleet-transfers-link"
+      mobile-icon-only
+    >
+      <i class="fa-duotone fa-right-left" />
+      {{ t("nav.hangar.transfers") }}
+    </Btn>
+    <Btn
+      v-if="canCreateInventories"
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
+      @click="openInventoryModal()"
+    >
       <i class="fa-light fa-plus" />
       {{ t("actions.logistics.createInventory") }}
     </Btn>
