@@ -39,6 +39,9 @@
 #  hydrogen_fuel_tanks               :string
 #  images_count                      :integer          default(0)
 #  in_game                           :boolean          default(FALSE), not null
+#  landed_beam                       :decimal(15, 2)
+#  landed_height                     :decimal(15, 2)
+#  landed_length                     :decimal(15, 2)
 #  last_updated_at                   :datetime
 #  legacy_slug                       :string
 #  length                            :decimal(15, 2)   default(0.0), not null
@@ -446,6 +449,18 @@ class Model < ApplicationRecord
   has_one_attached :extended_front_view_colored
   has_one_attached :extended_angled_view_colored
 
+  # The state a ship is in inside a hangar: gear down, and on some hulls the
+  # wings folded. Mirrors the extended family rather than inventing a shape.
+  has_one_attached :landed_holo
+  has_one_attached :landed_top_view
+  has_one_attached :landed_side_view
+  has_one_attached :landed_front_view
+  has_one_attached :landed_angled_view
+  has_one_attached :landed_top_view_colored
+  has_one_attached :landed_side_view_colored
+  has_one_attached :landed_front_view_colored
+  has_one_attached :landed_angled_view_colored
+
   # The fleetchart sizes a ship from the pixel dimensions of the view it draws,
   # so transparent padding around the hull reads as part of the ship. The store
   # images are left alone: they are framed artwork, not measured against
@@ -454,7 +469,21 @@ class Model < ApplicationRecord
     :top_view_colored, :side_view_colored, :front_view_colored, :angled_view_colored,
     :extended_top_view, :extended_side_view, :extended_front_view, :extended_angled_view,
     :extended_top_view_colored, :extended_side_view_colored,
-    :extended_front_view_colored, :extended_angled_view_colored
+    :extended_front_view_colored, :extended_angled_view_colored,
+    :landed_top_view, :landed_side_view, :landed_front_view, :landed_angled_view,
+    :landed_top_view_colored, :landed_side_view_colored,
+    :landed_front_view_colored, :landed_angled_view_colored
+
+  # Which holo describes which set of columns. A ship is measured from the file
+  # that shows it in that state, so attaching one is what fills them -- no task
+  # to remember to run, and the admin sees the numbers on the next reload.
+  HOLO_DIMENSIONS = {
+    "holo" => %i[length beam height],
+    "landed_holo" => %i[landed_length landed_beam landed_height],
+    "extended_holo" => %i[extended_length extended_beam extended_height]
+  }.freeze
+
+  after_commit :measure_attached_holos, if: :has_new_holos?
 
   before_save :update_slugs
 
@@ -668,6 +697,30 @@ class Model < ApplicationRecord
       .select(:model_id)
 
     where(id: own).or(where(id: through_modules))
+  end
+
+  # `sorted` inside the job assigns largest to length -- right for a hull that
+  # sits the usual way up, wrong for anything rendered on its side. Nothing in
+  # the catalogue is today, and a wrong assignment is visible and editable
+  # rather than silent.
+  def measure_attached_holos
+    new_holo_names.each do |name|
+      columns = HOLO_DIMENSIONS.fetch(name)
+
+      MeasureHoloJob.perform_async(
+        id, name, send(name).blob&.id, MeasureHoloJob.snapshot(self, columns)
+      )
+    end
+  end
+
+  # `new_attachment_names` comes from ActiveStorageVariants, which captures them
+  # in `after_save` -- `attachment_changes` is already empty by `after_commit`.
+  private def new_holo_names
+    new_attachment_names & HOLO_DIMENSIONS.keys
+  end
+
+  private def has_new_holos?
+    new_holo_names.any?
   end
 
   def update_from_hardpoints
@@ -968,6 +1021,42 @@ class Model < ApplicationRecord
 
     number = number_with_precision(
       extended_height,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "m"].join(" ")
+  end
+
+  def landed_length_label
+    return if landed_length.blank? || landed_length.zero?
+
+    number = number_with_precision(
+      landed_length,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "m"].join(" ")
+  end
+
+  def landed_beam_label
+    return if landed_beam.blank? || landed_beam.zero?
+
+    number = number_with_precision(
+      landed_beam,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "m"].join(" ")
+  end
+
+  def landed_height_label
+    return if landed_height.blank? || landed_height.zero?
+
+    number = number_with_precision(
+      landed_height,
       precision: 2,
       strip_insignificant_zeros: true
     )

@@ -18503,6 +18503,24 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         extendedAngledViewColored:
           "$ref": "#/components/schemas/MediaFile"
+        landedHolo:
+          "$ref": "#/components/schemas/MediaFile"
+        landedTopView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedTopViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedSideView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedSideViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedFrontView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedFrontViewColored:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledView:
+          "$ref": "#/components/schemas/MediaFile"
+        landedAngledViewColored:
+          "$ref": "#/components/schemas/MediaFile"
         frontView:
           "$ref": "#/components/schemas/MediaFile"
         frontViewColored:
@@ -18555,6 +18573,18 @@ components:
         extendedHeight:
           type: number
         extendedHeightLabel:
+          type: string
+        landedLength:
+          type: number
+        landedLengthLabel:
+          type: string
+        landedBeam:
+          type: number
+        landedBeamLabel:
+          type: string
+        landedHeight:
+          type: number
+        landedHeightLabel:
           type: string
         extendedFleetchartOffsetLength:
           type: number

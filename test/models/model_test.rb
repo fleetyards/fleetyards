@@ -41,6 +41,9 @@ require "test_helper"
 #  hydrogen_fuel_tanks               :string
 #  images_count                      :integer          default(0)
 #  in_game                           :boolean          default(FALSE), not null
+#  landed_beam                       :decimal(15, 2)
+#  landed_height                     :decimal(15, 2)
+#  landed_length                     :decimal(15, 2)
 #  last_updated_at                   :datetime
 #  legacy_slug                       :string
 #  length                            :decimal(15, 2)   default(0.0), not null
@@ -128,6 +131,51 @@ require "test_helper"
 #  index_models_on_size                      (size)
 #
 class ModelTest < ActiveSupport::TestCase
+  # Attaching a holo is what fills its columns -- there is no task to remember.
+  test "attaching a holo queues a measurement for it" do
+    model = create(:model)
+
+    assert_difference("MeasureHoloJob.jobs.size", 1) do
+      model.landed_holo.attach(
+        io: File.open(Rails.root.join("test/fixtures/holo/plain.gltf")),
+        filename: "plain.gltf"
+      )
+    end
+
+    # The blob comes along so a later upload cannot be measured from the older
+    # file, whichever job finishes last.
+    # The blob and the columns as they stood: a later upload must not be
+    # measured from the older file, and a correction made meanwhile must not be
+    # overwritten.
+    assert_equal(
+      [model.id, "landed_holo", model.landed_holo.blob.id, [nil, nil, nil]],
+      MeasureHoloJob.jobs.last["args"]
+    )
+  end
+
+  # The concern reads the names in `after_commit`, where `attachment_changes` is
+  # already empty -- so before they were captured in `after_save`, neither this
+  # nor the trimming it guards ran at all.
+  test "attaching an image queues its preprocessing" do
+    model = create(:model)
+
+    assert_difference("PreprocessRepresentationsJob.jobs.size", 1) do
+      model.store_image.attach(
+        io: File.open(Rails.root.join("app/frontend/images/fallback/store_image.jpg")),
+        filename: "store_image.jpg",
+        content_type: "image/jpeg"
+      )
+    end
+  end
+
+  test "saving something else queues nothing" do
+    model = create(:model)
+
+    assert_no_difference("MeasureHoloJob.jobs.size") do
+      model.update!(name: "#{model.name} II")
+    end
+  end
+
   # The loader rewrites sc_* on every import while the curated columns -- the
   # ones fits? and the public payload read -- stay put. Nothing kept them in
   # step, so this is how the drift becomes findable.

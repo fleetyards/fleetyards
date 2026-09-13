@@ -23,6 +23,16 @@ module Shared
             extendedBeamLabel: {type: :string},
             extendedHeight: {type: :number},
             extendedHeightLabel: {type: :string},
+            # Not nullable, and not required either: `Jbuilder.ignore_nil` drops
+            # the key entirely when a model has no landed measurement, so the
+            # payload never carries a null for these. Declaring them nullable
+            # would describe a value the API does not send.
+            landedLength: {type: :number},
+            landedLengthLabel: {type: :string},
+            landedBeam: {type: :number},
+            landedBeamLabel: {type: :string},
+            landedHeight: {type: :number},
+            landedHeightLabel: {type: :string},
             extendedFleetchartOffsetLength: {type: :number},
             extendedFleetchartOffsetBeam: {type: :number},
             height: {type: :number},

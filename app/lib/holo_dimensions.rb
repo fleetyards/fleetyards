@@ -73,13 +73,23 @@ class HoloDimensions
     blob.open { |file| new(parse(file.read)).call }
   end
 
+  # A GLB header is 12 bytes, then a chunk header of 8. A file that opens with
+  # the magic but stops short would otherwise reach `unpack1` or the slice as
+  # nil and come back as NoMethodError or TypeError -- neither of which says
+  # "this is not readable glTF" to the caller.
+  GLB_HEADER_BYTES = 20
+
   def self.parse(bytes)
     return JSON.parse(bytes) unless bytes[0, 4] == GLB_MAGIC
 
-    # header is magic, version, total length; then chunk length, chunk type,
-    # chunk data. The JSON chunk is required to come first.
+    raise JSON::ParserError, "GLB is shorter than its header" if bytes.bytesize < GLB_HEADER_BYTES
+
     length = bytes[12, 4].unpack1("V")
-    JSON.parse(bytes[20, length])
+    chunk = bytes[GLB_HEADER_BYTES, length.to_i]
+
+    raise JSON::ParserError, "GLB names a JSON chunk it does not contain" if chunk.nil? || chunk.bytesize < length.to_i
+
+    JSON.parse(chunk)
   end
 
   def initialize(gltf)

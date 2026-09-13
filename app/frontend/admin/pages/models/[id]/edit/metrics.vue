@@ -36,6 +36,9 @@ const initialValues = ref<ModelUpdateInput>({
   height: props.model.metrics.height,
   fleetchartOffsetLength: props.model.metrics.fleetchartOffsetLength,
   fleetchartOffsetBeam: props.model.metrics.fleetchartOffsetBeam,
+  landedLength: props.model.metrics.landedLength,
+  landedBeam: props.model.metrics.landedBeam,
+  landedHeight: props.model.metrics.landedHeight,
   extendedLength: props.model.metrics.extendedLength,
   extendedBeam: props.model.metrics.extendedBeam,
   extendedHeight: props.model.metrics.extendedHeight,
@@ -75,6 +78,9 @@ const [fleetchartOffsetLength, fleetchartOffsetLengthProps] = defineField(
 const [fleetchartOffsetBeam, fleetchartOffsetBeamProps] = defineField(
   "fleetchartOffsetBeam",
 );
+const [landedLength, landedLengthProps] = defineField("landedLength");
+const [landedBeam, landedBeamProps] = defineField("landedBeam");
+const [landedHeight, landedHeightProps] = defineField("landedHeight");
 const [extendedLength, extendedLengthProps] = defineField("extendedLength");
 const [extendedBeam, extendedBeamProps] = defineField("extendedBeam");
 const [extendedHeight, extendedHeightProps] = defineField("extendedHeight");
@@ -282,6 +288,39 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           name="fleetchartOffsetBeam"
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.fleetchartOffsetBeam"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="landedLength"
+          v-bind="landedLengthProps"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          name="landedLength"
+          translation-key="model.landedLength"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="landedBeam"
+          v-bind="landedBeamProps"
+          name="landedBeam"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          translation-key="model.landedBeam"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="landedHeight"
+          v-bind="landedHeightProps"
+          name="landedHeight"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          translation-key="model.landedHeight"
           :suffix="t('number.units.distance')"
         />
       </div>

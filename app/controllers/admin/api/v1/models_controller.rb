@@ -179,16 +179,20 @@ module Admin
             :classification, :focus, :size, :dock_size, :vehicle_size, :length, :beam, :height, :on_sale, :player_ownable,
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
             :fleetchart_offset_beam, :extended_length, :extended_beam, :extended_height,
+            :landed_length, :landed_beam, :landed_height,
             :extended_fleetchart_offset_length, :extended_fleetchart_offset_beam,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
             :quantum_fuel_tanks, :external_fuel_tanks, :refuel_boom, :store_image, :rsi_store_image, :holo, :brochure,
-            :fleetchart_image, :extended_holo,
+            :fleetchart_image, :extended_holo, :landed_holo,
             :top_view, :side_view, :front_view, :angled_view,
             :top_view_colored, :side_view_colored, :front_view_colored,
             :angled_view_colored,
             :extended_top_view, :extended_side_view, :extended_front_view, :extended_angled_view,
             :extended_top_view_colored, :extended_side_view_colored,
-            :extended_front_view_colored, :extended_angled_view_colored
+            :extended_front_view_colored, :extended_angled_view_colored,
+            :landed_top_view, :landed_side_view, :landed_front_view, :landed_angled_view,
+            :landed_top_view_colored, :landed_side_view_colored,
+            :landed_front_view_colored, :landed_angled_view_colored
           )
         end
       end

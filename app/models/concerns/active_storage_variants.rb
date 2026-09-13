@@ -20,6 +20,10 @@ module ActiveStorageVariants
   included do
     class_attribute :trimmed_attachment_names, default: [], instance_writer: false
 
+    # Captured in `after_save` and read in `after_commit`: Rails clears
+    # `attachment_changes` between the two, so asking there answers an empty
+    # list and the callback below never fires at all.
+    after_save :remember_new_attachments
     after_commit :preprocess_representations, if: :has_new_attachments?
   end
 
@@ -51,17 +55,21 @@ module ActiveStorageVariants
     end
   end
 
+  def new_attachment_names
+    @new_attachment_names || []
+  end
+
   private
+
+  def remember_new_attachments
+    @new_attachment_names = one_attachment_names.select { |name| attachment_changes.key?(name) }
+  end
 
   def trim_pending?(name)
     return false unless trimmed_attachment_names.include?(name)
 
     attachment = send(name)
     attachment.attached? && attachment.blob.metadata[:trimmed].blank?
-  end
-
-  def new_attachment_names
-    one_attachment_names.select { |name| attachment_changes.key?(name) }
   end
 
   def one_attachment_names

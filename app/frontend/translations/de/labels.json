@@ -670,7 +670,10 @@
           "announced": "Angekündigt"
         },
         "scIdentifier": "SC Identifier",
-        "carriedBy": "Wird getragen von"
+        "carriedBy": "Wird getragen von",
+        "landedLength": "Länge gelandet",
+        "landedBeam": "Breite gelandet",
+        "landedHeight": "Höhe gelandet"
       },
       "models": {
         "extraColumns": "Spalten",
