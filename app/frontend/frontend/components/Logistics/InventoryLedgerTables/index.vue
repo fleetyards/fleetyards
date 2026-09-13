@@ -27,6 +27,8 @@ type Props = {
   showMember?: boolean;
   showAddedBy?: boolean;
   showNotes?: boolean;
+  // Ticking stock rows, for an action that works on several positions at once.
+  stockSelectable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   showMember: false,
   showAddedBy: false,
   showNotes: false,
+  stockSelectable: false,
 });
 
 const { t } = useI18n();
@@ -177,8 +180,16 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     :columns="stockColumns"
     primary-key="id"
     :loading="stockLoading"
+    :selectable="stockSelectable"
     :empty-visible="!stockLoading && !stockRecords.length"
   >
+    <template
+      v-if="$slots['stock-selected-actions']"
+      #selected-actions="{ selected }"
+    >
+      <slot name="stock-selected-actions" :selected="selected" />
+    </template>
+
     <template #col-name="{ record }">
       <slot name="stock-name" :record="record">{{ record.name }}</slot>
     </template>

@@ -166,15 +166,18 @@ const canTransfer = computed(
   () => transfersEnabled.value && !!inventory.value?.id && hasCargo.value,
 );
 
-const openTransferModal = () => {
-  if (!inventory.value?.id) return;
+// A transfer starts from the rows the reader chose -- one, or a ticked set --
+// rather than from the whole inventory. `stockRecords` is per quality, so a
+// position can be several rows; the modal collapses them.
+const openTransferModal = (positions: InventoryStockRecord[]) => {
+  if (!inventory.value?.id || positions.length === 0) return;
 
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Logistics/TransferModal/index.vue"),
     props: {
       source: { id: inventory.value.id, name: inventory.value.name },
-      positions: stockData.value ?? [],
+      positions,
       targets: transferTargets.value,
       onSend: async (data: Parameters<typeof createTransfer>[0]["data"]) => {
         await createTransfer({ data });
@@ -184,6 +187,11 @@ const openTransferModal = () => {
   });
 };
 
+const openTransferForSelection = (selected: string[]) => {
+  openTransferModal(
+    stockRecords.value.filter((record) => selected.includes(record.id)),
+  );
+};
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
   comlink.emit("open-modal", {
     component: () =>
@@ -307,15 +315,6 @@ onMounted(() => {
         <i class="fa-duotone fa-boxes-stacked" />
         {{ t("nav.hangar.inventories") }}
       </Btn>
-      <Btn
-        v-if="canTransfer"
-        :size="BtnSizesEnum.MD"
-        data-test="vehicle-cargo-transfer"
-        @click="openTransferModal"
-      >
-        <i class="fa-duotone fa-right-left" />
-        {{ t("actions.logistics.transfer") }}
-      </Btn>
       <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
         <i class="fa-duotone fa-file-csv" />
         {{ t("actions.logistics.importCsv") }}
@@ -415,8 +414,30 @@ onMounted(() => {
           :log-records="itemsList"
           :stock-loading="stockLoading"
           :log-loading="logLoading"
+          :stock-selectable="canTransfer"
           show-notes
         >
+          <template v-if="canTransfer" #stock-actions="{ record }">
+            <Btn
+              :size="BtnSizesEnum.SM"
+              :aria-label="t('actions.logistics.transfer')"
+              :title="t('actions.logistics.transfer')"
+              :data-test="`stock-transfer-${record.slug}`"
+              @click="openTransferModal([record as InventoryStockRecord])"
+            >
+              <i class="fa-duotone fa-right-left" />
+            </Btn>
+          </template>
+          <template v-if="canTransfer" #stock-selected-actions="{ selected }">
+            <Btn
+              :size="BtnSizesEnum.SM"
+              data-test="stock-transfer-selected"
+              @click="openTransferForSelection(selected)"
+            >
+              <i class="fa-duotone fa-right-left" />
+              {{ t("actions.logistics.transfer") }}
+            </Btn>
+          </template>
           <template #stock-name="{ record }">
             <router-link :to="stockItemRoute(record.slug)">
               {{ record.name }}

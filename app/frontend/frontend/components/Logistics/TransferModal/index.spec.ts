@@ -78,10 +78,6 @@ const build = async (
   return { wrapper, onSend };
 };
 
-const select = async (slug: string) => {
-  await wrapper!.find(`[data-test="transfer-select-${slug}"]`).setValue(true);
-};
-
 describe("TransferModal", () => {
   it("offers only positions that hold something", async () => {
     await build([
@@ -101,19 +97,14 @@ describe("TransferModal", () => {
     ).toBe(false);
   });
 
-  it("cannot send with nothing selected", async () => {
-    await build([position()]);
+  // The reader already chose these rows in the list, so they arrive ticked.
+  it("starts every chosen line ticked and at its full quantity", async () => {
+    const { onSend } = await build([position()]);
 
     expect(
       wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
-    ).toBeDefined();
-  });
+    ).toBeUndefined();
 
-  // The whole position is the common case; a part of one is the exception.
-  it("defaults a selected line to the full net quantity", async () => {
-    const { onSend } = await build([position()]);
-
-    await select("titanium--commodity--scu");
     await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
     await flushPromises();
 
@@ -126,12 +117,43 @@ describe("TransferModal", () => {
     );
   });
 
+  it("cannot send once every line is unticked", async () => {
+    await build([position()]);
+
+    await wrapper!
+      .find('[data-test="transfer-select-titanium--commodity--scu"]')
+      .setValue(false);
+
+    expect(
+      wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
+    ).toBeDefined();
+  });
+
+  // One position can arrive as several rows -- `current_stock` groups per
+  // quality -- and they are one thing to move, at the sum of their amounts.
+  it("collapses several quality rows of one position into one line", async () => {
+    const { onSend } = await build([
+      position({ netQuantity: 60 }),
+      position({ netQuantity: 36 }),
+    ]);
+
+    expect(wrapper!.findAll('[data-test^="transfer-line-"]')).toHaveLength(1);
+
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        lines: [{ positionId: "pos-1", quantity: 96 }],
+      }),
+    );
+  });
+
   // All-or-nothing, the same rule the API applies: the button does not offer to
   // send a partly valid shipment.
   it("refuses to send when a line asks for more than the position holds", async () => {
     const { onSend } = await build([position()]);
 
-    await select("titanium--commodity--scu");
     await wrapper!.find('[data-test="input-quantity-pos-1"]').setValue("500");
     await flushPromises();
 

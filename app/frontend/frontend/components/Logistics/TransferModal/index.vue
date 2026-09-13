@@ -25,6 +25,8 @@ import type { TransferSource, TransferTargetOption } from "./types";
 
 type Props = {
   source: TransferSource;
+  // The positions the reader chose -- one row, or a bulk selection. Never the
+  // whole inventory: a hold with fifty positions made a modal nobody could use.
   positions: InventoryStockPosition[];
   targets: TransferTargetOption[];
   onSend: (payload: InventoryTransferCreateInput) => Promise<unknown>;
@@ -40,21 +42,49 @@ const submitting = ref(false);
 const note = ref("");
 const targetValue = ref<string | undefined>(props.targets[0]?.value);
 
-// Only positions holding something can move. An emptied one still resolves as a
-// record, which is why it can appear in the list this is handed.
-const movable = computed(() =>
-  props.positions.filter((position) => Number(position.netQuantity) > 0),
-);
+// The stock list is grouped per quality, so one position can arrive as several
+// rows -- mined ore at two grades is two rows carrying one `id`. They are one
+// thing to move, and the amount available is their sum, which is what
+// `stock_positions` reports server-side and what the withdrawal is checked
+// against. Collapsing them here is also what makes a bulk selection mean the
+// position rather than one of its grades.
+//
+// Only positions holding something can move; an emptied one still resolves as a
+// record, which is why it can appear in a list at all.
+const movable = computed(() => {
+  const byPosition = new Map<string, InventoryStockPosition>();
+
+  props.positions.forEach((position) => {
+    const existing = byPosition.get(position.id);
+
+    if (existing) {
+      existing.netQuantity =
+        Number(existing.netQuantity) + Number(position.netQuantity);
+      return;
+    }
+
+    byPosition.set(position.id, { ...position });
+  });
+
+  return [...byPosition.values()].filter(
+    (position) => Number(position.netQuantity) > 0,
+  );
+});
 
 const selected = ref<Record<string, boolean>>({});
 const quantities = ref<Record<string, string>>({});
 
-// Default every line to the whole position: unloading a hold is the common
-// case, and a part of one is the exception.
+// Every chosen line starts ticked and at its whole quantity: the reader picked
+// these rows to move them, and moving all of it is the common case. The tick
+// stays so a bulk selection can be trimmed without going back to the list.
 watchEffect(() => {
   movable.value.forEach((position) => {
     if (quantities.value[position.id] === undefined) {
       quantities.value[position.id] = String(position.netQuantity);
+    }
+
+    if (selected.value[position.id] === undefined) {
+      selected.value[position.id] = true;
     }
   });
 });
