@@ -184,44 +184,49 @@ describe("v-tooltip", () => {
   });
 
   /*
-   * A phone has nothing to hover with, so the tap has to open the tooltip. It
-   * used to do the opposite: `click` was wired straight to hide, so the text
-   * was unreachable on touch.
+   * A pointer that cannot hover has only the tap to open a tooltip with, and
+   * `click` was wired straight to hide -- so the tooltip a tap opened through
+   * its synthetic mouse events closed again in the same gesture.
+   *
+   * What separates a tap from a hover is contact, not the kind of pointer, so
+   * these drive the real event order rather than telling the directive what
+   * sort of device it is on. A tap presses before its `mouseenter` arrives; a
+   * hover never presses at all.
    */
-  describe("on a device that cannot hover", () => {
-    const hoverless = (matches: boolean) => {
-      window.matchMedia = ((query: string) =>
-        ({
-          matches: query.includes("hover: none") && matches,
-          media: query,
-          addEventListener: vi.fn(),
-          removeEventListener: vi.fn(),
-        }) as unknown as MediaQueryList) as typeof window.matchMedia;
+  describe("a tap", () => {
+    const tap = (el: HTMLElement) => {
+      el.dispatchEvent(new Event("pointerover"));
+      el.dispatchEvent(new Event("pointerdown"));
+      // Fired while the finger is still down, which is why it lands first.
+      el.dispatchEvent(new Event("pointerleave"));
+      el.dispatchEvent(new Event("mouseenter"));
+      el.dispatchEvent(new Event("click"));
     };
 
-    afterEach(() => {
-      // @ts-expect-error jsdom ships without it, which is the desktop path.
-      delete window.matchMedia;
-    });
+    const hover = (el: HTMLElement) => {
+      el.dispatchEvent(new Event("pointerover"));
+      el.dispatchEvent(new Event("mouseenter"));
+    };
 
-    it("opens on a tap and closes on the next one", async () => {
-      hoverless(true);
+    it("opens the tooltip, and the next tap closes it", async () => {
       const { el } = mountAnchor();
 
-      el.dispatchEvent(new Event("click"));
+      tap(el);
       await nextFrame();
       expect(visibleTooltips()).toHaveLength(1);
 
-      el.dispatchEvent(new Event("click"));
+      tap(el);
       expect(visibleTooltips()).toHaveLength(0);
     });
 
-    // The synthetic mouse events a tap fires would otherwise open it just
-    // before the tap closes it again.
-    it("ignores hover", async () => {
-      hoverless(true);
+    // The synthetic `mouseenter` would otherwise open it a moment before the
+    // click closed it again.
+    it("is not mistaken for a hover", async () => {
       const { el } = mountAnchor();
 
+      el.dispatchEvent(new Event("pointerover"));
+      el.dispatchEvent(new Event("pointerdown"));
+      el.dispatchEvent(new Event("pointerleave"));
       el.dispatchEvent(new Event("mouseenter"));
       await nextFrame();
 
@@ -229,48 +234,77 @@ describe("v-tooltip", () => {
     });
 
     /*
-     * The case the media query alone gets wrong. A touchscreen laptop reports
-     * `hover: hover`, because that describes its *primary* pointer -- so a
-     * finger tap would take the desktop path and the tooltip would be
-     * unreachable by exactly the gesture that cannot hover.
+     * The case a media query cannot answer. `(hover: none)` describes the
+     * device's primary pointer, so a touchscreen laptop reports `hover: hover`
+     * and a finger tap there would take the desktop path -- locking out the one
+     * gesture that cannot hover. Nothing here asks the device anything.
      */
-    it("follows the finger on a device that also has a mouse", async () => {
-      hoverless(false);
+    it("works on a device whose mouse also hovers", async () => {
       const { el } = mountAnchor();
 
-      el.dispatchEvent(
-        new PointerEvent("pointerdown", { pointerType: "touch" }),
-      );
-      el.dispatchEvent(new Event("click"));
-      await nextFrame();
-
-      expect(visibleTooltips()).toHaveLength(1);
-    });
-
-    it("still hovers with the mouse on that same device", async () => {
-      hoverless(false);
-      const { el } = mountAnchor();
-
-      el.dispatchEvent(
-        new PointerEvent("pointerover", { pointerType: "mouse" }),
-      );
-      el.dispatchEvent(new Event("mouseenter"));
+      hover(el);
       await nextFrame();
       expect(visibleTooltips()).toHaveLength(1);
 
       el.dispatchEvent(new Event("click"));
       expect(visibleTooltips()).toHaveLength(0);
+
+      el.dispatchEvent(new Event("mouseleave"));
+      tap(el);
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
     });
 
-    it("still closes on click where hover works", async () => {
-      hoverless(false);
+    // A stylus that hovers behaves like a mouse and one that only taps behaves
+    // like a finger, without either being enumerated.
+    it("covers a stylus either way round", async () => {
       const { el } = mountAnchor();
 
+      // Hovers: opens on approach, closes on the press that follows.
+      hover(el);
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+      el.dispatchEvent(new Event("pointerdown"));
+      el.dispatchEvent(new Event("click"));
+      expect(visibleTooltips()).toHaveLength(0);
+
+      el.dispatchEvent(new Event("mouseleave"));
+
+      // Only taps: the press lands before the synthetic hover.
+      tap(el);
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+    });
+  });
+
+  describe("a mouse", () => {
+    it("still opens on hover and closes on click", async () => {
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(new Event("pointerover"));
       el.dispatchEvent(new Event("mouseenter"));
       await nextFrame();
       expect(visibleTooltips()).toHaveLength(1);
 
+      el.dispatchEvent(new Event("pointerdown"));
       el.dispatchEvent(new Event("click"));
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    // Clicking a control twice must not put its tooltip back over the result.
+    it("keeps it closed on a second click", async () => {
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(new Event("pointerover"));
+      el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+
+      el.dispatchEvent(new Event("pointerdown"));
+      el.dispatchEvent(new Event("click"));
+      el.dispatchEvent(new Event("pointerdown"));
+      el.dispatchEvent(new Event("click"));
+      await nextFrame();
+
       expect(visibleTooltips()).toHaveLength(0);
     });
   });
