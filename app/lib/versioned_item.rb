@@ -27,6 +27,7 @@ class VersionedItem
   ROOTS = {
     "Component" => [],
     "Fleet" => [],
+    "FleetContract" => [:fleet],
     "FleetInventory" => [:fleet],
     "FleetInventoryItem" => [:fleet_inventory, :fleet],
     "FleetInventoryPosition" => [:fleet_inventory, :fleet],

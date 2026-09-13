@@ -86,6 +86,7 @@ class Fleet < ApplicationRecord
     dependent: :destroy,
     inverse_of: :addressee
   has_many :missions, dependent: :destroy
+  has_many :fleet_contracts, dependent: :destroy
   has_many :fleet_events, dependent: :destroy
   # Nullified rather than destroyed: a tour's ledger is the record of who still
   # owes whom, and the people on it are not all in this fleet. Losing the fleet
