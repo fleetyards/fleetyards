@@ -155,7 +155,7 @@
         "enable": " To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy."
       },
       "oauthAuthorize": {
-        "requestingAccess": "{clientName} 正在请求访问您的账户。",
+        "requestingAccess": "%{clientName} 正在请求访问您的账户。",
         "scopesIntro": "此应用将能够："
       },
       "syncExtension": {

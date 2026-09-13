@@ -155,7 +155,7 @@
         "enable": " Per proteggere il tuo account FleetYards.net puoi generare Token per l'autenticazione a due fattori con Google Authenticator, 1Password o Authy."
       },
       "oauthAuthorize": {
-        "requestingAccess": "{clientName} sta richiedendo l'accesso al tuo account.",
+        "requestingAccess": "%{clientName} sta richiedendo l'accesso al tuo account.",
         "scopesIntro": "Questa applicazione potrà:"
       },
       "syncExtension": {
