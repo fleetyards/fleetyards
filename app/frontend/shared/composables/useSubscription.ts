@@ -1,77 +1,90 @@
-import { useCable } from "@/shared/composables/useCable";
-import { Subscription } from "@rails/actioncable";
+import { getCable } from "@/shared/utils/Cable";
+import type { Channel, ChannelEvents, Message } from "@anycable/core";
 
-// Re-exported rather than hand-listed: the Ruby component derives the set from
-// app/channels, so a new channel shows up here without anyone maintaining a
-// second copy. The hand-written list had gone two channels stale.
-export { ChannelsEnum } from "@/services/fyApi";
+// What anycable reports when a channel connects: `reconnect` tells a
+// resubscribe apart from the first connect, `restored` a session the server
+// picked up where it left off.
+export type ConnectEvent = Parameters<ChannelEvents<Message>["connect"]>[0];
 
-export const useSubscription = <T = unknown>({
-  channelName,
+// A generated channel class. None of them takes client-supplied params -- every
+// channel streams for the connection's own user -- so the app subscribes by
+// handing over the class and the payload type follows from the contract.
+type SubscribableChannel<T extends Message> = {
+  new (): Channel<Record<string, never>, T>;
+  readonly identifier: string;
+};
+
+export const useSubscription = <T extends Message>({
+  channel,
   received,
   connected,
   disconnected,
   enabled,
 }: {
-  channelName: string;
+  channel: SubscribableChannel<T>;
   received?: (data: T) => void;
-  connected?: () => void;
+  connected?: (event: ConnectEvent) => void;
   disconnected?: () => void;
   enabled?: ComputedRef<boolean> | Ref<boolean>;
 }) => {
-  const { consumer } = useCable();
+  const { identifier } = channel;
 
-  const channel = ref<Subscription>();
+  // Shallow: anycable looks its channels up by identity, so a reactive proxy
+  // around one would never match the instance the cable holds.
+  const subscription = shallowRef<Channel<Record<string, never>, T>>();
 
   const unsubscribe = () => {
-    if (channel.value) {
-      channel.value.unsubscribe();
+    if (!subscription.value) {
+      return;
     }
+
+    subscription.value.disconnect();
+    subscription.value = undefined;
   };
 
   const subscribe = () => {
     unsubscribe();
 
-    if (!consumer) {
+    const cable = getCable();
+
+    if (!cable) {
       return;
     }
 
-    // actioncable opens the socket synchronously inside `create`, so a client
-    // that cannot open one at all -- a proxy rewriting the URL, an extension,
-    // a network policy blocking wss -- throws right here and used to take the
-    // mount with it. Live updates are an enhancement, so the page has to work
-    // without them.
-    try {
-      channel.value = consumer.subscriptions.create(
-        {
-          channel: channelName,
-        },
-        {
-          received,
-          connected: () => {
-            console.info("Connected to Channel:", channelName);
+    // A fresh instance per subscribe: a channel that has been disconnected
+    // clears its receiver asynchronously, and one that is still attached is
+    // returned unchanged by `subscribe`.
+    const instance = new channel();
 
-            if (connected) {
-              connected();
-            }
-          },
-          // No `unsubscribe()` here: actioncable reopens the socket by
-          // itself -- returning to a backgrounded tab is enough -- and
-          // resubscribes everything it still knows about. Dropping the
-          // subscription on the way down takes it out of that list, so the
-          // channel goes quiet for good after the first reconnect.
-          disconnected: () => {
-            console.info("Disconnected from Channel:", channelName);
+    instance.on("message", (data) => received?.(data));
 
-            if (disconnected) {
-              disconnected();
-            }
-          },
-        },
-      );
-    } catch (error) {
-      console.warn("Subscriptions: could not subscribe to", channelName, error);
-    }
+    // No `unsubscribe()` on the way down: anycable reopens the socket by itself
+    // -- returning to a backgrounded tab is enough -- and resubscribes every
+    // channel it still holds. Dropping the subscription takes it out of that
+    // set, so the channel would go quiet for good after the first reconnect.
+    instance.on("disconnect", (error) => {
+      console.info("Disconnected from Channel:", identifier, error?.message);
+
+      disconnected?.();
+    });
+
+    // `reconnect` tells a resubscribe apart from the first connect. Nothing is
+    // replayed, so a consumer that has to catch up resyncs from here.
+    instance.on("connect", (event) => {
+      console.info("Connected to Channel:", identifier);
+
+      connected?.(event);
+    });
+
+    // The subscription itself was refused -- an unauthenticated connection, a
+    // channel that rejects -- rather than the socket going down.
+    instance.on("close", (error) => {
+      if (error) {
+        console.warn("Subscriptions: closed", identifier, error.message);
+      }
+    });
+
+    subscription.value = cable.subscribe(instance);
   };
 
   onMounted(() => {
@@ -96,7 +109,7 @@ export const useSubscription = <T = unknown>({
   );
 
   return {
-    channel,
+    channel: subscription,
     subscribe,
     unsubscribe,
   };

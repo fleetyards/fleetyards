@@ -2,17 +2,17 @@
 
 set -euo pipefail
 
-# Message types for the cable channels, from the documents bin/generate-asyncapi
-# writes. Wipe first so a removed channel's models disappear too.
+# Channel classes and message types for the cable channels, from the documents
+# bin/generate-asyncapi writes. Wipe first so a removed channel disappears too.
 rm -rf ./app/frontend/services/fyCable ./app/frontend/services/fyCableAdmin
 
 pnpm exec asyncapi-cable
 
-# Keep only the models. The generated channel classes, composables and runtime
-# target @anycable/core, while the app subscribes through @rails/actioncable —
-# leaving them in place would put an uninstalled peer dependency into the
-# TypeScript compile graph.
+# Keep the models and the channel classes. The generated runtime and its
+# per-channel composables subscribe unconditionally and are emitted once per
+# document, while one cable carries both: the app subscribes through
+# useSubscription, which owns the single cable and the `enabled` gate.
 for target in ./app/frontend/services/fyCable ./app/frontend/services/fyCableAdmin; do
-  rm -rf "$target/channels" "$target/composables" "$target/runtime.ts" "$target/index.ts"
-  echo "kept $(find "$target/models" -name '*.ts' | wc -l | tr -d ' ') model files in $target"
+  rm -rf "$target/composables" "$target/runtime.ts" "$target/index.ts"
+  echo "kept $(find "$target" -name '*.ts' | wc -l | tr -d ' ') files in $target"
 done

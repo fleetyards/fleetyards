@@ -1,8 +1,8 @@
-// Message types for the cable channels, generated from the AsyncAPI documents
-// the Ruby side writes. Only `models/` is consumed: the generated channel
-// classes and runtime target @anycable/core, and the app subscribes through
-// @rails/actioncable via useSubscription. bin/generate-cable-client drops the
-// rest so nothing unused reaches the compile graph.
+// Typed AnyCable clients for the cable channels, generated from the AsyncAPI
+// documents the Ruby side writes -- the cable counterpart of orval.config.ts.
+// `channels/` and `models/` are what the app consumes; bin/generate-cable-client
+// drops the generated runtime and its per-channel composables, which subscribe
+// unconditionally against a cable that is always there. See useSubscription.
 export default {
   cable: {
     input: "asyncapi/cable/v1/schema.yaml",
