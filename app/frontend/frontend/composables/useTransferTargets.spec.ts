@@ -76,9 +76,10 @@ describe("useTransferTargets", () => {
     ]);
   });
 
-  // Acting for a fleet, "mine" means the fleet's own inventories, and the
-  // payload names them with the key that mount expects.
-  it("offers the fleet's inventories when acting for one", () => {
+  // Acting for a fleet offers both: the fleet's own inventories and the
+  // reader's. A fleet issuing kit to one of its members is the sixth movement,
+  // and the reader's own inventory is where that lands.
+  it("offers the fleet's inventories and the reader's when acting for one", () => {
     hangarInventories.value = { items: [{ id: "mine", name: "Locker" }] };
     fleetInventories.value = {
       items: [
@@ -94,8 +95,16 @@ describe("useTransferTargets", () => {
       fleetSlug: () => "crew",
     });
 
-    expect(targets.value).toEqual([
-      expect.objectContaining({ payload: { fleetInventoryId: "forward" } }),
+    expect(targets.value.map((target) => [target.kind, target.payload])).toEqual([
+      ["inventory", { fleetInventoryId: "forward" }],
+      ["mine", { inventoryId: "mine" }],
+    ]);
+    // Both are deposits the reader could make by hand, so neither waits.
+    expect(targets.value.every((target) => !target.needsAnswer)).toBe(true);
+    // No per-row suffix: the kind says whose it is.
+    expect(targets.value.map((target) => target.label)).toEqual([
+      "Forward",
+      "Locker",
     ]);
   });
 

@@ -107,7 +107,7 @@ watchEffect(() => {
 // which is also what a `known` transfer policy means server-side, so the picker
 // and the gate agree on who counts. Arbitrary users and fleets are the API's to
 // accept and are not offered here yet.
-const KINDS: TransferTargetKind[] = ["inventory", "fleet", "user"];
+const KINDS: TransferTargetKind[] = ["inventory", "mine", "fleet", "user"];
 
 // A person is picked out of a fleet, so the kind is offered whenever the reader
 // is in one -- there is no flat list of people to be empty.
@@ -153,10 +153,18 @@ const memberOptions = computed<FilterOption[]>(() =>
     })),
 );
 
+// Acting for a fleet, "inventory" means that fleet's -- which only needs saying
+// when the reader's own are on offer beside them.
 const kindOptions = computed<FilterOption[]>(() =>
   availableKinds.value.map((kind) => ({
     value: kind,
-    label: t(`labels.logistics.transferKinds.${kind}`),
+    label: t(
+      `labels.logistics.transferKinds.${
+        kind === "inventory" && availableKinds.value.includes("mine")
+          ? "fleetInventories"
+          : kind
+      }`,
+    ),
   })),
 );
 

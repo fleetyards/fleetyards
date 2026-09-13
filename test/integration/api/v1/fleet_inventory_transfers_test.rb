@@ -345,6 +345,43 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 403, path_params: {fleetSlug: @fleet.slug, id: transfer.id}
   end
 
+  # The sixth movement: a fleet issuing kit to one of its members, where the
+  # member is the one pressing the button. Immediate, because an officer who may
+  # withdraw from the fleet and deposit into their own hangar could already have
+  # done both by hand.
+  test "an officer moves fleet stock into their own hangar inventory" do
+    Flipper.enable("inventory_transfers")
+    locker = create(:inventory, holder: @officer)
+
+    sign_in @officer
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {
+      sourceInventoryId: @depot.id,
+      inventoryId: locker.id,
+      lines: [{positionId: @entry.position.id, quantity: 10}]
+    } do
+      assert_equal "completed", parsed_body["state"]
+      assert_equal "user", parsed_body["destination"]["kind"]
+    end
+
+    assert_equal 10, locker.reload.stock_positions.sole.net_quantity
+    assert_equal 90, @depot.reload.stock_positions.sole.net_quantity
+  end
+
+  test "a member cannot pull fleet stock into their own hangar" do
+    locker = create(:inventory, holder: @member)
+
+    sign_in @member
+
+    assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {
+      sourceInventoryId: @depot.id,
+      inventoryId: locker.id,
+      lines: [{positionId: @entry.position.id, quantity: 10}]
+    }
+
+    assert_equal 100, @depot.reload.stock_positions.sole.net_quantity
+  end
+
   private def donation_to_fleet
     donor = create(:user)
     donor_inventory = create(:inventory, holder: donor)

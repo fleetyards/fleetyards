@@ -40,9 +40,10 @@ export const useTransferTargets = (options: Options) => {
   const actingFleet = computed(() => toValue(options.fleetSlug));
   const sourceId = computed(() => toValue(options.source)?.id);
 
-  const { data: hangarInventories } = useHangarInventories(undefined, {
-    query: { enabled: computed(() => !actingFleet.value) },
-  });
+  // Always fetched, even when acting for a fleet: a fleet issuing kit to one of
+  // its members is the sixth movement, and the reader's own inventories are
+  // where that lands.
+  const { data: hangarInventories } = useHangarInventories();
 
   const { data: fleetInventories } = useFleetInventories(
     computed(() => actingFleet.value ?? ""),
@@ -50,23 +51,45 @@ export const useTransferTargets = (options: Options) => {
     { query: { enabled: computed(() => !!actingFleet.value) } },
   );
 
-  const ownInventories = computed<TransferTargetOption[]>(() => {
-    const items = actingFleet.value
-      ? (fleetInventories.value?.items ?? [])
-      : (hangarInventories.value?.items ?? []);
-
-    return items
+  const inventoryTargets = (
+    items: { id: string; name: string }[],
+    payloadKey: "inventoryId" | "fleetInventoryId",
+    kind: "inventory" | "mine",
+  ): TransferTargetOption[] =>
+    items
       .filter((inventory) => inventory.id !== sourceId.value)
       .map((inventory) => ({
-        kind: "inventory" as const,
-        value: `inventory:${inventory.id}`,
+        kind,
+        value: `${payloadKey}:${inventory.id}`,
         label: inventory.name,
         needsAnswer: false,
-        payload: actingFleet.value
-          ? { fleetInventoryId: inventory.id }
-          : { inventoryId: inventory.id },
+        payload: { [payloadKey]: inventory.id },
       }));
-  });
+
+  // Acting for a fleet, both are offered -- the fleet's and the reader's -- as
+  // two kinds rather than one list with "(mine)" stuck on half its rows. When
+  // the fleet holds nothing but the source, that suffix was on every entry and
+  // said nothing.
+  const ownInventories = computed<TransferTargetOption[]>(() =>
+    actingFleet.value
+      ? [
+          ...inventoryTargets(
+            fleetInventories.value?.items ?? [],
+            "fleetInventoryId",
+            "inventory",
+          ),
+          ...inventoryTargets(
+            hangarInventories.value?.items ?? [],
+            "inventoryId",
+            "mine",
+          ),
+        ]
+      : inventoryTargets(
+          hangarInventories.value?.items ?? [],
+          "inventoryId",
+          "inventory",
+        ),
+  );
 
   const { data: fleets } = useMyFleets();
 

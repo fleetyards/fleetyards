@@ -1903,7 +1903,9 @@
         "transferKinds": {
           "inventory": "我的库存",
           "fleet": "舰队",
-          "user": "某人"
+          "user": "某人",
+          "mine": "我的库存",
+          "fleetInventories": "该舰队"
         },
         "transferTargetKind": "发送至",
         "transferFromFleet": "来自舰队"

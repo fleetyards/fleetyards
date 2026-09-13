@@ -1908,7 +1908,9 @@
         "transferKinds": {
           "inventory": "My inventories",
           "fleet": "A fleet",
-          "user": "A person"
+          "user": "A person",
+          "mine": "My inventories",
+          "fleetInventories": "This fleet"
         },
         "transferTargetKind": "Send to",
         "transferFromFleet": "From fleet"

@@ -182,9 +182,25 @@ module InventoryTransferActions
     resolve_own_inventory(transfer_params[:source_inventory_id])
   end
 
+  # A *fleet* inventory is scoped to the party this mount acts for, so one
+  # fleet cannot name another's. A *user* inventory is resolved against the
+  # person making the request instead: a fleet issuing kit to one of its own
+  # members is the sixth movement, and the member is often the one pressing the
+  # button. Whether they may actually deposit there is `TransferAuthorizer`'s
+  # question, asked by the builder straight after.
+  #
+  # This does not re-open the diversion hole review found: that was about
+  # *accepting*, and `TransferResolver#accept` separately requires the
+  # destination to belong to the transfer's recipient.
   private def find_destination
-    resolve_own_inventory(transfer_params[:inventory_id]) ||
+    resolve_actor_inventory(transfer_params[:inventory_id]) ||
       resolve_own_inventory(transfer_params[:fleet_inventory_id])
+  end
+
+  private def resolve_actor_inventory(id)
+    return if id.blank?
+
+    current_resource_owner.inventories.find_by(id:)
   end
 
   private def resolve_own_inventory(id)

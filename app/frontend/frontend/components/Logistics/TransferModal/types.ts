@@ -9,7 +9,7 @@ export type TransferSource = {
 // the sender may write to, rather than from the client re-deriving the rule.
 // Which picker an option belongs to. Users and fleets are separate choices, not
 // one mixed list -- they are different kinds of address and read as such.
-export type TransferTargetKind = "inventory" | "fleet" | "user";
+export type TransferTargetKind = "inventory" | "mine" | "fleet" | "user";
 
 export type TransferTargetOption = {
   kind: TransferTargetKind;
