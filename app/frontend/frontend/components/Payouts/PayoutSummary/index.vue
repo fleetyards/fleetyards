@@ -73,7 +73,7 @@ const profit = computed(() => Number(props.ledger.profit ?? 0));
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   padding: 14px 16px;
-  background: var(--color-lifted, rgba(255, 255, 255, 0.03));
+  background: var(--color-surface, rgb(39 43 48 / 0.9));
   border: 1px solid var(--color-edge-faint, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-control-bare, 6px);
 
