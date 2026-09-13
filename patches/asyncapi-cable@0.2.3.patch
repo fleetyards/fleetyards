@@ -1,0 +1,51 @@
+diff --git a/src/index.mjs b/src/index.mjs
+index d70e57426fe147e2dd53399c5532753764ff63bb..6a56b0b511a83fa34d4403e12e175b1a6869b93b 100644
+--- a/src/index.mjs
++++ b/src/index.mjs
+@@ -201,6 +201,12 @@ async function generateModels(document, absModelsDir) {
+   const generator = new TypeScriptFileGenerator({
+     modelType: "interface",
+     mapType: "record",
++    // Unions rather than TypeScript `enum`s. A cable message is usually the
++    // same component the REST schema documents, and a string enum member is
++    // nominal -- it is not assignable to the literal union the OpenAPI client
++    // generates for the very same values, so passing a payload on to anything
++    // typed by that client would need a cast.
++    enumType: "union",
+     // Preserve the snake_case wire keys (user_id, error_message) instead of
+     // camelizing — cable payloads are not transformed on the socket path.
+     // Keep the default reserved-word/special-char safety, override only casing.
+@@ -333,14 +339,31 @@ export function ${composableName}(
+ function resolveMessageModelName(message, modelNames) {
+   const candidates = [message.id?.(), message.name?.()].filter(Boolean);
+   for (const candidate of candidates) {
+-    if (modelNames.includes(candidate)) return candidate;
++    const match = matchModelName(candidate, modelNames);
++    if (match) return match;
+   }
+   const payload = message.payload?.();
+   const payloadId = payload?.id?.() ?? payload?.$id?.();
+-  if (payloadId && modelNames.includes(payloadId)) return payloadId;
++  if (payloadId) {
++    const match = matchModelName(payloadId, modelNames);
++    if (match) return match;
++  }
+   return candidates[0] ?? payloadId;
+ }
+ 
++/**
++ * Modelina renames a model whose name is a TypeScript keyword -- a message
++ * named `Import` is emitted as `ReservedImport` -- so the document's name has
++ * to be matched against the renamed one as well, or the channel imports a
++ * module that was never written.
++ */
++function matchModelName(name, modelNames) {
++  if (modelNames.includes(name)) return name;
++  const reserved = `Reserved${name}`;
++  if (modelNames.includes(reserved)) return reserved;
++  return undefined;
++}
++
+ /** Emit a portable channel class + a per-channel composable/hook per `receive` operation. */
+ async function generateChannels(
+   document,
