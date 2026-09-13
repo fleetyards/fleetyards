@@ -31,7 +31,7 @@ en:
           manned_turrets: Manned Turrets
           manned_utility_turrets: Manned Utility Turrets
           mining_lasers: Mining Lasers
-          missile_racks: Missle Racks
+          missile_racks: Missile Racks
           missile_turrets: Missile Turrets
           missiles: Missiles
           power_plants: Power Plants
@@ -172,7 +172,7 @@ en:
         production_status: Production Status
         variants: Variants
         weapons: Weapons
-        fleetchart_image: Lagacy Fleetchart Image
+        fleetchart_image: Legacy Fleetchart Image
       progress_tracker_item:
         statuses:
           done: Done
@@ -184,7 +184,7 @@ en:
         mailer:
           default_from: Default From
           host: SMTP Host
-          password: SMPT Password or Token
+          password: SMTP Password or Token
           port: SMTP Port
           user: SMTP User
       updated_at: "%{time} ago"

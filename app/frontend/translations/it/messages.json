@@ -202,7 +202,7 @@
       },
       "account": {
         "destroy": {
-          "success": "<b>Il tuo account è stato distrutto.</b> <br>É un peccato vederti andare :'(",
+          "success": "<b>Il tuo account è stato distrutto.</b> <br>È un peccato vederti andare :'(",
           "failure": "Impossibile eliminare il tuo account. Riprova più tardi."
         },
         "calendarSubscription": {
@@ -238,7 +238,7 @@
           "failure": "Le impostazioni non possono essere salvate."
         },
         "destroy": {
-          "success": "La tua Flotta e' stata distrutta.",
+          "success": "La tua Flotta è stata distrutta.",
           "failure": "Non siamo riusciti a distruggere la tua Flotta."
         },
         "leave": {

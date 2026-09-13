@@ -228,7 +228,7 @@
         "lastVersion": {
           "active": {
             "false": "Elemento rimosso dalla roadmap",
-            "true": "Elemento riagiunto alla roadmap",
+            "true": "Elemento riaggiunto alla roadmap",
             "decreased": "L'Elemento é stato rimosso dalla Roadmap",
             "increased": "L'Elemento è stato ri-aggiunto alla Roadmap"
           },

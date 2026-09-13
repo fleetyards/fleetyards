@@ -172,7 +172,7 @@ zh-CN:
         production_status: 产品状态
         variants: 变体
         weapons: 武器
-        fleetchart_image: Lagacy 舰队图图像
+        fleetchart_image: Legacy 舰队图图像
       progress_tracker_item:
         statuses:
           done: 完成
@@ -184,7 +184,7 @@ zh-CN:
         mailer:
           default_from: 默认发件人姓名
           host: SMTP主机
-          password: SMPT 密码或令牌
+          password: SMTP 密码或令牌
           port: SMTP 端口
           user: SMTP 用户名
       updated_at: "%{time}前"

@@ -323,11 +323,11 @@
         "verify": "Verify your RSI Account",
         "security": {
           "index": "Kontosicherheit",
-          "twoFactor": "Two-factor Authentiation"
+          "twoFactor": "Two-factor Authentication"
         },
         "twoFactor": {
-          "enable": "Enable Two-factor Authentiation",
-          "disable": "Disable Two-factor Authentiation",
+          "enable": "Enable Two-factor Authentication",
+          "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
         "calendar": "Kalender-Abonnement"

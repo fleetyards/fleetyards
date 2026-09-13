@@ -74,7 +74,7 @@
         },
         "manage": {
           "headline": "Gestisci il tuo Hangar",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insides into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
         },
         "fleetchart": {
           "headline": "Fleetchart e Hangar pubblico",
@@ -103,7 +103,7 @@
         "copyright": "I contenuti e le opere creati dagli operatori delle pagine, su queste pagine sono soggetti al diritto d'autore tedesco. La duplicazione, il trattamento, la distribuzione e qualsiasi tipo di sfruttamento al di fuori dei limiti del Copyright richiedono il consenso scritto del rispettivo autore o creatore. I download e le copie di questa pagina sono solo per uso privato e non commerciale. Nella misura in cui il contenuto di questa pagina non è stato creato dall'operatore, sono rispettati i diritti d'autore di terze parti, in particolare i contenuti di terze parti in quanto tali. Vi preghiamo di contattarci se notate qualsiasi tipo di violazione del copyright. Rimuoveremo immediatamente qualsiasi contenuto una volta notificati di tali violazioni.",
         "disclaimer": {
           "p1": "Questo è un fansite non ufficiale di Star Citizen, non affiliato con Cloud Imperium e rispettivo gruppo di aziende.",
-          "p2": "Tutti i contenuti di questo sito che non sono stati creati dall'proprietario del sito o utenti dello stesso sono prerogativa dei rispettivi proprietari.",
+          "p2": "Tutti i contenuti di questo sito che non sono stati creati dal proprietario del sito o utenti dello stesso sono prerogativa dei rispettivi proprietari.",
           "p3": "Star Citizen®, Squadron 42®, Roberts Space Industries®, e Cloud Imperium® sono marchi registrati di Cloud Imperium Rights LLC. Tutti i diritti riservati."
         },
         "liabilityInternal": {
@@ -160,7 +160,7 @@
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
+        "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento."
       },
       "setEmail": "Per impostare una password, abilitare l'autenticazione a due fattori o ricevere notifiche via email, devi aggiungere un indirizzo email al tuo account. Riceverai un'email di conferma per verificare l'indirizzo.",

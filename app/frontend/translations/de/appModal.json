@@ -3,7 +3,7 @@
     "appModal": {
       "messages": {
         "confirm": {
-          "dirty": "Ungespeicherte Änderungen gehen verlorgen."
+          "dirty": "Ungespeicherte Änderungen gehen verloren."
         }
       }
     }

@@ -142,8 +142,8 @@ en:
     security:
       action: Manage Security Settings
       info: If you did not initiate the change please contact us at info@fleetyards.net.
-    transmission_end: "--- incomming transmission ---"
-    transmission_start: "--- incomming transmission ---"
+    transmission_end: "--- incoming transmission ---"
+    transmission_start: "--- incoming transmission ---"
     two_factor:
       disabled:
         body: You deactivated Two-factor Authentication for your Fleetyards.net Account.

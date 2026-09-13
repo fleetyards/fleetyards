@@ -112,8 +112,8 @@
         "calendar": "Suscripción al calendario",
         "security": "Seguridad de la cuenta",
         "twoFactor": {
-          "enable": "Enable Two-factor Authentiation",
-          "disable": "Disable Two-factor Authentiation",
+          "enable": "Enable Two-factor Authentication",
+          "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         }
       },

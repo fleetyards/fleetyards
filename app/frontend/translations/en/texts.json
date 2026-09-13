@@ -74,7 +74,7 @@
         },
         "manage": {
           "headline": "Manage your Hangar",
-          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insides into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
+          "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insights into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
         },
         "fleetchart": {
           "headline": "Fleetchart and Public Hangar",
@@ -160,7 +160,7 @@
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
+        "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "A Hangar Sync is already in progress. Please wait for it to finish."
       },
       "setEmail": "To set a password, enable two-factor authentication, or receive email notifications, you need to add an email address to your account. You will receive a confirmation email to verify the address.",

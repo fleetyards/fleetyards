@@ -56,7 +56,7 @@ en:
         model_paints: No Paint could be found.
         planet: No Planets could be found.
         user: No User could be found.
-        rsi_api_status: No unresolved RSI API Insidents
+        rsi_api_status: No unresolved RSI API Incidents
       component:
         category: Category
       model:

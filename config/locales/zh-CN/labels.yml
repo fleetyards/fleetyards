@@ -56,7 +56,7 @@ zh-CN:
         model_paints: 未找到任何玩家。
         planet: 项目无法找到。
         user: 未找到任何玩家。
-        rsi_api_status: 没有未解决的 RSI API内存信息
+        rsi_api_status: 没有未解决的 RSI API 事件
       component:
         category: 类别
       model:

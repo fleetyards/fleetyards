@@ -172,7 +172,7 @@ zh-TW:
         production_status: 生產狀態
         variants: 變體
         weapons: 武器
-        fleetchart_image: Lagacy Fleetchart Image
+        fleetchart_image: Legacy Fleetchart Image
       progress_tracker_item:
         statuses:
           done: 完成
@@ -184,7 +184,7 @@ zh-TW:
         mailer:
           default_from: 預設寄件人
           host: SMTP Host
-          password: SMPT Password or Token
+          password: SMTP Password or Token
           port: SMTP Port
           user: SMTP User
       updated_at: "%{time}前"

@@ -172,7 +172,7 @@ es:
         production_status: Estado de producción
         variants: Variantes
         weapons: Armas
-        fleetchart_image: Lagacy Fleetchart Image
+        fleetchart_image: Legacy Fleetchart Image
       progress_tracker_item:
         statuses:
           done: Hecho
@@ -184,7 +184,7 @@ es:
         mailer:
           default_from: Remitente predeterminado
           host: SMTP Host
-          password: SMPT Password or Token
+          password: SMTP Password or Token
           port: SMTP Port
           user: SMTP User
       updated_at: hace %{time}

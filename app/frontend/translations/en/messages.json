@@ -176,7 +176,7 @@
         },
         "disable": {
           "success": "Two-factor Authentication disabled!",
-          "failure": "Could not diable Two-factor Authentication."
+          "failure": "Could not disable Two-factor Authentication."
         },
         "backupCodes": {
           "failure": "Backup Codes could not be generated."
@@ -331,7 +331,7 @@
           "destroy": "Are you sure you want to remove this Group from you Hangar?"
         },
         "hangar": {
-          "import": "Imported ships will be added to your Hangar without matching to exisiting Ships.<br><br>Supported Formats are: Fleetyards Export or HangarXplor.<br><br>Do you want to continue?",
+          "import": "Imported ships will be added to your Hangar without matching to existing Ships.<br><br>Supported Formats are: Fleetyards Export or HangarXplor.<br><br>Do you want to continue?",
           "destroySelected": "Are you sure you want to remove all Selected Ships from you Hangar? This Action can't be reverted.",
           "destroyAll": "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted."
         },

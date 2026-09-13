@@ -29,7 +29,7 @@ en:
         success: Fleet Join Request received.
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
-      success: Loaner Upload successfull.
+      success: Loaner Upload successful.
     destroyed_fleets:
       fleet_still_exists: A fleet with this id still exists and cannot be restored.
       fid_taken: Another fleet is already using this fleet's FID, so it cannot be restored.
