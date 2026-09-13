@@ -270,6 +270,11 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </div>
 
+    <!-- Anything that belongs to the contract but is not one of its fields --
+         the goods, on the edit page. Rendered here so the submit bar stays the
+         last thing on the page rather than sitting above half of it. -->
+    <slot name="sections" />
+
     <FormActions form-id="contract-form" :submitting="submitting">
       <Btn :disabled="submitting || !meta.valid" type="submit">
         {{

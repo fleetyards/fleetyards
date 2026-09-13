@@ -64,21 +64,23 @@ const crumbs = computed<Crumb[]>(() => [
   </Heading>
 
   <template v-if="contract">
-    <ContractForm :fleet="fleet" :contract="contract" @cancel="cancel" />
-
     <!-- The lines live on a saved contract, so they are edited here rather than
          in the create form: publishing refuses a contract with nothing to
-         deliver, which is what sends an author back to this panel. -->
-    <Panel>
-      <PanelBody>
-        <Heading>{{ t("headlines.fleets.contracts.items") }}</Heading>
+         deliver, which is what sends an author here. -->
+    <ContractForm :fleet="fleet" :contract="contract" @cancel="cancel">
+      <template #sections>
+        <Panel>
+          <PanelBody>
+            <Heading>{{ t("headlines.fleets.contracts.items") }}</Heading>
 
-        <ContractItemsForm
-          :fleet="fleet"
-          :contract="contract"
-          @changed="refetch()"
-        />
-      </PanelBody>
-    </Panel>
+            <ContractItemsForm
+              :fleet="fleet"
+              :contract="contract"
+              @changed="refetch()"
+            />
+          </PanelBody>
+        </Panel>
+      </template>
+    </ContractForm>
   </template>
 </template>
