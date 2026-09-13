@@ -65,6 +65,7 @@ const closeNav = () => {
     }"
     class="app-navigation"
     role="navigation"
+    data-test="app-navigation"
   >
     <div
       :class="{

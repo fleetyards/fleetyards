@@ -18,4 +18,23 @@ export default class Nav {
       }
     }
   }
+
+  /*
+   * The navigation defaults to slim, where a row renders its icon and nothing
+   * else -- a label only reaches the DOM once the nav is expanded. Anything
+   * asserting on nav text has to expand it first.
+   */
+  async expand() {
+    const navigation = this.page.getByTestId("app-navigation");
+
+    if (
+      await navigation.evaluate((el) =>
+        el.classList.contains("app-navigation--slim"),
+      )
+    ) {
+      await this.click("toggle-slim");
+    }
+
+    await expect(navigation).not.toHaveClass(/app-navigation--slim/);
+  }
 }

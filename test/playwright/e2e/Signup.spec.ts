@@ -39,6 +39,8 @@ test.describe("Signup", () => {
       await page.locator("input[name='password']").fill(password);
       await page.getByTestId("submit-login").click();
 
+      await nav.expand();
+
       await expect(
         page.getByTestId("user-menu").getByText(user.username),
       ).toBeVisible();
