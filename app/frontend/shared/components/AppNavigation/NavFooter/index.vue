@@ -38,6 +38,7 @@ const toggleSlim = () => {
     <NavItem
       v-if="!mobile"
       :action="toggleSlim"
+      menu-key="toggle-slim"
       :label="toggleSlimLabel"
       :icon="
         slim
