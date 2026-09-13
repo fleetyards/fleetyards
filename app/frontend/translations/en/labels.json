@@ -1597,8 +1597,6 @@
         },
         "sessionStatus": "RSI Session status",
         "checkIdentity": "Check RSI Session",
-        "addBundledVehicles": "Add bundled snub crafts",
-        "addBundledVehiclesHint": "Adds the snub craft a ship comes with. Ones already in your hangar are kept either way.",
         "identityStatus": {
           "pending": "Checking...",
           "notFound": "not found",
@@ -1631,7 +1629,9 @@
           "foundUpgrades": "Found Upgrades",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
-        }
+        },
+        "addBundledVehicles": "Add bundled snub crafts",
+        "addBundledVehiclesHint": "Adds the snub craft a ship comes with. Ones already in your hangar are kept either way."
       },
       "cargoGridViewer": {
         "capacity": "Capacity",
@@ -2261,6 +2261,37 @@
         "dockingport": "Docking port",
         "hangar": "Hangar",
         "cargogrid": "Cargo grid"
+      },
+      "payouts": {
+        "amount": "Amount",
+        "description": "Description",
+        "entryType": "Type",
+        "expense": "Spent",
+        "income": "Earned",
+        "participant": "Who",
+        "notes": "Notes",
+        "occurredAt": "When",
+        "paid": "Spent",
+        "held": "Holding",
+        "share": "Share",
+        "net": "Balance",
+        "profit": "Profit",
+        "totalIncome": "Earned",
+        "totalExpenses": "Spent",
+        "guest": "Guest",
+        "username": "Username",
+        "name": "Name",
+        "sends": "sends",
+        "receives": "receives",
+        "settled": "Settled",
+        "open": "Open",
+        "owes": "owes",
+        "isOwed": "is owed",
+        "even": "settled up",
+        "title": "Title",
+        "startsAt": "Starts at",
+        "inviteLink": "Invite link",
+        "participants": "People"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

@@ -293,16 +293,38 @@ OpenAPI components under `app/api_components/v1/schemas/payouts/`, with the enum
 
 ## Discovery Log
 
+- **2026-09-13** Reviewed (PR #4882). Sixteen findings across two reviewers; the ones worth
+  recording: a ledger with entries could not be deleted at all, because Rails runs dependent
+  callbacks in declaration order and participants were destroyed before the rows holding a FK
+  to them. Deleting a user account hit the same class of problem across six unqualified FKs
+  that `check_fleet_memberships` does not shield -- a tour needs no fleet. And the tour had
+  two settle endpoints that did not agree: the UI calls the ledger's, so a tour's own status
+  was never set to settled by any action a person could take, while the tour's own endpoint
+  stayed live and deleted every confirmation on the way through. The transition now lives in
+  `PayoutLedger` where both paths go through it.
+- **2026-09-12** Phases 5-7 landed: policies, controllers, routes, jbuilder, the
+  OpenAPI components and 93 request specs, plus the ledger UI on both surfaces and the
+  seven locales. Three things the plan did not anticipate: a concern that registers its
+  own `before_action` runs *before* the including controller's, which turned every 401
+  into a 403 until the callbacks were declared explicitly; `current_resource_owner` is
+  not reachable from a jbuilder view, so the invite token is rendered against a
+  controller-set `@viewer`; and a guest participant has to omit `user` rather than emit
+  null, because UserRef types it as an object.
+- **2026-09-12** Phases 1-4 landed: tables, models, the settlement service with its
+  invariant tests, the `tour_payouts` flag and the privilege backfill. The asyncapi cable
+  schema had to be regenerated too — `fleetRole.resourceAccess` is an enum built from
+  `FleetRole.all_available_privileges`, so a new privilege group makes every membership
+  broadcast fail validation until `bin/generate-asyncapi` runs.
 - **2026-09-12** Initial research and plan creation. Confirmed with the user: polymorphic
   owner shipping both surfaces at once, expenses-plus-income rather than cost-splitting, no
   currency column, and an explicit participant list that allows guests.
 
 ## Progress
 
-- [ ] Phase 1 — Schema
-- [ ] Phase 2 — Models
-- [ ] Phase 3 — Settlement service
-- [ ] Phase 4 — Permissions and the flag
-- [ ] Phase 5 — API
-- [ ] Phase 6 — Frontend
-- [ ] Phase 7 — Tests
+- [x] Phase 1 — Schema
+- [x] Phase 2 — Models
+- [x] Phase 3 — Settlement service
+- [x] Phase 4 — Permissions and the flag
+- [x] Phase 5 — API
+- [x] Phase 6 — Frontend
+- [x] Phase 7 — Tests

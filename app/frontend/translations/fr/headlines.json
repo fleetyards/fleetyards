@@ -439,7 +439,23 @@
       "stationImages": "%{station} à proximité de %{celestialObject}",
       "shops": "Points de vente",
       "shop": "%{shop} sur %{station}",
-      "commodities": "Marchandises"
+      "commodities": "Marchandises",
+      "payouts": {
+        "index": "Répartition",
+        "summary": "Résumé",
+        "participants": "Participants",
+        "entries": "Écritures",
+        "balances": "Soldes",
+        "transfers": "Liste des versements",
+        "addEntry": "Enregistrer un montant",
+        "editEntry": "Modifier l'écriture",
+        "addParticipant": "Ajouter un participant",
+        "tours": {
+          "index": "Expéditions",
+          "create": "Créer une expédition",
+          "join": "Rejoindre cette expédition"
+        }
+      }
     }
   }
 }

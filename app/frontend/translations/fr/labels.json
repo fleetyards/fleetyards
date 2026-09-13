@@ -1602,8 +1602,6 @@
         },
         "sessionStatus": "Statut de session RSI",
         "checkIdentity": "Vérifier la session RSI",
-        "addBundledVehicles": "Ajouter les snub crafts inclus",
-        "addBundledVehiclesHint": "Ajoute le snub craft fourni avec un vaisseau. Ceux déjà dans votre hangar sont conservés.",
         "identityStatus": {
           "pending": "Vérification...",
           "notFound": "non trouvé",
@@ -1640,7 +1638,9 @@
           "updated": "Mis à jour",
           "movedToWanted": "Déplacé vers la liste de souhaits",
           "missing": "Impossible d'importer"
-        }
+        },
+        "addBundledVehicles": "Ajouter les snub crafts inclus",
+        "addBundledVehiclesHint": "Ajoute le snub craft fourni avec un vaisseau. Ceux déjà dans votre hangar sont conservés."
       },
       "cargoGridViewer": {
         "capacity": "Capacité",
@@ -2268,6 +2268,37 @@
         "dockingport": "Port d'amarrage",
         "hangar": "Hangar",
         "cargogrid": "Grille de fret"
+      },
+      "payouts": {
+        "amount": "Montant",
+        "description": "Description",
+        "entryType": "Type",
+        "expense": "Dépensé",
+        "income": "Gagné",
+        "participant": "Qui",
+        "notes": "Notes",
+        "occurredAt": "Quand",
+        "paid": "Dépensé",
+        "held": "Détient",
+        "share": "Part",
+        "net": "Solde",
+        "profit": "Bénéfice",
+        "totalIncome": "Gagné",
+        "totalExpenses": "Dépensé",
+        "guest": "Invité",
+        "username": "Nom d'utilisateur",
+        "name": "Nom",
+        "sends": "envoie",
+        "receives": "reçoit",
+        "settled": "Clôturé",
+        "open": "Ouvert",
+        "owes": "doit",
+        "isOwed": "doit recevoir",
+        "even": "à jour",
+        "title": "Titre",
+        "startsAt": "Commence le",
+        "inviteLink": "Lien d'invitation",
+        "participants": "Personnes"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

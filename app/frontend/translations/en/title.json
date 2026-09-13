@@ -79,7 +79,8 @@
             "description": "Edit Description - %{fleet}",
             "teams": "Edit Teams & Slots - %{fleet}"
           },
-          "show": "%{fleet} Event"
+          "show": "%{fleet} Event",
+          "payouts": "%{fleet} Event Payouts"
         },
         "settings": {
           "index": "%{fleet} Settings",
@@ -122,7 +123,13 @@
       "tools": {
         "index": "Tools",
         "travelTimes": "Travel Times",
-        "cargoGrids": "Cargo Grids"
+        "cargoGrids": "Cargo Grids",
+        "tours": {
+          "index": "Tours",
+          "add": "Create a new Tour",
+          "show": "%{tour}",
+          "join": "Join Tour"
+        }
       },
       "impressum": "Impressum",
       "privacyPolicy": "Privacy policy",

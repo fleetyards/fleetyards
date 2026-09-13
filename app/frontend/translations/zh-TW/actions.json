@@ -374,7 +374,20 @@
       },
       "selectFile": "選擇檔案",
       "applyGameFileValue": "採用",
-      "applyAllGameFileValues": "全部採用"
+      "applyAllGameFileValues": "全部採用",
+      "payouts": {
+        "openLedger": "開啟分帳簿",
+        "addEntry": "記一筆",
+        "addParticipant": "新增參與者",
+        "settle": "結算並計算分帳",
+        "reopen": "重新開啟",
+        "confirm": "標記為已付",
+        "unconfirm": "標記為未付",
+        "createTour": "建立行程",
+        "joinTour": "加入行程",
+        "copyInvite": "複製邀請連結",
+        "rotateInvite": "產生新連結"
+      }
     }
   }
 }

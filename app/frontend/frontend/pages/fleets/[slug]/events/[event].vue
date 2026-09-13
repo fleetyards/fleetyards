@@ -9,6 +9,10 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -37,6 +41,8 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { checkAccess } from "@/shared/utils/Access";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { FeatureFlagName } from "@/services/fyApi";
 import { format, parseISO } from "date-fns";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
@@ -110,6 +116,20 @@ const viewerEventRole = computed(
 // Two different policies, so two different gates. FleetEventPolicy#update?
 // admits the creator and per-event admins; FleetEventSignupPolicy goes through
 // event_moderator_or_admin?, which is what a moderator role is actually for.
+const { isFleetFeatureEnabled } = useFeatures();
+
+// The payouts tab is its own flag on top of the events feature, so the link
+// only shows once a fleet has switched it on.
+const canReadPayouts = computed(
+  () =>
+    isFleetFeatureEnabled(props.fleet, FeatureFlagName.TOUR_PAYOUTS) &&
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:payouts:manage",
+      "fleet:payouts:read",
+    ]),
+);
+
 const canManageEvent = computed(() => {
   if (canManage.value) return true;
   return ["creator", "admin"].includes(viewerEventRole.value ?? "");
@@ -432,8 +452,22 @@ const crumbs = computed<Crumb[]>(() => [
     stepper-param="event"
     :stepper-extra-params="{ slug: fleet.slug }"
   >
-    <template v-if="canManageEvent && event" #actions>
+    <template v-if="event" #actions>
+      <Btn
+        v-if="canReadPayouts"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.GHOST"
+        :to="{
+          name: 'fleet-event-payouts',
+          params: { slug: fleet.slug, event: event.slug },
+        }"
+        data-test="fleet-event-payouts-link"
+      >
+        <i class="fa-light fa-coins" />
+        <span>{{ t("nav.fleets.events.payouts") }}</span>
+      </Btn>
       <EventAdminActions
+        v-if="canManageEvent"
         :fleet="fleet"
         :event="event"
         :resource-access="resourceAccess"

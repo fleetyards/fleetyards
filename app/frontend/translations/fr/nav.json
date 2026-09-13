@@ -64,7 +64,8 @@
             "basic": "Général",
             "description": "Description",
             "teams": "Équipes & places"
-          }
+          },
+          "payouts": "Répartition"
         },
         "settings": {
           "index": "Paramètres",
@@ -82,7 +83,8 @@
       "tools": {
         "index": "Outils",
         "travelTimes": "Temps de Voyage",
-        "cargoGrids": "Grilles de Fret"
+        "cargoGrids": "Grilles de Fret",
+        "tours": "Expéditions"
       },
       "api": "Documentation API",
       "stats": "Statistiques",

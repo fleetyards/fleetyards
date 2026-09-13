@@ -439,7 +439,23 @@
       "stationImages": "Images of %{station} near %{celestialObject}",
       "shops": "Shops",
       "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      "commodities": "Commodities",
+      "payouts": {
+        "index": "分账",
+        "summary": "概要",
+        "participants": "参与者",
+        "entries": "记录",
+        "balances": "余额",
+        "transfers": "分账清单",
+        "addEntry": "记一笔",
+        "editEntry": "编辑记录",
+        "addParticipant": "添加参与者",
+        "tours": {
+          "index": "行程",
+          "create": "创建行程",
+          "join": "加入此行程"
+        }
+      }
     }
   }
 }

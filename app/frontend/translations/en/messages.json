@@ -871,6 +871,22 @@
           "error": "Could not cancel this import"
         }
       },
+      "payouts": {
+        "entryCreated": "Entry recorded",
+        "entryUpdated": "Entry updated",
+        "entryDestroyed": "Entry removed",
+        "participantAdded": "Participant added",
+        "participantRemoved": "Participant removed",
+        "participantHasEntries": "Remove their entries first",
+        "settled": "Payouts calculated",
+        "reopened": "Ledger reopened",
+        "tourCreated": "Tour created",
+        "tourJoined": "You joined the tour",
+        "inviteCopied": "Invite link copied",
+        "settleConfirm": "Calculate the payouts and lock the ledger? Entries can no longer be changed until it is reopened.",
+        "reopenConfirm": "Reopen the ledger? The current payout list will be discarded.",
+        "participantNeedsName": "Enter a username or a name"
+      },
       "dock": {
         "create": {
           "failure": "Could not create the dock."

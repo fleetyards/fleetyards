@@ -439,7 +439,23 @@
       "stationImages": "Images of %{station} near %{celestialObject}",
       "shops": "Shops",
       "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      "commodities": "Commodities",
+      "payouts": {
+        "index": "Pagos",
+        "summary": "Resumen",
+        "participants": "Participantes",
+        "entries": "Movimientos",
+        "balances": "Saldos",
+        "transfers": "Lista de pagos",
+        "addEntry": "Registrar dinero",
+        "editEntry": "Editar movimiento",
+        "addParticipant": "Añadir participante",
+        "tours": {
+          "index": "Expediciones",
+          "create": "Crear expedición",
+          "join": "Unirse a esta expedición"
+        }
+      }
     }
   }
 }

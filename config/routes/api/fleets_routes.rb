@@ -95,6 +95,9 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
     resources :fleet_event_admins, path: "admins", only: %i[index create destroy]
 
+    get "payouts", to: "payout_ledgers#show_for_subject"
+    post "payouts", to: "payout_ledgers#create"
+
     resources :fleet_event_teams, path: "teams", only: %i[create update destroy] do
       put :sort, on: :collection
       resources :fleet_event_ships, path: "ships", only: %i[create update destroy] do

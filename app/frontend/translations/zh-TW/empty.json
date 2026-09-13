@@ -24,6 +24,12 @@
         "wishlist": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
         "features": "目前沒有可用的自助服務功能。請稍後再查看，我們會定期新增新功能。",
         "fleetFeatures": "目前沒有艦隊可以自行啟用的功能。請稍後再查看，我們會定期新增新功能。"
+      },
+      "payouts": {
+        "entries": "還沒有任何紀錄",
+        "participants": "這個行程還沒有參與者",
+        "transfers": "結算後即可看到誰付給誰",
+        "tours": "還沒有行程"
       }
     }
   }

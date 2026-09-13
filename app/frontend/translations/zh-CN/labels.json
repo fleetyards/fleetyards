@@ -1602,8 +1602,6 @@
         },
         "sessionStatus": "RSI 会话状态",
         "checkIdentity": "检查 RSI 会话",
-        "addBundledVehicles": "添加附带的小型飞船",
-        "addBundledVehiclesHint": "添加飞船附带的小型飞船。已在机库中的会保留。",
         "identityStatus": {
           "pending": "检查中...",
           "notFound": "未找到",
@@ -1636,7 +1634,9 @@
           "foundUpgrades": "找到的升级",
           "missingUpgrades": "未找到升级",
           "missingUpgradeVehicles": "未找到匹配的飞船用于升级"
-        }
+        },
+        "addBundledVehicles": "添加附带的小型飞船",
+        "addBundledVehiclesHint": "添加飞船附带的小型飞船。已在机库中的会保留。"
       },
       "cargoGridViewer": {
         "capacity": "容量",
@@ -2260,6 +2260,37 @@
         "dockingport": "对接口",
         "hangar": "机库",
         "cargogrid": "货运格栅"
+      },
+      "payouts": {
+        "amount": "金额",
+        "description": "说明",
+        "entryType": "类型",
+        "expense": "支出",
+        "income": "收入",
+        "participant": "谁",
+        "notes": "备注",
+        "occurredAt": "时间",
+        "paid": "支出",
+        "held": "持有",
+        "share": "应得",
+        "net": "余额",
+        "profit": "利润",
+        "totalIncome": "收入",
+        "totalExpenses": "支出",
+        "guest": "访客",
+        "username": "用户名",
+        "name": "名称",
+        "sends": "支付给",
+        "receives": "收取",
+        "settled": "已结算",
+        "open": "进行中",
+        "owes": "应付",
+        "isOwed": "应收",
+        "even": "已结清",
+        "title": "标题",
+        "startsAt": "开始于",
+        "inviteLink": "邀请链接",
+        "participants": "人数"
       },
       "shipSizes": {
         "extra_extra_small": "斯努布克拉夫特 (XXS)",

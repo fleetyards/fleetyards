@@ -401,6 +401,22 @@
       },
       "notifications": {
         "index": "Notifications"
+      },
+      "payouts": {
+        "index": "Payouts",
+        "summary": "Summary",
+        "participants": "Participants",
+        "entries": "Entries",
+        "balances": "Balances",
+        "transfers": "Payout list",
+        "addEntry": "Record money",
+        "editEntry": "Edit entry",
+        "addParticipant": "Add participant",
+        "tours": {
+          "index": "Tours",
+          "create": "Create Tour",
+          "join": "Join this tour"
+        }
       }
     }
   }

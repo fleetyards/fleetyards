@@ -1235,6 +1235,92 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/payouts":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetEventSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Open a payout ledger on a fleet event
+      tags:
+      - Payouts
+      operationId: createFleetEventPayoutLedger
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PayoutLedgerCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutLedger"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show the payout ledger of a fleet event
+      tags:
+      - Payouts
+      operationId: fleetEventPayoutLedger
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutLedger"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: no ledger yet
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams":
     parameters:
     - name: fleetSlug
@@ -8935,6 +9021,567 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+  "/payouts/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Show a payout ledger
+      tags:
+      - Payouts
+      operationId: payoutLedger
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutLedger"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{id}/balances":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Balances and the transfers that settle them
+      tags:
+      - Payouts
+      operationId: payoutLedgerBalances
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutSettlement"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{id}/reopen":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Reopen a settled payout ledger
+      tags:
+      - Payouts
+      operationId: reopenPayoutLedger
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutLedger"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '409':
+          description: not settled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{id}/settle":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Settle a payout ledger
+      tags:
+      - Payouts
+      operationId: settlePayoutLedger
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutLedger"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '409':
+          description: already settled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{payoutLedgerId}/entries":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Record a payout entry
+      tags:
+      - Payouts
+      operationId: createPayoutEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PayoutEntryCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutEntry"
+        '400':
+          description: invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: List payout entries
+      tags:
+      - Payouts
+      operationId: payoutEntries
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - "$ref": "#/components/parameters/SortingParameter"
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutEntriesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{payoutLedgerId}/entries/{id}":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    patch:
+      summary: Update a payout entry
+      tags:
+      - Payouts
+      operationId: updatePayoutEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PayoutEntryUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutEntry"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Delete a payout entry
+      tags:
+      - Payouts
+      operationId: destroyPayoutEntry
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutEntry"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{payoutLedgerId}/participants":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Add a payout participant
+      tags:
+      - Payouts
+      operationId: createPayoutParticipant
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PayoutParticipantCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutParticipant"
+        '400':
+          description: invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: unknown username
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: List payout participants
+      tags:
+      - Payouts
+      operationId: payoutParticipants
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutParticipantsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{payoutLedgerId}/participants/{id}":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Remove a payout participant
+      tags:
+      - Payouts
+      operationId: destroyPayoutParticipant
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutParticipant"
+        '400':
+          description: still has entries
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/payouts/{payoutLedgerId}/transfers":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: The frozen payout list
+      tags:
+      - Payouts
+      operationId: payoutTransfers
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutTransfersList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/payouts/{payoutLedgerId}/transfers/{id}/confirm":
+    parameters:
+    - name: payoutLedgerId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Mark a transfer as paid
+      tags:
+      - Payouts
+      operationId: confirmPayoutTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutTransfer"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Undo a confirmation
+      tags:
+      - Payouts
+      operationId: unconfirmPayoutTransfer
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutTransfer"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/members":
     parameters:
     - name: fleetSlug
@@ -10048,6 +10695,304 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/SupportProgress"
+  "/tours":
+    post:
+      summary: Create Tour
+      tags:
+      - Tours
+      operationId: createTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TourCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '400':
+          description: invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: List Tours
+      tags:
+      - Tours
+      operationId: tours
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - "$ref": "#/components/parameters/SortingParameter"
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ToursList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/find-by-invite/{token}":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Preview a tour behind an invite link
+      tags:
+      - Tours
+      operationId: findTourByInvite
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/join/{token}":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Join Tour
+      tags:
+      - Tours
+      operationId: joinTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '409':
+          description: already settled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Show Tour
+      tags:
+      - Tours
+      operationId: tour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Tour
+      tags:
+      - Tours
+      operationId: updateTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TourUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Delete Tour
+      tags:
+      - Tours
+      operationId: destroyTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/{slug}/settle":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Settle Tour
+      tags:
+      - Tours
+      operationId: settleTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '409':
+          description: cannot be settled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -13099,6 +14044,7 @@ components:
       - ship_inventories
       - tools_cargo_grids
       - tools_travel_times
+      - tour_payouts
       x-enumNames:
       - DISCORD_COMMANDS
       - DISCORD_FLEET_COMMANDS
@@ -13117,6 +14063,7 @@ components:
       - SHIP_INVENTORIES
       - TOOLS_CARGO_GRIDS
       - TOOLS_TRAVEL_TIMES
+      - TOUR_PAYOUTS
       title: FeatureFlagName
     FeatureNamesList:
       type: array
@@ -15258,6 +16205,11 @@ components:
       - fleet:events:update
       - fleet:events:delete
       - fleet:events:manage
+      - fleet:payouts:read
+      - fleet:payouts:create
+      - fleet:payouts:update
+      - fleet:payouts:delete
+      - fleet:payouts:manage
       - fleet:notifications:manage
       x-enumNames:
       - FLEET_UPDATE
@@ -15300,6 +16252,11 @@ components:
       - FLEET_EVENTS_UPDATE
       - FLEET_EVENTS_DELETE
       - FLEET_EVENTS_MANAGE
+      - FLEET_PAYOUTS_READ
+      - FLEET_PAYOUTS_CREATE
+      - FLEET_PAYOUTS_UPDATE
+      - FLEET_PAYOUTS_DELETE
+      - FLEET_PAYOUTS_MANAGE
       - FLEET_NOTIFICATIONS_MANAGE
       title: FleetRoleResourceAccessEnum
     FleetUpdateInput:
@@ -20062,6 +21019,352 @@ components:
           type: string
       additionalProperties: false
       title: PasswordRequestInput
+    PayoutBalance:
+      type: object
+      properties:
+        participant:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        paid:
+          type: string
+        held:
+          type: string
+        share:
+          type: string
+        net:
+          type: string
+      required:
+      - participant
+      - paid
+      - held
+      - share
+      - net
+      additionalProperties: false
+      title: PayoutBalance
+    PayoutEntriesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PayoutEntry"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      additionalProperties: false
+      title: PayoutEntriesList
+    PayoutEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        payoutLedgerId:
+          type: string
+          format: uuid
+        payoutParticipantId:
+          type: string
+          format: uuid
+        entryType:
+          "$ref": "#/components/schemas/PayoutEntryTypeEnum"
+        amount:
+          type: string
+        description:
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        occurredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        participant:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - payoutLedgerId
+      - payoutParticipantId
+      - entryType
+      - amount
+      - description
+      additionalProperties: false
+      title: PayoutEntry
+    PayoutEntryCreateInput:
+      type: object
+      properties:
+        payoutParticipantId:
+          type: string
+          format: uuid
+        entryType:
+          "$ref": "#/components/schemas/PayoutEntryTypeEnum"
+        amount:
+          type:
+          - string
+          - number
+        description:
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        occurredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - payoutParticipantId
+      - entryType
+      - amount
+      - description
+      additionalProperties: false
+      title: PayoutEntryCreateInput
+    PayoutEntryTypeEnum:
+      type: string
+      enum:
+      - expense
+      - income
+      x-enumNames:
+      - EXPENSE
+      - INCOME
+      title: PayoutEntryTypeEnum
+    PayoutEntryUpdateInput:
+      type: object
+      properties:
+        payoutParticipantId:
+          type: string
+          format: uuid
+        entryType:
+          "$ref": "#/components/schemas/PayoutEntryTypeEnum"
+        amount:
+          type:
+          - string
+          - number
+        description:
+          type: string
+        notes:
+          type:
+          - string
+          - 'null'
+        occurredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      title: PayoutEntryUpdateInput
+    PayoutLedger:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        subjectType:
+          "$ref": "#/components/schemas/PayoutLedgerSubjectTypeEnum"
+        subjectId:
+          type: string
+          format: uuid
+        status:
+          "$ref": "#/components/schemas/PayoutLedgerStatusEnum"
+        notes:
+          type:
+          - string
+          - 'null'
+        settledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        participantsCount:
+          type: integer
+        entriesCount:
+          type: integer
+        totalIncome:
+          type: string
+        totalExpenses:
+          type: string
+        profit:
+          type: string
+        participants:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PayoutParticipant"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - subjectType
+      - subjectId
+      - status
+      additionalProperties: false
+      title: PayoutLedger
+    PayoutLedgerCreateInput:
+      type: object
+      properties:
+        notes:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: PayoutLedgerCreateInput
+    PayoutLedgerStatusEnum:
+      type: string
+      enum:
+      - open
+      - settled
+      x-enumNames:
+      - OPEN
+      - SETTLED
+      title: PayoutLedgerStatusEnum
+    PayoutLedgerSubjectTypeEnum:
+      type: string
+      enum:
+      - FleetEvent
+      - Tour
+      x-enumNames:
+      - FLEET_EVENT
+      - TOUR
+      title: PayoutLedgerSubjectTypeEnum
+    PayoutParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        payoutLedgerId:
+          type: string
+          format: uuid
+        displayName:
+          type: string
+        guest:
+          type: boolean
+        user:
+          "$ref": "#/components/schemas/UserRef"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - payoutLedgerId
+      - displayName
+      - guest
+      additionalProperties: false
+      title: PayoutParticipant
+    PayoutParticipantCreateInput:
+      type: object
+      properties:
+        username:
+          type:
+          - string
+          - 'null'
+        name:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      title: PayoutParticipantCreateInput
+    PayoutParticipantsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/PayoutParticipant"
+      title: PayoutParticipantsList
+    PayoutSettlement:
+      type: object
+      properties:
+        totalIncome:
+          type: string
+        totalExpenses:
+          type: string
+        profit:
+          type: string
+        balances:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PayoutBalance"
+        transfers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PayoutSettlementTransfer"
+      required:
+      - totalIncome
+      - totalExpenses
+      - profit
+      - balances
+      - transfers
+      additionalProperties: false
+      title: PayoutSettlement
+    PayoutSettlementTransfer:
+      type: object
+      properties:
+        from:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        to:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        amount:
+          type: string
+      required:
+      - from
+      - to
+      - amount
+      additionalProperties: false
+      title: PayoutSettlementTransfer
+    PayoutTransfer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        payoutLedgerId:
+          type: string
+          format: uuid
+        amount:
+          type: string
+        confirmed:
+          type: boolean
+        confirmedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        from:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        to:
+          "$ref": "#/components/schemas/PayoutParticipant"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - payoutLedgerId
+      - amount
+      - confirmed
+      - from
+      - to
+      additionalProperties: false
+      title: PayoutTransfer
+    PayoutTransfersList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/PayoutTransfer"
+      title: PayoutTransfersList
     PieChartStats:
       type: object
       properties:
@@ -20801,6 +22104,114 @@ components:
       - VTOL
       - MAV
       title: ThrusterClassEnum
+    Tour:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        status:
+          "$ref": "#/components/schemas/TourStatusEnum"
+        startsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        settledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdBy:
+          "$ref": "#/components/schemas/UserRef"
+        inviteToken:
+          type:
+          - string
+          - 'null'
+        payoutLedgerId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - title
+      - slug
+      - status
+      additionalProperties: false
+      title: Tour
+    TourCreateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        startsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - title
+      additionalProperties: false
+      title: TourCreateInput
+    TourStatusEnum:
+      type: string
+      enum:
+      - open
+      - settled
+      - cancelled
+      x-enumNames:
+      - OPEN
+      - SETTLED
+      - CANCELLED
+      title: TourStatusEnum
+    TourUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        startsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      title: TourUpdateInput
+    ToursList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Tour"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      additionalProperties: false
+      title: ToursList
     User:
       type: object
       properties:

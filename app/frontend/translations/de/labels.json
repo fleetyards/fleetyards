@@ -1602,8 +1602,6 @@
         },
         "sessionStatus": "RSI-Sitzungsstatus",
         "checkIdentity": "RSI-Sitzung prüfen",
-        "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",
-        "addBundledVehiclesHint": "Fügt den Snub Craft hinzu, der zu einem Schiff gehört. Bereits vorhandene bleiben in jedem Fall erhalten.",
         "identityStatus": {
           "pending": "Prüfe...",
           "notFound": "nicht gefunden",
@@ -1640,7 +1638,9 @@
           "updated": "Updated",
           "movedToWanted": "Moved to Wishlist",
           "missing": "Unable to Import"
-        }
+        },
+        "addBundledVehicles": "Mitgelieferte Snub Crafts hinzufügen",
+        "addBundledVehiclesHint": "Fügt den Snub Craft hinzu, der zu einem Schiff gehört. Bereits vorhandene bleiben in jedem Fall erhalten."
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",
@@ -2264,6 +2264,37 @@
         "dockingport": "Andockstutzen",
         "hangar": "Hangar",
         "cargogrid": "Frachtgitter"
+      },
+      "payouts": {
+        "amount": "Betrag",
+        "description": "Beschreibung",
+        "entryType": "Art",
+        "expense": "Ausgegeben",
+        "income": "Eingenommen",
+        "participant": "Wer",
+        "notes": "Notizen",
+        "occurredAt": "Wann",
+        "paid": "Ausgegeben",
+        "held": "Hält",
+        "share": "Anteil",
+        "net": "Saldo",
+        "profit": "Gewinn",
+        "totalIncome": "Eingenommen",
+        "totalExpenses": "Ausgegeben",
+        "guest": "Gast",
+        "username": "Benutzername",
+        "name": "Name",
+        "sends": "sendet",
+        "receives": "erhält",
+        "settled": "Abgerechnet",
+        "open": "Offen",
+        "owes": "schuldet",
+        "isOwed": "bekommt",
+        "even": "ausgeglichen",
+        "title": "Titel",
+        "startsAt": "Beginnt am",
+        "inviteLink": "Einladungslink",
+        "participants": "Personen"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

@@ -439,7 +439,23 @@
       "stationImages": "Immagini di %{station} vicino a %{celestialObject}",
       "shops": "Negozi",
       "shop": "%{shop} su %{station}",
-      "commodities": "Merci"
+      "commodities": "Merci",
+      "payouts": {
+        "index": "Pagamenti",
+        "summary": "Riepilogo",
+        "participants": "Partecipanti",
+        "entries": "Movimenti",
+        "balances": "Saldi",
+        "transfers": "Elenco pagamenti",
+        "addEntry": "Registra denaro",
+        "editEntry": "Modifica movimento",
+        "addParticipant": "Aggiungi partecipante",
+        "tours": {
+          "index": "Spedizioni",
+          "create": "Crea spedizione",
+          "join": "Unisciti a questa spedizione"
+        }
+      }
     }
   }
 }

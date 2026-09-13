@@ -374,7 +374,20 @@
       },
       "selectFile": "Seleccionar archivo",
       "applyGameFileValue": "Aplicar",
-      "applyAllGameFileValues": "Aplicar todo"
+      "applyAllGameFileValues": "Aplicar todo",
+      "payouts": {
+        "openLedger": "Abrir libro de pagos",
+        "addEntry": "Registrar dinero",
+        "addParticipant": "Añadir participante",
+        "settle": "Liquidar y calcular pagos",
+        "reopen": "Reabrir",
+        "confirm": "Marcar como pagado",
+        "unconfirm": "Marcar como no pagado",
+        "createTour": "Crear expedición",
+        "joinTour": "Unirse",
+        "copyInvite": "Copiar enlace de invitación",
+        "rotateInvite": "Generar un enlace nuevo"
+      }
     }
   }
 }

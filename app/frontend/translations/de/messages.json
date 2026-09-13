@@ -872,6 +872,22 @@
           "error": "Import konnte nicht abgebrochen werden"
         }
       },
+      "payouts": {
+        "entryCreated": "Eintrag erfasst",
+        "entryUpdated": "Eintrag aktualisiert",
+        "entryDestroyed": "Eintrag entfernt",
+        "participantAdded": "Teilnehmer hinzugefügt",
+        "participantRemoved": "Teilnehmer entfernt",
+        "participantHasEntries": "Entferne zuerst dessen Einträge",
+        "settled": "Auszahlungen berechnet",
+        "reopened": "Buch wieder geöffnet",
+        "tourCreated": "Tour erstellt",
+        "tourJoined": "Du bist der Tour beigetreten",
+        "inviteCopied": "Einladungslink kopiert",
+        "settleConfirm": "Auszahlungen berechnen und das Buch sperren? Einträge lassen sich dann bis zum Wiederöffnen nicht mehr ändern.",
+        "reopenConfirm": "Buch wieder öffnen? Die aktuelle Auszahlungsliste wird verworfen.",
+        "participantNeedsName": "Gib einen Benutzernamen oder einen Namen ein"
+      },
       "dock": {
         "create": {
           "failure": "Andockplatz konnte nicht angelegt werden."

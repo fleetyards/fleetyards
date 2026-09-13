@@ -202,3 +202,17 @@ fr:
       update: Impossible de mettre à jour les paramètres de notification.
     version:
       revert: Impossible de rétablir le champ.
+    tours:
+      create: L'expédition n'a pas pu être créée.
+      update: L'expédition n'a pas pu être mise à jour.
+      destroy: L'expédition n'a pas pu être supprimée.
+      join: Vous n'avez pas pu être ajouté à cette expédition.
+    payout_ledgers:
+      create: Le registre n'a pas pu être ouvert.
+    payout_entries:
+      create: L'écriture n'a pas pu être enregistrée.
+      update: L'écriture n'a pas pu être mise à jour.
+      destroy: L'écriture n'a pas pu être supprimée.
+    payout_participants:
+      create: Le participant n'a pas pu être ajouté.
+      destroy: Le participant n'a pas pu être retiré.

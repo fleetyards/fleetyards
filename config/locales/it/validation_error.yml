@@ -202,3 +202,17 @@ it:
       update: Impossibile aggiornare le impostazioni di notifica.
     version:
       revert: Impossibile ripristinare il campo.
+    tours:
+      create: Impossibile creare la spedizione.
+      update: Impossibile aggiornare la spedizione.
+      destroy: Impossibile eliminare la spedizione.
+      join: Impossibile aggiungerti a questa spedizione.
+    payout_ledgers:
+      create: Impossibile aprire il registro dei pagamenti.
+    payout_entries:
+      create: Impossibile registrare il movimento.
+      update: Impossibile aggiornare il movimento.
+      destroy: Impossibile rimuovere il movimento.
+    payout_participants:
+      create: Impossibile aggiungere il partecipante.
+      destroy: Impossibile rimuovere il partecipante.

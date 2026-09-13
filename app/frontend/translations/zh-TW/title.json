@@ -79,7 +79,8 @@
             "description": "編輯描述 - %{fleet}",
             "teams": "編輯小隊與席位 - %{fleet}"
           },
-          "show": "%{fleet} 活動"
+          "show": "%{fleet} 活動",
+          "payouts": "%{fleet} 活動分帳"
         },
         "settings": {
           "index": "%{fleet} 設定",
@@ -122,7 +123,13 @@
       "tools": {
         "index": "工具",
         "travelTimes": "旅行時間",
-        "cargoGrids": "貨物網格"
+        "cargoGrids": "貨物網格",
+        "tours": {
+          "index": "行程",
+          "add": "建立新行程",
+          "show": "%{tour}",
+          "join": "加入行程"
+        }
       },
       "impressum": "版權聲明",
       "privacyPolicy": "隱私政策",

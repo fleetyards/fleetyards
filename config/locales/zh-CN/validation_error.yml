@@ -201,3 +201,17 @@ zh-CN:
       update: 无法更新通知设置。
     version:
       revert: 无法还原该字段。
+    tours:
+      create: 无法创建行程。
+      update: 无法更新行程。
+      destroy: 无法删除行程。
+      join: 无法将你加入此行程。
+    payout_ledgers:
+      create: 无法打开分账簿。
+    payout_entries:
+      create: 无法记录该笔。
+      update: 无法更新该笔记录。
+      destroy: 无法删除该笔记录。
+    payout_participants:
+      create: 无法添加参与者。
+      destroy: 无法移除参与者。

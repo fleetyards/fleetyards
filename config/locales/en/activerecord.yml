@@ -233,6 +233,21 @@ en:
           attributes:
             vehicle_size:
               not_a_vehicle: only applies to a ground vehicle
+        payout_participant:
+          attributes:
+            base:
+              has_entries: still has entries recorded against them
+              ledger_settled: cannot be changed once the payouts are settled
+        payout_entry:
+          attributes:
+            base:
+              ledger_settled: cannot be changed once the payouts are settled
+            payout_participant_id:
+              wrong_ledger: is not on this ledger
+        payout_transfer:
+          attributes:
+            to_participant_id:
+              same_as_sender: cannot be the same as the sender
         fleet_role:
           attributes:
             base:

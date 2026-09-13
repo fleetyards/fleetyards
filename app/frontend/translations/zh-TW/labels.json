@@ -1602,8 +1602,6 @@
         },
         "sessionStatus": "RSI 工作階段狀態",
         "checkIdentity": "檢查 RSI 工作階段",
-        "addBundledVehicles": "新增附帶的小型飛船",
-        "addBundledVehiclesHint": "新增飛船附帶的小型飛船。已在機庫中的會保留。",
         "identityStatus": {
           "pending": "檢查中...",
           "notFound": "未找到",
@@ -1636,7 +1634,9 @@
           "foundUpgrades": "找到的升級",
           "missingUpgrades": "未找到升級",
           "missingUpgradeVehicles": "未找到匹配的飛船用於升級"
-        }
+        },
+        "addBundledVehicles": "新增附帶的小型飛船",
+        "addBundledVehiclesHint": "新增飛船附帶的小型飛船。已在機庫中的會保留。"
       },
       "cargoGridViewer": {
         "capacity": "容量",
@@ -2260,6 +2260,37 @@
         "dockingport": "對接口",
         "hangar": "機庫",
         "cargogrid": "貨運格柵"
+      },
+      "payouts": {
+        "amount": "金額",
+        "description": "說明",
+        "entryType": "類型",
+        "expense": "支出",
+        "income": "收入",
+        "participant": "誰",
+        "notes": "備註",
+        "occurredAt": "時間",
+        "paid": "支出",
+        "held": "持有",
+        "share": "應得",
+        "net": "餘額",
+        "profit": "利潤",
+        "totalIncome": "收入",
+        "totalExpenses": "支出",
+        "guest": "訪客",
+        "username": "使用者名稱",
+        "name": "名稱",
+        "sends": "支付給",
+        "receives": "收取",
+        "settled": "已結算",
+        "open": "進行中",
+        "owes": "應付",
+        "isOwed": "應收",
+        "even": "已結清",
+        "title": "標題",
+        "startsAt": "開始於",
+        "inviteLink": "邀請連結",
+        "participants": "人數"
       },
       "shipSizes": {
         "extra_extra_small": "小型飛船 (XXS)",

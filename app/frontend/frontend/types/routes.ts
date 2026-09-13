@@ -57,6 +57,11 @@ type FrontendSimpleRoutes =
   // Tools
   | "tools"
   | "travel-times"
+  | "tours"
+  | "tour"
+  | "tour-add"
+  | "tour-join"
+  | "fleet-event-payouts"
   | "cargo-grids"
   // Visual Tests (dev only)
   | "visual-tests"

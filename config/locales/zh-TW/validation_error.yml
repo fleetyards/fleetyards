@@ -201,3 +201,17 @@ zh-TW:
       update: 無法更新通知設定。
     version:
       revert: 無法還原該欄位。
+    tours:
+      create: 無法建立行程。
+      update: 無法更新行程。
+      destroy: 無法刪除行程。
+      join: 無法將你加入此行程。
+    payout_ledgers:
+      create: 無法開啟分帳簿。
+    payout_entries:
+      create: 無法記錄該筆。
+      update: 無法更新該筆紀錄。
+      destroy: 無法刪除該筆紀錄。
+    payout_participants:
+      create: 無法新增參與者。
+      destroy: 無法移除參與者。

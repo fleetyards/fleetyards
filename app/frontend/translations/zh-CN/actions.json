@@ -374,7 +374,20 @@
       },
       "selectFile": "选择文件",
       "applyGameFileValue": "采用",
-      "applyAllGameFileValues": "全部采用"
+      "applyAllGameFileValues": "全部采用",
+      "payouts": {
+        "openLedger": "打开分账簿",
+        "addEntry": "记一笔",
+        "addParticipant": "添加参与者",
+        "settle": "结算并计算分账",
+        "reopen": "重新打开",
+        "confirm": "标记为已付",
+        "unconfirm": "标记为未付",
+        "createTour": "创建行程",
+        "joinTour": "加入行程",
+        "copyInvite": "复制邀请链接",
+        "rotateInvite": "生成新链接"
+      }
     }
   }
 }
