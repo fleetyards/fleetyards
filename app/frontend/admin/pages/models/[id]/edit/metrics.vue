@@ -230,7 +230,10 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           :suffix="t('number.units.distance')"
         >
           <template #subline>
-            <span :class="{ 'metrics__sc--drifted': lengthDrifted }">
+            <span
+              class="metrics__sc"
+              :class="{ 'metrics__sc--drifted': lengthDrifted }"
+            >
               SC Length: {{ model.scLength ?? "—" }}
             </span>
             <button
@@ -254,7 +257,10 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           :suffix="t('number.units.distance')"
         >
           <template #subline>
-            <span :class="{ 'metrics__sc--drifted': beamDrifted }">
+            <span
+              class="metrics__sc"
+              :class="{ 'metrics__sc--drifted': beamDrifted }"
+            >
               SC Beam: {{ model.scBeam ?? "—" }}
             </span>
             <button
@@ -278,7 +284,10 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           :suffix="t('number.units.distance')"
         >
           <template #subline>
-            <span :class="{ 'metrics__sc--drifted': heightDrifted }">
+            <span
+              class="metrics__sc"
+              :class="{ 'metrics__sc--drifted': heightDrifted }"
+            >
               SC Height: {{ model.scHeight ?? "—" }}
             </span>
             <button
@@ -583,6 +592,10 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
 
 .metrics__sc--drifted {
   font-weight: 600;
+}
+
+.metrics__sc + .metrics__apply {
+  margin-left: 0.5rem;
 }
 
 .metrics__apply {
