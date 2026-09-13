@@ -1,5 +1,8 @@
 import { type ShipListState } from "@/frontend/types";
-import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
+// Type-only: a value import would put `@/services/fyApi` in the runtime graph of
+// every store that reaches this one, and the specs that mock that module
+// without `importOriginal` would lose whichever export they do not name.
+import type { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
 import { defineStore } from "pinia";
 
 export enum HangarTableViewImageColsEnum {
@@ -55,7 +58,7 @@ export const useHangarStore = defineStore("hangar", {
     syncModalOpen: false,
     syncRunning: false,
     syncAddBundledVehicles: true,
-    syncUnmatchedVehiclesAction: HangarSyncUnmatchedActionEnum.WISHLIST,
+    syncUnmatchedVehiclesAction: "wishlist",
     syncUnmatchedHangarGroupId: undefined,
     tableViewImageCols: [
       HangarTableViewImageColsEnum.STORE_IMAGE,
