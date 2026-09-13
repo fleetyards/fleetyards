@@ -1892,7 +1892,6 @@
           "cancelled": "Withdrawn",
           "expired": "Expired"
         },
-        "noTransfers": "No transfers",
         "acceptInto": "Accept into",
         "reportReason": "Reason",
         "reportReasons": {
@@ -1901,7 +1900,7 @@
           "scam": "Scam",
           "other": "Something else"
         },
-        "transferToFleet": "{fleet} (fleet)"
+        "transferToFleet": "%{fleet} (fleet)"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

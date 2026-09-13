@@ -152,7 +152,9 @@ const onReport = (transfer: InventoryTransfer) => {
 
     <Empty
       v-if="!isLoading && transfers.length === 0"
-      :text="t('labels.logistics.noTransfers')"
+      variant="box"
+      hide-actions
+      name="transfers"
     />
 
     <Grid v-else :records="transfers" primary-key="id">

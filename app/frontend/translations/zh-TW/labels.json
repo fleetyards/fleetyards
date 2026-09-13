@@ -1887,7 +1887,6 @@
           "cancelled": "已撤回",
           "expired": "已過期"
         },
-        "noTransfers": "暫無轉移",
         "acceptInto": "接收至",
         "reportReason": "原因",
         "reportReasons": {
@@ -1896,7 +1895,7 @@
           "scam": "詐騙",
           "other": "其他"
         },
-        "transferToFleet": "{fleet}（艦隊）"
+        "transferToFleet": "%{fleet}（艦隊）"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

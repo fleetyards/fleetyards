@@ -118,6 +118,25 @@ module Inventories
       assert_equal :sender_blocked, TransferGate.new(sender: fleet, recipient: @recipient).refusal.code
     end
 
+    # The serialised error has to carry a stable code; the human sentence
+    # belongs in the message beside it.
+    test "a refusal reaches the caller as a code, not as a sentence" do
+      @recipient.update!(inventory_transfer_policy: :nobody)
+
+      source = create(:inventory, holder: @sender)
+      entry = create(:inventory_item, inventory: source, quantity: 10)
+
+      builder = ::Inventories::TransferBuilder.new(
+        source:, actor: @sender, recipient: @recipient,
+        lines: [{position_id: entry.position.id, quantity: 1}]
+      )
+
+      refute builder.call
+      assert_equal [:policy_closed], builder.errors.details[:base].map { |d| d[:error] }
+      assert_equal [I18n.t("inventory_transfers.refusals.policy_closed")],
+        builder.errors[:base]
+    end
+
     private def gate
       TransferGate.new(sender: @sender, recipient: @recipient)
     end

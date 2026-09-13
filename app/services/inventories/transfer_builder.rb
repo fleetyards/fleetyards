@@ -157,7 +157,11 @@ module Inventories
 
       return true if @refusal.nil?
 
-      errors.add(:base, @refusal.message)
+      # The code, with the message beside it -- not the message as the code.
+      # `errors.add(:base, "some sentence")` makes that sentence the error type,
+      # so the serialised `code` came out as the human text and a client had
+      # nothing stable to branch on.
+      errors.add(:base, @refusal.code, message: @refusal.message)
       false
     end
 

@@ -13,7 +13,6 @@ import {
 } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -145,10 +144,13 @@ const onSubmit = async () => {
         {{ t("messages.logistics.transfer.needsAnswer") }}
       </p>
 
-      <Empty
+      <p
         v-if="movable.length === 0"
-        :text="t('labels.logistics.noStock')"
-      />
+        class="transfer-empty"
+        data-test="transfer-empty"
+      >
+        {{ t("labels.logistics.noStock") }}
+      </p>
 
       <template v-else>
         <div class="transfer-lines-head">
@@ -186,6 +188,7 @@ const onSubmit = async () => {
             <FormInput
               v-model="quantities[position.id]"
               type="number"
+              no-placeholder
               :min="0"
               :max="Number(position.netQuantity)"
               :name="`quantity-${position.id}`"
@@ -205,6 +208,7 @@ const onSubmit = async () => {
       <FormInput
         v-model="note"
         name="note"
+        no-placeholder
         :label="t('labels.logistics.transferNote')"
       />
     </form>
@@ -262,9 +266,9 @@ const onSubmit = async () => {
   opacity: 0.7;
 }
 
-.transfer-line-error {
-  margin: 0.25rem 0 0;
-  color: var(--color-danger, #d11b45);
+.transfer-empty {
+  margin: 0.5rem 0;
+  opacity: 0.75;
 }
 
 .transfer-line-error {

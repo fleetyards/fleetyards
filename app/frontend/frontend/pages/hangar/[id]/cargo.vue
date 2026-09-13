@@ -19,6 +19,7 @@ import {
   useVehicleInventory,
   useVehicleInventoryItems,
   useVehicleInventoryStock,
+  useCreateHangarInventoryTransfer,
   useDestroyVehicleInventory,
   useDestroyVehicleInventoryItem,
 } from "@/services/fyApi";
@@ -33,6 +34,7 @@ import type {
   InventoryTarget,
 } from "@/frontend/types/logistics";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useTransferTargets } from "@/frontend/composables/useTransferTargets";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -146,6 +148,41 @@ const showCargoGridsLink = computed(
     cargoCapacity.value > 0 &&
     storedScu.value >= 1,
 );
+
+// A ship's cargo moves the same way a locker's does. The transfer itself is a
+// hangar-mount call either way: what decides the source is the inventory id,
+// and a ship inventory is one of the user's own.
+const { targets: transferTargets } = useTransferTargets(() => inventory.value);
+
+const { mutateAsync: createTransfer } = useCreateHangarInventoryTransfer();
+
+const transfersEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
+);
+
+// Only once the ship has an inventory to move out of -- one does not exist
+// until something is put in it.
+const canTransfer = computed(
+  () => transfersEnabled.value && !!inventory.value?.id && hasCargo.value,
+);
+
+const openTransferModal = () => {
+  if (!inventory.value?.id) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Logistics/TransferModal/index.vue"),
+    props: {
+      source: { id: inventory.value.id, name: inventory.value.name },
+      positions: stockData.value ?? [],
+      targets: transferTargets.value,
+      onSend: async (data: Parameters<typeof createTransfer>[0]["data"]) => {
+        await createTransfer({ data });
+        await Promise.all([refetchStock(), refetchAll(), refetchInventory()]);
+      },
+    },
+  });
+};
 
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
   comlink.emit("open-modal", {
@@ -261,6 +298,23 @@ onMounted(() => {
       </Btn>
       <Btn :size="BtnSizesEnum.MD" @click="openItemModal('withdrawal')">
         {{ t("actions.logistics.withdraw") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :to="{ name: 'hangar-inventories' }"
+        data-test="vehicle-cargo-inventories-link"
+      >
+        <i class="fa-duotone fa-boxes-stacked" />
+        {{ t("nav.hangar.inventories") }}
+      </Btn>
+      <Btn
+        v-if="canTransfer"
+        :size="BtnSizesEnum.MD"
+        data-test="vehicle-cargo-transfer"
+        @click="openTransferModal"
+      >
+        <i class="fa-duotone fa-right-left" />
+        {{ t("actions.logistics.transfer") }}
       </Btn>
       <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
         <i class="fa-duotone fa-file-csv" />

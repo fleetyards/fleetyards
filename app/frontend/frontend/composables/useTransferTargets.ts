@@ -1,8 +1,6 @@
-import type { Ref } from "vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type Fleet,
-  type HangarInventory,
   useHangarInventories,
   useMyFleets,
 } from "@/services/fyApi";
@@ -18,8 +16,12 @@ import type { TransferTargetOption } from "@/frontend/components/Logistics/Trans
 // The client does not decide which is which by re-deriving the rule: it only
 // knows that naming an inventory means "now" and naming a party means "ask",
 // and the API refuses anything the sender is not actually allowed to do.
+// A getter rather than a `Ref`: a `Ref` is invariant, so a caller holding a
+// `Ref<Inventory> | Ref<undefined>` -- which is what the query hooks hand back --
+// cannot pass it. Only the id is read, and it is nullable because a ship's
+// inventory has none until something is put in it.
 export const useTransferTargets = (
-  source: Ref<HangarInventory | undefined>,
+  source: MaybeRefOrGetter<{ id?: string | null } | undefined>,
 ) => {
   const { t } = useI18n();
 
@@ -28,7 +30,7 @@ export const useTransferTargets = (
 
   const ownInventories = computed<TransferTargetOption[]>(() =>
     (inventories.value?.items ?? [])
-      .filter((inventory) => inventory.id !== source.value?.id)
+      .filter((inventory) => inventory.id !== toValue(source)?.id)
       .map((inventory) => ({
         value: `inventory:${inventory.id}`,
         label: inventory.name,

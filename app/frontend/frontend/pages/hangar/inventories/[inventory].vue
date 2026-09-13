@@ -145,7 +145,7 @@ const transfersEnabled = computed(() =>
   isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
 );
 
-const { targets: transferTargets } = useTransferTargets(inventory);
+const { targets: transferTargets } = useTransferTargets(() => inventory.value);
 
 const { mutateAsync: createTransfer } = useCreateHangarInventoryTransfer();
 

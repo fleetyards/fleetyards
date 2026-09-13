@@ -8,7 +8,8 @@
         "wishlist": "Ihre Wunschliste ist leer",
         "features": "Keine Funktionen verfügbar",
         "fleetFeatures": "Keine Flottenfunktionen verfügbar",
-        "imports": "Keine Importe gefunden"
+        "imports": "Keine Importe gefunden",
+        "transfers": "Noch keine Transfers"
       },
       "actions": {
         "reset": "Filter/Seiten zurücksetzen",
