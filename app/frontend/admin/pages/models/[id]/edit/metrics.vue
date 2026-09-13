@@ -104,10 +104,12 @@ const [height, heightProps] = defineField("height");
 // automatically wrong -- the Hull C is deliberately recorded expanded -- so it
 // is shown and taken over one field at a time.
 //
-// Once a holo has been measured the comparison stops being a correction to
-// offer: `maxBoundingBoxSize` does not orient its axes consistently and names
-// no configuration, so it is the worse of the two numbers. The game-file figure
-// stays on screen as reference, without the warning or the apply buttons.
+// Once a holo has been measured, a difference from the game files is no longer
+// worth flagging: `maxBoundingBoxSize` does not orient its axes consistently and
+// names no configuration, so it is the weaker figure and disagreeing with it is
+// the expected state. Only the warning goes -- the game-file value stays on the
+// subline and stays appliable, because a holo measurement is not beyond doubt
+// either (a hull rendered with its wings vertical sorts its axes wrongly).
 // `dimensionsMeasuredAt` rather than "a holo is attached" -- the job refuses an
 // export whose rotation is off the axes and skips a value corrected while it
 // was fetching, and both leave an attachment behind that measured nothing.
@@ -125,16 +127,14 @@ const heightDrifted = computed(
     !measuredFromHolo.value && hasDrifted(height.value, props.model.scHeight),
 );
 
-const lengthAppliable = computed(
-  () =>
-    !measuredFromHolo.value && isAppliable(length.value, props.model.scLength),
+const lengthAppliable = computed(() =>
+  isAppliable(length.value, props.model.scLength),
 );
-const beamAppliable = computed(
-  () => !measuredFromHolo.value && isAppliable(beam.value, props.model.scBeam),
+const beamAppliable = computed(() =>
+  isAppliable(beam.value, props.model.scBeam),
 );
-const heightAppliable = computed(
-  () =>
-    !measuredFromHolo.value && isAppliable(height.value, props.model.scHeight),
+const heightAppliable = computed(() =>
+  isAppliable(height.value, props.model.scHeight),
 );
 
 const anyAppliable = computed(
