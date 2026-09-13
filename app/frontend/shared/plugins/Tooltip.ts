@@ -184,7 +184,13 @@ interface TooltipState {
   options: TooltipOptions;
   showHandler: () => void;
   hideHandler: () => void;
+  leaveHandler: () => void;
+  clickHandler: (event: MouseEvent) => void;
   focusHandler: () => void;
+  pointerOverHandler: (event: PointerEvent) => void;
+  // What last arrived over the anchor: "mouse", "touch", "pen", or "" where the
+  // browser reports no pointer events at all.
+  pointerType: string;
   fadeFrame: number;
   hideTimer: number;
   anchorRect: DOMRect | null;
@@ -349,10 +355,11 @@ function cleanup(el: HTMLElement) {
 
   if (activeEl === el) deactivate();
 
+  el.removeEventListener("pointerover", state.pointerOverHandler);
   el.removeEventListener("mouseenter", state.showHandler);
-  el.removeEventListener("mouseleave", state.hideHandler);
-  el.removeEventListener("pointerleave", state.hideHandler);
-  el.removeEventListener("click", state.hideHandler);
+  el.removeEventListener("mouseleave", state.leaveHandler);
+  el.removeEventListener("pointerleave", state.leaveHandler);
+  el.removeEventListener("click", state.clickHandler);
   el.removeEventListener("focus", state.focusHandler);
   el.removeEventListener("blur", state.hideHandler);
 
@@ -361,6 +368,33 @@ function cleanup(el: HTMLElement) {
 
   state.tooltipEl?.remove();
   stateMap.delete(el);
+}
+
+/*
+ * A pointer that cannot hover has only the tap to open a tooltip with, and
+ * `click` used to do nothing but close -- so on a phone the tooltip the tap had
+ * just opened, through the synthetic mouse events a tap fires, closed again in
+ * the same gesture.
+ *
+ * Which pointer arrived is read from `pointerover`, because that is the one
+ * ordering the spec actually pins down: the compatibility mouse events are
+ * dispatched after the pointer events they stand in for. Where `pointerdown`
+ * lands is not pinned down -- it arrives before the synthetic `mouseenter` in
+ * some builds and after it in others, which is enough to invert the whole
+ * decision.
+ *
+ * Anything that is not a mouse is driven by the tap: hover cannot be relied on
+ * to open the tooltip, so it does not open it, and the tap toggles instead. A
+ * stylus that hovers loses hover-to-open and keeps tap-to-open, which is the
+ * side to err on -- being unable to read a hint is worse than needing a tap.
+ *
+ * `(hover: none)` cannot answer this at all: it describes a device's *primary*
+ * pointer, so a touchscreen laptop reports `hover: hover` for its mouse and
+ * would send every finger tap down the mouse path.
+ */
+
+function tapDriven(state: TooltipState) {
+  return state.pointerType !== "" && state.pointerType !== "mouse";
 }
 
 // Pointer focus already gets the tooltip from `mouseenter`; showing it on every
@@ -383,8 +417,45 @@ const vTooltip: Directive = {
     const state: TooltipState = {
       tooltipEl: null,
       options,
-      showHandler: () => show(el),
+      showHandler: () => {
+        if (tapDriven(state)) return;
+
+        show(el);
+      },
       hideHandler: () => hide(el),
+      leaveHandler: () => {
+        if (tapDriven(state)) return;
+
+        hide(el);
+      },
+      clickHandler: (event: MouseEvent) => {
+        /*
+         * `detail` is the click count, and a keyboard activation has none. It
+         * crosses no pointer over the anchor either, so without this it would
+         * inherit whatever last did -- and Enter after a tap would reopen the
+         * tooltip the tap had closed. Focus is what shows it for the keyboard.
+         */
+        const fromPointer = event.detail > 0;
+
+        // A click from a mouse closes, the way it always has -- clicking a
+        // control should not leave its tooltip sitting over the result.
+        if (!fromPointer || !tapDriven(state)) {
+          hide(el);
+          return;
+        }
+
+        if (activeEl === el) {
+          hide(el);
+        } else {
+          show(el);
+        }
+      },
+      // Whichever pointer arrives last owns the anchor, so a finger decides for
+      // itself even with a mouse resting on the same element.
+      pointerOverHandler: (event: PointerEvent) => {
+        state.pointerType = event.pointerType || "";
+      },
+      pointerType: "",
       focusHandler: () => {
         if (isKeyboardFocus(el)) show(el);
       },
@@ -395,10 +466,11 @@ const vTooltip: Directive = {
 
     stateMap.set(el, state);
 
+    el.addEventListener("pointerover", state.pointerOverHandler);
     el.addEventListener("mouseenter", state.showHandler);
-    el.addEventListener("mouseleave", state.hideHandler);
-    el.addEventListener("pointerleave", state.hideHandler);
-    el.addEventListener("click", state.hideHandler);
+    el.addEventListener("mouseleave", state.leaveHandler);
+    el.addEventListener("pointerleave", state.leaveHandler);
+    el.addEventListener("click", state.clickHandler);
     el.addEventListener("focus", state.focusHandler);
     el.addEventListener("blur", state.hideHandler);
   },

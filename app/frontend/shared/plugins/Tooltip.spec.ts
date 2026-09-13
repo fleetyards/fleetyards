@@ -183,6 +183,155 @@ describe("v-tooltip", () => {
     expect(tooltip.style.maxWidth).toBe("");
   });
 
+  /*
+   * A pointer that cannot hover has only the tap to open a tooltip with, and
+   * `click` was wired straight to hide -- so the tooltip a tap opened through
+   * its synthetic mouse events closed again in the same gesture.
+   *
+   * Which pointer arrived is read from `pointerover`, the one ordering the spec
+   * pins down. An earlier attempt keyed off whether `pointerdown` beat the
+   * synthetic `mouseenter`; that holds in some builds and not others, and CI
+   * ran one of the others.
+   */
+  describe("a pointer that cannot hover", () => {
+    const arrive = (el: HTMLElement, pointerType: string) =>
+      el.dispatchEvent(new PointerEvent("pointerover", { pointerType }));
+
+    const tap = (el: HTMLElement, pointerType = "touch") => {
+      arrive(el, pointerType);
+      // Order deliberately unhelpful: the synthetic hover lands before the
+      // press here, which is what CI does and what broke the previous attempt.
+      el.dispatchEvent(new Event("mouseenter"));
+      el.dispatchEvent(new Event("pointerdown"));
+      el.dispatchEvent(new MouseEvent("click", { detail: 1 }));
+    };
+
+    it("opens on a tap and closes on the next one", async () => {
+      const { el } = mountAnchor();
+
+      tap(el);
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+
+      tap(el);
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    // The synthetic `mouseenter` would otherwise open it a moment before the
+    // click closed it again.
+    it("does not open on the hover a tap synthesises", async () => {
+      const { el } = mountAnchor();
+
+      arrive(el, "touch");
+      el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    /*
+     * Enter on a focused anchor produces a click with no click count and no
+     * pointer crossing the anchor. Without saying so it would inherit the mode
+     * of the finger that was last here and reopen what it just closed; focus is
+     * what shows the tooltip for the keyboard.
+     */
+    it("does not lend its mode to the keyboard", async () => {
+      const { el } = mountAnchor();
+
+      // Tapped open and tapped shut again: the toggle's next move would be to
+      // open it, which is what the keyboard must not inherit.
+      tap(el);
+      await nextFrame();
+      tap(el);
+      expect(visibleTooltips()).toHaveLength(0);
+
+      el.dispatchEvent(new MouseEvent("click", { detail: 0 }));
+      await nextFrame();
+
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    // A stylus cannot be assumed to hover, and being unable to read a hint is
+    // worse than needing a tap for it.
+    it("treats a stylus the same way", async () => {
+      const { el } = mountAnchor();
+
+      tap(el, "pen");
+      await nextFrame();
+
+      expect(visibleTooltips()).toHaveLength(1);
+    });
+
+    /*
+     * The case a media query cannot answer: a touchscreen laptop reports
+     * `hover: hover`, because that describes its primary pointer. The finger
+     * has to decide for itself -- including when a mouse is still resting on
+     * the same anchor, having already opened and closed the tooltip.
+     */
+    it("decides for itself with a mouse resting on the anchor", async () => {
+      const { el } = mountAnchor();
+
+      arrive(el, "mouse");
+      el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+
+      el.dispatchEvent(new MouseEvent("click", { detail: 1 }));
+      expect(visibleTooltips()).toHaveLength(0);
+
+      // No `mouseleave` -- the mouse has not moved.
+      tap(el);
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+    });
+  });
+
+  describe("a mouse", () => {
+    const hover = (el: HTMLElement) => {
+      el.dispatchEvent(
+        new PointerEvent("pointerover", { pointerType: "mouse" }),
+      );
+      el.dispatchEvent(new Event("mouseenter"));
+    };
+
+    it("still opens on hover and closes on click", async () => {
+      const { el } = mountAnchor();
+
+      hover(el);
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+
+      el.dispatchEvent(new Event("click"));
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    // Clicking a control twice must not put its tooltip back over the result.
+    it("keeps it closed on a second click", async () => {
+      const { el } = mountAnchor();
+
+      hover(el);
+      await nextFrame();
+
+      el.dispatchEvent(new Event("click"));
+      el.dispatchEvent(new Event("click"));
+      await nextFrame();
+
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
+    // No pointer events at all: the tooltip behaves the way it always did.
+    it("behaves as before where nothing reports a pointer type", async () => {
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+
+      el.dispatchEvent(new Event("click"));
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+  });
+
   it("wraps a sentence when asked to", async () => {
     const { el } = mountAnchor({
       content: {
