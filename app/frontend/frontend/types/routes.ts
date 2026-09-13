@@ -43,6 +43,8 @@ type FrontendSimpleRoutes =
   | "fleet-logistics-inventory-transactions"
   | "hangar-transfers"
   | "fleet-logistics-transfers"
+  | "hangar-transfers-outgoing"
+  | "fleet-logistics-transfers-outgoing"
   | "hangar-inventories"
   | "hangar-inventory"
   // Fleets

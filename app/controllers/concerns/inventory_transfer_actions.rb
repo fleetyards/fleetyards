@@ -9,6 +9,8 @@ module InventoryTransferActions
   extend ActiveSupport::Concern
   include InventoryTransfersFeatureConcern
 
+  QUERY_PARAMS = %i[state_eq state_in created_at_gteq created_at_lteq s].freeze
+
   included do
     after_action -> { pagination_header(:inventory_transfers) }, only: %i[index]
   end
@@ -28,8 +30,14 @@ module InventoryTransferActions
     else incoming_scope.or(outgoing_scope)
     end
 
+    query_params = params.fetch(:q, {}).permit(*QUERY_PARAMS)
+    normalize_sort_params(query_params)
+    query_params["sorts"] = sorting_params(InventoryTransfer, query_params["sorts"])
+
+    @q = scope.ransack(query_params)
+
     @inventory_transfers = result_with_pagination(
-      scope.includes(transfer_includes).order(created_at: :desc),
+      @q.result(distinct: true).includes(transfer_includes),
       per_page(InventoryTransfer)
     )
   end
@@ -149,10 +157,21 @@ module InventoryTransferActions
   # Every transfer this party has to answer, and every one it sent. Written as
   # two scopes over the party columns rather than over the inventories, so a
   # transfer whose far end was deleted still lists.
+  # Addressed to this party, *or* delivered into one of its inventories. The
+  # second half is not redundant: an immediate transfer names no recipient at
+  # all, so a fleet issuing kit into a member's own locker matched neither this
+  # nor `outgoing_scope` -- it showed on the fleet's list and was invisible to
+  # the person who received it.
   private def incoming_scope
     case acting_party
-    when ::Fleet then InventoryTransfer.where(recipient_fleet: acting_party)
-    else InventoryTransfer.where(recipient: acting_party)
+    when ::Fleet
+      InventoryTransfer
+        .where(recipient_fleet: acting_party)
+        .or(InventoryTransfer.where(destination_fleet_inventory: acting_party.fleet_inventories))
+    else
+      InventoryTransfer
+        .where(recipient: acting_party)
+        .or(InventoryTransfer.where(destination_inventory: acting_party.inventories))
     end
   end
 

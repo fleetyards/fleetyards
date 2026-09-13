@@ -48,6 +48,18 @@ const totalScu = computed(() => props.inventory.totalScu ?? 0);
 
 const totalUnits = computed(() => props.inventory.totalUnits ?? 0);
 
+// Stock that has left on a transfer nobody has answered yet. The withdrawal is
+// real, so it is already out of the totals -- saying so is the difference
+// between "sent" and "lost".
+const inTransit = computed(() => ({
+  scu: props.inventory.inTransitScu ?? 0,
+  units: props.inventory.inTransitUnits ?? 0,
+}));
+
+const hasInTransit = computed(
+  () => inTransit.value.scu > 0 || inTransit.value.units > 0,
+);
+
 // A ship says where its inventory is far better than a free-text location does.
 const subtitle = computed(
   () => props.inventory.vehicle?.name || props.inventory.location,
@@ -172,12 +184,35 @@ const image = computed(
           </span>
         </template>
       </div>
+
+      <p
+        v-if="hasInTransit"
+        v-tooltip="t('labels.logistics.inTransitHint')"
+        class="inventory-panel-in-transit"
+        data-test="inventory-panel-in-transit"
+      >
+        <i class="fa-duotone fa-truck-fast" />
+        {{
+          t("labels.logistics.inTransitAmount", {
+            amount:
+              inTransit.scu > 0
+                ? `${inTransit.scu} SCU`
+                : `${inTransit.units} Units`,
+          })
+        }}
+      </p>
     </PanelBody>
   </Panel>
 </template>
 
 <style lang="scss" scoped>
 .inventory-panel {
+  .inventory-panel-in-transit {
+    margin: 0.35rem 0 0;
+    font-size: 0.85em;
+    opacity: 0.75;
+  }
+
   .inventory-panel-body {
     flex: 1;
     display: flex;

@@ -129,8 +129,19 @@ class InventoryTransfer < ApplicationRecord
     end
   end
 
+  # `state` is the word everything outside the model uses; ransack checks the
+  # allowlist for the alias while parsing the key and again for the column it
+  # lands on, so both have to be here.
+  DEFAULT_SORTING_PARAMS = ["created_at desc"]
+  ALLOWED_SORTING_PARAMS = [
+    "createdAt asc", "createdAt desc",
+    "state asc", "state desc"
+  ].freeze
+
+  ransack_alias :state, :aasm_state
+
   def self.ransackable_attributes(_auth_object = nil)
-    %w[aasm_state created_at updated_at expires_at completed_at declined_at cancelled_at expired_at]
+    %w[state aasm_state created_at updated_at expires_at completed_at declined_at cancelled_at expired_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)

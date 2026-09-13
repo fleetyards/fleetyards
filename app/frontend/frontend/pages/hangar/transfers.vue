@@ -18,5 +18,9 @@ const crumbs = computed<Crumb[]>(() => [
 </script>
 
 <template>
-  <TransfersView :crumbs="crumbs" />
+  <TransfersView
+    :crumbs="crumbs"
+    incoming-route="hangar-transfers"
+    outgoing-route="hangar-transfers-outgoing"
+  />
 </template>

@@ -57,6 +57,24 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "transfers/outgoing/",
+    name: "fleet-logistics-transfers-outgoing",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/logistics/transfers.vue"),
+    meta: {
+      backgroundImage: "bg-8",
+      title: "fleets.logistics.transfers",
+      needsAuthentication: true,
+      access: [
+        "fleet:inventories:update",
+        "fleet:inventories:manage",
+        "fleet:manage",
+      ],
+      feature: FeatureFlagName.INVENTORY_TRANSFERS,
+      customTitle: true,
+    },
+  },
+  {
     // The inventory list moved onto the logistics page itself. The path stays so
     // links people already shared keep resolving.
     path: "inventories/",

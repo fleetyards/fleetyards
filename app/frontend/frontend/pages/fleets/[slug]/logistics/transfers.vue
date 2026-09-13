@@ -34,5 +34,10 @@ const crumbs = computed<Crumb[]>(() => [
 </script>
 
 <template>
-  <TransfersView :crumbs="crumbs" :fleet-slug="fleet.slug" />
+  <TransfersView
+    :crumbs="crumbs"
+    :fleet-slug="fleet.slug"
+    incoming-route="fleet-logistics-transfers"
+    outgoing-route="fleet-logistics-transfers-outgoing"
+  />
 </template>

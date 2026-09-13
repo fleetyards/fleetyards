@@ -16,6 +16,9 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
       parameter name: "direction", in: :query, required: false,
         schema: {type: :string, enum: %w[incoming outgoing]},
         description: "Limit to transfers this user has to answer, or to ones they sent"
+      parameter name: "q", in: :query, required: false,
+        schema: ::V1::Schemas::Queries::InventoryTransferQuery,
+        description: "Filters"
       parameter name: "page", in: :query, required: false, schema: {type: :integer}
       parameter name: "limit", in: :query, required: false, schema: {type: :integer}
 
@@ -226,6 +229,50 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal "in", deposit["transfer"]["direction"]
     assert_equal @source.name, deposit["transfer"]["inventory"]["name"]
     assert_equal @user.username, deposit["transfer"]["counterparty"]["name"]
+  end
+
+  # An immediate transfer names no recipient, so one delivered into my own
+  # inventory matched neither scope: it showed on the sender's list and was
+  # invisible to the person who received it.
+  test "GET incoming shows what was delivered here, not only what was addressed to me" do
+    fleet = create(:fleet)
+    create(:fleet_membership, :accepted, :as_officer, fleet:, user: @user)
+    Flipper.enable("fleet_logistics")
+
+    depot = create(:fleet_inventory, fleet:)
+    entry = create(:fleet_inventory_item, fleet_inventory: depot,
+      name: "Agricium", category: :commodity, unit: :scu, quantity: 20)
+
+    builder = Inventories::TransferBuilder.new(
+      source: depot, actor: @user, destination: @destination,
+      lines: [{position_id: entry.position.id, quantity: 5}]
+    )
+
+    assert builder.call, builder.errors.full_messages.to_sentence
+    assert builder.transfer.completed?
+    assert_nil builder.transfer.recipient, "an immediate transfer names no recipient"
+
+    sign_in @user
+
+    assert_api_response :get, 200, params: {direction: "incoming"} do
+      assert_equal [builder.transfer.id], parsed_body["items"].map { |t| t["id"] }
+    end
+  end
+
+  test "GET filters by state" do
+    create(:inventory_transfer, source_inventory: @source, recipient: @recipient, initiated_by: @user)
+    create(:inventory_transfer, :completed, source_inventory: @source,
+      recipient: @recipient, initiated_by: @user)
+
+    sign_in @user
+
+    assert_api_response :get, 200, params: {direction: "outgoing", q: {stateEq: "pending"}} do
+      assert_equal ["pending"], parsed_body["items"].map { |t| t["state"] }.uniq
+    end
+
+    assert_api_response :get, 200, params: {direction: "outgoing", q: {stateEq: "completed"}} do
+      assert_equal ["completed"], parsed_body["items"].map { |t| t["state"] }.uniq
+    end
   end
 
   test "GET needs a signed-in user" do

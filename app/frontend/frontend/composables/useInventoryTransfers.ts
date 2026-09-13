@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from "vue";
+import type { AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -23,7 +24,9 @@ import {
 // they call, which is the same reason the backend serves both from a single
 // controller concern.
 export const useInventoryTransfers = (
-  fleetSlug?: MaybeRefOrGetter<string | undefined>,
+  fleetSlug: MaybeRefOrGetter<string | undefined>,
+  direction: MaybeRefOrGetter<"incoming" | "outgoing">,
+  getQuery?: () => Record<string, unknown>,
 ) => {
   const { t } = useI18n();
   const comlink = useComlink();
@@ -32,9 +35,10 @@ export const useInventoryTransfers = (
   const actingFleet = computed(() => toValue(fleetSlug));
   const forFleet = computed(() => !!actingFleet.value);
 
-  const direction = ref<"incoming" | "outgoing">("incoming");
-
-  const params = computed(() => ({ direction: direction.value }));
+  const params = computed(() => ({
+    direction: toValue(direction),
+    q: getQuery?.() ?? {},
+  }));
 
   const hangar = useHangarInventoryTransfers(params, {
     query: { enabled: computed(() => !forFleet.value) },
@@ -64,13 +68,31 @@ export const useInventoryTransfers = (
     forFleet.value ? fleet.isLoading.value : hangar.isLoading.value,
   );
 
-  const refetch = () => (forFleet.value ? fleet.refetch() : hangar.refetch());
+  const refetch = async () => {
+    await (forFleet.value ? fleet.refetch() : hangar.refetch());
+  };
 
+  // Where an accepted transfer can land: whichever side this list acts for.
   const destinations = computed(() =>
     forFleet.value
       ? (fleetInventories.value?.items ?? [])
       : (hangarInventories.value?.items ?? []),
   );
+
+  // What `FilteredList` draws its loading and empty states from. `AsyncStatus`
+  // holds refs rather than values, so each field is a computed that follows
+  // whichever of the two queries is live.
+  const active = computed(() => (forFleet.value ? fleet : hangar));
+
+  const asyncStatus: AsyncStatus = {
+    fetchStatus: computed(() => active.value.fetchStatus.value),
+    isError: computed(() => active.value.isError.value),
+    isPending: computed(() => active.value.isPending.value),
+    isLoading: computed(() => active.value.isLoading.value),
+    isFetching: computed(() => active.value.isFetching.value),
+    isRefetching: computed(() => active.value.isRefetching.value),
+    error: computed(() => active.value.error.value),
+  };
 
   const mutations = {
     hangar: {
@@ -163,8 +185,9 @@ export const useInventoryTransfers = (
   };
 
   return {
-    direction,
     transfers,
+    refetch,
+    asyncStatus,
     isLoading,
     busy,
     onAccept,

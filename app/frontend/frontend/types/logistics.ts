@@ -54,6 +54,10 @@ export type InventoryPanelRecord = {
   entriesCount: number;
   totalScu?: number;
   totalUnits?: number;
+  // Out on a transfer nobody has answered. Gone from the totals above, so
+  // without this the goods simply vanish from the page that sent them.
+  inTransitScu?: number;
+  inTransitUnits?: number;
   totalVolumeScu?: number;
   image?: { mediumUrl?: string };
   vehicle?: InventoryVehicleReference | null;

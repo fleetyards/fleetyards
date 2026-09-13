@@ -1880,7 +1880,6 @@
         "transferNote": "Notiz",
         "noStock": "Nichts zu verschieben",
         "overStock": "Mehr als diese Position enthält",
-        "inTransit": "Unterwegs",
         "incoming": "Eingehend",
         "outgoing": "Ausgehend",
         "transferStates": {
@@ -1915,7 +1914,9 @@
         "transferFromFleet": "Aus Flotte",
         "noTransferTargets": "Hier gibt es kein Ziel",
         "recordedAt": "Erfasst",
-        "origin": "Von / An"
+        "origin": "Von / An",
+        "inTransitAmount": "%{amount} unterwegs",
+        "inTransitHint": "Auf einem Transfer, den noch niemand beantwortet hat. Bereits aus den Summen heraus."
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {

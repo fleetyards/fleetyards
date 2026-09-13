@@ -18,6 +18,9 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
       parameter name: "direction", in: :query, required: false,
         schema: {type: :string, enum: %w[incoming outgoing]},
         description: "Limit to transfers this fleet has to answer, or to ones it sent"
+      parameter name: "q", in: :query, required: false,
+        schema: ::V1::Schemas::Queries::InventoryTransferQuery,
+        description: "Filters"
       parameter name: "page", in: :query, required: false, schema: {type: :integer}
       parameter name: "limit", in: :query, required: false, schema: {type: :integer}
 

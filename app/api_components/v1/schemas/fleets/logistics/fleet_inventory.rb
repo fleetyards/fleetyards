@@ -19,6 +19,8 @@ module V1
               entriesCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},
+              inTransitScu: {type: :number},
+              inTransitUnits: {type: :number},
               manager: FleetInventoryManager,
               image: ::Shared::V1::Schemas::MediaFile,
               createdAt: {type: :string, format: "date-time"},

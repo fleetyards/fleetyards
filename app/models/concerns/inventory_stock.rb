@@ -169,6 +169,14 @@ module InventoryStock
       .where(inventory_transfers: {aasm_state: "pending"})
   end
 
+  # What this inventory has out on transfers nobody has answered. Summed per
+  # unit, because SCU and pieces do not add up together.
+  def in_transit_totals
+    entries_in_transit.where(entry_type: :withdrawal).group(:unit).sum(:quantity)
+      .transform_keys(&:to_s)
+      .then { |totals| {scu: totals["scu"].to_f, units: totals["units"].to_f} }
+  end
+
   def goods_in_transit?
     return false unless persisted?
 

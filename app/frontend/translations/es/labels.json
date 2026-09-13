@@ -1880,7 +1880,6 @@
         "transferNote": "Nota",
         "noStock": "Nada que mover",
         "overStock": "Más de lo que contiene esta posición",
-        "inTransit": "En tránsito",
         "incoming": "Entrantes",
         "outgoing": "Salientes",
         "transferStates": {
@@ -1915,7 +1914,9 @@
         "transferFromFleet": "De la flota",
         "noTransferTargets": "Aquí no hay destino",
         "recordedAt": "Registrado",
-        "origin": "De / A"
+        "origin": "De / A",
+        "inTransitAmount": "%{amount} en tránsito",
+        "inTransitHint": "Enviado en una transferencia que nadie ha respondido. Ya está fuera de los totales."
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

@@ -3228,6 +3228,12 @@ paths:
           - incoming
           - outgoing
         description: Limit to transfers this fleet has to answer, or to ones it sent
+      - name: q
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/InventoryTransferQuery"
+        description: Filters
       - name: page
         in: query
         required: false
@@ -6874,6 +6880,12 @@ paths:
           - incoming
           - outgoing
         description: Limit to transfers this user has to answer, or to ones they sent
+      - name: q
+        in: query
+        required: false
+        schema:
+          "$ref": "#/components/schemas/InventoryTransferQuery"
+        description: Filters
       - name: page
         in: query
         required: false
@@ -15123,6 +15135,10 @@ components:
           type: number
         totalUnits:
           type: number
+        inTransitScu:
+          type: number
+        inTransitUnits:
+          type: number
         manager:
           "$ref": "#/components/schemas/FleetInventoryManager"
         image:
@@ -16692,6 +16708,10 @@ components:
           type: number
         totalUnits:
           type: number
+        inTransitScu:
+          type: number
+        inTransitUnits:
+          type: number
         totalVolumeScu:
           type: number
         unmeasuredCount:
@@ -17831,6 +17851,10 @@ components:
           type: number
         totalUnits:
           type: number
+        inTransitScu:
+          type: number
+        inTransitUnits:
+          type: number
         totalVolumeScu:
           type: number
         unmeasuredCount:
@@ -18395,6 +18419,25 @@ components:
       - KNOWN
       - NOBODY
       title: InventoryTransferPolicyEnum
+    InventoryTransferQuery:
+      type: object
+      properties:
+        stateEq:
+          "$ref": "#/components/schemas/InventoryTransferStateEnum"
+        stateIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/InventoryTransferStateEnum"
+        createdAtGteq:
+          type: string
+          format: date-time
+        createdAtLteq:
+          type: string
+          format: date-time
+        s:
+          "$ref": "#/components/schemas/InventoryTransferSortEnum"
+      additionalProperties: false
+      title: InventoryTransferQuery
     InventoryTransferReportInput:
       type: object
       properties:
@@ -18419,6 +18462,19 @@ components:
       - SCAM
       - OTHER
       title: InventoryTransferReportReasonEnum
+    InventoryTransferSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      - state asc
+      - state desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - STATE_ASC
+      - STATE_DESC
+      title: InventoryTransferSortEnum
     InventoryTransferStateEnum:
       type: string
       enum:

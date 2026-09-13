@@ -1876,7 +1876,6 @@
         "transferNote": "备注",
         "noStock": "没有可移动的物品",
         "overStock": "超过该条目的库存",
-        "inTransit": "运送中",
         "incoming": "接收",
         "outgoing": "发出",
         "transferStates": {
@@ -1911,7 +1910,9 @@
         "transferFromFleet": "来自舰队",
         "noTransferTargets": "这里没有可发送的目标",
         "recordedAt": "记录时间",
-        "origin": "来自 / 发往"
+        "origin": "来自 / 发往",
+        "inTransitAmount": "%{amount} 运送中",
+        "inTransitHint": "已随一笔尚未被答复的转移送出，已不计入上方总数。"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
