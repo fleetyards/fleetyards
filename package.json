@@ -2,7 +2,7 @@
   "name": "fleetyards",
   "private": true,
   "version": "7.15.0",
-  "packageManager": "pnpm@10.34.5",
+  "packageManager": "pnpm@12.3.4",
   "scripts": {
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -150,12 +150,5 @@
     "vue-tsc": "3.3.11",
     "workbox-build": "^7.4.1",
     "workbox-window": "^7.4.1"
-  },
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "vite-plugin-pwa>vite": "8"
-      }
-    }
   }
 }

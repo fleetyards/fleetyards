@@ -58,8 +58,10 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      # Pinned to an exact tag: pnpm 12 needs the native bootstrap added in
+      # v6.1.0, and the floating v6 tag still points at v6.0.10.
       - name: Install pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.1.0
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
