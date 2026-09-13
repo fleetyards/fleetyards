@@ -68,7 +68,12 @@ class Notification < ApplicationRecord
     fleet_ally_request_received: "fleet_ally_request_received",
     fleet_ally_request_accepted: "fleet_ally_request_accepted",
     tour_join_request_received: "tour_join_request_received",
-    tour_join_request_accepted: "tour_join_request_accepted"
+    tour_join_request_accepted: "tour_join_request_accepted",
+    fleet_contract_published: "fleet_contract_published",
+    fleet_contract_claimed: "fleet_contract_claimed",
+    fleet_contract_crew_requested: "fleet_contract_crew_requested",
+    fleet_contract_crew_answered: "fleet_contract_crew_answered",
+    fleet_contract_fulfilled: "fleet_contract_fulfilled"
   }
 
   TYPES = {
@@ -263,6 +268,30 @@ class Notification < ApplicationRecord
       retention: 30.days,
       channels: %i[app],
       preference_defaults: {app: true, mail: false, push: false}
+    },
+    # A new job on the board goes to every member who can see it, so it is off
+    # by default on mail -- the app badge is enough for something nobody has to
+    # answer.
+    fleet_contract_published: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_contract_claimed: {
+      retention: 30.days,
+      channels: %i[app]
+    },
+    fleet_contract_crew_requested: {
+      retention: 30.days,
+      channels: %i[app]
+    },
+    fleet_contract_crew_answered: {
+      retention: 30.days,
+      channels: %i[app]
+    },
+    fleet_contract_fulfilled: {
+      retention: 90.days,
+      channels: %i[app]
     }
   }.freeze
 

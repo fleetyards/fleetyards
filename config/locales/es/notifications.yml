@@ -64,3 +64,17 @@ es:
       title: "%{username} quiere unirse a %{tour}"
     tour_join_request_accepted:
       title: "Ya participas en %{tour}"
+    fleet_contract:
+      published:
+        title: "Nuevo contrato en %{fleet}: %{title}"
+        body: "%{fleet} acaba de publicar un nuevo contrato."
+      claimed:
+        title: "%{user} aceptó %{title}"
+      fulfilled:
+        title: "%{title} se ha completado"
+      crew_requested:
+        title: "%{user} pidió unirse a %{title}"
+      crew_accepted:
+        title: "Te han añadido a la tripulación de %{title}"
+      crew_declined:
+        title: "Tu solicitud para unirte a %{title} fue rechazada"
