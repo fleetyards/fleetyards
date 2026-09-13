@@ -717,6 +717,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
   end
 
   create_table "fleets", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "allies_fleet", default: false, null: false
+    t.boolean "allies_fleet_members", default: false, null: false
+    t.boolean "allies_fleet_stats", default: false, null: false
     t.string "calendar_feed_token"
     t.datetime "created_at", precision: nil, null: false
     t.uuid "created_by"

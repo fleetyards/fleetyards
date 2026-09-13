@@ -135,6 +135,8 @@ namespace :public do
       get :embed, on: :collection
     end
 
+    resources :fleet_members, path: "members", only: %i[index]
+
     resource :fleet_stats, path: "stats", only: %i[] do
       get "vehicles", to: "fleet_stats#vehicles"
       get "model-counts", to: "fleet_stats#model_counts"

@@ -10714,6 +10714,34 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/fleets/{fleet_slug}/members":
+    parameters:
+    - name: fleet_slug
+      in: path
+      schema:
+        type: string
+      description: fleet slug
+      required: true
+    get:
+      summary: Allied Fleet Members
+      tags:
+      - Fleets
+      operationId: publicFleetMembers
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AlliedFleetMembersList"
+        '404':
+          description: not found unless the reader is a member or an ally
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{slug}":
     parameters:
     - name: slug
@@ -13279,6 +13307,42 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
+    AlliedFleetMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        hidden:
+          type: boolean
+        username:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+        role:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - hidden
+      - role
+      title: AlliedFleetMember
+    AlliedFleetMembersList:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AlliedFleetMember"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AlliedFleetMembersList
     BarChartStats:
       type: object
       properties:
@@ -14961,6 +15025,12 @@ components:
           type: boolean
         publicFleetStats:
           type: boolean
+        alliesFleet:
+          type: boolean
+        alliesFleetStats:
+          type: boolean
+        alliesFleetMembers:
+          type: boolean
         defaultTimezone:
           type: string
         calendarFeedToken:
@@ -14989,6 +15059,9 @@ components:
       - slug
       - publicFleet
       - publicFleetStats
+      - alliesFleet
+      - alliesFleetStats
+      - alliesFleetMembers
       - features
       - createdAt
       - updatedAt
@@ -17116,6 +17189,12 @@ components:
         publicFleet:
           type: boolean
         publicFleetStats:
+          type: boolean
+        alliesFleet:
+          type: boolean
+        alliesFleetStats:
+          type: boolean
+        alliesFleetMembers:
           type: boolean
         homepage:
           type:

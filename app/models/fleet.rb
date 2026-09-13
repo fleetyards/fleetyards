@@ -5,6 +5,9 @@
 # Table name: fleets
 #
 #  id                        :uuid             not null, primary key
+#  allies_fleet              :boolean          default(FALSE), not null
+#  allies_fleet_members      :boolean          default(FALSE), not null
+#  allies_fleet_stats        :boolean          default(FALSE), not null
 #  calendar_feed_token       :string
 #  created_by                :uuid
 #  default_timezone          :string           default("UTC"), not null
