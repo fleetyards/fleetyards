@@ -13,4 +13,10 @@ resources :friendships, path: "friends", param: :username, only: %i[index show c
     put :decline
     put :ignore
   end
+  collection do
+    # What the badge asks for. The list answers the same question through its
+    # pagination, but a badge every client polls should not carry a page of
+    # rows to count them -- the same reason `notifications#unread_count` exists.
+    get "pending-count", to: "friendships#pending_count"
+  end
 end

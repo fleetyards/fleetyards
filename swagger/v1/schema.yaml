@@ -6423,6 +6423,37 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/friends/pending-count":
+    get:
+      summary: Pending friend request count
+      tags:
+      - Friends
+      operationId: friendsPendingCount
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:read
+      - OpenId:
+        - profile:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/RelationshipPendingCount"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/friends/{username}":
     parameters:
     - name: username
@@ -23629,6 +23660,15 @@ components:
       - INCOMING
       - OUTGOING
       title: RelationshipDirectionEnum
+    RelationshipPendingCount:
+      type: object
+      properties:
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - count
+      title: RelationshipPendingCount
     RelationshipStateEnum:
       type: string
       enum:

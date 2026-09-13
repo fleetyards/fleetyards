@@ -11,7 +11,7 @@ module Api
       include RelationshipsFeatureConcern
 
       before_action :authenticate_user!, only: []
-      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[index show]
+      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[index show pending_count]
       before_action -> { doorkeeper_authorize! "profile:write" },
         unless: :user_signed_in?,
         only: %i[create destroy accept decline ignore]
@@ -20,6 +20,16 @@ module Api
       before_action :set_relationship, only: %i[show destroy accept decline ignore]
 
       after_action -> { pagination_header(:friends) }, only: %i[index]
+
+      # Requests waiting on this user, for the badge that says so. `awaiting`
+      # rather than the listing scope: a row the reader ignored is no longer
+      # waiting on them, and a count that included it would be a badge they
+      # could never clear.
+      def pending_count
+        authorize! ::Friendship, to: :index?, with: ::FriendshipPolicy
+
+        @pending_count = ::Friendship.outstanding_for(current_resource_owner)
+      end
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t("messages.record_not_found.friendship"))

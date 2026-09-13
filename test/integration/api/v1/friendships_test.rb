@@ -55,6 +55,24 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/friends/pending-count" do
+    get("Pending friend request count") do
+      operationId "friendsPendingCount"
+      tags "Friends"
+      produces "application/json"
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["profile:read"]},
+        {OpenId: ["profile:read"]}
+      ]
+
+      response(200, "successful") { schema ::V1::Schemas::RelationshipPendingCount }
+      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
+      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
   setup do
     Flipper.enable("friends")
 
@@ -68,7 +86,7 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
     create(:friendship, requester: @user, addressee: @other)
     sign_in @user
 
-    assert_api_response :get, 200 do
+    assert_api_response :get, 200, api_path: "/friends" do
       assert_equal 1, parsed_body["items"].count
       assert_equal friend.username, parsed_body["items"].first.dig("user", "username")
       assert_equal "accepted", parsed_body["items"].first["state"]
@@ -81,12 +99,12 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
     create(:friendship, requester: @user, addressee: @other)
     sign_in @user
 
-    assert_api_response :get, 200, params: {state: "pending", direction: "incoming"} do
+    assert_api_response :get, 200, api_path: "/friends", params: {state: "pending", direction: "incoming"} do
       assert_equal [incoming.username], parsed_body["items"].map { |row| row.dig("user", "username") }
       assert_equal ["incoming"], parsed_body["items"].map { |row| row["direction"] }
     end
 
-    assert_api_response :get, 200, params: {state: "pending", direction: "outgoing"} do
+    assert_api_response :get, 200, api_path: "/friends", params: {state: "pending", direction: "outgoing"} do
       assert_equal [@other.username], parsed_body["items"].map { |row| row.dig("user", "username") }
       assert_equal ["outgoing"], parsed_body["items"].map { |row| row["direction"] }
     end
@@ -98,7 +116,7 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
     create(:friendship, :ignored, requester: @user, addressee: @other)
     sign_in @user
 
-    assert_api_response :get, 200, params: {state: "pending", direction: "outgoing"} do
+    assert_api_response :get, 200, api_path: "/friends", params: {state: "pending", direction: "outgoing"} do
       assert_equal 1, parsed_body["items"].count
       assert_equal "pending", parsed_body["items"].first["state"]
     end
@@ -108,24 +126,50 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
     create(:friendship, :ignored, requester: @other, addressee: @user)
     sign_in @user
 
-    assert_api_response :get, 200, params: {state: "pending", direction: "incoming"} do
+    assert_api_response :get, 200, api_path: "/friends", params: {state: "pending", direction: "incoming"} do
       assert_empty parsed_body["items"]
     end
 
-    assert_api_response :get, 200, params: {state: "ignored"} do
+    assert_api_response :get, 200, api_path: "/friends", params: {state: "ignored"} do
       assert_equal 1, parsed_body["items"].count
     end
   end
 
+  # `api_path` on every one of these: two collection paths now answer GET in
+  # this class, and the helper cannot tell which one a bare call means.
+  test "GET pending-count counts only what is waiting on the reader" do
+    create(:friendship, requester: @other, addressee: @user)
+    create(:friendship, requester: create(:user), addressee: @user)
+    create(:friendship, requester: @user, addressee: create(:user))
+    create(:friendship, :accepted, requester: @user, addressee: create(:user))
+    create(:friendship, :ignored, requester: create(:user), addressee: @user)
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/friends/pending-count" do
+      assert_equal 2, parsed_body["count"]
+    end
+  end
+
+  test "GET pending-count without a session is unauthorized" do
+    assert_api_response :get, 401, api_path: "/friends/pending-count"
+  end
+
+  test "GET pending-count is forbidden with the feature off" do
+    Flipper.disable("friends")
+    sign_in @user
+
+    assert_api_response :get, 403, api_path: "/friends/pending-count"
+  end
+
   test "GET without a session is unauthorized" do
-    assert_api_response :get, 401
+    assert_api_response :get, 401, api_path: "/friends"
   end
 
   test "GET is forbidden with the feature off" do
     Flipper.disable("friends")
     sign_in @user
 
-    assert_api_response :get, 403
+    assert_api_response :get, 403, api_path: "/friends"
   end
 
   test "POST sends a request" do
