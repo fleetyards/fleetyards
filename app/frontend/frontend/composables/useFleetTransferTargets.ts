@@ -1,11 +1,6 @@
 import type { MaybeRefOrGetter } from "vue";
-import { useI18n } from "@/shared/composables/useI18n";
-import {
-  type Fleet,
-  FeatureFlagName,
-  useFleetInventories,
-  useMyFleets,
-} from "@/services/fyApi";
+import { useFleetInventories } from "@/services/fyApi";
+import { useKnownTransferParties } from "@/frontend/composables/useKnownTransferParties";
 import type { TransferTargetOption } from "@/frontend/components/Logistics/TransferModal/types";
 
 // Where a fleet can send stock. The mirror of `useTransferTargets`, which does
@@ -20,11 +15,7 @@ export const useFleetTransferTargets = (
   fleetSlug: MaybeRefOrGetter<string>,
   source: MaybeRefOrGetter<{ id?: string | null } | undefined>,
 ) => {
-  const { t } = useI18n();
-
   const { data: inventories } = useFleetInventories(fleetSlug);
-  const { data: fleets } = useMyFleets();
-
   const ownInventories = computed<TransferTargetOption[]>(() =>
     (inventories.value?.items ?? [])
       .filter((inventory) => inventory.id !== toValue(source)?.id)
@@ -36,23 +27,14 @@ export const useFleetTransferTargets = (
       })),
   );
 
-  const canReceive = (fleet: Fleet) =>
-    fleet.slug !== toValue(fleetSlug) &&
-    fleet.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) &&
-    fleet.features?.includes(FeatureFlagName.FLEET_LOGISTICS);
-
-  const fleetTargets = computed<TransferTargetOption[]>(() =>
-    (fleets.value ?? []).filter(canReceive).map((fleet: Fleet) => ({
-      value: `fleet:${fleet.slug}`,
-      label: t("labels.logistics.transferToFleet", { fleet: fleet.name }),
-      needsAnswer: true,
-      payload: { recipientFleetSlug: fleet.slug },
-    })),
-  );
+  const { people, fleetTargets } = useKnownTransferParties({
+    excludeFleetSlug: toValue(fleetSlug),
+  });
 
   const targets = computed<TransferTargetOption[]>(() => [
     ...ownInventories.value,
     ...fleetTargets.value,
+    ...people.value,
   ]);
 
   return { targets, ownInventories, fleetTargets };

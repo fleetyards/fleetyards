@@ -225,4 +225,29 @@ describe("TransferModal", () => {
 
     expect(wrapper!.find('[data-test="transfer-hint"]').exists()).toBe(false);
   });
+
+  // Any user and any fleet are reachable, not only the ones already on this
+  // reader's list -- and with no other inventory and no eligible fleet, typing
+  // a handle is the only way to send at all.
+  it("can address a user who is on no list, with nothing else to pick", async () => {
+    const { onSend } = await build([position()], []);
+
+    await wrapper!
+      .find('[data-test="transfer-handle"] input')
+      .setValue("hauler");
+    await wrapper!.find('[data-test="transfer-submit"]').trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({ recipientUsername: "hauler" }),
+    );
+  });
+
+  it("cannot send on a blank handle", async () => {
+    await build([position()], []);
+
+    expect(
+      wrapper!.find('[data-test="transfer-submit"]').attributes("disabled"),
+    ).toBeDefined();
+  });
 });

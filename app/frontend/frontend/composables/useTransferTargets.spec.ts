@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { Fleet, HangarInventory } from "@/services/fyApi";
 
 const inventories = ref<{ items: Partial<HangarInventory>[] } | undefined>();
@@ -15,8 +15,24 @@ vi.mock(
   }),
 );
 
-vi.mock("@/services/fyApi/services/fleets/fleets", () => ({
-  useMyFleets: () => ({ data: fleets }),
+vi.mock("./useKnownTransferParties", () => ({
+  useKnownTransferParties: () => ({
+    people: computed(() => []),
+    fleetTargets: computed(() =>
+      (fleets.value ?? [])
+        .filter(
+          (fleet) =>
+            fleet.features?.includes("inventory_transfers") &&
+            fleet.features?.includes("fleet_logistics"),
+        )
+        .map((fleet) => ({
+          value: `fleet:${fleet.slug}`,
+          label: fleet.name,
+          needsAnswer: true,
+          payload: { recipientFleetSlug: fleet.slug },
+        })),
+    ),
+  }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -51,7 +67,8 @@ describe("useTransferTargets", () => {
   });
 
   // A fleet whose logistics are switched off cannot receive, and offering it
-  // would mean finding out by being refused.
+  // would mean finding out by being refused. The filtering itself lives in
+  // `useKnownTransferParties`; this checks the list it feeds reaches the caller.
   it("drops a fleet that is missing either flag", () => {
     inventories.value = { items: [] };
     fleets.value = [

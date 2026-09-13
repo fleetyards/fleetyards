@@ -1,10 +1,5 @@
-import { useI18n } from "@/shared/composables/useI18n";
-import {
-  type Fleet,
-  FeatureFlagName,
-  useHangarInventories,
-  useMyFleets,
-} from "@/services/fyApi";
+import { useHangarInventories } from "@/services/fyApi";
+import { useKnownTransferParties } from "@/frontend/composables/useKnownTransferParties";
 import type { TransferTargetOption } from "@/frontend/components/Logistics/TransferModal/types";
 
 // Where a user can send stock from one of their own inventories.
@@ -24,11 +19,7 @@ import type { TransferTargetOption } from "@/frontend/components/Logistics/Trans
 export const useTransferTargets = (
   source: MaybeRefOrGetter<{ id?: string | null } | undefined>,
 ) => {
-  const { t } = useI18n();
-
   const { data: inventories } = useHangarInventories();
-  const { data: fleets } = useMyFleets();
-
   const ownInventories = computed<TransferTargetOption[]>(() =>
     (inventories.value?.items ?? [])
       .filter((inventory) => inventory.id !== toValue(source)?.id)
@@ -44,27 +35,12 @@ export const useTransferTargets = (
   // that already governs them: the new flag does not open a fleet whose
   // logistics are switched off. The fleet payload carries its own enabled
   // features, so this needs nothing from the server that is not already here.
-  const canReceive = (fleet: Fleet) =>
-    fleet.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) &&
-    fleet.features?.includes(FeatureFlagName.FLEET_LOGISTICS);
-
-  // Filtered on whether the feature is *available* to that fleet -- never on
-  // whether the gate would admit this particular sender. A policy or a standing
-  // denial must not be readable from an option going missing: that is the same
-  // fact `TransferGate` refuses to distinguish in its wording, and hiding the
-  // option would say it louder. Those are refused at send time instead.
-  const fleetTargets = computed<TransferTargetOption[]>(() =>
-    (fleets.value ?? []).filter(canReceive).map((fleet: Fleet) => ({
-      value: `fleet:${fleet.slug}`,
-      label: t("labels.logistics.transferToFleet", { fleet: fleet.name }),
-      needsAnswer: true,
-      payload: { recipientFleetSlug: fleet.slug },
-    })),
-  );
+  const { people, fleetTargets } = useKnownTransferParties();
 
   const targets = computed<TransferTargetOption[]>(() => [
     ...ownInventories.value,
     ...fleetTargets.value,
+    ...people.value,
   ]);
 
   return { targets, ownInventories, fleetTargets };

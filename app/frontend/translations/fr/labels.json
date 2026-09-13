@@ -1903,7 +1903,11 @@
         "recipient": "À",
         "contents": "Contenu",
         "state": "Statut",
-        "sentAt": "Envoyé"
+        "sentAt": "Envoyé",
+        "transferToUser": "Un autre utilisateur…",
+        "transferToOtherFleet": "Une autre flotte…",
+        "username": "Nom d'utilisateur",
+        "fleetSlug": "Identifiant de flotte"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

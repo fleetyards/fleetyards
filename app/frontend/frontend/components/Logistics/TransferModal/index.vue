@@ -41,7 +41,9 @@ const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 const note = ref("");
-const targetValue = ref<string | undefined>(props.targets[0]?.value);
+const targetValue = ref<string | undefined>(
+  props.targets[0]?.value ?? "handle:user",
+);
 
 // The stock list is grouped per quality, so one position can arrive as several
 // rows -- mined ore at two grades is two rows carrying one `id`. They are one
@@ -88,16 +90,51 @@ watchEffect(() => {
   });
 });
 
-const targetOptions = computed<FilterOption[]>(() =>
-  props.targets.map((target) => ({
+// Any user and any fleet are reachable, not only the ones already on this
+// reader's list. There is no user or fleet search in the API, and the handles
+// are how invites and public pages already address them, so the sender types
+// one and the server's gate is the arbiter -- including whether it exists.
+const BY_HANDLE = {
+  user: "handle:user",
+  fleet: "handle:fleet",
+} as const;
+
+const handle = ref("");
+
+const handleTarget = computed(() =>
+  targetValue.value === BY_HANDLE.user || targetValue.value === BY_HANDLE.fleet
+    ? targetValue.value
+    : undefined,
+);
+
+const targetOptions = computed<FilterOption[]>(() => [
+  ...props.targets.map((target) => ({
     value: target.value,
     label: target.label,
   })),
-);
+  { value: BY_HANDLE.user, label: t("labels.logistics.transferToUser") },
+  { value: BY_HANDLE.fleet, label: t("labels.logistics.transferToOtherFleet") },
+]);
 
-const selectedTarget = computed(() =>
-  props.targets.find((target) => target.value === targetValue.value),
-);
+const selectedTarget = computed<TransferTargetOption | undefined>(() => {
+  if (handleTarget.value) {
+    const trimmed = handle.value.trim();
+
+    if (!trimmed) return undefined;
+
+    return {
+      value: handleTarget.value,
+      label: trimmed,
+      needsAnswer: true,
+      payload:
+        handleTarget.value === BY_HANDLE.user
+          ? { recipientUsername: trimmed }
+          : { recipientFleetSlug: trimmed },
+    };
+  }
+
+  return props.targets.find((target) => target.value === targetValue.value);
+});
 
 // What the receiving side will see. A target the sender may write to is carried
 // out on the spot; anything else has to be answered first.
@@ -175,6 +212,23 @@ const onSubmit = async () => {
         :options="targetOptions"
         :label="t('labels.logistics.transferTarget')"
         data-test="transfer-target"
+      />
+
+      <FormInput
+        v-if="handleTarget"
+        v-model="handle"
+        no-placeholder
+        :name="
+          handleTarget === BY_HANDLE.user
+            ? 'recipientUsername'
+            : 'recipientFleetSlug'
+        "
+        :label="
+          handleTarget === BY_HANDLE.user
+            ? t('labels.logistics.username')
+            : t('labels.logistics.fleetSlug')
+        "
+        data-test="transfer-handle"
       />
 
       <p v-if="needsAnswer" class="transfer-hint" data-test="transfer-hint">
