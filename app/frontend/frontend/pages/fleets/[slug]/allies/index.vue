@@ -69,6 +69,7 @@ const crumbs = computed<Crumb[]>(() => [
     :is-loading="isLoading"
     :busy="busy"
     :can-manage="canManage"
+    header-action
     :on-add="onAdd"
     @update:tab="tab = $event"
     @accept="onAccept"
