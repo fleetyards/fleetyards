@@ -1908,7 +1908,8 @@
           "fleetInventories": "該艦隊"
         },
         "transferTargetKind": "傳送至",
-        "transferFromFleet": "來自艦隊"
+        "transferFromFleet": "來自艦隊",
+        "noTransferTargets": "這裡沒有可傳送的目標"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

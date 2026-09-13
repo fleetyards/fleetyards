@@ -1912,7 +1912,8 @@
           "fleetInventories": "Cette flotte"
         },
         "transferTargetKind": "Envoyer à",
-        "transferFromFleet": "Depuis la flotte"
+        "transferFromFleet": "Depuis la flotte",
+        "noTransferTargets": "Aucune destination ici"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

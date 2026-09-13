@@ -95,7 +95,9 @@ describe("useTransferTargets", () => {
       fleetSlug: () => "crew",
     });
 
-    expect(targets.value.map((target) => [target.kind, target.payload])).toEqual([
+    expect(
+      targets.value.map((target) => [target.kind, target.payload]),
+    ).toEqual([
       ["inventory", { fleetInventoryId: "forward" }],
       ["mine", { inventoryId: "mine" }],
     ]);

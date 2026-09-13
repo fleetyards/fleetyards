@@ -1908,7 +1908,8 @@
           "fleetInventories": "该舰队"
         },
         "transferTargetKind": "发送至",
-        "transferFromFleet": "来自舰队"
+        "transferFromFleet": "来自舰队",
+        "noTransferTargets": "这里没有可发送的目标"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

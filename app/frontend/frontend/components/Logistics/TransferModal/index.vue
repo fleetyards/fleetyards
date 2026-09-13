@@ -267,8 +267,18 @@ const onSubmit = async () => {
     });
 
     comlink.emit("close-modal");
-  } catch {
-    displayAlert({ text: t("messages.logistics.transfer.create.failure") });
+  } catch (error) {
+    displayAlert({
+      text:
+        (
+          error as {
+            response?: {
+              data?: { errors?: { messages?: { message?: string }[] }[] };
+            };
+          }
+        )?.response?.data?.errors?.[0]?.messages?.[0]?.message ??
+        t("messages.logistics.transfer.create.failure"),
+    });
   } finally {
     submitting.value = false;
   }
@@ -307,6 +317,14 @@ const onSubmit = async () => {
         :label="t('labels.logistics.transferTarget')"
         data-test="transfer-target"
       />
+
+      <p
+        v-if="targetOptions.length === 0 && !membersLoading"
+        class="transfer-empty"
+        data-test="transfer-no-targets"
+      >
+        {{ t("labels.logistics.noTransferTargets") }}
+      </p>
 
       <p v-if="needsAnswer" class="transfer-hint" data-test="transfer-hint">
         {{ t("messages.logistics.transfer.needsAnswer") }}
