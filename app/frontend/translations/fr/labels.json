@@ -661,6 +661,15 @@
         "extendedFrontViewColored": "Vue de face étendue colorée",
         "extendedAngledView": "Vue en biais étendue",
         "extendedAngledViewColored": "Vue en biais étendue colorée",
+        "landedHolo": "Holo posé",
+        "landedTopView": "Vue de dessus posée",
+        "landedSideView": "Vue de côté posée",
+        "landedFrontView": "Vue de face posée",
+        "landedAngledView": "Vue en biais posée",
+        "landedTopViewColored": "Vue de dessus posée colorée",
+        "landedSideViewColored": "Vue de côté posée colorée",
+        "landedFrontViewColored": "Vue de face posée colorée",
+        "landedAngledViewColored": "Vue en biais posée colorée",
         "state": {
           "retracted": "Replié",
           "extended": "Déployé"

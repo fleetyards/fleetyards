@@ -661,6 +661,15 @@
         "extendedFrontViewColored": "Ausgefahrene Frontansicht Farbig",
         "extendedAngledView": "Ausgefahrene Schrägansicht",
         "extendedAngledViewColored": "Ausgefahrene Schrägansicht Farbig",
+        "landedHolo": "Gelandetes Holo",
+        "landedTopView": "Gelandete Draufsicht",
+        "landedSideView": "Gelandete Seitenansicht",
+        "landedFrontView": "Gelandete Frontansicht",
+        "landedAngledView": "Gelandete Schrägansicht",
+        "landedTopViewColored": "Gelandete Draufsicht Farbig",
+        "landedSideViewColored": "Gelandete Seitenansicht Farbig",
+        "landedFrontViewColored": "Gelandete Frontansicht Farbig",
+        "landedAngledViewColored": "Gelandete Schrägansicht Farbig",
         "state": {
           "retracted": "Eingefahren",
           "extended": "Ausgefahren"

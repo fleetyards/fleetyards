@@ -661,6 +661,15 @@
         "extendedFrontViewColored": "Vista frontal extendida en color",
         "extendedAngledView": "Vista en ángulo extendida",
         "extendedAngledViewColored": "Vista en ángulo extendida en color",
+        "landedHolo": "Holo aterrizado",
+        "landedTopView": "Vista superior aterrizada",
+        "landedSideView": "Vista lateral aterrizada",
+        "landedFrontView": "Vista frontal aterrizada",
+        "landedAngledView": "Vista en ángulo aterrizada",
+        "landedTopViewColored": "Vista superior aterrizada en color",
+        "landedSideViewColored": "Vista lateral aterrizada en color",
+        "landedFrontViewColored": "Vista frontal aterrizada en color",
+        "landedAngledViewColored": "Vista en ángulo aterrizada en color",
         "state": {
           "retracted": "Retraído",
           "extended": "Extendido"

@@ -29,6 +29,7 @@ const { t } = useI18n();
 const initialValues = ref<ModelUpdateInput>({
   holo: undefined,
   extendedHolo: undefined,
+  landedHolo: undefined,
   topView: undefined,
   sideView: undefined,
   frontView: undefined,
@@ -45,6 +46,14 @@ const initialValues = ref<ModelUpdateInput>({
   extendedSideViewColored: undefined,
   extendedFrontViewColored: undefined,
   extendedAngledViewColored: undefined,
+  landedTopView: undefined,
+  landedSideView: undefined,
+  landedFrontView: undefined,
+  landedAngledView: undefined,
+  landedTopViewColored: undefined,
+  landedSideViewColored: undefined,
+  landedFrontViewColored: undefined,
+  landedAngledViewColored: undefined,
 });
 
 const { defineField, handleSubmit, meta, setFieldValue } =
@@ -69,6 +78,7 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
 
 const [holo, holoProps] = defineField("holo");
 const [extendedHolo, extendedHoloProps] = defineField("extendedHolo");
+const [landedHolo, landedHoloProps] = defineField("landedHolo");
 const [topView, topViewProps] = defineField("topView");
 const [sideView, sideViewProps] = defineField("sideView");
 const [frontView, frontViewProps] = defineField("frontView");
@@ -98,6 +108,23 @@ const [extendedFrontViewColored, extendedFrontViewColoredProps] = defineField(
 const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
   "extendedAngledViewColored",
 );
+const [landedTopView, landedTopViewProps] = defineField("landedTopView");
+const [landedSideView, landedSideViewProps] = defineField("landedSideView");
+const [landedFrontView, landedFrontViewProps] = defineField("landedFrontView");
+const [landedAngledView, landedAngledViewProps] =
+  defineField("landedAngledView");
+const [landedTopViewColored, landedTopViewColoredProps] = defineField(
+  "landedTopViewColored",
+);
+const [landedSideViewColored, landedSideViewColoredProps] = defineField(
+  "landedSideViewColored",
+);
+const [landedFrontViewColored, landedFrontViewColoredProps] = defineField(
+  "landedFrontViewColored",
+);
+const [landedAngledViewColored, landedAngledViewColoredProps] = defineField(
+  "landedAngledViewColored",
+);
 </script>
 
 <template>
@@ -108,7 +135,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
     <hr />
 
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
         <FormFileInput
           v-model="holo"
           :file="model.media.holo"
@@ -120,7 +147,7 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           clearable
         />
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-4">
         <FormFileInput
           v-model="extendedHolo"
           :file="model.media.extendedHolo"
@@ -128,6 +155,18 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           v-bind="extendedHoloProps"
           name="extendedHolo"
           :preview-src="previews.extendedHolo"
+          :allowed-types="AllowedFileTypes.HOLO"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedHolo"
+          :file="model.media.landedHolo"
+          translation-key="model.landedHolo"
+          v-bind="landedHoloProps"
+          name="landedHolo"
+          :preview-src="previews.landedHolo"
           :allowed-types="AllowedFileTypes.HOLO"
           clearable
         />
@@ -352,6 +391,118 @@ const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
           v-bind="extendedAngledViewColoredProps"
           name="extendedAngledViewColored"
           :preview-src="previews.extendedAngledViewColored"
+          transparent
+          clearable
+        />
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedTopView"
+          :file="model.media.landedTopView"
+          translation-key="model.landedTopView"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedTopViewProps"
+          name="landedTopView"
+          :preview-src="previews.landedTopView"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedSideView"
+          :file="model.media.landedSideView"
+          translation-key="model.landedSideView"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedSideViewProps"
+          name="landedSideView"
+          :preview-src="previews.landedSideView"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedFrontView"
+          :file="model.media.landedFrontView"
+          translation-key="model.landedFrontView"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedFrontViewProps"
+          name="landedFrontView"
+          :preview-src="previews.landedFrontView"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedAngledView"
+          :file="model.media.landedAngledView"
+          translation-key="model.landedAngledView"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedAngledViewProps"
+          name="landedAngledView"
+          :preview-src="previews.landedAngledView"
+          transparent
+          clearable
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedTopViewColored"
+          :file="model.media.landedTopViewColored"
+          translation-key="model.landedTopViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedTopViewColoredProps"
+          name="landedTopViewColored"
+          :preview-src="previews.landedTopViewColored"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedSideViewColored"
+          :file="model.media.landedSideViewColored"
+          translation-key="model.landedSideViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedSideViewColoredProps"
+          name="landedSideViewColored"
+          :preview-src="previews.landedSideViewColored"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedFrontViewColored"
+          :file="model.media.landedFrontViewColored"
+          translation-key="model.landedFrontViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedFrontViewColoredProps"
+          name="landedFrontViewColored"
+          :preview-src="previews.landedFrontViewColored"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="landedAngledViewColored"
+          :file="model.media.landedAngledViewColored"
+          translation-key="model.landedAngledViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="landedAngledViewColoredProps"
+          name="landedAngledViewColored"
+          :preview-src="previews.landedAngledViewColored"
           transparent
           clearable
         />

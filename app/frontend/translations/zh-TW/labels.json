@@ -661,6 +661,15 @@
         "extendedFrontViewColored": "展開前視圖（彩色）",
         "extendedAngledView": "展開斜視圖",
         "extendedAngledViewColored": "展開斜視圖（彩色）",
+        "landedHolo": "著陸 Holo",
+        "landedTopView": "著陸俯視圖",
+        "landedSideView": "著陸側視圖",
+        "landedFrontView": "著陸前視圖",
+        "landedAngledView": "著陸斜視圖",
+        "landedTopViewColored": "著陸俯視圖（彩色）",
+        "landedSideViewColored": "著陸側視圖（彩色）",
+        "landedFrontViewColored": "著陸前視圖（彩色）",
+        "landedAngledViewColored": "著陸斜視圖（彩色）",
         "state": {
           "retracted": "收合",
           "extended": "展開"

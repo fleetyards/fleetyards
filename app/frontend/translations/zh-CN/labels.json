@@ -661,6 +661,15 @@
         "extendedFrontViewColored": "展开正视图（涂装）",
         "extendedAngledView": "展开斜视图",
         "extendedAngledViewColored": "展开斜视图（涂装）",
+        "landedHolo": "着陆全息图",
+        "landedTopView": "着陆俯视图",
+        "landedSideView": "着陆侧视图",
+        "landedFrontView": "着陆正视图",
+        "landedAngledView": "着陆斜视图",
+        "landedTopViewColored": "着陆俯视图（涂装）",
+        "landedSideViewColored": "着陆侧视图（涂装）",
+        "landedFrontViewColored": "着陆正视图（涂装）",
+        "landedAngledViewColored": "着陆斜视图（涂装）",
         "state": {
           "retracted": "收起",
           "extended": "展开"

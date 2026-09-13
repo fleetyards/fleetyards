@@ -661,6 +661,15 @@
         "extendedFrontViewColored": "Vista frontale estesa a colori",
         "extendedAngledView": "Vista angolata estesa",
         "extendedAngledViewColored": "Vista angolata estesa a colori",
+        "landedHolo": "Holo atterrato",
+        "landedTopView": "Vista dall'alto atterrata",
+        "landedSideView": "Vista laterale atterrata",
+        "landedFrontView": "Vista frontale atterrata",
+        "landedAngledView": "Vista angolata atterrata",
+        "landedTopViewColored": "Vista dall'alto atterrata a colori",
+        "landedSideViewColored": "Vista laterale atterrata a colori",
+        "landedFrontViewColored": "Vista frontale atterrata a colori",
+        "landedAngledViewColored": "Vista angolata atterrata a colori",
         "state": {
           "retracted": "Retratta",
           "extended": "Estesa"

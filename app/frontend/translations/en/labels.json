@@ -659,6 +659,15 @@
         "extendedFrontViewColored": "Extended Front View Colored",
         "extendedAngledView": "Extended Angled View",
         "extendedAngledViewColored": "Extended Angled View Colored",
+        "landedHolo": "Landed Holo",
+        "landedTopView": "Landed Top View",
+        "landedSideView": "Landed Side View",
+        "landedFrontView": "Landed Front View",
+        "landedAngledView": "Landed Angled View",
+        "landedTopViewColored": "Landed Top View Colored",
+        "landedSideViewColored": "Landed Side View Colored",
+        "landedFrontViewColored": "Landed Front View Colored",
+        "landedAngledViewColored": "Landed Angled View Colored",
         "state": {
           "retracted": "Retracted",
           "extended": "Extended"
