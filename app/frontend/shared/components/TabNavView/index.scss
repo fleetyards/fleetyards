@@ -37,6 +37,23 @@ $nav-transition-speed: 0.3s;
     padding-left: 0;
     list-style: none;
 
+    // The nav's badge, in a strip whose links are plain blocks: floated rather
+    // than laid out, so the label keeps the ellipsis it truncates with.
+    .tabs-badge {
+      float: right;
+      min-width: 18px;
+      height: 18px;
+      margin-inline-start: 8px;
+      padding: 0 5px;
+      font-size: 11px;
+      font-weight: bold;
+      line-height: 18px;
+      text-align: center;
+      color: #fff;
+      background-color: $danger;
+      border-radius: 9px;
+    }
+
     > a {
       position: relative;
       display: block;

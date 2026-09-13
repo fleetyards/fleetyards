@@ -1,5 +1,6 @@
 import { useQueryClient } from "@tanstack/vue-query";
 import {
+  getFriendsPendingCountQueryKey,
   getNotificationsQueryKey,
   getNotificationsUnreadCountQueryKey,
   type Notification,
@@ -18,11 +19,21 @@ export const useNotificationInvalidation = () => {
     });
   };
 
+  // A friend request arrives as a notification and nothing else, so the badge
+  // that counts the waiting ones refreshes off the same handler rather than
+  // waiting out its interval.
+  const invalidatePendingFriendRequests = () => {
+    void queryClient.invalidateQueries({
+      queryKey: getFriendsPendingCountQueryKey(),
+    });
+  };
+
   const invalidate = () => {
     void queryClient.invalidateQueries({
       queryKey: getNotificationsQueryKey(),
     });
     invalidateUnreadCount();
+    invalidatePendingFriendRequests();
   };
 
   // Swaps one row for the version the server just returned. Refetching would
@@ -49,5 +60,10 @@ export const useNotificationInvalidation = () => {
     );
   };
 
-  return { invalidate, invalidateUnreadCount, patchCached };
+  return {
+    invalidate,
+    invalidateUnreadCount,
+    invalidatePendingFriendRequests,
+    patchCached,
+  };
 };

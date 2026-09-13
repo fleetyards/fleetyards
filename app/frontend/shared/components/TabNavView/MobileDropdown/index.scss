@@ -132,3 +132,22 @@
   opacity: 0;
   transform: translateY(-6px);
 }
+
+// Same pill as the strip's, for the rows behind the trigger and for the
+// trigger itself, which has to carry what the closed panel is hiding.
+.tabs-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 18px;
+  height: 18px;
+  margin-inline-start: 8px;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  background-color: $danger;
+  border-radius: 9px;
+}

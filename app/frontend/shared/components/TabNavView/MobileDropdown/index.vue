@@ -6,7 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type RouteLocationRaw, type RouteRecordRaw } from "vue-router";
+import {
+  type RouteLocationRaw,
+  type RouteRecordName,
+  type RouteRecordRaw,
+} from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
 import {
   routeName,
@@ -19,12 +23,35 @@ type Props = {
   links?: TabNavLink[];
   authenticated: boolean;
   resourceAccess?: string[];
+  badges?: Record<string, number>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   links: undefined,
   resourceAccess: undefined,
+  badges: undefined,
 });
+
+const badgeFor = (name?: RouteRecordName) => {
+  const count = name ? props.badges?.[String(name)] : undefined;
+
+  if (!count) {
+    return undefined;
+  }
+
+  return count > 99 ? "99+" : String(count);
+};
+
+// What the closed dropdown owes the reader: the rows are behind a tap, so a
+// count on any of them has to reach the button that opens it.
+const waiting = computed(() =>
+  filteredRoutes.value
+    .filter((r) => routeName(r) !== routeName(activeRoute.value ?? r))
+    .reduce(
+      (total, r) => total + (props.badges?.[String(routeName(r))] || 0),
+      0,
+    ),
+);
 
 const { t } = useI18n();
 const route = useRoute();
@@ -113,6 +140,9 @@ onUnmounted(() => {
       @click="toggle"
     >
       <span class="tab-nav-dropdown__label">{{ activeLabel }}</span>
+      <span v-if="waiting" class="tabs-badge">
+        {{ waiting > 99 ? "99+" : waiting }}
+      </span>
       <i
         class="fa-solid fa-chevron-down tab-nav-dropdown__chevron"
         aria-hidden="true"
@@ -130,6 +160,9 @@ onUnmounted(() => {
           @click="select(item)"
         >
           <span>{{ t(`nav.${item.meta?.title}`) }}</span>
+          <span v-if="badgeFor(routeName(item))" class="tabs-badge">
+            {{ badgeFor(routeName(item)) }}
+          </span>
         </li>
         <li
           v-for="link in props.links"
