@@ -1896,7 +1896,48 @@
         "cargoGrid": "Cargo Grid",
         "shipInventory": "Ship Inventory",
         "remaining": "Remaining",
-        "unmeasured": "%{count} not measured yet"
+        "unmeasured": "%{count} not measured yet",
+        "transferTarget": "Recipient",
+        "transferNote": "Note",
+        "noStock": "Nothing to move",
+        "overStock": "More than this position holds",
+        "incoming": "Incoming",
+        "outgoing": "Outgoing",
+        "transferStates": {
+          "pending": "Waiting",
+          "completed": "Delivered",
+          "declined": "Declined",
+          "cancelled": "Withdrawn",
+          "expired": "Expired"
+        },
+        "acceptInto": "Accept into",
+        "reportReason": "Reason",
+        "reportReasons": {
+          "spam": "Spam",
+          "harassment": "Harassment",
+          "scam": "Scam",
+          "other": "Something else"
+        },
+        "transferToFleet": "%{fleet} (fleet)",
+        "sender": "From",
+        "recipient": "To",
+        "contents": "Contents",
+        "state": "Status",
+        "sentAt": "Sent",
+        "transferKinds": {
+          "inventory": "My inventories",
+          "fleet": "A fleet",
+          "user": "A person",
+          "mine": "My inventories",
+          "fleetInventories": "This fleet"
+        },
+        "transferTargetKind": "Send to",
+        "transferFromFleet": "From fleet",
+        "noTransferTargets": "Nothing to send to here",
+        "recordedAt": "Recorded",
+        "origin": "From / To",
+        "inTransitAmount": "%{amount} in transit",
+        "inTransitHint": "Sent on a transfer nobody has answered yet. It is already out of the totals."
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1951,7 +1992,8 @@
         "withdraw": "Withdraw",
         "syncAgain": "Sync again",
         "markAsBought": "Mark as bought",
-        "unavailable": "This is no longer available."
+        "unavailable": "This is no longer available.",
+        "openTransfers": "Open transfers"
       },
       "notificationTypes": {
         "channels": {
@@ -1963,7 +2005,8 @@
         "groups": {
           "account": "Account & hangar",
           "fleetMembership": "Fleet membership",
-          "fleetEvents": "Fleet events"
+          "fleetEvents": "Fleet events",
+          "logistics": "Logistics"
         },
         "hangar_create": "Hangar created",
         "hangar_destroy": "Hangar removed",
@@ -1989,7 +2032,9 @@
         "fleet_event_signup_confirmed": "Signup confirmed",
         "fleet_event_signup_assigned": "Assigned to a slot",
         "fleet_event_signup_kicked": "Removed from a slot",
-        "allInGroup": "Everything in this group"
+        "allInGroup": "Everything in this group",
+        "inventory_transfer_received": "Transfer received",
+        "inventory_transfer_resolved": "Transfer answered"
       },
       "fleets": {
         "missions": {

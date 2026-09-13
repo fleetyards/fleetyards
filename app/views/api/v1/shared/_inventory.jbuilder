@@ -11,6 +11,12 @@ stock = inventory.persisted? ? inventory.current_stock : []
 json.total_scu stock.select { |s| s.unit == "scu" }.sum(&:net_quantity).to_f
 json.total_units stock.select { |s| s.unit == "units" }.sum(&:net_quantity).to_f
 
+# Stock that has left on a transfer nobody has answered yet. It is gone from
+# every total above -- the withdrawal is real -- so without this the goods
+# simply disappear from the page that sent them.
+json.in_transit_scu inventory.persisted? ? inventory.in_transit_totals[:scu] : 0.0
+json.in_transit_units inventory.persisted? ? inventory.in_transit_totals[:units] : 0.0
+
 volume = inventory.persisted? ? inventory.stock_volume : {total: 0.0, unmeasured: 0}
 json.total_volume_scu volume[:total].round(4)
 json.unmeasured_count volume[:unmeasured]

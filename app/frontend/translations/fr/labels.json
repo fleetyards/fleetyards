@@ -1895,7 +1895,48 @@
         "cargoGrid": "Grille de fret",
         "shipInventory": "Inventaire du vaisseau",
         "remaining": "Restant",
-        "unmeasured": "%{count} pas encore mesurés"
+        "unmeasured": "%{count} pas encore mesurés",
+        "transferTarget": "Destinataire",
+        "transferNote": "Note",
+        "noStock": "Rien à déplacer",
+        "overStock": "Plus que ce que contient cette position",
+        "incoming": "Entrants",
+        "outgoing": "Sortants",
+        "transferStates": {
+          "pending": "En attente",
+          "completed": "Livré",
+          "declined": "Refusé",
+          "cancelled": "Annulé",
+          "expired": "Expiré"
+        },
+        "acceptInto": "Accepter dans",
+        "reportReason": "Motif",
+        "reportReasons": {
+          "spam": "Spam",
+          "harassment": "Harcèlement",
+          "scam": "Arnaque",
+          "other": "Autre chose"
+        },
+        "transferToFleet": "%{fleet} (flotte)",
+        "sender": "De",
+        "recipient": "À",
+        "contents": "Contenu",
+        "state": "Statut",
+        "sentAt": "Envoyé",
+        "transferKinds": {
+          "inventory": "Mes inventaires",
+          "fleet": "Une flotte",
+          "user": "Une personne",
+          "mine": "Mes inventaires",
+          "fleetInventories": "Cette flotte"
+        },
+        "transferTargetKind": "Envoyer à",
+        "transferFromFleet": "Depuis la flotte",
+        "noTransferTargets": "Aucune destination ici",
+        "recordedAt": "Enregistré",
+        "origin": "De / À",
+        "inTransitAmount": "%{amount} en transit",
+        "inTransitHint": "Envoyé par un transfert auquel personne n'a répondu. Déjà retiré des totaux."
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1950,7 +1991,8 @@
         "withdraw": "Se désinscrire",
         "syncAgain": "Synchroniser à nouveau",
         "markAsBought": "Marquer comme acheté",
-        "unavailable": "Ceci n'est plus disponible."
+        "unavailable": "Ceci n'est plus disponible.",
+        "openTransfers": "Ouvrir les transferts"
       },
       "notificationTypes": {
         "channels": {
@@ -1962,7 +2004,8 @@
         "groups": {
           "account": "Compte et hangar",
           "fleetMembership": "Adhésion à une flotte",
-          "fleetEvents": "Événements de flotte"
+          "fleetEvents": "Événements de flotte",
+          "logistics": "Logistique"
         },
         "hangar_create": "Vaisseau ajouté au hangar",
         "hangar_destroy": "Vaisseau retiré du hangar",
@@ -1988,7 +2031,9 @@
         "fleet_event_signup_confirmed": "Inscription confirmée",
         "fleet_event_signup_assigned": "Assigné à un poste",
         "fleet_event_signup_kicked": "Retiré d'un poste",
-        "allInGroup": "Tout dans ce groupe"
+        "allInGroup": "Tout dans ce groupe",
+        "inventory_transfer_received": "Transfert reçu",
+        "inventory_transfer_resolved": "Transfert traité"
       },
       "fleets": {
         "missions": {

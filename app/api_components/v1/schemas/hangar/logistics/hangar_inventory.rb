@@ -18,6 +18,8 @@ module V1
               entriesCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},
+              inTransitScu: {type: :number},
+              inTransitUnits: {type: :number},
               totalVolumeScu: {type: :number},
               unmeasuredCount: {type: :integer},
               image: ::Shared::V1::Schemas::MediaFile,

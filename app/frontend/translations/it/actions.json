@@ -271,7 +271,16 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory",
         "clearCargo": "Svuota carico",
-        "viewCargoGrid": "Vedi griglia di carico"
+        "viewCargoGrid": "Vedi griglia di carico",
+        "sendTransfer": "Invia",
+        "moveStock": "Sposta",
+        "transfer": "Trasferisci",
+        "acceptTransfer": "Accetta",
+        "declineTransfer": "Rifiuta",
+        "cancelTransfer": "Annulla",
+        "reportTransfer": "Segnala",
+        "resetToMax": "Reimposta al massimo",
+        "removeLine": "Rimuovi"
       },
       "adminNotifications": {
         "unread": "Segna come non letta",

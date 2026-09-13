@@ -33,9 +33,11 @@ import type {
   InventoryTarget,
 } from "@/frontend/types/logistics";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useTransferModal } from "@/frontend/composables/useTransferModal";
 import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
@@ -52,7 +54,10 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const vehicleId = computed(() => props.vehicle.id);
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "hangar-vehicle-cargo",
+  log: "hangar-vehicle-cargo-transactions",
+});
 
 const target = computed<InventoryTarget>(() => ({
   kind: "vehicle",
@@ -147,6 +152,24 @@ const showCargoGridsLink = computed(
     storedScu.value >= 1,
 );
 
+// A ship's cargo moves the same way a locker's does. The transfer itself is a
+// hangar-mount call either way: what decides the source is the inventory id,
+// and a ship inventory is one of the user's own.
+const transfersEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.INVENTORY_TRANSFERS),
+);
+
+// Only once the ship has an inventory to move out of -- one does not exist
+// until something is put in it.
+const canTransfer = computed(
+  () => transfersEnabled.value && !!inventory.value?.id && hasCargo.value,
+);
+
+const { openTransferModal, openTransferForSelection } = useTransferModal({
+  source: () => inventory.value,
+  records: () => stockRecords.value,
+  onSent: () => Promise.all([refetchStock(), refetchAll(), refetchInventory()]),
+});
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
   comlink.emit("open-modal", {
     component: () =>
@@ -262,6 +285,14 @@ onMounted(() => {
       <Btn :size="BtnSizesEnum.MD" @click="openItemModal('withdrawal')">
         {{ t("actions.logistics.withdraw") }}
       </Btn>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :to="{ name: 'hangar-inventories' }"
+        data-test="vehicle-cargo-inventories-link"
+      >
+        <i class="fa-duotone fa-boxes-stacked" />
+        {{ t("nav.hangar.inventories") }}
+      </Btn>
       <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
         <i class="fa-duotone fa-file-csv" />
         {{ t("actions.logistics.importCsv") }}
@@ -361,8 +392,30 @@ onMounted(() => {
           :log-records="itemsList"
           :stock-loading="stockLoading"
           :log-loading="logLoading"
+          :stock-selectable="canTransfer"
           show-notes
         >
+          <template v-if="canTransfer" #stock-actions="{ record }">
+            <Btn
+              :size="BtnSizesEnum.SM"
+              :aria-label="t('actions.logistics.transfer')"
+              :title="t('actions.logistics.transfer')"
+              :data-test="`stock-transfer-${record.slug}`"
+              @click="openTransferModal([record as InventoryStockRecord])"
+            >
+              <i class="fa-duotone fa-right-left" />
+            </Btn>
+          </template>
+          <template v-if="canTransfer" #stock-selected-actions="{ selected }">
+            <Btn
+              :size="BtnSizesEnum.SM"
+              data-test="stock-transfer-selected"
+              @click="openTransferForSelection(selected)"
+            >
+              <i class="fa-duotone fa-right-left" />
+              {{ t("actions.logistics.transfer") }}
+            </Btn>
+          </template>
           <template #stock-name="{ record }">
             <router-link :to="stockItemRoute(record.slug)">
               {{ record.name }}

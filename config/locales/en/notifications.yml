@@ -47,6 +47,11 @@ en:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:
       title: "You've been accepted into %{fleet}"
+    inventory_transfer_received:
+      title: "%{sender} sent you %{count} item(s)"
+      title_fleet: "%{sender} sent %{fleet} %{count} item(s)"
+    inventory_transfer_resolved:
+      title: "Your transfer to %{recipient} was %{outcome}"
     fleet_inventory_item_added:
       title: "New inventory item in %{fleet}: %{item_name}"
     fleet_event:

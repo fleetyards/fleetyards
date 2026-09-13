@@ -39,6 +39,11 @@ zh-CN:
     new_model:
       title: '新飞船: %{model}'
       body: "%{model} 已添加到飞船数据库。"
+    inventory_transfer_received:
+      title: "%{sender} 向你发送了 %{count} 件物品"
+      title_fleet: "%{sender} 向 %{fleet} 发送了 %{count} 件物品"
+    inventory_transfer_resolved:
+      title: "你发往 %{recipient} 的转移已%{outcome}"
     fleet_invite:
       title: 您已被邀请加入 %{fleet}
     fleet_member_requested:

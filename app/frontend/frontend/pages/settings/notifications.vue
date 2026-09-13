@@ -69,6 +69,13 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
       NotificationTypeEnum.FLEET_EVENT_SIGNUP_KICKED,
     ],
   },
+  {
+    key: "logistics",
+    types: [
+      NotificationTypeEnum.INVENTORY_TRANSFER_RECEIVED,
+      NotificationTypeEnum.INVENTORY_TRANSFER_RESOLVED,
+    ],
+  },
 ];
 
 const CHANNELS = ["app", "mail", "push", "discord"] as const;

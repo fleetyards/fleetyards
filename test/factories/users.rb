@@ -24,6 +24,7 @@
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
 #  homepage                  :string
+#  inventory_transfer_policy :integer          default(0), not null
 #  last_active_at            :datetime
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
@@ -52,6 +53,8 @@
 #  sign_in_count             :integer          default(0), not null
 #  tester                    :boolean          default(FALSE)
 #  tracking                  :boolean          default(TRUE)
+#  transfers_blocked_at      :datetime
+#  transfers_blocked_reason  :text
 #  twitch                    :string
 #  unconfirmed_email         :string(255)
 #  unlock_token              :string(255)

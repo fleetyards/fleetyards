@@ -591,6 +591,16 @@
             "success": "Carga vaciada.",
             "failure": "No se pudo vaciar la carga."
           }
+        },
+        "transfer": {
+          "needsAnswer": "Deben aceptarlo antes de que llegue. Las existencias salen de tu inventario ahora y vuelven si lo rechazan.",
+          "create": {
+            "failure": "No se pudo enviar la transferencia"
+          },
+          "resolve": {
+            "failure": "No se pudo actualizar la transferencia"
+          },
+          "reportHint": "Denunciar lo rechaza, devuelve la mercancía e impide que este remitente vuelva a contactarte."
         }
       },
       "adminNotifications": {

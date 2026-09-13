@@ -122,3 +122,8 @@ POST /model-hardpoints api path removed without deprecation
 DELETE /model-hardpoints/{id} api path removed without deprecation
 GET /model-hardpoints/{id} api path removed without deprecation
 PUT /model-hardpoints/{id} api path removed without deprecation
+GET /notifications added the new `inventory_transfer_reports` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`

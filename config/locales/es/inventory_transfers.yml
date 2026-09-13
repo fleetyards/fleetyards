@@ -1,0 +1,9 @@
+---
+es:
+  inventory_transfers:
+    refusals:
+      unavailable: "no puede recibir transferencias"
+      sender_blocked: "No tienes permiso para enviar transferencias"
+      policy_closed: "Este destinatario no puede aceptar transferencias"
+      policy_restricted: "Este destinatario solo acepta transferencias de personas con las que ya comparte una flota"
+      cap_reached: "Este destinatario tiene demasiadas transferencias pendientes. Inténtalo más tarde"

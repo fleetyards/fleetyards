@@ -591,6 +591,16 @@
             "success": "Cargaison vidée.",
             "failure": "Impossible de vider la cargaison."
           }
+        },
+        "transfer": {
+          "needsAnswer": "Le destinataire doit accepter avant réception. Le stock quitte votre inventaire maintenant et revient s'il refuse.",
+          "create": {
+            "failure": "Impossible d'envoyer le transfert"
+          },
+          "resolve": {
+            "failure": "Impossible de mettre à jour le transfert"
+          },
+          "reportHint": "Signaler refuse le transfert, renvoie les marchandises et empêche cet expéditeur de vous recontacter."
         }
       },
       "adminNotifications": {

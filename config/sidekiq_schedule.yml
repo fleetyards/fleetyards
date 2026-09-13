@@ -90,3 +90,8 @@ discord_poll_event_rsvps_dispatch_job:
   class: 'Discord::PollEventRsvpsDispatchJob'
   queue: 'notifications'
   enabled: <%= Discord::ApiClient.configured? %>
+inventories_expire_transfers_job:
+  cron: '15 3 */1 * *' # Daily at 3:15, off the hour the loaders use
+  class: 'Inventories::ExpireTransfersJob'
+  queue: 'default'
+  enabled: <%= Rails.env.production? %>

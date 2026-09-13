@@ -8,7 +8,8 @@
         "wishlist": "Su lista de deseos está vacía",
         "features": "No hay funciones disponibles",
         "fleetFeatures": "No hay funciones de flota disponibles",
-        "imports": "No se encontraron importaciones"
+        "imports": "No se encontraron importaciones",
+        "transfers": "Aún no hay transferencias"
       },
       "actions": {
         "reset": "Reset Filters/Pages",

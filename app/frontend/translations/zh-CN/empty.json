@@ -8,7 +8,8 @@
         "wishlist": "您的愿望清单是空的",
         "features": "没有可用功能",
         "fleetFeatures": "没有可用的舰队功能",
-        "imports": "未找到导入记录"
+        "imports": "未找到导入记录",
+        "transfers": "暂无转移"
       },
       "actions": {
         "reset": "Reset Filters/Pages",

@@ -49,6 +49,10 @@ zh-CN:
       create: 无法创建库存。
       update: 无法更新库存。
       destroy: 无法删除库存。
+    inventory_transfers:
+      create: 无法发送转移。
+      update: 无法更新转移。
+      report: 无法举报转移。
     hangar_inventory_items:
       create: 无法创建库存记录。
       update: 无法更新库存记录。

@@ -88,14 +88,16 @@ A cross-schema transfer has a source in one table and a destination in the other
 | one table, polymorphic `source`/`destination` | one shape, but **no foreign keys on either end** — and D13 depends on `ON DELETE RESTRICT` being a real backstop. |
 | **one table, four nullable FKs** | one shape, four real foreign keys, exactly-one-per-side enforced by check constraints. |
 
+**Corrected while building: the four are `ON DELETE SET NULL`, not `RESTRICT`.** `RESTRICT` was chosen here as a database-level backstop for D13, and it is wrong. `User has_many :inventories, dependent: :destroy` (`user.rb:163`), so a single *completed* transfer would make that user undeletable forever. A finished transfer holds no goods and must not restrain anything, and a foreign key cannot tell it from a pending one. The model can, and D13's guard is where a person gets a readable error anyway. Two of the check constraints go with it — "exactly one source" and "has a target" cannot survive a `SET NULL`, so they are model validations; "at most one" and "not to itself" stay in the database, because nulling a column can only make them more true.
+
 The third. #4855 D3 chose two tables over one polymorphic one and named "two nullable FKs" as the alternative it did not need; this is the case that needs it, because the thing being pointed at is genuinely one of two types rather than consistently one.
 
 ```
 id                             uuid pk
-source_inventory_id            uuid  FK → inventories          ON DELETE RESTRICT
-source_fleet_inventory_id      uuid  FK → fleet_inventories    ON DELETE RESTRICT
-destination_inventory_id       uuid  FK → inventories          ON DELETE RESTRICT
-destination_fleet_inventory_id uuid  FK → fleet_inventories    ON DELETE RESTRICT
+source_inventory_id            uuid  FK → inventories          ON DELETE SET NULL
+source_fleet_inventory_id      uuid  FK → fleet_inventories    ON DELETE SET NULL
+destination_inventory_id       uuid  FK → inventories          ON DELETE SET NULL
+destination_fleet_inventory_id uuid  FK → fleet_inventories    ON DELETE SET NULL
 recipient_id                   uuid  FK → users
 recipient_fleet_id             uuid  FK → fleets
 initiated_by_id                uuid  FK → users   not null
@@ -302,7 +304,9 @@ The trap: `FleetInventoryItem` fires `notify_inventory_entry` on **every** creat
 ### Phase 1 — The table and the state machine
 1. Migration: `inventory_transfers` per D4 — four inventory foreign keys, two recipient foreign keys, the check constraints and the two partial pending indexes.
 2. Migration: nullable `inventory_transfer_id` on `inventory_items` and on `fleet_inventory_items`, both with a foreign key and an index.
-3. `InventoryTransfer` model: the AASM block, `#source`/`#destination` over the four columns, the source/destination/recipient validations, `immediate?` per D3, `has_paper_trail`, a `VersionedItem::ROOTS` entry, `ransackable_*`.
+3. `InventoryTransfer` model: the AASM block, `#source`/`#destination` over the four columns, the source/destination/recipient validations, `immediate?` per D3, `has_paper_trail`, `ransackable_*`.
+
+   **No `VersionedItem::ROOTS` entry, contrary to the plan.** `ROOTS` is what the admin version reader will accept, and an entry there without a matching `POLICIES` entry is dead — `authorization_root` returns nil and every read is denied — while still widening the public `itemType` enum. paper_trail records the versions either way; surfacing them needs an `Admin::InventoryTransferPolicy` and a feed entry, and the report queue already shows an admin the transfer and its entries. Deferred rather than half-built.
 4. `transfer_association` on `InventoryLedgerEntry`, so both item classes reach it under one name.
 
 ### Phase 2 — The move itself
@@ -402,6 +406,18 @@ Written per phase. The state machine and both destroy guards; the D3 authorizer 
 | `app/frontend/frontend/components/Logistics/` | `StockItemPanel`, `InventoryItemModal`, `InventoryPanel` — where the action and the in-transit marker go |
 | `app/frontend/admin/pages/` | Where the report queue page goes, beside `users` and `fleets` |
 | `app/frontend/translations/*/` | Seven locales, hand-written; there is no key-parity check in CI |
+
+## What the build corrected
+
+Recorded here rather than silently, because each was a decision this plan got wrong:
+
+| decision | what changed | why |
+|---|---|---|
+| D4 | `ON DELETE RESTRICT` → `SET NULL` on the four inventory keys, two check constraints → model validations | `RESTRICT` would make a completed transfer block deleting its owner forever |
+| Phase 1 | no `VersionedItem::ROOTS` entry | an entry with no policy is dead and still widens a published enum |
+| D9 | the gate's six checks became five | the throttle is Rack::Attack's, which runs before the controller — it was never a step the gate could evaluate |
+
+Still to do, and not in this change: the fleet-side and settings frontend (the policy selector, the rules list, and "block this sender"), the admin report-queue page, and the Rack::Attack rule. The API for all of them is in place and tested; only the screens are missing.
 
 ## Not in scope (deferred)
 

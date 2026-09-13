@@ -60,7 +60,9 @@ class Notification < ApplicationRecord
     fleet_event_signup_withdrawn: "fleet_event_signup_withdrawn",
     fleet_event_signup_confirmed: "fleet_event_signup_confirmed",
     fleet_event_signup_assigned: "fleet_event_signup_assigned",
-    fleet_event_signup_kicked: "fleet_event_signup_kicked"
+    fleet_event_signup_kicked: "fleet_event_signup_kicked",
+    inventory_transfer_received: "inventory_transfer_received",
+    inventory_transfer_resolved: "inventory_transfer_resolved"
   }
 
   TYPES = {
@@ -205,6 +207,17 @@ class Notification < ApplicationRecord
       channels: %i[app mail],
       mailer: ->(notification) { FleetEventMailer.signup_kicked(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
+    },
+    # Two types rather than one per terminal state: who is told and what they
+    # are told differ, but the outcome is a word in the body, not a different
+    # kind of event.
+    inventory_transfer_received: {
+      retention: 30.days,
+      channels: %i[app mail]
+    },
+    inventory_transfer_resolved: {
+      retention: 30.days,
+      channels: %i[app]
     }
   }.freeze
 

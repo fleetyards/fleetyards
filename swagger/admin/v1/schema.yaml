@@ -8760,6 +8760,7 @@ components:
       - sc_data_unlisted_models
       - import_run
       - oauth_application_review
+      - inventory_transfer_reports
       x-enumNames:
       - PAINTS_IMPORT
       - MODULES_IMPORT
@@ -8775,6 +8776,7 @@ components:
       - SC_DATA_UNLISTED_MODELS
       - IMPORT_RUN
       - OAUTH_APPLICATION_REVIEW
+      - INVENTORY_TRANSFER_REPORTS
       title: AdminNotificationTypeEnum
     AdminNotificationUnreadCount:
       type: object

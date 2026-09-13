@@ -20,6 +20,7 @@ import {
   useFleetInventory,
   useFleetInventoryItems,
   useFleetInventoryStock,
+  FeatureFlagName,
   useDestroyFleetInventoryItem,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -29,8 +30,10 @@ import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedg
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
+import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useTransferModal } from "@/frontend/composables/useTransferModal";
 
 type Props = {
   fleet: Fleet;
@@ -46,7 +49,10 @@ const comlink = useComlink();
 const fleetSlug = computed(() => props.fleet.slug);
 const inventorySlug = computed(() => route.params.inventory as string);
 
-const activeTab = ref<"stock" | "log">("stock");
+const { activeTab } = useLedgerTab({
+  stock: "fleet-logistics-inventory",
+  log: "fleet-logistics-inventory-transactions",
+});
 
 const {
   data: inventory,
@@ -98,6 +104,20 @@ const activeRecords = computed<(FleetInventoryItem | InventoryStockRecord)[]>(
 const canManageInventory = computed(
   () => props.membership?.capabilities?.updateInventories ?? false,
 );
+
+const transfersEnabled = computed(
+  () =>
+    canManageInventory.value &&
+    (props.fleet?.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) ??
+      false),
+);
+
+const { openTransferModal, openTransferForSelection } = useTransferModal({
+  source: () => inventory.value,
+  records: () => stockRecords.value,
+  fleetSlug: () => fleetSlug.value,
+  onSent: () => Promise.all([refetchStock(), refetchAll(), refetchInventory()]),
+});
 
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
@@ -311,7 +331,32 @@ const crumbs = computed<Crumb[]>(() => [
               show-member
               show-added-by
               show-notes
+              :stock-selectable="transfersEnabled"
             >
+              <template v-if="transfersEnabled" #stock-actions="{ record }">
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  :aria-label="t('actions.logistics.transfer')"
+                  :title="t('actions.logistics.transfer')"
+                  :data-test="`stock-transfer-${record.slug}`"
+                  @click="openTransferModal([record as InventoryStockRecord])"
+                >
+                  <i class="fa-duotone fa-right-left" />
+                </Btn>
+              </template>
+              <template
+                v-if="transfersEnabled"
+                #stock-selected-actions="{ selected }"
+              >
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  data-test="stock-transfer-selected"
+                  @click="openTransferForSelection(selected)"
+                >
+                  <i class="fa-duotone fa-right-left" />
+                  {{ t("actions.logistics.transfer") }}
+                </Btn>
+              </template>
               <template #stock-name="{ record }">
                 <router-link :to="stockItemRoute(record.slug)">
                   {{ record.name }}

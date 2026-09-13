@@ -1891,7 +1891,48 @@
         "cargoGrid": "貨艙網格",
         "shipInventory": "飛船庫存",
         "remaining": "剩餘",
-        "unmeasured": "%{count} 項尚未測量"
+        "unmeasured": "%{count} 項尚未測量",
+        "transferTarget": "接收方",
+        "transferNote": "備註",
+        "noStock": "沒有可移動的物品",
+        "overStock": "超過該條目的庫存",
+        "incoming": "接收",
+        "outgoing": "發出",
+        "transferStates": {
+          "pending": "等待中",
+          "completed": "已送達",
+          "declined": "已拒絕",
+          "cancelled": "已撤回",
+          "expired": "已過期"
+        },
+        "acceptInto": "接收至",
+        "reportReason": "原因",
+        "reportReasons": {
+          "spam": "垃圾訊息",
+          "harassment": "騷擾",
+          "scam": "詐騙",
+          "other": "其他"
+        },
+        "transferToFleet": "%{fleet}（艦隊）",
+        "sender": "來自",
+        "recipient": "傳往",
+        "contents": "內容",
+        "state": "狀態",
+        "sentAt": "傳送時間",
+        "transferKinds": {
+          "inventory": "我的庫存",
+          "fleet": "艦隊",
+          "user": "某人",
+          "mine": "我的庫存",
+          "fleetInventories": "該艦隊"
+        },
+        "transferTargetKind": "傳送至",
+        "transferFromFleet": "來自艦隊",
+        "noTransferTargets": "這裡沒有可傳送的目標",
+        "recordedAt": "記錄時間",
+        "origin": "來自 / 傳往",
+        "inTransitAmount": "%{amount} 運送中",
+        "inTransitHint": "已隨一筆尚未被回覆的轉移送出，已不計入上方總數。"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1946,7 +1987,8 @@
         "withdraw": "取消報名",
         "syncAgain": "再次同步",
         "markAsBought": "標示為已購買",
-        "unavailable": "這項內容已無法使用。"
+        "unavailable": "這項內容已無法使用。",
+        "openTransfers": "開啟轉移"
       },
       "notificationTypes": {
         "channels": {
@@ -1958,7 +2000,8 @@
         "groups": {
           "account": "帳戶與機庫",
           "fleetMembership": "艦隊成員資格",
-          "fleetEvents": "艦隊活動"
+          "fleetEvents": "艦隊活動",
+          "logistics": "物流"
         },
         "hangar_create": "機庫已建立",
         "hangar_destroy": "機庫已移除",
@@ -1984,7 +2027,9 @@
         "fleet_event_signup_confirmed": "報名已確認",
         "fleet_event_signup_assigned": "已指派席位",
         "fleet_event_signup_kicked": "已從席位移除",
-        "allInGroup": "這個群組的全部項目"
+        "allInGroup": "這個群組的全部項目",
+        "inventory_transfer_received": "收到轉移",
+        "inventory_transfer_resolved": "轉移已回覆"
       },
       "fleets": {
         "missions": {

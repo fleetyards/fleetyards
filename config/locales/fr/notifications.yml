@@ -39,6 +39,11 @@ fr:
     new_model:
       title: 'Nouveau vaisseau : %{model}'
       body: "%{model} a été ajouté à la base de données des vaisseaux."
+    inventory_transfer_received:
+      title: "%{sender} vous a envoyé %{count} objet(s)"
+      title_fleet: "%{sender} a envoyé %{count} objet(s) à %{fleet}"
+    inventory_transfer_resolved:
+      title: "Votre transfert vers %{recipient} a été %{outcome}"
     fleet_invite:
       title: Vous avez été invité à %{fleet}
     fleet_member_requested:

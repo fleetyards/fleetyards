@@ -1,0 +1,9 @@
+---
+zh-CN:
+  inventory_transfers:
+    refusals:
+      unavailable: "无法接收转移"
+      sender_blocked: "你没有发送转移的权限"
+      policy_closed: "该接收方无法接受转移"
+      policy_restricted: "该接收方仅接受来自同一舰队成员的转移"
+      cap_reached: "该接收方待处理的转移过多，请稍后再试"

@@ -1891,7 +1891,48 @@
         "cargoGrid": "货舱网格",
         "shipInventory": "飞船库存",
         "remaining": "剩余",
-        "unmeasured": "%{count} 项尚未测量"
+        "unmeasured": "%{count} 项尚未测量",
+        "transferTarget": "接收方",
+        "transferNote": "备注",
+        "noStock": "没有可移动的物品",
+        "overStock": "超过该条目的库存",
+        "incoming": "接收",
+        "outgoing": "发出",
+        "transferStates": {
+          "pending": "等待中",
+          "completed": "已送达",
+          "declined": "已拒绝",
+          "cancelled": "已撤回",
+          "expired": "已过期"
+        },
+        "acceptInto": "接收至",
+        "reportReason": "原因",
+        "reportReasons": {
+          "spam": "垃圾信息",
+          "harassment": "骚扰",
+          "scam": "诈骗",
+          "other": "其他"
+        },
+        "transferToFleet": "%{fleet}（舰队）",
+        "sender": "来自",
+        "recipient": "发往",
+        "contents": "内容",
+        "state": "状态",
+        "sentAt": "发送时间",
+        "transferKinds": {
+          "inventory": "我的库存",
+          "fleet": "舰队",
+          "user": "某人",
+          "mine": "我的库存",
+          "fleetInventories": "该舰队"
+        },
+        "transferTargetKind": "发送至",
+        "transferFromFleet": "来自舰队",
+        "noTransferTargets": "这里没有可发送的目标",
+        "recordedAt": "记录时间",
+        "origin": "来自 / 发往",
+        "inTransitAmount": "%{amount} 运送中",
+        "inTransitHint": "已随一笔尚未被答复的转移送出，已不计入上方总数。"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1946,7 +1987,8 @@
         "withdraw": "取消报名",
         "syncAgain": "再次同步",
         "markAsBought": "标记为已购买",
-        "unavailable": "此内容已不再可用。"
+        "unavailable": "此内容已不再可用。",
+        "openTransfers": "打开转移"
       },
       "notificationTypes": {
         "channels": {
@@ -1958,7 +2000,8 @@
         "groups": {
           "account": "账户与机库",
           "fleetMembership": "舰队成员资格",
-          "fleetEvents": "舰队活动"
+          "fleetEvents": "舰队活动",
+          "logistics": "物流"
         },
         "hangar_create": "添加到机库",
         "hangar_destroy": "从机库移除",
@@ -1984,7 +2027,9 @@
         "fleet_event_signup_confirmed": "报名已确认",
         "fleet_event_signup_assigned": "已分配席位",
         "fleet_event_signup_kicked": "已被移出席位",
-        "allInGroup": "此分组中的全部"
+        "allInGroup": "此分组中的全部",
+        "inventory_transfer_received": "收到转移",
+        "inventory_transfer_resolved": "转移已答复"
       },
       "fleets": {
         "missions": {

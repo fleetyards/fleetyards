@@ -20,7 +20,8 @@
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "vehicleCargo": "貨物",
-        "imports": "匯入記錄"
+        "imports": "匯入記錄",
+        "transfers": "轉移"
       },
       "login": "登入",
       "logout": "登出",

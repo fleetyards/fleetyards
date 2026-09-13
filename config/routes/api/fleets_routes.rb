@@ -44,6 +44,16 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     get "discord-status", action: :discord_status
   end
 
+  resources :fleet_inventory_transfers, path: "inventory-transfers",
+    controller: "fleet_inventory_transfers", only: %i[index show create] do
+    member do
+      put :accept
+      put :decline
+      put :cancel
+      post :report
+    end
+  end
+
   get "inventory-items", to: "fleet_all_inventory_items#index"
   get "inventory-stock", to: "fleet_all_inventory_stock#index"
 

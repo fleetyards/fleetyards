@@ -1895,7 +1895,48 @@
         "cargoGrid": "Frachtraster",
         "shipInventory": "Schiffsinventar",
         "remaining": "Verbleibend",
-        "unmeasured": "%{count} noch nicht vermessen"
+        "unmeasured": "%{count} noch nicht vermessen",
+        "transferTarget": "Empfänger",
+        "transferNote": "Notiz",
+        "noStock": "Nichts zu verschieben",
+        "overStock": "Mehr als diese Position enthält",
+        "incoming": "Eingehend",
+        "outgoing": "Ausgehend",
+        "transferStates": {
+          "pending": "Wartet",
+          "completed": "Zugestellt",
+          "declined": "Abgelehnt",
+          "cancelled": "Zurückgezogen",
+          "expired": "Abgelaufen"
+        },
+        "acceptInto": "Annehmen in",
+        "reportReason": "Grund",
+        "reportReasons": {
+          "spam": "Spam",
+          "harassment": "Belästigung",
+          "scam": "Betrug",
+          "other": "Etwas anderes"
+        },
+        "transferToFleet": "%{fleet} (Flotte)",
+        "sender": "Von",
+        "recipient": "An",
+        "contents": "Inhalt",
+        "state": "Status",
+        "sentAt": "Gesendet",
+        "transferKinds": {
+          "inventory": "Meine Inventare",
+          "fleet": "Eine Flotte",
+          "user": "Eine Person",
+          "mine": "Meine Inventare",
+          "fleetInventories": "Diese Flotte"
+        },
+        "transferTargetKind": "Senden an",
+        "transferFromFleet": "Aus Flotte",
+        "noTransferTargets": "Hier gibt es kein Ziel",
+        "recordedAt": "Erfasst",
+        "origin": "Von / An",
+        "inTransitAmount": "%{amount} unterwegs",
+        "inTransitHint": "Auf einem Transfer, den noch niemand beantwortet hat. Bereits aus den Summen heraus."
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {
@@ -1950,7 +1991,8 @@
         "withdraw": "Abmelden",
         "syncAgain": "Erneut synchronisieren",
         "markAsBought": "Als gekauft markieren",
-        "unavailable": "Das ist nicht mehr verfügbar."
+        "unavailable": "Das ist nicht mehr verfügbar.",
+        "openTransfers": "Transfers öffnen"
       },
       "notificationTypes": {
         "channels": {
@@ -1962,7 +2004,8 @@
         "groups": {
           "account": "Konto & Hangar",
           "fleetMembership": "Flottenmitgliedschaft",
-          "fleetEvents": "Flotten-Events"
+          "fleetEvents": "Flotten-Events",
+          "logistics": "Logistik"
         },
         "hangar_create": "Hangar erstellt",
         "hangar_destroy": "Hangar entfernt",
@@ -1988,7 +2031,9 @@
         "fleet_event_signup_confirmed": "Anmeldung bestätigt",
         "fleet_event_signup_assigned": "Einem Slot zugewiesen",
         "fleet_event_signup_kicked": "Aus einem Slot entfernt",
-        "allInGroup": "Alles in dieser Gruppe"
+        "allInGroup": "Alles in dieser Gruppe",
+        "inventory_transfer_received": "Transfer erhalten",
+        "inventory_transfer_resolved": "Transfer beantwortet"
       },
       "fleets": {
         "missions": {

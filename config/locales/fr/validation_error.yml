@@ -50,6 +50,10 @@ fr:
       create: L'inventaire n'a pas pu être créé.
       update: L'inventaire n'a pas pu être mis à jour.
       destroy: L'inventaire n'a pas pu être détruit.
+    inventory_transfers:
+      create: Le transfert n'a pas pu être envoyé.
+      update: Le transfert n'a pas pu être mis à jour.
+      report: Le transfert n'a pas pu être signalé.
     hangar_inventory_items:
       create: L'entrée d'inventaire n'a pas pu être créée.
       update: L'entrée d'inventaire n'a pas pu être mise à jour.
