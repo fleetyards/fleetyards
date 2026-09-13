@@ -187,7 +187,8 @@ is the D5 follow-up's branch.
 
 ### Phase 1 — Schema
 
-Four migrations, all `id: :uuid, default: -> { "gen_random_uuid()" }`, every model annotated.
+Six migrations, all `id: :uuid, default: -> { "gen_random_uuid()" }`, every model annotated. Two of
+the six were added by review — see the Discovery Log.
 
 1. `fleet_contracts` — `fleet_id`, `created_by_id`, `title`, `slug`, `description`, `kind`
    (`transport: 0`, `procurement: 1`, `crafting: 2`), `source_fleet_inventory_id`,
@@ -202,6 +203,12 @@ Four migrations, all `id: :uuid, default: -> { "gen_random_uuid()" }`, every mod
    on `fleet_contract_id WHERE role = 0 AND aasm_state = 'accepted'`.
 4. `add_fleet_contract_to_inventory_transfers` — one nullable `fleet_contract_id`, `ON DELETE SET NULL`,
    indexed.
+5. `enforce_unique_fleet_contract_item_identity` — unique on
+   `(fleet_contract_id, lower(name), category, unit)`. Two lines sharing an identity both match the
+   same deposits, so one delivery satisfies both.
+6. `add_fleet_contract_contributor_to_inventory_transfers` — `fleet_contract_contributor_id`, written
+   when the contract link is made. Attribution is certain only while the source inventory still
+   exists, and that key is `ON DELETE SET NULL`.
 
 Quantities and amounts are always positive; direction is carried by the type column, as
 `InventoryLedgerEntry` carries deposit/withdrawal.
@@ -366,6 +373,23 @@ breakdown included.
 
 - **2026-09-13** Initial research and plan creation. Confirmed with the user: transport runs between two
   fleet inventories; a lead claims and approves crew; the reward splits by delivered quantity.
+- **2026-09-14** Seven findings from review, all real, all with a test that fails without its fix.
+  Three are worth carrying forward:
+  - **`touch: true` hides a race from a thread test.** The crew limit is a check-then-insert, and
+    `belongs_to :fleet_contract, touch: true` already serializes the *write* on the contract row — so
+    two bare threads pass with the lock removed. The touch blocks *after* the count, so both accepts
+    still count zero. What discriminates is holding the row while both workers reach their blocking
+    point. A race test that passes against the broken code is worse than none.
+  - **Fixing one finding introduced another.** Netting a returned pickup subtracted the transfer's
+    whole return from every quality grade, double-counting it for a pickup spent across grades —
+    `dispatch` writes one withdrawal per grade and `return_to_source` mirrors each. Caught by review,
+    not by my own test, which used a single grade.
+  - **Attribution had to be recorded, not derived.** Deriving the contributor from the transfer's
+    source is right until that inventory is deleted. Restricting the `initiated_by` fallback to
+    contractors closed "credits the dispatching officer" but left "the contractor loses their share",
+    which is narrowing a money bug rather than closing it. The column beside `fleet_contract_id` is
+    the fix; the original objection that it widened the transfer schema did not hold, since that
+    table already carries the link.
 - **2026-09-13** What the build corrected, recorded rather than fixed silently:
   - **A member cannot name a fleet inventory from the hangar mount.** #4878's two mount points
     resolve a *fleet* inventory only against the party the mount acts for, so "my inventory → a
