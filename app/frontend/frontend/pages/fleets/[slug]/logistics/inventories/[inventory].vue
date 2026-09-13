@@ -20,6 +20,8 @@ import {
   useFleetInventory,
   useFleetInventoryItems,
   useFleetInventoryStock,
+  useCreateFleetInventoryTransfer,
+  FeatureFlagName,
   useDestroyFleetInventoryItem,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -31,6 +33,7 @@ import { useInventoryStockList } from "@/frontend/composables/useInventoryStockL
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFleetTransferTargets } from "@/frontend/composables/useFleetTransferTargets";
 
 type Props = {
   fleet: Fleet;
@@ -98,6 +101,46 @@ const activeRecords = computed<(FleetInventoryItem | InventoryStockRecord)[]>(
 const canManageInventory = computed(
   () => props.membership?.capabilities?.updateInventories ?? false,
 );
+
+const transfersEnabled = computed(
+  () =>
+    canManageInventory.value &&
+    (props.fleet?.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) ??
+      false),
+);
+
+const { targets: transferTargets } = useFleetTransferTargets(
+  fleetSlug,
+  () => inventory.value,
+);
+
+const { mutateAsync: createTransfer } = useCreateFleetInventoryTransfer();
+
+// A transfer starts from the rows the reader chose -- one, or a ticked set --
+// rather than from the whole inventory.
+const openTransferModal = (positions: InventoryStockRecord[]) => {
+  if (!inventory.value?.id || positions.length === 0) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Logistics/TransferModal/index.vue"),
+    props: {
+      source: { id: inventory.value.id, name: inventory.value.name },
+      positions,
+      targets: transferTargets.value,
+      onSend: async (data: Parameters<typeof createTransfer>[0]["data"]) => {
+        await createTransfer({ fleetSlug: fleetSlug.value, data });
+        await Promise.all([refetchStock(), refetchAll(), refetchInventory()]);
+      },
+    },
+  });
+};
+
+const openTransferForSelection = (selected: string[]) => {
+  openTransferModal(
+    stockRecords.value.filter((record) => selected.includes(record.id)),
+  );
+};
 
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
@@ -311,7 +354,32 @@ const crumbs = computed<Crumb[]>(() => [
               show-member
               show-added-by
               show-notes
+              :stock-selectable="transfersEnabled"
             >
+              <template v-if="transfersEnabled" #stock-actions="{ record }">
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  :aria-label="t('actions.logistics.transfer')"
+                  :title="t('actions.logistics.transfer')"
+                  :data-test="`stock-transfer-${record.slug}`"
+                  @click="openTransferModal([record as InventoryStockRecord])"
+                >
+                  <i class="fa-duotone fa-right-left" />
+                </Btn>
+              </template>
+              <template
+                v-if="transfersEnabled"
+                #stock-selected-actions="{ selected }"
+              >
+                <Btn
+                  :size="BtnSizesEnum.SM"
+                  data-test="stock-transfer-selected"
+                  @click="openTransferForSelection(selected)"
+                >
+                  <i class="fa-duotone fa-right-left" />
+                  {{ t("actions.logistics.transfer") }}
+                </Btn>
+              </template>
               <template #stock-name="{ record }">
                 <router-link :to="stockItemRoute(record.slug)">
                   {{ record.name }}

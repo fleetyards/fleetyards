@@ -20,6 +20,7 @@ module V1
             destination: ::V1::Schemas::Transfers::InventoryTransferEndpoint,
             sender: ::V1::Schemas::Transfers::TransferParty,
             recipient: ::V1::Schemas::Transfers::TransferParty,
+            destinationParty: ::V1::Schemas::Transfers::TransferParty,
             initiatedBy: {type: [:string, :null]},
             resolvedBy: {type: [:string, :null]},
             lines: {

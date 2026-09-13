@@ -106,53 +106,51 @@ const onReport = (transfer: InventoryTransfer) => {
 </script>
 
 <template>
-  <section class="container">
-    <BreadCrumbs :crumbs="crumbs" />
+  <BreadCrumbs :crumbs="crumbs" />
 
-    <Heading size="hero" hero>
-      {{ t("headlines.logistics.transfers") }}
-    </Heading>
+  <Heading size="hero" hero>
+    {{ t("headlines.logistics.transfers") }}
+  </Heading>
 
-    <!-- `Heading` takes only `default` and `subHeading`, so controls belong in
-         the page header the way every other list does it. -->
-    <Teleport to="#header-right">
-      <BtnGroup>
-        <Btn
-          :size="BtnSizesEnum.MD"
-          :variant="
-            direction === 'incoming'
-              ? BtnVariantsEnum.SOLID
-              : BtnVariantsEnum.BARE
-          "
-          data-test="transfers-incoming"
-          @click="direction = 'incoming'"
-        >
-          {{ t("labels.logistics.incoming") }}
-        </Btn>
-        <Btn
-          :size="BtnSizesEnum.MD"
-          :variant="
-            direction === 'outgoing'
-              ? BtnVariantsEnum.SOLID
-              : BtnVariantsEnum.BARE
-          "
-          data-test="transfers-outgoing"
-          @click="direction = 'outgoing'"
-        >
-          {{ t("labels.logistics.outgoing") }}
-        </Btn>
-      </BtnGroup>
-    </Teleport>
+  <!-- `Heading` takes only `default` and `subHeading`, so controls belong in
+       the page header the way every other list does it. -->
+  <Teleport to="#header-right">
+    <BtnGroup>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :variant="
+          direction === 'incoming'
+            ? BtnVariantsEnum.SOLID
+            : BtnVariantsEnum.BARE
+        "
+        data-test="transfers-incoming"
+        @click="direction = 'incoming'"
+      >
+        {{ t("labels.logistics.incoming") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.MD"
+        :variant="
+          direction === 'outgoing'
+            ? BtnVariantsEnum.SOLID
+            : BtnVariantsEnum.BARE
+        "
+        data-test="transfers-outgoing"
+        @click="direction = 'outgoing'"
+      >
+        {{ t("labels.logistics.outgoing") }}
+      </Btn>
+    </BtnGroup>
+  </Teleport>
 
-    <TransferTable
-      :transfers="transfers"
-      :direction="direction"
-      :loading="isLoading"
-      :busy="busy"
-      @accept="onAccept"
-      @decline="onDecline"
-      @cancel="onCancel"
-      @report="onReport"
-    />
-  </section>
+  <TransferTable
+    :transfers="transfers"
+    :direction="direction"
+    :loading="isLoading"
+    :busy="busy"
+    @accept="onAccept"
+    @decline="onDecline"
+    @cancel="onCancel"
+    @report="onReport"
+  />
 </template>

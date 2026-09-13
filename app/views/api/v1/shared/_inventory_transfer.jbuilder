@@ -23,6 +23,15 @@ json.recipient do
   json.partial! "api/v1/shared/transfer_party", party: transfer.recipient_party
 end
 
+# Who holds the destination, which is not the same question as who it was
+# addressed to: an immediate transfer names no recipient at all, and a delivered
+# one is more usefully described by whose inventory it reached. Null until there
+# is a destination.
+json.destination_party do
+  json.partial! "api/v1/shared/transfer_party",
+    party: ::InventoryTransfer.party_of(transfer.destination)
+end
+
 json.initiated_by transfer.initiated_by&.username
 json.resolved_by transfer.resolved_by&.username
 

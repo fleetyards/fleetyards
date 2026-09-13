@@ -92,11 +92,13 @@ const from = (transfer: InventoryTransfer) => ({
   inventory: transfer.source?.name,
 });
 
-// A pending transfer has no destination yet -- the recipient picks one when
-// they accept -- so it names the party alone until then.
+// `destinationParty` is who holds the destination; `recipient` is who it was
+// addressed to. A pending transfer has only the second, a delivered one only
+// the first -- and reading the inventory's name as the party's, which is what
+// this did before, printed "Main / Main".
 const to = (transfer: InventoryTransfer) => ({
-  party: transfer.recipient?.name ?? transfer.destination?.name,
-  inventory: transfer.recipient ? undefined : transfer.destination?.name,
+  party: transfer.destinationParty?.name ?? transfer.recipient?.name,
+  inventory: transfer.destination?.name,
 });
 
 // Only a transfer still waiting can be answered, and only the side that did not
@@ -248,14 +250,16 @@ const canCancel = (transfer: InventoryTransfer) =>
   }
 }
 
-.transfer-party {
-  display: block;
-}
-
+// Inline, sitting against each other: "MARU Inc. · Main" reads as one address.
+// Stacked, or spread to the cell's width, they read as two unrelated values.
 .transfer-place {
-  display: block;
   font-size: 0.85em;
   opacity: 0.7;
+
+  &::before {
+    padding: 0 0.35rem;
+    content: "·";
+  }
 }
 
 .transfer-date {

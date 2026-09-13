@@ -18113,6 +18113,8 @@ components:
           "$ref": "#/components/schemas/TransferParty"
         recipient:
           "$ref": "#/components/schemas/TransferParty"
+        destinationParty:
+          "$ref": "#/components/schemas/TransferParty"
         initiatedBy:
           type:
           - string
