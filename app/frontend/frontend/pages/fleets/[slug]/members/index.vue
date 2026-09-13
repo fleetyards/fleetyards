@@ -20,10 +20,8 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import {
-  ChannelsEnum,
-  useSubscription,
-} from "@/shared/composables/useSubscription";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { FleetMembersChannel } from "@/services/fyCable/channels/FleetMembersChannel";
 import {
   useFleetMembers as useFleetMembersQuery,
   useFleetMembersStats as useFleetMembersStatsQuery,
@@ -121,7 +119,7 @@ onUnmounted(() => {
 });
 
 useSubscription({
-  channelName: ChannelsEnum.FLEET_MEMBERS_CHANNEL,
+  channel: FleetMembersChannel,
   received: () => debounce(fetch, 500),
 });
 

@@ -28,10 +28,13 @@ import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
   useSyncRsiHangarStatus,
 } from "@/services/fyApi";
+import { useSubscription } from "@/shared/composables/useSubscription";
 import {
-  useSubscription,
-  ChannelsEnum,
-} from "@/shared/composables/useSubscription";
+  HangarSyncChannel,
+  type HangarSyncData,
+} from "@/services/fyCable/channels/HangarSyncChannel";
+import { HangarSyncFailedStatusEnum } from "@/services/fyCable/models/HangarSyncFailedStatusEnum";
+import { HangarSyncFinishedStatusEnum } from "@/services/fyCable/models/HangarSyncFinishedStatusEnum";
 import { differenceInMinutes } from "date-fns";
 import {
   type FleetyardsSyncMessage,
@@ -329,19 +332,15 @@ watch(syncStatusData, (statusData) => {
   }
 });
 
-const onSyncResult = (message: {
-  status: string;
-  result?: HangarSyncResult;
-  error?: string;
-}) => {
-  if (message.status === "finished" && message.result) {
+const onSyncResult = (message: HangarSyncData) => {
+  if (message.status === HangarSyncFinishedStatusEnum.FINISHED) {
     result.value = message.result;
     hangarStore.syncRunning = false;
 
     displaySuccess({ text: t("messages.syncExtension.success") });
     updateStep("submitData", "success");
     comlink.emit("hangar-sync-finished");
-  } else if (message.status === "failed") {
+  } else if (message.status === HangarSyncFailedStatusEnum.FAILED) {
     hangarStore.syncRunning = false;
     updateStep("submitData", "backendFailure");
     console.error("Hangar sync failed:", message.error);
@@ -353,7 +352,7 @@ const onSyncDisconnected = () => {
 };
 
 useSubscription({
-  channelName: ChannelsEnum.HANGAR_SYNC_CHANNEL,
+  channel: HangarSyncChannel,
   received: onSyncResult,
   disconnected: onSyncDisconnected,
 });

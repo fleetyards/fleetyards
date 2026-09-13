@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import type { Subscription } from "@rails/actioncable";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -24,7 +23,8 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useCable } from "@/shared/composables/useCable";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { FleetVehiclesChannel } from "@/services/fyCable/channels/FleetVehiclesChannel";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
@@ -61,8 +61,6 @@ const openDisplayOptionsModal = () => {
   });
 };
 
-const fleetVehiclesChannel = ref<Subscription>();
-
 const mobile = useMobile();
 
 const fleetStore = useFleetStore();
@@ -95,30 +93,10 @@ watch(
   () => refetch(),
 );
 
-onMounted(() => {
-  setupUpdates();
+useSubscription({
+  channel: FleetVehiclesChannel,
+  received: () => debounce(refetch, 500),
 });
-
-const { consumer } = useCable();
-
-const setupUpdates = () => {
-  if (fleetVehiclesChannel.value) {
-    fleetVehiclesChannel.value.unsubscribe();
-  }
-
-  if (!consumer) {
-    return;
-  }
-
-  fleetVehiclesChannel.value = consumer.subscriptions.create(
-    {
-      channel: "FleetVehiclesChannel",
-    },
-    {
-      received: () => debounce(refetch, 500),
-    },
-  );
-};
 
 const exportJson = async () => {
   try {

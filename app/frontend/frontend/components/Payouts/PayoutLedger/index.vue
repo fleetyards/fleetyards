@@ -20,11 +20,8 @@ import PayoutBalances from "@/frontend/components/Payouts/PayoutBalances/index.v
 import PayoutTransferList from "@/frontend/components/Payouts/PayoutTransferList/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import {
-  useSubscription,
-  ChannelsEnum,
-} from "@/shared/composables/useSubscription";
-import { type PayoutLedger as PayoutLedgerMessage } from "@/services/fyCable/models/PayoutLedger";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { PayoutLedgerChannel } from "@/services/fyCable/channels/PayoutLedgerChannel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
 import {
@@ -101,8 +98,8 @@ const refetchAll = () => {
 // The channel is per-user, not per-ledger, so a viewer taking part in more than
 // one ledger hears about all of them on the same stream -- hence the id check
 // rather than a subscription scoped to this ledger.
-useSubscription<PayoutLedgerMessage>({
-  channelName: ChannelsEnum.PAYOUT_LEDGER_CHANNEL,
+useSubscription({
+  channel: PayoutLedgerChannel,
   // Nothing replays what was broadcast while the socket was down, and the
   // queries do not refetch on focus, so a dropped connection would leave the
   // page showing figures that have moved on. Resyncing on every connect covers

@@ -43,10 +43,8 @@ import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
-import {
-  ChannelsEnum,
-  useSubscription,
-} from "@/shared/composables/useSubscription";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   useHangarStats as useHangarStatsQuery,
@@ -208,7 +206,7 @@ const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
 };
 
 useSubscription({
-  channelName: ChannelsEnum.HANGAR_CHANNEL,
+  channel: HangarChannel,
   received: () => debounce(fetch, 500),
 });
 

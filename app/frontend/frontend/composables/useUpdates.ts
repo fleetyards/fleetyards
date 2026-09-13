@@ -4,21 +4,32 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNotificationInvalidation } from "@/frontend/composables/useNotificationUpdates";
-import {
-  useSubscription,
-  ChannelsEnum,
-} from "@/shared/composables/useSubscription";
+import { useSubscription } from "@/shared/composables/useSubscription";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
+import { AppVersionChannel } from "@/services/fyCable/channels/AppVersionChannel";
+import { HangarCreateChannel } from "@/services/fyCable/channels/HangarCreateChannel";
+import { HangarDestroyChannel } from "@/services/fyCable/channels/HangarDestroyChannel";
+import {
+  HangarSyncChannel,
+  type HangarSyncData,
+} from "@/services/fyCable/channels/HangarSyncChannel";
+import { NotificationsChannel } from "@/services/fyCable/channels/NotificationsChannel";
+import { OnSaleChannel } from "@/services/fyCable/channels/OnSaleChannel";
+import { OnSaleHangarChannel } from "@/services/fyCable/channels/OnSaleHangarChannel";
+import { UserNotificationsChannel } from "@/services/fyCable/channels/UserNotificationsChannel";
+import { WishlistCreateChannel } from "@/services/fyCable/channels/WishlistCreateChannel";
+import { WishlistDestroyChannel } from "@/services/fyCable/channels/WishlistDestroyChannel";
 import { type AnnouncementMessage } from "@/services/fyCable/models/AnnouncementMessage";
 import { AnnouncementTypeEnum } from "@/services/fyCable/models/AnnouncementTypeEnum";
-import {
-  type Model,
-  type Notification,
-  type Vehicle,
-  useSyncRsiHangarStatus,
-} from "@/services/fyApi";
+import { type AppVersionMessage } from "@/services/fyCable/models/AppVersionMessage";
+import { HangarSyncFailedStatusEnum } from "@/services/fyCable/models/HangarSyncFailedStatusEnum";
+import { HangarSyncFinishedStatusEnum } from "@/services/fyCable/models/HangarSyncFinishedStatusEnum";
+import { type Model } from "@/services/fyCable/models/Model";
+import { type Notification } from "@/services/fyCable/models/Notification";
+import { type Vehicle } from "@/services/fyCable/models/Vehicle";
+import { useSyncRsiHangarStatus } from "@/services/fyApi";
 
 const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
   [AnnouncementTypeEnum.SUCCESS]: MessageTypesEnum.SUCCESS,
@@ -30,7 +41,7 @@ const ANNOUNCEMENT_TYPES: Record<AnnouncementTypeEnum, MessageTypesEnum> = {
 export const useUpdates = () => {
   const appStore = useAppStore();
 
-  const updateAppVersion = (data: { version?: string; codename?: string }) => {
+  const updateAppVersion = (data: AppVersionMessage) => {
     appStore.updateVersion(data);
   };
 
@@ -138,48 +149,51 @@ export const useUpdates = () => {
   };
 
   useSubscription({
-    channelName: ChannelsEnum.APP_VERSION_CHANNEL,
+    channel: AppVersionChannel,
     received: updateAppVersion,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.ON_SALE_HANGAR_CHANNEL,
+    channel: OnSaleHangarChannel,
     received: notifyVehicleOnSale,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.ON_SALE_CHANNEL,
+    channel: OnSaleChannel,
     received: notifyOnSale,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.HANGAR_CREATE_CHANNEL,
+    channel: HangarCreateChannel,
     received: addShipToHangar,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.HANGAR_DESTROY_CHANNEL,
+    channel: HangarDestroyChannel,
     received: removeShipFromHangar,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.WISHLIST_CREATE_CHANNEL,
+    channel: WishlistCreateChannel,
     received: addShipToWishlist,
     enabled: isAuthenticated,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.WISHLIST_DESTROY_CHANNEL,
+    channel: WishlistDestroyChannel,
     received: removeShipFromWishlist,
     enabled: isAuthenticated,
   });
 
-  const handleHangarSyncUpdate = (message: { status: string }) => {
-    if (message.status === "finished" || message.status === "failed") {
+  const handleHangarSyncUpdate = (message: HangarSyncData) => {
+    const finished = message.status === HangarSyncFinishedStatusEnum.FINISHED;
+    const failed = message.status === HangarSyncFailedStatusEnum.FAILED;
+
+    if (finished || failed) {
       hangarStore.syncRunning = false;
     }
 
@@ -187,15 +201,15 @@ export const useUpdates = () => {
       return;
     }
 
-    if (message.status === "finished") {
+    if (finished) {
       displaySuccess({ text: t("messages.syncExtension.success") });
-    } else if (message.status === "failed") {
+    } else if (failed) {
       displayAlert({ text: t("messages.syncExtension.failure") });
     }
   };
 
   useSubscription({
-    channelName: ChannelsEnum.HANGAR_SYNC_CHANNEL,
+    channel: HangarSyncChannel,
     received: handleHangarSyncUpdate,
     enabled: isAuthenticated,
   });
@@ -217,12 +231,12 @@ export const useUpdates = () => {
   );
 
   useSubscription({
-    channelName: ChannelsEnum.NOTIFICATIONS_CHANNEL,
+    channel: NotificationsChannel,
     received: handleAnnouncement,
   });
 
   useSubscription({
-    channelName: ChannelsEnum.USER_NOTIFICATIONS_CHANNEL,
+    channel: UserNotificationsChannel,
     received: handleUserNotification,
   });
 };

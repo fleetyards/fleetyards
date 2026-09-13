@@ -32,10 +32,8 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
-import {
-  ChannelsEnum,
-  useSubscription,
-} from "@/shared/composables/useSubscription";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -154,7 +152,7 @@ const showNewModal = () => {
 };
 
 useSubscription({
-  channelName: ChannelsEnum.HANGAR_CHANNEL,
+  channel: HangarChannel,
   received: () => debounce(fetch, 500),
 });
 

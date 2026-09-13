@@ -2,8 +2,12 @@ import { type Ref } from "vue";
 import { useQueryClient } from "@tanstack/vue-query";
 import {
   useSubscription,
-  ChannelsEnum,
+  type ConnectEvent,
 } from "@/shared/composables/useSubscription";
+import {
+  AdminNotificationsChannel,
+  type AdminNotificationsData,
+} from "@/services/fyCableAdmin/channels/AdminNotificationsChannel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   getAdminNotificationsQueryKey,
@@ -64,7 +68,7 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
 
   const { displayInfo, displayWarning, displayAlert } = useAppNotifications();
 
-  const announce = (notification: AdminNotification) => {
+  const announce = (notification: AdminNotificationsData) => {
     // No timeout: a report that arrives while nobody is looking is the whole
     // point of the notification center, so the toast waits to be clicked away,
     // and that click lands in the center rather than only dismissing it.
@@ -86,7 +90,7 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
     }
   };
 
-  const received = (notification: AdminNotification) => {
+  const received = (notification: AdminNotificationsData) => {
     invalidate();
 
     announce(notification);
@@ -98,18 +102,14 @@ export const useAdminNotificationUpdates = (enabled: Ref<boolean>) => {
   // from the list until something else refetches it, and the unread count, on
   // its own interval, is the only sign it ever happened. Not on the first
   // connect: the queries have only just loaded.
-  let seenConnect = false;
-
-  const connected = () => {
-    if (seenConnect) {
+  const connected = ({ reconnect }: ConnectEvent) => {
+    if (reconnect) {
       invalidate();
     }
-
-    seenConnect = true;
   };
 
   useSubscription({
-    channelName: ChannelsEnum.ADMIN_NOTIFICATIONS_CHANNEL,
+    channel: AdminNotificationsChannel,
     received,
     connected,
     enabled,
