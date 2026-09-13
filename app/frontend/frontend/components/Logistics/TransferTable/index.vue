@@ -120,26 +120,34 @@ const canCancel = (transfer: InventoryTransfer) =>
     :empty-visible="!loading && !transfers.length"
   >
     <template #col-from="{ record }">
-      <span class="transfer-party">
-        {{ from(record as InventoryTransfer).party }}
-      </span>
-      <span
-        v-if="from(record as InventoryTransfer).inventory"
-        class="transfer-place"
-      >
-        {{ from(record as InventoryTransfer).inventory }}
+      <!-- One element, because the cell is a flex row with `space-between`:
+           two siblings get pushed to opposite ends of the column. -->
+      <span class="transfer-endpoint">
+        <span class="transfer-party">
+          {{ from(record as InventoryTransfer).party }}
+        </span>
+        <span
+          v-if="from(record as InventoryTransfer).inventory"
+          class="transfer-place"
+        >
+          {{ from(record as InventoryTransfer).inventory }}
+        </span>
       </span>
     </template>
 
     <template #col-to="{ record }">
-      <span class="transfer-party">
-        {{ to(record as InventoryTransfer).party }}
-      </span>
-      <span
-        v-if="to(record as InventoryTransfer).inventory"
-        class="transfer-place"
-      >
-        {{ to(record as InventoryTransfer).inventory }}
+      <!-- One element, because the cell is a flex row with `space-between`:
+           two siblings get pushed to opposite ends of the column. -->
+      <span class="transfer-endpoint">
+        <span class="transfer-party">
+          {{ to(record as InventoryTransfer).party }}
+        </span>
+        <span
+          v-if="to(record as InventoryTransfer).inventory"
+          class="transfer-place"
+        >
+          {{ to(record as InventoryTransfer).inventory }}
+        </span>
       </span>
     </template>
 
@@ -250,8 +258,14 @@ const canCancel = (transfer: InventoryTransfer) =>
   }
 }
 
-// Inline, sitting against each other: "MARU Inc. · Main" reads as one address.
-// Stacked, or spread to the cell's width, they read as two unrelated values.
+// One address, not two values: "MARU Inc. · Main" sitting against itself.
+.transfer-endpoint {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  min-width: 0;
+}
+
 .transfer-place {
   font-size: 0.85em;
   opacity: 0.7;

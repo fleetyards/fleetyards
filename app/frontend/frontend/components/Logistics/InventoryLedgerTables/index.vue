@@ -258,6 +258,7 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
 
     <template #col-origin="{ record }">
+      <!-- One element: the cell is a flex row with `space-between`. -->
       <span v-if="record.transfer" class="ledger-origin">
         <i
           class="fa-duotone ledger-origin-mark"
