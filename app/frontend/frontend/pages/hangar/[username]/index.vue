@@ -10,6 +10,7 @@ import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import HangarPublicHeading from "@/frontend/components/Hangar/PublicHeading/index.vue";
+import FriendButton from "@/frontend/components/Relationships/FriendButton/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
@@ -223,6 +224,8 @@ useSubscription({
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
+    <FriendButton :username="username" :size="BtnSizesEnum.MD" />
+
     <Btn
       :size="BtnSizesEnum.MD"
       v-if="user.publicHangarStats"
@@ -265,6 +268,8 @@ useSubscription({
   >
     <template v-if="mobile" #actions-right>
       <BtnDropdown>
+        <FriendButton :username="username" />
+
         <Btn
           v-if="user.publicHangarStats"
           :to="{ name: 'hangar-public-stats' }"

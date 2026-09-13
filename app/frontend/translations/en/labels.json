@@ -2409,7 +2409,9 @@
         },
         "fleet": {
           "handle": "Fleet slug"
-        }
+        },
+        "requested": "Request sent",
+        "friend": "Friends"
       }
     }
   }

@@ -2393,7 +2393,9 @@
         },
         "fleet": {
           "handle": "Identificador de la flota"
-        }
+        },
+        "requested": "Solicitud enviada",
+        "friend": "Amigos"
       }
     }
   }

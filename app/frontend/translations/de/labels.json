@@ -2393,7 +2393,9 @@
         },
         "fleet": {
           "handle": "Flotten-Slug"
-        }
+        },
+        "requested": "Anfrage gesendet",
+        "friend": "Befreundet"
       }
     }
   }
