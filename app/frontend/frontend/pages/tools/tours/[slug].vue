@@ -79,23 +79,22 @@ watch(
 </script>
 
 <template>
-  <section v-if="tour" class="container">
+  <section v-if="tour">
     <BreadCrumbs :crumbs="crumbs" />
 
-    <Heading>
-      {{ tour.title }}
-      <template #actions-right>
-        <Btn
-          v-if="isOrganiser && inviteUrl"
-          :size="BtnSizesEnum.SM"
-          :variant="BtnVariantsEnum.GHOST"
-          data-test="tour-copy-invite"
-          @click="onCopyInvite"
-        >
-          {{ t("actions.payouts.copyInvite") }}
-        </Btn>
-      </template>
-    </Heading>
+    <div class="tour-header">
+      <Heading hero>{{ tour.title }}</Heading>
+
+      <Btn
+        v-if="isOrganiser && inviteUrl"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.GHOST"
+        data-test="tour-copy-invite"
+        @click="onCopyInvite"
+      >
+        {{ t("actions.payouts.copyInvite") }}
+      </Btn>
+    </div>
 
     <div class="tour-meta">
       <Pill>
@@ -104,7 +103,7 @@ watch(
         }}
       </Pill>
       <span v-if="tour.startsAt" class="tour-meta__date">
-        {{ l(tour.startsAt) }}
+        {{ l(tour.startsAt, "datetime.formats.dateTime") }}
       </span>
     </div>
 
@@ -122,6 +121,14 @@ watch(
 </template>
 
 <style lang="scss" scoped>
+.tour-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .tour-meta {
   display: flex;
   align-items: center;
