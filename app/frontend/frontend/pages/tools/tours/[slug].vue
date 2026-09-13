@@ -9,10 +9,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
 import PayoutLedger from "@/frontend/components/Payouts/PayoutLedger/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
@@ -82,19 +78,20 @@ watch(
   <section v-if="tour">
     <BreadCrumbs :crumbs="crumbs" />
 
-    <div class="tour-header">
-      <Heading hero>{{ tour.title }}</Heading>
-
+    <Teleport to="#header-right">
       <Btn
         v-if="isOrganiser && inviteUrl"
-        :size="BtnSizesEnum.SM"
-        :variant="BtnVariantsEnum.GHOST"
+        :aria-label="t('actions.payouts.copyInvite')"
         data-test="tour-copy-invite"
+        mobile-icon-only
         @click="onCopyInvite"
       >
-        {{ t("actions.payouts.copyInvite") }}
+        <i class="fa-light fa-link" />
+        <span>{{ t("actions.payouts.copyInvite") }}</span>
       </Btn>
-    </div>
+    </Teleport>
+
+    <Heading hero mb>{{ tour.title }}</Heading>
 
     <div class="tour-meta">
       <Pill>
@@ -121,14 +118,6 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-.tour-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
 .tour-meta {
   display: flex;
   align-items: center;

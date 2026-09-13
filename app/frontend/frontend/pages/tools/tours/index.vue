@@ -42,13 +42,19 @@ const crumbs = computed<Crumb[]>(() => [
   <section>
     <BreadCrumbs :crumbs="crumbs" />
 
-    <div class="tours-header">
-      <Heading hero>{{ t("headlines.payouts.tours.index") }}</Heading>
-
-      <Btn :to="{ name: 'tour-add' }" data-test="tour-add">
-        {{ t("actions.payouts.createTour") }}
+    <Teleport to="#header-right">
+      <Btn
+        :to="{ name: 'tour-add' }"
+        :aria-label="t('actions.payouts.createTour')"
+        data-test="tour-add"
+        mobile-icon-only
+      >
+        <i class="fa-light fa-plus" />
+        <span>{{ t("actions.payouts.createTour") }}</span>
       </Btn>
-    </div>
+    </Teleport>
+
+    <Heading hero mb>{{ t("headlines.payouts.tours.index") }}</Heading>
 
     <BaseTable
       :records="tours?.items ?? []"
@@ -79,13 +85,3 @@ const crumbs = computed<Crumb[]>(() => [
     </BaseTable>
   </section>
 </template>
-
-<style lang="scss" scoped>
-.tours-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-</style>

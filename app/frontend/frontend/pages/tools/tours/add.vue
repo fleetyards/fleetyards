@@ -85,7 +85,7 @@ const crumbs = computed<Crumb[]>(() => [
   <section>
     <BreadCrumbs :crumbs="crumbs" />
 
-    <Heading hero>{{ t("headlines.payouts.tours.create") }}</Heading>
+    <Heading hero mb>{{ t("headlines.payouts.tours.create") }}</Heading>
 
     <Panel>
       <PanelBody>
