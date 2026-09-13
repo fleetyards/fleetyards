@@ -685,7 +685,9 @@
         "carriedBy": "Puede ser transportada por",
         "landedLength": "Longitud aterrizado",
         "landedBeam": "Manga aterrizado",
-        "landedHeight": "Altura aterrizado"
+        "landedHeight": "Altura aterrizado",
+        "landedFleetchartOffsetLength": "Desplazamiento de longitud aterrizado",
+        "landedFleetchartOffsetBeam": "Desplazamiento de manga aterrizado"
       },
       "models": {
         "extraColumns": "Columnas",

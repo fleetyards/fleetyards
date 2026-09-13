@@ -35,6 +35,8 @@ module Shared
             landedHeightLabel: {type: :string},
             extendedFleetchartOffsetLength: {type: :number},
             extendedFleetchartOffsetBeam: {type: :number},
+            landedFleetchartOffsetLength: {type: :number},
+            landedFleetchartOffsetBeam: {type: :number},
             height: {type: :number},
             heightLabel: {type: :string},
             hydrogenFuelTankSize: {type: :number},

@@ -93,6 +93,8 @@
         "landedLength": "着陆长度",
         "landedBeam": "着陆宽度",
         "landedHeight": "着陆高度",
+        "landedFleetchartOffsetLength": "着陆舰队图长度偏移",
+        "landedFleetchartOffsetBeam": "着陆舰队图宽度偏移",
         "cargo": "货物",
         "baseModel": "基础型号",
         "scIdentifier": "SC Identifier"

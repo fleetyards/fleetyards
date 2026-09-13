@@ -685,7 +685,9 @@
         "carriedBy": "Può essere trasportata da",
         "landedLength": "Lunghezza a terra",
         "landedBeam": "Larghezza a terra",
-        "landedHeight": "Altezza a terra"
+        "landedHeight": "Altezza a terra",
+        "landedFleetchartOffsetLength": "Scostamento lunghezza atterrato",
+        "landedFleetchartOffsetBeam": "Scostamento larghezza atterrato"
       },
       "models": {
         "extraColumns": "Colonne",

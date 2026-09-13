@@ -13471,6 +13471,10 @@ components:
           type: number
         extendedFleetchartOffsetBeam:
           type: number
+        landedFleetchartOffsetLength:
+          type: number
+        landedFleetchartOffsetBeam:
+          type: number
         height:
           type: number
         heightLabel:
@@ -14754,6 +14758,14 @@ components:
           - number
           - 'null'
         landedHeight:
+          type:
+          - number
+          - 'null'
+        landedFleetchartOffsetLength:
+          type:
+          - number
+          - 'null'
+        landedFleetchartOffsetBeam:
           type:
           - number
           - 'null'

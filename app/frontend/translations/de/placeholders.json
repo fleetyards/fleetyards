@@ -93,6 +93,8 @@
         "landedLength": "Länge gelandet",
         "landedBeam": "Breite gelandet",
         "landedHeight": "Höhe gelandet",
+        "landedFleetchartOffsetLength": "Flottenübersicht-Versatz Länge gelandet",
+        "landedFleetchartOffsetBeam": "Flottenübersicht-Versatz Breite gelandet",
         "cargo": "Fracht",
         "baseModel": "Basismodell"
       },

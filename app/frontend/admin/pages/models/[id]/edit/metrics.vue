@@ -39,6 +39,9 @@ const initialValues = ref<ModelUpdateInput>({
   landedLength: props.model.metrics.landedLength,
   landedBeam: props.model.metrics.landedBeam,
   landedHeight: props.model.metrics.landedHeight,
+  landedFleetchartOffsetLength:
+    props.model.metrics.landedFleetchartOffsetLength,
+  landedFleetchartOffsetBeam: props.model.metrics.landedFleetchartOffsetBeam,
   extendedLength: props.model.metrics.extendedLength,
   extendedBeam: props.model.metrics.extendedBeam,
   extendedHeight: props.model.metrics.extendedHeight,
@@ -81,6 +84,10 @@ const [fleetchartOffsetBeam, fleetchartOffsetBeamProps] = defineField(
 const [landedLength, landedLengthProps] = defineField("landedLength");
 const [landedBeam, landedBeamProps] = defineField("landedBeam");
 const [landedHeight, landedHeightProps] = defineField("landedHeight");
+const [landedFleetchartOffsetLength, landedFleetchartOffsetLengthProps] =
+  defineField("landedFleetchartOffsetLength");
+const [landedFleetchartOffsetBeam, landedFleetchartOffsetBeamProps] =
+  defineField("landedFleetchartOffsetBeam");
 const [extendedLength, extendedLengthProps] = defineField("extendedLength");
 const [extendedBeam, extendedBeamProps] = defineField("extendedBeam");
 const [extendedHeight, extendedHeightProps] = defineField("extendedHeight");
@@ -321,6 +328,29 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
           name="landedHeight"
           :alignment="InputAlignmentsEnum.RIGHT"
           translation-key="model.landedHeight"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="landedFleetchartOffsetLength"
+          v-bind="landedFleetchartOffsetLengthProps"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          name="landedFleetchartOffsetLength"
+          translation-key="model.landedFleetchartOffsetLength"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="landedFleetchartOffsetBeam"
+          v-bind="landedFleetchartOffsetBeamProps"
+          name="landedFleetchartOffsetBeam"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          translation-key="model.landedFleetchartOffsetBeam"
           :suffix="t('number.units.distance')"
         />
       </div>

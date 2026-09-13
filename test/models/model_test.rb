@@ -42,6 +42,8 @@ require "test_helper"
 #  images_count                      :integer          default(0)
 #  in_game                           :boolean          default(FALSE), not null
 #  landed_beam                       :decimal(15, 2)
+#  landed_fleetchart_offset_beam     :decimal(15, 2)
+#  landed_fleetchart_offset_length   :decimal(15, 2)
 #  landed_height                     :decimal(15, 2)
 #  landed_length                     :decimal(15, 2)
 #  last_updated_at                   :datetime

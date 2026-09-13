@@ -180,6 +180,7 @@ module Admin
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
             :fleetchart_offset_beam, :extended_length, :extended_beam, :extended_height,
             :landed_length, :landed_beam, :landed_height,
+            :landed_fleetchart_offset_length, :landed_fleetchart_offset_beam,
             :extended_fleetchart_offset_length, :extended_fleetchart_offset_beam,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
             :quantum_fuel_tanks, :external_fuel_tanks, :refuel_boom, :store_image, :rsi_store_image, :holo, :brochure,

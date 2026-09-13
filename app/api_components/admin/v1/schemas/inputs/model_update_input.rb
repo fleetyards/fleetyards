@@ -54,6 +54,8 @@ module Admin
               landedLength: {type: [:number, :null]},
               landedBeam: {type: [:number, :null]},
               landedHeight: {type: [:number, :null]},
+              landedFleetchartOffsetLength: {type: [:number, :null]},
+              landedFleetchartOffsetBeam: {type: [:number, :null]},
               onSale: {type: :boolean},
               playerOwnable: {type: :boolean},
               storeUrl: {type: [:string, :null]},

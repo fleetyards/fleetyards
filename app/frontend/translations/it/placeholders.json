@@ -93,6 +93,8 @@
         "landedLength": "Lunghezza atterrato",
         "landedBeam": "Larghezza atterrato",
         "landedHeight": "Altezza atterrato",
+        "landedFleetchartOffsetLength": "Scostamento lunghezza atterrato",
+        "landedFleetchartOffsetBeam": "Scostamento larghezza atterrato",
         "cargo": "Carico",
         "baseModel": "Modello base",
         "scIdentifier": "SC Identifier"

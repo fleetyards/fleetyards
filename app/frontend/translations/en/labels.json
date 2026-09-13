@@ -682,7 +682,9 @@
         "carriedBy": "Can be carried by",
         "landedLength": "Landed length",
         "landedBeam": "Landed beam",
-        "landedHeight": "Landed height"
+        "landedHeight": "Landed height",
+        "landedFleetchartOffsetLength": "Landed Fleetchart Offset Length",
+        "landedFleetchartOffsetBeam": "Landed Fleetchart Offset Beam"
       },
       "models": {
         "extraColumns": "Columns",

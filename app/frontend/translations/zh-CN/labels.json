@@ -685,7 +685,9 @@
         "carriedBy": "可被搭载于",
         "landedLength": "着陆长度",
         "landedBeam": "着陆宽度",
-        "landedHeight": "着陆高度"
+        "landedHeight": "着陆高度",
+        "landedFleetchartOffsetLength": "着陆舰队图长度偏移",
+        "landedFleetchartOffsetBeam": "着陆舰队图宽度偏移"
       },
       "models": {
         "extraColumns": "列",

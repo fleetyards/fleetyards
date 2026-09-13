@@ -93,6 +93,8 @@
         "landedLength": "Landed Length",
         "landedBeam": "Landed Beam",
         "landedHeight": "Landed Height",
+        "landedFleetchartOffsetLength": "Landed Fleetchart Offset Length",
+        "landedFleetchartOffsetBeam": "Landed Fleetchart Offset Beam",
         "cargo": "Cargo",
         "baseModel": "Base Model"
       },

@@ -93,6 +93,8 @@
         "landedLength": "Longueur posé",
         "landedBeam": "Largeur posé",
         "landedHeight": "Hauteur posé",
+        "landedFleetchartOffsetLength": "Décalage de longueur posé",
+        "landedFleetchartOffsetBeam": "Décalage de largeur posé",
         "cargo": "Cargaison",
         "baseModel": "Modèle de base",
         "scIdentifier": "SC Identifier"

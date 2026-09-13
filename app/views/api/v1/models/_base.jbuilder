@@ -181,6 +181,8 @@ json.metrics do
   json.landed_height_label model.landed_height_label
   json.extended_fleetchart_offset_length model.extended_fleetchart_offset_length&.to_f
   json.extended_fleetchart_offset_beam model.extended_fleetchart_offset_beam&.to_f
+  json.landed_fleetchart_offset_length model.landed_fleetchart_offset_length&.to_f
+  json.landed_fleetchart_offset_beam model.landed_fleetchart_offset_beam&.to_f
   json.height model.height.to_f
   json.height_label model.height_label
   json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size&.to_f

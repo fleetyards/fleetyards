@@ -685,7 +685,9 @@
         "carriedBy": "Peut être transporté par",
         "landedLength": "Longueur au sol",
         "landedBeam": "Largeur au sol",
-        "landedHeight": "Hauteur au sol"
+        "landedHeight": "Hauteur au sol",
+        "landedFleetchartOffsetLength": "Décalage de longueur posé",
+        "landedFleetchartOffsetBeam": "Décalage de largeur posé"
       },
       "models": {
         "extraColumns": "Colonnes",

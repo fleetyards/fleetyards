@@ -685,7 +685,9 @@
         "carriedBy": "Wird getragen von",
         "landedLength": "Länge gelandet",
         "landedBeam": "Breite gelandet",
-        "landedHeight": "Höhe gelandet"
+        "landedHeight": "Höhe gelandet",
+        "landedFleetchartOffsetLength": "Flottenübersicht-Versatz Länge gelandet",
+        "landedFleetchartOffsetBeam": "Flottenübersicht-Versatz Breite gelandet"
       },
       "models": {
         "extraColumns": "Spalten",
