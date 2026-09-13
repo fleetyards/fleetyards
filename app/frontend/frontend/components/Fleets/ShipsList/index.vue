@@ -17,7 +17,6 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
-import debounce from "lodash.debounce";
 import { format } from "date-fns";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFilters } from "@/shared/composables/useFilters";
@@ -25,6 +24,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { FleetVehiclesChannel } from "@/services/fyCable/channels/FleetVehiclesChannel";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
@@ -92,11 +92,6 @@ watch(
   () => props.fleet,
   () => refetch(),
 );
-
-useSubscription({
-  channel: FleetVehiclesChannel,
-  received: () => debounce(refetch, 500),
-});
 
 const exportJson = async () => {
   try {
@@ -198,6 +193,13 @@ const {
   refetch: refetchVehicles,
   ...asyncStatus
 } = useFleetVehiclesQuery(fleetSlug, fleetVehiclesQueryParams);
+
+const refresh = useDebouncedRefresh(refetch);
+
+useSubscription({
+  channel: FleetVehiclesChannel,
+  received: refresh,
+});
 </script>
 
 <template>

@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -20,6 +19,7 @@ import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue
 import { useFilters } from "@/shared/composables/useFilters";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { FleetMembersChannel } from "@/services/fyCable/channels/FleetMembersChannel";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import {
   useFleetMembers as useFleetMembersQuery,
   useFleetMembersStats as useFleetMembersStatsQuery,
@@ -111,9 +111,11 @@ onUnmounted(() => {
   fleetMemberUpdateComlink.value();
 });
 
+const refresh = useDebouncedRefresh(fetch);
+
 useSubscription({
   channel: FleetMembersChannel,
-  received: () => debounce(fetch, 500),
+  received: refresh,
 });
 
 const crumbs = computed<Crumb[]>(() => {

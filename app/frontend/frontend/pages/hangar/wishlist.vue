@@ -17,7 +17,6 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { format } from "date-fns";
-import debounce from "lodash.debounce";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
@@ -34,6 +33,7 @@ import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -151,9 +151,11 @@ const showNewModal = () => {
   });
 };
 
+const refresh = useDebouncedRefresh(fetch);
+
 useSubscription({
   channel: HangarChannel,
-  received: () => debounce(fetch, 500),
+  received: refresh,
 });
 
 const exportJson = async () => {

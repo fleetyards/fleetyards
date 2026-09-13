@@ -22,7 +22,6 @@ import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
-import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   type HangarGroupMetric,
@@ -45,6 +44,7 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   useHangarStats as useHangarStatsQuery,
@@ -205,9 +205,11 @@ const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
   highlightedGroup.value = group.id;
 };
 
+const refresh = useDebouncedRefresh(fetch);
+
 useSubscription({
   channel: HangarChannel,
-  received: () => debounce(fetch, 500),
+  received: refresh,
 });
 
 const downloadExport = (exportedData: unknown, suffix: string) => {
