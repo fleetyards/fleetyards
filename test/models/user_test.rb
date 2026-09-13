@@ -22,6 +22,9 @@
 #  encrypted_otp_secret_salt :string
 #  encrypted_password        :string(255)      default(""), not null
 #  failed_attempts           :integer          default(0), not null
+#  friends_hangar            :boolean          default(FALSE), not null
+#  friends_hangar_stats      :boolean          default(FALSE), not null
+#  friends_wishlist          :boolean          default(FALSE), not null
 #  guilded                   :string
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null

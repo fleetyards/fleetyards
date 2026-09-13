@@ -22,6 +22,9 @@
 #  encrypted_otp_secret_salt :string
 #  encrypted_password        :string(255)      default(""), not null
 #  failed_attempts           :integer          default(0), not null
+#  friends_hangar            :boolean          default(FALSE), not null
+#  friends_hangar_stats      :boolean          default(FALSE), not null
+#  friends_wishlist          :boolean          default(FALSE), not null
 #  guilded                   :string
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
@@ -108,6 +111,7 @@ class User < ApplicationRecord
     only: %i[
       username email unconfirmed_email rsi_handle sale_notify public_hangar
       public_hangar_loaners public_wishlist hide_owner tester
+      friends_hangar friends_hangar_stats friends_wishlist
     ],
     if: ->(record) { record.author_id.present? },
     meta: {
@@ -346,6 +350,17 @@ class User < ApplicationRecord
   # Everyone this user has an accepted friendship with, as a relation over a
   # subquery rather than an array of ids -- the bulk visibility filters compose
   # it into their own queries.
+  # Whose hangar a given reader may see, as a scope rather than a predicate --
+  # the multi-hangar embed asks it of a list of usernames at once, and asking
+  # per user would be a query each. Mirrors `Public::UserPolicy#show?`, which is
+  # what every single-user path goes through.
+  scope :with_hangar_readable_by, ->(reader) {
+    readable = where(public_hangar: true)
+    next readable if reader.blank?
+
+    readable.or(where(friends_hangar: true, id: ::Friendship.partner_ids_for(reader)))
+  }
+
   def friends
     ::User.where(id: ::Friendship.partner_ids_for(self))
   end

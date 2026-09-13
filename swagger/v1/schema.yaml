@@ -23557,6 +23557,12 @@ components:
           type: boolean
         publicWishlistUrl:
           type: string
+        friendsHangar:
+          type: boolean
+        friendsHangarStats:
+          type: boolean
+        friendsWishlist:
+          type: boolean
         hideOwner:
           type: boolean
         tracking:
@@ -23600,6 +23606,9 @@ components:
       - publicHangarLoaners
       - publicHangarStats
       - publicWishlist
+      - friendsHangar
+      - friendsHangarStats
+      - friendsWishlist
       - hideOwner
       - tracking
       - twoFactorRequired
@@ -23819,6 +23828,12 @@ components:
         publicHangarStats:
           type: boolean
         publicWishlist:
+          type: boolean
+        friendsHangar:
+          type: boolean
+        friendsHangarStats:
+          type: boolean
+        friendsWishlist:
           type: boolean
         hideOwner:
           type: boolean

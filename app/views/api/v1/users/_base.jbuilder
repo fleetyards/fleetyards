@@ -32,6 +32,9 @@ json.public_hangar_loaners user.public_hangar_loaners
 json.public_hangar_stats user.public_hangar_stats
 json.public_wishlist user.public_wishlist
 json.public_wishlist_url user.public_wishlist_url
+json.friends_hangar user.friends_hangar
+json.friends_hangar_stats user.friends_hangar_stats
+json.friends_wishlist user.friends_wishlist
 json.hide_owner user.hide_owner
 json.tracking user.tracking
 

@@ -1781,6 +1781,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_140400) do
     t.string "encrypted_otp_secret_salt"
     t.string "encrypted_password", limit: 255, default: "", null: false
     t.integer "failed_attempts", default: 0, null: false
+    t.boolean "friends_hangar", default: false, null: false
+    t.boolean "friends_hangar_stats", default: false, null: false
+    t.boolean "friends_wishlist", default: false, null: false
     t.string "guilded"
     t.datetime "hangar_updated_at", precision: nil
     t.boolean "hide_owner", default: false, null: false
