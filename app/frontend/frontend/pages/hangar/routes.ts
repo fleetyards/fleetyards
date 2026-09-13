@@ -59,6 +59,8 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar-transfers-outgoing",
     component: () => import("@/frontend/pages/hangar/transfers.vue"),
     meta: {
+      nav: "hidden",
+      activeTab: "hangar-transfers",
       needsAuthentication: true,
       title: "hangar.transfers",
       backgroundImage: "bg-5",
@@ -83,6 +85,8 @@ export const routes: RouteRecordRaw[] = [
     name: "hangar-transactions",
     component: () => import("@/frontend/pages/hangar/inventories/index.vue"),
     meta: {
+      nav: "hidden",
+      activeTab: "hangar-inventories",
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
@@ -108,6 +112,8 @@ export const routes: RouteRecordRaw[] = [
     component: () =>
       import("@/frontend/pages/hangar/inventories/[inventory].vue"),
     meta: {
+      nav: "hidden",
+      activeTab: "hangar-inventory",
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",

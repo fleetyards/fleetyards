@@ -22,7 +22,11 @@ const { isFeatureEnabled } = useFeatures();
 // until the flag is on, so showing it would only offer a dead end.
 const tabs = computed(() =>
   vehicleRoutes.filter(
-    (tab) => !tab.meta?.feature || isFeatureEnabled(tab.meta.feature),
+    (tab) =>
+      // A route reached from a tab rather than being one -- the cargo ledger is
+      // the same hold, seen differently.
+      tab.meta?.nav !== "hidden" &&
+      (!tab.meta?.feature || isFeatureEnabled(tab.meta.feature)),
   ),
 );
 
