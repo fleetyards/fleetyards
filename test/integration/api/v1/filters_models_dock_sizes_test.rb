@@ -19,9 +19,14 @@ class Api::V1::FiltersModelsDockSizesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /filters/models/dock-sizes returns filter options" do
+  # The values have to be the enum names. A count-only assertion let the option
+  # list drift to the integers behind them, which matched no model's dock_size
+  # and left the admin select reading "No Option selected" on every ship.
+  test "GET /filters/models/dock-sizes returns the enum names as values" do
     assert_api_response :get, 200 do
-      assert_operator parsed_body.count, :>, 0
+      values = parsed_body.map { |filter| filter["value"] }
+
+      assert_equal Model.dock_sizes.keys, values
     end
   end
 end

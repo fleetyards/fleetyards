@@ -591,12 +591,15 @@ class Model < ApplicationRecord
     end
   end
 
+  # The key, not the integer behind it. `dock_size` is a Rails enum, so the
+  # payload and the update input both speak in names -- an option carrying `2`
+  # matches nothing on the way in and is rejected as a non-string on the way out.
   def self.dock_size_filters
-    Model.dock_sizes.map do |key, item|
+    Model.dock_sizes.keys.map do |key|
       Filter.new(
         category: "dock_size",
         label: key.humanize,
-        value: item
+        value: key
       )
     end
   end
