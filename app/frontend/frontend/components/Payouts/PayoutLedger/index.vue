@@ -86,6 +86,12 @@ const refetchAll = () => {
 // rather than a subscription scoped to this ledger.
 useSubscription<PayoutLedgerMessage>({
   channelName: ChannelsEnum.PAYOUT_LEDGER_CHANNEL,
+  // Nothing replays what was broadcast while the socket was down, and the
+  // queries do not refetch on focus, so a dropped connection would leave the
+  // page showing figures that have moved on. Resyncing on every connect covers
+  // the reconnects and the gap between the first fetch and the subscription
+  // being live; the queries dedupe the one on mount.
+  connected: refetchAll,
   received: (message) => {
     if (message?.id !== props.payoutLedgerId) {
       return;
