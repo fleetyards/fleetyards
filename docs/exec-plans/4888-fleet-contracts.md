@@ -366,16 +366,30 @@ breakdown included.
 
 - **2026-09-13** Initial research and plan creation. Confirmed with the user: transport runs between two
   fleet inventories; a lead claims and approves crew; the reward splits by delivered quantity.
+- **2026-09-13** What the build corrected, recorded rather than fixed silently:
+  - **A member cannot name a fleet inventory from the hangar mount.** #4878's two mount points
+    resolve a *fleet* inventory only against the party the mount acts for, so "my inventory → a
+    fleet inventory, immediately" — case 5 of that change's own table — is not reachable over HTTP
+    from either side. A delivery therefore addresses the **fleet**, and the fleet says where it
+    lands. That is the better behaviour for a contract anyway (the receiving side confirms), and
+    `Contracts::Progress` still only counts it if it lands in the inventory the contract named. Not
+    worked around here; it belongs to #4881.
+  - **`FleetEvent`'s slug shape is a bug to avoid, not a pattern to copy.** It prefixes the slug
+    with the first segment of the id inside a `before_save`, where the id is still nil on create —
+    the database generates it — so the prefix appears on the *second* save and the URL moves under
+    anyone holding the first one. Contracts use `Mission`'s plain `generate_slug(title)`.
+  - **Frontend i18n interpolates `%{value}`, not `{value}`.** Nothing validates placeholders, so
+    the wrong form renders literally; the component spec is what caught it.
 - **2026-09-13** Corrected the base. The plan had assumed #2640 was unbuilt and that its ledger would
   land here; it is in fact built and reviewed on #4882, which is `CONFLICTING` with main. The money side
   became a follow-up on that branch (D5) rather than a second money table or a diamond base.
 
 ## Progress
 
-- [ ] Phase 1 — Schema
-- [ ] Phase 2 — Models
-- [ ] Phase 3 — Progress
-- [ ] Phase 4 — Permissions, flag, notifications
-- [ ] Phase 5 — API
-- [ ] Phase 6 — Frontend
-- [ ] Phase 7 — Tests
+- [x] Phase 1 — Schema
+- [x] Phase 2 — Models
+- [x] Phase 3 — Progress
+- [x] Phase 4 — Permissions, flag, notifications
+- [x] Phase 5 — API
+- [x] Phase 6 — Frontend
+- [x] Phase 7 — Tests
