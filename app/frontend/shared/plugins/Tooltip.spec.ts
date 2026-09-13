@@ -228,6 +228,40 @@ describe("v-tooltip", () => {
       expect(visibleTooltips()).toHaveLength(0);
     });
 
+    /*
+     * The case the media query alone gets wrong. A touchscreen laptop reports
+     * `hover: hover`, because that describes its *primary* pointer -- so a
+     * finger tap would take the desktop path and the tooltip would be
+     * unreachable by exactly the gesture that cannot hover.
+     */
+    it("follows the finger on a device that also has a mouse", async () => {
+      hoverless(false);
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(
+        new PointerEvent("pointerdown", { pointerType: "touch" }),
+      );
+      el.dispatchEvent(new Event("click"));
+      await nextFrame();
+
+      expect(visibleTooltips()).toHaveLength(1);
+    });
+
+    it("still hovers with the mouse on that same device", async () => {
+      hoverless(false);
+      const { el } = mountAnchor();
+
+      el.dispatchEvent(
+        new PointerEvent("pointerover", { pointerType: "mouse" }),
+      );
+      el.dispatchEvent(new Event("mouseenter"));
+      await nextFrame();
+      expect(visibleTooltips()).toHaveLength(1);
+
+      el.dispatchEvent(new Event("click"));
+      expect(visibleTooltips()).toHaveLength(0);
+    });
+
     it("still closes on click where hover works", async () => {
       hoverless(false);
       const { el } = mountAnchor();

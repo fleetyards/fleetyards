@@ -187,6 +187,8 @@ interface TooltipState {
   leaveHandler: () => void;
   clickHandler: () => void;
   focusHandler: () => void;
+  pointerHandler: (event: PointerEvent) => void;
+  pointerType: string;
   fadeFrame: number;
   hideTimer: number;
   anchorRect: DOMRect | null;
@@ -351,6 +353,8 @@ function cleanup(el: HTMLElement) {
 
   if (activeEl === el) deactivate();
 
+  el.removeEventListener("pointerover", state.pointerHandler);
+  el.removeEventListener("pointerdown", state.pointerHandler);
   el.removeEventListener("mouseenter", state.showHandler);
   el.removeEventListener("mouseleave", state.leaveHandler);
   el.removeEventListener("pointerleave", state.leaveHandler);
@@ -375,13 +379,26 @@ function cleanup(el: HTMLElement) {
  * leaves while the finger is still down, so `pointerleave` lands before
  * `mouseenter`, and `click` then toggles off what `mouseenter` had just opened.
  *
- * Guarded for jsdom, which has no `matchMedia`.
+ * Decided per interaction, from the pointer that started it. `(hover: none)`
+ * describes the device's *primary* pointer, so a touchscreen laptop reports
+ * `hover: hover` for its mouse and would send a finger tap down the desktop
+ * path -- leaving the tooltip unreachable for exactly the gesture that cannot
+ * hover. The media query stays as the fallback for anything that never
+ * reported a pointer type at all.
  */
-function hoverless() {
+function hoverlessDevice() {
   return (
     typeof window.matchMedia === "function" &&
     window.matchMedia("(hover: none)").matches
   );
+}
+
+function hoverless(state: TooltipState) {
+  if (state.pointerType) {
+    return state.pointerType === "touch";
+  }
+
+  return hoverlessDevice();
 }
 
 // Pointer focus already gets the tooltip from `mouseenter`; showing it on every
@@ -405,14 +422,14 @@ const vTooltip: Directive = {
       tooltipEl: null,
       options,
       showHandler: () => {
-        if (!hoverless()) show(el);
+        if (!hoverless(state)) show(el);
       },
       hideHandler: () => hide(el),
       leaveHandler: () => {
-        if (!hoverless()) hide(el);
+        if (!hoverless(state)) hide(el);
       },
       clickHandler: () => {
-        if (!hoverless()) {
+        if (!hoverless(state)) {
           hide(el);
           return;
         }
@@ -423,6 +440,12 @@ const vTooltip: Directive = {
           show(el);
         }
       },
+      // `pointerover` covers a mouse arriving, `pointerdown` a finger landing;
+      // both run before the synthetic mouse events the handlers above see.
+      pointerHandler: (event: PointerEvent) => {
+        state.pointerType = event.pointerType || "";
+      },
+      pointerType: "",
       focusHandler: () => {
         if (isKeyboardFocus(el)) show(el);
       },
@@ -433,6 +456,8 @@ const vTooltip: Directive = {
 
     stateMap.set(el, state);
 
+    el.addEventListener("pointerover", state.pointerHandler);
+    el.addEventListener("pointerdown", state.pointerHandler);
     el.addEventListener("mouseenter", state.showHandler);
     el.addEventListener("mouseleave", state.leaveHandler);
     el.addEventListener("pointerleave", state.leaveHandler);
