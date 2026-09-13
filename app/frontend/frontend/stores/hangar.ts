@@ -1,4 +1,5 @@
 import { type ShipListState } from "@/frontend/types";
+import { HangarSyncUnmatchedActionEnum } from "@/services/fyApi";
 import { defineStore } from "pinia";
 
 export enum HangarTableViewImageColsEnum {
@@ -35,6 +36,8 @@ interface HangarState extends ShipListState {
   syncModalOpen: boolean;
   syncRunning: boolean;
   syncAddBundledVehicles: boolean;
+  syncUnmatchedVehiclesAction: HangarSyncUnmatchedActionEnum;
+  syncUnmatchedHangarGroupId?: string;
   tableViewImageCols: HangarTableViewImageColsEnum[];
   tableViewCols: HangarTableViewColsEnum[];
 }
@@ -52,6 +55,8 @@ export const useHangarStore = defineStore("hangar", {
     syncModalOpen: false,
     syncRunning: false,
     syncAddBundledVehicles: true,
+    syncUnmatchedVehiclesAction: HangarSyncUnmatchedActionEnum.WISHLIST,
+    syncUnmatchedHangarGroupId: undefined,
     tableViewImageCols: [
       HangarTableViewImageColsEnum.STORE_IMAGE,
       HangarTableViewImageColsEnum.ANGLED_VIEW,
@@ -117,6 +122,8 @@ export const useHangarStore = defineStore("hangar", {
       "tableViewImageCols",
       "tableViewCols",
       "syncAddBundledVehicles",
+      "syncUnmatchedVehiclesAction",
+      "syncUnmatchedHangarGroupId",
     ],
   },
 });

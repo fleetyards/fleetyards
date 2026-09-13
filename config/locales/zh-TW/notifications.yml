@@ -21,6 +21,9 @@ zh-TW:
         imported_vehicles: 已新增的飛船
         found_vehicles: 已找到的飛船
         moved_vehicles_to_wanted: 已移至願望清單的飛船
+        deleted_vehicles: 已刪除的飛船
+        grouped_vehicles: 已歸入分組的飛船
+        unchanged_vehicles: 保持不變的飛船
         imported_components: 已新增的元件
         found_components: 已找到的元件
         imported_upgrades: 已新增的升級

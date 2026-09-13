@@ -21,6 +21,9 @@ zh-CN:
         imported_vehicles: 已添加的飞船
         found_vehicles: 已找到的飞船
         moved_vehicles_to_wanted: 已移至愿望清单的飞船
+        deleted_vehicles: 已删除的飞船
+        grouped_vehicles: 已归入分组的飞船
+        unchanged_vehicles: 保持不变的飞船
         imported_components: 已添加的组件
         found_components: 已找到的组件
         imported_upgrades: 已添加的升级
