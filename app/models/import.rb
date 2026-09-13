@@ -68,11 +68,15 @@ class Import < ApplicationRecord
 
   validates :unmatched_vehicles_action, inclusion: {in: UNMATCHED_VEHICLES_ACTIONS}
 
-  # Only meaningful for the action that needs one: every other action ignores
-  # the group, and a stale id left over from a switched radio is not an error.
-  validates :unmatched_hangar_group_id,
-    presence: true,
-    if: -> { unmatched_vehicles_action == "group" }
+  # `unmatched_hangar_group_id` is deliberately not validated against the action
+  # that uses it. The foreign key nullifies rather than cascading, so deleting
+  # the group between queueing a sync and running one would leave a `group`
+  # import that no longer validates -- and every lifecycle write goes through
+  # one: `start!` would refuse, leaving the row in `created` where
+  # `running_hangar_import?` blocks every later sync, and the rescue path's
+  # `fail!` would refuse for the same reason. The request boundary normalises
+  # the pairing instead, and the run treats a vanished group as "leave them
+  # alone".
 
   # An import that entered `started` and is still there long after any run would
   # have finished. Not a state of its own: the job died without ever reaching

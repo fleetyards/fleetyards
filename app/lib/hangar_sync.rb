@@ -338,12 +338,18 @@ class HangarSync < HangarImporter
     # had not reached yet still looks unmatched. Acting on those would make
     # stopping a sync worse than letting it finish -- and under `delete` it
     # would take the hangar with it.
-    return outcome if @cancelled
+    #
+    # `@cancelled` alone is not enough: it is only set at the ship loop's
+    # checkpoints, so a cancel landing after the last one leaves it false while
+    # the row already says cancelled. That gap was survivable while the only
+    # outcome was a wishlist move the user could undo by hand. It is not
+    # survivable under `delete`, so the row is read once more here.
+    return outcome if @cancelled || @import&.cancel_requested?
 
     case @import&.unmatched_vehicles_action
     when "keep" then outcome.merge(unchanged_vehicles: scope.pluck(:id))
     when "delete" then outcome.merge(deleted_vehicles: delete_unmatched(scope))
-    when "group" then outcome.merge(grouped_vehicles: group_unmatched(scope))
+    when "group" then outcome.merge(group_unmatched(scope))
     else outcome.merge(moved_vehicles_to_wanted: move_unmatched_to_wanted(scope))
     end
   end
@@ -384,18 +390,21 @@ class HangarSync < HangarImporter
   # work through by hand, not to decide anything about those ships -- and
   # `wanted` is not available to it either way, because a wishlisted vehicle
   # drops its groups on save.
+  #
+  # The group can be gone by the time the run reaches this: the foreign key
+  # nullifies rather than cascading, so deleting it between queueing a sync and
+  # running one leaves the action behind without its target. The ships are left
+  # alone and reported as such -- calling them filed somewhere they are not
+  # would be the one answer worse than doing nothing.
   private def group_unmatched(scope)
     group_id = @import&.unmatched_hangar_group_id
     vehicle_ids = scope.pluck(:id)
 
-    # `Import` validates the pairing, so a missing group is a guard rather than
-    # a path -- and reporting ships as filed when nothing was filed would be a
-    # worse answer than reporting none.
-    return [] if group_id.blank?
+    return {unchanged_vehicles: vehicle_ids} if group_id.blank?
 
     file_into_group(vehicle_ids, group_id)
 
-    vehicle_ids
+    {grouped_vehicles: vehicle_ids}
   end
 
   private def sync_components(user_id)

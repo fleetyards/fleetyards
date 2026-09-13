@@ -61,15 +61,26 @@ silent no-op, and the user never learns which ships the sync failed to find.
   `imports`.
 - `Import::UNMATCHED_VEHICLES_ACTIONS` as a string-backed enum, so `output` and
   the admin imports table read as words rather than integers.
-- `Imports::HangarSync` validates that `group` carries a group.
+- The action is validated for inclusion; the group deliberately is **not**
+  validated against it. The foreign key nullifies, so deleting the group
+  between queueing a sync and running one would leave a `group` import that no
+  longer validates — and every lifecycle write goes through one. `start!` would
+  refuse, leaving the row in `created` where `running_hangar_import?` blocks
+  every later sync, and the rescue path's `fail!` would refuse for the same
+  reason. The request boundary normalises the pairing instead.
 
 ### 2. The run
 
 - `HangarSync#sync_vehicles` branches on `@import.unmatched_vehicles_action`.
-- The `@cancelled` guard stays in front of all four: a run that stopped early
+- The cancellation guard stays in front of all four: a run that stopped early
   never saw the rest of the pledge list, so every vehicle it had not reached yet
   still looks unmatched. That was already true of the wishlist move; it is
   data loss under `delete`.
+- `@cancelled` alone is not enough for that. It is only set at the ship loop's
+  checkpoints, so a cancel landing after the last one leaves it false while the
+  row already says cancelled. Survivable while the outcome was a wishlist move
+  the user could undo; not survivable under `delete`, so the row is read once
+  more immediately before reconciliation.
 - `delete` reads the names before it deletes, sets `notify: false` the way
   `destroy_bulk` does, and goes through `Vehicle.delete_with_dependents` — a
   plain `destroy_all` leaves `vehicle_loadouts` behind and raises on the FK.
@@ -100,7 +111,9 @@ silent no-op, and the user never learns which ships the sync failed to find.
 ## Tests
 
 - Loader: one test per action, plus a cancelled run under `delete` leaving
-  everything alone, plus a re-sync under `group` not stacking task forces.
+  everything alone, a cancel landing after the last checkpoint doing the same,
+  a group deleted since the run was queued leaving the ships alone and the
+  import still finishing, and a re-sync under `group` not stacking task forces.
 - Endpoint: the choice is recorded; an absent action still moves to the wishlist;
   a `group` action with someone else's group id does not reach that group.
 - Vitest: the modal sends the store's values, the group picker is conditional.

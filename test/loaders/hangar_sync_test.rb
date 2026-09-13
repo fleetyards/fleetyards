@@ -188,6 +188,29 @@ class HangarSyncTest < ActiveSupport::TestCase
       refute_includes result[:deleted_vehicles], wishlisted.name
     end
 
+    # The group can go between queueing a sync and running one -- the foreign key
+    # nullifies rather than cascading. The run has to stay harmless and the
+    # import has to still finish, rather than sticking in a state that blocks
+    # every later sync.
+    test "leaves them alone when the group has gone since the run was queued" do
+      group = HangarGroup.create!(user_id: @user.id, name: "Sort me out", color: "#ffffff")
+      import = ::Imports::HangarSync.create!(
+        user_id: @user.id, input: @input,
+        unmatched_vehicles_action: "group", unmatched_hangar_group_id: group.id
+      )
+
+      group.destroy!
+
+      assert_nil import.reload.unmatched_hangar_group_id
+
+      result = ::HangarSync.new(@input).run_with_import(import)
+
+      assert_equal [@jav_ship.id], result[:unchanged_vehicles]
+      assert_equal [], result[:grouped_vehicles]
+      refute_predicate @jav_ship.reload, :wanted?
+      assert_predicate import.reload, :finished?
+    end
+
     # Stopping a sync is how a user gets out of a scrape that came back short.
     # Under `delete` an unreached vehicle is not recoverable, so the guard that
     # already covered the wishlist move has to cover this too.
@@ -200,6 +223,25 @@ class HangarSyncTest < ActiveSupport::TestCase
 
         import.request_cancel!
         @cancelled = true
+      end
+
+      sync.run_with_import(import)
+
+      assert Vehicle.exists?(@jav_ship.id)
+    end
+
+    # `@cancelled` is only set at the ship loop's checkpoints, so a cancel that
+    # lands after the last one leaves it false while the row already says
+    # cancelled. Simulated by cancelling from the call immediately before
+    # reconciliation, which is the one window no checkpoint covers.
+    test "a cancel landing after the last checkpoint still deletes nothing" do
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: @input, unmatched_vehicles_action: "delete")
+
+      sync = ::HangarSync.new(@input)
+      sync.define_singleton_method(:assign_target_group) do |vehicle_ids|
+        import.request_cancel!
+
+        super(vehicle_ids)
       end
 
       sync.run_with_import(import)
