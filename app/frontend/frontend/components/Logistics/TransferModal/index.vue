@@ -156,9 +156,16 @@ const memberFleet = ref<string | undefined>(props.memberFleets[0]?.value);
 // Searched on the server, not filtered out of one fixed page. A fleet can hold
 // hundreds of members, and fetching the first hundred made everybody after them
 // unreachable -- they could not be found because they were never fetched.
+//
+// `transferTargets` narrows the roster to the members who could actually
+// receive, which is the same question `TransferGate` asks on the way in. It has
+// to be the API's answer rather than a filter here for the same reason the
+// search is: the list is paged, and thinning a page client-side would hide
+// people the next page never reaches.
 const fetchMembers = (params: BaseSelectParams<FilterOption>) =>
   fleetMembers(memberFleet.value ?? "", {
     q: { usernameCont: params.search || undefined },
+    transferTargets: true,
   });
 
 // The person list lives in the select rather than in `targetOptions`, so the

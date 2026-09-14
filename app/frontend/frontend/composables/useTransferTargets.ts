@@ -36,10 +36,17 @@ type Options = {
 // picker and the gate agree on who counts: a fleet in common, a friendship, or
 // -- when sending on a fleet's behalf -- an alliance.
 //
-// Fleets are filtered on whether the feature is *available* to them, never on
-// whether the gate would admit this sender: a policy or a standing denial must
-// not be readable from an option going missing. People are not filtered --
-// another user's flags are not ours to read.
+// Both sides are filtered on whether the feature is *available* to the party,
+// never on whether the gate would admit this sender: a policy or a standing
+// denial must not be readable from an option going missing.
+//
+// For people that filtering is the API's, through `transferTargets` on the two
+// group endpoints, and it does make one person's feature flags legible from
+// another's picker. The trade was made deliberately: `TransferGate` already
+// answers the same fact one refused send at a time, and a name that can only be
+// picked to be told "this person cannot receive" is worse than a name that was
+// never offered.
+
 // The value the group picker uses for "my friends" rather than a fleet slug.
 // Not a slug any fleet can have: slugs are lowercased alphanumerics.
 export const FRIENDS_GROUP = "@friends";
@@ -126,7 +133,7 @@ export const useTransferTargets = (options: Options) => {
   // Accepted friendships, for the party picker. Only for a reader sending as
   // themselves: a fleet has no friends.
   const { data: friends } = useFriends(
-    computed(() => ({ state: "accepted" as const })),
+    computed(() => ({ state: "accepted" as const, transferTargets: true })),
     {
       query: {
         enabled: computed(
@@ -166,9 +173,10 @@ export const useTransferTargets = (options: Options) => {
     ...allyTargets.value,
   ]);
 
-  // Where a person can be picked out of. Not filtered on transfer flags the way
-  // `fleetTargets` is: those gate sending to the *fleet*, and this is about
-  // finding a person who happens to be in it.
+  // Where a person can be picked out of. The *groups* are not filtered on
+  // transfer flags the way `fleetTargets` is -- those gate sending to the fleet
+  // itself, and this is about finding a person who happens to be in it. The
+  // people inside them are, by the endpoints the pickers read.
   //
   // This list is the grouping, and it is the extension point: a friends list,
   // or any other way of knowing somebody, becomes another entry here rather
