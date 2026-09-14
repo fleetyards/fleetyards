@@ -16,7 +16,7 @@ export const useFilters = <T>({
   // route query into `q`, and the query schemas are `additionalProperties:
   // false` -- so a key like this reaches the API as an unknown filter and comes
   // back a 400, which reads as a server error.
-  const viewStateKeys = ["tab"];
+  const viewStateKeys = ["tab", "view", "direction"];
 
   const excludeKeys = [
     ...defaultIgnoreKeys,
@@ -75,6 +75,20 @@ export const useFilters = <T>({
 
   const router = useRouter();
 
+  /*
+   * View state is excluded from `getQuery` because it is not a filter -- but it
+   * still belongs in the URL, so every navigation this composable makes has to
+   * carry it back. Without this, filtering a list dropped the tab it was on and
+   * the page fell back to its default view.
+   */
+  const viewState = computed(() =>
+    Object.fromEntries(
+      Object.entries(route.query).filter(([key]) =>
+        viewStateKeys.includes(key),
+      ),
+    ),
+  );
+
   const hasOnlyPageQuery = computed(() => {
     return Object.keys(route.query).length === 1 && route.query.page;
   });
@@ -92,6 +106,7 @@ export const useFilters = <T>({
         hash: undefined,
         query: {
           ...query,
+          ...viewState.value,
           page: shouldResetPage(query) ? undefined : route.query.page,
         },
       })
@@ -102,7 +117,8 @@ export const useFilters = <T>({
     router
       .replace({
         ...route,
-        query: {},
+        // Clearing the filters is not leaving the view they were set in.
+        query: { ...viewState.value },
       })
 
       .catch(() => {});

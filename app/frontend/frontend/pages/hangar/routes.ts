@@ -55,17 +55,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // Was a route of its own; the view moved into the query so switching
+    // to it keeps the page. The path stays so shared links resolve.
     path: "transfers/outgoing/",
-    name: "hangar-transfers-outgoing",
-    component: () => import("@/frontend/pages/hangar/transfers.vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "hangar-transfers",
-      needsAuthentication: true,
-      title: "hangar.transfers",
-      backgroundImage: "bg-5",
-      feature: FeatureFlagName.INVENTORY_TRANSFERS,
-    },
+    redirect: (to) => ({
+      name: "hangar-transfers",
+      params: to.params,
+      query: { ...to.query, direction: "outgoing" },
+    }),
   },
   {
     path: "inventories/",
@@ -79,19 +76,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    // Not `inventories/transactions`: an inventory slugged "transactions" would
-    // shadow it.
+    // Was a route of its own; the view moved into the query so switching
+    // to it keeps the page. The path stays so shared links resolve.
     path: "transactions/",
-    name: "hangar-transactions",
-    component: () => import("@/frontend/pages/hangar/inventories/index.vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "hangar-inventories",
-      needsAuthentication: true,
-      title: "hangar.inventories",
-      backgroundImage: "bg-5",
-      feature: FeatureFlagName.HANGAR_INVENTORIES,
-    },
+    redirect: (to) => ({
+      name: "hangar-inventories",
+      params: to.params,
+      query: { ...to.query, tab: "log" },
+    }),
   },
   {
     path: "inventories/:inventory/",
@@ -106,19 +98,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    // The ledger is a place you can link somebody to, so it is a route.
+    // Was a route of its own; the view moved into the query so switching
+    // to it keeps the page. The path stays so shared links resolve.
     path: "inventories/:inventory/transactions/",
-    name: "hangar-inventory-transactions",
-    component: () =>
-      import("@/frontend/pages/hangar/inventories/[inventory].vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "hangar-inventory",
-      needsAuthentication: true,
-      title: "hangar.inventories",
-      backgroundImage: "bg-5",
-      feature: FeatureFlagName.HANGAR_INVENTORIES,
-    },
+    redirect: (to) => ({
+      name: "hangar-inventory",
+      params: to.params,
+      query: { ...to.query, tab: "log" },
+    }),
   },
   {
     path: "inventories/:inventory/items/:item/",

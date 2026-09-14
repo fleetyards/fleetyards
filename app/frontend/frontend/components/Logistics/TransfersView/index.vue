@@ -23,18 +23,13 @@ type Props = {
   crumbs: Crumb[];
   // Present when the page acts for a fleet; absent for a user's own transfers.
   fleetSlug?: string;
-  incomingRoute: string;
-  outgoingRoute: string;
 };
 
 const props = withDefaults(defineProps<Props>(), { fleetSlug: undefined });
 
 const { t } = useI18n();
 
-const { direction } = useTransferDirection({
-  incoming: props.incomingRoute,
-  outgoing: props.outgoingRoute,
-});
+const { direction } = useTransferDirection();
 
 const { isFilterSelected, getQuery } = useTransferFilters();
 
@@ -64,8 +59,8 @@ const DIRECTIONS = ["incoming", "outgoing"] as const;
     name="inventory-transfers"
     :records="transfers"
     :async-status="asyncStatus"
-    placeholders
     :hide-empty="true"
+    placeholders
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
@@ -97,9 +92,10 @@ const DIRECTIONS = ["incoming", "outgoing"] as const;
       </BtnGroup>
     </template>
 
-    <template #default>
+    <template #default="{ emptyVisible }">
       <TransferTable
         :transfers="transfers"
+        :empty-visible="emptyVisible"
         :direction="direction"
         :loading="isLoading"
         :busy="busy"

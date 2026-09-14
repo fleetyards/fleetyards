@@ -36,15 +36,8 @@ type FrontendSimpleRoutes =
   | "hangar-fleetchart"
   | "hangar-stats"
   | "hangar-imports"
-  | "hangar-transactions"
-  | "hangar-inventory-transactions"
-  | "hangar-vehicle-cargo-transactions"
-  | "fleet-logistics-transactions"
-  | "fleet-logistics-inventory-transactions"
   | "hangar-transfers"
   | "fleet-logistics-transfers"
-  | "hangar-transfers-outgoing"
-  | "fleet-logistics-transfers-outgoing"
   | "hangar-inventories"
   | "hangar-inventory"
   // Fleets
@@ -96,7 +89,6 @@ export type FrontendRouteLocation =
   | ParamRoute<"fleet-fleetchart", SlugParams>
   | ParamRoute<"fleet-members", SlugParams>
   | ParamRoute<"fleet-members-index", SlugParams>
-  | ParamRoute<"fleet-members-invites", SlugParams>
   | ParamRoute<"fleet-settings", SlugParams>
   | ParamRoute<"fleet-settings-membership", SlugParams>
   | ParamRoute<"fleet-settings-fleet", SlugParams>

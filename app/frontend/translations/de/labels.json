@@ -435,7 +435,11 @@
           },
           "contact": "Kontakt",
           "spectrumDm": "Nachricht auf Spectrum",
-          "discordContact": "Discord"
+          "discordContact": "Discord",
+          "views": {
+            "members": "Mitglieder",
+            "invites": "Einladungen"
+          }
         },
         "roles": {
           "permanent": "Permanent",

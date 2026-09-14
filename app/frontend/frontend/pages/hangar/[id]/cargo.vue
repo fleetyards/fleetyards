@@ -54,10 +54,7 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const vehicleId = computed(() => props.vehicle.id);
 
-const { activeTab } = useLedgerTab({
-  stock: "hangar-vehicle-cargo",
-  log: "hangar-vehicle-cargo-transactions",
-});
+const { activeTab } = useLedgerTab();
 
 const target = computed<InventoryTarget>(() => ({
   kind: "vehicle",

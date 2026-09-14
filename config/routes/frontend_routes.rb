@@ -17,6 +17,45 @@ namespace :frontend, **frontend_options do
   get "ships/:slug/images", to: "base#model_images", as: :model_images
   get "ships/:slug/videos", to: "base#model_videos", as: :model_videos
 
+  # Views that used to be paths of their own and are query state now. Every one
+  # of them is live -- shared, bookmarked, and in the invite list's case in mail
+  # that has already gone out -- so the server answers it, rather than letting
+  # the app load and bounce.
+  #
+  # Declared above `hangar/:username`, which matches any single segment and
+  # renders the app shell even for a username nobody has: below it,
+  # `hangar/transactions` would answer 200 and never redirect.
+  {
+    "hangar/transactions" => ["tab=log", ->(_params) { "/hangar/inventories/" }],
+    "hangar/transfers/outgoing" => ["direction=outgoing", ->(_params) { "/hangar/transfers/" }],
+    "hangar/inventories/:inventory/transactions" =>
+      ["tab=log", ->(params) { "/hangar/inventories/#{params[:inventory]}/" }],
+    "hangar/:id/cargo/transactions" => ["tab=log", ->(params) { "/hangar/#{params[:id]}/cargo/" }],
+    "fleets/:slug/members/invites" =>
+      ["view=invites", ->(params) { "/fleets/#{params[:slug]}/members/" }],
+    "fleets/:slug/logistics/transactions" =>
+      ["tab=log", ->(params) { "/fleets/#{params[:slug]}/logistics/" }],
+    "fleets/:slug/logistics/transfers/outgoing" =>
+      ["direction=outgoing", ->(params) { "/fleets/#{params[:slug]}/logistics/transfers/" }],
+    "fleets/:slug/logistics/inventories/:inventory/transactions" =>
+      ["tab=log", ->(params) { "/fleets/#{params[:slug]}/logistics/inventories/#{params[:inventory]}/" }]
+  }.each do |path, (state, target)|
+    get path, to: redirect(status: 301) { |params, request|
+      # The view the path names wins over one the link also carried: repeated
+      # keys reach the client router as an array, and what reads them there
+      # expects a single value -- so `?tab=stock` appended to the ledger's old
+      # path would have opened the stock list that path was not asking for.
+      #
+      # Split rather than round-tripped through `to_query`, which renames a
+      # repeated key to `roleIn[]` and loses every filter holding more than one
+      # value.
+      key = state.split("=").first
+      carried = request.query_string.split("&").reject { |pair| pair.split("=", 2).first == key }
+
+      "#{target.call(params)}?#{[state, *carried].join("&")}"
+    }
+  end
+
   get "hangar", to: "hangar#index", as: :hangar
   get "hangar/:username", to: "hangar#public", as: :public_hangar
   get "hangar/:username/fleetchart", to: "hangar#public"
@@ -33,7 +72,6 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
   get "fleets/:slug/allies", to: "fleets#show", as: :fleet_allies
   get "fleets/:slug/allies/incoming", to: "fleets#show", as: :incoming_fleet_allies
-  get "fleets/:slug/members/invites", to: "fleets#members", as: :fleet_member_invites
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
   get "fleets/:slug/settings/fleet", to: "fleets#settings"

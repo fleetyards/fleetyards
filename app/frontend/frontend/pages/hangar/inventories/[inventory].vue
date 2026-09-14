@@ -43,10 +43,7 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const inventorySlug = computed(() => route.params.inventory as string);
 
-const { activeTab } = useLedgerTab({
-  stock: "hangar-inventory",
-  log: "hangar-inventory-transactions",
-});
+const { activeTab } = useLedgerTab();
 
 const {
   data: inventory,

@@ -67,10 +67,7 @@ const canSeeTransfers = computed(
       false),
 );
 
-const { activeTab } = useLedgerTab({
-  stock: "fleet-logistics",
-  log: "fleet-logistics-transactions",
-});
+const { activeTab } = useLedgerTab();
 
 const {
   data: inventories,

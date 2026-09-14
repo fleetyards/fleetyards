@@ -20,24 +20,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    // The ledger is a place you can link somebody to, so it is a route.
+    // Was a route of its own; the view moved into the query so switching
+    // to it keeps the page. The path stays so shared links resolve.
     path: "transactions/",
-    name: "fleet-logistics-transactions",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/logistics/index.vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "fleet-logistics",
-      backgroundImage: "bg-8",
-      title: "fleets.logistics.index",
-      needsAuthentication: true,
-      access: [
-        "fleet:inventories:read",
-        "fleet:inventories:manage",
-        "fleet:manage",
-      ],
-      customTitle: true,
-    },
+    redirect: (to) => ({
+      name: "fleet-logistics",
+      params: to.params,
+      query: { ...to.query, tab: "log" },
+    }),
   },
   {
     // Where `TransferNotifier` sends a fleet's inventory managers.
@@ -59,24 +49,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // Was a route of its own; the view moved into the query so switching
+    // to it keeps the page. The path stays so shared links resolve.
     path: "transfers/outgoing/",
-    name: "fleet-logistics-transfers-outgoing",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/logistics/transfers.vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "fleet-logistics-transfers",
-      backgroundImage: "bg-8",
-      title: "fleets.logistics.transfers",
-      needsAuthentication: true,
-      access: [
-        "fleet:inventories:update",
-        "fleet:inventories:manage",
-        "fleet:manage",
-      ],
-      feature: FeatureFlagName.INVENTORY_TRANSFERS,
-      customTitle: true,
-    },
+    redirect: (to) => ({
+      name: "fleet-logistics-transfers",
+      params: to.params,
+      query: { ...to.query, direction: "outgoing" },
+    }),
   },
   {
     // The inventory list moved onto the logistics page itself. The path stays so
@@ -103,23 +83,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // Was a route of its own; the view moved into the query so switching
+    // to it keeps the page. The path stays so shared links resolve.
     path: "inventories/:inventory/transactions/",
-    name: "fleet-logistics-inventory-transactions",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/logistics/inventories/[inventory].vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "fleet-logistics-inventory",
-      backgroundImage: "bg-8",
-      title: "fleets.logistics.inventories",
-      needsAuthentication: true,
-      access: [
-        "fleet:inventories:read",
-        "fleet:inventories:manage",
-        "fleet:manage",
-      ],
-      customTitle: true,
-    },
+    redirect: (to) => ({
+      name: "fleet-logistics-inventory",
+      params: to.params,
+      query: { ...to.query, tab: "log" },
+    }),
   },
   {
     path: "inventories/:inventory/items/:item/",

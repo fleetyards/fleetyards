@@ -1,37 +1,39 @@
-import type { RouteRecordName } from "vue-router";
-
 export type LedgerTab = "stock" | "log";
 
-type Options = {
-  stock: RouteRecordName;
-  log: RouteRecordName;
-};
-
-// Which view of an inventory is open, held as a route rather than as view state
-// in the query.
-//
-// It was `?tab=log` first, and that had two faults. `useFilters#getQuery`
-// spreads the whole route query into `q`, and the query schemas are
-// `additionalProperties: false`, so the key reached the API as an unknown
-// filter and came back a 400 that read as a server error. And a tab is a place
-// you can link someone to, which is what a route is for.
-export const useLedgerTab = (routes: Options) => {
+/*
+ * Which view of an inventory is open, held in the query so it can be linked to
+ * without the page being rebuilt to reach it: `App.vue` keys the page on its
+ * path, so a tab with a path of its own threw the whole view away and built it
+ * again on every switch -- losing the scroll position and anything else the
+ * page was holding.
+ *
+ * This was `?tab=log` once before and was moved to a route because
+ * `useFilters#getQuery` spread the whole query into `q`, and the query schemas
+ * are `additionalProperties: false` -- so the key reached the API as an unknown
+ * filter and came back a 400. `useFilters` knows the view-state keys now and
+ * drops them, which is what makes this safe.
+ */
+export const useLedgerTab = () => {
   const route = useRoute();
   const router = useRouter();
 
   const activeTab = computed<LedgerTab>({
-    get: () => (route.name === routes.log ? "log" : "stock"),
+    get: () => (route.query.tab === "log" ? "log" : "stock"),
     set: (tab) => {
-      const name = tab === "log" ? routes.log : routes.stock;
+      if (activeTab.value === tab) return;
 
-      if (route.name === name) return;
-
+      const query = { ...route.query };
       // The page number belongs to the list it was counted on: page three of
       // the log is not page three of the stock.
-      const query = { ...route.query };
       delete query.page;
 
-      void router.push({ name, params: route.params, query });
+      if (tab === "log") {
+        query.tab = "log";
+      } else {
+        delete query.tab;
+      }
+
+      void router.replace({ query });
     },
   });
 
