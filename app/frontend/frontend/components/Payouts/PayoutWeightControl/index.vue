@@ -58,24 +58,40 @@ watch(
   },
 );
 
-// What we last asked the parent for. `props.weight` only catches up once the
-// request lands, so without this a second event fired before then would
+// What we have asked the parent for and not yet heard back about. Two events
+// can land before `props.weight` catches up, and without this the second would
 // compare against the stale weight and send the same PATCH again.
-const lastEmitted = ref<string | null>(null);
+//
+// It has to be released when the request *finishes*, not when the weight
+// changes: a refused PATCH leaves the parent on the old weight, so waiting for
+// that would swallow the retry and leave the only way back a detour through a
+// different weight.
+const inFlight = ref<string | null>(null);
 
 const emitWeight = (weight: string) => {
-  if (lastEmitted.value === weight) {
+  if (inFlight.value === weight) {
     return;
   }
 
-  lastEmitted.value = weight;
+  inFlight.value = weight;
   emit("update", weight);
 };
 
 watch(
+  () => props.loading,
+  (loading, wasLoading) => {
+    if (wasLoading && !loading) {
+      inFlight.value = null;
+    }
+  },
+);
+
+// A parent that tracks no loading state still releases the guard by answering
+// with a new weight.
+watch(
   () => props.weight,
   () => {
-    lastEmitted.value = null;
+    inFlight.value = null;
   },
 );
 

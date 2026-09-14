@@ -137,6 +137,34 @@ describe("PayoutWeightControl", () => {
     },
   );
 
+  // A refused PATCH leaves the parent on the old weight, so releasing the guard
+  // on a weight change alone would swallow the retry: the only way back would be
+  // a detour through some other weight.
+  it("lets the same weight be sent again after a failed update", async () => {
+    const wrapper = await mount({ weight: "1.0", loading: false });
+
+    await wrapper.find("[data-test='payout-weight-0.5']").trigger("click");
+    expect(wrapper.emitted("update")).toHaveLength(1);
+
+    // The parent takes the request, then fails it: loading goes back down and
+    // the weight never moves.
+    await wrapper.setProps({ loading: true });
+    await wrapper.setProps({ loading: false });
+
+    await wrapper.find("[data-test='payout-weight-0.5']").trigger("click");
+
+    expect(wrapper.emitted("update")).toHaveLength(2);
+  });
+
+  it("does not resend the same weight while the request is still out", async () => {
+    const wrapper = await mount({ weight: "1.0", loading: false });
+
+    await wrapper.find("[data-test='payout-weight-0.5']").trigger("click");
+    await wrapper.find("[data-test='payout-weight-0.5']").trigger("click");
+
+    expect(wrapper.emitted("update")).toHaveLength(1);
+  });
+
   it("sends nothing while disabled", async () => {
     const wrapper = await mount({ weight: "1.0", disabled: true });
 
