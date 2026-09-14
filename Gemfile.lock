@@ -216,7 +216,7 @@ GEM
     discordrb-webhooks (3.8.0)
       rest-client (>= 2.0.0)
     domain_name (0.6.20240107)
-    doorkeeper (5.9.6)
+    doorkeeper (5.9.7)
       railties (>= 5)
     doorkeeper-jwt (0.4.4)
       doorkeeper (>= 5.4)
@@ -1069,7 +1069,7 @@ CHECKSUMS
   discordrb (3.8.0) sha256=53802e5e64aa557c566538c86f6a682f63f5da9380a23792b78f13b7a72b6f21
   discordrb-webhooks (3.8.0) sha256=20bdf1ab54a1f5d9d4774c8facc34353e728601815f6def182e5e86798500ced
   domain_name (0.6.20240107) sha256=5f693b2215708476517479bf2b3802e49068ad82167bcd2286f899536a17d933
-  doorkeeper (5.9.6) sha256=19b0d2c1099750762d8ddbf7ef4d79e38d2c80f583d97bbfd122a73c4af20d95
+  doorkeeper (5.9.7) sha256=aa27426a84a1ee0676eee54528e8c247b543a9a441f2571633720617fcb37c11
   doorkeeper-jwt (0.4.4) sha256=208851db8aafc506aa565486a81ea1b1d9e475bdeb836fbdce690dd409b1213b
   doorkeeper-openid_connect (1.10.5) sha256=1382e5573e2fdfef2b16ce9969af777e61496b8e9cff0197789d8bf9c12efb02
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
