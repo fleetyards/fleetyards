@@ -21,6 +21,17 @@ const profit = computed(() => Number(props.ledger.profit ?? 0));
 // Deliberately no per-head tile here. profit / count in JS floats disagrees
 // with the server's largest-remainder share by a hundredth, and the balances
 // table below already gives every participant their exact share.
+
+// What the profit is actually divided by, which stops being the head count the
+// moment somebody is on less than a full share. Shown only when the two differ:
+// on an unweighted ledger it would repeat the number above it. The figure is
+// the server's -- summing the weights here would be the float arithmetic the
+// comment above refuses.
+const totalWeight = computed(() => Number(props.ledger.totalWeight ?? 0));
+
+const weighted = computed(
+  () => totalWeight.value !== Number(props.ledger.participantsCount ?? 0),
+);
 </script>
 
 <template>
@@ -62,6 +73,13 @@ const profit = computed(() => Number(props.ledger.profit ?? 0));
       </span>
       <span class="payout-summary__value">
         {{ ledger.participantsCount ?? 0 }}
+      </span>
+      <span
+        v-if="weighted"
+        class="payout-summary__shares"
+        data-test="payout-summary-shares"
+      >
+        {{ ledger.totalWeight }} {{ t("labels.payouts.shares") }}
       </span>
     </div>
   </div>
@@ -105,5 +123,10 @@ const profit = computed(() => Number(props.ledger.profit ?? 0));
 
 .payout-summary__value--expense {
   color: var(--color-danger, #f44336);
+}
+
+.payout-summary__shares {
+  font-size: 11px;
+  color: var(--color-gold, #d4af37);
 }
 </style>

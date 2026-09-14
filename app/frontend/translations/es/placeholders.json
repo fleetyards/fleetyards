@@ -3,6 +3,7 @@
     "placeholders": {
       "name": "Nombre",
       "description": "Descripción",
+      "amount": "Importe",
       "login": "Nombre de usuario o correo electrónico",
       "username": "Nombre de usuario",
       "twoFactorCode": "Código de dos factores",

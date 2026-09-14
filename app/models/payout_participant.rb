@@ -6,6 +6,7 @@
 #
 #  id               :uuid             not null, primary key
 #  name             :string
+#  weight           :decimal(5, 2)    default(1.0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  added_by_id      :uuid
@@ -35,7 +36,14 @@ class PayoutParticipant < ApplicationRecord
   # SupporterContribution carries the same pair for the same reason.
   validates :name, presence: true, if: -> { user_id.blank? }
   validates :user_id, uniqueness: {scope: :payout_ledger_id}, allow_nil: true
+  # Strictly positive, not merely non-negative. A weight of zero on every
+  # participant would leave the profit divided by nothing, and the shares would
+  # sum to less than it -- which breaks the one invariant the transfer list is
+  # built on. Somebody who is to receive nothing is not a participant with a
+  # zero weight, they are off the list, and removing them has its own rule.
+  validates :weight, numericality: {greater_than: 0, less_than_or_equal_to: 999.99}
   validate :ledger_is_open, on: :create
+  validate :ledger_is_open_for_weight, on: :update
 
   before_destroy :check_for_entries, prepend: true
   before_destroy :ledger_must_be_open, prepend: true
@@ -51,7 +59,7 @@ class PayoutParticipant < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[payout_ledger_id user_id name created_at updated_at]
+    %w[payout_ledger_id user_id name weight created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
@@ -66,6 +74,19 @@ class PayoutParticipant < ApplicationRecord
   # transfers are being computed would otherwise be left out of a list that can
   # no longer be changed.
   private def ledger_is_open
+    return if payout_ledger.blank?
+    return if payout_ledger.open_for_edits?
+
+    errors.add(:base, :ledger_settled)
+  end
+
+  # A weight is what the profit is divided by, so moving one after the transfers
+  # were frozen would leave the settled payout list describing a split that no
+  # longer exists -- the same reason an entry cannot move, and it takes the same
+  # lock for the same race. Guarded on the weight alone so an unrelated save
+  # does not lock the ledger row.
+  private def ledger_is_open_for_weight
+    return unless will_save_change_to_weight?
     return if payout_ledger.blank?
     return if payout_ledger.open_for_edits?
 

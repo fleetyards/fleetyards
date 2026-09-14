@@ -225,4 +225,5 @@ it:
       destroy: Impossibile rimuovere il movimento.
     payout_participants:
       create: Impossibile aggiungere il partecipante.
+      update: Impossibile aggiornare il partecipante.
       destroy: Impossibile rimuovere il partecipante.

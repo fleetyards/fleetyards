@@ -3,11 +3,17 @@ import { afterEach, describe, expect, it } from "vitest";
 import Component from "./index.vue";
 import type { PayoutBalance } from "@/services/fyApi";
 
-const participant = (id: string, displayName: string, guest = false) => ({
+const participant = (
+  id: string,
+  displayName: string,
+  guest = false,
+  weight = "1.0",
+) => ({
   id,
   payoutLedgerId: "ledger-1",
   displayName,
   guest,
+  weight,
 });
 
 const balance = (overrides: Partial<PayoutBalance> = {}): PayoutBalance =>
@@ -85,5 +91,66 @@ describe("PayoutBalances", () => {
     const wrapper = await mount([]);
 
     expect(wrapper.findAll("[data-test^='payout-balance-']")).toHaveLength(0);
+  });
+
+  // Zero is the one good outcome, and toUEC renders it as "-" -- which reads as
+  // a figure nobody worked out rather than as nothing left to pay.
+  it("names a zero balance instead of dashing it", async () => {
+    const wrapper = await mount([balance({ net: "0.0" })]);
+
+    expect(wrapper.find(".payout-balances__net").text()).toBe("settled up");
+  });
+
+  // A column of identical ones is worth nothing; it earns its place only once
+  // somebody is on less than a full share.
+  it("hides the weight column while everyone is on a full share", async () => {
+    const wrapper = await mount([
+      balance({ participant: participant("p1", "Alice") }),
+      balance({ participant: participant("p2", "Bob") }),
+    ]);
+
+    expect(wrapper.find(".payout-balances__weight").exists()).toBe(false);
+    expect(wrapper.classes()).not.toContain("payout-balances--weighted");
+  });
+
+  it("shows the weight column once a share is reduced", async () => {
+    const wrapper = await mount([
+      balance({ participant: participant("p1", "Alice") }),
+      balance({ participant: participant("p2", "Vex", false, "0.5") }),
+    ]);
+
+    const weights = wrapper.findAll(".payout-balances__weight");
+
+    expect(weights).toHaveLength(2);
+    expect(weights[1].text()).toBe("0.5");
+    expect(wrapper.classes()).toContain("payout-balances--weighted");
+  });
+
+  // A weight above a full share is a deviation too, and the organiser handing
+  // somebody extra is exactly the case a reader needs the column to explain.
+  it("shows the weight column for a share above a full one", async () => {
+    const wrapper = await mount([
+      balance({ participant: participant("p1", "Alice") }),
+      balance({ participant: participant("p2", "Hazard", false, "1.5") }),
+    ]);
+
+    const weights = wrapper.findAll(".payout-balances__weight");
+
+    expect(wrapper.classes()).toContain("payout-balances--weighted");
+    expect(weights[1].classes()).toContain("payout-balances__weight--adjusted");
+  });
+
+  it("marks only the share that is not a full one", async () => {
+    const wrapper = await mount([
+      balance({ participant: participant("p1", "Alice") }),
+      balance({ participant: participant("p2", "Vex", false, "0.5") }),
+    ]);
+
+    const weights = wrapper.findAll(".payout-balances__weight");
+
+    expect(weights[0].classes()).not.toContain(
+      "payout-balances__weight--adjusted",
+    );
+    expect(weights[1].classes()).toContain("payout-balances__weight--adjusted");
   });
 });

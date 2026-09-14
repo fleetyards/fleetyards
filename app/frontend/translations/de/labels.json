@@ -2377,7 +2377,11 @@
         "title": "Titel",
         "startsAt": "Beginnt am",
         "inviteLink": "Einladungslink",
-        "participants": "Personen"
+        "participants": "Personen",
+        "weight": "Gewichtung",
+        "shares": "Anteile",
+        "customWeight": "Eigene Gewichtung",
+        "preview": "Vorschau · ändert sich bis zur Abrechnung"
       },
       "relationships": {
         "party": "Name",

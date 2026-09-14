@@ -2377,7 +2377,11 @@
         "title": "Titolo",
         "startsAt": "Inizia il",
         "inviteLink": "Link d'invito",
-        "participants": "Persone"
+        "participants": "Persone",
+        "weight": "Peso",
+        "shares": "quote",
+        "customWeight": "Peso personalizzato",
+        "preview": "Anteprima · cambia fino al saldo"
       },
       "relationships": {
         "party": "Nome",

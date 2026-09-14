@@ -224,4 +224,5 @@ zh-CN:
       destroy: 无法删除该笔记录。
     payout_participants:
       create: 无法添加参与者。
+      update: 无法更新参与者。
       destroy: 无法移除参与者。

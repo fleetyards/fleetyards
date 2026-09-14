@@ -68,7 +68,10 @@ const onToggle = async (transfer: PayoutTransfer) => {
       v-for="transfer in transfers"
       :key="transfer.id || `${transfer.from.id}-${transfer.to.id}`"
       class="payout-transfers__row"
-      :class="{ 'payout-transfers__row--confirmed': transfer.confirmed }"
+      :class="{
+        'payout-transfers__row--confirmed': transfer.confirmed,
+        'payout-transfers__row--preview': preview,
+      }"
       data-test="payout-transfer"
     >
       <div class="payout-transfers__parties">
@@ -130,6 +133,13 @@ const onToggle = async (transfer: PayoutTransfer) => {
 .payout-transfers__row--confirmed {
   border-color: var(--color-success, #4caf50);
   opacity: 0.7;
+}
+
+/* While the ledger is open these rows are recomputed on every read. They used
+   to look exactly like the frozen list people pay against, which is a costly
+   thing to mistake once a weight can move them. */
+.payout-transfers__row--preview {
+  border-style: dashed;
 }
 
 .payout-transfers__parties {

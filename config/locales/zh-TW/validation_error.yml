@@ -224,4 +224,5 @@ zh-TW:
       destroy: 無法刪除該筆紀錄。
     payout_participants:
       create: 無法新增參與者。
+      update: 無法更新參與者。
       destroy: 無法移除參與者。

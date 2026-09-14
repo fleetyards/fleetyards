@@ -231,4 +231,5 @@ en:
       destroy: Entry could not be removed.
     payout_participants:
       create: Participant could not be added.
+      update: Participant could not be updated.
       destroy: Participant could not be removed.

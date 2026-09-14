@@ -2384,7 +2384,11 @@
         "title": "Title",
         "startsAt": "Starts at",
         "inviteLink": "Invite link",
-        "participants": "People"
+        "participants": "People",
+        "weight": "Weight",
+        "shares": "shares",
+        "customWeight": "Any weight",
+        "preview": "Preview · moves until you settle"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

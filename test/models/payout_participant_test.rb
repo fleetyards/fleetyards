@@ -8,6 +8,7 @@ require "test_helper"
 #
 #  id               :uuid             not null, primary key
 #  name             :string
+#  weight           :decimal(5, 2)    default(1.0), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  added_by_id      :uuid
@@ -135,5 +136,53 @@ class PayoutParticipantTest < ActiveSupport::TestCase
 
     assert_not participant.destroy
     assert PayoutParticipant.exists?(participant.id)
+  end
+
+  test "carries a full share by default" do
+    participant = create(:payout_participant, payout_ledger: @ledger)
+
+    assert_equal 1.0, participant.weight
+  end
+
+  test "accepts a reduced weight" do
+    participant = create(:payout_participant, payout_ledger: @ledger, weight: 0.25)
+
+    assert_equal 0.25, participant.reload.weight
+  end
+
+  # Zero is not "a participant who receives nothing" -- it is a participant the
+  # profit cannot be divided by. Removing them is what expresses that.
+  test "refuses a weight of zero" do
+    participant = build(:payout_participant, payout_ledger: @ledger, weight: 0)
+
+    assert_not participant.valid?
+    assert_includes participant.errors.attribute_names, :weight
+  end
+
+  test "refuses a negative weight" do
+    participant = build(:payout_participant, payout_ledger: @ledger, weight: -0.5)
+
+    assert_not participant.valid?
+  end
+
+  # The settled transfers were computed from the weights that existed at the
+  # time, so one moving underneath them would leave the frozen list describing
+  # a split that no longer exists.
+  test "cannot have its weight changed once the ledger is settled" do
+    participant = create(:payout_participant, payout_ledger: @ledger)
+    @ledger.update!(status: "settled", settled_at: Time.current)
+
+    assert_not participant.update(weight: 0.5)
+    assert_equal 1.0, participant.reload.weight
+  end
+
+  # Only the weight takes the lock. A settled ledger still has to tolerate the
+  # saves that do not move anybody's share -- a user being renamed reaches this
+  # row through its own association.
+  test "tolerates an unrelated save on a settled ledger" do
+    participant = create(:payout_participant, :guest, payout_ledger: @ledger)
+    @ledger.update!(status: "settled", settled_at: Time.current)
+
+    assert participant.update(name: "Vex")
   end
 end

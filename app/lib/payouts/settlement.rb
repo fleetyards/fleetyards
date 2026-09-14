@@ -9,8 +9,15 @@ module Payouts
   # profit is shared. Expressed as a single balance per participant:
   #
   #   profit  = total income - total expenses
-  #   share   = profit / participant count
+  #   share   = profit * their weight / the weights of everyone on the ledger
   #   balance = (income they hold - expenses they paid) - share
+  #
+  # The weight is what a participant is entitled to relative to the others --
+  # 1 for a full share, less for somebody who joined the tour late or left it
+  # early. It divides the profit and nothing else: reimbursement is not a share,
+  # so a latecomer who paid for the fuel still gets all of it back. A ledger
+  # where nobody carries a reduced weight divides exactly as an unweighted one
+  # would, which is what lets this ship without moving any existing ledger.
   #
   # A positive balance means they are holding more than their share and have to
   # send the difference on; a negative one means they are owed. The balances sum
@@ -146,27 +153,47 @@ module Payouts
       end
     end
 
-    # An even split almost never divides evenly, and dropping the remainder
-    # would leave the balances summing to something other than zero -- which
-    # means a transfer list that cannot exist. The largest-remainder method
-    # hands the leftover hundredths out one each, in a stable participant order
-    # so the same ledger always settles identically. Ordering by id after the
+    # A split almost never divides evenly, and dropping the remainder would
+    # leave the balances summing to something other than zero -- which means a
+    # transfer list that cannot exist. The largest-remainder method hands the
+    # leftover hundredths out one each, in a stable participant order so the
+    # same ledger always settles identically. Ordering by position after the
     # remainder is what keeps it stable; ordering by remainder alone would let
-    # ties fall wherever the hash happened to enumerate.
+    # ties fall wherever the array happened to enumerate.
+    #
+    # The weights are scaled to hundredths for the same reason the amounts are:
+    # they are decimal(5, 2) and so exact already, but the division is not, and
+    # integers are the only way to divide, round and re-add without the
+    # remainder going missing.
     private def shares_by_participant_id
-      count = @participants.size
-      return {} if count.zero?
+      return {} if @participants.empty?
 
-      base, remainder = profit_minor.divmod(count)
+      weights = @participants.map { |participant| to_minor(participant.weight) }
+      total_weight = weights.sum
 
-      # divmod on a negative profit floors, so `base` is already the smaller
-      # share and `remainder` is a non-negative count of participants who take
-      # one hundredth more. That is the same shape as the positive case, so no
-      # branch on the sign is needed.
-      ordered_ids = @participants.map(&:id)
+      # Unreachable while the weight validation holds -- it is strictly
+      # positive, so any non-empty ledger totals more than zero. Here so a
+      # malformed row cannot divide by zero rather than as a real branch.
+      return {} if total_weight.zero?
 
-      ordered_ids.each_with_index.to_h do |id, index|
-        [id, base + ((index < remainder) ? 1 : 0)]
+      # Integer division floors in Ruby, on a negative profit too, so each base
+      # is already the smaller share and every remainder below is non-negative.
+      # That is the same shape the unweighted divmod had, which is why no branch
+      # on the sign is needed here either.
+      bases = weights.map { |weight| (profit_minor * weight) / total_weight }
+
+      remainders = weights.each_with_index.map do |weight, index|
+        (profit_minor * weight) - (bases[index] * total_weight)
+      end
+
+      leftover = profit_minor - bases.sum
+      largest_first = remainders.each_with_index.sort_by { |remainder, index| [-remainder, index] }.map(&:last)
+
+      shares = bases.dup
+      largest_first.first(leftover).each { |index| shares[index] += 1 }
+
+      @participants.each_with_index.to_h do |participant, index|
+        [participant.id, shares[index]]
       end
     end
 

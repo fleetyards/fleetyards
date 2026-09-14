@@ -3,6 +3,7 @@
     "placeholders": {
       "name": "名称",
       "description": "描述",
+      "amount": "金额",
       "login": "用户名或电子邮件",
       "username": "用户名",
       "twoFactorCode": "两步验证码",
