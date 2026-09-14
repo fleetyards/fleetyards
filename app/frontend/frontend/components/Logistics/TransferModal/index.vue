@@ -41,6 +41,9 @@ type Props = {
   // Where a person can be picked out of -- a fleet today, and whatever else
   // comes to mean "known" later, which lands here rather than as a new branch.
   memberFleets: { value: string; label: string }[];
+  // Sending on a fleet's behalf, which is the only case where the reader's own
+  // inventories are a separate kind from the ones being sent from.
+  actingForFleet?: boolean;
   // Accepted friends, as `user:<username>` options. Held client-side rather
   // than searched: a friends list is short, and there is no second page of it.
   friendOptions?: { value: string; label: string }[];
@@ -114,23 +117,38 @@ watchEffect(() => {
 // accept and are not offered here yet.
 const KINDS: TransferTargetKind[] = ["inventory", "mine", "fleet", "user"];
 
-// A person is picked out of a fleet, so the kind is offered whenever the reader
-// is in one -- there is no flat list of people to be empty.
+// Every kind is offered whether or not it holds anything, and an empty one says
+// so. A kind that disappears when its list comes back empty leaves the reader
+// with nothing to read: "I cannot send to a fleet" and "this build has no such
+// thing" look identical, and the first is a state they can do something about.
+//
+// `mine` is the exception, because it is not a kind so much as a split: the
+// reader's own inventories are only worth separating out when the ones being
+// sent from belong to somebody else. Anywhere else it would list them twice.
 const availableKinds = computed(() =>
-  KINDS.filter((kind) =>
-    kind === "user"
-      ? props.memberFleets.length > 0
-      : props.targets.some((target) => target.kind === kind),
-  ),
+  KINDS.filter((kind) => kind !== "mine" || props.actingForFleet),
 );
+
+// A person is reached through a group -- a fleet, or the friends list -- so
+// that kind is empty when there is no group to pick one out of, rather than
+// when a list came back short.
+const kindHasTargets = (kind: TransferTargetKind) =>
+  kind === "user"
+    ? props.memberFleets.length > 0
+    : props.targets.some((target) => target.kind === kind);
 
 const targetKind = ref<TransferTargetKind | undefined>();
 
+// Offered always, but not *landed on* always: the modal opens on the first kind
+// that holds something, so a reader whose only route is a fleet still finds it
+// selected. Falling back to the first kind is what puts an empty list and its
+// explanation in front of somebody with no route at all.
 watchEffect(() => {
   if (targetKind.value && availableKinds.value.includes(targetKind.value))
     return;
 
-  targetKind.value = availableKinds.value[0];
+  targetKind.value =
+    availableKinds.value.find(kindHasTargets) ?? availableKinds.value[0];
 });
 
 const memberFleet = ref<string | undefined>(props.memberFleets[0]?.value);
@@ -138,9 +156,16 @@ const memberFleet = ref<string | undefined>(props.memberFleets[0]?.value);
 // Searched on the server, not filtered out of one fixed page. A fleet can hold
 // hundreds of members, and fetching the first hundred made everybody after them
 // unreachable -- they could not be found because they were never fetched.
+//
+// `transferTargets` narrows the roster to the members who could actually
+// receive, which is the same question `TransferGate` asks on the way in. It has
+// to be the API's answer rather than a filter here for the same reason the
+// search is: the list is paged, and thinning a page client-side would hide
+// people the next page never reaches.
 const fetchMembers = (params: BaseSelectParams<FilterOption>) =>
   fleetMembers(memberFleet.value ?? "", {
     q: { usernameCont: params.search || undefined },
+    transferTargets: true,
   });
 
 // The person list lives in the select rather than in `targetOptions`, so the
@@ -173,9 +198,7 @@ const kindOptions = computed<FilterOption[]>(() =>
     value: kind,
     label: t(
       `labels.logistics.transferKinds.${
-        kind === "inventory" && availableKinds.value.includes("mine")
-          ? "fleetInventories"
-          : kind
+        kind === "inventory" && props.actingForFleet ? "fleetInventories" : kind
       }`,
     ),
   })),
@@ -199,6 +222,10 @@ watch(
     targetValue.value = options[0]?.value as string | undefined;
   },
   { immediate: true },
+);
+
+const noTargets = computed(
+  () => !targetKind.value || !kindHasTargets(targetKind.value),
 );
 
 const selectedTarget = computed<TransferTargetOption | undefined>(() => {
@@ -329,8 +356,10 @@ const onSubmit = async () => {
         data-test="transfer-target"
       />
 
+      <!-- Held back until a group is chosen: the search names the fleet in its
+           path, so an absent one asks the API for the members of "". -->
       <BaseSelect
-        v-else-if="targetKind === 'user'"
+        v-else-if="targetKind === 'user' && memberFleet"
         v-model="targetValue"
         name="target"
         searchable
@@ -341,7 +370,7 @@ const onSubmit = async () => {
       />
 
       <BaseSelect
-        v-else
+        v-else-if="targetKind !== 'user'"
         v-model="targetValue"
         name="target"
         searchable
@@ -351,7 +380,7 @@ const onSubmit = async () => {
       />
 
       <p
-        v-if="targetKind !== 'user' && targetOptions.length === 0"
+        v-if="noTargets"
         class="transfer-empty"
         data-test="transfer-no-targets"
       >

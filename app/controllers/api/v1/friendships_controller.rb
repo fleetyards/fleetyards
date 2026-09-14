@@ -9,6 +9,7 @@ module Api
     class FriendshipsController < ::Api::BaseController
       include RelationshipActions
       include RelationshipsFeatureConcern
+      include TransferTargetFilterConcern
 
       before_action :authenticate_user!, only: []
       before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[index show pending_count]
@@ -40,6 +41,20 @@ module Api
       private def relationship_policy = ::FriendshipPolicy
 
       private def acting_party = current_resource_owner
+
+      # The transfer picker asks for the friends it could address, which is the
+      # question `Inventories::TransferGate` asks of a user recipient. Both
+      # columns, because a friendship is one row per unordered pair and the
+      # reader is on whichever side asked first -- filtering either column alone
+      # would admit a partner who cannot receive whenever the reader can.
+      private def narrow_relationships(scope)
+        return scope unless transfer_targets_only?
+
+        receivers = ::User.receiving_transfers.select(:id)
+
+        scope.where(requester_id: acting_party.id, addressee_id: receivers)
+          .or(scope.where(addressee_id: acting_party.id, requester_id: receivers))
+      end
 
       # `username` on the member routes and in the create body alike.
       private def requested_party

@@ -23,6 +23,8 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
         explode: true,
         required: false
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
+      parameter name: "transferTargets", in: :query, schema: {type: :boolean}, required: false,
+        description: "Only members who could receive an inventory transfer"
 
       security [
         {SessionCookie: []},
@@ -190,6 +192,33 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug},
       params: {q: {"s" => "username asc", "sorts" => "username desc"}} do
       assert_equal %w[charlie bravo alpha], parsed_body["items"].map { |m| m["username"] }
+    end
+  end
+
+  # The transfer picker asks this endpoint for the members it could address,
+  # which is the question `Inventories::TransferGate` asks of a user recipient.
+  test "GET /fleets/:slug/members filters to members who could receive a transfer" do
+    Flipper.enable_actor("inventory_transfers", @member)
+    Flipper.enable_actor("hangar_inventories", @member)
+    # Half the pair only: the surface without the feature is not enough, and a
+    # transfer to a person lands in their own hangar inventory.
+    Flipper.enable_actor("hangar_inventories", @another_member)
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {transferTargets: true} do
+      assert_equal [@member.username], parsed_body["items"].map { |m| m["username"] }
+    end
+  end
+
+  test "GET /fleets/:slug/members lists everybody without the filter" do
+    Flipper.enable_actor("inventory_transfers", @member)
+    Flipper.enable_actor("hangar_inventories", @member)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 3, parsed_body["items"].count
     end
   end
 

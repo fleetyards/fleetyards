@@ -3957,6 +3957,12 @@ paths:
         schema:
           type: string
         required: false
+      - name: transferTargets
+        in: query
+        schema:
+          type: boolean
+        required: false
+        description: Only members who could receive an inventory transfer
       security:
       - SessionCookie: []
       - Oauth2:
@@ -6348,6 +6354,12 @@ paths:
         required: false
         schema:
           type: integer
+      - name: transferTargets
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Only friends who could receive an inventory transfer
       security:
       - SessionCookie: []
       - Oauth2:

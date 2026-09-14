@@ -7,6 +7,7 @@ import TransferModal from "./index.vue";
 vi.mock("@/services/fyApi/services/fleet-members/fleet-members", () => ({
   fleetMembers: vi.fn().mockResolvedValue({ items: [] }),
 }));
+import { fleetMembers } from "@/services/fyApi/services/fleet-members/fleet-members";
 import type { InventoryStockPosition } from "@/services/fyApi";
 import type { TransferTargetOption } from "./types";
 
@@ -54,6 +55,7 @@ const build = async (
   targets: TransferTargetOption[] = [immediateTarget],
   onSend = vi.fn().mockResolvedValue(undefined),
   memberFleets: { value: string; label: string }[] = [],
+  actingForFleet = false,
 ) => {
   wrapper = mount(TransferModal, {
     props: {
@@ -61,6 +63,7 @@ const build = async (
       positions,
       targets,
       memberFleets,
+      actingForFleet,
       onSend,
     },
     global: {
@@ -234,14 +237,20 @@ describe("TransferModal", () => {
     expect(wrapper!.find('[data-test="transfer-hint"]').exists()).toBe(false);
   });
 
-  // Users and fleets are separate choices; the kind picker only appears when
-  // there is more than one kind to choose between.
-  it("hides the kind picker when only one kind is available", async () => {
-    await build([position()], [immediateTarget]);
+  // An option that disappears when its list comes back empty is unreadable:
+  // "no fleet can receive this" and "there is no such thing" look the same.
+  it("offers the fleet kind even when no fleet can receive", async () => {
+    const { wrapper: w } = await build([position()], [immediateTarget]);
 
-    expect(wrapper!.find('[data-test="transfer-target-kind"]').exists()).toBe(
-      false,
-    );
+    expect(w.find('[data-test="transfer-target-kind"]').exists()).toBe(true);
+
+    (w.vm as unknown as { targetKind?: string }).targetKind = "fleet";
+    await w.vm.$nextTick();
+
+    expect(w.find('[data-test="transfer-no-targets"]').exists()).toBe(true);
+    expect(
+      w.find('[data-test="transfer-submit"]').attributes("disabled"),
+    ).toBeDefined();
   });
 
   it("offers a kind picker once there are both", async () => {
@@ -250,6 +259,40 @@ describe("TransferModal", () => {
     expect(wrapper!.find('[data-test="transfer-target-kind"]').exists()).toBe(
       true,
     );
+  });
+
+  // `mine` is a split rather than a kind: separating the reader's own
+  // inventories out only means something when the source belongs to a fleet.
+  it("splits off the reader's own inventories only for a fleet", async () => {
+    const kinds = (w: ReturnType<typeof mount>) =>
+      (w.vm as unknown as { availableKinds: string[] }).availableKinds;
+
+    const asPerson = await build([position()]);
+    expect(kinds(asPerson.wrapper)).not.toContain("mine");
+    asPerson.wrapper.unmount();
+
+    const asFleet = await build(
+      [position()],
+      [immediateTarget],
+      vi.fn(),
+      [],
+      true,
+    );
+    expect(kinds(asFleet.wrapper)).toContain("mine");
+  });
+
+  // The member search names the fleet in its path, so asking with no group
+  // chosen requests the members of "".
+  it("asks for nobody's members when there is no group to pick from", async () => {
+    const { wrapper: w } = await build([position()], [], vi.fn(), []);
+
+    (w.vm as unknown as { targetKind?: string }).targetKind = "user";
+    await w.vm.$nextTick();
+    await flushPromises();
+
+    expect(w.find('[data-test="transfer-target"]').exists()).toBe(false);
+    expect(w.find('[data-test="transfer-no-targets"]').exists()).toBe(true);
+    expect(fleetMembers).not.toHaveBeenCalled();
   });
 
   // People are reached through a fleet, so the kind is offered whenever the

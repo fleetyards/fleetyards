@@ -4,6 +4,7 @@ module Api
   module V1
     class FleetMembersController < ::Api::BaseController
       include FleetMemberFiltersConcern
+      include TransferTargetFilterConcern
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
@@ -26,6 +27,10 @@ module Api
         authorize! with: FleetMembershipPolicy, context: {fleet: @fleet}
 
         scope = @fleet.fleet_memberships.kept
+        # In SQL rather than over the rendered page: the roster is paginated and
+        # searched server-side, so filtering afterwards would thin one page at a
+        # time and leave the Link header pointing at counts it never returned.
+        scope = scope.where(user: ::User.receiving_transfers) if transfer_targets_only?
 
         normalize_sort_params(member_query_params)
         member_query_params["sorts"] = sorting_params(FleetMembership, member_query_params["sorts"])

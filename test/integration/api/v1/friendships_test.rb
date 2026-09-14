@@ -21,6 +21,8 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
         description: "Limit to requests this user sent, or ones they were sent"
       parameter name: "page", in: :query, required: false, schema: {type: :integer}
       parameter name: "limit", in: :query, required: false, schema: {type: :integer}
+      parameter name: "transferTargets", in: :query, required: false, schema: {type: :boolean},
+        description: "Only friends who could receive an inventory transfer"
 
       security [
         {SessionCookie: []},
@@ -90,6 +92,35 @@ class Api::V1::FriendshipsTest < ActionDispatch::IntegrationTest
       assert_equal 1, parsed_body["items"].count
       assert_equal friend.username, parsed_body["items"].first.dig("user", "username")
       assert_equal "accepted", parsed_body["items"].first["state"]
+    end
+  end
+
+  # The transfer picker asks for the friends it could address. A friendship is
+  # one row per unordered pair, so the filter has to read whichever column the
+  # *other* party is in -- the reader being able to receive says nothing about
+  # them.
+  test "GET filters to friends who could receive a transfer, from either side" do
+    receiver = create(:user)
+    sent_to = create(:user)
+    Flipper.enable_actor("inventory_transfers", receiver)
+    Flipper.enable_actor("hangar_inventories", receiver)
+    Flipper.enable_actor("inventory_transfers", sent_to)
+    Flipper.enable_actor("hangar_inventories", sent_to)
+    Flipper.enable_actor("inventory_transfers", @user)
+    Flipper.enable_actor("hangar_inventories", @user)
+
+    create(:friendship, :accepted, requester: receiver, addressee: @user)
+    create(:friendship, :accepted, requester: @user, addressee: sent_to)
+    create(:friendship, :accepted, requester: @user, addressee: @other)
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/friends", params: {transferTargets: true} do
+      assert_equal [receiver.username, sent_to.username].sort,
+        parsed_body["items"].map { |row| row.dig("user", "username") }.sort
+    end
+
+    assert_api_response :get, 200, api_path: "/friends" do
+      assert_equal 3, parsed_body["items"].count
     end
   end
 

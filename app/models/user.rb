@@ -359,6 +359,44 @@ class User < ApplicationRecord
     readable.or(where(friends_hangar: true, id: ::Friendship.partner_ids_for(reader)))
   }
 
+  # A Flipper feature read as a scope rather than as a predicate. The transfer
+  # pickers are searched and paginated in SQL, so asking `Flipper.enabled?` per
+  # row would filter one page at a time and leave the pagination header counting
+  # rows it did not return.
+  #
+  # Only the gates that can be written as a query are read: the boolean, the
+  # actor list, and the `testers` group, which is a column. The `admins` group
+  # never matches a `User` at all. Neither percentage rollout can be expressed --
+  # one picks a fraction of actors, the other answers differently per call for
+  # the same actor -- and both admit everybody rather than nobody: offering
+  # somebody `TransferGate` may still refuse is the harmless way round, and
+  # hiding somebody who can in fact receive is not.
+  scope :with_feature, ->(name) {
+    gates = Flipper.feature(name).gate_values
+
+    next all if gates.boolean
+    next all if gates.percentage_of_actors.to_i.positive?
+    next all if gates.percentage_of_time.to_i.positive?
+
+    actor_ids = gates.actors.filter_map do |value|
+      value.delete_prefix("User;") if value.start_with?("User;")
+    end
+
+    scoped = where(id: actor_ids)
+    scoped = scoped.or(where(tester: true)) if gates.groups.include?("testers")
+    scoped
+  }
+
+  # Who a transfer may be addressed to, which is the question
+  # `Inventories::TransferGate` asks of a user recipient -- both flags, because
+  # a transfer to a person lands in their own hangar inventory and they need the
+  # surface as well as the feature. Kept as one scope so the picker and the
+  # refusal cannot drift apart.
+  scope :receiving_transfers, -> {
+    where(id: with_feature(:inventory_transfers).select(:id))
+      .where(id: with_feature(:hangar_inventories).select(:id))
+  }
+
   def friends
     ::User.where(id: ::Friendship.partner_ids_for(self))
   end
