@@ -437,6 +437,81 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.check_constraint "requester_id <> addressee_id", name: "fleet_alliances_not_to_self"
   end
 
+  create_table "fleet_contract_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "requested", null: false
+    t.datetime "accepted_at"
+    t.uuid "approved_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "declined_at"
+    t.uuid "fleet_contract_id", null: false
+    t.datetime "removed_at"
+    t.datetime "requested_at"
+    t.integer "role", default: 1, null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.datetime "withdrawn_at"
+    t.index ["approved_by_id"], name: "index_fleet_contract_assignments_on_approved_by_id"
+    t.index ["fleet_contract_id", "aasm_state"], name: "index_fleet_contract_assignments_on_contract_and_state"
+    t.index ["fleet_contract_id", "user_id"], name: "idx_on_fleet_contract_id_user_id_cd14b5f8cd", unique: true
+    t.index ["fleet_contract_id"], name: "index_fleet_contract_assignments_on_accepted_lead", unique: true, where: "((role = 0) AND ((aasm_state)::text = 'accepted'::text))"
+    t.index ["fleet_contract_id"], name: "index_fleet_contract_assignments_on_fleet_contract_id"
+    t.index ["user_id"], name: "index_fleet_contract_assignments_on_user_id"
+  end
+
+  create_table "fleet_contract_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.uuid "fleet_contract_id", null: false
+    t.uuid "item_id"
+    t.string "item_type"
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.integer "quality"
+    t.integer "quality_match", default: 0, null: false
+    t.decimal "quantity", precision: 15, scale: 2, default: "0.0", null: false
+    t.integer "unit", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index "fleet_contract_id, lower((name)::text), category, unit", name: "index_fleet_contract_items_on_identity", unique: true
+    t.index ["fleet_contract_id", "position"], name: "index_fleet_contract_items_on_fleet_contract_id_and_position"
+    t.index ["fleet_contract_id"], name: "index_fleet_contract_items_on_fleet_contract_id"
+    t.index ["item_type", "item_id"], name: "index_fleet_contract_items_on_item_type_and_item_id"
+    t.check_constraint "quality IS NULL OR quality >= 0 AND quality <= 1000", name: "fleet_contract_items_quality_range"
+    t.check_constraint "quantity > 0::numeric", name: "fleet_contract_items_quantity_positive"
+  end
+
+  create_table "fleet_contracts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "draft", null: false
+    t.datetime "cancelled_at"
+    t.datetime "claimed_at"
+    t.datetime "created_at", null: false
+    t.uuid "created_by_id"
+    t.integer "crew_limit"
+    t.datetime "deadline"
+    t.text "description"
+    t.uuid "destination_fleet_inventory_id"
+    t.datetime "expired_at"
+    t.uuid "fleet_id", null: false
+    t.datetime "fulfilled_at"
+    t.integer "kind", default: 0, null: false
+    t.datetime "published_at"
+    t.boolean "reimburse_expenses", default: true, null: false
+    t.decimal "reward", precision: 15, scale: 2, default: "0.0", null: false
+    t.string "slug", null: false
+    t.uuid "source_fleet_inventory_id"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_fleet_contracts_on_created_by_id"
+    t.index ["destination_fleet_inventory_id"], name: "index_fleet_contracts_on_destination_fleet_inventory_id"
+    t.index ["fleet_id", "aasm_state"], name: "index_fleet_contracts_on_fleet_id_and_aasm_state"
+    t.index ["fleet_id", "kind"], name: "index_fleet_contracts_on_fleet_id_and_kind"
+    t.index ["fleet_id", "slug"], name: "index_fleet_contracts_on_fleet_id_and_slug", unique: true
+    t.index ["fleet_id"], name: "index_fleet_contracts_on_fleet_id"
+    t.index ["source_fleet_inventory_id"], name: "index_fleet_contracts_on_source_fleet_inventory_id"
+    t.check_constraint "crew_limit IS NULL OR crew_limit > 0", name: "fleet_contracts_crew_limit_positive"
+    t.check_constraint "kind = 0 AND source_fleet_inventory_id IS NOT NULL OR kind <> 0 AND source_fleet_inventory_id IS NULL", name: "fleet_contracts_source_only_for_transport"
+    t.check_constraint "reward >= 0::numeric", name: "fleet_contracts_reward_not_negative"
+  end
+
   create_table "fleet_event_admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "fleet_event_id", null: false
@@ -1011,6 +1086,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.uuid "destination_inventory_id"
     t.datetime "expired_at"
     t.datetime "expires_at"
+    t.uuid "fleet_contract_contributor_id"
+    t.uuid "fleet_contract_id"
     t.uuid "initiated_by_id"
     t.text "note"
     t.uuid "recipient_fleet_id"
@@ -1022,6 +1099,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.index ["destination_fleet_inventory_id"], name: "index_inventory_transfers_on_destination_fleet_inventory_id"
     t.index ["destination_inventory_id"], name: "index_inventory_transfers_on_destination_inventory_id"
     t.index ["expires_at"], name: "index_inventory_transfers_on_pending_expires_at", where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["fleet_contract_contributor_id"], name: "index_inventory_transfers_on_contract_contributor", where: "(fleet_contract_contributor_id IS NOT NULL)"
+    t.index ["fleet_contract_id"], name: "index_inventory_transfers_on_fleet_contract_id", where: "(fleet_contract_id IS NOT NULL)"
     t.index ["initiated_by_id"], name: "index_inventory_transfers_on_initiated_by_id"
     t.index ["recipient_fleet_id"], name: "index_inventory_transfers_on_pending_recipient_fleet", where: "((aasm_state)::text = 'pending'::text)"
     t.index ["recipient_fleet_id"], name: "index_inventory_transfers_on_recipient_fleet_id"
@@ -1962,6 +2041,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "requester_id", on_delete: :cascade
+  add_foreign_key "fleet_contract_assignments", "fleet_contracts", on_delete: :cascade
+  add_foreign_key "fleet_contract_assignments", "users", column: "approved_by_id", on_delete: :nullify
+  add_foreign_key "fleet_contract_assignments", "users", on_delete: :cascade
+  add_foreign_key "fleet_contract_items", "fleet_contracts", on_delete: :cascade
+  add_foreign_key "fleet_contracts", "fleet_inventories", column: "destination_fleet_inventory_id", on_delete: :nullify
+  add_foreign_key "fleet_contracts", "fleet_inventories", column: "source_fleet_inventory_id", on_delete: :nullify
+  add_foreign_key "fleet_contracts", "fleets"
+  add_foreign_key "fleet_contracts", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"
@@ -2013,11 +2100,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
   add_foreign_key "inventory_transfer_rules", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "inventory_transfer_rules", "users", column: "subject_user_id", on_delete: :cascade
   add_foreign_key "inventory_transfer_rules", "users", on_delete: :cascade
+  add_foreign_key "inventory_transfers", "fleet_contracts", on_delete: :nullify
   add_foreign_key "inventory_transfers", "fleet_inventories", column: "destination_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "fleet_inventories", column: "source_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "fleets", column: "recipient_fleet_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "inventories", column: "destination_inventory_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "inventories", column: "source_inventory_id", on_delete: :nullify
+  add_foreign_key "inventory_transfers", "users", column: "fleet_contract_contributor_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "initiated_by_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "recipient_id", on_delete: :nullify
   add_foreign_key "inventory_transfers", "users", column: "resolved_by_id", on_delete: :nullify

@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "¿Seguro que quieres eliminar este punto de montaje? Esta acción no se puede revertir."
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "¿Quitar estas mercancías del contrato?"
+          }
         }
       },
       "oauthAuthorize": {
@@ -830,6 +835,30 @@
             "success": "Slot eliminado.",
             "failure": "No se pudo eliminar el slot."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Contrato creado",
+            "failure": "No se pudo crear el contrato"
+          },
+          "update": {
+            "success": "Contrato guardado",
+            "failure": "No se pudo guardar el contrato"
+          },
+          "item": {
+            "create": {
+              "failure": "No se pudieron añadir las mercancías"
+            },
+            "destroy": {
+              "failure": "No se pudieron quitar las mercancías"
+            },
+            "update": {
+              "failure": "No se han podido cambiar las mercancías"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Envía las mercancías desde uno de tus inventarios y elige este contrato para que la entrega cuente."
         }
       },
       "notifications": {

@@ -294,7 +294,23 @@
           "assignSlotFor": "Assign slot for %{username}",
           "reassignSlotFor": "Reassign slot for %{username}"
         },
-        "memberNickname": "Member Nickname"
+        "memberNickname": "Member Nickname",
+        "contracts": {
+          "index": "Contracts",
+          "create": "Create Contract",
+          "edit": "Edit Contract",
+          "progress": "Progress",
+          "crew": "Crew",
+          "items": "Goods",
+          "editItem": "Edit goods",
+          "addItem": "Add goods",
+          "views": {
+            "open": "Contracts",
+            "closed": "Closed contracts",
+            "mine": "My contracts",
+            "completed": "Completed contracts"
+          }
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -431,6 +447,9 @@
           "index": "Allies",
           "add": "Add an ally"
         }
+      },
+      "fleet": {
+        "contractCovers": "Contract covers"
       }
     }
   }

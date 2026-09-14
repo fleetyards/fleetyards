@@ -155,15 +155,47 @@ const canCancel = (transfer: InventoryTransfer) =>
     </template>
 
     <template #col-contents="{ record }">
-      <ul class="transfer-contents">
-        <li v-for="line in (record as InventoryTransfer).lines" :key="line.id">
-          <span class="transfer-contents-name">{{ line.name }}</span>
-          <span class="transfer-contents-amount">
-            {{ line.quantity }}
-            {{ t(`labels.logistics.units.${line.unit}`) }}
-          </span>
-        </li>
-      </ul>
+      <!-- One element, because the cell is a flex row with `space-between`:
+           the goods and the contract they are for would otherwise be pushed to
+           opposite ends of the column. -->
+      <div class="transfer-contents-cell">
+        <ul class="transfer-contents">
+          <li
+            v-for="line in (record as InventoryTransfer).lines"
+            :key="line.id"
+          >
+            <span class="transfer-contents-name">{{ line.name }}</span>
+            <span class="transfer-contents-amount">
+              {{ line.quantity }}
+              {{ t(`labels.logistics.units.${line.unit}`) }}
+            </span>
+          </li>
+        </ul>
+
+        <!-- After the goods, which are what the column is about: this says
+             what they were for. Only a transfer naming a contract counts
+             towards one, so a delivery that will never count says so here
+             rather than leaving somebody to wonder why a bar has not moved. -->
+        <span
+          v-if="(record as InventoryTransfer).contract"
+          class="transfer-contract"
+        >
+          {{ t("labels.logistics.forContract") }}
+          <router-link
+            :to="{
+              name: 'fleet-contract',
+              params: {
+                slug: (record as InventoryTransfer).contract!.fleetSlug,
+                contract: (record as InventoryTransfer).contract!.slug,
+              },
+            }"
+            data-test="transfer-contract-link"
+          >
+            <i class="fa-duotone fa-clipboard-list" />
+            {{ (record as InventoryTransfer).contract!.title }}
+          </router-link>
+        </span>
+      </div>
     </template>
 
     <template #col-state="{ record }">
@@ -248,6 +280,14 @@ const canCancel = (transfer: InventoryTransfer) =>
 </template>
 
 <style lang="scss" scoped>
+// The whole cell: the shipment, and what it was shipped for, stacked.
+.transfer-contents-cell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
 .transfer-contents {
   padding: 0;
   margin: 0;
@@ -286,5 +326,28 @@ const canCancel = (transfer: InventoryTransfer) =>
 .transfer-contents-amount {
   white-space: nowrap;
   opacity: 0.7;
+}
+
+// Under the goods rather than a column of its own: most transfers name no
+// contract, and an empty column on every row buys nothing. No margin of its
+// own -- the list's own row padding is the whole gap.
+.transfer-contract {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: baseline;
+  gap: 5px;
+  // The cell's own size: this is a line of the contents, not a footnote to it.
+  color: $gray-light;
+
+  a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    color: $gold;
+
+    &:hover {
+      color: lighten($gold, 10%);
+    }
+  }
 }
 </style>

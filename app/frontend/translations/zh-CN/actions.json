@@ -344,6 +344,22 @@
           "grantRole": "授予角色",
           "revokeRole": "撤销",
           "addTeam": "添加小队"
+        },
+        "contracts": {
+          "create": "创建合约",
+          "save": "保存合约",
+          "publish": "发布",
+          "claim": "接下",
+          "join": "申请加入",
+          "release": "放弃",
+          "fulfil": "标记为完成",
+          "cancel": "取消合约",
+          "edit": "编辑",
+          "leave": "退出",
+          "remove": "移除",
+          "acceptCrew": "同意",
+          "declineCrew": "拒绝",
+          "addItem": "添加货物"
         }
       },
       "notifications": {

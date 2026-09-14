@@ -57,7 +57,8 @@ class FleetPolicy < FleetBasePolicy
         :fid, :name, :description, :logo, :background_image, :public_fleet, :public_fleet_stats,
         :allies_fleet, :allies_fleet_stats, :allies_fleet_members,
         :remove_logo, :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
-        :twitch, :guilded
+        :twitch, :guilded,
+        :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover
       ]
     end
 
@@ -66,7 +67,11 @@ class FleetPolicy < FleetBasePolicy
     end
 
     if accepted_fleet_membership&.has_access?(["fleet:update:images"])
-      allowed_params << [:logo, :background_image, :remove_logo, :remove_background]
+      # The contract covers are images, so the image privilege reaches them too.
+      allowed_params << [
+        :logo, :background_image, :remove_logo, :remove_background,
+        :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover
+      ]
     end
 
     params.permit(*allowed_params.flatten)

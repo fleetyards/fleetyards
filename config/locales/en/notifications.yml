@@ -66,6 +66,20 @@ en:
       title: "Your transfer to %{recipient} was %{outcome}"
     fleet_inventory_item_added:
       title: "New inventory item in %{fleet}: %{item_name}"
+    fleet_contract:
+      published:
+        title: "New contract in %{fleet}: %{title}"
+        body: "%{fleet} just posted a new contract."
+      claimed:
+        title: "%{user} claimed %{title}"
+      fulfilled:
+        title: "%{title} has been fulfilled"
+      crew_requested:
+        title: "%{user} asked to join %{title}"
+      crew_accepted:
+        title: "You were added to the crew for %{title}"
+      crew_declined:
+        title: "Your request to join %{title} was declined"
     fleet_event:
       published:
         title: "New event in %{fleet}: %{title}"

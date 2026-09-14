@@ -77,9 +77,13 @@
           "notifications": "Notifications",
           "discord": "Discord",
           "calendar": "Calendar",
-          "features": "Features"
+          "features": "Features",
+          "contracts": "Contracts"
         },
-        "allies": "Allies"
+        "allies": "Allies",
+        "contracts": {
+          "index": "Contracts"
+        }
       },
       "rsiProfile": "RSI Profile",
       "rsiHangar": "RSI Hangar",

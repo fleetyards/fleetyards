@@ -94,3 +94,20 @@ it:
       format:
         significant: true
         strip_insignificant_zeros: true
+  fleet_contracts:
+    units:
+      scu: SCU
+      units: unità
+    generated_title:
+      transport: "Trasportare %{goods}"
+      procurement: "Comprare %{goods}"
+      crafting: "Fabbricare %{goods}"
+      goods: "%{quantity} %{unit} %{name}"
+      more: "%{goods} e altri %{count}"
+      quality:
+        at_least: "%{goods} di qualità %{quality}+"
+        exact: "%{goods} di qualità esattamente %{quality}"
+      empty:
+        transport: Trasporto senza titolo
+        procurement: Acquisto senza titolo
+        crafting: Fabbricazione senza titolo

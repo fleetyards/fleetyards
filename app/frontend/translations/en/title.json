@@ -97,7 +97,14 @@
           "notifications": "%{fleet} Notification Settings",
           "discord": "%{fleet} Discord Settings",
           "calendar": "%{fleet} Calendar Settings",
-          "features": "%{fleet} Features"
+          "features": "%{fleet} Features",
+          "contracts": "%{fleet} Contract Settings"
+        },
+        "contracts": {
+          "index": "Contracts",
+          "create": "Create Contract",
+          "edit": "Edit Contract",
+          "show": "Contract"
         }
       },
       "roadmap": {

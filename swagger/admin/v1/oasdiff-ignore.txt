@@ -127,3 +127,5 @@ PUT /notifications/{id}/archive added the new `inventory_transfer_reports` enum 
 PUT /notifications/{id}/read added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
+GET /versions added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`
+GET /versions/recent added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`

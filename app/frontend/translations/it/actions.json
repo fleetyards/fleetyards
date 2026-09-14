@@ -344,6 +344,22 @@
           "grantRole": "Assegna ruolo",
           "revokeRole": "Revoca",
           "addTeam": "Aggiungi team"
+        },
+        "contracts": {
+          "create": "Crea contratto",
+          "save": "Salva contratto",
+          "publish": "Pubblica",
+          "claim": "Prendi",
+          "join": "Chiedi di unirti",
+          "release": "Abbandona",
+          "fulfil": "Segna come completato",
+          "cancel": "Annulla contratto",
+          "edit": "Modifica",
+          "leave": "Esci",
+          "remove": "Rimuovi",
+          "acceptCrew": "Accetta",
+          "declineCrew": "Rifiuta",
+          "addItem": "Aggiungi merci"
         }
       },
       "notifications": {

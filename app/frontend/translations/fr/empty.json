@@ -31,6 +31,11 @@
         "participants": "Personne sur cette expédition",
         "transfers": "Clôturez pour voir qui paie qui",
         "tours": "Aucune expédition"
+      },
+      "fleets": {
+        "contracts": {
+          "items": "Aucune marchandise. Ajoutez ce que ce contrat demande — il ne peut pas être publié vide."
+        }
       }
     }
   }

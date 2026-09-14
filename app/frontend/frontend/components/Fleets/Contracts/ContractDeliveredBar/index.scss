@@ -1,0 +1,50 @@
+.delivered-bar {
+  --delivered-bar-color: #{$primary};
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+
+  &--underway {
+    --delivered-bar-color: #{$warning};
+  }
+
+  &--complete {
+    --delivered-bar-color: #{$success};
+  }
+
+  &--quiet {
+    --delivered-bar-color: #{$gray};
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.8em;
+    color: $gray-light;
+  }
+
+  &__track {
+    position: relative;
+    height: 6px;
+    background: $gray-darker;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--delivered-bar-color);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  &__figure {
+    font-size: 0.8em;
+    color: $gray-lighter;
+    font-variant-numeric: tabular-nums;
+  }
+}

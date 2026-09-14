@@ -14,6 +14,10 @@ module V1
             logo: {type: [:string, :null]},
             removeLogo: {type: :boolean},
             backgroundImage: {type: [:string, :null], format: :binary},
+            # A cover per contract kind. Signed ids, like the logo above.
+            transportContractCover: {type: [:string, :null]},
+            procurementContractCover: {type: [:string, :null]},
+            craftingContractCover: {type: [:string, :null]},
             removeBackground: {type: :boolean},
             description: {type: [:string, :null]},
             publicFleet: {type: :boolean},

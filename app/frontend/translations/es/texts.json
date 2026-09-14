@@ -171,6 +171,9 @@
       },
       "payouts": {
         "tourInvite": "%{username} te invita a unirte a esta expedición."
+      },
+      "fleet": {
+        "contractCovers": "La imagen que el tablero muestra para cada tipo de contrato. Si dejas una vacía, se usa la imagen incorporada de abajo."
       }
     }
   }

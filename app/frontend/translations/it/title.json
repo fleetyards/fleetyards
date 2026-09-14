@@ -97,7 +97,14 @@
           "notifications": "Impostazioni Notifiche di %{fleet}",
           "discord": "Impostazioni Discord di %{fleet}",
           "calendar": "Impostazioni Calendario di %{fleet}",
-          "features": "Funzionalità di %{fleet}"
+          "features": "Funzionalità di %{fleet}",
+          "contracts": "Impostazioni contratti di %{fleet}"
+        },
+        "contracts": {
+          "index": "Contratti",
+          "create": "Crea contratto",
+          "edit": "Modifica contratto",
+          "show": "Contratto"
         }
       },
       "roadmap": {

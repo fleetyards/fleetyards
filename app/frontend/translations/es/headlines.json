@@ -292,7 +292,23 @@
           "assignSlotFor": "Asignar plaza para %{username}",
           "reassignSlotFor": "Reasignar plaza para %{username}"
         },
-        "memberNickname": "Apodo del miembro"
+        "memberNickname": "Apodo del miembro",
+        "contracts": {
+          "index": "Contratos",
+          "create": "Crear contrato",
+          "edit": "Editar contrato",
+          "progress": "Progreso",
+          "crew": "Tripulación",
+          "items": "Mercancías",
+          "editItem": "Editar mercancías",
+          "addItem": "Añadir mercancías",
+          "views": {
+            "open": "Contratos",
+            "closed": "Contratos cerrados",
+            "mine": "Mis contratos",
+            "completed": "Contratos completados"
+          }
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -429,6 +445,9 @@
           "index": "Aliados",
           "add": "Añadir un aliado"
         }
+      },
+      "fleet": {
+        "contractCovers": "Portadas de contrato"
       }
     }
   }

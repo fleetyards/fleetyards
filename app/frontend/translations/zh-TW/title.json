@@ -97,7 +97,14 @@
           "notifications": "%{fleet} 通知設定",
           "discord": "%{fleet} Discord 設定",
           "calendar": "%{fleet} 行事曆設定",
-          "features": "%{fleet} 功能"
+          "features": "%{fleet} 功能",
+          "contracts": "%{fleet} 合約設定"
+        },
+        "contracts": {
+          "index": "合約",
+          "create": "建立合約",
+          "edit": "編輯合約",
+          "show": "合約"
         }
       },
       "roadmap": {

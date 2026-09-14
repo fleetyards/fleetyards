@@ -563,7 +563,12 @@
         },
         "allies": "Ships visible to allies",
         "alliesStats": "Stats visible to allies",
-        "alliesMembers": "Member list visible to allies"
+        "alliesMembers": "Member list visible to allies",
+        "contractCovers": {
+          "transport": "Transport cover",
+          "procurement": "Procurement cover",
+          "crafting": "Crafting cover"
+        }
       },
       "hangarGroup": {
         "name": "Name",
@@ -1673,9 +1678,7 @@
           "foundUpgrades": "Found Upgrades",
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
-        },
-        "addBundledVehicles": "Add bundled snub crafts",
-        "addBundledVehiclesHint": "Adds the snub craft a ship comes with. Ones already in your hangar are kept either way."
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacity",
@@ -1962,7 +1965,10 @@
         "origin": "From / To",
         "inTransitAmount": "%{amount} in transit",
         "inTransitHint": "Sent on a transfer nobody has answered yet. It is already out of the totals.",
-        "transferFromFriends": "My friends"
+        "transferFromFriends": "My friends",
+        "towardsContract": "Towards a contract",
+        "noContract": "No contract",
+        "forContract": "for"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -2021,7 +2027,8 @@
         "openTransfers": "Open transfers",
         "openFriends": "Open friends",
         "openAllies": "Open allies",
-        "openTour": "Open tour"
+        "openTour": "Open tour",
+        "openContract": "Open contract"
       },
       "notificationTypes": {
         "channels": {
@@ -2036,7 +2043,8 @@
           "fleetEvents": "Fleet events",
           "logistics": "Logistics",
           "relationships": "Friends & allies",
-          "tours": "Tours"
+          "tours": "Tours",
+          "fleetContracts": "Fleet contracts"
         },
         "hangar_create": "Hangar created",
         "hangar_destroy": "Hangar removed",
@@ -2070,7 +2078,12 @@
         "fleet_ally_request_received": "Ally request received",
         "fleet_ally_request_accepted": "Ally request accepted",
         "tour_join_request_received": "Join request received",
-        "tour_join_request_accepted": "Join request accepted"
+        "tour_join_request_accepted": "Join request accepted",
+        "fleet_contract_published": "Contract posted",
+        "fleet_contract_claimed": "Contract claimed",
+        "fleet_contract_crew_requested": "Crew wants to join a contract",
+        "fleet_contract_crew_answered": "Contract crew request answered",
+        "fleet_contract_fulfilled": "Contract fulfilled"
       },
       "fleets": {
         "missions": {
@@ -2252,6 +2265,61 @@
             "weekTitle": "Week of %{date}"
           },
           "repeats": "Repeats"
+        },
+        "contracts": {
+          "title": "Title",
+          "description": "Description",
+          "reward": "Reward",
+          "deadline": "Deadline",
+          "crewLimit": "Crew limit",
+          "reimburseExpenses": "Reimburse expenses",
+          "from": "Collect from",
+          "to": "Deliver to",
+          "lead": "Lead",
+          "pendingCrew": "Waiting to join",
+          "minQuality": "min. quality %{value}",
+          "pickedUp": "%{quantity} picked up",
+          "itemName": "Item",
+          "itemCategory": "Category",
+          "itemUnit": "Unit",
+          "itemQuantity": "Quantity",
+          "kind": {
+            "label": "Type",
+            "transport": "Transport",
+            "procurement": "Procurement",
+            "crafting": "Crafting"
+          },
+          "state": {
+            "draft": "Draft",
+            "open": "Open",
+            "in_progress": "In progress",
+            "fulfilled": "Fulfilled",
+            "cancelled": "Cancelled",
+            "expired": "Expired"
+          },
+          "itemTypes": {
+            "Commodity": "Commodity",
+            "Component": "Component",
+            "Equipment": "Equipment"
+          },
+          "qualityMatch": "Match",
+          "exactQuality": "exactly %{value}",
+          "qualityMatches": {
+            "at_least": "At least",
+            "exact": "Exactly"
+          },
+          "itemQuality": "Quality",
+          "titleHint": "Optional — a contract without one is named after the goods it asks for",
+          "postedBy": "Posted by",
+          "claimedBy": "claimed by",
+          "delivered": "Delivered",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "Open",
+            "closed": "Closed",
+            "mine": "Mine",
+            "completed": "Completed"
+          }
         }
       },
       "commodity": {

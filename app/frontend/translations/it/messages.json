@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "Sei sicuro di voler eliminare questo punto di montaggio? Questa azione non può essere annullata."
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "Rimuovere queste merci dal contratto?"
+          }
         }
       },
       "oauthAuthorize": {
@@ -830,6 +835,30 @@
             "success": "Slot rimosso.",
             "failure": "Non è stato possibile rimuovere lo slot."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Contratto creato",
+            "failure": "Impossibile creare il contratto"
+          },
+          "update": {
+            "success": "Contratto salvato",
+            "failure": "Impossibile salvare il contratto"
+          },
+          "item": {
+            "create": {
+              "failure": "Impossibile aggiungere le merci"
+            },
+            "destroy": {
+              "failure": "Impossibile rimuovere le merci"
+            },
+            "update": {
+              "failure": "Non è stato possibile modificare le merci"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Invia le merci da uno dei tuoi inventari e scegli questo contratto, così la consegna viene conteggiata."
         }
       },
       "notifications": {

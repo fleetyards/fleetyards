@@ -563,7 +563,12 @@
         },
         "allies": "Navi visibili agli alleati",
         "alliesStats": "Statistiche visibili agli alleati",
-        "alliesMembers": "Elenco membri visibile agli alleati"
+        "alliesMembers": "Elenco membri visibile agli alleati",
+        "contractCovers": {
+          "transport": "Copertina trasporto",
+          "procurement": "Copertina approvvigionamento",
+          "crafting": "Copertina fabbricazione"
+        }
       },
       "hangarGroup": {
         "name": "Nome",
@@ -1946,7 +1951,10 @@
         "origin": "Da / A",
         "inTransitAmount": "%{amount} in transito",
         "inTransitHint": "Inviato con un trasferimento a cui nessuno ha risposto. Già fuori dai totali.",
-        "transferFromFriends": "I miei amici"
+        "transferFromFriends": "I miei amici",
+        "towardsContract": "Per un contratto",
+        "noContract": "Nessun contratto",
+        "forContract": "per"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -2005,7 +2013,8 @@
         "openTransfers": "Apri trasferimenti",
         "openFriends": "Apri gli amici",
         "openAllies": "Apri gli alleati",
-        "openTour": "Apri spedizione"
+        "openTour": "Apri spedizione",
+        "openContract": "Apri contratto"
       },
       "notificationTypes": {
         "channels": {
@@ -2020,7 +2029,8 @@
           "fleetEvents": "Eventi della flotta",
           "logistics": "Logistica",
           "relationships": "Amici e alleati",
-          "tours": "Spedizioni"
+          "tours": "Spedizioni",
+          "fleetContracts": "Contratti della flotta"
         },
         "hangar_create": "Hangar creato",
         "hangar_destroy": "Hangar rimosso",
@@ -2054,7 +2064,12 @@
         "fleet_ally_request_received": "Richiesta di alleanza ricevuta",
         "fleet_ally_request_accepted": "Richiesta di alleanza accettata",
         "tour_join_request_received": "Richiesta di partecipazione ricevuta",
-        "tour_join_request_accepted": "Richiesta di partecipazione accettata"
+        "tour_join_request_accepted": "Richiesta di partecipazione accettata",
+        "fleet_contract_published": "Contratto pubblicato",
+        "fleet_contract_claimed": "Contratto preso in carico",
+        "fleet_contract_crew_requested": "Qualcuno vuole unirsi a un contratto",
+        "fleet_contract_crew_answered": "Richiesta di equipaggio gestita",
+        "fleet_contract_fulfilled": "Contratto completato"
       },
       "fleets": {
         "missions": {
@@ -2236,6 +2251,61 @@
             "weekTitle": "Settimana del %{date}"
           },
           "repeats": "Ricorrente"
+        },
+        "contracts": {
+          "title": "Titolo",
+          "description": "Descrizione",
+          "reward": "Ricompensa",
+          "deadline": "Scadenza",
+          "crewLimit": "Limite equipaggio",
+          "reimburseExpenses": "Rimborsa le spese",
+          "from": "Ritira da",
+          "to": "Consegna a",
+          "lead": "Responsabile",
+          "pendingCrew": "In attesa",
+          "minQuality": "qualità min. %{value}",
+          "pickedUp": "%{quantity} ritirato",
+          "itemName": "Articolo",
+          "itemCategory": "Categoria",
+          "itemUnit": "Unità",
+          "itemQuantity": "Quantità",
+          "kind": {
+            "label": "Tipo",
+            "transport": "Trasporto",
+            "procurement": "Approvvigionamento",
+            "crafting": "Fabbricazione"
+          },
+          "state": {
+            "draft": "Bozza",
+            "open": "Aperto",
+            "in_progress": "In corso",
+            "fulfilled": "Completato",
+            "cancelled": "Annullato",
+            "expired": "Scaduto"
+          },
+          "itemTypes": {
+            "Commodity": "Merce",
+            "Component": "Componente",
+            "Equipment": "Equipaggiamento"
+          },
+          "qualityMatch": "Corrispondenza",
+          "exactQuality": "esattamente %{value}",
+          "qualityMatches": {
+            "at_least": "Almeno",
+            "exact": "Esattamente"
+          },
+          "itemQuality": "Qualità",
+          "titleHint": "Facoltativo — senza titolo il contratto prende il nome dalle merci richieste",
+          "postedBy": "Pubblicato da",
+          "claimedBy": "preso da",
+          "delivered": "Consegnato",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "Aperti",
+            "closed": "Chiusi",
+            "mine": "I miei",
+            "completed": "Completati"
+          }
         }
       },
       "commodity": {

@@ -31,6 +31,11 @@
         "participants": "Noch niemand auf dieser Tour",
         "transfers": "Rechne ab, um zu sehen wer wem zahlt",
         "tours": "Noch keine Touren"
+      },
+      "fleets": {
+        "contracts": {
+          "items": "Noch keine Waren. Füge hinzu, was dieser Auftrag verlangt — leer kann er nicht veröffentlicht werden."
+        }
       }
     }
   }

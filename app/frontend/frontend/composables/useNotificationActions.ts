@@ -58,6 +58,11 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   // it starts to mean something.
   tour_join_request_received: "reviewRequest",
   tour_join_request_accepted: "openTour",
+  fleet_contract_published: "openContract",
+  fleet_contract_claimed: "openContract",
+  fleet_contract_crew_requested: "openContract",
+  fleet_contract_crew_answered: "openContract",
+  fleet_contract_fulfilled: "openContract",
 };
 
 const ACTION_ICONS: Record<string, string> = {
@@ -72,6 +77,7 @@ const ACTION_ICONS: Record<string, string> = {
   openFriends: "fa-duotone fa-user-group",
   openAllies: "fa-duotone fa-handshake",
   openTransfers: "fa-duotone fa-right-left",
+  openContract: "fa-duotone fa-clipboard-list",
   openEvent: "fa-duotone fa-calendar-day",
   openTour: "fa-duotone fa-coins",
   openRoster: "fa-duotone fa-list-check",

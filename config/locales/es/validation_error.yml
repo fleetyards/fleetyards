@@ -47,6 +47,24 @@ es:
       create: No se pudo crear el grupo
       destroy: No se pudo destruir el grupo
       update: No se pudo actualizar el grupo
+    fleet_contracts:
+      create: No se pudo crear el contrato.
+      update: No se pudo actualizar el contrato.
+      destroy: No se pudo eliminar el contrato.
+      publish: No se pudo publicar el contrato.
+      claim: No se pudo aceptar el contrato.
+      release: No se pudo abandonar el contrato.
+      fulfil: No se pudo marcar el contrato como completado.
+      cancel: No se pudo cancelar el contrato.
+    fleet_contract_items:
+      create: No se pudieron añadir las mercancías.
+      update: No se pudieron actualizar las mercancías.
+      destroy: No se pudieron quitar las mercancías.
+    fleet_contract_assignments:
+      create: No se pudo enviar la solicitud.
+      accept: No se pudo aceptar al tripulante.
+      decline: No se pudo rechazar al tripulante.
+      destroy: No se pudo quitar al tripulante.
     fleet_inventories:
       create: No se pudo crear el inventario.
       update: No se pudo actualizar el inventario.

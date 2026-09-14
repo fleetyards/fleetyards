@@ -292,7 +292,23 @@
           "assignSlotFor": "Slot für %{username} zuweisen",
           "reassignSlotFor": "Slot für %{username} neu zuweisen"
         },
-        "memberNickname": "Spitzname des Mitglieds"
+        "memberNickname": "Spitzname des Mitglieds",
+        "contracts": {
+          "index": "Aufträge",
+          "create": "Auftrag erstellen",
+          "edit": "Auftrag bearbeiten",
+          "progress": "Fortschritt",
+          "crew": "Crew",
+          "items": "Waren",
+          "editItem": "Waren bearbeiten",
+          "addItem": "Waren hinzufügen",
+          "views": {
+            "open": "Aufträge",
+            "closed": "Beendete Aufträge",
+            "mine": "Meine Aufträge",
+            "completed": "Abgeschlossene Aufträge"
+          }
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -429,6 +445,9 @@
           "index": "Verbündete",
           "add": "Verbündeten hinzufügen"
         }
+      },
+      "fleet": {
+        "contractCovers": "Auftrags-Titelbilder"
       }
     }
   }

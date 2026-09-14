@@ -77,6 +77,26 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     delete "stock/:slug", to: "fleet_inventory_stock#destroy"
   end
 
+  resources :fleet_contracts, path: "contracts", param: :slug, only: %i[index show create update destroy] do
+    member do
+      put :publish
+      put :claim
+      put :release
+      put :fulfil
+      put :cancel
+      get :progress
+    end
+
+    resources :fleet_contract_items, path: "items", only: %i[create update destroy]
+
+    resources :fleet_contract_assignments, path: "crew", only: %i[index create destroy] do
+      member do
+        put :accept
+        put :decline
+      end
+    end
+  end
+
   resources :missions, param: :slug, only: %i[index show create update destroy] do
     put :unarchive, on: :member
     resources :mission_teams, path: "teams", only: %i[create update destroy] do

@@ -18,13 +18,14 @@ module Inventories
     # never reached them.
     attr_reader :transfer, :refusal, :quantity
 
-    def initialize(source:, actor:, lines:, destination: nil, recipient: nil, note: nil)
+    def initialize(source:, actor:, lines:, destination: nil, recipient: nil, note: nil, contract: nil)
       @source = source
       @actor = actor
       @requested_lines = Array(lines)
       @destination = destination
       @recipient = recipient
       @note = note
+      @contract = contract
       @authorizer = TransferAuthorizer.new(actor)
     end
 
@@ -32,6 +33,7 @@ module Inventories
       return false unless authorized_to_send?
       return false unless lines_resolve?
       return false unless target_resolves?
+      return false unless contract_link_allowed?
 
       ::ActiveRecord::Base.transaction do
         # The recipient row is taken before the gate counts what is waiting for
@@ -77,8 +79,16 @@ module Inventories
     end
 
     private def build_transfer
-      transfer = ::InventoryTransfer.new(initiated_by: @actor, note: @note)
+      transfer = ::InventoryTransfer.new(initiated_by: @actor, note: @note, fleet_contract: @contract)
       transfer.source = @source
+
+      # Whose goods these are, written down while the source still exists --
+      # deleting it later nulls the only other record of it. Never the actor: an
+      # officer dispatching on a member's behalf is not the contributor.
+      if @contract.present?
+        party = ::InventoryTransfer.party_of(@source)
+        transfer.fleet_contract_contributor_id = party.id if party.is_a?(::User)
+      end
 
       if immediate?
         transfer.destination = @destination
@@ -94,6 +104,23 @@ module Inventories
       TransferExecutor.new(@transfer, actor: @actor).deliver
       @transfer.resolved_by = @actor
       @transfer.accept!
+    end
+
+    # A refused link is an error rather than a transfer quietly filed under
+    # nothing: a contractor who named a contract and got an ordinary transfer
+    # back would have no way to tell until the progress bar failed to move.
+    private def contract_link_allowed?
+      return true if @contract.blank?
+
+      link = ::Contracts::TransferLink.new(
+        contract: @contract, actor: @actor,
+        source: @source, destination: @destination, recipient: @recipient
+      )
+
+      return true if link.call
+
+      errors.add(:base, link.error)
+      false
     end
 
     private def authorized_to_send?

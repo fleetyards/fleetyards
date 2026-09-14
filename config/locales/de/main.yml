@@ -32,3 +32,20 @@ de:
     workers: Workers
     header:
       toggle: Navigation umschalten
+  fleet_contracts:
+    units:
+      scu: SCU
+      units: Stück
+    generated_title:
+      transport: "%{goods} transportieren"
+      procurement: "%{goods} kaufen"
+      crafting: "%{goods} herstellen"
+      goods: "%{quantity} %{unit} %{name}"
+      more: "%{goods} und %{count} weitere"
+      quality:
+        at_least: "%{goods} ab Qualität %{quality}"
+        exact: "%{goods} mit genau Qualität %{quality}"
+      empty:
+        transport: Transport ohne Titel
+        procurement: Beschaffung ohne Titel
+        crafting: Herstellung ohne Titel

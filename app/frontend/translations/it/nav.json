@@ -77,9 +77,13 @@
           "notifications": "Notifiche",
           "discord": "Discord",
           "calendar": "Calendario",
-          "features": "Funzionalità"
+          "features": "Funzionalità",
+          "contracts": "Contratti"
         },
-        "allies": "Alleati"
+        "allies": "Alleati",
+        "contracts": {
+          "index": "Contratti"
+        }
       },
       "rsiProfile": "Profilo RSI",
       "rsiHangar": "Hangar RSI",

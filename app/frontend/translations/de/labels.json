@@ -563,7 +563,12 @@
         },
         "allies": "Schiffe für Verbündete sichtbar",
         "alliesStats": "Statistiken für Verbündete sichtbar",
-        "alliesMembers": "Mitgliederliste für Verbündete sichtbar"
+        "alliesMembers": "Mitgliederliste für Verbündete sichtbar",
+        "contractCovers": {
+          "transport": "Transport-Titelbild",
+          "procurement": "Beschaffungs-Titelbild",
+          "crafting": "Herstellungs-Titelbild"
+        }
       },
       "hangarGroup": {
         "name": "Name",
@@ -1946,7 +1951,10 @@
         "origin": "Von / An",
         "inTransitAmount": "%{amount} unterwegs",
         "inTransitHint": "Auf einem Transfer, den noch niemand beantwortet hat. Bereits aus den Summen heraus.",
-        "transferFromFriends": "Meine Freunde"
+        "transferFromFriends": "Meine Freunde",
+        "towardsContract": "Für einen Auftrag",
+        "noContract": "Kein Auftrag",
+        "forContract": "für"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {
@@ -2005,7 +2013,8 @@
         "openTransfers": "Transfers öffnen",
         "openFriends": "Freunde öffnen",
         "openAllies": "Verbündete öffnen",
-        "openTour": "Tour öffnen"
+        "openTour": "Tour öffnen",
+        "openContract": "Auftrag öffnen"
       },
       "notificationTypes": {
         "channels": {
@@ -2020,7 +2029,8 @@
           "fleetEvents": "Flotten-Events",
           "logistics": "Logistik",
           "relationships": "Freunde & Verbündete",
-          "tours": "Touren"
+          "tours": "Touren",
+          "fleetContracts": "Flotten-Aufträge"
         },
         "hangar_create": "Hangar erstellt",
         "hangar_destroy": "Hangar entfernt",
@@ -2054,7 +2064,12 @@
         "fleet_ally_request_received": "Bündnisanfrage erhalten",
         "fleet_ally_request_accepted": "Bündnisanfrage angenommen",
         "tour_join_request_received": "Teilnahme-Anfrage erhalten",
-        "tour_join_request_accepted": "Teilnahme-Anfrage angenommen"
+        "tour_join_request_accepted": "Teilnahme-Anfrage angenommen",
+        "fleet_contract_published": "Auftrag veröffentlicht",
+        "fleet_contract_claimed": "Auftrag übernommen",
+        "fleet_contract_crew_requested": "Crew möchte einem Auftrag beitreten",
+        "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
+        "fleet_contract_fulfilled": "Auftrag erfüllt"
       },
       "fleets": {
         "missions": {
@@ -2236,6 +2251,61 @@
             "weekTitle": "Woche vom %{date}"
           },
           "repeats": "Wiederholung"
+        },
+        "contracts": {
+          "title": "Titel",
+          "description": "Beschreibung",
+          "reward": "Belohnung",
+          "deadline": "Frist",
+          "crewLimit": "Crew-Limit",
+          "reimburseExpenses": "Auslagen erstatten",
+          "from": "Abholen bei",
+          "to": "Liefern an",
+          "lead": "Leitung",
+          "pendingCrew": "Wartet auf Aufnahme",
+          "minQuality": "min. Qualität %{value}",
+          "pickedUp": "%{quantity} abgeholt",
+          "itemName": "Ware",
+          "itemCategory": "Kategorie",
+          "itemUnit": "Einheit",
+          "itemQuantity": "Menge",
+          "kind": {
+            "label": "Art",
+            "transport": "Transport",
+            "procurement": "Beschaffung",
+            "crafting": "Herstellung"
+          },
+          "state": {
+            "draft": "Entwurf",
+            "open": "Offen",
+            "in_progress": "In Arbeit",
+            "fulfilled": "Erfüllt",
+            "cancelled": "Abgebrochen",
+            "expired": "Abgelaufen"
+          },
+          "itemTypes": {
+            "Commodity": "Handelsware",
+            "Component": "Komponente",
+            "Equipment": "Ausrüstung"
+          },
+          "qualityMatch": "Abgleich",
+          "exactQuality": "genau %{value}",
+          "qualityMatches": {
+            "at_least": "Mindestens",
+            "exact": "Genau"
+          },
+          "itemQuality": "Qualität",
+          "titleHint": "Optional — ohne Titel wird der Auftrag nach den geforderten Waren benannt",
+          "postedBy": "Ausgeschrieben von",
+          "claimedBy": "übernommen von",
+          "delivered": "Geliefert",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "Offen",
+            "closed": "Beendet",
+            "mine": "Meine",
+            "completed": "Abgeschlossen"
+          }
         }
       },
       "commodity": {

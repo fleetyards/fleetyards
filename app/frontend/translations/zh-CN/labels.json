@@ -563,7 +563,12 @@
         },
         "allies": "盟友可见舰船",
         "alliesStats": "盟友可见统计",
-        "alliesMembers": "盟友可见成员列表"
+        "alliesMembers": "盟友可见成员列表",
+        "contractCovers": {
+          "transport": "运送封面图",
+          "procurement": "采购封面图",
+          "crafting": "制造封面图"
+        }
       },
       "hangarGroup": {
         "name": "名称",
@@ -1673,9 +1678,7 @@
           "foundUpgrades": "找到的升级",
           "missingUpgrades": "未找到升级",
           "missingUpgradeVehicles": "未找到匹配的飞船用于升级"
-        },
-        "addBundledVehicles": "添加附带的小型飞船",
-        "addBundledVehiclesHint": "添加飞船附带的小型飞船。已在机库中的会保留。"
+        }
       },
       "cargoGridViewer": {
         "capacity": "容量",
@@ -1948,7 +1951,10 @@
         "origin": "来自 / 发往",
         "inTransitAmount": "%{amount} 运送中",
         "inTransitHint": "已随一笔尚未被答复的转移送出，已不计入上方总数。",
-        "transferFromFriends": "我的好友"
+        "transferFromFriends": "我的好友",
+        "towardsContract": "计入合约",
+        "noContract": "不计入合约",
+        "forContract": "用于"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -2007,7 +2013,8 @@
         "openTransfers": "打开转移",
         "openFriends": "打开好友",
         "openAllies": "打开盟友",
-        "openTour": "打开行程"
+        "openTour": "打开行程",
+        "openContract": "打开合约"
       },
       "notificationTypes": {
         "channels": {
@@ -2022,7 +2029,8 @@
           "fleetEvents": "舰队活动",
           "logistics": "物流",
           "relationships": "好友与盟友",
-          "tours": "行程"
+          "tours": "行程",
+          "fleetContracts": "舰队合约"
         },
         "hangar_create": "添加到机库",
         "hangar_destroy": "从机库移除",
@@ -2056,7 +2064,12 @@
         "fleet_ally_request_received": "收到结盟请求",
         "fleet_ally_request_accepted": "结盟请求已通过",
         "tour_join_request_received": "收到参加申请",
-        "tour_join_request_accepted": "参加申请已通过"
+        "tour_join_request_accepted": "参加申请已通过",
+        "fleet_contract_published": "合约已发布",
+        "fleet_contract_claimed": "合约已接取",
+        "fleet_contract_crew_requested": "有人想加入合约",
+        "fleet_contract_crew_answered": "合约成员申请已处理",
+        "fleet_contract_fulfilled": "合约已完成"
       },
       "fleets": {
         "missions": {
@@ -2238,6 +2251,61 @@
             "weekTitle": "%{date} 所在周"
           },
           "repeats": "重复"
+        },
+        "contracts": {
+          "title": "标题",
+          "description": "描述",
+          "reward": "报酬",
+          "deadline": "截止时间",
+          "crewLimit": "队伍上限",
+          "reimburseExpenses": "报销开支",
+          "from": "取货地点",
+          "to": "交付地点",
+          "lead": "负责人",
+          "pendingCrew": "等待加入",
+          "minQuality": "最低品质 %{value}",
+          "pickedUp": "已取 %{quantity}",
+          "itemName": "物品",
+          "itemCategory": "类别",
+          "itemUnit": "单位",
+          "itemQuantity": "数量",
+          "kind": {
+            "label": "类型",
+            "transport": "运输",
+            "procurement": "采购",
+            "crafting": "制造"
+          },
+          "state": {
+            "draft": "草稿",
+            "open": "开放",
+            "in_progress": "进行中",
+            "fulfilled": "已完成",
+            "cancelled": "已取消",
+            "expired": "已过期"
+          },
+          "itemTypes": {
+            "Commodity": "商品",
+            "Component": "部件",
+            "Equipment": "装备"
+          },
+          "qualityMatch": "匹配方式",
+          "exactQuality": "正好 %{value}",
+          "qualityMatches": {
+            "at_least": "至少",
+            "exact": "正好"
+          },
+          "itemQuality": "品质",
+          "titleHint": "可选——不填时合约以所需货物命名",
+          "postedBy": "发布者",
+          "claimedBy": "接下者",
+          "delivered": "已交付",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "进行中",
+            "closed": "已结束",
+            "mine": "我的",
+            "completed": "已完成"
+          }
         }
       },
       "commodity": {

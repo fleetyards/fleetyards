@@ -43,6 +43,24 @@ zh-TW:
       create: 無法建立群組
       destroy: 無法刪除群組
       update: 無法更新群組
+    fleet_contracts:
+      create: 無法建立合約。
+      update: 無法更新合約。
+      destroy: 無法刪除合約。
+      publish: 無法發布合約。
+      claim: 無法接下合約。
+      release: 無法放棄合約。
+      fulfil: 無法將合約標記為完成。
+      cancel: 無法取消合約。
+    fleet_contract_items:
+      create: 無法新增貨物。
+      update: 無法更新貨物。
+      destroy: 無法移除貨物。
+    fleet_contract_assignments:
+      create: 無法發送申請。
+      accept: 無法同意該隊員。
+      decline: 無法拒絕該隊員。
+      destroy: 無法移除該隊員。
     fleet_inventories:
       create: 無法建立庫存。
       update: 無法更新庫存。

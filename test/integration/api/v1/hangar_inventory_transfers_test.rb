@@ -292,6 +292,124 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The whole point of the contract link: a delivery is an ordinary transfer,
+  # and the contract's progress is a sum over what it deposited. Addressed to
+  # the fleet rather than to the depot directly -- from this mount a member
+  # names a party, and the fleet says where it lands.
+  test "a delivery filed under a contract counts once the fleet accepts it" do
+    contract, depot = contract_for(@user)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientFleetSlug: contract.fleet.slug,
+             contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]} do
+      assert_equal "pending", parsed_body["state"]
+    end
+
+    transfer = InventoryTransfer.find(parsed_body["id"])
+
+    assert_equal contract.id, transfer.fleet_contract_id
+    assert_equal 0.to_d, Contracts::Progress.new(contract).lines.first.delivered
+
+    # The accept path itself is covered on the fleet mount; what is being
+    # asserted here is that the deposit it writes is what moves the contract.
+    Inventories::TransferResolver.new(transfer, actor: @user).accept(depot)
+
+    assert_equal 40.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
+  end
+
+  test "a delivery the fleet lands somewhere else counts for nothing" do
+    contract, _depot = contract_for(@user)
+    elsewhere = create(:fleet_inventory, fleet: contract.fleet)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientFleetSlug: contract.fleet.slug,
+             contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+
+    transfer = InventoryTransfer.find(parsed_body["id"])
+    Inventories::TransferResolver.new(transfer, actor: @user).accept(elsewhere)
+
+    assert_equal 0.to_d, Contracts::Progress.new(contract.reload).lines.first.delivered
+  end
+
+  # Attribution is certain only while the source still exists, so the link
+  # writes it down there and then.
+  test "a contract delivery records who its goods came from" do
+    contract, _depot = contract_for(@user)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientFleetSlug: contract.fleet.slug,
+             contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+
+    transfer = InventoryTransfer.find(parsed_body["id"])
+
+    assert_equal @user.id, transfer.fleet_contract_contributor_id
+  end
+
+  test "a transfer with no contract records no contributor" do
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientUsername: @recipient.username,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+
+    assert_nil InventoryTransfer.find(parsed_body["id"]).fleet_contract_contributor_id
+  end
+
+  test "POST naming a contract from a fleet the caller is not in is refused" do
+    outsiders_fleet = create(:fleet)
+    depot = create(:fleet_inventory, fleet: outsiders_fleet)
+    contract = create(:fleet_contract, :in_progress, fleet: outsiders_fleet,
+      destination_fleet_inventory: depot)
+
+    sign_in @user
+
+    assert_api_response :post, 400,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientUsername: @recipient.username,
+             contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+  end
+
+  test "POST naming a contract that is not being worked yet is refused" do
+    contract, _depot = contract_for(@user, state: :published)
+    sign_in @user
+
+    assert_api_response :post, 400,
+      path_params: {},
+      body: {sourceInventoryId: @source.id, recipientFleetSlug: contract.fleet.slug,
+             contractId: contract.id,
+             lines: [{positionId: @entry.reload.position_id, quantity: 40}]}
+  end
+
+  private def contract_for(worker, state: :in_progress)
+    fleet = create(:fleet, admins: [worker])
+    Flipper.enable("fleet_contracts")
+    Flipper.enable("fleet_logistics")
+
+    depot = create(:fleet_inventory, fleet: fleet)
+    contract = create(:fleet_contract, state, fleet: fleet, destination_fleet_inventory: depot)
+    contract.fleet_contract_items.destroy_all
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Quantanium", category: :commodity, unit: :scu, quantity: 800)
+
+    if state == :in_progress
+      contract.fleet_contract_assignments.create!(user: worker, role: :lead,
+        aasm_state: "accepted", accepted_at: Time.current)
+    end
+
+    [contract, depot]
+  end
+
   test "GET needs a signed-in user" do
     assert_api_response :get, 401
   end

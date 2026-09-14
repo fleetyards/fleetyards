@@ -344,6 +344,22 @@
           "grantRole": "授予角色",
           "revokeRole": "撤銷",
           "addTeam": "新增隊伍"
+        },
+        "contracts": {
+          "create": "建立合約",
+          "save": "儲存合約",
+          "publish": "發布",
+          "claim": "接下",
+          "join": "申請加入",
+          "release": "放棄",
+          "fulfil": "標記為完成",
+          "cancel": "取消合約",
+          "edit": "編輯",
+          "leave": "退出",
+          "remove": "移除",
+          "acceptCrew": "同意",
+          "declineCrew": "拒絕",
+          "addItem": "新增貨物"
         }
       },
       "notifications": {

@@ -1144,6 +1144,804 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contracts":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: List Fleet Contracts
+      tags:
+      - Contracts
+      operationId: fleetContracts
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/FleetContractQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: mine
+        in: query
+        schema:
+          type: boolean
+        required: false
+      - name: page
+        in: query
+        schema:
+          type: integer
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: integer
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Create Fleet Contract
+      tags:
+      - Contracts
+      operationId: createFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetContractInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/contracts/{fleetContractSlug}/crew":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetContractSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: List Fleet Contract Crew
+      tags:
+      - Contracts
+      operationId: fleetContractCrew
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractCrewList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Join Fleet Contract Crew
+      tags:
+      - Contracts
+      operationId: joinFleetContractCrew
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractCrewMember"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/contracts/{fleetContractSlug}/crew/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetContractSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Leave Fleet Contract Crew
+      tags:
+      - Contracts
+      operationId: leaveFleetContractCrew
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractCrewMember"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/contracts/{fleetContractSlug}/crew/{id}/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetContractSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Accept Fleet Contract Crew Request
+      tags:
+      - Contracts
+      operationId: acceptFleetContractCrew
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractCrewMember"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/contracts/{fleetContractSlug}/crew/{id}/decline":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetContractSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Decline Fleet Contract Crew Request
+      tags:
+      - Contracts
+      operationId: declineFleetContractCrew
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractCrewMember"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contracts/{fleetContractSlug}/items":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetContractSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Fleet Contract Item
+      tags:
+      - Contracts
+      operationId: createFleetContractItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetContractItemInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractItem"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/contracts/{fleetContractSlug}/items/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: fleetContractSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    patch:
+      summary: Update Fleet Contract Item
+      tags:
+      - Contracts
+      operationId: updateFleetContractItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetContractItemInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractItem"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+    delete:
+      summary: Delete Fleet Contract Item
+      tags:
+      - Contracts
+      operationId: destroyFleetContractItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contracts/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Get Fleet Contract
+      tags:
+      - Contracts
+      operationId: fleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Fleet Contract
+      tags:
+      - Contracts
+      operationId: updateFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetContractInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+    delete:
+      summary: Delete Fleet Contract
+      tags:
+      - Contracts
+      operationId: destroyFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contracts/{slug}/cancel":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Cancel Fleet Contract
+      tags:
+      - Contracts
+      operationId: cancelFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+  "/fleets/{fleetSlug}/contracts/{slug}/claim":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Claim Fleet Contract
+      tags:
+      - Contracts
+      operationId: claimFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/contracts/{slug}/fulfil":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Fulfil Fleet Contract
+      tags:
+      - Contracts
+      operationId: fulfilFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contracts/{slug}/progress":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Get Fleet Contract Progress
+      tags:
+      - Contracts
+      operationId: fleetContractProgress
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractProgress"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/contracts/{slug}/publish":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Publish Fleet Contract
+      tags:
+      - Contracts
+      operationId: publishFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+  "/fleets/{fleetSlug}/contracts/{slug}/release":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Release Fleet Contract
+      tags:
+      - Contracts
+      operationId: releaseFleetContract
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetContractDetail"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/events":
     parameters:
     - name: fleetSlug
@@ -16069,6 +16867,7 @@ components:
       - discord_commands
       - discord_fleet_commands
       - fleet_allies
+      - fleet_contracts
       - fleet_logistics
       - fleet_mission_builder
       - fleet_starmap
@@ -16092,6 +16891,7 @@ components:
       - DISCORD_COMMANDS
       - DISCORD_FLEET_COMMANDS
       - FLEET_ALLIES
+      - FLEET_CONTRACTS
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_STARMAP
@@ -16207,6 +17007,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
           "$ref": "#/components/schemas/MediaFile"
+        contractCovers:
+          "$ref": "#/components/schemas/FleetContractCovers"
         myFleet:
           type: boolean
         features:
@@ -16299,6 +17101,725 @@ components:
       required:
       - items
       title: FleetCalendar
+    FleetContract:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        customTitle:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        kind:
+          "$ref": "#/components/schemas/FleetContractKindEnum"
+        state:
+          "$ref": "#/components/schemas/FleetContractStateEnum"
+        reward:
+          type: string
+        reimburseExpenses:
+          type: boolean
+        crewLimit:
+          type:
+          - integer
+          - 'null'
+        requiresPickup:
+          type: boolean
+        deadline:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crewPreview:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractBoardMember"
+        progress:
+          "$ref": "#/components/schemas/FleetContractProgressSummary"
+        itemsCount:
+          type: integer
+        crewCount:
+          type: integer
+        source:
+          "$ref": "#/components/schemas/FleetContractEndpoint"
+        destination:
+          "$ref": "#/components/schemas/FleetContractEndpoint"
+        createdBy:
+          "$ref": "#/components/schemas/FleetContractAuthor"
+        publishedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        claimedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        fulfilledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        cancelledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - slug
+      - kind
+      - state
+      - reward
+      - requiresPickup
+      - destination
+      - crewPreview
+      - progress
+      - itemsCount
+      - crewCount
+      title: FleetContract
+    FleetContractAuthor:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - username
+      title: FleetContractAuthor
+    FleetContractBoardMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - username
+      title: FleetContractBoardMember
+    FleetContractContribution:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        delivered:
+          type: string
+        weight:
+          type: number
+      additionalProperties: false
+      required:
+      - userId
+      - delivered
+      - weight
+      title: FleetContractContribution
+    FleetContractCovers:
+      type: object
+      properties:
+        transport:
+          "$ref": "#/components/schemas/MediaFile"
+        procurement:
+          "$ref": "#/components/schemas/MediaFile"
+        crafting:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      title: FleetContractCovers
+    FleetContractCrewList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetContractCrewMember"
+      title: FleetContractCrewList
+    FleetContractCrewMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          "$ref": "#/components/schemas/FleetContractCrewRoleEnum"
+        state:
+          "$ref": "#/components/schemas/FleetContractCrewStateEnum"
+        user:
+          "$ref": "#/components/schemas/FleetContractCrewUser"
+        requestedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        acceptedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - role
+      - state
+      title: FleetContractCrewMember
+    FleetContractCrewRoleEnum:
+      type: string
+      enum:
+      - lead
+      - crew
+      x-enumNames:
+      - LEAD
+      - CREW
+      title: FleetContractCrewRoleEnum
+    FleetContractCrewStateEnum:
+      type: string
+      enum:
+      - requested
+      - accepted
+      - declined
+      - withdrawn
+      - removed
+      x-enumNames:
+      - REQUESTED
+      - ACCEPTED
+      - DECLINED
+      - WITHDRAWN
+      - REMOVED
+      title: FleetContractCrewStateEnum
+    FleetContractCrewUser:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - username
+      title: FleetContractCrewUser
+    FleetContractDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        customTitle:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        kind:
+          "$ref": "#/components/schemas/FleetContractKindEnum"
+        state:
+          "$ref": "#/components/schemas/FleetContractStateEnum"
+        reward:
+          type: string
+        reimburseExpenses:
+          type: boolean
+        crewLimit:
+          type:
+          - integer
+          - 'null'
+        requiresPickup:
+          type: boolean
+        deadline:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        crewPreview:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractBoardMember"
+        progress:
+          "$ref": "#/components/schemas/FleetContractProgress"
+        itemsCount:
+          type: integer
+        crewCount:
+          type: integer
+        source:
+          "$ref": "#/components/schemas/FleetContractEndpoint"
+        destination:
+          "$ref": "#/components/schemas/FleetContractEndpoint"
+        createdBy:
+          "$ref": "#/components/schemas/FleetContractAuthor"
+        publishedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        claimedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        fulfilledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        cancelledAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        expiredAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractItem"
+        crew:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractCrewMember"
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - slug
+      - kind
+      - state
+      - reward
+      - requiresPickup
+      - destination
+      - crewPreview
+      - progress
+      - itemsCount
+      - crewCount
+      - items
+      - crew
+      title: FleetContractDetail
+    FleetContractEndpoint:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        location:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: FleetContractEndpoint
+    FleetContractInput:
+      type: object
+      properties:
+        title:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        kind:
+          "$ref": "#/components/schemas/FleetContractKindEnum"
+        reward:
+          type: string
+        reimburseExpenses:
+          type: boolean
+        crewLimit:
+          type:
+          - integer
+          - 'null'
+        deadline:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        sourceFleetInventoryId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        destinationFleetInventoryId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractItemInput"
+      additionalProperties: false
+      required: []
+      title: FleetContractInput
+    FleetContractItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
+        unit:
+          "$ref": "#/components/schemas/InventoryUnitEnum"
+        quantity:
+          type: string
+        quality:
+          type:
+          - integer
+          - 'null'
+        qualityMatch:
+          "$ref": "#/components/schemas/FleetContractQualityMatchEnum"
+        position:
+          type: integer
+        item:
+          "$ref": "#/components/schemas/FleetContractItemRef"
+        createdAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updatedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - category
+      - unit
+      - quantity
+      - position
+      - qualityMatch
+      title: FleetContractItem
+    FleetContractItemInput:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
+        unit:
+          "$ref": "#/components/schemas/InventoryUnitEnum"
+        quantity:
+          type: string
+        quality:
+          type:
+          - integer
+          - 'null'
+        qualityMatch:
+          "$ref": "#/components/schemas/FleetContractQualityMatchEnum"
+        position:
+          type: integer
+        itemType:
+          "$ref": "#/components/schemas/NullableInventoryItemTypeEnum"
+        itemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+      required:
+      - name
+      - category
+      - unit
+      - quantity
+      title: FleetContractItemInput
+    FleetContractItemRef:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        name:
+          type: string
+        slug:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - id
+      - type
+      - name
+      title: FleetContractItemRef
+    FleetContractKindEnum:
+      type: string
+      enum:
+      - transport
+      - procurement
+      - crafting
+      x-enumNames:
+      - TRANSPORT
+      - PROCUREMENT
+      - CRAFTING
+      title: FleetContractKindEnum
+    FleetContractProgress:
+      type: object
+      properties:
+        complete:
+          type: boolean
+        fraction:
+          type: number
+        lines:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractProgressLine"
+        shares:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractShare"
+      additionalProperties: false
+      required:
+      - complete
+      - fraction
+      - lines
+      - shares
+      title: FleetContractProgress
+    FleetContractProgressLine:
+      type: object
+      properties:
+        itemId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          "$ref": "#/components/schemas/InventoryCategoryEnum"
+        unit:
+          "$ref": "#/components/schemas/InventoryUnitEnum"
+        quality:
+          type:
+          - integer
+          - 'null'
+        qualityMatch:
+          "$ref": "#/components/schemas/FleetContractQualityMatchEnum"
+        requested:
+          type: string
+        delivered:
+          type: string
+        pickedUp:
+          type: string
+        remaining:
+          type: string
+        complete:
+          type: boolean
+        fraction:
+          type: number
+        contributions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractContribution"
+      additionalProperties: false
+      required:
+      - itemId
+      - name
+      - category
+      - unit
+      - requested
+      - delivered
+      - pickedUp
+      - remaining
+      - complete
+      - fraction
+      - contributions
+      title: FleetContractProgressLine
+    FleetContractProgressSummary:
+      type: object
+      properties:
+        fraction:
+          type: number
+        delivered:
+          type: string
+        requested:
+          type: string
+        unit:
+          type:
+          - string
+          - 'null'
+        complete:
+          type: boolean
+      additionalProperties: false
+      required:
+      - fraction
+      - delivered
+      - requested
+      - complete
+      title: FleetContractProgressSummary
+    FleetContractQualityMatchEnum:
+      type: string
+      enum:
+      - at_least
+      - exact
+      x-enumNames:
+      - AT_LEAST
+      - EXACT
+      title: FleetContractQualityMatchEnum
+    FleetContractQuery:
+      type: object
+      properties:
+        titleCont:
+          type: string
+        stateEq:
+          "$ref": "#/components/schemas/FleetContractStateEnum"
+        stateIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractStateEnum"
+        kindEq:
+          "$ref": "#/components/schemas/FleetContractKindEnum"
+        s:
+          "$ref": "#/components/schemas/FleetContractSortEnum"
+      additionalProperties: false
+      title: FleetContractQuery
+    FleetContractShare:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        weight:
+          type: number
+        share:
+          type: number
+      additionalProperties: false
+      required:
+      - userId
+      - weight
+      - share
+      title: FleetContractShare
+    FleetContractSortEnum:
+      type: string
+      enum:
+      - title asc
+      - title desc
+      - state asc
+      - state desc
+      - deadline asc
+      - deadline desc
+      - reward asc
+      - reward desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - TITLE_ASC
+      - TITLE_DESC
+      - STATE_ASC
+      - STATE_DESC
+      - DEADLINE_ASC
+      - DEADLINE_DESC
+      - REWARD_ASC
+      - REWARD_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FleetContractSortEnum
+    FleetContractStateEnum:
+      type: string
+      enum:
+      - draft
+      - open
+      - in_progress
+      - fulfilled
+      - cancelled
+      - expired
+      x-enumNames:
+      - DRAFT
+      - OPEN
+      - IN_PROGRESS
+      - FULFILLED
+      - CANCELLED
+      - EXPIRED
+      title: FleetContractStateEnum
+    FleetContractsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContract"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: FleetContractsList
     FleetCreateInput:
       type: object
       properties:
@@ -18351,6 +19872,11 @@ components:
       - fleet:allies:create
       - fleet:allies:delete
       - fleet:allies:manage
+      - fleet:contracts:read
+      - fleet:contracts:create
+      - fleet:contracts:update
+      - fleet:contracts:delete
+      - fleet:contracts:manage
       - fleet:missions:read
       - fleet:missions:create
       - fleet:missions:update
@@ -18402,6 +19928,11 @@ components:
       - FLEET_ALLIES_CREATE
       - FLEET_ALLIES_DELETE
       - FLEET_ALLIES_MANAGE
+      - FLEET_CONTRACTS_READ
+      - FLEET_CONTRACTS_CREATE
+      - FLEET_CONTRACTS_UPDATE
+      - FLEET_CONTRACTS_DELETE
+      - FLEET_CONTRACTS_MANAGE
       - FLEET_MISSIONS_READ
       - FLEET_MISSIONS_CREATE
       - FLEET_MISSIONS_UPDATE
@@ -18441,6 +19972,18 @@ components:
           - string
           - 'null'
           format: binary
+        transportContractCover:
+          type:
+          - string
+          - 'null'
+        procurementContractCover:
+          type:
+          - string
+          - 'null'
+        craftingContractCover:
+          type:
+          - string
+          - 'null'
         removeBackground:
           type: boolean
         description:
@@ -20598,6 +22141,8 @@ components:
           "$ref": "#/components/schemas/TransferParty"
         destinationParty:
           "$ref": "#/components/schemas/TransferParty"
+        contract:
+          "$ref": "#/components/schemas/InventoryTransferContract"
         initiatedBy:
           type:
           - string
@@ -20670,6 +22215,27 @@ components:
           format: uuid
       additionalProperties: false
       title: InventoryTransferAcceptInput
+    InventoryTransferContract:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        slug:
+          type: string
+        fleetSlug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - slug
+      - fleetSlug
+      title: InventoryTransferContract
     InventoryTransferCreateInput:
       type: object
       properties:
@@ -20694,6 +22260,9 @@ components:
           type: string
         recipientFleetSlug:
           type: string
+        contractId:
+          type: string
+          format: uuid
         note:
           type: string
       additionalProperties: false
@@ -23394,6 +24963,11 @@ components:
       - fleet_ally_request_accepted
       - tour_join_request_received
       - tour_join_request_accepted
+      - fleet_contract_published
+      - fleet_contract_claimed
+      - fleet_contract_crew_requested
+      - fleet_contract_crew_answered
+      - fleet_contract_fulfilled
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -23427,6 +25001,11 @@ components:
       - FLEET_ALLY_REQUEST_ACCEPTED
       - TOUR_JOIN_REQUEST_RECEIVED
       - TOUR_JOIN_REQUEST_ACCEPTED
+      - FLEET_CONTRACT_PUBLISHED
+      - FLEET_CONTRACT_CLAIMED
+      - FLEET_CONTRACT_CREW_REQUESTED
+      - FLEET_CONTRACT_CREW_ANSWERED
+      - FLEET_CONTRACT_FULFILLED
       title: NotificationTypeEnum
     NotificationUnreadCount:
       type: object

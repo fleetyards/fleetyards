@@ -344,6 +344,22 @@
           "grantRole": "Attribuer un rôle",
           "revokeRole": "Révoquer",
           "addTeam": "Ajouter une équipe"
+        },
+        "contracts": {
+          "create": "Créer un contrat",
+          "save": "Enregistrer",
+          "publish": "Publier",
+          "claim": "Prendre",
+          "join": "Demander à rejoindre",
+          "release": "Abandonner",
+          "fulfil": "Marquer comme rempli",
+          "cancel": "Annuler le contrat",
+          "edit": "Modifier",
+          "leave": "Quitter",
+          "remove": "Retirer",
+          "acceptCrew": "Accepter",
+          "declineCrew": "Refuser",
+          "addItem": "Ajouter des marchandises"
         }
       },
       "notifications": {

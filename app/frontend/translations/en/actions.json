@@ -344,6 +344,22 @@
           "grantRole": "Grant role",
           "revokeRole": "Revoke",
           "addTeam": "Add team"
+        },
+        "contracts": {
+          "create": "Create Contract",
+          "save": "Save Contract",
+          "publish": "Publish",
+          "claim": "Claim",
+          "join": "Ask to join",
+          "release": "Give up",
+          "fulfil": "Mark fulfilled",
+          "cancel": "Cancel Contract",
+          "edit": "Edit",
+          "leave": "Leave",
+          "remove": "Remove",
+          "acceptCrew": "Accept",
+          "declineCrew": "Decline",
+          "addItem": "Add goods"
         }
       },
       "notifications": {

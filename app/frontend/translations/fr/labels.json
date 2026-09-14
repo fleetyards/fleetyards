@@ -563,7 +563,12 @@
         },
         "allies": "Vaisseaux visibles par les alliés",
         "alliesStats": "Statistiques visibles par les alliés",
-        "alliesMembers": "Liste des membres visible par les alliés"
+        "alliesMembers": "Liste des membres visible par les alliés",
+        "contractCovers": {
+          "transport": "Visuel transport",
+          "procurement": "Visuel approvisionnement",
+          "crafting": "Visuel fabrication"
+        }
       },
       "hangarGroup": {
         "name": "Nom",
@@ -1946,7 +1951,10 @@
         "origin": "De / À",
         "inTransitAmount": "%{amount} en transit",
         "inTransitHint": "Envoyé par un transfert auquel personne n'a répondu. Déjà retiré des totaux.",
-        "transferFromFriends": "Mes amis"
+        "transferFromFriends": "Mes amis",
+        "towardsContract": "Pour un contrat",
+        "noContract": "Aucun contrat",
+        "forContract": "pour"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -2005,7 +2013,8 @@
         "openTransfers": "Ouvrir les transferts",
         "openFriends": "Ouvrir les amis",
         "openAllies": "Ouvrir les alliés",
-        "openTour": "Ouvrir l'expédition"
+        "openTour": "Ouvrir l'expédition",
+        "openContract": "Ouvrir le contrat"
       },
       "notificationTypes": {
         "channels": {
@@ -2020,7 +2029,8 @@
           "fleetEvents": "Événements de flotte",
           "logistics": "Logistique",
           "relationships": "Amis et alliés",
-          "tours": "Expéditions"
+          "tours": "Expéditions",
+          "fleetContracts": "Contrats de flotte"
         },
         "hangar_create": "Vaisseau ajouté au hangar",
         "hangar_destroy": "Vaisseau retiré du hangar",
@@ -2054,7 +2064,12 @@
         "fleet_ally_request_received": "Demande d'alliance reçue",
         "fleet_ally_request_accepted": "Demande d'alliance acceptée",
         "tour_join_request_received": "Demande de participation reçue",
-        "tour_join_request_accepted": "Demande de participation acceptée"
+        "tour_join_request_accepted": "Demande de participation acceptée",
+        "fleet_contract_published": "Contrat publié",
+        "fleet_contract_claimed": "Contrat pris en charge",
+        "fleet_contract_crew_requested": "Quelqu'un veut rejoindre un contrat",
+        "fleet_contract_crew_answered": "Demande d'équipage traitée",
+        "fleet_contract_fulfilled": "Contrat rempli"
       },
       "fleets": {
         "missions": {
@@ -2236,6 +2251,61 @@
             "weekTitle": "Semaine du %{date}"
           },
           "repeats": "Répétition"
+        },
+        "contracts": {
+          "title": "Titre",
+          "description": "Description",
+          "reward": "Récompense",
+          "deadline": "Échéance",
+          "crewLimit": "Limite d'équipage",
+          "reimburseExpenses": "Rembourser les frais",
+          "from": "Récupérer à",
+          "to": "Livrer à",
+          "lead": "Responsable",
+          "pendingCrew": "En attente",
+          "minQuality": "qualité min. %{value}",
+          "pickedUp": "%{quantity} récupéré",
+          "itemName": "Article",
+          "itemCategory": "Catégorie",
+          "itemUnit": "Unité",
+          "itemQuantity": "Quantité",
+          "kind": {
+            "label": "Type",
+            "transport": "Transport",
+            "procurement": "Approvisionnement",
+            "crafting": "Fabrication"
+          },
+          "state": {
+            "draft": "Brouillon",
+            "open": "Ouvert",
+            "in_progress": "En cours",
+            "fulfilled": "Rempli",
+            "cancelled": "Annulé",
+            "expired": "Expiré"
+          },
+          "itemTypes": {
+            "Commodity": "Marchandise",
+            "Component": "Composant",
+            "Equipment": "Équipement"
+          },
+          "qualityMatch": "Correspondance",
+          "exactQuality": "exactement %{value}",
+          "qualityMatches": {
+            "at_least": "Au moins",
+            "exact": "Exactement"
+          },
+          "itemQuality": "Qualité",
+          "titleHint": "Facultatif — sans titre, le contrat prend le nom des marchandises demandées",
+          "postedBy": "Publié par",
+          "claimedBy": "pris par",
+          "delivered": "Livré",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "Ouverts",
+            "closed": "Clos",
+            "mine": "Les miens",
+            "completed": "Terminés"
+          }
         }
       },
       "commodity": {

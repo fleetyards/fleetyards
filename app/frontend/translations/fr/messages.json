@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce point d'attache ? Cette action est irréversible."
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "Retirer ces marchandises du contrat ?"
+          }
         }
       },
       "oauthAuthorize": {
@@ -830,6 +835,30 @@
             "success": "Poste retiré.",
             "failure": "Impossible de retirer le poste."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Contrat créé",
+            "failure": "Le contrat n'a pas pu être créé"
+          },
+          "update": {
+            "success": "Contrat enregistré",
+            "failure": "Le contrat n'a pas pu être enregistré"
+          },
+          "item": {
+            "create": {
+              "failure": "Les marchandises n'ont pas pu être ajoutées"
+            },
+            "destroy": {
+              "failure": "Les marchandises n'ont pas pu être retirées"
+            },
+            "update": {
+              "failure": "Les marchandises n'ont pas pu être modifiées"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Envoyez les marchandises depuis un de vos inventaires et choisissez ce contrat pour que la livraison compte."
         }
       },
       "notifications": {

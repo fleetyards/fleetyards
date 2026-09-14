@@ -64,6 +64,17 @@
     color: var(--color-endcap, #7a8288);
   }
 
+  /*
+   * A prefix comes before the value, so with nothing between the two it reads
+   * as the value -- a quality field prefixed "At least" looked like a field
+   * whose content was the words "At least", with the number nowhere. A suffix
+   * follows the value and cannot be mistaken for it, which is why only this
+   * side is divided.
+   */
+  &__prefix {
+    border-right: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  }
+
   &__subline {
     display: block;
     margin-top: 5px;

@@ -43,6 +43,24 @@ zh-CN:
       create: 无法创建群组
       destroy: 无法删除群组
       update: 无法更新群组
+    fleet_contracts:
+      create: 无法创建合约。
+      update: 无法更新合约。
+      destroy: 无法删除合约。
+      publish: 无法发布合约。
+      claim: 无法接下合约。
+      release: 无法放弃合约。
+      fulfil: 无法将合约标记为完成。
+      cancel: 无法取消合约。
+    fleet_contract_items:
+      create: 无法添加货物。
+      update: 无法更新货物。
+      destroy: 无法移除货物。
+    fleet_contract_assignments:
+      create: 无法发送申请。
+      accept: 无法同意该队员。
+      decline: 无法拒绝该队员。
+      destroy: 无法移除该队员。
     fleet_inventories:
       create: 无法创建库存。
       update: 无法更新库存。

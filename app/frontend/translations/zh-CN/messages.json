@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "确定要删除此挂载点吗? 此操作无法撤销。"
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "要从合约中移除这些货物吗？"
+          }
         }
       },
       "oauthAuthorize": {
@@ -830,6 +835,30 @@
             "success": "席位已移除。",
             "failure": "无法移除席位。"
           }
+        },
+        "contract": {
+          "create": {
+            "success": "合约已创建",
+            "failure": "无法创建合约"
+          },
+          "update": {
+            "success": "合约已保存",
+            "failure": "无法保存合约"
+          },
+          "item": {
+            "create": {
+              "failure": "无法添加货物"
+            },
+            "destroy": {
+              "failure": "无法移除货物"
+            },
+            "update": {
+              "failure": "无法修改货物"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "从你的仓库发送货物并选择此合约，交付才会计入进度。"
         }
       },
       "notifications": {

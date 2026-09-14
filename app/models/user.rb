@@ -176,6 +176,8 @@ class User < ApplicationRecord
     through: :kept_fleet_memberships
 
   has_many :inventories, as: :holder, dependent: :destroy
+  has_many :fleet_contract_assignments, dependent: :destroy
+  has_many :fleet_contracts, through: :fleet_contract_assignments
 
   # Both directions of the same table, because a friendship is one row per
   # unordered pair -- see `PartyRelationship`. Nothing outside the inbox should

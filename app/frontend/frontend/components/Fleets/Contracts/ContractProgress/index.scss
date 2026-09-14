@@ -1,0 +1,115 @@
+@use "sass:color";
+
+.contract-progress {
+  &__overall {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+
+  &__overall-bar {
+    position: relative;
+    flex: 1 1 auto;
+    height: 12px;
+    background: $gray-darker;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  &__overall-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 4px;
+    background: linear-gradient(
+      $warning,
+      color.adjust($warning, $lightness: 12%)
+    );
+    transition: width 0.3s ease;
+  }
+
+  &__overall-value {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+    color: $gray-lighter;
+  }
+
+  &__line {
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  &__name {
+    color: #eee;
+  }
+
+  // The grade is the one thing on the row that changes what counts, so it reads
+  // as a mark rather than as more text.
+  &__quality {
+    flex: none;
+    padding: 2px 6px;
+    font-size: 0.75em;
+    color: $gold;
+    border: 1px solid rgba($gold, 0.35);
+    border-radius: 4px;
+  }
+
+  &__counts {
+    margin-left: auto;
+    font-size: 0.85em;
+    color: $gray-lighter;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  &__bar {
+    position: relative;
+    height: 8px;
+    background: $gray-darker;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  /*
+   * Hatched, and behind the fill: goods picked up but not delivered are in a
+   * courier's hold. A flat second colour read as a rival measure; the hatch
+   * reads as "on its way".
+   */
+  &__picked {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: repeating-linear-gradient(
+      135deg,
+      rgba($gray-light, 0.45) 0 6px,
+      rgba($gray-light, 0.18) 6px 12px
+    );
+  }
+
+  &__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 4px;
+    background: $warning;
+    transition: width 0.3s ease;
+
+    &--complete {
+      background: $success;
+    }
+  }
+
+  &__pickup {
+    margin: 7px 0 0;
+    font-size: 0.8em;
+    color: $gray-light;
+  }
+}

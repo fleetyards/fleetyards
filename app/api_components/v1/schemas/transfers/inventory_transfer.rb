@@ -21,6 +21,7 @@ module V1
             sender: ::V1::Schemas::Transfers::TransferParty,
             recipient: ::V1::Schemas::Transfers::TransferParty,
             destinationParty: ::V1::Schemas::Transfers::TransferParty,
+            contract: ::V1::Schemas::Transfers::InventoryTransferContract,
             initiatedBy: {type: [:string, :null]},
             resolvedBy: {type: [:string, :null]},
             lines: {

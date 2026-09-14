@@ -34,6 +34,11 @@
         "participants": "Nobody on this tour yet",
         "transfers": "Settle the ledger to see who pays whom",
         "tours": "No tours yet"
+      },
+      "fleets": {
+        "contracts": {
+          "items": "No goods yet. Add what this contract asks for — it cannot be published empty."
+        }
       }
     }
   }

@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "確定要刪除此掛載點嗎？此操作無法復原。"
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "要從合約中移除這些貨物嗎？"
+          }
         }
       },
       "oauthAuthorize": {
@@ -830,6 +835,30 @@
             "success": "席位已移除。",
             "failure": "無法移除席位。"
           }
+        },
+        "contract": {
+          "create": {
+            "success": "合約已建立",
+            "failure": "無法建立合約"
+          },
+          "update": {
+            "success": "合約已儲存",
+            "failure": "無法儲存合約"
+          },
+          "item": {
+            "create": {
+              "failure": "無法新增貨物"
+            },
+            "destroy": {
+              "failure": "無法移除貨物"
+            },
+            "update": {
+              "failure": "無法修改貨物"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "從你的倉庫發送貨物並選擇此合約，交付才會計入進度。"
         }
       },
       "notifications": {

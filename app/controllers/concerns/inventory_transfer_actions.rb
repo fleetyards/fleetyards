@@ -64,13 +64,20 @@ module InventoryTransferActions
     destination = find_destination
     return feature_closed if destination.present? && !inventory_feature_enabled?(destination)
 
+    contract = find_contract
+    if transfer_params[:contract_id].present? && contract.blank?
+      return render json: ValidationError.new("inventory_transfers.create",
+        errors: contract_not_found_errors), status: :bad_request
+    end
+
     builder = ::Inventories::TransferBuilder.new(
       source:,
       actor: current_resource_owner,
       lines: transfer_params[:lines],
       destination:,
       recipient: find_recipient,
-      note: transfer_params[:note]
+      note: transfer_params[:note],
+      contract:
     )
 
     unless builder.call
@@ -197,7 +204,7 @@ module InventoryTransferActions
 
   private def transfer_params
     params.permit(:note, :inventory_id, :fleet_inventory_id, :vehicle_id,
-      :recipient_username, :recipient_fleet_slug, :source_inventory_id,
+      :recipient_username, :recipient_fleet_slug, :source_inventory_id, :contract_id,
       lines: [:position_id, :quantity])
   end
 
@@ -244,6 +251,26 @@ module InventoryTransferActions
     when ::Fleet then acting_party.fleet_inventories
     else acting_party.inventories
     end
+  end
+
+  # Scoped to the fleets the caller is actually in, so naming a contract id
+  # from a fleet they have nothing to do with is "no such contract" rather than
+  # a hint that it exists. Whether they may *work* it is
+  # `Contracts::TransferLink`'s question, asked by the builder.
+  private def find_contract
+    id = transfer_params[:contract_id]
+    return if id.blank?
+    return if current_resource_owner.blank?
+
+    fleet_ids = current_resource_owner.fleet_memberships.kept.accepted.select(:fleet_id)
+
+    ::FleetContract.where(fleet_id: fleet_ids).find_by(id:)
+  end
+
+  private def contract_not_found_errors
+    errors = ::ActiveModel::Errors.new(::InventoryTransfer.new)
+    errors.add(:base, :contract_not_found)
+    errors
   end
 
   private def find_recipient

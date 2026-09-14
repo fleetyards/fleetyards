@@ -30,6 +30,9 @@ discord_fleet_commands:
 fleet_allies:
   description: "Fleet alliances — a fleet sharing its ships, stats and roster with another fleet"
 
+fleet_contracts:
+  description: "Fleet contracts — jobs members claim, tracked through the transfer ledger"
+
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
 

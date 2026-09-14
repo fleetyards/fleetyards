@@ -76,6 +76,24 @@ en:
       create: Group could not be created
       destroy: Group could not be destroyed
       update: Group could not be updated
+    fleet_contracts:
+      create: Contract could not be created.
+      update: Contract could not be updated.
+      destroy: Contract could not be destroyed.
+      publish: Contract could not be published.
+      claim: Contract could not be claimed.
+      release: Contract could not be released.
+      fulfil: Contract could not be marked as fulfilled.
+      cancel: Contract could not be cancelled.
+    fleet_contract_items:
+      create: Contract goods could not be added.
+      update: Contract goods could not be updated.
+      destroy: Contract goods could not be removed.
+    fleet_contract_assignments:
+      create: Request to join could not be sent.
+      accept: Crew member could not be accepted.
+      decline: Crew member could not be declined.
+      destroy: Crew member could not be removed.
     fleet_inventories:
       create: Inventory could not be created.
       update: Inventory could not be updated.

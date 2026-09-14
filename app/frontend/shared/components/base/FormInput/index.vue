@@ -295,11 +295,18 @@ defineExpose({
         'base-input__wrapper--with-suffix': !!suffix || !!slots.suffix,
       }"
     >
-      <slot name="prefix">
-        <div v-if="prefix" class="base-input__prefix">
+      <!--
+        The wrapper is ours, the way the suffix's is. Left inside the slot's
+        default content a custom prefix replaced it, and a wrapper written in
+        the consumer's template carries the consumer's scope id rather than
+        this component's -- so every rule here missed it and the affix fell
+        through unstyled.
+      -->
+      <div v-if="prefix || slots.prefix" class="base-input__prefix">
+        <slot name="prefix">
           {{ prefix }}
-        </div>
-      </slot>
+        </slot>
+      </div>
       <input
         :id="internalId"
         :aria-describedby="hasErrors ? errorId : undefined"

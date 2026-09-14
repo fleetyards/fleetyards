@@ -292,7 +292,23 @@
           "assignSlotFor": "为 %{username} 分配席位",
           "reassignSlotFor": "为 %{username} 重新分配席位"
         },
-        "memberNickname": "成员昵称"
+        "memberNickname": "成员昵称",
+        "contracts": {
+          "index": "合约",
+          "create": "创建合约",
+          "edit": "编辑合约",
+          "progress": "进度",
+          "crew": "队伍",
+          "items": "货物",
+          "editItem": "编辑货物",
+          "addItem": "添加货物",
+          "views": {
+            "open": "合约",
+            "closed": "已结束的合约",
+            "mine": "我的合约",
+            "completed": "已完成的合约"
+          }
+        }
       },
       "hangarGroup": {
         "create": "Create Group",
@@ -429,6 +445,9 @@
           "index": "盟友",
           "add": "添加盟友"
         }
+      },
+      "fleet": {
+        "contractCovers": "合约封面图"
       }
     }
   }

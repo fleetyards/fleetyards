@@ -32,6 +32,21 @@ json.destination_party do
     party: ::InventoryTransfer.party_of(transfer.destination)
 end
 
+# The contract this shipment was sent towards, when it names one. Only a
+# transfer carrying the link counts towards a contract's progress, so saying so
+# on the transfer is what makes a delivery that will never count visible before
+# somebody wonders why the bar has not moved.
+if transfer.fleet_contract.present?
+  json.contract do
+    json.id transfer.fleet_contract.id
+    json.title transfer.fleet_contract.display_title
+    json.slug transfer.fleet_contract.slug
+    json.fleet_slug transfer.fleet_contract.fleet.slug
+  end
+else
+  json.contract nil
+end
+
 json.initiated_by transfer.initiated_by&.username
 json.resolved_by transfer.resolved_by&.username
 

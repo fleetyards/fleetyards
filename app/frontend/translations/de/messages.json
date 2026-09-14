@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "Bist du sicher, dass du diesen Aufhängungspunkt löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "Diese Waren vom Auftrag entfernen?"
+          }
         }
       },
       "oauthAuthorize": {
@@ -830,6 +835,30 @@
             "success": "Slot entfernt.",
             "failure": "Slot konnte nicht entfernt werden."
           }
+        },
+        "contract": {
+          "create": {
+            "success": "Auftrag erstellt",
+            "failure": "Auftrag konnte nicht erstellt werden"
+          },
+          "update": {
+            "success": "Auftrag gespeichert",
+            "failure": "Auftrag konnte nicht gespeichert werden"
+          },
+          "item": {
+            "create": {
+              "failure": "Waren konnten nicht hinzugefügt werden"
+            },
+            "destroy": {
+              "failure": "Waren konnten nicht entfernt werden"
+            },
+            "update": {
+              "failure": "Die Waren konnten nicht geändert werden"
+            }
+          }
+        },
+        "contracts": {
+          "deliverHint": "Sende die Waren aus einem deiner Inventare und wähle diesen Auftrag aus, damit die Lieferung zählt."
         }
       },
       "notifications": {

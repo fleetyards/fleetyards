@@ -344,6 +344,22 @@
           "grantRole": "Rolle vergeben",
           "revokeRole": "Entziehen",
           "addTeam": "Team hinzufügen"
+        },
+        "contracts": {
+          "create": "Auftrag erstellen",
+          "save": "Auftrag speichern",
+          "publish": "Veröffentlichen",
+          "claim": "Übernehmen",
+          "join": "Mitmachen",
+          "release": "Abgeben",
+          "fulfil": "Als erfüllt markieren",
+          "cancel": "Auftrag abbrechen",
+          "edit": "Bearbeiten",
+          "leave": "Verlassen",
+          "remove": "Entfernen",
+          "acceptCrew": "Annehmen",
+          "declineCrew": "Ablehnen",
+          "addItem": "Waren hinzufügen"
         }
       },
       "notifications": {

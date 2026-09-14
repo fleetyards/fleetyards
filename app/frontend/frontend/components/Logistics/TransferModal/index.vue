@@ -21,6 +21,8 @@ import {
   type FilterOption,
   type InventoryStockPosition,
   type InventoryTransferCreateInput,
+  FleetContractStateEnum,
+  useFleetContracts,
 } from "@/services/fyApi";
 import { type FleetMember, fleetMembers } from "@/services/fyApi";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
@@ -47,6 +49,10 @@ type Props = {
   // Accepted friends, as `user:<username>` options. Held client-side rather
   // than searched: a friends list is short, and there is no second page of it.
   friendOptions?: { value: string; label: string }[];
+  // The fleet this transfer is being sent on behalf of, when there is one. Its
+  // own inventories are the immediate targets, so a delivery towards one of
+  // its contracts has no recipient slug to read the fleet off.
+  fleetSlug?: string;
   onSend: (payload: InventoryTransferCreateInput) => Promise<unknown>;
 };
 
@@ -250,6 +256,49 @@ const selectedTarget = computed<TransferTargetOption | undefined>(() => {
 // out on the spot; anything else has to be answered first.
 const needsAnswer = computed(() => selectedTarget.value?.needsAnswer ?? false);
 
+/*
+ * Which fleet's contracts this delivery could count towards. A contract only
+ * counts what a transfer naming it delivered -- `Contracts::Progress` reads the
+ * link, not the goods -- so without this the bar never moves however exactly
+ * the deposit matches the line.
+ */
+const contractFleetSlug = computed(() => {
+  const payload = selectedTarget.value?.payload;
+  if (!payload) return undefined;
+  if (payload.recipientFleetSlug) return payload.recipientFleetSlug;
+
+  return payload.fleetInventoryId ? props.fleetSlug : undefined;
+});
+
+const { data: openContracts } = useFleetContracts(
+  computed(() => contractFleetSlug.value ?? ""),
+  computed(() => ({
+    q: { stateIn: [FleetContractStateEnum.IN_PROGRESS] },
+  })),
+  {
+    query: {
+      retry: false,
+      enabled: computed(() => !!contractFleetSlug.value),
+    },
+  },
+);
+
+const contractOptions = computed<FilterOption[]>(() => [
+  { value: "", label: t("labels.logistics.noContract") },
+  ...(openContracts.value?.items ?? []).map((contract) => ({
+    value: contract.id,
+    label: contract.title,
+  })),
+]);
+
+const contractId = ref<string>("");
+
+// A contract belongs to the fleet that posted it, so a change of address drops
+// the choice rather than filing goods under a contract they never reach.
+watch(contractFleetSlug, () => {
+  contractId.value = "";
+});
+
 const chosen = computed(() =>
   movable.value.filter((position) => !removed.value.has(position.id)),
 );
@@ -301,6 +350,7 @@ const onSubmit = async () => {
         quantity: quantityFor(position),
       })),
       note: note.value || undefined,
+      contractId: contractId.value || undefined,
       ...target.payload,
     });
 
@@ -377,6 +427,18 @@ const onSubmit = async () => {
         :options="targetOptions"
         :label="t('labels.logistics.transferTarget')"
         data-test="transfer-target"
+      />
+
+      <!-- Only when there is something to deliver towards: a fleet with no job
+           running should not be asked about one. -->
+      <BaseSelect
+        v-if="contractOptions.length > 1"
+        v-model="contractId"
+        name="contract"
+        searchable
+        :options="contractOptions"
+        :label="t('labels.logistics.towardsContract')"
+        data-test="transfer-contract"
       />
 
       <p
