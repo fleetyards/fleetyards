@@ -65,7 +65,6 @@ const DIRECTIONS = ["incoming", "outgoing"] as const;
     :records="transfers"
     :async-status="asyncStatus"
     placeholders
-    :hide-empty="true"
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>

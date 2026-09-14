@@ -253,7 +253,6 @@ const crumbs = computed<Crumb[]>(() => [
           :records="activeRecords"
           :async-status="logAsyncStatus"
           :hide-loading="activeTab === 'stock'"
-          :hide-empty="true"
           placeholders
           :is-filter-selected="isFilterSelected"
         >
