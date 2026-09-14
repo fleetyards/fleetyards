@@ -225,11 +225,7 @@ const crumbs = computed<Crumb[]>(() => {
 <template>
   <BreadCrumbs :crumbs="crumbs" />
   <Heading hero size="hero">
-    {{
-      view === "invites"
-        ? t("headlines.fleets.invites")
-        : t("headlines.fleets.members.index")
-    }}
+    {{ t("headlines.fleets.members.index") }}
     <template v-if="stats" #subHeading>
       {{
         t("labels.fleet.members.total", {
@@ -258,7 +254,7 @@ const crumbs = computed<Crumb[]>(() => {
       <i class="fa-duotone fa-planet-ringed" />
       {{ t("actions.fleet.starmap") }}
     </Btn>
-    <template v-if="view === 'invites' && canInvite">
+    <template v-if="canInvite">
       <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openInviteUrlModal">
         <i class="fa-light fa-plus" />
         {{ t("actions.fleet.createInviteUrl") }}
