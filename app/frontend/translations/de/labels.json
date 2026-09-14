@@ -1403,7 +1403,7 @@
         "supporterClaimKey": {
           "intro": "Füge diesen Schlüssel der Nachricht deiner Spende hinzu, damit die Zahlung deinem Konto zugeordnet werden kann.",
           "howTo": "Funktioniert bei Ko-fi, PayPal und Buy Me a Coffee, die deine Nachricht weitergeben. Patreon hat dafür kein Feld — dort wird dein Konto über die E-Mail-Adresse deiner Unterstützung zugeordnet.",
-          "notCreated": "Du hast noch keinen Schlüssel."
+          "patreonNote": "wird über deine E-Mail-Adresse zugeordnet, kein Schlüssel nötig"
         }
       },
       "filters": {

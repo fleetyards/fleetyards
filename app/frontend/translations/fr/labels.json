@@ -1403,7 +1403,7 @@
         "supporterClaimKey": {
           "intro": "Ajoutez cette clé au message de votre don pour que le paiement soit associé à votre compte.",
           "howTo": "Fonctionne avec Ko-fi, PayPal et Buy Me a Coffee, qui transmettent votre message. Patreon n'a pas de champ pour cela — votre compte y est associé via l'adresse e-mail de votre soutien.",
-          "notCreated": "Vous n'avez pas encore de clé."
+          "patreonNote": "associé via votre e-mail, aucune clé nécessaire"
         }
       },
       "filters": {

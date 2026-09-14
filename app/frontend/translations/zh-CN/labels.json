@@ -1403,7 +1403,7 @@
         "supporterClaimKey": {
           "intro": "在捐赠留言中附上此密钥，付款即可与您的账号关联。",
           "howTo": "适用于会转发留言的 Ko-fi、PayPal 和 Buy Me a Coffee。Patreon 没有对应的字段：在那里将通过您赞助所用的邮箱地址关联账号。",
-          "notCreated": "您还没有密钥。"
+          "patreonNote": "通过您的邮箱关联，无需密钥"
         }
       },
       "filters": {

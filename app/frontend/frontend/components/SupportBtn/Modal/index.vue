@@ -9,36 +9,136 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useMySupporterClaimKey } from "@/services/fyApi";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
 const { t } = useI18n();
+const sessionStore = useSessionStore();
+
+// Reading generates the key, so it is here the moment somebody opens the modal
+// to donate rather than after a detour through settings.
+const { data: claimKey } = useMySupporterClaimKey({
+  query: { enabled: computed(() => sessionStore.isAuthenticated) },
+});
+
+const key = computed(() => claimKey.value?.key ?? "");
+
+const copiedFrom = ref<string | null>(null);
+let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+// The three platforms that carry a donor message copy the key on the way out,
+// so it is on the clipboard when the payment form asks for one. Ko-fi has no
+// URL parameter to prefill it with, so this is as close as it gets.
+//
+// Deliberately not awaited: the link opens in a new tab and awaiting first
+// would put the navigation outside the user gesture. Failure is silent by
+// design -- the clipboard is a convenience here, and the key is still visible
+// in the hint below.
+const copyKeyFor = (platform: string) => {
+  if (!key.value) return;
+
+  void navigator.clipboard?.writeText(key.value).then(
+    () => {
+      copiedFrom.value = platform;
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        copiedFrom.value = null;
+      }, 4000);
+    },
+    () => {},
+  );
+};
+
+onBeforeUnmount(() => clearTimeout(resetTimer));
 </script>
 
 <template>
   <Modal :title="t('headlines.support')">
     <div class="support-body">
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <SupportProgress />
+      <SupportProgress />
+
+      <p class="support-section__note">{{ t("texts.support.goal") }}</p>
+
+      <div class="support-section">
+        <div class="support-section__label">
+          {{ t("texts.support.subline") }}
         </div>
-      </div>
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <p>{{ t("texts.support.goal") }}</p>
+
+        <div class="support-platforms">
+          <Btn
+            v-for="platform in [
+              {
+                id: 'paypal',
+                label: 'PayPal',
+                href: 'https://paypal.me/mortik',
+              },
+              {
+                id: 'kofi',
+                label: 'Ko-fi',
+                href: 'https://ko-fi.com/fleetyardsnet',
+              },
+              {
+                id: 'bmac',
+                label: 'Buy me a coffee',
+                href: 'https://www.buymeacoffee.com/mortik',
+              },
+            ]"
+            :key="platform.id"
+            :href="platform.href"
+            :data-test="`support-${platform.id}`"
+            class="support-platform"
+            @click="copyKeyFor(platform.id)"
+          >
+            <i v-if="platform.id === 'paypal'" class="fa-brands fa-paypal" />
+            <img
+              v-else-if="platform.id === 'kofi'"
+              :src="kofiIcon"
+              alt="Ko-fi Icon"
+              width="24"
+            />
+            <i v-else class="fa-solid fa-mug-hot" />
+            <span>{{ platform.label }}</span>
+            <span
+              v-if="key"
+              class="support-platform__copied"
+              :class="{
+                'support-platform__copied--on': copiedFrom === platform.id,
+              }"
+            >
+              {{ t("messages.account.supporterClaimKey.copy.success") }}
+            </span>
+          </Btn>
         </div>
+
+        <p
+          v-if="key"
+          class="support-claim-key__hint"
+          data-test="claim-key-hint"
+        >
+          <code class="support-claim-key" data-test="claim-key">{{ key }}</code>
+          {{ t("labels.account.supporterClaimKey.howTo") }}
+        </p>
+
+        <Btn
+          href="https://www.patreon.com/fleetyards"
+          class="support-platform support-platform--wide"
+          data-test="support-patreon"
+        >
+          <i class="fa-brands fa-patreon" />
+          <span>Patreon</span>
+          <span v-if="key" class="support-platform__note">
+            {{ t("labels.account.supporterClaimKey.patreonNote") }}
+          </span>
+        </Btn>
       </div>
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <p v-html="t('texts.support.info')" />
-        </div>
-      </div>
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <p v-html="t('texts.support.code')" />
+
+      <hr class="support-rule" />
+
+      <div class="support-secondary">
+        <p v-html="t('texts.support.info')" />
+        <p>
+          <span v-html="t('texts.support.code')" />
           <a
             href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
             class="support-referral-link"
@@ -47,29 +147,7 @@ const { t } = useI18n();
           >
             <b>STAR-5F32-SJZ4</b>
           </a>
-        </div>
-      </div>
-      <br />
-      <p>
-        {{ t("texts.support.subline") }}
-      </p>
-      <div class="page-actions page-actions-center">
-        <Btn href="https://paypal.me/mortik" size="lg">
-          <i class="fa-brands fa-paypal" />
-          PayPal
-        </Btn>
-        <Btn href="https://www.patreon.com/fleetyards" size="lg">
-          <i class="fa-brands fa-patreon" />
-          Patreon
-        </Btn>
-        <Btn href="https://ko-fi.com/fleetyardsnet" size="lg">
-          <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
-          Ko-fi
-        </Btn>
-        <Btn href="https://www.buymeacoffee.com/mortik" size="lg">
-          <i class="fa-solid fa-mug-hot" />
-          Buy me a coffee
-        </Btn>
+        </p>
       </div>
     </div>
   </Modal>

@@ -1403,7 +1403,7 @@
         "supporterClaimKey": {
           "intro": "Add this key to the message on a donation so the payment can be matched to your account.",
           "howTo": "Works on Ko-fi, PayPal and Buy Me a Coffee, which pass your message on. Patreon does not have a field for it — there your account is matched by the email address on your pledge.",
-          "notCreated": "You do not have a key yet."
+          "patreonNote": "matched by your email, no key needed"
         }
       },
       "filters": {

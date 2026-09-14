@@ -1,7 +1,106 @@
 .support-body {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
 }
 
 .support-referral-link {
-  font-size: 130%;
+  font-size: 115%;
+}
+
+.support-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+  }
+
+  &__note {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+}
+
+.support-platforms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+
+  @media (max-width: $tablet-breakpoint) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.support-platform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &--wide {
+    width: 100%;
+  }
+
+  &__note {
+    font-size: 0.72rem;
+    opacity: 0.55;
+  }
+
+  /*
+   * Reserved rather than revealed: without a fixed line the grid reflows the
+   * moment one button confirms a copy, nudging the other two under the cursor.
+   */
+  &__copied {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: $gold;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+    &--on {
+      opacity: 1;
+    }
+  }
+}
+
+.support-claim-key {
+  font-family: ui-monospace, "SFMono-Regular", menlo, monospace;
+  letter-spacing: 0.06em;
+  color: $gold;
+}
+
+.support-claim-key__hint {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  opacity: 0.7;
+}
+
+.support-rule {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid $gray-dark;
+}
+
+.support-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.8;
+
+  p {
+    margin: 0;
+  }
 }
