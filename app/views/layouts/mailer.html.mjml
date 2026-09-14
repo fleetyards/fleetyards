@@ -18,6 +18,32 @@
     <mj-title><%= I18n.t("title.default") %></mj-title>
 
     <%#
+      "This mail is already dark - leave it alone."
+
+      Every mail here is drawn on MailerTheme::BACKGROUND and has no light
+      variant, so `dark` is the accurate declaration rather than the `light dark`
+      a mail that ships both would use. Apple Mail, iOS Mail and Outlook for
+      macOS/iOS read it and skip the colour transform they would otherwise run
+      over a message with no scheme of its own.
+
+      The meta and the :root rule say the same thing twice on purpose: the meta
+      is what the Apple clients look for, the property is the standard, and the
+      pair is what every dark-mode email guide ships.
+
+      It does nothing for Gmail. Gmail's mobile apps run a full colour invert -
+      dark backgrounds included, which is why the panel arrives as a light grey
+      card on a phone - and honour neither this nor prefers-color-scheme. The one
+      known lever is Rémi Parmentier's blend-mode hack, which holds the colours
+      by stacking mix-blend-mode: screen over difference; it only works for white
+      text, and this palette is six colours deep, so it would trade a readable
+      inversion for dark-on-dark. Left undone deliberately.
+    %>
+    <mj-raw>
+      <meta name="color-scheme" content="dark" />
+      <meta name="supported-color-schemes" content="dark" />
+    </mj-raw>
+
+    <%#
       No mj-font, deliberately.
 
       mj-font emits <link href="https://fonts.googleapis.com/...">, and
@@ -91,6 +117,9 @@
       before, so the floor has not moved.
     %>
     <mj-style>
+      /* The scheme declaration again, as the standard property. See the note above. */
+      :root { color-scheme: dark; supported-color-schemes: dark; }
+
       /*
         The inward-rounded end of each cap - the top cap rounds its bottom
         corners and the bottom cap its top, so the outward edge stays a line
