@@ -3,6 +3,7 @@
     "placeholders": {
       "name": "Name",
       "description": "Description",
+      "amount": "Amount",
       "login": "Username or email",
       "username": "Username",
       "twoFactorCode": "Two-factor code",

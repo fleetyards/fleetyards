@@ -3,6 +3,7 @@
     "placeholders": {
       "name": "名稱",
       "description": "描述",
+      "amount": "金額",
       "login": "使用者名稱或電子郵件",
       "username": "使用者名稱",
       "twoFactorCode": "兩步驟驗證碼",
