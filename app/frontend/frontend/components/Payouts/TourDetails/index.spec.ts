@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import Component from "./index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
 import type { Tour } from "@/services/fyApi";
 
 const tour = (overrides: Partial<Tour> = {}): Tour =>
@@ -74,6 +75,20 @@ describe("TourDetails", () => {
 
     expect(header()).toContain("Withdraw request");
     expect(header()).not.toContain("Ask to participate");
+  });
+
+  // The ledger has its own channel; the viewer's standing on the tour rides on
+  // the tour payload, which only the page can refetch. Without this an
+  // approved ask still reads as pending until a reload.
+  it("asks the page to reload when the ledger changes", async () => {
+    const wrapper = await mount({
+      tour: tour({ joinRequestPending: true, joinRequestId: "request-1" }),
+    });
+
+    useComlink().emit("payout-ledger-changed");
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.emitted("reload")).toBeTruthy();
   });
 
   it("says an ask is waiting for an answer", async () => {

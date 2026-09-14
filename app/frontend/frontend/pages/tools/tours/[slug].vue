@@ -18,7 +18,7 @@ const route = useRoute();
 
 const slug = computed(() => String(route.params.slug));
 
-const { data: tour } = useTour(slug);
+const { data: tour, refetch } = useTour(slug);
 
 const crumbs = computed<Crumb[]>(() => [
   { to: { name: "tools" }, label: t("nav.tools.index") },
@@ -45,6 +45,6 @@ watch(
 
     <Heading hero mb>{{ tour.title }}</Heading>
 
-    <TourDetails :tour="tour" />
+    <TourDetails :tour="tour" @reload="refetch" />
   </section>
 </template>

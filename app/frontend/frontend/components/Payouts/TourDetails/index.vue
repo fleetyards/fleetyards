@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import PayoutLedger from "@/frontend/components/Payouts/PayoutLedger/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
 import copyText from "@/shared/utils/CopyText";
@@ -34,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), { manageable: false });
 const emit = defineEmits<{ reload: [] }>();
 
 const { t, l } = useI18n();
+const comlink = useComlink();
 const sessionStore = useSessionStore();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -99,6 +101,22 @@ const onWithdraw = async () => {
       asking.value = false;
     });
 };
+
+// The ledger reaches the page over its own channel, but the viewer's standing
+// on the tour -- whether they are on it, and whether their ask is still
+// unanswered -- rides on the tour payload, which that channel says nothing
+// about. Without this an approved ask still reads as pending until a reload.
+const ledgerChangedComlink = ref();
+
+onMounted(() => {
+  ledgerChangedComlink.value = comlink.on("payout-ledger-changed", () => {
+    emit("reload");
+  });
+});
+
+onBeforeUnmount(() => {
+  ledgerChangedComlink.value?.();
+});
 
 // The join page is the same one either way -- a tour is joined by its token,
 // not through whichever list it was found in.
