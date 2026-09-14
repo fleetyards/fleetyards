@@ -134,9 +134,8 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
     assert_equal commodity, @contract.fleet_contract_items.sole.item
   end
 
-  test "POST stores a component, and a crafting grade beside it" do
+  test "POST stores a component, and the grade asked for beside it" do
     component = create(:component)
-    @contract.update!(kind: :crafting)
     sign_in @officer
 
     assert_api_response :post, 201,
@@ -151,7 +150,6 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
   end
 
   test "POST records a grade that has to be matched exactly" do
-    @contract.update!(kind: :crafting)
     sign_in @officer
 
     assert_api_response :post, 201,
@@ -185,6 +183,40 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
       body: {name: "Titanium", category: "commodity", unit: "scu", quantity: "800",
              itemType: "Commodity", itemId: SecureRandom.uuid}
+  end
+
+  test "POST adds several different goods to one contract" do
+    sign_in @officer
+
+    [["Titanium", "commodity", "scu"],
+      ["Quantanium", "commodity", "scu"],
+      ["Power Plant", "component", "units"]].each do |name, category, unit|
+      assert_api_response :post, 201,
+        api_path: COLLECTION_PATH,
+        path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+        body: {name: name, category: category, unit: unit, quantity: "10"}
+    end
+
+    assert_equal 3, @contract.fleet_contract_items.count
+  end
+
+  # The same goods twice would match the same deposits, so one delivery would
+  # satisfy both lines -- but the refusal has to say that, not "name taken".
+  test "POST refuses the same goods twice, and says why" do
+    sign_in @officer
+
+    2.times do |index|
+      assert_api_response :post, (index.zero? ? 201 : 400),
+        api_path: COLLECTION_PATH,
+        path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+        body: {name: "Titanium", category: "commodity", unit: "scu", quantity: "10"} do
+        next if index.zero?
+
+        message = parsed_body["errors"].first["messages"].first["message"]
+
+        assert_match(/already on this contract/, message)
+      end
+    end
   end
 
   test "POST refuses a unit the category does not use" do

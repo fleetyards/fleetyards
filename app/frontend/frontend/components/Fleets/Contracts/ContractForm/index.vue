@@ -13,6 +13,7 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -65,7 +66,7 @@ const kindOptions = computed<FilterOption[]>(() =>
   })),
 );
 
-const { defineField, handleSubmit, meta } = useForm({
+const { defineField, handleSubmit, meta, setErrors } = useForm({
   initialValues: {
     title: props.contract?.title ?? "",
     description: props.contract?.description ?? "",
@@ -160,11 +161,17 @@ const onSubmit = handleSubmit(async (values) => {
         });
       }
     })
-    .catch(() => {
+    .catch((error) => {
+      const { message, formErrors } = validationErrorFrom(error);
+
+      setErrors(formErrors);
+
       displayAlert({
-        text: isEdit.value
-          ? t("messages.fleets.contract.update.failure")
-          : t("messages.fleets.contract.create.failure"),
+        text:
+          message ||
+          (isEdit.value
+            ? t("messages.fleets.contract.update.failure")
+            : t("messages.fleets.contract.create.failure")),
       });
     })
     .finally(() => {
