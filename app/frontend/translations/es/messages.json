@@ -851,6 +851,9 @@
             },
             "destroy": {
               "failure": "No se pudieron quitar las mercancías"
+            },
+            "update": {
+              "failure": "No se han podido cambiar las mercancías"
             }
           }
         },

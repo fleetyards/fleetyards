@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -285,17 +284,14 @@ const onSubmit = handleSubmit(async (values) => {
          last thing on the page rather than sitting above half of it. -->
     <slot name="sections" />
 
-    <FormActions form-id="contract-form" :submitting="submitting">
-      <Btn :disabled="submitting || !meta.valid" type="submit">
-        {{
-          isEdit
-            ? t("actions.fleets.contracts.save")
-            : t("actions.fleets.contracts.create")
-        }}
-      </Btn>
-      <Btn @click="emit('cancel')">
-        {{ t("actions.cancel") }}
-      </Btn>
-    </FormActions>
+    <!-- FormActions renders the pair itself and takes no children; passing
+         buttons in dropped them on the floor, and its own Cancel emitted at
+         nobody. -->
+    <FormActions
+      form-id="contract-form"
+      :submitting="submitting"
+      :dirty="meta.dirty"
+      @cancel="emit('cancel')"
+    />
   </form>
 </template>

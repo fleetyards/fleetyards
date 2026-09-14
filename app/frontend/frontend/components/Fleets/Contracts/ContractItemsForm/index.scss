@@ -1,3 +1,18 @@
+/*
+ * The shared list draws its rows at 5% white, which is enough over a panel but
+ * not on the bare page this form sits on -- the goods were hard to read. A
+ * solid surface and a firmer edge, the treatment the contract board's tiles
+ * use.
+ */
+.contract-items :deep(.list-group__item) {
+  background: $panel-bg;
+  border-color: rgba($gray-light, 0.28);
+
+  &:hover {
+    background: $gray-dark;
+  }
+}
+
 .contract-items {
   &__name {
     color: #eee;

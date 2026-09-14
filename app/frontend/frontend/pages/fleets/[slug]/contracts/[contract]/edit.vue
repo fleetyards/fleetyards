@@ -8,8 +8,6 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ContractForm from "@/frontend/components/Fleets/Contracts/ContractForm/index.vue";
 import ContractItemsForm from "@/frontend/components/Fleets/Contracts/ContractItemsForm/index.vue";
 import {
@@ -69,17 +67,13 @@ const crumbs = computed<Crumb[]>(() => [
          deliver, which is what sends an author here. -->
     <ContractForm :fleet="fleet" :contract="contract" @cancel="cancel">
       <template #sections>
-        <Panel>
-          <PanelBody>
-            <Heading>{{ t("headlines.fleets.contracts.items") }}</Heading>
+        <Heading>{{ t("headlines.fleets.contracts.items") }}</Heading>
 
-            <ContractItemsForm
-              :fleet="fleet"
-              :contract="contract"
-              @changed="refetch()"
-            />
-          </PanelBody>
-        </Panel>
+        <ContractItemsForm
+          :fleet="fleet"
+          :contract="contract"
+          @changed="refetch()"
+        />
       </template>
     </ContractForm>
   </template>

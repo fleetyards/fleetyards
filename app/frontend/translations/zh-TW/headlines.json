@@ -299,7 +299,8 @@
           "edit": "編輯合約",
           "progress": "進度",
           "crew": "隊伍",
-          "items": "貨物"
+          "items": "貨物",
+          "editItem": "編輯貨物"
         }
       },
       "hangarGroup": {

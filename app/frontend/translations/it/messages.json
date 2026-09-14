@@ -851,6 +851,9 @@
             },
             "destroy": {
               "failure": "Impossibile rimuovere le merci"
+            },
+            "update": {
+              "failure": "Non è stato possibile modificare le merci"
             }
           }
         },

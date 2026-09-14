@@ -10,7 +10,7 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
@@ -361,7 +361,12 @@ const crumbs = computed<Crumb[]>(() => [
         <i class="fa-duotone fa-pen" />
         {{ t("actions.fleets.contracts.edit") }}
       </Btn>
-      <BtnConfirm v-if="canCancel" :size="BtnSizesEnum.MD" @confirm="onCancel">
+      <BtnConfirm
+        v-if="canCancel"
+        :size="BtnSizesEnum.MD"
+        :tone="BtnTonesEnum.DANGER"
+        @confirm="onCancel"
+      >
         <i class="fa-duotone fa-ban" />
         {{ t("actions.fleets.contracts.cancel") }}
       </BtnConfirm>

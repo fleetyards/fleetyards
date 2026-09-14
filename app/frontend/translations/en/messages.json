@@ -861,6 +861,9 @@
             },
             "destroy": {
               "failure": "Goods could not be removed"
+            },
+            "update": {
+              "failure": "The goods could not be changed"
             }
           }
         },

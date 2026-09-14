@@ -851,6 +851,9 @@
             },
             "destroy": {
               "failure": "Waren konnten nicht entfernt werden"
+            },
+            "update": {
+              "failure": "Die Waren konnten nicht geändert werden"
             }
           }
         },

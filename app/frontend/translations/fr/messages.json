@@ -851,6 +851,9 @@
             },
             "destroy": {
               "failure": "Les marchandises n'ont pas pu être retirées"
+            },
+            "update": {
+              "failure": "Les marchandises n'ont pas pu être modifiées"
             }
           }
         },

@@ -851,6 +851,9 @@
             },
             "destroy": {
               "failure": "无法移除货物"
+            },
+            "update": {
+              "failure": "无法修改货物"
             }
           }
         },

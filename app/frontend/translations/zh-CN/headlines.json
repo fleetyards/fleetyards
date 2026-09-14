@@ -299,7 +299,8 @@
           "edit": "编辑合约",
           "progress": "进度",
           "crew": "队伍",
-          "items": "货物"
+          "items": "货物",
+          "editItem": "编辑货物"
         }
       },
       "hangarGroup": {
