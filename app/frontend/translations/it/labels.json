@@ -1401,9 +1401,9 @@
           "howTo": "Incolla il link nella tua app calendario sotto \"Iscriviti a un calendario\" o \"Aggiungi tramite URL\". Chiunque abbia questo link può vedere gli eventi a cui ti sei iscritto — tienilo privato."
         },
         "supporterClaimKey": {
-          "intro": "Aggiungi questa chiave al messaggio della tua donazione per collegare il pagamento al tuo account.",
-          "howTo": "Funziona con Ko-fi, PayPal e Buy Me a Coffee, che trasmettono il tuo messaggio. Patreon non ha un campo adatto: lì il tuo account viene collegato tramite l'indirizzo email del tuo sostegno.",
-          "patreonNote": "collegato tramite la tua email, nessuna chiave necessaria"
+          "patreonNote": "collegato tramite la tua email, nessuna chiave necessaria",
+          "label": "La tua chiave",
+          "hint": "Incollala nel messaggio di un pagamento PayPal, Ko-fi o Buy me a coffee e verrà collegato al tuo account. Su Patreon il collegamento avviene tramite email."
         }
       },
       "filters": {

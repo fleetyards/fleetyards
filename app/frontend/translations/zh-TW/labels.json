@@ -1401,9 +1401,9 @@
           "howTo": "把連結貼進你的行事曆應用程式的\"訂閱行事曆\"或\"以網址新增\"中。任何拿到這個連結的人都能看到你報名的活動 — 請妥善保管。"
         },
         "supporterClaimKey": {
-          "intro": "在贊助留言中附上此金鑰，付款即可與您的帳號連結。",
-          "howTo": "適用於會轉達留言的 Ko-fi、PayPal 與 Buy Me a Coffee。Patreon 沒有對應的欄位：在該平台將透過您贊助所用的電子郵件地址連結帳號。",
-          "patreonNote": "透過您的電子郵件連結，不需金鑰"
+          "patreonNote": "透過您的電子郵件連結，不需金鑰",
+          "label": "您的金鑰",
+          "hint": "將其貼到 PayPal、Ko-fi 或 Buy me a coffee 付款的留言中，付款即可與您的帳號連結。Patreon 則透過電子郵件連結。"
         }
       },
       "filters": {

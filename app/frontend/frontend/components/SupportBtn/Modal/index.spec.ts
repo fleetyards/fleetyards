@@ -42,7 +42,8 @@ describe("SupportModal", () => {
   it("shows the key to a signed-in supporter", async () => {
     const wrapper = await mount();
 
-    expect(wrapper.find("[data-test='claim-key']").text()).toBe("FY-7K2M-9QXD");
+    expect(wrapper.find("[data-test='claim-key']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='copy-claim-key']").exists()).toBe(true);
   });
 
   it("shows no key and no hint when signed out", async () => {
@@ -52,7 +53,7 @@ describe("SupportModal", () => {
     const wrapper = await mount();
 
     expect(wrapper.find("[data-test='claim-key']").exists()).toBe(false);
-    expect(wrapper.find("[data-test='claim-key-hint']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='copy-claim-key']").exists()).toBe(false);
   });
 
   // Ko-fi has no URL parameter to prefill a message with, so the key goes to
@@ -67,6 +68,14 @@ describe("SupportModal", () => {
       expect(writeText).toHaveBeenCalledWith("FY-7K2M-9QXD");
     },
   );
+
+  it("copies the key from the copy button", async () => {
+    const wrapper = await mount();
+
+    await wrapper.find("[data-test='copy-claim-key']").trigger("click");
+
+    expect(writeText).toHaveBeenCalledWith("FY-7K2M-9QXD");
+  });
 
   // Patreon carries no donor message, so a key would be copied for nothing and
   // read as something the donor is meant to paste somewhere.

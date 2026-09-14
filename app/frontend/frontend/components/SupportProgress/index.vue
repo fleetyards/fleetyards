@@ -8,7 +8,6 @@ export default {
 import { useSupportersProgress } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
-import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 
 type Props = {
   compact?: boolean;
@@ -52,14 +51,17 @@ const formattedGoal = computed(() =>
 
 const supporters = computed(() => progress.value?.contributions ?? []);
 
-// What the month's money is actually for, on the caption line rather than as
-// a list of its own -- two or three short titles read as context, not content.
-const goalTitles = computed(() =>
-  (progress.value?.goal?.items ?? [])
+// One line under the bar: what the money is for, then what it is paying for.
+// Two or three short goal titles read as context; as a list of their own they
+// read as content and the modal grows another block.
+const caption = computed(() => {
+  const titles = (progress.value?.goal?.items ?? [])
     .map((item) => item.title)
     .filter(Boolean)
-    .join(" · "),
-);
+    .join(" · ");
+
+  return [t("texts.support.goal"), titles].filter(Boolean).join(" · ");
+});
 </script>
 
 <template>
@@ -70,13 +72,23 @@ const goalTitles = computed(() =>
     <div class="support-progress__header">
       <span class="support-progress__total">{{ formattedTotal }}</span>
       <span v-if="progress?.goal" class="support-progress__goal">
-        / {{ formattedGoal }}
+        {{ t("texts.support.thisMonth", { goal: formattedGoal }) }}
       </span>
     </div>
-    <ProgressBar :progress="percent" />
+    <div
+      class="support-progress__bar"
+      role="progressbar"
+      :aria-valuenow="percent"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+      <div
+        class="support-progress__bar__fill"
+        :style="{ width: `${percent}%` }"
+      />
+    </div>
     <p v-if="!compact && progress?.goal" class="support-progress__caption">
-      {{ t("texts.support.thisMonth")
-      }}<template v-if="goalTitles"> · {{ goalTitles }}</template>
+      {{ caption }}
     </p>
     <div v-if="!compact && supporters.length" class="support-progress__thanks">
       <h4 class="support-progress__thanks__headline">

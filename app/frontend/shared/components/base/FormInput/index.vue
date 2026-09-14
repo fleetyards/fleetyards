@@ -200,6 +200,7 @@ const cssClasses = computed(() => {
     "base-input--inline": props.inline,
     "base-input--align-left": props.alignment === InputAlignmentsEnum.LEFT,
     "base-input--align-right": props.alignment === InputAlignmentsEnum.RIGHT,
+    "base-input--align-center": props.alignment === InputAlignmentsEnum.CENTER,
     [`base-input--${props.type}`]: true,
   };
 });

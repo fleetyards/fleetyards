@@ -8,7 +8,9 @@
         "info": "Kein Geld übrig? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Gib uns eine Stimme auf Spectrum</b></a> und hilf mehr Leuten, FleetYards zu finden.",
         "goal": "Deckt laufende Kosten wie Server-Hosting und Datendienste.",
         "code": "Neu bei Star Citizen? Nutze diesen Code für 5000 UEC Startguthaben:",
-        "thisMonth": "Diesen Monat eingegangen"
+        "thisMonth": "von %{goal} in diesem Monat",
+        "subline": "Unterstütze uns direkt",
+        "otherWays": "Andere Wege zu helfen"
       },
       "supportHint": {
         "hangarSync": "Background-Syncs sind der größte Posten unserer Hosting-Rechnung. FleetYards läuft auf Spendenbasis — jeder Beitrag hilft.",

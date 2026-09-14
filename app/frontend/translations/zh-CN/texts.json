@@ -8,7 +8,9 @@
         "info": "不方便捐助？<a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>在 Spectrum 为我们点赞</b></a>，让更多人发现 FleetYards。",
         "goal": "用于服务器托管和数据服务等日常运营开支。",
         "code": "刚接触星际公民？使用此邀请码可获得 5000 UEC 初始资金：",
-        "thisMonth": "本月已筹集"
+        "thisMonth": "本月目标 %{goal}",
+        "subline": "直接支持我们",
+        "otherWays": "其他帮助方式"
       },
       "supportHint": {
         "hangarSync": "后台同步是我们托管账单中最大的一项支出。FleetYards 依靠捐赠运行 — 任何支持都很重要。",

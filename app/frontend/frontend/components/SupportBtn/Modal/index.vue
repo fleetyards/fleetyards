@@ -7,13 +7,18 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMySupporterClaimKey } from "@/services/fyApi";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
 const { t } = useI18n();
 const sessionStore = useSessionStore();
+const { displaySuccess } = useAppNotifications();
 
 // Reading generates the key, so it is here the moment somebody opens the modal
 // to donate rather than after a detour through settings.
@@ -29,23 +34,30 @@ const platforms = [
     label: "PayPal",
     icon: "fa-brands fa-paypal",
     href: "https://paypal.me/mortik",
+    carriesMessage: true,
+  },
+  {
+    id: "patreon",
+    label: "Patreon",
+    icon: "fa-brands fa-patreon",
+    href: "https://www.patreon.com/fleetyards",
+    carriesMessage: false,
   },
   {
     id: "kofi",
     label: "Ko-fi",
     icon: "",
     href: "https://ko-fi.com/fleetyardsnet",
+    carriesMessage: true,
   },
   {
     id: "bmac",
     label: "Buy me a coffee",
     icon: "fa-solid fa-mug-hot",
     href: "https://www.buymeacoffee.com/mortik",
+    carriesMessage: true,
   },
 ];
-
-const copiedFrom = ref<string | null>(null);
-let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
 // The three platforms that carry a donor message copy the key on the way out,
 // so it is on the clipboard when the payment form asks for one. Ko-fi has no
@@ -55,22 +67,20 @@ let resetTimer: ReturnType<typeof setTimeout> | undefined;
 // would put the navigation outside the user gesture. Failure is silent by
 // design -- the clipboard is a convenience here, and the key is still visible
 // in the hint below.
-const copyKeyFor = (platform: string) => {
+const copyKey = () => {
   if (!key.value) return;
 
+  // Not awaited: a platform link opens in a new tab, and awaiting first would
+  // put the navigation outside the user gesture that permits the write.
   void navigator.clipboard?.writeText(key.value).then(
     () => {
-      copiedFrom.value = platform;
-      clearTimeout(resetTimer);
-      resetTimer = setTimeout(() => {
-        copiedFrom.value = null;
-      }, 4000);
+      displaySuccess({
+        text: t("messages.account.supporterClaimKey.copy.success"),
+      });
     },
     () => {},
   );
 };
-
-onBeforeUnmount(() => clearTimeout(resetTimer));
 </script>
 
 <template>
@@ -78,75 +88,83 @@ onBeforeUnmount(() => clearTimeout(resetTimer));
     <div class="support-body">
       <SupportProgress />
 
-      <p class="support-note">{{ t("texts.support.goal") }}</p>
+      <hr class="support-rule" />
 
-      <div class="support-platforms">
-        <a
-          v-for="platform in platforms"
-          :key="platform.id"
-          :href="platform.href"
-          :data-test="`support-${platform.id}`"
-          class="support-tile"
-          target="_blank"
-          rel="noopener"
-          @click="copyKeyFor(platform.id)"
-        >
-          <img
-            v-if="platform.id === 'kofi'"
-            :src="kofiIcon"
-            alt=""
-            width="22"
-            class="support-tile__icon"
-          />
-          <i v-else :class="platform.icon" class="support-tile__icon" />
-          <span class="support-tile__label">{{ platform.label }}</span>
-          <span
-            v-if="key"
-            class="support-tile__copied"
-            :class="{ 'support-tile__copied--on': copiedFrom === platform.id }"
+      <div class="support-section">
+        <div class="support-section__label">
+          {{ t("texts.support.subline") }}
+        </div>
+
+        <div class="support-platforms">
+          <Btn
+            v-for="platform in platforms"
+            :key="platform.id"
+            :href="platform.href"
+            :data-test="`support-${platform.id}`"
+            @click="platform.carriesMessage && copyKey()"
           >
-            {{ t("messages.account.supporterClaimKey.copy.success") }}
-          </span>
-        </a>
+            <img
+              v-if="platform.id === 'kofi'"
+              :src="kofiIcon"
+              alt=""
+              width="20"
+            />
+            <i v-else :class="platform.icon" />
+            <span>{{ platform.label }}</span>
+          </Btn>
+        </div>
+
+        <template v-if="key">
+          <FormInput
+            name="supporterClaimKey"
+            :model-value="key"
+            :prefix="t('labels.account.supporterClaimKey.label')"
+            :alignment="InputAlignmentsEnum.CENTER"
+            no-label
+            class="support-claim-key"
+            data-test="claim-key"
+          >
+            <template #suffix>
+              <button
+                type="button"
+                class="support-claim-key__copy"
+                :aria-label="t('actions.copy')"
+                :title="t('actions.copy')"
+                data-test="copy-claim-key"
+                @click="copyKey"
+              >
+                <i class="fa-light fa-copy" />
+              </button>
+            </template>
+          </FormInput>
+
+          <p class="support-claim-key__hint">
+            {{ t("labels.account.supporterClaimKey.hint") }}
+          </p>
+        </template>
       </div>
-
-      <p v-if="key" class="support-claim-key__hint" data-test="claim-key-hint">
-        <i class="fa-light fa-key support-claim-key__icon" />
-        <span>
-          <code class="support-claim-key" data-test="claim-key">{{ key }}</code>
-          {{ t("labels.account.supporterClaimKey.howTo") }}
-        </span>
-      </p>
-
-      <a
-        href="https://www.patreon.com/fleetyards"
-        class="support-tile support-tile--wide"
-        data-test="support-patreon"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="fa-brands fa-patreon support-tile__icon" />
-        <span class="support-tile__label">Patreon</span>
-        <span v-if="key" class="support-tile__note">
-          {{ t("labels.account.supporterClaimKey.patreonNote") }}
-        </span>
-      </a>
 
       <hr class="support-rule" />
 
-      <div class="support-secondary">
-        <p v-html="t('texts.support.info')" />
-        <p class="support-secondary__referral">
-          {{ t("texts.support.code") }}
-          <a
-            href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
-            class="support-referral-link"
-            target="_blank"
-            rel="noopener"
-          >
-            <b>STAR-5F32-SJZ4</b>
-          </a>
-        </p>
+      <div class="support-section">
+        <div class="support-section__label">
+          {{ t("texts.support.otherWays") }}
+        </div>
+
+        <div class="support-secondary">
+          <p v-html="t('texts.support.info')" />
+          <p class="support-secondary__referral">
+            {{ t("texts.support.code") }}
+            <a
+              href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
+              class="support-referral-link"
+              target="_blank"
+              rel="noopener"
+            >
+              <b>STAR-5F32-SJZ4</b>
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </Modal>

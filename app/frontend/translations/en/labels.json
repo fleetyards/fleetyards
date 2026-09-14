@@ -1401,9 +1401,9 @@
           "howTo": "Paste the link into your calendar app under \"Subscribe to calendar\" or \"Add by URL\". Anyone with this link can see the events you're signed up for — keep it private."
         },
         "supporterClaimKey": {
-          "intro": "Add this key to the message on a donation so the payment can be matched to your account.",
-          "howTo": "Works on Ko-fi, PayPal and Buy Me a Coffee, which pass your message on. Patreon does not have a field for it — there your account is matched by the email address on your pledge.",
-          "patreonNote": "matched by your email, no key needed"
+          "patreonNote": "matched by your email, no key needed",
+          "label": "Your key",
+          "hint": "Paste it into the message on a PayPal, Ko-fi or Buy me a coffee payment and it links to your account. Patreon matches you by email instead."
         }
       },
       "filters": {

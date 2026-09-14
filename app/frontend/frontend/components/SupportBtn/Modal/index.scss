@@ -5,16 +5,22 @@
   text-align: left;
 }
 
-.support-note {
-  margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  opacity: 0.7;
+.support-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+  }
 }
 
 .support-platforms {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 
   @media (max-width: $tablet-breakpoint) {
@@ -22,94 +28,40 @@
   }
 }
 
-/*
- * Deliberately not the Btn component. These are two-line tiles -- icon over
- * label over a copy confirmation -- and Btn lays its slot out as one
- * overflow-hidden, text-ellipsis row; its own source says not to reach across
- * that boundary to restyle it, and it is right.
- */
-.support-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  padding: 14px 8px;
-  background: $gray-dark;
-  border: 1px solid $gray;
-  border-radius: $border-radius-base;
-  color: $text-color;
-  text-align: center;
-  transition:
-    border-color 0.15s ease,
-    background 0.15s ease;
+.support-claim-key {
+  /* The key is a separate step from choosing a platform, not a fifth button. */
+  width: 50%;
+  margin: 8px auto 0;
 
-  &:hover,
-  &:focus-visible {
-    background: color.adjust($gray-dark, $lightness: 4%);
-    border-color: $gray-light;
-    color: #fff;
-    text-decoration: none;
-  }
-
-  &__icon {
-    font-size: 1.35rem;
-    line-height: 1;
-  }
-
-  &__label {
-    font-size: 0.85rem;
-  }
-
-  &__note {
-    font-size: 0.72rem;
-    opacity: 0.55;
+  @media (max-width: $tablet-breakpoint) {
+    width: 100%;
   }
 
   /*
-   * Always rendered, faded when idle: revealing it would reflow the grid the
-   * moment one tile confirms, nudging the other two under the cursor.
+   * The suffix is an endcap -- 40px wide, muted, sized for a unit or an icon.
+   * A Btn in there brings its own background, border and radius and reads as
+   * something dropped on top of the field rather than part of it.
    */
-  &__copied {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: $gold;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+  &__copy {
+    padding: 0;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
 
-    &--on {
-      opacity: 1;
+    &:hover,
+    &:focus-visible {
+      color: $gold;
     }
   }
 
-  &--wide {
-    flex-direction: row;
-    justify-content: center;
-    gap: 8px;
-    padding: 11px 14px;
+  &__hint {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    opacity: 0.7;
   }
-}
-
-.support-claim-key__hint {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.5;
-  opacity: 0.7;
-}
-
-.support-claim-key__icon {
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: $gold;
-}
-
-.support-claim-key {
-  font-family: ui-monospace, "SFMono-Regular", menlo, monospace;
-  letter-spacing: 0.06em;
-  color: $gold;
 }
 
 .support-rule {
@@ -124,9 +76,9 @@
   grid-template-columns: 1fr auto;
   gap: 8px 24px;
   align-items: start;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   line-height: 1.45;
-  opacity: 0.75;
+  opacity: 0.8;
 
   p {
     margin: 0;
