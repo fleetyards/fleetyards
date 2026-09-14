@@ -39,6 +39,7 @@ class TourJoinRequest < ApplicationRecord
   validate :no_pending_request, on: :create
 
   after_create_commit :notify_deciders
+  after_commit :broadcast_to_deciders
 
   aasm column: :aasm_state, whiny_transitions: false do
     state :pending, initial: true
@@ -112,6 +113,16 @@ class TourJoinRequest < ApplicationRecord
     }.filter_map(&:user)
 
     ([tour.created_by] + managers).compact.uniq.reject { |decider| decider.id == user_id }
+  end
+
+  # The list the request appears in is the ledger's participant list, so the
+  # page it belongs to is refreshed by the ledger's own channel. The asker is
+  # included because their own standing on the tour changed with the answer.
+  private def broadcast_to_deciders
+    ledger = tour&.payout_ledger
+    return if ledger.blank?
+
+    ledger.broadcast_change_to(deciders + [user])
   end
 
   private def notify_deciders

@@ -127,6 +127,14 @@ const refetchAll = () => {
   void refetchTransfers();
 };
 
+// Announced rather than refetched directly: the participant list carries the
+// requests to join this tour, which are a query of its own, and a broadcast
+// has to reach those as well as the figures here. The listener below is what
+// refetches this component's own queries.
+const resync = () => {
+  comlink.emit("payout-ledger-changed");
+};
+
 // The channel is per-user, not per-ledger, so a viewer taking part in more than
 // one ledger hears about all of them on the same stream -- hence the id check
 // rather than a subscription scoped to this ledger.
@@ -137,13 +145,13 @@ useSubscription({
   // page showing figures that have moved on. Resyncing on every connect covers
   // the reconnects and the gap between the first fetch and the subscription
   // being live; the queries dedupe the one on mount.
-  connected: refetchAll,
+  connected: () => resync(),
   received: (message) => {
     if (message?.id !== props.payoutLedgerId) {
       return;
     }
 
-    refetchAll();
+    resync();
   },
 });
 

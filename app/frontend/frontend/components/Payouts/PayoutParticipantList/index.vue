@@ -80,6 +80,24 @@ const pendingJoinRequests = computed(() =>
 const approveMutation = useApproveTourJoinRequestMutation();
 const declineMutation = useDeclineTourJoinRequestMutation();
 
+// A request arriving is a change to this list, and it reaches the page over
+// the ledger's channel -- which PayoutLedger turns into this event.
+const ledgerChangedComlink = ref();
+
+onMounted(() => {
+  ledgerChangedComlink.value = comlink.on("payout-ledger-changed", () => {
+    if (!joinRequestsEnabled.value) {
+      return;
+    }
+
+    void refetchJoinRequests();
+  });
+});
+
+onBeforeUnmount(() => {
+  ledgerChangedComlink.value?.();
+});
+
 const onApprove = async (joinRequest: TourJoinRequest) => {
   if (!props.tourSlug) {
     return;

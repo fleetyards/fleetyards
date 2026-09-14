@@ -191,6 +191,19 @@ class PayoutLedger < ApplicationRecord
     end
   end
 
+  # For the people a change concerns who are not on the ledger themselves.
+  # Somebody who can answer a request to join a tour has no participant row
+  # until they join one, so `broadcast_change` would never reach them -- and
+  # the request is exactly what they are waiting to see. Every caller passes
+  # users who may already read this ledger.
+  def broadcast_change_to(users)
+    payload = to_jbuilder_hash
+
+    Array(users).compact.uniq.each do |user|
+      PayoutLedgerChannel.broadcast_to(user, payload)
+    end
+  end
+
   private def broadcast_own_change
     return unless saved_change_to_status? || saved_change_to_notes?
 
