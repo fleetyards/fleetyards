@@ -21,21 +21,32 @@ const { t, toUEC } = useI18n();
 const rows = computed(() =>
   props.balances.map((balance) => {
     const net = Number(balance.net ?? 0);
+    const weight = Number(balance.participant.weight ?? 1);
 
     return {
       balance,
       net,
       owes: net > 0,
       owed: net < 0,
+      weight,
+      reduced: weight !== 1,
     };
   }),
 );
+
+// Worth a column of its own only once somebody is on less than a full share.
+// On a ledger where nobody is, it would be a column of identical ones.
+const showWeight = computed(() => rows.value.some((row) => row.reduced));
 </script>
 
 <template>
-  <div class="payout-balances">
+  <div
+    class="payout-balances"
+    :class="{ 'payout-balances--weighted': showWeight }"
+  >
     <div class="payout-balances__row payout-balances__row--head">
       <span>{{ t("labels.payouts.participant") }}</span>
+      <span v-if="showWeight">{{ t("labels.payouts.weight") }}</span>
       <span>{{ t("labels.payouts.paid") }}</span>
       <span>{{ t("labels.payouts.held") }}</span>
       <span>{{ t("labels.payouts.share") }}</span>
@@ -53,9 +64,26 @@ const rows = computed(() =>
           {{ t("labels.payouts.guest") }}
         </span>
       </span>
-      <span v-html="toUEC(Number(row.balance.paid ?? 0))" />
-      <span v-html="toUEC(Number(row.balance.held ?? 0))" />
-      <span v-html="toUEC(Number(row.balance.share ?? 0))" />
+      <span
+        v-if="showWeight"
+        class="payout-balances__weight"
+        :class="{ 'payout-balances__weight--reduced': row.reduced }"
+        :data-label="t('labels.payouts.weight')"
+      >
+        {{ row.balance.participant.weight }}
+      </span>
+      <span
+        :data-label="t('labels.payouts.paid')"
+        v-html="toUEC(Number(row.balance.paid ?? 0))"
+      />
+      <span
+        :data-label="t('labels.payouts.held')"
+        v-html="toUEC(Number(row.balance.held ?? 0))"
+      />
+      <span
+        :data-label="t('labels.payouts.share')"
+        v-html="toUEC(Number(row.balance.share ?? 0))"
+      />
       <!-- The sign carries owe-vs-owed on its own; the colour only
            reinforces it, so the column still reads in print or to someone who
            cannot separate the two hues. -->
@@ -65,10 +93,18 @@ const rows = computed(() =>
           'payout-balances__net--owes': row.owes,
           'payout-balances__net--owed': row.owed,
         }"
+        :data-label="t('labels.payouts.net')"
       >
-        <template v-if="row.owes">−</template>
-        <template v-else-if="row.owed">+</template>
-        <span v-html="toUEC(Math.abs(row.net))" />
+        <!-- toUEC renders 0 as "-", which reads as a figure nobody worked out
+             rather than as the one good outcome. -->
+        <template v-if="!row.owes && !row.owed">
+          {{ t("labels.payouts.even") }}
+        </template>
+        <template v-else>
+          <template v-if="row.owes">−</template>
+          <template v-else>+</template>
+          <span v-html="toUEC(Math.abs(row.net))" />
+        </template>
       </span>
     </div>
   </div>
@@ -91,6 +127,13 @@ const rows = computed(() =>
   > span:not(:first-child) {
     text-align: right;
   }
+}
+
+.payout-balances--weighted .payout-balances__row {
+  grid-template-columns: minmax(140px, 2fr) minmax(64px, 0.6fr) repeat(
+      4,
+      minmax(90px, 1fr)
+    );
 }
 
 .payout-balances__row--head {
@@ -116,11 +159,51 @@ const rows = computed(() =>
   color: var(--color-muted, #999);
 }
 
+.payout-balances__weight--reduced {
+  color: var(--color-gold, #d4af37);
+}
+
 .payout-balances__net--owes {
   color: var(--color-danger, #f44336);
 }
 
 .payout-balances__net--owed {
   color: var(--color-success, #4caf50);
+}
+
+/*
+ * Six columns is past what a phone can carry. The table scrolled sideways at
+ * five already, which put the balance -- the column people actually came for --
+ * off the edge; below the md breakpoint each row becomes a block instead, and
+ * every figure carries the heading it lost with the header row.
+ */
+@media (max-width: 991px) {
+  .payout-balances__row--head {
+    display: none;
+  }
+
+  .payout-balances__row,
+  .payout-balances--weighted .payout-balances__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px 0;
+
+    > span:not(:first-child) {
+      text-align: left;
+    }
+  }
+
+  .payout-balances__name {
+    grid-column: 1 / -1;
+  }
+
+  .payout-balances__row > span[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-muted, #999);
+  }
 }
 </style>

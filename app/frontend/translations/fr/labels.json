@@ -2377,7 +2377,11 @@
         "title": "Titre",
         "startsAt": "Commence le",
         "inviteLink": "Lien d'invitation",
-        "participants": "Personnes"
+        "participants": "Personnes",
+        "weight": "Pondération",
+        "shares": "parts",
+        "customWeight": "Pondération libre",
+        "preview": "Aperçu · évolue jusqu'au règlement"
       },
       "relationships": {
         "party": "Nom",

@@ -886,7 +886,8 @@
         "inviteCopied": "Einladungslink kopiert",
         "settleConfirm": "Auszahlungen berechnen und das Buch sperren? Einträge lassen sich dann bis zum Wiederöffnen nicht mehr ändern.",
         "reopenConfirm": "Buch wieder öffnen? Die aktuelle Auszahlungsliste wird verworfen.",
-        "participantNeedsName": "Gib einen Benutzernamen oder einen Namen ein"
+        "participantNeedsName": "Gib einen Benutzernamen oder einen Namen ein",
+        "weightUpdated": "Anteil aktualisiert"
       },
       "dock": {
         "create": {

@@ -88,6 +88,26 @@ const shownTransfers = computed(() =>
     : ((balances.value?.transfers ?? []) as never[]),
 );
 
+// Only used to say why a participant cannot be removed before the click. The
+// entries list is paginated, so on a very long ledger a participant can look
+// removable when they are not -- which is exactly the behaviour this replaces,
+// and the API is what refuses either way.
+const entryCounts = computed(() =>
+  (entries.value?.items ?? []).reduce<Record<string, number>>(
+    (counts, entry) => {
+      if (!entry.payoutParticipantId) {
+        return counts;
+      }
+
+      counts[entry.payoutParticipantId] =
+        (counts[entry.payoutParticipantId] ?? 0) + 1;
+
+      return counts;
+    },
+    {},
+  ),
+);
+
 const refetchAll = () => {
   void refetchLedger();
   void refetchBalances();
@@ -233,6 +253,7 @@ const onReopen = async () => {
             :payout-ledger-id="payoutLedgerId"
             :participants="participants"
             :manageable="manageable && !settled"
+            :entry-counts="entryCounts"
           />
         </PanelBody>
       </Panel>
@@ -248,7 +269,15 @@ const onReopen = async () => {
     <Panel>
       <PanelHeading>
         <div class="payout-ledger__heading">
-          <span>{{ t("headlines.payouts.transfers") }}</span>
+          <span class="payout-ledger__heading-title">
+            <span>{{ t("headlines.payouts.transfers") }}</span>
+            <!-- An open ledger's list is recomputed on every read; nothing said
+                 so, and it looked identical to the frozen one people pay
+                 against. -->
+            <span v-if="!settled" class="payout-ledger__preview">
+              {{ t("labels.payouts.preview") }}
+            </span>
+          </span>
           <Btn
             v-if="manageable"
             :size="BtnSizesEnum.SM"
@@ -303,5 +332,20 @@ const onReopen = async () => {
   justify-content: space-between;
   gap: 12px;
   width: 100%;
+}
+
+.payout-ledger__heading-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.payout-ledger__preview {
+  font-family: "Open Sans", sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-gold, #d4af37);
 }
 </style>
