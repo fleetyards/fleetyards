@@ -49,10 +49,7 @@ const comlink = useComlink();
 const fleetSlug = computed(() => props.fleet.slug);
 const inventorySlug = computed(() => route.params.inventory as string);
 
-const { activeTab } = useLedgerTab({
-  stock: "fleet-logistics-inventory",
-  log: "fleet-logistics-inventory-transactions",
-});
+const { activeTab } = useLedgerTab();
 
 const {
   data: inventory,
@@ -292,6 +289,7 @@ const crumbs = computed<Crumb[]>(() => [
           :records="activeRecords"
           :async-status="logAsyncStatus"
           :hide-loading="activeTab === 'stock'"
+          :hide-empty="true"
           placeholders
           :is-filter-selected="isFilterSelected"
         >

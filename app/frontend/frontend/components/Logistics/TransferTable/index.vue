@@ -25,6 +25,9 @@ type Props = {
   direction: "incoming" | "outgoing";
   loading?: boolean;
   busy?: boolean;
+  // Drawn as a row inside the table's own frame, rather than as a panel under
+  // an empty header.
+  emptyVisible?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -117,7 +120,7 @@ const canCancel = (transfer: InventoryTransfer) =>
     :columns="columns"
     primary-key="id"
     :loading="loading"
-    :empty-visible="!loading && !transfers.length"
+    :empty-visible="emptyVisible"
   >
     <template #col-from="{ record }">
       <!-- One element, because the cell is a flex row with `space-between`:

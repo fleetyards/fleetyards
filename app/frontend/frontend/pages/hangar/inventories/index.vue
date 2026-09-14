@@ -38,10 +38,7 @@ import { useFeatures } from "@/frontend/composables/useFeatures";
 const { t } = useI18n();
 const comlink = useComlink();
 
-const { activeTab } = useLedgerTab({
-  stock: "hangar-inventories",
-  log: "hangar-transactions",
-});
+const { activeTab } = useLedgerTab();
 
 const { isFeatureEnabled } = useFeatures();
 

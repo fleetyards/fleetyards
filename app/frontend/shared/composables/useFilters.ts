@@ -16,7 +16,7 @@ export const useFilters = <T>({
   // route query into `q`, and the query schemas are `additionalProperties:
   // false` -- so a key like this reaches the API as an unknown filter and comes
   // back a 400, which reads as a server error.
-  const viewStateKeys = ["tab"];
+  const viewStateKeys = ["tab", "view", "direction"];
 
   const excludeKeys = [
     ...defaultIgnoreKeys,
