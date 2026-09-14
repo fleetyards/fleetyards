@@ -11,7 +11,12 @@ vi.mock("@/frontend/components/Logistics/ComponentPicker/index.vue", () => ({
   default: { name: "LogisticsComponentPicker", render: () => null },
 }));
 vi.mock("@/frontend/components/Logistics/EquipmentPicker/index.vue", () => ({
-  default: { name: "LogisticsEquipmentPicker", render: () => null },
+  default: {
+    name: "LogisticsEquipmentPicker",
+    // Declared so the filter arrives as a prop rather than falling through.
+    props: { equipmentTypes: { type: Array, default: undefined } },
+    render: () => null,
+  },
 }));
 
 const contract = (kind = "procurement") =>
@@ -51,6 +56,51 @@ describe("FleetContractsItemModal", () => {
     expect(prefix.exists()).toBe(true);
     expect(prefix.findComponent({ name: "BaseSelect" }).exists()).toBe(true);
     expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(true);
+  });
+
+  // You cannot craft a commodity — those are mined, bought or hauled.
+  it("offers only craftable categories on a crafting contract", async () => {
+    const subject = await mount("crafting");
+
+    const options = subject
+      .findComponent({ name: "BaseSelect" })
+      .props("options") as { value: string }[];
+
+    // Two, not the ledger's four: splitting weapon/ammunition out here hid a
+    // rifle behind the wrong word.
+    expect(options.map((option) => option.value)).toEqual([
+      "component",
+      "equipment",
+    ]);
+  });
+
+  it("offers every category on a contract that is not crafting", async () => {
+    const subject = await mount("procurement");
+
+    const options = subject
+      .findComponent({ name: "BaseSelect" })
+      .props("options") as { value: string }[];
+
+    expect(options.map((option) => option.value)).toContain("commodity");
+  });
+
+  // The picker is unfiltered while crafting, so the stored category has to come
+  // from the pick — a rifle the ledger records as `weapon` must be asked for as
+  // `weapon` or Progress will never match it.
+  it("offers the whole equipment catalogue while crafting", async () => {
+    const subject = await mount("crafting");
+
+    // Switch the family select to equipment; the picker only renders then.
+    subject
+      .findComponent({ name: "BaseSelect" })
+      .vm.$emit("update:modelValue", "equipment");
+    await subject.vm.$nextTick();
+
+    const picker = subject.findComponent({ name: "LogisticsEquipmentPicker" });
+
+    expect(picker.exists()).toBe(true);
+    // Unfiltered — an armour-and-tools filter is what hid the rifles.
+    expect(picker.props("equipmentTypes")).toEqual([]);
   });
 
   it("asks for a quantity and its unit", async () => {

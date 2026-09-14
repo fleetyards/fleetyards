@@ -47,6 +47,42 @@ const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { categoryOptions, unitOptionsFor } = useInventoryOptions();
 
+const isCrafting = computed(() => props.contract.kind === "crafting");
+
+// You cannot craft a commodity — those are mined, bought or hauled. A crafting
+// contract asks for something made, so the choice is the two catalogues that
+// hold made things: components, or equipment.
+//
+// Only two, rather than the ledger's four equipment-ish categories, because
+// splitting them here hides goods behind the wrong word: a Galant is a `weapon`,
+// so under an "Equipment" that filtered to armour and tools it could be neither
+// searched for nor scrolled to. The equipment picker is unfiltered instead, and
+// the category is taken from whatever gets picked (see `categoryForEquipment`).
+const CRAFTABLE_CATEGORIES: string[] = [
+  InventoryCategoryEnum.COMPONENT,
+  InventoryCategoryEnum.EQUIPMENT,
+];
+
+const availableCategories = computed(() =>
+  isCrafting.value
+    ? categoryOptions.value.filter((option) =>
+        CRAFTABLE_CATEGORIES.includes(option.value as string),
+      )
+    : categoryOptions.value,
+);
+
+// Which ledger category a piece of equipment is deposited under. It has to be
+// the depositor's word, not the contract author's: `Contracts::Progress` matches
+// on (name, category, unit), so a line filed as `equipment` would never see a
+// rifle the courier's ledger recorded as `weapon`.
+const categoryForEquipment = (equipmentType?: string | null) => {
+  if (equipmentType === "weapon") return InventoryCategoryEnum.WEAPON;
+  if (equipmentType === "weapon_attachment")
+    return InventoryCategoryEnum.AMMUNITION;
+
+  return InventoryCategoryEnum.EQUIPMENT;
+};
+
 const submitting = ref(false);
 
 // The catalogue entry this line asks for, when it asks for one. Same slot and
@@ -62,7 +98,9 @@ const validationSchema = {
 const { defineField, handleSubmit, setFieldValue, setErrors } = useForm({
   initialValues: {
     name: "",
-    category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
+    category: (props.contract.kind === "crafting"
+      ? InventoryCategoryEnum.COMPONENT
+      : InventoryCategoryEnum.COMMODITY) as InventoryCategoryEnum,
     quantity: 1,
     unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
     quality: undefined as number | undefined,
@@ -110,9 +148,25 @@ const EQUIPMENT_TYPES_FOR_CATEGORY: Record<string, string[]> = {
   ],
 };
 
-const equipmentTypes = computed(
-  () => EQUIPMENT_TYPES_FOR_CATEGORY[category.value] || [],
+// Unfiltered while crafting: the two-way select cannot say which slice of the
+// table the author means, so the picker offers all of it and the pick decides.
+const equipmentTypes = computed(() =>
+  isCrafting.value ? [] : EQUIPMENT_TYPES_FOR_CATEGORY[category.value] || [],
 );
+
+// While crafting, the select shows the family and the stored category follows
+// the picked item — so choosing a rifle files the line as `weapon` without the
+// select flipping to a word that is not one of its two options.
+const craftingFamily = ref<string>(InventoryCategoryEnum.COMPONENT);
+
+const categorySelection = computed({
+  get: () => (isCrafting.value ? craftingFamily.value : category.value),
+  set: (value: string) => {
+    if (isCrafting.value) craftingFamily.value = value;
+
+    setFieldValue("category", value as InventoryCategoryEnum);
+  },
+});
 
 const unitOptions = unitOptionsFor(category);
 
@@ -159,6 +213,10 @@ const applyPickedEquipment = (equipment: GameEquipment) => {
   };
 
   setFieldValue("name", equipment.name);
+
+  if (isCrafting.value) {
+    setFieldValue("category", categoryForEquipment(equipment.equipmentType));
+  }
 };
 
 // A hand-edited name no longer describes the picked item, so the reference goes
@@ -241,10 +299,10 @@ const onSubmit = handleSubmit(async (values) => {
       />
 
       <BaseSelect
-        v-model="category"
+        v-model="categorySelection"
         v-bind="categoryProps"
         name="itemCategory"
-        :options="categoryOptions"
+        :options="availableCategories"
         :label="t('labels.logistics.category')"
         :searchable="false"
       />
