@@ -332,6 +332,47 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A contract with nothing to deliver cannot be published, so the create form
+  # collects the goods with it rather than sending the author to a second form
+  # to add them.
+  test "POST creates a contract with its goods in one request" do
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", reward: "120000.00",
+             destinationFleetInventoryId: @depot.id,
+             items: [
+               {name: "Titanium", category: "commodity", unit: "scu", quantity: "800.0",
+                quality: 500, qualityMatch: "at_least"},
+               {name: "Agricium", category: "commodity", unit: "scu", quantity: "200.0"}
+             ]} do
+      assert_equal 2, parsed_body["itemsCount"]
+    end
+
+    contract = FleetContract.order(:created_at).last
+
+    assert_equal %w[Agricium Titanium], contract.fleet_contract_items.map(&:name).sort
+    assert_equal 500, contract.fleet_contract_items.find_by(name: "Titanium").quality
+  end
+
+  # Nested saving is one transaction, so a line the model refuses takes the
+  # contract with it -- a half-built contract is worse than none.
+  test "POST refuses the whole contract when one of its goods is invalid" do
+    sign_in @officer
+
+    assert_difference -> { FleetContract.count }, 0 do
+      post "/api/v1/fleets/#{@fleet.slug}/contracts",
+        params: {kind: "procurement", reward: "1.00",
+                 destinationFleetInventoryId: @depot.id,
+                 items: [{name: "", category: "commodity", unit: "scu", quantity: "800.0"}]},
+        as: :json
+
+      assert_response :bad_request
+    end
+  end
+
   # The date field the schema declares as `format: date-time`. Sent explicitly
   # because a create test that omits it leaves the form free to submit a value
   # the API rejects, with the suite still green.

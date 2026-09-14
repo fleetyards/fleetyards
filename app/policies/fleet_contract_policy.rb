@@ -61,8 +61,14 @@ class FleetContractPolicy < FleetBasePolicy
 
   alias_rule :progress?, to: :show?
 
+  # `items` is the create form's nested list: a contract and the goods it asks
+  # for arrive together, because a contract with nothing to deliver cannot be
+  # published and making the author save one to get a second form is the long
+  # way round.
   params_filter do |params|
     params.permit(:title, :description, :kind, :reward, :reimburse_expenses,
-      :crew_limit, :deadline, :source_fleet_inventory_id, :destination_fleet_inventory_id)
+      :crew_limit, :deadline, :source_fleet_inventory_id, :destination_fleet_inventory_id,
+      items: [:name, :category, :unit, :quantity, :quality, :quality_match, :item_type,
+        :item_id])
   end
 end

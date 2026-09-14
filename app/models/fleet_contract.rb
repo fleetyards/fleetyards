@@ -87,6 +87,7 @@ class FleetContract < ApplicationRecord
   belongs_to :destination_fleet_inventory, class_name: "FleetInventory", optional: true
 
   has_many :fleet_contract_items, -> { order(:position) }, dependent: :destroy
+  accepts_nested_attributes_for :fleet_contract_items
   has_many :fleet_contract_assignments, dependent: :destroy
   has_many :contractors, through: :fleet_contract_assignments, source: :user
 
