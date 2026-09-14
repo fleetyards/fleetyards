@@ -17,6 +17,37 @@ namespace :frontend, **frontend_options do
   get "ships/:slug/images", to: "base#model_images", as: :model_images
   get "ships/:slug/videos", to: "base#model_videos", as: :model_videos
 
+  # Views that used to be paths of their own and are query state now. Every one
+  # of them is live -- shared, bookmarked, and in the invite list's case in mail
+  # that has already gone out -- so the server answers it, rather than letting
+  # the app load and bounce. Each target already opens its query, so whatever
+  # the link carried is appended to it.
+  #
+  # Declared above `hangar/:username`, which matches any single segment and
+  # renders the app shell even for a username nobody has: below it,
+  # `hangar/transactions` would answer 200 and never redirect.
+  {
+    "hangar/transactions" => ->(_params) { "/hangar/inventories/?tab=log" },
+    "hangar/transfers/outgoing" => ->(_params) { "/hangar/transfers/?direction=outgoing" },
+    "hangar/inventories/:inventory/transactions" =>
+      ->(params) { "/hangar/inventories/#{params[:inventory]}/?tab=log" },
+    "hangar/:id/cargo/transactions" => ->(params) { "/hangar/#{params[:id]}/cargo/?tab=log" },
+    "fleets/:slug/members/invites" =>
+      ->(params) { "/fleets/#{params[:slug]}/members/?view=invites" },
+    "fleets/:slug/logistics/transactions" =>
+      ->(params) { "/fleets/#{params[:slug]}/logistics/?tab=log" },
+    "fleets/:slug/logistics/transfers/outgoing" =>
+      ->(params) { "/fleets/#{params[:slug]}/logistics/transfers/?direction=outgoing" },
+    "fleets/:slug/logistics/inventories/:inventory/transactions" =>
+      ->(params) { "/fleets/#{params[:slug]}/logistics/inventories/#{params[:inventory]}/?tab=log" }
+  }.each do |path, target|
+    get path, to: redirect(status: 301) { |params, request|
+      carried = request.query_string.presence
+
+      "#{target.call(params)}#{"&#{carried}" if carried}"
+    }
+  end
+
   get "hangar", to: "hangar#index", as: :hangar
   get "hangar/:username", to: "hangar#public", as: :public_hangar
   get "hangar/:username/fleetchart", to: "hangar#public"
@@ -33,13 +64,6 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
   get "fleets/:slug/allies", to: "fleets#show", as: :fleet_allies
   get "fleets/:slug/allies/incoming", to: "fleets#show", as: :incoming_fleet_allies
-  # The invite list is a view of the members page now. Mail already sent, and
-  # links people shared, carry the old path -- so it keeps resolving, from the
-  # server rather than by loading the app and bouncing.
-  get "fleets/:slug/members/invites", to: redirect(status: 301) { |params, req|
-    query = req.query_string.presence
-    "/fleets/#{params[:slug]}/members/?view=invites#{"&#{query}" if query}"
-  }
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
   get "fleets/:slug/settings/fleet", to: "fleets#settings"
