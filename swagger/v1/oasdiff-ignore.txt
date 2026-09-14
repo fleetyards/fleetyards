@@ -1173,3 +1173,17 @@ PUT /notifications/{id}/archive added the new `friendship` enum value to the `re
 PUT /notifications/{id}/read added the new `friendship` enum value to the `record/type` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `friendship` enum value to the `record/type` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `friendship` enum value to the `record/type` response property for the response status `200`
+GET /notification-preferences added the new `tour_join_request_accepted` enum value to the `items/notificationType` response property for the response status `200`
+GET /notification-preferences added the new `tour_join_request_received` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `tour_join_request_accepted` enum value to the `items/items/notificationType` response property for the response status `200`
+GET /notifications added the new `tour_join_request_received` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `tour_join_request_accepted` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `tour_join_request_received` enum value to the `notificationType` response property for the response status `200`
