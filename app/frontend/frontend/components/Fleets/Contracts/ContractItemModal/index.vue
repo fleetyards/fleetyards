@@ -394,7 +394,6 @@ const onSubmit = handleSubmit(async (values) => {
             :min="0"
             :step="1"
             :max="1000"
-            no-placeholder
           >
             <!-- The suffix slot is wrapped by FormInput; the prefix slot is
                  not -- its default content carries the class itself. Without
