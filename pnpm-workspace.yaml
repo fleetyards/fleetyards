@@ -25,4 +25,5 @@ overrides:
   js-yaml@4: '>=4.3.2 <5'
 patchedDependencies:
   '@tresjs/core@5.8.1': patches/@tresjs__core@5.8.1.patch
-  'asyncapi-cable@0.2.3': patches/asyncapi-cable@0.2.3.patch
+minimumReleaseAgeExclude:
+  - asyncapi-cable@0.3.0
