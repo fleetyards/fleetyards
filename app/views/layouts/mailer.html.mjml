@@ -30,6 +30,11 @@
       is what the Apple clients look for, the property is the standard, and the
       pair is what every dark-mode email guide ships.
 
+      premailer does not leave the rule in the style block - :root matches <html>,
+      so it inlines the property onto that tag and drops the rule. That is a fine
+      landing, and the assertion in MjmlRenderingTest accepts either, because the
+      thing that matters is the property being on the root element at all.
+
       It does nothing for Gmail. Gmail's mobile apps run a full colour invert -
       dark backgrounds included, which is why the panel arrives as a light grey
       card on a phone - and honour neither this nor prefers-color-scheme. The one

@@ -22,7 +22,7 @@ en:
           delta: Change
           metric: Metric
           previous: Last Week
-        headline: FleetYards.net Command - Weekly
+        headline: Command Weekly
         metrics:
           active_users: Active Users
           email_rejections: Email Rejections
