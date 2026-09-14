@@ -79,8 +79,10 @@ class PayoutLedger < ApplicationRecord
 
   def settled? = status == "settled"
 
+  # Both subjects can carry one: an event always does, a tour only when it was
+  # organised from a fleet's page.
   def fleet
-    subject.is_a?(FleetEvent) ? subject.fleet : nil
+    subject.try(:fleet)
   end
 
   def settlement

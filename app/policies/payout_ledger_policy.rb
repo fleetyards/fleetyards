@@ -6,6 +6,8 @@
 # and its per-event admins. A ledger on a standalone tour has none of that, so
 # it answers to its own participant list: anyone on the tour can read it and
 # record what they spent, and only the organiser manages the list or settles it.
+# A tour that belongs to a fleet adds that fleet's payout privileges on top of
+# its own list, so an officer can read and settle one they never joined.
 #
 # Every rule below routes through `read?` / `contribute?` / `manage?`, and only
 # those three branch on the subject. Anything that needs a fourth shape wants
@@ -41,7 +43,7 @@ class PayoutLedgerPolicy < FleetBasePolicy
       accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:payouts:manage"]) ||
         subject.event_moderator_or_admin?(user)
     when Tour
-      tour_organiser?
+      tour_organiser? || tour_fleet_access?(["fleet:manage", "fleet:payouts:manage"])
     else
       false
     end
@@ -72,7 +74,8 @@ class PayoutLedgerPolicy < FleetBasePolicy
     when FleetEvent
       accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"])
     when Tour
-      participant? || tour_organiser?
+      participant? || tour_organiser? ||
+        tour_fleet_access?(["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"])
     else
       false
     end
@@ -100,10 +103,20 @@ class PayoutLedgerPolicy < FleetBasePolicy
     subject.is_a?(Tour) && user.present? && subject.created_by_id == user.id
   end
 
+  # Recording money is still the participant list's call, not the fleet's --
+  # `contribute?` deliberately does not route through here. An entry is
+  # attributed to a participant, and someone who is not on the tour has no row
+  # to attribute it to.
+  private def tour_fleet_access?(privileges)
+    return false unless subject.is_a?(Tour) && subject.fleet_id.present?
+
+    accepted_fleet_membership&.has_access?(privileges) || false
+  end
+
   # FleetBasePolicy resolves a membership from `record.fleet_id`, which a
   # ledger does not have -- its fleet is two hops away, through the subject.
   private def fleet_membership
-    fleet_id = subject.is_a?(FleetEvent) ? subject.fleet_id : fleet&.id
+    fleet_id = subject.try(:fleet_id) || fleet&.id
     return if fleet_id.blank?
 
     user&.fleet_memberships&.kept&.find_by(fleet_id: fleet_id)
