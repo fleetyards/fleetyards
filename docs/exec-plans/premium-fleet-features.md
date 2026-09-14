@@ -7,7 +7,10 @@ individually or toggling anything. The entitlement is a first-class record with 
 trail — not a feature flag — so it can be granted, revoked, comped, and answered for.
 
 Four fleet capabilities go behind it: **contracts** (#4890), **events**, **logistics** and **tours**
-(#4912).
+(#4912, behind a new `fleet_tours` flag).
+
+Payment stays where it is — Patreon and Ko-fi — and the record is deliberately payment-agnostic, because
+donations are not a lawful basis for selling software indefinitely (D15).
 
 ## Context
 
@@ -71,7 +74,9 @@ wrong tool, for reasons that are structural rather than stylistic:
 - **No audit.** A flag records who has it now, never who had it when, or why, or who granted it.
 - **The admin toggle becomes the billing surface.** `/admin/features` is operated for rollouts. One
   misclick there would be a refund conversation.
-- **A flag is the wrong shape.** D3 — two of the four capabilities are not a whole flag.
+- **Alignment is not a reason.** D3 tidies the registry until each capability *is* one flag, which
+  removes the shape objection and none of the four above. A subscription that happened to look like a
+  flag would still prune, still only grant, still not audit, and still be toggled from a rollout page.
 
 So the two questions stay separate and both must pass:
 
@@ -110,39 +115,45 @@ CREATE UNIQUE INDEX index_fleet_subscriptions_on_active_fleet
 fleets keep what they have, how a support ticket is answered, and how a PayPal or Buy Me a Coffee
 supporter is honoured at all.
 
-### D3 — Premium is a set of fleet surfaces, not a set of flags
+The `source` enum is also the extension point D15 needs: the entitlement record deliberately says
+nothing about how the money arrived, so a real billing provider later is another value here rather than
+a second entitlement system.
 
-Two of the four capabilities do not correspond to a flag, and paywalling the flag would charge for a
-personal feature:
+### D3 — The flags get cleaned up first, so each has one owner
 
-| capability | flag | why the flag is the wrong unit |
-|---|---|---|
-| contracts | `fleet_contracts` | — the flag is the feature |
-| events | `fleet_mission_builder` | — the flag is the feature |
-| **logistics** | `fleet_logistics` | `inventory_transfers` also covers hangar and ship transfers. Paywalling *it* would charge for personal inventories. |
-| **tours** | `tour_payouts` | *"One flag, two surfaces"* per its own registry comment — the fleet ledger **and** the standalone tour under `/tools/`. Paywalling it would charge for a personal tool. |
+Two of the four capabilities do not currently correspond to a flag, and paywalling the flag as it
+stands would charge for a personal feature. Both are fixed by tidying the registry rather than by
+working around it:
 
-So the premium set names **surfaces**, and enforcement is a `before_action` on the fleet-scoped
-controllers (D10) rather than anything attached to a flag:
+| capability | flag | today | after |
+|---|---|---|---|
+| contracts | `fleet_contracts` | the flag is the feature | unchanged |
+| events | `fleet_mission_builder` | the flag is the feature | unchanged |
+| logistics | `fleet_logistics` | the flag is the feature | unchanged |
+| tours | — | `tour_payouts` is *"one flag, two surfaces"* by its own registry comment | **new `fleet_tours` flag** for the fleet-scoped surfaces |
 
-- **Logistics** — the fleet inventory controllers require a subscription. `inventory_transfers` is left
-  alone entirely; a transfer into a fleet inventory already needs `fleet_logistics`, so the fleet side
-  is covered by covering the fleet controllers, and personal hangar and ship transfers stay free.
-- **Tours** — the fleet-scoped tour routes #4912 adds under `/fleets/:slug/tours/` require a
-  subscription. The standalone `/tools/tours/` pages do not, and neither does the settle, cancel or
-  invite-rotate path addressed by the tour's own slug.
+`inventory_transfers` is not part of this. It is an addon for logistics that composes on top of three
+gates rather than replacing any of them, and it goes globally on once it reaches live — so it never
+becomes a pricing unit, and nothing here touches it. A transfer into a fleet inventory still needs
+`fleet_logistics`, which is what puts the fleet side behind the subscription for free.
+
+`fleet_tours` covers a fleet's own tours from #4912 **and** the payout ledger on a fleet event, leaving
+`tour_payouts` as purely the standalone tool under `/tools/`. That is what "one owner per flag" means
+here: every fleet-scoped payout surface behind the new flag, every personal one behind the old. The
+alternative — leaving the event ledger on `tour_payouts` — keeps a fleet surface and a personal surface
+sharing a flag, which is the exact smell this cleanup exists to remove.
 
 Stated plainly, because it is the part most easily lost later: **global tours and hangar inventories
 are not affected by this.** A standalone tour under `/tools/tours/` and a member's own hangar or ship
 inventory are personal features, they are free today, and they stay free — the subscription buys the
 fleet-scoped surfaces and nothing else.
 
-`Subscriptions::PREMIUM_FEATURES` is therefore a frozen list of capability keys —
-`%i[contracts events logistics tours]` — and the mapping from a key to the controllers that enforce it
-lives in the controllers, one greppable `before_action` each.
-
-This is the decision a Flipper group could not have expressed at all, which retires the shortcut in D1
-on grounds independent of the four there.
+After the cleanup all four capabilities map one-to-one onto four flags. That is a convenience, not a
+licence to move entitlement back into Flipper: every reason in D1 is unchanged by it, and alignment is
+a fact about today rather than a property anything should depend on. `Subscriptions::PREMIUM_FEATURES`
+stays a frozen list of capability keys — `%i[contracts events logistics tours]` — and enforcement stays
+a `before_action` on the fleet-scoped controllers (D10), which is what keeps this true the next time a
+flag and a surface diverge.
 
 ### D4 — Four capabilities, one flat tier
 
@@ -285,6 +296,10 @@ which for an unbought feature reads as broken and gives the frontend nothing to 
 Premium refusals render `subscription_required`, which the frontend turns into a link to the support
 page. The existing code is untouched for every non-premium gate.
 
+"Price" here means *this is unbought*, not *here is a checkout*. Per D15 the copy describes a supporter
+contribution that unlocks the feature for a nominated fleet, and the link goes to the support page —
+never a shop.
+
 Two constraints, neither optional: the code is a **literal** string at every site — an interpolated one
 ships `translation missing` silently — and it needs an entry in all seven locale files by hand, because
 there is no Crowdin and no CI check for locale parity.
@@ -313,7 +328,46 @@ Losing features silently is the worst version of this. Two notification types, t
 
 No notification for a nomination change — that is the supporter's own action, in their own settings.
 
+### D15 — Donations are not licence sales, and this will have to change
+
+Patreon and Ko-fi are donation platforms. A payment that grants software features is consideration for
+a supply rather than a gift, whatever the button says, and past a certain revenue that distinction
+stops being academic under German law: Umsatzsteuer has to be charged and remitted, and customers need
+real invoices carrying the mandatory contents of §14 UStG. The Kleinunternehmerregelung covers the
+current scale; it will not cover an interesting one.
+
+Two facts shape how much exposure there is today:
+
+- **Patreon is merchant of record for EU memberships** and collects and remits VAT on the patron's
+  side under the deemed-supplier rule for electronically supplied services. Ko-fi's platform products
+  work similarly.
+- **That coverage stops at the platform's edge.** A direct PayPal or Buy Me a Coffee payment is a
+  supply from you to the customer with nothing in between, so it is the exposed path — and it is
+  precisely the path D7 keeps hand-entered and small.
+
+None of that is built now, and this plan does not build it. What it does is refuse to make it harder:
+the entitlement is a record with a period and a source (D2), decoupled from payment entirely (D1), so
+an invoiced billing provider arrives as a new `source` value and a new reconciler beside
+`Subscriptions::Sync`. Nothing in D10's enforcement, D11's read or the four capabilities changes.
+
+One thing is in scope now, because it is free and cannot be retrofitted: **the copy must not describe a
+purchase.** No price list, no checkout, no "buy", no "licence" — a supporter contribution that unlocks
+fleet features for the fleet they nominate. D12's refusal links to the support page, it does not open a
+shop. Getting this wrong is a legal-form problem that a later migration cannot undo, because it is what
+the customer was told they were doing.
+
+This is a description of the problem, not tax advice. Get a Steuerberater involved before the revenue
+is worth arguing about, not after.
+
 ## What changes
+
+### Phase 0 — Flag cleanup (independent, lands first)
+1. A `fleet_tours` flag in `config/feature_flags.yml` per D3, covering #4912's fleet-scoped tour routes
+   and the payout ledger on a fleet event. `tour_payouts` keeps the standalone `/tools/` tool alone.
+2. The gate calls on those surfaces move to the new flag. Lands with or immediately after #4912, and is
+   a prerequisite for Phase 7 rather than part of it.
+3. `inventory_transfers` is untouched — it is an addon that composes on three gates and goes globally
+   on when it reaches live.
 
 ### Phase 1 — Patreon identity
 1. `Patreon::Member` gains `email`; `MEMBER_FIELDS` gains it; the access token is reissued with
@@ -360,7 +414,7 @@ No notification for a nomination change — that is the supporter's own action, 
    - **events** — the fleet event, signup, ship, team, slot and admin controllers.
    - **logistics** — the fleet inventory, item, stock and transfer controllers. `inventory_transfers`
      is not touched, and the personal hangar and ship inventory controllers are not touched.
-   - **tours** — the fleet-scoped tour routes from #4912 only. `/tools/tours/` and the slug-addressed
+   - **tours** — the surfaces behind Phase 0's `fleet_tours`. `/tools/tours/` and the slug-addressed
      settle, cancel and invite paths stay free.
 
 ### Phase 8 — Comping early access
@@ -410,6 +464,10 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
       hangar and ship inventories, and run a standalone tour, exactly as before.
 - [ ] **`inventory_transfers` was not touched** — its gates, its composition rule and its personal
       surfaces are byte-for-byte what they were.
+- [ ] **Each capability owns one flag** — after Phase 0, no premium surface shares a flag with a free
+      one, and `tour_payouts` gates only the standalone tool.
+- [ ] **Nothing reads as a shop** — no price, no checkout, no "buy" and no "licence" in any locale; the
+      refusal and the nav point at the support page.
 - [ ] **Early access kept what it had** — every fleet holding an actor gate on the four flags has an
       open comped subscription before enforcement ships.
 - [ ] **A comp survives a sync** — a manual subscription is untouched by an import that knows nothing
@@ -465,9 +523,10 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
   would do nothing for the other three platforms.
 - **PayPal and Buy Me a Coffee endpoints.** D7. Hand-entered with the key pasted from the payment note,
   which is the same resolution path and no new code, until either grows enough to argue otherwise.
-- **Taking payment in the app.** Patreon and Ko-fi are the subscription systems. Stripe means invoices,
-  tax, dunning, refunds and a webhook surface, none of it needed to grant a feature to a fleet that
-  already pays.
+- **Taking payment in the app, and everything the tax authority will eventually want.** Patreon and
+  Ko-fi are the subscription systems for now. Real billing means a merchant of record, Umsatzsteuer,
+  §14 UStG invoices, OSS registration for EU B2C, reverse charge for B2B, and retention — a project of
+  its own, and per D15 one this plan is shaped to accept later rather than to pre-empt now.
 - **Tiers and named plans.** D4. The extension is one nullable column plus a join. Ko-fi's `tier_name`
   is deliberately stored and ignored, so the data is there when it is wanted.
 - **Per-seat pricing.** A subscription covers the fleet; counting members makes the price move when the
@@ -475,9 +534,8 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
 - **Paywalling `fleet_allies`, the starmap or the worldmap.** The first is days old and the other two
   are the only fleet flags already boolean-on in production — taking them back is the one move here
   that would cost a fleet something it has.
-- **Splitting the personal surfaces out of their shared flags.** D3 routes around
-  `tour_payouts` and `inventory_transfers` at the controller instead. Giving each surface its own flag
-  is tidier and is a rollout change, not a pricing one.
+- **Renaming `tour_payouts`.** Once D3 moves the fleet surfaces to `fleet_tours`, the old name
+  describes a personal tool and reads oddly. A rename is a rollout change and can wait for one.
 - **Proration, refunds and grace periods.** D11's live read has no concept of a partial period.
 - **An upsell anywhere but the refusal and the nav.** No banners, no locked-feature teasers.
 
@@ -507,12 +565,25 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
   `is_subscription_payment` and a transaction id, so Ko-fi is fully automatic rather than the
   hand-entered case it looked like at the start.
 
+  **Two of the four were not a whole flag, and the answer was to tidy rather than route around.**
+  `tour_payouts` is *"one flag, two surfaces"* by its own registry comment; `inventory_transfers` is an
+  addon that composes on three gates and will be globally on. A new `fleet_tours` flag fixes the first
+  and the second needs nothing, which leaves all four capabilities aligned one-to-one with a flag —
+  and, per D1, changes nothing about where entitlement lives.
+
+  **The money has a legal form, and donations are not it.** Patreon is merchant of record for EU
+  memberships and remits VAT under the deemed-supplier rule, but that coverage stops at the platform's
+  edge, so direct PayPal and Buy Me a Coffee payments are the exposed path. D15 records what this will
+  eventually need and what it costs now: nothing structural, and one constraint on the copy that cannot
+  be retrofitted.
+
   **Flipper was the first design and is the wrong one.** The gate calls do already OR a fleet actor —
   verified against the dev database, with the flag on a fleet actor only,
   `Flipper.enabled?(flag, user, fleet)` returns true — so it would have worked for contracts alone. It
   was dropped for the four reasons in D1, and then D3 made it impossible rather than merely unwise.
 
 ## Progress
+- [ ] Phase 0 — Flag cleanup (independent, lands first)
 - [ ] Phase 1 — Patreon identity
 - [ ] Phase 2 — The claim key
 - [ ] Phase 3 — Ko-fi
