@@ -4,11 +4,11 @@ Default cover images for fleet contracts, keyed by `FleetContract.kind`.
 
 Drop in WebP files (recommended ~1600×500 for the banner; smaller is fine):
 
-| Kind          | File                |
-| ------------- | ------------------- |
-| `transport`   | `transport.webp`    |
-| `procurement` | `procurement.webp`  |
-| `crafting`    | `crafting.webp`     |
+| Kind          | File               |
+| ------------- | ------------------ |
+| `transport`   | `transport.webp`   |
+| `procurement` | `procurement.webp` |
+| `crafting`    | `crafting.webp`    |
 
 Alternates are picked up automatically: `transport_alt1.webp`, `transport_alt2.webp`
 and so on join the rotation for that kind, the way the mission covers work.
