@@ -2288,7 +2288,10 @@
             "exact": "Exactement"
           },
           "itemQuality": "Qualité",
-          "titleHint": "Facultatif — sans titre, le contrat prend le nom des marchandises demandées"
+          "titleHint": "Facultatif — sans titre, le contrat prend le nom des marchandises demandées",
+          "postedBy": "Publié par",
+          "claimedBy": "pris par",
+          "delivered": "Livré"
         }
       },
       "commodity": {

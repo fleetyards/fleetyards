@@ -2288,7 +2288,10 @@
             "exact": "Exactamente"
           },
           "itemQuality": "Calidad",
-          "titleHint": "Opcional: sin título, el contrato toma el nombre de las mercancías que pide"
+          "titleHint": "Opcional: sin título, el contrato toma el nombre de las mercancías que pide",
+          "postedBy": "Publicado por",
+          "claimedBy": "aceptado por",
+          "delivered": "Entregado"
         }
       },
       "commodity": {

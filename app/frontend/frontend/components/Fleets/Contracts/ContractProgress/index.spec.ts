@@ -70,7 +70,7 @@ describe("FleetContractsProgress", () => {
     ).toHaveLength(2);
   });
 
-  it("labels the bar with the quantities, not the percentage", async () => {
+  it("states the quantities, not just a percentage", async () => {
     const subject = await mount({ progress: progress() });
 
     expect(subject.text()).toContain("240 / 800");
@@ -82,13 +82,16 @@ describe("FleetContractsProgress", () => {
     expect(subject.find(".contract-progress__pickup").exists()).toBe(false);
   });
 
-  it("shows what is still in the courier's hold on a transport contract", async () => {
+  // Drawn behind the delivered fill: goods in a hold are on their way, not a
+  // rival measure.
+  it("draws what is still in the courier's hold behind the delivered fill", async () => {
     const subject = await mount({
       progress: progress({ lines: [line({ pickedUp: "400.0" })] }),
       showPickup: true,
     });
 
     expect(subject.find(".contract-progress__pickup").text()).toContain("400");
+    expect(subject.find(".contract-progress__picked").exists()).toBe(true);
   });
 
   it("shows the required grade when a line has one", async () => {

@@ -2288,7 +2288,10 @@
             "exact": "正好"
           },
           "itemQuality": "品质",
-          "titleHint": "可选——不填时合约以所需货物命名"
+          "titleHint": "可选——不填时合约以所需货物命名",
+          "postedBy": "发布者",
+          "claimedBy": "接下者",
+          "delivered": "已交付"
         }
       },
       "commodity": {

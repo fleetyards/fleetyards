@@ -2302,7 +2302,10 @@
             "exact": "Exactly"
           },
           "itemQuality": "Quality",
-          "titleHint": "Optional — a contract without one is named after the goods it asks for"
+          "titleHint": "Optional — a contract without one is named after the goods it asks for",
+          "postedBy": "Posted by",
+          "claimedBy": "claimed by",
+          "delivered": "Delivered"
         }
       },
       "commodity": {

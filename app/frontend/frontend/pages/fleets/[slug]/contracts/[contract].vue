@@ -34,6 +34,7 @@ import {
   useLeaveFleetContractCrew,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useContractCover } from "@/frontend/composables/useContractCover";
 import { useSessionStore } from "@/frontend/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
@@ -47,6 +48,13 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, toUEC, l } = useI18n();
+const { resolve: resolveCover } = useContractCover();
+
+const cover = computed(() => resolveCover(contract.value, props.fleet));
+
+const percent = computed(() =>
+  Math.round((contract.value?.progress?.fraction ?? 0) * 100),
+);
 const route = useRoute();
 const router = useRouter();
 const sessionStore = useSessionStore();
@@ -223,19 +231,71 @@ const crumbs = computed<Crumb[]>(() => [
   <BreadCrumbs :crumbs="crumbs" />
 
   <template v-if="contract">
-    <Heading size="hero" hero>
-      {{ contract.title }}
-    </Heading>
+    <!-- The cover carries the title, the way a contract card's does. -->
+    <div class="contract-hero">
+      <img :src="cover" alt="" class="contract-hero__cover" />
+      <div class="contract-hero__scrim" />
 
-    <div class="contract-detail__meta">
-      <ContractStatePill :state="contract.state" />
-      <span>{{ t(`labels.fleets.contracts.kind.${contract.kind}`) }}</span>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <span v-html="toUEC(Number(contract.reward))" />
-      <span v-if="contract.deadline">{{ l(contract.deadline) }}</span>
+      <div class="contract-hero__body">
+        <div class="contract-hero__meta">
+          <span class="contract-hero__kind">
+            {{ t(`labels.fleets.contracts.kind.${contract.kind}`) }}
+          </span>
+          <span class="contract-hero__dot" />
+          <ContractStatePill :state="contract.state" />
+        </div>
+
+        <Heading size="hero" hero class="contract-hero__title">
+          {{ contract.title }}
+        </Heading>
+
+        <p v-if="contract.createdBy" class="contract-hero__byline">
+          {{ t("labels.fleets.contracts.postedBy") }}
+          <strong>{{ contract.createdBy.username }}</strong>
+          <template v-if="lead?.user">
+            ·
+            {{ t("labels.fleets.contracts.claimedBy") }}
+            <strong>{{ lead.user.username }}</strong>
+          </template>
+        </p>
+      </div>
     </div>
 
-    <!-- A page's main actions live in the global header, not on the page. -->
+    <!-- The figures overlap the hero's seam, so the page opens on what it pays
+         and how far it has got rather than on a photograph. -->
+    <div class="metrics-card__hero contract-detail__figures">
+      <div class="metrics-card__tile metrics-card__tile--primary">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.fleets.contracts.reward") }}
+        </div>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div
+          class="metrics-card__tile__value"
+          v-html="toUEC(Number(contract.reward))"
+        />
+      </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.fleets.contracts.delivered") }}
+        </div>
+        <div class="metrics-card__tile__value">{{ percent }} %</div>
+      </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.fleets.contracts.deadline") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ contract.deadline ? l(contract.deadline) : "—" }}
+        </div>
+      </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("headlines.fleets.contracts.crew") }}
+        </div>
+        <div class="metrics-card__tile__value">{{ crew.length }}</div>
+      </div>
+    </div>
+
     <Teleport to="#header-right">
       <Btn
         v-if="canPublish"
@@ -311,88 +371,252 @@ const crumbs = computed<Crumb[]>(() => [
       {{ contract.description }}
     </p>
 
-    <Panel>
+    <!-- A haul has two ends, so it reads as one leg rather than two facts. -->
+    <Panel v-if="contract.source || contract.destination">
       <PanelBody>
-        <Heading>{{ t("headlines.fleets.contracts.progress") }}</Heading>
-
-        <ContractProgress
-          :progress="contract.progress"
-          :show-pickup="contract.requiresPickup"
-        />
-
-        <!-- Where the goods have to come from and go to. A member reading this
-             has to know which inventory to address a transfer to. -->
-        <dl class="contract-detail__route">
-          <div v-if="contract.source">
-            <dt>{{ t("labels.fleets.contracts.from") }}</dt>
-            <dd>{{ contract.source.name }}</dd>
+        <div class="contract-route">
+          <div v-if="contract.source" class="contract-route__end">
+            <div class="contract-route__label">
+              {{ t("labels.fleets.contracts.from") }}
+            </div>
+            <div class="contract-route__place">{{ contract.source.name }}</div>
+            <div v-if="contract.source.location" class="contract-route__where">
+              {{ contract.source.location }}
+            </div>
           </div>
-          <div v-if="contract.destination">
-            <dt>{{ t("labels.fleets.contracts.to") }}</dt>
-            <dd>{{ contract.destination.name }}</dd>
-          </div>
-        </dl>
 
-        <p v-if="isContractor" class="contract-detail__hint">
-          {{ t("messages.fleets.contracts.deliverHint") }}
-        </p>
+          <div v-if="contract.source" class="contract-route__leg">
+            <span class="contract-route__rule" />
+            <i class="fa-duotone fa-arrow-right" />
+            <span class="contract-route__rule" />
+          </div>
+
+          <div
+            v-if="contract.destination"
+            class="contract-route__end contract-route__end--to"
+          >
+            <div class="contract-route__label">
+              {{ t("labels.fleets.contracts.to") }}
+            </div>
+            <div class="contract-route__place">
+              {{ contract.destination.name }}
+            </div>
+            <div
+              v-if="contract.destination.location"
+              class="contract-route__where"
+            >
+              {{ contract.destination.location }}
+            </div>
+          </div>
+        </div>
       </PanelBody>
     </Panel>
 
-    <Panel>
-      <PanelBody>
-        <Heading>{{ t("headlines.fleets.contracts.crew") }}</Heading>
+    <div class="contract-detail__columns">
+      <Panel>
+        <PanelBody>
+          <Heading>{{ t("headlines.fleets.contracts.progress") }}</Heading>
 
-        <ContractCrewList
-          :crew="crew"
-          :can-answer="isLead || canManage"
-          :current-user-id="currentUserId"
-          @accept="onAcceptCrew"
-          @decline="onDeclineCrew"
-          @remove="onRemoveCrew"
-        />
-      </PanelBody>
-    </Panel>
+          <ContractProgress
+            :progress="contract.progress"
+            :show-pickup="contract.requiresPickup"
+          />
+
+          <p v-if="isContractor" class="contract-detail__hint">
+            <i class="fa-duotone fa-circle-info" />
+            {{ t("messages.fleets.contracts.deliverHint") }}
+          </p>
+        </PanelBody>
+      </Panel>
+
+      <Panel>
+        <PanelBody>
+          <Heading>{{ t("headlines.fleets.contracts.crew") }}</Heading>
+
+          <ContractCrewList
+            :crew="crew"
+            :can-answer="isLead || canManage"
+            :current-user-id="currentUserId"
+            @accept="onAcceptCrew"
+            @decline="onDeclineCrew"
+            @remove="onRemoveCrew"
+          />
+        </PanelBody>
+      </Panel>
+    </div>
   </template>
 </template>
 
 <style lang="scss" scoped>
-.contract-detail {
+@import "@/shared/components/metricsCard";
+
+/*
+ * Full-bleed against App.vue's page container: the cover is the page's own
+ * edge, and a gutter down either side of a photograph reads as a mistake.
+ */
+.contract-hero {
+  position: relative;
+  height: 260px;
+  margin: -20px -20px 0;
+  overflow: hidden;
+  border-radius: $panelContentBorderRadius $panelContentBorderRadius 0 0;
+
+  &__cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  // Down to the page's own black, so the figures below sit on a seam rather
+  // than on a hard edge.
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(#000, 0.35) 0%,
+      rgba(#000, 0.1) 30%,
+      $background 100%
+    );
+  }
+
+  &__body {
+    position: absolute;
+    right: 24px;
+    bottom: 26px;
+    left: 24px;
+  }
+
   &__meta {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  &__kind {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $gray-light;
+  }
+
+  &__dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: $gray;
+  }
+
+  &__title {
+    margin: 0;
+    max-width: 24ch;
+    text-wrap: pretty;
+  }
+
+  &__byline {
+    margin: 10px 0 0;
+    font-size: 0.85em;
+    color: $gray-lighter;
+  }
+}
+
+.contract-detail {
+  &__figures {
+    position: relative;
+    z-index: 2;
+    margin-top: -18px;
   }
 
   &__description {
     margin-bottom: 24px;
   }
 
-  &__route {
+  &__columns {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 8px 16px;
-    margin: 16px 0 0;
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
 
-    dt {
-      font-size: 0.75em;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: $gray-lighter;
-      margin: 0;
-    }
-
-    dd {
-      margin: 0;
+    // The crew would be a column of initials at this width; it goes underneath.
+    @media (max-width: $desktop-breakpoint) {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
   &__hint {
-    margin: 16px 0 0;
-    font-size: 0.9em;
-    color: $gray-lighter;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 18px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid rgba($gray-light, 0.16);
+    font-size: 0.85em;
+    color: $gray-light;
+  }
+}
+
+.contract-route {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  &__end {
+    flex: 1 1 0;
+    min-width: 0;
+
+    &--to {
+      text-align: right;
+    }
+  }
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $gray-light;
+    margin-bottom: 6px;
+  }
+
+  &__place {
+    color: #eee;
+  }
+
+  &__where {
+    margin-top: 4px;
+    font-size: 0.8em;
+    color: $gray-light;
+  }
+
+  &__leg {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: $gray-light;
+  }
+
+  &__rule {
+    width: 46px;
+    height: 1px;
+    background: rgba($gray-light, 0.4);
+  }
+
+  @media (max-width: $tablet-breakpoint) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+
+    &__end--to {
+      text-align: left;
+    }
+
+    &__leg {
+      justify-content: center;
+    }
   }
 }
 </style>

@@ -2288,7 +2288,10 @@
             "exact": "Genau"
           },
           "itemQuality": "Qualität",
-          "titleHint": "Optional — ohne Titel wird der Auftrag nach den geforderten Waren benannt"
+          "titleHint": "Optional — ohne Titel wird der Auftrag nach den geforderten Waren benannt",
+          "postedBy": "Ausgeschrieben von",
+          "claimedBy": "übernommen von",
+          "delivered": "Geliefert"
         }
       },
       "commodity": {

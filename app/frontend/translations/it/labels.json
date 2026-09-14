@@ -2288,7 +2288,10 @@
             "exact": "Esattamente"
           },
           "itemQuality": "Qualità",
-          "titleHint": "Facoltativo — senza titolo il contratto prende il nome dalle merci richieste"
+          "titleHint": "Facoltativo — senza titolo il contratto prende il nome dalle merci richieste",
+          "postedBy": "Pubblicato da",
+          "claimedBy": "preso da",
+          "delivered": "Consegnato"
         }
       },
       "commodity": {
