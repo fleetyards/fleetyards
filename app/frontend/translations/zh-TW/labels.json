@@ -2375,7 +2375,8 @@
         "weight": "權重",
         "shares": "份",
         "customWeight": "自訂權重",
-        "preview": "預覽 · 結算前會變動"
+        "preview": "預覽 · 結算前會變動",
+        "joinRequestPending": "申請待處理"
       },
       "shipSizes": {
         "extra_extra_small": "小型飛船 (XXS)",

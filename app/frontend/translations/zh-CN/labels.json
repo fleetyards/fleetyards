@@ -2375,7 +2375,8 @@
         "weight": "权重",
         "shares": "份",
         "customWeight": "自定义权重",
-        "preview": "预览 · 结算前会变动"
+        "preview": "预览 · 结算前会变动",
+        "joinRequestPending": "申请待处理"
       },
       "shipSizes": {
         "extra_extra_small": "斯努布克拉夫特 (XXS)",

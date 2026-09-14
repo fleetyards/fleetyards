@@ -887,7 +887,11 @@
         "settleConfirm": "計算分帳並鎖定帳簿？在重新開啟之前將無法修改紀錄。",
         "reopenConfirm": "重新開啟帳簿？目前的分帳清單將被捨棄。",
         "participantNeedsName": "請輸入使用者名稱或名稱",
-        "weightUpdated": "份額已更新"
+        "weightUpdated": "份額已更新",
+        "joinRequested": "你的申請已送出",
+        "joinRequestWithdrawn": "申請已撤回",
+        "joinRequestApproved": "申請已通過",
+        "joinRequestDeclined": "申請已拒絕"
       },
       "dock": {
         "create": {

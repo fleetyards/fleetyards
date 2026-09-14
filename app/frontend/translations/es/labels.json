@@ -2382,7 +2382,8 @@
         "weight": "Peso",
         "shares": "partes",
         "customWeight": "Peso personalizado",
-        "preview": "Vista previa · cambia hasta liquidar"
+        "preview": "Vista previa · cambia hasta liquidar",
+        "joinRequestPending": "Solicitud pendiente"
       },
       "relationships": {
         "party": "Nombre",

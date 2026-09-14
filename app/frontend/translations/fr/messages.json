@@ -887,7 +887,11 @@
         "settleConfirm": "Calculer la répartition et verrouiller le registre ? Les écritures ne seront plus modifiables jusqu'à réouverture.",
         "reopenConfirm": "Rouvrir le registre ? La liste de versements actuelle sera abandonnée.",
         "participantNeedsName": "Saisissez un nom d'utilisateur ou un nom",
-        "weightUpdated": "Part mise à jour"
+        "weightUpdated": "Part mise à jour",
+        "joinRequested": "Votre demande a été envoyée",
+        "joinRequestWithdrawn": "Demande retirée",
+        "joinRequestApproved": "Demande acceptée",
+        "joinRequestDeclined": "Demande refusée"
       },
       "dock": {
         "create": {

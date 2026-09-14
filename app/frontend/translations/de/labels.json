@@ -2382,7 +2382,8 @@
         "weight": "Gewichtung",
         "shares": "Anteile",
         "customWeight": "Eigene Gewichtung",
-        "preview": "Vorschau · ändert sich bis zur Abrechnung"
+        "preview": "Vorschau · ändert sich bis zur Abrechnung",
+        "joinRequestPending": "Anfrage offen"
       },
       "relationships": {
         "party": "Name",

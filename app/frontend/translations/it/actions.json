@@ -395,7 +395,11 @@
         "createTour": "Crea spedizione",
         "joinTour": "Unisciti",
         "copyInvite": "Copia link d'invito",
-        "rotateInvite": "Genera un nuovo link"
+        "rotateInvite": "Genera un nuovo link",
+        "askToJoin": "Chiedi di partecipare",
+        "withdrawJoinRequest": "Ritira la richiesta",
+        "approveJoinRequest": "Accetta",
+        "declineJoinRequest": "Rifiuta"
       },
       "relationships": {
         "accept": "Accetta",

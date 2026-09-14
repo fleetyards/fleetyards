@@ -887,7 +887,11 @@
         "settleConfirm": "计算分账并锁定账簿？在重新打开之前将无法修改记录。",
         "reopenConfirm": "重新打开账簿？当前的分账清单将被丢弃。",
         "participantNeedsName": "请输入用户名或名称",
-        "weightUpdated": "份额已更新"
+        "weightUpdated": "份额已更新",
+        "joinRequested": "你的申请已发送",
+        "joinRequestWithdrawn": "申请已撤回",
+        "joinRequestApproved": "申请已通过",
+        "joinRequestDeclined": "申请已拒绝"
       },
       "dock": {
         "create": {

@@ -395,7 +395,11 @@
         "createTour": "创建行程",
         "joinTour": "加入行程",
         "copyInvite": "复制邀请链接",
-        "rotateInvite": "生成新链接"
+        "rotateInvite": "生成新链接",
+        "askToJoin": "申请参加",
+        "withdrawJoinRequest": "撤回申请",
+        "approveJoinRequest": "通过",
+        "declineJoinRequest": "拒绝"
       },
       "relationships": {
         "accept": "接受",

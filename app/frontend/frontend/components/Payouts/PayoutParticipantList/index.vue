@@ -18,7 +18,11 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useDestroyPayoutParticipant as useDestroyPayoutParticipantMutation,
   useUpdatePayoutParticipant as useUpdatePayoutParticipantMutation,
+  useTourJoinRequests as useTourJoinRequestsQuery,
+  useApproveTourJoinRequest as useApproveTourJoinRequestMutation,
+  useDeclineTourJoinRequest as useDeclineTourJoinRequestMutation,
   type PayoutParticipant,
+  type TourJoinRequest,
 } from "@/services/fyApi";
 import type { ApiError } from "@/shared/types/api-error";
 
@@ -30,11 +34,15 @@ type Props = {
   // used to say why a row cannot be removed before the click rather than
   // after it -- the API is what actually refuses.
   entryCounts?: Record<string, number>;
+  // Only a fleet tour has people asking to be on the list. A fleet event's
+  // ledger, and a standalone tour, leave this unset and the rows never appear.
+  tourSlug?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   manageable: false,
   entryCounts: () => ({}),
+  tourSlug: undefined,
 });
 
 const { t } = useI18n();
@@ -46,6 +54,75 @@ const weighingId = ref<string | null>(null);
 
 const destroyMutation = useDestroyPayoutParticipantMutation();
 const updateMutation = useUpdatePayoutParticipantMutation();
+
+// Whoever is waiting to be on this list, shown as rows of it rather than as a
+// queue somewhere else -- answering is the same decision as adding somebody.
+// Only fetched for whoever may answer: the API refuses the list to anyone else.
+const joinRequestsEnabled = computed(
+  () => !!props.tourSlug && props.manageable,
+);
+
+const { data: joinRequests, refetch: refetchJoinRequests } =
+  useTourJoinRequestsQuery(
+    computed(() => props.tourSlug ?? ""),
+    {
+      query: {
+        retry: false,
+        enabled: joinRequestsEnabled,
+      },
+    },
+  );
+
+const pendingJoinRequests = computed(() =>
+  joinRequestsEnabled.value ? (joinRequests.value ?? []) : [],
+);
+
+const approveMutation = useApproveTourJoinRequestMutation();
+const declineMutation = useDeclineTourJoinRequestMutation();
+
+const onApprove = async (joinRequest: TourJoinRequest) => {
+  if (!props.tourSlug) {
+    return;
+  }
+
+  busyId.value = joinRequest.id;
+
+  await approveMutation
+    .mutateAsync({ tourSlug: props.tourSlug, id: joinRequest.id })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.joinRequestApproved") });
+      // Approving adds a participant, so every share on the page just moved.
+      comlink.emit("payout-ledger-changed");
+      void refetchJoinRequests();
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    })
+    .finally(() => {
+      busyId.value = null;
+    });
+};
+
+const onDecline = async (joinRequest: TourJoinRequest) => {
+  if (!props.tourSlug) {
+    return;
+  }
+
+  busyId.value = joinRequest.id;
+
+  await declineMutation
+    .mutateAsync({ tourSlug: props.tourSlug, id: joinRequest.id })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.joinRequestDeclined") });
+      void refetchJoinRequests();
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    })
+    .finally(() => {
+      busyId.value = null;
+    });
+};
 
 const entryCountFor = (participant: PayoutParticipant) =>
   props.entryCounts[participant.id] ?? 0;
@@ -100,7 +177,10 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
 
 <template>
   <div class="payout-participants">
-    <p v-if="!participants.length" class="payout-participants__empty">
+    <p
+      v-if="!participants.length && !pendingJoinRequests.length"
+      class="payout-participants__empty"
+    >
       {{ t("empty.payouts.participants") }}
     </p>
 
@@ -152,6 +232,48 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
         {{ participant.weight }} {{ t("labels.payouts.shares") }}
       </span>
     </div>
+
+    <div
+      v-for="joinRequest in pendingJoinRequests"
+      :key="joinRequest.id"
+      class="payout-participants__row"
+      data-test="payout-participant-request"
+    >
+      <div class="payout-participants__head">
+        <span class="payout-participants__name">
+          {{ joinRequest.user.username }}
+          <span class="payout-participants__tag">
+            {{ t("labels.payouts.joinRequestPending") }}
+          </span>
+        </span>
+
+        <div class="payout-participants__actions">
+          <Btn
+            :size="BtnSizesEnum.SM"
+            :variant="BtnVariantsEnum.BARE"
+            :loading="busyId === joinRequest.id"
+            :disabled="busyId !== null"
+            :aria-label="t('actions.payouts.approveJoinRequest')"
+            data-test="payout-participant-request-approve"
+            @click="onApprove(joinRequest)"
+          >
+            <i class="fa-light fa-check" />
+          </Btn>
+          <Btn
+            :size="BtnSizesEnum.SM"
+            :variant="BtnVariantsEnum.BARE"
+            :tone="BtnTonesEnum.DANGER"
+            :loading="busyId === joinRequest.id"
+            :disabled="busyId !== null"
+            :aria-label="t('actions.payouts.declineJoinRequest')"
+            data-test="payout-participant-request-decline"
+            @click="onDecline(joinRequest)"
+          >
+            <i class="fa-light fa-xmark" />
+          </Btn>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -200,6 +322,12 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
   border-radius: var(--radius-control-bare, 6px);
   border: 1px solid var(--color-edge-soft, rgba(255, 255, 255, 0.15));
   color: var(--color-muted, #999);
+}
+
+.payout-participants__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .payout-participants__weight {

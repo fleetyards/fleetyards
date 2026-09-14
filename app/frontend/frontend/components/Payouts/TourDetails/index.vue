@@ -12,7 +12,12 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
 import copyText from "@/shared/utils/CopyText";
+import {
+  useCreateTourJoinRequest as useCreateTourJoinRequestMutation,
+  useDestroyTourJoinRequest as useDestroyTourJoinRequestMutation,
+} from "@/services/fyApi";
 import type { Tour } from "@/services/fyApi";
+import type { ApiError } from "@/shared/types/api-error";
 
 type Props = {
   tour: Tour;
@@ -24,6 +29,10 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), { manageable: false });
 
+// Asking, withdrawing and being approved all change what the tour payload
+// says about the viewer, and the page owns that query.
+const emit = defineEmits<{ reload: [] }>();
+
 const { t, l } = useI18n();
 const sessionStore = useSessionStore();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -33,6 +42,63 @@ const isOrganiser = computed(
 );
 
 const canManage = computed(() => isOrganiser.value || props.manageable);
+
+// Asking onto the tour only exists on a fleet's: a standalone one is not
+// listed anywhere a stranger could have found it, so its link is the way in.
+const askable = computed(
+  () =>
+    !!props.tour.fleet &&
+    props.tour.status === "open" &&
+    !props.tour.participating &&
+    !props.tour.joinRequestPending,
+);
+
+const withdrawable = computed(
+  () => !!props.tour.fleet && !!props.tour.joinRequestId,
+);
+
+const createJoinRequestMutation = useCreateTourJoinRequestMutation();
+const destroyJoinRequestMutation = useDestroyTourJoinRequestMutation();
+
+const asking = ref(false);
+
+const onAsk = async () => {
+  asking.value = true;
+
+  await createJoinRequestMutation
+    .mutateAsync({ tourSlug: props.tour.slug })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.joinRequested") });
+      emit("reload");
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    })
+    .finally(() => {
+      asking.value = false;
+    });
+};
+
+const onWithdraw = async () => {
+  if (!props.tour.joinRequestId) {
+    return;
+  }
+
+  asking.value = true;
+
+  await destroyJoinRequestMutation
+    .mutateAsync({ tourSlug: props.tour.slug, id: props.tour.joinRequestId })
+    .then(() => {
+      displaySuccess({ text: t("messages.payouts.joinRequestWithdrawn") });
+      emit("reload");
+    })
+    .catch((error: ApiError) => {
+      displayAlert({ text: error.response?.data?.message });
+    })
+    .finally(() => {
+      asking.value = false;
+    });
+};
 
 // The join page is the same one either way -- a tour is joined by its token,
 // not through whichever list it was found in.
@@ -62,6 +128,30 @@ const onCopyInvite = async () => {
 <template>
   <Teleport to="#header-right">
     <Btn
+      v-if="askable"
+      :loading="asking"
+      :aria-label="t('actions.payouts.askToJoin')"
+      data-test="tour-ask-to-join"
+      mobile-icon-only
+      @click="onAsk"
+    >
+      <i class="fa-light fa-hand" />
+      <span>{{ t("actions.payouts.askToJoin") }}</span>
+    </Btn>
+
+    <Btn
+      v-if="withdrawable"
+      :loading="asking"
+      :aria-label="t('actions.payouts.withdrawJoinRequest')"
+      data-test="tour-withdraw-join-request"
+      mobile-icon-only
+      @click="onWithdraw"
+    >
+      <i class="fa-light fa-hand" />
+      <span>{{ t("actions.payouts.withdrawJoinRequest") }}</span>
+    </Btn>
+
+    <Btn
       v-if="inviteUrl"
       :aria-label="t('actions.payouts.copyInvite')"
       data-test="tour-copy-invite"
@@ -78,6 +168,9 @@ const onCopyInvite = async () => {
       {{
         t(`labels.payouts.${tour.status === "settled" ? "settled" : "open"}`)
       }}
+    </Pill>
+    <Pill v-if="tour.joinRequestPending" data-test="tour-join-request-pending">
+      {{ t("labels.payouts.joinRequestPending") }}
     </Pill>
     <span v-if="tour.startsAt" class="tour-meta__date">
       {{ l(tour.startsAt, "datetime.formats.dateTime") }}
@@ -97,6 +190,7 @@ const onCopyInvite = async () => {
     :payout-ledger-id="tour.payoutLedgerId"
     :manageable="canManage"
     :contributable="true"
+    :tour-slug="tour.fleet ? tour.slug : undefined"
   />
 </template>
 

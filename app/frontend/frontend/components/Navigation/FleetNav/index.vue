@@ -87,14 +87,6 @@ const hasEventsAccess = computed(() => {
   );
 });
 
-const hasPayoutsAccess = computed(() => {
-  const access = membership.value?.fleetRole?.resourceAccess;
-  if (!access) return false;
-  return access.some((a: string) =>
-    ["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"].includes(a),
-  );
-});
-
 const eventsNavActive = computed(() => {
   const name = String(route.name ?? "");
   if (name.startsWith("fleet-event") || name.startsWith("fleet-mission")) {
@@ -199,8 +191,8 @@ onMounted(() => {
         />
         <NavItem
           v-if="
-            hasPayoutsAccess &&
-            isFleetFeatureEnabled(currentFleet, FeatureFlagName.TOUR_PAYOUTS)
+            isFleetFeatureEnabled(currentFleet, FeatureFlagName.TOUR_PAYOUTS) &&
+            isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_TOURS)
           "
           :to="{
             name: 'fleet-tours',

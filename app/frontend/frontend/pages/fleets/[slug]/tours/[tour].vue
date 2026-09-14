@@ -28,7 +28,7 @@ const route = useRoute();
 const fleetSlug = computed(() => props.fleet.slug);
 const tourSlug = computed(() => String(route.params.tour));
 
-const { data: tour } = useFleetTour(fleetSlug, tourSlug);
+const { data: tour, refetch } = useFleetTour(fleetSlug, tourSlug);
 
 // TourDetails adds the organiser on top of this; a fleet's payout managers get
 // it without having organised or joined the tour.
@@ -67,6 +67,6 @@ watch(
 
     <Heading size="hero" hero>{{ tour.title }}</Heading>
 
-    <TourDetails :tour="tour" :manageable="canManage" />
+    <TourDetails :tour="tour" :manageable="canManage" @reload="refetch" />
   </template>
 </template>

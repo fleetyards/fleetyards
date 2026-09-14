@@ -2389,7 +2389,8 @@
         "weight": "Weight",
         "shares": "shares",
         "customWeight": "Any weight",
-        "preview": "Preview · moves until you settle"
+        "preview": "Preview · moves until you settle",
+        "joinRequestPending": "Request pending"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

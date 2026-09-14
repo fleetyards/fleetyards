@@ -2382,7 +2382,8 @@
         "weight": "Pondération",
         "shares": "parts",
         "customWeight": "Pondération libre",
-        "preview": "Aperçu · évolue jusqu'au règlement"
+        "preview": "Aperçu · évolue jusqu'au règlement",
+        "joinRequestPending": "Demande en attente"
       },
       "relationships": {
         "party": "Nom",

@@ -40,11 +40,15 @@ type Props = {
   manageable?: boolean;
   // Whether the viewer may record and edit entries.
   contributable?: boolean;
+  // Set for a fleet tour's ledger, whose participant list also carries whoever
+  // has asked to be on it. A fleet event's ledger leaves it unset.
+  tourSlug?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   manageable: false,
   contributable: false,
+  tourSlug: undefined,
 });
 
 const { t } = useI18n();
@@ -262,6 +266,7 @@ const onReopen = async () => {
             :participants="participants"
             :manageable="manageable && !settled"
             :entry-counts="entryCounts"
+            :tour-slug="tourSlug"
           />
         </PanelBody>
       </Panel>

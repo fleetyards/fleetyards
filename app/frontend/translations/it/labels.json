@@ -2382,7 +2382,8 @@
         "weight": "Peso",
         "shares": "quote",
         "customWeight": "Peso personalizzato",
-        "preview": "Anteprima · cambia fino al saldo"
+        "preview": "Anteprima · cambia fino al saldo",
+        "joinRequestPending": "Richiesta in attesa"
       },
       "relationships": {
         "party": "Nome",

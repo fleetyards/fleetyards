@@ -395,7 +395,11 @@
         "createTour": "Create Tour",
         "joinTour": "Join Tour",
         "copyInvite": "Copy invite link",
-        "rotateInvite": "Generate a new link"
+        "rotateInvite": "Generate a new link",
+        "askToJoin": "Ask to participate",
+        "withdrawJoinRequest": "Withdraw request",
+        "approveJoinRequest": "Approve",
+        "declineJoinRequest": "Decline"
       },
       "relationships": {
         "accept": "Accept",
