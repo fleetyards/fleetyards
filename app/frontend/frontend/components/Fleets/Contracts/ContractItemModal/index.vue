@@ -18,6 +18,7 @@ import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/ind
 import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/index.vue";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -58,7 +59,7 @@ const validationSchema = {
   quantity: "required|min_value:0",
 };
 
-const { defineField, handleSubmit, setFieldValue } = useForm({
+const { defineField, handleSubmit, setFieldValue, setErrors } = useForm({
   initialValues: {
     name: "",
     category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
@@ -122,10 +123,6 @@ watch(unitOptions, (options) => {
 
   setFieldValue("unit", options[0].value as InventoryUnitEnum);
 });
-
-// Only a crafting contract can demand a grade; asking for one on a haul would
-// silently stop counting deposits recorded without a quality.
-const showQuality = computed(() => props.contract.kind === "crafting");
 
 const qualityMatchOptions = computed<FilterOption[]>(() =>
   Object.values(FleetContractQualityMatchEnum).map((value) => ({
@@ -201,10 +198,7 @@ const onSubmit = handleSubmit(async (values) => {
         category: values.category,
         unit: values.unit,
         quantity: String(values.quantity),
-        quality:
-          showQuality.value && values.quality != null
-            ? Number(values.quality)
-            : null,
+        quality: values.quality != null ? Number(values.quality) : null,
         qualityMatch: values.qualityMatch,
         itemType: pickedItem.value?.type,
         itemId: pickedItem.value?.id,
@@ -214,8 +208,20 @@ const onSubmit = handleSubmit(async (values) => {
       comlink.emit("fleet-contract-item-created");
       comlink.emit("close-modal");
     })
-    .catch(() => {
-      displayAlert({ text: t("messages.fleets.contract.item.create.failure") });
+    .catch((error) => {
+      // The API says *why* -- asking for the same goods twice is the common
+      // refusal, and a generic toast leaves the author guessing.
+      const { message, formErrors } = validationErrorFrom(error, {
+        name: "itemName",
+        quantity: "itemQuantity",
+        quality: "itemQuality",
+      });
+
+      setErrors(formErrors);
+
+      displayAlert({
+        text: message || t("messages.fleets.contract.item.create.failure"),
+      });
     })
     .finally(() => {
       submitting.value = false;
@@ -252,7 +258,7 @@ const onSubmit = handleSubmit(async (values) => {
       />
 
       <div class="row">
-        <div :class="showQuality ? 'col-6' : 'col-12'">
+        <div class="col-6">
           <FormInput
             v-model="quantity"
             v-bind="quantityProps"
@@ -282,8 +288,10 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
 
         <!-- The grade, and how it is read. "At least" is the ordinary case; a
-             job that wants exactly 500 and no better cannot say so otherwise. -->
-        <div v-if="showQuality" class="col-6">
+             job that wants exactly 500 and no better cannot say so otherwise.
+             Offered on every kind, because the ledger records a grade on every
+             entry -- leaving it blank is what asks for any. -->
+        <div class="col-6">
           <FormInput
             v-model="quality"
             v-bind="qualityProps"
@@ -295,16 +303,22 @@ const onSubmit = handleSubmit(async (values) => {
             :max="1000"
             no-placeholder
           >
+            <!-- The suffix slot is wrapped by FormInput; the prefix slot is
+                 not -- its default content carries the class itself. Without
+                 the wrapper the select is unconstrained and takes the whole
+                 field, leaving the number with nowhere to go. -->
             <template #prefix>
-              <BaseSelect
-                v-model="qualityMatch"
-                :options="qualityMatchOptions"
-                :label="t('labels.fleets.contracts.qualityMatch')"
-                :variant="BaseSelectVariantsEnum.AFFIX"
-                name="itemQualityMatch"
-                no-label
-                :searchable="false"
-              />
+              <div class="base-input__prefix">
+                <BaseSelect
+                  v-model="qualityMatch"
+                  :options="qualityMatchOptions"
+                  :label="t('labels.fleets.contracts.qualityMatch')"
+                  :variant="BaseSelectVariantsEnum.AFFIX"
+                  name="itemQualityMatch"
+                  no-label
+                  :searchable="false"
+                />
+              </div>
             </template>
           </FormInput>
         </div>

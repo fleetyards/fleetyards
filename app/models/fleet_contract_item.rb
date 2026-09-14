@@ -69,11 +69,11 @@ class FleetContractItem < ApplicationRecord
 
   scope :ordered, -> { order(:position, :created_at) }
 
-  # Only a crafting contract can demand a grade. Asking for one on a haul would
-  # silently stop counting deposits that came out of the fleet's own inventory
-  # at whatever quality they were recorded with.
+  # A grade is a property of the goods, not of crafting -- the ledger records one
+  # on every entry, and a haul can be asked for at a grade just as a crafting job
+  # can. Nil is the permissive default and is what most lines carry.
   def required_quality
-    quality if fleet_contract&.crafting?
+    quality
   end
 
   # Whether a deposit recorded at `grade` answers what this line asked for. A
@@ -107,7 +107,11 @@ class FleetContractItem < ApplicationRecord
 
     return unless twin.exists?
 
-    errors.add(:name, :taken)
+    # Not a bare :taken -- "Name has already been taken" reads as though the
+    # name alone were the conflict, when what collides is the whole identity the
+    # ledger is matched on.
+    errors.add(:name, :taken,
+      message: I18n.t("activerecord.errors.messages.contract_item_already_asked_for"))
   end
 
   private def set_name_from_item

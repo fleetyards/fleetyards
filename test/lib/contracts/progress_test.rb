@@ -86,6 +86,17 @@ module Contracts
       assert_equal 300.to_d, progress.lines.first.delivered
     end
 
+    # A grade belongs to the goods, not to crafting: a haul can ask for one too,
+    # and gating it on the kind meant a stored grade was silently ignored.
+    test "a grade is honoured on a contract that is not crafting" do
+      @item.update!(quality: 500)
+
+      deliver(quantity: 100, quality: 400)
+      deliver(quantity: 300, quality: 900)
+
+      assert_equal 300.to_d, progress.lines.first.delivered
+    end
+
     test "a line with no threshold counts every grade" do
       deliver(quantity: 100, quality: 0)
       deliver(quantity: 100, quality: 900)
