@@ -87,6 +87,14 @@ const hasEventsAccess = computed(() => {
   );
 });
 
+const hasPayoutsAccess = computed(() => {
+  const access = membership.value?.fleetRole?.resourceAccess;
+  if (!access) return false;
+  return access.some((a: string) =>
+    ["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"].includes(a),
+  );
+});
+
 const eventsNavActive = computed(() => {
   const name = String(route.name ?? "");
   if (name.startsWith("fleet-event") || name.startsWith("fleet-mission")) {
@@ -190,11 +198,25 @@ onMounted(() => {
           prefix="06"
         />
         <NavItem
+          v-if="
+            hasPayoutsAccess &&
+            isFleetFeatureEnabled(currentFleet, FeatureFlagName.TOUR_PAYOUTS)
+          "
+          :to="{
+            name: 'fleet-tours',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.tours')"
+          :active="String(route.name).startsWith('fleet-tour')"
+          icon="fa-duotone fa-coins"
+          prefix="07"
+        />
+        <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
           icon="fa-duotone fa-cogs"
-          prefix="07"
+          prefix="08"
         />
       </template>
     </template>

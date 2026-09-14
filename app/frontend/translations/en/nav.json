@@ -68,6 +68,7 @@
           },
           "payouts": "Payouts"
         },
+        "tours": "Tours",
         "settings": {
           "index": "Settings",
           "fleet": "Fleet Settings",

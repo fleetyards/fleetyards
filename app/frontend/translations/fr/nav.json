@@ -68,6 +68,7 @@
           },
           "payouts": "Répartition"
         },
+        "tours": "Expéditions",
         "settings": {
           "index": "Paramètres",
           "fleet": "Paramètres de Flotte",

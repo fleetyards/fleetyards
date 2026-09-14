@@ -4,6 +4,7 @@ import { routes as logisticsRoutes } from "@/frontend/pages/fleets/[slug]/logist
 import { routes as alliesRoutes } from "@/frontend/pages/fleets/[slug]/allies/routes";
 import { routes as missionsRoutes } from "@/frontend/pages/fleets/[slug]/missions/routes";
 import { routes as eventsRoutes } from "@/frontend/pages/fleets/[slug]/events/routes";
+import { routes as toursRoutes } from "@/frontend/pages/fleets/[slug]/tours/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/fleets/[slug]/settings/routes";
 
 export const routes: RouteRecordRaw[] = [
@@ -102,6 +103,20 @@ export const routes: RouteRecordRaw[] = [
       name: eventsRoutes[0].name,
     },
     children: eventsRoutes,
+  },
+  {
+    path: "tours/",
+    name: "fleet-tours-root",
+    component: () => import("@/frontend/pages/fleets/[slug]/tours.vue"),
+    meta: {
+      needsAuthentication: true,
+      backgroundImage: "bg-8",
+      customTitle: true,
+    },
+    redirect: {
+      name: toursRoutes[0].name,
+    },
+    children: toursRoutes,
   },
   {
     path: "calendar/",

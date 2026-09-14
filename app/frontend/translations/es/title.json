@@ -84,6 +84,11 @@
           "show": "Evento de %{fleet}",
           "payouts": "Pagos del evento de %{fleet}"
         },
+        "tours": {
+          "index": "Expediciones de %{fleet}",
+          "create": "Crear expedición - %{fleet}",
+          "show": "Expedición de %{fleet}"
+        },
         "settings": {
           "index": "Configuración de %{fleet}",
           "fleet": "Configuración de %{fleet}",

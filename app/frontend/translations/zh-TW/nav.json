@@ -68,6 +68,7 @@
           },
           "payouts": "分帳"
         },
+        "tours": "行程",
         "settings": {
           "index": "設定",
           "fleet": "艦隊設定",

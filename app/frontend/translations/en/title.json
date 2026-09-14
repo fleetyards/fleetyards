@@ -84,6 +84,11 @@
           "show": "%{fleet} Event",
           "payouts": "%{fleet} Event Payouts"
         },
+        "tours": {
+          "index": "%{fleet} Tours",
+          "create": "Create Tour - %{fleet}",
+          "show": "%{fleet} Tour"
+        },
         "settings": {
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",

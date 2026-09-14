@@ -84,6 +84,11 @@
           "show": "Evento di %{fleet}",
           "payouts": "Pagamenti dell'evento di %{fleet}"
         },
+        "tours": {
+          "index": "Spedizioni di %{fleet}",
+          "create": "Crea spedizione - %{fleet}",
+          "show": "Spedizione di %{fleet}"
+        },
         "settings": {
           "index": "Impostazioni di %{fleet}",
           "fleet": "Impostazioni di %{fleet}",
