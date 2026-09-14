@@ -18,16 +18,19 @@ require "test_helper"
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  created_by_id :uuid             not null
+#  fleet_id      :uuid
 #
 # Indexes
 #
 #  index_tours_on_created_by_id_and_status  (created_by_id,status)
+#  index_tours_on_fleet_id_and_status       (fleet_id,status)
 #  index_tours_on_invite_token              (invite_token) UNIQUE
 #  index_tours_on_slug                      (slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (fleet_id => fleets.id)
 #
 class TourTest < ActiveSupport::TestCase
   test "requires a title" do
@@ -92,6 +95,25 @@ class TourTest < ActiveSupport::TestCase
 
   test "hands out an invite token long enough to be a credential" do
     assert_equal 32, create(:tour).invite_token.length
+  end
+
+  test "belongs to no fleet by default" do
+    assert_nil create(:tour).fleet_id
+    assert_includes Tour.standalone, create(:tour)
+  end
+
+  # Deleting the fleet must not take the record of who still owes whom with it
+  # -- the people on the tour are not all in the fleet, and a standalone tour
+  # is something they can still settle between themselves.
+  test "survives its fleet as a standalone tour" do
+    fleet = create(:fleet)
+    tour = create(:tour, fleet:)
+    ledger = create(:payout_ledger, subject: tour)
+
+    fleet.destroy
+
+    assert_nil tour.reload.fleet_id
+    assert PayoutLedger.exists?(ledger.id)
   end
 
   test "is destroyed along with its ledger" do

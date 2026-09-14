@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_14_100500) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1749,6 +1749,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_100500) do
     t.datetime "created_at", null: false
     t.uuid "created_by_id", null: false
     t.text "description"
+    t.uuid "fleet_id"
     t.string "invite_token", null: false
     t.datetime "settled_at"
     t.string "slug", null: false
@@ -1757,6 +1758,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_100500) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id", "status"], name: "index_tours_on_created_by_id_and_status"
+    t.index ["fleet_id", "status"], name: "index_tours_on_fleet_id_and_status"
     t.index ["invite_token"], name: "index_tours_on_invite_token", unique: true
     t.index ["slug"], name: "index_tours_on_slug", unique: true
   end
@@ -2042,6 +2044,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_100500) do
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
+  add_foreign_key "tours", "fleets"
   add_foreign_key "tours", "users", column: "created_by_id"
   add_foreign_key "vehicle_loadouts", "vehicles"
 end
