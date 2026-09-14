@@ -173,7 +173,38 @@ What stays free for every fleet: the fleet page and roster, roles and privileges
 fleetchart, stats, the starmap and worldmap, invites, alliances, and the Discord integration. The free
 tier is still most of what a fleet does.
 
-### D5 — Patreon links by verified email. There is no key on Patreon
+### D5 — Every platform gives us an email, so the linker is source-agnostic
+
+All four funding routes carry the payer's email address, and it is the same resolution rule every time:
+match it against the account whose **confirmed** email equals it.
+
+| platform | where the email comes from |
+|---|---|
+| Patreon | the `email` field, under the `campaigns.members[email]` scope |
+| Ko-fi | `email` on the webhook payload |
+| PayPal | the payer address on the transaction, entered with the contribution |
+| Buy Me a Coffee | the same, entered with the contribution |
+
+So `supporter_contributions` gains a **`payer_email`** column, written by every path, and
+`Supporters::Linker` takes a contribution rather than a platform. One rule, one place, four sources —
+and the hand-entered platforms get the automatic match without an integration, because a human typing
+the address into admin produces the identical input to a webhook supplying it.
+
+Storing it rather than resolving and discarding buys the case that otherwise loses people silently: a
+donor whose email has **no account yet**, who signs up with the same address a week later. The linker
+re-runs and resolves them. Without the column that contribution is unlinkable forever, and nobody ever
+finds out.
+
+The match is safe in a way a user-entered email is not: neither side is a claim. The platform verified
+the address for billing, Fleetyards verified it at confirmation, and the comparison is between two
+independently verified records with no user assertion in between. An unconfirmed account never matches.
+
+`payer_email` is personal data with an obvious purpose, and at this scale plaintext is proportionate —
+it is already visible in each platform's own dashboard. If the volume ever makes that uncomfortable,
+the column only ever gets equality-matched, so a normalised digest would serve identically and retain
+nothing readable.
+
+### D5a — There is no key on Patreon
 
 **Patreon API v2 exposes no patron-written field.** `note` is documented as *"The creator's notes on
 the member"*; there is no pledge message, survey response or patron comment on the Member resource. A
@@ -191,6 +222,9 @@ Ops note: the existing access token has to be reissued with `campaigns.members[e
 simply absent from the payload — a failure mode indistinguishable from "no patron matched". Phase 1
 logs the distinction rather than leaving it to be discovered.
 
+This is why the claim key (D6) is a **fallback rather than the mechanism**: it exists for the supporter
+whose platform email differs from their Fleetyards one, which at three supporters may be nobody.
+
 **The three who pay today do not need any of this.** Their Patreon names already resolve against the
 user table: `Elfwyn` and `RikonGB` match a username exactly, and `Christopher Jackson` is a legal name
 with no exact match. So they are linked by asking and then by an admin edit, once, before any of the
@@ -201,6 +235,9 @@ is a coincidence-capable heuristic, and the cost of being wrong is handing a str
 entitlement. Three people is a conversation, not an algorithm.
 
 ### D6 — The claim key is for the platforms that carry a donor message
+
+The email match in D5 resolves most people. The key is for the rest — a supporter whose platform email
+is not the one on their Fleetyards account, which no automatic rule can bridge.
 
 PayPal, Ko-fi and Buy Me a Coffee all let the payer write a message, and all of them show it to the
 recipient. That is the field Patreon does not have, and it is where the key goes.
@@ -433,11 +470,16 @@ that number is how the three paying supporters lose access on announcement day.
 3. `inventory_transfers` is untouched — it is an addon that composes on three gates and goes globally
    on when it reaches live.
 
-### Phase 1 — Patreon identity
-1. `Patreon::Member` gains `email`; `MEMBER_FIELDS` gains it; the access token is reissued with
-   `campaigns.members[email]` per D5.
-2. `Supporters::Linker` — confirmed-email match, idempotent, called per member from the importer.
-3. A missing `email` field is logged as a scope problem, distinctly from an unmatched patron.
+### Phase 1 — Identity by email
+1. Migration: `payer_email` on `supporter_contributions`, indexed, per D5.
+2. `Supporters::Linker` — takes a contribution, matches `payer_email` against a **confirmed** account,
+   idempotent and safe to re-run over unlinked rows.
+3. `Patreon::Member` gains `email`; `MEMBER_FIELDS` gains it; the access token is reissued with
+   `campaigns.members[email]`. A missing field is logged as a scope problem, distinctly from an
+   unmatched patron.
+4. The admin contribution form takes `payer_email`, so a hand-entered PayPal or Buy Me a Coffee payment
+   resolves through the same path as a webhook.
+5. A periodic re-run over unlinked contributions, for the donor who signs up after paying.
 
 ### Phase 2 — The claim key
 1. Migration: `claim_key` on `users`, unique, nullable — generated on first view, the way
@@ -449,7 +491,7 @@ that number is how the three paying supporters lose access on announcement day.
 ### Phase 3 — Ko-fi
 1. A webhook endpoint per D7: constant-time `verification_token` check, throttle, form-encoded `data`.
 2. `Kofi::PaymentImporter` — upsert on `kofi_transaction_id`, `is_subscription_payment` → `recurring`,
-   resolve through `Supporters::Linker`.
+   `email` into `payer_email`, then resolve through `Supporters::Linker`.
 3. Migration: `kofi_transaction_id` on `supporter_contributions`, unique partial index matching the
    `patreon_member_id` one; `kofi` joins the `source` enum.
 
@@ -554,8 +596,10 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
       nothing.
 - [ ] **The free tier is still a fleet** — roster, roles, vehicles, fleetchart, stats, starmap,
       worldmap, invites, alliances and Discord all work unsubscribed.
-- [ ] **A Patreon patron is linked without doing anything** — a confirmed email matching theirs links
-      on the next sync, and an unconfirmed account never matches.
+- [ ] **Every platform links by email** — Patreon, Ko-fi and a hand-entered PayPal payment all resolve
+      through the one linker, and an unconfirmed account never matches on any of them.
+- [ ] **A late signup is still found** — a donor whose email had no account when they paid is linked
+      when they register, without anyone re-entering anything.
 - [ ] **A Ko-fi donor is linked by their own message** — the key in `message` resolves to their account
       with no manual step.
 - [ ] **A key cannot claim someone else's payment** — a key belongs to one account and matches only it.
