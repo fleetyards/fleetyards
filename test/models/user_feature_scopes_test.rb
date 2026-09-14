@@ -35,11 +35,20 @@ class UserFeatureScopesTest < ActiveSupport::TestCase
     assert_equal [@other.id], User.with_feature(:hangar_inventories).pluck(:id)
   end
 
-  # A percentage rollout cannot be written as a query. Admitting everybody
+  # Neither percentage rollout can be written as a query. Admitting everybody
   # offers somebody the gate may still refuse, which is the harmless way round;
   # admitting nobody would hide people who can in fact receive.
   test "admits everybody under a percentage rollout it cannot express" do
     Flipper.enable_percentage_of_actors("hangar_inventories", 50)
+
+    assert_includes User.with_feature(:hangar_inventories).pluck(:id), @other.id
+  end
+
+  # `percentage_of_time` answers differently per call rather than per actor, so
+  # there is no set of ids it could ever resolve to. Reading only the actor gate
+  # would have hidden everybody for the whole rollout.
+  test "admits everybody under a time-based rollout too" do
+    Flipper.enable_percentage_of_time("hangar_inventories", 50)
 
     assert_includes User.with_feature(:hangar_inventories).pluck(:id), @other.id
   end
