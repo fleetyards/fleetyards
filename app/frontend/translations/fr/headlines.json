@@ -299,8 +299,7 @@
           "edit": "Modifier le contrat",
           "progress": "Progression",
           "crew": "Équipage",
-          "items": "Marchandises",
-          "addItem": "Ajouter des marchandises"
+          "items": "Marchandises"
         }
       },
       "hangarGroup": {

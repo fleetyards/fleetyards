@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "¿Seguro que quieres eliminar este punto de montaje? Esta acción no se puede revertir."
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "¿Quitar estas mercancías del contrato?"
+          }
         }
       },
       "oauthAuthorize": {

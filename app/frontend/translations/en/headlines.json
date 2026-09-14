@@ -301,8 +301,7 @@
           "edit": "Edit Contract",
           "progress": "Progress",
           "crew": "Crew",
-          "items": "Goods",
-          "addItem": "Add goods"
+          "items": "Goods"
         }
       },
       "hangarGroup": {

@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "确定要删除此挂载点吗? 此操作无法撤销。"
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "要从合约中移除这些货物吗？"
+          }
         }
       },
       "oauthAuthorize": {

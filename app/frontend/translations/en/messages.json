@@ -470,6 +470,11 @@
         },
         "hardpoint": {
           "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "Remove these goods from the contract?"
+          }
         }
       },
       "oauthAuthorize": {

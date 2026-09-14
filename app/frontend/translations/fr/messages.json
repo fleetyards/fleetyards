@@ -460,6 +460,11 @@
         },
         "hardpoint": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce point d'attache ? Cette action est irréversible."
+        },
+        "fleets": {
+          "contractItem": {
+            "destroy": "Retirer ces marchandises du contrat ?"
+          }
         }
       },
       "oauthAuthorize": {

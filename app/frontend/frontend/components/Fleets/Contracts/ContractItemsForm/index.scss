@@ -1,37 +1,22 @@
 .contract-items {
-  &__empty {
-    margin: 0 0 16px;
+  &__name {
+    color: #eee;
+  }
+
+  &__quantity {
+    margin-left: 10px;
+    font-variant-numeric: tabular-nums;
     color: $gray-lighter;
   }
 
-  &__list {
-    list-style: none;
-    margin: 0 0 16px;
-    padding: 0;
-  }
-
-  &__row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 6px 0;
-  }
-
-  &__name {
-    flex: 1 1 auto;
-  }
-
-  &__category,
   &__reference,
   &__quality {
+    margin-left: 10px;
     font-size: 0.85em;
-    color: $gray-lighter;
+    color: $gray-light;
   }
 
-  &__reference {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+  &__quality {
+    color: $gold;
   }
 }
