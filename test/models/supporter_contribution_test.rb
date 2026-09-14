@@ -11,6 +11,7 @@
 #  ended_at            :date
 #  name                :string
 #  note                :text
+#  payer_email         :string
 #  recurring           :boolean          default(FALSE), not null
 #  source              :string           default("manual"), not null
 #  source_amount_cents :integer
@@ -18,12 +19,15 @@
 #  started_at          :date             not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  kofi_transaction_id :string
 #  patreon_member_id   :string
 #  user_id             :uuid
 #
 # Indexes
 #
+#  index_supporter_contributions_on_kofi_transaction_id     (kofi_transaction_id) UNIQUE WHERE (kofi_transaction_id IS NOT NULL)
 #  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
+#  index_supporter_contributions_on_payer_email             (payer_email) WHERE (payer_email IS NOT NULL)
 #  index_supporter_contributions_on_recurring_and_ended_at  (recurring,ended_at)
 #  index_supporter_contributions_on_started_at              (started_at)
 #  index_supporter_contributions_on_user_id                 (user_id)

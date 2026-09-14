@@ -5,8 +5,11 @@ module Patreon
     BASE = "https://www.patreon.com/api/oauth2/v2"
     MAX_PAGES = 50
 
+    # `email` needs the campaigns.members[email] scope on the access token.
+    # Without it Patreon omits the field rather than erroring, so an unscoped
+    # token looks exactly like a campaign of patrons who match nobody.
     MEMBER_FIELDS = %w[
-      full_name patron_status currently_entitled_amount_cents
+      full_name email patron_status currently_entitled_amount_cents
       pledge_relationship_start last_charge_date last_charge_status will_pay_amount_cents
     ].join(",")
 
@@ -65,7 +68,8 @@ module Patreon
         status: attrs["patron_status"],
         amount_cents: entitled_or_pledge(attrs),
         pledged_at: parse_date(attrs["pledge_relationship_start"]),
-        last_charge_date: parse_date(attrs["last_charge_date"])
+        last_charge_date: parse_date(attrs["last_charge_date"]),
+        email: attrs["email"].presence
       )
     end
 

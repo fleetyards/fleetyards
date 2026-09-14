@@ -102,5 +102,52 @@ module Patreon
 
       assert_equal Patreon::Client::MAX_PAGES, members.size
     end
+
+    test "#members requests the email field and reads it off the member" do
+      assert_includes Patreon::Client::MEMBER_FIELDS.split(","), "email"
+
+      stub_request(:get, %r{#{Regexp.escape(BASE)}/campaigns/#{CAMPAIGN_ID}/members}o)
+        .to_return(status: 200, body: {
+          data: [{
+            id: "m1",
+            attributes: {
+              full_name: "Alice",
+              email: "alice@example.test",
+              patron_status: "active_patron",
+              currently_entitled_amount_cents: 500,
+              pledge_relationship_start: "2026-01-15T00:00:00.000+00:00",
+              last_charge_date: "2026-06-01T00:00:00.000+00:00"
+            },
+            relationships: {user: {data: {id: "u1", type: "user"}}}
+          }],
+          included: [],
+          links: {}
+        }.to_json, headers: {"Content-Type" => "application/json"})
+
+      assert_equal "alice@example.test", @client.members(CAMPAIGN_ID).to_a.first.email
+    end
+
+    # An access token without campaigns.members[email] gets members with the
+    # field simply absent, rather than an error.
+    test "#members leaves email nil when the payload omits it" do
+      stub_request(:get, %r{#{Regexp.escape(BASE)}/campaigns/#{CAMPAIGN_ID}/members}o)
+        .to_return(status: 200, body: {
+          data: [{
+            id: "m1",
+            attributes: {
+              full_name: "Alice",
+              patron_status: "active_patron",
+              currently_entitled_amount_cents: 500,
+              pledge_relationship_start: "2026-01-15T00:00:00.000+00:00",
+              last_charge_date: "2026-06-01T00:00:00.000+00:00"
+            },
+            relationships: {user: {data: {id: "u1", type: "user"}}}
+          }],
+          included: [],
+          links: {}
+        }.to_json, headers: {"Content-Type" => "application/json"})
+
+      assert_nil @client.members(CAMPAIGN_ID).to_a.first.email
+    end
   end
 end

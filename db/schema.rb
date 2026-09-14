@@ -1801,6 +1801,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.string "name"
     t.text "note"
     t.string "patreon_member_id"
+    t.string "payer_email"
     t.boolean "recurring", default: false, null: false
     t.string "source", default: "manual", null: false
     t.integer "source_amount_cents"
@@ -1809,6 +1810,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["patreon_member_id"], name: "index_supporter_contributions_on_patreon_member_id", unique: true, where: "(patreon_member_id IS NOT NULL)"
+    t.index ["payer_email"], name: "index_supporter_contributions_on_payer_email", where: "(payer_email IS NOT NULL)"
     t.index ["recurring", "ended_at"], name: "index_supporter_contributions_on_recurring_and_ended_at"
     t.index ["started_at"], name: "index_supporter_contributions_on_started_at"
     t.index ["user_id"], name: "index_supporter_contributions_on_user_id"

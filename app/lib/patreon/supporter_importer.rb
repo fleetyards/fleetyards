@@ -16,13 +16,17 @@ module Patreon
     def initialize(client:, campaign_id:)
       @client = client
       @campaign_id = campaign_id
-      @stats = {created: 0, updated: 0, ended: 0, skipped: 0}
+      @stats = {created: 0, updated: 0, ended: 0, skipped: 0, linked: 0}
+      # A diagnostic rather than a result, so it stays out of the returned stats
+      # and the shape callers already depend on does not move.
+      @without_email = 0
     end
 
     def call
       raise Patreon::Error, "missing Patreon campaign_id" if @campaign_id.blank?
 
       @client.members(@campaign_id).each { |member| import(member) }
+      warn_about_missing_scope
       @stats
     end
 
@@ -45,6 +49,8 @@ module Patreon
         return
       end
 
+      link(record)
+
       ended_now = apply_lifecycle(record, member)
       unless record.changed?
         @stats[:skipped] += 1
@@ -61,16 +67,37 @@ module Patreon
 
       assign_defaults(record, member) if new_record
       record.name = member.name
+      record.payer_email = member.email if member.email.present?
+      @without_email += 1 if member.email.blank?
       apply_amount(record, member)
       ended_now = apply_lifecycle(record, member)
 
-      return unless record.changed?
+      if record.changed?
+        record.save!
+        @stats[new_record ? :created : :updated] += 1
+        @stats[:ended] += 1 if ended_now
 
-      record.save!
-      @stats[new_record ? :created : :updated] += 1
-      @stats[:ended] += 1 if ended_now
+        Notifications::NewPatronJob.perform_async(record.id) if new_record && record.ended_at.blank?
+      end
 
-      Notifications::NewPatronJob.perform_async(record.id) if new_record && record.ended_at.blank?
+      # Outside the changed? guard on purpose: a row that is identical to last
+      # week still wants linking when the person behind it registered since.
+      link(record)
+    end
+
+    def link(record)
+      @stats[:linked] += 1 if ::Supporters::Linker.call(record).present? && record.saved_change_to_user_id?
+    end
+
+    # Every member arriving without an address means the token is missing
+    # campaigns.members[email], not that every patron hid it -- and the two look
+    # identical from the outside, so say which one it was.
+    def warn_about_missing_scope
+      return if @without_email.zero?
+
+      message = "Patreon members feed returned no email for #{@without_email} member(s); " \
+        "the access token is probably missing the campaigns.members[email] scope"
+      Rails.logger.warn("[Patreon::SupporterImporter] #{message}")
     end
 
     def assign_defaults(record, member)
