@@ -210,6 +210,21 @@
             "failure": "Non è stato possibile disattivare la sottoscrizione al calendario personale.",
             "confirm": "Disattivando la sottoscrizione interromperai il feed per tutte le app calendario attualmente iscritte."
           }
+        },
+        "supporterClaimKey": {
+          "create": {
+            "success": "Chiave creata.",
+            "failure": "Impossibile creare la chiave."
+          },
+          "rotate": {
+            "confirm": "Generare una nuova chiave? Quella precedente smetterà di funzionare.",
+            "success": "Nuova chiave generata.",
+            "failure": "Impossibile generare una nuova chiave."
+          },
+          "copy": {
+            "success": "Chiave copiata.",
+            "failure": "Impossibile copiare la chiave."
+          }
         }
       },
       "user": {

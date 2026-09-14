@@ -302,6 +302,10 @@
           "enable": "產生個人行事曆連結",
           "rotate": "更換連結",
           "disable": "停用訂閱"
+        },
+        "supporterClaimKey": {
+          "create": "建立金鑰",
+          "rotate": "產生新金鑰"
         }
       },
       "today": "今天",

@@ -220,6 +220,21 @@
             "failure": "Could not disable personal calendar subscription.",
             "confirm": "Disabling the subscription will kill the feed for any calendar app currently subscribed."
           }
+        },
+        "supporterClaimKey": {
+          "create": {
+            "success": "Key created.",
+            "failure": "The key could not be created."
+          },
+          "rotate": {
+            "confirm": "Generate a new key? The old one stops working.",
+            "success": "New key generated.",
+            "failure": "A new key could not be generated."
+          },
+          "copy": {
+            "success": "Key copied.",
+            "failure": "The key could not be copied."
+          }
         }
       },
       "user": {

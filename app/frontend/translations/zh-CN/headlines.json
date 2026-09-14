@@ -336,7 +336,8 @@
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
-        "calendar": "日历订阅"
+        "calendar": "日历订阅",
+        "supporter": "支持者密钥"
       },
       "oauthApplications": {
         "new": "新建 OAuth 应用",

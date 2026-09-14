@@ -129,7 +129,8 @@
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
-        "friends": "Friends"
+        "friends": "Friends",
+        "supporter": "Supporter Key"
       },
       "compare": {
         "ships": "Compare Ships"

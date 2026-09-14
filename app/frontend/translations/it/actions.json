@@ -302,6 +302,10 @@
           "enable": "Genera link calendario personale",
           "rotate": "Rigenera il link",
           "disable": "Disattiva la sottoscrizione"
+        },
+        "supporterClaimKey": {
+          "create": "Crea chiave",
+          "rotate": "Genera una nuova chiave"
         }
       },
       "today": "Oggi",

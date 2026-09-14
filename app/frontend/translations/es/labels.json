@@ -1399,6 +1399,11 @@
         "calendarSubscription": {
           "intro": "Genera un enlace privado para añadir los eventos a los que te has inscrito a tu aplicación de calendario personal (Apple Calendar, Google Calendar, Outlook).",
           "howTo": "Pega el enlace en tu aplicación de calendario en \"Suscribirse al calendario\" o \"Añadir por URL\". Cualquiera que tenga este enlace puede ver los eventos a los que estás inscrito: mantenlo en privado."
+        },
+        "supporterClaimKey": {
+          "intro": "Añade esta clave al mensaje de tu donación para que el pago se asocie a tu cuenta.",
+          "howTo": "Funciona con Ko-fi, PayPal y Buy Me a Coffee, que transmiten tu mensaje. Patreon no tiene un campo para ello: allí tu cuenta se asocia mediante el correo electrónico de tu aportación.",
+          "notCreated": "Todavía no tienes una clave."
         }
       },
       "filters": {

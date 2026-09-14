@@ -43,6 +43,15 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "supporter/",
+    name: "settings-supporter",
+    component: () => import("@/frontend/pages/settings/supporter.vue"),
+    meta: {
+      title: "settings.supporter",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "hangar/",
     name: "settings-hangar",
     component: () => import("@/frontend/pages/settings/hangar.vue"),

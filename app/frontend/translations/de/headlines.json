@@ -336,7 +336,8 @@
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
-        "calendar": "Kalender-Abonnement"
+        "calendar": "Kalender-Abonnement",
+        "supporter": "Unterstützer-Schlüssel"
       },
       "oauthApplications": {
         "new": "Neue OAuth-Anwendung",

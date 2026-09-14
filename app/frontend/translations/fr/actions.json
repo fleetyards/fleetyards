@@ -302,6 +302,10 @@
           "enable": "Générer un lien de calendrier personnel",
           "rotate": "Renouveler le lien",
           "disable": "Désactiver l'abonnement"
+        },
+        "supporterClaimKey": {
+          "create": "Créer une clé",
+          "rotate": "Générer une nouvelle clé"
         }
       },
       "today": "Aujourd'hui",

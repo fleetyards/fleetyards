@@ -129,7 +129,8 @@
           "disable": "Désactiver l'authentification en deux étapes",
           "backupCodes": "Générer des codes de sauvegarde"
         },
-        "friends": "Amis"
+        "friends": "Amis",
+        "supporter": "Clé de soutien"
       },
       "compare": {
         "ships": "Comparer les vaisseaux"

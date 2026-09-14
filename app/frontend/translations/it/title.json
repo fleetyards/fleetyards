@@ -129,7 +129,8 @@
           "disable": "Disattiva Autenticazione A Due Fattori",
           "backupCodes": "Genera Codici Di Backup Autenticazione a Due Fattori"
         },
-        "friends": "Amici"
+        "friends": "Amici",
+        "supporter": "Chiave sostenitore"
       },
       "compare": {
         "ships": "Confronta Navi"

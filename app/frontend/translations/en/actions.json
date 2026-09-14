@@ -302,6 +302,10 @@
           "enable": "Generate personal calendar link",
           "rotate": "Rotate link",
           "disable": "Disable subscription"
+        },
+        "supporterClaimKey": {
+          "create": "Create key",
+          "rotate": "Generate a new key"
         }
       },
       "today": "Today",

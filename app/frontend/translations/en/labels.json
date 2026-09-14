@@ -1399,6 +1399,11 @@
         "calendarSubscription": {
           "intro": "Generate a private link to add the events you've signed up for to your personal calendar app (Apple Calendar, Google Calendar, Outlook).",
           "howTo": "Paste the link into your calendar app under \"Subscribe to calendar\" or \"Add by URL\". Anyone with this link can see the events you're signed up for — keep it private."
+        },
+        "supporterClaimKey": {
+          "intro": "Add this key to the message on a donation so the payment can be matched to your account.",
+          "howTo": "Works on Ko-fi, PayPal and Buy Me a Coffee, which pass your message on. Patreon does not have a field for it — there your account is matched by the email address on your pledge.",
+          "notCreated": "You do not have a key yet."
         }
       },
       "filters": {

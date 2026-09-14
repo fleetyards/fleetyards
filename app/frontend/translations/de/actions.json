@@ -302,6 +302,10 @@
           "enable": "Persönlichen Kalenderlink erzeugen",
           "rotate": "Link erneuern",
           "disable": "Abo deaktivieren"
+        },
+        "supporterClaimKey": {
+          "create": "Schlüssel erstellen",
+          "rotate": "Neuen Schlüssel erzeugen"
         }
       },
       "today": "Heute",

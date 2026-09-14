@@ -129,7 +129,8 @@
           "disable": "禁用双因素认证",
           "backupCodes": "生成双因素备份代码"
         },
-        "friends": "好友"
+        "friends": "好友",
+        "supporter": "支持者密钥"
       },
       "compare": {
         "ships": "比较舰船"
