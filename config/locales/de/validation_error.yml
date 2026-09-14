@@ -231,4 +231,5 @@ de:
       destroy: Eintrag konnte nicht entfernt werden.
     payout_participants:
       create: Teilnehmer konnte nicht hinzugefügt werden.
+      update: Teilnehmer konnte nicht aktualisiert werden.
       destroy: Teilnehmer konnte nicht entfernt werden.

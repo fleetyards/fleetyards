@@ -11,10 +11,12 @@ class PayoutParticipantPolicy < FleetBasePolicy
     ledger&.open? && ledger_policy.manage?
   end
 
-  alias_rule :destroy?, to: :create?
+  # A weight decides what the profit is divided by, so it answers to the same
+  # right as adding and removing -- recording an entry does not earn it.
+  alias_rule :destroy?, :update?, to: :create?
 
   params_filter do |params|
-    params.permit(:user_id, :username, :name)
+    params.permit(:user_id, :username, :name, :weight)
   end
 
   private def ledger

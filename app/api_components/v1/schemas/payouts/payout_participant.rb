@@ -13,11 +13,14 @@ module V1
             payoutLedgerId: {type: :string, format: :uuid},
             displayName: {type: :string},
             guest: {type: :boolean},
+            # What this participant is entitled to relative to the others.
+            # A decimal like every other, so it is carried as a string.
+            weight: {type: :string},
             user: ::V1::Schemas::UserRef,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
-          required: %w[id payoutLedgerId displayName guest],
+          required: %w[id payoutLedgerId displayName guest weight],
           additionalProperties: false
         })
       end

@@ -10973,6 +10973,48 @@ paths:
         type: string
         format: uuid
       required: true
+    patch:
+      summary: Update a payout participant
+      tags:
+      - Payouts
+      operationId: updatePayoutParticipant
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PayoutParticipantUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PayoutParticipant"
+        '400':
+          description: invalid weight
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     delete:
       summary: Remove a payout participant
       tags:
@@ -23419,6 +23461,8 @@ components:
           format: date-time
         participantsCount:
           type: integer
+        totalWeight:
+          type: string
         entriesCount:
           type: integer
         totalIncome:
@@ -23484,6 +23528,8 @@ components:
           type: string
         guest:
           type: boolean
+        weight:
+          type: string
         user:
           "$ref": "#/components/schemas/UserRef"
         createdAt:
@@ -23497,6 +23543,7 @@ components:
       - payoutLedgerId
       - displayName
       - guest
+      - weight
       additionalProperties: false
       title: PayoutParticipant
     PayoutParticipantCreateInput:
@@ -23512,6 +23559,13 @@ components:
           - 'null'
       additionalProperties: false
       title: PayoutParticipantCreateInput
+    PayoutParticipantUpdateInput:
+      type: object
+      properties:
+        weight:
+          type: string
+      additionalProperties: false
+      title: PayoutParticipantUpdateInput
     PayoutParticipantsList:
       type: array
       items:

@@ -228,4 +228,5 @@ es:
       destroy: No se pudo eliminar el movimiento.
     payout_participants:
       create: No se pudo añadir al participante.
+      update: No se pudo actualizar al participante.
       destroy: No se pudo eliminar al participante.

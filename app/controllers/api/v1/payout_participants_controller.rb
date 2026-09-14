@@ -11,12 +11,12 @@ module Api
         only: %i[index]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write", "user:write" },
         unless: :user_signed_in?,
-        only: %i[create destroy]
+        only: %i[create update destroy]
 
       before_action :set_payout_ledger
       before_action :check_tour_payouts_feature
       before_action :resolve_username, only: %i[create]
-      before_action :set_payout_participant, only: %i[destroy]
+      before_action :set_payout_participant, only: %i[update destroy]
 
       def index
         authorize! with: PayoutParticipantPolicy, context: ledger_context
@@ -37,6 +37,16 @@ module Api
         end
       end
 
+      def update
+        authorize! @payout_participant, with: PayoutParticipantPolicy, context: ledger_context
+
+        if @payout_participant.update(weight_attributes)
+          render :show
+        else
+          render json: ValidationError.new("payout_participants.update", errors: @payout_participant.errors), status: :bad_request
+        end
+      end
+
       def destroy
         authorize! @payout_participant, with: PayoutParticipantPolicy, context: ledger_context
 
@@ -45,6 +55,14 @@ module Api
         else
           render json: ValidationError.new("payout_participants.destroy", errors: @payout_participant.errors), status: :bad_request
         end
+      end
+
+      # Only the weight. Who a participant is was decided when they were added,
+      # and moving it here would rewrite whose money every entry against them
+      # describes -- the policy filter is shared with create, so the narrowing
+      # has to happen on this side.
+      private def weight_attributes
+        authorized(params, with: PayoutParticipantPolicy, context: ledger_context).to_h.slice("weight")
       end
 
       private def participant_attributes

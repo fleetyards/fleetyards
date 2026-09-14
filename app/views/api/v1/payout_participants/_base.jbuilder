@@ -4,6 +4,7 @@ json.id payout_participant.id
 json.payout_ledger_id payout_participant.payout_ledger_id
 json.display_name payout_participant.display_name
 json.guest payout_participant.guest?
+json.weight payout_participant.weight
 
 # Omitted rather than null for a guest: UserRef is an object, and a property
 # that is present and null does not satisfy it.

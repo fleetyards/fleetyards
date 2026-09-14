@@ -16,6 +16,7 @@ module V1
             notes: {type: [:string, :null]},
             settledAt: {type: [:string, :null], format: "date-time"},
             participantsCount: {type: :integer},
+            totalWeight: {type: :string},
             entriesCount: {type: :integer},
             totalIncome: {type: :string},
             totalExpenses: {type: :string},

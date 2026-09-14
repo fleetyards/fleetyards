@@ -225,4 +225,5 @@ fr:
       destroy: L'écriture n'a pas pu être supprimée.
     payout_participants:
       create: Le participant n'a pas pu être ajouté.
+      update: Le participant n'a pas pu être mis à jour.
       destroy: Le participant n'a pas pu être retiré.

@@ -5,7 +5,7 @@ resources :payout_ledgers, path: "payouts", only: %i[show] do
     get :balances
   end
 
-  resources :payout_participants, path: "participants", only: %i[index create destroy]
+  resources :payout_participants, path: "participants", only: %i[index create update destroy]
   resources :payout_entries, path: "entries", only: %i[index create update destroy]
 
   resources :payout_transfers, path: "transfers", only: %i[index] do

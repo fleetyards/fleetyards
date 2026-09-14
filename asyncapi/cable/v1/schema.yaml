@@ -3136,6 +3136,8 @@ components:
           format: date-time
         participantsCount:
           type: integer
+        totalWeight:
+          type: string
         entriesCount:
           type: integer
         totalIncome:
@@ -3189,6 +3191,8 @@ components:
           type: string
         guest:
           type: boolean
+        weight:
+          type: string
         user:
           "$ref": "#/components/schemas/UserRef"
         createdAt:
@@ -3202,6 +3206,7 @@ components:
       - payoutLedgerId
       - displayName
       - guest
+      - weight
       additionalProperties: false
     RefuelBoom:
       type: object
