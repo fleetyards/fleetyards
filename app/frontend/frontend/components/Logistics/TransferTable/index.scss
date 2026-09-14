@@ -1,0 +1,14 @@
+// Above the goods rather than a column of its own: most transfers name no
+// contract, and an empty column on every row buys nothing.
+.transfer-contract {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 0.8em;
+  color: $gold;
+
+  &:hover {
+    color: lighten($gold, 10%);
+  }
+}

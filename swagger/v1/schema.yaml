@@ -22136,6 +22136,8 @@ components:
           "$ref": "#/components/schemas/TransferParty"
         destinationParty:
           "$ref": "#/components/schemas/TransferParty"
+        contract:
+          "$ref": "#/components/schemas/InventoryTransferContract"
         initiatedBy:
           type:
           - string
@@ -22208,6 +22210,27 @@ components:
           format: uuid
       additionalProperties: false
       title: InventoryTransferAcceptInput
+    InventoryTransferContract:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        slug:
+          type: string
+        fleetSlug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - slug
+      - fleetSlug
+      title: InventoryTransferContract
     InventoryTransferCreateInput:
       type: object
       properties:
