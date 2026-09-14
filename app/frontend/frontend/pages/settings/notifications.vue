@@ -70,6 +70,16 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
     ],
   },
   {
+    key: "fleetContracts",
+    types: [
+      NotificationTypeEnum.FLEET_CONTRACT_PUBLISHED,
+      NotificationTypeEnum.FLEET_CONTRACT_CLAIMED,
+      NotificationTypeEnum.FLEET_CONTRACT_CREW_REQUESTED,
+      NotificationTypeEnum.FLEET_CONTRACT_CREW_ANSWERED,
+      NotificationTypeEnum.FLEET_CONTRACT_FULFILLED,
+    ],
+  },
+  {
     key: "logistics",
     types: [
       NotificationTypeEnum.INVENTORY_TRANSFER_RECEIVED,
