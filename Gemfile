@@ -126,7 +126,7 @@ gem "flipper"
 gem "flipper-active_record"
 
 # openapi
-gem "openapi-ruby", "~> 4.2"
+gem "openapi-ruby", "~> 5.0"
 
 # asyncapi
 gem "asyncapi_cable", "~> 0.2"
