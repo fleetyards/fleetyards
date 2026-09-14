@@ -49,7 +49,7 @@ describe("useFilters navigation", () => {
   });
 
   it("keeps the view somebody is filtering in", async () => {
-    query.value = { view: "invites", tab: "log" };
+    query.value = { view: "invites", tab: "log", direction: "outgoing" };
 
     useFilters().filter({ nameCont: "ti" } as never);
     await vi.waitFor(() => expect(replace).toHaveBeenCalled());
@@ -58,16 +58,19 @@ describe("useFilters navigation", () => {
       nameCont: "ti",
       view: "invites",
       tab: "log",
+      direction: "outgoing",
     });
   });
 
   it("keeps it when the filters are cleared", () => {
-    query.value = { view: "invites", nameCont: "ti" };
+    query.value = { view: "invites", direction: "outgoing", nameCont: "ti" };
 
     useFilters().resetFilter();
 
     expect(replace).toHaveBeenCalledWith(
-      expect.objectContaining({ query: { view: "invites" } }),
+      expect.objectContaining({
+        query: { view: "invites", direction: "outgoing" },
+      }),
     );
   });
 });

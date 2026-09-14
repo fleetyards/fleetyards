@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
 
 const route = ref<{ query: Record<string, unknown> }>({ query: {} });
 

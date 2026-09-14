@@ -20,31 +20,39 @@ namespace :frontend, **frontend_options do
   # Views that used to be paths of their own and are query state now. Every one
   # of them is live -- shared, bookmarked, and in the invite list's case in mail
   # that has already gone out -- so the server answers it, rather than letting
-  # the app load and bounce. Each target already opens its query, so whatever
-  # the link carried is appended to it.
+  # the app load and bounce.
   #
   # Declared above `hangar/:username`, which matches any single segment and
   # renders the app shell even for a username nobody has: below it,
   # `hangar/transactions` would answer 200 and never redirect.
   {
-    "hangar/transactions" => ->(_params) { "/hangar/inventories/?tab=log" },
-    "hangar/transfers/outgoing" => ->(_params) { "/hangar/transfers/?direction=outgoing" },
+    "hangar/transactions" => ["tab=log", ->(_params) { "/hangar/inventories/" }],
+    "hangar/transfers/outgoing" => ["direction=outgoing", ->(_params) { "/hangar/transfers/" }],
     "hangar/inventories/:inventory/transactions" =>
-      ->(params) { "/hangar/inventories/#{params[:inventory]}/?tab=log" },
-    "hangar/:id/cargo/transactions" => ->(params) { "/hangar/#{params[:id]}/cargo/?tab=log" },
+      ["tab=log", ->(params) { "/hangar/inventories/#{params[:inventory]}/" }],
+    "hangar/:id/cargo/transactions" => ["tab=log", ->(params) { "/hangar/#{params[:id]}/cargo/" }],
     "fleets/:slug/members/invites" =>
-      ->(params) { "/fleets/#{params[:slug]}/members/?view=invites" },
+      ["view=invites", ->(params) { "/fleets/#{params[:slug]}/members/" }],
     "fleets/:slug/logistics/transactions" =>
-      ->(params) { "/fleets/#{params[:slug]}/logistics/?tab=log" },
+      ["tab=log", ->(params) { "/fleets/#{params[:slug]}/logistics/" }],
     "fleets/:slug/logistics/transfers/outgoing" =>
-      ->(params) { "/fleets/#{params[:slug]}/logistics/transfers/?direction=outgoing" },
+      ["direction=outgoing", ->(params) { "/fleets/#{params[:slug]}/logistics/transfers/" }],
     "fleets/:slug/logistics/inventories/:inventory/transactions" =>
-      ->(params) { "/fleets/#{params[:slug]}/logistics/inventories/#{params[:inventory]}/?tab=log" }
-  }.each do |path, target|
+      ["tab=log", ->(params) { "/fleets/#{params[:slug]}/logistics/inventories/#{params[:inventory]}/" }]
+  }.each do |path, (state, target)|
     get path, to: redirect(status: 301) { |params, request|
-      carried = request.query_string.presence
+      # The view the path names wins over one the link also carried: repeated
+      # keys reach the client router as an array, and what reads them there
+      # expects a single value -- so `?tab=stock` appended to the ledger's old
+      # path would have opened the stock list that path was not asking for.
+      #
+      # Split rather than round-tripped through `to_query`, which renames a
+      # repeated key to `roleIn[]` and loses every filter holding more than one
+      # value.
+      key = state.split("=").first
+      carried = request.query_string.split("&").reject { |pair| pair.split("=", 2).first == key }
 
-      "#{target.call(params)}#{"&#{carried}" if carried}"
+      "#{target.call(params)}?#{[state, *carried].join("&")}"
     }
   end
 

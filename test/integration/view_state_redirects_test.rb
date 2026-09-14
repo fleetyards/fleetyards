@@ -32,6 +32,26 @@ class ViewStateRedirectsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Repeated keys reach the client router as an array, and what reads them there
+  # expects one value -- so the view the path names has to replace the one the
+  # link carried rather than queue behind it.
+  test "the view the path names wins over one the link carried" do
+    get "/hangar/transactions?tab=stock&page=2"
+
+    assert_response :moved_permanently
+    assert_equal "http://www.example.com/hangar/inventories/?tab=log&page=2", response.location
+  end
+
+  # vue-router writes a filter holding more than one value as a repeated key, so
+  # the carried query is split rather than parsed and rebuilt.
+  test "it keeps a filter that repeats its key" do
+    get "/fleets/black-sun/members/invites?roleIn=admin&roleIn=officer"
+
+    assert_response :moved_permanently
+    assert_equal "http://www.example.com/fleets/black-sun/members/?view=invites&roleIn=admin&roleIn=officer",
+      response.location
+  end
+
   test "it keeps what the link carried" do
     get "/fleets/black-sun/members/invites?page=2"
 
