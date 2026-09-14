@@ -119,6 +119,44 @@ class MjmlRenderingTest < ActionMailer::TestCase
         "border-radius on a table is inert under border-collapse: collapse")
     end
 
+    # The mails have exactly one design and it is dark. Saying so is what stops
+    # Apple Mail, iOS Mail and Outlook for macOS/iOS running their own colour
+    # transform over a message that declares no scheme - and neither half of the
+    # declaration is safe by reading the layout, because both go through MRML
+    # and then premailer, whose entire job is to lift rules out of style blocks
+    # and onto elements - and :root is a selector it can resolve, so the rule
+    # does not survive as a rule.
+    #
+    # Gmail is not covered by this and cannot be: its mobile apps full-invert
+    # regardless. That is the known floor, not a regression to chase.
+    test "#{preview.name}##{email} declares itself dark" do
+      html = html_part_for(preview, email)
+      metas = html.scan(/<meta[^>]*>/i)
+
+      %w[color-scheme supported-color-schemes].each do |name|
+        tag = metas.find { |meta| meta.match?(/name=["']#{name}["']/i) }
+
+        assert tag,
+          "#{preview.name}##{email} ships no #{name} meta. Without it a client is free " \
+          "to decide this dark mail needs its own dark treatment and transform it twice."
+        assert_match(/content=["']dark["']/i, tag,
+          "#{preview.name}##{email} declares #{name} as something other than dark, but " \
+          "these mails have no light variant to offer.")
+      end
+
+      # premailer resolves the :root rule onto <html> itself rather than leaving
+      # it in the style block, which is a perfectly good landing - the property
+      # is on the root element either way. Assert the outcome, not the route.
+      root = html[/<html[^>]*>/i].to_s
+      on_root = root.match?(/color-scheme:\s*dark/i) ||
+        html.match?(/:root\s*\{[^}]*color-scheme:\s*dark/i)
+
+      assert on_root,
+        "#{preview.name}##{email} carries color-scheme on neither <html> nor a :root " \
+        "rule, so the standard half of the declaration did not survive the pipeline. " \
+        "The <html> tag rendered as: #{root}"
+    end
+
     test "#{preview.name}##{email} keeps the panel end-cap" do
       html = html_part_for(preview, email)
 
