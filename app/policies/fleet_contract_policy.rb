@@ -89,6 +89,6 @@ class FleetContractPolicy < FleetBasePolicy
     params.permit(:title, :description, :kind, :reward, :reimburse_expenses,
       :crew_limit, :deadline, :source_fleet_inventory_id, :destination_fleet_inventory_id,
       items: [:name, :category, :unit, :quantity, :quality, :quality_match, :item_type,
-        :item_id])
+        :item_id, :position])
   end
 end

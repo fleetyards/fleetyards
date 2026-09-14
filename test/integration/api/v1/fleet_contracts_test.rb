@@ -360,6 +360,29 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_equal 500, contract.fleet_contract_items.find_by(name: "Titanium").quality
   end
 
+  # `FleetContractItemInput` carries a position, and the nested list has to mean
+  # it: `set_position` only fills in the lines that arrived without one.
+  test "POST keeps the order the goods were sent in" do
+    sign_in @officer
+
+    post "/api/v1/fleets/#{@fleet.slug}/contracts",
+      params: {kind: "procurement", reward: "1.00",
+               destinationFleetInventoryId: @depot.id,
+               items: [
+                 {name: "Agricium", category: "commodity", unit: "scu", quantity: "1.0",
+                  position: 2},
+                 {name: "Titanium", category: "commodity", unit: "scu", quantity: "1.0",
+                  position: 1}
+               ]},
+      as: :json
+
+    assert_response :created
+
+    contract = FleetContract.order(:created_at).last
+
+    assert_equal %w[Titanium Agricium], contract.fleet_contract_items.ordered.map(&:name)
+  end
+
   # Nested saving is one transaction, so a line the model refuses takes the
   # contract with it -- a half-built contract is worse than none.
   test "POST refuses the whole contract when one of its goods is invalid" do
