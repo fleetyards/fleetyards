@@ -356,8 +356,14 @@ fleet features for the fleet they nominate. D12's refusal links to the support p
 shop. Getting this wrong is a legal-form problem that a later migration cannot undo, because it is what
 the customer was told they were doing.
 
+One gap is worth noting now because it is the only input that cannot be reconstructed later:
+**customer location evidence is collected nowhere**, and the place of supply for an electronically
+supplied service follows the customer.
+
 This is a description of the problem, not tax advice. Get a Steuerberater involved before the revenue
-is worth arguing about, not after.
+is worth arguing about, not after — and a Fachanwalt for the consumer-law half, which bites at the
+first euro rather than at a threshold. The detail is in
+[`docs/findings/selling-software-in-germany.md`](../findings/selling-software-in-germany.md).
 
 ## What changes
 
