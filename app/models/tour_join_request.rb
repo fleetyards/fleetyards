@@ -38,6 +38,8 @@ class TourJoinRequest < ApplicationRecord
   validate :not_already_a_participant, on: :create
   validate :no_pending_request, on: :create
 
+  after_create_commit :notify_deciders
+
   aasm column: :aasm_state, whiny_transitions: false do
     state :pending, initial: true
     state :approved
@@ -58,23 +60,30 @@ class TourJoinRequest < ApplicationRecord
   # Answers false rather than raising when the ledger closed in between, which
   # is the same shape PayoutLedger#settle! uses for the same race.
   def approve_by(decider)
-    with_lock do
-      return false unless pending?
+    approved = with_lock do
+      next false unless pending?
 
       ledger = tour.payout_ledger
-      return false if ledger.blank?
+      next false if ledger.blank?
 
       participant = ledger.payout_participants.find_or_initialize_by(user_id: user_id)
-      return false unless participant.persisted? || participant.save
+      next false unless participant.persisted? || participant.save
 
       assign_attributes(decided_by: decider, decided_at: Time.current)
+
       approve!
     end
+
+    # Outside the lock: notifying enqueues delivery, and a job picked up before
+    # the transaction commits would read a row that is not there yet.
+    notify_asker if approved
+
+    approved
   end
 
   def decline_by(decider)
     with_lock do
-      return false unless pending?
+      next false unless pending?
 
       assign_attributes(decided_by: decider, decided_at: Time.current)
       decline!
@@ -87,6 +96,56 @@ class TourJoinRequest < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[tour user decided_by]
+  end
+
+  # Everyone who can answer, which is the same set that settles the tour: its
+  # organiser, and the fleet's payout managers. Resolved through the
+  # memberships rather than the fleet's roles so a member whose role was
+  # emptied does not get told about something they cannot act on.
+  def deciders
+    return [] if tour.blank?
+
+    memberships = tour.fleet&.fleet_memberships&.kept&.accepted&.includes(:fleet_role, :user) || []
+
+    managers = memberships.select { |membership|
+      membership.has_access?(TourPolicy::MANAGE_PRIVILEGES)
+    }.filter_map(&:user)
+
+    ([tour.created_by] + managers).compact.uniq.reject { |decider| decider.id == user_id }
+  end
+
+  private def notify_deciders
+    return if tour.blank? || tour.fleet.blank?
+
+    deciders.each do |decider|
+      Notification.notify!(
+        user: decider,
+        type: :tour_join_request_received,
+        title: I18n.t("notifications.tour_join_request_received.title", username: user&.username, tour: tour.title),
+        link: tour_link,
+        icon: "fa-duotone fa-coins",
+        record: tour
+      )
+    end
+  end
+
+  private def notify_asker
+    return if user.blank? || tour.blank?
+
+    Notification.notify!(
+      user:,
+      type: :tour_join_request_accepted,
+      title: I18n.t("notifications.tour_join_request_accepted.title", tour: tour.title),
+      link: tour_link,
+      icon: "fa-duotone fa-coins",
+      record: tour
+    )
+  end
+
+  private def tour_link
+    return "/tools/tours/#{tour.slug}/" if tour.fleet.blank?
+
+    "/fleets/#{tour.fleet.slug}/tours/#{tour.slug}/"
   end
 
   private def tour_belongs_to_a_fleet

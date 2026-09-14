@@ -2000,7 +2000,8 @@
         "unavailable": "Ceci n'est plus disponible.",
         "openTransfers": "Ouvrir les transferts",
         "openFriends": "Ouvrir les amis",
-        "openAllies": "Ouvrir les alliés"
+        "openAllies": "Ouvrir les alliés",
+        "openTour": "Ouvrir l'expédition"
       },
       "notificationTypes": {
         "channels": {
@@ -2014,7 +2015,8 @@
           "fleetMembership": "Adhésion à une flotte",
           "fleetEvents": "Événements de flotte",
           "logistics": "Logistique",
-          "relationships": "Amis et alliés"
+          "relationships": "Amis et alliés",
+          "tours": "Expéditions"
         },
         "hangar_create": "Vaisseau ajouté au hangar",
         "hangar_destroy": "Vaisseau retiré du hangar",
@@ -2046,7 +2048,9 @@
         "friend_request_received": "Demande d'ami reçue",
         "friend_request_accepted": "Demande d'ami acceptée",
         "fleet_ally_request_received": "Demande d'alliance reçue",
-        "fleet_ally_request_accepted": "Demande d'alliance acceptée"
+        "fleet_ally_request_accepted": "Demande d'alliance acceptée",
+        "tour_join_request_received": "Demande de participation reçue",
+        "tour_join_request_accepted": "Demande de participation acceptée"
       },
       "fleets": {
         "missions": {

@@ -54,6 +54,10 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   friend_request_accepted: "openFriends",
   fleet_ally_request_received: "reviewRequest",
   fleet_ally_request_accepted: "openAllies",
+  // Both lead to the tour: it is where the ask is answered, and where being on
+  // it starts to mean something.
+  tour_join_request_received: "reviewRequest",
+  tour_join_request_accepted: "openTour",
 };
 
 const ACTION_ICONS: Record<string, string> = {
@@ -69,6 +73,7 @@ const ACTION_ICONS: Record<string, string> = {
   openAllies: "fa-duotone fa-handshake",
   openTransfers: "fa-duotone fa-right-left",
   openEvent: "fa-duotone fa-calendar-day",
+  openTour: "fa-duotone fa-coins",
   openRoster: "fa-duotone fa-list-check",
   addToCalendar: "fa-duotone fa-calendar-plus",
   open: "fa-duotone fa-arrow-up-right-from-square",

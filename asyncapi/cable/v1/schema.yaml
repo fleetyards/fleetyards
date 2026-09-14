@@ -3081,6 +3081,8 @@ components:
       - friend_request_accepted
       - fleet_ally_request_received
       - fleet_ally_request_accepted
+      - tour_join_request_received
+      - tour_join_request_accepted
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -3112,6 +3114,8 @@ components:
       - FRIEND_REQUEST_ACCEPTED
       - FLEET_ALLY_REQUEST_RECEIVED
       - FLEET_ALLY_REQUEST_ACCEPTED
+      - TOUR_JOIN_REQUEST_RECEIVED
+      - TOUR_JOIN_REQUEST_ACCEPTED
     PayoutLedger:
       type: object
       properties:

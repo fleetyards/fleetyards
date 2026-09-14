@@ -2000,7 +2000,8 @@
         "unavailable": "Das ist nicht mehr verfügbar.",
         "openTransfers": "Transfers öffnen",
         "openFriends": "Freunde öffnen",
-        "openAllies": "Verbündete öffnen"
+        "openAllies": "Verbündete öffnen",
+        "openTour": "Tour öffnen"
       },
       "notificationTypes": {
         "channels": {
@@ -2014,7 +2015,8 @@
           "fleetMembership": "Flottenmitgliedschaft",
           "fleetEvents": "Flotten-Events",
           "logistics": "Logistik",
-          "relationships": "Freunde & Verbündete"
+          "relationships": "Freunde & Verbündete",
+          "tours": "Touren"
         },
         "hangar_create": "Hangar erstellt",
         "hangar_destroy": "Hangar entfernt",
@@ -2046,7 +2048,9 @@
         "friend_request_received": "Freundschaftsanfrage erhalten",
         "friend_request_accepted": "Freundschaftsanfrage angenommen",
         "fleet_ally_request_received": "Bündnisanfrage erhalten",
-        "fleet_ally_request_accepted": "Bündnisanfrage angenommen"
+        "fleet_ally_request_accepted": "Bündnisanfrage angenommen",
+        "tour_join_request_received": "Teilnahme-Anfrage erhalten",
+        "tour_join_request_accepted": "Teilnahme-Anfrage angenommen"
       },
       "fleets": {
         "missions": {

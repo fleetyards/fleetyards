@@ -104,6 +104,74 @@ class TourJoinRequestTest < ActiveSupport::TestCase
     assert_not request.approve_by(@organiser)
   end
 
+  # The organiser, and anyone who could settle the tour, since they are the
+  # same set that can answer it.
+  test "asking tells whoever can answer" do
+    officer = create(:user)
+    create(:fleet_membership,
+      fleet: @fleet,
+      user: officer,
+      fleet_role: @fleet.fleet_roles.ranked.second,
+      aasm_state: :accepted)
+
+    assert_difference "Notification.where(notification_type: 'tour_join_request_received').count", 2 do
+      create(:tour_join_request, tour: @tour, user: @member)
+    end
+
+    notification = Notification.where(notification_type: "tour_join_request_received").find_by(user: @organiser)
+
+    assert_includes notification.title, @member.username
+    assert_equal "/fleets/#{@fleet.slug}/tours/#{@tour.slug}/", notification.link
+  end
+
+  # Their role carries no payout privilege, so there is nothing for them to do
+  # with it.
+  test "asking leaves an ordinary member out of it" do
+    other = create(:user)
+    create(:fleet_membership,
+      fleet: @fleet,
+      user: other,
+      fleet_role: @fleet.default_member_role,
+      aasm_state: :accepted)
+    @fleet.default_member_role.update!(resource_access: [])
+
+    create(:tour_join_request, tour: @tour, user: @member)
+
+    assert_not Notification.where(notification_type: "tour_join_request_received", user: other).exists?
+  end
+
+  test "approving tells the asker" do
+    request = create(:tour_join_request, tour: @tour, user: @member)
+
+    assert_difference "Notification.where(notification_type: 'tour_join_request_accepted').count", 1 do
+      request.approve_by(@organiser)
+    end
+
+    notification = Notification.find_by(notification_type: "tour_join_request_accepted")
+
+    assert_equal @member.id, notification.user_id
+    assert_includes notification.title, @tour.title
+  end
+
+  test "a refused approval tells nobody" do
+    request = create(:tour_join_request, tour: @tour, user: @member)
+    @ledger.settle!(@organiser)
+
+    assert_no_difference "Notification.where(notification_type: 'tour_join_request_accepted').count" do
+      assert_not request.approve_by(@organiser)
+    end
+  end
+
+  # A decline is the organiser's answer to give in their own words rather than
+  # a notification telling somebody they were turned down.
+  test "declining tells nobody" do
+    request = create(:tour_join_request, tour: @tour, user: @member)
+
+    assert_no_difference "Notification.count" do
+      request.decline_by(@organiser)
+    end
+  end
+
   test "declining leaves the ledger alone" do
     request = create(:tour_join_request, tour: @tour, user: @member)
 

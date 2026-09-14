@@ -2002,7 +2002,8 @@
         "unavailable": "此内容已不再可用。",
         "openTransfers": "打开转移",
         "openFriends": "打开好友",
-        "openAllies": "打开盟友"
+        "openAllies": "打开盟友",
+        "openTour": "打开行程"
       },
       "notificationTypes": {
         "channels": {
@@ -2016,7 +2017,8 @@
           "fleetMembership": "舰队成员资格",
           "fleetEvents": "舰队活动",
           "logistics": "物流",
-          "relationships": "好友与盟友"
+          "relationships": "好友与盟友",
+          "tours": "行程"
         },
         "hangar_create": "添加到机库",
         "hangar_destroy": "从机库移除",
@@ -2048,7 +2050,9 @@
         "friend_request_received": "收到好友请求",
         "friend_request_accepted": "好友请求已通过",
         "fleet_ally_request_received": "收到结盟请求",
-        "fleet_ally_request_accepted": "结盟请求已通过"
+        "fleet_ally_request_accepted": "结盟请求已通过",
+        "tour_join_request_received": "收到参加申请",
+        "tour_join_request_accepted": "参加申请已通过"
       },
       "fleets": {
         "missions": {
