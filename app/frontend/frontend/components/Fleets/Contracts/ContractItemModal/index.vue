@@ -395,22 +395,17 @@ const onSubmit = handleSubmit(async (values) => {
             :step="1"
             :max="1000"
           >
-            <!-- The suffix slot is wrapped by FormInput; the prefix slot is
-                 not -- its default content carries the class itself. Without
-                 the wrapper the select is unconstrained and takes the whole
-                 field, leaving the number with nowhere to go. -->
+            <!-- How the grade is read, in the field's own end-cap. -->
             <template #prefix>
-              <div class="base-input__prefix">
-                <BaseSelect
-                  v-model="qualityMatch"
-                  :options="qualityMatchOptions"
-                  :label="t('labels.fleets.contracts.qualityMatch')"
-                  :variant="BaseSelectVariantsEnum.AFFIX"
-                  name="itemQualityMatch"
-                  no-label
-                  :searchable="false"
-                />
-              </div>
+              <BaseSelect
+                v-model="qualityMatch"
+                :options="qualityMatchOptions"
+                :label="t('labels.fleets.contracts.qualityMatch')"
+                :variant="BaseSelectVariantsEnum.AFFIX"
+                name="itemQualityMatch"
+                no-label
+                :searchable="false"
+              />
             </template>
           </FormInput>
         </div>
