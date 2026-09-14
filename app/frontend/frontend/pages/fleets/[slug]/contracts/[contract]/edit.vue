@@ -72,6 +72,7 @@ const crumbs = computed<Crumb[]>(() => [
         <ContractItemsForm
           :fleet="fleet"
           :contract="contract"
+          :kind="contract.kind"
           @changed="refetch()"
         />
       </template>

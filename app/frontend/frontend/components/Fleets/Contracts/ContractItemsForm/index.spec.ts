@@ -42,7 +42,7 @@ afterEach(() => {
 
 const mount = async (lines?: unknown[]) => {
   wrapper = await mountWithDefaults(Component, {
-    props: { fleet, contract: contract(lines) },
+    props: { fleet, contract: contract(lines), kind: "transport" as never },
   });
 
   return wrapper;

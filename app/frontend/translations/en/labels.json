@@ -2040,7 +2040,8 @@
           "fleetEvents": "Fleet events",
           "logistics": "Logistics",
           "relationships": "Friends & allies",
-          "tours": "Tours"
+          "tours": "Tours",
+          "fleetContracts": "Fleet contracts"
         },
         "hangar_create": "Hangar created",
         "hangar_destroy": "Hangar removed",
@@ -2074,7 +2075,12 @@
         "fleet_ally_request_received": "Ally request received",
         "fleet_ally_request_accepted": "Ally request accepted",
         "tour_join_request_received": "Join request received",
-        "tour_join_request_accepted": "Join request accepted"
+        "tour_join_request_accepted": "Join request accepted",
+        "fleet_contract_published": "Contract posted",
+        "fleet_contract_claimed": "Contract claimed",
+        "fleet_contract_crew_requested": "Crew wants to join a contract",
+        "fleet_contract_crew_answered": "Contract crew request answered",
+        "fleet_contract_fulfilled": "Contract fulfilled"
       },
       "fleets": {
         "missions": {
@@ -2305,7 +2311,8 @@
           "titleHint": "Optional — a contract without one is named after the goods it asks for",
           "postedBy": "Posted by",
           "claimedBy": "claimed by",
-          "delivered": "Delivered"
+          "delivered": "Delivered",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}"
         }
       },
       "commodity": {

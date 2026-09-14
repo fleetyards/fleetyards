@@ -14,9 +14,8 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
-import Panel from "@/shared/components/base/Panel/index.vue";
 import ContractPanel from "@/frontend/components/Fleets/Contracts/ContractPanel/index.vue";
-import ContractRow from "@/frontend/components/Fleets/Contracts/ContractRow/index.vue";
+import ContractTable from "@/frontend/components/Fleets/Contracts/ContractTable/index.vue";
 import {
   type Fleet,
   type FleetMember,
@@ -191,16 +190,13 @@ const crumbs = computed<Crumb[]>(() => [
         </template>
       </Grid>
 
-      <!-- The dense board: every open job on one screen. One panel holding the
-           rows, rather than a frame around each. -->
-      <Panel v-else>
-        <ContractRow
-          v-for="record in records as FleetContract[]"
-          :key="record.id"
-          :contract="record"
-          :fleet="fleet"
-        />
-      </Panel>
+      <!-- The dense board: every open job on one screen, in the app's table. -->
+      <ContractTable
+        v-else
+        :fleet="fleet"
+        :contracts="records as FleetContract[]"
+        :async-status="asyncStatus"
+      />
     </template>
   </FilteredList>
 </template>

@@ -1,0 +1,64 @@
+.contract-table {
+  &__cover {
+    display: block;
+    width: 52px;
+    height: 38px;
+    border-radius: 6px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__contract {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  &__title-line {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+  }
+
+  &__title {
+    color: #eee;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__route {
+    font-size: 0.8em;
+    color: $gray-light;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__reward,
+  &__deadline {
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Overlapped, so a crew of four still fits a column sized for a number.
+  &__crew {
+    display: flex;
+    align-items: center;
+
+    > * + * {
+      margin-left: -7px;
+    }
+  }
+
+  &__crew-empty {
+    color: $gray;
+  }
+}

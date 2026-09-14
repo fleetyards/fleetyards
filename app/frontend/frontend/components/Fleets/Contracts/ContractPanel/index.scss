@@ -1,55 +1,83 @@
 @import "@/shared/components/metricsCard";
 
-/* Anchored to .panel__inner, which is the cover. */
-.contract-panel__status {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
-  z-index: 2;
-}
-
-/*
- * A pill's tint is 20% alpha, drawn for a dark surface — over a photograph it
- * washes out, and the cover carries no scrim down here. Darkening what is
- * behind it keeps the variant's colour doing the talking.
- */
-.contract-panel__status :deep(.base-pill) {
-  backdrop-filter: blur(6px) brightness(0.45);
-}
-
-.contract-panel__kind {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 2;
-  padding: 2px 8px;
-  border-radius: 3px;
-  font-size: 0.7em;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  backdrop-filter: blur(6px) brightness(0.45);
-}
-
 .contract-panel {
+  // Shorter than a mission card's: a contract's figures are the content, and
+  // the photograph is there to say which kind of job it is.
+  --panel-image-height: 132px;
+
+  /* Dark at the top for the kind chip, dark at the bottom to hand over to the
+     body -- the cover has to end somewhere, and a hard edge reads as a seam. */
+  &__scrim {
+    position: absolute;
+    inset: 0;
+    /* The cover behind it is rounded to the frame's inner radius; square
+       corners here painted over them. */
+    border-radius: $panelContentBorderRadius $panelContentBorderRadius 0 0;
+    background: linear-gradient(
+      180deg,
+      rgba(#000, 0.55) 0%,
+      rgba(#000, 0.05) 38%,
+      $panel-bg 100%
+    );
+  }
+
+  &__kind {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    backdrop-filter: blur(6px) brightness(0.45);
+  }
+
+  /*
+   * A pill's tint is 20% alpha, drawn for a dark surface -- over a photograph
+   * it washes out. Darkening what is behind it keeps the variant's colour
+   * doing the talking.
+   */
+  &__status {
+    position: absolute;
+    right: 14px;
+    bottom: 12px;
+    border-radius: 4px;
+    backdrop-filter: blur(6px) brightness(0.45);
+  }
+
+  &__title {
+    margin: 0 0 10px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.35;
+
+    a {
+      color: #eee;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+  }
+
   &__route,
   &__deadline {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0 0 12px;
+    margin: 0 0 16px;
     font-size: 0.85em;
-    color: $gray-lighter;
+    color: $gray-light;
   }
 
   &__deadline {
-    margin: 12px 0 0;
+    margin: 0;
   }
 
-  &__lede {
-    margin: 0 0 12px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  &__progress {
+    margin-bottom: 16px;
   }
 }

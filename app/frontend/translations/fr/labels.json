@@ -2026,7 +2026,8 @@
           "fleetEvents": "Événements de flotte",
           "logistics": "Logistique",
           "relationships": "Amis et alliés",
-          "tours": "Expéditions"
+          "tours": "Expéditions",
+          "fleetContracts": "Contrats de flotte"
         },
         "hangar_create": "Vaisseau ajouté au hangar",
         "hangar_destroy": "Vaisseau retiré du hangar",
@@ -2060,7 +2061,12 @@
         "fleet_ally_request_received": "Demande d'alliance reçue",
         "fleet_ally_request_accepted": "Demande d'alliance acceptée",
         "tour_join_request_received": "Demande de participation reçue",
-        "tour_join_request_accepted": "Demande de participation acceptée"
+        "tour_join_request_accepted": "Demande de participation acceptée",
+        "fleet_contract_published": "Contrat publié",
+        "fleet_contract_claimed": "Contrat pris en charge",
+        "fleet_contract_crew_requested": "Quelqu'un veut rejoindre un contrat",
+        "fleet_contract_crew_answered": "Demande d'équipage traitée",
+        "fleet_contract_fulfilled": "Contrat rempli"
       },
       "fleets": {
         "missions": {
@@ -2291,7 +2297,8 @@
           "titleHint": "Facultatif — sans titre, le contrat prend le nom des marchandises demandées",
           "postedBy": "Publié par",
           "claimedBy": "pris par",
-          "delivered": "Livré"
+          "delivered": "Livré",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}"
         }
       },
       "commodity": {

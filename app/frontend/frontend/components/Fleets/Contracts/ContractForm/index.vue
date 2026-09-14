@@ -20,6 +20,7 @@ import {
   type Fleet,
   type FilterOption,
   type FleetContract,
+  type FleetContractItemInput,
   type FleetContractDetail,
   FleetContractKindEnum,
   useFleetInventories,
@@ -31,11 +32,17 @@ import { useRouter } from "vue-router";
 type Props = {
   fleet: Fleet;
   contract?: FleetContract | FleetContractDetail;
+  // Goods written alongside a contract that does not exist yet. Sent with it,
+  // so the two are saved in one transaction.
+  items?: FleetContractItemInput[];
 };
 
 const props = defineProps<Props>();
 const emit = defineEmits<{
   cancel: [];
+  // The goods form outside this one needs to know: only a crafting contract
+  // rules commodities out.
+  "kind-change": [FleetContractKindEnum];
 }>();
 
 const { t } = useI18n();
@@ -82,6 +89,10 @@ const { defineField, handleSubmit, meta, setErrors } = useForm({
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
 const [kind, kindProps] = defineField("kind");
+
+watch(kind, (value) => emit("kind-change", value as FleetContractKindEnum), {
+  immediate: true,
+});
 const [reward, rewardProps] = defineField("reward");
 const [reimburseExpenses] = defineField("reimburseExpenses");
 const [crewLimit, crewLimitProps] = defineField("crewLimit");
@@ -135,7 +146,7 @@ const onSubmit = handleSubmit(async (values) => {
       })
     : createMutation.mutateAsync({
         fleetSlug: props.fleet.slug,
-        data,
+        data: { ...data, items: props.items },
       });
 
   await mutation
@@ -150,12 +161,14 @@ const onSubmit = handleSubmit(async (values) => {
       const targetSlug = isEdit.value ? props.contract!.slug : response?.slug;
       if (targetSlug) {
         void router.push({
-          // A new contract goes to its edit page rather than its detail page:
-          // the goods are what it is for, they need a saved contract to hang
-          // off, and `publish` refuses a contract with none. Landing on the
-          // detail page leaves that step to be discovered behind an Edit
-          // button.
-          name: isEdit.value ? "fleet-contract" : "fleet-contract-edit",
+          // A new contract that arrived with its goods is ready to publish,
+          // so it lands on its own page. One that did not goes to the form
+          // that can still add them: `publish` refuses a contract with none,
+          // and leaving that behind an Edit button hides the step.
+          name:
+            isEdit.value || props.items?.length
+              ? "fleet-contract"
+              : "fleet-contract-edit",
           params: { slug: props.fleet.slug, contract: targetSlug },
         });
       }

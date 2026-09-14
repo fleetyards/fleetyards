@@ -2026,7 +2026,8 @@
           "fleetEvents": "Eventos de flota",
           "logistics": "Logística",
           "relationships": "Amigos y aliados",
-          "tours": "Expediciones"
+          "tours": "Expediciones",
+          "fleetContracts": "Contratos de flota"
         },
         "hangar_create": "Nave añadida al hangar",
         "hangar_destroy": "Nave eliminada del hangar",
@@ -2060,7 +2061,12 @@
         "fleet_ally_request_received": "Solicitud de alianza recibida",
         "fleet_ally_request_accepted": "Solicitud de alianza aceptada",
         "tour_join_request_received": "Solicitud de participación recibida",
-        "tour_join_request_accepted": "Solicitud de participación aceptada"
+        "tour_join_request_accepted": "Solicitud de participación aceptada",
+        "fleet_contract_published": "Contrato publicado",
+        "fleet_contract_claimed": "Contrato aceptado",
+        "fleet_contract_crew_requested": "Alguien quiere unirse a un contrato",
+        "fleet_contract_crew_answered": "Solicitud de tripulación respondida",
+        "fleet_contract_fulfilled": "Contrato cumplido"
       },
       "fleets": {
         "missions": {
@@ -2291,7 +2297,8 @@
           "titleHint": "Opcional: sin título, el contrato toma el nombre de las mercancías que pide",
           "postedBy": "Publicado por",
           "claimedBy": "aceptado por",
-          "delivered": "Entregado"
+          "delivered": "Entregado",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}"
         }
       },
       "commodity": {

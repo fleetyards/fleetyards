@@ -2026,7 +2026,8 @@
           "fleetEvents": "舰队活动",
           "logistics": "物流",
           "relationships": "好友与盟友",
-          "tours": "行程"
+          "tours": "行程",
+          "fleetContracts": "舰队合约"
         },
         "hangar_create": "添加到机库",
         "hangar_destroy": "从机库移除",
@@ -2060,7 +2061,12 @@
         "fleet_ally_request_received": "收到结盟请求",
         "fleet_ally_request_accepted": "结盟请求已通过",
         "tour_join_request_received": "收到参加申请",
-        "tour_join_request_accepted": "参加申请已通过"
+        "tour_join_request_accepted": "参加申请已通过",
+        "fleet_contract_published": "合约已发布",
+        "fleet_contract_claimed": "合约已接取",
+        "fleet_contract_crew_requested": "有人想加入合约",
+        "fleet_contract_crew_answered": "合约成员申请已处理",
+        "fleet_contract_fulfilled": "合约已完成"
       },
       "fleets": {
         "missions": {
@@ -2291,7 +2297,8 @@
           "titleHint": "可选——不填时合约以所需货物命名",
           "postedBy": "发布者",
           "claimedBy": "接下者",
-          "delivered": "已交付"
+          "delivered": "已交付",
+          "deliveredOf": "%{delivered} / %{requested} %{unit}"
         }
       },
       "commodity": {

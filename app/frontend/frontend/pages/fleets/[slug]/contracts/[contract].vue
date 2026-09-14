@@ -234,7 +234,8 @@ const crumbs = computed<Crumb[]>(() => [
     <!-- The cover carries the title, the way a contract card's does. -->
     <div class="contract-hero">
       <img :src="cover" alt="" class="contract-hero__cover" />
-      <div class="contract-hero__scrim" />
+      <!-- The seam into the page below; the head carries its own band. -->
+      <div class="contract-hero__seam" />
 
       <div class="contract-hero__body">
         <div class="contract-hero__meta">
@@ -245,7 +246,7 @@ const crumbs = computed<Crumb[]>(() => [
           <ContractStatePill :state="contract.state" />
         </div>
 
-        <Heading size="hero" hero class="contract-hero__title">
+        <Heading size="hero" hero shadow class="contract-hero__title">
           {{ contract.title }}
         </Heading>
 
@@ -434,7 +435,7 @@ const crumbs = computed<Crumb[]>(() => [
         </PanelBody>
       </Panel>
 
-      <Panel>
+      <Panel v-if="crew.length">
         <PanelBody>
           <Heading>{{ t("headlines.fleets.contracts.crew") }}</Heading>
 
@@ -475,24 +476,50 @@ const crumbs = computed<Crumb[]>(() => [
     display: block;
   }
 
-  // Down to the page's own black, so the figures below sit on a seam rather
-  // than on a hard edge.
-  &__scrim {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(#000, 0.35) 0%,
-      rgba(#000, 0.1) 30%,
-      $background 100%
-    );
-  }
-
+  /*
+   * The panel heading's treatment, which is how every other card over a
+   * photograph does this: a band at the top that the text sits in, not a
+   * darkening of the whole image. Held through the middle rather than fading
+   * at once, so a byline under the title has something under it too.
+   */
   &__body {
     position: absolute;
+    top: 0;
     right: 24px;
-    bottom: 26px;
     left: 24px;
+    padding: 20px 0 32px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -24px;
+      bottom: 0;
+      left: -24px;
+      border-radius: var(--radius-surface, 16px) var(--radius-surface, 16px) 0 0;
+      background: linear-gradient(
+        to bottom,
+        rgb(0 0 0 / 0.8),
+        rgb(0 0 0 / 0.55) 55%,
+        transparent
+      );
+    }
+
+    > * {
+      position: relative;
+    }
+  }
+
+  // Down to the page's own black, so the figures below sit on a seam rather
+  // than on a hard edge. Only the last stretch, which leaves the photograph
+  // itself readable.
+  &__seam {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 45%;
+    background: linear-gradient(180deg, rgba(#000, 0) 0%, $background 100%);
   }
 
   &__meta {
