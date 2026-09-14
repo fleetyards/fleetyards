@@ -560,11 +560,6 @@ class User < ApplicationRecord
     claim_key
   end
 
-  def rotate_claim_key!
-    update_column(:claim_key, self.class.generate_claim_key)
-    claim_key
-  end
-
   # Nil for anything not key-shaped, so a donation message with no key is not
   # mistaken for one naming an account that does not exist.
   def self.find_by_claim_key(value)

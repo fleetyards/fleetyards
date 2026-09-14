@@ -302,10 +302,6 @@
           "enable": "生成个人日历链接",
           "rotate": "更换链接",
           "disable": "停用订阅"
-        },
-        "supporterClaimKey": {
-          "create": "创建密钥",
-          "rotate": "生成新密钥"
         }
       },
       "today": "今天",

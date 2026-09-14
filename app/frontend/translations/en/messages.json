@@ -222,15 +222,6 @@
           }
         },
         "supporterClaimKey": {
-          "create": {
-            "success": "Key created.",
-            "failure": "The key could not be created."
-          },
-          "rotate": {
-            "confirm": "Generate a new key? The old one stops working.",
-            "success": "New key generated.",
-            "failure": "A new key could not be generated."
-          },
           "copy": {
             "success": "Key copied.",
             "failure": "The key could not be copied."

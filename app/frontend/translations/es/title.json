@@ -129,8 +129,7 @@
           "disable": "Disable Two-factor Authentication",
           "backupCodes": "Generate Two-Factor Backup Codes"
         },
-        "friends": "Amigos",
-        "supporter": "Clave de mecenas"
+        "friends": "Amigos"
       },
       "compare": {
         "ships": "Comparar naves"

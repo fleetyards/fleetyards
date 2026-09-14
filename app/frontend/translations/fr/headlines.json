@@ -336,8 +336,7 @@
           "disable": "Désactiver l'authentification en deux étapes",
           "backupCodes": "Générer des codes de sauvegarde"
         },
-        "calendar": "Abonnement au calendrier",
-        "supporter": "Clé de soutien"
+        "calendar": "Abonnement au calendrier"
       },
       "oauthApplications": {
         "new": "Nouvelle application OAuth",

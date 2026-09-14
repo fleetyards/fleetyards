@@ -386,16 +386,6 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     assert_equal key, user.ensure_claim_key!
   end
 
-  test "#rotate_claim_key! replaces the key" do
-    user = create(:user)
-    original = user.ensure_claim_key!
-
-    rotated = user.rotate_claim_key!
-
-    assert_not_equal original, rotated
-    assert_equal rotated, user.reload.claim_key
-  end
-
   test ".find_by_claim_key accepts what a supporter is likely to type" do
     user = create(:user)
     key = user.ensure_claim_key!

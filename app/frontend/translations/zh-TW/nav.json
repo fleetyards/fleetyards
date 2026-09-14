@@ -117,8 +117,7 @@
         "connections": "連線",
         "oauthApplications": "OAuth 應用",
         "verify": "RSI 帳戶驗證",
-        "friends": "好友",
-        "supporter": "支持者"
+        "friends": "好友"
       },
       "reload": "有可用更新！",
       "visualTests": {

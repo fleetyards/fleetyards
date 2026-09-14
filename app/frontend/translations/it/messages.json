@@ -212,15 +212,6 @@
           }
         },
         "supporterClaimKey": {
-          "create": {
-            "success": "Chiave creata.",
-            "failure": "Impossibile creare la chiave."
-          },
-          "rotate": {
-            "confirm": "Generare una nuova chiave? Quella precedente smetterà di funzionare.",
-            "success": "Nuova chiave generata.",
-            "failure": "Impossibile generare una nuova chiave."
-          },
           "copy": {
             "success": "Chiave copiata.",
             "failure": "Impossibile copiare la chiave."

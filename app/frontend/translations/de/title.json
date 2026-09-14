@@ -129,8 +129,7 @@
           "disable": "Zwei-Faktor-Authentifizierung deaktivieren",
           "backupCodes": "Zwei-Faktor-Backup-Codes generieren"
         },
-        "friends": "Freunde",
-        "supporter": "Unterstützer-Schlüssel"
+        "friends": "Freunde"
       },
       "compare": {
         "ships": "Schiffe vergleichen"

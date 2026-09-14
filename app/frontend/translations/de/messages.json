@@ -212,15 +212,6 @@
           }
         },
         "supporterClaimKey": {
-          "create": {
-            "success": "Schlüssel erstellt.",
-            "failure": "Der Schlüssel konnte nicht erstellt werden."
-          },
-          "rotate": {
-            "confirm": "Einen neuen Schlüssel erzeugen? Der alte funktioniert danach nicht mehr.",
-            "success": "Neuer Schlüssel erzeugt.",
-            "failure": "Es konnte kein neuer Schlüssel erzeugt werden."
-          },
           "copy": {
             "success": "Schlüssel kopiert.",
             "failure": "Der Schlüssel konnte nicht kopiert werden."

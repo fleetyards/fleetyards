@@ -212,15 +212,6 @@
           }
         },
         "supporterClaimKey": {
-          "create": {
-            "success": "金鑰已建立。",
-            "failure": "無法建立金鑰。"
-          },
-          "rotate": {
-            "confirm": "要產生新金鑰嗎？舊金鑰將失效。",
-            "success": "已產生新金鑰。",
-            "failure": "無法產生新金鑰。"
-          },
           "copy": {
             "success": "金鑰已複製。",
             "failure": "無法複製金鑰。"

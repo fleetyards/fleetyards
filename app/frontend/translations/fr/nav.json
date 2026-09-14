@@ -117,8 +117,7 @@
         "connections": "Connexions",
         "oauthApplications": "Apps OAuth",
         "verify": "Vérification du compte RSI",
-        "friends": "Amis",
-        "supporter": "Soutien"
+        "friends": "Amis"
       },
       "reload": "Mise à jour disponible!",
       "visualTests": {

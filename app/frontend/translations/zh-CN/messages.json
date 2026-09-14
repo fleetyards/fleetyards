@@ -212,15 +212,6 @@
           }
         },
         "supporterClaimKey": {
-          "create": {
-            "success": "密钥已创建。",
-            "failure": "无法创建密钥。"
-          },
-          "rotate": {
-            "confirm": "要生成新密钥吗？旧密钥将失效。",
-            "success": "已生成新密钥。",
-            "failure": "无法生成新密钥。"
-          },
           "copy": {
             "success": "密钥已复制。",
             "failure": "无法复制密钥。"

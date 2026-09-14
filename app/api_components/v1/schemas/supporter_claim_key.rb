@@ -8,9 +8,9 @@ module V1
       schema({
         type: :object,
         properties: {
-          # Null until the account asks for one, which is a normal response
-          # rather than an error, so the contract has to allow it.
-          key: {type: [:string, :null]}
+          # Never null: reading generates one, so there is no state in which an
+          # authenticated caller gets a response without a key.
+          key: {type: :string}
         },
         required: %w[key],
         additionalProperties: false

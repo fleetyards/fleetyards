@@ -212,15 +212,6 @@
           }
         },
         "supporterClaimKey": {
-          "create": {
-            "success": "Clé créée.",
-            "failure": "La clé n'a pas pu être créée."
-          },
-          "rotate": {
-            "confirm": "Générer une nouvelle clé ? L'ancienne cessera de fonctionner.",
-            "success": "Nouvelle clé générée.",
-            "failure": "Impossible de générer une nouvelle clé."
-          },
           "copy": {
             "success": "Clé copiée.",
             "failure": "La clé n'a pas pu être copiée."

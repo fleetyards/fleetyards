@@ -129,8 +129,7 @@
           "disable": "停用雙因素認證",
           "backupCodes": "產生雙因素備份代碼"
         },
-        "friends": "好友",
-        "supporter": "支持者金鑰"
+        "friends": "好友"
       },
       "compare": {
         "ships": "比較艦船"
