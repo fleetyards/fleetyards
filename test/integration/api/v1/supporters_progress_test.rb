@@ -36,17 +36,20 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
       assert_includes titles, "Server costs"
       assert_includes titles, "Discord"
       refute_includes titles, "Retired"
+      # Every contribution counts toward the goal; only the named ones are
+      # listed. Bob asked not to be named, and the nameless row was forced
+      # anonymous by the model, so neither appears.
       assert_equal 4_250, parsed_body["monthlyTotal"]["amountCents"]
-      assert_equal 4, parsed_body["contributions"].count
+      assert_equal 2, parsed_body["contributions"].count
 
-      anonymous_entry = parsed_body["contributions"].find { |c| c["amountCents"] == 500 }
-      assert_equal "Anonymous", anonymous_entry["displayName"]
+      assert_nil parsed_body["contributions"].find { |c| c["amountCents"] == 500 }
+      assert_nil parsed_body["contributions"].find { |c| c["amountCents"] == 250 }
 
       named_entry = parsed_body["contributions"].find { |c| c["amountCents"] == 1_000 }
       assert_equal "Alice", named_entry["displayName"]
 
-      nameless_entry = parsed_body["contributions"].find { |c| c["amountCents"] == 250 }
-      assert_equal "Anonymous", nameless_entry["displayName"]
+      recurring_entry = parsed_body["contributions"].find { |c| c["amountCents"] == 2_500 }
+      assert_equal "Carla", recurring_entry["displayName"]
     end
   end
 
@@ -74,15 +77,16 @@ class Api::V1::SupportersProgressTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /supporters/progress never links an anonymous contribution" do
+  # Rendering an anonymous contribution as an "Anonymous" row still lists it,
+  # which is the one thing it asked not to be -- and a column of identical
+  # "Anonymous" entries tells a reader nothing anyway.
+  test "GET /supporters/progress omits an anonymous contribution but still counts it" do
     user = create(:user, :public_hangar)
     create(:supporter_contribution, :anonymous, name: "Erin", user:, amount_cents: 900, started_at: Date.current)
 
     assert_api_response :get, 200 do
-      entry = parsed_body["contributions"].find { |c| c["amountCents"] == 900 }
-
-      assert_equal "Anonymous", entry["displayName"]
-      refute entry.key?("username")
+      assert_equal [], parsed_body["contributions"]
+      assert_equal 900, parsed_body["monthlyTotal"]["amountCents"]
     end
   end
 
