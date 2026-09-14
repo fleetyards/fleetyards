@@ -88,6 +88,10 @@ const onCopyInvite = async () => {
     {{ tour.description }}
   </p>
 
+  <!-- Everyone on a tour accounts for their own money, so there is no privilege
+       to read here. A fleet's payout readers reach a tour they never joined,
+       and the ledger withholds the controls from them because they have no
+       participant row to record against. -->
   <PayoutLedger
     v-if="tour.payoutLedgerId"
     :payout-ledger-id="tour.payoutLedgerId"

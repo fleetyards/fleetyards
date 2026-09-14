@@ -80,6 +80,14 @@ const recordableParticipants = computed(() => {
   );
 });
 
+// Being allowed to record money is not the same as having a row to record it
+// against: a fleet's payout readers reach a tour or an event they never joined,
+// and for them the picker is empty and every entry the API would accept does
+// not exist. Offering the controls anyway sends them to a 403.
+const canRecord = computed(
+  () => props.contributable && recordableParticipants.value.length > 0,
+);
+
 // While the ledger is open the transfer list is a live preview recomputed from
 // the entries; once settled it is the frozen rows people pay against.
 const shownTransfers = computed(() =>
@@ -214,7 +222,7 @@ const onReopen = async () => {
           <div class="payout-ledger__heading">
             <span>{{ t("headlines.payouts.entries") }}</span>
             <Btn
-              v-if="contributable && !settled"
+              v-if="canRecord && !settled"
               :size="BtnSizesEnum.SM"
               data-test="payout-add-entry"
               @click="onAddEntry"
@@ -228,7 +236,7 @@ const onReopen = async () => {
             :payout-ledger-id="payoutLedgerId"
             :entries="entries?.items ?? []"
             :participants="recordableParticipants"
-            :editable="contributable && !settled"
+            :editable="canRecord && !settled"
           />
         </PanelBody>
       </Panel>
