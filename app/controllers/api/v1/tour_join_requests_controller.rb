@@ -33,6 +33,13 @@ module Api
         else
           render json: ValidationError.new("tour_join_requests.create", errors: @tour_join_request.errors), status: :bad_request
         end
+      rescue ActiveRecord::RecordNotUnique
+        # Two tabs raced the pending-request validation. The partial unique
+        # index is what actually decides, and the answer it forces is the one
+        # the validation would have given a moment later.
+        @tour_join_request.errors.add(:base, :already_requested)
+
+        render json: ValidationError.new("tour_join_requests.create", errors: @tour_join_request.errors), status: :bad_request
       end
 
       # Guarded rather than idempotent, the same way settling is: the answer

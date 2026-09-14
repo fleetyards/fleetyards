@@ -6,7 +6,10 @@ module V1
       class TourJoinRequestStatusEnum
         include OpenapiRuby::Components::Base
 
-        VALUES = %w[pending approved declined].freeze
+        # Sourced from the model rather than re-typed: a schema-local copy
+        # drifts the moment a state is added, and the API contract would keep
+        # describing a set the record no longer has.
+        VALUES = ::TourJoinRequest.aasm.states.map { |state| state.name.to_s }.freeze
 
         schema({
           type: :string,

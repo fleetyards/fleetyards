@@ -91,6 +91,20 @@ class Api::V1::TourJoinRequestsCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, path_params: path_params
   end
 
+  # The validation and the partial unique index answer the same question, and
+  # two tabs can pass the first before either reaches the second. The index is
+  # what decides, and its answer has to read like the validation's.
+  test "POST answers a race on the second ask the same way" do
+    sign_in @member
+
+    TourJoinRequest.any_instance.stubs(:save).raises(ActiveRecord::RecordNotUnique)
+
+    assert_api_response :post, 400, path_params: path_params do
+      assert_equal "validation_error.tour_join_requests.create", parsed_body["code"]
+      assert_predicate parsed_body["errors"], :present?
+    end
+  end
+
   # The answer was no; asking again is allowed, which is why only pending rows
   # are constrained.
   test "POST allows asking again after a decline" do
