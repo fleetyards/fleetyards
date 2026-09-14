@@ -191,6 +191,15 @@ Ops note: the existing access token has to be reissued with `campaigns.members[e
 simply absent from the payload — a failure mode indistinguishable from "no patron matched". Phase 1
 logs the distinction rather than leaving it to be discovered.
 
+**The three who pay today do not need any of this.** Their Patreon names already resolve against the
+user table: `Elfwyn` and `RikonGB` match a username exactly, and `Christopher Jackson` is a legal name
+with no exact match. So they are linked by asking and then by an admin edit, once, before any of the
+automatic paths exist.
+
+A name match is offered in admin as a **candidate for confirmation and never as an automatic link**. It
+is a coincidence-capable heuristic, and the cost of being wrong is handing a stranger's fleet an
+entitlement. Three people is a conversation, not an algorithm.
+
 ### D6 — The claim key is for the platforms that carry a donor message
 
 PayPal, Ko-fi and Buy Me a Coffee all let the payer write a message, and all of them show it to the
@@ -203,6 +212,11 @@ case-insensitively with separators stripped, so a supporter who types `fy7k2m9qx
 The key is per **user**, not per fleet. A per-fleet key would name the fleet in the payment and could
 then only be re-pointed by making another payment; a user key plus an in-app nomination (D8) re-points
 instantly.
+
+The key is introduced **with D13's announcement**, so it is in place before the next payment anybody
+makes. What it cannot do is reach us through Patreon — a recurring pledge has no "next donation" to
+attach a message to, and D5 is why no field carries it. A Patreon supporter links by email or by
+asking; the key is for the platforms where the payer writes something we receive.
 
 Email is the fallback on these platforms too, and the key takes precedence where both match — the key
 is a deliberate act, the email is a coincidence.
@@ -321,8 +335,8 @@ it is a **grace window** that keeps them running past the date while they decide
    note naming the announcement. They expire by themselves under D11's live read, with no second task
    and nothing to remember.
 
-The length of the window is a product decision, not a technical one, and wants a real number before
-Phase 8 runs. A permanent comp is the option to avoid: the fleets that tested hardest are the ones most
+The window is **three months** from the announcement — ample at this scale, where the whole affected
+population of paying supporters is three people and the claim key ships with the announcement itself. A permanent comp is the option to avoid: the fleets that tested hardest are the ones most
 likely to subscribe, and comping them forever removes exactly that group.
 
 It is a task rather than a migration because it reads Flipper, which a schema migration has no business

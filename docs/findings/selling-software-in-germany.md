@@ -24,7 +24,7 @@ Not uniformly across the four funding links, which is the useful part:
 | platform | who is the seller | VAT exposure |
 |---|---|---|
 | **Patreon** | Patreon, as merchant of record for EU memberships | Collects and remits EU VAT under the deemed-supplier rule for electronically supplied services (Implementing Regulation 282/2011 Art. 9a). Low. |
-| **Ko-fi** | Ko-fi for its platform products | Similar in shape; confirm per product, since shop/membership/tip are treated differently. |
+| **Ko-fi** | Ko-fi for its platform products | Similar in shape; **confirm per product before recommending anyone switch to it**, since shop, membership and tip are treated differently and Patreon's MoR status for memberships is the clearer one. |
 | **PayPal** | **you** | A direct supply with nothing in between. This is the exposed path. |
 | **Buy Me a Coffee** | **you**, in most configurations | Same. |
 
