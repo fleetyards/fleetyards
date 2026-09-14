@@ -13,7 +13,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            title: {type: :string},
+            title: {type: [:string, :null]},
             description: {type: [:string, :null]},
             kind: ::V1::Schemas::Enums::FleetContractKindEnum,
             reward: {type: :string},
@@ -26,7 +26,7 @@ module V1
             destinationFleetInventoryId: {type: :string, format: :uuid}
           },
           additionalProperties: false,
-          required: %w[title]
+          required: []
         })
       end
     end

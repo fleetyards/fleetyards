@@ -45,3 +45,20 @@ zh-TW:
       format:
         significant: true
         strip_insignificant_zeros: true
+  fleet_contracts:
+    units:
+      scu: SCU
+      units: 件
+    generated_title:
+      transport: "運送 %{goods}"
+      procurement: "採購 %{goods}"
+      crafting: "製造 %{goods}"
+      goods: "%{quantity} %{unit} %{name}"
+      more: "%{goods} 等 %{count} 項"
+      quality:
+        at_least: "%{goods}（品質 %{quality} 以上）"
+        exact: "%{goods}（品質正好 %{quality}）"
+      empty:
+        transport: 未命名運送合約
+        procurement: 未命名採購合約
+        crafting: 未命名製造合約

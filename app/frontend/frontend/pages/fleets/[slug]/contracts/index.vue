@@ -14,7 +14,9 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import ContractPanel from "@/frontend/components/Fleets/Contracts/ContractPanel/index.vue";
+import ContractRow from "@/frontend/components/Fleets/Contracts/ContractRow/index.vue";
 import {
   type Fleet,
   type FleetMember,
@@ -25,6 +27,8 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
+import { storeToRefs } from "pinia";
+import { useContractsStore } from "@/frontend/stores/contracts";
 import { useRouter } from "vue-router";
 
 type Props = {
@@ -39,6 +43,16 @@ const { t } = useI18n();
 const comlink = useComlink();
 const route = useRoute();
 const router = useRouter();
+
+const contractsStore = useContractsStore();
+const { gridView } = storeToRefs(contractsStore);
+
+const openDisplayOptionsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Contracts/ContractDisplayOptionsModal/index.vue"),
+  });
+};
 
 const fleetSlug = computed(() => props.fleet.slug);
 const showClosed = ref(false);
@@ -139,6 +153,16 @@ const crumbs = computed<Crumb[]>(() => [
     :async-status="asyncStatus"
     hide-empty
   >
+    <template #actions-right>
+      <Btn
+        :aria-label="t('actions.models.openTableConfiguration')"
+        data-test="contracts-display-options"
+        @click="openDisplayOptionsModal"
+      >
+        <i class="fa-duotone fa-sliders" />
+      </Btn>
+    </template>
+
     <template #actions-left>
       <BtnGroup segmented>
         <Btn :active="!showClosed" mobile-icon-only @click="showClosed = false">
@@ -157,11 +181,26 @@ const crumbs = computed<Crumb[]>(() => [
     </template>
 
     <template #default="{ records }">
-      <Grid :records="records as FleetContract[]" primary-key="id">
+      <Grid
+        v-if="gridView"
+        :records="records as FleetContract[]"
+        primary-key="id"
+      >
         <template #default="{ record }">
           <ContractPanel :contract="record" :fleet="fleet" />
         </template>
       </Grid>
+
+      <!-- The dense board: every open job on one screen. One panel holding the
+           rows, rather than a frame around each. -->
+      <Panel v-else>
+        <ContractRow
+          v-for="record in records as FleetContract[]"
+          :key="record.id"
+          :contract="record"
+          :fleet="fleet"
+        />
+      </Panel>
     </template>
   </FilteredList>
 </template>

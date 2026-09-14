@@ -2282,7 +2282,8 @@
             "at_least": "至少",
             "exact": "正好"
           },
-          "itemQuality": "品質"
+          "itemQuality": "品質",
+          "titleHint": "可選——不填時合約以所需貨物命名"
         }
       },
       "commodity": {

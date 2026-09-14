@@ -498,7 +498,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.decimal "reward", precision: 15, scale: 2, default: "0.0", null: false
     t.string "slug", null: false
     t.uuid "source_fleet_inventory_id"
-    t.string "title", null: false
+    t.string "title"
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_fleet_contracts_on_created_by_id"
     t.index ["destination_fleet_inventory_id"], name: "index_fleet_contracts_on_destination_fleet_inventory_id"

@@ -18,7 +18,7 @@
 #  reimburse_expenses             :boolean          default(TRUE), not null
 #  reward                         :decimal(15, 2)   default(0.0), not null
 #  slug                           :string           not null
-#  title                          :string           not null
+#  title                          :string
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  created_by_id                  :uuid

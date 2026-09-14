@@ -2282,7 +2282,8 @@
             "at_least": "Al menos",
             "exact": "Exactamente"
           },
-          "itemQuality": "Calidad"
+          "itemQuality": "Calidad",
+          "titleHint": "Opcional: sin título, el contrato toma el nombre de las mercancías que pide"
         }
       },
       "commodity": {

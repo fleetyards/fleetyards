@@ -2282,7 +2282,8 @@
             "at_least": "Mindestens",
             "exact": "Genau"
           },
-          "itemQuality": "Qualität"
+          "itemQuality": "Qualität",
+          "titleHint": "Optional — ohne Titel wird der Auftrag nach den geforderten Waren benannt"
         }
       },
       "commodity": {

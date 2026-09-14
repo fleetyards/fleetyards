@@ -20,7 +20,7 @@ require "test_helper"
 #  reimburse_expenses             :boolean          default(TRUE), not null
 #  reward                         :decimal(15, 2)   default(0.0), not null
 #  slug                           :string           not null
-#  title                          :string           not null
+#  title                          :string
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  created_by_id                  :uuid
@@ -75,6 +75,72 @@ class FleetContractTest < ActiveSupport::TestCase
       source_fleet_inventory: inventory, destination_fleet_inventory: inventory)
 
     assert_not contract.valid?
+  end
+
+  # A contract already says what it wants in its goods; making the author
+  # restate that in a title is busywork.
+  test "an untitled contract describes itself from its goods" do
+    contract = create(:fleet_contract, title: nil)
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 800)
+
+    assert_equal "Buy 800 SCU Titanium", contract.reload.display_title
+  end
+
+  test "the grade it asks for is part of the sentence" do
+    contract = create(:fleet_contract, title: nil, kind: :crafting)
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Cooler", category: :component, unit: :units, quantity: 4, quality: 500)
+
+    assert_equal "Craft 4 units Cooler at 500+ quality", contract.reload.display_title
+
+    contract.fleet_contract_items.sole.update!(quality_match: :exact)
+
+    assert_equal "Craft 4 units Cooler at exactly 500 quality", contract.reload.display_title
+  end
+
+  test "several lines name the first and count the rest" do
+    contract = create(:fleet_contract, title: nil)
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 800)
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Quantanium", category: :commodity, unit: :scu, quantity: 200)
+
+    assert_equal "Buy 800 SCU Titanium and 1 more", contract.reload.display_title
+  end
+
+  test "a contract with nothing on it yet still has something to be called" do
+    assert_equal "Untitled purchase", create(:fleet_contract, title: nil).display_title
+  end
+
+  test "a title the author gave wins over the derived one" do
+    contract = create(:fleet_contract, title: "Weekly Daymar run")
+    create(:fleet_contract_item, fleet_contract: contract)
+
+    assert_equal "Weekly Daymar run", contract.reload.display_title
+  end
+
+  # A derived title moves whenever the goods do, so the slug cannot follow it.
+  test "an untitled contract keeps its slug when its goods change" do
+    contract = create(:fleet_contract, title: nil)
+    slug = contract.slug
+
+    assert_match(/\Aprocurement-[0-9a-f]{8}\z/, slug)
+
+    create(:fleet_contract_item, fleet_contract: contract)
+    contract.reload.touch
+
+    assert_equal slug, contract.reload.slug
+  end
+
+  test "a renamed contract follows its new title" do
+    contract = create(:fleet_contract, title: "First name")
+
+    assert_equal "first-name", contract.slug
+
+    contract.update!(title: "Second name")
+
+    assert_equal "second-name", contract.slug
   end
 
   test "publishing needs something to deliver" do

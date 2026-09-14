@@ -2282,7 +2282,8 @@
             "at_least": "Almeno",
             "exact": "Esattamente"
           },
-          "itemQuality": "Qualità"
+          "itemQuality": "Qualità",
+          "titleHint": "Facoltativo — senza titolo il contratto prende il nome dalle merci richieste"
         }
       },
       "commodity": {

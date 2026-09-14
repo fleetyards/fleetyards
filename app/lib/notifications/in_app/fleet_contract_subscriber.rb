@@ -64,7 +64,7 @@ module Notifications
         readers.each do |user|
           notify(user, :fleet_contract_published,
             title: I18n.t("notifications.fleet_contract.published.title",
-              fleet: contract.fleet.name, title: contract.title),
+              fleet: contract.fleet.name, title: contract.display_title),
             body: I18n.t("notifications.fleet_contract.published.body",
               fleet: contract.fleet.name))
         end
@@ -80,7 +80,7 @@ module Notifications
 
           notify(user, :fleet_contract_claimed,
             title: I18n.t("notifications.fleet_contract.claimed.title",
-              user: claimant&.username || "A member", title: contract.title))
+              user: claimant&.username || "A member", title: contract.display_title))
         end
       end
 
@@ -91,7 +91,7 @@ module Notifications
         # what they are waiting on before they can be paid.
         (managers + contract.contractor_assignments.includes(:user).map(&:user)).compact.uniq.each do |user|
           notify(user, :fleet_contract_fulfilled,
-            title: I18n.t("notifications.fleet_contract.fulfilled.title", title: contract.title))
+            title: I18n.t("notifications.fleet_contract.fulfilled.title", title: contract.display_title))
         end
       end
 
@@ -106,7 +106,7 @@ module Notifications
         recipients.each do |user|
           notify(user, :fleet_contract_crew_requested,
             title: I18n.t("notifications.fleet_contract.crew_requested.title",
-              user: assignment.user&.username || "A member", title: contract.title))
+              user: assignment.user&.username || "A member", title: contract.display_title))
         end
       end
 
@@ -117,7 +117,7 @@ module Notifications
         key = assignment.accepted? ? "accepted" : "declined"
 
         notify(assignment.user, :fleet_contract_crew_answered,
-          title: I18n.t("notifications.fleet_contract.crew_#{key}.title", title: contract.title))
+          title: I18n.t("notifications.fleet_contract.crew_#{key}.title", title: contract.display_title))
       end
 
       def memberships

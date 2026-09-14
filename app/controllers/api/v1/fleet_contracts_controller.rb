@@ -30,7 +30,8 @@ module Api
         @q = scope.ransack(query_params)
 
         @fleet_contracts = result_with_pagination(
-          @q.result(distinct: true).includes(:destination_fleet_inventory, :source_fleet_inventory, :created_by),
+          @q.result(distinct: true).includes(:destination_fleet_inventory, :source_fleet_inventory,
+            :created_by, :fleet_contract_items, :fleet_contract_assignments),
           per_page(FleetContract)
         )
       end

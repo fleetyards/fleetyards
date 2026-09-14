@@ -11,6 +11,9 @@ module V1
           properties: {
             id: {type: :string, format: :uuid},
             title: {type: :string},
+            # The author's own title, when they gave one. `title` is this or the
+            # sentence derived from the goods.
+            customTitle: {type: [:string, :null]},
             slug: {type: :string},
             description: {type: [:string, :null]},
             kind: ::V1::Schemas::Enums::FleetContractKindEnum,
@@ -24,6 +27,8 @@ module V1
             # client shows the pickup column on this rather than on the kind.
             requiresPickup: {type: :boolean},
             deadline: {type: [:string, :null], format: "date-time"},
+            itemsCount: {type: :integer},
+            crewCount: {type: :integer},
             source: ::V1::Schemas::Contracts::FleetContractEndpoint,
             destination: ::V1::Schemas::Contracts::FleetContractEndpoint,
             createdBy: ::V1::Schemas::Contracts::FleetContractAuthor,
@@ -36,7 +41,7 @@ module V1
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id title slug kind state reward requiresPickup destination]
+          required: %w[id title slug kind state reward requiresPickup destination itemsCount crewCount]
         })
       end
     end

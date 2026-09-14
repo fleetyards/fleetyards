@@ -68,7 +68,7 @@ const kindOptions = computed<FilterOption[]>(() =>
 
 const { defineField, handleSubmit, meta, setErrors } = useForm({
   initialValues: {
-    title: props.contract?.title ?? "",
+    title: props.contract?.customTitle ?? "",
     description: props.contract?.description ?? "",
     kind: props.contract?.kind ?? FleetContractKindEnum.PROCUREMENT,
     reward: props.contract?.reward ?? "0",
@@ -112,7 +112,7 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   const data = {
-    title: values.title,
+    title: values.title || null,
     description: values.description || null,
     kind: values.kind as never,
     reward: String(values.reward ?? "0"),
@@ -188,9 +188,12 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="title"
           v-bind="titleProps"
           name="title"
-          rules="required|min:2"
           :label="t('labels.fleets.contracts.title')"
-        />
+        >
+          <template #subline>
+            {{ t("labels.fleets.contracts.titleHint") }}
+          </template>
+        </FormInput>
       </div>
     </div>
 

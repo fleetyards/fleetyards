@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 json.id fleet_contract.id
-json.title fleet_contract.title
+# The stored title is an override; without one the contract describes itself
+# from its goods. Clients render this and never have to know which it was.
+json.title fleet_contract.display_title
+json.custom_title fleet_contract.title
 json.slug fleet_contract.slug
 json.description fleet_contract.description
 json.kind fleet_contract.kind
@@ -31,5 +34,10 @@ json.claimed_at fleet_contract.claimed_at&.utc&.iso8601
 json.fulfilled_at fleet_contract.fulfilled_at&.utc&.iso8601
 json.cancelled_at fleet_contract.cancelled_at&.utc&.iso8601
 json.expired_at fleet_contract.expired_at&.utc&.iso8601
+
+# Counted off the loaded associations rather than queried per row -- the index
+# eager-loads both, so this is two queries for the page and not two per card.
+json.items_count fleet_contract.fleet_contract_items.size
+json.crew_count fleet_contract.fleet_contract_assignments.count { |assignment| assignment.aasm_state == "accepted" }
 
 json.partial! "api/shared/dates", record: fleet_contract

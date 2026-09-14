@@ -361,6 +361,38 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
              deadline: "2026-09-16T18:30"}
   end
 
+  # The goods say what the job is, so a title is an override rather than a
+  # requirement -- and an untitled contract still needs a stable slug.
+  test "POST creates a contract with no title" do
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", destinationFleetInventoryId: @depot.id} do
+      assert_equal "Untitled purchase", parsed_body["title"]
+      assert_nil parsed_body["customTitle"]
+      assert_match(/\Aprocurement-[0-9a-f]{8}\z/, parsed_body["slug"])
+    end
+  end
+
+  test "the title reads back as what the contract asks for" do
+    # Open, not the factory's draft: a draft is deliberately invisible to a
+    # member who cannot publish it.
+    contract = create(:fleet_contract, fleet: @fleet, title: nil,
+      aasm_state: "open", destination_fleet_inventory: @depot)
+    create(:fleet_contract_item, fleet_contract: contract,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 800)
+
+    sign_in @member
+
+    assert_api_response :get, 200,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_equal "Buy 800 SCU Titanium", parsed_body["title"]
+    end
+  end
+
   test "POST refuses a transport contract with no source" do
     sign_in @officer
 

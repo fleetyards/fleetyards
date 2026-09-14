@@ -2296,7 +2296,8 @@
             "at_least": "At least",
             "exact": "Exactly"
           },
-          "itemQuality": "Quality"
+          "itemQuality": "Quality",
+          "titleHint": "Optional — a contract without one is named after the goods it asks for"
         }
       },
       "commodity": {

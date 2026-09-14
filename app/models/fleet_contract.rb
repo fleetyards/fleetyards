@@ -31,7 +31,7 @@
 #  reimburse_expenses             :boolean          default(TRUE), not null
 #  reward                         :decimal(15, 2)   default(0.0), not null
 #  slug                           :string           not null
-#  title                          :string           not null
+#  title                          :string
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
 #  created_by_id                  :uuid
@@ -96,7 +96,9 @@ class FleetContract < ApplicationRecord
 
   enum :kind, KINDS
 
-  validates :title, presence: true, uniqueness: {case_sensitive: false, scope: :fleet_id}
+  # Optional: an untitled contract describes itself from its goods. Still unique
+  # when given, so two jobs in one fleet cannot share a name.
+  validates :title, uniqueness: {case_sensitive: false, scope: :fleet_id}, allow_blank: true
   validates :reward, numericality: {greater_than_or_equal_to: 0}
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
   validates :destination_fleet_inventory, presence: true
@@ -210,6 +212,45 @@ class FleetContract < ApplicationRecord
     lead_assignment&.user_id == user.id
   end
 
+  # What the contract is called. The stored title is an override; without one it
+  # describes itself from the goods it asks for -- "Buy 800 SCU Titanium at 500+
+  # quality" -- which is the thing the author would have typed anyway.
+  #
+  # Derived here rather than in the client because notifications and mails need
+  # the same sentence, and `I18n.t` already resolves to the right locale in both
+  # places. The API publishes this as `title`.
+  def display_title
+    return title if title.present?
+
+    goods = fleet_contract_items.ordered.to_a
+
+    return I18n.t("fleet_contracts.generated_title.empty.#{kind}") if goods.empty?
+
+    I18n.t("fleet_contracts.generated_title.#{kind}", goods: goods_summary(goods))
+  end
+
+  # The first line spelled out, with the rest counted. Listing four sets of goods
+  # in a heading is unreadable, and the detail page shows them all anyway.
+  private def goods_summary(goods)
+    first = describe_goods(goods.first)
+
+    return first if goods.size == 1
+
+    I18n.t("fleet_contracts.generated_title.more", goods: first, count: goods.size - 1)
+  end
+
+  private def describe_goods(item)
+    described = I18n.t("fleet_contracts.generated_title.goods",
+      quantity: ActiveSupport::NumberHelper.number_to_delimited(item.quantity.to_i),
+      unit: I18n.t("fleet_contracts.units.#{item.unit}"),
+      name: item.name)
+
+    return described if item.quality.blank?
+
+    I18n.t("fleet_contracts.generated_title.quality.#{item.quality_match}",
+      goods: described, quality: item.quality)
+  end
+
   def progress
     @progress ||= ::Contracts::Progress.new(self)
   end
@@ -311,13 +352,18 @@ class FleetContract < ApplicationRecord
     errors.add(:destination_fleet_inventory, :same_as_source)
   end
 
-  # `Mission`'s shape, not `FleetEvent`'s. FleetEvent prefixes the slug with the
-  # first segment of the id, which is nil in a `before_save` on create -- the
-  # database generates the uuid -- so the prefix only appears on the *second*
-  # save and the URL moves under anyone holding the first one. Uniqueness here
-  # comes from the case-insensitive title validation, with the unique index on
-  # [fleet_id, slug] as the backstop.
+  # Only from a real title, and only while there is one. A derived title moves
+  # every time the goods do, and a slug following it would break every link
+  # already shared -- so an untitled contract takes its kind and a random
+  # suffix, once.
+  #
+  # `Mission`'s shape rather than `FleetEvent`'s, which prefixes with the first
+  # segment of the id: that is nil in a `before_save` on create, because the
+  # database generates the uuid, so the prefix would only appear on the *second*
+  # save and move the URL under anyone holding the first one.
   private def update_slug
-    self.slug = generate_slug(title)
+    return if slug.present? && !will_save_change_to_title?
+
+    self.slug = title.present? ? generate_slug(title) : "#{kind}-#{SecureRandom.hex(4)}"
   end
 end

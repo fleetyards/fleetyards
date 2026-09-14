@@ -31,3 +31,20 @@ en:
     header:
       toggle: Toggle Navigation
 
+  fleet_contracts:
+    units:
+      scu: SCU
+      units: units
+    generated_title:
+      transport: "Haul %{goods}"
+      procurement: "Buy %{goods}"
+      crafting: "Craft %{goods}"
+      goods: "%{quantity} %{unit} %{name}"
+      more: "%{goods} and %{count} more"
+      quality:
+        at_least: "%{goods} at %{quality}+ quality"
+        exact: "%{goods} at exactly %{quality} quality"
+      empty:
+        transport: Untitled haul
+        procurement: Untitled purchase
+        crafting: Untitled crafting job
