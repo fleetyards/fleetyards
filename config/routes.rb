@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   # not public API surface, carries no OpenAPI component and must not enter the
   # generated schema or the TS client.
   post "/discord/interactions" => "discord/interactions#create"
+  post "/kofi/webhook" => "kofi/webhooks#create"
 
   if Rails.env.production?
     match "/uploads/(*path)", to: redirect { |_params, request| "#{Rails.configuration.app.legacy_cdn_endpoint}#{request.fullpath}" }, via: [:get, :head]

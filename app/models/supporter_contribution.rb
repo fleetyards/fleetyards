@@ -68,7 +68,7 @@ class SupporterContribution < ApplicationRecord
     "createdAt asc", "createdAt desc"
   ]
 
-  enum :source, {manual: "manual", patreon: "patreon"}, default: "manual"
+  enum :source, {manual: "manual", patreon: "patreon", kofi: "kofi"}, default: "manual"
 
   validates :amount_cents, presence: true, numericality: {greater_than: 0, only_integer: true}
   validates :currency, presence: true
@@ -93,7 +93,7 @@ class SupporterContribution < ApplicationRecord
     [
       "name", "amount_cents", "currency", "anonymous", "recurring",
       "started_at", "ended_at", "note", "source", "patreon_member_id",
-      "payer_email",
+      "kofi_transaction_id", "payer_email",
       "created_at", "updated_at", "id", "user_id"
     ]
   end

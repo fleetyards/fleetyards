@@ -1798,6 +1798,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.datetime "created_at", null: false
     t.string "currency", default: "EUR", null: false
     t.date "ended_at"
+    t.string "kofi_transaction_id"
     t.string "name"
     t.text "note"
     t.string "patreon_member_id"
@@ -1809,6 +1810,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.date "started_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
+    t.index ["kofi_transaction_id"], name: "index_supporter_contributions_on_kofi_transaction_id", unique: true, where: "(kofi_transaction_id IS NOT NULL)"
     t.index ["patreon_member_id"], name: "index_supporter_contributions_on_patreon_member_id", unique: true, where: "(patreon_member_id IS NOT NULL)"
     t.index ["payer_email"], name: "index_supporter_contributions_on_payer_email", where: "(payer_email IS NOT NULL)"
     t.index ["recurring", "ended_at"], name: "index_supporter_contributions_on_recurring_and_ended_at"
