@@ -6,6 +6,7 @@
 #
 #  id                        :uuid             not null, primary key
 #  calendar_feed_token       :string
+#  claim_key                 :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -70,6 +71,7 @@
 # Indexes
 #
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
+#  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
@@ -538,6 +540,37 @@ class User < ApplicationRecord
   # public badge only reflects the ones cleared for attribution.
   def public_supporter?
     supporter_contributions.active_now.where(anonymous: false).exists?
+  end
+
+  # Generated on first view rather than at sign-up, the way a fleet's calendar
+  # feed token is: most accounts never donate, and an unused key is one more
+  # secret to rotate for nothing.
+  def ensure_claim_key!
+    return claim_key if claim_key.present?
+
+    update_column(:claim_key, self.class.generate_claim_key)
+    claim_key
+  end
+
+  def rotate_claim_key!
+    update_column(:claim_key, self.class.generate_claim_key)
+    claim_key
+  end
+
+  # Nil for anything not key-shaped, so a donation message with no key is not
+  # mistaken for one naming an account that does not exist.
+  def self.find_by_claim_key(value)
+    key = SupporterClaimKey.normalize(value)
+    return if key.blank?
+
+    find_by(claim_key: key)
+  end
+
+  def self.generate_claim_key
+    loop do
+      key = SupporterClaimKey.generate
+      break key unless exists?(claim_key: key)
+    end
   end
 
   def reset_password(new_password, new_password_confirmation)

@@ -1865,6 +1865,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
 
   create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "calendar_feed_token"
+    t.string "claim_key"
     t.datetime "confirmation_sent_at", precision: nil
     t.string "confirmation_token", limit: 255
     t.datetime "confirmed_at", precision: nil
@@ -1930,6 +1931,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"
     t.index ["calendar_feed_token"], name: "index_users_on_calendar_feed_token", unique: true
+    t.index ["claim_key"], name: "index_users_on_claim_key", unique: true, where: "(claim_key IS NOT NULL)"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["id"], name: "index_users_on_id_where_not_tracking", where: "(tracking = false)"

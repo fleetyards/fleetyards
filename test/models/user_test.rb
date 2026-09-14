@@ -6,6 +6,7 @@
 #
 #  id                        :uuid             not null, primary key
 #  calendar_feed_token       :string
+#  claim_key                 :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -70,6 +71,7 @@
 # Indexes
 #
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
+#  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
@@ -339,5 +341,43 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     RETIRED_COLUMNS.each do |column|
       assert_not_includes User.ransackable_attributes, column
     end
+  end
+  test "#ensure_claim_key! generates once and is stable afterwards" do
+    user = create(:user)
+
+    assert_nil user.claim_key
+
+    key = user.ensure_claim_key!
+
+    assert_match(/\AFY-[0-9A-Z]{4}-[0-9A-Z]{4}\z/, key)
+    assert_equal key, user.reload.claim_key
+    assert_equal key, user.ensure_claim_key!
+  end
+
+  test "#rotate_claim_key! replaces the key" do
+    user = create(:user)
+    original = user.ensure_claim_key!
+
+    rotated = user.rotate_claim_key!
+
+    assert_not_equal original, rotated
+    assert_equal rotated, user.reload.claim_key
+  end
+
+  test ".find_by_claim_key accepts what a supporter is likely to type" do
+    user = create(:user)
+    key = user.ensure_claim_key!
+
+    assert_equal user, User.find_by_claim_key(key)
+    assert_equal user, User.find_by_claim_key(key.downcase)
+    assert_equal user, User.find_by_claim_key(key.delete("-"))
+  end
+
+  test ".find_by_claim_key returns nil for a non-key and for an unclaimed key" do
+    create(:user).ensure_claim_key!
+
+    assert_nil User.find_by_claim_key("hello")
+    assert_nil User.find_by_claim_key(nil)
+    assert_nil User.find_by_claim_key("FY-0000-0000")
   end
 end
