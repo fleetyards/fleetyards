@@ -23,7 +23,11 @@ module V1
             # Only a transport contract may carry a source, and it must carry
             # one. The model refuses the other three combinations.
             sourceFleetInventoryId: {type: [:string, :null], format: :uuid},
-            destinationFleetInventoryId: {type: :string, format: :uuid}
+            destinationFleetInventoryId: {type: :string, format: :uuid},
+            # The goods, when a contract arrives with them. Saved with it in one
+            # transaction, because a contract with nothing to deliver cannot be
+            # published and a second form to add them is the long way round.
+            items: {type: :array, items: ::V1::Schemas::Inputs::FleetContractItemInput}
           },
           additionalProperties: false,
           required: []

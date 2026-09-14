@@ -365,11 +365,16 @@ describe("TransferModal towards a contract", () => {
 
     const { wrapper, onSend } = await build([position()], [pendingTarget]);
 
-    const picker = wrapper.findComponent("[data-test='transfer-contract']");
+    const picker = wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find(
+        (component) =>
+          component.attributes("data-test") === "transfer-contract",
+      );
 
-    expect(picker.exists()).toBe(true);
+    expect(picker).toBeDefined();
 
-    await picker.vm.$emit("update:modelValue", "contract-1");
+    await picker?.vm.$emit("update:modelValue", "contract-1");
     await wrapper.find("[data-test='transfer-submit']").trigger("click");
     await flushPromises();
 

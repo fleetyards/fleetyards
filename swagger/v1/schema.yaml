@@ -17381,6 +17381,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FleetContractBoardMember"
+        progress:
+          "$ref": "#/components/schemas/FleetContractProgress"
         itemsCount:
           type: integer
         crewCount:
@@ -17434,8 +17436,6 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FleetContractCrewMember"
-        progress:
-          "$ref": "#/components/schemas/FleetContractProgress"
       additionalProperties: false
       required:
       - id
@@ -17447,11 +17447,11 @@ components:
       - requiresPickup
       - destination
       - crewPreview
+      - progress
       - itemsCount
       - crewCount
       - items
       - crew
-      - progress
       title: FleetContractDetail
     FleetContractEndpoint:
       type:
@@ -17648,28 +17648,6 @@ components:
       - lines
       - shares
       title: FleetContractProgress
-    FleetContractProgressSummary:
-      type: object
-      properties:
-        fraction:
-          type: number
-        delivered:
-          type: string
-        requested:
-          type: string
-        unit:
-          type:
-          - string
-          - 'null'
-        complete:
-          type: boolean
-      additionalProperties: false
-      required:
-      - fraction
-      - delivered
-      - requested
-      - complete
-      title: FleetContractProgressSummary
     FleetContractProgressLine:
       type: object
       properties:
@@ -17718,6 +17696,28 @@ components:
       - fraction
       - contributions
       title: FleetContractProgressLine
+    FleetContractProgressSummary:
+      type: object
+      properties:
+        fraction:
+          type: number
+        delivered:
+          type: string
+        requested:
+          type: string
+        unit:
+          type:
+          - string
+          - 'null'
+        complete:
+          type: boolean
+      additionalProperties: false
+      required:
+      - fraction
+      - delivered
+      - requested
+      - complete
+      title: FleetContractProgressSummary
     FleetContractQualityMatchEnum:
       type: string
       enum:

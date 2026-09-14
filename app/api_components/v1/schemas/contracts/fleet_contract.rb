@@ -27,6 +27,10 @@ module V1
             # client shows the pickup column on this rather than on the kind.
             requiresPickup: {type: :boolean},
             deadline: {type: [:string, :null], format: "date-time"},
+            # Who is on it, and how far it has got -- what a board shows
+            # without opening the contract.
+            crewPreview: {type: :array, items: ::V1::Schemas::Contracts::FleetContractBoardMember},
+            progress: ::V1::Schemas::Contracts::FleetContractProgressSummary,
             itemsCount: {type: :integer},
             crewCount: {type: :integer},
             source: ::V1::Schemas::Contracts::FleetContractEndpoint,
@@ -41,7 +45,7 @@ module V1
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id title slug kind state reward requiresPickup destination itemsCount crewCount]
+          required: %w[id title slug kind state reward requiresPickup destination crewPreview progress itemsCount crewCount]
         })
       end
     end
