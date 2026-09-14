@@ -15642,6 +15642,8 @@ components:
           format: date
         note:
           type: string
+        payerEmail:
+          type: string
         userId:
           type: string
           format: uuid
@@ -15686,6 +15688,10 @@ components:
           format: date
         note:
           type: string
+        payerEmail:
+          type:
+          - string
+          - 'null'
         userId:
           type:
           - string

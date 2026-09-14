@@ -8,8 +8,9 @@ module V1
       schema({
         type: :object,
         properties: {
-          # Null until the account asks for one.
-          key: {type: :string}
+          # Null until the account asks for one, which is a normal response
+          # rather than an error, so the contract has to allow it.
+          key: {type: [:string, :null]}
         },
         required: %w[key],
         additionalProperties: false

@@ -268,6 +268,12 @@ class User < ApplicationRecord
   before_create :setup_otp_secret
   after_create :create_default_notification_preferences
 
+  # Keyed on the column rather than on Devise's after_confirmation hook, so an
+  # account confirmed by assignment -- an OAuth signup, an admin, a backfill --
+  # is covered as well as one that went through `confirm`.
+  after_commit :link_supporter_contributions,
+    if: -> { saved_change_to_confirmed_at? && confirmed_at.present? }
+
   after_update :notify_user
   after_update :sync_sale_notify_preference
   after_save :touch_fleet_memberships
@@ -544,7 +550,13 @@ class User < ApplicationRecord
   def ensure_claim_key!
     return claim_key if claim_key.present?
 
-    update_column(:claim_key, self.class.generate_claim_key)
+    # Two requests arriving together would otherwise both find nothing, both
+    # generate, and the loser would be handed a key that no longer exists by the
+    # time they copy it. `with_lock` re-reads the row inside the transaction.
+    with_lock do
+      update_column(:claim_key, self.class.generate_claim_key) if claim_key.blank?
+    end
+
     claim_key
   end
 
@@ -567,6 +579,18 @@ class User < ApplicationRecord
       key = SupporterClaimKey.generate
       break key unless exists?(claim_key: key)
     end
+  end
+
+  # A donation can arrive before its donor has an account, or before they have
+  # confirmed it -- the linker only ever matches a confirmed address, so
+  # confirmation is the moment an unlinked contribution becomes resolvable.
+  # Reconfirmation runs this too, which covers somebody moving their account to
+  # the address they donate from.
+  private def link_supporter_contributions
+    SupporterContribution
+      .where(user_id: nil)
+      .where("lower(payer_email) = ?", email.to_s.strip.downcase)
+      .find_each { |contribution| ::Supporters::Linker.call(contribution) }
   end
 
   def reset_password(new_password, new_password_confirmation)

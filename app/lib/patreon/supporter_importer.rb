@@ -49,17 +49,23 @@ module Patreon
         return
       end
 
-      link(record)
-
+      # Refreshed rather than trusted: a row written before this column existed
+      # has no address at all, and one written before the patron changed theirs
+      # holds an address that may now belong to somebody else's account.
+      record.payer_email = member.email if member.email.present?
       ended_now = apply_lifecycle(record, member)
-      unless record.changed?
+
+      if record.changed?
+        record.save!
+        @stats[:updated] += 1
+        @stats[:ended] += 1 if ended_now
+      else
         @stats[:skipped] += 1
-        return
       end
 
-      record.save!
-      @stats[:updated] += 1
-      @stats[:ended] += 1 if ended_now
+      # After the save, and outside the changed? guard, for the same reason
+      # upsert links there: an unchanged row still wants linking.
+      link(record)
     end
 
     def upsert(record, member)

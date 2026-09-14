@@ -202,6 +202,30 @@ class UserTest < ActiveSupport::TestCase
       refute @user.supporter?
     end
 
+    # A donation can land before its donor has an account. The linker only ever
+    # matches a confirmed address, so confirmation is the moment it resolves.
+    test "confirming an account claims a contribution that arrived first" do
+      contribution = create(:supporter_contribution, payer_email: "later@example.test")
+      user = create(:user, email: "later@example.test", confirmed_at: nil)
+
+      assert_nil contribution.reload.user
+
+      user.update!(confirmed_at: Time.current)
+
+      assert_equal user, contribution.reload.user
+    end
+
+    test "confirming claims nothing that is already linked or addressed elsewhere" do
+      mine = create(:user, confirmed_at: Time.current)
+      taken = create(:supporter_contribution, payer_email: "later@example.test", user: mine)
+      other = create(:supporter_contribution, payer_email: "somebody@example.test")
+
+      create(:user, email: "later@example.test", confirmed_at: nil).update!(confirmed_at: Time.current)
+
+      assert_equal mine, taken.reload.user
+      assert_nil other.reload.user
+    end
+
     test "an unlinked contribution belongs to nobody" do
       create(:supporter_contribution, started_at: Date.current)
 

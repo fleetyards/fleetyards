@@ -26478,7 +26478,9 @@ components:
       type: object
       properties:
         key:
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - key
       additionalProperties: false

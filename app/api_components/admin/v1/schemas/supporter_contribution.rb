@@ -20,6 +20,7 @@ module Admin
             startedAt: {type: :string, format: :date},
             endedAt: {type: :string, format: :date},
             note: {type: :string},
+            payerEmail: {type: :string},
             userId: {type: :string, format: :uuid},
             user: ::Admin::V1::Schemas::Users::Options::UserOption,
             createdAt: {type: :string, format: "date-time"},
