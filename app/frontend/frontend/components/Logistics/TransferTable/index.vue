@@ -173,6 +173,7 @@ const canCancel = (transfer: InventoryTransfer) =>
         v-if="(record as InventoryTransfer).contract"
         class="transfer-contract"
       >
+        <i class="fa-duotone fa-clipboard-list" />
         {{ t("labels.logistics.forContract") }}
         <router-link
           :to="{
@@ -309,5 +310,24 @@ const canCancel = (transfer: InventoryTransfer) =>
 .transfer-contents-amount {
   white-space: nowrap;
   opacity: 0.7;
+}
+
+// Under the goods rather than a column of its own: most transfers name no
+// contract, and an empty column on every row buys nothing. No margin of its
+// own -- the list's own row padding is the whole gap.
+.transfer-contract {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  // The cell's own size: this is a line of the contents, not a footnote to it.
+  color: $gray-light;
+
+  a {
+    color: $gold;
+
+    &:hover {
+      color: lighten($gold, 10%);
+    }
+  }
 }
 </style>
