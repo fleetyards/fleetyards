@@ -15808,9 +15808,11 @@ components:
       enum:
       - manual
       - patreon
+      - kofi
       x-enumNames:
       - MANUAL
       - PATREON
+      - KOFI
       title: SupporterContributionSourceEnum
     SupporterContributionStats:
       type: object

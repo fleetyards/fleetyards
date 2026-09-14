@@ -18,6 +18,9 @@ namespace :me, defaults: {format: :json} do
   resource :calendar_subscription, path: "calendar/subscription", only: %i[show create destroy] do
     post :rotate
   end
+  resource :supporter_claim_key, path: "supporter/claim-key", only: %i[show create] do
+    post :rotate
+  end
   get "calendar/events.ics", to: "calendar_subscriptions#ics",
     as: :calendar_feed, defaults: {format: "ics"}, constraints: {format: "ics"}
 end
