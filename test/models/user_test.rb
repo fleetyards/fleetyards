@@ -262,6 +262,50 @@ class UserTest < ActiveSupport::TestCase
       assert_equal user, contribution.reload.user
     end
 
+    test "no contributions is tier zero" do
+      assert_equal 0, @user.supporter_tier
+    end
+
+    test "the tier follows this month's total" do
+      create(:supporter_contribution, user: @user, amount_cents: 100, started_at: Date.current)
+
+      assert_equal 1, @user.reload.supporter_tier
+
+      create(:supporter_contribution, user: @user, amount_cents: 400, started_at: Date.current)
+
+      assert_equal 2, @user.reload.supporter_tier
+    end
+
+    test "a contribution below the first threshold earns a badge but no tier" do
+      create(:supporter_contribution, user: @user, amount_cents: 50, started_at: Date.current)
+
+      assert @user.supporter?
+      assert_equal 0, @user.reload.supporter_tier
+    end
+
+    # The second tier is for the commitment, not for what the exchange rate did
+    # to it in a given month.
+    test "a recurring Patreon pledge is tier two whatever it converted to" do
+      create(:supporter_contribution, :patreon, user: @user, amount_cents: 120,
+        started_at: 1.year.ago.to_date, ended_at: nil)
+
+      assert_equal 2, @user.reload.supporter_tier
+    end
+
+    test "a one-off Patreon contribution is not promoted" do
+      create(:supporter_contribution, :patreon, user: @user, amount_cents: 120,
+        recurring: false, started_at: Date.current)
+
+      assert_equal 1, @user.reload.supporter_tier
+    end
+
+    test "last month's contributions do not count toward the tier" do
+      create(:supporter_contribution, user: @user, amount_cents: 900,
+        started_at: 2.months.ago.to_date)
+
+      assert_equal 0, @user.reload.supporter_tier
+    end
+
     test "an unlinked contribution belongs to nobody" do
       create(:supporter_contribution, started_at: Date.current)
 

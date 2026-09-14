@@ -21,7 +21,8 @@ module V1
           publicHangarLoaners: {type: :boolean},
           publicHangarStats: {type: :boolean},
           publicWishlist: {type: :boolean},
-          supporter: {type: :boolean}
+          supporter: {type: :boolean},
+          supporterTier: {type: :integer}
         },
         additionalProperties: false,
         required: %w[username publicHangarLoaners publicHangarStats publicWishlist supporter]

@@ -26883,6 +26883,8 @@ components:
           type: boolean
         supporter:
           type: boolean
+        supporterTier:
+          type: integer
       additionalProperties: false
       required:
       - username

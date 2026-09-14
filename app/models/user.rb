@@ -543,12 +543,36 @@ class User < ApplicationRecord
     email.ends_with?("@users.noreply.fleetyards.net")
   end
 
+  # Thresholds are compared against amount_cents, which every importer has
+  # already normalised to EUR -- the figure the platforms report is whatever
+  # currency the donor paid in, and comparing those directly would make a tier
+  # mean different things to different people.
+  SUPPORTER_TIERS = {1 => 100, 2 => 500}.freeze
+
   # Perks and the public badge both, and deliberately blind to anonymity.
   # Anonymity says whether a contribution is *named* on the supporters page --
   # SupporterContribution#public_name is where it is answered -- not whether the
   # person behind it may be known to support at all.
   def supporter?
     supporter_contributions.active_now.exists?
+  end
+
+  # 0 for everybody else, so callers can compare rather than branch on nil.
+  #
+  # Derived, never stored: it is a fact about this month's contributions and
+  # would otherwise need recalculating every time one is added, edited, ended
+  # or linked -- with nothing to notice when a recalculation was missed.
+  def supporter_tier
+    contributions = supporter_contributions.active_now
+    total = contributions.sum(:amount_cents)
+
+    tier = SUPPORTER_TIERS.select { |_, cents| total >= cents }.keys.max || 0
+
+    # A recurring Patreon pledge is the commitment the second tier is for,
+    # whatever the exchange rate did to its amount this month.
+    return [tier, 2].max if contributions.any? { |c| c.patreon? && c.recurring? }
+
+    tier
   end
 
   # Generated on first view rather than at sign-up, the way a fleet's calendar
