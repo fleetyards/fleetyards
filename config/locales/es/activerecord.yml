@@ -248,6 +248,15 @@ es:
           attributes:
             base:
               invalid_holder: "necesita exactamente un propietario"
+        tour_join_request:
+          attributes:
+            base:
+              already_requested: "Ya has solicitado unirte a esta expedición"
+            tour:
+              standalone: "no es una expedición de flota"
+              not_open: "ya no está abierta"
+            user:
+              already_participating: "ya participa en esta expedición"
         fleet_role:
           attributes:
             base:

@@ -2,6 +2,7 @@
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { routes as settingsRoutes } from "./settings/routes";
 import { useSessionStore } from "@/frontend/stores/session";
+import { checkFeatures } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { usePendingFriendRequests } from "@/frontend/composables/usePendingFriendRequests";
 
@@ -9,8 +10,8 @@ const sessionStore = useSessionStore();
 const { isFeatureEnabled } = useFeatures();
 
 const visibleRoutes = computed(() =>
-  settingsRoutes.filter(
-    (route) => !route.meta?.feature || isFeatureEnabled(route.meta.feature),
+  settingsRoutes.filter((route) =>
+    checkFeatures(route.meta?.feature, isFeatureEnabled),
   ),
 );
 

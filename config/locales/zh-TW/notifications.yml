@@ -60,3 +60,7 @@ zh-TW:
       title: "%{fleet} 希望與 %{own_fleet} 結盟"
     fleet_ally_request_accepted:
       title: "%{fleet} 現已與 %{own_fleet} 結盟"
+    tour_join_request_received:
+      title: "%{username} 想加入 %{tour}"
+    tour_join_request_accepted:
+      title: "你已加入 %{tour}"

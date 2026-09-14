@@ -248,6 +248,15 @@ zh-CN:
           attributes:
             base:
               invalid_holder: "需要且仅需要一个所有者"
+        tour_join_request:
+          attributes:
+            base:
+              already_requested: "你已申请加入此行程"
+            tour:
+              standalone: "不是舰队行程"
+              not_open: "已不再开放"
+            user:
+              already_participating: "已经参加了此行程"
         fleet_role:
           attributes:
             base:

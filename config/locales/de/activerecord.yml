@@ -248,6 +248,15 @@ de:
           attributes:
             base:
               invalid_holder: "braucht genau einen Besitzer"
+        tour_join_request:
+          attributes:
+            base:
+              already_requested: "Du hast bereits angefragt, dieser Tour beizutreten"
+            tour:
+              standalone: "ist keine Flotten-Tour"
+              not_open: "ist nicht mehr offen"
+            user:
+              already_participating: "ist bereits auf dieser Tour"
         fleet_role:
           attributes:
             base:

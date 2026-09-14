@@ -223,6 +223,9 @@ de:
       update: Tour konnte nicht aktualisiert werden.
       destroy: Tour konnte nicht gelöscht werden.
       join: Du konntest dieser Tour nicht hinzugefügt werden.
+    tour_join_requests:
+      create: Deine Anfrage konnte nicht gesendet werden.
+      destroy: Deine Anfrage konnte nicht zurückgezogen werden.
     payout_ledgers:
       create: Auszahlungsbuch konnte nicht geöffnet werden.
     payout_entries:

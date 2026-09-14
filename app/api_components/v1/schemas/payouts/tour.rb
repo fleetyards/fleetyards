@@ -17,14 +17,23 @@ module V1
             startsAt: {type: [:string, :null], format: "date-time"},
             settledAt: {type: [:string, :null], format: "date-time"},
             createdBy: ::V1::Schemas::UserRefWithAvatar,
+            # Only on a tour organised from a fleet's page; a standalone tour
+            # omits the key rather than sending a null object.
+            fleet: ::V1::Schemas::FleetRef,
             # Only ever present for the organiser; it is the credential the
             # invite link carries.
             inviteToken: {type: [:string, :null]},
             payoutLedgerId: {type: [:string, :null], format: :uuid},
+            # The viewer's own standing on this tour: whether they are on the
+            # ledger, and whether they have already asked to be.
+            participating: {type: :boolean},
+            joinRequestPending: {type: :boolean},
+            # The viewer's own pending ask, so the page can offer withdrawing it.
+            joinRequestId: {type: [:string, :null], format: :uuid},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
-          required: %w[id title slug status],
+          required: %w[id title slug status participating joinRequestPending],
           additionalProperties: false
         })
       end

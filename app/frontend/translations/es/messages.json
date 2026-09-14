@@ -887,7 +887,11 @@
         "settleConfirm": "¿Calcular los pagos y bloquear el libro? Los movimientos no se podrán cambiar hasta reabrirlo.",
         "reopenConfirm": "¿Reabrir el libro? Se descartará la lista de pagos actual.",
         "participantNeedsName": "Introduce un usuario o un nombre",
-        "weightUpdated": "Parte actualizada"
+        "weightUpdated": "Parte actualizada",
+        "joinRequested": "Tu solicitud fue enviada",
+        "joinRequestWithdrawn": "Solicitud retirada",
+        "joinRequestApproved": "Solicitud aceptada",
+        "joinRequestDeclined": "Solicitud rechazada"
       },
       "dock": {
         "create": {

@@ -66,7 +66,9 @@ class Notification < ApplicationRecord
     friend_request_received: "friend_request_received",
     friend_request_accepted: "friend_request_accepted",
     fleet_ally_request_received: "fleet_ally_request_received",
-    fleet_ally_request_accepted: "fleet_ally_request_accepted"
+    fleet_ally_request_accepted: "fleet_ally_request_accepted",
+    tour_join_request_received: "tour_join_request_received",
+    tour_join_request_accepted: "tour_join_request_accepted"
   }
 
   TYPES = {
@@ -245,6 +247,19 @@ class Notification < ApplicationRecord
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_ally_request_accepted: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    # Asking onto a tour and being let on, and nothing in between: a decline is
+    # the organiser's answer to give in their own words, not a notification
+    # telling somebody they were turned down.
+    tour_join_request_received: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    tour_join_request_accepted: {
       retention: 30.days,
       channels: %i[app],
       preference_defaults: {app: true, mail: false, push: false}

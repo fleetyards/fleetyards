@@ -55,6 +55,10 @@ en:
       title: "%{fleet} wants to ally with %{own_fleet}"
     fleet_ally_request_accepted:
       title: "%{fleet} is now allied with %{own_fleet}"
+    tour_join_request_received:
+      title: "%{username} wants to join %{tour}"
+    tour_join_request_accepted:
+      title: "You're on %{tour}"
     inventory_transfer_received:
       title: "%{sender} sent you %{count} item(s)"
       title_fleet: "%{sender} sent %{fleet} %{count} item(s)"

@@ -77,6 +77,13 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
     ],
   },
   {
+    key: "tours",
+    types: [
+      NotificationTypeEnum.TOUR_JOIN_REQUEST_RECEIVED,
+      NotificationTypeEnum.TOUR_JOIN_REQUEST_ACCEPTED,
+    ],
+  },
+  {
     key: "relationships",
     types: [
       NotificationTypeEnum.FRIEND_REQUEST_RECEIVED,

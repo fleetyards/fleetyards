@@ -50,6 +50,26 @@ class PayoutLedgerChannelTest < AsyncapiTestCase
     assert_equal ledger.id, payloads.first["id"]
   end
 
+  # Whoever can answer a request to join a tour has no participant row until
+  # they join one, so the fan-out over the participants would never reach them
+  # -- and the request is exactly what they are waiting to see appear.
+  test "broadcasts to a tour's organiser when somebody asks to join it" do
+    Flipper.enable("tour_payouts")
+    Flipper.enable("fleet_tours")
+
+    organiser = create(:user)
+    member = create(:user)
+    fleet = create(:fleet, admins: [organiser], members: [member])
+    tour = create(:tour, fleet: fleet, created_by: organiser)
+    ledger = create(:payout_ledger, subject: tour)
+
+    payloads = assert_asyncapi_broadcast(params: {user_gid: organiser.to_gid_param}) do
+      create(:tour_join_request, tour: tour, user: member)
+    end
+
+    assert_equal ledger.id, payloads.first["id"]
+  end
+
   test "broadcasts to a participant when the ledger is settled" do
     ledger = create(:payout_ledger)
     participant = create(:payout_participant, payout_ledger: ledger)

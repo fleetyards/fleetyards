@@ -16,16 +16,19 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  created_by_id :uuid             not null
+#  fleet_id      :uuid
 #
 # Indexes
 #
 #  index_tours_on_created_by_id_and_status  (created_by_id,status)
+#  index_tours_on_fleet_id_and_status       (fleet_id,status)
 #  index_tours_on_invite_token              (invite_token) UNIQUE
 #  index_tours_on_slug                      (slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (fleet_id => fleets.id)
 #
 FactoryBot.define do
   factory :tour do
@@ -33,6 +36,10 @@ FactoryBot.define do
     sequence(:title) { |n| "Tour #{n}" }
     description { Faker::Lorem.sentence }
     starts_at { 1.day.from_now }
+
+    trait :for_fleet do
+      association :fleet, factory: :fleet
+    end
 
     trait :settled do
       status { "settled" }

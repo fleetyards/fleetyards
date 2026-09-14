@@ -2016,7 +2016,8 @@
         "unavailable": "This is no longer available.",
         "openTransfers": "Open transfers",
         "openFriends": "Open friends",
-        "openAllies": "Open allies"
+        "openAllies": "Open allies",
+        "openTour": "Open tour"
       },
       "notificationTypes": {
         "channels": {
@@ -2030,7 +2031,8 @@
           "fleetMembership": "Fleet membership",
           "fleetEvents": "Fleet events",
           "logistics": "Logistics",
-          "relationships": "Friends & allies"
+          "relationships": "Friends & allies",
+          "tours": "Tours"
         },
         "hangar_create": "Hangar created",
         "hangar_destroy": "Hangar removed",
@@ -2062,7 +2064,9 @@
         "friend_request_received": "Friend request received",
         "friend_request_accepted": "Friend request accepted",
         "fleet_ally_request_received": "Ally request received",
-        "fleet_ally_request_accepted": "Ally request accepted"
+        "fleet_ally_request_accepted": "Ally request accepted",
+        "tour_join_request_received": "Join request received",
+        "tour_join_request_accepted": "Join request accepted"
       },
       "fleets": {
         "missions": {
@@ -2382,13 +2386,15 @@
         "isOwed": "is owed",
         "even": "settled up",
         "title": "Title",
+        "fleet": "Fleet",
         "startsAt": "Starts at",
         "inviteLink": "Invite link",
         "participants": "People",
         "weight": "Weight",
         "shares": "shares",
         "customWeight": "Any weight",
-        "preview": "Preview · moves until you settle"
+        "preview": "Preview · moves until you settle",
+        "joinRequestPending": "Request pending"
       },
       "shipSizes": {
         "extra_extra_small": "Snubcraft (XXS)",

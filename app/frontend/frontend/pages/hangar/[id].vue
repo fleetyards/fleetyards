@@ -11,6 +11,7 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { useShowVehicle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { checkFeatures } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
@@ -26,7 +27,7 @@ const tabs = computed(() =>
       // A route reached from a tab rather than being one -- the cargo ledger is
       // the same hold, seen differently.
       tab.meta?.nav !== "hidden" &&
-      (!tab.meta?.feature || isFeatureEnabled(tab.meta.feature)),
+      checkFeatures(tab.meta?.feature, isFeatureEnabled),
   ),
 );
 

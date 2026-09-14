@@ -68,6 +68,7 @@
           },
           "payouts": "分账"
         },
+        "tours": "行程",
         "settings": {
           "index": "设置",
           "fleet": "舰队设置",

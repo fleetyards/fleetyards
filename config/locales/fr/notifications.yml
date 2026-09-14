@@ -60,3 +60,7 @@ fr:
       title: "%{fleet} souhaite s'allier avec %{own_fleet}"
     fleet_ally_request_accepted:
       title: "%{fleet} est désormais alliée à %{own_fleet}"
+    tour_join_request_received:
+      title: "%{username} veut rejoindre %{tour}"
+    tour_join_request_accepted:
+      title: "Vous participez à %{tour}"

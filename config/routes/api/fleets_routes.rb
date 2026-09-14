@@ -127,6 +127,12 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     end
   end
 
+  # Only the endpoints that need the fleet to resolve them. Everything else a
+  # tour does -- settling, cancelling, rotating the invite -- stays addressed
+  # by the tour's own slug under /tours: the slug is unique site-wide, and
+  # TourPolicy reads the tour's fleet to decide who may do it.
+  resources :tours, param: :slug, only: %i[index show create], constraints: {slug: %r{[^/.]+}}
+
   resource :fleet_stats, path: "stats", only: %i[] do
     get "model-counts", to: "fleet_stats#model_counts"
     get "vehicles", to: "fleet_stats#vehicles"

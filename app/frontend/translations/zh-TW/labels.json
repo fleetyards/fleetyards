@@ -2002,7 +2002,8 @@
         "unavailable": "這項內容已無法使用。",
         "openTransfers": "開啟轉移",
         "openFriends": "開啟好友",
-        "openAllies": "開啟盟友"
+        "openAllies": "開啟盟友",
+        "openTour": "開啟行程"
       },
       "notificationTypes": {
         "channels": {
@@ -2016,7 +2017,8 @@
           "fleetMembership": "艦隊成員資格",
           "fleetEvents": "艦隊活動",
           "logistics": "物流",
-          "relationships": "好友與盟友"
+          "relationships": "好友與盟友",
+          "tours": "行程"
         },
         "hangar_create": "機庫已建立",
         "hangar_destroy": "機庫已移除",
@@ -2048,7 +2050,9 @@
         "friend_request_received": "收到好友請求",
         "friend_request_accepted": "好友請求已接受",
         "fleet_ally_request_received": "收到結盟請求",
-        "fleet_ally_request_accepted": "結盟請求已接受"
+        "fleet_ally_request_accepted": "結盟請求已接受",
+        "tour_join_request_received": "收到參加申請",
+        "tour_join_request_accepted": "參加申請已通過"
       },
       "fleets": {
         "missions": {
@@ -2368,13 +2372,15 @@
         "isOwed": "應收",
         "even": "已結清",
         "title": "標題",
+        "fleet": "艦隊",
         "startsAt": "開始於",
         "inviteLink": "邀請連結",
         "participants": "人數",
         "weight": "權重",
         "shares": "份",
         "customWeight": "自訂權重",
-        "preview": "預覽 · 結算前會變動"
+        "preview": "預覽 · 結算前會變動",
+        "joinRequestPending": "申請待處理"
       },
       "shipSizes": {
         "extra_extra_small": "小型飛船 (XXS)",

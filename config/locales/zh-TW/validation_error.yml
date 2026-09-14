@@ -216,6 +216,9 @@ zh-TW:
       update: 無法更新行程。
       destroy: 無法刪除行程。
       join: 無法將你加入此行程。
+    tour_join_requests:
+      create: 無法送出你的申請。
+      destroy: 無法撤回你的申請。
     payout_ledgers:
       create: 無法開啟分帳簿。
     payout_entries:

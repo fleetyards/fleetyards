@@ -395,7 +395,11 @@
         "createTour": "建立行程",
         "joinTour": "加入行程",
         "copyInvite": "複製邀請連結",
-        "rotateInvite": "產生新連結"
+        "rotateInvite": "產生新連結",
+        "askToJoin": "申請參加",
+        "withdrawJoinRequest": "撤回申請",
+        "approveJoinRequest": "通過",
+        "declineJoinRequest": "拒絕"
       },
       "relationships": {
         "accept": "接受",

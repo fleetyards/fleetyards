@@ -10,6 +10,7 @@ import {
 } from "vue-router";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { checkFeatures } from "@/shared/utils/Access";
 
 type NavTypes = "main" | "footer" | "hidden";
 
@@ -48,11 +49,11 @@ const filteredRoutes = computed(() => {
       return props.hasAccessTo(route.meta?.access);
     })
     .filter((route) => {
-      if (!props.isFeatureEnabled || !route.meta?.feature) {
+      if (!props.isFeatureEnabled) {
         return true;
       }
 
-      return props.isFeatureEnabled(route.meta.feature);
+      return checkFeatures(route.meta?.feature, props.isFeatureEnabled);
     });
 });
 
@@ -77,11 +78,11 @@ const filteredChildRoutes = (
       return false;
     })
     .filter((child) => {
-      if (!props.isFeatureEnabled || !child.meta?.feature) {
+      if (!props.isFeatureEnabled) {
         return true;
       }
 
-      return props.isFeatureEnabled(child.meta.feature);
+      return checkFeatures(child.meta?.feature, props.isFeatureEnabled);
     })
     .map((child) => {
       if (child.children) {

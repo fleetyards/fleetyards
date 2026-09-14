@@ -70,6 +70,30 @@ class Api::V1::ToursSettleTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 403, path_params: {slug: @tour.slug}
   end
 
+  # A fleet tour does not die with whoever organised it: the fleet's payout
+  # managers can close it out, which is the whole reason one carries a fleet.
+  test "PUT lets a fleet officer settle a tour they did not organise" do
+    officer = create(:user)
+    fleet = create(:fleet, officers: [officer], members: [@organiser])
+    @tour.update!(fleet:)
+
+    sign_in officer
+
+    assert_api_response :put, 200, path_params: {slug: @tour.slug} do
+      assert_equal "settled", parsed_body["status"]
+    end
+  end
+
+  test "PUT is still refused for a fleet member with no payout manage" do
+    member = create(:user)
+    fleet = create(:fleet, members: [member, @organiser])
+    @tour.update!(fleet:)
+
+    sign_in member
+
+    assert_api_response :put, 403, path_params: {slug: @tour.slug}
+  end
+
   test "PUT returns 401 when not signed in" do
     assert_api_response :put, 401, path_params: {slug: @tour.slug}
   end

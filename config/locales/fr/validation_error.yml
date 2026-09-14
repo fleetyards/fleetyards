@@ -217,6 +217,9 @@ fr:
       update: L'expédition n'a pas pu être mise à jour.
       destroy: L'expédition n'a pas pu être supprimée.
       join: Vous n'avez pas pu être ajouté à cette expédition.
+    tour_join_requests:
+      create: Votre demande n'a pas pu être envoyée.
+      destroy: Votre demande n'a pas pu être retirée.
     payout_ledgers:
       create: Le registre n'a pas pu être ouvert.
     payout_entries:

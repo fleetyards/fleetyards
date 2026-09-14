@@ -40,11 +40,15 @@ type Props = {
   manageable?: boolean;
   // Whether the viewer may record and edit entries.
   contributable?: boolean;
+  // Set for a fleet tour's ledger, whose participant list also carries whoever
+  // has asked to be on it. A fleet event's ledger leaves it unset.
+  tourSlug?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   manageable: false,
   contributable: false,
+  tourSlug: undefined,
 });
 
 const { t } = useI18n();
@@ -79,6 +83,14 @@ const recordableParticipants = computed(() => {
     (participant) => participant.user?.id === sessionStore.currentUser?.id,
   );
 });
+
+// Being allowed to record money is not the same as having a row to record it
+// against: a fleet's payout readers reach a tour or an event they never joined,
+// and for them the picker is empty and every entry the API would accept does
+// not exist. Offering the controls anyway sends them to a 403.
+const canRecord = computed(
+  () => props.contributable && recordableParticipants.value.length > 0,
+);
 
 // While the ledger is open the transfer list is a live preview recomputed from
 // the entries; once settled it is the frozen rows people pay against.
@@ -115,6 +127,14 @@ const refetchAll = () => {
   void refetchTransfers();
 };
 
+// Announced rather than refetched directly: the participant list carries the
+// requests to join this tour, which are a query of its own, and a broadcast
+// has to reach those as well as the figures here. The listener below is what
+// refetches this component's own queries.
+const resync = () => {
+  comlink.emit("payout-ledger-changed");
+};
+
 // The channel is per-user, not per-ledger, so a viewer taking part in more than
 // one ledger hears about all of them on the same stream -- hence the id check
 // rather than a subscription scoped to this ledger.
@@ -125,13 +145,13 @@ useSubscription({
   // page showing figures that have moved on. Resyncing on every connect covers
   // the reconnects and the gap between the first fetch and the subscription
   // being live; the queries dedupe the one on mount.
-  connected: refetchAll,
+  connected: () => resync(),
   received: (message) => {
     if (message?.id !== props.payoutLedgerId) {
       return;
     }
 
-    refetchAll();
+    resync();
   },
 });
 
@@ -214,7 +234,7 @@ const onReopen = async () => {
           <div class="payout-ledger__heading">
             <span>{{ t("headlines.payouts.entries") }}</span>
             <Btn
-              v-if="contributable && !settled"
+              v-if="canRecord && !settled"
               :size="BtnSizesEnum.SM"
               data-test="payout-add-entry"
               @click="onAddEntry"
@@ -228,7 +248,7 @@ const onReopen = async () => {
             :payout-ledger-id="payoutLedgerId"
             :entries="entries?.items ?? []"
             :participants="recordableParticipants"
-            :editable="contributable && !settled"
+            :editable="canRecord && !settled"
           />
         </PanelBody>
       </Panel>
@@ -254,6 +274,7 @@ const onReopen = async () => {
             :participants="participants"
             :manageable="manageable && !settled"
             :entry-counts="entryCounts"
+            :tour-slug="tourSlug"
           />
         </PanelBody>
       </Panel>

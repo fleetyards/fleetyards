@@ -887,7 +887,11 @@
         "settleConfirm": "Calcolare i pagamenti e bloccare il registro? I movimenti non saranno più modificabili fino alla riapertura.",
         "reopenConfirm": "Riaprire il registro? L'elenco pagamenti attuale verrà scartato.",
         "participantNeedsName": "Inserisci un nome utente o un nome",
-        "weightUpdated": "Quota aggiornata"
+        "weightUpdated": "Quota aggiornata",
+        "joinRequested": "La tua richiesta è stata inviata",
+        "joinRequestWithdrawn": "Richiesta ritirata",
+        "joinRequestApproved": "Richiesta accettata",
+        "joinRequestDeclined": "Richiesta rifiutata"
       },
       "dock": {
         "create": {

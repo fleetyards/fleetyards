@@ -63,6 +63,28 @@ class Api::V1::PayoutLedgersShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 403, path_params: {id: @ledger.id}
   end
 
+  # The money of a fleet tour is the fleet's business: `fleet:payouts:read` is
+  # what the default member role carries, and it reaches the ledger without
+  # anybody having to be added to the participant list.
+  test "GET returns the ledger of a fleet tour to a member who never joined" do
+    member = create(:user)
+    @tour.update!(fleet: create(:fleet, members: [member, @organiser]))
+
+    sign_in member
+
+    assert_api_response :get, 200, path_params: {id: @ledger.id} do
+      assert_equal @ledger.id, parsed_body["id"]
+    end
+  end
+
+  test "GET is still refused to someone outside a fleet tour's fleet" do
+    @tour.update!(fleet: create(:fleet, members: [@organiser]))
+
+    sign_in @stranger
+
+    assert_api_response :get, 403, path_params: {id: @ledger.id}
+  end
+
   test "GET returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {id: @ledger.id}
   end

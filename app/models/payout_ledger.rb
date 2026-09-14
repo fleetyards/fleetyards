@@ -79,8 +79,10 @@ class PayoutLedger < ApplicationRecord
 
   def settled? = status == "settled"
 
+  # Both subjects can carry one: an event always does, a tour only when it was
+  # organised from a fleet's page.
   def fleet
-    subject.is_a?(FleetEvent) ? subject.fleet : nil
+    subject.try(:fleet)
   end
 
   def settlement
@@ -185,6 +187,19 @@ class PayoutLedger < ApplicationRecord
     payload = to_jbuilder_hash
 
     User.where(id: payout_participants.where.not(user_id: nil).select(:user_id)).find_each do |user|
+      PayoutLedgerChannel.broadcast_to(user, payload)
+    end
+  end
+
+  # For the people a change concerns who are not on the ledger themselves.
+  # Somebody who can answer a request to join a tour has no participant row
+  # until they join one, so `broadcast_change` would never reach them -- and
+  # the request is exactly what they are waiting to see. Every caller passes
+  # users who may already read this ledger.
+  def broadcast_change_to(users)
+    payload = to_jbuilder_hash
+
+    Array(users).compact.uniq.each do |user|
       PayoutLedgerChannel.broadcast_to(user, payload)
     end
   end

@@ -84,6 +84,11 @@
           "show": "%{fleet} 活動",
           "payouts": "%{fleet} 活動分帳"
         },
+        "tours": {
+          "index": "%{fleet} 行程",
+          "create": "建立行程 - %{fleet}",
+          "show": "%{fleet} 行程"
+        },
         "settings": {
           "index": "%{fleet} 設定",
           "fleet": "%{fleet} 設定",

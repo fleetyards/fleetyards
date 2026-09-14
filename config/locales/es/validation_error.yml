@@ -220,6 +220,9 @@ es:
       update: No se pudo actualizar la expedición.
       destroy: No se pudo eliminar la expedición.
       join: No se te pudo añadir a esta expedición.
+    tour_join_requests:
+      create: No se pudo enviar tu solicitud.
+      destroy: No se pudo retirar tu solicitud.
     payout_ledgers:
       create: No se pudo abrir el libro de pagos.
     payout_entries:

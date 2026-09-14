@@ -216,6 +216,9 @@ zh-CN:
       update: 无法更新行程。
       destroy: 无法删除行程。
       join: 无法将你加入此行程。
+    tour_join_requests:
+      create: 无法发送你的申请。
+      destroy: 无法撤回你的申请。
     payout_ledgers:
       create: 无法打开分账簿。
     payout_entries:

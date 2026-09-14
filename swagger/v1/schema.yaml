@@ -5651,6 +5651,146 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/tours":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Fleet Tour
+      tags:
+      - Tours
+      operationId: createFleetTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TourCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '400':
+          description: invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: List Fleet Tours
+      tags:
+      - Tours
+      operationId: fleetTours
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - "$ref": "#/components/parameters/SortingParameter"
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ToursList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/tours/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Show Fleet Tour
+      tags:
+      - Tours
+      operationId: fleetTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/vehicles":
     parameters:
     - name: fleetSlug
@@ -12608,6 +12748,234 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/{tourSlug}/join-requests":
+    parameters:
+    - name: tourSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Ask To Join Tour
+      tags:
+      - Tours
+      operationId: createTourJoinRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TourJoinRequest"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: List Tour Join Requests
+      tags:
+      - Tours
+      operationId: tourJoinRequests
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TourJoinRequestsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/{tourSlug}/join-requests/{id}":
+    parameters:
+    - name: tourSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Withdraw Tour Join Request
+      tags:
+      - Tours
+      operationId: destroyTourJoinRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TourJoinRequest"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/{tourSlug}/join-requests/{id}/approve":
+    parameters:
+    - name: tourSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Approve Tour Join Request
+      tags:
+      - Tours
+      operationId: approveTourJoinRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TourJoinRequest"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '409':
+          description: cannot be approved
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/tours/{tourSlug}/join-requests/{id}/decline":
+    parameters:
+    - name: tourSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Decline Tour Join Request
+      tags:
+      - Tours
+      operationId: declineTourJoinRequest
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/TourJoinRequest"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '409':
+          description: cannot be declined
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -15704,6 +16072,7 @@ components:
       - fleet_logistics
       - fleet_mission_builder
       - fleet_starmap
+      - fleet_tours
       - fleet_worldmap
       - friends
       - hangar_inventories
@@ -15726,6 +16095,7 @@ components:
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_STARMAP
+      - FLEET_TOURS
       - FLEET_WORLDMAP
       - FRIENDS
       - HANGAR_INVENTORIES
@@ -17852,6 +18222,24 @@ components:
       - meta
       - items
       title: FleetPublicVehicles
+    FleetRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: FleetRef
     FleetResourceAccessGroup:
       type: object
       properties:
@@ -23004,6 +23392,8 @@ components:
       - friend_request_accepted
       - fleet_ally_request_received
       - fleet_ally_request_accepted
+      - tour_join_request_received
+      - tour_join_request_accepted
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -23035,6 +23425,8 @@ components:
       - FRIEND_REQUEST_ACCEPTED
       - FLEET_ALLY_REQUEST_RECEIVED
       - FLEET_ALLY_REQUEST_ACCEPTED
+      - TOUR_JOIN_REQUEST_RECEIVED
+      - TOUR_JOIN_REQUEST_ACCEPTED
       title: NotificationTypeEnum
     NotificationUnreadCount:
       type: object
@@ -24483,11 +24875,22 @@ components:
           format: date-time
         createdBy:
           "$ref": "#/components/schemas/UserRefWithAvatar"
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
         inviteToken:
           type:
           - string
           - 'null'
         payoutLedgerId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        participating:
+          type: boolean
+        joinRequestPending:
+          type: boolean
+        joinRequestId:
           type:
           - string
           - 'null'
@@ -24503,6 +24906,8 @@ components:
       - title
       - slug
       - status
+      - participating
+      - joinRequestPending
       additionalProperties: false
       title: Tour
     TourCreateInput:
@@ -24523,6 +24928,55 @@ components:
       - title
       additionalProperties: false
       title: TourCreateInput
+    TourJoinRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        tourId:
+          type: string
+          format: uuid
+        status:
+          "$ref": "#/components/schemas/TourJoinRequestStatusEnum"
+        user:
+          "$ref": "#/components/schemas/UserRefWithAvatar"
+        decidedBy:
+          "$ref": "#/components/schemas/UserRef"
+        decidedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+      - id
+      - tourId
+      - status
+      - user
+      additionalProperties: false
+      title: TourJoinRequest
+    TourJoinRequestStatusEnum:
+      type: string
+      enum:
+      - pending
+      - approved
+      - declined
+      x-enumNames:
+      - PENDING
+      - APPROVED
+      - DECLINED
+      title: TourJoinRequestStatusEnum
+    TourJoinRequestsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/TourJoinRequest"
+      title: TourJoinRequestsList
     TourStatusEnum:
       type: string
       enum:

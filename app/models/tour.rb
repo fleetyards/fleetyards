@@ -16,16 +16,19 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  created_by_id :uuid             not null
+#  fleet_id      :uuid
 #
 # Indexes
 #
 #  index_tours_on_created_by_id_and_status  (created_by_id,status)
+#  index_tours_on_fleet_id_and_status       (fleet_id,status)
 #  index_tours_on_invite_token              (invite_token) UNIQUE
 #  index_tours_on_slug                      (slug) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (fleet_id => fleets.id)
 #
 class Tour < ApplicationRecord
   include AASM
@@ -34,7 +37,16 @@ class Tour < ApplicationRecord
 
   belongs_to :created_by, class_name: "User"
 
+  # A fleet tour is organised from a fleet's page and answers to its payout
+  # privileges; a tour with no fleet is the ad-hoc trip the standalone tool
+  # exists for, and answers only to its own participant list.
+  belongs_to :fleet, optional: true
+
   has_one :payout_ledger, as: :subject, dependent: :destroy
+
+  # Only a fleet tour ever has any: a standalone tour is not listed anywhere a
+  # stranger can see it, so the invite link is the only way onto one.
+  has_many :join_requests, class_name: "TourJoinRequest", dependent: :destroy
 
   validates :title, presence: true
 
@@ -43,6 +55,7 @@ class Tour < ApplicationRecord
   before_save :update_slug
 
   scope :active, -> { where(cancelled_at: nil) }
+  scope :standalone, -> { where(fleet_id: nil) }
 
   DEFAULT_SORTING_PARAMS = ["createdAt desc"]
   ALLOWED_SORTING_PARAMS = [
@@ -76,11 +89,11 @@ class Tour < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[title slug status starts_at created_by_id created_at updated_at]
+    %w[title slug status starts_at created_by_id fleet_id created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[created_by payout_ledger]
+    %w[created_by fleet payout_ledger]
   end
 
   def cancelled? = cancelled_at.present?
@@ -98,10 +111,11 @@ class Tour < ApplicationRecord
     SecureRandom.hex(16)
   end
 
-  # A tour has no owning fleet to scope its slug to, so the whole site shares
-  # one namespace and two people naming a trip "Jumptown Run" would collide.
-  # The id prefix is what makes that impossible, the same way FleetEvent does
-  # it within a fleet -- and it reads as `<short-id>-<title>` in the URL.
+  # Tours share one slug namespace whether or not they belong to a fleet -- a
+  # tour is addressed by slug alone -- so two people naming a trip "Jumptown
+  # Run" would collide. The id prefix is what makes that impossible, the same
+  # way FleetEvent does it within a fleet, and it reads as
+  # `<short-id>-<title>` in the URL.
   private def update_slug
     base = generate_slug(title)
     prefix = id.to_s.split("-").first
