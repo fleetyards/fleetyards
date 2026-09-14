@@ -57,6 +57,7 @@ const mount = async (kind?: string, item?: unknown) => {
     props: {
       fleet: { slug: "test-fleet" } as never,
       contract: contract(kind),
+      kind: (kind ?? "procurement") as never,
       item: item as never,
     },
   });
@@ -72,19 +73,16 @@ describe("FleetContractsItemModal", () => {
     expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(true);
   });
 
-  // As an affix inside the number field the selector read as the field's
-  // value, which is the number's job -- it is a choice about the grade, so it
-  // is offered as one.
-  it("offers the match as a choice beside the grade, not inside it", async () => {
+  // FormInput wraps its suffix slot but not its prefix slot, so an unwrapped
+  // affix select is unconstrained and takes the whole field -- the number then
+  // has nowhere to render.
+  it("keeps the number field beside the match selector", async () => {
     const subject = await mount();
 
-    expect(subject.find(".base-input__prefix").exists()).toBe(false);
-    expect(subject.find("[data-test='quality-match-at_least']").exists()).toBe(
-      true,
-    );
-    expect(subject.find("[data-test='quality-match-exact']").exists()).toBe(
-      true,
-    );
+    const prefix = subject.find(".base-input__prefix");
+
+    expect(prefix.exists()).toBe(true);
+    expect(prefix.findComponent({ name: "BaseSelect" }).exists()).toBe(true);
     expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(true);
   });
 

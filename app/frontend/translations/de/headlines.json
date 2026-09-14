@@ -300,7 +300,8 @@
           "progress": "Fortschritt",
           "crew": "Crew",
           "items": "Waren",
-          "editItem": "Waren bearbeiten"
+          "editItem": "Waren bearbeiten",
+          "addItem": "Waren hinzufügen"
         }
       },
       "hangarGroup": {

@@ -302,7 +302,8 @@
           "progress": "Progress",
           "crew": "Crew",
           "items": "Goods",
-          "editItem": "Edit goods"
+          "editItem": "Edit goods",
+          "addItem": "Add goods"
         }
       },
       "hangarGroup": {

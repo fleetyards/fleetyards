@@ -300,7 +300,8 @@
           "progress": "进度",
           "crew": "队伍",
           "items": "货物",
-          "editItem": "编辑货物"
+          "editItem": "编辑货物",
+          "addItem": "添加货物"
         }
       },
       "hangarGroup": {

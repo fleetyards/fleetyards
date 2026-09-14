@@ -300,7 +300,8 @@
           "progress": "Avanzamento",
           "crew": "Equipaggio",
           "items": "Merci",
-          "editItem": "Modifica merci"
+          "editItem": "Modifica merci",
+          "addItem": "Aggiungi merci"
         }
       },
       "hangarGroup": {

@@ -352,6 +352,15 @@
     border: none;
     border-radius: 0;
 
+    /*
+     * An affix qualifies the field's value; it is not the value. Left at the
+     * trigger's own bold in the end-cap's place it outweighed the number
+     * beside it -- a quality of "At least 600" read as "At least", set in
+     * heavier type than the 600 it qualifies.
+     */
+    font-weight: normal;
+    color: var(--color-endcap, #7a8288);
+
     // The field around it already draws a frame and answers focus with its own
     // cap, so a second pair here would read as a control inside a control.
     &::before,

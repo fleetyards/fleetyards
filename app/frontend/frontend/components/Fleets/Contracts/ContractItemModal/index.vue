@@ -8,7 +8,6 @@ export default {
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
@@ -28,8 +27,11 @@ import {
   type Commodity,
   type Equipment as GameEquipment,
   type Component as GameComponent,
+  type FilterOption,
   type FleetContractDetail,
   type FleetContractItem,
+  type FleetContractItemInput,
+  type FleetContractKindEnum,
   InventoryCategoryEnum,
   InventoryUnitEnum,
   FleetContractQualityMatchEnum,
@@ -39,9 +41,13 @@ import {
 
 type Props = {
   fleet: Fleet;
-  contract: FleetContractDetail;
+  // Absent while the contract is still being written, which is when `onDraft`
+  // takes over: there is nothing to post the line to yet.
+  contract?: FleetContractDetail;
+  kind: FleetContractKindEnum;
   // Absent when the modal is asking for a new line.
   item?: FleetContractItem;
+  onDraft?: (values: FleetContractItemInput) => void;
 };
 
 const props = defineProps<Props>();
@@ -53,7 +59,7 @@ const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { categoryOptions, unitOptionsFor } = useInventoryOptions();
 
-const isCrafting = computed(() => props.contract.kind === "crafting");
+const isCrafting = computed(() => props.kind === "crafting");
 
 // A commodity is the one thing you cannot craft — those are mined, bought or
 // hauled. Written as an exclusion rather than an allowlist so a category added
@@ -105,7 +111,7 @@ const { defineField, handleSubmit, setFieldValue, setErrors } = useForm({
   initialValues: {
     name: props.item?.name ?? "",
     category: (props.item?.category ??
-      (props.contract.kind === "crafting"
+      (props.kind === "crafting"
         ? InventoryCategoryEnum.COMPONENT
         : InventoryCategoryEnum.COMMODITY)) as InventoryCategoryEnum,
     quantity: Number(props.item?.quantity ?? 1),
@@ -172,9 +178,12 @@ watch(unitOptions, (options) => {
   setFieldValue("unit", options[0].value as InventoryUnitEnum);
 });
 
-// Two ways to read the grade, offered as a choice rather than a dropdown: at
-// this width a select reads as the field's value, which is the number's job.
-const qualityMatches = Object.values(FleetContractQualityMatchEnum);
+const qualityMatchOptions = computed<FilterOption[]>(() =>
+  Object.values(FleetContractQualityMatchEnum).map((value) => ({
+    value,
+    label: t(`labels.fleets.contracts.qualityMatches.${value}`),
+  })),
+);
 
 const applyPickedComponent = (component: GameComponent) => {
   pickedItem.value = {
@@ -250,16 +259,26 @@ const onSubmit = handleSubmit(async (values) => {
     itemId: pickedItem.value?.id,
   };
 
+  // Nothing to post to yet: the line goes back to the form, which saves it
+  // with the contract in one request.
+  if (props.onDraft) {
+    props.onDraft(data);
+    comlink.emit("close-modal");
+    submitting.value = false;
+
+    return;
+  }
+
   const saved = props.item
     ? updateItem.mutateAsync({
         fleetSlug: props.fleet.slug,
-        fleetContractSlug: props.contract.slug,
+        fleetContractSlug: props.contract!.slug,
         id: props.item.id,
         data,
       })
     : createItem.mutateAsync({
         fleetSlug: props.fleet.slug,
-        fleetContractSlug: props.contract.slug,
+        fleetContractSlug: props.contract!.slug,
         data,
       });
 
@@ -377,20 +396,24 @@ const onSubmit = handleSubmit(async (values) => {
             :max="1000"
             no-placeholder
           >
+            <!-- The suffix slot is wrapped by FormInput; the prefix slot is
+                 not -- its default content carries the class itself. Without
+                 the wrapper the select is unconstrained and takes the whole
+                 field, leaving the number with nowhere to go. -->
+            <template #prefix>
+              <div class="base-input__prefix">
+                <BaseSelect
+                  v-model="qualityMatch"
+                  :options="qualityMatchOptions"
+                  :label="t('labels.fleets.contracts.qualityMatch')"
+                  :variant="BaseSelectVariantsEnum.AFFIX"
+                  name="itemQualityMatch"
+                  no-label
+                  :searchable="false"
+                />
+              </div>
+            </template>
           </FormInput>
-
-          <BtnGroup segmented class="contract-item-modal__match">
-            <Btn
-              v-for="match in qualityMatches"
-              :key="match"
-              :active="qualityMatch === match"
-              :size="BtnSizesEnum.SM"
-              :data-test="`quality-match-${match}`"
-              @click="setFieldValue('qualityMatch', match)"
-            >
-              {{ t(`labels.fleets.contracts.qualityMatches.${match}`) }}
-            </Btn>
-          </BtnGroup>
         </div>
       </div>
     </form>
@@ -409,7 +432,3 @@ const onSubmit = handleSubmit(async (values) => {
     </template>
   </Modal>
 </template>
-
-<style lang="scss" scoped>
-@import "index";
-</style>

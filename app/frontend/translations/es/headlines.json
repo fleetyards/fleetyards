@@ -300,7 +300,8 @@
           "progress": "Progreso",
           "crew": "Tripulación",
           "items": "Mercancías",
-          "editItem": "Editar mercancías"
+          "editItem": "Editar mercancías",
+          "addItem": "Añadir mercancías"
         }
       },
       "hangarGroup": {

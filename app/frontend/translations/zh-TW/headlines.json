@@ -300,7 +300,8 @@
           "progress": "進度",
           "crew": "隊伍",
           "items": "貨物",
-          "editItem": "編輯貨物"
+          "editItem": "編輯貨物",
+          "addItem": "新增貨物"
         }
       },
       "hangarGroup": {
