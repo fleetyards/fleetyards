@@ -171,6 +171,9 @@
       },
       "payouts": {
         "tourInvite": "%{username} lädt dich zu dieser Tour ein."
+      },
+      "fleet": {
+        "contractCovers": "Das Bild, das die Auftragstafel je Auftragsart zeigt. Bleibt eines leer, wird das eingebaute Bild darunter verwendet."
       }
     }
   }

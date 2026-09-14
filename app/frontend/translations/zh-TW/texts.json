@@ -171,6 +171,9 @@
       },
       "payouts": {
         "tourInvite": "%{username} 邀請你加入此行程。"
+      },
+      "fleet": {
+        "contractCovers": "合約板為每種合約顯示的圖片。留空則使用下方的內建圖片。"
       }
     }
   }

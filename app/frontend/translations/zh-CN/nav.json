@@ -77,7 +77,8 @@
           "notifications": "通知",
           "discord": "Discord",
           "calendar": "日历",
-          "features": "功能"
+          "features": "功能",
+          "contracts": "合约"
         },
         "allies": "盟友",
         "contracts": {

@@ -97,7 +97,8 @@
           "notifications": "%{fleet} Benachrichtigungseinstellungen",
           "discord": "%{fleet} Discord-Einstellungen",
           "calendar": "%{fleet} Kalendereinstellungen",
-          "features": "%{fleet} Funktionen"
+          "features": "%{fleet} Funktionen",
+          "contracts": "%{fleet} Auftragseinstellungen"
         },
         "contracts": {
           "index": "Aufträge",

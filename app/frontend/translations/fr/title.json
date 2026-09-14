@@ -97,7 +97,8 @@
           "notifications": "Paramètres de notification de %{fleet}",
           "discord": "Paramètres Discord de %{fleet}",
           "calendar": "Paramètres de calendrier de %{fleet}",
-          "features": "Fonctionnalités de %{fleet}"
+          "features": "Fonctionnalités de %{fleet}",
+          "contracts": "Réglages des contrats de %{fleet}"
         },
         "contracts": {
           "index": "Contrats",

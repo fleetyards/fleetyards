@@ -171,6 +171,9 @@
       },
       "payouts": {
         "tourInvite": "%{username} invites you to join this tour."
+      },
+      "fleet": {
+        "contractCovers": "The art the board shows for each kind of contract. Leave one empty and the built-in image below is used."
       }
     }
   }

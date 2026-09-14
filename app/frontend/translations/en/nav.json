@@ -77,7 +77,8 @@
           "notifications": "Notifications",
           "discord": "Discord",
           "calendar": "Calendar",
-          "features": "Features"
+          "features": "Features",
+          "contracts": "Contracts"
         },
         "allies": "Allies",
         "contracts": {

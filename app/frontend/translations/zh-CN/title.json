@@ -97,7 +97,8 @@
           "notifications": "%{fleet} 通知设置",
           "discord": "%{fleet} Discord 设置",
           "calendar": "%{fleet} 日历设置",
-          "features": "%{fleet} 功能"
+          "features": "%{fleet} 功能",
+          "contracts": "%{fleet} 合约设置"
         },
         "contracts": {
           "index": "合约",

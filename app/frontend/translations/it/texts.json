@@ -171,6 +171,9 @@
       },
       "payouts": {
         "tourInvite": "%{username} ti invita a unirti a questa spedizione."
+      },
+      "fleet": {
+        "contractCovers": "L'immagine che la bacheca mostra per ogni tipo di contratto. Lasciandone una vuota viene usata l'immagine integrata qui sotto."
       }
     }
   }
