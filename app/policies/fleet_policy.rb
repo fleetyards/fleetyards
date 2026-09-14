@@ -55,6 +55,7 @@ class FleetPolicy < FleetBasePolicy
     if accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:update"])
       allowed_params << [
         :fid, :name, :description, :logo, :background_image, :public_fleet, :public_fleet_stats,
+        :allies_fleet, :allies_fleet_stats, :allies_fleet_members,
         :remove_logo, :remove_background, :homepage, :rsi_sid, :discord, :ts, :youtube,
         :twitch, :guilded
       ]

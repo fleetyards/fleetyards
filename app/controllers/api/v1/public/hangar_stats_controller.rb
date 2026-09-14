@@ -34,7 +34,7 @@ module Api
 
           @quick_stats = QuickStats.new(
             total: vehicles.count,
-            wishlist_total: @user.public_wishlist ? @user.vehicles.wanted.public.where(loaner: false).count : nil,
+            wishlist_total: wishlist_readable? ? @user.vehicles.wanted.public.where(loaner: false).count : nil,
             classifications: Model.classifications.map do |classification|
               ClassificationCount.new(
                 classification_count: classification_count_models.count { |model| model.classification == classification },
@@ -123,6 +123,13 @@ module Api
             manufacturer_count: manufacturer_ids.size,
             missing_classifications: missing_classifications
           }
+        end
+
+        # The stats page names a wishlist total, which is its own surface with
+        # its own switch -- so it asks the same question the wishlist endpoint
+        # does rather than reading one column.
+        private def wishlist_readable?
+          allowed_to?(:wishlist?, @user, with: ::Public::UserPolicy)
         end
 
         def set_user

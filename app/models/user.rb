@@ -22,6 +22,9 @@
 #  encrypted_otp_secret_salt :string
 #  encrypted_password        :string(255)      default(""), not null
 #  failed_attempts           :integer          default(0), not null
+#  friends_hangar            :boolean          default(FALSE), not null
+#  friends_hangar_stats      :boolean          default(FALSE), not null
+#  friends_wishlist          :boolean          default(FALSE), not null
 #  guilded                   :string
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
@@ -45,7 +48,6 @@
 #  public_hangar_loaners     :boolean          default(FALSE)
 #  public_hangar_stats       :boolean          default(FALSE)
 #  public_wishlist           :boolean          default(FALSE)
-#  purchased_vehicles_count  :integer          default(0), not null
 #  remember_created_at       :datetime
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
@@ -61,7 +63,6 @@
 #  unconfirmed_email         :string(255)
 #  unlock_token              :string(255)
 #  username                  :string(255)      default(""), not null
-#  wanted_vehicles_count     :integer          default(0), not null
 #  youtube                   :string
 #  created_at                :datetime
 #  updated_at                :datetime
@@ -108,6 +109,7 @@ class User < ApplicationRecord
     only: %i[
       username email unconfirmed_email rsi_handle sale_notify public_hangar
       public_hangar_loaners public_wishlist hide_owner tester
+      friends_hangar friends_hangar_stats friends_wishlist
     ],
     if: ->(record) { record.author_id.present? },
     meta: {
@@ -174,6 +176,20 @@ class User < ApplicationRecord
     through: :kept_fleet_memberships
 
   has_many :inventories, as: :holder, dependent: :destroy
+
+  # Both directions of the same table, because a friendship is one row per
+  # unordered pair -- see `PartyRelationship`. Nothing outside the inbox should
+  # use either of these; `#friends` and `#friend_of?` read over both columns.
+  has_many :sent_friend_requests,
+    class_name: "Friendship",
+    foreign_key: :requester_id,
+    dependent: :destroy,
+    inverse_of: :requester
+  has_many :received_friend_requests,
+    class_name: "Friendship",
+    foreign_key: :addressee_id,
+    dependent: :destroy,
+    inverse_of: :addressee
 
   has_many :notifications, dependent: :delete_all
   has_many :notification_preferences, dependent: :delete_all
@@ -327,6 +343,32 @@ class User < ApplicationRecord
     return false if warden.nil?
 
     warden.winning_strategy.is_a?(Devise::Strategies::Rememberable)
+  end
+
+  # Everyone this user has an accepted friendship with, as a relation over a
+  # subquery rather than an array of ids -- the bulk visibility filters compose
+  # it into their own queries.
+  # Whose hangar a given reader may see, as a scope rather than a predicate --
+  # the multi-hangar embed asks it of a list of usernames at once, and asking
+  # per user would be a query each. Mirrors `Public::UserPolicy#show?`, which is
+  # what every single-user path goes through.
+  scope :with_hangar_readable_by, ->(reader) {
+    readable = where(public_hangar: true)
+    next readable if reader.blank?
+
+    readable.or(where(friends_hangar: true, id: ::Friendship.partner_ids_for(reader)))
+  }
+
+  def friends
+    ::User.where(id: ::Friendship.partner_ids_for(self))
+  end
+
+  def friend_of?(other)
+    ::Friendship.accepted_between?(self, other)
+  end
+
+  def friendship_with(other)
+    ::Friendship.between(self, other)
   end
 
   def set_normalized_login_fields

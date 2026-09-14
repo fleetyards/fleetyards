@@ -898,6 +898,58 @@
         "destroy": {
           "failure": "Impossibile eliminare il dock."
         }
+      },
+      "relationships": {
+        "user": {
+          "addHint": "Inserisci il nome utente della persona da aggiungere. Le verrà chiesto di accettare."
+        },
+        "fleet": {
+          "addHint": "Inserisci l'identificativo della flotta con cui vuoi allearti. I suoi amministratori dovranno accettare."
+        }
+      },
+      "friends": {
+        "request": {
+          "success": "Richiesta inviata",
+          "failure": "Impossibile inviare la richiesta"
+        },
+        "accept": {
+          "success": "Richiesta accettata",
+          "failure": "Impossibile accettare la richiesta"
+        },
+        "decline": {
+          "success": "Richiesta rifiutata",
+          "failure": "Impossibile rifiutare la richiesta"
+        },
+        "ignore": {
+          "success": "Richiesta ignorata",
+          "failure": "Impossibile ignorare la richiesta"
+        },
+        "remove": {
+          "success": "Rimosso",
+          "failure": "Impossibile rimuovere"
+        }
+      },
+      "fleetAllies": {
+        "request": {
+          "success": "Richiesta inviata",
+          "failure": "Impossibile inviare la richiesta"
+        },
+        "accept": {
+          "success": "Richiesta accettata",
+          "failure": "Impossibile accettare la richiesta"
+        },
+        "decline": {
+          "success": "Richiesta rifiutata",
+          "failure": "Impossibile rifiutare la richiesta"
+        },
+        "ignore": {
+          "success": "Richiesta ignorata",
+          "failure": "Impossibile ignorare la richiesta"
+        },
+        "remove": {
+          "success": "Rimosso",
+          "failure": "Impossibile rimuovere"
+        }
       }
     }
   }

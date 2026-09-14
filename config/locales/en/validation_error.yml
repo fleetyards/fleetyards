@@ -1,6 +1,12 @@
 ---
 en:
   validation_error:
+    relationships:
+      create: "Request could not be sent."
+      destroy: "Request could not be removed."
+      accept: "Request could not be accepted."
+      decline: "Request could not be declined."
+      ignore: "Request could not be ignored."
     version:
       revert: Field could not be reverted.
       unknown_field: This version did not change that field.

@@ -14,6 +14,9 @@ json.description fleet.description
 json.slug fleet.slug
 json.public_fleet fleet.public_fleet
 json.public_fleet_stats fleet.public_fleet_stats
+json.allies_fleet fleet.allies_fleet
+json.allies_fleet_stats fleet.allies_fleet_stats
+json.allies_fleet_members fleet.allies_fleet_members
 json.default_timezone fleet.default_timezone
 json.logo do
   json.partial! "api/v1/shared/file", record: fleet, attr: :logo

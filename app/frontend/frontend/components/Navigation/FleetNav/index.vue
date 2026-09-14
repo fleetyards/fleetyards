@@ -65,6 +65,10 @@ const hasLogisticsAccess = computed(
   () => membership.value?.capabilities?.readInventories ?? false,
 );
 
+const hasAlliesAccess = computed(
+  () => membership.value?.capabilities?.readAllies ?? false,
+);
+
 const hasMissionsAccess = computed(() => {
   const access = membership.value?.fleetRole?.resourceAccess;
   if (!access) return false;
@@ -156,6 +160,20 @@ onMounted(() => {
         />
         <NavItem
           v-if="
+            hasAlliesAccess &&
+            isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_ALLIES)
+          "
+          :to="{
+            name: 'fleet-allies',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.allies')"
+          :active="String(route.name).startsWith('fleet-allies')"
+          icon="fa-duotone fa-handshake"
+          prefix="05"
+        />
+        <NavItem
+          v-if="
             (hasEventsAccess || hasMissionsAccess) &&
             isFleetFeatureEnabled(
               currentFleet,
@@ -169,14 +187,14 @@ onMounted(() => {
           :label="t('nav.fleets.events.index')"
           :active="eventsNavActive"
           icon="fa-duotone fa-calendar-day"
-          prefix="05"
+          prefix="06"
         />
         <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
           icon="fa-duotone fa-cogs"
-          prefix="06"
+          prefix="07"
         />
       </template>
     </template>

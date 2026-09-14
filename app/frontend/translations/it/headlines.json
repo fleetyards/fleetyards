@@ -419,6 +419,16 @@
           "create": "Crea spedizione",
           "join": "Unisciti a questa spedizione"
         }
+      },
+      "relationships": {
+        "user": {
+          "index": "Amici",
+          "add": "Aggiungi un amico"
+        },
+        "fleet": {
+          "index": "Alleati",
+          "add": "Aggiungi un alleato"
+        }
       }
     }
   }

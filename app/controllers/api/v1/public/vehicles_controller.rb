@@ -10,10 +10,10 @@ module Api
         def fleetchart
           user = User.find_by!(normalized_username: params.fetch(:username, "").downcase)
 
-          unless user.public_hangar?
-            not_found
-            return
-          end
+          # Was two inline `public_hangar?` checks. Visibility has a second
+          # answer now, and a rule with two spellings is a rule with one of them
+          # forgotten -- so this asks the policy every other hangar path asks.
+          authorize! user, to: :show?, with: ::Public::UserPolicy
 
           @q = user.vehicles
             .visible
@@ -21,8 +21,6 @@ module Api
             .public
             .ransack(vehicle_query_params)
 
-          @vehicles = []
-          return unless user.public_hangar?
           @vehicles = Vehicle.where(
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )

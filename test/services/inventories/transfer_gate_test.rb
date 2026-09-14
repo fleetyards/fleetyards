@@ -137,6 +137,73 @@ module Inventories
         builder.errors[:base]
     end
 
+    test "known admits a friend without a fleet in common" do
+      @recipient.update!(inventory_transfer_policy: :known)
+
+      assert_equal :policy_restricted, gate.refusal.code
+
+      create(:friendship, :accepted, requester: @sender, addressee: @recipient)
+
+      assert gate.allowed?
+    end
+
+    test "a pending friend request does not make you known" do
+      @recipient.update!(inventory_transfer_policy: :known)
+      create(:friendship, requester: @sender, addressee: @recipient)
+
+      assert_equal :policy_restricted, gate.refusal.code
+    end
+
+    # The gate evaluates the stance before the exception to it, so widening the
+    # first must not reach the second.
+    test "a standing denial still refuses a friend" do
+      create(:friendship, :accepted, requester: @sender, addressee: @recipient)
+      create(:inventory_transfer_rule, user: @recipient, subject_user: @sender, effect: :deny)
+
+      assert_equal :policy_closed, gate.refusal.code
+    end
+
+    test "a closed policy is not softened by a friendship" do
+      @recipient.update!(inventory_transfer_policy: :nobody)
+      create(:friendship, :accepted, requester: @sender, addressee: @recipient)
+
+      assert_equal :policy_closed, gate.refusal.code
+    end
+
+    test "known admits an allied fleet, in both directions" do
+      sending_fleet = create(:fleet, created_by: create(:user).id)
+      receiving_fleet = create(:fleet, created_by: create(:user).id)
+      [sending_fleet, receiving_fleet].each { |fleet| enable_fleet_transfers(fleet) }
+      receiving_fleet.update!(inventory_transfer_policy: :known)
+      sending_fleet.update!(inventory_transfer_policy: :known)
+
+      assert_equal :policy_restricted, fleet_gate(sending_fleet, receiving_fleet).refusal.code
+
+      create(:fleet_alliance, :accepted, requester: sending_fleet, addressee: receiving_fleet)
+
+      assert fleet_gate(sending_fleet, receiving_fleet).allowed?
+      assert fleet_gate(receiving_fleet, sending_fleet).allowed?
+    end
+
+    test "a pending alliance does not make two fleets known" do
+      sending_fleet = create(:fleet, created_by: create(:user).id)
+      receiving_fleet = create(:fleet, created_by: create(:user).id)
+      [sending_fleet, receiving_fleet].each { |fleet| enable_fleet_transfers(fleet) }
+      receiving_fleet.update!(inventory_transfer_policy: :known)
+      create(:fleet_alliance, requester: sending_fleet, addressee: receiving_fleet)
+
+      assert_equal :policy_restricted, fleet_gate(sending_fleet, receiving_fleet).refusal.code
+    end
+
+    private def fleet_gate(sender, recipient)
+      TransferGate.new(sender:, recipient:)
+    end
+
+    private def enable_fleet_transfers(fleet)
+      Flipper.enable_actor(:inventory_transfers, fleet)
+      Flipper.enable_actor(:fleet_logistics, fleet)
+    end
+
     private def gate
       TransferGate.new(sender: @sender, recipient: @recipient)
     end

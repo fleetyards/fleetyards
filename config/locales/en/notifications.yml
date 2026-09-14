@@ -47,6 +47,14 @@ en:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:
       title: "You've been accepted into %{fleet}"
+    friend_request_received:
+      title: "%{username} sent you a friend request"
+    friend_request_accepted:
+      title: "%{username} accepted your friend request"
+    fleet_ally_request_received:
+      title: "%{fleet} wants to ally with %{own_fleet}"
+    fleet_ally_request_accepted:
+      title: "%{fleet} is now allied with %{own_fleet}"
     inventory_transfer_received:
       title: "%{sender} sent you %{count} item(s)"
       title_fleet: "%{sender} sent %{fleet} %{count} item(s)"

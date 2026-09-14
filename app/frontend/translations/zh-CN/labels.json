@@ -556,7 +556,10 @@
             "members_only": "仅成员",
             "officers_only": "仅军官"
           }
-        }
+        },
+        "allies": "盟友可见舰船",
+        "alliesStats": "盟友可见统计",
+        "alliesMembers": "盟友可见成员列表"
       },
       "hangarGroup": {
         "name": "名称",
@@ -1307,7 +1310,10 @@
           "dmy_slash": "31/12/2026",
           "mdy_slash": "12/31/2026",
           "ymd_dash": "2026-12-31"
-        }
+        },
+        "friendsHangar": "好友可见机库",
+        "friendsHangarStats": "好友可见机库统计",
+        "friendsWishlist": "好友可见愿望单"
       },
       "adminUser": {
         "superAdmin": "超级管理员",
@@ -1937,7 +1943,8 @@
         "recordedAt": "记录时间",
         "origin": "来自 / 发往",
         "inTransitAmount": "%{amount} 运送中",
-        "inTransitHint": "已随一笔尚未被答复的转移送出，已不计入上方总数。"
+        "inTransitHint": "已随一笔尚未被答复的转移送出，已不计入上方总数。",
+        "transferFromFriends": "我的好友"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1993,7 +2000,9 @@
         "syncAgain": "再次同步",
         "markAsBought": "标记为已购买",
         "unavailable": "此内容已不再可用。",
-        "openTransfers": "打开转移"
+        "openTransfers": "打开转移",
+        "openFriends": "打开好友",
+        "openAllies": "打开盟友"
       },
       "notificationTypes": {
         "channels": {
@@ -2006,7 +2015,8 @@
           "account": "账户与机库",
           "fleetMembership": "舰队成员资格",
           "fleetEvents": "舰队活动",
-          "logistics": "物流"
+          "logistics": "物流",
+          "relationships": "好友与盟友"
         },
         "hangar_create": "添加到机库",
         "hangar_destroy": "从机库移除",
@@ -2034,7 +2044,11 @@
         "fleet_event_signup_kicked": "已被移出席位",
         "allInGroup": "此分组中的全部",
         "inventory_transfer_received": "收到转移",
-        "inventory_transfer_resolved": "转移已答复"
+        "inventory_transfer_resolved": "转移已答复",
+        "friend_request_received": "收到好友请求",
+        "friend_request_accepted": "好友请求已通过",
+        "fleet_ally_request_received": "收到结盟请求",
+        "fleet_ally_request_accepted": "结盟请求已通过"
       },
       "fleets": {
         "missions": {
@@ -2366,6 +2380,24 @@
         "large": "大号（L）",
         "extra_large": "特大号 (XL)",
         "capital": "资本（C）"
+      },
+      "relationships": {
+        "party": "名称",
+        "since": "自",
+        "tabs": {
+          "accepted": "已建立",
+          "incoming": "收到的",
+          "outgoing": "已发送",
+          "ignored": "已忽略"
+        },
+        "user": {
+          "handle": "用户名"
+        },
+        "fleet": {
+          "handle": "舰队标识"
+        },
+        "requested": "请求已发送",
+        "friend": "已是好友"
       }
     }
   }

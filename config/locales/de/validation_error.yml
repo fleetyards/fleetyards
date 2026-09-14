@@ -1,6 +1,12 @@
 ---
 de:
   validation_error:
+    relationships:
+      create: "Anfrage konnte nicht gesendet werden."
+      destroy: "Anfrage konnte nicht entfernt werden."
+      accept: "Anfrage konnte nicht angenommen werden."
+      decline: "Anfrage konnte nicht abgelehnt werden."
+      ignore: "Anfrage konnte nicht ignoriert werden."
     version:
       revert: Feld konnte nicht zurückgesetzt werden.
       unknown_field: Diese Version hat dieses Feld nicht geändert.

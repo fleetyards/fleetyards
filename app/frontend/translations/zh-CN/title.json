@@ -116,7 +116,8 @@
           "enable": "启用双因素认证",
           "disable": "禁用双因素认证",
           "backupCodes": "生成双因素备份代码"
-        }
+        },
+        "friends": "好友"
       },
       "compare": {
         "ships": "比较舰船"

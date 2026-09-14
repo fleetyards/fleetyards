@@ -1244,6 +1244,12 @@ components:
           type: boolean
         publicFleetStats:
           type: boolean
+        alliesFleet:
+          type: boolean
+        alliesFleetStats:
+          type: boolean
+        alliesFleetMembers:
+          type: boolean
         defaultTimezone:
           type: string
         calendarFeedToken:
@@ -1272,6 +1278,9 @@ components:
       - slug
       - publicFleet
       - publicFleetStats
+      - alliesFleet
+      - alliesFleetStats
+      - alliesFleetMembers
       - features
       - createdAt
       - updatedAt
@@ -1405,6 +1414,14 @@ components:
           type: boolean
         destroyInventories:
           type: boolean
+        readAllies:
+          type: boolean
+        createAllies:
+          type: boolean
+        destroyAllies:
+          type: boolean
+        manageAllies:
+          type: boolean
         readVehicles:
           type: boolean
         readRoles:
@@ -1428,6 +1445,10 @@ components:
       - createInventories
       - updateInventories
       - destroyInventories
+      - readAllies
+      - createAllies
+      - destroyAllies
+      - manageAllies
       - readVehicles
       - readRoles
       - manageFleet
@@ -1509,6 +1530,10 @@ components:
       - fleet:inventories:update
       - fleet:inventories:delete
       - fleet:inventories:manage
+      - fleet:allies:read
+      - fleet:allies:create
+      - fleet:allies:delete
+      - fleet:allies:manage
       - fleet:missions:read
       - fleet:missions:create
       - fleet:missions:update
@@ -1556,6 +1581,10 @@ components:
       - FLEET_INVENTORIES_UPDATE
       - FLEET_INVENTORIES_DELETE
       - FLEET_INVENTORIES_MANAGE
+      - FLEET_ALLIES_READ
+      - FLEET_ALLIES_CREATE
+      - FLEET_ALLIES_DELETE
+      - FLEET_ALLIES_MANAGE
       - FLEET_MISSIONS_READ
       - FLEET_MISSIONS_CREATE
       - FLEET_MISSIONS_UPDATE
@@ -3009,12 +3038,14 @@ components:
       - fleet_membership
       - fleet_event
       - fleet_inventory
+      - friendship
       - vehicle
       - hangar_sync
       x-enumNames:
       - FLEET_MEMBERSHIP
       - FLEET_EVENT
       - FLEET_INVENTORY
+      - FRIENDSHIP
       - VEHICLE
       - HANGAR_SYNC
     NotificationTypeEnum:
@@ -3046,6 +3077,10 @@ components:
       - fleet_event_signup_kicked
       - inventory_transfer_received
       - inventory_transfer_resolved
+      - friend_request_received
+      - friend_request_accepted
+      - fleet_ally_request_received
+      - fleet_ally_request_accepted
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -3073,6 +3108,10 @@ components:
       - FLEET_EVENT_SIGNUP_KICKED
       - INVENTORY_TRANSFER_RECEIVED
       - INVENTORY_TRANSFER_RESOLVED
+      - FRIEND_REQUEST_RECEIVED
+      - FRIEND_REQUEST_ACCEPTED
+      - FLEET_ALLY_REQUEST_RECEIVED
+      - FLEET_ALLY_REQUEST_ACCEPTED
     PayoutLedger:
       type: object
       properties:

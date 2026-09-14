@@ -216,6 +216,24 @@ en:
         inventory_goods_in_transit: "cannot be deleted while a transfer it sent is still waiting to be answered"
         position_goods_in_transit: "cannot be deleted while a transfer it was sent in is still waiting to be answered"
       models:
+        fleet_alliance:
+          attributes:
+            base:
+              not_to_self: "A fleet cannot ally with itself"
+              already_related: "These fleets are already allied"
+              at_capacity: "This fleet has too many pending requests right now"
+              not_found: "This fleet could not be found"
+              already_resolved: "This request has already been answered"
+              forbidden: "You are not allowed to answer this request"
+        friendship:
+          attributes:
+            base:
+              not_to_self: "You cannot send a friend request to yourself"
+              already_related: "You are already friends"
+              at_capacity: "This user has too many pending requests right now"
+              not_found: "This user could not be found"
+              already_resolved: "This request has already been answered"
+              forbidden: "You are not allowed to answer this request"
         inventory_transfer:
           attributes:
             base:

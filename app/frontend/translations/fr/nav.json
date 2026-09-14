@@ -77,7 +77,8 @@
           "discord": "Discord",
           "calendar": "Calendrier",
           "features": "Fonctionnalités"
-        }
+        },
+        "allies": "Alliés"
       },
       "rsiProfile": "Profil RSI",
       "rsiHangar": "Hangar RSI",
@@ -110,7 +111,8 @@
         "features": "Fonctionnalités",
         "connections": "Connexions",
         "oauthApplications": "Apps OAuth",
-        "verify": "Vérification du compte RSI"
+        "verify": "Vérification du compte RSI",
+        "friends": "Amis"
       },
       "reload": "Mise à jour disponible!",
       "visualTests": {

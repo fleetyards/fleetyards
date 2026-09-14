@@ -37,6 +37,9 @@ const fleet: Fleet = {
   slug: "silent-wings",
   publicFleet: true,
   publicFleetStats: true,
+  alliesFleet: false,
+  alliesFleetStats: false,
+  alliesFleetMembers: false,
   createdAt: NOW,
   updatedAt: NOW,
 };

@@ -31,6 +31,8 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/ships", to: "fleets#show"
   get "fleets/:slug/fleetchart", to: "fleets#show"
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
+  get "fleets/:slug/allies", to: "fleets#show", as: :fleet_allies
+  get "fleets/:slug/allies/incoming", to: "fleets#show", as: :incoming_fleet_allies
   get "fleets/:slug/members/invites", to: "fleets#members", as: :fleet_member_invites
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
@@ -51,6 +53,10 @@ namespace :frontend, **frontend_options do
   get "notifications", to: "base#index", as: :notifications
   get "settings", to: "base#index", as: :settings_account
   get "settings/notifications", to: "base#index"
+  get "settings/friends", to: "base#index", as: :friends
+  # The list a request is answered on. A notification that dropped the reader on
+  # the accepted friends is pointing at the one list the request is not in.
+  get "settings/friends/incoming", to: "base#index", as: :incoming_friends
   get "settings/connections", to: "base#index", as: :connections_settings
   get "settings/security", to: "base#index", as: :security_settings
 

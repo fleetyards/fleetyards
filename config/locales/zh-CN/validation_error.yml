@@ -1,6 +1,12 @@
 ---
 zh-CN:
   validation_error:
+    relationships:
+      create: "无法发送请求。"
+      destroy: "无法移除请求。"
+      accept: "无法接受请求。"
+      decline: "无法拒绝请求。"
+      ignore: "无法忽略请求。"
     change_pasword: 密码更改失败。
     confirmation: 确认失败。
     vehicle:

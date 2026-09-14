@@ -76,6 +76,15 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
       NotificationTypeEnum.INVENTORY_TRANSFER_RESOLVED,
     ],
   },
+  {
+    key: "relationships",
+    types: [
+      NotificationTypeEnum.FRIEND_REQUEST_RECEIVED,
+      NotificationTypeEnum.FRIEND_REQUEST_ACCEPTED,
+      NotificationTypeEnum.FLEET_ALLY_REQUEST_RECEIVED,
+      NotificationTypeEnum.FLEET_ALLY_REQUEST_ACCEPTED,
+    ],
+  },
 ];
 
 const CHANNELS = ["app", "mail", "push", "discord"] as const;

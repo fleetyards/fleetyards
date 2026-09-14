@@ -421,6 +421,16 @@
           "create": "Create Tour",
           "join": "Join this tour"
         }
+      },
+      "relationships": {
+        "user": {
+          "index": "Friends",
+          "add": "Add a friend"
+        },
+        "fleet": {
+          "index": "Allies",
+          "add": "Add an ally"
+        }
       }
     }
   }

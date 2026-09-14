@@ -32,6 +32,9 @@ module V1
           publicHangarStats: {type: :boolean},
           publicWishlist: {type: :boolean},
           publicWishlistUrl: {type: :string},
+          friendsHangar: {type: :boolean},
+          friendsHangarStats: {type: :boolean},
+          friendsWishlist: {type: :boolean},
           hideOwner: {type: :boolean},
           tracking: {type: :boolean},
           twoFactorRequired: {type: :boolean},
@@ -48,7 +51,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner tracking
+          username email saleNotify dateFormat publicHangar publicHangarLoaners publicHangarStats publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })

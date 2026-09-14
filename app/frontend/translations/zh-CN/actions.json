@@ -396,6 +396,20 @@
         "joinTour": "加入行程",
         "copyInvite": "复制邀请链接",
         "rotateInvite": "生成新链接"
+      },
+      "relationships": {
+        "accept": "接受",
+        "decline": "拒绝",
+        "ignore": "忽略",
+        "withdraw": "撤回",
+        "end": "移除",
+        "send": "发送请求",
+        "user": {
+          "add": "添加好友"
+        },
+        "fleet": {
+          "add": "添加盟友"
+        }
       }
     }
   }

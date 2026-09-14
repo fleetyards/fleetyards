@@ -2,10 +2,14 @@ import type { MaybeRefOrGetter } from "vue";
 import {
   type Fleet,
   FeatureFlagName,
+  useFleetAllies,
   useFleetInventories,
+  useFriends,
   useHangarInventories,
   useMyFleets,
 } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { TransferTargetOption } from "@/frontend/components/Logistics/TransferModal/types";
 
 type Options = {
@@ -28,17 +32,24 @@ type Options = {
 //   user       somebody you share a fleet with -- has to accept, and is
 //              picked out of that fleet rather than from one flat list
 //
-// This iteration reaches only what the reader already shares a fleet with,
-// which is what a `known` transfer policy means server-side, so the picker and
-// the gate agree on who counts.
+// Who this reaches is kept in step with what `known` means server-side, so the
+// picker and the gate agree on who counts: a fleet in common, a friendship, or
+// -- when sending on a fleet's behalf -- an alliance.
 //
 // Fleets are filtered on whether the feature is *available* to them, never on
 // whether the gate would admit this sender: a policy or a standing denial must
 // not be readable from an option going missing. People are not filtered --
 // another user's flags are not ours to read.
+// The value the group picker uses for "my friends" rather than a fleet slug.
+// Not a slug any fleet can have: slugs are lowercased alphanumerics.
+export const FRIENDS_GROUP = "@friends";
+
 export const useTransferTargets = (options: Options) => {
   const actingFleet = computed(() => toValue(options.fleetSlug));
   const sourceId = computed(() => toValue(options.source)?.id);
+
+  const { isFeatureEnabled } = useFeatures();
+  const { t } = useI18n();
 
   // Always fetched, even when acting for a fleet: a fleet issuing kit to one of
   // its members is the sixth movement, and the reader's own inventories are
@@ -95,20 +106,65 @@ export const useTransferTargets = (options: Options) => {
 
   const fleetList = computed<Fleet[]>(() => fleets.value ?? []);
 
+  // A fleet's allies, and only when acting for that fleet. An alliance is
+  // between the two organisations, not between one of them and each member of
+  // the other, so a person shipping from their own hangar is never offered it.
+  const { data: allies } = useFleetAllies(
+    computed(() => actingFleet.value ?? ""),
+    computed(() => ({ state: "accepted" as const })),
+    {
+      query: {
+        enabled: computed(
+          () =>
+            !!actingFleet.value &&
+            isFeatureEnabled(FeatureFlagName.FLEET_ALLIES),
+        ),
+      },
+    },
+  );
+
+  // Accepted friendships, for the party picker. Only for a reader sending as
+  // themselves: a fleet has no friends.
+  const { data: friends } = useFriends(
+    computed(() => ({ state: "accepted" as const })),
+    {
+      query: {
+        enabled: computed(
+          () => !actingFleet.value && isFeatureEnabled(FeatureFlagName.FRIENDS),
+        ),
+      },
+    },
+  );
+
   const canReceive = (fleet: Fleet) =>
     fleet.slug !== actingFleet.value &&
     fleet.features?.includes(FeatureFlagName.INVENTORY_TRANSFERS) &&
     fleet.features?.includes(FeatureFlagName.FLEET_LOGISTICS);
 
-  const fleetTargets = computed<TransferTargetOption[]>(() =>
-    fleetList.value.filter(canReceive).map((fleet) => ({
+  // An ally carries no feature list -- the alliance payload names the fleet and
+  // nothing about what it holds -- so unlike `fleetList` these are not filtered
+  // on availability. Offering one the API then refuses is the right way round:
+  // the refusal is the API's to give, and inferring it here would be guessing.
+  const allyTargets = computed<TransferTargetOption[]>(() =>
+    (allies.value?.items ?? []).map((alliance) => ({
+      kind: "fleet" as const,
+      value: `fleet:${alliance.fleet.slug}`,
+      label: alliance.fleet.name,
+      needsAnswer: true,
+      payload: { recipientFleetSlug: alliance.fleet.slug },
+    })),
+  );
+
+  const fleetTargets = computed<TransferTargetOption[]>(() => [
+    ...fleetList.value.filter(canReceive).map((fleet) => ({
       kind: "fleet" as const,
       value: `fleet:${fleet.slug}`,
       label: fleet.name,
       needsAnswer: true,
       payload: { recipientFleetSlug: fleet.slug },
     })),
-  );
+    ...allyTargets.value,
+  ]);
 
   // Where a person can be picked out of. Not filtered on transfer flags the way
   // `fleetTargets` is: those gate sending to the *fleet*, and this is about
@@ -117,17 +173,35 @@ export const useTransferTargets = (options: Options) => {
   // This list is the grouping, and it is the extension point: a friends list,
   // or any other way of knowing somebody, becomes another entry here rather
   // than another branch in the modal.
-  const memberFleets = computed(() =>
-    fleetList.value.map((fleet) => ({
+  // Friends are the entry this list was always going to grow: another way of
+  // knowing somebody, offered as a group to pick a person out of rather than as
+  // a fourth kind of address.
+  const friendOptions = computed(() =>
+    (friends.value?.items ?? []).map((friendship) => ({
+      value: `user:${friendship.user.username}`,
+      label: friendship.user.username,
+    })),
+  );
+
+  const memberFleets = computed(() => [
+    ...(friendOptions.value.length
+      ? [
+          {
+            value: FRIENDS_GROUP,
+            label: t("labels.logistics.transferFromFriends"),
+          },
+        ]
+      : []),
+    ...fleetList.value.map((fleet) => ({
       value: fleet.slug,
       label: fleet.name,
     })),
-  );
+  ]);
 
   const targets = computed<TransferTargetOption[]>(() => [
     ...ownInventories.value,
     ...fleetTargets.value,
   ]);
 
-  return { targets, ownInventories, fleetTargets, memberFleets };
+  return { targets, ownInventories, fleetTargets, memberFleets, friendOptions };
 };

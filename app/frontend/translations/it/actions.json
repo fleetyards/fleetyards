@@ -396,6 +396,20 @@
         "joinTour": "Unisciti",
         "copyInvite": "Copia link d'invito",
         "rotateInvite": "Genera un nuovo link"
+      },
+      "relationships": {
+        "accept": "Accetta",
+        "decline": "Rifiuta",
+        "ignore": "Ignora",
+        "withdraw": "Ritira",
+        "end": "Rimuovi",
+        "send": "Invia richiesta",
+        "user": {
+          "add": "Aggiungi amico"
+        },
+        "fleet": {
+          "add": "Aggiungi alleato"
+        }
       }
     }
   }

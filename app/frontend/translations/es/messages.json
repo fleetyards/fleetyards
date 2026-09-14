@@ -898,6 +898,58 @@
         "destroy": {
           "failure": "No se pudo eliminar el muelle."
         }
+      },
+      "relationships": {
+        "user": {
+          "addHint": "Introduce el nombre de usuario de la persona que quieres añadir. Se le pedirá que acepte."
+        },
+        "fleet": {
+          "addHint": "Introduce el identificador de la flota con la que quieres aliarte. Sus administradores deberán aceptar."
+        }
+      },
+      "friends": {
+        "request": {
+          "success": "Solicitud enviada",
+          "failure": "No se ha podido enviar la solicitud"
+        },
+        "accept": {
+          "success": "Solicitud aceptada",
+          "failure": "No se ha podido aceptar la solicitud"
+        },
+        "decline": {
+          "success": "Solicitud rechazada",
+          "failure": "No se ha podido rechazar la solicitud"
+        },
+        "ignore": {
+          "success": "Solicitud ignorada",
+          "failure": "No se ha podido ignorar la solicitud"
+        },
+        "remove": {
+          "success": "Eliminado",
+          "failure": "No se ha podido eliminar"
+        }
+      },
+      "fleetAllies": {
+        "request": {
+          "success": "Solicitud enviada",
+          "failure": "No se ha podido enviar la solicitud"
+        },
+        "accept": {
+          "success": "Solicitud aceptada",
+          "failure": "No se ha podido aceptar la solicitud"
+        },
+        "decline": {
+          "success": "Solicitud rechazada",
+          "failure": "No se ha podido rechazar la solicitud"
+        },
+        "ignore": {
+          "success": "Solicitud ignorada",
+          "failure": "No se ha podido ignorar la solicitud"
+        },
+        "remove": {
+          "success": "Eliminado",
+          "failure": "No se ha podido eliminar"
+        }
       }
     }
   }

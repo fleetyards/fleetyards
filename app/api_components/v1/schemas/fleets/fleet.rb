@@ -23,6 +23,9 @@ module V1
             description: {type: :string},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
+            alliesFleet: {type: :boolean},
+            alliesFleetStats: {type: :boolean},
+            alliesFleetMembers: {type: :boolean},
             defaultTimezone: {type: :string},
             calendarFeedToken: {type: :string},
             logo: ::Shared::V1::Schemas::MediaFile,
@@ -33,7 +36,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats features createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers features createdAt updatedAt]
         })
       end
     end

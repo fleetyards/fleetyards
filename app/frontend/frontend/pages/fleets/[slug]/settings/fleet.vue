@@ -25,6 +25,7 @@ import {
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
 
 type Props = {
   fleet: Fleet;
@@ -65,6 +66,9 @@ const initialValues = ref<FleetUpdateInput>({
   guilded: props.fleet.guilded,
   publicFleet: props.fleet.publicFleet,
   publicFleetStats: props.fleet.publicFleetStats,
+  alliesFleet: props.fleet.alliesFleet,
+  alliesFleetStats: props.fleet.alliesFleetStats,
+  alliesFleetMembers: props.fleet.alliesFleetMembers,
 });
 
 const validationSchema = {
@@ -89,7 +93,17 @@ const [guilded, guildedProps] = defineField("guilded");
 const [publicFleet, publicFleetProps] = defineField("publicFleet");
 const [publicFleetStats, publicFleetStatsProps] =
   defineField("publicFleetStats");
+const [alliesFleet, alliesFleetProps] = defineField("alliesFleet");
+const [alliesFleetStats, alliesFleetStatsProps] =
+  defineField("alliesFleetStats");
+const [alliesFleetMembers, alliesFleetMembersProps] =
+  defineField("alliesFleetMembers");
 const [logo, logoProps] = defineField("logo");
+
+// See `narrowerAudienceDisabled`. The roster has no public form at all, which
+// is why the third toggle is never passed one.
+const alliesDisabled = (isPublic: unknown) =>
+  narrowerAudienceDisabled(isPublic, submitting.value);
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -221,6 +235,7 @@ const onDestroy = async () => {
         />
       </div>
     </div>
+    <hr />
     <div class="row">
       <div class="col-12 col-md-6">
         <FormToggle
@@ -236,6 +251,35 @@ const onDestroy = async () => {
           name="publicFleetStats"
           translation-key="fleet.publicStats"
           v-bind="publicFleetStatsProps"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="alliesFleet"
+          name="alliesFleet"
+          translation-key="fleet.allies"
+          v-bind="alliesFleetProps"
+          :disabled="alliesDisabled(publicFleet)"
+          :implied="!!publicFleet"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="alliesFleetStats"
+          name="alliesFleetStats"
+          translation-key="fleet.alliesStats"
+          v-bind="alliesFleetStatsProps"
+          :disabled="alliesDisabled(publicFleetStats)"
+          :implied="!!publicFleetStats"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="alliesFleetMembers"
+          name="alliesFleetMembers"
+          translation-key="fleet.alliesMembers"
+          v-bind="alliesFleetMembersProps"
+          :disabled="submitting"
         />
       </div>
     </div>

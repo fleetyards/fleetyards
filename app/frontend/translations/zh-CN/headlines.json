@@ -419,6 +419,16 @@
           "create": "创建行程",
           "join": "加入此行程"
         }
+      },
+      "relationships": {
+        "user": {
+          "index": "好友",
+          "add": "添加好友"
+        },
+        "fleet": {
+          "index": "盟友",
+          "add": "添加盟友"
+        }
       }
     }
   }

@@ -419,6 +419,16 @@
           "create": "Tour erstellen",
           "join": "Dieser Tour beitreten"
         }
+      },
+      "relationships": {
+        "user": {
+          "index": "Freunde",
+          "add": "Freund hinzufügen"
+        },
+        "fleet": {
+          "index": "Verbündete",
+          "add": "Verbündeten hinzufügen"
+        }
       }
     }
   }

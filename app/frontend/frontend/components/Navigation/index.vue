@@ -17,6 +17,7 @@ import FleetNav from "./FleetNav/index.vue";
 import NotificationsNav from "./NotificationsNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
+import { usePendingFriendRequests } from "@/frontend/composables/usePendingFriendRequests";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useFiltersStore } from "@/shared/stores/filters";
@@ -31,6 +32,10 @@ const sessionStore = useSessionStore();
 const { isAuthenticated, currentUser } = storeToRefs(sessionStore);
 
 const hangarStore = useHangarStore();
+
+// Friend requests are answered two levels in, under settings, so the footer
+// row that leads there carries their count.
+const { count: pendingFriendRequests } = usePendingFriendRequests();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
@@ -107,6 +112,10 @@ const settingsActive = computed(() => {
     "settings-hangar",
     "settings-features",
     "settings-notifications",
+    "settings-friends",
+    "settings-friends-incoming",
+    "settings-friends-outgoing",
+    "settings-friends-ignored",
     "settings-security-status",
     "settings-two-factor-enable",
     "settings-two-factor-disable",
@@ -201,6 +210,7 @@ const settingsActive = computed(() => {
           :active="settingsActive"
           :label="t('nav.settings.index')"
           icon="fa-light fa-cog"
+          :badge="pendingFriendRequests"
         />
         <template v-if="currentUser.rsiHandle">
           <NavItem

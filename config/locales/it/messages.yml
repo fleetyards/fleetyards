@@ -36,6 +36,8 @@ it:
       base: Nessuna voce trovata
       fleet: Nessuna flotta trovata
       fleet_membership: Nessun membro della flotta trovato
+      friendship: Nessun amico trovato
+      fleet_alliance: Nessuna flotta alleata trovata
       user: Nessun utente trovato
       invite: Nessun invito trovato
       model: Nessun modello trovato

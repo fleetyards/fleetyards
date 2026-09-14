@@ -16,6 +16,14 @@ type Props = {
   modelValue?: boolean | null;
   disabled?: boolean;
   /*
+   * Reads as on whatever it holds, for a narrower switch a wider one already
+   * covers -- "visible to allies" under a fleet that is public. Display only:
+   * the field keeps its own value, so turning the wider switch off again
+   * restores the choice that was made here rather than the one it was shown as.
+   * Pair it with `disabled`, or it offers a state it will not keep.
+   */
+  implied?: boolean;
+  /*
    * Reserves the line a field's label occupies, so this control lines up with
    * the fields beside it in a row. Off by default: on its own it would add a
    * phantom label line to every standalone checkbox in the app.
@@ -39,6 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: undefined,
   modelValue: undefined,
   disabled: false,
+  implied: false,
   alignWithFields: false,
   translationKey: undefined,
   slim: true,
@@ -72,6 +81,14 @@ const emit = defineEmits(["update:modelValue"]);
 
 const update = () => {
   emit("update:modelValue", value.value);
+};
+
+// What `v-model` on the checkbox did, spelled out: it is gone so that `implied`
+// can sit in front of the value without becoming it, and the emit it drove --
+// the only path a parent's own `v-model` has -- has to stay.
+const onChange = (event: Event) => {
+  value.value = (event.target as HTMLInputElement).checked;
+  update();
 };
 
 const innerLabel = computed(() => {
@@ -119,7 +136,7 @@ const innerPlaceholder = computed(() => {
   >
     <input
       :id="uuid"
-      v-model="value"
+      :checked="implied || !!value"
       v-tooltip.right="errorMessage"
       :aria-invalid="!!errorMessage || undefined"
       :aria-describedby="errorMessage ? errorId : undefined"
@@ -128,7 +145,7 @@ const innerPlaceholder = computed(() => {
       :disabled="disabled"
       type="checkbox"
       :data-test="`toggle-${name}`"
-      @update:model-value="update"
+      @change="onChange"
     />
     <label :for="uuid">
       <span class="form-toggle-switch"></span>

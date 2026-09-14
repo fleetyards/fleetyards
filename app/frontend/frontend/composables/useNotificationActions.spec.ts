@@ -49,6 +49,23 @@ describe("useNotificationActions", () => {
         }),
       ),
     ).toEqual(["reviewRequest"]);
+
+    // The link a request carries is the incoming list, not the friends.
+    expect(
+      keysFor(
+        notification(NotificationTypeEnum.FRIEND_REQUEST_RECEIVED, {
+          link: "/x",
+        }),
+      ),
+    ).toEqual(["reviewRequest"]);
+
+    expect(
+      keysFor(
+        notification(NotificationTypeEnum.FRIEND_REQUEST_ACCEPTED, {
+          link: "/x",
+        }),
+      ),
+    ).toEqual(["openFriends"]);
   });
 
   it("offers nothing when the notification carries no link", () => {

@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useSessionStore } from "@/frontend/stores/session";
+import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
 import { type UserUpdateInput } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -30,6 +31,9 @@ const initialValues = ref<UserUpdateInput>({
   publicHangarLoaners: sessionStore.currentUser?.publicHangarLoaners,
   publicHangarStats: sessionStore.currentUser?.publicHangarStats,
   publicWishlist: sessionStore.currentUser?.publicWishlist,
+  friendsHangar: sessionStore.currentUser?.friendsHangar,
+  friendsHangarStats: sessionStore.currentUser?.friendsHangarStats,
+  friendsWishlist: sessionStore.currentUser?.friendsWishlist,
   hideOwner: sessionStore.currentUser?.hideOwner,
 });
 
@@ -39,6 +43,9 @@ const setupForm = () => {
     publicHangarLoaners: sessionStore.currentUser?.publicHangarLoaners,
     publicHangarStats: sessionStore.currentUser?.publicHangarStats,
     publicWishlist: sessionStore.currentUser?.publicWishlist,
+    friendsHangar: sessionStore.currentUser?.friendsHangar,
+    friendsHangarStats: sessionStore.currentUser?.friendsHangarStats,
+    friendsWishlist: sessionStore.currentUser?.friendsWishlist,
     hideOwner: sessionStore.currentUser?.hideOwner,
   };
 };
@@ -69,7 +76,16 @@ const [publicHangarLoaners, publicHangarLoanersProps] = defineField(
 const [publicHangarStats, publicHangarStatsProps] =
   defineField("publicHangarStats");
 const [publicWishlist, publicWishlistProps] = defineField("publicWishlist");
+const [friendsHangar, friendsHangarProps] = defineField("friendsHangar");
+const [friendsHangarStats, friendsHangarStatsProps] =
+  defineField("friendsHangarStats");
+const [friendsWishlist, friendsWishlistProps] = defineField("friendsWishlist");
 const [hideOwner, hideOwnerProps] = defineField("hideOwner");
+
+// See `narrowerAudienceDisabled`: a friend is a member of the public, so while
+// the public switch is on the friend one is not consulted at all.
+const friendsDisabled = (isPublic: unknown) =>
+  narrowerAudienceDisabled(isPublic, submitting.value);
 
 const mutation = useUpdateProfileMutation();
 
@@ -114,6 +130,16 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
       <div class="col-12 col-md-6">
         <FormToggle
+          v-model="friendsHangar"
+          name="friendsHangar"
+          v-bind="friendsHangarProps"
+          :disabled="friendsDisabled(publicHangar)"
+          :implied="!!publicHangar"
+          :label="t('labels.user.friendsHangar')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
           v-model="publicHangarLoaners"
           name="publicHangarLoaners"
           v-bind="publicHangarLoanersProps"
@@ -130,10 +156,30 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
       <div class="col-12 col-md-6">
         <FormToggle
+          v-model="friendsHangarStats"
+          name="friendsHangarStats"
+          v-bind="friendsHangarStatsProps"
+          :disabled="friendsDisabled(publicHangarStats)"
+          :implied="!!publicHangarStats"
+          :label="t('labels.user.friendsHangarStats')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
           v-model="publicWishlist"
           name="publicWishlist"
           v-bind="publicWishlistProps"
           :label="t('labels.user.publicWishlist')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="friendsWishlist"
+          name="friendsWishlist"
+          v-bind="friendsWishlistProps"
+          :disabled="friendsDisabled(publicWishlist)"
+          :implied="!!publicWishlist"
+          :label="t('labels.user.friendsWishlist')"
         />
       </div>
       <div class="col-12 col-md-6">

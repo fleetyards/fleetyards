@@ -33,6 +33,16 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_roles, path: "roles", only: %i[index]
 
+  # Addressed by the other fleet's slug, the same way a friendship is addressed
+  # by the other user's username.
+  resources :fleet_alliances, path: "allies", param: :ally_slug, only: %i[index show create destroy] do
+    member do
+      put :accept
+      put :decline
+      put :ignore
+    end
+  end
+
   resources :fleet_features, path: "features", only: %i[index] do
     member do
       put :enable
@@ -134,6 +144,8 @@ namespace :public do
     resources :fleet_vehicles, path: "vehicles", only: %i[index] do
       get :embed, on: :collection
     end
+
+    resources :fleet_members, path: "members", only: %i[index]
 
     resource :fleet_stats, path: "stats", only: %i[] do
       get "vehicles", to: "fleet_stats#vehicles"

@@ -77,7 +77,8 @@
           "discord": "Discord",
           "calendar": "行事曆",
           "features": "功能"
-        }
+        },
+        "allies": "盟友"
       },
       "rsiProfile": "RSI 檔案",
       "rsiHangar": "RSI 機庫",
@@ -110,7 +111,8 @@
         "features": "功能",
         "connections": "連線",
         "oauthApplications": "OAuth 應用",
-        "verify": "RSI 帳戶驗證"
+        "verify": "RSI 帳戶驗證",
+        "friends": "好友"
       },
       "reload": "有可用更新！",
       "visualTests": {

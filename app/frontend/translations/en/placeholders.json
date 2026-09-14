@@ -287,6 +287,14 @@
         "grade": "Grade",
         "scKey": "SC Key",
         "scRef": "SC Ref"
+      },
+      "relationships": {
+        "user": {
+          "handle": "Their username"
+        },
+        "fleet": {
+          "handle": "Their fleet slug"
+        }
       }
     }
   }

@@ -556,7 +556,10 @@
             "members_only": "Solo miembros",
             "officers_only": "Solo oficiales"
           }
-        }
+        },
+        "allies": "Naves visibles para los aliados",
+        "alliesStats": "Estadísticas visibles para los aliados",
+        "alliesMembers": "Lista de miembros visible para los aliados"
       },
       "hangarGroup": {
         "name": "Nombre",
@@ -1307,7 +1310,10 @@
           "dmy_slash": "31/12/2026",
           "mdy_slash": "12/31/2026",
           "ymd_dash": "2026-12-31"
-        }
+        },
+        "friendsHangar": "Hangar visible para los amigos",
+        "friendsHangarStats": "Estadísticas del hangar visibles para los amigos",
+        "friendsWishlist": "Lista de deseos visible para los amigos"
       },
       "adminUser": {
         "superAdmin": "Super administrador",
@@ -1935,7 +1941,8 @@
         "recordedAt": "Registrado",
         "origin": "De / A",
         "inTransitAmount": "%{amount} en tránsito",
-        "inTransitHint": "Enviado en una transferencia que nadie ha respondido. Ya está fuera de los totales."
+        "inTransitHint": "Enviado en una transferencia que nadie ha respondido. Ya está fuera de los totales.",
+        "transferFromFriends": "Mis amigos"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
@@ -1991,7 +1998,9 @@
         "syncAgain": "Sincronizar de nuevo",
         "markAsBought": "Marcar como comprada",
         "unavailable": "Esto ya no está disponible.",
-        "openTransfers": "Abrir transferencias"
+        "openTransfers": "Abrir transferencias",
+        "openFriends": "Abrir amigos",
+        "openAllies": "Abrir aliados"
       },
       "notificationTypes": {
         "channels": {
@@ -2004,7 +2013,8 @@
           "account": "Cuenta y hangar",
           "fleetMembership": "Membresía de flota",
           "fleetEvents": "Eventos de flota",
-          "logistics": "Logística"
+          "logistics": "Logística",
+          "relationships": "Amigos y aliados"
         },
         "hangar_create": "Nave añadida al hangar",
         "hangar_destroy": "Nave eliminada del hangar",
@@ -2032,7 +2042,11 @@
         "fleet_event_signup_kicked": "Eliminado de un slot",
         "allInGroup": "Todo en este grupo",
         "inventory_transfer_received": "Transferencia recibida",
-        "inventory_transfer_resolved": "Transferencia respondida"
+        "inventory_transfer_resolved": "Transferencia respondida",
+        "friend_request_received": "Solicitud de amistad recibida",
+        "friend_request_accepted": "Solicitud de amistad aceptada",
+        "fleet_ally_request_received": "Solicitud de alianza recibida",
+        "fleet_ally_request_accepted": "Solicitud de alianza aceptada"
       },
       "fleets": {
         "missions": {
@@ -2364,6 +2378,24 @@
         "startsAt": "Comienza el",
         "inviteLink": "Enlace de invitación",
         "participants": "Personas"
+      },
+      "relationships": {
+        "party": "Nombre",
+        "since": "Desde",
+        "tabs": {
+          "accepted": "Activos",
+          "incoming": "Entrantes",
+          "outgoing": "Enviadas",
+          "ignored": "Ignoradas"
+        },
+        "user": {
+          "handle": "Nombre de usuario"
+        },
+        "fleet": {
+          "handle": "Identificador de la flota"
+        },
+        "requested": "Solicitud enviada",
+        "friend": "Amigos"
       }
     }
   }

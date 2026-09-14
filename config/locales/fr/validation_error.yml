@@ -1,6 +1,12 @@
 ---
 fr:
   validation_error:
+    relationships:
+      create: "La demande n'a pas pu être envoyée."
+      destroy: "La demande n'a pas pu être supprimée."
+      accept: "La demande n'a pas pu être acceptée."
+      decline: "La demande n'a pas pu être refusée."
+      ignore: "La demande n'a pas pu être ignorée."
     change_pasword: Le changement de mot de passe a échoué.
     confirmation: Échec de la confirmation.
     vehicle:

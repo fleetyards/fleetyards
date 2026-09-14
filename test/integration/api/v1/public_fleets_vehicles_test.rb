@@ -82,6 +82,59 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/fleets/:fleetSlug/vehicles is open to an allied fleet" do
+    member = create(:user, vehicle_count: 2)
+    fleet = create(:fleet, public_fleet: false, allies_fleet: true, members: [member])
+    reader = create(:user)
+    allied_fleet = create(:fleet, created_by: reader.id)
+    create(:fleet_alliance, :accepted, requester: fleet, addressee: allied_fleet)
+    sign_in reader
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug} do
+      assert_equal 2, parsed_body["items"].count
+    end
+  end
+
+  test "GET /public/fleets/:fleetSlug/vehicles stays closed to a stranger when only allies are admitted" do
+    fleet = create(:fleet, public_fleet: false, allies_fleet: true, members: [create(:user, vehicle_count: 1)])
+    sign_in create(:user)
+
+    assert_api_response :get, 404, path_params: {fleetSlug: fleet.slug}
+  end
+
+  # This endpoint authorizes against `show?`, so sharing the numbers must not
+  # also hand over the ship list with its loadouts, modules and owner avatars.
+  test "GET /public/fleets/:fleetSlug/vehicles is closed to an ally given only the stats" do
+    fleet = create(:fleet, public_fleet: false, public_fleet_stats: false,
+      allies_fleet: false, allies_fleet_stats: true,
+      members: [create(:user, vehicle_count: 1)])
+    reader = create(:user)
+    allied_fleet = create(:fleet, created_by: reader.id)
+    create(:fleet_alliance, :accepted, requester: fleet, addressee: allied_fleet)
+    sign_in reader
+
+    assert_api_response :get, 404, path_params: {fleetSlug: fleet.slug}
+  end
+
+  # The ally view reads `fleet.vehicles`, which is FleetVehicle rows that each
+  # member's own ships_filter already decided the contents of. Nothing in this
+  # feature re-applies that rule, so this is the test that it is still applied.
+  test "GET /public/fleets/:fleetSlug/vehicles hides a member who hid their ships from an ally too" do
+    hidden_member = create(:user, vehicle_count: 2)
+    shown_member = create(:user, vehicle_count: 1)
+    fleet = create(:fleet, public_fleet: false, allies_fleet: true, members: [hidden_member, shown_member])
+    fleet.fleet_memberships.find_by(user: hidden_member).update!(ships_filter: :hide)
+
+    reader = create(:user)
+    allied_fleet = create(:fleet, created_by: reader.id)
+    create(:fleet_alliance, :accepted, requester: fleet, addressee: allied_fleet)
+    sign_in reader
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug} do
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
+
   test "GET /public/fleets/:fleetSlug/vehicles returns 404 for non-public fleet" do
     fleet = create(:fleet, public_fleet: false)
 

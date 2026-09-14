@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as membersRoutes } from "@/frontend/pages/fleets/[slug]/members/routes";
 import { routes as logisticsRoutes } from "@/frontend/pages/fleets/[slug]/logistics/routes";
+import { routes as alliesRoutes } from "@/frontend/pages/fleets/[slug]/allies/routes";
 import { routes as missionsRoutes } from "@/frontend/pages/fleets/[slug]/missions/routes";
 import { routes as eventsRoutes } from "@/frontend/pages/fleets/[slug]/events/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/fleets/[slug]/settings/routes";
@@ -59,6 +60,20 @@ export const routes: RouteRecordRaw[] = [
       name: logisticsRoutes[0].name,
     },
     children: logisticsRoutes,
+  },
+  {
+    path: "allies/",
+    name: "fleet-allies-root",
+    component: () => import("@/frontend/pages/fleets/[slug]/allies.vue"),
+    meta: {
+      needsAuthentication: true,
+      backgroundImage: "bg-8",
+      customTitle: true,
+    },
+    redirect: {
+      name: alliesRoutes[0].name,
+    },
+    children: alliesRoutes,
   },
   {
     path: "missions/",

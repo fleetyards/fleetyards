@@ -5,6 +5,9 @@
 # Table name: fleets
 #
 #  id                        :uuid             not null, primary key
+#  allies_fleet              :boolean          default(FALSE), not null
+#  allies_fleet_members      :boolean          default(FALSE), not null
+#  allies_fleet_stats        :boolean          default(FALSE), not null
 #  calendar_feed_token       :string
 #  created_by                :uuid
 #  default_timezone          :string           default("UTC"), not null
@@ -71,6 +74,17 @@ class Fleet < ApplicationRecord
   has_many :fleet_invite_urls,
     dependent: :destroy
   has_many :fleet_inventories, dependent: :destroy
+
+  has_many :sent_alliance_requests,
+    class_name: "FleetAlliance",
+    foreign_key: :requester_id,
+    dependent: :destroy,
+    inverse_of: :requester
+  has_many :received_alliance_requests,
+    class_name: "FleetAlliance",
+    foreign_key: :addressee_id,
+    dependent: :destroy,
+    inverse_of: :addressee
   has_many :missions, dependent: :destroy
   has_many :fleet_events, dependent: :destroy
   has_one :fleet_notification_setting, dependent: :destroy
@@ -127,6 +141,23 @@ class Fleet < ApplicationRecord
   def self.accepted
     includes(:fleet_memberships).joins(:fleet_memberships)
       .where(fleet_memberships: {aasm_state: :accepted})
+  end
+
+  # Every fleet this one has an accepted alliance with. Scoped `.kept`: a fleet
+  # is soft-deleted, so its alliances outlive it, and one with a discarded fleet
+  # must admit nothing -- while staying intact if that fleet is restored.
+  def allies
+    ::Fleet.kept.where(id: ::FleetAlliance.partner_ids_for(self))
+  end
+
+  def allied_with?(other)
+    return false if other.blank? || other.discarded?
+
+    ::FleetAlliance.accepted_between?(self, other)
+  end
+
+  def alliance_with(other)
+    ::FleetAlliance.between(self, other)
   end
 
   def set_normalized_fields

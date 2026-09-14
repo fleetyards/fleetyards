@@ -20,6 +20,9 @@
 #  encrypted_otp_secret_salt :string
 #  encrypted_password        :string(255)      default(""), not null
 #  failed_attempts           :integer          default(0), not null
+#  friends_hangar            :boolean          default(FALSE), not null
+#  friends_hangar_stats      :boolean          default(FALSE), not null
+#  friends_wishlist          :boolean          default(FALSE), not null
 #  guilded                   :string
 #  hangar_updated_at         :datetime
 #  hide_owner                :boolean          default(FALSE), not null
@@ -43,7 +46,6 @@
 #  public_hangar_loaners     :boolean          default(FALSE)
 #  public_hangar_stats       :boolean          default(FALSE)
 #  public_wishlist           :boolean          default(FALSE)
-#  purchased_vehicles_count  :integer          default(0), not null
 #  remember_created_at       :datetime
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
@@ -59,7 +61,6 @@
 #  unconfirmed_email         :string(255)
 #  unlock_token              :string(255)
 #  username                  :string(255)      default(""), not null
-#  wanted_vehicles_count     :integer          default(0), not null
 #  youtube                   :string
 #  created_at                :datetime
 #  updated_at                :datetime

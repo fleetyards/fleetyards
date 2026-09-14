@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type RouteRecordRaw } from "vue-router";
+import { type RouteRecordName, type RouteRecordRaw } from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
 import {
   routeName,
@@ -19,12 +19,26 @@ type Props = {
   links?: TabNavLink[];
   authenticated: boolean;
   resourceAccess?: string[];
+  // Counts to show beside a tab, by route name. The nav badge's cap, so a tab
+  // cannot be widened by a number nobody reads precisely anyway.
+  badges?: Record<string, number>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   links: undefined,
   resourceAccess: undefined,
+  badges: undefined,
 });
+
+const badgeFor = (name?: RouteRecordName) => {
+  const count = name ? props.badges?.[String(name)] : undefined;
+
+  if (!count) {
+    return undefined;
+  }
+
+  return count > 99 ? "99+" : String(count);
+};
 
 const filteredRoutes = computed(() => {
   return props.routes
@@ -59,7 +73,12 @@ const { isActive } = useActiveTab(filteredRoutes);
       @click="navigate"
       @keypress.enter="() => navigate"
     >
-      <a :href="linkHref">{{ t(`nav.${item.meta?.title}`) }}</a>
+      <a :href="linkHref">
+        {{ t(`nav.${item.meta?.title}`) }}
+        <span v-if="badgeFor(routeName(item))" class="tabs-badge">
+          {{ badgeFor(routeName(item)) }}
+        </span>
+      </a>
     </li>
   </router-link>
   <template v-if="props.links?.length">

@@ -52,3 +52,11 @@ de:
       title: "%{username} ist %{fleet} beigetreten"
     fleet_request_accepted:
       title: Sie wurden in %{fleet} aufgenommen
+    friend_request_received:
+      title: "%{username} hat dir eine Freundschaftsanfrage geschickt"
+    friend_request_accepted:
+      title: "%{username} hat deine Freundschaftsanfrage angenommen"
+    fleet_ally_request_received:
+      title: "%{fleet} möchte sich mit %{own_fleet} verbünden"
+    fleet_ally_request_accepted:
+      title: "%{fleet} ist jetzt mit %{own_fleet} verbündet"

@@ -62,7 +62,11 @@ class Notification < ApplicationRecord
     fleet_event_signup_assigned: "fleet_event_signup_assigned",
     fleet_event_signup_kicked: "fleet_event_signup_kicked",
     inventory_transfer_received: "inventory_transfer_received",
-    inventory_transfer_resolved: "inventory_transfer_resolved"
+    inventory_transfer_resolved: "inventory_transfer_resolved",
+    friend_request_received: "friend_request_received",
+    friend_request_accepted: "friend_request_accepted",
+    fleet_ally_request_received: "fleet_ally_request_received",
+    fleet_ally_request_accepted: "fleet_ally_request_accepted"
   }
 
   TYPES = {
@@ -218,6 +222,32 @@ class Notification < ApplicationRecord
     inventory_transfer_resolved: {
       retention: 30.days,
       channels: %i[app]
+    },
+    # Two types per relationship, not four. There is deliberately no
+    # notification for a decline and obviously none for an ignore -- an ignore
+    # that pings the sender is not an ignore, and a decline that does makes
+    # declining the more hostile of the two answers. The same shape the
+    # membership types already take, which have never had a declined
+    # counterpart either.
+    friend_request_received: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    friend_request_accepted: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_ally_request_received: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_ally_request_accepted: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
     }
   }.freeze
 

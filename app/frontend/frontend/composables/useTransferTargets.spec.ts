@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { computed, ref } from "vue";
 import type { Fleet, HangarInventory } from "@/services/fyApi";
 
@@ -10,6 +10,9 @@ const fleetInventories = ref<
 >();
 const fleets = ref<Partial<Fleet>[] | undefined>();
 const members = ref<{ items: { username: string }[] }[]>([]);
+const allies = ref<{ items: { fleet: { slug: string; name: string } }[] }>();
+const friends = ref<{ items: { user: { username: string } }[] }>();
+const enabledFeatures = ref<string[]>(["friends", "fleet_allies"]);
 
 vi.mock(
   "@/services/fyApi/services/hangar-inventories/hangar-inventories",
@@ -31,6 +34,21 @@ vi.mock("@/services/fyApi/services/fleets/fleets", () => ({
 
 vi.mock("@/services/fyApi/services/fleet-members/fleet-members", () => ({
   fleetMembers: vi.fn(),
+}));
+
+vi.mock("@/services/fyApi/services/fleet-allies/fleet-allies", () => ({
+  useFleetAllies: () => ({ data: allies }),
+}));
+
+vi.mock("@/services/fyApi/services/friends/friends", () => ({
+  useFriends: () => ({ data: friends }),
+}));
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({
+    isFeatureEnabled: (feature: string) =>
+      enabledFeatures.value.includes(feature),
+  }),
 }));
 
 vi.mock("@tanstack/vue-query", () => ({
@@ -55,6 +73,12 @@ const fleet = (overrides: Partial<Fleet> = {}): Partial<Fleet> => ({
 });
 
 describe("useTransferTargets", () => {
+  beforeEach(() => {
+    allies.value = undefined;
+    friends.value = undefined;
+    enabledFeatures.value = ["friends", "fleet_allies"];
+  });
+
   it("offers the holder's other inventories, never the one being emptied", () => {
     hangarInventories.value = {
       items: [
@@ -149,5 +173,63 @@ describe("useTransferTargets", () => {
       { value: "crew", label: "Crew" },
       { value: "quiet", label: "Quiet" },
     ]);
+  });
+
+  // The extension point the composable's own comment describes: another way of
+  // knowing somebody becomes another group to pick a person out of.
+  it("offers friends as a group beside the fleets", () => {
+    hangarInventories.value = { items: [] };
+    fleets.value = [fleet()];
+    friends.value = { items: [{ user: { username: "wingman" } }] };
+
+    const { memberFleets, friendOptions } = useTransferTargets({
+      source: () => undefined,
+    });
+
+    expect(memberFleets.value[0]).toEqual({
+      value: "@friends",
+      label: "labels.logistics.transferFromFriends",
+    });
+    expect(friendOptions.value).toEqual([
+      { value: "user:wingman", label: "wingman" },
+    ]);
+  });
+
+  it("offers no friends group when there are none", () => {
+    hangarInventories.value = { items: [] };
+    fleets.value = [fleet()];
+    friends.value = { items: [] };
+
+    const { memberFleets } = useTransferTargets({ source: () => undefined });
+
+    expect(memberFleets.value).toEqual([{ value: "crew", label: "Crew" }]);
+  });
+
+  // An alliance is between the two organisations, not between one of them and
+  // each member of the other.
+  it("offers allied fleets only when acting for a fleet", () => {
+    hangarInventories.value = { items: [] };
+    fleetInventories.value = { items: [] };
+    fleets.value = [];
+    allies.value = { items: [{ fleet: { slug: "ally", name: "Ally" } }] };
+
+    const asFleet = useTransferTargets({
+      source: () => undefined,
+      fleetSlug: () => "crew",
+    });
+
+    expect(asFleet.targets.value.map((target) => target.payload)).toEqual([
+      { recipientFleetSlug: "ally" },
+    ]);
+    expect(asFleet.targets.value.every((target) => target.needsAnswer)).toBe(
+      true,
+    );
+
+    // The same alliance data, read as a person rather than as the fleet: the
+    // query is disabled there, so this asserts the shape rather than the fetch.
+    allies.value = undefined;
+    const asPerson = useTransferTargets({ source: () => undefined });
+
+    expect(asPerson.targets.value).toEqual([]);
   });
 });

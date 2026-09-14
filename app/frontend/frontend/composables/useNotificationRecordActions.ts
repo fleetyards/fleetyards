@@ -1,6 +1,8 @@
 import {
   acceptFleetMember,
   acceptFleetMembership,
+  acceptFriendship,
+  declineFriendship,
   declineFleetMember,
   declineFleetMembership,
   FleetEventSignupStatusEnum,
@@ -12,6 +14,7 @@ import {
   useFleetEvent,
   useFleetMember,
   useFleetMembership,
+  useFriendship,
   useShowVehicle,
   useSyncRsiHangarStatus,
   type Notification,
@@ -33,6 +36,7 @@ export type NotificationAction = {
 const LOOKUPS = {
   fleet_invite: "ownMembership",
   fleet_member_requested: "member",
+  friend_request_received: "friendship",
   fleet_event_published: "event",
   fleet_event_starting_soon: "event",
   fleet_event_signup_confirmed: "event",
@@ -88,6 +92,9 @@ export const useNotificationRecordActions = (
         enabled: enabledFor("event", fleetSlug, eventSlug),
         retry: false,
       },
+    }),
+    friendship: useFriendship(username, {
+      query: { enabled: enabledFor("friendship", username), retry: false },
     }),
     vehicle: useShowVehicle(recordId, {
       query: { enabled: enabledFor("vehicle", recordId), retry: false },
@@ -149,6 +156,30 @@ export const useNotificationRecordActions = (
           () => acceptFleetMember(fleetSlug.value, username.value),
           () => declineFleetMember(fleetSlug.value, username.value),
         );
+
+      // Only while it is still waiting -- and `state` is what the *reader*
+      // sees, so a request they already ignored reports `ignored` and offers
+      // nothing, while one the sender is looking at reads `pending` forever
+      // and is not this notification anyway.
+      case NotificationTypeEnum.FRIEND_REQUEST_RECEIVED: {
+        if (queries.friendship.data.value?.state !== "pending") {
+          return [];
+        }
+
+        return [
+          {
+            key: "accept",
+            icon: "fa-duotone fa-check",
+            run: () => acceptFriendship(username.value),
+          },
+          {
+            key: "decline",
+            icon: "fa-duotone fa-xmark",
+            tone: BtnTonesEnum.DANGER,
+            run: () => declineFriendship(username.value),
+          },
+        ];
+      }
 
       case NotificationTypeEnum.FLEET_EVENT_PUBLISHED:
       case NotificationTypeEnum.FLEET_EVENT_STARTING_SOON: {

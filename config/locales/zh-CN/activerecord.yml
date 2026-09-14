@@ -215,6 +215,24 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        fleet_alliance:
+          attributes:
+            base:
+              not_to_self: "舰队不能与自身结盟"
+              already_related: "这些舰队已经结盟"
+              at_capacity: "该舰队当前的待处理请求过多"
+              not_found: "找不到该舰队"
+              already_resolved: "该请求已被处理"
+              forbidden: "你无权处理该请求"
+        friendship:
+          attributes:
+            base:
+              not_to_self: "不能向自己发送好友请求"
+              already_related: "你们已经是好友了"
+              at_capacity: "该用户当前的待处理请求过多"
+              not_found: "找不到该用户"
+              already_resolved: "该请求已被处理"
+              forbidden: "你无权处理该请求"
         inventory_transfer:
           attributes:
             base:

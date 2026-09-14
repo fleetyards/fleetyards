@@ -37,6 +37,8 @@ fr:
       base: Aucune entrée trouvée
       fleet: Aucune flotte trouvée
       fleet_membership: Aucun membre de flotte trouvé
+      friendship: Aucun ami trouvé
+      fleet_alliance: Aucune flotte alliée trouvée
       user: Aucun utilisateur trouvé
       invite: Aucune invitation trouvée
       model: Aucun modèle trouvé

@@ -19,6 +19,7 @@ const queries = {
   ownMembership: stub(),
   member: stub(),
   event: stub(),
+  friendship: stub(),
   vehicle: stub(),
   sync: stub(),
 };
@@ -31,6 +32,8 @@ const mutations = {
   signupFleetEvent: vi.fn(),
   syncRsiHangar: vi.fn(),
   updateVehicle: vi.fn(),
+  acceptFriendship: vi.fn(),
+  declineFriendship: vi.fn(),
 };
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -38,6 +41,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useFleetMembership: () => queries.ownMembership,
   useFleetMember: () => queries.member,
   useFleetEvent: () => queries.event,
+  useFriendship: () => queries.friendship,
   useShowVehicle: () => queries.vehicle,
   useSyncRsiHangarStatus: () => queries.sync,
   ...mutations,
@@ -74,6 +78,12 @@ const membershipRecord = {
   username: "newcomer",
 };
 
+const friendshipRecord = {
+  type: NotificationRecordTypeEnum.FRIENDSHIP,
+  id: "friendship-1",
+  username: "wingman",
+};
+
 const eventRecord = {
   type: NotificationRecordTypeEnum.FLEET_EVENT,
   id: "event-1",
@@ -106,6 +116,43 @@ describe("useNotificationRecordActions", () => {
     await actions.value[0].run();
 
     expect(mutations.acceptFleetMembership).toHaveBeenCalledWith("test-fleet");
+  });
+
+  it("answers a friend request through the friendship endpoint", async () => {
+    queries.friendship.data.value = { state: "pending" };
+
+    const { actions } = useNotificationRecordActions(
+      notificationRef(
+        NotificationTypeEnum.FRIEND_REQUEST_RECEIVED,
+        friendshipRecord,
+      ),
+    );
+
+    expect(actions.value.map((action) => action.key)).toEqual([
+      "accept",
+      "decline",
+    ]);
+
+    await actions.value[1].run();
+
+    expect(mutations.declineFriendship).toHaveBeenCalledWith("wingman");
+  });
+
+  // `state` is what the *reader* sees, so a request they already ignored
+  // reports `ignored` and has nothing left to offer.
+  it("offers nothing once a friend request has been answered", () => {
+    ["accepted", "declined", "ignored"].forEach((state) => {
+      queries.friendship.data.value = { state };
+
+      const { actions } = useNotificationRecordActions(
+        notificationRef(
+          NotificationTypeEnum.FRIEND_REQUEST_RECEIVED,
+          friendshipRecord,
+        ),
+      );
+
+      expect(actions.value).toEqual([]);
+    });
   });
 
   it("offers nothing once the invite has been answered elsewhere", () => {

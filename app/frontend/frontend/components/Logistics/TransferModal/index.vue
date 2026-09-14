@@ -25,6 +25,7 @@ import {
 import { type FleetMember, fleetMembers } from "@/services/fyApi";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
+import { FRIENDS_GROUP } from "@/frontend/composables/useTransferTargets";
 import type {
   TransferSource,
   TransferTargetKind,
@@ -40,6 +41,9 @@ type Props = {
   // Where a person can be picked out of -- a fleet today, and whatever else
   // comes to mean "known" later, which lands here rather than as a new branch.
   memberFleets: { value: string; label: string }[];
+  // Accepted friends, as `user:<username>` options. Held client-side rather
+  // than searched: a friends list is short, and there is no second page of it.
+  friendOptions?: { value: string; label: string }[];
   onSend: (payload: InventoryTransferCreateInput) => Promise<unknown>;
 };
 
@@ -142,12 +146,17 @@ const fetchMembers = (params: BaseSelectParams<FilterOption>) =>
 // The person list lives in the select rather than in `targetOptions`, so the
 // watcher that re-picks when the kind changes never sees a fleet change.
 // Without this, choosing somebody in fleet A and then switching to fleet B
-// keeps A's username selected and sends the goods to them.
+// keeps A's username selected and sends the goods to them. It covers the
+// friends group for the same reason.
 watch(memberFleet, () => {
   if (targetKind.value !== "user") return;
 
   targetValue.value = undefined;
 });
+
+// Friends are a group you pick a person out of, exactly like a fleet -- so the
+// group picker holds both and only the source of the names differs.
+const pickingFriends = computed(() => memberFleet.value === FRIENDS_GROUP);
 
 const formatMembers = (response: { items: FleetMember[] }) =>
   (response.items || [])
@@ -311,7 +320,17 @@ const onSubmit = async () => {
       />
 
       <BaseSelect
-        v-if="targetKind === 'user'"
+        v-if="targetKind === 'user' && pickingFriends"
+        v-model="targetValue"
+        name="target"
+        searchable
+        :options="friendOptions"
+        :label="t('labels.logistics.transferTarget')"
+        data-test="transfer-target"
+      />
+
+      <BaseSelect
+        v-else-if="targetKind === 'user'"
         v-model="targetValue"
         name="target"
         searchable

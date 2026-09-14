@@ -1,6 +1,12 @@
 ---
 it:
   validation_error:
+    relationships:
+      create: "Impossibile inviare la richiesta."
+      destroy: "Impossibile rimuovere la richiesta."
+      accept: "Impossibile accettare la richiesta."
+      decline: "Impossibile rifiutare la richiesta."
+      ignore: "Impossibile ignorare la richiesta."
     change_pasword: Cambio password fallito.
     confirmation: Conferma fallita.
     vehicle:

@@ -17,6 +17,8 @@ type Props = {
   authenticated?: boolean;
   resourceAccess?: string[];
   activeKey?: string;
+  // Counts to show beside a tab, by route name.
+  badges?: Record<string, number>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -25,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   authenticated: false,
   resourceAccess: undefined,
   activeKey: undefined,
+  badges: undefined,
 });
 
 const mobile = useMobile();
@@ -78,6 +81,7 @@ watch(
         :links="props.links"
         :authenticated="props.authenticated"
         :resource-access="props.resourceAccess"
+        :badges="props.badges"
       />
       <ul v-else class="tabs">
         <slot name="nav">
@@ -87,6 +91,7 @@ watch(
             :links="props.links"
             :authenticated="props.authenticated"
             :resource-access="props.resourceAccess"
+            :badges="props.badges"
           />
         </slot>
       </ul>

@@ -111,6 +111,17 @@ export const routes: RouteRecordRaw[] = [
       nav: "main",
     },
   },
+  // The list moved under settings. Notifications written before it did carry
+  // `/friends` as their link, and those rows outlive the move -- as do the tab
+  // links somebody was sent, so each one lands on the list it named.
+  ...(["incoming", "outgoing", "ignored"].map((tab) => ({
+    path: `/friends/${tab}/`,
+    redirect: { name: `settings-friends-${tab}` },
+  })) as RouteRecordRaw[]),
+  {
+    path: "/friends/:tab*",
+    redirect: { name: "settings-friends" },
+  },
   {
     path: "/notifications/",
     name: "notifications",
