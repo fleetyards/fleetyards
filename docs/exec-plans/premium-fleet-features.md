@@ -637,9 +637,19 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
 
 - **Flipper as the entitlement layer.** D1 and D3, recorded here because it was the first design and
   the reasons it was dropped are the reasons not to reach for it again.
-- **Patreon OAuth as a seventh provider.** The D5 email match covers Patreon automatically. An OAuth
-  provider would add credentials, a callback and a maintained strategy to solve a solved problem, and
-  would do nothing for the other three platforms.
+- **Patreon OAuth as a seventh provider — a follow-up, and wanted.** Not dropped: the D5 email match
+  only links a patron whose Patreon address *is* their Fleetyards one, and the D6 key cannot reach us
+  through Patreon at all, so a patron whose addresses differ has no self-service path today. OAuth is
+  the answer, and specifically **not** a user-entered "my Patreon email" field: an address somebody
+  types is an assertion, and it would let anyone claim a stranger's contribution — and, once this plan
+  lands, their entitlement. What makes the email match safe is that neither side is asserted.
+
+  Most of it is already here. `Patreon::Client#normalize` resolves the included user record and keeps
+  only its `vanity`, discarding the Patreon **user id** on every sync; stored beside
+  `patreon_member_id` it is an exact join key, and an OAuth connection's `uid` is that same id.
+  `OmniauthConnection`'s provider enum takes a seventh value, and `backfill_discord_member_roles` is
+  the link-on-connect precedent. Needs a redirect URI on the Patreon client and its id/secret in the
+  environment credentials — neither of which a code change can do.
 - **PayPal and Buy Me a Coffee endpoints.** D7. Hand-entered with the key pasted from the payment note,
   which is the same resolution path and no new code, until either grows enough to argue otherwise.
 - **Taking payment in the app, and everything the tax authority will eventually want.** Patreon and
