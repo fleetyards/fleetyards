@@ -33,7 +33,13 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
   get "fleets/:slug/allies", to: "fleets#show", as: :fleet_allies
   get "fleets/:slug/allies/incoming", to: "fleets#show", as: :incoming_fleet_allies
-  get "fleets/:slug/members/invites", to: "fleets#members", as: :fleet_member_invites
+  # The invite list is a view of the members page now. Mail already sent, and
+  # links people shared, carry the old path -- so it keeps resolving, from the
+  # server rather than by loading the app and bouncing.
+  get "fleets/:slug/members/invites", to: redirect(status: 301) { |params, req|
+    query = req.query_string.presence
+    "/fleets/#{params[:slug]}/members/?view=invites#{"&#{query}" if query}"
+  }
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
   get "fleets/:slug/settings/fleet", to: "fleets#settings"

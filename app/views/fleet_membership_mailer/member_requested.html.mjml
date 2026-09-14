@@ -11,6 +11,6 @@
 </mj-text>
 
 <%= render "shared/mailer/btn",
-           href: frontend_fleet_member_invites_url(slug: @fleet.slug),
+           href: frontend_fleet_members_url(slug: @fleet.slug, view: "invites"),
            label: I18n.t("mailer.fleet_membership.member_requested.action", fleet: @fleet.name),
            tone: :primary %>
