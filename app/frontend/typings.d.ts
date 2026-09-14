@@ -21,7 +21,7 @@ declare module "vue-router" {
     nav?: "main" | "sub" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;
     href?: string;
-    feature?: FeatureFlagName;
+    feature?: FeatureFlagName | FeatureFlagName[];
     // Read `feature` against the fleet in the route rather than the viewer.
     featureScope?: "fleet";
     hideWhenAuthenticated?: boolean;

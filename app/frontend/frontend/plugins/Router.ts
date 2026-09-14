@@ -82,7 +82,15 @@ export const beforeResolve = async (
   const fleetSlug =
     to.meta.featureScope === "fleet" ? String(to.params.slug) : undefined;
 
-  if (to.meta.feature && !(await featureEnabled(to.meta.feature, fleetSlug))) {
+  // A route can stack flags -- a fleet's tours need the tours feature *and* the
+  // fleet one -- and every one of them has to be on.
+  const features = to.meta.feature ? [to.meta.feature].flat() : [];
+
+  const allowed = await Promise.all(
+    features.map((feature) => featureEnabled(feature, fleetSlug)),
+  );
+
+  if (allowed.some((enabled) => !enabled)) {
     return {
       routeName: "404",
     };
