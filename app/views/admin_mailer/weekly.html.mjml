@@ -15,18 +15,43 @@
   app's metric-label face and what .report-section already asked for.
 %>
 <%
-  cell = "padding: 6px 8px; border-bottom: 1px solid #{MailerTheme::EDGE_FAINT}; font-size: 14px;"
+  cell = "padding: 5px; border-bottom: 1px solid #{MailerTheme::EDGE_FAINT}; font-size: 14px;"
+  # Tracking comes down from 1px and the headings sit on one baseline. Both are
+  # for the narrow case: a phone breaks "This Week" and "Last Week" over two
+  # lines while "Metric" and "Change" stay on one, and at 1px "Change" did not
+  # fit its column at all.
   head = "#{cell} color: #{MailerTheme::MUTED}; font-weight: normal; font-size: 11px; " \
-         "letter-spacing: 1px; text-transform: uppercase;"
-  label_cell = "#{cell} text-align: left; color: #{MailerTheme::TEXT};"
+         "letter-spacing: .5px; text-transform: uppercase; vertical-align: bottom;"
+  # The first and last column drop the padding on their outward side, so the
+  # table's own edges line up with the section heading above it rather than
+  # sitting 5px inside - and on a phone that is width the figures get to keep.
+  label_cell = "#{cell} padding-left: 0; text-align: left; color: #{MailerTheme::TEXT};"
   # tabular-nums so a column of figures lines up on the decimal.
-  number_cell = "#{cell} text-align: right; width: 90px; font-variant-numeric: tabular-nums;"
+  number_cell = "#{cell} text-align: right; font-variant-numeric: tabular-nums;"
+  last_cell = "#{number_cell} padding-right: 0;"
+  # The notifications table has no header row, so its one declared width has to
+  # ride on the date cell of every row instead.
+  date_cell = "#{last_cell} width: 76px;"
   delta_color = {
     "positive" => MailerTheme::SUCCESS,
     "negative" => MailerTheme::DANGER,
     "neutral" => MailerTheme::MUTED
   }
-  table_attrs = 'width="100%" cellpadding="0" cellspacing="0" padding="0 0 8px" font-size="14px"'
+  # table-layout: fixed, with the widths declared as shares on the header row.
+  #
+  # The three figure columns used to be 90px each, which at 640px still left the
+  # metric name 250. Gmail on a 390pt phone hands the table about 330px, the
+  # same 270 came off the top, and "New Registrations" came down the page one
+  # character per line. A share cannot do that, and fixed layout is what makes
+  # the client honour the declaration instead of re-measuring each column
+  # against its contents.
+  #
+  # 36/21/21/22 rather than an even split, because the metric names are the long
+  # text - "Models Needing Position Curation" against a four-digit count. The
+  # last column takes the odd point back: "Change" is wider than any figure
+  # underneath it, and it is the one heading with no space to break at.
+  table_attrs = 'width="100%" cellpadding="0" cellspacing="0" table-layout="fixed" ' \
+                'padding="0 0 8px" font-size="14px"'
 %>
 
 <mj-text mj-class="h2" padding="0 0 6px">
@@ -46,10 +71,18 @@
 
   <mj-table <%= table_attrs.html_safe %>>
     <tr>
-      <th style="<%= head %> text-align: left;"><%= I18n.t("mailer.admin.weekly.columns.metric") %></th>
-      <th style="<%= head %> text-align: right;"><%= I18n.t("mailer.admin.weekly.columns.current") %></th>
-      <th style="<%= head %> text-align: right;"><%= I18n.t("mailer.admin.weekly.columns.previous") %></th>
-      <th style="<%= head %> text-align: right;"><%= I18n.t("mailer.admin.weekly.columns.delta") %></th>
+      <th style="<%= head %> padding-left: 0; text-align: left; width: 36%;">
+        <%= I18n.t("mailer.admin.weekly.columns.metric") %>
+      </th>
+      <th style="<%= head %> text-align: right; width: 21%;">
+        <%= I18n.t("mailer.admin.weekly.columns.current") %>
+      </th>
+      <th style="<%= head %> text-align: right; width: 21%;">
+        <%= I18n.t("mailer.admin.weekly.columns.previous") %>
+      </th>
+      <th style="<%= head %> padding-right: 0; text-align: right; width: 22%;">
+        <%= I18n.t("mailer.admin.weekly.columns.delta") %>
+      </th>
     </tr>
     <% section.metrics.each do |metric| %>
       <tr>
@@ -62,7 +95,7 @@
         <td style="<%= number_cell %> color: <%= MailerTheme::MUTED %>;">
           <%= admin_report_previous_value(metric) || "&mdash;".html_safe %>
         </td>
-        <td style="<%= number_cell %> color: <%= delta_color.fetch(admin_report_delta_class(metric)) %>;">
+        <td style="<%= last_cell %> color: <%= delta_color.fetch(admin_report_delta_class(metric)) %>;">
           <%= admin_report_delta(metric) || "&mdash;".html_safe %>
         </td>
       </tr>
@@ -84,8 +117,9 @@
             <span style="color: <%= MailerTheme::MUTED %>;">&times;<%= notification.occurrences %></span>
           <% end %>
         </td>
-        <td style="<%= number_cell %> color: <%= MailerTheme::MUTED %>;">
-          <%= I18n.l(notification.created_at.to_date, format: :day_month) %>
+        <%# day_month is "Sunday, September 13" - three lines in a column this narrow. %>
+        <td style="<%= date_cell %> color: <%= MailerTheme::MUTED %>;">
+          <%= I18n.l(notification.created_at.to_date, format: :day_month_short) %>
         </td>
       </tr>
     <% end %>
