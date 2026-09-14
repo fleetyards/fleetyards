@@ -12,12 +12,16 @@ import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import {
+  MEMBERS_VIEW_FILTER_KEYS,
+  type MembersView,
+} from "@/frontend/composables/useMembersView";
+import {
   InputSizesEnum,
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
 
 type Props = {
-  variant?: "members" | "invites";
+  variant?: MembersView;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,28 +35,36 @@ const { filter, resetFilter, isFilterSelected, filters } =
     updateCallback: setupForm,
   });
 
+// Only the fields this variant asks about, read from the same map the page
+// clears the other variant's by, so a field added here cannot be forgotten
+// there and go on filtering the list that never shows it.
+const variantFilters = () =>
+  Object.fromEntries(
+    MEMBERS_VIEW_FILTER_KEYS[props.variant].map((key) => [
+      key,
+      // A multi-select binds to an array; unset, that has to be an empty one.
+      key === "stateIn" ? filters.value.stateIn || [] : filters.value[key],
+    ]),
+  ) as FleetMemberQuery;
+
 function setupForm() {
   form.value = {
     usernameCont: filters.value.usernameCont,
     roleIn: filters.value.roleIn || [],
     sorts: filters.value.sorts,
-    ...(props.variant === "members" && {
-      acceptedAtGteq: filters.value.acceptedAtGteq,
-      acceptedAtLteq: filters.value.acceptedAtLteq,
-    }),
-    ...(props.variant === "invites" && {
-      stateIn: filters.value.stateIn || [],
-      invitedAtGteq: filters.value.invitedAtGteq,
-      invitedAtLteq: filters.value.invitedAtLteq,
-      requestedAtGteq: filters.value.requestedAtGteq,
-      requestedAtLteq: filters.value.requestedAtLteq,
-      declinedAtGteq: filters.value.declinedAtGteq,
-      declinedAtLteq: filters.value.declinedAtLteq,
-    }),
+    ...variantFilters(),
   };
 }
 
 const form = ref<FleetMemberQuery>({});
+
+/*
+ * The view is not a filter, so it is kept out of `filters` -- which means a
+ * bare switch between the roster and the invites changes nothing this form
+ * watches. Without this the form keeps the fields it was holding for the list
+ * it has just left, and writes them back into the URL on the next keystroke.
+ */
+watch(() => props.variant, setupForm);
 
 watch(
   () => form.value,

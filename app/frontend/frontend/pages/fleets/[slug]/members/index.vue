@@ -17,11 +17,14 @@ import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterFo
 import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue";
 import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import type { LocationQuery } from "vue-router";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import {
+  useMembersView,
+  type MembersView,
+} from "@/frontend/composables/useMembersView";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { FleetMembersChannel } from "@/services/fyCable/channels/FleetMembersChannel";
 import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
@@ -64,35 +67,14 @@ const canInvite = computed(
  * with the choice in the query. In a path of its own it was a page rebuild on
  * every switch: `App.vue` keys the page on `locale-path`.
  */
-const VIEWS = ["members", "invites"] as const;
+const { view, views, viewQuery, scopedFilters } =
+  useMembersView(canManageInvites);
 
-type MembersView = (typeof VIEWS)[number];
-
-// A view somebody may not read falls back to the roster rather than to an
-// empty list or an error.
-const view = computed<MembersView>(() =>
-  route.query.view === "invites" && canManageInvites.value
-    ? "invites"
-    : "members",
-);
-
-const viewLink = (value: MembersView) => {
-  const query: LocationQuery = { ...route.query };
-  // The page number belongs to the list it was counted on.
-  delete query.page;
-
-  if (value === "invites") {
-    query.view = "invites";
-  } else {
-    delete query.view;
-  }
-
-  return {
-    name: "fleet-members-index",
-    params: { slug: props.fleet.slug },
-    query,
-  };
-};
+const viewLink = (value: MembersView) => ({
+  name: "fleet-members-index",
+  params: { slug: props.fleet.slug },
+  query: viewQuery(value),
+});
 
 // Everything that has not been accepted: invited, asked to join, or refused.
 const INVITE_STATES = ["invited", "requested", "declined"];
@@ -127,7 +109,7 @@ const membersQueryParams = computed<FleetMembersParams>(() => ({
   page: page.value,
   perPage: perPage.value,
   q: {
-    ...getQuery(),
+    ...scopedFilters(getQuery()),
     stateIn: stateIn.value,
   } as FleetMemberQuery,
 }));
@@ -284,7 +266,7 @@ const crumbs = computed<Crumb[]>(() => {
     <template v-if="canManageInvites" #actions-left>
       <BtnGroup segmented>
         <Btn
-          v-for="value in VIEWS"
+          v-for="value in views"
           :key="value"
           :to="viewLink(value)"
           :active="view === value"
