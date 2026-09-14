@@ -1965,7 +1965,9 @@
         "origin": "From / To",
         "inTransitAmount": "%{amount} in transit",
         "inTransitHint": "Sent on a transfer nobody has answered yet. It is already out of the totals.",
-        "transferFromFriends": "My friends"
+        "transferFromFriends": "My friends",
+        "towardsContract": "Towards a contract",
+        "noContract": "No contract"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

@@ -1951,7 +1951,9 @@
         "origin": "Von / An",
         "inTransitAmount": "%{amount} unterwegs",
         "inTransitHint": "Auf einem Transfer, den noch niemand beantwortet hat. Bereits aus den Summen heraus.",
-        "transferFromFriends": "Meine Freunde"
+        "transferFromFriends": "Meine Freunde",
+        "towardsContract": "Für einen Auftrag",
+        "noContract": "Kein Auftrag"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {

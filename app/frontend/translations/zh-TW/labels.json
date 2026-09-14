@@ -1951,7 +1951,9 @@
         "origin": "來自 / 傳往",
         "inTransitAmount": "%{amount} 運送中",
         "inTransitHint": "已隨一筆尚未被回覆的轉移送出，已不計入上方總數。",
-        "transferFromFriends": "我的好友"
+        "transferFromFriends": "我的好友",
+        "towardsContract": "計入合約",
+        "noContract": "不計入合約"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

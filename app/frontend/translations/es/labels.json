@@ -1951,7 +1951,9 @@
         "origin": "De / A",
         "inTransitAmount": "%{amount} en tránsito",
         "inTransitHint": "Enviado en una transferencia que nadie ha respondido. Ya está fuera de los totales.",
-        "transferFromFriends": "Mis amigos"
+        "transferFromFriends": "Mis amigos",
+        "towardsContract": "Para un contrato",
+        "noContract": "Ningún contrato"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

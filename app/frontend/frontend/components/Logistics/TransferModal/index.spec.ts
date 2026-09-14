@@ -8,6 +8,15 @@ vi.mock("@/services/fyApi/services/fleet-members/fleet-members", () => ({
   fleetMembers: vi.fn().mockResolvedValue({ items: [] }),
 }));
 import { fleetMembers } from "@/services/fyApi/services/fleet-members/fleet-members";
+
+const openContracts = { value: [] as { id: string; title: string }[] };
+
+vi.mock("@/services/fyApi/services/contracts/contracts", async (original) => ({
+  ...(await original<Record<string, unknown>>()),
+  useFleetContracts: () => ({
+    data: computed(() => ({ items: openContracts.value })),
+  }),
+}));
 import type { InventoryStockPosition } from "@/services/fyApi";
 import type { TransferTargetOption } from "./types";
 
@@ -331,6 +340,54 @@ describe("TransferModal", () => {
 
     expect(wrapper!.find('[data-test="transfer-target-kind"]').exists()).toBe(
       true,
+    );
+  });
+});
+
+// `Contracts::Progress` counts what a transfer naming the contract delivered,
+// not what landed in the inventory -- so a delivery that cannot name one never
+// moves the bar, however exactly it matches the line.
+describe("TransferModal towards a contract", () => {
+  afterEach(() => {
+    openContracts.value = [];
+  });
+
+  it("does not ask about contracts when the fleet has none running", async () => {
+    const { wrapper } = await build([position()], [pendingTarget]);
+
+    expect(wrapper.find("[data-test='transfer-contract']").exists()).toBe(
+      false,
+    );
+  });
+
+  it("sends the chosen contract with the transfer", async () => {
+    openContracts.value = [{ id: "contract-1", title: "Craft 10 rifles" }];
+
+    const { wrapper, onSend } = await build([position()], [pendingTarget]);
+
+    const picker = wrapper.findComponent("[data-test='transfer-contract']");
+
+    expect(picker.exists()).toBe(true);
+
+    await picker.vm.$emit("update:modelValue", "contract-1");
+    await wrapper.find("[data-test='transfer-submit']").trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({ contractId: "contract-1" }),
+    );
+  });
+
+  it("leaves it out when no contract was picked", async () => {
+    openContracts.value = [{ id: "contract-1", title: "Craft 10 rifles" }];
+
+    const { wrapper, onSend } = await build([position()], [pendingTarget]);
+
+    await wrapper.find("[data-test='transfer-submit']").trigger("click");
+    await flushPromises();
+
+    expect(onSend).toHaveBeenCalledWith(
+      expect.objectContaining({ contractId: undefined }),
     );
   });
 });

@@ -65,6 +65,7 @@ export const useTransferModal = (options: Options) => {
         actingForFleet: !!toValue(options.fleetSlug),
         memberFleets: memberFleets.value,
         friendOptions: friendOptions.value,
+        fleetSlug: toValue(options.fleetSlug),
         onSend: send,
       },
     });

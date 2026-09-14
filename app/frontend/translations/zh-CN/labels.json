@@ -1951,7 +1951,9 @@
         "origin": "来自 / 发往",
         "inTransitAmount": "%{amount} 运送中",
         "inTransitHint": "已随一笔尚未被答复的转移送出，已不计入上方总数。",
-        "transferFromFriends": "我的好友"
+        "transferFromFriends": "我的好友",
+        "towardsContract": "计入合约",
+        "noContract": "不计入合约"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
