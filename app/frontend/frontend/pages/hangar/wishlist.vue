@@ -17,7 +17,6 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import { format } from "date-fns";
-import debounce from "lodash.debounce";
 import VehiclesTable from "@/frontend/components/Vehicles/Table/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
@@ -32,10 +31,9 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
-import {
-  ChannelsEnum,
-  useSubscription,
-} from "@/shared/composables/useSubscription";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -153,9 +151,19 @@ const showNewModal = () => {
   });
 };
 
+const refresh = useDebouncedRefresh(fetch);
+
 useSubscription({
-  channelName: ChannelsEnum.HANGAR_CHANNEL,
-  received: () => debounce(fetch, 500),
+  channel: HangarChannel,
+  received: refresh,
+  // The channel replays nothing it broadcast while the socket was down, so
+  // the wishlist is read again on the way back rather than waiting for whatever
+  // changes next.
+  connected: ({ reconnect }) => {
+    if (reconnect) {
+      refresh();
+    }
+  },
 });
 
 const exportJson = async () => {

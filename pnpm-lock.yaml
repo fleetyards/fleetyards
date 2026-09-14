@@ -18,11 +18,20 @@ patchedDependencies:
   '@tresjs/core@5.8.1':
     hash: 51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2
     path: patches/@tresjs__core@5.8.1.patch
+  asyncapi-cable@0.2.3:
+    hash: 1ff85469ebf1a3b51d89c43e54088a95cb95f5767e46b1362cd34b95c98fe323
+    path: patches/asyncapi-cable@0.2.3.patch
 
 importers:
 
   .:
     dependencies:
+      '@anycable/core':
+        specifier: ^1.1.7
+        version: 1.1.7
+      '@anycable/web':
+        specifier: ^1.1.1
+        version: 1.1.1
       '@appsignal/javascript':
         specifier: ^1.6.1
         version: 1.6.1
@@ -35,9 +44,6 @@ importers:
       '@number-flow/vue':
         specifier: ^0.5.2
         version: 0.5.2(vue@3.5.42(typescript@6.0.3))
-      '@rails/actioncable':
-        specifier: 8.1.301
-        version: 8.1.301
       '@rails/activestorage':
         specifier: ^8.1.301
         version: 8.1.301
@@ -222,9 +228,6 @@ importers:
       '@types/qs':
         specifier: ^6.15.1
         version: 6.15.1
-      '@types/rails__actioncable':
-        specifier: ^8.0.3
-        version: 8.0.3
       '@types/rails__activestorage':
         specifier: ^8.0.1
         version: 8.0.1
@@ -263,7 +266,7 @@ importers:
         version: 2.5.0(@vue/compiler-dom@3.5.42)(@vue/server-renderer@3.5.42)(vue@3.5.42(typescript@6.0.3))
       asyncapi-cable:
         specifier: ^0.2.3
-        version: 0.2.3(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3))
+        version: 0.2.3(patch_hash=1ff85469ebf1a3b51d89c43e54088a95cb95f5767e46b1362cd34b95c98fe323)(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3))
       c8:
         specifier: 12.0.0
         version: 12.0.0
@@ -378,6 +381,9 @@ packages:
   '@anycable/core@1.1.7':
     resolution: {integrity: sha512-qwDnqkLZ/CLTcrfaz2eWM1tYrJI/VDEEv2nbtAa7o9z1/wDDBJNKt4F/xrZLSyFSLG4fSRwbGHDWCLwpXmCAIg==}
     engines: {node: '>=18.0.0'}
+
+  '@anycable/web@1.1.1':
+    resolution: {integrity: sha512-ImNEZ0TC8DiqcrDIXNuQcXM4Z4E+b8NuN8pssokhAiYI1vcShhvML/VuRNAHOCjlN4HNwZ9i26ji/fPUF3e9ag==}
 
   '@apideck/better-ajv-errors@0.3.7':
     resolution: {integrity: sha512-TajUJwGWbDwkCx/CZi7tRE8PVB7simCvKJfHUsSdvps+aTM/PDPP4gkLmKnc+x3CE//y9i/nj74GqdL/hwk7Iw==}
@@ -1927,9 +1933,6 @@ packages:
   '@pmndrs/pointer-events@6.6.29':
     resolution: {integrity: sha512-o4YD6VfJgDYjFgde/YyAw2X5KY454tdmOXrHGOvKTWJBHzkL90B5vH4rqmexwRVvaDfT3YLvVh/Dm5cBbgZXMg==}
 
-  '@rails/actioncable@8.1.301':
-    resolution: {integrity: sha512-n4Q6DfnqnZ604xgqeqURNyUmk6JtPoKf++UeV9agvecIkV3AcpgJs5D08Kx8WnZNgM7u4av9ezfIXv+CgdV94A==}
-
   '@rails/activestorage@8.1.301':
     resolution: {integrity: sha512-o+gxhV96Wa/NpVdTWib9iR9RWlqWjjsylPv16muSFUjIhI6usZJBjM1y93h9cjwWfuW/FxI5QONeH3EFv3+cbg==}
 
@@ -2622,9 +2625,6 @@ packages:
 
   '@types/qs@6.15.1':
     resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
-
-  '@types/rails__actioncable@8.0.3':
-    resolution: {integrity: sha512-y46MOTYorVQVwlHUyaZYbrh3nIkXsRYNuPna32lb3RngLVBlndNbIPvAUywFfhivftNhYg+vW5sZKWYCVIX2lA==}
 
   '@types/rails__activestorage@8.0.1':
     resolution: {integrity: sha512-gwUZjLHyllzSEmegCXfkL11PrpZ/3Z+vCXBbYWgIdtX0ChfjtZcKq7HGfXYO5v5UYGLYenjGH3u8U+PpnA3dhg==}
@@ -6686,6 +6686,10 @@ snapshots:
     dependencies:
       nanoevents: 9.1.0
 
+  '@anycable/web@1.1.1':
+    dependencies:
+      '@anycable/core': 1.1.7
+
   '@apideck/better-ajv-errors@0.3.7(ajv@8.20.0)':
     dependencies:
       ajv: 8.20.0
@@ -8360,8 +8364,6 @@ snapshots:
 
   '@pmndrs/pointer-events@6.6.29': {}
 
-  '@rails/actioncable@8.1.301': {}
-
   '@rails/activestorage@8.1.301':
     dependencies:
       spark-md5: 3.0.2
@@ -9010,8 +9012,6 @@ snapshots:
       '@types/node': 26.5.0
 
   '@types/qs@6.15.1': {}
-
-  '@types/rails__actioncable@8.0.3': {}
 
   '@types/rails__activestorage@8.0.1': {}
 
@@ -9750,7 +9750,7 @@ snapshots:
 
   async@3.2.6: {}
 
-  asyncapi-cable@0.2.3(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3)):
+  asyncapi-cable@0.2.3(patch_hash=1ff85469ebf1a3b51d89c43e54088a95cb95f5767e46b1362cd34b95c98fe323)(@anycable/core@1.1.7)(react@19.1.0)(vue@3.5.42(typescript@6.0.3)):
     dependencies:
       '@anycable/core': 1.1.7
       '@asyncapi/modelina': 5.10.1

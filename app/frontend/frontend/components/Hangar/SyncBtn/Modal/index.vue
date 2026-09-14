@@ -28,10 +28,11 @@ import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
   useSyncRsiHangarStatus,
 } from "@/services/fyApi";
+import { useSubscription } from "@/shared/composables/useSubscription";
 import {
-  useSubscription,
-  ChannelsEnum,
-} from "@/shared/composables/useSubscription";
+  HangarSyncChannel,
+  type HangarSyncData,
+} from "@/services/fyCable/channels/HangarSyncChannel";
 import { differenceInMinutes } from "date-fns";
 import {
   type FleetyardsSyncMessage,
@@ -329,12 +330,8 @@ watch(syncStatusData, (statusData) => {
   }
 });
 
-const onSyncResult = (message: {
-  status: string;
-  result?: HangarSyncResult;
-  error?: string;
-}) => {
-  if (message.status === "finished" && message.result) {
+const onSyncResult = (message: HangarSyncData) => {
+  if (message.status === "finished") {
     result.value = message.result;
     hangarStore.syncRunning = false;
 
@@ -353,7 +350,7 @@ const onSyncDisconnected = () => {
 };
 
 useSubscription({
-  channelName: ChannelsEnum.HANGAR_SYNC_CHANNEL,
+  channel: HangarSyncChannel,
   received: onSyncResult,
   disconnected: onSyncDisconnected,
 });

@@ -1,9 +1,10 @@
 import { computed, watch, type Ref } from "vue";
 import { useQueryClient } from "@tanstack/vue-query";
+import { useSubscription } from "@/shared/composables/useSubscription";
 import {
-  useSubscription,
-  ChannelsEnum,
-} from "@/shared/composables/useSubscription";
+  ImportsChannel,
+  type ImportsData,
+} from "@/services/fyCableAdmin/channels/ImportsChannel";
 import { useImportsStore } from "@/admin/stores/imports";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -28,7 +29,7 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
   const { t } = useI18n();
   const queryClient = useQueryClient();
 
-  const handleImportUpdate = (importData: Import) => {
+  const handleImportUpdate = (importData: ImportsData) => {
     const previousImport = importsStore.imports[importData.id];
     const previousStatus = previousImport?.status;
 
@@ -65,7 +66,7 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
   };
 
   useSubscription({
-    channelName: ChannelsEnum.IMPORTS_CHANNEL,
+    channel: ImportsChannel,
     received: handleImportUpdate,
   });
 

@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -18,10 +17,9 @@ import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterFo
 import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue";
 
 import { useFilters } from "@/shared/composables/useFilters";
-import {
-  ChannelsEnum,
-  useSubscription,
-} from "@/shared/composables/useSubscription";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { FleetMembersChannel } from "@/services/fyCable/channels/FleetMembersChannel";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import {
   useFleetMembers as useFleetMembersQuery,
   useFleetMembersStats as useFleetMembersStatsQuery,
@@ -113,9 +111,19 @@ onUnmounted(() => {
   fleetMemberUpdateComlink.value();
 });
 
+const refresh = useDebouncedRefresh(fetch);
+
 useSubscription({
-  channelName: ChannelsEnum.FLEET_MEMBERS_CHANNEL,
-  received: () => debounce(fetch, 500),
+  channel: FleetMembersChannel,
+  received: refresh,
+  // The channel replays nothing it broadcast while the socket was down, so
+  // the invite list is read again on the way back rather than waiting for whatever
+  // changes next.
+  connected: ({ reconnect }) => {
+    if (reconnect) {
+      refresh();
+    }
+  },
 });
 
 const crumbs = computed<Crumb[]>(() => {

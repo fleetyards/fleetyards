@@ -17,7 +17,6 @@ import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
 import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   HangarGroup,
@@ -31,10 +30,9 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import {
-  ChannelsEnum,
-  useSubscription,
-} from "@/shared/composables/useSubscription";
+import { useSubscription } from "@/shared/composables/useSubscription";
+import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
+import { useDebouncedRefresh } from "@/shared/composables/useDebouncedRefresh";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
   usePublicHangar as usePublicHangarQuery,
@@ -136,9 +134,19 @@ const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
   highlightedGroup.value = group.id;
 };
 
+const refresh = useDebouncedRefresh(fetch);
+
 useSubscription({
-  channelName: ChannelsEnum.HANGAR_CHANNEL,
-  received: () => debounce(fetch, 500),
+  channel: HangarChannel,
+  received: refresh,
+  // The channel replays nothing it broadcast while the socket was down, so
+  // the hangar is read again on the way back rather than waiting for whatever
+  // changes next.
+  connected: ({ reconnect }) => {
+    if (reconnect) {
+      refresh();
+    }
+  },
 });
 </script>
 
