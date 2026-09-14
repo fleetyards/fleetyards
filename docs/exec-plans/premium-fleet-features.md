@@ -304,22 +304,32 @@ Two constraints, neither optional: the code is a **literal** string at every sit
 ships `translation missing` silently — and it needs an entry in all seven locale files by hand, because
 there is no Crowdin and no CI check for locale parity.
 
-### D13 — Early access is comped, not cut off
+### D13 — The transition is announced with a date, and beta access is graced rather than comped
 
-The production probe shows no boolean gate on any of the four, but it cannot show actor gates, and
-there are certainly fleets and users holding one from early access. Those people tested an unfinished
-feature and must not meet a paywall as their reward.
+The four capabilities are in beta behind Flipper actor gates. Those fleets tested unfinished work, and
+the fair thing is not a permanent free ride — it is **knowing in advance**. So the mechanism is an
+announcement naming a concrete date on which the features become supporter features, made far enough
+ahead that nobody is surprised and everybody can decide.
 
-So a one-off task opens a `source: manual` subscription, with a note, for every fleet that holds an
-actor gate on any of the four flags — and for every fleet whose members hold one, since D1's OR means a
-member's personal gate is what has been granting them access.
+That changes what the comping task is for. It is no longer a way to avoid cutting testers off forever;
+it is a **grace window** that keeps them running past the date while they decide:
 
-It is a task rather than a migration: it reads Flipper, which a schema migration has no business doing,
-and it wants to be runnable again after the numbers are checked. `dry_run` defaults to true, which for
-this codebase means a bare run reports and rolls back.
+1. A one-off task reads Flipper and opens a `source: manual` subscription for every fleet holding an
+   actor gate on any of the four flags, and for every fleet whose members hold one — D1's OR means a
+   member's personal gate is what has been granting access.
+2. Those subscriptions carry an `ended_at` **set to the end of the grace window**, not left open, and a
+   note naming the announcement. They expire by themselves under D11's live read, with no second task
+   and nothing to remember.
 
-Comped subscriptions have no contribution behind them, so D9 leaves them alone forever. Ending one is a
-deliberate admin act with an author on it.
+The length of the window is a product decision, not a technical one, and wants a real number before
+Phase 8 runs. A permanent comp is the option to avoid: the fleets that tested hardest are the ones most
+likely to subscribe, and comping them forever removes exactly that group.
+
+It is a task rather than a migration because it reads Flipper, which a schema migration has no business
+doing, and because it wants to be runnable again after the numbers are checked. `dry_run` defaults to
+true, which for this codebase means a bare run reports and rolls back.
+
+Graced subscriptions have no contribution behind them, so D9 leaves them alone.
 
 ### D14 — A fleet is told before it finds out from a 403
 
@@ -329,6 +339,11 @@ Losing features silently is the worst version of this. Two notification types, t
 No notification for a nomination change — that is the supporter's own action, in their own settings.
 
 ### D15 — Donations are not licence sales, and this will have to change
+
+D13's announcement is also the honest version of "supporter perks may change": a dated, public notice
+is what makes a later move to a billing provider a change people were told about rather than one they
+discover. The wording is constrained by this decision — supporter features, never a purchase.
+
 
 Patreon and Ko-fi are donation platforms. A payment that grants software features is consideration for
 a supply rather than a gift, whatever the button says, and past a certain revenue that distinction
@@ -373,6 +388,26 @@ This is a description of the problem, not tax advice. Get a Steuerberater involv
 is worth arguing about, not after — and a Fachanwalt for the consumer-law half, which bites at the
 first euro rather than at a threshold. The detail is in
 [`docs/findings/selling-software-in-germany.md`](../findings/selling-software-in-germany.md).
+### D16 — Nothing is enforced until entitlement is reachable, and that is measured
+
+The announcement sets a date. The date is not the constraint — **being able to hold a subscription by
+then is.** Zero of sixteen contributions carry a `user_id` today, so if identity and nomination are not
+live and in use before the date, the cutover finds no subscriptions, and the features switch off for
+every fleet including the three that pay.
+
+So the order is fixed, and the announcement date is chosen to fit it rather than the reverse:
+
+| | |
+|---|---|
+| **well before the date** | Phases 0–6 in production: flag cleanup, identity, the claim key, Ko-fi, nomination, the subscription record and reconciliation |
+| **the announcement** | names the date, and the settings surfaces it points at already work |
+| **the window** | supporters link and nominate; Phase 8 opens the graced subscriptions |
+| **the date** | Phase 7 — enforcement — and nothing else |
+
+Enforcement is therefore the **last** thing built and the last thing switched on, and it is gated on a
+number rather than on a calendar: a readiness query reporting how many fleets currently reaching a
+premium surface have neither a subscription nor a grace row. Flipping enforcement without having read
+that number is how the three paying supporters lose access on announcement day.
 
 ## What changes
 
@@ -421,7 +456,7 @@ first euro rather than at a threshold. The detail is in
    nomination change.
 2. Manual subscriptions excluded by construction — asserted, not assumed.
 
-### Phase 7 — Enforcement
+### Phase 7 — Enforcement *(built last, switched on at the announced date)*
 1. `FleetSubscriptionConcern` with `require_fleet_subscription(capability)`, rendering
    `subscription_required`.
 2. Applied per D3, after the flag check per D10:
@@ -432,10 +467,17 @@ first euro rather than at a threshold. The detail is in
    - **tours** — the surfaces behind Phase 0's `fleet_tours`. `/tools/tours/` and the slug-addressed
      settle, cancel and invite paths stay free.
 
-### Phase 8 — Comping early access
-1. A maintenance task per D13, `dry_run` defaulting to true, reading Flipper actor gates on the four
-   flags and opening `source: manual` subscriptions with a note.
-2. Run and the numbers checked before Phase 7 reaches production.
+### Phase 8 — The announcement, and grace for beta access
+1. A readiness query per D16: fleets reaching a premium surface today with neither a subscription nor a
+   grace row. Reported before anything is switched, and again before the date.
+2. A maintenance task per D13, `dry_run` defaulting to true, reading Flipper actor gates on the four
+   flags and opening `source: manual` subscriptions whose `ended_at` is the end of the grace window.
+3. The announcement itself. Nothing in the app broadcasts, so it is: a notification to the admins of
+   every affected fleet and to every gate-holding member, the Discord channels, and a dismissible
+   notice on the fleet pages concerned. A blog or changelog surface does not exist and is not built
+   for this.
+4. Copy reviewed against D15 — supporter features, a date, and what happens to a fleet that does not
+   subscribe. No price, no checkout, no "buy".
 
 ### Phase 9 — Admin
 1. Subscriptions CRUD under the existing `community` section beside `supporters`: open, close, comp,
@@ -483,8 +525,12 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
       one, and `tour_payouts` gates only the standalone tool.
 - [ ] **Nothing reads as a shop** — no price, no checkout, no "buy" and no "licence" in any locale; the
       refusal and the nav point at the support page.
-- [ ] **Early access kept what it had** — every fleet holding an actor gate on the four flags has an
-      open comped subscription before enforcement ships.
+- [ ] **Nobody is surprised** — the announcement named a date, reached the admins of every affected
+      fleet, and went out before any enforcement shipped.
+- [ ] **Beta access ran past the date** — every fleet holding an actor gate has a grace subscription
+      covering the announced window, and it expires on its own without a second task.
+- [ ] **The three who pay did not lose access** — the readiness query was read before enforcement was
+      switched on, and reported no linked supporter without a subscription.
 - [ ] **A comp survives a sync** — a manual subscription is untouched by an import that knows nothing
       about it.
 - [ ] **A lapse closes access** — with no job run, no column written and no deploy.
@@ -556,8 +602,14 @@ starmap, worldmap and alliances are untouched while all four premium surfaces an
 
 ## Discovery Log
 
-- **2026-09-14** Research and plan creation. Six things the research established that the idea as posed
-  did not assume:
+- **2026-09-14** Research and plan creation. Seven things the research established that the idea as
+  posed did not assume:
+
+  **Enforcement is the last thing switched on, and it is gated on a number.** An announced date makes
+  the transition fair, but entitlement has to be *reachable* by then: with 0 of 16 contributions
+  linked, switching enforcement on before identity and nomination are in use would take the features
+  from every fleet, the paying supporters included. D16 fixes the order and requires a readiness query
+  to be read rather than assumed.
 
   **The blocker is identity, not entitlement.** 0 of 16 contributions have ever been linked to a user,
   so `supporter?` is false for all 59,946 accounts. Everything else here is small; this is not.
