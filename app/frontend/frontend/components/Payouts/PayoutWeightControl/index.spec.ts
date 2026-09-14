@@ -56,12 +56,41 @@ describe("PayoutWeightControl", () => {
     expect(wrapper.emitted("update")).toBeUndefined();
   });
 
-  it("only marks a reduced share", async () => {
+  // Above a full share as well as below: both are a deviation the reader has to
+  // be able to see. Only an exact full share is left unmarked.
+  it("marks any weight that is not a full share", async () => {
     const full = await mount({ weight: "1.0" });
     const reduced = await mount({ weight: "0.5" });
+    const raised = await mount({ weight: "1.5" });
 
-    expect(full.find(".payout-weight__preset--reduced").exists()).toBe(false);
-    expect(reduced.find(".payout-weight__preset--reduced").exists()).toBe(true);
+    expect(full.find(".payout-weight__preset--adjusted").exists()).toBe(false);
+    expect(reduced.find(".payout-weight__preset--adjusted").exists()).toBe(
+      true,
+    );
+    expect(raised.find(".payout-weight__preset--adjusted").exists()).toBe(true);
+  });
+
+  // Leaving the field fires change; listening to blur as well sent the same
+  // PATCH twice, because props.weight has not caught up yet.
+  it("commits a typed weight once per edit", async () => {
+    const wrapper = await mount({ weight: "0.6" });
+
+    const field = wrapper.find("[data-test='payout-weight-field']");
+    await field.setValue("1.25");
+    await field.trigger("change");
+    await field.trigger("blur");
+
+    expect(wrapper.emitted("update")).toHaveLength(1);
+  });
+
+  it("sends nothing from the field while disabled", async () => {
+    const wrapper = await mount({ weight: "0.6", disabled: true });
+
+    const field = wrapper.find("[data-test='payout-weight-field']");
+    await field.setValue("1.25");
+    await field.trigger("change");
+
+    expect(wrapper.emitted("update")).toBeUndefined();
   });
 
   // A weight no preset can express has to be visible without being hunted for.

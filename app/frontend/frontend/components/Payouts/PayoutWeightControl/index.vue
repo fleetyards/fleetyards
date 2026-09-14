@@ -16,11 +16,11 @@ import {
   FULL_WEIGHT,
 } from "@/frontend/components/Payouts/PayoutWeightControl/types";
 
-type Props = {
+interface Props {
   weight?: string;
   disabled?: boolean;
   loading?: boolean;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   weight: "1.0",
@@ -58,15 +58,40 @@ watch(
   },
 );
 
+// What we last asked the parent for. `props.weight` only catches up once the
+// request lands, so without this a second event fired before then would
+// compare against the stale weight and send the same PATCH again.
+const lastEmitted = ref<string | null>(null);
+
+const emitWeight = (weight: string) => {
+  if (lastEmitted.value === weight) {
+    return;
+  }
+
+  lastEmitted.value = weight;
+  emit("update", weight);
+};
+
+watch(
+  () => props.weight,
+  () => {
+    lastEmitted.value = null;
+  },
+);
+
 const onPick = (value: number) => {
   if (props.disabled || value === current.value) {
     return;
   }
 
-  emit("update", String(value));
+  emitWeight(String(value));
 };
 
 const onCustom = () => {
+  if (props.disabled) {
+    return;
+  }
+
   const value = Number(String(customValue.value).replace(",", "."));
 
   // The API refuses these too. Declined here so a mistyped share does not cost
@@ -80,7 +105,7 @@ const onCustom = () => {
     return;
   }
 
-  emit("update", value.toFixed(2));
+  emitWeight(value.toFixed(2));
 };
 </script>
 
@@ -96,7 +121,7 @@ const onCustom = () => {
       :loading="loading && preset.value === current"
       class="payout-weight__preset"
       :class="{
-        'payout-weight__preset--reduced':
+        'payout-weight__preset--adjusted':
           preset.value === current && preset.value !== FULL_WEIGHT,
       }"
       :data-test="`payout-weight-${preset.value}`"
@@ -112,7 +137,7 @@ const onCustom = () => {
       :disabled="disabled"
       :aria-label="t('labels.payouts.customWeight')"
       class="payout-weight__preset"
-      :class="{ 'payout-weight__preset--reduced': !isPreset }"
+      :class="{ 'payout-weight__preset--adjusted': !isPreset }"
       data-test="payout-weight-custom"
       @click="customOpen = !customOpen"
     >
@@ -134,7 +159,6 @@ const onCustom = () => {
       :aria-label="t('labels.payouts.weight')"
       data-test="payout-weight-field"
       @change="onCustom"
-      @blur="onCustom"
       @keyup.enter="onCustom"
     />
   </div>
@@ -148,11 +172,12 @@ const onCustom = () => {
   flex-wrap: wrap;
 }
 
-/* Only a reduced share is worth a colour. A full share is the resting state on
-   almost every row, and lighting all of them turns the column into noise
-   rather than a signal -- the same call the metric heading makes about its
-   status dot. */
-.payout-weight__preset--reduced {
+/* Only a weight that is not a full share is worth a colour -- above as well as
+   below, since both are a deviation the reader has to be able to see. A full
+   share is the resting state on almost every row, and lighting all of them
+   turns the column into noise rather than a signal, which is the same call the
+   metric heading makes about its status dot. */
+.payout-weight__preset--adjusted {
   box-shadow: inset 0 -2px 0 -1px var(--color-gold, #d4af37);
 }
 

@@ -29,14 +29,16 @@ const rows = computed(() =>
       owes: net > 0,
       owed: net < 0,
       weight,
-      reduced: weight !== 1,
+      // Above a full share as well as below: both are a deviation the reader
+      // has to be able to see, and calling 1.5 a reduced share was wrong.
+      adjusted: weight !== 1,
     };
   }),
 );
 
-// Worth a column of its own only once somebody is on less than a full share.
-// On a ledger where nobody is, it would be a column of identical ones.
-const showWeight = computed(() => rows.value.some((row) => row.reduced));
+// Worth a column of its own only once somebody is not on a full share. On a
+// ledger where everybody is, it would be a column of identical ones.
+const showWeight = computed(() => rows.value.some((row) => row.adjusted));
 </script>
 
 <template>
@@ -67,7 +69,7 @@ const showWeight = computed(() => rows.value.some((row) => row.reduced));
       <span
         v-if="showWeight"
         class="payout-balances__weight"
-        :class="{ 'payout-balances__weight--reduced': row.reduced }"
+        :class="{ 'payout-balances__weight--adjusted': row.adjusted }"
         :data-label="t('labels.payouts.weight')"
       >
         {{ row.balance.participant.weight }}
@@ -159,7 +161,7 @@ const showWeight = computed(() => rows.value.some((row) => row.reduced));
   color: var(--color-muted, #999);
 }
 
-.payout-balances__weight--reduced {
+.payout-balances__weight--adjusted {
   color: var(--color-gold, #d4af37);
 }
 

@@ -126,7 +126,21 @@ describe("PayoutBalances", () => {
     expect(wrapper.classes()).toContain("payout-balances--weighted");
   });
 
-  it("marks only the reduced share", async () => {
+  // A weight above a full share is a deviation too, and the organiser handing
+  // somebody extra is exactly the case a reader needs the column to explain.
+  it("shows the weight column for a share above a full one", async () => {
+    const wrapper = await mount([
+      balance({ participant: participant("p1", "Alice") }),
+      balance({ participant: participant("p2", "Hazard", false, "1.5") }),
+    ]);
+
+    const weights = wrapper.findAll(".payout-balances__weight");
+
+    expect(wrapper.classes()).toContain("payout-balances--weighted");
+    expect(weights[1].classes()).toContain("payout-balances__weight--adjusted");
+  });
+
+  it("marks only the share that is not a full one", async () => {
     const wrapper = await mount([
       balance({ participant: participant("p1", "Alice") }),
       balance({ participant: participant("p2", "Vex", false, "0.5") }),
@@ -135,8 +149,8 @@ describe("PayoutBalances", () => {
     const weights = wrapper.findAll(".payout-balances__weight");
 
     expect(weights[0].classes()).not.toContain(
-      "payout-balances__weight--reduced",
+      "payout-balances__weight--adjusted",
     );
-    expect(weights[1].classes()).toContain("payout-balances__weight--reduced");
+    expect(weights[1].classes()).toContain("payout-balances__weight--adjusted");
   });
 });
