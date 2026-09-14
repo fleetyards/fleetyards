@@ -451,15 +451,17 @@ const crumbs = computed<Crumb[]>(() => [
 @import "@/shared/components/metricsCard";
 
 /*
- * Full-bleed against App.vue's page container: the cover is the page's own
- * edge, and a gutter down either side of a photograph reads as a mistake.
+ * Inside App.vue's page container, not bleeding past it. A negative margin has
+ * to know `.main`'s padding-inline to cancel it, and guessing wrong widens the
+ * page: at -20px against its actual 15px the document scrolled sideways by
+ * 10px. The container owns the gutter -- see the panels either side, which
+ * share this edge.
  */
 .contract-hero {
   position: relative;
   height: 260px;
-  margin: -20px -20px 0;
   overflow: hidden;
-  border-radius: $panelContentBorderRadius $panelContentBorderRadius 0 0;
+  border-radius: var(--radius-surface, 16px) var(--radius-surface, 16px) 0 0;
 
   &__cover {
     width: 100%;
