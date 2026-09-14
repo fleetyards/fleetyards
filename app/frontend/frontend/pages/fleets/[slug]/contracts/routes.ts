@@ -32,60 +32,6 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
-  // The other three boards. One component, one route each, the way the
-  // logistics ledger and the transfers list are built -- `nav: "hidden"` keeps
-  // them out of the fleet nav, which names the section once.
-  {
-    path: "closed/",
-    name: "fleet-contracts-closed",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/contracts/index.vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "fleet-contracts",
-      backgroundImage: "bg-8",
-      title: "fleets.contracts.closed",
-      needsAuthentication: true,
-      access: READ_ACCESS,
-      feature: FeatureFlagName.FLEET_CONTRACTS,
-      featureScope: "fleet",
-      customTitle: true,
-    },
-  },
-  {
-    path: "mine/",
-    name: "fleet-contracts-mine",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/contracts/index.vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "fleet-contracts",
-      backgroundImage: "bg-8",
-      title: "fleets.contracts.mine",
-      needsAuthentication: true,
-      access: READ_ACCESS,
-      feature: FeatureFlagName.FLEET_CONTRACTS,
-      featureScope: "fleet",
-      customTitle: true,
-    },
-  },
-  {
-    path: "completed/",
-    name: "fleet-contracts-completed",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/contracts/index.vue"),
-    meta: {
-      nav: "hidden",
-      activeTab: "fleet-contracts",
-      backgroundImage: "bg-8",
-      title: "fleets.contracts.completed",
-      needsAuthentication: true,
-      access: READ_ACCESS,
-      feature: FeatureFlagName.FLEET_CONTRACTS,
-      featureScope: "fleet",
-      customTitle: true,
-    },
-  },
   {
     path: "new/",
     name: "fleet-contract-new",

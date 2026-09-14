@@ -21,6 +21,9 @@ type Props = {
   fleet: Fleet;
   contracts: FleetContract[];
   asyncStatus?: AsyncStatus;
+  // Drawn as a row inside the table's own frame, rather than as a panel under
+  // an empty header.
+  emptyVisible?: boolean;
 };
 
 const props = defineProps<Props>();
@@ -95,6 +98,7 @@ const openContract = (contract: FleetContract) => {
     :columns="columns"
     primary-key="id"
     :async-status="asyncStatus"
+    :empty-visible="emptyVisible"
     row-clickable
     data-test="contracts-table"
     @row-click="openContract($event as FleetContract)"

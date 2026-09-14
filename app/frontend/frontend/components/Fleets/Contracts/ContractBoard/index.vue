@@ -23,6 +23,7 @@ import {
 } from "@/frontend/components/Fleets/Contracts/ContractBoard/views";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import type { LocationQuery } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useContractsStore } from "@/frontend/stores/contracts";
 
@@ -50,6 +51,16 @@ const openDisplayOptionsModal = () => {
 };
 
 const fleetSlug = computed(() => props.fleet.slug);
+
+// Same route, different query: the page keeps its instance, and the list below
+// refetches rather than being rebuilt. The page number belongs to the board it
+// was counted on, so it does not come along.
+const boardLink = (board: ContractBoardView) => {
+  const query: LocationQuery = { ...route.query, view: board.key };
+  delete query.page;
+
+  return { name: "fleet-contracts", params: { slug: props.fleet.slug }, query };
+};
 
 const queryParams = computed(() => ({
   mine: props.view.mine ? true : undefined,
@@ -84,10 +95,10 @@ onUnmounted(() => {
 
 <template>
   <FilteredList
-    :key="`fleet-contracts-${view.key}`"
     :name="route.name?.toString() || ''"
     :records="contractList"
     :async-status="asyncStatus"
+    :hide-empty="!gridView"
   >
     <template #actions-right>
       <Btn
@@ -104,7 +115,7 @@ onUnmounted(() => {
         <Btn
           v-for="board in CONTRACT_BOARD_VIEWS"
           :key="board.key"
-          :to="{ name: board.route, params: { slug: fleet.slug } }"
+          :to="boardLink(board)"
           :active="board.key === view.key"
           :data-test="`contracts-board-${board.key}`"
           mobile-icon-only
@@ -119,7 +130,7 @@ onUnmounted(() => {
       <GridSkeleton :filter-visible="filterVisible" />
     </template>
 
-    <template #default="{ records }">
+    <template #default="{ records, emptyVisible }">
       <Grid
         v-if="gridView"
         :records="records as FleetContract[]"
@@ -131,11 +142,14 @@ onUnmounted(() => {
       </Grid>
 
       <!-- The dense board: every job on one screen, in the app's table. -->
+      <!-- The table draws its own empty row inside its frame, so the list's
+           panel would be a second one under it. -->
       <ContractTable
         v-else
         :fleet="fleet"
         :contracts="records as FleetContract[]"
         :async-status="asyncStatus"
+        :empty-visible="emptyVisible"
       />
     </template>
   </FilteredList>

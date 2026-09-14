@@ -16,6 +16,7 @@ import { contractBoardViewFrom } from "@/frontend/components/Fleets/Contracts/Co
 import { useI18n } from "@/shared/composables/useI18n";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
+import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 
 type Props = {
   fleet: Fleet;
@@ -30,9 +31,10 @@ const router = useRouter();
 
 const route = useRoute();
 
-// One page, four boards. Which one is the route, the way the logistics ledger
-// and the transfers list do it, so each of them can be linked to.
-const view = computed(() => contractBoardViewFrom(route.name));
+// One page, four boards. The choice lives in the query, so a board can be
+// linked to without the page being thrown away and rebuilt each time somebody
+// switches -- `App.vue` keys the page on its path.
+const view = computed(() => contractBoardViewFrom(route.query.view));
 
 const canCreate = computed(() =>
   checkAccess(props.resourceAccess, [
@@ -63,6 +65,14 @@ const crumbs = computed<Crumb[]>(() => [
 const heading = computed(() =>
   t(`headlines.fleets.contracts.views.${view.value.key}`),
 );
+
+// One route now, so the document title is this page's to write and it follows
+// the board rather than naming one of four.
+const { updateMetaInfo } = useMetaInfo();
+
+watch(heading, (value) => updateMetaInfo({ title: value }), {
+  immediate: true,
+});
 </script>
 
 <template>
