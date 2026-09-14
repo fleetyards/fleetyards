@@ -345,6 +345,13 @@ Two facts shape how much exposure there is today:
   supply from you to the customer with nothing in between, so it is the exposed path — and it is
   precisely the path D7 keeps hand-entered and small.
 
+A merchant of record — Paddle, FastSpring, Lemon Squeezy — removes most of the tax half by becoming the
+legal seller, and is the likely answer when this is real. It does not remove the rest: income taxes,
+our own supply *to* the provider, the § 19 thresholds, and the consumer-facing obligations attaching to
+an account and a cancellation flow that live here rather than at the checkout. And it fixes nothing at
+all while donations still grant the same entitlement beside it — that is a compliant channel next to a
+non-compliant one. The end state is a provider selling premium and donations granting only the badge.
+
 None of that is built now, and this plan does not build it. What it does is refuse to make it harder:
 the entitlement is a record with a period and a source (D2), decoupled from payment entirely (D1), so
 an invoiced billing provider arrives as a new `source` value and a new reconciler beside

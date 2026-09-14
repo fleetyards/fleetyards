@@ -118,6 +118,45 @@ cost is ~5% + a fixed fee, which buys the removal of an entire compliance surfac
 Note the distinction: **Stripe Billing is not a merchant of record.** Stripe Tax calculates and helps
 file, but you remain the seller and the liable party. That difference is the whole decision.
 
+### What a merchant of record does not cover
+
+Paddle describes itself precisely: *"Paddle acts as a reseller of your product, and is, therefore, the
+'seller on record.'"* That is a two-step chain — **you supply Paddle, Paddle supplies the customer** —
+and the residual obligations all follow from it.
+
+| | |
+|---|---|
+| **Covered** | VAT/sales tax calculation, collection, registration and remittance worldwide; OSS; per-country thresholds; VIES and reverse charge; customer invoices; refunds, chargebacks, fraud; liability for non-compliance penalties on sales tax |
+| **Still yours** | Einkommensteuer / Körperschaftsteuer and Gewerbesteuer on the revenue; **your own supply to the MoR**, with its own place-of-supply treatment and reporting; Gewerbeanmeldung; bookkeeping and GoBD retention; Impressum, privacy policy and an EULA for the software itself |
+
+Two traps worth naming:
+
+- **Your turnover does not disappear.** Revenue received from the MoR still counts toward the § 19
+  thresholds, and the cross-border B2B leg has § 13b reverse-charge wrinkles that specifically catch
+  Kleinunternehmer. A question for the Steuerberater, not an assumption.
+- **The consumer layer stays in the app.** Paddle's checkout concludes the sale, but the account, the
+  subscription and the cancellation flow live in Fleetyards. Whether a MoR checkout discharges § 312k
+  and § 356a for a subscription *presented and managed in our own interface* is a Fachanwalt question;
+  the MoR's documentation does not address it.
+
+### The mixture is the real problem, and no provider fixes it
+
+Selling premium through a merchant of record while Patreon and Ko-fi donations still grant the same
+entitlement does not solve anything — it places a compliant channel beside a non-compliant one, and
+arguably worsens the position, because the compliant channel demonstrates the distinction was
+understood.
+
+So the clean end state is that **donations stop granting entitlement**:
+
+- the MoR becomes the only way to buy premium;
+- Patreon and Ko-fi go back to being donations, granting the supporter badge and nothing gated;
+- supporters who were promised features get comped subscriptions.
+
+The plan absorbs this without restructuring: `source` gains a value, `Subscriptions::Sync` gains a
+reconciler beside the Patreon and Ko-fi ones, and D13's comping mechanism is already the migration
+path. D10's enforcement, D11's read and the four capabilities do not move — which is what keeping
+entitlement payment-agnostic was for.
+
 ## What this means for the plan as written
 
 Nothing needs rebuilding, and three things are already right:
@@ -145,3 +184,5 @@ collected anywhere**, and it is the only input above that cannot be reconstructe
 - [Withdrawal rights for digital content — Heuking](https://www.heuking.de/de/news-events/newsletter-fachbeitraege/artikel/vorsicht-bei-widerrufsbelehrungen-bei-digitalen-inhalten-und-dienstleistungen.html)
 - [How VAT works for creators on Patreon](https://support.patreon.com/hc/en-us/articles/205259549-How-VAT-works-for-creators-on-Patreon)
 - [Platform liability under the deemed supplier rule](https://hellotax.com/blog/vat-on-digital-platforms/)
+- [How Paddle takes on VAT and tax responsibilities](https://www.paddle.com/help/start/intro-to-paddle/how-paddle-is-able-to-take-on-your-vat-and-tax-responsibilities)
+- [What is a merchant of record — Paddle](https://www.paddle.com/blog/what-is-merchant-of-record)
