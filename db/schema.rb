@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_14_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1744,6 +1744,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_150000) do
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
   end
 
+  create_table "tour_join_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "aasm_state", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "decided_at"
+    t.uuid "decided_by_id"
+    t.uuid "tour_id", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["decided_by_id"], name: "index_tour_join_requests_on_decided_by_id"
+    t.index ["tour_id", "user_id"], name: "index_tour_join_requests_on_pending_tour_and_user", unique: true, where: "((aasm_state)::text = 'pending'::text)"
+    t.index ["tour_id"], name: "index_tour_join_requests_on_tour_id"
+    t.index ["user_id"], name: "index_tour_join_requests_on_user_id"
+  end
+
   create_table "tours", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "cancelled_at"
     t.datetime "created_at", null: false
@@ -2044,6 +2058,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_150000) do
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
+  add_foreign_key "tour_join_requests", "tours", on_delete: :cascade
+  add_foreign_key "tour_join_requests", "users", column: "decided_by_id", on_delete: :nullify
+  add_foreign_key "tour_join_requests", "users", on_delete: :cascade
   add_foreign_key "tours", "fleets"
   add_foreign_key "tours", "users", column: "created_by_id"
   add_foreign_key "vehicle_loadouts", "vehicles"

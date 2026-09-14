@@ -44,6 +44,10 @@ class Tour < ApplicationRecord
 
   has_one :payout_ledger, as: :subject, dependent: :destroy
 
+  # Only a fleet tour ever has any: a standalone tour is not listed anywhere a
+  # stranger can see it, so the invite link is the only way onto one.
+  has_many :join_requests, class_name: "TourJoinRequest", dependent: :destroy
+
   validates :title, presence: true
 
   before_validation :ensure_id, on: :create

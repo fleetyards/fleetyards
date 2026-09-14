@@ -248,6 +248,15 @@ it:
           attributes:
             base:
               invalid_holder: "richiede esattamente un proprietario"
+        tour_join_request:
+          attributes:
+            base:
+              already_requested: "Hai già chiesto di partecipare a questa spedizione"
+            tour:
+              standalone: "non è una spedizione di flotta"
+              not_open: "non è più aperta"
+            user:
+              already_participating: "partecipa già a questa spedizione"
         fleet_role:
           attributes:
             base:

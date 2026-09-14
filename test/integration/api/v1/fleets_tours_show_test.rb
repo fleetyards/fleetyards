@@ -42,6 +42,7 @@ class Api::V1::FleetsToursShowTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("tour_payouts")
+    Flipper.enable("fleet_tours")
 
     @admin = create(:user)
     @officer = create(:user)
@@ -63,6 +64,44 @@ class Api::V1::FleetsToursShowTest < ActionDispatch::IntegrationTest
       assert_equal @tour.id, parsed_body["id"]
       assert_equal @fleet.slug, parsed_body["fleet"]["slug"]
     end
+  end
+
+  test "GET shows a fleet tour to a member with no payout privileges" do
+    @fleet.default_member_role.update!(resource_access: [])
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal @tour.id, parsed_body["id"]
+    end
+  end
+
+  # What the page reads to decide whether to offer asking onto the tour, and to
+  # address the withdrawal if it already did.
+  test "GET names the viewer's own pending ask" do
+    join_request = create(:tour_join_request, tour: @tour, user: @member)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal false, parsed_body["participating"]
+      assert_equal true, parsed_body["joinRequestPending"]
+      assert_equal join_request.id, parsed_body["joinRequestId"]
+    end
+  end
+
+  test "GET says the viewer is on the tour once they are" do
+    create(:payout_participant, payout_ledger: @tour.payout_ledger, user: @member)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal true, parsed_body["participating"]
+      assert_nil parsed_body["joinRequestId"]
+    end
+  end
+
+  test "GET returns 404 to somebody outside the fleet" do
+    sign_in create(:user)
+
+    assert_api_response :get, 404, path_params: path_params
   end
 
   test "GET withholds the invite token from a member who only reads" do

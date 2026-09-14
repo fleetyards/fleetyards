@@ -249,6 +249,15 @@ en:
           attributes:
             base:
               invalid_holder: "needs exactly one owner"
+        tour_join_request:
+          attributes:
+            base:
+              already_requested: "You have already asked to join this tour"
+            tour:
+              standalone: "is not a fleet tour"
+              not_open: "is no longer open"
+            user:
+              already_participating: "is already on this tour"
         mission_ship:
           attributes:
             base:

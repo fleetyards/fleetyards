@@ -44,6 +44,7 @@ class Api::V1::FleetsToursCreateTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("tour_payouts")
+    Flipper.enable("fleet_tours")
 
     @admin = create(:user)
     @member = create(:user)

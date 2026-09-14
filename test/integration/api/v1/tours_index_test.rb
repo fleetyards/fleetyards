@@ -69,6 +69,49 @@ class Api::V1::ToursIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The fleet's own page lists these, and it is now open to every member, so
+  # repeating them here would show one trip in two places.
+  test "GET /tours leaves out a tour owned by a fleet the user is in" do
+    Flipper.enable("fleet_tours")
+    fleet = create(:fleet, members: [@organiser])
+    create(:tour, fleet: fleet, created_by: @organiser)
+
+    sign_in @organiser
+
+    assert_api_response :get, 200 do
+      assert_equal [@tour.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  # They joined by invite link, and a fleet's page 404s for an outsider, so
+  # this list is the only place left to find it.
+  test "GET /tours keeps a tour of a fleet the user does not belong to" do
+    Flipper.enable("fleet_tours")
+    fleet_tour = create(:tour, :for_fleet, created_by: create(:user))
+    ledger = create(:payout_ledger, subject: fleet_tour)
+    create(:payout_participant, payout_ledger: ledger, user: @participant)
+
+    sign_in @participant
+
+    assert_api_response :get, 200 do
+      assert_equal [@tour.id, fleet_tour.id].sort, parsed_body["items"].map { |item| item["id"] }.sort
+    end
+  end
+
+  # The fleet page is what the exclusion above assumes is showing them, and
+  # with fleet_tours off there is no such page -- so the tour has to stay here
+  # or its own organiser cannot find it.
+  test "GET /tours keeps a fleet's tours while fleet_tours is off" do
+    fleet = create(:fleet, members: [@organiser])
+    fleet_tour = create(:tour, fleet: fleet, created_by: @organiser)
+
+    sign_in @organiser
+
+    assert_api_response :get, 200 do
+      assert_equal [@tour.id, fleet_tour.id].sort, parsed_body["items"].map { |item| item["id"] }.sort
+    end
+  end
+
   test "GET /tours withholds the invite token from a participant" do
     sign_in @participant
 

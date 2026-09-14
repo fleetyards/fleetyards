@@ -5,10 +5,14 @@
 # model for one.
 #
 # A tour created from a fleet's page carries that fleet, and then the fleet's
-# payout privileges apply on top -- so an officer can find, read and settle a
-# tour they never joined, and the trip does not die with whoever organised it.
+# payout privileges apply on top -- so an officer can settle a tour they never
+# joined, and the trip does not die with whoever organised it.
+#
+# Finding one is not a payout right, though: every member of the fleet reads
+# the list and the tour page, which is how they find a trip to ask onto. The
+# money stays behind PayoutLedgerPolicy, which still wants a participant row or
+# a payout privilege.
 class TourPolicy < FleetBasePolicy
-  READ_PRIVILEGES = ["fleet:manage", "fleet:payouts:manage", "fleet:payouts:read"].freeze
   CREATE_PRIVILEGES = ["fleet:manage", "fleet:payouts:manage", "fleet:payouts:create"].freeze
   MANAGE_PRIVILEGES = ["fleet:manage", "fleet:payouts:manage"].freeze
 
@@ -18,11 +22,11 @@ class TourPolicy < FleetBasePolicy
     return false if user.blank?
     return true if fleet.blank?
 
-    fleet_access?(READ_PRIVILEGES)
+    fleet_member?
   end
 
   def show?
-    organiser? || participant? || fleet_access?(READ_PRIVILEGES)
+    organiser? || participant? || fleet_member?
   end
 
   def create?
@@ -41,11 +45,11 @@ class TourPolicy < FleetBasePolicy
 
   alias_rule :find_by_invite?, to: :join?
 
-  # Deliberately not widened by fleet privileges: this is the list of tours the
-  # signed-in user is on, and an officer's payout privileges would otherwise
-  # empty every fleet they can read into their personal tools page. A fleet's
-  # own tours are listed by the fleet-scoped index, which authorizes `index?`
-  # with that fleet in context.
+  # Every tour the signed-in user is on, fleet-owned ones included. Which of
+  # them the personal tools list repeats is the controller's business -- this
+  # answers what they are allowed to see, and an officer's payout privileges
+  # deliberately do not widen it, or every fleet they can read would empty into
+  # their own page.
   relation_scope do |relation|
     next relation.none if user.blank?
 
@@ -86,5 +90,11 @@ class TourPolicy < FleetBasePolicy
     return false if scoped_fleet_id.blank?
 
     accepted_fleet_membership&.has_access?(privileges) || false
+  end
+
+  private def fleet_member?
+    return false if scoped_fleet_id.blank?
+
+    accepted_fleet_membership.present?
   end
 end

@@ -248,6 +248,15 @@ fr:
           attributes:
             base:
               invalid_holder: "doit avoir exactement un propriétaire"
+        tour_join_request:
+          attributes:
+            base:
+              already_requested: "Vous avez déjà demandé à rejoindre cette expédition"
+            tour:
+              standalone: "n'est pas une expédition de flotte"
+              not_open: "n'est plus ouverte"
+            user:
+              already_participating: "participe déjà à cette expédition"
         fleet_role:
           attributes:
             base:

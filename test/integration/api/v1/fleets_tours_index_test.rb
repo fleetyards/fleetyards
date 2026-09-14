@@ -44,6 +44,7 @@ class Api::V1::FleetsToursIndexTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("tour_payouts")
+    Flipper.enable("fleet_tours")
 
     @admin = create(:user)
     @member = create(:user)
@@ -57,13 +58,36 @@ class Api::V1::FleetsToursIndexTest < ActionDispatch::IntegrationTest
     {fleetSlug: @fleet.slug}
   end
 
-  # The point of the fleet-scoped list: a member sees the fleet's tours through
-  # their payout privileges, without having organised or joined any of them.
+  # The point of the fleet-scoped list: a member sees the fleet's tours without
+  # having organised or joined any of them.
   test "GET lists the fleet's tours for a member who is on none of them" do
     sign_in @member
 
     assert_api_response :get, 200, path_params: path_params do
       assert_equal [@tour.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  # Reading the list is a membership right, not a payout one. A fleet whose
+  # roles predate the payout privileges has nobody holding them, and its members
+  # would otherwise find the page empty and the nav item gone.
+  test "GET lists the fleet's tours for a member with no payout privileges" do
+    @fleet.default_member_role.update!(resource_access: [])
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal [@tour.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
+  # The list is what a member reads to find a tour to ask onto, so it says
+  # where they already stand on each one.
+  test "GET says whether the viewer is on each tour" do
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: path_params do
+      assert_equal false, parsed_body["items"].first["participating"]
+      assert_equal false, parsed_body["items"].first["joinRequestPending"]
     end
   end
 
@@ -105,6 +129,17 @@ class Api::V1::FleetsToursIndexTest < ActionDispatch::IntegrationTest
 
   test "GET is refused when the feature is off" do
     Flipper.disable("tour_payouts")
+    sign_in @admin
+
+    assert_api_response :get, 403, path_params: path_params do
+      assert_equal "forbidden", parsed_body["code"]
+    end
+  end
+
+  # fleet_tours stacks on tour_payouts rather than replacing it, so the fleet
+  # surface closes on its own while the standalone tool stays open.
+  test "GET is refused when the fleet flag is off" do
+    Flipper.disable("fleet_tours")
     sign_in @admin
 
     assert_api_response :get, 403, path_params: path_params do

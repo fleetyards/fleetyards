@@ -15,4 +15,15 @@ resources :tours, param: :slug, only: %i[index show create update destroy], cons
   # addressed by ledger id under /payouts.
   get "payouts", to: "payout_ledgers#show_for_subject"
   post "payouts", to: "payout_ledgers#create"
+
+  # Only a fleet tour has any -- the standalone one is joined by its link --
+  # but they hang off the tour rather than the fleet, because the answer is the
+  # organiser's as much as the fleet's.
+  resources :join_requests, path: "join-requests",
+    controller: "tour_join_requests", only: %i[index create destroy] do
+    member do
+      put :approve
+      put :decline
+    end
+  end
 end

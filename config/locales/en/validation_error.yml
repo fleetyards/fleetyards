@@ -223,6 +223,9 @@ en:
       update: Tour could not be updated.
       destroy: Tour could not be deleted.
       join: You could not be added to this tour.
+    tour_join_requests:
+      create: Your request could not be sent.
+      destroy: Your request could not be withdrawn.
     payout_ledgers:
       create: Payout ledger could not be opened.
     payout_entries:

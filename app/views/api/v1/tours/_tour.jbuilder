@@ -13,3 +13,13 @@ may_invite = tour.created_by_id == @viewer&.id ||
 
 json.invite_token(may_invite ? tour.invite_token : nil)
 json.payout_ledger_id tour.payout_ledger&.id
+
+# What the viewer's own standing on this tour is, so the page knows whether to
+# offer asking onto it. Both come from a set resolved once per response rather
+# than a lookup per row.
+json.participating @participating_tour_ids.to_a.include?(tour.id)
+
+pending_join_request_id = @pending_join_request_ids.to_h[tour.id]
+
+json.join_request_pending pending_join_request_id.present?
+json.join_request_id pending_join_request_id

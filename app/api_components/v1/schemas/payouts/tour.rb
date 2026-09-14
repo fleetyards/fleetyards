@@ -24,10 +24,16 @@ module V1
             # invite link carries.
             inviteToken: {type: [:string, :null]},
             payoutLedgerId: {type: [:string, :null], format: :uuid},
+            # The viewer's own standing on this tour: whether they are on the
+            # ledger, and whether they have already asked to be.
+            participating: {type: :boolean},
+            joinRequestPending: {type: :boolean},
+            # The viewer's own pending ask, so the page can offer withdrawing it.
+            joinRequestId: {type: [:string, :null], format: :uuid},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
-          required: %w[id title slug status],
+          required: %w[id title slug status participating joinRequestPending],
           additionalProperties: false
         })
       end

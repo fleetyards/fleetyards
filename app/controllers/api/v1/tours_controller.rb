@@ -188,6 +188,28 @@ module Api
       private def set_viewer
         @viewer = current_resource_owner
         @payout_manager_fleet_ids = payout_manager_fleet_ids
+        @participating_tour_ids = participating_tour_ids
+        @pending_join_request_ids = pending_join_request_ids
+      end
+
+      # Both are the viewer's own standing, not this page's -- a person is on a
+      # handful of tours, so one query each beats a lookup per rendered row.
+      private def participating_tour_ids
+        return [] if @viewer.blank?
+
+        PayoutLedger
+          .where(subject_type: "Tour")
+          .joins(:payout_participants)
+          .where(payout_participants: {user_id: @viewer.id})
+          .pluck(:subject_id)
+      end
+
+      # Keyed by tour rather than a plain list: the page offers withdrawing the
+      # ask, and that is addressed by the request's own id.
+      private def pending_join_request_ids
+        return {} if @viewer.blank?
+
+        TourJoinRequest.pending.where(user_id: @viewer.id).pluck(:tour_id, :id).to_h
       end
 
       # Resolved once for the whole response rather than per tour: the index
@@ -225,7 +247,26 @@ module Api
       private def index_scope
         return @fleet.tours if @fleet
 
-        authorized_scope(Tour.all)
+        without_tours_listed_by_a_fleet(authorized_scope(Tour.all))
+      end
+
+      # A tour owned by a fleet whose own page lists it would otherwise show up
+      # in two places at once. Only that fleet's page: a tour from a fleet the
+      # viewer does not belong to, or one whose fleet has fleet_tours switched
+      # off, has nowhere else to be found and stays here.
+      private def without_tours_listed_by_a_fleet(scope)
+        return scope if @viewer.blank?
+
+        fleet_ids = @viewer.fleet_memberships.kept.accepted
+          .map(&:fleet)
+          .select { |fleet| fleet.present? && feature_enabled?("tour_payouts", fleet) && feature_enabled?("fleet_tours", fleet) }
+          .map(&:id)
+
+        return scope if fleet_ids.empty?
+
+        # Spelled out rather than `where.not(fleet_id:)`: a NOT IN comparison
+        # against NULL is NULL, which would drop every standalone tour.
+        scope.where("tours.fleet_id IS NULL OR tours.fleet_id NOT IN (:fleet_ids)", fleet_ids: fleet_ids)
       end
 
       private def set_fleet
@@ -235,9 +276,23 @@ module Api
         authorize! @fleet, to: :show?
       end
 
+      # Two flags, stacked. tour_payouts is what makes tours exist at all; a
+      # fleet running them as a fleet -- its own list, its own page, members
+      # asking onto them -- additionally wants fleet_tours, so switching that
+      # one off closes the fleet surface without touching the standalone tool.
       private def check_tour_payouts_feature
-        return if feature_enabled?("tour_payouts", *[@fleet].compact)
+        actors = [@fleet].compact
 
+        unless feature_enabled?("tour_payouts", *actors)
+          return render_feature_unavailable
+        end
+
+        return if @fleet.blank? || feature_enabled?("fleet_tours", *actors)
+
+        render_feature_unavailable
+      end
+
+      private def render_feature_unavailable
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
     end

@@ -217,6 +217,9 @@ it:
       update: Impossibile aggiornare la spedizione.
       destroy: Impossibile eliminare la spedizione.
       join: Impossibile aggiungerti a questa spedizione.
+    tour_join_requests:
+      create: Impossibile inviare la tua richiesta.
+      destroy: Impossibile ritirare la tua richiesta.
     payout_ledgers:
       create: Impossibile aprire il registro dei pagamenti.
     payout_entries:
