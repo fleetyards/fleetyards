@@ -1,7 +1,19 @@
 packages:
   - '.'
-onlyBuiltDependencies:
-  - esbuild
+allowBuilds:
+  '@hyperjump/json-pointer': false
+  '@hyperjump/json-schema': false
+  '@hyperjump/json-schema-core': false
+  '@hyperjump/pact': false
+  '@parcel/watcher': false
+  '@scarf/scarf': false
+  core-js: false
+  esbuild: true
+  msw: false
+  vue-demi: false
+peerDependencyRules:
+  allowedVersions:
+    vite-plugin-pwa>vite: '8'
 overrides:
   json5: '>=2.2.2'
   semver: '>=7.5.2'
