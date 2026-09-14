@@ -530,16 +530,12 @@ class User < ApplicationRecord
     email.ends_with?("@users.noreply.fleetyards.net")
   end
 
-  # Gate perks on this one: it ignores anonymity, so an anonymous supporter keeps
-  # whatever their contribution earns them.
+  # Perks and the public badge both, and deliberately blind to anonymity.
+  # Anonymity says whether a contribution is *named* on the supporters page --
+  # SupporterContribution#public_name is where it is answered -- not whether the
+  # person behind it may be known to support at all.
   def supporter?
     supporter_contributions.active_now.exists?
-  end
-
-  # Safe to expose: an anonymous contribution must not out its supporter, so the
-  # public badge only reflects the ones cleared for attribution.
-  def public_supporter?
-    supporter_contributions.active_now.where(anonymous: false).exists?
   end
 
   # Generated on first view rather than at sign-up, the way a fleet's calendar

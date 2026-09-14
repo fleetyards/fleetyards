@@ -176,22 +176,30 @@ class UserTest < ActiveSupport::TestCase
       create(:supporter_contribution, user: @user, started_at: Date.current)
 
       assert @user.supporter?
-      assert @user.public_supporter?
     end
 
-    test "an anonymous contribution still earns supporter status but no public badge" do
-      create(:supporter_contribution, :anonymous, user: @user, started_at: Date.current)
+    # Anonymity decides whether the contribution is named on the supporters
+    # page, and nothing else. Both halves are asserted here because the rule is
+    # only meaningful as a pair.
+    test "an anonymous contribution earns the badge and stays unnamed" do
+      contribution = create(:supporter_contribution, :anonymous, user: @user, started_at: Date.current)
 
       assert @user.supporter?
-      refute @user.public_supporter?
+      assert_nil contribution.public_name
     end
 
-    test "a contribution that ended before this month counts for neither" do
+    test "a named contribution earns the badge and is named" do
+      contribution = create(:supporter_contribution, user: @user, name: "Jo", started_at: Date.current)
+
+      assert @user.supporter?
+      assert_equal "Jo", contribution.public_name
+    end
+
+    test "a contribution that ended before this month earns nothing" do
       create(:supporter_contribution, :recurring, user: @user,
         started_at: 1.year.ago.to_date, ended_at: 2.months.ago.to_date)
 
       refute @user.supporter?
-      refute @user.public_supporter?
     end
 
     test "an unlinked contribution belongs to nobody" do
