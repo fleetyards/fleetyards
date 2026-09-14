@@ -99,7 +99,7 @@
     "@types/leaflet.markercluster": "^1.5.6",
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^26.5.0",
+    "@types/node": "^26.5.1",
     "@types/qs": "^6.15.1",
     "@types/rails__activestorage": "^8.0.1",
     "@types/sortablejs": "^1.15.9",
