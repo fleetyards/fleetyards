@@ -13,6 +13,7 @@ import ContractItemsForm from "@/frontend/components/Fleets/Contracts/ContractIt
 import {
   type Fleet,
   type FleetMember,
+  FleetContractStateEnum,
   useFleetContract,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -34,6 +35,18 @@ const fleetSlug = computed(() => props.fleet.slug);
 const contractSlug = computed(() => route.params.contract as string);
 
 const { data: contract, refetch } = useFleetContract(fleetSlug, contractSlug);
+
+// Only a draft is editable -- published, the terms are what somebody claimed
+// the contract on. Reached by its URL anyway, the page hands back to the
+// contract rather than offering a form the API would refuse.
+watch(contract, (value) => {
+  if (!value || value.state === FleetContractStateEnum.DRAFT) return;
+
+  void router.replace({
+    name: "fleet-contract",
+    params: { slug: props.fleet.slug, contract: contractSlug.value },
+  });
+});
 
 const cancel = () => {
   void router.push({
@@ -61,7 +74,7 @@ const crumbs = computed<Crumb[]>(() => [
     {{ t("headlines.fleets.contracts.edit") }}
   </Heading>
 
-  <template v-if="contract">
+  <template v-if="contract && contract.state === FleetContractStateEnum.DRAFT">
     <!-- The lines live on a saved contract, so they are edited here rather than
          in the create form: publishing refuses a contract with nothing to
          deliver, which is what sends an author here. -->

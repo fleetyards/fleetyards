@@ -70,12 +70,20 @@ const canManage = computed(() =>
   checkAccess(props.resourceAccess, ["fleet:manage", "fleet:contracts:manage"]),
 );
 
-const canEdit = computed(() =>
+// The privilege on its own. Cancelling and publishing ride on it and reach a
+// contract that editing no longer does.
+const mayEdit = computed(() =>
   checkAccess(props.resourceAccess, [
     "fleet:manage",
     "fleet:contracts:manage",
     "fleet:contracts:update",
   ]),
+);
+
+// Only a draft. Published, it is an offer members have read and may already be
+// working to, so the terms stop moving -- the API refuses it either way.
+const canEdit = computed(
+  () => mayEdit.value && contract.value?.state === FleetContractStateEnum.DRAFT,
 );
 
 const crew = computed(() => contract.value?.crew ?? []);
@@ -121,7 +129,7 @@ const canFulfil = computed(
 );
 
 const canPublish = computed(
-  () => contract.value?.state === FleetContractStateEnum.DRAFT && canEdit.value,
+  () => contract.value?.state === FleetContractStateEnum.DRAFT && mayEdit.value,
 );
 
 const CANCELLABLE_STATES: FleetContractStateEnum[] = [
@@ -132,7 +140,7 @@ const CANCELLABLE_STATES: FleetContractStateEnum[] = [
 
 const canCancel = computed(
   () =>
-    canEdit.value &&
+    mayEdit.value &&
     contract.value !== undefined &&
     CANCELLABLE_STATES.includes(contract.value.state),
 );

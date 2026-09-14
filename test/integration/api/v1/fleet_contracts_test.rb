@@ -647,6 +647,47 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Published, a contract is an offer somebody may already be working to, so
+  # what it pays and what it asks for stop moving.
+  test "PATCH refuses a contract that is no longer a draft" do
+    contract = create(:fleet_contract, :published, fleet: @fleet,
+      destination_fleet_inventory: @depot)
+    sign_in @officer
+
+    patch "/api/v1/fleets/#{@fleet.slug}/contracts/#{contract.slug}",
+      params: {reward: "999999.00"}, as: :json
+
+    assert_response :forbidden
+    refute_equal 999_999.to_d, contract.reload.reward
+  end
+
+  test "its goods are closed with it" do
+    contract = create(:fleet_contract, :published, fleet: @fleet,
+      destination_fleet_inventory: @depot)
+    sign_in @officer
+
+    assert_difference -> { FleetContractItem.count }, 0 do
+      post "/api/v1/fleets/#{@fleet.slug}/contracts/#{contract.slug}/items",
+        params: {name: "Titanium", category: "commodity", unit: "scu", quantity: "5.0"},
+        as: :json
+
+      assert_response :forbidden
+    end
+  end
+
+  # Cancelling has to reach a contract that is already out there, which is the
+  # rule editing no longer follows.
+  test "PUT cancel still reaches a published contract" do
+    contract = create(:fleet_contract, :published, fleet: @fleet,
+      destination_fleet_inventory: @depot)
+    sign_in @officer
+
+    put "/api/v1/fleets/#{@fleet.slug}/contracts/#{contract.slug}/cancel", as: :json
+
+    assert_response :success
+    assert_equal "cancelled", contract.reload.aasm_state
+  end
+
   test "DELETE removes a contract" do
     contract = create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @depot)
     sign_in @officer

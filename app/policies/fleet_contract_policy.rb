@@ -22,15 +22,35 @@ class FleetContractPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage", "fleet:contracts:create"])
   end
 
+  # Only a draft. Published, it is an offer members have read and may already be
+  # working to, so the terms stop moving -- what it pays and what it asks for
+  # are what somebody claimed it on. Cancelling is the way out, and that is its
+  # own rule.
   def update?
-    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage", "fleet:contracts:update"])
+    return false unless may_update?
+
+    record.blank? || record.draft?
   end
 
   def destroy?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage", "fleet:contracts:delete"])
   end
 
-  alias_rule :publish?, :cancel?, to: :update?
+  # Publishing is what ends the editable phase, so it is the one thing a draft
+  # is for. Cancelling has to reach a contract that is already out there, which
+  # `update?` deliberately no longer does.
+  def publish?
+    may_update? && record.draft?
+  end
+
+  def cancel?
+    may_update?
+  end
+
+  private def may_update?
+    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage",
+      "fleet:contracts:update"])
+  end
 
   def manage?
     accepted_fleet_membership&.has_access?(MANAGE)
