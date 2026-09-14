@@ -39,8 +39,14 @@ module Kofi
       Rails.application.credentials.dig(:kofi, :verification_token).to_s
     end
 
+    # Valid JSON is not necessarily an object: `[]` and `1` parse fine and then
+    # raise TypeError on a string subscript, turning an unauthenticated request
+    # into a 500. Anything that is not an object is simply not a payload.
     private def payload
-      @payload ||= JSON.parse(params[:data].to_s)
+      @payload ||= begin
+        parsed = JSON.parse(params[:data].to_s)
+        parsed.is_a?(Hash) ? parsed : {}
+      end
     rescue JSON::ParserError
       @payload = {}
     end

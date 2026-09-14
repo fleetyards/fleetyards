@@ -77,6 +77,7 @@ class SupporterContribution < ApplicationRecord
   validate :ended_at_after_started_at
 
   before_validation :force_anonymous_when_name_blank
+  before_validation :normalize_payer_email
 
   scope :active_now, ->(date = Date.current) { active_in(date.beginning_of_month, date.end_of_month) }
 
@@ -88,6 +89,13 @@ class SupporterContribution < ApplicationRecord
       true, month_end, month_start
     )
   }
+
+  # Stored trimmed and downcased so every lookup can compare it directly. The
+  # platforms are not careful about this -- Patreon hands back names like
+  # "Elfwyn " -- and an address with a stray space matches nothing, silently.
+  private def normalize_payer_email
+    self.payer_email = payer_email&.strip&.downcase.presence
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     [

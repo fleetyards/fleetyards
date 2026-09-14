@@ -102,4 +102,16 @@ class KofiWebhookTest < ActionDispatch::IntegrationTest
       assert_response :unauthorized
     end
   end
+
+  # Valid JSON that is not an object: these parse, and a string subscript on the
+  # result raises rather than reading as a missing token.
+  test "refuses valid JSON that is not an object" do
+    ["[]", "1", '"a string"', "null"].each do |body|
+      assert_no_difference -> { SupporterContribution.count } do
+        post PATH, params: {data: body}
+      end
+
+      assert_response :unauthorized, "#{body} must not 500"
+    end
+  end
 end

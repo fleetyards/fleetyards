@@ -358,6 +358,40 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  # An admin editing payer_email is saying who paid; leaving the entitlement
+  # with the previous account is the surprising answer.
+  test "PUT /supporter-contributions/:id re-resolves when the payer email is corrected" do
+    wrong = create(:user, email: "wrong@example.test", confirmed_at: Time.current)
+    right = create(:user, email: "right@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, payer_email: "wrong@example.test", user: wrong)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "right@example.test"} do
+      assert_equal right.id, parsed_body["userId"]
+    end
+  end
+
+  test "PUT /supporter-contributions/:id keeps a user named in the same request" do
+    wrong = create(:user, email: "wrong@example.test", confirmed_at: Time.current)
+    chosen = create(:user, confirmed_at: Time.current)
+    create(:user, email: "right@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, payer_email: "wrong@example.test", user: wrong)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "right@example.test",
+             userId: chosen.id} do
+      assert_equal chosen.id, parsed_body["userId"]
+    end
+  end
+
   test "PUT /supporter-contributions/:id clears the link when userId is null" do
     contribution = create(:supporter_contribution, user: create(:user))
     sign_in @user

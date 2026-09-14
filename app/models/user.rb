@@ -268,11 +268,18 @@ class User < ApplicationRecord
   before_create :setup_otp_secret
   after_create :create_default_notification_preferences
 
-  # Keyed on the column rather than on Devise's after_confirmation hook, so an
+  # Keyed on the columns rather than on Devise's after_confirmation hook, so an
   # account confirmed by assignment -- an OAuth signup, an admin, a backfill --
   # is covered as well as one that went through `confirm`.
+  #
+  # Reconfirmation changes both, so confirmed_at alone would be enough for it.
+  # The email arm is for the case that changes only that: an admin moving an
+  # account with skip_reconfirmation!.
   after_commit :link_supporter_contributions,
-    if: -> { saved_change_to_confirmed_at? && confirmed_at.present? }
+    if: -> {
+      confirmed_at.present? &&
+        (saved_change_to_confirmed_at? || saved_change_to_email?)
+    }
 
   after_update :notify_user
   after_update :sync_sale_notify_preference
@@ -584,7 +591,7 @@ class User < ApplicationRecord
   private def link_supporter_contributions
     SupporterContribution
       .where(user_id: nil)
-      .where("lower(payer_email) = ?", email.to_s.strip.downcase)
+      .where(payer_email: email.to_s.strip.downcase)
       .find_each { |contribution| ::Supporters::Linker.call(contribution) }
   end
 

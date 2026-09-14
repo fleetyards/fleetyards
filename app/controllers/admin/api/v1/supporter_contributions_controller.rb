@@ -96,9 +96,19 @@ module Admin
         end
 
         # A hand-entered PayPal or Buy Me a Coffee payment resolves the same way a
-        # webhook does. Never overwrites a user an admin picked themselves --
-        # Supporters::Linker refuses a contribution that already has one.
+        # webhook does.
+        #
+        # Correcting the address re-resolves rather than keeping the old link:
+        # an admin editing payer_email is saying who paid, and leaving the
+        # entitlement with the previous account is the surprising answer. An
+        # admin who names a user in the same request outranks both -- that is an
+        # explicit choice, not a correction.
         private def resolve_supporter
+          if @supporter_contribution.saved_change_to_payer_email? &&
+              !supporter_contribution_params.key?(:user_id)
+            @supporter_contribution.update!(user_id: nil)
+          end
+
           ::Supporters::Linker.call(@supporter_contribution)
         end
 

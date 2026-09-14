@@ -226,6 +226,42 @@ class UserTest < ActiveSupport::TestCase
       assert_nil other.reload.user
     end
 
+    # Devise's reconfirmation changes confirmed_at as well as email, so this is
+    # the path the confirmation arm already covered. Asserted because it is the
+    # one a reviewer expected to be broken.
+    test "reconfirming to a new address claims a contribution for it" do
+      contribution = create(:supporter_contribution, payer_email: "moved@example.test")
+      user = create(:user, confirmed_at: Time.current)
+
+      user.update!(email: "moved@example.test")
+      user.confirm
+
+      assert_equal user, contribution.reload.user
+    end
+
+    # The case confirmed_at alone would miss: an admin moving an account.
+    test "an admin moving an address without reconfirmation still claims it" do
+      contribution = create(:supporter_contribution, payer_email: "forced@example.test")
+      user = create(:user, confirmed_at: Time.current)
+
+      user.skip_reconfirmation!
+      user.update!(email: "forced@example.test")
+
+      assert_equal user, contribution.reload.user
+    end
+
+    # Platforms are not careful with whitespace, and an address with a stray
+    # space matches nothing without a word of warning.
+    test "a payer email with surrounding space is still claimed" do
+      contribution = create(:supporter_contribution, payer_email: "  Spaced@Example.test  ")
+
+      assert_equal "spaced@example.test", contribution.reload.payer_email
+
+      user = create(:user, email: "spaced@example.test", confirmed_at: Time.current)
+
+      assert_equal user, contribution.reload.user
+    end
+
     test "an unlinked contribution belongs to nobody" do
       create(:supporter_contribution, started_at: Date.current)
 
