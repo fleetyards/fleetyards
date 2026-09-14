@@ -38,8 +38,82 @@ module Contracts
       end
     end
 
-    def initialize(contract)
+    # What a board shows for one contract: a bar, and the quantities behind it
+    # when every line is measured the same way.
+    Summary = Struct.new(:fraction, :delivered, :requested, :unit, :complete)
+
+    # One page of contracts, in a bounded number of queries rather than three
+    # per row: the ledger is rolled up once for every transfer on the page and
+    # handed to each contract pre-sliced.
+    def self.for_all(contracts)
+      contracts = contracts.to_a
+      return {} if contracts.empty?
+
+      transfers = ::InventoryTransfer
+        .where(fleet_contract_id: contracts.map(&:id))
+        .includes(source_inventory: {}, source_fleet_inventory: {})
+        .group_by(&:fleet_contract_id)
+
+      transfer_ids = transfers.values.flatten.map(&:id)
+      inventory_ids = contracts.flat_map do |contract|
+        [contract.destination_fleet_inventory_id, contract.source_fleet_inventory_id]
+      end.compact.uniq
+
+      deposits = batch_rollup(inventory_ids, transfer_ids, :deposit)
+      withdrawals = batch_rollup(inventory_ids, transfer_ids, :withdrawal)
+
+      contracts.index_by(&:id).transform_values do |contract|
+        own_transfers = transfers.fetch(contract.id, [])
+
+        new(
+          contract,
+          preloaded: {
+            transfers: own_transfers,
+            deposits: deposits,
+            withdrawals: withdrawals
+          }
+        )
+      end
+    end
+
+    # The same shape `rollup` returns, for every inventory at once: keyed by
+    # inventory so a contract can take only the rows written into its own ends.
+    private_class_method def self.batch_rollup(inventory_ids, transfer_ids, entry_type)
+      return {} if inventory_ids.empty? || transfer_ids.empty?
+
+      rows = ::FleetInventoryItem
+        .where(fleet_inventory_id: inventory_ids, entry_type: entry_type)
+        .where(inventory_transfer_id: transfer_ids)
+        .group(:fleet_inventory_id, Arel.sql("LOWER(name)"), :category, :unit, :quality,
+          :inventory_transfer_id)
+        .sum(:quantity)
+
+      rows.each_with_object({}) do |(key, quantity), result|
+        inventory_id, name, category, unit, quality, transfer_id = key
+
+        ((result[inventory_id] ||= {})[[name, category, unit]] ||= []) << {
+          quality: quality,
+          quantity: quantity,
+          inventory_transfer_id: transfer_id
+        }
+      end
+    end
+
+    def initialize(contract, preloaded: nil)
       @contract = contract
+      @preloaded = preloaded
+    end
+
+    def summary
+      units = lines.map { |line| line.item.unit }.uniq
+
+      Summary.new(
+        fraction.to_f,
+        lines.sum(0.to_d, &:delivered),
+        lines.sum(0.to_d, &:requested),
+        units.one? ? units.first : nil,
+        complete?
+      )
     end
 
     def lines
@@ -129,9 +203,13 @@ module Contracts
     end
 
     private def transfers_by_id
-      @transfers_by_id ||= @contract.inventory_transfers
-        .includes(source_inventory: {}, source_fleet_inventory: {})
-        .index_by(&:id)
+      @transfers_by_id ||= if @preloaded
+        @preloaded[:transfers].index_by(&:id)
+      else
+        @contract.inventory_transfers
+          .includes(source_inventory: {}, source_fleet_inventory: {})
+          .index_by(&:id)
+      end
     end
 
     private def deposits
@@ -180,11 +258,27 @@ module Contracts
       end
     end
 
+    # This contract's share of a page-wide rollup: the rows written into one of
+    # its ends *by one of its own transfers*. Both halves matter -- two
+    # contracts delivering into the same fleet inventory would otherwise read
+    # each other's deliveries as their own.
+    private def sliced_rollup(inventory_id, entry_type)
+      by_identity = ((entry_type == :deposit) ? @preloaded[:deposits] : @preloaded[:withdrawals])
+        .fetch(inventory_id, {})
+      own_transfer_ids = transfers_by_id.keys.to_set
+
+      by_identity.each_with_object({}) do |(identity, rows), result|
+        own = rows.select { |row| own_transfer_ids.include?(row[:inventory_transfer_id]) }
+        result[identity] = own if own.any?
+      end
+    end
+
     # Grouped down to one row per position, grade and transfer. Keyed by the
     # same downcased triple `FleetContractItem#position_identity` produces, so a
     # deposit entered as "titanium" answers a contract written as "Titanium".
     private def rollup(inventory_id, entry_type)
       return {} if inventory_id.blank?
+      return sliced_rollup(inventory_id, entry_type) if @preloaded
 
       rows = ::FleetInventoryItem
         .where(fleet_inventory_id: inventory_id, entry_type: entry_type)

@@ -17133,6 +17133,12 @@ components:
           - string
           - 'null'
           format: date-time
+        crewPreview:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractBoardMember"
+        progress:
+          "$ref": "#/components/schemas/FleetContractProgressSummary"
         itemsCount:
           type: integer
         crewCount:
@@ -17188,6 +17194,8 @@ components:
       - reward
       - requiresPickup
       - destination
+      - crewPreview
+      - progress
       - itemsCount
       - crewCount
       title: FleetContract
@@ -17206,6 +17214,21 @@ components:
       - id
       - username
       title: FleetContractAuthor
+    FleetContractBoardMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - username
+      title: FleetContractBoardMember
     FleetContractContribution:
       type: object
       properties:
@@ -17354,6 +17377,10 @@ components:
           - string
           - 'null'
           format: date-time
+        crewPreview:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractBoardMember"
         itemsCount:
           type: integer
         crewCount:
@@ -17419,6 +17446,7 @@ components:
       - reward
       - requiresPickup
       - destination
+      - crewPreview
       - itemsCount
       - crewCount
       - items
@@ -17481,6 +17509,10 @@ components:
         destinationFleetInventoryId:
           type: string
           format: uuid
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetContractItemInput"
       additionalProperties: false
       required: []
       title: FleetContractInput
@@ -17616,6 +17648,28 @@ components:
       - lines
       - shares
       title: FleetContractProgress
+    FleetContractProgressSummary:
+      type: object
+      properties:
+        fraction:
+          type: number
+        delivered:
+          type: string
+        requested:
+          type: string
+        unit:
+          type:
+          - string
+          - 'null'
+        complete:
+          type: boolean
+      additionalProperties: false
+      required:
+      - fraction
+      - delivered
+      - requested
+      - complete
+      title: FleetContractProgressSummary
     FleetContractProgressLine:
       type: object
       properties:

@@ -37,6 +37,23 @@ json.expired_at fleet_contract.expired_at&.utc&.iso8601
 
 # Counted off the loaded associations rather than queried per row -- the index
 # eager-loads both, so this is two queries for the page and not two per card.
+# Who is on it, for a board that shows faces rather than a number. Capped: the
+# crew list itself belongs to the contract's own page.
+json.crew_preview do
+  accepted = fleet_contract.fleet_contract_assignments
+    .select { |assignment| assignment.aasm_state == "accepted" && assignment.user.present? }
+    .sort_by(&:created_at)
+    .first(4)
+
+  json.array!(accepted) do |assignment|
+    json.id assignment.user.id
+    json.username assignment.user.username
+    json.avatar do
+      json.partial! "api/v1/shared/file", record: assignment.user, attr: :avatar
+    end
+  end
+end
+
 json.items_count fleet_contract.fleet_contract_items.size
 json.crew_count fleet_contract.fleet_contract_assignments.count { |assignment| assignment.aasm_state == "accepted" }
 

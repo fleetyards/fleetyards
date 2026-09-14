@@ -31,9 +31,13 @@ module Api
 
         @fleet_contracts = result_with_pagination(
           @q.result(distinct: true).includes(:destination_fleet_inventory, :source_fleet_inventory,
-            :created_by, :fleet_contract_items, :fleet_contract_assignments),
+            :created_by, :fleet_contract_items, {fleet_contract_assignments: :user}),
           per_page(FleetContract)
         )
+
+        # Built for the whole page at once: a bar per row would otherwise be
+        # three ledger queries per row.
+        @progress_by_id = ::Contracts::Progress.for_all(@fleet_contracts)
       end
 
       def show
@@ -155,7 +159,15 @@ module Api
       end
 
       private def fleet_contract_params
-        authorized(params, with: FleetContractPolicy)
+        permitted = authorized(params, with: FleetContractPolicy)
+        items = permitted.delete(:items)
+
+        return permitted if items.blank?
+
+        # Rails writes the children with the parent in one transaction, so a
+        # rejected line takes the contract down with it rather than leaving a
+        # half-built one behind.
+        permitted.merge(fleet_contract_items_attributes: items)
       end
 
       private def set_fleet
