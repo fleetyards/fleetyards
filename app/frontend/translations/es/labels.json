@@ -1953,7 +1953,8 @@
         "inTransitHint": "Enviado en una transferencia que nadie ha respondido. Ya está fuera de los totales.",
         "transferFromFriends": "Mis amigos",
         "towardsContract": "Para un contrato",
-        "noContract": "Ningún contrato"
+        "noContract": "Ningún contrato",
+        "forContract": "para"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

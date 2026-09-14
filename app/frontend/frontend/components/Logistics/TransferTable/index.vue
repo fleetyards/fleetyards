@@ -155,25 +155,6 @@ const canCancel = (transfer: InventoryTransfer) =>
     </template>
 
     <template #col-contents="{ record }">
-      <!-- A shipment sent towards a contract, which is the only kind that
-           counts towards one. Said here so a delivery that will never count is
-           visible before anybody wonders why a bar has not moved. -->
-      <router-link
-        v-if="(record as InventoryTransfer).contract"
-        class="transfer-contract"
-        :to="{
-          name: 'fleet-contract',
-          params: {
-            slug: (record as InventoryTransfer).contract!.fleetSlug,
-            contract: (record as InventoryTransfer).contract!.slug,
-          },
-        }"
-        data-test="transfer-contract-link"
-      >
-        <i class="fa-duotone fa-clipboard-list" />
-        {{ (record as InventoryTransfer).contract!.title }}
-      </router-link>
-
       <ul class="transfer-contents">
         <li v-for="line in (record as InventoryTransfer).lines" :key="line.id">
           <span class="transfer-contents-name">{{ line.name }}</span>
@@ -183,6 +164,29 @@ const canCancel = (transfer: InventoryTransfer) =>
           </span>
         </li>
       </ul>
+
+      <!-- After the goods, which are what the column is about: this says what
+           they were for. Only a transfer naming a contract counts towards one,
+           so a delivery that will never count says so here rather than leaving
+           somebody to wonder why a bar has not moved. -->
+      <span
+        v-if="(record as InventoryTransfer).contract"
+        class="transfer-contract"
+      >
+        {{ t("labels.logistics.forContract") }}
+        <router-link
+          :to="{
+            name: 'fleet-contract',
+            params: {
+              slug: (record as InventoryTransfer).contract!.fleetSlug,
+              contract: (record as InventoryTransfer).contract!.slug,
+            },
+          }"
+          data-test="transfer-contract-link"
+        >
+          {{ (record as InventoryTransfer).contract!.title }}
+        </router-link>
+      </span>
     </template>
 
     <template #col-state="{ record }">

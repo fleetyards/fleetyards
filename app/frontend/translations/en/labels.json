@@ -1967,7 +1967,8 @@
         "inTransitHint": "Sent on a transfer nobody has answered yet. It is already out of the totals.",
         "transferFromFriends": "My friends",
         "towardsContract": "Towards a contract",
-        "noContract": "No contract"
+        "noContract": "No contract",
+        "forContract": "for"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

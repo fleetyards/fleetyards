@@ -1953,7 +1953,8 @@
         "inTransitHint": "已隨一筆尚未被回覆的轉移送出，已不計入上方總數。",
         "transferFromFriends": "我的好友",
         "towardsContract": "計入合約",
-        "noContract": "不計入合約"
+        "noContract": "不計入合約",
+        "forContract": "用於"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

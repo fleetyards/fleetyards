@@ -1953,7 +1953,8 @@
         "inTransitHint": "Auf einem Transfer, den noch niemand beantwortet hat. Bereits aus den Summen heraus.",
         "transferFromFriends": "Meine Freunde",
         "towardsContract": "Für einen Auftrag",
-        "noContract": "Kein Auftrag"
+        "noContract": "Kein Auftrag",
+        "forContract": "für"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {

@@ -1,14 +1,18 @@
-// Above the goods rather than a column of its own: most transfers name no
+// Under the goods rather than a column of its own: most transfers name no
 // contract, and an empty column on every row buys nothing.
 .transfer-contract {
   display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
+  align-items: baseline;
+  gap: 5px;
+  margin-top: 4px;
   font-size: 0.8em;
-  color: $gold;
+  color: $gray-light;
 
-  &:hover {
-    color: lighten($gold, 10%);
+  a {
+    color: $gold;
+
+    &:hover {
+      color: lighten($gold, 10%);
+    }
   }
 }
