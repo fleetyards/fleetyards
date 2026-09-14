@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_14_100400) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_100500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1647,6 +1647,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_100400) do
     t.uuid "payout_ledger_id", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
+    t.decimal "weight", precision: 5, scale: 2, default: "1.0", null: false
     t.index ["payout_ledger_id", "user_id"], name: "index_payout_participants_unique_user_per_ledger", unique: true, where: "(user_id IS NOT NULL)"
     t.index ["payout_ledger_id"], name: "index_payout_participants_on_payout_ledger_id"
   end
