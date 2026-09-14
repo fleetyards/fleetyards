@@ -13,7 +13,7 @@ zh-CN:
         subject: RSI 连接已恢复
         text: 通过 "%{url}" 的 RSI 自动更新已恢复
       weekly:
-        headline: FleetYards.net Command - Weekly
+        headline: Command Weekly
         metrics:
           fleets: 新舰队
           registrations: 新注册
