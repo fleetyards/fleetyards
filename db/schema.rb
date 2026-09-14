@@ -420,7 +420,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
   end
 
-<<<<<<< HEAD
   create_table "fleet_alliances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "aasm_state", default: "pending", null: false
     t.datetime "accepted_at"
@@ -436,7 +435,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.index ["addressee_id"], name: "index_fleet_alliances_on_pending_addressee", where: "((aasm_state)::text = 'pending'::text)"
     t.index ["requester_id"], name: "index_fleet_alliances_on_requester_id"
     t.check_constraint "requester_id <> addressee_id", name: "fleet_alliances_not_to_self"
-=======
+  end
+
   create_table "fleet_contract_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "aasm_state", default: "requested", null: false
     t.datetime "accepted_at"
@@ -510,7 +510,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.check_constraint "crew_limit IS NULL OR crew_limit > 0", name: "fleet_contracts_crew_limit_positive"
     t.check_constraint "kind = 0 AND source_fleet_inventory_id IS NOT NULL OR kind <> 0 AND source_fleet_inventory_id IS NULL", name: "fleet_contracts_source_only_for_transport"
     t.check_constraint "reward >= 0::numeric", name: "fleet_contracts_reward_not_negative"
->>>>>>> b152356d3 (feat(contracts): a fleet posts jobs its members claim)
   end
 
   create_table "fleet_event_admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2040,10 +2039,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
-<<<<<<< HEAD
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "requester_id", on_delete: :cascade
-=======
   add_foreign_key "fleet_contract_assignments", "fleet_contracts", on_delete: :cascade
   add_foreign_key "fleet_contract_assignments", "users", column: "approved_by_id", on_delete: :nullify
   add_foreign_key "fleet_contract_assignments", "users", on_delete: :cascade
@@ -2052,7 +2049,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
   add_foreign_key "fleet_contracts", "fleet_inventories", column: "source_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "fleets"
   add_foreign_key "fleet_contracts", "users", column: "created_by_id", on_delete: :nullify
->>>>>>> b152356d3 (feat(contracts): a fleet posts jobs its members claim)
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_occurrence_states", "fleet_events"

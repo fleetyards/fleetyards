@@ -1258,6 +1258,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
           "$ref": "#/components/schemas/MediaFile"
+        contractCovers:
+          "$ref": "#/components/schemas/FleetContractCovers"
         myFleet:
           type: boolean
         features:
@@ -1284,6 +1286,16 @@ components:
       - features
       - createdAt
       - updatedAt
+    FleetContractCovers:
+      type: object
+      properties:
+        transport:
+          "$ref": "#/components/schemas/MediaFile"
+        procurement:
+          "$ref": "#/components/schemas/MediaFile"
+        crafting:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
     FleetMember:
       type: object
       properties:
@@ -1534,6 +1546,11 @@ components:
       - fleet:allies:create
       - fleet:allies:delete
       - fleet:allies:manage
+      - fleet:contracts:read
+      - fleet:contracts:create
+      - fleet:contracts:update
+      - fleet:contracts:delete
+      - fleet:contracts:manage
       - fleet:missions:read
       - fleet:missions:create
       - fleet:missions:update
@@ -1585,6 +1602,11 @@ components:
       - FLEET_ALLIES_CREATE
       - FLEET_ALLIES_DELETE
       - FLEET_ALLIES_MANAGE
+      - FLEET_CONTRACTS_READ
+      - FLEET_CONTRACTS_CREATE
+      - FLEET_CONTRACTS_UPDATE
+      - FLEET_CONTRACTS_DELETE
+      - FLEET_CONTRACTS_MANAGE
       - FLEET_MISSIONS_READ
       - FLEET_MISSIONS_CREATE
       - FLEET_MISSIONS_UPDATE
@@ -3083,6 +3105,11 @@ components:
       - fleet_ally_request_accepted
       - tour_join_request_received
       - tour_join_request_accepted
+      - fleet_contract_published
+      - fleet_contract_claimed
+      - fleet_contract_crew_requested
+      - fleet_contract_crew_answered
+      - fleet_contract_fulfilled
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -3116,6 +3143,11 @@ components:
       - FLEET_ALLY_REQUEST_ACCEPTED
       - TOUR_JOIN_REQUEST_RECEIVED
       - TOUR_JOIN_REQUEST_ACCEPTED
+      - FLEET_CONTRACT_PUBLISHED
+      - FLEET_CONTRACT_CLAIMED
+      - FLEET_CONTRACT_CREW_REQUESTED
+      - FLEET_CONTRACT_CREW_ANSWERED
+      - FLEET_CONTRACT_FULFILLED
     PayoutLedger:
       type: object
       properties:
