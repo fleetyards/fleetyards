@@ -66,11 +66,16 @@ describe("FleetContractsItemModal", () => {
       .findComponent({ name: "BaseSelect" })
       .props("options") as { value: string }[];
 
-    // Two, not the ledger's four: splitting weapon/ammunition out here hid a
-    // rifle behind the wrong word.
+    // Everything the ledger knows except commodity: that is the only thing you
+    // cannot craft.
+    expect(options.map((option) => option.value)).not.toContain("commodity");
     expect(options.map((option) => option.value)).toEqual([
       "component",
+      "weapon",
       "equipment",
+      "ammunition",
+      "consumable",
+      "other",
     ]);
   });
 
@@ -87,10 +92,11 @@ describe("FleetContractsItemModal", () => {
   // The picker is unfiltered while crafting, so the stored category has to come
   // from the pick — a rifle the ledger records as `weapon` must be asked for as
   // `weapon` or Progress will never match it.
+  // A Galant is a `weapon`: under an "Equipment" filtered to armour and tools it
+  // could be neither searched for nor scrolled to.
   it("offers the whole equipment catalogue while crafting", async () => {
     const subject = await mount("crafting");
 
-    // Switch the family select to equipment; the picker only renders then.
     subject
       .findComponent({ name: "BaseSelect" })
       .vm.$emit("update:modelValue", "equipment");

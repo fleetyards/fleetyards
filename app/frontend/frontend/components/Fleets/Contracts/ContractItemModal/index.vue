@@ -49,24 +49,16 @@ const { categoryOptions, unitOptionsFor } = useInventoryOptions();
 
 const isCrafting = computed(() => props.contract.kind === "crafting");
 
-// You cannot craft a commodity — those are mined, bought or hauled. A crafting
-// contract asks for something made, so the choice is the two catalogues that
-// hold made things: components, or equipment.
-//
-// Only two, rather than the ledger's four equipment-ish categories, because
-// splitting them here hides goods behind the wrong word: a Galant is a `weapon`,
-// so under an "Equipment" that filtered to armour and tools it could be neither
-// searched for nor scrolled to. The equipment picker is unfiltered instead, and
-// the category is taken from whatever gets picked (see `categoryForEquipment`).
-const CRAFTABLE_CATEGORIES: string[] = [
-  InventoryCategoryEnum.COMPONENT,
-  InventoryCategoryEnum.EQUIPMENT,
-];
+// A commodity is the one thing you cannot craft — those are mined, bought or
+// hauled. Written as an exclusion rather than an allowlist so a category added
+// to the ledger later is craftable by default, which is the honest assumption:
+// the ledger only holds things that exist, and all but raw cargo are made.
+const UNCRAFTABLE_CATEGORIES: string[] = [InventoryCategoryEnum.COMMODITY];
 
 const availableCategories = computed(() =>
   isCrafting.value
-    ? categoryOptions.value.filter((option) =>
-        CRAFTABLE_CATEGORIES.includes(option.value as string),
+    ? categoryOptions.value.filter(
+        (option) => !UNCRAFTABLE_CATEGORIES.includes(option.value as string),
       )
     : categoryOptions.value,
 );
@@ -153,20 +145,6 @@ const EQUIPMENT_TYPES_FOR_CATEGORY: Record<string, string[]> = {
 const equipmentTypes = computed(() =>
   isCrafting.value ? [] : EQUIPMENT_TYPES_FOR_CATEGORY[category.value] || [],
 );
-
-// While crafting, the select shows the family and the stored category follows
-// the picked item — so choosing a rifle files the line as `weapon` without the
-// select flipping to a word that is not one of its two options.
-const craftingFamily = ref<string>(InventoryCategoryEnum.COMPONENT);
-
-const categorySelection = computed({
-  get: () => (isCrafting.value ? craftingFamily.value : category.value),
-  set: (value: string) => {
-    if (isCrafting.value) craftingFamily.value = value;
-
-    setFieldValue("category", value as InventoryCategoryEnum);
-  },
-});
 
 const unitOptions = unitOptionsFor(category);
 
@@ -299,7 +277,7 @@ const onSubmit = handleSubmit(async (values) => {
       />
 
       <BaseSelect
-        v-model="categorySelection"
+        v-model="category"
         v-bind="categoryProps"
         name="itemCategory"
         :options="availableCategories"
