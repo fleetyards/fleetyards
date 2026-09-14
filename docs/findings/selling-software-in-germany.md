@@ -157,6 +157,49 @@ reconciler beside the Patreon and Ko-fi ones, and D13's comping mechanism is alr
 path. D10's enforcement, D11's read and the four capabilities do not move — which is what keeping
 entitlement payment-agnostic was for.
 
+## Starting with donations and migrating later
+
+This is the intended sequence, and it is defensible for a specific structural reason rather than
+because the numbers are small.
+
+**No paid contract is concluded with a consumer here.** Patreon is merchant of record: its checkout,
+its terms, its VAT. Fleetyards recognises an existing membership and grants features in acknowledgement
+of it. That keeps the consumer-law cluster — § 312k, § 356a, § 356 Abs. 5, the Button-Lösung — with
+Patreon rather than with us. Those obligations carry **no revenue threshold**, so scale is no
+protection and the structure is doing all the work.
+
+On tax, the § 19 thresholds do the rest: below €25,000 prior year and €100,000 current, no VAT is
+charged on either framing. Income tax applies from the first euro, but that is already true of the
+Patreon income and is not changed by granting features for it.
+
+**The weak point is the direct path.** PayPal and Buy Me a Coffee are a supply from us with no platform
+in between, arranged through our own interface. D7 keeps them hand-entered and small; that should stay
+a deliberate choice rather than an accident of effort.
+
+### What makes the migration hard, none of it technical
+
+- **Telling supporters.** Either a donation becomes a purchase or it stops granting features. Both are
+  trust conversations, and the second is much worse if nobody was told to expect it. Saying *supporter
+  perks may change* in the copy now costs nothing and buys the option.
+- **Pricing.** A donation amount is chosen by the donor; a price is set by us. Moving from "€X or more
+  unlocks it" to "it costs €X" reprices people, some of them out.
+- **B2B.** The first org wanting an invoice to expense it is the tripwire that cannot be deferred, and
+  it will arrive well before any revenue threshold.
+
+### Tripwires — migrate when one fires, not on a schedule
+
+1. Contributions approaching **€25,000/year**.
+2. Wanting to set a **price** rather than a qualifying minimum.
+3. Adding any **direct payment channel** that is not a merchant-of-record platform.
+4. The first **B2B invoice request**.
+
+### Correction
+
+An earlier version of this note listed *customer location evidence* as a gap to close now, on the
+grounds that it cannot be reconstructed retroactively. That is overstated on the MoR route: the
+provider collects location at checkout, and no VAT is owed for the donation period under the
+thresholds anyway. It matters only if we ever self-bill, and is not worth building now.
+
 ## What this means for the plan as written
 
 Nothing needs rebuilding, and three things are already right:
