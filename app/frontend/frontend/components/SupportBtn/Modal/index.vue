@@ -24,6 +24,27 @@ const { data: claimKey } = useMySupporterClaimKey({
 
 const key = computed(() => claimKey.value?.key ?? "");
 
+const platforms = [
+  {
+    id: "paypal",
+    label: "PayPal",
+    icon: "fa-brands fa-paypal",
+    href: "https://paypal.me/mortik",
+  },
+  {
+    id: "kofi",
+    label: "Ko-fi",
+    icon: "",
+    href: "https://ko-fi.com/fleetyardsnet",
+  },
+  {
+    id: "bmac",
+    label: "Buy me a coffee",
+    icon: "fa-solid fa-mug-hot",
+    href: "https://www.buymeacoffee.com/mortik",
+  },
+];
+
 const copiedFrom = ref<string | null>(null);
 let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -61,44 +82,23 @@ onBeforeUnmount(() => clearTimeout(resetTimer));
       <p class="support-section__note">{{ t("texts.support.goal") }}</p>
 
       <div class="support-section">
-        <div class="support-section__label">
-          {{ t("texts.support.subline") }}
-        </div>
-
         <div class="support-platforms">
           <Btn
-            v-for="platform in [
-              {
-                id: 'paypal',
-                label: 'PayPal',
-                href: 'https://paypal.me/mortik',
-              },
-              {
-                id: 'kofi',
-                label: 'Ko-fi',
-                href: 'https://ko-fi.com/fleetyardsnet',
-              },
-              {
-                id: 'bmac',
-                label: 'Buy me a coffee',
-                href: 'https://www.buymeacoffee.com/mortik',
-              },
-            ]"
+            v-for="platform in platforms"
             :key="platform.id"
             :href="platform.href"
             :data-test="`support-${platform.id}`"
             class="support-platform"
             @click="copyKeyFor(platform.id)"
           >
-            <i v-if="platform.id === 'paypal'" class="fa-brands fa-paypal" />
             <img
-              v-else-if="platform.id === 'kofi'"
+              v-if="platform.id === 'kofi'"
               :src="kofiIcon"
               alt="Ko-fi Icon"
-              width="24"
+              width="22"
             />
-            <i v-else class="fa-solid fa-mug-hot" />
-            <span>{{ platform.label }}</span>
+            <i v-else :class="platform.icon" class="support-platform__icon" />
+            <span class="support-platform__label">{{ platform.label }}</span>
             <span
               v-if="key"
               class="support-platform__copied"
@@ -116,8 +116,13 @@ onBeforeUnmount(() => clearTimeout(resetTimer));
           class="support-claim-key__hint"
           data-test="claim-key-hint"
         >
-          <code class="support-claim-key" data-test="claim-key">{{ key }}</code>
-          {{ t("labels.account.supporterClaimKey.howTo") }}
+          <i class="fa-light fa-key support-claim-key__icon" />
+          <span>
+            <code class="support-claim-key" data-test="claim-key">{{
+              key
+            }}</code>
+            {{ t("labels.account.supporterClaimKey.howTo") }}
+          </span>
         </p>
 
         <Btn
@@ -125,8 +130,8 @@ onBeforeUnmount(() => clearTimeout(resetTimer));
           class="support-platform support-platform--wide"
           data-test="support-patreon"
         >
-          <i class="fa-brands fa-patreon" />
-          <span>Patreon</span>
+          <i class="fa-brands fa-patreon support-platform__icon" />
+          <span class="support-platform__label">Patreon</span>
           <span v-if="key" class="support-platform__note">
             {{ t("labels.account.supporterClaimKey.patreonNote") }}
           </span>

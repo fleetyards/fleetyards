@@ -40,13 +40,24 @@
 }
 
 .support-platform {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  /*
+   * Btn lays its content out in a row. These three stack instead, so the icon
+   * leads and the copy confirmation gets a line of its own -- in a row, three
+   * labels plus three confirmations share one line at a third of the modal.
+   */
+  :deep(.btn__content) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
 
-  &--wide {
-    width: 100%;
+  &__icon {
+    font-size: 1.35rem;
+  }
+
+  &__label {
+    font-size: 0.85rem;
   }
 
   &__note {
@@ -55,8 +66,8 @@
   }
 
   /*
-   * Reserved rather than revealed: without a fixed line the grid reflows the
-   * moment one button confirms a copy, nudging the other two under the cursor.
+   * Always rendered, faded when idle: revealing it would reflow the grid the
+   * moment one button confirms, nudging the other two under the cursor.
    */
   &__copied {
     font-size: 0.65rem;
@@ -70,6 +81,15 @@
       opacity: 1;
     }
   }
+
+  &--wide {
+    width: 100%;
+
+    :deep(.btn__content) {
+      flex-direction: row;
+      gap: 8px;
+    }
+  }
 }
 
 .support-claim-key {
@@ -79,10 +99,19 @@
 }
 
 .support-claim-key__hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   margin: 0;
   font-size: 0.78rem;
   line-height: 1.5;
   opacity: 0.7;
+}
+
+.support-claim-key__icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: $gold;
 }
 
 .support-rule {
@@ -96,9 +125,9 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  opacity: 0.8;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0.7;
 
   p {
     margin: 0;
