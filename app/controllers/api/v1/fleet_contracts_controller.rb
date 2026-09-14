@@ -22,6 +22,8 @@ module Api
         authorize! with: FleetContractPolicy, context: {fleet: @fleet}
 
         scope = visible_scope
+        # The caller's own board: what they are working, and what they worked.
+        scope = scope.worked_by(current_resource_owner) if params[:mine].to_s == "true"
 
         query_params = params.fetch(:q, {}).permit(:title_cont, :state_eq, :kind_eq, :s, {state_in: []})
         normalize_sort_params(query_params)

@@ -104,7 +104,10 @@
           "index": "Aufträge",
           "create": "Auftrag erstellen",
           "edit": "Auftrag bearbeiten",
-          "show": "Auftrag"
+          "show": "Auftrag",
+          "mine": "Meine %{fleet} Aufträge",
+          "completed": "Abgeschlossene %{fleet} Aufträge",
+          "closed": "Beendete %{fleet} Aufträge"
         }
       },
       "roadmap": {

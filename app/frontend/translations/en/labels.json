@@ -2279,8 +2279,6 @@
           "pendingCrew": "Waiting to join",
           "minQuality": "min. quality %{value}",
           "pickedUp": "%{quantity} picked up",
-          "openTab": "Open",
-          "closedTab": "Closed",
           "itemName": "Item",
           "itemCategory": "Category",
           "itemUnit": "Unit",
@@ -2315,7 +2313,13 @@
           "postedBy": "Posted by",
           "claimedBy": "claimed by",
           "delivered": "Delivered",
-          "deliveredOf": "%{delivered} / %{requested} %{unit}"
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "Open",
+            "closed": "Closed",
+            "mine": "Mine",
+            "completed": "Completed"
+          }
         }
       },
       "commodity": {

@@ -113,6 +113,15 @@ class FleetContract < ApplicationRecord
   scope :active, -> { where(aasm_state: %w[open in_progress]) }
   scope :closed, -> { where(aasm_state: %w[fulfilled cancelled expired]) }
 
+  # The contracts somebody is actually working, which is the accepted seats --
+  # a withdrawn or refused request is not work they are on. `distinct` because
+  # a lead who is also crew would otherwise arrive twice.
+  scope :worked_by, ->(user) {
+    joins(:fleet_contract_assignments)
+      .where(fleet_contract_assignments: {user_id: user, aasm_state: "accepted"})
+      .distinct
+  }
+
   # `whiny_transitions: false` matches the rest of the app's state machines.
   # The two stamps aasm cannot write are written by hand: its timestamp feature
   # derives the column from the *state* name, so `open` would want `open_at` and

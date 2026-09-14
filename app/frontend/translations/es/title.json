@@ -104,7 +104,10 @@
           "index": "Contratos",
           "create": "Crear contrato",
           "edit": "Editar contrato",
-          "show": "Contrato"
+          "show": "Contrato",
+          "mine": "Mis contratos de %{fleet}",
+          "completed": "Contratos completados de %{fleet}",
+          "closed": "Contratos cerrados de %{fleet}"
         }
       },
       "roadmap": {

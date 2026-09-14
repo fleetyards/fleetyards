@@ -104,7 +104,10 @@
           "index": "合约",
           "create": "创建合约",
           "edit": "编辑合约",
-          "show": "合约"
+          "show": "合约",
+          "mine": "我的 %{fleet} 合约",
+          "completed": "%{fleet} 已完成的合约",
+          "closed": "%{fleet} 已结束的合约"
         }
       },
       "roadmap": {

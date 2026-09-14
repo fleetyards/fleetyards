@@ -301,7 +301,13 @@
           "crew": "Crew",
           "items": "Waren",
           "editItem": "Waren bearbeiten",
-          "addItem": "Waren hinzufügen"
+          "addItem": "Waren hinzufügen",
+          "views": {
+            "open": "Aufträge",
+            "closed": "Beendete Aufträge",
+            "mine": "Meine Aufträge",
+            "completed": "Abgeschlossene Aufträge"
+          }
         }
       },
       "hangarGroup": {

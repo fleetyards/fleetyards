@@ -2265,8 +2265,6 @@
           "pendingCrew": "Wartet auf Aufnahme",
           "minQuality": "min. Qualität %{value}",
           "pickedUp": "%{quantity} abgeholt",
-          "openTab": "Offen",
-          "closedTab": "Abgeschlossen",
           "itemName": "Ware",
           "itemCategory": "Kategorie",
           "itemUnit": "Einheit",
@@ -2301,7 +2299,13 @@
           "postedBy": "Ausgeschrieben von",
           "claimedBy": "übernommen von",
           "delivered": "Geliefert",
-          "deliveredOf": "%{delivered} / %{requested} %{unit}"
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "Offen",
+            "closed": "Beendet",
+            "mine": "Meine",
+            "completed": "Abgeschlossen"
+          }
         }
       },
       "commodity": {

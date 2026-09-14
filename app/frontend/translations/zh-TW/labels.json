@@ -2265,8 +2265,6 @@
           "pendingCrew": "等待加入",
           "minQuality": "最低品質 %{value}",
           "pickedUp": "已取 %{quantity}",
-          "openTab": "進行中",
-          "closedTab": "已結束",
           "itemName": "物品",
           "itemCategory": "類別",
           "itemUnit": "單位",
@@ -2301,7 +2299,13 @@
           "postedBy": "發布者",
           "claimedBy": "接下者",
           "delivered": "已交付",
-          "deliveredOf": "%{delivered} / %{requested} %{unit}"
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "進行中",
+            "closed": "已結束",
+            "mine": "我的",
+            "completed": "已完成"
+          }
         }
       },
       "commodity": {

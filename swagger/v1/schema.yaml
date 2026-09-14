@@ -1164,6 +1164,11 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: mine
+        in: query
+        schema:
+          type: boolean
+        required: false
       - name: page
         in: query
         schema:

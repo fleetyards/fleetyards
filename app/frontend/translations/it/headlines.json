@@ -301,7 +301,13 @@
           "crew": "Equipaggio",
           "items": "Merci",
           "editItem": "Modifica merci",
-          "addItem": "Aggiungi merci"
+          "addItem": "Aggiungi merci",
+          "views": {
+            "open": "Contratti",
+            "closed": "Contratti chiusi",
+            "mine": "I miei contratti",
+            "completed": "Contratti completati"
+          }
         }
       },
       "hangarGroup": {

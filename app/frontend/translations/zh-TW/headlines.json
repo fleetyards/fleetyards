@@ -301,7 +301,13 @@
           "crew": "隊伍",
           "items": "貨物",
           "editItem": "編輯貨物",
-          "addItem": "新增貨物"
+          "addItem": "新增貨物",
+          "views": {
+            "open": "合約",
+            "closed": "已結束的合約",
+            "mine": "我的合約",
+            "completed": "已完成的合約"
+          }
         }
       },
       "hangarGroup": {

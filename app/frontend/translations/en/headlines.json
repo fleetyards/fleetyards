@@ -303,7 +303,13 @@
           "crew": "Crew",
           "items": "Goods",
           "editItem": "Edit goods",
-          "addItem": "Add goods"
+          "addItem": "Add goods",
+          "views": {
+            "open": "Contracts",
+            "closed": "Closed contracts",
+            "mine": "My contracts",
+            "completed": "Completed contracts"
+          }
         }
       },
       "hangarGroup": {

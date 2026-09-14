@@ -301,7 +301,13 @@
           "crew": "Équipage",
           "items": "Marchandises",
           "editItem": "Modifier les marchandises",
-          "addItem": "Ajouter des marchandises"
+          "addItem": "Ajouter des marchandises",
+          "views": {
+            "open": "Contrats",
+            "closed": "Contrats clos",
+            "mine": "Mes contrats",
+            "completed": "Contrats terminés"
+          }
         }
       },
       "hangarGroup": {

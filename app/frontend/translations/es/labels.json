@@ -2265,8 +2265,6 @@
           "pendingCrew": "Esperando unirse",
           "minQuality": "calidad mín. %{value}",
           "pickedUp": "%{quantity} recogido",
-          "openTab": "Abiertos",
-          "closedTab": "Cerrados",
           "itemName": "Artículo",
           "itemCategory": "Categoría",
           "itemUnit": "Unidad",
@@ -2301,7 +2299,13 @@
           "postedBy": "Publicado por",
           "claimedBy": "aceptado por",
           "delivered": "Entregado",
-          "deliveredOf": "%{delivered} / %{requested} %{unit}"
+          "deliveredOf": "%{delivered} / %{requested} %{unit}",
+          "views": {
+            "open": "Abiertos",
+            "closed": "Cerrados",
+            "mine": "Míos",
+            "completed": "Completados"
+          }
         }
       },
       "commodity": {

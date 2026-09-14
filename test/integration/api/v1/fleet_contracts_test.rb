@@ -27,6 +27,9 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       parameter name: "q", in: :query,
         schema: ::V1::Schemas::Queries::FleetContractQuery,
         style: :deepObject, explode: true, required: false
+      # Not a ransack filter: "am I on this" is a question about the caller,
+      # not about a column.
+      parameter name: "mine", in: :query, schema: {type: :boolean}, required: false
       parameter name: "page", in: :query, schema: {type: :integer}, required: false
       parameter name: "perPage", in: :query, schema: {type: :integer}, required: false
 
@@ -492,6 +495,47 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
   # 404 rather than 403: the fleet itself is out of scope for someone who is
   # not in it, so the board does not get to say it exists.
+  # A member's own board: what they are working, which is the accepted seats --
+  # a withdrawn request is not work they are on.
+  test "GET mine lists only the contracts the caller works" do
+    mine = create(:fleet_contract, :in_progress, fleet: @fleet, destination_fleet_inventory: @depot)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: mine, user: @crewmate)
+
+    somebody_elses = create(:fleet_contract, :in_progress, fleet: @fleet,
+      destination_fleet_inventory: @depot)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: somebody_elses, user: @member)
+
+    withdrawn = create(:fleet_contract, :in_progress, fleet: @fleet,
+      destination_fleet_inventory: @depot)
+    create(:fleet_contract_assignment, fleet_contract: withdrawn, user: @crewmate,
+      aasm_state: "withdrawn")
+
+    sign_in @crewmate
+
+    get "/api/v1/fleets/#{@fleet.slug}/contracts", params: {mine: true}, as: :json
+
+    assert_response :success
+    assert_equal [mine.slug], parsed_body["items"].map { |item| item["slug"] }
+  end
+
+  test "GET mine narrows to a state like any other board" do
+    done = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
+    done.update!(aasm_state: "fulfilled")
+    create(:fleet_contract_assignment, :accepted, fleet_contract: done, user: @crewmate)
+
+    running = create(:fleet_contract, :in_progress, fleet: @fleet,
+      destination_fleet_inventory: @depot)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: running, user: @crewmate)
+
+    sign_in @crewmate
+
+    get "/api/v1/fleets/#{@fleet.slug}/contracts",
+      params: {mine: true, q: {state_in: ["fulfilled"]}}, as: :json
+
+    assert_response :success
+    assert_equal [done.slug], parsed_body["items"].map { |item| item["slug"] }
+  end
+
   test "a non-member cannot see the board at all" do
     sign_in @outsider
 

@@ -301,7 +301,13 @@
           "crew": "Tripulación",
           "items": "Mercancías",
           "editItem": "Editar mercancías",
-          "addItem": "Añadir mercancías"
+          "addItem": "Añadir mercancías",
+          "views": {
+            "open": "Contratos",
+            "closed": "Contratos cerrados",
+            "mine": "Mis contratos",
+            "completed": "Contratos completados"
+          }
         }
       },
       "hangarGroup": {
