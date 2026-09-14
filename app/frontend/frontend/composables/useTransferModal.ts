@@ -62,6 +62,7 @@ export const useTransferModal = (options: Options) => {
         source: { id: source.id, name: source.name },
         positions,
         targets: targets.value,
+        actingForFleet: !!toValue(options.fleetSlug),
         memberFleets: memberFleets.value,
         friendOptions: friendOptions.value,
         onSend: send,
