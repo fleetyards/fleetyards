@@ -438,6 +438,9 @@
           "index": "Alleati",
           "add": "Aggiungi un alleato"
         }
+      },
+      "fleet": {
+        "contractCovers": "Copertine dei contratti"
       }
     }
   }

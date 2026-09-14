@@ -26,7 +26,7 @@ const props = defineProps<Props>();
 const { t, toUEC, l } = useI18n();
 const { resolve } = useContractCover();
 
-const cover = computed(() => resolve(props.contract));
+const cover = computed(() => resolve(props.contract, props.fleet));
 
 // Where the goods come from and go to. A haul has both ends; the other kinds
 // only have somewhere to deliver.

@@ -46,6 +46,30 @@ require "test_helper"
 #  fk_rails_...  (source_fleet_inventory_id => fleet_inventories.id) ON DELETE => nullify
 #
 class FleetContractTest < ActiveSupport::TestCase
+  # A fleet's own board art, one attachment per kind. The lookup is by kind so
+  # nothing above it deals in three attachment names.
+  test "a fleet carries a cover per contract kind" do
+    fleet = create(:fleet)
+
+    FleetContract::KINDS.each_key do |kind|
+      assert_not_nil fleet.contract_cover_for(kind), "no attachment for #{kind}"
+      assert_not fleet.contract_cover_for(kind).attached?
+    end
+
+    assert_nil fleet.contract_cover_for("nonsense")
+  end
+
+  test "a contract cover refuses a vector image" do
+    fleet = build(:fleet)
+    fleet.transport_contract_cover.attach(
+      io: StringIO.new("<svg xmlns='http://www.w3.org/2000/svg'></svg>"),
+      filename: "cover.svg", content_type: "image/svg+xml"
+    )
+
+    assert_not fleet.valid?
+    assert_includes fleet.errors.attribute_names, :transport_contract_cover
+  end
+
   test "a transport contract needs a source inventory and the others must not have one" do
     fleet = create(:fleet)
 

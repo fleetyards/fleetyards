@@ -1,4 +1,8 @@
-import type { FleetContract, FleetContractDetail } from "@/services/fyApi";
+import type {
+  Fleet,
+  FleetContract,
+  FleetContractDetail,
+} from "@/services/fyApi";
 import fallback from "@/images/fallback/store_image.webp";
 
 const covers = import.meta.glob<{ default: string }>(
@@ -59,11 +63,29 @@ const standInFor = (kind: string) => {
 };
 
 export const useContractCover = () => {
-  const resolve = (contract?: FleetContract | FleetContractDetail | null) => {
+  /*
+   * The fleet's own art wins: a fleet that uploaded a cover for this kind in its
+   * settings should see that and not the stand-in. Then anything dropped into
+   * images/contracts/, then the mission art that comes closest, then the generic
+   * placeholder.
+   */
+  const resolve = (
+    contract?: FleetContract | FleetContractDetail | null,
+    fleet?: Fleet | null,
+  ) => {
     const kind = contract?.kind;
     if (!kind) return fallback;
 
-    return coverByKind[kind] ?? standInFor(kind) ?? fallback;
+    const own =
+      fleet?.contractCovers?.[kind as keyof typeof fleet.contractCovers];
+
+    return (
+      own?.mediumUrl ??
+      own?.url ??
+      coverByKind[kind] ??
+      standInFor(kind) ??
+      fallback
+    );
   };
 
   return { resolve };

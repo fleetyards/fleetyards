@@ -438,6 +438,9 @@
           "index": "Aliados",
           "add": "Añadir un aliado"
         }
+      },
+      "fleet": {
+        "contractCovers": "Portadas de contrato"
       }
     }
   }

@@ -30,6 +30,7 @@ module V1
             calendarFeedToken: {type: :string},
             logo: ::Shared::V1::Schemas::MediaFile,
             backgroundImage: ::Shared::V1::Schemas::MediaFile,
+            contractCovers: ::V1::Schemas::Fleets::FleetContractCovers,
             myFleet: {type: :boolean},
             features: {type: :array, items: {type: :string}},
             createdAt: {type: :string, format: "date-time"},

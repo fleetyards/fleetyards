@@ -563,7 +563,12 @@
         },
         "allies": "Navi visibili agli alleati",
         "alliesStats": "Statistiche visibili agli alleati",
-        "alliesMembers": "Elenco membri visibile agli alleati"
+        "alliesMembers": "Elenco membri visibile agli alleati",
+        "contractCovers": {
+          "transport": "Copertina trasporto",
+          "procurement": "Copertina approvvigionamento",
+          "crafting": "Copertina fabbricazione"
+        }
       },
       "hangarGroup": {
         "name": "Nome",

@@ -440,6 +440,9 @@
           "index": "Allies",
           "add": "Add an ally"
         }
+      },
+      "fleet": {
+        "contractCovers": "Contract covers"
       }
     }
   }

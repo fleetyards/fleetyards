@@ -20,7 +20,7 @@ const props = defineProps<Props>();
 const { t, toUEC, l } = useI18n();
 const { resolve } = useContractCover();
 
-const cover = computed(() => resolve(props.contract));
+const cover = computed(() => resolve(props.contract, props.fleet));
 
 const route = computed(() => {
   const to = props.contract.destination?.name;

@@ -563,7 +563,12 @@
         },
         "allies": "盟友可见舰船",
         "alliesStats": "盟友可见统计",
-        "alliesMembers": "盟友可见成员列表"
+        "alliesMembers": "盟友可见成员列表",
+        "contractCovers": {
+          "transport": "运送封面图",
+          "procurement": "采购封面图",
+          "crafting": "制造封面图"
+        }
       },
       "hangarGroup": {
         "name": "名称",

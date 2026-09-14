@@ -563,7 +563,12 @@
         },
         "allies": "Vaisseaux visibles par les alliés",
         "alliesStats": "Statistiques visibles par les alliés",
-        "alliesMembers": "Liste des membres visible par les alliés"
+        "alliesMembers": "Liste des membres visible par les alliés",
+        "contractCovers": {
+          "transport": "Visuel transport",
+          "procurement": "Visuel approvisionnement",
+          "crafting": "Visuel fabrication"
+        }
       },
       "hangarGroup": {
         "name": "Nom",

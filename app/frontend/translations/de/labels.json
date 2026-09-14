@@ -563,7 +563,12 @@
         },
         "allies": "Schiffe für Verbündete sichtbar",
         "alliesStats": "Statistiken für Verbündete sichtbar",
-        "alliesMembers": "Mitgliederliste für Verbündete sichtbar"
+        "alliesMembers": "Mitgliederliste für Verbündete sichtbar",
+        "contractCovers": {
+          "transport": "Transport-Titelbild",
+          "procurement": "Beschaffungs-Titelbild",
+          "crafting": "Herstellungs-Titelbild"
+        }
       },
       "hangarGroup": {
         "name": "Name",

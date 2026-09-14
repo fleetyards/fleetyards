@@ -563,7 +563,12 @@
         },
         "allies": "Naves visibles para los aliados",
         "alliesStats": "Estadísticas visibles para los aliados",
-        "alliesMembers": "Lista de miembros visible para los aliados"
+        "alliesMembers": "Lista de miembros visible para los aliados",
+        "contractCovers": {
+          "transport": "Portada de transporte",
+          "procurement": "Portada de adquisición",
+          "crafting": "Portada de fabricación"
+        }
       },
       "hangarGroup": {
         "name": "Nombre",

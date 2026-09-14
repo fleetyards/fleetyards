@@ -563,7 +563,12 @@
         },
         "allies": "Ships visible to allies",
         "alliesStats": "Stats visible to allies",
-        "alliesMembers": "Member list visible to allies"
+        "alliesMembers": "Member list visible to allies",
+        "contractCovers": {
+          "transport": "Transport cover",
+          "procurement": "Procurement cover",
+          "crafting": "Crafting cover"
+        }
       },
       "hangarGroup": {
         "name": "Name",

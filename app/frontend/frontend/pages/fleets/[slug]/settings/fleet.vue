@@ -13,6 +13,8 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
@@ -54,6 +56,9 @@ const deleting = ref(false);
 
 const initialValues = ref<FleetUpdateInput>({
   logo: undefined,
+  transportContractCover: undefined,
+  procurementContractCover: undefined,
+  craftingContractCover: undefined,
   fid: props.fleet.fid,
   name: props.fleet.name,
   description: props.fleet.description,
@@ -90,6 +95,15 @@ const [homepage, homepageProps] = defineField("homepage");
 const [twitch, twitchProps] = defineField("twitch");
 const [youtube, youtubeProps] = defineField("youtube");
 const [guilded, guildedProps] = defineField("guilded");
+const [transportContractCover, transportContractCoverProps] = defineField(
+  "transportContractCover",
+);
+const [procurementContractCover, procurementContractCoverProps] = defineField(
+  "procurementContractCover",
+);
+const [craftingContractCover, craftingContractCoverProps] = defineField(
+  "craftingContractCover",
+);
 const [publicFleet, publicFleetProps] = defineField("publicFleet");
 const [publicFleetStats, publicFleetStatsProps] =
   defineField("publicFleetStats");
@@ -196,6 +210,48 @@ const onDestroy = async () => {
         />
       </div>
     </div>
+    <!-- The board's cover art, one per contract kind. Left empty, a contract
+         falls back to the built-in art rather than to nothing. -->
+    <Heading :level="HeadingLevelEnum.H3">
+      {{ t("headlines.fleet.contractCovers") }}
+    </Heading>
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="transportContractCover"
+          v-bind="transportContractCoverProps"
+          :file="fleet.contractCovers?.transport"
+          name="transportContractCover"
+          translation-key="fleet.contractCovers.transport"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="procurementContractCover"
+          v-bind="procurementContractCoverProps"
+          :file="fleet.contractCovers?.procurement"
+          name="procurementContractCover"
+          translation-key="fleet.contractCovers.procurement"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="craftingContractCover"
+          v-bind="craftingContractCoverProps"
+          :file="fleet.contractCovers?.crafting"
+          name="craftingContractCover"
+          translation-key="fleet.contractCovers.crafting"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput

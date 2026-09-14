@@ -134,7 +134,30 @@ class Fleet < ApplicationRecord
 
   has_one_attached :logo
   has_one_attached :background_image
-  validates :logo, :background_image, no_vector_image: true
+
+  # A cover per contract kind, so a fleet's board carries its own art rather
+  # than the stand-ins `useContractCover` falls back to. One attachment each
+  # rather than a table: the kinds are a fixed enum of three, and this is the
+  # shape the logo and the background already use.
+  has_one_attached :transport_contract_cover
+  has_one_attached :procurement_contract_cover
+  has_one_attached :crafting_contract_cover
+
+  CONTRACT_COVER_ATTACHMENTS = {
+    "transport" => :transport_contract_cover,
+    "procurement" => :procurement_contract_cover,
+    "crafting" => :crafting_contract_cover
+  }.freeze
+
+  validates :logo, :background_image,
+    :transport_contract_cover, :procurement_contract_cover, :crafting_contract_cover,
+    no_vector_image: true
+
+  def contract_cover_for(kind)
+    attachment = CONTRACT_COVER_ATTACHMENTS[kind.to_s]
+
+    public_send(attachment) if attachment.present?
+  end
 
   accepts_nested_attributes_for :fleet_memberships
 

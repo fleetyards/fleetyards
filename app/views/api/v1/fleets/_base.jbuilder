@@ -21,6 +21,14 @@ json.default_timezone fleet.default_timezone
 json.logo do
   json.partial! "api/v1/shared/file", record: fleet, attr: :logo
 end
+json.contract_covers do
+  ::Fleet::CONTRACT_COVER_ATTACHMENTS.each do |kind, attachment|
+    json.set! kind do
+      json.partial! "api/v1/shared/file", record: fleet, attr: attachment
+    end
+  end
+end
+
 json.background_image do
   json.partial! "api/v1/shared/file", record: fleet, attr: :background_image
 end

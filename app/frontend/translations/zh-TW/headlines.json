@@ -438,6 +438,9 @@
           "index": "盟友",
           "add": "新增盟友"
         }
+      },
+      "fleet": {
+        "contractCovers": "合約封面圖"
       }
     }
   }
