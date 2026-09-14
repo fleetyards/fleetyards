@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -79,71 +78,66 @@ onBeforeUnmount(() => clearTimeout(resetTimer));
     <div class="support-body">
       <SupportProgress />
 
-      <p class="support-section__note">{{ t("texts.support.goal") }}</p>
+      <p class="support-note">{{ t("texts.support.goal") }}</p>
 
-      <div class="support-section">
-        <div class="support-platforms">
-          <Btn
-            v-for="platform in platforms"
-            :key="platform.id"
-            :href="platform.href"
-            :data-test="`support-${platform.id}`"
-            class="support-platform"
-            @click="copyKeyFor(platform.id)"
+      <div class="support-platforms">
+        <a
+          v-for="platform in platforms"
+          :key="platform.id"
+          :href="platform.href"
+          :data-test="`support-${platform.id}`"
+          class="support-tile"
+          target="_blank"
+          rel="noopener"
+          @click="copyKeyFor(platform.id)"
+        >
+          <img
+            v-if="platform.id === 'kofi'"
+            :src="kofiIcon"
+            alt=""
+            width="22"
+            class="support-tile__icon"
+          />
+          <i v-else :class="platform.icon" class="support-tile__icon" />
+          <span class="support-tile__label">{{ platform.label }}</span>
+          <span
+            v-if="key"
+            class="support-tile__copied"
+            :class="{ 'support-tile__copied--on': copiedFrom === platform.id }"
           >
-            <img
-              v-if="platform.id === 'kofi'"
-              :src="kofiIcon"
-              alt="Ko-fi Icon"
-              width="22"
-            />
-            <i v-else :class="platform.icon" class="support-platform__icon" />
-            <span class="support-platform__label">{{ platform.label }}</span>
-            <span
-              v-if="key"
-              class="support-platform__copied"
-              :class="{
-                'support-platform__copied--on': copiedFrom === platform.id,
-              }"
-            >
-              {{ t("messages.account.supporterClaimKey.copy.success") }}
-            </span>
-          </Btn>
-        </div>
-
-        <p
-          v-if="key"
-          class="support-claim-key__hint"
-          data-test="claim-key-hint"
-        >
-          <i class="fa-light fa-key support-claim-key__icon" />
-          <span>
-            <code class="support-claim-key" data-test="claim-key">{{
-              key
-            }}</code>
-            {{ t("labels.account.supporterClaimKey.howTo") }}
+            {{ t("messages.account.supporterClaimKey.copy.success") }}
           </span>
-        </p>
-
-        <Btn
-          href="https://www.patreon.com/fleetyards"
-          class="support-platform support-platform--wide"
-          data-test="support-patreon"
-        >
-          <i class="fa-brands fa-patreon support-platform__icon" />
-          <span class="support-platform__label">Patreon</span>
-          <span v-if="key" class="support-platform__note">
-            {{ t("labels.account.supporterClaimKey.patreonNote") }}
-          </span>
-        </Btn>
+        </a>
       </div>
+
+      <p v-if="key" class="support-claim-key__hint" data-test="claim-key-hint">
+        <i class="fa-light fa-key support-claim-key__icon" />
+        <span>
+          <code class="support-claim-key" data-test="claim-key">{{ key }}</code>
+          {{ t("labels.account.supporterClaimKey.howTo") }}
+        </span>
+      </p>
+
+      <a
+        href="https://www.patreon.com/fleetyards"
+        class="support-tile support-tile--wide"
+        data-test="support-patreon"
+        target="_blank"
+        rel="noopener"
+      >
+        <i class="fa-brands fa-patreon support-tile__icon" />
+        <span class="support-tile__label">Patreon</span>
+        <span v-if="key" class="support-tile__note">
+          {{ t("labels.account.supporterClaimKey.patreonNote") }}
+        </span>
+      </a>
 
       <hr class="support-rule" />
 
       <div class="support-secondary">
         <p v-html="t('texts.support.info')" />
-        <p>
-          <span v-html="t('texts.support.code')" />
+        <p class="support-secondary__referral">
+          {{ t("texts.support.code") }}
           <a
             href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
             class="support-referral-link"

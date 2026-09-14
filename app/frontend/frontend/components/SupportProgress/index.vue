@@ -51,6 +51,15 @@ const formattedGoal = computed(() =>
 );
 
 const supporters = computed(() => progress.value?.contributions ?? []);
+
+// What the month's money is actually for, on the caption line rather than as
+// a list of its own -- two or three short titles read as context, not content.
+const goalTitles = computed(() =>
+  (progress.value?.goal?.items ?? [])
+    .map((item) => item.title)
+    .filter(Boolean)
+    .join(" · "),
+);
 </script>
 
 <template>
@@ -66,7 +75,8 @@ const supporters = computed(() => progress.value?.contributions ?? []);
     </div>
     <ProgressBar :progress="percent" />
     <p v-if="!compact && progress?.goal" class="support-progress__caption">
-      {{ t("texts.support.thisMonth") }}
+      {{ t("texts.support.thisMonth")
+      }}<template v-if="goalTitles"> · {{ goalTitles }}</template>
     </p>
     <div v-if="!compact && supporters.length" class="support-progress__thanks">
       <h4 class="support-progress__thanks__headline">

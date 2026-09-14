@@ -5,28 +5,11 @@
   text-align: left;
 }
 
-.support-referral-link {
-  font-size: 115%;
-}
-
-.support-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  &__label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.7;
-  }
-
-  &__note {
-    margin: 0;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    opacity: 0.7;
-  }
+.support-note {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0.7;
 }
 
 .support-platforms {
@@ -39,21 +22,38 @@
   }
 }
 
-.support-platform {
-  /*
-   * Btn lays its content out in a row. These three stack instead, so the icon
-   * leads and the copy confirmation gets a line of its own -- in a row, three
-   * labels plus three confirmations share one line at a third of the modal.
-   */
-  :deep(.btn__content) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
+/*
+ * Deliberately not the Btn component. These are two-line tiles -- icon over
+ * label over a copy confirmation -- and Btn lays its slot out as one
+ * overflow-hidden, text-ellipsis row; its own source says not to reach across
+ * that boundary to restyle it, and it is right.
+ */
+.support-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 14px 8px;
+  background: $gray-dark;
+  border: 1px solid $gray;
+  border-radius: $border-radius-base;
+  color: $text-color;
+  text-align: center;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: color.adjust($gray-dark, $lightness: 4%);
+    border-color: $gray-light;
+    color: #fff;
+    text-decoration: none;
   }
 
   &__icon {
     font-size: 1.35rem;
+    line-height: 1;
   }
 
   &__label {
@@ -67,7 +67,7 @@
 
   /*
    * Always rendered, faded when idle: revealing it would reflow the grid the
-   * moment one button confirms, nudging the other two under the cursor.
+   * moment one tile confirms, nudging the other two under the cursor.
    */
   &__copied {
     font-size: 0.65rem;
@@ -83,19 +83,11 @@
   }
 
   &--wide {
-    width: 100%;
-
-    :deep(.btn__content) {
-      flex-direction: row;
-      gap: 8px;
-    }
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 14px;
   }
-}
-
-.support-claim-key {
-  font-family: ui-monospace, "SFMono-Regular", menlo, monospace;
-  letter-spacing: 0.06em;
-  color: $gold;
 }
 
 .support-claim-key__hint {
@@ -114,6 +106,12 @@
   color: $gold;
 }
 
+.support-claim-key {
+  font-family: ui-monospace, "SFMono-Regular", menlo, monospace;
+  letter-spacing: 0.06em;
+  color: $gold;
+}
+
 .support-rule {
   width: 100%;
   margin: 0;
@@ -122,14 +120,32 @@
 }
 
 .support-secondary {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 24px;
+  align-items: start;
   font-size: 0.78rem;
   line-height: 1.45;
-  opacity: 0.7;
+  opacity: 0.75;
 
   p {
     margin: 0;
   }
+
+  &__referral {
+    text-align: right;
+  }
+
+  @media (max-width: $tablet-breakpoint) {
+    grid-template-columns: 1fr;
+
+    &__referral {
+      text-align: left;
+    }
+  }
+}
+
+.support-referral-link {
+  font-family: ui-monospace, "SFMono-Regular", menlo, monospace;
+  white-space: nowrap;
 }

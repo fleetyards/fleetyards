@@ -6,16 +6,19 @@
   &__header {
     display: flex;
     align-items: baseline;
-    gap: 4px;
-    font-size: 1.1rem;
+    gap: 6px;
   }
 
   &__total {
+    font-size: 1.35rem;
     font-weight: 600;
+    color: #fff;
+    line-height: 1.1;
   }
 
   &__goal {
-    opacity: 0.7;
+    font-size: 0.95rem;
+    opacity: 0.6;
   }
 
   &__caption {

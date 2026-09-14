@@ -5,10 +5,9 @@
       "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
       "indexQuoteSource": "Author Unknown, Source:",
       "support": {
-        "info": "Vous aimez FleetYards.net ? Aidez-nous à grandir en votant pour notre <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> — c'est gratuit et améliore notre visibilité dans la communauté.",
-        "goal": "L'objectif mensuel aide à couvrir les frais de fonctionnement de FleetYards, comme l'hébergement des serveurs et les services de données. Chaque soutien aide à maintenir le site en ligne, rapide et à jour.",
-        "code": "De plus, vous pouvez obtenir 5000 UEC d’argent de départ en utilisant le code de recrutement suivant lors de l’achat de Star Citizen :",
-        "subline": "ou vous pouvez nous soutenir directement via :",
+        "info": "Pas de budget ? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Votez pour nous sur Spectrum</b></a> pour aider plus de monde à trouver FleetYards.",
+        "goal": "Couvre les frais courants comme l'hébergement et les services de données.",
+        "code": "Nouveau sur Star Citizen ? Utilisez ce code pour 5000 UEC de départ :",
         "thisMonth": "Collecté ce mois-ci"
       },
       "supportHint": {
