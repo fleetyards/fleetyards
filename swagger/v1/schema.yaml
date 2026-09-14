@@ -5651,6 +5651,146 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/tours":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Fleet Tour
+      tags:
+      - Tours
+      operationId: createFleetTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user:write
+      - OpenId:
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TourCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '400':
+          description: invalid
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: List Fleet Tours
+      tags:
+      - Tours
+      operationId: fleetTours
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - "$ref": "#/components/parameters/SortingParameter"
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ToursList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/tours/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Show Fleet Tour
+      tags:
+      - Tours
+      operationId: fleetTour
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+      - OpenId:
+        - user
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Tour"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/vehicles":
     parameters:
     - name: fleetSlug
@@ -17852,6 +17992,24 @@ components:
       - meta
       - items
       title: FleetPublicVehicles
+    FleetRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      title: FleetRef
     FleetResourceAccessGroup:
       type: object
       properties:
@@ -24483,6 +24641,8 @@ components:
           format: date-time
         createdBy:
           "$ref": "#/components/schemas/UserRefWithAvatar"
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
         inviteToken:
           type:
           - string

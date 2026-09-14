@@ -17,6 +17,9 @@ module V1
             startsAt: {type: [:string, :null], format: "date-time"},
             settledAt: {type: [:string, :null], format: "date-time"},
             createdBy: ::V1::Schemas::UserRefWithAvatar,
+            # Only on a tour organised from a fleet's page; a standalone tour
+            # omits the key rather than sending a null object.
+            fleet: ::V1::Schemas::FleetRef,
             # Only ever present for the organiser; it is the credential the
             # invite link carries.
             inviteToken: {type: [:string, :null]},

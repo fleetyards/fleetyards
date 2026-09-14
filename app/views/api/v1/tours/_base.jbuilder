@@ -21,4 +21,18 @@ json.created_by do
   end
 end
 
+if tour.fleet.present?
+  json.fleet do
+    json.id tour.fleet.id
+    json.name tour.fleet.name
+    json.slug tour.fleet.slug
+
+    if tour.fleet.logo.attached?
+      json.logo do
+        json.partial! "api/v1/shared/file", record: tour.fleet, attr: :logo
+      end
+    end
+  end
+end
+
 json.partial! "api/shared/dates", record: tour
