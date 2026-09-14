@@ -435,7 +435,11 @@
           },
           "contact": "Contact",
           "spectrumDm": "Message on Spectrum",
-          "discordContact": "Discord"
+          "discordContact": "Discord",
+          "views": {
+            "members": "成員",
+            "invites": "邀請"
+          }
         },
         "roles": {
           "permanent": "永久",

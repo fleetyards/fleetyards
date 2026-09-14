@@ -89,7 +89,6 @@ export type FrontendRouteLocation =
   | ParamRoute<"fleet-fleetchart", SlugParams>
   | ParamRoute<"fleet-members", SlugParams>
   | ParamRoute<"fleet-members-index", SlugParams>
-  | ParamRoute<"fleet-members-invites", SlugParams>
   | ParamRoute<"fleet-settings", SlugParams>
   | ParamRoute<"fleet-settings-membership", SlugParams>
   | ParamRoute<"fleet-settings-fleet", SlugParams>
