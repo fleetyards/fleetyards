@@ -51,6 +51,12 @@
         "percentageOfTime": "del tempo",
         "currentState": "Stato attuale",
         "toggle": "Attiva/Disattiva",
+        "permanent": "Permanente",
+        "tabs": {
+          "all": "Tutte",
+          "rollout": "Rollout",
+          "permanent": "Permanenti"
+        },
         "settingsIntro": "Attiva o disattiva le funzioni sperimentali per il tuo account. Queste funzioni potrebbero essere incomplete o cambiare senza preavviso.",
         "descriptions": {
           "tools_travel_times": "Mostra i tempi di viaggio stimati tra le posizioni.",

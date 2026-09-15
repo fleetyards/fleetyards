@@ -13,6 +13,8 @@ import BasePill from "@/shared/components/base/Pill/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
+import TabNavView from "@/shared/components/TabNavView/index.vue";
+import TabNavViewAnchorItems from "@/shared/components/TabNavView/AnchorItems/index.vue";
 import UserSelect from "@/admin/components/base/UserSelect/index.vue";
 import FleetSelect from "@/admin/components/base/FleetSelect/index.vue";
 import {
@@ -48,6 +50,43 @@ interface FeatureItem extends Feature {
 const featureItems = computed<FeatureItem[]>(() => {
   if (!features.value) return [];
   return features.value.map((f) => ({ ...f, id: f.name }));
+});
+
+const tabs = ["all", "rollout", "permanent"] as const;
+
+type FeatureTab = (typeof tabs)[number];
+
+const route = useRoute();
+const router = useRouter();
+
+const isFeatureTab = (value: unknown): value is FeatureTab =>
+  tabs.includes(value as FeatureTab);
+
+const activeTab = computed<FeatureTab>(() => {
+  const fromQuery = route.query.tab;
+
+  return isFeatureTab(fromQuery) ? fromQuery : "all";
+});
+
+const setActiveTab = (tab: string) => {
+  void router.replace({
+    query: { ...route.query, tab: tab === "all" ? undefined : tab },
+  });
+};
+
+const tabItems = computed(() =>
+  tabs.map((tab) => ({ id: tab, label: t(`labels.features.tabs.${tab}`) })),
+);
+
+const visibleFeatureItems = computed<FeatureItem[]>(() => {
+  switch (activeTab.value) {
+    case "permanent":
+      return featureItems.value.filter((item) => item.permanent);
+    case "rollout":
+      return featureItems.value.filter((item) => !item.permanent);
+    default:
+      return featureItems.value;
+  }
 });
 
 const editableList = ref<{
@@ -227,190 +266,217 @@ const hasSelectedActor = computed(() => {
 
   <p class="text-muted">{{ t("labels.features.registryHint") }}</p>
 
-  <InlineEditableList
-    ref="editableList"
-    empty-name="features"
-    :loading="isLoading"
-    :items="featureItems"
-    hide-destroy
-    @start-edit="onStartEdit"
-    @save-edit="onSaveEdit"
-  >
-    <template #display="{ item }">
-      <BasePill :variant="stateVariant(item.state)" uppercase margin-right>
-        {{ stateLabel(item.state) }}
-      </BasePill>
-      <span class="feature-name" data-test="feature-name">{{ item.name }}</span>
-      <BasePill v-if="item.selfServiceUser" margin-right>
-        {{ t("labels.features.selfServiceUser") }}
-      </BasePill>
-      <BasePill v-if="item.selfServiceFleet" margin-right>
-        {{ t("labels.features.selfServiceFleet") }}
-      </BasePill>
-      <BasePill v-if="item.percentageOfActors > 0" margin-right>
-        {{ item.percentageOfActors }}%
-        {{ t("labels.features.percentageOfActors") }}
-      </BasePill>
-      <BasePill v-if="item.percentageOfTime > 0" margin-right>
-        {{ item.percentageOfTime }}% {{ t("labels.features.percentageOfTime") }}
-      </BasePill>
-      <BasePill v-if="item.groups.length > 0" margin-right>
-        {{ item.groups.join(", ") }}
-      </BasePill>
-      <BasePill v-if="item.actors.length > 0" margin-right>
-        {{ item.actors.length }} {{ t("labels.features.actors") }}
-      </BasePill>
+  <TabNavView :active-key="activeTab">
+    <template #nav>
+      <TabNavViewAnchorItems
+        :items="tabItems"
+        :active-id="activeTab"
+        @update:active-id="setActiveTab"
+      />
     </template>
 
-    <template #actions="{ item, mobile }">
-      <Btn
-        v-tooltip="t('labels.features.toggle')"
-        data-test="toggle-feature"
-        @click="toggleFeature(item)"
-        :variant="BtnVariantsEnum.GHOST"
+    <template #content>
+      <InlineEditableList
+        ref="editableList"
+        empty-name="features"
+        :loading="isLoading"
+        :items="visibleFeatureItems"
+        hide-destroy
+        @start-edit="onStartEdit"
+        @save-edit="onSaveEdit"
       >
-        <i
-          class="fa-duotone fa-power-off"
-          :class="item.state === 'on' ? 'text-success' : 'text-muted'"
-        />
-        <span v-if="mobile">{{ t("labels.features.toggle") }}</span>
-      </Btn>
-    </template>
+        <template #display="{ item }">
+          <BasePill :variant="stateVariant(item.state)" uppercase margin-right>
+            {{ stateLabel(item.state) }}
+          </BasePill>
+          <span class="feature-name" data-test="feature-name">{{
+            item.name
+          }}</span>
+          <BasePill v-if="item.permanent" margin-right>
+            {{ t("labels.features.permanent") }}
+          </BasePill>
+          <BasePill v-if="item.selfServiceUser" margin-right>
+            {{ t("labels.features.selfServiceUser") }}
+          </BasePill>
+          <BasePill v-if="item.selfServiceFleet" margin-right>
+            {{ t("labels.features.selfServiceFleet") }}
+          </BasePill>
+          <BasePill v-if="item.percentageOfActors > 0" margin-right>
+            {{ item.percentageOfActors }}%
+            {{ t("labels.features.percentageOfActors") }}
+          </BasePill>
+          <BasePill v-if="item.percentageOfTime > 0" margin-right>
+            {{ item.percentageOfTime }}%
+            {{ t("labels.features.percentageOfTime") }}
+          </BasePill>
+          <BasePill v-if="item.groups.length > 0" margin-right>
+            {{ item.groups.join(", ") }}
+          </BasePill>
+          <BasePill v-if="item.actors.length > 0" margin-right>
+            {{ item.actors.length }} {{ t("labels.features.actors") }}
+          </BasePill>
+        </template>
 
-    <template #edit="{ item }">
-      <div class="edit-feature" data-test="edit-feature">
-        <div class="edit-section" data-test="edit-section">
-          <h4>{{ t("headlines.admin.features.selfService") }}</h4>
-          <Toggle
-            :active="item.selfServiceUser"
-            :label="t('labels.features.selfServiceUser')"
-            data-test="toggle-self-service"
-            @toggle="toggleUserSelfService(item)"
-          />
-          <Toggle
-            :active="item.selfServiceFleet"
-            :label="t('labels.features.selfServiceFleet')"
-            data-test="toggle-fleet-self-service"
-            @toggle="toggleFleetSelfService(item)"
-          />
-        </div>
-
-        <div class="edit-section" data-test="edit-section">
-          <h4>{{ t("headlines.admin.features.percentageOfActors") }}</h4>
-          <div class="edit-percentage">
-            <input
-              type="range"
-              min="0"
-              max="100"
-              :value="item.percentageOfActors"
-              @change="
-                updatePercentageOfActors(
-                  item,
-                  Number(($event.target as HTMLInputElement).value),
-                )
-              "
+        <template #actions="{ item, mobile }">
+          <Btn
+            v-tooltip="t('labels.features.toggle')"
+            data-test="toggle-feature"
+            @click="toggleFeature(item)"
+            :variant="BtnVariantsEnum.GHOST"
+          >
+            <i
+              class="fa-duotone fa-power-off"
+              :class="item.state === 'on' ? 'text-success' : 'text-muted'"
             />
-            <span class="percentage-value">{{ item.percentageOfActors }}%</span>
-          </div>
-        </div>
+            <span v-if="mobile">{{ t("labels.features.toggle") }}</span>
+          </Btn>
+        </template>
 
-        <div class="edit-section" data-test="edit-section">
-          <h4>{{ t("headlines.admin.features.percentageOfTime") }}</h4>
-          <div class="edit-percentage">
-            <input
-              type="range"
-              min="0"
-              max="100"
-              :value="item.percentageOfTime"
-              @change="
-                updatePercentageOfTime(
-                  item,
-                  Number(($event.target as HTMLInputElement).value),
-                )
-              "
-            />
-            <span class="percentage-value">{{ item.percentageOfTime }}%</span>
-          </div>
-        </div>
-
-        <div class="edit-section" data-test="edit-section">
-          <h4>{{ t("headlines.admin.features.groups") }}</h4>
-          <div class="edit-groups">
-            <div
-              v-for="group in item.groups"
-              :key="group"
-              class="edit-group-item"
-            >
-              <BasePill margin-right>{{ group }}</BasePill>
-              <Btn @click.prevent="removeGroup(item.name, group)">
-                <i class="fa-duotone fa-times" />
-              </Btn>
+        <template #edit="{ item }">
+          <div class="edit-feature" data-test="edit-feature">
+            <div class="edit-section" data-test="edit-section">
+              <h4>{{ t("headlines.admin.features.selfService") }}</h4>
+              <Toggle
+                :active="item.selfServiceUser"
+                :label="t('labels.features.selfServiceUser')"
+                data-test="toggle-self-service"
+                @toggle="toggleUserSelfService(item)"
+              />
+              <Toggle
+                :active="item.selfServiceFleet"
+                :label="t('labels.features.selfServiceFleet')"
+                data-test="toggle-fleet-self-service"
+                @toggle="toggleFleetSelfService(item)"
+              />
             </div>
-            <Btn
-              v-for="group in availableGroups.filter(
-                (g) => !item.groups.includes(g),
-              )"
-              :key="group"
-              :data-test="`add-group-${group}`"
-              @click.prevent="addGroup(item.name, group)"
-            >
-              <i class="fa-duotone fa-plus" />
-              {{ group }}
-            </Btn>
-          </div>
-        </div>
 
-        <div class="edit-section" data-test="edit-section">
-          <h4>{{ t("headlines.admin.features.actors") }}</h4>
-          <div v-if="item.actors.length > 0" class="edit-actors">
-            <div
-              v-for="actor in item.actors"
-              :key="`${actor.type};${actor.id}`"
-              class="edit-actor-item"
-            >
-              <BasePill uppercase margin-right>{{ actor.type }}</BasePill>
-              <span class="edit-actor-name">{{ actor.name }}</span>
-              <Btn
-                class="edit-actor-remove"
-                @click.prevent="removeActor(item.name, actor.type, actor.id)"
-              >
-                <i class="fa-duotone fa-times" />
-              </Btn>
+            <div class="edit-section" data-test="edit-section">
+              <h4>{{ t("headlines.admin.features.percentageOfActors") }}</h4>
+              <div class="edit-percentage">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  :value="item.percentageOfActors"
+                  @change="
+                    updatePercentageOfActors(
+                      item,
+                      Number(($event.target as HTMLInputElement).value),
+                    )
+                  "
+                />
+                <span class="percentage-value"
+                  >{{ item.percentageOfActors }}%</span
+                >
+              </div>
+            </div>
+
+            <div class="edit-section" data-test="edit-section">
+              <h4>{{ t("headlines.admin.features.percentageOfTime") }}</h4>
+              <div class="edit-percentage">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  :value="item.percentageOfTime"
+                  @change="
+                    updatePercentageOfTime(
+                      item,
+                      Number(($event.target as HTMLInputElement).value),
+                    )
+                  "
+                />
+                <span class="percentage-value"
+                  >{{ item.percentageOfTime }}%</span
+                >
+              </div>
+            </div>
+
+            <div class="edit-section" data-test="edit-section">
+              <h4>{{ t("headlines.admin.features.groups") }}</h4>
+              <div class="edit-groups">
+                <div
+                  v-for="group in item.groups"
+                  :key="group"
+                  class="edit-group-item"
+                >
+                  <BasePill margin-right>{{ group }}</BasePill>
+                  <Btn @click.prevent="removeGroup(item.name, group)">
+                    <i class="fa-duotone fa-times" />
+                  </Btn>
+                </div>
+                <Btn
+                  v-for="group in availableGroups.filter(
+                    (g) => !item.groups.includes(g),
+                  )"
+                  :key="group"
+                  :data-test="`add-group-${group}`"
+                  @click.prevent="addGroup(item.name, group)"
+                >
+                  <i class="fa-duotone fa-plus" />
+                  {{ group }}
+                </Btn>
+              </div>
+            </div>
+
+            <div class="edit-section" data-test="edit-section">
+              <h4>{{ t("headlines.admin.features.actors") }}</h4>
+              <div v-if="item.actors.length > 0" class="edit-actors">
+                <div
+                  v-for="actor in item.actors"
+                  :key="`${actor.type};${actor.id}`"
+                  class="edit-actor-item"
+                >
+                  <BasePill uppercase margin-right>{{ actor.type }}</BasePill>
+                  <span class="edit-actor-name">{{ actor.name }}</span>
+                  <Btn
+                    class="edit-actor-remove"
+                    @click.prevent="
+                      removeActor(item.name, actor.type, actor.id)
+                    "
+                  >
+                    <i class="fa-duotone fa-times" />
+                  </Btn>
+                </div>
+              </div>
+
+              <div class="add-actor-form">
+                <BaseSelect
+                  v-model="editActorType"
+                  inline
+                  name="actor-type"
+                  :options="actorTypeOptions"
+                  :nullable="false"
+                  :label="t('labels.features.actorType')"
+                />
+                <UserSelect
+                  v-if="editActorType === 'User'"
+                  v-model="selectedUser"
+                  name="feature-user"
+                  inline
+                  :no-label="false"
+                />
+                <FleetSelect
+                  v-if="editActorType === 'Fleet'"
+                  v-model="selectedFleet"
+                  name="feature-fleet"
+                  inline
+                  :no-label="false"
+                />
+                <Btn
+                  :disabled="!hasSelectedActor"
+                  @click.prevent="addActor(item)"
+                >
+                  <i class="fa-duotone fa-plus" />
+                  {{ t("actions.addActor") }}
+                </Btn>
+              </div>
             </div>
           </div>
-
-          <div class="add-actor-form">
-            <BaseSelect
-              v-model="editActorType"
-              inline
-              name="actor-type"
-              :options="actorTypeOptions"
-              :nullable="false"
-              :label="t('labels.features.actorType')"
-            />
-            <UserSelect
-              v-if="editActorType === 'User'"
-              v-model="selectedUser"
-              name="feature-user"
-              inline
-              :no-label="false"
-            />
-            <FleetSelect
-              v-if="editActorType === 'Fleet'"
-              v-model="selectedFleet"
-              name="feature-fleet"
-              inline
-              :no-label="false"
-            />
-            <Btn :disabled="!hasSelectedActor" @click.prevent="addActor(item)">
-              <i class="fa-duotone fa-plus" />
-              {{ t("actions.addActor") }}
-            </Btn>
-          </div>
-        </div>
-      </div>
+        </template>
+      </InlineEditableList>
     </template>
-  </InlineEditableList>
+  </TabNavView>
 </template>
 
 <style lang="scss" scoped>

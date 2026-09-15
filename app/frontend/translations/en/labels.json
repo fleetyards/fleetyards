@@ -51,6 +51,12 @@
         "percentageOfTime": "of time",
         "currentState": "Current State",
         "toggle": "Toggle",
+        "permanent": "Permanent",
+        "tabs": {
+          "all": "All",
+          "rollout": "Rollout",
+          "permanent": "Permanent"
+        },
         "settingsIntro": "Enable or disable experimental features for your account. These features may be incomplete or change without notice.",
         "descriptions": {
           "tools_travel_times": "Show estimated travel times between locations.",

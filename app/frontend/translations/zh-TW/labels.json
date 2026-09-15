@@ -51,6 +51,12 @@
         "percentageOfTime": "的時間",
         "currentState": "目前狀態",
         "toggle": "切換",
+        "permanent": "長期",
+        "tabs": {
+          "all": "全部",
+          "rollout": "灰度發布",
+          "permanent": "長期"
+        },
         "settingsIntro": "為您的帳戶啟用或停用實驗性功能。這些功能可能不完整或隨時變更。",
         "descriptions": {
           "tools_travel_times": "顯示地點之間的預計旅行時間。",

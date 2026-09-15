@@ -51,6 +51,12 @@
         "percentageOfTime": "的时间",
         "currentState": "当前状态",
         "toggle": "切换",
+        "permanent": "长期",
+        "tabs": {
+          "all": "全部",
+          "rollout": "灰度发布",
+          "permanent": "长期"
+        },
         "settingsIntro": "为您的账户启用或禁用实验性功能。这些功能可能不完整或随时更改。",
         "descriptions": {
           "tools_travel_times": "显示地点之间的预计旅行时间。",
