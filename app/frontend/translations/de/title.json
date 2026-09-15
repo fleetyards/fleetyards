@@ -66,8 +66,7 @@
           "index": "%{fleet} Missionen",
           "create": "Mission erstellen - %{fleet}",
           "edit": {
-            "basic": "Mission bearbeiten - %{fleet}",
-            "description": "Beschreibung bearbeiten - %{fleet}",
+            "details": "Mission bearbeiten - %{fleet}",
             "teams": "Teams & Slots bearbeiten - %{fleet}"
           },
           "show": "%{fleet} Mission"
@@ -77,8 +76,9 @@
           "calendar": "%{fleet} Kalender",
           "create": "Event erstellen - %{fleet}",
           "edit": {
-            "basic": "Event bearbeiten - %{fleet}",
-            "description": "Beschreibung bearbeiten - %{fleet}",
+            "details": "Event bearbeiten - %{fleet}",
+            "schedule": "Termin bearbeiten - %{fleet}",
+            "signup": "Anmeldung bearbeiten - %{fleet}",
             "teams": "Teams & Slots bearbeiten - %{fleet}"
           },
           "show": "%{fleet} Event",

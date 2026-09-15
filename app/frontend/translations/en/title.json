@@ -66,8 +66,7 @@
           "index": "%{fleet} Missions",
           "create": "Create Mission - %{fleet}",
           "edit": {
-            "basic": "Edit Mission - %{fleet}",
-            "description": "Edit Description - %{fleet}",
+            "details": "Edit Mission - %{fleet}",
             "teams": "Edit Teams & Slots - %{fleet}"
           },
           "show": "%{fleet} Mission"
@@ -77,8 +76,9 @@
           "calendar": "%{fleet} Calendar",
           "create": "Create Event - %{fleet}",
           "edit": {
-            "basic": "Edit Event - %{fleet}",
-            "description": "Edit Description - %{fleet}",
+            "details": "Edit Event - %{fleet}",
+            "schedule": "Edit Schedule - %{fleet}",
+            "signup": "Edit Sign-up - %{fleet}",
             "teams": "Edit Teams & Slots - %{fleet}"
           },
           "show": "%{fleet} Event",

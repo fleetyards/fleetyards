@@ -66,8 +66,7 @@
           "index": "%{fleet} 任務",
           "create": "建立任務 - %{fleet}",
           "edit": {
-            "basic": "編輯任務 - %{fleet}",
-            "description": "編輯描述 - %{fleet}",
+            "details": "編輯任務 - %{fleet}",
             "teams": "編輯小隊與席位 - %{fleet}"
           },
           "show": "%{fleet} 任務"
@@ -77,8 +76,9 @@
           "calendar": "%{fleet} 行事曆",
           "create": "建立活動 - %{fleet}",
           "edit": {
-            "basic": "編輯活動 - %{fleet}",
-            "description": "編輯描述 - %{fleet}",
+            "details": "編輯活動 - %{fleet}",
+            "schedule": "編輯日程 - %{fleet}",
+            "signup": "編輯報名 - %{fleet}",
             "teams": "編輯小隊與席位 - %{fleet}"
           },
           "show": "%{fleet} 活動",

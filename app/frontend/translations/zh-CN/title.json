@@ -66,8 +66,7 @@
           "index": "%{fleet} 任务",
           "create": "创建任务 - %{fleet}",
           "edit": {
-            "basic": "编辑任务 - %{fleet}",
-            "description": "编辑描述 - %{fleet}",
+            "details": "编辑任务 - %{fleet}",
             "teams": "编辑小队与席位 - %{fleet}"
           },
           "show": "%{fleet} 任务"
@@ -77,8 +76,9 @@
           "calendar": "%{fleet} 日历",
           "create": "创建活动 - %{fleet}",
           "edit": {
-            "basic": "编辑活动 - %{fleet}",
-            "description": "编辑描述 - %{fleet}",
+            "details": "编辑活动 - %{fleet}",
+            "schedule": "编辑日程 - %{fleet}",
+            "signup": "编辑报名 - %{fleet}",
             "teams": "编辑小队与席位 - %{fleet}"
           },
           "show": "%{fleet} 活动",
