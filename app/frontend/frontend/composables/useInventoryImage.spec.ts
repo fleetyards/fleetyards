@@ -44,6 +44,48 @@ describe("useInventoryImage", () => {
     expect(defaultImage.value).toBe(shipImage.mediumUrl);
   });
 
+  /*
+   * The serializer emits the sized variants only for an attachment it could
+   * build representations for. One that arrives with just its original is
+   * still a picture somebody chose, and drawing a preset over it would look
+   * like the upload was lost.
+   */
+  it("shows an attachment that has only an original", () => {
+    const { image } = useInventoryImage(
+      inventory({ image: { url: "https://example.test/original.tiff" } }),
+    );
+
+    expect(image.value).toBe("https://example.test/original.tiff");
+  });
+
+  it("shows a ship image that has only an original", () => {
+    const { image, defaultImage } = useInventoryImage(
+      inventory({
+        vehicle: {
+          id: "v-1",
+          name: "North Star",
+          model: { image: { url: "https://example.test/ship.tiff" } },
+        },
+      }),
+    );
+
+    expect(image.value).toBe("https://example.test/ship.tiff");
+    expect(defaultImage.value).toBe("https://example.test/ship.tiff");
+  });
+
+  it("prefers a sized variant over the original", () => {
+    const { image } = useInventoryImage(
+      inventory({
+        image: {
+          url: "https://example.test/original.png",
+          mediumUrl: "https://example.test/medium.png",
+        },
+      }),
+    );
+
+    expect(image.value).toBe("https://example.test/medium.png");
+  });
+
   it("falls back to a preset for an inventory no ship carries", () => {
     const { image } = useInventoryImage(inventory({ name: "Locker" }));
 
