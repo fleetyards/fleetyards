@@ -33,6 +33,13 @@ class OmniauthConnection < ApplicationRecord
 
   validates :provider, presence: true, uniqueness: {scope: :user_id}
 
+  # One Patreon account, one Fleetyards account. Elsewhere a shared identity
+  # would only be an odd sign-in; here it is two people with a claim on the
+  # same pledge, and the linker would hand it to whichever the lookup returned.
+  # The connection is refused rather than resolved -- handle_connect already
+  # reports a failed save back to the user.
+  validates :uid, uniqueness: {scope: :provider}, if: :patreon?
+
   # Linking an account changes no membership, so without this a member who
   # links Discord after being accepted never receives the roles their fleets
   # already mapped.

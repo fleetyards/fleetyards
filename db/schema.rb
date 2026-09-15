@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_15_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1688,6 +1688,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_090000) do
     t.string "uid", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
+    t.index ["uid"], name: "index_omniauth_connections_on_patreon_uid", unique: true, where: "(provider = 6)"
     t.index ["user_id"], name: "index_omniauth_connections_on_user_id"
   end
 

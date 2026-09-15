@@ -17,12 +17,13 @@ module OmniAuth
       option :client_options, {
         site: "https://www.patreon.com",
         authorize_url: "https://www.patreon.com/oauth2/authorize",
-        token_url: "https://www.patreon.com/api/oauth2/token"
+        token_url: "https://www.patreon.com/api/oauth2/token",
+        # oauth2 2.x defaults to :basic_auth. Patreon wants the client
+        # credentials as form parameters and refuses the exchange without
+        # them, which fails the callback before raw_info is ever reached.
+        auth_scheme: :request_body
       }
 
-      # Patreon reads the client credentials from the form body, not from a
-      # Basic auth header.
-      option :auth_token_params, {mode: :query, param_name: "access_token"}
       option :token_params, {parse: :json}
 
       # `identity` is what names the account; the bracketed one adds its email.
