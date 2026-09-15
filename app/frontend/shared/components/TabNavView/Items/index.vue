@@ -9,6 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type RouteRecordName, type RouteRecordRaw } from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
 import {
+  isTabRoute,
   routeName,
   useActiveTab,
 } from "@/shared/components/TabNavView/useActiveTab";
@@ -42,6 +43,7 @@ const badgeFor = (name?: RouteRecordName) => {
 
 const filteredRoutes = computed(() => {
   return props.routes
+    .filter(isTabRoute)
     .filter((route) => {
       if (props.authenticated) {
         return !route.meta?.hideWhenAuthenticated;

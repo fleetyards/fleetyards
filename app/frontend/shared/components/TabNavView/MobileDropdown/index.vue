@@ -13,6 +13,7 @@ import {
 } from "vue-router";
 import { checkAccess } from "@/shared/utils/Access";
 import {
+  isTabRoute,
   routeName,
   useActiveTab,
 } from "@/shared/components/TabNavView/useActiveTab";
@@ -62,6 +63,7 @@ const wrapper = ref<HTMLElement | null>(null);
 
 const filteredRoutes = computed(() => {
   return props.routes
+    .filter(isTabRoute)
     .filter((r) => {
       if (props.authenticated) {
         return !r.meta?.hideWhenAuthenticated;
