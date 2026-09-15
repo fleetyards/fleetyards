@@ -133,6 +133,20 @@ const coverImageInput = ref<{ clear: () => void } | undefined>();
  */
 const detachedForPreset = ref(false);
 
+/*
+ * Anything the author does to the field is theirs, including clearing it. The
+ * flag below only ever covers a detach this form asked for -- once the author
+ * has cleared the file themselves, unpicking a tile must not put it back.
+ *
+ * Reachable because both actions write the same `null`: picking a preset over a
+ * saved cover sets it, and a clear afterwards changes nothing visible, so
+ * without this the form still thought the `null` was its own.
+ */
+const chooseTheUpload = (value: string | null | undefined) => {
+  coverImage.value = value;
+  detachedForPreset.value = false;
+};
+
 const chooseThePreset = (key: string | null) => {
   coverImagePreset.value = key;
 
@@ -337,8 +351,9 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="col-12">
             <FormFileInput
               ref="coverImageInput"
-              v-model="coverImage"
+              :model-value="coverImage"
               v-bind="coverImageProps"
+              @update:model-value="chooseTheUpload"
               :file="existingCoverImage as never"
               name="coverImage"
               :label="t('labels.fleets.missions.coverImage')"
