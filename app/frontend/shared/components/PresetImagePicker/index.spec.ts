@@ -161,6 +161,73 @@ describe("PresetImagePicker", () => {
     expect(selected(subject)?.at(-1)).toEqual([null]);
   });
 
+  /*
+   * `aria-modal` says everything behind this is inert, and the keyboard has to
+   * agree with that claim. The form underneath is still tabbable and still
+   * looks focusable, so without this Tab walks straight out of the dialog and
+   * into a form the reader cannot see.
+   */
+  describe("focus", () => {
+    const dialog = () =>
+      document.body.querySelector<HTMLElement>("[role='dialog']");
+
+    const focusable = () =>
+      Array.from(
+        dialog()?.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])",
+        ) ?? [],
+      );
+
+    const tab = (shiftKey = false) =>
+      window.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Tab",
+          shiftKey,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+
+    it("takes focus when it opens, on the thing that carries its name", async () => {
+      await mount();
+
+      expect(document.activeElement).toBe(dialog());
+    });
+
+    it("wraps forwards off the last control", async () => {
+      await mount();
+      const items = focusable();
+
+      items[items.length - 1].focus();
+      tab();
+
+      expect(document.activeElement).toBe(items[0]);
+    });
+
+    it("wraps backwards off the first", async () => {
+      await mount();
+      const items = focusable();
+
+      items[0].focus();
+      tab(true);
+
+      expect(document.activeElement).toBe(items[items.length - 1]);
+    });
+
+    // Whatever Tab was about to reach, it was not inside the dialog.
+    it("pulls focus back when it has escaped", async () => {
+      await mount();
+      const outside = document.createElement("button");
+      document.body.append(outside);
+      outside.focus();
+
+      tab();
+
+      expect(document.activeElement).toBe(focusable()[0]);
+      outside.remove();
+    });
+  });
+
   // An inventory picture is not "of" anything, so there is nothing to narrow by.
   it("renders no filter for a catalogue that is not divided", async () => {
     await mount({ catalogue: "inventories" });

@@ -294,6 +294,22 @@ const selectPreset = (key: string | null) => {
  */
 const pickerOpen = ref(false);
 
+const presetButton = ref<{ $el?: HTMLElement } | undefined>();
+
+/*
+ * Focus goes back where it came from. The picker takes it on open and contains
+ * it while it is up; when it closes, the button that opened it is the place a
+ * keyboard was left, and leaving focus on `<body>` would drop someone back at
+ * the top of the page.
+ */
+const closePicker = () => {
+  pickerOpen.value = false;
+
+  void nextTick(() => {
+    presetButton.value?.$el?.focus();
+  });
+};
+
 const fileTypeIconClass = computed(() => {
   if (
     props.allowedTypes?.length === 1 ||
@@ -496,6 +512,7 @@ defineExpose({
       />
       <Btn
         v-if="presetCatalogue && !disabled"
+        ref="presetButton"
         v-tooltip="t('actions.presets.choose')"
         class="base-image-input__preset"
         variant="bare"
@@ -511,7 +528,7 @@ defineExpose({
         :selected="presetValue"
         :group="presetGroup"
         @select="selectPreset"
-        @close="pickerOpen = false"
+        @close="closePicker"
       />
       <!-- A preset counts: it is a picture in the frame like any other, and
            while it did not the only way back to none was through the picker. -->

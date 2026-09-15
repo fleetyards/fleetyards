@@ -86,11 +86,63 @@ const select = (key: string | null) => {
  */
 const entered = ref(false);
 
+const dialog = ref<HTMLElement | undefined>();
+
 onMounted(() => {
   afterNextPaint(() => {
     entered.value = true;
   });
+
+  /*
+   * The dialog itself rather than the first tile: it carries the label, so a
+   * screen reader announces what this is before reading out a grid of
+   * pictures. Tab from here reaches the first control.
+   */
+  dialog.value?.focus();
 });
+
+const FOCUSABLE = [
+  "a[href]",
+  "button:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  "textarea:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(", ");
+
+const focusable = () =>
+  Array.from(dialog.value?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []);
+
+/*
+ * `aria-modal` tells assistive tech that everything behind this is inert, and
+ * the keyboard has to agree: without a trap, Tab walks straight out of the
+ * dialog and into the form it is covering, which is still tabbable and still
+ * looks focusable.
+ */
+const containFocus = (event: KeyboardEvent) => {
+  const items = focusable();
+  if (!items.length) return;
+
+  const first = items[0];
+  const last = items[items.length - 1];
+  const active = document.activeElement as HTMLElement | null;
+
+  // Focus escaped, or never arrived -- bring it back rather than letting Tab
+  // carry on from wherever it is.
+  if (!active || !dialog.value?.contains(active)) {
+    event.preventDefault();
+    first.focus();
+    return;
+  }
+
+  if (event.shiftKey && active === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && active === last) {
+    event.preventDefault();
+    first.focus();
+  }
+};
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === "Escape") {
@@ -98,7 +150,10 @@ const handleKeyDown = (event: KeyboardEvent) => {
     // -- a modal underneath must not also read it and close as well.
     event.stopPropagation();
     emit("close");
+    return;
   }
+
+  if (event.key === "Tab") containFocus(event);
 };
 
 onMounted(() => {
@@ -115,13 +170,19 @@ onUnmounted(() => {
     <div
       class="preset-picker fade"
       :class="{ in: entered }"
-      role="dialog"
-      aria-modal="true"
-      :aria-label="t('labels.presets.title')"
       data-test="preset-picker"
       @click.self="emit('close')"
     >
-      <div class="preset-picker__dialog">
+      <!-- The dialog is the panel, not the scrim behind it. `tabindex="-1"` so
+           it can hold focus on open without joining the tab order. -->
+      <div
+        ref="dialog"
+        class="preset-picker__dialog"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="t('labels.presets.title')"
+        tabindex="-1"
+      >
         <Panel :outer-spacing="false">
           <PanelHeading :level="HeadingLevelEnum.H2">
             {{ t("labels.presets.title") }}

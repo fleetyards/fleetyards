@@ -38,9 +38,13 @@ afterEach(() => {
   document.body.innerHTML = "";
 });
 
-const mount = async (props: Record<string, unknown> = {}) => {
+const mount = async (
+  props: Record<string, unknown> = {},
+  { attached = false } = {},
+) => {
   wrapper = await mountWithDefaults(Component, {
     props: { name: "coverImage", ...props } as never,
+    attachTo: attached ? document.body : undefined,
   });
 
   return wrapper;
@@ -207,6 +211,27 @@ describe("FormFileInput presets", () => {
     });
 
     expect(subject.find(".base-image-input__clear").exists()).toBe(false);
+  });
+
+  /*
+   * The picker takes focus on open and contains it while it is up, so the way
+   * back has to be arranged too -- otherwise closing leaves focus on `<body>`
+   * and a keyboard is dropped at the top of the page.
+   */
+  it("returns focus to the button that opened the picker", async () => {
+    // In the document, or `focus()` is a no-op and this proves nothing.
+    const subject = await mount(
+      { presetCatalogue: "missions" },
+      { attached: true },
+    );
+    const button = subject.find("[data-test='choose-preset-coverImage']");
+
+    await openPicker(subject);
+    picker()?.vm.$emit("close");
+    await subject.vm.$nextTick();
+    await subject.vm.$nextTick();
+
+    expect(document.activeElement).toBe(button.element);
   });
 
   it("leaves the picture alone when the preset is only removed", async () => {
