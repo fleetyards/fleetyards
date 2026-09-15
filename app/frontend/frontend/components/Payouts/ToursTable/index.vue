@@ -31,6 +31,11 @@ const emit = defineEmits<{
 
 const { t, l } = useI18n();
 
+// Neither page puts this table inside a FilteredList, so there is no list
+// geometry to take a row count from and BaseTable reserves none - which left
+// both pages spinning over an empty frame. See BaseTable's `skeletonRows`.
+const SKELETON_ROWS = 5;
+
 const columns = computed<BaseTableCol<Tour>[]>(() => {
   const cols: BaseTableCol<Tour>[] = [
     { name: "title", label: t("labels.payouts.title"), flexGrow: 2 },
@@ -55,6 +60,7 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
     primary-key="id"
     :columns="columns"
     :loading="loading"
+    :skeleton-rows="SKELETON_ROWS"
     :empty-visible="!tours.length && !loading"
     row-clickable
     @row-click="(tour: Tour) => emit('row-click', tour)"

@@ -12,6 +12,7 @@ import {
   BtnTonesEnum,
 } from "@/shared/components/base/Btn/types";
 import PayoutWeightControl from "@/frontend/components/Payouts/PayoutWeightControl/index.vue";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -62,19 +63,29 @@ const joinRequestsEnabled = computed(
   () => !!props.tourSlug && props.manageable,
 );
 
-const { data: joinRequests, refetch: refetchJoinRequests } =
-  useTourJoinRequestsQuery(
-    computed(() => props.tourSlug ?? ""),
-    {
-      query: {
-        retry: false,
-        enabled: joinRequestsEnabled,
-      },
+const {
+  data: joinRequests,
+  refetch: refetchJoinRequests,
+  isLoading: joinRequestsLoading,
+} = useTourJoinRequestsQuery(
+  computed(() => props.tourSlug ?? ""),
+  {
+    query: {
+      retry: false,
+      enabled: joinRequestsEnabled,
     },
-  );
+  },
+);
 
 const pendingJoinRequests = computed(() =>
   joinRequestsEnabled.value ? (joinRequests.value ?? []) : [],
+);
+
+// A tour whose ledger has nobody on it yet still has people waiting to be let
+// on, and they arrive from a second request. Saying "nobody on this tour yet"
+// before that answers is the wrong half of the list.
+const waiting = computed(
+  () => joinRequestsEnabled.value && joinRequestsLoading.value,
 );
 
 const approveMutation = useApproveTourJoinRequestMutation();
@@ -195,8 +206,13 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
 
 <template>
   <div class="payout-participants">
+    <RowsSkeleton
+      v-if="waiting && !participants.length && !pendingJoinRequests.length"
+      :meta="false"
+    />
+
     <p
-      v-if="!participants.length && !pendingJoinRequests.length"
+      v-else-if="!participants.length && !pendingJoinRequests.length"
       class="payout-participants__empty"
     >
       {{ t("empty.payouts.participants") }}

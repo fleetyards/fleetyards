@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
 import PayoutLedger from "@/frontend/components/Payouts/PayoutLedger/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -38,7 +39,11 @@ const { displayAlert } = useAppNotifications();
 const fleetSlug = computed(() => String(route.params.slug));
 const eventSlug = computed(() => String(route.params.event));
 
-const { data: ledger, refetch } = useFleetEventPayoutLedger(
+const {
+  data: ledger,
+  refetch,
+  isLoading: ledgerLoading,
+} = useFleetEventPayoutLedger(
   fleetSlug,
   eventSlug,
   // A 404 here is the normal "no ledger opened yet" state, not an error worth
@@ -115,12 +120,25 @@ const crumbs = computed<Crumb[]>(() => [
 </script>
 
 <template>
-  <section class="container">
+  <!-- No `container` of its own: App.vue already puts one round the page, and a
+       second doubles the gutter this page had against every other. -->
+  <section>
     <BreadCrumbs :crumbs="crumbs" />
 
     <Heading>{{ t("headlines.payouts.index") }}</Heading>
 
-    <Panel v-if="!ledger">
+    <!-- Before this branch existed, "nothing recorded yet" and the button to
+         open a ledger were what the page showed while the ledger was still on
+         its way - so a ledger that already existed announced itself as absent
+         for as long as the request took. -->
+    <DetailSkeleton
+      v-if="ledgerLoading"
+      :hero="false"
+      :figures="4"
+      :panels="3"
+    />
+
+    <Panel v-else-if="!ledger">
       <PanelBody>
         <p class="fleet-event-payouts__empty">
           {{ t("empty.payouts.entries") }}

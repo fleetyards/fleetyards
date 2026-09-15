@@ -10,6 +10,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -26,9 +27,16 @@ type Props = {
   // Transfers computed from an open ledger are a preview: nobody has agreed to
   // pay them yet, so there is nothing to tick off.
   preview?: boolean;
+  // Whichever query these rows came from is still answering. Without it the
+  // panel tells the reader to settle the ledger before it knows whether one
+  // has been settled already.
+  loading?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), { preview: false });
+const props = withDefaults(defineProps<Props>(), {
+  preview: false,
+  loading: false,
+});
 
 const { t, toUEC } = useI18n();
 const comlink = useComlink();
@@ -60,7 +68,9 @@ const onToggle = async (transfer: PayoutTransfer) => {
 
 <template>
   <div class="payout-transfers">
-    <p v-if="!transfers.length" class="payout-transfers__empty">
+    <RowsSkeleton v-if="loading && !transfers.length" :meta="false" trailing />
+
+    <p v-else-if="!transfers.length" class="payout-transfers__empty">
       {{ t("empty.payouts.transfers") }}
     </p>
 

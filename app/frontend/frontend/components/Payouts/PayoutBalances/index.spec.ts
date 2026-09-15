@@ -30,9 +30,9 @@ const balance = (overrides: Partial<PayoutBalance> = {}): PayoutBalance =>
 // test assert against a second store and pass either way.
 const wrappers: Array<{ unmount: () => void }> = [];
 
-const mount = async (balances: PayoutBalance[]) => {
+const mount = async (balances: PayoutBalance[], loading = false) => {
   const wrapper = await mountWithDefaults<typeof Component>(Component, {
-    props: { balances },
+    props: { balances, loading },
   });
   wrappers.push(wrapper);
   return wrapper;
@@ -91,6 +91,27 @@ describe("PayoutBalances", () => {
     const wrapper = await mount([]);
 
     expect(wrapper.findAll("[data-test^='payout-balance-']")).toHaveLength(0);
+    expect(
+      wrapper.findAll("[data-test='payout-balances-skeleton-row']"),
+    ).toHaveLength(0);
+  });
+
+  // The balances are their own request. A header row with nothing under it
+  // reads as a ledger on which nobody is owed anything.
+  it("holds the table open while the balances are being read", async () => {
+    const wrapper = await mount([], true);
+
+    expect(
+      wrapper.findAll("[data-test='payout-balances-skeleton-row']").length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("drops the placeholders once the balances land", async () => {
+    const wrapper = await mount([balance()], true);
+
+    expect(
+      wrapper.findAll("[data-test='payout-balances-skeleton-row']"),
+    ).toHaveLength(0);
   });
 
   // Zero is the one good outcome, and toUEC renders it as "-" -- which reads as
