@@ -8,6 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import ToursTable from "@/frontend/components/Payouts/ToursTable/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useTours } from "@/services/fyApi";
@@ -36,6 +37,7 @@ const crumbs = computed<Crumb[]>(() => [
 
     <Teleport to="#header-right">
       <Btn
+        :size="BtnSizesEnum.MD"
         :to="{ name: 'tour-add' }"
         :aria-label="t('actions.payouts.createTour')"
         data-test="tour-add"

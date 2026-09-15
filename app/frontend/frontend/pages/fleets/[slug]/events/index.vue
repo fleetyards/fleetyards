@@ -288,6 +288,7 @@ const openDisplayOptionsModal = () => {
   <Teleport to="#header-right">
     <Btn
       v-if="canManageMissions"
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'fleet-missions', params: { slug: props.fleet.slug } }"
       :aria-label="t('actions.fleets.missions.viewMissions')"
       variant="bare"
@@ -298,6 +299,7 @@ const openDisplayOptionsModal = () => {
     </Btn>
     <Btn
       v-if="canCreate"
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'fleet-event-new', params: { slug: props.fleet.slug } }"
       :aria-label="t('actions.fleets.events.create')"
       mobile-icon-only

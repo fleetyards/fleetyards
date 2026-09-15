@@ -140,6 +140,7 @@ const crumbs = computed<Crumb[]>(() => [
   <Teleport to="#header-right">
     <Btn
       v-if="canCreate"
+      :size="BtnSizesEnum.MD"
       :aria-label="t('actions.fleets.missions.create')"
       data-test="create-mission"
       mobile-icon-only
