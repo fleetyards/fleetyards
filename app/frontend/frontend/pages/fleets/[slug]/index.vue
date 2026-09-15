@@ -118,7 +118,7 @@ const description = computed(() => {
     </div>
   </div>
   <div v-if="description" class="row md:justify-center">
-    <div class="col-12 col-sm-8">
+    <div class="col-12 col-md-8">
       <p class="description" v-html="description" />
     </div>
   </div>
