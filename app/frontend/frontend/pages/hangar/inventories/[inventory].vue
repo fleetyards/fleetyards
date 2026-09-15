@@ -235,6 +235,7 @@ const crumbs = computed<Crumb[]>(() => [
           <Btn
             :size="BtnSizesEnum.MD"
             :aria-label="t('actions.logistics.editInventory')"
+            data-test="inventory-edit"
             @click="openEditModal"
           >
             <i class="fa-duotone fa-pen" />
