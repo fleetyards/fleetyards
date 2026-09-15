@@ -246,6 +246,7 @@
           "inAppNotifications": "应用内通知",
           "discord": "Discord",
           "calendar": "日历",
+          "contracts": "合约设置",
           "features": "舰队功能"
         },
         "inviteMember": "Invite new Member",

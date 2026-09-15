@@ -248,6 +248,7 @@
           "inAppNotifications": "In-app Notifications",
           "discord": "Discord",
           "calendar": "Calendar",
+          "contracts": "Contract Settings",
           "features": "Fleet Features"
         },
         "inviteMember": "Invite new Member",

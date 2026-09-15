@@ -246,6 +246,7 @@
           "inAppNotifications": "Notifications dans l'application",
           "discord": "Discord",
           "calendar": "Calendrier",
+          "contracts": "Paramètres des contrats",
           "features": "Fonctionnalités de la flotte"
         },
         "inviteMember": "Inviter un nouveau membre",
