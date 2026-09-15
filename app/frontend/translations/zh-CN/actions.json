@@ -136,7 +136,8 @@
           "bluesky": "已连接到 BlueSky",
           "github": "已连接到 GitHub",
           "twitch": "已连接到 Twitch",
-          "citizenid": "已连接到 Citizen iD"
+          "citizenid": "已连接到 Citizen iD",
+          "patreon": "已连接 Patreon"
         },
         "disconnect": {
           "google": "断开 Google 连接",
@@ -144,8 +145,10 @@
           "bluesky": "断开 BlueSky 连接",
           "github": "断开 GitHub 连接",
           "twitch": "断开 Twitch 连接",
-          "citizenid": "断开 Citizen iD 连接"
-        }
+          "citizenid": "断开 Citizen iD 连接",
+          "patreon": "断开 Patreon"
+        },
+        "patreon": "Patreon"
       },
       "compare": {
         "ships": "对比"

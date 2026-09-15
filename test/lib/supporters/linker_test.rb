@@ -27,6 +27,48 @@ module Supporters
       assert_nil contribution.reload.user
     end
 
+    # The only arm nobody asserts: signing into Patreon proves which account it
+    # is, where a key can be mistyped into the wrong payment and an address can
+    # be shared.
+    test "links by a connected Patreon account" do
+      user = create(:user, confirmed_at: Time.current)
+      create(:omniauth_connection, user: user, provider: :patreon, uid: "patreon-user-1")
+      contribution = create(:supporter_contribution, :patreon, patreon_user_id: "patreon-user-1")
+
+      assert_equal user, Supporters::Linker.call(contribution)
+    end
+
+    test "a connected Patreon account outranks a key and an email" do
+      connected = create(:user, confirmed_at: Time.current)
+      create(:omniauth_connection, user: connected, provider: :patreon, uid: "patreon-user-1")
+
+      keyed = create(:user, confirmed_at: Time.current)
+      key = keyed.ensure_claim_key!
+      create(:user, email: "someone.else@example.test", confirmed_at: Time.current)
+
+      contribution = create(:supporter_contribution, :patreon,
+        patreon_user_id: "patreon-user-1",
+        note: "thanks #{key}",
+        payer_email: "someone.else@example.test")
+
+      assert_equal connected, Supporters::Linker.call(contribution)
+    end
+
+    test "another provider's connection with the same uid does not match" do
+      user = create(:user, confirmed_at: Time.current)
+      create(:omniauth_connection, user: user, provider: :discord, uid: "patreon-user-1")
+      contribution = create(:supporter_contribution, :patreon, patreon_user_id: "patreon-user-1")
+
+      assert_nil Supporters::Linker.call(contribution)
+    end
+
+    test "a contribution with no Patreon user id falls through to the other arms" do
+      user = create(:user, email: "patron@example.test", confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, payer_email: "patron@example.test")
+
+      assert_equal user, Supporters::Linker.call(contribution)
+    end
+
     test "links by a claim key found in the donation message" do
       user = create(:user, confirmed_at: Time.current)
       key = user.ensure_claim_key!

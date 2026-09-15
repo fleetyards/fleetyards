@@ -136,7 +136,8 @@
           "bluesky": "Connected to BlueSky",
           "github": "Connected to GitHub",
           "twitch": "Connected to Twitch",
-          "citizenid": "Connected to Citizen iD"
+          "citizenid": "Connected to Citizen iD",
+          "patreon": "Connected to Patreon"
         },
         "disconnect": {
           "google": "Disconnect Google",
@@ -144,8 +145,10 @@
           "bluesky": "Disconnect BlueSky",
           "github": "Disconnect GitHub",
           "twitch": "Disconnect Twitch",
-          "citizenid": "Disconnect Citizen iD"
-        }
+          "citizenid": "Disconnect Citizen iD",
+          "patreon": "Disconnect Patreon"
+        },
+        "patreon": "Patreon"
       },
       "compare": {
         "ships": "Compare"

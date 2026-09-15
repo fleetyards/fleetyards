@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 module Patreon
-  # `email` defaults so a client built without the campaigns.members[email]
-  # scope still constructs -- the field is simply absent from the payload then,
-  # which the importer reports as a scope problem rather than as no match.
-  Member = Data.define(:id, :name, :status, :amount_cents, :pledged_at, :last_charge_date, :email) do
-    def initialize(email: nil, **) = super
+  # `email` and `patreon_user_id` default so a client built without the
+  # campaigns.members[email] scope, or a payload without the user relationship,
+  # still constructs -- the fields are simply absent then, which the importer
+  # reports rather than failing on.
+  Member = Data.define(:id, :name, :status, :amount_cents, :pledged_at,
+    :last_charge_date, :email, :patreon_user_id) do
+    def initialize(email: nil, patreon_user_id: nil, **) = super
   end
 end

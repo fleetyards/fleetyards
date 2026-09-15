@@ -63,6 +63,7 @@ de:
         bluesky: Bluesky
         twitch: Twitch
         citizenid: Citizen iD
+        patreon: "Patreon"
       failure: Authentifizierung mit %{kind} fehlgeschlagen.
       failure_with_reason: 'Authentifizierung mit %{kind} fehlgeschlagen: "%{reason}".'
       failure_username_taken: |-

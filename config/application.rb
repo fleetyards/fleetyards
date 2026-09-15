@@ -8,6 +8,7 @@ require_relative "../lib/middleware/transform_parameters"
 # Backport of Rails 8.2 `Rails.app.creds` — must load before config_for calls.
 # REMOVAL: Delete this line and lib/rails_creds_backport/ when upgrading to Rails 8.2.
 require_relative "../lib/rails_creds_backport"
+require_relative "../lib/omniauth/strategies/patreon"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -21,7 +22,11 @@ module Fleetyards
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
-    config.autoload_lib(ignore: %w[assets])
+    # `omniauth` is required outright above -- it has to be loaded before
+    # devise's initializer reads it -- and its constant is OmniAuth, which no
+    # inflection of the directory name produces. Zeitwerk would look for
+    # Omniauth::Strategies::Patreon and fail eager loading.
+    config.autoload_lib(ignore: %w[assets omniauth])
 
     # Configuration for the application, engines, and railties goes here.
     #

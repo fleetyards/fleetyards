@@ -60,6 +60,7 @@ it:
         bluesky: Bluesky
         twitch: Twitch
         citizenid: Citizen iD
+        patreon: "Patreon"
       failure: Impossibile autenticarti con %{kind}.
       failure_with_reason: Impossibile autenticarti con %{kind} perché "%{reason}".
       failure_username_taken: |-

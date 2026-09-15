@@ -103,6 +103,49 @@ module Patreon
       assert_equal Patreon::Client::MAX_PAGES, members.size
     end
 
+    # The account behind the membership, as opposed to the membership itself.
+    # It is what an OAuth connection proves ownership of.
+    test "#members reads the Patreon user id off the relationship" do
+      stub_request(:get, %r{#{Regexp.escape(BASE)}/campaigns/#{CAMPAIGN_ID}/members}o)
+        .to_return(status: 200, body: {
+          data: [{
+            id: "m1",
+            attributes: {
+              full_name: "Alice",
+              patron_status: "active_patron",
+              currently_entitled_amount_cents: 500,
+              pledge_relationship_start: "2026-01-15T00:00:00.000+00:00",
+              last_charge_date: "2026-06-01T00:00:00.000+00:00"
+            },
+            relationships: {user: {data: {id: "u1", type: "user"}}}
+          }],
+          included: [],
+          links: {}
+        }.to_json, headers: {"Content-Type" => "application/json"})
+
+      assert_equal "u1", @client.members(CAMPAIGN_ID).to_a.first.patreon_user_id
+    end
+
+    test "#members leaves the Patreon user id nil when there is no relationship" do
+      stub_request(:get, %r{#{Regexp.escape(BASE)}/campaigns/#{CAMPAIGN_ID}/members}o)
+        .to_return(status: 200, body: {
+          data: [{
+            id: "m1",
+            attributes: {
+              full_name: "Alice",
+              patron_status: "active_patron",
+              currently_entitled_amount_cents: 500,
+              pledge_relationship_start: "2026-01-15T00:00:00.000+00:00",
+              last_charge_date: "2026-06-01T00:00:00.000+00:00"
+            }
+          }],
+          included: [],
+          links: {}
+        }.to_json, headers: {"Content-Type" => "application/json"})
+
+      assert_nil @client.members(CAMPAIGN_ID).to_a.first.patreon_user_id
+    end
+
     test "#members requests the email field and reads it off the member" do
       assert_includes Patreon::Client::MEMBER_FIELDS.split(","), "email"
 

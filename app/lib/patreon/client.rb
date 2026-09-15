@@ -69,7 +69,12 @@ module Patreon
         amount_cents: entitled_or_pledge(attrs),
         pledged_at: parse_date(attrs["pledge_relationship_start"]),
         last_charge_date: parse_date(attrs["last_charge_date"]),
-        email: attrs["email"].presence
+        email: attrs["email"].presence,
+        # The id of the Patreon account behind the membership, as opposed to
+        # `id`, which identifies the membership itself. It is what an OAuth
+        # connection proves ownership of, so it is the one key that matches a
+        # contribution to an account without anybody asserting anything.
+        patreon_user_id: user_id(member)
       )
     end
 
@@ -77,11 +82,15 @@ module Patreon
       attrs["currently_entitled_amount_cents"].to_i.nonzero? || attrs["will_pay_amount_cents"].to_i
     end
 
-    def find_user(member, included)
-      user_id = member.dig("relationships", "user", "data", "id")
-      return nil if user_id.blank?
+    def user_id(member)
+      member.dig("relationships", "user", "data", "id").presence
+    end
 
-      Array(included).find { |entry| entry["type"] == "user" && entry["id"] == user_id }
+    def find_user(member, included)
+      id = user_id(member)
+      return nil if id.blank?
+
+      Array(included).find { |entry| entry["type"] == "user" && entry["id"] == id }
     end
 
     def parse_date(value)

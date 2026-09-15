@@ -43,6 +43,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     handle_auth(t("devise.omniauth.provider.citizenid"))
   end
 
+  def patreon
+    handle_auth(t("devise.omniauth.provider.patreon"))
+  end
+
   private def handle_connect(kind)
     existing_connection = current_user.omniauth_connections.find_by(provider: auth.provider.to_s, uid: auth.uid)
     if existing_connection.present?

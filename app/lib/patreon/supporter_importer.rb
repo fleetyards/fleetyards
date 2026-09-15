@@ -53,6 +53,12 @@ module Patreon
       # has no address at all, and one written before the patron changed theirs
       # holds an address that may now belong to somebody else's account.
       record.payer_email = member.email if member.email.present?
+      # Unconditional, unlike the address above: this one decides who may claim
+      # the contribution by connecting an account, so holding an identity the
+      # current sync does not confirm is worse than holding none. A transient
+      # omission costs a sync's worth of connect-claiming; a stale id could hand
+      # the pledge to the wrong account outright.
+      record.patreon_user_id = member.patreon_user_id
       ended_now = apply_lifecycle(record, member)
 
       if record.changed?
@@ -74,6 +80,12 @@ module Patreon
       assign_defaults(record, member) if new_record
       record.name = member.name
       record.payer_email = member.email if member.email.present?
+      # Unconditional, unlike the address above: this one decides who may claim
+      # the contribution by connecting an account, so holding an identity the
+      # current sync does not confirm is worse than holding none. A transient
+      # omission costs a sync's worth of connect-claiming; a stale id could hand
+      # the pledge to the wrong account outright.
+      record.patreon_user_id = member.patreon_user_id
       @without_email += 1 if member.email.blank?
       apply_amount(record, member)
       ended_now = apply_lifecycle(record, member)

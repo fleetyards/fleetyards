@@ -26,7 +26,7 @@ module Supporters
     def call
       return @contribution.user if @contribution.user_id.present?
 
-      user = by_claim_key || by_verified_email
+      user = by_connected_patreon_account || by_claim_key || by_verified_email
       return if user.nil?
 
       @contribution.update!(user: user)
@@ -36,6 +36,20 @@ module Supporters
     # First, because it is a deliberate act. A supporter who put their key in a
     # donation meant that account, even if the payment carries an address
     # belonging to someone else's.
+    # First, because it is the only arm nobody asserts: the supporter proved
+    # they hold the Patreon account by signing into it. A key can be mistyped
+    # into the wrong payment and an address can be shared; this cannot.
+    private def by_connected_patreon_account
+      return if @contribution.patreon_user_id.blank?
+
+      User.joins(:omniauth_connections).find_by(
+        omniauth_connections: {
+          provider: OmniauthConnection.providers[:patreon],
+          uid: @contribution.patreon_user_id
+        }
+      )
+    end
+
     private def by_claim_key
       User.find_by_claim_key(SupporterClaimKey.extract(@contribution.note))
     end

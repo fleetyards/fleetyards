@@ -52,6 +52,7 @@ zh-CN:
         bluesky: Bluesky
         twitch: Twitch
         citizenid: Citizen iD
+        patreon: "Patreon"
       failure: 无法通过 %{kind} 认证。
       failure_with_reason: 无法通过 %{kind} 认证，原因："%{reason}"。
       failure_username_taken: |-

@@ -23,6 +23,78 @@
 require "test_helper"
 
 class OmniauthConnectionTest < ActiveSupport::TestCase
+  # Connecting proves which Patreon account this is, so a contribution already
+  # synced under it can be claimed on the spot rather than waiting for the next
+  # campaign sync.
+  test "connecting Patreon claims contributions already synced for that account" do
+    user = create(:user, confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, :patreon, patreon_user_id: "patreon-user-1")
+
+    assert_nil contribution.user
+
+    create(:omniauth_connection, user: user, provider: :patreon, uid: "patreon-user-1")
+
+    assert_equal user, contribution.reload.user
+  end
+
+  test "connecting Patreon leaves another account's contributions alone" do
+    user = create(:user, confirmed_at: Time.current)
+    other = create(:supporter_contribution, :patreon, patreon_user_id: "somebody-else")
+
+    create(:omniauth_connection, user: user, provider: :patreon, uid: "patreon-user-1")
+
+    assert_nil other.reload.user
+  end
+
+  test "connecting Patreon never takes a contribution that is already linked" do
+    owner = create(:user, confirmed_at: Time.current)
+    claimed = create(:supporter_contribution, :patreon,
+      patreon_user_id: "patreon-user-1", user: owner)
+
+    create(:omniauth_connection, user: create(:user, confirmed_at: Time.current),
+      provider: :patreon, uid: "patreon-user-1")
+
+    assert_equal owner, claimed.reload.user
+  end
+
+  # A shared Patreon identity is not a duplicate row -- it is two people with a
+  # claim on the same pledge, resolved by whichever the lookup happened to
+  # return.
+  test "a Patreon identity cannot be connected to a second account" do
+    create(:omniauth_connection, provider: :patreon, uid: "patreon-user-1")
+
+    second = build(:omniauth_connection, provider: :patreon, uid: "patreon-user-1")
+
+    assert_not second.valid?
+    assert_includes second.errors.attribute_names, :uid
+  end
+
+  test "the database refuses a second Patreon identity even without validation" do
+    create(:omniauth_connection, provider: :patreon, uid: "patreon-user-1")
+
+    assert_raises(ActiveRecord::RecordNotUnique) do
+      build(:omniauth_connection, provider: :patreon, uid: "patreon-user-1").save(validate: false)
+    end
+  end
+
+  # The rule is Patreon's alone: elsewhere a shared identity is only an odd
+  # sign-in, and six providers have years of rows behind them.
+  test "another provider may still share a uid across accounts" do
+    create(:omniauth_connection, provider: :discord, uid: "shared-uid")
+
+    second = build(:omniauth_connection, provider: :discord, uid: "shared-uid")
+
+    assert second.valid?
+  end
+
+  test "connecting another provider claims nothing" do
+    user = create(:user, confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, :patreon, patreon_user_id: "patreon-user-1")
+
+    create(:omniauth_connection, user: user, provider: :github, uid: "patreon-user-1")
+
+    assert_nil contribution.reload.user
+  end
   should belong_to(:user)
 
   test "enforces one connection per provider per user" do
@@ -47,7 +119,8 @@ class OmniauthConnectionTest < ActiveSupport::TestCase
       "github" => 2,
       "bluesky" => 3,
       "twitch" => 4,
-      "citizenid" => 5
+      "citizenid" => 5,
+      "patreon" => 6
     }, OmniauthConnection.providers)
   end
 end
