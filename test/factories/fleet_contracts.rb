@@ -8,6 +8,7 @@
 #  aasm_state                     :string           default("draft"), not null
 #  cancelled_at                   :datetime
 #  claimed_at                     :datetime
+#  cover_image_preset             :string
 #  crew_limit                     :integer
 #  deadline                       :datetime
 #  description                    :text

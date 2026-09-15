@@ -27,6 +27,8 @@ module V1
             # client shows the pickup column on this rather than on the kind.
             requiresPickup: {type: :boolean},
             deadline: {type: [:string, :null], format: "date-time"},
+            coverImage: ::Shared::V1::Schemas::MediaFile,
+            coverImagePreset: {type: [:string, :null]},
             # Who is on it, and how far it has got -- what a board shows
             # without opening the contract.
             crewPreview: {type: :array, items: ::V1::Schemas::Contracts::FleetContractBoardMember},

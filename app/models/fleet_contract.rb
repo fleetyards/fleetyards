@@ -21,6 +21,7 @@
 #  aasm_state                     :string           default("draft"), not null
 #  cancelled_at                   :datetime
 #  claimed_at                     :datetime
+#  cover_image_preset             :string
 #  crew_limit                     :integer
 #  deadline                       :datetime
 #  description                    :text
@@ -58,6 +59,7 @@
 #
 class FleetContract < ApplicationRecord
   include AASM
+  include ActiveStorageVariants
 
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
@@ -96,6 +98,11 @@ class FleetContract < ApplicationRecord
   has_many :inventory_transfers, dependent: :nullify
 
   enum :kind, KINDS
+
+  has_one_attached :cover_image
+  validates :cover_image, no_vector_image: true
+
+  before_validation :default_cover_image_preset
 
   # Optional: an untitled contract describes itself from its goods. Still unique
   # when given, so two jobs in one fleet cannot share a name.
@@ -375,5 +382,27 @@ class FleetContract < ApplicationRecord
     return if slug.present? && !will_save_change_to_title?
 
     self.slug = title.present? ? generate_slug(title) : "#{kind}-#{SecureRandom.hex(4)}"
+  end
+
+  # When the form picks no preset, fall back to the kind's base asset -- the
+  # same defaulting FleetEvent does for its category, so the picture a reader
+  # sees is settled here rather than differently by each thing that renders one.
+  private def default_cover_image_preset
+    return if kind.blank?
+
+    if cover_image_preset.blank?
+      self.cover_image_preset = kind.to_s
+      return
+    end
+
+    # A preset naming a kind this contract no longer is: the form offers only
+    # the current kind's art, so this is the previous kind's default left behind
+    # by an update that changed the kind and nothing else. Left alone it would
+    # resolve to the old kind's picture.
+    stem = cover_image_preset.to_s.split("_alt").first
+    return if stem == kind.to_s
+    return unless KINDS.key?(stem.to_sym)
+
+    self.cover_image_preset = kind.to_s
   end
 end

@@ -20,6 +20,10 @@ module V1
             reimburseExpenses: {type: :boolean},
             crewLimit: {type: [:integer, :null]},
             deadline: {type: [:string, :null], format: "date-time"},
+            # The picture, the way a fleet event carries one: either art the
+            # author uploaded or the key of a preset the app ships.
+            coverImage: {type: [:string, :null]},
+            coverImagePreset: {type: [:string, :null]},
             # Only a transport contract may carry a source, and it must carry
             # one. The model refuses the other three combinations.
             sourceFleetInventoryId: {type: [:string, :null], format: :uuid},
