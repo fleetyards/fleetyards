@@ -9,15 +9,13 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import PayoutSummary from "@/frontend/components/Payouts/PayoutSummary/index.vue";
 import PayoutEntryList from "@/frontend/components/Payouts/PayoutEntryList/index.vue";
 import PayoutParticipantList from "@/frontend/components/Payouts/PayoutParticipantList/index.vue";
 import PayoutBalances from "@/frontend/components/Payouts/PayoutBalances/index.vue";
 import PayoutTransferList from "@/frontend/components/Payouts/PayoutTransferList/index.vue";
+import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useSubscription } from "@/shared/composables/useSubscription";
@@ -57,12 +55,26 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 
 const ledgerId = computed(() => props.payoutLedgerId);
 
-const { data: ledger, refetch: refetchLedger } = usePayoutLedger(ledgerId);
-const { data: balances, refetch: refetchBalances } =
-  usePayoutLedgerBalances(ledgerId);
-const { data: entries, refetch: refetchEntries } = usePayoutEntries(ledgerId);
-const { data: transfers, refetch: refetchTransfers } =
-  usePayoutTransfers(ledgerId);
+const {
+  data: ledger,
+  refetch: refetchLedger,
+  isLoading: ledgerLoading,
+} = usePayoutLedger(ledgerId);
+const {
+  data: balances,
+  refetch: refetchBalances,
+  isLoading: balancesLoading,
+} = usePayoutLedgerBalances(ledgerId);
+const {
+  data: entries,
+  refetch: refetchEntries,
+  isLoading: entriesLoading,
+} = usePayoutEntries(ledgerId);
+const {
+  data: transfers,
+  refetch: refetchTransfers,
+  isLoading: transfersLoading,
+} = usePayoutTransfers(ledgerId);
 
 const settled = computed(() => ledger.value?.status === "settled");
 
@@ -98,6 +110,12 @@ const shownTransfers = computed(() =>
   settled.value
     ? (transfers.value ?? [])
     : ((balances.value?.transfers ?? []) as never[]),
+);
+
+// Which query the list above is actually waiting on, which is the same split:
+// the frozen rows come from `transfers`, the preview from `balances`.
+const shownTransfersLoading = computed(() =>
+  settled.value ? transfersLoading.value : balancesLoading.value,
 );
 
 // Only used to say why a participant cannot be removed before the click. The
@@ -225,7 +243,13 @@ const onReopen = async () => {
 </script>
 
 <template>
-  <div v-if="ledger" class="payout-ledger">
+  <!-- The ledger's own shape: its four figures, then the entry, participant
+       and transfer panels. The four queries answer separately, so each list
+       below also carries its own wait rather than reading as empty until the
+       slowest of them lands. -->
+  <DetailSkeleton v-if="ledgerLoading" :hero="false" :figures="4" :panels="3" />
+
+  <div v-else-if="ledger" class="payout-ledger">
     <PayoutSummary :ledger="ledger" />
 
     <div class="payout-ledger__columns">
@@ -249,6 +273,7 @@ const onReopen = async () => {
             :entries="entries?.items ?? []"
             :participants="recordableParticipants"
             :editable="canRecord && !settled"
+            :loading="entriesLoading"
           />
         </PanelBody>
       </Panel>
@@ -257,10 +282,11 @@ const onReopen = async () => {
         <PanelHeading>
           <div class="payout-ledger__heading">
             <span>{{ t("headlines.payouts.participants") }}</span>
+            <!-- The same button as "add entry" in the panel beside it: the two
+                 are peers, and only one of them was a ghost. -->
             <Btn
               v-if="manageable && !settled"
               :size="BtnSizesEnum.SM"
-              :variant="BtnVariantsEnum.GHOST"
               data-test="payout-add-participant"
               @click="onAddParticipant"
             >
@@ -283,7 +309,10 @@ const onReopen = async () => {
     <Panel>
       <PanelHeading>{{ t("headlines.payouts.balances") }}</PanelHeading>
       <PanelBody>
-        <PayoutBalances :balances="balances?.balances ?? []" />
+        <PayoutBalances
+          :balances="balances?.balances ?? []"
+          :loading="balancesLoading"
+        />
       </PanelBody>
     </Panel>
 
@@ -324,6 +353,7 @@ const onReopen = async () => {
           :payout-ledger-id="payoutLedgerId"
           :transfers="shownTransfers"
           :preview="!settled"
+          :loading="shownTransfersLoading"
         />
       </PanelBody>
     </Panel>

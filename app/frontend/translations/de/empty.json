@@ -35,6 +35,24 @@
       "fleets": {
         "contracts": {
           "items": "Noch keine Waren. Füge hinzu, was dieser Auftrag verlangt — leer kann er nicht veröffentlicht werden."
+        },
+        "events": {
+          "upcoming": "Nichts geplant",
+          "past": "Noch keine vergangenen Events",
+          "archived": "Nichts archiviert",
+          "info": {
+            "upcoming": "Erstelle ein Event, um die Flotte zusammenzubringen — Zeit festlegen, Slots anlegen, Mitglieder anmelden lassen.",
+            "past": "Ein Event landet hier, sobald seine Endzeit vorbei ist.",
+            "archived": "Archivieren nimmt ein Event von der Liste, ohne es zu löschen."
+          }
+        },
+        "missions": {
+          "active": "Noch keine Missionen",
+          "archived": "Nichts archiviert",
+          "info": {
+            "active": "Eine Mission ist ein wiederverwendbarer Plan — Teams, Schiffe und Slots — aus dem du Events erzeugst.",
+            "archived": "Archivieren nimmt eine Mission von der Liste, ohne sie zu löschen."
+          }
         }
       }
     }

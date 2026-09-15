@@ -1,6 +1,7 @@
 {
   "zh-TW": {
     "labels": {
+      "loading": "載入中…",
       "true": "是",
       "false": "否",
       "null": "-",
@@ -372,6 +373,7 @@
       "yourFlagship": "您的旗艦",
       "flagship": "旗艦",
       "fleet": {
+        "index": "艦隊",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "艦隊",
         "fid": "艦隊 ID",
@@ -458,6 +460,9 @@
             "inventories": "庫存",
             "missions": "任務",
             "events": "活動",
+            "allies": "盟友",
+            "contracts": "合約",
+            "payouts": "分帳",
             "notifications": "通知"
           },
           "privileges": {
@@ -501,6 +506,20 @@
             "fleet:events:update": "更新活動",
             "fleet:events:delete": "刪除活動",
             "fleet:events:manage": "管理活動",
+            "fleet:allies:read": "檢視盟友",
+            "fleet:allies:create": "新增盟友",
+            "fleet:allies:delete": "移除盟友",
+            "fleet:allies:manage": "管理盟友",
+            "fleet:contracts:read": "檢視合約",
+            "fleet:contracts:create": "建立合約",
+            "fleet:contracts:update": "更新合約",
+            "fleet:contracts:delete": "刪除合約",
+            "fleet:contracts:manage": "管理合約",
+            "fleet:payouts:read": "檢視分帳",
+            "fleet:payouts:create": "記錄分帳",
+            "fleet:payouts:update": "更新分帳",
+            "fleet:payouts:delete": "刪除分帳",
+            "fleet:payouts:manage": "管理分帳",
             "fleet:notifications:manage": "管理通知設定"
           },
           "name": "名稱",
@@ -2229,6 +2248,8 @@
           "noMatchingVehicle": "沒有任何報名帶來符合的載具。",
           "shipNotCrewedYet": "尚無符合的報名。",
           "expandHint": "%{model} 還有 %{count} 個座位。要新增席位讓其他人填補嗎？",
+          "noExtraPositions": "這艘船沒有可再開放的席位。",
+          "expandShipHint": "選擇要在 %{model} 上開放的席位。",
           "notes": "備註",
           "upcomingTab": "即將舉行",
           "pastTab": "過去",

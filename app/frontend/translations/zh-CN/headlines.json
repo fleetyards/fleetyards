@@ -246,6 +246,7 @@
           "inAppNotifications": "应用内通知",
           "discord": "Discord",
           "calendar": "日历",
+          "contracts": "合约设置",
           "features": "舰队功能"
         },
         "inviteMember": "Invite new Member",
@@ -266,6 +267,7 @@
           "editShip": "编辑飞船"
         },
         "events": {
+          "expandShip": "增加席位",
           "index": "活动",
           "calendar": "日历",
           "create": "创建活动",

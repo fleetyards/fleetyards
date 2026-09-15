@@ -35,6 +35,24 @@
       "fleets": {
         "contracts": {
           "items": "Aucune marchandise. Ajoutez ce que ce contrat demande — il ne peut pas être publié vide."
+        },
+        "events": {
+          "upcoming": "Rien de prévu",
+          "past": "Rien ne s'est encore passé",
+          "archived": "Rien d'archivé",
+          "info": {
+            "upcoming": "Créez un événement pour rassembler la flotte — choisissez une date, ajoutez des postes et laissez les membres s'inscrire.",
+            "past": "Un événement arrive ici une fois son heure de fin passée.",
+            "archived": "Archiver retire un événement de la liste sans le supprimer."
+          }
+        },
+        "missions": {
+          "active": "Aucune mission",
+          "archived": "Rien d'archivé",
+          "info": {
+            "active": "Une mission est un plan réutilisable — équipes, vaisseaux et postes — à partir duquel vous créez des événements.",
+            "archived": "Archiver retire une mission de la liste sans la supprimer."
+          }
         }
       }
     }

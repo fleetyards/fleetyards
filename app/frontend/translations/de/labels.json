@@ -1,6 +1,7 @@
 {
   "de": {
     "labels": {
+      "loading": "Lädt…",
       "true": "Ja",
       "false": "Nein",
       "null": "-",
@@ -372,6 +373,7 @@
       "yourFlagship": "Ihr Flaggschiff",
       "flagship": "Flaggschiff",
       "fleet": {
+        "index": "Flotte",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flotte",
         "fid": "Flotten-ID",
@@ -458,6 +460,9 @@
             "inventories": "Inventare",
             "missions": "Missionen",
             "events": "Events",
+            "allies": "Verbündete",
+            "contracts": "Aufträge",
+            "payouts": "Auszahlungen",
             "notifications": "Benachrichtigungen"
           },
           "privileges": {
@@ -501,6 +506,20 @@
             "fleet:events:update": "Events aktualisieren",
             "fleet:events:delete": "Events löschen",
             "fleet:events:manage": "Events verwalten",
+            "fleet:allies:read": "Verbündete anzeigen",
+            "fleet:allies:create": "Verbündete hinzufügen",
+            "fleet:allies:delete": "Verbündete entfernen",
+            "fleet:allies:manage": "Verbündete verwalten",
+            "fleet:contracts:read": "Aufträge anzeigen",
+            "fleet:contracts:create": "Aufträge erstellen",
+            "fleet:contracts:update": "Aufträge aktualisieren",
+            "fleet:contracts:delete": "Aufträge löschen",
+            "fleet:contracts:manage": "Aufträge verwalten",
+            "fleet:payouts:read": "Auszahlungen anzeigen",
+            "fleet:payouts:create": "Auszahlungen erfassen",
+            "fleet:payouts:update": "Auszahlungen aktualisieren",
+            "fleet:payouts:delete": "Auszahlungen löschen",
+            "fleet:payouts:manage": "Auszahlungen verwalten",
             "fleet:notifications:manage": "Benachrichtigungseinstellungen verwalten"
           },
           "name": "Name",
@@ -2229,6 +2248,8 @@
           "noMatchingVehicle": "Keine Anmeldung bringt ein passendes Fahrzeug mit.",
           "shipNotCrewedYet": "Noch keine passende Anmeldung.",
           "expandHint": "%{model} hat %{count} weitere Sitze. Slots hinzufügen, damit andere sie besetzen können?",
+          "noExtraPositions": "Dieses Schiff hat keine weiteren Positionen zu öffnen.",
+          "expandShipHint": "Wähle die Positionen, die auf der %{model} geöffnet werden.",
           "notes": "Notizen",
           "upcomingTab": "Anstehend",
           "pastTab": "Vergangen",

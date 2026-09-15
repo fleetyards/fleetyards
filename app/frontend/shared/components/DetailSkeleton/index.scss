@@ -1,0 +1,100 @@
+// The figure tiles are the real ones, so a placeholder strip and the strip that
+// replaces it are the same box at the same height - only the values inside are
+// bars. Same reasoning as GridSkeleton's import of this partial.
+@import "@/shared/components/metricsCard";
+@import "@/shared/components/skeleton";
+
+// A plain block rather than a flex column: the figure strip and Panel both
+// carry their own bottom margin, and a gap here would stack on top of them.
+.detail-skeleton {
+  // 260px, which is what all three heroes this stands in for measure: the
+  // contract page sets it on a bare box, the event and mission pages through
+  // --panel-image-height on a Panel. (The 200px figure belongs to the *cards* -
+  // EventPanel and MissionPanel - not to these pages.)
+  //
+  // Deliberately not narrowed at any breakpoint: none of the real heroes shrink,
+  // so a placeholder that did would hand the page up a screen that then grows by
+  // the difference - the shift this exists to prevent.
+  &__hero {
+    position: relative;
+    height: 260px;
+    border-radius: var(--radius-surface, 16px) var(--radius-surface, 16px) 0 0;
+  }
+
+  // Bottom-anchored, because that is where the real title sits: over the foot of
+  // the picture rather than in the middle of it.
+  &__hero-body {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 24px 24px;
+  }
+
+  // Overlaps the hero's seam the way the real figure strip does, so the two do
+  // not shift past each other as the record lands.
+  &__figures {
+    position: relative;
+    z-index: 1;
+    margin-top: -28px;
+  }
+
+  &__panel-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  // Widths as a share of the line rather than in pixels: these stand in for a
+  // title and a byline, which run to whatever the record is called, and a bar
+  // measured in pixels reads as a fixed field.
+  .skeleton-bar {
+    &--kind {
+      width: 30%;
+      max-width: 140px;
+    }
+
+    &--title {
+      width: 55%;
+      // The hero title is Orbitron at hero size and the bar inherits the font of
+      // whatever it stands in, which here is the plain body text - so the height
+      // has to be said rather than inherited.
+      height: 34px;
+    }
+
+    &--byline {
+      width: 40%;
+      max-width: 240px;
+    }
+
+    &--label {
+      width: 60%;
+    }
+
+    &--figure {
+      width: 70%;
+    }
+
+    &--heading {
+      width: 35%;
+      max-width: 200px;
+    }
+  }
+
+  // Only the bars inside narrow, never the box around them: the hero's height
+  // is what the page reserves, and the real heroes keep theirs at every width.
+  @media (max-width: $desktop-breakpoint) {
+    &__hero-body {
+      padding: 0 16px 16px;
+    }
+
+    .skeleton-bar--title {
+      width: 75%;
+      height: 26px;
+    }
+  }
+}

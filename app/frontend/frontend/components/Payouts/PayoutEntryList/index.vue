@@ -10,6 +10,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import type { PayoutEntry, PayoutParticipant } from "@/services/fyApi";
@@ -19,9 +20,16 @@ type Props = {
   entries: PayoutEntry[];
   participants: PayoutParticipant[];
   editable?: boolean;
+  // The entries are a query of their own, answering after the ledger that
+  // frames this panel - so without this the panel says "nothing recorded yet"
+  // about a ledger that is still being read.
+  loading?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), { editable: false });
+const props = withDefaults(defineProps<Props>(), {
+  editable: false,
+  loading: false,
+});
 
 // The same rule the API applies: a row may only be corrected by someone who
 // may record against the participant it names. `participants` is already
@@ -54,7 +62,9 @@ const onEdit = (entry: PayoutEntry) => {
 
 <template>
   <div class="payout-entries">
-    <p v-if="!entries.length" class="payout-entries__empty">
+    <RowsSkeleton v-if="loading && !entries.length" icon trailing />
+
+    <p v-else-if="!entries.length" class="payout-entries__empty">
       {{ t("empty.payouts.entries") }}
     </p>
 

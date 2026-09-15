@@ -10,7 +10,8 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
   type Fleet,
@@ -123,9 +124,13 @@ const cancel = () => {
 <template>
   <form id="fleet-contract-settings-form" @submit.prevent="onSubmit">
     <Panel>
+      <!-- A PanelHeading rather than a Heading inside the body, which is what
+           the roles page beside it uses: the panel's own heading is Orbitron,
+           and a body heading is the plain body face. -->
+      <PanelHeading :level="HeadingLevelEnum.H3">
+        {{ t("headlines.fleet.contractCovers") }}
+      </PanelHeading>
       <PanelBody>
-        <Heading>{{ t("headlines.fleet.contractCovers") }}</Heading>
-
         <p class="contract-covers__lede">
           {{ t("texts.fleet.contractCovers") }}
         </p>

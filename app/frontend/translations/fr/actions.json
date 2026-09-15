@@ -1,6 +1,7 @@
 {
   "fr": {
     "actions": {
+      "selectAll": "Tout sélectionner",
       "admin": {
         "dashboard": {
           "reloadModels": "Recharger les modèles",

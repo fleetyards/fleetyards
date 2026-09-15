@@ -13,6 +13,7 @@ import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
 import ContractProgress from "@/frontend/components/Fleets/Contracts/ContractProgress/index.vue";
 import ContractCrewList from "@/frontend/components/Fleets/Contracts/ContractCrewList/index.vue";
@@ -62,7 +63,11 @@ const sessionStore = useSessionStore();
 const fleetSlug = computed(() => props.fleet.slug);
 const contractSlug = computed(() => route.params.contract as string);
 
-const { data: contract, refetch } = useFleetContract(fleetSlug, contractSlug);
+const {
+  data: contract,
+  refetch,
+  isLoading,
+} = useFleetContract(fleetSlug, contractSlug);
 
 const currentUserId = computed(() => sessionStore.currentUser?.id);
 
@@ -459,6 +464,13 @@ const crumbs = computed<Crumb[]>(() => [
       </Panel>
     </div>
   </template>
+
+  <!-- The four figures the page opens on - reward, delivered, deadline, crew -
+       over the hero's seam, then the route and progress panels. All four are
+       unconditional, so reserving three let the last tile shift the strip as it
+       arrived. Same arrangement as the real page, so nothing moves once the
+       contract lands. -->
+  <DetailSkeleton v-else-if="isLoading" :figures="4" :panels="2" />
 </template>
 
 <style lang="scss" scoped>

@@ -1,6 +1,7 @@
 {
   "en": {
     "actions": {
+      "selectAll": "Select all",
       "admin": {
         "dashboard": {
           "reloadModels": "Reload Models",

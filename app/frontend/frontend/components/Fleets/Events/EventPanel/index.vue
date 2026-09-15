@@ -23,7 +23,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
-import { format, parseISO } from "date-fns";
 
 type Props = {
   fleet: Fleet;
@@ -35,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   canManage: false,
 });
 
-const { t } = useI18n();
+const { t, l } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { resolve } = useMissionCover();
@@ -58,9 +57,13 @@ const recurringLabel = computed(() => {
   return t(`labels.fleets.events.recurrence.${interval}`);
 });
 
+// Through the locale's own format rather than a pattern written here: this one
+// said neither the reader's timezone nor anything the other six locales could
+// change, and when an event starts is exactly the figure that needs a zone on
+// it. Same format the events table uses.
 const startDate = computed(() => {
   try {
-    return format(parseISO(props.event.startsAt), "MMM d, yyyy · HH:mm");
+    return l(props.event.startsAt, "datetime.formats.dateTimeZone");
   } catch {
     return props.event.startsAt;
   }

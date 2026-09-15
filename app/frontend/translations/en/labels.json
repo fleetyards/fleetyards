@@ -1,6 +1,7 @@
 {
   "en": {
     "labels": {
+      "loading": "Loading…",
       "true": "Yes",
       "false": "No",
       "null": "-",
@@ -372,6 +373,7 @@
       "yourFlagship": "Your Flagship",
       "flagship": "Flagship",
       "fleet": {
+        "index": "Fleet",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Fleet",
         "fid": "Fleet ID",
@@ -458,6 +460,9 @@
             "inventories": "Inventories",
             "missions": "Missions",
             "events": "Events",
+            "allies": "Allies",
+            "contracts": "Contracts",
+            "payouts": "Payouts",
             "notifications": "Notifications"
           },
           "privileges": {
@@ -501,6 +506,20 @@
             "fleet:events:update": "Update Events",
             "fleet:events:delete": "Delete Events",
             "fleet:events:manage": "Manage Events",
+            "fleet:allies:read": "View Allies",
+            "fleet:allies:create": "Add Allies",
+            "fleet:allies:delete": "Remove Allies",
+            "fleet:allies:manage": "Manage Allies",
+            "fleet:contracts:read": "View Contracts",
+            "fleet:contracts:create": "Create Contracts",
+            "fleet:contracts:update": "Update Contracts",
+            "fleet:contracts:delete": "Delete Contracts",
+            "fleet:contracts:manage": "Manage Contracts",
+            "fleet:payouts:read": "View Payouts",
+            "fleet:payouts:create": "Record Payouts",
+            "fleet:payouts:update": "Update Payouts",
+            "fleet:payouts:delete": "Delete Payouts",
+            "fleet:payouts:manage": "Manage Payouts",
             "fleet:notifications:manage": "Manage Notification Settings"
           },
           "name": "Name",
@@ -2243,6 +2262,8 @@
           "noMatchingVehicle": "No signup brings a fitting vehicle.",
           "shipNotCrewedYet": "No fitting signup yet.",
           "expandHint": "%{model} has %{count} more seat(s). Add slots so others can fill them?",
+          "noExtraPositions": "This ship has no further positions to open.",
+          "expandShipHint": "Pick the positions to open on the %{model}.",
           "notes": "Notes",
           "upcomingTab": "Upcoming",
           "pastTab": "Past",

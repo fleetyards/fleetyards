@@ -10,9 +10,18 @@ import type { PayoutBalance } from "@/services/fyApi";
 
 type Props = {
   balances: PayoutBalance[];
+  // The balances are their own request. The header row alone, with nothing
+  // under it, reads as a ledger where nobody is owed anything.
+  loading?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), { loading: false });
+
+const skeletonVisible = computed(() => props.loading && !props.balances.length);
+
+// Enough to hold the panel open without claiming a head count: three is the
+// smallest number that still reads as a list rather than as one stray row.
+const SKELETON_ROWS = 3;
 
 const { t, toUEC } = useI18n();
 
@@ -54,6 +63,25 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
       <span>{{ t("labels.payouts.share") }}</span>
       <span>{{ t("labels.payouts.net") }}</span>
     </div>
+    <!-- Placeholders inside the same grid row rather than a list beside it, so
+         every bar stands in the column its figure will land in. -->
+    <div
+      v-for="row in skeletonVisible ? SKELETON_ROWS : 0"
+      :key="`payout-balances__skeleton-${row}`"
+      class="payout-balances__row"
+      aria-hidden="true"
+      data-test="payout-balances-skeleton-row"
+    >
+      <span class="payout-balances__name">
+        <span class="skeleton-bar skeleton-bar--name" />
+      </span>
+      <span v-if="showWeight"><span class="skeleton-bar" /></span>
+      <span><span class="skeleton-bar" /></span>
+      <span><span class="skeleton-bar" /></span>
+      <span><span class="skeleton-bar" /></span>
+      <span><span class="skeleton-bar" /></span>
+    </div>
+
     <div
       v-for="row in rows"
       :key="row.balance.participant.id"
@@ -113,6 +141,8 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
 </template>
 
 <style lang="scss" scoped>
+@import "@/shared/components/skeleton";
+
 .payout-balances {
   display: flex;
   flex-direction: column;
@@ -149,6 +179,17 @@ const showWeight = computed(() => rows.value.some((row) => row.adjusted));
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+
+// The figure columns are right-aligned, so their bars have to be too - a bar
+// filling the cell would read as a very long number.
+.payout-balances__row[aria-hidden="true"] .skeleton-bar {
+  width: 60%;
+
+  &--name {
+    width: 55%;
+    max-width: 180px;
+  }
 }
 
 .payout-balances__tag {

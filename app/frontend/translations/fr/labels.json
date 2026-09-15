@@ -1,6 +1,7 @@
 {
   "fr": {
     "labels": {
+      "loading": "Chargement…",
       "true": "Oui",
       "false": "Non",
       "null": "nul",
@@ -372,6 +373,7 @@
       "yourFlagship": "Votre vaisseau amiral",
       "flagship": "Vaisseau amiral",
       "fleet": {
+        "index": "Flotte",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flotte",
         "fid": "Identifiant de la Flotte",
@@ -458,6 +460,9 @@
             "inventories": "Inventaires",
             "missions": "Missions",
             "events": "Événements",
+            "allies": "Alliés",
+            "contracts": "Contrats",
+            "payouts": "Répartitions",
             "notifications": "Notifications"
           },
           "privileges": {
@@ -501,6 +506,20 @@
             "fleet:events:update": "Mettre à jour les événements",
             "fleet:events:delete": "Supprimer des événements",
             "fleet:events:manage": "Gérer les événements",
+            "fleet:allies:read": "Voir les alliés",
+            "fleet:allies:create": "Ajouter des alliés",
+            "fleet:allies:delete": "Retirer des alliés",
+            "fleet:allies:manage": "Gérer les alliés",
+            "fleet:contracts:read": "Voir les contrats",
+            "fleet:contracts:create": "Créer des contrats",
+            "fleet:contracts:update": "Mettre à jour les contrats",
+            "fleet:contracts:delete": "Supprimer des contrats",
+            "fleet:contracts:manage": "Gérer les contrats",
+            "fleet:payouts:read": "Voir les répartitions",
+            "fleet:payouts:create": "Enregistrer des répartitions",
+            "fleet:payouts:update": "Mettre à jour les répartitions",
+            "fleet:payouts:delete": "Supprimer des répartitions",
+            "fleet:payouts:manage": "Gérer les répartitions",
             "fleet:notifications:manage": "Gérer les paramètres de notification"
           },
           "name": "Nom",
@@ -2229,6 +2248,8 @@
           "noMatchingVehicle": "Aucune inscription n'apporte de véhicule adapté.",
           "shipNotCrewedYet": "Aucune inscription adaptée pour le moment.",
           "expandHint": "%{model} dispose de %{count} siège(s) supplémentaire(s). Ajouter des postes pour que d'autres puissent les occuper ?",
+          "noExtraPositions": "Ce vaisseau n'a plus de postes à ouvrir.",
+          "expandShipHint": "Choisissez les postes à ouvrir sur %{model}.",
           "notes": "Notes",
           "upcomingTab": "À venir",
           "pastTab": "Passés",

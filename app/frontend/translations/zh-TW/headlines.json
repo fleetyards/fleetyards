@@ -246,6 +246,7 @@
           "inAppNotifications": "應用內通知",
           "discord": "Discord",
           "calendar": "行事曆",
+          "contracts": "合約設定",
           "features": "艦隊功能"
         },
         "inviteMember": "Invite new Member",
@@ -266,6 +267,7 @@
           "editShip": "編輯飛船"
         },
         "events": {
+          "expandShip": "增加席位",
           "index": "活動",
           "calendar": "行事曆",
           "create": "建立活動",

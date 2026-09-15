@@ -13,7 +13,11 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
+import EmptyInfo from "@/shared/components/Empty/Info/index.vue";
+import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import EventPanel from "@/frontend/components/Fleets/Events/EventPanel/index.vue";
+import EventsTable from "@/frontend/components/Fleets/Events/EventsTable/index.vue";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import {
   type Fleet,
@@ -27,6 +31,19 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
+import {
+  type EventCalendarView,
+  type EventTab,
+  type EventView,
+  DEFAULT_EVENT_VIEW,
+  eventTabFrom,
+  eventViewFrom,
+  isEventCalendarView,
+  rememberedTab,
+} from "@/frontend/pages/fleets/[slug]/events/views";
+import { useEventsStore } from "@/frontend/stores/events";
+import { storeToRefs } from "pinia";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { checkAccess } from "@/shared/utils/Access";
 import { startOfMonth, endOfMonth, addDays, subDays } from "date-fns";
 
@@ -46,41 +63,52 @@ const router = useRouter();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
-type ViewKind = "list" | "month" | "week";
+const view = computed<EventView>(() => eventViewFrom(route.query.view));
 
-const view = computed<ViewKind>(() => {
-  const q = route.query.view;
-  return q === "month" || q === "week" ? q : "list";
-});
+const isCalendar = computed(() => isEventCalendarView(view.value));
 
-const isCalendar = computed(
-  () => view.value === "month" || view.value === "week",
-);
-
-const calendarView = computed<"month" | "week">(() =>
+const calendarView = computed<EventCalendarView>(() =>
   view.value === "week" ? "week" : "month",
 );
 
-const setView = (next: ViewKind) => {
+const tab = computed<EventTab>(() => eventTabFrom(view.value));
+
+const setView = (next: EventView) => {
   if (view.value === next) return;
   void router.replace({
     name: "fleet-events",
     params: { slug: props.fleet.slug },
     query: {
       ...route.query,
-      view: next === "list" ? undefined : next,
+      // The default stays out of the URL, so the page's own address is the
+      // short one and only a deliberate choice is spelled out.
+      view: next === DEFAULT_EVENT_VIEW ? undefined : next,
       // Drop the legacy calendarView param if it lingers from an older link.
       calendarView: undefined,
     },
   });
 };
 
+// Which list tab the calendar came from, so leaving the calendar puts the
+// reader back on the tab they left rather than always on "upcoming".
+//
+// Watches `view` and not `tab`: on a calendar `tab` reports the default, so
+// recording it there overwrote the very thing this is for - opening the
+// calendar from "archived" and coming back landed on "upcoming".
+const lastTab = ref<EventTab>(DEFAULT_EVENT_VIEW);
+
+watch(
+  view,
+  (current) => {
+    lastTab.value = rememberedTab(current, lastTab.value);
+  },
+  { immediate: true },
+);
+
 const toggleListCalendar = (next: "list" | "calendar") => {
-  if (next === "list") setView("list");
+  if (next === "list") setView(lastTab.value);
   else setView(view.value === "week" ? "week" : "month");
 };
-
-const tab = ref<"upcoming" | "past" | "archived">("upcoming");
 
 const queryParams = computed(() => ({
   upcoming: tab.value === "upcoming" ? true : undefined,
@@ -134,7 +162,9 @@ const listContext = useFleetEventListContextStore();
 watch(
   [view, eventList, calendarEvents],
   ([currentView, list, calendar]) => {
-    if (currentView === "list") {
+    // The three list tabs are one context to the stepper: whichever of them is
+    // showing, the next and previous event are the ones beside it in this list.
+    if (!isEventCalendarView(currentView)) {
       listContext.setContext(
         props.fleet.slug,
         "list",
@@ -227,6 +257,25 @@ const crumbs = computed<Crumb[]>(() => [
     label: props.fleet.name,
   },
 ]);
+
+// Cards or dense rows, for the list view only - the calendar is a third shape
+// and rides in the route, because a month can be linked to.
+const eventsStore = useEventsStore();
+const { gridView } = storeToRefs(eventsStore);
+
+const openDisplayOptionsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/shared/components/DisplayOptionsModal/index.vue"),
+    props: {
+      gridView: gridView.value,
+      testPrefix: "events",
+      updateCallback: (next: boolean) => {
+        eventsStore.gridView = next;
+      },
+    },
+  });
+};
 </script>
 
 <template>
@@ -263,23 +312,30 @@ const crumbs = computed<Crumb[]>(() => [
          the view: a list narrows by when, a calendar already shows the month and
          offers to hand it to your own calendar instead. -->
     <div class="events-toolbar__lead">
-      <BtnGroup v-if="view === 'list'" segmented data-test="events-tab-switch">
+      <BtnGroup v-if="!isCalendar" segmented data-test="events-tab-switch">
         <Btn
           :active="tab === 'upcoming'"
           mobile-icon-only
-          @click="tab = 'upcoming'"
+          data-test="events-tab-upcoming"
+          @click="setView('upcoming')"
         >
           <i class="fa-light fa-calendar-clock" />
           {{ t("labels.fleets.events.upcomingTab") }}
         </Btn>
-        <Btn :active="tab === 'past'" mobile-icon-only @click="tab = 'past'">
+        <Btn
+          :active="tab === 'past'"
+          mobile-icon-only
+          data-test="events-tab-past"
+          @click="setView('past')"
+        >
           <i class="fa-light fa-clock-rotate-left" />
           {{ t("labels.fleets.events.pastTab") }}
         </Btn>
         <Btn
           :active="tab === 'archived'"
           mobile-icon-only
-          @click="tab = 'archived'"
+          data-test="events-tab-archived"
+          @click="setView('archived')"
         >
           <i class="fa-light fa-box-archive" />
           {{ t("labels.fleets.events.archivedTab") }}
@@ -304,44 +360,105 @@ const crumbs = computed<Crumb[]>(() => [
       </Btn>
     </div>
 
-    <BtnGroup segmented data-test="events-view-switch">
+    <div class="events-toolbar__views">
+      <!-- Which shape the list itself takes. Beside the list/calendar switch
+           rather than inside it: a calendar is a third view of the same
+           records, and cards-or-rows is a question only the list answers. -->
       <Btn
-        :active="view === 'list'"
-        mobile-icon-only
-        @click="toggleListCalendar('list')"
+        v-if="!isCalendar"
+        :size="BtnSizesEnum.SM"
+        :aria-label="t('actions.models.openTableConfiguration')"
+        data-test="events-display-options"
+        @click="openDisplayOptionsModal"
       >
-        <i class="fa-light fa-list" />
-        {{ t("labels.fleets.events.listTab") }}
+        <i class="fa-duotone fa-sliders" />
       </Btn>
-      <Btn
-        :active="isCalendar"
-        mobile-icon-only
-        @click="toggleListCalendar('calendar')"
-      >
-        <i class="fa-light fa-calendar" />
-        {{ t("labels.fleets.events.calendarTab") }}
-      </Btn>
-    </BtnGroup>
+
+      <BtnGroup segmented data-test="events-view-switch">
+        <Btn
+          :active="!isCalendar"
+          mobile-icon-only
+          @click="toggleListCalendar('list')"
+        >
+          <i class="fa-light fa-list" />
+          {{ t("labels.fleets.events.listTab") }}
+        </Btn>
+        <Btn
+          :active="isCalendar"
+          mobile-icon-only
+          @click="toggleListCalendar('calendar')"
+        >
+          <i class="fa-light fa-calendar" />
+          {{ t("labels.fleets.events.calendarTab") }}
+        </Btn>
+      </BtnGroup>
+    </div>
   </div>
 
   <FilteredList
-    v-if="view === 'list'"
+    v-if="!isCalendar"
     key="fleet-events-index"
     :name="route.name?.toString() || ''"
     :records="eventList"
     :async-status="asyncStatus"
-    hide-empty
+    :hide-empty="!gridView"
+    :placeholders="!gridView"
   >
-    <template #skeleton="{ filterVisible }">
+    <!-- Only the grid needs placeholder cards. In table view the slot is gone,
+         which hands the wait to `placeholders` above: the table draws its own
+         header and a page of placeholder rows out of an empty record set,
+         which is closer to what arrives than cards would be. -->
+    <template v-if="gridView" #skeleton="{ filterVisible }">
       <GridSkeleton :filter-visible="filterVisible" />
     </template>
 
-    <template #default="{ records }">
-      <Grid :records="records as FleetEvent[]" primary-key="id">
+    <!-- Only the list view carries one: the calendar draws its month whether or
+         not anything falls in it, and a box over an empty grid says nothing the
+         grid does not already. -->
+    <template #empty>
+      <Empty :variant="EmptyVariantsEnum.BOX" data-test="fleet-events-empty">
+        <template #headline="{ queryPresent }">
+          <span v-if="!queryPresent">
+            {{ t(`empty.fleets.events.${tab}`) }}
+          </span>
+        </template>
+
+        <template #info="{ queryPresent }">
+          <EmptyInfo v-if="queryPresent" :query-present="queryPresent" />
+          <template v-else>
+            <p>{{ t(`empty.fleets.events.info.${tab}`) }}</p>
+            <!-- In the info slot rather than `actions`: Empty only renders its
+                 footer when a filter or a page sent the reader here, and this
+                 box is what a fleet with no events at all sees. -->
+            <Btn
+              v-if="canCreate && tab === 'upcoming'"
+              :to="{ name: 'fleet-event-new', params: { slug: fleet.slug } }"
+            >
+              <i class="fa-light fa-plus" />
+              <span>{{ t("actions.fleets.events.create") }}</span>
+            </Btn>
+          </template>
+        </template>
+      </Empty>
+    </template>
+
+    <template #default="{ records, emptyVisible }">
+      <Grid v-if="gridView" :records="records as FleetEvent[]" primary-key="id">
         <template #default="{ record }">
           <EventPanel :event="record" :fleet="fleet" :can-manage="canManage" />
         </template>
       </Grid>
+
+      <!-- The dense view: every event on one screen, in the app's table. The
+           table draws its own empty row inside its frame, so the list's panel
+           would be a second one under it - hence `hide-empty` above. -->
+      <EventsTable
+        v-else
+        :fleet="fleet"
+        :events="records as FleetEvent[]"
+        :async-status="asyncStatus"
+        :empty-visible="emptyVisible"
+      />
     </template>
   </FilteredList>
 
@@ -366,6 +483,14 @@ const crumbs = computed<Crumb[]>(() => [
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 12px;
+}
+
+/* The display options sit beside the view switch rather than in it, so the two
+   stay one block when the toolbar wraps. */
+.events-toolbar__views {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* Holds the row's height when the view offers nothing to put here, so the view

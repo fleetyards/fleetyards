@@ -43,9 +43,13 @@
     white-space: nowrap;
   }
 
+  // `nowrap`, because only the header row carries it - see Table/Col - so a
+  // deadline in this fixed-width column broke across two lines rather than
+  // overflowing, and the row grew to fit the break.
   &__reward,
   &__deadline {
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
   // Overlapped, so a crew of four still fits a column sized for a number.

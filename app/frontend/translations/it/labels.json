@@ -1,6 +1,7 @@
 {
   "it": {
     "labels": {
+      "loading": "Caricamento…",
       "true": "Si",
       "false": "No",
       "null": "-",
@@ -372,6 +373,7 @@
       "yourFlagship": "La tua Ammiraglia",
       "flagship": "Ammiraglia",
       "fleet": {
+        "index": "Flotta",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flotta",
         "fid": "ID Flotta",
@@ -458,6 +460,9 @@
             "inventories": "Inventari",
             "missions": "Missioni",
             "events": "Eventi",
+            "allies": "Alleati",
+            "contracts": "Contratti",
+            "payouts": "Pagamenti",
             "notifications": "Notifiche"
           },
           "privileges": {
@@ -501,6 +506,20 @@
             "fleet:events:update": "Aggiorna eventi",
             "fleet:events:delete": "Elimina eventi",
             "fleet:events:manage": "Gestisci eventi",
+            "fleet:allies:read": "Visualizza alleati",
+            "fleet:allies:create": "Aggiungi alleati",
+            "fleet:allies:delete": "Rimuovi alleati",
+            "fleet:allies:manage": "Gestisci alleati",
+            "fleet:contracts:read": "Visualizza contratti",
+            "fleet:contracts:create": "Crea contratti",
+            "fleet:contracts:update": "Aggiorna contratti",
+            "fleet:contracts:delete": "Elimina contratti",
+            "fleet:contracts:manage": "Gestisci contratti",
+            "fleet:payouts:read": "Visualizza pagamenti",
+            "fleet:payouts:create": "Registra pagamenti",
+            "fleet:payouts:update": "Aggiorna pagamenti",
+            "fleet:payouts:delete": "Elimina pagamenti",
+            "fleet:payouts:manage": "Gestisci pagamenti",
             "fleet:notifications:manage": "Gestisci impostazioni notifiche"
           },
           "name": "Nome",
@@ -2229,6 +2248,8 @@
           "noMatchingVehicle": "Nessuna iscrizione porta un veicolo adatto.",
           "shipNotCrewedYet": "Ancora nessuna iscrizione adatta.",
           "expandHint": "%{model} ha %{count} posti in più. Vuoi aggiungere degli slot così che altri possano occuparli?",
+          "noExtraPositions": "Questa nave non ha altri posti da aprire.",
+          "expandShipHint": "Scegli quali posti aprire su %{model}.",
           "notes": "Note",
           "upcomingTab": "In programma",
           "pastTab": "Passati",

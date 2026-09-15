@@ -1,6 +1,7 @@
 {
   "es": {
     "labels": {
+      "loading": "Cargando…",
       "true": "Sí",
       "false": "No",
       "null": "-",
@@ -372,6 +373,7 @@
       "yourFlagship": "Su nave insignia",
       "flagship": "Nave insignia",
       "fleet": {
+        "index": "Flota",
         "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flota",
         "fid": "ID de flota",
@@ -458,6 +460,9 @@
             "inventories": "Inventarios",
             "missions": "Misiones",
             "events": "Eventos",
+            "allies": "Aliados",
+            "contracts": "Contratos",
+            "payouts": "Pagos",
             "notifications": "Notificaciones"
           },
           "privileges": {
@@ -501,6 +506,20 @@
             "fleet:events:update": "Actualizar eventos",
             "fleet:events:delete": "Eliminar eventos",
             "fleet:events:manage": "Gestionar eventos",
+            "fleet:allies:read": "Ver aliados",
+            "fleet:allies:create": "Añadir aliados",
+            "fleet:allies:delete": "Quitar aliados",
+            "fleet:allies:manage": "Gestionar aliados",
+            "fleet:contracts:read": "Ver contratos",
+            "fleet:contracts:create": "Crear contratos",
+            "fleet:contracts:update": "Actualizar contratos",
+            "fleet:contracts:delete": "Eliminar contratos",
+            "fleet:contracts:manage": "Gestionar contratos",
+            "fleet:payouts:read": "Ver pagos",
+            "fleet:payouts:create": "Registrar pagos",
+            "fleet:payouts:update": "Actualizar pagos",
+            "fleet:payouts:delete": "Eliminar pagos",
+            "fleet:payouts:manage": "Gestionar pagos",
             "fleet:notifications:manage": "Gestionar la configuración de notificaciones"
           },
           "name": "Nombre",
@@ -2229,6 +2248,8 @@
           "noMatchingVehicle": "Ninguna inscripción aporta un vehículo que encaje.",
           "shipNotCrewedYet": "Aún no hay ninguna inscripción que encaje.",
           "expandHint": "%{model} tiene %{count} asiento(s) más. ¿Añadir slots para que otros los ocupen?",
+          "noExtraPositions": "Esta nave no tiene más puestos que abrir.",
+          "expandShipHint": "Elige los puestos que abrir en %{model}.",
           "notes": "Notas",
           "upcomingTab": "Próximos",
           "pastTab": "Pasados",

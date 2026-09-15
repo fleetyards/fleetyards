@@ -68,4 +68,16 @@ describe("ToursTable", () => {
 
     expect(wrapper.text()).toContain("No tours yet");
   });
+
+  // Neither page puts this table inside a FilteredList, so BaseTable has no
+  // list geometry to take a row count from and reserved none of its own -
+  // which left both pages spinning over an empty frame.
+  it("holds the table open with placeholder rows while it loads", async () => {
+    const wrapper = await mount({ tours: [], loading: true });
+
+    expect(
+      wrapper.findAll("[data-test='base-table-skeleton-row']").length,
+    ).toBeGreaterThan(0);
+    expect(wrapper.text()).not.toContain("No tours yet");
+  });
 });

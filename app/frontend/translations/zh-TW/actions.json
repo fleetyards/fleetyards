@@ -1,6 +1,7 @@
 {
   "zh-TW": {
     "actions": {
+      "selectAll": "全選",
       "admin": {
         "dashboard": {
           "reloadModels": "重新載入模型",

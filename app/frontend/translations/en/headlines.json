@@ -248,6 +248,7 @@
           "inAppNotifications": "In-app Notifications",
           "discord": "Discord",
           "calendar": "Calendar",
+          "contracts": "Contract Settings",
           "features": "Fleet Features"
         },
         "inviteMember": "Invite new Member",
@@ -268,6 +269,7 @@
           "editShip": "Edit Ship"
         },
         "events": {
+          "expandShip": "Add seats",
           "index": "Events",
           "calendar": "Calendar",
           "create": "Create Event",
