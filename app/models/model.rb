@@ -441,6 +441,15 @@ class Model < ApplicationRecord
   has_one_attached :front_view_colored
   has_one_attached :angled_view_colored
   has_one_attached :brochure
+
+  # The three a ship is drawn from, in the order every serializer prefers them.
+  # Named here so a cache key can depend on the artwork rather than on the model
+  # row, which attaching an image does not touch.
+  IMAGE_ATTACHMENT_NAMES = %i[store_image angled_view fleetchart_image].freeze
+
+  def image_attachments
+    IMAGE_ATTACHMENT_NAMES.filter_map { |name| public_send(:"#{name}_attachment") }
+  end
   has_one_attached :holo
   has_one_attached :extended_holo
   has_one_attached :extended_top_view

@@ -11,7 +11,8 @@ module V1
           name: {type: :string},
           slug: {type: :string},
           cargo: {type: :number},
-          personalInventory: {type: :number}
+          personalInventory: {type: :number},
+          image: ::Shared::V1::Schemas::MediaFile
         }
       })
     end

@@ -17,6 +17,8 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { inventoryDefaultImage } from "@/frontend/composables/useInventoryImage";
+import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import {
   type Fleet,
   type FleetInventory,
@@ -61,6 +63,18 @@ const { defineField, handleSubmit } = useForm({
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
 const [image, imageProps] = defineField("image");
+
+// Only while the inventory carries no picture of its own: `previewSrc` outranks
+// the attached file, so offering it unconditionally would hide the real one.
+const defaultImage = computed(() =>
+  // `smallUrl` rather than the attachment itself: that is the one the field
+  // draws from, and an image with no representation -- the serializer omits
+  // every size for one -- would otherwise suppress this and show nothing at
+  // all. The panel falls back the same way, so the two agree.
+  props.inventory && !props.inventory.image?.smallUrl
+    ? inventoryDefaultImage(props.inventory as InventoryPanelRecord)
+    : undefined,
+);
 const [visibility, visibilityProps] = defineField("visibility");
 const [location, locationProps] = defineField("location");
 const [managedBy] = defineField("managedBy");
@@ -152,10 +166,14 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="inventory-form" @submit.prevent="onSubmit">
+      <!-- The picture already standing in for this inventory, so the field
+           shows what it is replacing rather than an empty dropzone. Only while
+           none is attached: `previewSrc` outranks the real file. -->
       <FormFileInput
         v-model="image"
         v-bind="imageProps"
         :file="inventory?.image"
+        :preview-src="defaultImage"
         name="image"
         :label="t('labels.logistics.image')"
         :allowed-types="AllowedFileTypes.IMAGE"
