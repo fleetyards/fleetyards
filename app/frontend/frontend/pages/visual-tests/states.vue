@@ -12,6 +12,8 @@ import InventoryPanel from "@/frontend/components/Logistics/InventoryPanel/index
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
+import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
+import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import ModelsTable from "@/frontend/components/Models/Table/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -297,6 +299,50 @@ const updatePerPage = (value: number | string) => {
     <div class="col-12 col-lg-6">
       <BaseText muted no-spacing>the rows they stand in for</BaseText>
       <ModelsTable :models="comparisonModels" />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">DetailSkeleton</Heading>
+  <p>
+    What a detail page holds itself open with while its record loads - a
+    contract, an event, a mission, a tour. Before it, those pages rendered
+    nothing at all until the record landed, so the header sat alone over an
+    empty screen and the whole page appeared at once underneath it.
+    <code>hero</code> is the cover the page opens on; <code>figures</code> the
+    strip of tiles that overlaps its seam.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>with a cover and three figures</BaseText>
+      <DetailSkeleton :figures="3" :panels="1" />
+    </div>
+    <div class="col-12 col-lg-6">
+      <BaseText muted no-spacing>
+        no cover - a tour or a payout ledger
+      </BaseText>
+      <DetailSkeleton :hero="false" :figures="4" :panels="2" />
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">RowsSkeleton</Heading>
+  <p>
+    The rows a panel inside a detail page waits with - the payout ledger's
+    entries, participants and transfers, each of which answers on a request of
+    its own. Without them the panel said "nothing recorded yet" about a ledger
+    that was still being read.
+  </p>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <BaseText muted no-spacing>entries - icon and amount</BaseText>
+      <RowsSkeleton icon trailing />
+    </div>
+    <div class="col-12 col-lg-4">
+      <BaseText muted no-spacing>transfers - amount only</BaseText>
+      <RowsSkeleton :meta="false" trailing />
+    </div>
+    <div class="col-12 col-lg-4">
+      <BaseText muted no-spacing>participants - names</BaseText>
+      <RowsSkeleton :meta="false" />
     </div>
   </div>
 

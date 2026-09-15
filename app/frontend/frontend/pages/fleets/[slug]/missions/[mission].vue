@@ -13,7 +13,7 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
-import Loader from "@/shared/components/Loader/index.vue";
+import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
 import TeamCard from "@/frontend/components/Fleets/Missions/TeamCard/index.vue";
 import MissionAdminActions from "@/frontend/components/Fleets/Missions/MissionAdminActions/index.vue";
 import {
@@ -143,7 +143,10 @@ const hasFooter = computed(() => !!mission.value?.description);
     </template>
   </BreadCrumbs>
 
-  <Loader :loading="isLoading" />
+  <!-- The mission's own shape: the cover panel it opens on, then a section per
+       team and one for the events spawned from it. A spinner in the middle of
+       an empty page said only that something was happening. -->
+  <DetailSkeleton v-if="isLoading && !mission" :panels="2" />
 
   <div v-if="mission" class="mission-detail">
     <!--

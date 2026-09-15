@@ -1,0 +1,56 @@
+@import "@/shared/components/skeleton";
+
+// Built to the recipe of the payout panel rows it stands in for - see
+// PayoutEntryList and PayoutTransferList, which share this row shape - so the
+// placeholder and the record are the same height and nothing shifts as the
+// figures land.
+.rows-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--color-edge-faint, rgba(255, 255, 255, 0.08));
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  // A square, not a bar: the rows that carry one hold an icon, and a line the
+  // width of the column would read as a very short label.
+  &__icon {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    background: rgba($gray-light, 0.18);
+  }
+
+  &__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .skeleton-bar {
+    &--meta {
+      width: 35%;
+      max-width: 160px;
+      // The meta line is 11px where the title is body size, and the bar takes
+      // the height of the line it stands in - so it has to be said here.
+      height: 9px;
+    }
+
+    &--trailing {
+      flex: 0 0 auto;
+      width: 72px;
+    }
+  }
+}
