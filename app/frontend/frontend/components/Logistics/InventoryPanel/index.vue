@@ -22,10 +22,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
-import fallbackImage1 from "@/images/inventories/placeholder-1.webp";
-import fallbackImage2 from "@/images/inventories/placeholder-2.jpg";
-
-const fallbackImages = [fallbackImage1, fallbackImage2];
+import { useInventoryImage } from "@/frontend/composables/useInventoryImage";
 
 type Props = {
   inventory: InventoryPanelRecord;
@@ -110,17 +107,7 @@ const showCargoGridsLink = computed(
     (props.inventory.totalVolumeScu ?? 0) >= 1,
 );
 
-const fallbackIndex = computed(() => {
-  let hash = 0;
-  for (const ch of props.inventory.name) {
-    hash = (hash << 5) - hash + ch.charCodeAt(0);
-  }
-  return Math.abs(hash) % fallbackImages.length;
-});
-
-const image = computed(
-  () => props.inventory.image?.mediumUrl || fallbackImages[fallbackIndex.value],
-);
+const { image } = useInventoryImage(() => props.inventory);
 </script>
 
 <template>

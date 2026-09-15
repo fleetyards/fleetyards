@@ -30,7 +30,17 @@ module Api
         query_params["sorts"] = sorting_params(Inventory, query_params["sorts"])
 
         @q = scope.ransack(query_params)
-        result = @q.result(distinct: true)
+        # A ship's hold is drawn as its ship, so the serializer reaches for the
+        # model's artwork on every vehicle-backed row -- three attachment
+        # lookups and a blob read each without this.
+        result = @q.result(distinct: true).includes(
+          image_attachment: :blob,
+          vehicle: {model: [
+            {store_image_attachment: :blob},
+            {angled_view_attachment: :blob},
+            {fleetchart_image_attachment: :blob}
+          ]}
+        )
 
         @hangar_inventories = result_with_pagination(result, per_page(Inventory))
       end

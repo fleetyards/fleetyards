@@ -35,10 +35,32 @@ if inventory.vehicle.present?
     json.name inventory.vehicle.display_name
     json.serial inventory.vehicle.serial
     json.model do
-      json.name inventory.vehicle.model.name
-      json.slug inventory.vehicle.model.slug
-      json.cargo inventory.vehicle.model.cargo.to_f
-      json.personal_inventory inventory.vehicle.model.personal_inventory.to_f
+      model = inventory.vehicle.model
+
+      json.name model.name
+      json.slug model.slug
+      json.cargo model.cargo.to_f
+      json.personal_inventory model.personal_inventory.to_f
+
+      # What a ship's hold looks like when nobody has given it a picture: the
+      # ship itself. Same order of preference the rest of the API shows a model
+      # in, so the hold and the ship never disagree about which one that is.
+      image_attr = if model.store_image.attached?
+        :store_image
+      elsif model.angled_view.attached?
+        :angled_view
+      elsif model.fleetchart_image.attached?
+        :fleetchart_image
+      end
+
+      # Omitted rather than null when there is none: the schema documents this
+      # as an optional MediaFile, and a null would disagree with both it and the
+      # generated client, which types the property as absent-or-object.
+      if image_attr
+        json.image do
+          json.partial! "api/v1/shared/file", record: model, attr: image_attr
+        end
+      end
     end
   end
 else

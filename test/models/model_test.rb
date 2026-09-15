@@ -767,4 +767,41 @@ class ModelVehicleSizeTest < ActiveSupport::TestCase
     assert_equal "extra_extra_small", Model::VEHICLE_SIZES.first
     assert_equal "extra_extra_large", Model::VEHICLE_SIZES.last
   end
+
+  # What a ship inventory's cache key is built from. Attaching artwork writes an
+  # Attachment row and leaves the model row untouched, so a key made of the
+  # model alone would go on serving the picture the ship used to have.
+  test "#image_attachments is empty for a model with no artwork" do
+    assert_empty create(:model).image_attachments
+  end
+
+  test "#image_attachments picks up artwork as it is attached" do
+    model = create(:model)
+
+    model.store_image.attach(
+      io: file_fixture("test.png").open,
+      filename: "store.png",
+      content_type: "image/png"
+    )
+
+    assert_equal 1, model.reload.image_attachments.size
+  end
+
+  test "#image_attachments changes when the artwork is replaced" do
+    model = create(:model)
+    model.store_image.attach(
+      io: file_fixture("test.png").open,
+      filename: "store.png",
+      content_type: "image/png"
+    )
+    before = model.reload.image_attachments.map(&:id)
+
+    model.store_image.attach(
+      io: file_fixture("image.jpg").open,
+      filename: "store.jpg",
+      content_type: "image/jpeg"
+    )
+
+    assert_not_equal before, model.reload.image_attachments.map(&:id)
+  end
 end
