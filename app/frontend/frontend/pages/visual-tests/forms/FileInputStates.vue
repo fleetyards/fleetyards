@@ -36,6 +36,12 @@ const saved = ref<string | null>("stored-blob-id");
 
 const empty = ref<string | null>(null);
 
+// The catalogue states. Two controls, because a preset chosen and a catalogue
+// merely offered look nothing alike and both have to be reviewable.
+const preset = ref<string | null>("mining");
+
+const noPreset = ref<string | null>(null);
+
 /*
  * The other way an image reaches this control, and the one that happens in the
  * app: a persisted file, from which the component reads `smallUrl` itself.
@@ -88,6 +94,31 @@ const savedFile: MediaFile = {
           :file="savedFile"
           :allowed-types="AllowedFileTypes.IMAGE"
           :allowed-size-mb="5"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <p class="text-muted">preset — chosen, drawn like an upload</p>
+        <FormFileInput
+          v-model="empty"
+          v-model:preset-value="preset"
+          name="filePreset"
+          label="Image"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          preset-catalogue="missions"
+          preset-group="mining"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <p class="text-muted">preset — offered, nothing chosen</p>
+        <FormFileInput
+          v-model="empty"
+          v-model:preset-value="noPreset"
+          name="filePresetEmpty"
+          label="Image"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          preset-catalogue="inventories"
           clearable
         />
       </div>

@@ -90,6 +90,10 @@
       "deleteSelected": "Ausgewählte löschen",
       "enableSelected": "Ausgewählte aktivieren",
       "disableSelected": "Ausgewählte deaktivieren",
+      "presets": {
+        "choose": "Bild auswählen",
+        "remove": "Bild entfernen"
+      },
       "close": "Schließen",
       "filter": "Filter",
       "showStatusColor": "Status als Farbe anzeigen",

@@ -5,6 +5,12 @@
       "true": "是",
       "false": "否",
       "null": "-",
+      "presets": {
+        "title": "选择图片",
+        "filter": "类型",
+        "all": "全部",
+        "empty": "没有可用的图片。"
+      },
       "supporter": {
         "badge": "支持者",
         "tooltip": "本月正在支持 FleetYards.net"
@@ -2139,7 +2145,6 @@
           "seats": "座位",
           "category": "分类",
           "coverImage": "封面图片",
-          "coverPresets": "从示例中选择",
           "scenario": "场景",
           "categories": {
             "other": "其他",

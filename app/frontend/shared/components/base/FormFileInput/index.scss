@@ -152,6 +152,42 @@
     }
   }
 
+  /*
+   * Always visible, unlike the clear button beside it. Clearing is something a
+   * reader goes looking for once they have decided; the catalogue is the offer
+   * itself, and an offer that only appears under the pointer is one nobody on a
+   * touch screen is ever made.
+   *
+   * Opposite corner from the clear button on purpose: the two are not a pair,
+   * and a destructive action should not sit where a hand reaches for the
+   * harmless one.
+   */
+  &__preset {
+    position: absolute;
+    right: 0;
+    bottom: 5px;
+    z-index: 4;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-control, rgb(35 39 43 / 0.95)) !important;
+    border-radius: 10px 0 0 10px;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 0.15s ease-in-out;
+
+    &:hover,
+    &:focus-visible {
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
   &--disabled {
     --field-cap: transparent;
 
