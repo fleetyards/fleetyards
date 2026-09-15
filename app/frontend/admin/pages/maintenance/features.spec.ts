@@ -19,7 +19,9 @@ const feature = (overrides: Partial<Feature> = {}): Feature => ({
   ...overrides,
 });
 
-const features = ref<Feature[] | undefined>(undefined);
+const features = vi.hoisted(() => ({
+  value: undefined as Feature[] | undefined,
+}));
 
 vi.mock("@/services/fyAdminApi", () => ({
   useAdminFeatures: () => ({ data: features, isLoading: ref(false) }),
