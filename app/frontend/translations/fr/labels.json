@@ -2286,6 +2286,12 @@
           "repeats": "Répétition"
         },
         "contracts": {
+          "tabs": {
+            "details": "Détails",
+            "delivery": "Livraison",
+            "crew": "Équipage et prime",
+            "goods": "Marchandises"
+          },
           "title": "Titre",
           "description": "Description",
           "reward": "Récompense",

@@ -80,8 +80,6 @@ const crumbs = computed<Crumb[]>(() => [
          deliver, which is what sends an author here. -->
     <ContractForm :fleet="fleet" :contract="contract" @cancel="cancel">
       <template #sections>
-        <Heading>{{ t("headlines.fleets.contracts.items") }}</Heading>
-
         <ContractItemsForm
           :fleet="fleet"
           :contract="contract"

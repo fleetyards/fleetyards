@@ -2300,6 +2300,12 @@
           "repeats": "Repeats"
         },
         "contracts": {
+          "tabs": {
+            "details": "Details",
+            "delivery": "Delivery",
+            "crew": "Crew & reward",
+            "goods": "Goods"
+          },
           "title": "Title",
           "description": "Description",
           "reward": "Reward",

@@ -68,8 +68,6 @@ const crumbs = computed<Crumb[]>(() => [
     @kind-change="kind = $event"
   >
     <template #sections>
-      <Heading>{{ t("headlines.fleets.contracts.items") }}</Heading>
-
       <ContractItemsForm
         :fleet="fleet"
         :kind="kind"

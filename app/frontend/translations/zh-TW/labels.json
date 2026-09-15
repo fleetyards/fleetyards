@@ -2286,6 +2286,12 @@
           "repeats": "重複"
         },
         "contracts": {
+          "tabs": {
+            "details": "詳細資訊",
+            "delivery": "運送",
+            "crew": "船員與報酬",
+            "goods": "貨物"
+          },
           "title": "標題",
           "description": "描述",
           "reward": "報酬",

@@ -2286,6 +2286,12 @@
           "repeats": "Ricorrente"
         },
         "contracts": {
+          "tabs": {
+            "details": "Dettagli",
+            "delivery": "Consegna",
+            "crew": "Equipaggio e premio",
+            "goods": "Merci"
+          },
           "title": "Titolo",
           "description": "Descrizione",
           "reward": "Ricompensa",
