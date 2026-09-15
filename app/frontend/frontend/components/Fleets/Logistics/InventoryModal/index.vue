@@ -78,7 +78,10 @@ const visibilityOptions: FilterOption[] = [
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
   return fetchFleetMembers(props.fleet.slug, {
-    q: { usernameCont: params.search || undefined },
+    q: {
+      usernameCont: params.search || undefined,
+      stateIn: ["accepted"],
+    },
   });
 };
 
