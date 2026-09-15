@@ -6,6 +6,7 @@ const destroySession = vi.fn(() => Promise.resolve());
 vi.mock("@/services/fyApi", () => ({
   destroySession: () => destroySession(),
   me: vi.fn(),
+  getMySupporterClaimKeyQueryKey: () => ["me", "supporter", "claim-key"],
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
