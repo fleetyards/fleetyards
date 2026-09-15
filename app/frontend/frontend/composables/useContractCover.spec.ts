@@ -30,6 +30,49 @@ describe("useContractCover", () => {
     expect(procurement).toContain("other");
   });
 
+  /*
+   * The two halves of the same value. Nothing writes a default into the column
+   * any more, so an unset preset is the absence of a choice and the fleet's own
+   * cover answers -- while a stored one is a picture somebody picked, even when
+   * it names this contract's own kind, which is a tile the picker offers.
+   */
+  it("lets the fleet's cover answer when nothing was chosen", () => {
+    const fleet = {
+      contractCovers: { crafting: { mediumUrl: "/uploads/own-cover.webp" } },
+    } as never;
+    const unchosen = {
+      kind: FleetContractKindEnum.CRAFTING,
+      coverImagePreset: null,
+    } as never;
+
+    expect(resolve(unchosen, fleet)).toBe("/uploads/own-cover.webp");
+  });
+
+  it("keeps a preset naming the contract's own kind", () => {
+    const fleet = {
+      contractCovers: { crafting: { mediumUrl: "/uploads/own-cover.webp" } },
+    } as never;
+    const chosen = {
+      kind: FleetContractKindEnum.CRAFTING,
+      coverImagePreset: "crafting",
+    } as never;
+
+    expect(resolve(chosen, fleet)).toContain("crafting");
+    expect(resolve(chosen, fleet)).not.toBe("/uploads/own-cover.webp");
+  });
+
+  it("keeps a preset naming another kind", () => {
+    const fleet = {
+      contractCovers: { transport: { mediumUrl: "/uploads/own-cover.webp" } },
+    } as never;
+    const crossKind = {
+      kind: FleetContractKindEnum.TRANSPORT,
+      coverImagePreset: "crafting",
+    } as never;
+
+    expect(resolve(crossKind, fleet)).toContain("crafting");
+  });
+
   // A fleet that uploaded its own cover sees that, not the built-in one.
   it("prefers the fleet's own upload over everything", () => {
     const fleet = {

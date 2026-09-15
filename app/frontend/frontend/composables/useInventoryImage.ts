@@ -60,14 +60,27 @@ export const useInventoryImage = (
   /*
    * The inventory's own picture first, and `url` after `mediumUrl` because only
    * the original is guaranteed -- an attachment with no sized variants is still
-   * the picture somebody uploaded. Then the preset they chose, then the one
-   * their name lands on.
+   * the picture somebody uploaded.
+   *
+   * Then the ship, for a hold that rides in one. It outranks a preset on
+   * purpose: a ship's hold is shown as its ship, and the form that would let
+   * somebody choose otherwise is not offered for one. The column still allows a
+   * preset, so the rule is kept here rather than assumed.
+   *
+   * Then the preset they chose, then the one their name lands on.
    */
   const image = computed(() => {
-    const own = toValue(inventory).image;
+    const record = toValue(inventory);
+    const own = record.image;
+    const ship = record.vehicle?.model?.image;
 
     return (
-      own?.mediumUrl || own?.url || chosenImage.value || defaultImage.value
+      own?.mediumUrl ||
+      own?.url ||
+      ship?.mediumUrl ||
+      ship?.url ||
+      chosenImage.value ||
+      defaultImage.value
     );
   });
 

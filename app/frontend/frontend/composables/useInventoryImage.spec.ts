@@ -127,6 +127,39 @@ describe("useInventoryImage", () => {
     );
   });
 
+  /*
+   * The form that would let somebody pick one is not offered for a ship's hold,
+   * but the column allows a preset and the API is not the only way rows get
+   * written. A hold that rides in a ship is shown as that ship, full stop.
+   */
+  it("shows a ship's hold as its ship even when a preset was stored", () => {
+    const { image } = useInventoryImage(
+      inventory({
+        imagePreset: inventoryPresets[0].key,
+        vehicle: { id: "v-1", name: "North Star", model: { image: shipImage } },
+      }),
+    );
+
+    expect(image.value).toBe(shipImage.mediumUrl);
+  });
+
+  // Only the original is guaranteed, so a ship whose art has no sized variants
+  // is still that ship rather than falling through to a preset.
+  it("takes the ship's original when it has no sized variants", () => {
+    const { image } = useInventoryImage(
+      inventory({
+        imagePreset: inventoryPresets[0].key,
+        vehicle: {
+          id: "v-1",
+          name: "North Star",
+          model: { image: { url: "https://example.test/original.jpg" } },
+        },
+      }),
+    );
+
+    expect(image.value).toBe("https://example.test/original.jpg");
+  });
+
   // A ship's hold is shown as its ship, and offers no picture of its own to
   // pick -- so nothing can ever overrule that.
   it("still shows a ship's hold as its ship", () => {

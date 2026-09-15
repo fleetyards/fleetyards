@@ -102,8 +102,6 @@ class FleetContract < ApplicationRecord
   has_one_attached :cover_image
   validates :cover_image, no_vector_image: true
 
-  before_validation :default_cover_image_preset
-
   # Optional: an untitled contract describes itself from its goods. Still unique
   # when given, so two jobs in one fleet cannot share a name.
   validates :title, uniqueness: {case_sensitive: false, scope: :fleet_id}, allow_blank: true
@@ -382,30 +380,5 @@ class FleetContract < ApplicationRecord
     return if slug.present? && !will_save_change_to_title?
 
     self.slug = title.present? ? generate_slug(title) : "#{kind}-#{SecureRandom.hex(4)}"
-  end
-
-  # When the form picks no preset, fall back to the kind's base asset -- the
-  # same defaulting FleetEvent does for its category, so the picture a reader
-  # sees is settled here rather than differently by each thing that renders one.
-  private def default_cover_image_preset
-    return if kind.blank?
-
-    if cover_image_preset.blank?
-      self.cover_image_preset = kind.to_s
-      return
-    end
-
-    # The default left behind by an update that changed the kind and nothing
-    # else: the old kind's own stem, which would go on resolving to the old
-    # kind's picture.
-    #
-    # Only that one. The picker offers every kind's art and says so, so any
-    # other value is a picture somebody chose for this job -- re-defaulting it
-    # would throw away the choice and show no sign of having done so.
-    # `persisted?` as well: on a create `kind_was` is only the column default,
-    # and nothing was left behind by anything.
-    return unless persisted? && kind_changed?
-
-    self.cover_image_preset = kind.to_s if cover_image_preset == kind_was.to_s
   end
 end

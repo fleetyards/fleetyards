@@ -38,8 +38,14 @@ export const useContractCover = () => {
       );
     }
 
-    const preset = presetImageUrl("contracts", contract?.coverImagePreset);
-    if (preset) return preset;
+    /*
+     * Any value here is a picture somebody chose, including one that names this
+     * contract's own kind. Nothing writes a default into the column any more --
+     * an unset preset is the absence of a choice, which is what lets the
+     * fleet's own cover answer below.
+     */
+    const chosen = presetImageUrl("contracts", contract?.coverImagePreset);
+    if (chosen) return chosen;
 
     const own =
       fleet?.contractCovers?.[kind as keyof typeof fleet.contractCovers];
