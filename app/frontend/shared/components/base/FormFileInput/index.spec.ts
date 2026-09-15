@@ -2,12 +2,13 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
 import { presetImageUrl } from "@/shared/composables/usePresetImages";
+import PresetImagePicker from "@/shared/components/PresetImagePicker/index.vue";
 import Component from "./index.vue";
 
-const emit = vi.fn();
-
-vi.mock("@/shared/composables/useComlink", () => ({
-  useComlink: () => ({ emit, on: () => () => undefined }),
+// jsdom reports a narrow viewport, and the picker's chip row folds into a
+// closed dropdown there.
+vi.mock("@/shared/composables/useMobile", () => ({
+  useMobile: () => false,
 }));
 
 // The holo branch pulls in three.js, which will not resolve under vitest -- and
@@ -34,7 +35,7 @@ let wrapper: VueWrapper | undefined;
 afterEach(() => {
   wrapper?.unmount();
   wrapper = undefined;
-  emit.mockClear();
+  document.body.innerHTML = "";
 });
 
 const mount = async (props: Record<string, unknown> = {}) => {
@@ -48,8 +49,11 @@ const mount = async (props: Record<string, unknown> = {}) => {
 const shownImage = (subject: VueWrapper) =>
   subject.findComponent({ name: "LazyImage" });
 
-const openModal = () =>
-  emit.mock.calls.find(([event]) => event === "open-modal")?.[1];
+const picker = () => wrapper?.findComponent(PresetImagePicker);
+
+const openPicker = async (subject: VueWrapper) => {
+  await subject.find("[data-test='choose-preset-coverImage']").trigger("click");
+};
 
 const attachedSmallUrl = "https://example.test/cover.webp";
 
@@ -112,33 +116,47 @@ describe("FormFileInput presets", () => {
     ).toBe(true);
   });
 
-  it("opens the picker on the record's own type", async () => {
+  // Its own overlay, not the app modal: this control sits inside a modal in the
+  // logistics forms, and the app has one -- the picker would have replaced the
+  // form being filled in.
+  it("opens the picker on the record's own type, in its own surface", async () => {
     const subject = await mount({
       presetCatalogue: "missions",
       presetValue: "mining",
       presetGroup: "salvage",
     });
 
-    await subject
-      .find("[data-test='choose-preset-coverImage']")
-      .trigger("click");
+    expect(picker()?.exists()).toBe(false);
 
-    expect(openModal()?.props).toMatchObject({
+    await openPicker(subject);
+
+    expect(picker()?.props()).toMatchObject({
       catalogue: "missions",
       selected: "mining",
       group: "salvage",
     });
+    expect(document.body.querySelector("[data-test='preset-picker']")).not.toBe(
+      null,
+    );
   });
 
   it("hands a choice back to the form", async () => {
     const subject = await mount({ presetCatalogue: "missions" });
 
-    await subject
-      .find("[data-test='choose-preset-coverImage']")
-      .trigger("click");
-    openModal()?.props.onSelect("mining");
+    await openPicker(subject);
+    picker()?.vm.$emit("select", "mining");
 
     expect(subject.emitted("update:presetValue")?.at(-1)).toEqual(["mining"]);
+  });
+
+  it("puts the picker away once it has been answered", async () => {
+    const subject = await mount({ presetCatalogue: "missions" });
+
+    await openPicker(subject);
+    picker()?.vm.$emit("close");
+    await subject.vm.$nextTick();
+
+    expect(picker()?.exists()).toBe(false);
   });
 
   /*
@@ -152,10 +170,8 @@ describe("FormFileInput presets", () => {
       presetCatalogue: "missions",
     });
 
-    await subject
-      .find("[data-test='choose-preset-coverImage']")
-      .trigger("click");
-    openModal()?.props.onSelect("mining");
+    await openPicker(subject);
+    picker()?.vm.$emit("select", "mining");
 
     expect(subject.emitted("update:modelValue")?.at(-1)).toEqual([null]);
 
@@ -175,10 +191,8 @@ describe("FormFileInput presets", () => {
       presetValue: "mining",
     });
 
-    await subject
-      .find("[data-test='choose-preset-coverImage']")
-      .trigger("click");
-    openModal()?.props.onSelect(null);
+    await openPicker(subject);
+    picker()?.vm.$emit("select", null);
 
     expect(subject.emitted("update:presetValue")?.at(-1)).toEqual([null]);
     expect(subject.emitted("update:modelValue")).toBeUndefined();

@@ -20,7 +20,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { type MediaFile } from "@/services/fyApi";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
-import { useComlink } from "@/shared/composables/useComlink";
+import PresetImagePicker from "@/shared/components/PresetImagePicker/index.vue";
 import {
   presetImageUrl,
   type PresetCatalogueName,
@@ -239,8 +239,6 @@ const onUploadClear = () => {
   });
 };
 
-const comlink = useComlink();
-
 /*
  * Only while this control holds no file of its own. The attachment is the
  * picture the record actually carries -- every reader of it prefers the upload
@@ -281,18 +279,13 @@ const selectPreset = (key: string | null) => {
   emit("update:presetValue", key);
 };
 
-const openPresetPicker = () => {
-  comlink.emit("open-modal", {
-    component: () => import("@/shared/components/PresetImageModal/index.vue"),
-    wide: true,
-    props: {
-      catalogue: props.presetCatalogue,
-      selected: props.presetValue,
-      group: props.presetGroup,
-      onSelect: selectPreset,
-    },
-  });
-};
+/*
+ * The picker brings its own overlay rather than going through the app modal,
+ * because this control is itself inside one in the logistics forms -- and the
+ * app has a single modal, so opening a second would replace the form being
+ * filled in.
+ */
+const pickerOpen = ref(false);
 
 const fileTypeIconClass = computed(() => {
   if (
@@ -501,10 +494,18 @@ defineExpose({
         variant="bare"
         :aria-label="t('actions.presets.choose')"
         :data-test="`choose-preset-${name}`"
-        @click="openPresetPicker"
+        @click="pickerOpen = true"
       >
         <i class="fa-light fa-images" />
       </Btn>
+      <PresetImagePicker
+        v-if="pickerOpen && presetCatalogue"
+        :catalogue="presetCatalogue"
+        :selected="presetValue"
+        :group="presetGroup"
+        @select="selectPreset"
+        @close="pickerOpen = false"
+      />
       <Btn
         v-if="clearable && (internalSrc || inputValue)"
         v-tooltip="clearLabel"
