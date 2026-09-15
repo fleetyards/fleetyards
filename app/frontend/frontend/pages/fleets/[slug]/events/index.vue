@@ -30,6 +30,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useEventDraft } from "@/frontend/composables/useDraftCreate";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 import {
   type EventCalendarView,
@@ -129,13 +130,18 @@ const visibleRange = ref<{ start: Date; end: Date }>({
   end: addDays(endOfMonth(new Date()), 7),
 });
 
+const { create: createEventDraft, pending: creating } = useEventDraft();
+
+/*
+ * The button writes the event rather than opening a form that would write it
+ * later: an event has to exist before its teams, ships and slots can hang off
+ * it, and those are the editor's whole job. Clicking a day on the calendar
+ * starts it there rather than now.
+ */
 const goToCreate = (date: Date) => {
   if (!canCreate.value) return;
-  void router.push({
-    name: "fleet-event-new",
-    params: { slug: props.fleet.slug },
-    query: { startsAt: date.toISOString() },
-  });
+
+  void createEventDraft(props.fleet.slug, { startsAt: date });
 };
 
 const calendarParams = computed(() => ({
@@ -181,12 +187,23 @@ watch(
   { immediate: true },
 );
 
-const canCreate = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:events:manage",
-    "fleet:events:create",
-  ]),
+/*
+ * `update` as well as `create`, because the button no longer opens a form -- it
+ * writes a draft and lands the author in the editor. Somebody who may create but
+ * not update would be handed an event they cannot name, publish or throw away.
+ */
+const canCreate = computed(
+  () =>
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:events:manage",
+      "fleet:events:create",
+    ]) &&
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:events:manage",
+      "fleet:events:update",
+    ]),
 );
 
 const canManage = computed(() =>
@@ -300,7 +317,8 @@ const openDisplayOptionsModal = () => {
     <Btn
       v-if="canCreate"
       :size="BtnSizesEnum.MD"
-      :to="{ name: 'fleet-event-new', params: { slug: props.fleet.slug } }"
+      :loading="creating"
+      @click="goToCreate(new Date())"
       :aria-label="t('actions.fleets.events.create')"
       mobile-icon-only
     >

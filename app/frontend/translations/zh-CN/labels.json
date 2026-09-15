@@ -2104,6 +2104,7 @@
       },
       "fleets": {
         "missions": {
+          "untitled": "未命名任务",
           "title": "标题",
           "description": "描述",
           "team": "小队",
@@ -2152,6 +2153,7 @@
           }
         },
         "events": {
+          "untitled": "未命名活动",
           "title": "标题",
           "description": "描述",
           "briefing": "简报",

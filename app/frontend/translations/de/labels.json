@@ -2104,6 +2104,7 @@
       },
       "fleets": {
         "missions": {
+          "untitled": "Unbenannte Mission",
           "title": "Titel",
           "description": "Beschreibung",
           "team": "Team",
@@ -2152,6 +2153,7 @@
           }
         },
         "events": {
+          "untitled": "Unbenanntes Event",
           "title": "Titel",
           "description": "Beschreibung",
           "briefing": "Briefing",

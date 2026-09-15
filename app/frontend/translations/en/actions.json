@@ -311,6 +311,7 @@
       "today": "Today",
       "fleets": {
         "missions": {
+          "publish": "Publish",
           "create": "Create Mission",
           "edit": "Edit Mission",
           "archive": "Archive Mission",

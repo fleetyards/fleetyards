@@ -18,6 +18,7 @@ module V1
               scenario: {type: :string},
               coverImagePreset: {type: :string},
               coverImage: ::Shared::V1::Schemas::MediaFile,
+              status: ::V1::Schemas::Enums::MissionStatusEnum,
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time"},
               createdBy: ::V1::Schemas::UserRef,

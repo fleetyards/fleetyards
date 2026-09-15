@@ -13,6 +13,7 @@ import {
   type Fleet,
   type MissionExtended,
   useDestroyFleetMission,
+  usePublishMission,
   useUnarchiveFleetMission,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -60,8 +61,28 @@ const canCreateEvents = computed(() =>
 
 const archived = computed(() => !!props.mission.archived);
 
+// A mission nobody has offered to the fleet yet. The create button writes one
+// of these, so the author needs both of its exits from here: publish it, or
+// throw it away -- and throwing it away removes it rather than archiving a
+// mission that was never seen.
+const draft = computed(() => props.mission.status === "draft");
+
 const destroyMutation = useDestroyFleetMission();
 const unarchiveMutation = useUnarchiveFleetMission();
+const publishMutation = usePublishMission();
+
+const publish = async () => {
+  try {
+    await publishMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: props.mission.slug,
+    });
+    displaySuccess({ text: t("messages.fleets.mission.publish.success") });
+    comlink.emit("fleet-mission-updated");
+  } catch {
+    displayAlert({ text: t("messages.fleets.mission.publish.failure") });
+  }
+};
 
 const goToEdit = () => {
   void router.push({
@@ -137,6 +158,16 @@ const handleDestroy = () => {
     </Btn>
     <BtnDropdown :size="BtnSizesEnum.SM">
       <Btn
+        v-if="canEdit && draft"
+        :size="BtnSizesEnum.SM"
+        :loading="publishMutation.isPending.value"
+        data-test="mission-publish"
+        @click="publish"
+      >
+        <i class="fa-light fa-paper-plane" />
+        <span>{{ t("actions.fleets.missions.publish") }}</span>
+      </Btn>
+      <Btn
         v-if="canCreateEvents && !archived"
         :size="BtnSizesEnum.SM"
         @click="goToSpawnEvent"
@@ -154,7 +185,7 @@ const handleDestroy = () => {
         <span>{{ t("actions.fleets.missions.unarchive") }}</span>
       </Btn>
       <Btn
-        v-if="canDelete && !archived"
+        v-if="canDelete && !archived && !draft"
         :size="BtnSizesEnum.SM"
         tone="danger"
         :loading="destroyMutation.isPending.value"
@@ -163,10 +194,13 @@ const handleDestroy = () => {
         <i class="fa-light fa-archive" />
         <span>{{ t("actions.fleets.missions.archive") }}</span>
       </Btn>
+      <!-- A draft is deleted outright by the same endpoint, so it says so
+           rather than offering to archive something nobody ever saw. -->
       <Btn
-        v-if="canDelete && archived"
+        v-if="canDelete && (archived || draft)"
         :size="BtnSizesEnum.SM"
         tone="danger"
+        data-test="mission-destroy"
         @click="handleDestroy"
       >
         <i class="fa-light fa-trash" />

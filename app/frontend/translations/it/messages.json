@@ -643,6 +643,10 @@
           }
         },
         "mission": {
+          "publish": {
+            "success": "Missione pubblicata — la flotta può vederla.",
+            "failure": "Impossibile pubblicare la missione."
+          },
           "create": {
             "success": "Missione creata.",
             "failure": "Non è stato possibile creare la missione."

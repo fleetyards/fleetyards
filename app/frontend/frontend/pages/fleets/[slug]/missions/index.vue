@@ -27,8 +27,8 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useMissionDraft } from "@/frontend/composables/useDraftCreate";
 import { checkAccess } from "@/shared/utils/Access";
-import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useMissionsStore } from "@/frontend/stores/missions";
 
@@ -43,7 +43,6 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const route = useRoute();
-const router = useRouter();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const showArchived = ref(false);
@@ -60,20 +59,32 @@ const {
 
 const missionList = computed<Mission[]>(() => missions.value?.items ?? []);
 
-const canCreate = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:missions:manage",
-    "fleet:missions:create",
-  ]),
+/*
+ * `update` as well as `create`, because the button no longer opens a form -- it
+ * writes a draft and lands the author in the editor. Somebody who may create but
+ * not update would be handed a mission they cannot name, publish or throw away,
+ * so they are not offered the button at all.
+ */
+const canCreate = computed(
+  () =>
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:missions:manage",
+      "fleet:missions:create",
+    ]) &&
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:missions:manage",
+      "fleet:missions:update",
+    ]),
 );
 
-const goToCreate = () => {
-  void router.push({
-    name: "fleet-mission-new",
-    params: { slug: props.fleet.slug },
-  });
-};
+const { create: createMissionDraft, pending: creating } = useMissionDraft();
+
+// The button writes the mission rather than opening a form that would write it
+// later: a mission has to exist before its teams, ships and slots can hang off
+// it, and those are the editor's whole job.
+const goToCreate = () => void createMissionDraft(props.fleet.slug);
 
 // Which of the two tabs came back empty, so the box says what is missing here
 // rather than that the fleet has no missions at all.
@@ -167,6 +178,10 @@ const crumbs = computed<Crumb[]>(() => [
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />
+      </Btn>
+      <Btn v-if="canCreate" :loading="creating" @click="goToCreate">
+        <i class="fa-light fa-plus" />
+        <span>{{ t("actions.fleets.missions.create") }}</span>
       </Btn>
     </template>
 

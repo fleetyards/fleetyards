@@ -53,8 +53,7 @@
         "missions": {
           "index": "Missions",
           "edit": {
-            "basic": "Basic",
-            "description": "Description",
+            "details": "Details",
             "teams": "Teams & slots"
           }
         },
@@ -62,8 +61,9 @@
           "index": "Events",
           "calendar": "Calendar",
           "edit": {
-            "basic": "Basic",
-            "description": "Description",
+            "details": "Details",
+            "schedule": "Schedule",
+            "signup": "Sign-up",
             "teams": "Teams & slots"
           },
           "payouts": "Payouts"

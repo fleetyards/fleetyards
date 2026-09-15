@@ -19,6 +19,17 @@ class MissionPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:missions:manage", "fleet:missions:delete"])
   end
 
+  # Who may see a draft that is not theirs. `update` is in here because
+  # `publish?` is aliased to it: somebody who may publish another author's draft
+  # has to be able to find it first.
+  def manage?
+    accepted_fleet_membership&.has_access?(
+      ["fleet:manage", "fleet:missions:manage", "fleet:missions:update"]
+    )
+  end
+
+  alias_rule :publish?, to: :update?
+
   # Archiving happens through destroy, so restoring has to cost the same
   # privilege. Left on update? it would let someone with only
   # fleet:missions:update pull a mission back into the active list.

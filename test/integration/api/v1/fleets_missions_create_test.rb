@@ -32,6 +32,10 @@ class Api::V1::FleetsMissionsCreateTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::StandardError
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(403, "forbidden - member cannot create") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -53,6 +57,55 @@ class Api::V1::FleetsMissionsCreateTest < ActionDispatch::IntegrationTest
       body: {title: "Operation Bluebird", description: "Cargo run"} do
       assert_equal "Operation Bluebird", parsed_body["title"]
       assert_equal "operation-bluebird", parsed_body["slug"]
+      # The create button writes one of these before the author has typed
+      # anything, so it must not be on the fleet's list yet.
+      assert_equal "draft", parsed_body["status"]
+    end
+  end
+
+  # The create button sends no title at all; the API names it.
+  test "POST /fleets/:slug/missions names a mission that arrives without one" do
+    sign_in @admin
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {} do
+      assert_equal "Untitled mission", parsed_body["title"]
+      assert_equal "draft", parsed_body["status"]
+    end
+  end
+
+  # Two clicks arrive under the same generated name; the second is numbered
+  # rather than refused, because the author is on their way to rename it.
+  test "POST /fleets/:slug/missions numbers a second untitled mission" do
+    create(:mission, :draft, fleet: @fleet, created_by: @admin, title: "Untitled mission")
+    sign_in @admin
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {} do
+      assert_equal "Untitled mission 2", parsed_body["title"]
+    end
+  end
+
+  # Only the generated one. A title somebody typed is theirs alone, and a
+  # duplicate is an error rather than something quietly renamed behind them.
+  test "POST /fleets/:slug/missions refuses a duplicate title somebody chose" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Operation Bluebird")
+    sign_in @admin
+
+    assert_api_response :post, 400,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {title: "Operation Bluebird"}
+  end
+
+  # Title uniqueness is checked on the title, but the index is on the slug --
+  # and two different titles can derive the same one. The caller is told, rather
+  # than handed a 201 for a mission named something they never asked for.
+  test "POST /fleets/:slug/missions reports a slug collision instead of renaming" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Operation Bluebird")
+    sign_in @admin
+
+    assert_difference -> { Mission.count }, 0 do
+      assert_api_response :post, 400,
+        path_params: {fleetSlug: @fleet.slug},
+        body: {title: "Operation Bluebird!"}
     end
   end
 

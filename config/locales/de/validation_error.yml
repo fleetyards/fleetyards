@@ -170,6 +170,7 @@ de:
     missions:
       create: Mission konnte nicht erstellt werden.
       destroy: Mission konnte nicht gelöscht werden.
+      publish: Mission konnte nicht veröffentlicht werden.
       unarchive: Mission konnte nicht aus dem Archiv geholt werden.
       update: Mission konnte nicht aktualisiert werden.
     model:

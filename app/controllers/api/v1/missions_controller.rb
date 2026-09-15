@@ -11,16 +11,16 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy unarchive]
+        only: %i[create update destroy unarchive publish]
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
-      before_action :set_mission, only: %i[show update destroy unarchive]
+      before_action :set_mission, only: %i[show update destroy unarchive publish]
 
       def index
         authorize! with: MissionPolicy, context: {fleet: @fleet}
 
-        scope = @fleet.missions
+        scope = visible_scope
         scope = (params[:archived] == "true") ? scope.archived : scope.active
 
         query_params = params.fetch(:q, {}).permit(:title_cont, :s)
@@ -43,7 +43,7 @@ module Api
 
         authorize! @mission
 
-        if @mission.save
+        if save_mission
           render :show, status: :created
         else
           render json: ValidationError.new("missions.create", errors: @mission.errors), status: :bad_request
@@ -60,10 +60,26 @@ module Api
         end
       end
 
+      # A draft is written by the create button and finished in the editor; this
+      # is the step that offers it to the fleet.
+      def publish
+        authorize! @mission
+
+        if @mission.publish!
+          render :show
+        else
+          render json: ValidationError.new("missions.publish", errors: @mission.errors), status: :bad_request
+        end
+      rescue ActiveRecord::RecordInvalid => e
+        render json: ValidationError.new("missions.publish", errors: e.record.errors), status: :bad_request
+      end
+
       def destroy
         authorize! @mission
 
-        if @mission.archived?
+        # Nothing was ever announced and nobody can have signed up, so a draft
+        # goes rather than being archived -- abandoning a create leaves no trace.
+        if @mission.archived? || @mission.draft?
           unless @mission.destroy
             render json: ValidationError.new("missions.destroy", errors: @mission.errors), status: :bad_request
           end
@@ -84,6 +100,44 @@ module Api
         end
       end
 
+      # Everything the member may see. A draft is not a mission the fleet has
+      # been offered yet, so it only lists for its author and for the people who
+      # could publish it.
+      private def visible_scope
+        scope = @fleet.missions
+
+        scope.visible_to(
+          current_resource_owner,
+          manage: allowed_to?(:manage?, Mission, context: {fleet: @fleet})
+        )
+      end
+
+      # Two create buttons pressed at once settle on the same free title, and the
+      # unique index on (fleet_id, slug) refuses the loser. A second attempt now
+      # sees the winner's row and numbers past it rather than 500ing.
+      private def save_mission(attempts: 2)
+        @mission.save
+      rescue ActiveRecord::RecordNotUnique
+        # A title the caller chose is theirs. Its slug can still collide with
+        # one derived from a different title, and renaming around that would
+        # answer 201 with a mission they did not ask for -- so it is reported
+        # the way any other taken title is.
+        if mission_params[:title].present?
+          @mission.errors.add(:title, :taken)
+
+          return false
+        end
+
+        raise if (attempts -= 1) <= 0
+
+        # Only the title this app generated is renumbered: two create buttons
+        # pressed at once settle on the same one, and the second sees the
+        # winner's row on the way through again.
+        @mission.slug = nil
+        @mission.title = nil
+        retry
+      end
+
       private def mission_params
         authorized(params, with: MissionPolicy)
       end
@@ -95,7 +149,10 @@ module Api
       end
 
       private def set_mission
-        @mission = @fleet.missions.find_by!(slug: params[:slug])
+        # Through the same scope the list uses. Resolving from every mission in
+        # the fleet would hand a draft to anybody who learned its slug, which is
+        # exactly what keeping it off the list is meant to prevent.
+        @mission = visible_scope.find_by!(slug: params[:slug])
       end
 
       private def check_fleet_mission_builder_feature

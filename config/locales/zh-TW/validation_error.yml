@@ -161,6 +161,7 @@ zh-TW:
     missions:
       create: 無法建立任務。
       destroy: 無法刪除任務。
+      publish: 無法發布任務。
       unarchive: 無法取消封存該任務。
       update: 無法更新任務。
     model:

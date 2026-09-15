@@ -1,0 +1,8 @@
+zh-CN:
+  defaults:
+    mission:
+      # What the create button's mission is called until its author
+      # renames it in the editor. Server-side because the client sends
+      # no title at all: one it chose would be a title somebody typed,
+      # and those are never renumbered.
+      title: 未命名任务

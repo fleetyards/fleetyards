@@ -643,6 +643,10 @@
           }
         },
         "mission": {
+          "publish": {
+            "success": "任务已发布 — 舰队现在可以看到它。",
+            "failure": "无法发布任务。"
+          },
           "create": {
             "success": "任务已创建。",
             "failure": "无法创建任务。"

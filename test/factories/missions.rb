@@ -11,6 +11,7 @@
 #  description        :text
 #  scenario           :string
 #  slug               :string           not null
+#  status             :string           default("draft"), not null
 #  title              :string           not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -23,6 +24,7 @@
 #  index_missions_on_fleet_id_and_category     (fleet_id,category)
 #  index_missions_on_fleet_id_and_scenario     (fleet_id,scenario)
 #  index_missions_on_fleet_id_and_slug         (fleet_id,slug) UNIQUE
+#  index_missions_on_fleet_id_and_status       (fleet_id,status)
 #
 # Foreign Keys
 #
@@ -35,6 +37,13 @@ FactoryBot.define do
     association :created_by, factory: :user
     sequence(:title) { |n| "Mission #{n}" }
     description { Faker::Lorem.sentence }
+    # A mission the fleet has been offered, which is what almost every test
+    # means by one. The column defaults to draft for the create button's sake.
+    status { Mission::STATUSES[:published] }
+
+    trait :draft do
+      status { Mission::STATUSES[:draft] }
+    end
 
     trait :archived do
       archived_at { Time.current }

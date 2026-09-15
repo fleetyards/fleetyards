@@ -16,7 +16,9 @@ module V1
             coverImagePreset: {type: [:string, :null]},
             coverImage: {type: [:string, :null]}
           },
-          required: %w[title],
+          # No title: the create button sends none and the model fills one in,
+          # so that one is the only title it ever renumbers.
+          required: [],
           additionalProperties: false
         })
       end

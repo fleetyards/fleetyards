@@ -5,18 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import { type Crumb } from "@/shared/components/BreadCrumbs/types";
-import Heading from "@/shared/components/base/Heading/index.vue";
-import EventForm from "@/frontend/components/Fleets/Events/EventForm/index.vue";
-import {
-  type Fleet,
-  type FleetMember,
-  type Mission,
-  useFleetMission,
-} from "@/services/fyApi";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useRouter } from "vue-router";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
+import { useEventDraft } from "@/frontend/composables/useDraftCreate";
 
 type Props = {
   fleet: Fleet;
@@ -26,58 +20,57 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
 const route = useRoute();
-const router = useRouter();
 
-const fleetSlug = computed(() => props.fleet.slug);
-const missionSlugQuery = computed(
-  () => (route.query.mission as string | undefined) ?? null,
-);
-const startsAtQuery = computed(
-  () => (route.query.startsAt as string | undefined) ?? undefined,
-);
+/*
+ * No form of its own any more. An event has to exist before its teams, ships and
+ * slots can hang off it, so the list writes one and hands the author to the
+ * editor -- and this path, which people have bookmarked and which the "spawn an
+ * event from this mission" action still uses, does the same.
+ *
+ * Both of the things it was called with still carry: the day clicked on the
+ * calendar, and the mission to build it from. The API copies that mission's
+ * teams onto the event, which the old form only prefilled on the client.
+ *
+ * `replace`, so Back returns to wherever they came from instead of landing here
+ * and writing another draft.
+ */
+const { create } = useEventDraft();
 
-const { data: prefillMission } = useFleetMission(
-  fleetSlug,
-  computed(() => missionSlugQuery.value || ""),
-  {
-    query: {
-      enabled: computed(() => !!missionSlugQuery.value),
-    },
-  },
-);
+const { t } = useI18n();
 
-const cancel = () => {
-  void router.push({
-    name: "fleet-events",
-    params: { slug: props.fleet.slug },
-  });
+const failed = ref(false);
+
+const start = async () => {
+  failed.value = false;
+  failed.value = !(await create(props.fleet.slug, {
+    startsAt: route.query.startsAt as string | undefined,
+    missionSlug: route.query.mission as string | undefined,
+    replace: true,
+  }));
 };
 
-const crumbs = computed<Crumb[]>(() => [
-  {
-    to: { name: "fleet", params: { slug: props.fleet.slug } },
-    label: props.fleet.name,
-  },
-  {
-    to: { name: "fleet-events", params: { slug: props.fleet.slug } },
-    label: t("headlines.fleets.events.index"),
-  },
-]);
+onMounted(() => {
+  void start();
+});
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
-
-  <Heading size="hero" hero>
-    {{ t("headlines.fleets.events.create") }}
-  </Heading>
-
-  <EventForm
-    :fleet="fleet"
-    :mission="prefillMission as Mission | undefined"
-    :starts-at-prefill="startsAtQuery"
-    @cancel="cancel"
-  />
+  <!-- A create that failed would otherwise leave nothing on screen but a
+       spinner that never stops: this page has no content of its own to fall
+       back to, because writing the event is the whole of its job. -->
+  <Empty v-if="failed" :title="t('messages.fleets.event.create.failure')">
+    <template #actions>
+      <Btn data-test="event-create-retry" @click="start">
+        {{ t("actions.retry") }}
+      </Btn>
+      <Btn
+        :to="{ name: 'fleet-events', params: { slug: fleet.slug } }"
+        data-test="event-create-back"
+      >
+        {{ t("actions.back") }}
+      </Btn>
+    </template>
+  </Empty>
+  <Loader v-else :loading="true" />
 </template>
