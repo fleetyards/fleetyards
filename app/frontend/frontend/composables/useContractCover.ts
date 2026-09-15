@@ -38,8 +38,18 @@ export const useContractCover = () => {
       );
     }
 
-    const preset = presetImageUrl("contracts", contract?.coverImagePreset);
-    if (preset) return preset;
+    /*
+     * Only a preset naming something other than the kind is a choice. The model
+     * writes the kind into `cover_image_preset` whenever the form left it
+     * empty, so treating that as a choice put a default ahead of the cover a
+     * fleet configured for this kind in its own settings -- which is the one
+     * thing here somebody deliberately set up.
+     */
+    const chosen =
+      contract?.coverImagePreset && contract.coverImagePreset !== kind
+        ? presetImageUrl("contracts", contract.coverImagePreset)
+        : undefined;
+    if (chosen) return chosen;
 
     const own =
       fleet?.contractCovers?.[kind as keyof typeof fleet.contractCovers];
