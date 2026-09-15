@@ -53,10 +53,19 @@ const {
   showAlliesNav,
   showContractsNav,
   showEventsNav,
+  eventsNavRoute,
   showToursNav,
   contractsNavActive,
   eventsNavActive,
 } = useFleetNavAccess(currentFleet);
+
+// The tab keeps its place in the order but says where it goes: a role that
+// reads missions and not events is sent to the missions list.
+const eventsNavLabel = computed(() =>
+  eventsNavRoute.value === "fleet-missions"
+    ? t("nav.fleets.missions.index")
+    : t("nav.fleets.events.index"),
+);
 
 const shipsNavActive = computed(() => {
   return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
@@ -144,10 +153,10 @@ onMounted(() => {
         <NavItem
           v-if="showEventsNav"
           :to="{
-            name: 'fleet-events',
+            name: eventsNavRoute,
             params: { slug: currentFleet.slug },
           }"
-          :label="t('nav.fleets.events.index')"
+          :label="eventsNavLabel"
           :active="eventsNavActive"
           icon="fa-duotone fa-calendar-day"
           prefix="07"

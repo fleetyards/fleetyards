@@ -103,6 +103,31 @@ describe("useFleetNavAccess", () => {
     expect(useFleetNavAccess(fleet).showEventsNav.value).toBe(true);
   });
 
+  // The events route admits event access only, so the tab that mission-only
+  // access opens has to lead somewhere that access can be used.
+  it("sends a mission-only member to the missions list", () => {
+    membership.value = memberWith(
+      FleetRoleResourceAccessEnum.FLEET_MISSIONS_READ,
+    );
+
+    const fleet = fleetWith(FeatureFlagName.FLEET_MISSION_BUILDER);
+
+    expect(useFleetNavAccess(fleet).eventsNavRoute.value).toBe(
+      "fleet-missions",
+    );
+  });
+
+  it("sends a member with event access to the events list", () => {
+    membership.value = memberWith(
+      FleetRoleResourceAccessEnum.FLEET_EVENTS_READ,
+      FleetRoleResourceAccessEnum.FLEET_MISSIONS_READ,
+    );
+
+    const fleet = fleetWith(FeatureFlagName.FLEET_MISSION_BUILDER);
+
+    expect(useFleetNavAccess(fleet).eventsNavRoute.value).toBe("fleet-events");
+  });
+
   it("reads the flag from the viewer as well as the fleet", () => {
     membership.value = memberWith(FleetRoleResourceAccessEnum.FLEET_MANAGE);
     viewerFeatures.value = [FeatureFlagName.FLEET_MISSION_BUILDER];

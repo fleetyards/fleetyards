@@ -101,6 +101,13 @@ export const useFleetNavAccess = (
       ),
   );
 
+  // Missions are reached from the events page, but the events route only
+  // admits event access, so a role that reads missions and nothing else lands
+  // on NotAuthorized. It gets the same tab, pointed one page further in.
+  const eventsNavRoute = computed(() =>
+    hasEventsAccess.value ? "fleet-events" : "fleet-missions",
+  );
+
   const showToursNav = computed(
     () =>
       !!membership.value &&
@@ -132,6 +139,7 @@ export const useFleetNavAccess = (
     showAlliesNav,
     showContractsNav,
     showEventsNav,
+    eventsNavRoute,
     showToursNav,
     contractsNavActive,
     eventsNavActive,

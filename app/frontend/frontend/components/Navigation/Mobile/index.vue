@@ -77,8 +77,13 @@ const { data: publicFleetData } = usePublicFleetQuery(fleetSlug, {
 
 const currentFleet = computed(() => fleetData.value || publicFleetData.value);
 
-const { showContractsNav, showEventsNav, contractsNavActive, eventsNavActive } =
-  useFleetNavAccess(currentFleet);
+const {
+  showContractsNav,
+  showEventsNav,
+  eventsNavRoute,
+  contractsNavActive,
+  eventsNavActive,
+} = useFleetNavAccess(currentFleet);
 
 const { data: myFleets, isPending: myFleetsPending } = useMyFleetsQuery({
   query: {
@@ -127,11 +132,15 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         <NavItem
           v-if="showEventsNav"
           :to="{
-            name: 'fleet-events',
+            name: eventsNavRoute,
             params: { slug: currentFleet.slug },
           }"
           :active="eventsNavActive"
-          icon="fa-duotone fa-calendar-day"
+          :icon="
+            eventsNavRoute === 'fleet-missions'
+              ? 'fa-duotone fa-flag-checkered'
+              : 'fa-duotone fa-calendar-day'
+          "
         />
       </template>
     </template>
