@@ -38,7 +38,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
-import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   vehicle: Vehicle;
@@ -48,7 +47,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
-const mobile = useMobile();
 const { isFeatureEnabled } = useFeatures();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
@@ -275,42 +273,40 @@ onMounted(() => {
       </span>
     </div>
 
-    <Teleport v-if="!mobile" to="#header-right">
-      <Btn :size="BtnSizesEnum.MD" @click="openItemModal('deposit')">
+    <!-- The same actions a hangar inventory puts here, in the same order and
+         behind the same icons: the two hold the same goods and differ only in
+         what is carrying them. What acts on this hold in particular is in the
+         menu over the table instead. -->
+    <Teleport to="#header-right">
+      <Btn
+        :size="BtnSizesEnum.MD"
+        data-test="vehicle-cargo-deposit"
+        mobile-icon-only
+        @click="openItemModal('deposit')"
+      >
+        <i class="fa-duotone fa-arrow-down-to-square" />
         {{ t("actions.logistics.deposit") }}
       </Btn>
-      <Btn :size="BtnSizesEnum.MD" @click="openItemModal('withdrawal')">
+      <Btn
+        :size="BtnSizesEnum.MD"
+        mobile-icon-only
+        @click="openItemModal('withdrawal')"
+      >
+        <i class="fa-duotone fa-arrow-up-from-square" />
         {{ t("actions.logistics.withdraw") }}
+      </Btn>
+      <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openCsvImportModal">
+        <i class="fa-duotone fa-file-csv" />
+        {{ t("actions.logistics.importCsv") }}
       </Btn>
       <Btn
         :size="BtnSizesEnum.MD"
         :to="{ name: 'hangar-inventories' }"
         data-test="vehicle-cargo-inventories-link"
+        mobile-icon-only
       >
         <i class="fa-duotone fa-boxes-stacked" />
         {{ t("nav.hangar.inventories") }}
-      </Btn>
-      <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
-        <i class="fa-duotone fa-file-csv" />
-        {{ t("actions.logistics.importCsv") }}
-      </Btn>
-      <Btn
-        v-if="showCargoGridsLink"
-        :size="BtnSizesEnum.MD"
-        :to="cargoGridsRoute"
-        data-test="vehicle-cargo-grids-link"
-      >
-        <i class="fa-light fa-cube" />
-        {{ t("actions.logistics.viewCargoGrid") }}
-      </Btn>
-      <Btn
-        v-if="hasCargo"
-        :size="BtnSizesEnum.MD"
-        :tone="BtnTonesEnum.DANGER"
-        @click="clearCargo"
-      >
-        <i class="fa-duotone fa-trash" />
-        {{ t("actions.logistics.clearCargo") }}
       </Btn>
     </Teleport>
 
@@ -331,30 +327,27 @@ onMounted(() => {
         <InventoryItemFilterForm :update-callback="refetchAll" />
       </template>
 
+      <!-- What belongs to this hold rather than to holds in general: the grid
+           it is stowed on, and emptying it. Over the table, because that is
+           what they act on. -->
       <template #actions-right>
-        <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SM">
-          <Btn :size="BtnSizesEnum.SM" @click="openItemModal('deposit')">
-            <i class="fa-duotone fa-arrow-down-to-bracket" />
-            <span>{{ t("actions.logistics.deposit") }}</span>
-          </Btn>
-          <Btn :size="BtnSizesEnum.SM" @click="openItemModal('withdrawal')">
-            <i class="fa-duotone fa-arrow-up-from-bracket" />
-            <span>{{ t("actions.logistics.withdraw") }}</span>
-          </Btn>
-          <Btn :size="BtnSizesEnum.SM" @click="openCsvImportModal">
-            <i class="fa-duotone fa-file-csv" />
-            <span>{{ t("actions.logistics.importCsv") }}</span>
-          </Btn>
+        <Btn
+          v-if="showCargoGridsLink"
+          :size="BtnSizesEnum.SM"
+          :to="cargoGridsRoute"
+          :aria-label="t('actions.logistics.viewCargoGrid')"
+          :title="t('actions.logistics.viewCargoGrid')"
+          data-test="vehicle-cargo-grids-link"
+        >
+          <i class="fa-light fa-cube" />
+        </Btn>
+        <!-- Nothing to empty, nothing to open: the menu is its only entry. -->
+        <BtnDropdown v-if="hasCargo" :size="BtnSizesEnum.SM">
           <Btn
-            v-if="showCargoGridsLink"
             :size="BtnSizesEnum.SM"
-            :to="cargoGridsRoute"
-            data-test="vehicle-cargo-grids-link"
+            :tone="BtnTonesEnum.DANGER"
+            @click="clearCargo"
           >
-            <i class="fa-light fa-cube" />
-            <span>{{ t("actions.logistics.viewCargoGrid") }}</span>
-          </Btn>
-          <Btn v-if="hasCargo" :size="BtnSizesEnum.SM" @click="clearCargo">
             <i class="fa-duotone fa-trash" />
             <span>{{ t("actions.logistics.clearCargo") }}</span>
           </Btn>
