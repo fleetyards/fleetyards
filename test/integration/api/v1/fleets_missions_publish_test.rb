@@ -22,8 +22,10 @@ class Api::V1::FleetsMissionsPublishTest < ActionDispatch::IntegrationTest
         {OpenId: ["fleet", "fleet:write"]}
       ]
 
+      # `publish` renders :show, which carries the teams -- so the documented
+      # response is the extended one, the same as the show endpoint's.
       response(200, "successful") do
-        schema ::V1::Schemas::Fleets::Missions::Mission
+        schema ::V1::Schemas::Fleets::Missions::MissionExtended
       end
 
       response(401, "unauthorized") do

@@ -33,6 +33,12 @@ export const useMissionDraft = () => {
   const mutation = useCreateFleetMission();
 
   const create = async (fleetSlug: string, { replace = false } = {}) => {
+    // One draft per press, wherever the press came from. The mutation does not
+    // serialise concurrent calls, and not every control that reaches here is
+    // disabled while it runs -- a calendar day and an empty-state button both
+    // start this without a loading state of their own.
+    if (mutation.isPending.value) return false;
+
     try {
       // No title: the API names it, so the one name that gets renumbered when
       // two people press this at once is the one it chose. A title sent from
@@ -79,6 +85,12 @@ export const useEventDraft = () => {
       replace?: boolean;
     } = {},
   ) => {
+    // One draft per press, wherever the press came from. The mutation does not
+    // serialise concurrent calls, and not every control that reaches here is
+    // disabled while it runs -- a calendar day and an empty-state button both
+    // start this without a loading state of their own.
+    if (mutation.isPending.value) return false;
+
     const startsAtIso =
       startsAt instanceof Date
         ? startsAt.toISOString()
