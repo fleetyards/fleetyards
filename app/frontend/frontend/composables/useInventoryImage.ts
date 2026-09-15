@@ -94,14 +94,14 @@ const presetFor = (name: string) => {
  * Kept apart from the attached image so a form can offer this as the picture in
  * place while still knowing the inventory carries none of its own.
  */
-export const inventoryDefaultImage = (inventory: InventoryPanelRecord) => {
+export function inventoryDefaultImage(inventory: InventoryPanelRecord) {
   const shipImage = inventory.vehicle?.model?.image;
 
   // `url` after `mediumUrl`: only the original is guaranteed, and a ship whose
   // artwork has no sized variants is still that ship. Falling straight to a
   // preset would draw a crate over a picture we were given.
   return shipImage?.mediumUrl || shipImage?.url || presetFor(inventory.name);
-};
+}
 
 export const useInventoryImage = (
   inventory: MaybeRefOrGetter<InventoryPanelRecord>,

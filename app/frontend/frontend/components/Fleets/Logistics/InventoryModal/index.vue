@@ -64,8 +64,6 @@ const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
 const [image, imageProps] = defineField("image");
 
-// Only while the inventory carries no picture of its own: `previewSrc` outranks
-// the attached file, so offering it unconditionally would hide the real one.
 /*
  * What the field should show in place. `FormFileInput` draws an image from
  * `smallUrl`, which the serializer only emits for an attachment it could build
@@ -178,8 +176,8 @@ const onSubmit = handleSubmit(async (values) => {
   >
     <form id="inventory-form" @submit.prevent="onSubmit">
       <!-- The picture already standing in for this inventory, so the field
-           shows what it is replacing rather than an empty dropzone. Only while
-           none is attached: `previewSrc` outranks the real file. -->
+           shows what it is replacing rather than an empty dropzone. See
+           `defaultImage` for which of the three cases each is. -->
       <FormFileInput
         v-model="image"
         v-bind="imageProps"
