@@ -210,6 +210,12 @@
             "failure": "Persönliches Kalender-Abo konnte nicht deaktiviert werden.",
             "confirm": "Beim Deaktivieren des Abos wird der Feed für jede aktuell abonnierte Kalender-App abgeschaltet."
           }
+        },
+        "supporterClaimKey": {
+          "copy": {
+            "success": "Schlüssel kopiert.",
+            "failure": "Der Schlüssel konnte nicht kopiert werden."
+          }
         }
       },
       "user": {

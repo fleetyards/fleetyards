@@ -72,13 +72,19 @@ module Admin
 
           authorize! @supporter_contribution, with: ::Admin::SupporterContributionPolicy
 
-          return if @supporter_contribution.save
+          if @supporter_contribution.save
+            resolve_supporter
+            return
+          end
 
           render json: ValidationError.new("supporter_contribution.create", errors: @supporter_contribution.errors), status: :bad_request
         end
 
         def update
-          return if @supporter_contribution.update(supporter_contribution_params.merge(author_id: current_user.id))
+          if @supporter_contribution.update(supporter_contribution_params.merge(author_id: current_user.id))
+            resolve_supporter
+            return
+          end
 
           render json: ValidationError.new("supporter_contribution.update", errors: @supporter_contribution.errors), status: :bad_request
         end
@@ -87,6 +93,23 @@ module Admin
           return if @supporter_contribution.destroy
 
           render json: ValidationError.new("supporter_contribution.destroy", errors: @supporter_contribution.errors), status: :bad_request
+        end
+
+        # A hand-entered PayPal or Buy Me a Coffee payment resolves the same way a
+        # webhook does.
+        #
+        # Correcting the address re-resolves rather than keeping the old link:
+        # an admin editing payer_email is saying who paid, and leaving the
+        # entitlement with the previous account is the surprising answer. An
+        # admin who names a user in the same request outranks both -- that is an
+        # explicit choice, not a correction.
+        private def resolve_supporter
+          if @supporter_contribution.saved_change_to_payer_email? &&
+              !supporter_contribution_params.key?(:user_id)
+            @supporter_contribution.update!(user_id: nil)
+          end
+
+          ::Supporters::Linker.call(@supporter_contribution)
         end
 
         private def set_supporter_contribution
@@ -98,7 +121,7 @@ module Admin
         private def supporter_contribution_params
           @supporter_contribution_params ||= params.permit(
             :name, :amount_cents, :currency, :anonymous, :recurring,
-            :started_at, :ended_at, :note, :user_id
+            :started_at, :ended_at, :note, :user_id, :payer_email
           )
         end
 

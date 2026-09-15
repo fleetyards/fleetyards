@@ -164,6 +164,45 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
     end
   end
 
+  # A hand-entered PayPal or Buy Me a Coffee payment resolves the same way a
+  # webhook does, so an admin does not have to know who an address belongs to.
+  test "POST /supporter-contributions resolves a payer email to its account" do
+    donor = create(:user, email: "donor@example.test", confirmed_at: Time.current)
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, payerEmail: "donor@example.test"}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal "donor@example.test", parsed_body["payerEmail"]
+      assert_equal donor.id, parsed_body["userId"]
+    end
+  end
+
+  test "POST /supporter-contributions resolves a claim key written in the note" do
+    donor = create(:user, confirmed_at: Time.current)
+    key = donor.ensure_claim_key!
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601, note: "PayPal note: #{key}"}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal donor.id, parsed_body["userId"]
+    end
+  end
+
+  test "POST /supporter-contributions keeps the account an admin chose" do
+    chosen = create(:user)
+    create(:user, email: "donor@example.test", confirmed_at: Time.current)
+    sign_in @user
+
+    body = {amountCents: 500, startedAt: Date.current.iso8601,
+            payerEmail: "donor@example.test", userId: chosen.id}
+
+    assert_api_response :post, 200, body: body do
+      assert_equal chosen.id, parsed_body["userId"]
+    end
+  end
+
   test "POST /supporter-contributions rejects a userId with no account" do
     sign_in @user
 
@@ -302,6 +341,54 @@ class Admin::Api::V1::SupporterContributionsTest < ActionDispatch::IntegrationTe
 
     assert_api_response :put, 200, path_params: {id: contribution.id}, body: {name: "Updated Name", amountCents: 999, startedAt: Date.current.iso8601} do
       assert_equal "Updated Name", parsed_body["name"]
+    end
+  end
+
+  test "PUT /supporter-contributions/:id resolves a payer email added later" do
+    donor = create(:user, email: "donor@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "donor@example.test"} do
+      assert_equal donor.id, parsed_body["userId"]
+    end
+  end
+
+  # An admin editing payer_email is saying who paid; leaving the entitlement
+  # with the previous account is the surprising answer.
+  test "PUT /supporter-contributions/:id re-resolves when the payer email is corrected" do
+    wrong = create(:user, email: "wrong@example.test", confirmed_at: Time.current)
+    right = create(:user, email: "right@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, payer_email: "wrong@example.test", user: wrong)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "right@example.test"} do
+      assert_equal right.id, parsed_body["userId"]
+    end
+  end
+
+  test "PUT /supporter-contributions/:id keeps a user named in the same request" do
+    wrong = create(:user, email: "wrong@example.test", confirmed_at: Time.current)
+    chosen = create(:user, confirmed_at: Time.current)
+    create(:user, email: "right@example.test", confirmed_at: Time.current)
+    contribution = create(:supporter_contribution, payer_email: "wrong@example.test", user: wrong)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {id: contribution.id},
+      body: {amountCents: contribution.amount_cents,
+             startedAt: contribution.started_at.iso8601,
+             payerEmail: "right@example.test",
+             userId: chosen.id} do
+      assert_equal chosen.id, parsed_body["userId"]
     end
   end
 

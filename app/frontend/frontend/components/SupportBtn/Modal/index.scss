@@ -1,7 +1,103 @@
 .support-body {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+.support-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+  }
+}
+
+.support-platforms {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+
+  @media (max-width: $tablet-breakpoint) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.support-claim-key {
+  /* The key is a separate step from choosing a platform, not a fifth button. */
+  width: 50%;
+  margin: 8px auto 0;
+
+  @media (max-width: $tablet-breakpoint) {
+    width: 100%;
+  }
+
+  /*
+   * The suffix is an endcap -- 40px wide, muted, sized for a unit or an icon.
+   * A Btn in there brings its own background, border and radius and reads as
+   * something dropped on top of the field rather than part of it.
+   */
+  &__copy {
+    padding: 0;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: $gold;
+    }
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+}
+
+.support-rule {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid $gray-dark;
+}
+
+.support-secondary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 24px;
+  align-items: start;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  opacity: 0.8;
+
+  p {
+    margin: 0;
+  }
+
+  &__referral {
+    text-align: right;
+  }
+
+  @media (max-width: $tablet-breakpoint) {
+    grid-template-columns: 1fr;
+
+    &__referral {
+      text-align: left;
+    }
+  }
 }
 
 .support-referral-link {
-  font-size: 130%;
+  font-family: ui-monospace, "SFMono-Regular", menlo, monospace;
+  white-space: nowrap;
 }

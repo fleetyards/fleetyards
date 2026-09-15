@@ -1399,6 +1399,11 @@
         "calendarSubscription": {
           "intro": "Genera un enlace privado para añadir los eventos a los que te has inscrito a tu aplicación de calendario personal (Apple Calendar, Google Calendar, Outlook).",
           "howTo": "Pega el enlace en tu aplicación de calendario en \"Suscribirse al calendario\" o \"Añadir por URL\". Cualquiera que tenga este enlace puede ver los eventos a los que estás inscrito: mantenlo en privado."
+        },
+        "supporterClaimKey": {
+          "patreonNote": "se asocia mediante tu correo, no hace falta clave",
+          "label": "Tu clave",
+          "hint": "Pégala en el mensaje de un pago por PayPal, Ko-fi o Buy me a coffee y se asociará a tu cuenta. En Patreon la asociación se hace por correo electrónico."
         }
       },
       "filters": {

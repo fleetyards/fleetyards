@@ -18,6 +18,7 @@ module Admin
               startedAt: {type: :string, format: :date},
               endedAt: {type: :string, format: :date},
               note: {type: :string},
+              payerEmail: {type: [:string, :null]},
               userId: {type: [:string, :null], format: :uuid}
             },
             additionalProperties: false,

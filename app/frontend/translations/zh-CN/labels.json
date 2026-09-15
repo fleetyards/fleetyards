@@ -1399,6 +1399,11 @@
         "calendarSubscription": {
           "intro": "生成一个私有链接，将您已报名的活动添加到个人日历应用（Apple 日历、Google 日历、Outlook）。",
           "howTo": "将该链接粘贴到日历应用的“订阅日历”或“通过 URL 添加”中。任何拿到此链接的人都能看到您已报名的活动 — 请妥善保管。"
+        },
+        "supporterClaimKey": {
+          "patreonNote": "通过您的邮箱关联，无需密钥",
+          "label": "您的密钥",
+          "hint": "将其粘贴到 PayPal、Ko-fi 或 Buy me a coffee 付款的留言中，付款即可与您的账号关联。Patreon 则通过邮箱关联。"
         }
       },
       "filters": {

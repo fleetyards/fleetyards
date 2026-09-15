@@ -210,6 +210,12 @@
             "failure": "无法停用个人日历订阅。",
             "confirm": "停用订阅会中断当前所有已订阅日历应用的数据源。"
           }
+        },
+        "supporterClaimKey": {
+          "copy": {
+            "success": "密钥已复制。",
+            "failure": "无法复制密钥。"
+          }
         }
       },
       "user": {

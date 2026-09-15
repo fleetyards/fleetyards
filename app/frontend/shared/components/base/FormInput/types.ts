@@ -26,4 +26,5 @@ export enum InputVariantsEnum {
 export enum InputAlignmentsEnum {
   RIGHT = "right",
   LEFT = "left",
+  CENTER = "center",
 }

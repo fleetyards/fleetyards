@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_170200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1798,9 +1798,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.datetime "created_at", null: false
     t.string "currency", default: "EUR", null: false
     t.date "ended_at"
+    t.string "kofi_transaction_id"
     t.string "name"
     t.text "note"
     t.string "patreon_member_id"
+    t.string "payer_email"
     t.boolean "recurring", default: false, null: false
     t.string "source", default: "manual", null: false
     t.integer "source_amount_cents"
@@ -1808,7 +1810,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.date "started_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id"
+    t.index ["kofi_transaction_id"], name: "index_supporter_contributions_on_kofi_transaction_id", unique: true, where: "(kofi_transaction_id IS NOT NULL)"
     t.index ["patreon_member_id"], name: "index_supporter_contributions_on_patreon_member_id", unique: true, where: "(patreon_member_id IS NOT NULL)"
+    t.index ["payer_email"], name: "index_supporter_contributions_on_payer_email", where: "(payer_email IS NOT NULL)"
     t.index ["recurring", "ended_at"], name: "index_supporter_contributions_on_recurring_and_ended_at"
     t.index ["started_at"], name: "index_supporter_contributions_on_started_at"
     t.index ["user_id"], name: "index_supporter_contributions_on_user_id"
@@ -1865,6 +1869,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
 
   create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "calendar_feed_token"
+    t.string "claim_key"
     t.datetime "confirmation_sent_at", precision: nil
     t.string "confirmation_token", limit: 255
     t.datetime "confirmed_at", precision: nil
@@ -1930,6 +1935,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_14_160000) do
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"
     t.index ["calendar_feed_token"], name: "index_users_on_calendar_feed_token", unique: true
+    t.index ["claim_key"], name: "index_users_on_claim_key", unique: true, where: "(claim_key IS NOT NULL)"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["id"], name: "index_users_on_id_where_not_tracking", where: "(tracking = false)"

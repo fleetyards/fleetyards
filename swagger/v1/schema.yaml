@@ -9606,6 +9606,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/supporter/claim-key":
+    get:
+      summary: Show the supporter claim key
+      tags:
+      - Me Supporter
+      operationId: mySupporterClaimKey
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterClaimKey"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/mission-slots":
     post:
       summary: Create Mission Slot
@@ -26394,6 +26421,15 @@ components:
       - monthlyTotal
       - contributions
       title: SupportProgress
+    SupporterClaimKey:
+      type: object
+      properties:
+        key:
+          type: string
+      required:
+      - key
+      additionalProperties: false
+      title: SupporterClaimKey
     SyncRsiHangarInput:
       type: object
       properties:
@@ -26847,6 +26883,8 @@ components:
           type: boolean
         supporter:
           type: boolean
+        supporterTier:
+          type: integer
       additionalProperties: false
       required:
       - username

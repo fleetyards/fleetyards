@@ -129,3 +129,8 @@ PUT /notifications/{id}/unarchive added the new `inventory_transfer_reports` enu
 PUT /notifications/{id}/unread added the new `inventory_transfer_reports` enum value to the `notificationType` response property for the response status `200`
 GET /versions added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`
 GET /versions/recent added the new `FleetContract` enum value to the `items/items/itemType` response property for the response status `200`
+GET /supporter-contributions added the new `kofi` enum value to the `items/items/source` response property for the response status `200`
+POST /supporter-contributions added the new `kofi` enum value to the `source` response property for the response status `200`
+DELETE /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
+GET /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`
+PUT /supporter-contributions/{id} added the new `kofi` enum value to the `source` response property for the response status `200`

@@ -5,11 +5,12 @@
       "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
       "indexQuoteSource": "Author Unknown, Source:",
       "support": {
-        "info": "¿Te gusta FleetYards.net? Ayúdanos a crecer votando nuestro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> — es gratis y aumenta nuestra visibilidad en la comunidad.",
-        "goal": "El objetivo mensual ayuda a cubrir los costes de funcionamiento de FleetYards, como el alojamiento de servidores y los servicios de datos. Cualquier apoyo ayuda a mantener el sitio en línea, rápido y actualizado.",
-        "code": "Además puedes conseguir 5000 UEC de dinero inicial usando el siguiente código de reclutamiento al comprar Star Citizen:",
-        "subline": "o puede apoyarnos directamente a través de:",
-        "thisMonth": "Recaudado este mes"
+        "info": "¿Sin presupuesto? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Vótanos en Spectrum</b></a> para que más gente encuentre FleetYards.",
+        "goal": "Cubre los costes de funcionamiento, como el alojamiento y los servicios de datos.",
+        "code": "¿Nuevo en Star Citizen? Usa este código para 5000 UEC iniciales:",
+        "thisMonth": "de %{goal} este mes",
+        "subline": "Apóyanos directamente",
+        "otherWays": "Otras formas de ayudar"
       },
       "supportHint": {
         "hangarSync": "Las sincronizaciones en segundo plano son el mayor gasto de hosting. FleetYards funciona gracias a las donaciones — cualquier aporte ayuda.",

@@ -42,12 +42,23 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /public/users/:username does not flag an anonymous supporter" do
+  # Anonymity keeps a contribution off the supporters page by name; it is not a
+  # secret about whether somebody supports, so the badge is unaffected.
+  test "GET /public/users/:username flags an anonymous supporter too" do
     user = create(:user, :public_hangar)
     create(:supporter_contribution, :anonymous, user:, started_at: Date.current)
 
     assert_api_response :get, 200, path_params: {username: user.username} do
-      assert_equal false, parsed_body["supporter"]
+      assert_equal true, parsed_body["supporter"]
+    end
+  end
+
+  test "GET /public/users/:username carries the supporter tier" do
+    user = create(:user, :public_hangar)
+    create(:supporter_contribution, user:, amount_cents: 500, started_at: Date.current)
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal 2, parsed_body["supporterTier"]
     end
   end
 
@@ -56,6 +67,7 @@ class Api::V1::PublicUsersShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {username: user.username} do
       assert_equal false, parsed_body["supporter"]
+      assert_equal 0, parsed_body["supporterTier"]
     end
   end
 

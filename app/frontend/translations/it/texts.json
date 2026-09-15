@@ -5,11 +5,12 @@
       "indexQuote": "\"Allaccia le cinture in una delle dozzine di astronavi e imbarcati in una vita nell'universo di Star Citizen. <br> Slegato da professioni o Abilità, sei libero di scegliere il percorso della tua vita.\"",
       "indexQuoteSource": "Autore Sconosciuto, Fonte:",
       "support": {
-        "info": "Ti piace FleetYards.net? Aiutaci a crescere votando il nostro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> — è gratis e aumenta la nostra visibilità nella community.",
-        "goal": "L'obiettivo mensile aiuta a coprire i costi di gestione di FleetYards, come l'hosting dei server e i servizi dati. Ogni supporto aiuta a mantenere il sito online, veloce e aggiornato.",
-        "code": "Inoltre puoi ottenere 5000 UEC come denaro iniziale usando il seguente codice di reclutamento quando acquisti Star Citizen:",
-        "subline": "o puoi supportarci direttamente tramite:",
-        "thisMonth": "Raccolti questo mese"
+        "info": "Niente budget? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Votaci su Spectrum</b></a> per far scoprire FleetYards a più persone.",
+        "goal": "Copre i costi correnti come hosting dei server e servizi dati.",
+        "code": "Nuovo su Star Citizen? Usa questo codice per 5000 UEC iniziali:",
+        "thisMonth": "su %{goal} questo mese",
+        "subline": "Sostienici direttamente",
+        "otherWays": "Altri modi per aiutare"
       },
       "supportHint": {
         "hangarSync": "Le sincronizzazioni in background sono la voce più grande della nostra bolletta di hosting. FleetYards va avanti grazie alle donazioni — ogni contributo aiuta.",

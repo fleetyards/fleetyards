@@ -210,6 +210,12 @@
             "failure": "No se pudo desactivar la suscripción al calendario personal.",
             "confirm": "Desactivar la suscripción cortará el feed para cualquier aplicación de calendario suscrita actualmente."
           }
+        },
+        "supporterClaimKey": {
+          "copy": {
+            "success": "Clave copiada.",
+            "failure": "No se pudo copiar la clave."
+          }
         }
       },
       "user": {

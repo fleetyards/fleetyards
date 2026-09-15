@@ -15,4 +15,5 @@ json.homepage user.homepage
 json.public_hangar_loaners user.public_hangar_loaners
 json.public_hangar_stats user.public_hangar_stats
 json.public_wishlist user.public_wishlist
-json.supporter user.public_supporter?
+json.supporter user.supporter?
+json.supporter_tier user.supporter_tier

@@ -6,6 +6,7 @@
 #
 #  id                        :uuid             not null, primary key
 #  calendar_feed_token       :string
+#  claim_key                 :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -70,6 +71,7 @@
 # Indexes
 #
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
+#  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
@@ -174,22 +176,134 @@ class UserTest < ActiveSupport::TestCase
       create(:supporter_contribution, user: @user, started_at: Date.current)
 
       assert @user.supporter?
-      assert @user.public_supporter?
     end
 
-    test "an anonymous contribution still earns supporter status but no public badge" do
-      create(:supporter_contribution, :anonymous, user: @user, started_at: Date.current)
+    # Anonymity decides whether the contribution is named on the supporters
+    # page, and nothing else. Both halves are asserted here because the rule is
+    # only meaningful as a pair.
+    test "an anonymous contribution earns the badge and stays unnamed" do
+      contribution = create(:supporter_contribution, :anonymous, user: @user, started_at: Date.current)
 
       assert @user.supporter?
-      refute @user.public_supporter?
+      assert_nil contribution.public_name
     end
 
-    test "a contribution that ended before this month counts for neither" do
+    test "a named contribution earns the badge and is named" do
+      contribution = create(:supporter_contribution, user: @user, name: "Jo", started_at: Date.current)
+
+      assert @user.supporter?
+      assert_equal "Jo", contribution.public_name
+    end
+
+    test "a contribution that ended before this month earns nothing" do
       create(:supporter_contribution, :recurring, user: @user,
         started_at: 1.year.ago.to_date, ended_at: 2.months.ago.to_date)
 
       refute @user.supporter?
-      refute @user.public_supporter?
+    end
+
+    # A donation can land before its donor has an account. The linker only ever
+    # matches a confirmed address, so confirmation is the moment it resolves.
+    test "confirming an account claims a contribution that arrived first" do
+      contribution = create(:supporter_contribution, payer_email: "later@example.test")
+      user = create(:user, email: "later@example.test", confirmed_at: nil)
+
+      assert_nil contribution.reload.user
+
+      user.update!(confirmed_at: Time.current)
+
+      assert_equal user, contribution.reload.user
+    end
+
+    test "confirming claims nothing that is already linked or addressed elsewhere" do
+      mine = create(:user, confirmed_at: Time.current)
+      taken = create(:supporter_contribution, payer_email: "later@example.test", user: mine)
+      other = create(:supporter_contribution, payer_email: "somebody@example.test")
+
+      create(:user, email: "later@example.test", confirmed_at: nil).update!(confirmed_at: Time.current)
+
+      assert_equal mine, taken.reload.user
+      assert_nil other.reload.user
+    end
+
+    # Devise's reconfirmation changes confirmed_at as well as email, so this is
+    # the path the confirmation arm already covered. Asserted because it is the
+    # one a reviewer expected to be broken.
+    test "reconfirming to a new address claims a contribution for it" do
+      contribution = create(:supporter_contribution, payer_email: "moved@example.test")
+      user = create(:user, confirmed_at: Time.current)
+
+      user.update!(email: "moved@example.test")
+      user.confirm
+
+      assert_equal user, contribution.reload.user
+    end
+
+    # The case confirmed_at alone would miss: an admin moving an account.
+    test "an admin moving an address without reconfirmation still claims it" do
+      contribution = create(:supporter_contribution, payer_email: "forced@example.test")
+      user = create(:user, confirmed_at: Time.current)
+
+      user.skip_reconfirmation!
+      user.update!(email: "forced@example.test")
+
+      assert_equal user, contribution.reload.user
+    end
+
+    # Platforms are not careful with whitespace, and an address with a stray
+    # space matches nothing without a word of warning.
+    test "a payer email with surrounding space is still claimed" do
+      contribution = create(:supporter_contribution, payer_email: "  Spaced@Example.test  ")
+
+      assert_equal "spaced@example.test", contribution.reload.payer_email
+
+      user = create(:user, email: "spaced@example.test", confirmed_at: Time.current)
+
+      assert_equal user, contribution.reload.user
+    end
+
+    test "no contributions is tier zero" do
+      assert_equal 0, @user.supporter_tier
+    end
+
+    test "the tier follows this month's total" do
+      create(:supporter_contribution, user: @user, amount_cents: 100, started_at: Date.current)
+
+      assert_equal 1, @user.reload.supporter_tier
+
+      create(:supporter_contribution, user: @user, amount_cents: 400, started_at: Date.current)
+
+      assert_equal 2, @user.reload.supporter_tier
+    end
+
+    test "a contribution below the first threshold earns a badge but no tier" do
+      create(:supporter_contribution, user: @user, amount_cents: 50, started_at: Date.current)
+
+      assert @user.supporter?
+      assert_equal 0, @user.reload.supporter_tier
+    end
+
+    # The second tier is for the commitment, not for what the exchange rate did
+    # to it in a given month.
+    test "a recurring Patreon pledge is tier two whatever it converted to" do
+      create(:supporter_contribution, :patreon, user: @user, amount_cents: 120,
+        started_at: 1.year.ago.to_date, ended_at: nil)
+
+      assert_equal 2, @user.reload.supporter_tier
+    end
+
+    test "a one-off Patreon contribution is not promoted" do
+      create(:supporter_contribution, :patreon, user: @user, amount_cents: 120,
+        recurring: false, started_at: Date.current)
+
+      assert_equal 1, @user.reload.supporter_tier
+    end
+
+    test "last month's contributions do not count toward the tier" do
+      create(:supporter_contribution, user: @user, amount_cents: 900,
+        started_at: 2.months.ago.to_date)
+
+      assert_equal 0, @user.reload.supporter_tier
     end
 
     test "an unlinked contribution belongs to nobody" do
@@ -339,5 +453,33 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     RETIRED_COLUMNS.each do |column|
       assert_not_includes User.ransackable_attributes, column
     end
+  end
+  test "#ensure_claim_key! generates once and is stable afterwards" do
+    user = create(:user)
+
+    assert_nil user.claim_key
+
+    key = user.ensure_claim_key!
+
+    assert_match(/\AFY-[0-9A-Z]{4}-[0-9A-Z]{4}\z/, key)
+    assert_equal key, user.reload.claim_key
+    assert_equal key, user.ensure_claim_key!
+  end
+
+  test ".find_by_claim_key accepts what a supporter is likely to type" do
+    user = create(:user)
+    key = user.ensure_claim_key!
+
+    assert_equal user, User.find_by_claim_key(key)
+    assert_equal user, User.find_by_claim_key(key.downcase)
+    assert_equal user, User.find_by_claim_key(key.delete("-"))
+  end
+
+  test ".find_by_claim_key returns nil for a non-key and for an unclaimed key" do
+    create(:user).ensure_claim_key!
+
+    assert_nil User.find_by_claim_key("hello")
+    assert_nil User.find_by_claim_key(nil)
+    assert_nil User.find_by_claim_key("FY-0000-0000")
   end
 end

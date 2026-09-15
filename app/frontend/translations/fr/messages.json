@@ -210,6 +210,12 @@
             "failure": "Impossible de désactiver l'abonnement au calendrier personnel.",
             "confirm": "Désactiver l'abonnement coupera le flux pour toute application de calendrier actuellement abonnée."
           }
+        },
+        "supporterClaimKey": {
+          "copy": {
+            "success": "Clé copiée.",
+            "failure": "La clé n'a pas pu être copiée."
+          }
         }
       },
       "user": {

@@ -39,6 +39,16 @@ Rack::Attack.throttle("oauth-application-registration", limit: 5, period: 1.hour
   end
 end
 
+# Ko-fi posts one request per payment, which at any plausible volume is a
+# handful a day. The endpoint is unauthenticated by nature -- the token is in
+# the body, so a wrong one still costs a JSON parse -- and this caps what that
+# is worth to anyone who finds the URL.
+Rack::Attack.throttle("kofi-webhook", limit: 60, period: 1.hour) do |req|
+  if req.path == "/kofi/webhook" && req.post?
+    (req.get_header("action_dispatch.remote_ip") || req.ip).to_s
+  end
+end
+
 Rack::Attack.throttled_response_retry_after_header = true
 
 Rack::Attack.throttled_responder = lambda do |request|

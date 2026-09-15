@@ -43,7 +43,7 @@ module Patreon
       assert_equal "USD", record.source_currency
       assert_equal Date.new(2026, 1, 15), record.started_at
       assert_nil record.ended_at
-      assert_equal({created: 1, updated: 0, ended: 0, skipped: 0}, stats)
+      assert_equal({created: 1, updated: 0, ended: 0, skipped: 0, linked: 0}, stats)
     end
 
     test "enqueues a new-patron notification for a newly-created active patron" do
@@ -80,7 +80,7 @@ module Patreon
       stats = import([member(amount_cents: 0)])
 
       assert_nil SupporterContribution.find_by(patreon_member_id: "m1")
-      assert_equal({created: 0, updated: 0, ended: 0, skipped: 1}, stats)
+      assert_equal({created: 0, updated: 0, ended: 0, skipped: 1, linked: 0}, stats)
     end
 
     test "ends an existing record for a former patron even when amount drops to zero" do
@@ -91,7 +91,7 @@ module Patreon
 
       record = SupporterContribution.find_by(patreon_member_id: "m1")
       assert_equal Date.new(2026, 5, 20), record.ended_at
-      assert_equal({created: 0, updated: 1, ended: 1, skipped: 0}, stats)
+      assert_equal({created: 0, updated: 1, ended: 1, skipped: 0, linked: 0}, stats)
     end
 
     test "does not re-convert when the source amount is unchanged" do
@@ -102,7 +102,7 @@ module Patreon
 
       record = SupporterContribution.find_by(patreon_member_id: "m1")
       assert_equal 460, record.amount_cents
-      assert_equal({created: 0, updated: 0, ended: 0, skipped: 0}, stats)
+      assert_equal({created: 0, updated: 0, ended: 0, skipped: 0, linked: 0}, stats)
     end
 
     test "re-converts when the source amount changes" do
@@ -115,7 +115,7 @@ module Patreon
       record = SupporterContribution.find_by(patreon_member_id: "m1")
       assert_equal 920, record.amount_cents
       assert_equal 1000, record.source_amount_cents
-      assert_equal({created: 0, updated: 1, ended: 0, skipped: 0}, stats)
+      assert_equal({created: 0, updated: 1, ended: 0, skipped: 0, linked: 0}, stats)
     end
 
     test "ends a pledge when the patron becomes a former patron" do
@@ -126,7 +126,7 @@ module Patreon
 
       record = SupporterContribution.find_by(patreon_member_id: "m1")
       assert_equal Date.new(2026, 5, 20), record.ended_at
-      assert_equal({created: 0, updated: 1, ended: 1, skipped: 0}, stats)
+      assert_equal({created: 0, updated: 1, ended: 1, skipped: 0, linked: 0}, stats)
     end
 
     test "keeps a declined patron active so Patreon can retry the charge" do
@@ -137,13 +137,94 @@ module Patreon
 
       record = SupporterContribution.find_by(patreon_member_id: "m1")
       assert_nil record.ended_at
-      assert_equal({created: 0, updated: 0, ended: 0, skipped: 0}, stats)
+      assert_equal({created: 0, updated: 0, ended: 0, skipped: 0, linked: 0}, stats)
     end
 
     test "raises when no campaign_id is configured" do
       assert_raises(Patreon::Error) do
         Patreon::SupporterImporter.call(client: FakeClient.new([]), campaign_id: nil)
       end
+    end
+
+    test "stores the payer email and links a confirmed account" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      user = create(:user, email: "alice@example.test", confirmed_at: Time.current)
+
+      stats = import([member(email: "alice@example.test")])
+
+      record = SupporterContribution.find_by(patreon_member_id: "m1")
+      assert_equal "alice@example.test", record.payer_email
+      assert_equal user, record.user
+      assert_equal 1, stats[:linked]
+    end
+
+    test "does not link an unconfirmed account" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      create(:user, email: "alice@example.test", confirmed_at: nil)
+
+      stats = import([member(email: "alice@example.test")])
+
+      assert_nil SupporterContribution.find_by(patreon_member_id: "m1").user
+      assert_equal 0, stats[:linked]
+    end
+
+    # The account was confirmed before the row had an address to match it on, so
+    # User's confirmation hook had nothing to find. The sync that supplies the
+    # address is what resolves it.
+    test "links a confirmed account once the sync supplies an address" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      user = create(:user, email: "alice@example.test", confirmed_at: Time.current)
+      import([member(email: nil)])
+
+      assert_nil SupporterContribution.find_by(patreon_member_id: "m1").user
+
+      stats = import([member(email: "alice@example.test")])
+
+      assert_equal 1, stats[:linked]
+      assert_equal user, SupporterContribution.find_by(patreon_member_id: "m1").reload.user
+    end
+
+    # A token without campaigns.members[email] returns members with no address
+    # at all, which is indistinguishable from a campaign of patrons who match
+    # nobody unless it is said out loud.
+    test "warns that the token is probably unscoped when no member has an email" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      Rails.logger.expects(:warn).with(regexp_matches(/campaigns.members\[email\] scope/))
+
+      import([member(email: nil)])
+    end
+
+    # A row written before payer_email existed has no address at all, so a
+    # former patron who is still identifiable has to pick one up on the way out.
+    test "a former patron's row takes the current address and links" do
+      user = create(:user, email: "alice@example.test", confirmed_at: Time.current)
+      contribution = create(:supporter_contribution, :patreon,
+        patreon_member_id: "m1", payer_email: nil,
+        started_at: Date.new(2026, 1, 1), ended_at: nil)
+
+      import([member(status: "former_patron", amount_cents: 0, email: "alice@example.test")])
+
+      contribution.reload
+      assert_equal "alice@example.test", contribution.payer_email
+      assert_equal user, contribution.user
+      assert_not_nil contribution.ended_at
+    end
+
+    test "a former patron whose address moved does not keep the old one" do
+      create(:supporter_contribution, :patreon,
+        patreon_member_id: "m1", payer_email: "old@example.test",
+        started_at: Date.new(2026, 1, 1), ended_at: nil)
+
+      import([member(status: "former_patron", amount_cents: 0, email: "new@example.test")])
+
+      assert_equal "new@example.test", SupporterContribution.find_by(patreon_member_id: "m1").payer_email
+    end
+
+    test "says nothing about scope when emails are present" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      Rails.logger.expects(:warn).never
+
+      import([member(email: "alice@example.test")])
     end
   end
 end

@@ -1399,6 +1399,11 @@
         "calendarSubscription": {
           "intro": "Erzeuge einen privaten Link, um die Events, für die du angemeldet bist, in deiner persönlichen Kalender-App zu sehen (Apple Kalender, Google Kalender, Outlook).",
           "howTo": "Füge den Link in deiner Kalender-App unter „Kalender abonnieren“ oder „Per URL hinzufügen“ ein. Wer diesen Link hat, sieht die Events, für die du angemeldet bist — halte ihn privat."
+        },
+        "supporterClaimKey": {
+          "patreonNote": "wird über deine E-Mail-Adresse zugeordnet, kein Schlüssel nötig",
+          "label": "Dein Schlüssel",
+          "hint": "Füge ihn der Nachricht einer PayPal-, Ko-fi- oder Buy-me-a-coffee-Zahlung hinzu, dann wird sie deinem Konto zugeordnet. Bei Patreon geschieht das über deine E-Mail-Adresse."
         }
       },
       "filters": {

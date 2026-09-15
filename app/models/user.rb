@@ -6,6 +6,7 @@
 #
 #  id                        :uuid             not null, primary key
 #  calendar_feed_token       :string
+#  claim_key                 :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -70,6 +71,7 @@
 # Indexes
 #
 #  index_users_on_calendar_feed_token    (calendar_feed_token) UNIQUE
+#  index_users_on_claim_key              (claim_key) UNIQUE WHERE (claim_key IS NOT NULL)
 #  index_users_on_confirmation_token     (confirmation_token) UNIQUE
 #  index_users_on_email                  (email) UNIQUE
 #  index_users_on_id_where_not_tracking  (id) WHERE (tracking = false)
@@ -265,6 +267,19 @@ class User < ApplicationRecord
   before_validation :update_urls
   before_create :setup_otp_secret
   after_create :create_default_notification_preferences
+
+  # Keyed on the columns rather than on Devise's after_confirmation hook, so an
+  # account confirmed by assignment -- an OAuth signup, an admin, a backfill --
+  # is covered as well as one that went through `confirm`.
+  #
+  # Reconfirmation changes both, so confirmed_at alone would be enough for it.
+  # The email arm is for the case that changes only that: an admin moving an
+  # account with skip_reconfirmation!.
+  after_commit :link_supporter_contributions,
+    if: -> {
+      confirmed_at.present? &&
+        (saved_change_to_confirmed_at? || saved_change_to_email?)
+    }
 
   after_update :notify_user
   after_update :sync_sale_notify_preference
@@ -528,16 +543,80 @@ class User < ApplicationRecord
     email.ends_with?("@users.noreply.fleetyards.net")
   end
 
-  # Gate perks on this one: it ignores anonymity, so an anonymous supporter keeps
-  # whatever their contribution earns them.
+  # Thresholds are compared against amount_cents, which every importer has
+  # already normalised to EUR -- the figure the platforms report is whatever
+  # currency the donor paid in, and comparing those directly would make a tier
+  # mean different things to different people.
+  SUPPORTER_TIERS = {1 => 100, 2 => 500}.freeze
+
+  # Perks and the public badge both, and deliberately blind to anonymity.
+  # Anonymity says whether a contribution is *named* on the supporters page --
+  # SupporterContribution#public_name is where it is answered -- not whether the
+  # person behind it may be known to support at all.
   def supporter?
     supporter_contributions.active_now.exists?
   end
 
-  # Safe to expose: an anonymous contribution must not out its supporter, so the
-  # public badge only reflects the ones cleared for attribution.
-  def public_supporter?
-    supporter_contributions.active_now.where(anonymous: false).exists?
+  # 0 for everybody else, so callers can compare rather than branch on nil.
+  #
+  # Derived, never stored: it is a fact about this month's contributions and
+  # would otherwise need recalculating every time one is added, edited, ended
+  # or linked -- with nothing to notice when a recalculation was missed.
+  def supporter_tier
+    contributions = supporter_contributions.active_now
+    total = contributions.sum(:amount_cents)
+
+    tier = SUPPORTER_TIERS.select { |_, cents| total >= cents }.keys.max || 0
+
+    # A recurring Patreon pledge is the commitment the second tier is for,
+    # whatever the exchange rate did to its amount this month.
+    return [tier, 2].max if contributions.any? { |c| c.patreon? && c.recurring? }
+
+    tier
+  end
+
+  # Generated on first view rather than at sign-up, the way a fleet's calendar
+  # feed token is: most accounts never donate, and an unused key is one more
+  # secret to rotate for nothing.
+  def ensure_claim_key!
+    return claim_key if claim_key.present?
+
+    # Two requests arriving together would otherwise both find nothing, both
+    # generate, and the loser would be handed a key that no longer exists by the
+    # time they copy it. `with_lock` re-reads the row inside the transaction.
+    with_lock do
+      update_column(:claim_key, self.class.generate_claim_key) if claim_key.blank?
+    end
+
+    claim_key
+  end
+
+  # Nil for anything not key-shaped, so a donation message with no key is not
+  # mistaken for one naming an account that does not exist.
+  def self.find_by_claim_key(value)
+    key = SupporterClaimKey.normalize(value)
+    return if key.blank?
+
+    find_by(claim_key: key)
+  end
+
+  def self.generate_claim_key
+    loop do
+      key = SupporterClaimKey.generate
+      break key unless exists?(claim_key: key)
+    end
+  end
+
+  # A donation can arrive before its donor has an account, or before they have
+  # confirmed it -- the linker only ever matches a confirmed address, so
+  # confirmation is the moment an unlinked contribution becomes resolvable.
+  # Reconfirmation runs this too, which covers somebody moving their account to
+  # the address they donate from.
+  private def link_supporter_contributions
+    SupporterContribution
+      .where(user_id: nil)
+      .where(payer_email: email.to_s.strip.downcase)
+      .find_each { |contribution| ::Supporters::Linker.call(contribution) }
   end
 
   def reset_password(new_password, new_password_confirmation)

@@ -299,6 +299,12 @@
     }
   }
 
+  &--align-center {
+    input {
+      text-align: center;
+    }
+  }
+
   /*
    * The frame stays neutral and the signature says what is wrong -- the call
    * Panel makes for its own tones. :focus-within carries a pseudo-class and so

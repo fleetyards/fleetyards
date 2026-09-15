@@ -6,70 +6,165 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useSessionStore } from "@/frontend/stores/session";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMySupporterClaimKey } from "@/services/fyApi";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
 const { t } = useI18n();
+const sessionStore = useSessionStore();
+const { displaySuccess } = useAppNotifications();
+
+// Reading generates the key, so it is here the moment somebody opens the modal
+// to donate rather than after a detour through settings.
+const { data: claimKey } = useMySupporterClaimKey({
+  query: { enabled: computed(() => sessionStore.isAuthenticated) },
+});
+
+const key = computed(() => claimKey.value?.key ?? "");
+
+const platforms = [
+  {
+    id: "paypal",
+    label: "PayPal",
+    icon: "fa-brands fa-paypal",
+    href: "https://paypal.me/mortik",
+    carriesMessage: true,
+  },
+  {
+    id: "patreon",
+    label: "Patreon",
+    icon: "fa-brands fa-patreon",
+    href: "https://www.patreon.com/fleetyards",
+    carriesMessage: false,
+  },
+  {
+    id: "kofi",
+    label: "Ko-fi",
+    icon: "",
+    href: "https://ko-fi.com/fleetyardsnet",
+    carriesMessage: true,
+  },
+  {
+    id: "bmac",
+    label: "Buy me a coffee",
+    icon: "fa-solid fa-mug-hot",
+    href: "https://www.buymeacoffee.com/mortik",
+    carriesMessage: true,
+  },
+];
+
+// The three platforms that carry a donor message copy the key on the way out,
+// so it is on the clipboard when the payment form asks for one. Ko-fi has no
+// URL parameter to prefill it with, so this is as close as it gets.
+//
+// Deliberately not awaited: the link opens in a new tab and awaiting first
+// would put the navigation outside the user gesture. Failure is silent by
+// design -- the clipboard is a convenience here, and the key is still visible
+// in the hint below.
+const copyKey = () => {
+  if (!key.value) return;
+
+  // Not awaited: a platform link opens in a new tab, and awaiting first would
+  // put the navigation outside the user gesture that permits the write.
+  void navigator.clipboard?.writeText(key.value).then(
+    () => {
+      displaySuccess({
+        text: t("messages.account.supporterClaimKey.copy.success"),
+      });
+    },
+    () => {},
+  );
+};
 </script>
 
 <template>
   <Modal :title="t('headlines.support')">
     <div class="support-body">
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <SupportProgress />
+      <SupportProgress />
+
+      <hr class="support-rule" />
+
+      <div class="support-section">
+        <div class="support-section__label">
+          {{ t("texts.support.subline") }}
         </div>
-      </div>
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <p>{{ t("texts.support.goal") }}</p>
-        </div>
-      </div>
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <p v-html="t('texts.support.info')" />
-        </div>
-      </div>
-      <br />
-      <div class="row">
-        <div class="col-12">
-          <p v-html="t('texts.support.code')" />
-          <a
-            href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
-            class="support-referral-link"
-            target="_blank"
-            rel="noopener"
+
+        <div class="support-platforms">
+          <Btn
+            v-for="platform in platforms"
+            :key="platform.id"
+            :href="platform.href"
+            :data-test="`support-${platform.id}`"
+            @click="platform.carriesMessage && copyKey()"
           >
-            <b>STAR-5F32-SJZ4</b>
-          </a>
+            <img
+              v-if="platform.id === 'kofi'"
+              :src="kofiIcon"
+              alt=""
+              width="20"
+            />
+            <i v-else :class="platform.icon" />
+            <span>{{ platform.label }}</span>
+          </Btn>
         </div>
+
+        <template v-if="key">
+          <FormInput
+            name="supporterClaimKey"
+            :model-value="key"
+            :prefix="t('labels.account.supporterClaimKey.label')"
+            :alignment="InputAlignmentsEnum.CENTER"
+            no-label
+            class="support-claim-key"
+            data-test="claim-key"
+          >
+            <template #suffix>
+              <button
+                type="button"
+                class="support-claim-key__copy"
+                :aria-label="t('actions.copy')"
+                :title="t('actions.copy')"
+                data-test="copy-claim-key"
+                @click="copyKey"
+              >
+                <i class="fa-light fa-copy" />
+              </button>
+            </template>
+          </FormInput>
+
+          <p class="support-claim-key__hint">
+            {{ t("labels.account.supporterClaimKey.hint") }}
+          </p>
+        </template>
       </div>
-      <br />
-      <p>
-        {{ t("texts.support.subline") }}
-      </p>
-      <div class="page-actions page-actions-center">
-        <Btn href="https://paypal.me/mortik" size="lg">
-          <i class="fa-brands fa-paypal" />
-          PayPal
-        </Btn>
-        <Btn href="https://www.patreon.com/fleetyards" size="lg">
-          <i class="fa-brands fa-patreon" />
-          Patreon
-        </Btn>
-        <Btn href="https://ko-fi.com/fleetyardsnet" size="lg">
-          <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
-          Ko-fi
-        </Btn>
-        <Btn href="https://www.buymeacoffee.com/mortik" size="lg">
-          <i class="fa-solid fa-mug-hot" />
-          Buy me a coffee
-        </Btn>
+
+      <hr class="support-rule" />
+
+      <div class="support-section">
+        <div class="support-section__label">
+          {{ t("texts.support.otherWays") }}
+        </div>
+
+        <div class="support-secondary">
+          <p v-html="t('texts.support.info')" />
+          <p class="support-secondary__referral">
+            {{ t("texts.support.code") }}
+            <a
+              href="https://robertsspaceindustries.com/enlist?referral=STAR-5F32-SJZ4"
+              class="support-referral-link"
+              target="_blank"
+              rel="noopener"
+            >
+              <b>STAR-5F32-SJZ4</b>
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </Modal>
