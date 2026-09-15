@@ -266,6 +266,12 @@ Devise.setup do |config|
     }
   end
 
+  patreon_client_id = Rails.application.credentials.dig(:patreon, :oauth_client_id)
+  patreon_secret = Rails.application.credentials.dig(:patreon, :oauth_secret)
+  if patreon_client_id.present? && patreon_secret.present?
+    config.omniauth :patreon, patreon_client_id, patreon_secret
+  end
+
   config.omniauth :openid_connect, {
     name: :citizenid,
     scope: [:openid, :profile, :email, "rsi.profile", "rsi.orgs.primary", "rsi.orgs.public"],

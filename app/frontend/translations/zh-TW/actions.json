@@ -136,7 +136,8 @@
           "bluesky": "已連接到 BlueSky",
           "github": "已連接到 GitHub",
           "twitch": "已連接到 Twitch",
-          "citizenid": "已連接到 Citizen iD"
+          "citizenid": "已連接到 Citizen iD",
+          "patreon": "已連結 Patreon"
         },
         "disconnect": {
           "google": "中斷 Google 連線",
@@ -144,8 +145,10 @@
           "bluesky": "中斷 BlueSky 連線",
           "github": "中斷 GitHub 連線",
           "twitch": "中斷 Twitch 連線",
-          "citizenid": "中斷 Citizen iD 連線"
-        }
+          "citizenid": "中斷 Citizen iD 連線",
+          "patreon": "中斷 Patreon"
+        },
+        "patreon": "Patreon"
       },
       "compare": {
         "ships": "對比"

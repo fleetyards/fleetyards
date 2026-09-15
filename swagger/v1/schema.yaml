@@ -16909,6 +16909,7 @@ components:
       - oauth-discord
       - oauth-github
       - oauth-google
+      - oauth-patreon
       - oauth-twitch
       - ship_inventories
       - tools_cargo_grids
@@ -16933,6 +16934,7 @@ components:
       - OAUTH_DISCORD
       - OAUTH_GITHUB
       - OAUTH_GOOGLE
+      - OAUTH_PATREON
       - OAUTH_TWITCH
       - SHIP_INVENTORIES
       - TOOLS_CARGO_GRIDS

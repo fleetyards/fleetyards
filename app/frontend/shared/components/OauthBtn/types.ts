@@ -5,4 +5,5 @@ export enum OauthBtnProvidersEnum {
   GOOGLE = "google",
   BLUESKY = "bluesky",
   CITIZENID = "citizenid",
+  PATREON = "patreon",
 }

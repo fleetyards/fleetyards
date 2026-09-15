@@ -27,7 +27,8 @@ class OmniauthConnection < ApplicationRecord
     github: 2,
     bluesky: 3,
     twitch: 4,
-    citizenid: 5
+    citizenid: 5,
+    patreon: 6
   }
 
   validates :provider, presence: true, uniqueness: {scope: :user_id}
@@ -36,6 +37,16 @@ class OmniauthConnection < ApplicationRecord
   # links Discord after being accepted never receives the roles their fleets
   # already mapped.
   after_create_commit :backfill_discord_member_roles, if: :discord?
+  after_create_commit :link_patreon_contributions, if: :patreon?
+
+  # Connecting proves which Patreon account this is, which is the one thing a
+  # typed address never could -- so a contribution already synced under that
+  # account can be claimed on the spot.
+  private def link_patreon_contributions
+    SupporterContribution
+      .where(user_id: nil, patreon_user_id: uid)
+      .find_each { |contribution| ::Supporters::Linker.call(contribution) }
+  end
 
   private def backfill_discord_member_roles
     ::Discord::BackfillUserMemberRolesJob.perform_async(user_id)

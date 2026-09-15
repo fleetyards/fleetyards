@@ -93,6 +93,10 @@ oauth-google:
   description: "Google login"
   permanent: true
 
+oauth-patreon:
+  description: "Patreon account connection, for matching a pledge to an account"
+  permanent: true
+
 oauth-twitch:
   description: "Twitch login"
   permanent: true
