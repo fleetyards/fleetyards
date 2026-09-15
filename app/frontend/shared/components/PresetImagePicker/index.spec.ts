@@ -130,23 +130,32 @@ describe("PresetImagePicker", () => {
     expect(selected(subject)).toBeUndefined();
   });
 
-  // Escape belongs to the topmost surface: a modal underneath must not read the
-  // same key and close as well.
-  it("closes on Escape without letting it through", async () => {
+  /*
+   * Escape belongs to the topmost surface. The app modal and the confirm dialog
+   * both listen on `window` in the bubble phase and are mounted long before
+   * this is, so the probe is registered the same way and in the same order --
+   * dispatching straight at `window` instead proves nothing, because then the
+   * two listeners are on the target together and order alone decides.
+   */
+  it("closes on Escape without the surface underneath reading it too", async () => {
+    const underneath = vi.fn();
+    window.addEventListener("keydown", underneath);
+
     const subject = await mount();
 
-    const event = new KeyboardEvent("keydown", {
-      key: "Escape",
-      bubbles: true,
-      cancelable: true,
-    });
-    const reachedTheModalUnderneath = vi.fn();
-    window.addEventListener("keydown", reachedTheModalUnderneath);
-    window.dispatchEvent(event);
-    window.removeEventListener("keydown", reachedTheModalUnderneath);
+    // From inside the dialog, which is where focus is while it is open.
+    find("[data-test='preset-picker-close']")?.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "Escape",
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
+
+    window.removeEventListener("keydown", underneath);
 
     expect(subject.emitted("close")).toHaveLength(1);
-    expect(reachedTheModalUnderneath).not.toHaveBeenCalled();
+    expect(underneath).not.toHaveBeenCalled();
   });
 
   it("offers a way back to no picture at all, and only once there is one", async () => {

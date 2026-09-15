@@ -146,9 +146,15 @@ const containFocus = (event: KeyboardEvent) => {
 
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === "Escape") {
-    // The picker is the topmost surface while it is open, so the key is its own
-    // -- a modal underneath must not also read it and close as well.
-    event.stopPropagation();
+    /*
+     * The key is this picker's own: it is the topmost surface while it is open,
+     * and a modal underneath must not read the same press and close as well.
+     *
+     * `stopImmediatePropagation`, because `stopPropagation` only stops the
+     * later phases -- a second listener on `window` itself still runs, and
+     * `window` is exactly where the surfaces underneath listen.
+     */
+    event.stopImmediatePropagation();
     emit("close");
     return;
   }
