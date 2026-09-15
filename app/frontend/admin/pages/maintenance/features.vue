@@ -59,8 +59,9 @@ type FeatureTab = (typeof tabs)[number];
 const route = useRoute();
 const router = useRouter();
 
-const isFeatureTab = (value: unknown): value is FeatureTab =>
-  tabs.includes(value as FeatureTab);
+function isFeatureTab(value: unknown): value is FeatureTab {
+  return tabs.includes(value as FeatureTab);
+}
 
 const activeTab = computed<FeatureTab>(() => {
   const fromQuery = route.query.tab;

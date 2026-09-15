@@ -6,18 +6,20 @@ import type { Feature } from "@/services/fyAdminApi";
 
 const FEATURE_NAME = '[data-test="feature-name"]';
 
-const feature = (overrides: Partial<Feature> = {}): Feature => ({
-  name: "fleet_logistics",
-  state: "off",
-  permanent: false,
-  selfServiceUser: false,
-  selfServiceFleet: false,
-  percentageOfActors: 0,
-  percentageOfTime: 0,
-  groups: [],
-  actors: [],
-  ...overrides,
-});
+function feature(overrides: Partial<Feature> = {}): Feature {
+  return {
+    name: "fleet_logistics",
+    state: "off",
+    permanent: false,
+    selfServiceUser: false,
+    selfServiceFleet: false,
+    percentageOfActors: 0,
+    percentageOfTime: 0,
+    groups: [],
+    actors: [],
+    ...overrides,
+  };
+}
 
 const features = vi.hoisted(() => ({
   value: undefined as Feature[] | undefined,
@@ -95,9 +97,11 @@ const mountPage = async (tab?: string) => {
   return { wrapper, router };
 };
 
-const namesOn = (wrapper: {
+function namesOn(wrapper: {
   findAll: (s: string) => { text: () => string }[];
-}) => wrapper.findAll(FEATURE_NAME).map((el) => el.text());
+}) {
+  return wrapper.findAll(FEATURE_NAME).map((el) => el.text());
+}
 
 describe("AdminFeaturesPage", () => {
   beforeEach(() => {
