@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
 });
 
-const { t } = useI18n();
+const { t, l } = useI18n();
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(props.mission));
 </script>
@@ -84,6 +84,19 @@ const cover = computed(() => resolve(props.mission));
             </div>
             <div class="metrics-card__tile__value">
               {{ mission.shipCount }}
+            </div>
+          </div>
+        </div>
+        <!-- Under the rail rather than a third tile beside the two counts: it
+             is a line of text where those are figures, and the table view of
+             this same list carries it as a column. -->
+        <div class="metrics-card__rows">
+          <div class="metrics-card__row">
+            <div class="metrics-card__row__label">
+              {{ t("labels.createdAt") }}
+            </div>
+            <div class="metrics-card__row__value">
+              {{ l(mission.createdAt, "datetime.formats.dateTimeZone") }}
             </div>
           </div>
         </div>

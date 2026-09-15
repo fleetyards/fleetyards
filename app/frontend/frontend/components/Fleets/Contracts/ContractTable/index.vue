@@ -59,8 +59,11 @@ const columns = computed<BaseTableCol<FleetContract>[]>(() => [
   },
   {
     name: "deadline",
+    // Wide enough for the date, the clock time and the zone together, like the
+    // events and missions tables. `short` dropped the year, which on a deadline
+    // is the difference between overdue and a year out.
     label: t("labels.fleets.contracts.deadline"),
-    width: "130px",
+    width: "195px",
     mobile: false,
   },
   {
@@ -147,7 +150,10 @@ const openContract = (contract: FleetContract) => {
       <span class="contract-table__deadline">
         {{
           (record as FleetContract).deadline
-            ? l((record as FleetContract).deadline!, "datetime.formats.short")
+            ? l(
+                (record as FleetContract).deadline!,
+                "datetime.formats.dateTimeZone",
+              )
             : "—"
         }}
       </span>
