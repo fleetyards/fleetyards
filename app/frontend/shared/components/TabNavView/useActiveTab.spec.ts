@@ -13,7 +13,7 @@ vi.mock("vue-router", async (importOriginal) => ({
   useRoute: () => currentRoute,
 }));
 
-const { useActiveTab, routeName } = await import("./useActiveTab");
+const { useActiveTab, routeName, isTabRoute } = await import("./useActiveTab");
 
 const tab = (name: string): RouteRecordRaw =>
   ({ path: name, name, component: {} }) as RouteRecordRaw;
@@ -93,5 +93,34 @@ describe("useActiveTab", () => {
     const { isActive } = useActiveTab(grouped);
 
     expect(isActive("admin-commodity-edit")).toBe(true);
+  });
+
+  /*
+   * An old path kept alive as a redirect carries a function, and a function
+   * written inline is named after the property it sits on -- so an unguarded
+   * read reported every one of them as a tab called "redirect", which is a
+   * route nobody registered.
+   */
+  it("reads no name off a redirect written as a function", () => {
+    const legacy = {
+      path: "cargo/transactions/",
+      redirect: (to: { params: unknown }) => ({
+        name: "hangar-vehicle-cargo",
+        params: to.params,
+      }),
+    } as unknown as RouteRecordRaw;
+
+    expect(routeName(legacy)).toBeUndefined();
+    expect(isTabRoute(legacy)).toBe(false);
+  });
+
+  it("keeps a route that redirects by name as a tab", () => {
+    const group = {
+      path: ":id/",
+      redirect: { name: "admin-commodity-edit" },
+    } as unknown as RouteRecordRaw;
+
+    expect(isTabRoute(group)).toBe(true);
+    expect(isTabRoute(tab("admin-fleet-members"))).toBe(true);
   });
 });
