@@ -117,6 +117,7 @@ class Admin::Api::V1::FleetInventoriesTest < ActionDispatch::IntegrationTest
 
   test "GET /fleets/:fleet_id/inventories/:id names the manager when one is set" do
     manager = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: manager)
     @inventory.update!(manager:)
     sign_in @admin
 

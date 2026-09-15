@@ -258,6 +258,10 @@ de:
               not_open: "ist nicht mehr offen"
             user:
               already_participating: "ist bereits auf dieser Tour"
+        fleet_inventory:
+          attributes:
+            managed_by:
+              not_a_member: muss ein bestätigtes Mitglied dieser Flotte sein
         fleet_role:
           attributes:
             base:

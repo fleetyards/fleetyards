@@ -79,4 +79,46 @@ class FleetInventoryTest < ActiveSupport::TestCase
 
     assert_equal({added_by: user.id}, @inventory.ledger_attributes_for(user))
   end
+
+  test "the manager has to be an accepted member of the fleet" do
+    @inventory.manager = create(:user)
+
+    assert_not @inventory.valid?
+    assert_includes @inventory.errors[:managed_by], "must be an accepted member of this fleet"
+  end
+
+  test "a pending invite cannot manage an inventory" do
+    invited = create(:user)
+    create(:fleet_membership, :invited, fleet: @fleet, user: invited)
+
+    @inventory.manager = invited
+
+    assert_not @inventory.valid?
+  end
+
+  test "an accepted member can manage an inventory" do
+    member = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: member)
+
+    @inventory.manager = member
+
+    assert_predicate @inventory, :valid?
+  end
+
+  test "an inventory without a manager stays valid" do
+    @inventory.manager = nil
+
+    assert_predicate @inventory, :valid?
+  end
+
+  test "an inventory whose manager left the fleet can still be edited" do
+    member = create(:user)
+    membership = create(:fleet_membership, :accepted, fleet: @fleet, user: member)
+    @inventory.update!(manager: member)
+    membership.discard
+
+    @inventory.name = "Area 18 Vault"
+
+    assert_predicate @inventory, :valid?
+  end
 end

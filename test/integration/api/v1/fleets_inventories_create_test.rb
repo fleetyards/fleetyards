@@ -65,6 +65,35 @@ class Api::V1::FleetsInventoriesCreateTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug}, body: {name: "Main Warehouse"}
   end
 
+  test "POST /fleets/:slug/inventories accepts a member as the manager" do
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {name: "Managed Warehouse", managedBy: @member.id} do
+      assert_equal @member.username, parsed_body["manager"]["username"]
+    end
+  end
+
+  test "POST /fleets/:slug/inventories returns 400 for a manager outside the fleet" do
+    outsider = create(:user)
+    sign_in @admin
+
+    assert_api_response :post, 400,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {name: "Outsider Warehouse", managedBy: outsider.id}
+  end
+
+  test "POST /fleets/:slug/inventories returns 400 for a manager with a pending invite" do
+    invited = create(:user)
+    create(:fleet_membership, :invited, fleet: @fleet, user: invited)
+    sign_in @admin
+
+    assert_api_response :post, 400,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {name: "Invitee Warehouse", managedBy: invited.id}
+  end
+
   test "POST /fleets/:slug/inventories returns 403 for non-admin member" do
     sign_in @member
 

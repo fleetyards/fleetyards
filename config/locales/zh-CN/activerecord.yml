@@ -258,6 +258,10 @@ zh-CN:
               not_open: "已不再开放"
             user:
               already_participating: "已经参加了此行程"
+        fleet_inventory:
+          attributes:
+            managed_by:
+              not_a_member: 必须是该舰队的正式成员
         fleet_role:
           attributes:
             base:

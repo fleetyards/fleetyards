@@ -39,6 +39,10 @@ FactoryBot.define do
 
     trait :with_manager do
       association :manager, factory: :user
+
+      after(:build) do |inventory|
+        create(:fleet_membership, :accepted, fleet: inventory.fleet, user: inventory.manager)
+      end
     end
   end
 end

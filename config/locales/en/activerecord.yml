@@ -294,6 +294,10 @@ en:
           attributes:
             to_participant_id:
               same_as_sender: cannot be the same as the sender
+        fleet_inventory:
+          attributes:
+            managed_by:
+              not_a_member: must be an accepted member of this fleet
         fleet_role:
           attributes:
             base:

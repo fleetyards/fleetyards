@@ -258,6 +258,10 @@ es:
               not_open: "ya no está abierta"
             user:
               already_participating: "ya participa en esta expedición"
+        fleet_inventory:
+          attributes:
+            managed_by:
+              not_a_member: debe ser un miembro aceptado de esta flota
         fleet_role:
           attributes:
             base:

@@ -211,7 +211,7 @@ class FleetInventoryItemTest < ActiveSupport::TestCase
 
   test "notifies the inventory manager on top of the fleet management" do
     manager = create(:user)
-    fleet = create(:fleet, admins: [create(:user)])
+    fleet = create(:fleet, admins: [create(:user)], members: [manager])
     inventory = create(:fleet_inventory, fleet: fleet, manager: manager)
 
     assert_difference "Notification.where(user: manager).count", 1 do

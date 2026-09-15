@@ -258,6 +258,10 @@ zh-TW:
               not_open: "已不再開放"
             user:
               already_participating: "已經參加了此行程"
+        fleet_inventory:
+          attributes:
+            managed_by:
+              not_a_member: 必須是該艦隊的正式成員
         fleet_role:
           attributes:
             base:

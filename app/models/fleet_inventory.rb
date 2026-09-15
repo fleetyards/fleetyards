@@ -47,6 +47,8 @@ class FleetInventory < ApplicationRecord
 
   validates :name, presence: true, uniqueness: {case_sensitive: false, scope: :fleet_id}
 
+  validate :manager_belongs_to_fleet
+
   AVAILABLE_PRIVILEGES = [
     "fleet:inventories:read",
     "fleet:inventories:create",
@@ -71,5 +73,21 @@ class FleetInventory < ApplicationRecord
 
   def ledger_attributes_for(user)
     {added_by: user&.id}
+  end
+
+  # Pending invites, open requests and declined applicants all live in the same
+  # table as the roster, so an unfiltered member list offers people who never
+  # joined. The picker asks for accepted memberships; this keeps a request that
+  # names anyone else from storing them as the manager.
+  #
+  # Only on a change: nothing clears `managed_by` when a manager leaves the
+  # fleet, so a row that already names a former member has to stay editable --
+  # renaming such an inventory must not fail over a field the edit never touched.
+  private def manager_belongs_to_fleet
+    return if managed_by.blank?
+    return unless will_save_change_to_managed_by?
+    return if fleet&.fleet_memberships&.kept&.exists?(user_id: managed_by, aasm_state: "accepted")
+
+    errors.add(:managed_by, :not_a_member)
   end
 end
