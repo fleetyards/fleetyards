@@ -154,6 +154,18 @@ module Patreon
       assert_equal "u1", SupporterContribution.find_by(patreon_member_id: "m1").patreon_user_id
     end
 
+    # Never keep asserting an identity the current sync does not confirm: the id
+    # is what lets a connected account claim the contribution.
+    test "a member returned without a user relationship clears the stored id" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      create(:supporter_contribution, :patreon,
+        patreon_member_id: "m1", patreon_user_id: "u1", started_at: Date.new(2026, 1, 1))
+
+      import([member(patreon_user_id: nil)])
+
+      assert_nil SupporterContribution.find_by(patreon_member_id: "m1").patreon_user_id
+    end
+
     test "links a patron who connected their Patreon account first" do
       ExchangeRateFetcher.stubs(:convert_cents).returns(460)
       user = create(:user, confirmed_at: Time.current)
