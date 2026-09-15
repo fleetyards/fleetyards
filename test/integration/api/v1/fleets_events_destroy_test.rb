@@ -42,15 +42,29 @@ class Api::V1::FleetsEventsDestroyTest < ActionDispatch::IntegrationTest
     @fleet_event = create(:fleet_event, fleet: @fleet, created_by: @admin)
   end
 
-  test "DELETE /fleets/:slug/events/:slug archives the event" do
+  # A published event is kept: people may have signed up to it, so deleting one
+  # archives it and a second delete is what finally removes it.
+  test "DELETE /fleets/:slug/events/:slug archives a published event" do
+    published = create(:fleet_event, :open, fleet: @fleet, created_by: @admin)
     sign_in @admin
 
     assert_api_response :delete, 200,
-      path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug} do
+      path_params: {fleetSlug: @fleet.slug, slug: published.slug} do
       assert_equal true, parsed_body["archived"]
     end
 
-    assert @fleet_event.reload.archived?
+    assert published.reload.archived?
+  end
+
+  # Nothing was ever announced and nobody can have signed up, so a draft goes
+  # rather than being archived -- abandoning a create leaves no trace.
+  test "DELETE /fleets/:slug/events/:slug deletes an unpublished event outright" do
+    sign_in @admin
+
+    assert_api_response :delete, 204,
+      path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug}
+
+    assert_raises(ActiveRecord::RecordNotFound) { @fleet_event.reload }
   end
 
   test "DELETE /fleets/:slug/events/:slug permanently deletes an already-archived event" do
@@ -64,8 +78,10 @@ class Api::V1::FleetsEventsDestroyTest < ActionDispatch::IntegrationTest
   end
 
   test "DELETE /fleets/:slug/events/:slug with OAuth bearer token" do
+    published = create(:fleet_event, :open, fleet: @fleet, created_by: @admin)
+
     assert_api_response :delete, 200,
-      path_params: {fleetSlug: @fleet.slug, slug: @fleet_event.slug},
+      path_params: {fleetSlug: @fleet.slug, slug: published.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"])
   end
 

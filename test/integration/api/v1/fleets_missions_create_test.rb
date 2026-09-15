@@ -53,6 +53,23 @@ class Api::V1::FleetsMissionsCreateTest < ActionDispatch::IntegrationTest
       body: {title: "Operation Bluebird", description: "Cargo run"} do
       assert_equal "Operation Bluebird", parsed_body["title"]
       assert_equal "operation-bluebird", parsed_body["slug"]
+      # The create button writes one of these before the author has typed
+      # anything, so it must not be on the fleet's list yet.
+      assert_equal "draft", parsed_body["status"]
+    end
+  end
+
+  # Two clicks on the create button arrive under the same default name; the
+  # second is numbered rather than refused, because the author is on their way
+  # to the editor to rename it anyway.
+  test "POST /fleets/:slug/missions numbers a second draft of the same name" do
+    create(:mission, :draft, fleet: @fleet, created_by: @admin, title: "Untitled mission")
+    sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {title: "Untitled mission"} do
+      assert_equal "Untitled mission 2", parsed_body["title"]
     end
   end
 

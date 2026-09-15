@@ -99,6 +99,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :missions, param: :slug, only: %i[index show create update destroy] do
     put :unarchive, on: :member
+    put :publish, on: :member
     resources :mission_teams, path: "teams", only: %i[create update destroy] do
       put :sort, on: :collection
       resources :mission_ships, path: "ships", only: %i[create update destroy] do

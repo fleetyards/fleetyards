@@ -36,7 +36,31 @@ class Api::V1::FleetsMissionsIndexTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
-    @fleet = create(:fleet, admins: [@admin])
+    @member = create(:user)
+    @fleet = create(:fleet, admins: [@admin], members: [@member])
+  end
+
+  # A draft is not a mission the fleet has been offered, so it stays off an
+  # ordinary member's list until somebody publishes it.
+  test "GET /fleets/:slug/missions hides another author's draft from a member" do
+    create(:mission, fleet: @fleet, created_by: @admin)
+    create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 1, parsed_body["items"].size
+      assert_equal ["published"], parsed_body["items"].map { |item| item["status"] }.uniq
+    end
+  end
+
+  test "GET /fleets/:slug/missions shows a draft to the manager who can publish it" do
+    create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 1, parsed_body["items"].size
+      assert_equal "draft", parsed_body["items"].first["status"]
+    end
   end
 
   test "GET /fleets/:slug/missions returns the list" do

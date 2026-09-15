@@ -29,6 +29,10 @@ class Api::V1::FleetsMissionsUpdateTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Missions::MissionExtended
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -70,5 +74,16 @@ class Api::V1::FleetsMissionsUpdateTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 401,
       path_params: {fleetSlug: @fleet.slug, slug: @mission.slug},
       body: {title: "Updated Mission"}
+  end
+  # Only the provisional title a draft arrives with is renamed. One somebody
+  # typed is theirs alone, and the editor says so rather than quietly numbering
+  # it behind them.
+  test "PATCH /fleets/:slug/missions/:slug refuses a title another mission holds" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Operation Bluebird")
+    sign_in @admin
+
+    assert_api_response :put, 400,
+      path_params: {fleetSlug: @fleet.slug, slug: @mission.slug},
+      body: {title: "Operation Bluebird"}
   end
 end

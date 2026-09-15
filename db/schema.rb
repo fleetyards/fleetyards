@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_15_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1266,12 +1266,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_140000) do
     t.uuid "fleet_id", null: false
     t.string "scenario"
     t.string "slug", null: false
+    t.string "status", default: "draft", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["fleet_id", "archived_at"], name: "index_missions_on_fleet_id_and_archived_at"
     t.index ["fleet_id", "category"], name: "index_missions_on_fleet_id_and_category"
     t.index ["fleet_id", "scenario"], name: "index_missions_on_fleet_id_and_scenario"
     t.index ["fleet_id", "slug"], name: "index_missions_on_fleet_id_and_slug", unique: true
+    t.index ["fleet_id", "status"], name: "index_missions_on_fleet_id_and_status"
   end
 
   create_table "model_build_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -23,10 +23,12 @@ import {
   type Fleet,
   type FleetMember,
   type Mission,
+  useCreateFleetMission,
   useFleetMissions,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
@@ -41,6 +43,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const route = useRoute();
 const router = useRouter();
@@ -68,11 +71,40 @@ const canCreate = computed(() =>
   ]),
 );
 
-const goToCreate = () => {
-  void router.push({
-    name: "fleet-mission-new",
-    params: { slug: props.fleet.slug },
-  });
+const createMutation = useCreateFleetMission();
+const creating = ref(false);
+
+/*
+ * The button writes the mission rather than opening a form that would write it
+ * later: a mission has to exist before its teams, ships and slots can hang off
+ * it, and those are the editor's whole job. It arrives as a draft, so the fleet
+ * does not see it until the author publishes, and deleting one removes it
+ * outright rather than archiving a mission nobody was ever offered.
+ */
+const goToCreate = async () => {
+  if (creating.value) return;
+
+  creating.value = true;
+
+  await createMutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      data: { title: t("labels.fleets.missions.untitled") },
+    })
+    .then((mission) => {
+      if (!mission?.slug) return;
+
+      void router.push({
+        name: "fleet-mission-edit",
+        params: { slug: props.fleet.slug, mission: mission.slug },
+      });
+    })
+    .catch(() => {
+      displayAlert({ text: t("messages.fleets.mission.create.failure") });
+    })
+    .finally(() => {
+      creating.value = false;
+    });
 };
 
 // Which of the two tabs came back empty, so the box says what is missing here
@@ -167,6 +199,10 @@ const crumbs = computed<Crumb[]>(() => [
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />
+      </Btn>
+      <Btn v-if="canCreate" :loading="creating" @click="goToCreate">
+        <i class="fa-light fa-plus" />
+        <span>{{ t("actions.fleets.missions.create") }}</span>
       </Btn>
     </template>
 

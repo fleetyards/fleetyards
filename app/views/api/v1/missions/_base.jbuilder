@@ -7,6 +7,7 @@ json.description mission.description
 json.category mission.category
 json.scenario mission.scenario
 json.cover_image_preset mission.cover_image_preset
+json.status mission.status
 json.archived mission.archived?
 json.archived_at mission.archived_at
 

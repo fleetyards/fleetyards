@@ -23,7 +23,9 @@ import {
   type Fleet,
   type FleetMember,
   type FleetEvent,
+  useCreateFleetEvent,
   useFleetEvents,
+  FleetEventVisibilityEnum,
   useFleetCalendar,
   useFleetCalendarSubscription,
 } from "@/services/fyApi";
@@ -129,13 +131,55 @@ const visibleRange = ref<{ start: Date; end: Date }>({
   end: addDays(endOfMonth(new Date()), 7),
 });
 
-const goToCreate = (date: Date) => {
-  if (!canCreate.value) return;
-  void router.push({
-    name: "fleet-event-new",
-    params: { slug: props.fleet.slug },
-    query: { startsAt: date.toISOString() },
-  });
+const createMutation = useCreateFleetEvent();
+const creating = ref(false);
+
+// The event's own timezone, read once. A create that omitted it would be
+// refused, and the editor is where the author changes it.
+const browserTz = (() => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  } catch {
+    return "UTC";
+  }
+})();
+
+/*
+ * The button writes the event rather than opening a form that would write it
+ * later: an event has to exist before its teams, ships and slots can hang off
+ * it, and those are the editor's whole job. It arrives as a draft, so the fleet
+ * does not see it until the author publishes, and deleting one removes it
+ * outright rather than archiving an event nobody was ever offered.
+ */
+const goToCreate = async (date: Date) => {
+  if (!canCreate.value || creating.value) return;
+
+  creating.value = true;
+
+  await createMutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      data: {
+        title: t("labels.fleets.events.untitled"),
+        startsAt: date.toISOString(),
+        timezone: browserTz,
+        visibility: FleetEventVisibilityEnum.MEMBERS,
+      },
+    })
+    .then((event) => {
+      if (!event?.slug) return;
+
+      void router.push({
+        name: "fleet-event-edit",
+        params: { slug: props.fleet.slug, event: event.slug },
+      });
+    })
+    .catch(() => {
+      displayAlert({ text: t("messages.fleets.event.create.failure") });
+    })
+    .finally(() => {
+      creating.value = false;
+    });
 };
 
 const calendarParams = computed(() => ({
@@ -300,7 +344,8 @@ const openDisplayOptionsModal = () => {
     <Btn
       v-if="canCreate"
       :size="BtnSizesEnum.MD"
-      :to="{ name: 'fleet-event-new', params: { slug: props.fleet.slug } }"
+      :loading="creating"
+      @click="goToCreate(new Date())"
       :aria-label="t('actions.fleets.events.create')"
       mobile-icon-only
     >

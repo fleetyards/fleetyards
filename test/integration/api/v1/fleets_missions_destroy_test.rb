@@ -62,6 +62,18 @@ class Api::V1::FleetsMissionsDestroyTest < ActionDispatch::IntegrationTest
     assert_raises(ActiveRecord::RecordNotFound) { archived.reload }
   end
 
+  # Nothing was ever offered to the fleet and nobody can have joined, so there
+  # is nothing to keep: abandoning a create leaves no trace.
+  test "DELETE /fleets/:slug/missions/:slug deletes an unpublished mission outright" do
+    draft = create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    sign_in @admin
+
+    assert_api_response :delete, 204,
+      path_params: {fleetSlug: @fleet.slug, slug: draft.slug}
+
+    assert_raises(ActiveRecord::RecordNotFound) { draft.reload }
+  end
+
   test "DELETE /fleets/:slug/missions/:slug with OAuth bearer token" do
     assert_api_response :delete, 200,
       path_params: {fleetSlug: @fleet.slug, slug: @mission.slug},

@@ -90,7 +90,9 @@ module Api
       def destroy
         authorize! @fleet_event
 
-        if @fleet_event.archived?
+        # Nothing was ever announced and nobody can have signed up, so a draft
+        # goes rather than being archived -- abandoning a create leaves no trace.
+        if @fleet_event.archived? || @fleet_event.draft?
           if @fleet_event.destroy
             ActiveSupport::Notifications.instrument("fleet_event.destroyed", event: @fleet_event)
           else

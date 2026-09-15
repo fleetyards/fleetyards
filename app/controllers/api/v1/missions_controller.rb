@@ -11,16 +11,16 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy unarchive]
+        only: %i[create update destroy unarchive publish]
 
       before_action :set_fleet
       before_action :check_fleet_mission_builder_feature
-      before_action :set_mission, only: %i[show update destroy unarchive]
+      before_action :set_mission, only: %i[show update destroy unarchive publish]
 
       def index
         authorize! with: MissionPolicy, context: {fleet: @fleet}
 
-        scope = @fleet.missions
+        scope = visible_scope
         scope = (params[:archived] == "true") ? scope.archived : scope.active
 
         query_params = params.fetch(:q, {}).permit(:title_cont, :s)
@@ -60,10 +60,24 @@ module Api
         end
       end
 
+      # A draft is written by the create button and finished in the editor; this
+      # is the step that offers it to the fleet.
+      def publish
+        authorize! @mission
+
+        if @mission.publish!
+          render :show
+        else
+          render json: ValidationError.new("missions.publish", errors: @mission.errors), status: :bad_request
+        end
+      end
+
       def destroy
         authorize! @mission
 
-        if @mission.archived?
+        # Nothing was ever announced and nobody can have signed up, so a draft
+        # goes rather than being archived -- abandoning a create leaves no trace.
+        if @mission.archived? || @mission.draft?
           unless @mission.destroy
             render json: ValidationError.new("missions.destroy", errors: @mission.errors), status: :bad_request
           end
@@ -82,6 +96,18 @@ module Api
         else
           render json: ValidationError.new("missions.unarchive", errors: @mission.errors), status: :bad_request
         end
+      end
+
+      # Everything the member may see. A draft is not a mission the fleet has
+      # been offered yet, so it only lists for its author and for the people who
+      # could publish it.
+      private def visible_scope
+        scope = @fleet.missions
+
+        scope.visible_to(
+          current_resource_owner,
+          manage: allowed_to?(:manage?, Mission, context: {fleet: @fleet})
+        )
       end
 
       private def mission_params
