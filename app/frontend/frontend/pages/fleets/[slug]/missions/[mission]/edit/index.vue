@@ -89,7 +89,11 @@ const wrapHandleSubmit = (cb: SubmissionHandler<MissionUpdateInput>) =>
         category: values.category as never,
         scenario: values.scenario || null,
         description: values.description || null,
-        coverImage: values.coverImage || undefined,
+        // Passed through rather than coerced: `undefined` drops the key and
+        // keeps what is attached, `null` is how the field says it was cleared,
+        // and a signed id is a replacement. `|| undefined` turned a clear back
+        // into a keep, so the picture could not be removed.
+        coverImage: values.coverImage,
         // An upload replaces the preset rather than sitting over one that
         // would win back if the file were later cleared.
         coverImagePreset: values.coverImage ? null : values.coverImagePreset,

@@ -39,7 +39,7 @@ export const useMissionDraft = () => {
       // here would be a title somebody typed, and those are never renamed.
       const mission = await mutation.mutateAsync({ fleetSlug, data: {} });
 
-      if (!mission?.slug) return;
+      if (!mission?.slug) return false;
 
       const to = {
         name: "fleet-mission-edit",
@@ -49,8 +49,12 @@ export const useMissionDraft = () => {
       // `replace` for a page that only exists to do this: the create URL must
       // not sit in the history for Back to land on and write a second draft.
       await (replace ? router.replace(to) : router.push(to));
+
+      return true;
     } catch {
       displayAlert({ text: t("messages.fleets.mission.create.failure") });
+
+      return false;
     }
   };
 
@@ -94,7 +98,7 @@ export const useEventDraft = () => {
         },
       });
 
-      if (!event?.slug) return;
+      if (!event?.slug) return false;
 
       const to = {
         name: "fleet-event-edit",
@@ -102,8 +106,12 @@ export const useEventDraft = () => {
       };
 
       await (replace ? router.replace(to) : router.push(to));
+
+      return true;
     } catch {
       displayAlert({ text: t("messages.fleets.event.create.failure") });
+
+      return false;
     }
   };
 

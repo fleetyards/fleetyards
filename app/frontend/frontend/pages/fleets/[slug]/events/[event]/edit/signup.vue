@@ -63,8 +63,10 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     cb(
       {
         ...values,
-        location: values.location || undefined,
-        meetupLocation: values.meetupLocation || undefined,
+        // `null`, not `undefined`: an emptied field is an instruction to clear
+        // it, and a dropped key leaves the stored value in place.
+        location: values.location || null,
+        meetupLocation: values.meetupLocation || null,
         maxAttendees: values.maxAttendees ? Number(values.maxAttendees) : null,
         // The number only means anything while the lock is on, and the API
         // refuses one without it.
