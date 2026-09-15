@@ -23,15 +23,14 @@ import {
   type Fleet,
   type FleetMember,
   type FleetEvent,
-  useCreateFleetEvent,
   useFleetEvents,
-  FleetEventVisibilityEnum,
   useFleetCalendar,
   useFleetCalendarSubscription,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useEventDraft } from "@/frontend/composables/useDraftCreate";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 import {
   type EventCalendarView,
@@ -131,55 +130,18 @@ const visibleRange = ref<{ start: Date; end: Date }>({
   end: addDays(endOfMonth(new Date()), 7),
 });
 
-const createMutation = useCreateFleetEvent();
-const creating = ref(false);
-
-// The event's own timezone, read once. A create that omitted it would be
-// refused, and the editor is where the author changes it.
-const browserTz = (() => {
-  try {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-  } catch {
-    return "UTC";
-  }
-})();
+const { create: createEventDraft, pending: creating } = useEventDraft();
 
 /*
  * The button writes the event rather than opening a form that would write it
  * later: an event has to exist before its teams, ships and slots can hang off
- * it, and those are the editor's whole job. It arrives as a draft, so the fleet
- * does not see it until the author publishes, and deleting one removes it
- * outright rather than archiving an event nobody was ever offered.
+ * it, and those are the editor's whole job. Clicking a day on the calendar
+ * starts it there rather than now.
  */
-const goToCreate = async (date: Date) => {
-  if (!canCreate.value || creating.value) return;
+const goToCreate = (date: Date) => {
+  if (!canCreate.value) return;
 
-  creating.value = true;
-
-  await createMutation
-    .mutateAsync({
-      fleetSlug: props.fleet.slug,
-      data: {
-        title: t("labels.fleets.events.untitled"),
-        startsAt: date.toISOString(),
-        timezone: browserTz,
-        visibility: FleetEventVisibilityEnum.MEMBERS,
-      },
-    })
-    .then((event) => {
-      if (!event?.slug) return;
-
-      void router.push({
-        name: "fleet-event-edit",
-        params: { slug: props.fleet.slug, event: event.slug },
-      });
-    })
-    .catch(() => {
-      displayAlert({ text: t("messages.fleets.event.create.failure") });
-    })
-    .finally(() => {
-      creating.value = false;
-    });
+  void createEventDraft(props.fleet.slug, { startsAt: date });
 };
 
 const calendarParams = computed(() => ({

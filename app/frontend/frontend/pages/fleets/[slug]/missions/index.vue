@@ -23,14 +23,12 @@ import {
   type Fleet,
   type FleetMember,
   type Mission,
-  useCreateFleetMission,
   useFleetMissions,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMissionDraft } from "@/frontend/composables/useDraftCreate";
 import { checkAccess } from "@/shared/utils/Access";
-import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useMissionsStore } from "@/frontend/stores/missions";
 
@@ -43,10 +41,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const route = useRoute();
-const router = useRouter();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const showArchived = ref(false);
@@ -71,41 +67,12 @@ const canCreate = computed(() =>
   ]),
 );
 
-const createMutation = useCreateFleetMission();
-const creating = ref(false);
+const { create: createMissionDraft, pending: creating } = useMissionDraft();
 
-/*
- * The button writes the mission rather than opening a form that would write it
- * later: a mission has to exist before its teams, ships and slots can hang off
- * it, and those are the editor's whole job. It arrives as a draft, so the fleet
- * does not see it until the author publishes, and deleting one removes it
- * outright rather than archiving a mission nobody was ever offered.
- */
-const goToCreate = async () => {
-  if (creating.value) return;
-
-  creating.value = true;
-
-  await createMutation
-    .mutateAsync({
-      fleetSlug: props.fleet.slug,
-      data: { title: t("labels.fleets.missions.untitled") },
-    })
-    .then((mission) => {
-      if (!mission?.slug) return;
-
-      void router.push({
-        name: "fleet-mission-edit",
-        params: { slug: props.fleet.slug, mission: mission.slug },
-      });
-    })
-    .catch(() => {
-      displayAlert({ text: t("messages.fleets.mission.create.failure") });
-    })
-    .finally(() => {
-      creating.value = false;
-    });
-};
+// The button writes the mission rather than opening a form that would write it
+// later: a mission has to exist before its teams, ships and slots can hang off
+// it, and those are the editor's whole job.
+const goToCreate = () => void createMissionDraft(props.fleet.slug);
 
 // Which of the two tabs came back empty, so the box says what is missing here
 // rather than that the fleet has no missions at all.

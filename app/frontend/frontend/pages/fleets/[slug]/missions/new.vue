@@ -5,13 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import { type Crumb } from "@/shared/components/BreadCrumbs/types";
-import Heading from "@/shared/components/base/Heading/index.vue";
-import MissionForm from "@/frontend/components/Fleets/Missions/MissionForm/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { type Fleet, type FleetMember } from "@/services/fyApi";
-import { useI18n } from "@/shared/composables/useI18n";
-import { useRouter } from "vue-router";
+import { useMissionDraft } from "@/frontend/composables/useDraftCreate";
 
 type Props = {
   fleet: Fleet;
@@ -21,38 +17,22 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
-const router = useRouter();
+/*
+ * No form of its own any more. A mission has to exist before its teams, ships
+ * and slots can hang off it, so the list writes one and hands the author to the
+ * editor -- and this path, which people have bookmarked and which other pages
+ * still link to, does the same rather than offering a second way to create.
+ *
+ * `replace`, so Back returns to wherever they came from instead of landing here
+ * and writing another draft.
+ */
+const { create } = useMissionDraft();
 
-const cancel = () => {
-  void router.push({
-    name: "fleet-missions",
-    params: { slug: props.fleet.slug },
-  });
-};
-
-const crumbs = computed<Crumb[]>(() => [
-  {
-    to: { name: "fleet", params: { slug: props.fleet.slug } },
-    label: props.fleet.name,
-  },
-  {
-    to: { name: "fleet-events", params: { slug: props.fleet.slug } },
-    label: t("headlines.fleets.events.index"),
-  },
-  {
-    to: { name: "fleet-missions", params: { slug: props.fleet.slug } },
-    label: t("nav.fleets.missions.index"),
-  },
-]);
+onMounted(() => {
+  void create(props.fleet.slug, { replace: true });
+});
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
-
-  <Heading size="hero" hero>
-    {{ t("headlines.fleets.missions.create") }}
-  </Heading>
-
-  <MissionForm :fleet="fleet" @cancel="cancel" />
+  <Loader :loading="true" />
 </template>
