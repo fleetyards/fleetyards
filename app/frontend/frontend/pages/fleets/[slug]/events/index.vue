@@ -39,6 +39,7 @@ import {
   eventTabFrom,
   eventViewFrom,
   isEventCalendarView,
+  rememberedTab,
 } from "@/frontend/pages/fleets/[slug]/events/views";
 import { useEventsStore } from "@/frontend/stores/events";
 import { storeToRefs } from "pinia";
@@ -90,12 +91,16 @@ const setView = (next: EventView) => {
 
 // Which list tab the calendar came from, so leaving the calendar puts the
 // reader back on the tab they left rather than always on "upcoming".
+//
+// Watches `view` and not `tab`: on a calendar `tab` reports the default, so
+// recording it there overwrote the very thing this is for - opening the
+// calendar from "archived" and coming back landed on "upcoming".
 const lastTab = ref<EventTab>(DEFAULT_EVENT_VIEW);
 
 watch(
-  tab,
+  view,
   (current) => {
-    lastTab.value = current;
+    lastTab.value = rememberedTab(current, lastTab.value);
   },
   { immediate: true },
 );

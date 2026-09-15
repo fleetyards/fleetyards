@@ -46,3 +46,13 @@ export const eventViewFrom = (value: unknown): EventView => {
 // the tab strip it belongs to is hidden there, so the default stands in.
 export const eventTabFrom = (view: EventView): EventTab =>
   isEventTab(view) ? view : DEFAULT_EVENT_VIEW;
+
+/*
+ * The tab to remember, so leaving a calendar returns to the list the reader
+ * opened it from. A calendar remembers nothing - it has no tab of its own, and
+ * `eventTabFrom` reports the default there, so feeding that back in is what
+ * loses the tab: open the calendar from "archived" and you come back to
+ * "upcoming". Hence the view, not the tab.
+ */
+export const rememberedTab = (view: EventView, previous: EventTab): EventTab =>
+  isEventCalendarView(view) ? previous : view;

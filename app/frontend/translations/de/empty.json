@@ -38,7 +38,7 @@
         },
         "events": {
           "upcoming": "Nichts geplant",
-          "past": "Noch nichts stattgefunden",
+          "past": "Noch keine vergangenen Events",
           "archived": "Nichts archiviert",
           "info": {
             "upcoming": "Erstelle ein Event, um die Flotte zusammenzubringen — Zeit festlegen, Slots anlegen, Mitglieder anmelden lassen.",

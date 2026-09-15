@@ -5,6 +5,7 @@ import {
   eventViewFrom,
   isEventCalendarView,
   isEventTab,
+  rememberedTab,
 } from "./views";
 
 describe("eventViewFrom", () => {
@@ -50,6 +51,29 @@ describe("eventTabFrom", () => {
   it("is the default on a calendar", () => {
     expect(eventTabFrom("month")).toBe(DEFAULT_EVENT_VIEW);
     expect(eventTabFrom("week")).toBe(DEFAULT_EVENT_VIEW);
+  });
+});
+
+describe("rememberedTab", () => {
+  it("remembers whichever list tab is showing", () => {
+    expect(rememberedTab("archived", "upcoming")).toBe("archived");
+    expect(rememberedTab("past", "archived")).toBe("past");
+  });
+
+  // The bug this exists to prevent: a calendar has no tab of its own, and
+  // eventTabFrom reports the default there - so recording that overwrote the
+  // tab the reader came from, and leaving the calendar landed on "upcoming".
+  it("keeps the tab the calendar was opened from", () => {
+    expect(rememberedTab("month", "archived")).toBe("archived");
+    expect(rememberedTab("week", "past")).toBe("past");
+  });
+
+  it("survives a calendar view switch without losing the tab", () => {
+    let remembered = rememberedTab("archived", DEFAULT_EVENT_VIEW);
+    remembered = rememberedTab("month", remembered);
+    remembered = rememberedTab("week", remembered);
+
+    expect(remembered).toBe("archived");
   });
 });
 

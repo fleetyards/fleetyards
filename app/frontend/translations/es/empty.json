@@ -42,7 +42,7 @@
           "archived": "Nada archivado",
           "info": {
             "upcoming": "Crea un evento para reunir a la flota: elige una fecha, añade puestos y deja que los miembros se apunten.",
-            "past": "Un evento pasa aquí en cuanto termina su hora de fin.",
+            "past": "Un evento aparece aquí una vez que ha pasado su hora de finalización.",
             "archived": "Archivar quita un evento de la lista sin borrarlo."
           }
         },

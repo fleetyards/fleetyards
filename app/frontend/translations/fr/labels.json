@@ -2249,7 +2249,7 @@
           "shipNotCrewedYet": "Aucune inscription adaptée pour le moment.",
           "expandHint": "%{model} dispose de %{count} siège(s) supplémentaire(s). Ajouter des postes pour que d'autres puissent les occuper ?",
           "noExtraPositions": "Ce vaisseau n'a plus de postes à ouvrir.",
-          "expandShipHint": "Choisissez les postes à ouvrir sur le %{model}.",
+          "expandShipHint": "Choisissez les postes à ouvrir sur %{model}.",
           "notes": "Notes",
           "upcomingTab": "À venir",
           "pastTab": "Passés",

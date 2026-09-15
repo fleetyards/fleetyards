@@ -465,10 +465,12 @@ const crumbs = computed<Crumb[]>(() => [
     </div>
   </template>
 
-  <!-- The three figures the page opens on - reward, delivered, deadline - over
-       the hero's seam, then the route and progress panels. Same arrangement as
-       the real page, so nothing moves once the contract lands. -->
-  <DetailSkeleton v-else-if="isLoading" :figures="3" :panels="2" />
+  <!-- The four figures the page opens on - reward, delivered, deadline, crew -
+       over the hero's seam, then the route and progress panels. All four are
+       unconditional, so reserving three let the last tile shift the strip as it
+       arrived. Same arrangement as the real page, so nothing moves once the
+       contract lands. -->
+  <DetailSkeleton v-else-if="isLoading" :figures="4" :panels="2" />
 </template>
 
 <style lang="scss" scoped>
