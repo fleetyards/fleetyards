@@ -3,6 +3,10 @@
 json.name feature.name
 json.state feature.state.to_s
 
+# A flag Flipper knows but the registry does not is on its way out — the next
+# `bin/feature-flags sync` prunes it — so it is never a permanent one.
+json.permanent FeatureFlags::Registry.current.fetch(feature.name)&.permanent? || false
+
 setting = FeatureSetting.find_by(feature_name: feature.name.to_s)
 
 json.selfServiceUser setting&.self_service_user || false

@@ -11,6 +11,7 @@ module Admin
           properties: {
             name: {type: :string},
             state: {type: :string},
+            permanent: {type: :boolean},
             selfServiceUser: {type: :boolean},
             selfServiceFleet: {type: :boolean},
             percentageOfActors: {type: :number},
@@ -19,7 +20,7 @@ module Admin
             actors: {type: :array, items: ::Admin::V1::Schemas::FeatureActor}
           },
           additionalProperties: false,
-          required: %w[name state selfServiceUser selfServiceFleet percentageOfActors percentageOfTime groups actors]
+          required: %w[name state permanent selfServiceUser selfServiceFleet percentageOfActors percentageOfTime groups actors]
         })
       end
     end

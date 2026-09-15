@@ -41,6 +41,13 @@ module FeatureFlags
       new(path).tap(&:validate!)
     end
 
+    # The registry as checked in. Memoised because the YAML is static config —
+    # changing it needs a restart either way — and callers such as the admin
+    # feature list ask for it once per flag.
+    def self.current
+      @current ||= load
+    end
+
     # +raw+ lets tests inject a parsed hash without touching the filesystem.
     def initialize(path = self.class.default_path, raw: nil)
       @path = path
