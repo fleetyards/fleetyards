@@ -12,9 +12,7 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
-import CoverPresetPicker from "@/shared/components/CoverPresetPicker/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import { useContractCover } from "@/frontend/composables/useContractCover";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -114,84 +112,6 @@ const [destinationFleetInventoryId, destinationProps] = defineField(
 const [coverImagePreset] = defineField("coverImagePreset");
 const [coverImage, coverImageProps] = defineField("coverImage");
 
-const { presetsFor } = useContractCover();
-
-// What this kind has art for. Changing the kind changes the offer, the way the
-// event form follows its category.
-const presetOptions = computed(() => presetsFor(kind.value as string));
-
-const coverImageInput = ref<{ clear: () => void } | undefined>();
-
-// Picking a preset drops an upload rather than sitting behind it: submit gives
-// the upload precedence, so the two together would save the file and discard
-// the preset the author just chose.
-/*
- * `null` in the field means "detach what is saved", and it gets there two ways:
- * the author clearing the file themselves, and this handler clearing it so a
- * preset can take its place. Unpicking the tile withdraws the second and must
- * leave the first alone, which the value cannot say on its own.
- */
-const detachedForPreset = ref(false);
-
-/*
- * Anything the author does to the field is theirs, including clearing it. The
- * flag below only ever covers a detach this form asked for -- once the author
- * has cleared the file themselves, unpicking a tile must not put it back.
- *
- * Reachable because both actions write the same `null`: picking a preset over a
- * saved cover sets it, and a clear afterwards changes nothing visible, so
- * without this the form still thought the `null` was its own.
- */
-const chooseTheUpload = (value: string | null | undefined) => {
-  coverImage.value = value;
-  detachedForPreset.value = false;
-};
-
-const chooseThePreset = (key: string | null) => {
-  coverImagePreset.value = key;
-
-  if (!key) {
-    // Only while it is still the detach this handler asked for: an upload made
-    // since would be thrown away by putting `undefined` back.
-    if (detachedForPreset.value && coverImage.value === null) {
-      coverImage.value = undefined;
-    }
-
-    detachedForPreset.value = false;
-
-    return;
-  }
-
-  // A file uploaded here outranks the preset on submit, so it goes.
-  if (coverImage.value) {
-    coverImageInput.value?.clear();
-    coverImage.value = undefined;
-  }
-
-  /*
-   * So does a cover already saved -- `useContractCover` prefers an attachment
-   * over any preset, so leaving it would make picking one look like it did
-   * nothing. Remembered as ours, so unpicking can put it back.
-   *
-   * Only from `undefined`: a `null` already sitting there is the author's own
-   * clear, which stands whatever happens to the tile.
-   */
-  if (coverImage.value === undefined && existingCoverImage.value) {
-    coverImage.value = null;
-    detachedForPreset.value = true;
-  }
-};
-
-// The picker only offers the current kind's art, so a selection made before the
-// kind changed is no longer on it. The model re-defaults a stale preset on save
-// as well; this is so the form stops showing a choice it no longer offers.
-watch(presetOptions, (options) => {
-  if (!coverImagePreset.value) return;
-  if (options.some((option) => option.key === coverImagePreset.value)) return;
-
-  coverImagePreset.value = null;
-});
-
 const existingCoverImage = computed(() => props.contract?.coverImage);
 
 // Only a transport contract collects from somewhere. The API refuses the other
@@ -226,9 +146,9 @@ const onSubmit = handleSubmit(async (values) => {
       ? values.sourceFleetInventoryId
       : null,
     destinationFleetInventoryId: values.destinationFleetInventoryId as string,
-    // An upload replaces the preset outright rather than sitting alongside one
-    // that would win back if the file were later cleared.
-    coverImagePreset: values.coverImage ? null : values.coverImagePreset,
+    // The field keeps the two exclusive itself -- an upload retires the preset,
+    // a preset clears the upload -- so this is passed on as it stands.
+    coverImagePreset: values.coverImagePreset,
     // Passed through rather than coerced, because all three values mean
     // something different: `undefined` drops the key and keeps what is
     // attached, `null` is how the field says it was cleared, and a signed id
@@ -337,27 +257,20 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
         </div>
 
-        <div v-if="presetOptions.length" class="row">
-          <div class="col-12">
-            <CoverPresetPicker
-              :model-value="coverImagePreset"
-              @update:model-value="chooseThePreset"
-              :presets="presetOptions"
-              :label="t('labels.fleets.missions.coverPresets')"
-            />
-          </div>
-        </div>
         <div class="row">
           <div class="col-12">
+            <!-- The picker opens on the kind this form is editing, and every
+                 other kind's art is one chip away. -->
             <FormFileInput
-              ref="coverImageInput"
-              :model-value="coverImage"
+              v-model="coverImage"
+              v-model:preset-value="coverImagePreset"
               v-bind="coverImageProps"
-              @update:model-value="chooseTheUpload"
               :file="existingCoverImage as never"
               name="coverImage"
               :label="t('labels.fleets.missions.coverImage')"
               :allowed-types="AllowedFileTypes.IMAGE"
+              preset-catalogue="contracts"
+              :preset-group="kind as string"
               clearable
             />
           </div>

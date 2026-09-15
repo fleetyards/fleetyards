@@ -283,10 +283,9 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_equal "transport_alt1", contract.cover_image_preset
   end
 
-  # The form only ever offers the current kind's art, so a preset naming another
-  # kind is the previous one's default left behind by a change of kind -- and it
-  # would resolve to that kind's picture.
-  test "changing the kind drops a preset left over from the old one" do
+  # Nobody chose it -- it is the default this contract was given for being a
+  # transport, and left alone it would go on showing a transport's picture.
+  test "changing the kind drops the old kind's default" do
     contract = create(:fleet_contract, :transport)
     assert_equal "transport", contract.cover_image_preset
 
@@ -295,12 +294,25 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_equal "crafting", contract.cover_image_preset
   end
 
-  test "changing the kind drops an alternate of the old kind too" do
+  # The picker offers every kind's art, so anything but the bare default is a
+  # picture somebody picked for this job -- a change of kind is not a reason to
+  # throw it away.
+  test "changing the kind keeps a preset the author picked" do
     contract = create(:fleet_contract, :transport, cover_image_preset: "transport_alt1")
 
     contract.update!(kind: :crafting, source_fleet_inventory: nil)
 
-    assert_equal "crafting", contract.cover_image_preset
+    assert_equal "transport_alt1", contract.cover_image_preset
+  end
+
+  test "a preset naming another kind is kept as chosen" do
+    contract = create(:fleet_contract, :crafting, cover_image_preset: "transport")
+
+    assert_equal "transport", contract.cover_image_preset
+
+    contract.reload.update!(title: "Renamed")
+
+    assert_equal "transport", contract.cover_image_preset
   end
 
   test "a vector cover is refused" do

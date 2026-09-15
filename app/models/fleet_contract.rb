@@ -395,14 +395,17 @@ class FleetContract < ApplicationRecord
       return
     end
 
-    # A preset naming a kind this contract no longer is: the form offers only
-    # the current kind's art, so this is the previous kind's default left behind
-    # by an update that changed the kind and nothing else. Left alone it would
-    # resolve to the old kind's picture.
-    stem = cover_image_preset.to_s.split("_alt").first
-    return if stem == kind.to_s
-    return unless KINDS.key?(stem.to_sym)
+    # The default left behind by an update that changed the kind and nothing
+    # else: the old kind's own stem, which would go on resolving to the old
+    # kind's picture.
+    #
+    # Only that one. The picker offers every kind's art and says so, so any
+    # other value is a picture somebody chose for this job -- re-defaulting it
+    # would throw away the choice and show no sign of having done so.
+    # `persisted?` as well: on a create `kind_was` is only the column default,
+    # and nothing was left behind by anything.
+    return unless persisted? && kind_changed?
 
-    self.cover_image_preset = kind.to_s
+    self.cover_image_preset = kind.to_s if cover_image_preset == kind_was.to_s
   end
 end

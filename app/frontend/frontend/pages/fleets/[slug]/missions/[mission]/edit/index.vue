@@ -11,7 +11,6 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import CoverPresetPicker from "@/shared/components/CoverPresetPicker/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import MissionEditFormShell from "@/frontend/components/Fleets/Missions/MissionEditFormShell/index.vue";
 import {
@@ -23,7 +22,6 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionScenarios } from "@/frontend/composables/useMissionScenarios";
-import { useMissionCover } from "@/frontend/composables/useMissionCover";
 
 type Props = {
   fleet: Fleet;
@@ -67,12 +65,6 @@ const categoryOptions = computed<FilterOption[]>(() =>
   })),
 );
 
-const { presetsFor } = useMissionCover();
-
-// The art on offer follows the category, which is edited on this same tab --
-// so it tracks the field rather than the saved mission.
-const presetOptions = computed(() => presetsFor(category.value as string));
-
 const existingCoverImage = computed(
   () =>
     (
@@ -94,9 +86,10 @@ const wrapHandleSubmit = (cb: SubmissionHandler<MissionUpdateInput>) =>
         // and a signed id is a replacement. `|| undefined` turned a clear back
         // into a keep, so the picture could not be removed.
         coverImage: values.coverImage,
-        // An upload replaces the preset rather than sitting over one that
-        // would win back if the file were later cleared.
-        coverImagePreset: values.coverImage ? null : values.coverImagePreset,
+        // The field keeps the two exclusive itself -- an upload retires the
+        // preset, a preset clears the upload -- so this is passed on as it
+        // stands rather than coerced a second time.
+        coverImagePreset: values.coverImagePreset,
       },
       ctx,
     ),
@@ -166,24 +159,20 @@ const wrapHandleSubmit = (cb: SubmissionHandler<MissionUpdateInput>) =>
       </div>
     </div>
 
-    <div v-if="presetOptions.length" class="row">
-      <div class="col-12">
-        <CoverPresetPicker
-          v-model="coverImagePreset"
-          :presets="presetOptions"
-          :label="t('labels.fleets.missions.coverPresets')"
-        />
-      </div>
-    </div>
     <div class="row">
       <div class="col-12">
+        <!-- The picker opens on the category this form is editing, not on the
+             saved one: the art follows the field. -->
         <FormFileInput
           v-model="coverImage"
+          v-model:preset-value="coverImagePreset"
           v-bind="coverImageProps"
           :file="existingCoverImage as never"
           name="coverImage"
           :label="t('labels.fleets.missions.coverImage')"
           :allowed-types="AllowedFileTypes.IMAGE"
+          preset-catalogue="missions"
+          :preset-group="category as string"
           clearable
         />
       </div>
