@@ -266,6 +266,7 @@
           "editShip": "Modifier le vaisseau"
         },
         "events": {
+          "expandShip": "Ajouter des places",
           "index": "Événements",
           "calendar": "Calendrier",
           "create": "Créer un événement",

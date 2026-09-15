@@ -1,6 +1,7 @@
 {
   "zh-CN": {
     "actions": {
+      "selectAll": "全选",
       "admin": {
         "dashboard": {
           "reloadModels": "重新加载模型",

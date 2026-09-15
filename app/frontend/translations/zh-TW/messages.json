@@ -1,6 +1,7 @@
 {
   "zh-TW": {
     "messages": {
+      "loading": "載入中…",
       "copy": {
         "success": "文本已複製！",
         "failure": "無法複製文本"

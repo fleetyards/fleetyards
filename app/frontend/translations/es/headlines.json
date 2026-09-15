@@ -266,6 +266,7 @@
           "editShip": "Editar nave"
         },
         "events": {
+          "expandShip": "Añadir puestos",
           "index": "Eventos",
           "calendar": "Calendario",
           "create": "Crear evento",

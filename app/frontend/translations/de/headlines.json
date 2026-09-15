@@ -266,6 +266,7 @@
           "editShip": "Schiff bearbeiten"
         },
         "events": {
+          "expandShip": "Sitze hinzufügen",
           "index": "Events",
           "calendar": "Kalender",
           "create": "Event erstellen",

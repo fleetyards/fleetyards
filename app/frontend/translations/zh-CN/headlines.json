@@ -266,6 +266,7 @@
           "editShip": "编辑飞船"
         },
         "events": {
+          "expandShip": "增加席位",
           "index": "活动",
           "calendar": "日历",
           "create": "创建活动",

@@ -1,6 +1,7 @@
 {
   "zh-CN": {
     "messages": {
+      "loading": "加载中…",
       "copy": {
         "success": "文本已复制！",
         "failure": "无法复制文本"

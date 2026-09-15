@@ -1,6 +1,7 @@
 {
   "en": {
     "messages": {
+      "loading": "Loading…",
       "copy": {
         "success": "Text Copied!",
         "failure": "Could not copy Text"
