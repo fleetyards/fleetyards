@@ -77,7 +77,7 @@
           "create": "Crear evento - %{fleet}",
           "edit": {
             "details": "Editar evento - %{fleet}",
-            "schedule": "Editar fecha - %{fleet}",
+            "schedule": "Editar programación - %{fleet}",
             "signup": "Editar inscripción - %{fleet}",
             "teams": "Editar equipos y plazas - %{fleet}"
           },
