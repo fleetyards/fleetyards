@@ -53,6 +53,7 @@ module Patreon
       # has no address at all, and one written before the patron changed theirs
       # holds an address that may now belong to somebody else's account.
       record.payer_email = member.email if member.email.present?
+      record.patreon_user_id = member.patreon_user_id if member.patreon_user_id.present?
       ended_now = apply_lifecycle(record, member)
 
       if record.changed?
@@ -74,6 +75,7 @@ module Patreon
       assign_defaults(record, member) if new_record
       record.name = member.name
       record.payer_email = member.email if member.email.present?
+      record.patreon_user_id = member.patreon_user_id if member.patreon_user_id.present?
       @without_email += 1 if member.email.blank?
       apply_amount(record, member)
       ended_now = apply_lifecycle(record, member)

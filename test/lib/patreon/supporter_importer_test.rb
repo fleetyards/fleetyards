@@ -146,6 +146,25 @@ module Patreon
       end
     end
 
+    test "stores the Patreon user id so a later connection can claim it" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+
+      import([member(patreon_user_id: "u1")])
+
+      assert_equal "u1", SupporterContribution.find_by(patreon_member_id: "m1").patreon_user_id
+    end
+
+    test "links a patron who connected their Patreon account first" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      user = create(:user, confirmed_at: Time.current)
+      create(:omniauth_connection, user: user, provider: :patreon, uid: "u1")
+
+      stats = import([member(patreon_user_id: "u1", email: nil)])
+
+      assert_equal user, SupporterContribution.find_by(patreon_member_id: "m1").user
+      assert_equal 1, stats[:linked]
+    end
+
     test "stores the payer email and links a confirmed account" do
       ExchangeRateFetcher.stubs(:convert_cents).returns(460)
       user = create(:user, email: "alice@example.test", confirmed_at: Time.current)
