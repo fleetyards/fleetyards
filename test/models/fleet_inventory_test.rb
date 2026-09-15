@@ -6,16 +6,17 @@ require "test_helper"
 #
 # Table name: fleet_inventories
 #
-#  id          :uuid             not null, primary key
-#  description :text
-#  location    :string
-#  managed_by  :uuid
-#  name        :string           not null
-#  slug        :string           not null
-#  visibility  :integer          default(0), not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  fleet_id    :uuid             not null
+#  id           :uuid             not null, primary key
+#  description  :text
+#  image_preset :string
+#  location     :string
+#  managed_by   :uuid
+#  name         :string           not null
+#  slug         :string           not null
+#  visibility   :integer          default(0), not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  fleet_id     :uuid             not null
 #
 # Indexes
 #

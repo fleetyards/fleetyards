@@ -21,6 +21,10 @@ volume = inventory.persisted? ? inventory.stock_volume : {total: 0.0, unmeasured
 json.total_volume_scu volume[:total].round(4)
 json.unmeasured_count volume[:unmeasured]
 
+# The picture somebody picked for this hold. Held next to the attachment rather
+# than resolved here: the app it is drawn in is the one that ships the art.
+json.image_preset inventory.image_preset
+
 if inventory.image.attached?
   json.image do
     json.partial! "api/v1/shared/file", record: inventory, attr: :image

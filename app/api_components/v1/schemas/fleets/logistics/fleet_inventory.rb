@@ -22,6 +22,7 @@ module V1
               inTransitScu: {type: :number},
               inTransitUnits: {type: :number},
               manager: FleetInventoryManager,
+              imagePreset: {type: [:string, :null]},
               image: ::Shared::V1::Schemas::MediaFile,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

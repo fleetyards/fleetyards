@@ -55,6 +55,7 @@ const { defineField, handleSubmit } = useForm({
     visibility: props.inventory?.visibility ?? "members_only",
     location: props.inventory?.location ?? "",
     image: undefined as string | undefined,
+    imagePreset: props.inventory?.imagePreset ?? null,
     managedBy:
       props.inventory?.manager?.id ?? (undefined as string | undefined),
   },
@@ -63,6 +64,7 @@ const { defineField, handleSubmit } = useForm({
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
 const [image, imageProps] = defineField("image");
+const [imagePreset] = defineField("imagePreset");
 
 /*
  * What the field should show in place. `FormFileInput` draws an image from
@@ -126,7 +128,10 @@ const onSubmit = handleSubmit(async (values) => {
     description: values.description || undefined,
     visibility: values.visibility as "members_only" | "officers_only",
     location: values.location || undefined,
-    image: values.image || undefined,
+    // Passed through rather than coerced: `undefined` keeps what is attached,
+    // `null` is the field saying it was cleared, and a signed id replaces it.
+    image: values.image,
+    imagePreset: values.imagePreset,
     managedBy: values.managedBy || undefined,
   };
 
@@ -177,15 +182,21 @@ const onSubmit = handleSubmit(async (values) => {
     <form id="inventory-form" @submit.prevent="onSubmit">
       <!-- The picture already standing in for this inventory, so the field
            shows what it is replacing rather than an empty dropzone. See
-           `defaultImage` for which of the three cases each is. -->
+           `defaultImage` for which of the three cases each is.
+
+           No filter on the catalogue: an inventory is not a kind of thing the
+           way a mission or a contract is, so there is nothing to narrow it by
+           and every picture is offered at once. -->
       <FormFileInput
         v-model="image"
+        v-model:preset-value="imagePreset"
         v-bind="imageProps"
         :file="inventory?.image"
         :preview-src="defaultImage"
         name="image"
         :label="t('labels.logistics.image')"
         :allowed-types="AllowedFileTypes.IMAGE"
+        preset-catalogue="inventories"
         clearable
       />
       <FormInput

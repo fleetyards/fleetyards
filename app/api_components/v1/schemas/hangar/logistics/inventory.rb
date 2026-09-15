@@ -25,6 +25,7 @@ module V1
               inTransitUnits: {type: :number},
               totalVolumeScu: {type: :number},
               unmeasuredCount: {type: :integer},
+              imagePreset: {type: [:string, :null]},
               image: ::Shared::V1::Schemas::MediaFile,
               vehicle: ::V1::Schemas::InventoryVehicle,
               createdAt: {type: [:string, :null], format: "date-time"},

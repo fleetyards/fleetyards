@@ -64,6 +64,8 @@ export type InventoryPanelRecord = {
   // an attachment that is representable (or a vector, where all four are the
   // same file), so anything else arrives with the original and nothing else.
   image?: { url?: string; mediumUrl?: string; smallUrl?: string };
+  // The preset somebody picked, as opposed to the one the name hashes to.
+  imagePreset?: string | null;
   vehicle?: InventoryVehicleReference | null;
 };
 

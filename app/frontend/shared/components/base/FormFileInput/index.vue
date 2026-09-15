@@ -20,6 +20,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { type MediaFile } from "@/services/fyApi";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
+import PresetImagePicker from "@/shared/components/PresetImagePicker/index.vue";
+import {
+  presetImageUrl,
+  type PresetCatalogueName,
+} from "@/shared/composables/usePresetImages";
 
 type Props = {
   name: string;
@@ -49,6 +54,16 @@ type Props = {
   suffix?: string;
   transparent?: boolean;
   avatar?: boolean;
+  /**
+   * Turns on the picker: the art the app ships for records nobody has given a
+   * picture to. A preset is shown in this control the way an upload is, rather
+   * than in a grid beside it -- it is the picture the record will carry, so it
+   * belongs where the reader looks for that.
+   */
+  presetCatalogue?: PresetCatalogueName;
+  presetValue?: string | null;
+  /** The record's own type, and the filter the picker opens on. */
+  presetGroup?: string | null;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -78,6 +93,9 @@ const props = withDefaults(defineProps<Props>(), {
   suffix: undefined,
   transparent: false,
   avatar: false,
+  presetCatalogue: undefined,
+  presetValue: null,
+  presetGroup: undefined,
 });
 
 watch(
@@ -180,7 +198,7 @@ onMounted(() => {
   }
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "update:presetValue"]);
 
 const clear = () => {
   uploadedHere.value = false;
@@ -191,6 +209,13 @@ const clear = () => {
     handleReset();
     internalSrc.value = undefined;
     emit("update:modelValue", null);
+  }
+
+  // Both, because the button means "no picture": a clear that dropped the file
+  // and left the preset would put a picture straight back in the frame, which
+  // reads as the clear not having worked.
+  if (props.presetValue) {
+    emit("update:presetValue", null);
   }
 };
 
@@ -204,6 +229,12 @@ const onUploadDone = (files: FileUpload[]) => {
   uploadedHere.value = true;
   inputValue.value = files[0].blob.signed_id;
   emit("update:modelValue", files[0].blob.signed_id);
+
+  // An upload replaces the preset rather than sitting over one that would win
+  // back the moment the file were cleared.
+  if (props.presetValue) {
+    emit("update:presetValue", null);
+  }
 };
 
 const onUploadClear = () => {
@@ -212,6 +243,70 @@ const onUploadClear = () => {
 
   resetField({
     value: props.modelValue,
+  });
+};
+
+/*
+ * Only while this control holds no file of its own. The attachment is the
+ * picture the record actually carries -- every reader of it prefers the upload
+ * -- so a preset drawn over one would show something here that appears nowhere
+ * else.
+ */
+const presetSrc = computed(() => {
+  if (!props.presetCatalogue || uploadedHere.value || internalSrc.value) {
+    return undefined;
+  }
+
+  return presetImageUrl(props.presetCatalogue, props.presetValue);
+});
+
+/*
+ * A preset replaces the picture rather than hiding beneath it: whatever file
+ * this control was holding has to go, or the record keeps showing it and the
+ * choice appears not to have taken.
+ *
+ * The uploader is cleared before the field is, because its own `clear` event
+ * puts the field back to `modelValue` -- which is still the old id at that
+ * point, the prop not having been updated yet.
+ */
+const selectPreset = (key: string | null) => {
+  const heldAFile = !!internalSrc.value || !!inputValue.value;
+
+  if (key && heldAFile) {
+    uploadedHere.value = false;
+    uploadFailed.value = false;
+
+    directUpload.value?.clear();
+    internalSrc.value = undefined;
+
+    resetField({ value: null });
+    emit("update:modelValue", null);
+  }
+
+  emit("update:presetValue", key);
+};
+
+/*
+ * The picker brings its own overlay rather than going through the app modal,
+ * because this control is itself inside one in the logistics forms -- and the
+ * app has a single modal, so opening a second would replace the form being
+ * filled in.
+ */
+const pickerOpen = ref(false);
+
+const presetButton = ref<{ $el?: HTMLElement } | undefined>();
+
+/*
+ * Focus goes back where it came from. The picker takes it on open and contains
+ * it while it is up; when it closes, the button that opened it is the place a
+ * keyboard was left, and leaving focus on `<body>` would drop someone back at
+ * the top of the page.
+ */
+const closePicker = () => {
+  pickerOpen.value = false;
+
+  void nextTick(() => {
+    presetButton.value?.$el?.focus();
   });
 };
 
@@ -310,7 +405,12 @@ const holoModel = computed(() => {
 // previewSrc counts: the folder upload fills the whole form that way, and
 // forcing the overlay on top of it hid every picture it just set.
 const hasPreview = computed(() => {
-  return uploadedHere.value || !!props.previewSrc || !!internalSrc.value;
+  return (
+    uploadedHere.value ||
+    !!props.previewSrc ||
+    !!internalSrc.value ||
+    !!presetSrc.value
+  );
 });
 
 const clearLabel = computed(() => {
@@ -354,6 +454,16 @@ defineExpose({
           :controllable="false"
           :models="[previewHoloModel]"
           inline
+        />
+        <!-- Above `previewSrc`, which is a stand-in: a preset is a choice
+             somebody made. Never above the attachment -- `presetSrc` is already
+             empty while there is one. -->
+        <LazyImage
+          v-else-if="presetSrc"
+          v-tooltip.right="hasErrors && errorMessage"
+          :src="presetSrc"
+          :transparent="transparent || avatar"
+          :shadow="!transparent && !avatar"
         />
         <LazyImage
           v-else-if="previewSrc"
@@ -401,7 +511,29 @@ defineExpose({
         hidden
       />
       <Btn
-        v-if="clearable && (internalSrc || inputValue)"
+        v-if="presetCatalogue && !disabled"
+        ref="presetButton"
+        v-tooltip="t('actions.presets.choose')"
+        class="base-image-input__preset"
+        variant="bare"
+        :aria-label="t('actions.presets.choose')"
+        :data-test="`choose-preset-${name}`"
+        @click="pickerOpen = true"
+      >
+        <i class="fa-light fa-images" />
+      </Btn>
+      <PresetImagePicker
+        v-if="pickerOpen && presetCatalogue"
+        :catalogue="presetCatalogue"
+        :selected="presetValue"
+        :group="presetGroup"
+        @select="selectPreset"
+        @close="closePicker"
+      />
+      <!-- A preset counts: it is a picture in the frame like any other, and
+           while it did not the only way back to none was through the picker. -->
+      <Btn
+        v-if="clearable && (internalSrc || inputValue || presetSrc)"
         v-tooltip="clearLabel"
         @click="clear"
         class="base-image-input__clear"

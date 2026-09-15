@@ -56,6 +56,33 @@ class Api::V1::HangarInventoriesUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The picture somebody picked, held next to the attachment rather than as one:
+  # the art it names ships with the app, not with the record.
+  test "PUT /hangar/inventories/:slug records the picture that was picked" do
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {slug: @inventory.slug},
+      body: {imagePreset: "bg-hangar"} do
+      assert_equal "bg-hangar", parsed_body["imagePreset"]
+    end
+
+    assert_equal "bg-hangar", @inventory.reload.image_preset
+  end
+
+  test "PUT /hangar/inventories/:slug clears the picture that was picked" do
+    @inventory.update!(image_preset: "bg-hangar")
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {slug: @inventory.slug},
+      body: {imagePreset: nil} do
+      assert_nil parsed_body["imagePreset"]
+    end
+
+    assert_nil @inventory.reload.image_preset
+  end
+
   test "PUT /hangar/inventories/:slug returns 404 for another user's inventory" do
     sign_in @other_user
 

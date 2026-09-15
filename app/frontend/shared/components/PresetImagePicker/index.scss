@@ -1,0 +1,133 @@
+/*
+ * Above the app modal (1050), on AppConfirm's value: the field that opens this
+ * is itself inside a modal in the logistics forms, and a picker painted under
+ * the form it belongs to is no picker at all.
+ */
+.preset-picker {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: rgb(0 0 0 / 70%);
+  transition: opacity $transition-base-speed ease-in-out;
+
+  &__dialog {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    // Wider than the confirm dialog and than a form modal: this is a grid of
+    // banners, and at modal width it is two tiles across.
+    width: 900px;
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform $transition-base-speed ease-in-out;
+  }
+
+  // Above the scrim, so the ground is opaque rather than sharing a value with
+  // the page behind it -- the same thing AppConfirm's panel has to do.
+  :deep(.panel) {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    background-color: $gray-darker;
+  }
+
+  // The grid scrolls, not the page: the dialog keeps its heading in place while
+  // a catalogue of twenty banners is read through.
+  :deep(.panel-body) {
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  &__actions {
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding-top: 1rem;
+  }
+
+  &__filter {
+    margin-bottom: 16px;
+  }
+
+  /*
+   * Wide tiles: every one of these is a banner behind a panel or a card, and a
+   * square thumbnail of one crops away the part the reader is choosing by.
+   */
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+  }
+
+  // Start state, painted before `in` is added. See afterNextPaint in index.vue.
+  &.fade {
+    opacity: 0;
+
+    .preset-picker__dialog {
+      transform: translate(0, -25%);
+    }
+
+    &.in {
+      opacity: 1;
+
+      .preset-picker__dialog {
+        transform: translate(0, 0);
+      }
+    }
+  }
+}
+
+.preset-image {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--color-field, rgb(18 20 23 / 0.96));
+  border: 2px solid transparent;
+  border-radius: var(--radius-control-bare, 6px);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.1s ease;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:hover {
+    border-color: rgb(255 255 255 / 30%);
+    transform: scale(1.02);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+.preset-image--active {
+  border-color: var(--color-primary, #428bca);
+  box-shadow: 0 0 0 1px var(--color-primary, #428bca);
+}

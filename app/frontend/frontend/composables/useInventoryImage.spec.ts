@@ -99,6 +99,46 @@ describe("useInventoryImage", () => {
     expect(inventoryPresets.every((preset) => !!preset.url)).toBe(true);
   });
 
+  /*
+   * The picture somebody picked, as opposed to the one their inventory's name
+   * happens to hash to. It is what `defaultImage` is the fallback for, so the
+   * form still knows what it would show without a choice.
+   */
+  it("prefers a chosen preset over the one the name lands on", () => {
+    const chosen = inventoryPresets[inventoryPresets.length - 1];
+
+    const { image, defaultImage } = useInventoryImage(
+      inventory({ name: "Locker", imagePreset: chosen.key }),
+    );
+
+    expect(image.value).toBe(chosen.url);
+    expect(defaultImage.value).toBe(
+      inventoryDefaultImage(inventory({ name: "Locker" })),
+    );
+  });
+
+  it("ignores a preset naming art that is no longer shipped", () => {
+    const { image } = useInventoryImage(
+      inventory({ name: "Locker", imagePreset: "retired_art" }),
+    );
+
+    expect(image.value).toBe(
+      inventoryDefaultImage(inventory({ name: "Locker" })),
+    );
+  });
+
+  // A ship's hold is shown as its ship, and offers no picture of its own to
+  // pick -- so nothing can ever overrule that.
+  it("still shows a ship's hold as its ship", () => {
+    const { image } = useInventoryImage(
+      inventory({
+        vehicle: { id: "v-1", name: "North Star", model: { image: shipImage } },
+      }),
+    );
+
+    expect(image.value).toBe(shipImage.mediumUrl);
+  });
+
   // Two inventories side by side should not show the same picture.
   it("spreads names across the presets it has", () => {
     if (inventoryPresets.length < 2) return;

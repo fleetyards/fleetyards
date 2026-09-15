@@ -5,6 +5,12 @@
       "true": "Oui",
       "false": "Non",
       "null": "nul",
+      "presets": {
+        "title": "Choisir une image",
+        "filter": "Type",
+        "all": "Toutes",
+        "empty": "Aucune image disponible."
+      },
       "supporter": {
         "badge": "Soutien",
         "tooltip": "Soutient FleetYards.net ce mois-ci"
@@ -2139,7 +2145,6 @@
           "seats": "Sièges",
           "category": "Catégorie",
           "coverImage": "Image de couverture",
-          "coverPresets": "Choisir parmi les exemples",
           "scenario": "Scénario",
           "categories": {
             "other": "Autre",

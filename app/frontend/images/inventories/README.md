@@ -1,28 +1,26 @@
-# Inventory Placeholder Images
+# Inventory Pictures
 
-The picture an inventory is shown with when it carries none of its own and no
-ship lends it one. A ship's hold is drawn as its ship; everything else — a
-hand-made hangar inventory, a fleet inventory — takes one of these.
+The art offered when an inventory is created or edited, and the art one falls
+back to when nobody has picked anything.
 
-Drop in WebP files (recommended ~1600×500 for the panel; smaller is fine). The
-filename is the only thing that matters — there is no list to extend:
+Drop a WebP file in here and it joins the picker — there is no list to edit and
+no key to register. Recommended ~1600×500, the same banner shape the mission and
+contract covers use; smaller is fine. A `.jpg` beside a `.webp` of the same name
+is treated as the same picture in a second format, and the WebP wins.
 
-    placeholder-1.webp
-    placeholder-2.webp
-    crates.webp
-    ...
+Unlike missions and contracts, these are not filed under a type: an inventory is
+a place, not a kind of job, so the picker shows every picture at once and renders
+no filter.
 
-Every file in this folder joins the rotation. Which one an inventory gets is
-spread across them by its name, so two inventories side by side differ and one
-keeps its picture across reloads and between the panel and the form that edits
-it. Adding art therefore reshuffles which inventory shows what — that is the
-intent, not a regression.
+Two things never take a picture from this folder:
 
-`webp` wins over `png`, which wins over `jpg`/`jpeg`, for the same stem: two
-files named `crates.webp` and `crates.jpg` are one picture in two formats, not
-two entries in the rotation.
+- **A ship's hold**, which is shown as its ship. That is the one thing about the
+  hold a reader already recognises, which is also why a ship's hold offers no
+  picture of its own to pick.
+- **An inventory that carries an upload**, which is shown as what was uploaded.
 
-This folder is not the only source: `useInventoryImage` also pulls a curated set
-of backdrops the app already ships, so the rotation is never empty just because
-nothing has been dropped in here. The generic store-image placeholder is only
-reached if both are empty.
+Anything else with no picture picked takes one from here, chosen by hashing its
+name — so two inventories side by side differ, and one keeps its picture across
+reloads. Adding art therefore reshuffles which inventory falls back to what; that
+is the intent, not a regression. An inventory whose picture was actually picked
+is unaffected.

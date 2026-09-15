@@ -36,6 +36,13 @@ export const mountWithDefaults = async <C extends new (...args: any) => any>(
     slots?: InstanceType<C>["$slots"];
     initialState?: TestingOptions["initialState"];
     plugins?: Plugin[];
+    /**
+     * Renders into the document rather than a detached node. Needed by anything
+     * asserting on focus: `HTMLElement.focus()` does nothing for an element
+     * that is not in the document, so the assertion sees `<body>` and reads as
+     * a component that never moved focus at all.
+     */
+    attachTo?: Element | string;
   },
 ) => {
   // Do not redefine vue-router
@@ -45,6 +52,7 @@ export const mountWithDefaults = async <C extends new (...args: any) => any>(
   const wrapper = mount(component, {
     props: params?.props,
     slots: params?.slots,
+    attachTo: params?.attachTo,
     global: {
       plugins: [
         createPinia(params?.initialState || {}),

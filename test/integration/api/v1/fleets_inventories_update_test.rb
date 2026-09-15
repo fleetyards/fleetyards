@@ -57,6 +57,20 @@ class Api::V1::FleetsInventoriesUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The picture somebody picked, held next to the attachment rather than as one:
+  # the art it names ships with the app, not with the record.
+  test "PUT /fleets/:slug/inventories/:slug records the picture that was picked" do
+    sign_in @admin
+
+    assert_api_response :put, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: @inventory.slug},
+      body: {imagePreset: "bg-hangar"} do
+      assert_equal "bg-hangar", parsed_body["imagePreset"]
+    end
+
+    assert_equal "bg-hangar", @inventory.reload.image_preset
+  end
+
   test "PUT /fleets/:slug/inventories/:slug returns 403 for non-admin member" do
     sign_in @member
 

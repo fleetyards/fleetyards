@@ -118,9 +118,26 @@ describe("useActiveTab", () => {
     const group = {
       path: ":id/",
       redirect: { name: "admin-commodity-edit" },
+      meta: { title: "admin.commodities.edit" },
     } as unknown as RouteRecordRaw;
 
     expect(isTabRoute(group)).toBe(true);
     expect(isTabRoute(tab("admin-fleet-members"))).toBe(true);
+  });
+
+  /*
+   * The other kind of redirect-by-name, and the one a name cannot tell apart
+   * from a grouped tab: a retired path pointing at the sibling that absorbed
+   * it. `routeName` reports the sibling, so the strip drew a second copy of
+   * that tab -- labelled `nav.undefined`, and lit whenever the real one was.
+   */
+  it("reads no tab off a retired path pointing at its replacement", () => {
+    const alias = {
+      path: "description/",
+      redirect: { name: "fleet-event-edit" },
+    } as unknown as RouteRecordRaw;
+
+    expect(routeName(alias)).toBe("fleet-event-edit");
+    expect(isTabRoute(alias)).toBe(false);
   });
 });

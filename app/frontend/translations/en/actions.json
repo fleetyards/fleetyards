@@ -90,6 +90,10 @@
       "deleteSelected": "Delete Selected",
       "enableSelected": "Enable Selected",
       "disableSelected": "Disable Selected",
+      "presets": {
+        "choose": "Choose an image",
+        "remove": "Remove image"
+      },
       "close": "Close",
       "filter": "Filter",
       "showStatusColor": "Show Status as Color",
