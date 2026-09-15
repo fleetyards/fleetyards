@@ -162,6 +162,27 @@ describe("ContractForm cover", () => {
     expect(vm(wrapper).coverImage).toBeNull();
   });
 
+  /*
+   * The order that hides the problem: picking first sets the same `null` the
+   * author's clear would, so a clear afterwards changes nothing visible. The
+   * form still has to notice it was theirs, or unpicking puts the cover back.
+   */
+  it("keeps a clear the author made after picking a preset", async () => {
+    const wrapper = mountForm(SAVED_COVER);
+
+    const picker = wrapper.getComponent({ name: "CoverPresetPicker" });
+    await picker.vm.$emit("update:modelValue", "transport");
+
+    // What FormFileInput emits when its clear button is used.
+    await wrapper
+      .getComponent({ name: "FormFileInput" })
+      .vm.$emit("update:modelValue", null);
+
+    await picker.vm.$emit("update:modelValue", null);
+
+    expect(vm(wrapper).coverImage).toBeNull();
+  });
+
   // An upload made after the preset was picked must not be thrown away by
   // unpicking it either.
   it("keeps an upload made after the preset was picked", async () => {
