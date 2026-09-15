@@ -14,7 +14,8 @@ module V1
             managedBy: {type: [:string, :null], format: :uuid},
             visibility: ::V1::Schemas::Enums::FleetInventoryVisibilityEnum,
             location: {type: [:string, :null]},
-            image: {type: [:string, :null]}
+            image: {type: [:string, :null]},
+            imagePreset: {type: [:string, :null]}
           },
           additionalProperties: false
         })

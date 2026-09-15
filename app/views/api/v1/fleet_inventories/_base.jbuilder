@@ -24,6 +24,10 @@ else
   json.manager nil
 end
 
+# The picture somebody picked for this hold. Held next to the attachment rather
+# than resolved here: the app it is drawn in is the one that ships the art.
+json.image_preset fleet_inventory.image_preset
+
 if fleet_inventory.image.attached?
   json.image do
     json.partial! "api/v1/shared/file", record: fleet_inventory, attr: :image

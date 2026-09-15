@@ -19016,6 +19016,10 @@ components:
           type: number
         manager:
           "$ref": "#/components/schemas/FleetInventoryManager"
+        imagePreset:
+          type:
+          - string
+          - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         createdAt:
@@ -19057,6 +19061,10 @@ components:
           - string
           - 'null'
         image:
+          type:
+          - string
+          - 'null'
+        imagePreset:
           type:
           - string
           - 'null'
@@ -19298,6 +19306,10 @@ components:
           - string
           - 'null'
         image:
+          type:
+          - string
+          - 'null'
+        imagePreset:
           type:
           - string
           - 'null'
@@ -20700,6 +20712,10 @@ components:
           type: number
         unmeasuredCount:
           type: integer
+        imagePreset:
+          type:
+          - string
+          - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         vehicle:
@@ -20735,6 +20751,10 @@ components:
           - string
           - 'null'
         image:
+          type:
+          - string
+          - 'null'
+        imagePreset:
           type:
           - string
           - 'null'
@@ -20955,6 +20975,10 @@ components:
           - string
           - 'null'
         image:
+          type:
+          - string
+          - 'null'
+        imagePreset:
           type:
           - string
           - 'null'
@@ -21863,6 +21887,10 @@ components:
           type: number
         unmeasuredCount:
           type: integer
+        imagePreset:
+          type:
+          - string
+          - 'null'
         image:
           "$ref": "#/components/schemas/MediaFile"
         vehicle:

@@ -4,16 +4,17 @@
 #
 # Table name: inventories
 #
-#  id          :uuid             not null, primary key
-#  description :text
-#  holder_type :string           not null
-#  location    :string
-#  name        :string           not null
-#  slug        :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  holder_id   :uuid             not null
-#  vehicle_id  :uuid
+#  id           :uuid             not null, primary key
+#  description  :text
+#  holder_type  :string           not null
+#  image_preset :string
+#  location     :string
+#  name         :string           not null
+#  slug         :string           not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  holder_id    :uuid             not null
+#  vehicle_id   :uuid
 #
 # Indexes
 #

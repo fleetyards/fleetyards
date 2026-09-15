@@ -12,7 +12,8 @@ module V1
             name: {type: :string},
             description: {type: [:string, :null]},
             location: {type: [:string, :null]},
-            image: {type: [:string, :null]}
+            image: {type: [:string, :null]},
+            imagePreset: {type: [:string, :null]}
           },
           additionalProperties: false
         })
