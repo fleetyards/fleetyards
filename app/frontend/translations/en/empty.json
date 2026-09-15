@@ -38,6 +38,24 @@
       "fleets": {
         "contracts": {
           "items": "No goods yet. Add what this contract asks for — it cannot be published empty."
+        },
+        "events": {
+          "upcoming": "Nothing coming up",
+          "past": "Nothing has happened yet",
+          "archived": "Nothing archived",
+          "info": {
+            "upcoming": "Create an event to get the fleet together — pick a time, add slots, and let members sign up.",
+            "past": "An event moves here once its end time has passed.",
+            "archived": "Archiving an event takes it off the list without deleting it."
+          }
+        },
+        "missions": {
+          "active": "No missions yet",
+          "archived": "Nothing archived",
+          "info": {
+            "active": "A mission is a reusable plan — teams, ships and slots — that you spawn events from.",
+            "archived": "Archiving a mission takes it off the list without deleting it."
+          }
         }
       }
     }

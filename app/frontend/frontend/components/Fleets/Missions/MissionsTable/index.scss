@@ -1,0 +1,57 @@
+// Built to the recipe of the contracts table, which is the other board on this
+// fleet that offers the same two shapes - a row of one and a row of the other
+// should not read as two different tables.
+.missions-table {
+  &__cover {
+    display: block;
+    width: 52px;
+    height: 38px;
+    border-radius: 6px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__mission {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  &__title-line {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-width: 0;
+  }
+
+  &__title {
+    color: #eee;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__lede {
+    font-size: 0.8em;
+    color: $gray-light;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // `nowrap`, because only the header row carries it - see Table/Col - so a
+  // figure in a fixed-width column breaks across two lines rather than
+  // overflowing, and the row grows to fit the break.
+  &__count,
+  &__created {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+}

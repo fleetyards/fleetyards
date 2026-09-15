@@ -46,7 +46,14 @@ const { gridView } = storeToRefs(contractsStore);
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/components/Fleets/Contracts/ContractDisplayOptionsModal/index.vue"),
+      import("@/shared/components/DisplayOptionsModal/index.vue"),
+    props: {
+      gridView: gridView.value,
+      testPrefix: "contracts",
+      updateCallback: (next: boolean) => {
+        contractsStore.gridView = next;
+      },
+    },
   });
 };
 
