@@ -3,7 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const destroySession = vi.fn(() => Promise.resolve());
 
-vi.mock("@/services/fyApi", () => ({
+// Spread the real module: the session store imports from here too, and a
+// factory listing only what this file uses breaks the moment anything else in
+// the graph reaches for another export -- which is what
+// getMySupporterClaimKeyQueryKey did when logout learned to drop the key.
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<Record<string, unknown>>()),
   destroySession: () => destroySession(),
   me: vi.fn(),
 }));
