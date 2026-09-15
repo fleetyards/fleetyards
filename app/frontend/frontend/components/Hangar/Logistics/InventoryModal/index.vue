@@ -55,17 +55,26 @@ const [description, descriptionProps] = defineField("description");
 const [location, locationProps] = defineField("location");
 const [image, imageProps] = defineField("image");
 
-// Only while the inventory carries no picture of its own: `previewSrc` outranks
-// the attached file, so offering it unconditionally would hide the real one.
-const defaultImage = computed(() =>
-  // `smallUrl` rather than the attachment itself: that is the one the field
-  // draws from, and an image with no representation -- the serializer omits
-  // every size for one -- would otherwise suppress this and show nothing at
-  // all. The panel falls back the same way, so the two agree.
-  props.inventory && !props.inventory.image?.smallUrl
-    ? inventoryDefaultImage(props.inventory as InventoryPanelRecord)
-    : undefined,
-);
+/*
+ * What the field should show in place. `FormFileInput` draws an image from
+ * `smallUrl`, which the serializer only emits for an attachment it could build
+ * representations for -- so there are three cases, not two:
+ *
+ *   sized attachment  -> nothing here; the field draws it itself
+ *   original only     -> the original, which is still the picture somebody
+ *                        uploaded and must not be replaced by fallback art
+ *   nothing attached  -> whatever the panel would fall back to
+ */
+const defaultImage = computed(() => {
+  if (!props.inventory) return undefined;
+
+  const image = props.inventory.image;
+
+  if (image?.smallUrl) return undefined;
+  if (image?.url) return image.url;
+
+  return inventoryDefaultImage(props.inventory as InventoryPanelRecord);
+});
 
 const createMutation = useCreateHangarInventory();
 const updateMutation = useUpdateHangarInventory();
@@ -119,8 +128,8 @@ const onSubmit = handleSubmit(async (values) => {
   >
     <form id="hangar-inventory-form" @submit.prevent="onSubmit">
       <!-- The picture already standing in for this inventory, so the field
-           shows what it is replacing rather than an empty dropzone. Only while
-           none is attached: `previewSrc` outranks the real file. -->
+           shows what it is replacing rather than an empty dropzone. See
+           `defaultImage` for which of the three cases each is. -->
       <FormFileInput
         v-model="image"
         v-bind="imageProps"

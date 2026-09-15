@@ -43,7 +43,7 @@ export type InventoryVehicleReference = {
     slug?: string;
     cargo?: number;
     personalInventory?: number;
-    image?: { mediumUrl?: string };
+    image?: { url?: string; mediumUrl?: string };
   };
 };
 
@@ -60,9 +60,10 @@ export type InventoryPanelRecord = {
   inTransitScu?: number;
   inTransitUnits?: number;
   totalVolumeScu?: number;
-  // `smallUrl` alongside `mediumUrl`: the panel draws from one and the edit
-  // field from the other, and an unrepresentable attachment carries neither.
-  image?: { mediumUrl?: string; smallUrl?: string };
+  // Only `url` is guaranteed. The serializer emits the sized variants just for
+  // an attachment that is representable (or a vector, where all four are the
+  // same file), so anything else arrives with the original and nothing else.
+  image?: { url?: string; mediumUrl?: string; smallUrl?: string };
   vehicle?: InventoryVehicleReference | null;
 };
 
