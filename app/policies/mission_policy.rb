@@ -19,11 +19,13 @@ class MissionPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:missions:manage", "fleet:missions:delete"])
   end
 
-  # Who may see a draft that is not theirs. Publishing is not this: somebody
-  # with `create` but not `manage` would be able to write a draft and never be
-  # able to publish it, which is the whole of their job.
+  # Who may see a draft that is not theirs. `update` is in here because
+  # `publish?` is aliased to it: somebody who may publish another author's draft
+  # has to be able to find it first.
   def manage?
-    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:missions:manage"])
+    accepted_fleet_membership&.has_access?(
+      ["fleet:manage", "fleet:missions:manage", "fleet:missions:update"]
+    )
   end
 
   alias_rule :publish?, to: :update?

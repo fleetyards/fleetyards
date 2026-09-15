@@ -187,12 +187,23 @@ watch(
   { immediate: true },
 );
 
-const canCreate = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:events:manage",
-    "fleet:events:create",
-  ]),
+/*
+ * `update` as well as `create`, because the button no longer opens a form -- it
+ * writes a draft and lands the author in the editor. Somebody who may create but
+ * not update would be handed an event they cannot name, publish or throw away.
+ */
+const canCreate = computed(
+  () =>
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:events:manage",
+      "fleet:events:create",
+    ]) &&
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:events:manage",
+      "fleet:events:update",
+    ]),
 );
 
 const canManage = computed(() =>

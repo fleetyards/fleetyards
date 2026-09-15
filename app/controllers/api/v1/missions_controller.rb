@@ -43,7 +43,7 @@ module Api
 
         authorize! @mission
 
-        if @mission.save
+        if save_mission
           render :show, status: :created
         else
           render json: ValidationError.new("missions.create", errors: @mission.errors), status: :bad_request
@@ -70,6 +70,8 @@ module Api
         else
           render json: ValidationError.new("missions.publish", errors: @mission.errors), status: :bad_request
         end
+      rescue ActiveRecord::RecordInvalid => e
+        render json: ValidationError.new("missions.publish", errors: e.record.errors), status: :bad_request
       end
 
       def destroy
@@ -110,6 +112,19 @@ module Api
         )
       end
 
+      # Two create buttons pressed at once settle on the same free title, and the
+      # unique index on (fleet_id, slug) refuses the loser. A second attempt now
+      # sees the winner's row and numbers past it rather than 500ing.
+      private def save_mission(attempts: 2)
+        @mission.save
+      rescue ActiveRecord::RecordNotUnique
+        raise if (attempts -= 1) <= 0
+
+        @mission.slug = nil
+        @mission.title = nil
+        retry
+      end
+
       private def mission_params
         authorized(params, with: MissionPolicy)
       end
@@ -121,7 +136,10 @@ module Api
       end
 
       private def set_mission
-        @mission = @fleet.missions.find_by!(slug: params[:slug])
+        # Through the same scope the list uses. Resolving from every mission in
+        # the fleet would hand a draft to anybody who learned its slug, which is
+        # exactly what keeping it off the list is meant to prevent.
+        @mission = visible_scope.find_by!(slug: params[:slug])
       end
 
       private def check_fleet_mission_builder_feature

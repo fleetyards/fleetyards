@@ -39,7 +39,8 @@ class Api::V1::FleetsMissionsShowTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_mission_builder")
     @admin = create(:user)
-    @fleet = create(:fleet, admins: [@admin])
+    @member = create(:user)
+    @fleet = create(:fleet, admins: [@admin], members: [@member])
     @mission = create(:mission, fleet: @fleet, created_by: @admin)
   end
 
@@ -75,5 +76,25 @@ class Api::V1::FleetsMissionsShowTest < ActionDispatch::IntegrationTest
   test "GET /fleets/:slug/missions/:slug returns 401 when not signed in" do
     assert_api_response :get, 401,
       path_params: {fleetSlug: @fleet.slug, slug: @mission.slug}
+  end
+
+  # Keeping a draft off the list is only half of it: a member who learned the
+  # slug could otherwise read one straight from this endpoint.
+  test "GET /fleets/:slug/missions/:slug hides another author's draft from a member" do
+    draft = create(:mission, :draft, fleet: @fleet, created_by: @admin)
+    sign_in @member
+
+    assert_api_response :get, 404,
+      path_params: {fleetSlug: @fleet.slug, slug: draft.slug}
+  end
+
+  test "GET /fleets/:slug/missions/:slug shows an author their own draft" do
+    draft = create(:mission, :draft, fleet: @fleet, created_by: @member)
+    sign_in @member
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug, slug: draft.slug} do
+      assert_equal "draft", parsed_body["status"]
+    end
   end
 end

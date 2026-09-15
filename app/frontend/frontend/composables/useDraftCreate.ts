@@ -34,10 +34,10 @@ export const useMissionDraft = () => {
 
   const create = async (fleetSlug: string, { replace = false } = {}) => {
     try {
-      const mission = await mutation.mutateAsync({
-        fleetSlug,
-        data: { title: t("labels.fleets.missions.untitled") },
-      });
+      // No title: the API names it, so the one name that gets renumbered when
+      // two people press this at once is the one it chose. A title sent from
+      // here would be a title somebody typed, and those are never renamed.
+      const mission = await mutation.mutateAsync({ fleetSlug, data: {} });
 
       if (!mission?.slug) return;
 

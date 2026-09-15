@@ -32,6 +32,10 @@ class Api::V1::FleetsMissionsCreateTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::StandardError
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(403, "forbidden - member cannot create") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -59,18 +63,36 @@ class Api::V1::FleetsMissionsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # Two clicks on the create button arrive under the same default name; the
-  # second is numbered rather than refused, because the author is on their way
-  # to the editor to rename it anyway.
-  test "POST /fleets/:slug/missions numbers a second draft of the same name" do
+  # The create button sends no title at all; the API names it.
+  test "POST /fleets/:slug/missions names a mission that arrives without one" do
+    sign_in @admin
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {} do
+      assert_equal "Untitled mission", parsed_body["title"]
+      assert_equal "draft", parsed_body["status"]
+    end
+  end
+
+  # Two clicks arrive under the same generated name; the second is numbered
+  # rather than refused, because the author is on their way to rename it.
+  test "POST /fleets/:slug/missions numbers a second untitled mission" do
     create(:mission, :draft, fleet: @fleet, created_by: @admin, title: "Untitled mission")
     sign_in @admin
 
-    assert_api_response :post, 201,
-      path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Untitled mission"} do
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {} do
       assert_equal "Untitled mission 2", parsed_body["title"]
     end
+  end
+
+  # Only the generated one. A title somebody typed is theirs alone, and a
+  # duplicate is an error rather than something quietly renamed behind them.
+  test "POST /fleets/:slug/missions refuses a duplicate title somebody chose" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Operation Bluebird")
+    sign_in @admin
+
+    assert_api_response :post, 400,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {title: "Operation Bluebird"}
   end
 
   test "POST /fleets/:slug/missions returns 403 when caller is a member" do

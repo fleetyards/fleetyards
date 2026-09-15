@@ -33,6 +33,10 @@ class Api::V1::FleetsMissionsPublishTest < ActionDispatch::IntegrationTest
       response(403, "forbidden") do
         schema ::Shared::V1::Schemas::StandardError
       end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
     end
   end
 
@@ -67,13 +71,23 @@ class Api::V1::FleetsMissionsPublishTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "PUT /fleets/:slug/missions/:slug/publish returns 403 for a member" do
+  # 404 rather than 403: a draft is not on this member's list and is not
+  # readable by slug either, so the answer must not confirm that it exists.
+  test "PUT /fleets/:slug/missions/:slug/publish hides another author's draft" do
     sign_in @member
 
-    assert_api_response :put, 403,
+    assert_api_response :put, 404,
       path_params: {fleetSlug: @fleet.slug, slug: @mission.slug}
 
     assert @mission.reload.draft?
+  end
+
+  test "PUT /fleets/:slug/missions/:slug/publish returns 403 for a member who may read it" do
+    published = create(:mission, fleet: @fleet, created_by: @admin)
+    sign_in @member
+
+    assert_api_response :put, 403,
+      path_params: {fleetSlug: @fleet.slug, slug: published.slug}
   end
 
   test "PUT /fleets/:slug/missions/:slug/publish returns 401 when not signed in" do

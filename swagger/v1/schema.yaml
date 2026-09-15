@@ -5392,14 +5392,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '403':
           description: forbidden - member cannot create
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: List Missions
       tags:
@@ -5991,6 +5995,12 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
           content:
             application/json:
               schema:
@@ -22939,8 +22949,7 @@ components:
           type:
           - string
           - 'null'
-      required:
-      - title
+      required: []
       additionalProperties: false
       title: MissionCreateInput
     MissionExtended:

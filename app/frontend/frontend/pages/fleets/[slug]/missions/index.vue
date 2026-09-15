@@ -59,12 +59,24 @@ const {
 
 const missionList = computed<Mission[]>(() => missions.value?.items ?? []);
 
-const canCreate = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:missions:manage",
-    "fleet:missions:create",
-  ]),
+/*
+ * `update` as well as `create`, because the button no longer opens a form -- it
+ * writes a draft and lands the author in the editor. Somebody who may create but
+ * not update would be handed a mission they cannot name, publish or throw away,
+ * so they are not offered the button at all.
+ */
+const canCreate = computed(
+  () =>
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:missions:manage",
+      "fleet:missions:create",
+    ]) &&
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:missions:manage",
+      "fleet:missions:update",
+    ]),
 );
 
 const { create: createMissionDraft, pending: creating } = useMissionDraft();
