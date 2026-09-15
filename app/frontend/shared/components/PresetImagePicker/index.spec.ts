@@ -99,6 +99,18 @@ describe("PresetImagePicker", () => {
     expect(tiles().length).toBeGreaterThan(0);
   });
 
+  it("marks the chosen picture, and only that one", async () => {
+    await mount({ group: "mining", selected: "mining_alt1" });
+
+    const chosen = find("[data-test='preset-image-mining_alt1']");
+    const other = find("[data-test='preset-image-mining']");
+
+    expect(chosen?.classList.contains("preset-image--active")).toBe(true);
+    expect(chosen?.getAttribute("aria-pressed")).toBe("true");
+    expect(other?.classList.contains("preset-image--active")).toBe(false);
+    expect(other?.getAttribute("aria-pressed")).toBe("false");
+  });
+
   it("hands the choice back and closes", async () => {
     const subject = await mount({ group: "mining" });
 

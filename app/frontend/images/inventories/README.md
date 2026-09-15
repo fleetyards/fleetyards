@@ -12,11 +12,6 @@ Unlike missions and contracts, these are not filed under a type: an inventory is
 a place, not a kind of job, so the picker shows every picture at once and renders
 no filter.
 
-Until this folder is full enough to choose from, `usePresetImages` also lends the
-picker a handful of page backdrops the app already ships (`bg-hangar`, `bg-1`,
-`bg-2`, `bg-3`, `bg-5`, `bg-9`). A file in here always outranks one of those with
-the same name.
-
 Two things never take a picture from this folder:
 
 - **A ship's hold**, which is shown as its ship. That is the one thing about the

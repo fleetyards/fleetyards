@@ -53,22 +53,6 @@ const folders: Record<PresetCatalogueName, GlobResult> = {
   ),
 };
 
-/*
- * Art the app already ships, so an inventory has more than two pictures to
- * choose between without a second copy of anything. Named rather than globbed
- * wholesale: these are page backdrops, and only the ones that read as a place
- * goods are kept belong here -- and the heaviest of them (bg-6 through bg-8,
- * over a megabyte each) have no business behind a panel this size.
- *
- * Anything in images/inventories/ was put there for this and outranks all of it.
- */
-const borrowedArt: Partial<Record<PresetCatalogueName, GlobResult>> = {
-  inventories: import.meta.glob<{ default: string }>(
-    "@/images/{bg-hangar,bg-1,bg-2,bg-3,bg-5,bg-9}.webp",
-    { eager: true },
-  ),
-};
-
 // A mission picture is named after the category it illustrates, so the stem is
 // the group -- but `ship_combat_alt1` has to land under `ship_combat` and not
 // under `ship`, which is why the list is matched rather than the name split.
@@ -115,29 +99,22 @@ const build = (catalogue: PresetCatalogueName): PresetCatalogue => {
   const urlByKey: Record<string, string> = {};
   const extByKey: Record<string, string> = {};
 
-  const collect = (files: GlobResult, borrowed: boolean) => {
-    for (const [path, mod] of Object.entries(files)) {
-      const match = path.match(/\/([^/.]+)\.(webp|jpg|jpeg|png)$/);
-      if (!match) continue;
+  for (const [path, mod] of Object.entries(folders[catalogue])) {
+    const match = path.match(/\/([^/.]+)\.(webp|jpg|jpeg|png)$/);
+    if (!match) continue;
 
-      const [, key, ext] = match;
+    const [, key, ext] = match;
 
-      // Borrowed art never replaces a file of the same name in the catalogue's
-      // own folder: that one was put there for this, and this is only what
-      // happened to be lying around.
-      if (borrowed && urlByKey[key]) continue;
-
-      if ((FORMAT_PRIORITY[ext] ?? 0) < (FORMAT_PRIORITY[extByKey[key]] ?? 0)) {
-        continue;
-      }
-
-      urlByKey[key] = mod.default;
-      extByKey[key] = ext;
+    // One picture per name: `placeholder-3.webp` and `placeholder-3.jpg` are
+    // the same art in two formats, and only the better format may replace what
+    // is already held.
+    if ((FORMAT_PRIORITY[ext] ?? 0) < (FORMAT_PRIORITY[extByKey[key]] ?? 0)) {
+      continue;
     }
-  };
 
-  collect(folders[catalogue], false);
-  collect(borrowedArt[catalogue] ?? {}, true);
+    urlByKey[key] = mod.default;
+    extByKey[key] = ext;
+  }
 
   const config = GROUPS_BY_CATALOGUE[catalogue];
 

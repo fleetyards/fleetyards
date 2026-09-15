@@ -210,6 +210,13 @@ const clear = () => {
     internalSrc.value = undefined;
     emit("update:modelValue", null);
   }
+
+  // Both, because the button means "no picture": a clear that dropped the file
+  // and left the preset would put a picture straight back in the frame, which
+  // reads as the clear not having worked.
+  if (props.presetValue) {
+    emit("update:presetValue", null);
+  }
 };
 
 const onUploadDone = (files: FileUpload[]) => {
@@ -506,8 +513,10 @@ defineExpose({
         @select="selectPreset"
         @close="pickerOpen = false"
       />
+      <!-- A preset counts: it is a picture in the frame like any other, and
+           while it did not the only way back to none was through the picker. -->
       <Btn
-        v-if="clearable && (internalSrc || inputValue)"
+        v-if="clearable && (internalSrc || inputValue || presetSrc)"
         v-tooltip="clearLabel"
         @click="clear"
         class="base-image-input__clear"

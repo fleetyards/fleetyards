@@ -47,11 +47,13 @@ describe("usePresetImages", () => {
     expect(presets.every((preset) => preset.group === undefined)).toBe(true);
   });
 
-  it("lends an inventory art the app already ships", () => {
+  // Only what was put there for this. The picker briefly borrowed a handful of
+  // page backdrops to pad the list out; they are backdrops, and they read as
+  // backdrops behind a panel this size.
+  it("takes inventory art from its own folder and nowhere else", () => {
     const keys = presetCatalogue("inventories").presets.map((p) => p.key);
 
-    expect(keys).toContain("bg-hangar");
-    expect(keys).toContain("placeholder-1");
+    expect(keys).toEqual(["placeholder-1", "placeholder-2", "placeholder-3"]);
   });
 
   it("resolves a key to a URL, and an unknown one to nothing", () => {

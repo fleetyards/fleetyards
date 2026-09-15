@@ -184,6 +184,31 @@ describe("FormFileInput presets", () => {
     );
   });
 
+  /*
+   * The clear button used to appear only for a file, so a field showing a
+   * preset had no way back to no picture except through the picker.
+   */
+  it("clears a preset from the field itself", async () => {
+    const subject = await mount({
+      presetCatalogue: "missions",
+      presetValue: "mining",
+      clearable: true,
+    });
+
+    await subject.find(".base-image-input__clear").trigger("click");
+
+    expect(subject.emitted("update:presetValue")?.at(-1)).toEqual([null]);
+  });
+
+  it("offers no clear while there is nothing to clear", async () => {
+    const subject = await mount({
+      presetCatalogue: "missions",
+      clearable: true,
+    });
+
+    expect(subject.find(".base-image-input__clear").exists()).toBe(false);
+  });
+
   it("leaves the picture alone when the preset is only removed", async () => {
     const subject = await mount({
       file: attachedFile,
