@@ -9,16 +9,14 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
 import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
@@ -71,11 +69,11 @@ const fleetEventParams = computed(() =>
   occurrenceParam.value ? { occurrence: occurrenceParam.value } : {},
 );
 
-const { data: event, refetch } = useFleetEvent(
-  fleetSlug,
-  eventSlug,
-  fleetEventParams as never,
-);
+const {
+  data: event,
+  refetch,
+  isLoading,
+} = useFleetEvent(fleetSlug, eventSlug, fleetEventParams as never);
 
 const listContext = useFleetEventListContextStore();
 
@@ -456,7 +454,6 @@ const crumbs = computed<Crumb[]>(() => [
       <Btn
         v-if="canReadPayouts"
         :size="BtnSizesEnum.SM"
-        :variant="BtnVariantsEnum.GHOST"
         :to="{
           name: 'fleet-event-payouts',
           params: { slug: fleet.slug, event: event.slug },
@@ -497,6 +494,22 @@ const crumbs = computed<Crumb[]>(() => [
            and not a framed chip, which renders a button with aria-pressed. -->
       <div class="event-detail__status">
         <Pill :variant="statusVariant">{{ statusLabel }}</Pill>
+      </div>
+
+      <!-- On the cover's top corner, opposite the status: handing the event to
+           your own calendar is the one thing a reader does from the hero, and
+           below the eight rows of metadata it was past the fold. -->
+      <div v-if="icsDownloadUrl" class="event-detail__calendar">
+        <Btn
+          :href="icsDownloadUrl"
+          :size="BtnSizesEnum.SM"
+          :aria-label="t('actions.fleets.events.addToCalendar')"
+          data-test="event-add-to-calendar"
+          mobile-icon-only
+        >
+          <i class="fa-light fa-calendar-arrow-down" />
+          <span>{{ t("actions.fleets.events.addToCalendar") }}</span>
+        </Btn>
       </div>
 
       <!--
@@ -578,13 +591,6 @@ const crumbs = computed<Crumb[]>(() => [
                 {{ event.maxAttendees }}
               </div>
             </div>
-          </div>
-
-          <div v-if="icsDownloadUrl" class="event-hero__actions">
-            <Btn :href="icsDownloadUrl" variant="bare">
-              <i class="fa-light fa-calendar-arrow-down" />
-              {{ t("actions.fleets.events.addToCalendar") }}
-            </Btn>
           </div>
 
           <div v-if="hasOverviewContent" class="event-overview">
@@ -702,6 +708,10 @@ const crumbs = computed<Crumb[]>(() => [
       />
     </section>
   </div>
+
+  <!-- The hero the event opens on, then the sections below it - your signup,
+       the teams, the unassigned list. -->
+  <DetailSkeleton v-else-if="isLoading" :panels="3" />
 </template>
 
 <style lang="scss" scoped>
@@ -733,18 +743,28 @@ const crumbs = computed<Crumb[]>(() => [
 .event-detail__status :deep(.base-pill) {
   backdrop-filter: blur(6px) brightness(0.45);
 }
+
+/*
+ * The cover's other top corner. Above the heading's own stacking so the button
+ * stays clickable where a long title reaches it, and darkened behind the way
+ * the status pill is - the top shadow is drawn for text, not for a control.
+ */
+.event-detail__calendar {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+}
+
+.event-detail__calendar :deep(.btn) {
+  backdrop-filter: blur(6px) brightness(0.45);
+}
 .event-hero__tz {
   font-size: 0.85em;
   opacity: 0.75;
 }
 .event-hero__series-link {
   margin-left: 8px;
-}
-.event-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
 }
 .event-overview {
   display: flex;
