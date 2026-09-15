@@ -91,6 +91,13 @@ const destroyMutation = useDestroyFleetEvent();
 
 const status = computed(() => props.event.status);
 const archived = computed(() => props.event.archived);
+
+// An event nobody has published. Deleting one removes it rather than archiving
+// an event the fleet was never offered, so the wording has to follow.
+const draft = computed(() => props.event.status === "draft");
+
+// Whether the delete really deletes, as opposed to archiving first.
+const removes = computed(() => archived.value || draft.value);
 const discordConfigured = computed(() => !!props.event.discordConfigured);
 
 const transition = async (
@@ -123,7 +130,7 @@ const handleCancel = () => {
 };
 
 const performDestroy = async () => {
-  const wasArchived = props.event.archived;
+  const wasArchived = removes.value;
   try {
     await destroyMutation.mutateAsync({
       fleetSlug: props.fleet.slug,
@@ -153,10 +160,10 @@ const performDestroy = async () => {
 
 const handleDestroy = () => {
   displayConfirm({
-    text: archived.value
+    text: removes.value
       ? t("messages.fleets.event.destroy.confirm")
       : t("messages.fleets.event.archive.confirm"),
-    confirmText: archived.value
+    confirmText: removes.value
       ? t("actions.fleets.events.destroy")
       : t("actions.fleets.events.archive"),
     onConfirm: performDestroy,
@@ -280,7 +287,7 @@ const openAdminsModal = () => {
       >
         <i class="fa-light fa-trash" />
         <span>{{
-          event.archived
+          removes
             ? t("actions.fleets.events.destroy")
             : t("actions.fleets.events.archive")
         }}</span>

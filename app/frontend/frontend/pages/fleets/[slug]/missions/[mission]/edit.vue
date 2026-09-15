@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
+import MissionAdminActions from "@/frontend/components/Fleets/Missions/MissionAdminActions/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as editRoutes } from "@/frontend/pages/fleets/[slug]/missions/[mission]/edit/routes";
@@ -17,6 +18,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
   fleet: Fleet;
@@ -34,6 +36,17 @@ const fleetSlug = computed(() => props.fleet.slug);
 const missionSlug = computed(() => route.params.mission as string);
 
 const { data: mission, refetch } = useFleetMission(fleetSlug, missionSlug);
+
+// The create button lands an author here with a draft, so the two things they
+// may want next -- publish it, or throw it away -- have to be reachable from
+// this page and not only from the one they skipped.
+const canEdit = computed(() =>
+  checkAccess(props.resourceAccess, [
+    "fleet:manage",
+    "fleet:missions:manage",
+    "fleet:missions:update",
+  ]),
+);
 
 const fleetMissionUpdatedComlink = ref<() => void>();
 const missionChildrenChangedComlink = ref<() => void>();
@@ -82,7 +95,15 @@ const crumbs = computed<Crumb[]>(() => [
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
+  <BreadCrumbs :crumbs="crumbs">
+    <template v-if="canEdit && mission" #actions>
+      <MissionAdminActions
+        :fleet="fleet"
+        :mission="mission"
+        :resource-access="resourceAccess"
+      />
+    </template>
+  </BreadCrumbs>
 
   <TabNavView v-if="mission">
     <template #nav>

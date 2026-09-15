@@ -311,6 +311,7 @@
       "today": "Aujourd'hui",
       "fleets": {
         "missions": {
+          "publish": "Publier",
           "create": "Créer une mission",
           "edit": "Modifier la mission",
           "archive": "Archiver la mission",

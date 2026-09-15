@@ -7,12 +7,14 @@ export default {
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
+import EventAdminActions from "@/frontend/components/Fleets/Events/EventAdminActions/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as editRoutes } from "@/frontend/pages/fleets/[slug]/events/[event]/edit/routes";
 import { type Fleet, type FleetMember, useFleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
   fleet: Fleet;
@@ -30,6 +32,17 @@ const fleetSlug = computed(() => props.fleet.slug);
 const eventSlug = computed(() => route.params.event as string);
 
 const { data: event, refetch } = useFleetEvent(fleetSlug, eventSlug);
+
+// The create button lands an author here with a draft, so the two things they
+// may want next -- publish it, or throw it away -- have to be reachable from
+// this page and not only from the one they skipped.
+const canEdit = computed(() =>
+  checkAccess(props.resourceAccess, [
+    "fleet:manage",
+    "fleet:events:manage",
+    "fleet:events:update",
+  ]),
+);
 
 const fleetEventUpdatedComlink = ref<() => void>();
 const fleetEventChildrenChangedComlink = ref<() => void>();
@@ -74,7 +87,15 @@ const crumbs = computed<Crumb[]>(() => [
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
+  <BreadCrumbs :crumbs="crumbs">
+    <template v-if="canEdit && event" #actions>
+      <EventAdminActions
+        :fleet="fleet"
+        :event="event"
+        :resource-access="resourceAccess"
+      />
+    </template>
+  </BreadCrumbs>
 
   <TabNavView v-if="event">
     <template #nav>

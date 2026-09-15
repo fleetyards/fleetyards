@@ -311,6 +311,7 @@
       "today": "今天",
       "fleets": {
         "missions": {
+          "publish": "发布",
           "create": "创建任务",
           "edit": "编辑任务",
           "archive": "归档任务",
