@@ -118,8 +118,21 @@ module Api
       private def save_mission(attempts: 2)
         @mission.save
       rescue ActiveRecord::RecordNotUnique
+        # A title the caller chose is theirs. Its slug can still collide with
+        # one derived from a different title, and renaming around that would
+        # answer 201 with a mission they did not ask for -- so it is reported
+        # the way any other taken title is.
+        if mission_params[:title].present?
+          @mission.errors.add(:title, :taken)
+
+          return false
+        end
+
         raise if (attempts -= 1) <= 0
 
+        # Only the title this app generated is renumbered: two create buttons
+        # pressed at once settle on the same one, and the second sees the
+        # winner's row on the way through again.
         @mission.slug = nil
         @mission.title = nil
         retry

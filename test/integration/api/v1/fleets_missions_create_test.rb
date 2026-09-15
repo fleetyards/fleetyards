@@ -95,6 +95,20 @@ class Api::V1::FleetsMissionsCreateTest < ActionDispatch::IntegrationTest
       body: {title: "Operation Bluebird"}
   end
 
+  # Title uniqueness is checked on the title, but the index is on the slug --
+  # and two different titles can derive the same one. The caller is told, rather
+  # than handed a 201 for a mission named something they never asked for.
+  test "POST /fleets/:slug/missions reports a slug collision instead of renaming" do
+    create(:mission, fleet: @fleet, created_by: @admin, title: "Operation Bluebird")
+    sign_in @admin
+
+    assert_difference -> { Mission.count }, 0 do
+      assert_api_response :post, 400,
+        path_params: {fleetSlug: @fleet.slug},
+        body: {title: "Operation Bluebird!"}
+    end
+  end
+
   test "POST /fleets/:slug/missions returns 403 when caller is a member" do
     sign_in @member
 
