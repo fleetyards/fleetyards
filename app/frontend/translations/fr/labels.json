@@ -51,6 +51,12 @@
         "percentageOfTime": "du temps",
         "currentState": "État actuel",
         "toggle": "Basculer",
+        "permanent": "Permanent",
+        "tabs": {
+          "all": "Toutes",
+          "rollout": "Déploiement",
+          "permanent": "Permanentes"
+        },
         "settingsIntro": "Activez ou désactivez les fonctionnalités expérimentales pour votre compte. Ces fonctionnalités peuvent être incomplètes ou changer sans préavis.",
         "descriptions": {
           "tools_travel_times": "Afficher les temps de trajet estimés entre les emplacements.",

@@ -51,6 +51,12 @@
         "percentageOfTime": "del tiempo",
         "currentState": "Estado actual",
         "toggle": "Alternar",
+        "permanent": "Permanente",
+        "tabs": {
+          "all": "Todas",
+          "rollout": "Despliegue",
+          "permanent": "Permanentes"
+        },
         "settingsIntro": "Habilite o deshabilite funciones experimentales para su cuenta. Estas funciones pueden estar incompletas o cambiar sin previo aviso.",
         "descriptions": {
           "tools_travel_times": "Mostrar tiempos de viaje estimados entre ubicaciones.",

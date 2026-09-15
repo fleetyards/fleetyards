@@ -11065,6 +11065,8 @@ components:
           type: string
         state:
           type: string
+        permanent:
+          type: boolean
         selfServiceUser:
           type: boolean
         selfServiceFleet:
@@ -11085,6 +11087,7 @@ components:
       required:
       - name
       - state
+      - permanent
       - selfServiceUser
       - selfServiceFleet
       - percentageOfActors

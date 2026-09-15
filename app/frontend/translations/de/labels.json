@@ -51,6 +51,12 @@
         "percentageOfTime": "der Zeit",
         "currentState": "Aktueller Status",
         "toggle": "Umschalten",
+        "permanent": "Dauerhaft",
+        "tabs": {
+          "all": "Alle",
+          "rollout": "Rollout",
+          "permanent": "Dauerhaft"
+        },
         "settingsIntro": "Aktivieren oder deaktivieren Sie experimentelle Funktionen für Ihr Konto. Diese Funktionen können unvollständig sein oder sich ohne Vorankündigung ändern.",
         "descriptions": {
           "tools_travel_times": "Geschätzte Reisezeiten zwischen Standorten anzeigen.",

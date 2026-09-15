@@ -105,6 +105,26 @@ class Admin::Api::V1::FeaturesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: "TestFeature"}
   end
 
+  # The flag is permanent because config/feature_flags.yml says so, not because
+  # of anything Flipper holds — the admin UI groups the long-lived gates by it.
+  test "GET /features/:id reports a flag the registry declares permanent" do
+    Flipper.add("oauth-discord")
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: "oauth-discord"} do
+      assert parsed_body["permanent"]
+    end
+  end
+
+  test "GET /features/:id reports a flag the registry does not know as not permanent" do
+    Flipper.enable("TestFeature")
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {id: "TestFeature"} do
+      assert_not parsed_body["permanent"]
+    end
+  end
+
   test "GET /features/:id returns 404 for unknown feature" do
     sign_in @user
 
