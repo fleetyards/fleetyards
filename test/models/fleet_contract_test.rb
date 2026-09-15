@@ -10,6 +10,7 @@ require "test_helper"
 #  aasm_state                     :string           default("draft"), not null
 #  cancelled_at                   :datetime
 #  claimed_at                     :datetime
+#  cover_image_preset             :string
 #  crew_limit                     :integer
 #  deadline                       :datetime
 #  description                    :text
@@ -269,5 +270,60 @@ class FleetContractTest < ActiveSupport::TestCase
     assignment = create(:fleet_contract_assignment, :accepted, fleet_contract: contract)
 
     assert assignment.update(approved_by: create(:user))
+  end
+  test "a contract with no preset takes its kind's" do
+    contract = create(:fleet_contract, :transport)
+
+    assert_equal "transport", contract.cover_image_preset
+  end
+
+  test "a preset the author chose is kept" do
+    contract = create(:fleet_contract, :transport, cover_image_preset: "transport_alt1")
+
+    assert_equal "transport_alt1", contract.cover_image_preset
+  end
+
+  # The form only ever offers the current kind's art, so a preset naming another
+  # kind is the previous one's default left behind by a change of kind -- and it
+  # would resolve to that kind's picture.
+  test "changing the kind drops a preset left over from the old one" do
+    contract = create(:fleet_contract, :transport)
+    assert_equal "transport", contract.cover_image_preset
+
+    contract.update!(kind: :crafting, source_fleet_inventory: nil)
+
+    assert_equal "crafting", contract.cover_image_preset
+  end
+
+  test "changing the kind drops an alternate of the old kind too" do
+    contract = create(:fleet_contract, :transport, cover_image_preset: "transport_alt1")
+
+    contract.update!(kind: :crafting, source_fleet_inventory: nil)
+
+    assert_equal "crafting", contract.cover_image_preset
+  end
+
+  test "a vector cover is refused" do
+    contract = build(:fleet_contract)
+    contract.cover_image.attach(
+      io: StringIO.new("<svg xmlns='http://www.w3.org/2000/svg'></svg>"),
+      filename: "cover.svg",
+      content_type: "image/svg+xml"
+    )
+
+    assert_not contract.valid?
+    assert_includes contract.errors.attribute_names, :cover_image
+  end
+
+  test "a raster cover is accepted" do
+    contract = build(:fleet_contract)
+    contract.cover_image.attach(
+      io: file_fixture("test.png").open,
+      filename: "cover.png",
+      content_type: "image/png"
+    )
+
+    assert_predicate contract, :valid?
+    assert_predicate contract.cover_image, :attached?
   end
 end

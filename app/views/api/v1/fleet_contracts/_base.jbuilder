@@ -14,6 +14,16 @@ json.reimburse_expenses fleet_contract.reimburse_expenses
 json.crew_limit fleet_contract.crew_limit
 json.requires_pickup fleet_contract.requires_pickup?
 json.deadline fleet_contract.deadline&.utc&.iso8601
+json.cover_image_preset fleet_contract.cover_image_preset
+
+# Omitted rather than null when nothing is attached: the schema documents this
+# as an optional MediaFile, and a null disagrees with both it and the generated
+# client, which types the property as absent-or-object.
+if fleet_contract.cover_image.attached?
+  json.cover_image do
+    json.partial! "api/v1/shared/file", record: fleet_contract, attr: :cover_image
+  end
+end
 
 json.partial! "api/v1/fleet_contracts/endpoint",
   inventory: fleet_contract.source_fleet_inventory, name: :source

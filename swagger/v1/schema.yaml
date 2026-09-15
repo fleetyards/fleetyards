@@ -17167,6 +17167,12 @@ components:
           - string
           - 'null'
           format: date-time
+        coverImage:
+          "$ref": "#/components/schemas/MediaFile"
+        coverImagePreset:
+          type:
+          - string
+          - 'null'
         crewPreview:
           type: array
           items:
@@ -17411,6 +17417,12 @@ components:
           - string
           - 'null'
           format: date-time
+        coverImage:
+          "$ref": "#/components/schemas/MediaFile"
+        coverImagePreset:
+          type:
+          - string
+          - 'null'
         crewPreview:
           type: array
           items:
@@ -17535,6 +17547,14 @@ components:
           - string
           - 'null'
           format: date-time
+        coverImage:
+          type:
+          - string
+          - 'null'
+        coverImagePreset:
+          type:
+          - string
+          - 'null'
         sourceFleetInventoryId:
           type:
           - string
