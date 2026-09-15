@@ -53,8 +53,7 @@
         "missions": {
           "index": "任務",
           "edit": {
-            "basic": "基本",
-            "description": "描述",
+            "details": "詳細資訊",
             "teams": "小隊與席位"
           }
         },
@@ -62,8 +61,9 @@
           "index": "活動",
           "calendar": "行事曆",
           "edit": {
-            "basic": "基本",
-            "description": "描述",
+            "details": "詳細資訊",
+            "schedule": "時間安排",
+            "signup": "報名",
             "teams": "小隊與席位"
           },
           "payouts": "分帳"

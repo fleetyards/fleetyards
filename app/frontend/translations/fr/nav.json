@@ -53,8 +53,7 @@
         "missions": {
           "index": "Missions",
           "edit": {
-            "basic": "Général",
-            "description": "Description",
+            "details": "Détails",
             "teams": "Équipes & places"
           }
         },
@@ -62,8 +61,9 @@
           "index": "Événements",
           "calendar": "Calendrier",
           "edit": {
-            "basic": "Général",
-            "description": "Description",
+            "details": "Détails",
+            "schedule": "Planification",
+            "signup": "Inscription",
             "teams": "Équipes & places"
           },
           "payouts": "Répartition"

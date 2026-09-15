@@ -1,58 +1,37 @@
-import type { RouteRecordRaw } from "vue-router";
+import type { RouteMeta, RouteRecordRaw } from "vue-router";
 
+const meta: RouteMeta = {
+  needsAuthentication: true,
+  nav: "editTabs",
+  activeRoute: "fleet-missions",
+  access: ["fleet:missions:update", "fleet:missions:manage", "fleet:manage"],
+  customTitle: true,
+};
+
+/*
+ * A mission has no schedule and no signup rules -- it is the template an event
+ * is spawned from -- so it splits in two where an event splits in four. What it
+ * is, and who flies it.
+ */
 export const routes: RouteRecordRaw[] = [
   {
     path: "",
     name: "fleet-mission-edit",
     component: () =>
       import("@/frontend/pages/fleets/[slug]/missions/[mission]/edit/index.vue"),
-    meta: {
-      title: "fleets.missions.edit.basic",
-      needsAuthentication: true,
-      nav: "editTabs",
-      activeRoute: "fleet-missions",
-      access: [
-        "fleet:missions:update",
-        "fleet:missions:manage",
-        "fleet:manage",
-      ],
-      customTitle: true,
-    },
-  },
-  {
-    path: "description/",
-    name: "fleet-mission-edit-description",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/missions/[mission]/edit/description.vue"),
-    meta: {
-      title: "fleets.missions.edit.description",
-      needsAuthentication: true,
-      nav: "editTabs",
-      activeRoute: "fleet-missions",
-      access: [
-        "fleet:missions:update",
-        "fleet:missions:manage",
-        "fleet:manage",
-      ],
-      customTitle: true,
-    },
+    meta: { ...meta, title: "fleets.missions.edit.details" },
   },
   {
     path: "teams/",
     name: "fleet-mission-edit-teams",
     component: () =>
       import("@/frontend/pages/fleets/[slug]/missions/[mission]/edit/teams.vue"),
-    meta: {
-      title: "fleets.missions.edit.teams",
-      needsAuthentication: true,
-      nav: "editTabs",
-      activeRoute: "fleet-missions",
-      access: [
-        "fleet:missions:update",
-        "fleet:missions:manage",
-        "fleet:manage",
-      ],
-      customTitle: true,
-    },
+    meta: { ...meta, title: "fleets.missions.edit.teams" },
+  },
+  {
+    // Was a tab of its own; its fields moved into Details. The path stays so
+    // links people already have keep resolving.
+    path: "description/",
+    redirect: { name: "fleet-mission-edit" },
   },
 ];

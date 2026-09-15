@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "FleetEventEditBasicPage",
+  name: "FleetEventEditDetailsPage",
 };
 </script>
 
@@ -8,23 +8,22 @@ export default {
 import { useForm, type SubmissionHandler } from "vee-validate";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import CoverPresetPicker from "@/shared/components/CoverPresetPicker/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import EventEditFormShell from "@/frontend/components/Fleets/Events/EventEditFormShell/index.vue";
 import {
   type Fleet,
   type FilterOption,
   type FleetEventExtended,
   type FleetEventUpdateInput,
-  FleetEventVisibilityEnum,
   MissionCategoryEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionScenarios } from "@/frontend/composables/useMissionScenarios";
-import { TIMEZONE_OPTIONS } from "@/shared/utils/Timezones";
-import { format, parseISO } from "date-fns";
+import { useMissionCover } from "@/frontend/composables/useMissionCover";
 
 type Props = {
   fleet: Fleet;
@@ -35,79 +34,31 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const LOCAL_FORMAT = "yyyy-MM-dd'T'HH:mm";
-
-const toLocal = (iso: string | null | undefined) => {
-  if (!iso) return "";
-  try {
-    return format(parseISO(iso), LOCAL_FORMAT);
-  } catch {
-    return "";
-  }
-};
-
 const validationSchema = {
   title: "required|min:2",
-  startsAt: "required",
-  timezone: "required",
 };
 
 const { defineField, handleSubmit, meta, setErrors } =
   useForm<FleetEventUpdateInput>({
     initialValues: {
       title: props.event.title,
-      startsAt: toLocal(props.event.startsAt) as never,
-      endsAt: toLocal(props.event.endsAt) as never,
-      timezone: props.event.timezone,
-      location: props.event.location ?? "",
-      meetupLocation: props.event.meetupLocation ?? "",
-      visibility: props.event.visibility,
       category: props.event.category,
       scenario: props.event.scenario ?? "",
-      maxAttendees: props.event.maxAttendees ?? null,
-      autoLockEnabled: props.event.autoLockEnabled ?? true,
-      autoLockMinutesBefore: props.event.autoLockMinutesBefore ?? 60,
-      recurring: props.event.recurring ?? false,
-      recurrenceInterval: (props.event.recurrenceInterval ?? "weekly") as never,
-      recurrenceUntil: props.event.recurrenceUntil ?? null,
-      recurrenceCount: props.event.recurrenceCount ?? null,
+      description: props.event.description ?? "",
+      briefing: props.event.briefing ?? "",
+      coverImage: undefined,
+      coverImagePreset: props.event.coverImagePreset ?? null,
     },
     validationSchema,
   });
 
 const [title, titleProps] = defineField("title");
-const [startsAt] = defineField("startsAt");
-const [endsAt] = defineField("endsAt");
-const [timezone, timezoneProps] = defineField("timezone");
-const [location, locationProps] = defineField("location");
-const [meetupLocation, meetupLocationProps] = defineField("meetupLocation");
-const [visibility, visibilityProps] = defineField("visibility");
 const [category, categoryProps] = defineField("category");
 const [scenario, scenarioProps] = defineField("scenario");
-const [maxAttendees, maxAttendeesProps] = defineField("maxAttendees");
-const [autoLockEnabled] = defineField("autoLockEnabled");
-const [autoLockMinutesBefore, autoLockMinutesBeforeProps] = defineField(
-  "autoLockMinutesBefore",
-);
-const [recurring] = defineField("recurring");
-const [recurrenceInterval, recurrenceIntervalProps] =
-  defineField("recurrenceInterval");
-const [recurrenceUntil] = defineField("recurrenceUntil");
-const [recurrenceCount, recurrenceCountProps] = defineField("recurrenceCount");
-const recurrenceEndKind = ref<"never" | "until" | "count">(
-  props.event.recurrenceUntil
-    ? "until"
-    : props.event.recurrenceCount
-      ? "count"
-      : "never",
-);
-
-const recurrenceIntervalOptions = computed<FilterOption[]>(() => [
-  { value: "daily", label: t("labels.fleets.events.recurrence.daily") },
-  { value: "weekly", label: t("labels.fleets.events.recurrence.weekly") },
-  { value: "biweekly", label: t("labels.fleets.events.recurrence.biweekly") },
-  { value: "monthly", label: t("labels.fleets.events.recurrence.monthly") },
-]);
+const [description, descriptionProps] = defineField("description");
+const [briefing, briefingProps] = defineField("briefing");
+const [coverImage, coverImageProps] = defineField("coverImage");
+const [coverImagePreset] = defineField("coverImagePreset");
 
 const { suggestions: scenarioSuggestions } = useMissionScenarios();
 
@@ -118,92 +69,47 @@ const categoryOptions = computed<FilterOption[]>(() =>
   })),
 );
 
-const visibilityOptions = computed<FilterOption[]>(() =>
-  Object.values(FleetEventVisibilityEnum).map((value) => ({
-    value,
-    label: t(`labels.fleets.events.visibilities.${value}`),
-  })),
+const { presetsFor } = useMissionCover();
+
+// The art on offer follows the category, which is edited on this same tab --
+// so it tracks the field rather than the saved event.
+const presetOptions = computed(() => presetsFor(category.value as string));
+
+const existingCoverImage = computed(
+  () =>
+    (
+      props.event as
+        { coverImage?: { url?: string; mediumUrl?: string } | null } | undefined
+    )?.coverImage,
 );
 
-const timezoneOptions = computed<FilterOption[]>(() => {
-  const base = TIMEZONE_OPTIONS.map((tz) => ({
-    value: tz.value,
-    label: tz.label,
-  }));
-  const current = (timezone.value as string) || "";
-  if (current && !base.some((opt) => opt.value === current)) {
-    base.unshift({ value: current, label: current });
-  }
-  return base;
-});
-
-const addHours = (value: string, hours: number) => {
-  if (!value) return "";
-  const parsed = new Date(value);
-  if (isNaN(parsed.getTime())) return "";
-  parsed.setHours(parsed.getHours() + hours);
-  return format(parsed, LOCAL_FORMAT);
-};
-
-let endsAtTouched = !!props.event.endsAt;
-watch(endsAt, (newValue) => {
-  const start = startsAt.value as string;
-  if (!start || !newValue) return;
-  if (newValue !== addHours(start, 2)) endsAtTouched = true;
-});
-watch(startsAt, (newStart) => {
-  if (!newStart || endsAtTouched) return;
-  endsAt.value = addHours(newStart as string, 2) as never;
-});
-
-// vee-validate gives us back local datetime strings; the API wants ISO.
-// Wrap the submit handler so payload values are correctly typed.
 const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
-  handleSubmit((values, ctx) => {
-    const endKind = recurrenceEndKind.value;
-    return cb(
+  handleSubmit((values, ctx) =>
+    cb(
       {
         ...values,
-        startsAt: values.startsAt
-          ? (new Date(values.startsAt as string).toISOString() as never)
-          : undefined,
-        endsAt: values.endsAt
-          ? (new Date(values.endsAt as string).toISOString() as never)
-          : null,
         scenario: values.scenario || null,
-        maxAttendees: values.maxAttendees ? Number(values.maxAttendees) : null,
-        autoLockMinutesBefore: values.autoLockEnabled
-          ? Number(values.autoLockMinutesBefore || 60)
-          : null,
-        location: values.location || undefined,
-        meetupLocation: values.meetupLocation || undefined,
-        recurring: !!values.recurring,
-        recurrenceInterval: values.recurring
-          ? (values.recurrenceInterval as never)
-          : null,
-        recurrenceUntil:
-          values.recurring && endKind === "until"
-            ? (values.recurrenceUntil as never)
-            : null,
-        recurrenceCount:
-          values.recurring && endKind === "count"
-            ? Number(values.recurrenceCount || 0) || null
-            : null,
+        description: values.description || undefined,
+        briefing: values.briefing || undefined,
+        coverImage: values.coverImage || undefined,
+        // An upload replaces the preset rather than sitting over one that
+        // would win back if the file were later cleared.
+        coverImagePreset: values.coverImage ? null : values.coverImagePreset,
       } as never,
       ctx,
-    );
-  });
+    ),
+  );
 </script>
 
 <template>
-  <Heading hero>{{ t("headlines.fleets.events.editBasic") }}</Heading>
+  <Heading hero>{{ t("headlines.fleets.events.editDetails") }}</Heading>
   <EventEditFormShell
     :fleet="fleet"
     :event="event"
     :handle-submit="wrapHandleSubmit"
     :meta="meta"
     :set-errors="setErrors"
-    form-id="fleet-event-edit-basic"
+    form-id="fleet-event-edit-details"
   >
     <div class="row">
       <div class="col-12">
@@ -218,77 +124,6 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     </div>
 
     <div class="row">
-      <div class="col-12 col-md-6">
-        <FormDateTime
-          v-model="startsAt"
-          name="startsAt"
-          :rules="validationSchema.startsAt"
-          :minutes-increment="15"
-          :label="t('labels.fleets.events.startsAt')"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormDateTime
-          v-model="endsAt"
-          name="endsAt"
-          :minutes-increment="15"
-          :label="t('labels.fleets.events.endsAt')"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <BaseSelect
-          v-model="timezone"
-          v-bind="timezoneProps"
-          :options="timezoneOptions"
-          :label="t('labels.fleets.events.timezone')"
-          name="timezone"
-          :searchable="true"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="maxAttendees"
-          v-bind="maxAttendeesProps"
-          name="maxAttendees"
-          :type="InputTypesEnum.NUMBER"
-          :label="t('labels.fleets.events.maxAttendees')"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="location"
-          v-bind="locationProps"
-          name="location"
-          :label="t('labels.fleets.events.location')"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="meetupLocation"
-          v-bind="meetupLocationProps"
-          name="meetupLocation"
-          :label="t('labels.fleets.events.meetupLocation')"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <BaseSelect
-          v-model="visibility"
-          v-bind="visibilityProps"
-          :options="visibilityOptions"
-          :label="t('labels.fleets.events.visibility')"
-          name="visibility"
-          :searchable="false"
-        />
-      </div>
       <div class="col-12 col-md-6">
         <BaseSelect
           v-model="category"
@@ -322,141 +157,47 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     </div>
 
     <div class="row">
-      <div class="col-12 col-md-6">
-        <FormCheckbox
-          v-model="autoLockEnabled"
-          name="autoLockEnabled"
-          :label="t('labels.fleets.events.autoLockEnabled')"
-          align-with-fields
-        />
-      </div>
-      <div v-if="autoLockEnabled" class="col-12 col-md-6">
-        <FormInput
-          v-model="autoLockMinutesBefore"
-          v-bind="autoLockMinutesBeforeProps"
-          name="autoLockMinutesBefore"
-          :type="InputTypesEnum.NUMBER"
-          :label="t('labels.fleets.events.autoLockMinutesBefore')"
+      <div class="col-12">
+        <FormTextarea
+          v-model="description"
+          v-bind="descriptionProps"
+          name="description"
+          :label="t('labels.fleets.events.description')"
         />
       </div>
     </div>
-
-    <hr />
-
     <div class="row">
       <div class="col-12">
-        <FormCheckbox
-          v-model="recurring"
-          name="recurring"
-          :label="t('labels.fleets.events.recurring')"
+        <FormTextarea
+          v-model="briefing"
+          v-bind="briefingProps"
+          name="briefing"
+          :label="t('labels.fleets.events.briefing')"
         />
-        <p class="text-muted small">
-          {{ t("labels.fleets.events.recurringHint") }}
-        </p>
       </div>
     </div>
 
-    <template v-if="recurring">
-      <div class="row">
-        <div class="col-12 col-md-6">
-          <BaseSelect
-            v-model="recurrenceInterval"
-            v-bind="recurrenceIntervalProps"
-            :options="recurrenceIntervalOptions"
-            :label="t('labels.fleets.events.recurrenceInterval')"
-            name="recurrenceInterval"
-            :searchable="false"
-          />
-        </div>
+    <div v-if="presetOptions.length" class="row">
+      <div class="col-12">
+        <CoverPresetPicker
+          v-model="coverImagePreset"
+          :presets="presetOptions"
+          :label="t('labels.fleets.missions.coverPresets')"
+        />
       </div>
-
-      <div class="row">
-        <div class="col-12">
-          <span class="text-muted small">
-            {{ t("labels.fleets.events.recurrenceEnd") }}
-          </span>
-          <div class="series-end">
-            <label class="series-end__option">
-              <input
-                v-model="recurrenceEndKind"
-                type="radio"
-                name="recurrenceEndKind"
-                value="never"
-              />
-              <span>{{ t("labels.fleets.events.recurrenceEndNever") }}</span>
-            </label>
-            <label class="series-end__option">
-              <input
-                v-model="recurrenceEndKind"
-                type="radio"
-                name="recurrenceEndKind"
-                value="until"
-              />
-              <span>{{ t("labels.fleets.events.recurrenceEndOn") }}</span>
-              <input
-                v-model="recurrenceUntil"
-                type="date"
-                :disabled="recurrenceEndKind !== 'until'"
-                class="series-end__input"
-              />
-            </label>
-            <label class="series-end__option">
-              <input
-                v-model="recurrenceEndKind"
-                type="radio"
-                name="recurrenceEndKind"
-                value="count"
-              />
-              <span>{{ t("labels.fleets.events.recurrenceEndAfter") }}</span>
-              <input
-                v-model.number="recurrenceCount"
-                v-bind="recurrenceCountProps"
-                type="number"
-                min="1"
-                :disabled="recurrenceEndKind !== 'count'"
-                class="series-end__input series-end__input--narrow"
-              />
-              <span>{{
-                t("labels.fleets.events.recurrenceEndOccurrences")
-              }}</span>
-            </label>
-          </div>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <FormFileInput
+          v-model="coverImage"
+          v-bind="coverImageProps"
+          :file="existingCoverImage as never"
+          name="coverImage"
+          :label="t('labels.fleets.missions.coverImage')"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
       </div>
-    </template>
+    </div>
   </EventEditFormShell>
 </template>
-
-<style lang="scss" scoped>
-.series-end {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 6px;
-}
-.series-end__option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-.series-end__input {
-  padding: 4px 8px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-control-bare, 6px);
-  color: inherit;
-  font-family: inherit;
-  font-size: 13px;
-
-  &:disabled {
-    opacity: 0.4;
-  }
-}
-.series-end__input--narrow {
-  width: 5rem;
-}
-.small {
-  font-size: 13px;
-}
-</style>
