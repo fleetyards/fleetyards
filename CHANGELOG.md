@@ -2,6 +2,118 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.0.0](https://github.com/fleetyards/fleetyards/compare/v7.15.0...v8.0.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **imports:** PUT /hangar/import returns the queued import rather than the import result. Poll GET /imports/{id} for the outcome.
+
+### Features
+
+* **admin:** filter the ships list for unmeasured dimensions ([1b9e123](https://github.com/fleetyards/fleetyards/commit/1b9e1237f52b4f86dbdbe40c97e67343c511c590))
+* **admin:** find and take over dimensions the game files disagree with ([#4872](https://github.com/fleetyards/fleetyards/issues/4872)) ([35e3313](https://github.com/fleetyards/fleetyards/commit/35e33131650f283af9ca9223ca3cd16c748f32eb))
+* **admin:** let a model's landed holo and views be uploaded ([0612f9f](https://github.com/fleetyards/fleetyards/commit/0612f9fbd29c058d380dce8187b0390f724208dc))
+* **contracts:** a contract carries its own picture ([#4922](https://github.com/fleetyards/fleetyards/issues/4922)) ([da4eb29](https://github.com/fleetyards/fleetyards/commit/da4eb294711d8fd203fed170b441ce34158521ed))
+* **contracts:** fleets post jobs, tracked through the transfer ledger ([#4890](https://github.com/fleetyards/fleetyards/issues/4890)) ([0124a77](https://github.com/fleetyards/fleetyards/commit/0124a776fa68baf5f4db2719cb14b3ccdb1ebc79))
+* **contracts:** the contract form gets the tab nav the others have ([#4925](https://github.com/fleetyards/fleetyards/issues/4925)) ([5d0ee33](https://github.com/fleetyards/fleetyards/commit/5d0ee33ce7b50b32fa994082de98efbb4c4e4c53))
+* **docks:** let a dock belong to a module as well as a ship ([#4869](https://github.com/fleetyards/fleetyards/issues/4869)) ([a8d5b5d](https://github.com/fleetyards/fleetyards/commit/a8d5b5de7fa285837472f0174f189d27fea8835d))
+* **features:** a permanent tab on the admin flag list ([#4918](https://github.com/fleetyards/fleetyards/issues/4918)) ([b096a01](https://github.com/fleetyards/fleetyards/commit/b096a0167a2177c1bb4087c65716ff4098e4c84b))
+* **fleetchart:** share the chart from its own controls ([#4848](https://github.com/fleetyards/fleetyards/issues/4848)) ([20f2c4b](https://github.com/fleetyards/fleetyards/commit/20f2c4b61069cb52e8030c61eba0d3c1113214e9)), closes [#1203](https://github.com/fleetyards/fleetyards/issues/1203)
+* **fleets:** create writes a draft and opens the editor ([#4926](https://github.com/fleetyards/fleetyards/issues/4926)) ([e2df975](https://github.com/fleetyards/fleetyards/commit/e2df97585d0350474d01d3a5ed4a3be11ec030b7))
+* **fleets:** empty states, skeletons, and table views across fleet ops ([#4924](https://github.com/fleetyards/fleetyards/issues/4924)) ([80921a5](https://github.com/fleetyards/fleetyards/commit/80921a50a611944375bd69c9b79f7a13a8df8a2c))
+* **fleets:** events and contracts on the fleet mobile nav ([#4927](https://github.com/fleetyards/fleetyards/issues/4927)) ([fbd278f](https://github.com/fleetyards/fleetyards/commit/fbd278ffbe9c8b00a049d1b97110eb94ddca3b07))
+* **fleets:** let admins nickname a member ([#4867](https://github.com/fleetyards/fleetyards/issues/4867)) ([8ddddd5](https://github.com/fleetyards/fleetyards/commit/8ddddd5b85466fa63de942c3d448af9ed877de15)), closes [#2586](https://github.com/fleetyards/fleetyards/issues/2586)
+* **forms:** the shipped art is picked inside the upload field ([#4930](https://github.com/fleetyards/fleetyards/issues/4930)) ([55032e4](https://github.com/fleetyards/fleetyards/commit/55032e452bf1ffa347cf52ead094e4ba0d506b05))
+* **hangar:** let a sync decide what happens to ships it cannot find ([#4886](https://github.com/fleetyards/fleetyards/issues/4886)) ([91b6d65](https://github.com/fleetyards/fleetyards/commit/91b6d65c5edac4436a155ed8bc4e1e5fe4b92c35))
+* **hangar:** let a sync leave bundled snub crafts out ([#4880](https://github.com/fleetyards/fleetyards/issues/4880)) ([44528ab](https://github.com/fleetyards/fleetyards/commit/44528abd60f1e68117eee516bd5a165326519a7c))
+* **hangar:** record what a user changes on their own ship ([#4851](https://github.com/fleetyards/fleetyards/issues/4851)) ([671ca44](https://github.com/fleetyards/fleetyards/commit/671ca44aeedcb46b8f0577848ae18fa86012ed14))
+* **holo:** measure a holo export's bounding box ([#4877](https://github.com/fleetyards/fleetyards/issues/4877)) ([4d262b3](https://github.com/fleetyards/fleetyards/commit/4d262b3fe7d2fc6008664ec567ffe687168f3154))
+* **imports:** visible, cancellable, group-aware hangar imports ([#4866](https://github.com/fleetyards/fleetyards/issues/4866)) ([402cfa8](https://github.com/fleetyards/fleetyards/commit/402cfa811651299781565d20f57ee392d6019bf5))
+* **inventories:** transfer items from one inventory to another ([#4881](https://github.com/fleetyards/fleetyards/issues/4881)) ([7630d23](https://github.com/fleetyards/fleetyards/commit/7630d2309fddfb9fe5d4ba0a133b6511cdb93063)), closes [#4878](https://github.com/fleetyards/fleetyards/issues/4878)
+* **logistics:** a ship's hold is shown as its ship ([#4921](https://github.com/fleetyards/fleetyards/issues/4921)) ([1d4118f](https://github.com/fleetyards/fleetyards/commit/1d4118f9eaf70321a934eb27d1f14c9e8632c7e4))
+* **logistics:** show every transfer kind, and only the people a transfer can reach ([#4911](https://github.com/fleetyards/fleetyards/issues/4911)) ([7790450](https://github.com/fleetyards/fleetyards/commit/77904501fb4560ae0bdf162e7c8d3dc1fa4e3aa0))
+* **models:** give ground vehicles a size ladder ([#4868](https://github.com/fleetyards/fleetyards/issues/4868)) ([1e83b16](https://github.com/fleetyards/fleetyards/commit/1e83b16de76a2245a1d578172edc87c7270aa9e0))
+* **models:** give the landed state its own fleetchart offsets ([af1a3bd](https://github.com/fleetyards/fleetyards/commit/af1a3bd0c2017581cff65354adf8be84e2f140de))
+* **models:** record what a ship measures while it is standing ([#4883](https://github.com/fleetyards/fleetyards/issues/4883)) ([2da5464](https://github.com/fleetyards/fleetyards/commit/2da5464f1f8757223fb9f2d5014a54bc6a0264e7))
+* **models:** record when a holo measured a model's dimensions ([4d9b5bc](https://github.com/fleetyards/fleetyards/commit/4d9b5bcbdf8adbb2ff40bee95f5f4ac7d34a9990))
+* **nav:** default the navigation to its slim state ([9744cfb](https://github.com/fleetyards/fleetyards/commit/9744cfb40913de739143fc40b221c2c26593c66c))
+* **patreon:** connect a Patreon account to claim its pledges ([#4917](https://github.com/fleetyards/fleetyards/issues/4917)) ([9fcbca1](https://github.com/fleetyards/fleetyards/commit/9fcbca1132260d7dadf05aab66e68316d775e7e7))
+* **payouts:** a fleet's own tours ([#4912](https://github.com/fleetyards/fleetyards/issues/4912)) ([7cb809a](https://github.com/fleetyards/fleetyards/commit/7cb809a90921a631ffdd9496d3d5ebe81f811767))
+* **payouts:** a share weight, for somebody who joined the tour late ([#4909](https://github.com/fleetyards/fleetyards/issues/4909)) ([a6c8adf](https://github.com/fleetyards/fleetyards/commit/a6c8adff2db61541637a29c569c87a23944083b3))
+* **payouts:** tour money calculation tool ([#4882](https://github.com/fleetyards/fleetyards/issues/4882)) ([b511396](https://github.com/fleetyards/fleetyards/commit/b511396936960bec3d7cf51242e1889bfdc99481))
+* **relationships:** friends for users, allies for fleets ([#4889](https://github.com/fleetyards/fleetyards/issues/4889)) ([b1f2de4](https://github.com/fleetyards/fleetyards/commit/b1f2de44d00b647bfce14bbac10d57a01e16de0f))
+* **ships:** name the ships that can carry this one ([#4856](https://github.com/fleetyards/fleetyards/issues/4856)) ([ee03d4e](https://github.com/fleetyards/fleetyards/commit/ee03d4ee66ea2617b4a5d97b3242ffe4f9cca11d))
+* **supporters:** link a donation to the account that made it ([#4915](https://github.com/fleetyards/fleetyards/issues/4915)) ([9c8ba0f](https://github.com/fleetyards/fleetyards/commit/9c8ba0f17ab6442818d57ccd404a8e4cd785cf57))
+
+
+### Bug Fixes
+
+* **admin:** drop the stray dock size dump above the select ([99590c2](https://github.com/fleetyards/fleetyards/commit/99590c260fd4333e9cdc355c3963566fc39e594d))
+* **admin:** give the landed metrics the placeholders they were missing ([fdb22e3](https://github.com/fleetyards/fleetyards/commit/fdb22e3a325790593a6fc3903b75b3e017b71249))
+* **admin:** keep the sc apply buttons on a holo-measured model ([6d1da1e](https://github.com/fleetyards/fleetyards/commit/6d1da1e0eb283acd5f7cc3d467572e286e59dc1f))
+* **admin:** make the dock size options match the values they filter ([b3255fb](https://github.com/fleetyards/fleetyards/commit/b3255fbba0e3360825ae753ab8f0a201ff2312a6))
+* **admin:** render the dropdowns in four more forms ([#4875](https://github.com/fleetyards/fleetyards/issues/4875)) ([14a7944](https://github.com/fleetyards/fleetyards/commit/14a7944fdb603642b25b70a6b4cdb420e5b1c336))
+* **admin:** space the apply button off the game-file figure ([72aa10c](https://github.com/fleetyards/fleetyards/commit/72aa10c925094596c02bf119ba762d8a870e6ab7))
+* **admin:** stop dropping the positionsNeedCuration filter ([45bfd4b](https://github.com/fleetyards/fleetyards/commit/45bfd4bb2422a2a7883da82d22f5a6a600937131))
+* **asyncapi:** regenerate the cable schema for the landed fleetchart offsets ([#4892](https://github.com/fleetyards/fleetyards/issues/4892)) ([86a9d64](https://github.com/fleetyards/fleetyards/commit/86a9d64a775bb02b61fb190f61129dc23c1efecf))
+* **contracts:** a cover the author cleared stays cleared ([#4931](https://github.com/fleetyards/fleetyards/issues/4931)) ([af99985](https://github.com/fleetyards/fleetyards/commit/af99985d711edba18e46f1afd80740870bf7a5e6))
+* **docks:** remove the 391 docks that belong to nothing ([#4864](https://github.com/fleetyards/fleetyards/issues/4864)) ([15c52ec](https://github.com/fleetyards/fleetyards/commit/15c52ec6dbcbca3cbc3262a4c3ef4698edd38484)), closes [#4852](https://github.com/fleetyards/fleetyards/issues/4852)
+* **e2e:** expand the navigation before asserting on its labels ([#4893](https://github.com/fleetyards/fleetyards/issues/4893)) ([0615e5c](https://github.com/fleetyards/fleetyards/commit/0615e5ca8cca07b724e475db377e0c41e53da933))
+* **errors:** tell an offline client the connection is gone, not the server ([#4860](https://github.com/fleetyards/fleetyards/issues/4860)) ([f00552e](https://github.com/fleetyards/fleetyards/commit/f00552eefabc0df3c2e48197b574a36d6d7ea1e9))
+* **hangar:** clear what hangs off a vehicle on a bulk delete ([#4871](https://github.com/fleetyards/fleetyards/issues/4871)) ([e1c4d48](https://github.com/fleetyards/fleetyards/commit/e1c4d48a8f3d7069212ac6ec90614a1d36ea6894))
+* **i18n:** correct the misspellings the locale files carry ([c662cac](https://github.com/fleetyards/fleetyards/commit/c662cac73c9d7b68c4574e6e6aa23c3acae7d7df))
+* **inventories:** record who renamed a stock position ([#4849](https://github.com/fleetyards/fleetyards/issues/4849)) ([a3a6bd3](https://github.com/fleetyards/fleetyards/commit/a3a6bd3514dde7050f55eb73204d2a04ab9775b2))
+* **logistics:** a ship's hold is its ship, and four other review leftovers ([#4932](https://github.com/fleetyards/fleetyards/issues/4932)) ([1d5dc09](https://github.com/fleetyards/fleetyards/commit/1d5dc0921854e9f4bfd56e394b278592ab0240a9))
+* **logistics:** an image with no sized variants is still the picture ([#4929](https://github.com/fleetyards/fleetyards/issues/4929)) ([ca069a6](https://github.com/fleetyards/fleetyards/commit/ca069a60875f75ddb5edbe5103c1b69cfccb7b11))
+* **logistics:** offer only accepted members as an inventory manager ([f04f073](https://github.com/fleetyards/fleetyards/commit/f04f07389bb3d645aef5b2c6f5922905b569f9b5))
+* **logistics:** reject an inventory manager who is not in the fleet ([e6ea7f6](https://github.com/fleetyards/fleetyards/commit/e6ea7f6348525b374f2902280125dcd5f96bd6e7))
+* **mailer:** drop the brand from the weekly headline, and cover [#4907](https://github.com/fleetyards/fleetyards/issues/4907)'s silent declarations ([#4908](https://github.com/fleetyards/fleetyards/issues/4908)) ([cd192e1](https://github.com/fleetyards/fleetyards/commit/cd192e171a83c91be90237af5dde9ec93119f744))
+* **mailer:** stop the weekly report table collapsing on a phone ([#4907](https://github.com/fleetyards/fleetyards/issues/4907)) ([d4453ec](https://github.com/fleetyards/fleetyards/commit/d4453ec973cfe8dba1d810ff80da0e9d92822b76))
+* **nav:** a redirect-only route is not a tab ([#4919](https://github.com/fleetyards/fleetyards/issues/4919)) ([dba2a11](https://github.com/fleetyards/fleetyards/commit/dba2a11cfd160b4178e0c6e1b98c3d18347c8b4d))
+* **sc-data:** read the Nox with its length on z ([#4874](https://github.com/fleetyards/fleetyards/issues/4874)) ([a2b4c76](https://github.com/fleetyards/fleetyards/commit/a2b4c76ead2330d029935d372cd81cf846d01978))
+* **supporters:** hide the claim key from a signed-out visitor ([c5bacec](https://github.com/fleetyards/fleetyards/commit/c5bacecbb55eef7b1b5b37683a67d5ee69296964))
+* **tests:** stub the claim key query key in the session's fyApi mock ([b6e4228](https://github.com/fleetyards/fleetyards/commit/b6e42289a352c6ed2145d006d7576174dab11167))
+* the will-it-fit filter is broken four ways ([#4854](https://github.com/fleetyards/fleetyards/issues/4854)) ([debe44a](https://github.com/fleetyards/fleetyards/commit/debe44a5a4e86fa948ae30ed80054ff4a1b861a6)), closes [#4853](https://github.com/fleetyards/fleetyards/issues/4853)
+* **tooltip:** let a tap open a tooltip on touch ([#4885](https://github.com/fleetyards/fleetyards/issues/4885)) ([81969be](https://github.com/fleetyards/fleetyards/commit/81969bebfdbfb097a942e3fe15f4bada1a147805))
+* **users:** drop the counter_cache that made .size raise ([#4876](https://github.com/fleetyards/fleetyards/issues/4876)) ([9629303](https://github.com/fleetyards/fleetyards/commit/9629303858e71a2fdd0f5d457b2c773b41d24207))
+* **users:** retire the two vehicle counter columns ([#4891](https://github.com/fleetyards/fleetyards/issues/4891)) ([af9d3be](https://github.com/fleetyards/fleetyards/commit/af9d3be7e3293b4bacb7a5560d5d3b1744b485d1))
+
+
+### Refactorings
+
+* **cable:** move the frontend onto anycable and the generated channel clients ([#4894](https://github.com/fleetyards/fleetyards/issues/4894)) ([fbd3ffa](https://github.com/fleetyards/fleetyards/commit/fbd3ffa96fdc56a31b0808a05d5c9042857284ca))
+* **inventories:** give a stock position its own row ([#4862](https://github.com/fleetyards/fleetyards/issues/4862)) ([b656ee3](https://github.com/fleetyards/fleetyards/commit/b656ee3d7c4c9a03313a78d91e30df6d83203102))
+* **logistics:** one set of main actions for every hold ([#4920](https://github.com/fleetyards/fleetyards/issues/4920)) ([7000ae6](https://github.com/fleetyards/fleetyards/commit/7000ae645cf67df3d7ee32f954f5351631af52f3))
+* **models:** spell ground_deceleration correctly ([23c35c0](https://github.com/fleetyards/fleetyards/commit/23c35c0b155be42162d26a3ab71d7bc13cf3ee3c))
+* **sc-data:** move the source switch into the navigation ([#4870](https://github.com/fleetyards/fleetyards/issues/4870)) ([4acb7a2](https://github.com/fleetyards/fleetyards/commit/4acb7a202b11741a81b1a5f54a19c7e05b9cc26f))
+* view state in the query, and the roster and invites as one page ([#4913](https://github.com/fleetyards/fleetyards/issues/4913)) ([09f9279](https://github.com/fleetyards/fleetyards/commit/09f927931dda069d50e15722350a2cbcd21f1355))
+
+
+### Chores
+
+* **credentials:** add the ko-fi verification code ([b27ec62](https://github.com/fleetyards/fleetyards/commit/b27ec62e119435b710b22a54a5d48248379f2437))
+* **deps-dev:** bump @types/node from 26.4.1 to 26.5.0 ([#4857](https://github.com/fleetyards/fleetyards/issues/4857)) ([81c2580](https://github.com/fleetyards/fleetyards/commit/81c2580cd3fa4efcfec9349ebc6216a570b4e8ef))
+* **deps-dev:** bump @types/node from 26.5.0 to 26.5.1 ([#4905](https://github.com/fleetyards/fleetyards/issues/4905)) ([083316d](https://github.com/fleetyards/fleetyards/commit/083316deb326620c17cc0a4887cf7e351185398a))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#4904](https://github.com/fleetyards/fleetyards/issues/4904)) ([430e298](https://github.com/fleetyards/fleetyards/commit/430e298b3a8de8d8e1c5538ace3cde1c1b1828e4))
+* **deps-dev:** bump @typescript-eslint/parser from 8.69.0 to 8.70.0 ([#4859](https://github.com/fleetyards/fleetyards/issues/4859)) ([4dd9748](https://github.com/fleetyards/fleetyards/commit/4dd97482e3e74e97f94546b0c6ecba3dfd46fc3b))
+* **deps-dev:** bump knip from 6.34.0 to 6.35.1 ([#4900](https://github.com/fleetyards/fleetyards/issues/4900)) ([6c7f6d2](https://github.com/fleetyards/fleetyards/commit/6c7f6d20804a1d3f757d85182f0c872926cd9b40))
+* **deps-dev:** bump orval from 8.29.0 to 8.30.0 ([#4858](https://github.com/fleetyards/fleetyards/issues/4858)) ([9dc8071](https://github.com/fleetyards/fleetyards/commit/9dc8071a85ab34a166c7af1d2dff4528e5489bb9))
+* **deps-dev:** bump orval from 8.30.0 to 8.31.0 ([#4903](https://github.com/fleetyards/fleetyards/issues/4903)) ([a7957a8](https://github.com/fleetyards/fleetyards/commit/a7957a806c1faf80aea36e70d6e1de3ff045230c))
+* **deps-dev:** bump vite from 8.2.2 to 8.3.0 ([#4895](https://github.com/fleetyards/fleetyards/issues/4895)) ([6b74ece](https://github.com/fleetyards/fleetyards/commit/6b74eced16c8e9fe51c9ff313149118994a24814))
+* **deps:** asyncapi-cable 0.3.0, dropping the local patch ([#4910](https://github.com/fleetyards/fleetyards/issues/4910)) ([69bc331](https://github.com/fleetyards/fleetyards/commit/69bc3317f30b2e2df07cc743a08640e4abb3a44f))
+* **deps:** bump @event-calendar/core from 5.12.2 to 5.12.3 ([#4898](https://github.com/fleetyards/fleetyards/issues/4898)) ([2980d4d](https://github.com/fleetyards/fleetyards/commit/2980d4dd05fd99bb2596d2a520c4691187c047d4))
+* **deps:** bump appsignal from 4.10.1 to 4.10.3 ([#4902](https://github.com/fleetyards/fleetyards/issues/4902)) ([8b8148b](https://github.com/fleetyards/fleetyards/commit/8b8148befd37f12b09585482f5ffbc9e9f839fe8))
+* **deps:** bump aws-sdk-s3 from 1.229.0 to 1.231.0 ([#4901](https://github.com/fleetyards/fleetyards/issues/4901)) ([8b4c103](https://github.com/fleetyards/fleetyards/commit/8b4c103701d6434fade51b7c82db1a0f6262cf42))
+* **deps:** bump aws-sdk-s3 from 1.231.0 to 1.232.0 ([#4916](https://github.com/fleetyards/fleetyards/issues/4916)) ([7986569](https://github.com/fleetyards/fleetyards/commit/79865691ba05c5d68e1bbd3c297140780fa76cb9))
+* **deps:** bump doorkeeper from 5.9.6 to 5.9.7 ([#4899](https://github.com/fleetyards/fleetyards/issues/4899)) ([4b0394a](https://github.com/fleetyards/fleetyards/commit/4b0394a4df2be7aa43ac0b62d813784096ea2e5d))
+* **deps:** bump git from 5.4.1 to 5.5.0 ([#4897](https://github.com/fleetyards/fleetyards/issues/4897)) ([f5d6eaf](https://github.com/fleetyards/fleetyards/commit/f5d6eaf661f60f1f3de2308fe234427ddd3adaf0))
+* **deps:** bump openapi-ruby from 4.2.0 to 5.0.0 ([#4896](https://github.com/fleetyards/fleetyards/issues/4896)) ([143bc16](https://github.com/fleetyards/fleetyards/commit/143bc16d1293b56a7965d5bfceba3c621a1083da))
+* **deps:** bump three from 0.185.1 to 0.186.0 ([#4906](https://github.com/fleetyards/fleetyards/issues/4906)) ([5dbbc4c](https://github.com/fleetyards/fleetyards/commit/5dbbc4c4b9f8233a103a79bc1801180d57e076e3))
+* **deps:** migrate to pnpm 12 ([#4839](https://github.com/fleetyards/fleetyards/issues/4839)) ([ca08246](https://github.com/fleetyards/fleetyards/commit/ca0824614aec32e3f387dcc23099966b1bf7edf9))
+* **i18n:** drop the translation keys nothing reads ([ecd5aa0](https://github.com/fleetyards/fleetyards/commit/ecd5aa0959a3688eda17d4c6bfa5b1f90c2cbfc3))
+* **setup:** schedule bin/setup steps as a dependency graph ([#4861](https://github.com/fleetyards/fleetyards/issues/4861)) ([a9953af](https://github.com/fleetyards/fleetyards/commit/a9953afe80ecb02ff50d92ddc6a2127af518484f))
+
 ## [7.15.0](https://github.com/fleetyards/fleetyards/compare/v7.14.0...v7.15.0) (2026-09-10)
 
 
