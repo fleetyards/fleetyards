@@ -11,14 +11,11 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
-  useFleetMembership as useFleetMembershipQuery,
-  FeatureFlagName,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
 
 const { t } = useI18n();
-const { isFeatureEnabled, isFleetFeatureEnabled } = useFeatures();
 
 const route = useRoute();
 
@@ -46,66 +43,32 @@ const { data: publicFleet } = usePublicFleetQuery(fleetSlug, {
   },
 });
 
-const { data: membership } = useFleetMembershipQuery(fleetSlug, {
-  query: {
-    retry: false,
-    enabled: computed(() => hasSlug.value && sessionStore.isAuthenticated),
-  },
-});
-
 const currentFleet = computed(() => {
   return fleet.value || publicFleet.value;
 });
 
+const {
+  membership,
+  showLogisticsNav,
+  showAlliesNav,
+  showContractsNav,
+  showEventsNav,
+  eventsNavRoute,
+  showToursNav,
+  contractsNavActive,
+  eventsNavActive,
+} = useFleetNavAccess(currentFleet);
+
+// The tab keeps its place in the order but says where it goes: a role that
+// reads missions and not events is sent to the missions list.
+const eventsNavLabel = computed(() =>
+  eventsNavRoute.value === "fleet-missions"
+    ? t("nav.fleets.missions.index")
+    : t("nav.fleets.events.index"),
+);
+
 const shipsNavActive = computed(() => {
   return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
-});
-
-const hasLogisticsAccess = computed(
-  () => membership.value?.capabilities?.readInventories ?? false,
-);
-
-const hasAlliesAccess = computed(
-  () => membership.value?.capabilities?.readAllies ?? false,
-);
-
-const hasContractsAccess = computed(() => {
-  const access = membership.value?.fleetRole?.resourceAccess;
-  if (!access) return false;
-  return access.some((a: string) =>
-    ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:read"].includes(
-      a,
-    ),
-  );
-});
-
-const hasMissionsAccess = computed(() => {
-  const access = membership.value?.fleetRole?.resourceAccess;
-  if (!access) return false;
-  return access.some((a: string) =>
-    ["fleet:manage", "fleet:missions:manage", "fleet:missions:read"].includes(
-      a,
-    ),
-  );
-});
-
-const hasEventsAccess = computed(() => {
-  const access = membership.value?.fleetRole?.resourceAccess;
-  if (!access) return false;
-  return access.some((a: string) =>
-    ["fleet:manage", "fleet:events:manage", "fleet:events:read"].includes(a),
-  );
-});
-
-const eventsNavActive = computed(() => {
-  const name = String(route.name ?? "");
-  if (name.startsWith("fleet-event") || name.startsWith("fleet-mission")) {
-    return true;
-  }
-  if (name === "fleet-calendar") return true;
-
-  const path = route.path || "";
-  return /\/fleets\/[^/]+\/(events|missions|calendar)/.test(path);
 });
 
 const comlink = useComlink();
@@ -155,10 +118,7 @@ onMounted(() => {
           prefix="03"
         />
         <NavItem
-          v-if="
-            hasLogisticsAccess &&
-            isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS)
-          "
+          v-if="showLogisticsNav"
           :to="{
             name: 'fleet-logistics',
             params: { slug: currentFleet.slug },
@@ -169,10 +129,7 @@ onMounted(() => {
           prefix="04"
         />
         <NavItem
-          v-if="
-            hasAlliesAccess &&
-            isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_ALLIES)
-          "
+          v-if="showAlliesNav"
           :to="{
             name: 'fleet-allies',
             params: { slug: currentFleet.slug },
@@ -183,41 +140,29 @@ onMounted(() => {
           prefix="05"
         />
         <NavItem
-          v-if="
-            hasContractsAccess &&
-            isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_CONTRACTS)
-          "
+          v-if="showContractsNav"
           :to="{
             name: 'fleet-contracts',
             params: { slug: currentFleet.slug },
           }"
           :label="t('nav.fleets.contracts.index')"
-          :active="String(route.name).startsWith('fleet-contract')"
+          :active="contractsNavActive"
           icon="fa-duotone fa-clipboard-list"
           prefix="06"
         />
         <NavItem
-          v-if="
-            (hasEventsAccess || hasMissionsAccess) &&
-            isFleetFeatureEnabled(
-              currentFleet,
-              FeatureFlagName.FLEET_MISSION_BUILDER,
-            )
-          "
+          v-if="showEventsNav"
           :to="{
-            name: 'fleet-events',
+            name: eventsNavRoute,
             params: { slug: currentFleet.slug },
           }"
-          :label="t('nav.fleets.events.index')"
+          :label="eventsNavLabel"
           :active="eventsNavActive"
           icon="fa-duotone fa-calendar-day"
           prefix="07"
         />
         <NavItem
-          v-if="
-            isFleetFeatureEnabled(currentFleet, FeatureFlagName.TOUR_PAYOUTS) &&
-            isFleetFeatureEnabled(currentFleet, FeatureFlagName.FLEET_TOURS)
-          "
+          v-if="showToursNav"
           :to="{
             name: 'fleet-tours',
             params: { slug: currentFleet.slug },

@@ -11,6 +11,7 @@ import NotificationsNav from "@/frontend/components/Navigation/NotificationsNav/
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
+import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { type LocationQueryRaw } from "vue-router";
@@ -76,6 +77,14 @@ const { data: publicFleetData } = usePublicFleetQuery(fleetSlug, {
 
 const currentFleet = computed(() => fleetData.value || publicFleetData.value);
 
+const {
+  showContractsNav,
+  showEventsNav,
+  eventsNavRoute,
+  contractsNavActive,
+  eventsNavActive,
+} = useFleetNavAccess(currentFleet);
+
 const { data: myFleets, isPending: myFleetsPending } = useMyFleetsQuery({
   query: {
     refetchOnWindowFocus: false,
@@ -103,32 +112,36 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
           icon="fa-duotone fa-starship"
         />
         <NavItem
-          v-if="currentFleet.publicFleetStats || currentFleet.myFleet"
+          v-if="currentFleet.myFleet"
           :to="{
-            name: 'fleet-stats',
+            name: 'fleet-members',
             params: { slug: currentFleet.slug },
           }"
-          :active="routeActive('fleet-stats')"
-          icon="fa-duotone fa-chart-bar"
+          :active="String(route.name).startsWith('fleet-members')"
+          icon="fa-duotone fa-users"
         />
-        <template v-if="currentFleet.myFleet">
-          <NavItem
-            :to="{
-              name: 'fleet-members',
-              params: { slug: currentFleet.slug },
-            }"
-            :active="routeActive('fleet-members')"
-            icon="fa-duotone fa-users"
-          />
-          <NavItem
-            :to="{
-              name: 'fleet-settings',
-              params: { slug: currentFleet.slug },
-            }"
-            :active="routeActive('fleet-settings')"
-            icon="fa-duotone fa-cogs"
-          />
-        </template>
+        <NavItem
+          v-if="showContractsNav"
+          :to="{
+            name: 'fleet-contracts',
+            params: { slug: currentFleet.slug },
+          }"
+          :active="contractsNavActive"
+          icon="fa-duotone fa-clipboard-list"
+        />
+        <NavItem
+          v-if="showEventsNav"
+          :to="{
+            name: eventsNavRoute,
+            params: { slug: currentFleet.slug },
+          }"
+          :active="eventsNavActive"
+          :icon="
+            eventsNavRoute === 'fleet-missions'
+              ? 'fa-duotone fa-flag-checkered'
+              : 'fa-duotone fa-calendar-day'
+          "
+        />
       </template>
     </template>
     <template v-else>

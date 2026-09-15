@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import PayoutLedger from "@/frontend/components/Payouts/PayoutLedger/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -147,6 +148,7 @@ const onCopyInvite = async () => {
   <Teleport to="#header-right">
     <Btn
       v-if="askable"
+      :size="BtnSizesEnum.MD"
       :loading="asking"
       :aria-label="t('actions.payouts.askToJoin')"
       data-test="tour-ask-to-join"
@@ -159,6 +161,7 @@ const onCopyInvite = async () => {
 
     <Btn
       v-if="withdrawable"
+      :size="BtnSizesEnum.MD"
       :loading="asking"
       :aria-label="t('actions.payouts.withdrawJoinRequest')"
       data-test="tour-withdraw-join-request"
@@ -171,6 +174,7 @@ const onCopyInvite = async () => {
 
     <Btn
       v-if="inviteUrl"
+      :size="BtnSizesEnum.MD"
       :aria-label="t('actions.payouts.copyInvite')"
       data-test="tour-copy-invite"
       mobile-icon-only
