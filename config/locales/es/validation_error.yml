@@ -165,6 +165,7 @@ es:
     missions:
       create: No se pudo crear la misión.
       destroy: No se pudo eliminar la misión.
+      publish: No se pudo publicar la misión.
       unarchive: No se pudo desarchivar la misión.
       update: No se pudo actualizar la misión.
     model:

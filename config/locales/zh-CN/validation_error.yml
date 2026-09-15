@@ -161,6 +161,7 @@ zh-CN:
     missions:
       create: 无法创建任务。
       destroy: 无法删除任务。
+      publish: 无法发布任务。
       unarchive: 无法取消归档该任务。
       update: 无法更新任务。
     model:

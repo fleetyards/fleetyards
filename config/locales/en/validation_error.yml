@@ -197,6 +197,7 @@ en:
     missions:
       create: Mission could not be created.
       destroy: Mission could not be destroyed.
+      publish: Mission could not be published.
       unarchive: Mission could not be unarchived.
       update: Mission could not be updated.
     model:

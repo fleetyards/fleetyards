@@ -162,6 +162,7 @@ fr:
     missions:
       create: Impossible de créer la mission.
       destroy: Impossible de supprimer la mission.
+      publish: La mission n'a pas pu être publiée.
       unarchive: Impossible de désarchiver la mission.
       update: Impossible de mettre à jour la mission.
     model:
