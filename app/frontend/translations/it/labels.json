@@ -1401,6 +1401,7 @@
           "howTo": "Incolla il link nella tua app calendario sotto \"Iscriviti a un calendario\" o \"Aggiungi tramite URL\". Chiunque abbia questo link può vedere gli eventi a cui ti sei iscritto — tienilo privato."
         },
         "supporterClaimKey": {
+          "signedOut": "Accedi per ottenere la tua chiave personale da sostenitore.",
           "patreonNote": "collegato tramite la tua email, nessuna chiave necessaria",
           "label": "La tua chiave",
           "hint": "Incollala nel messaggio di un pagamento PayPal, Ko-fi o Buy me a coffee e verrà collegato al tuo account. Su Patreon il collegamento avviene tramite email."

@@ -13,12 +13,14 @@ import { InputAlignmentsEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useMySupporterClaimKey } from "@/services/fyApi";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
 const { t } = useI18n();
 const sessionStore = useSessionStore();
 const { displaySuccess } = useAppNotifications();
+const comlink = useComlink();
 
 // Reading generates the key, so it is here the moment somebody opens the modal
 // to donate rather than after a detour through settings.
@@ -26,7 +28,11 @@ const { data: claimKey } = useMySupporterClaimKey({
   query: { enabled: computed(() => sessionStore.isAuthenticated) },
 });
 
-const key = computed(() => claimKey.value?.key ?? "");
+// Gated on the session rather than on the query alone: a disabled query keeps
+// serving its cached data, so after a logout the key would still be here.
+const key = computed(() =>
+  sessionStore.isAuthenticated ? (claimKey.value?.key ?? "") : "",
+);
 
 const platforms = [
   {
@@ -142,6 +148,16 @@ const copyKey = () => {
             {{ t("labels.account.supporterClaimKey.hint") }}
           </p>
         </template>
+
+        <router-link
+          v-else-if="!sessionStore.isAuthenticated"
+          :to="{ name: 'login' }"
+          class="support-claim-key__hint support-claim-key__hint--signed-out"
+          data-test="claim-key-signed-out"
+          @click="comlink.emit('close-modal')"
+        >
+          {{ t("labels.account.supporterClaimKey.signedOut") }}
+        </router-link>
       </div>
 
       <hr class="support-rule" />

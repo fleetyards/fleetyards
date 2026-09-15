@@ -61,6 +61,13 @@
     font-size: 0.78rem;
     line-height: 1.5;
     opacity: 0.7;
+
+    /* Stands in for the key field, so it sits where the field would. */
+    &--signed-out {
+      display: block;
+      margin-top: 8px;
+      text-align: center;
+    }
   }
 }
 

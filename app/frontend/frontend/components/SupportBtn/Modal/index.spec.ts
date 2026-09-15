@@ -22,7 +22,10 @@ vi.mock("@/frontend/stores/session", () => ({
 
 const router = createRouter({
   history: createMemoryHistory(),
-  routes: [{ path: "/", name: "home", component: { template: "<div />" } }],
+  routes: [
+    { path: "/", name: "home", component: { template: "<div />" } },
+    { path: "/login", name: "login", component: { template: "<div />" } },
+  ],
 });
 
 import SupportModal from "./index.vue";
@@ -46,7 +49,7 @@ describe("SupportModal", () => {
     expect(wrapper.find("[data-test='copy-claim-key']").exists()).toBe(true);
   });
 
-  it("shows no key and no hint when signed out", async () => {
+  it("points a signed-out visitor at the login instead of the key", async () => {
     authenticated.value = false;
     claimKey.value = undefined;
 
@@ -54,6 +57,30 @@ describe("SupportModal", () => {
 
     expect(wrapper.find("[data-test='claim-key']").exists()).toBe(false);
     expect(wrapper.find("[data-test='copy-claim-key']").exists()).toBe(false);
+    expect(
+      wrapper.find("[data-test='claim-key-signed-out']").attributes("href"),
+    ).toBe("/login");
+  });
+
+  // The query is only disabled on logout, not cleared -- it keeps serving the
+  // key it fetched for the person who just left.
+  it("hides a key left in the cache after a logout", async () => {
+    authenticated.value = false;
+
+    const wrapper = await mount();
+
+    expect(wrapper.find("[data-test='claim-key']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='claim-key-signed-out']").exists()).toBe(
+      true,
+    );
+  });
+
+  it("shows no signed-out hint to a signed-in supporter", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.find("[data-test='claim-key-signed-out']").exists()).toBe(
+      false,
+    );
   });
 
   // Ko-fi has no URL parameter to prefill a message with, so the key goes to
@@ -87,9 +114,8 @@ describe("SupportModal", () => {
     expect(writeText).not.toHaveBeenCalled();
   });
 
-  it("copies nothing when there is no key", async () => {
+  it("copies nothing when signed out", async () => {
     authenticated.value = false;
-    claimKey.value = undefined;
 
     const wrapper = await mount();
     await wrapper.find("[data-test='support-paypal']").trigger("click");

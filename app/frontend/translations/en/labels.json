@@ -1401,6 +1401,7 @@
           "howTo": "Paste the link into your calendar app under \"Subscribe to calendar\" or \"Add by URL\". Anyone with this link can see the events you're signed up for — keep it private."
         },
         "supporterClaimKey": {
+          "signedOut": "Please log in to get your personal supporter key.",
           "patreonNote": "matched by your email, no key needed",
           "label": "Your key",
           "hint": "Paste it into the message on a PayPal, Ko-fi or Buy me a coffee payment and it links to your account. Patreon matches you by email instead."

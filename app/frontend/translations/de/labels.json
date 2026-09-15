@@ -1401,6 +1401,7 @@
           "howTo": "Füge den Link in deiner Kalender-App unter „Kalender abonnieren“ oder „Per URL hinzufügen“ ein. Wer diesen Link hat, sieht die Events, für die du angemeldet bist — halte ihn privat."
         },
         "supporterClaimKey": {
+          "signedOut": "Bitte melde dich an, um deinen persönlichen Unterstützer-Schlüssel zu erhalten.",
           "patreonNote": "wird über deine E-Mail-Adresse zugeordnet, kein Schlüssel nötig",
           "label": "Dein Schlüssel",
           "hint": "Füge ihn der Nachricht einer PayPal-, Ko-fi- oder Buy-me-a-coffee-Zahlung hinzu, dann wird sie deinem Konto zugeordnet. Bei Patreon geschieht das über deine E-Mail-Adresse."

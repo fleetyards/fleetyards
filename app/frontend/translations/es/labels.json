@@ -1401,6 +1401,7 @@
           "howTo": "Pega el enlace en tu aplicación de calendario en \"Suscribirse al calendario\" o \"Añadir por URL\". Cualquiera que tenga este enlace puede ver los eventos a los que estás inscrito: mantenlo en privado."
         },
         "supporterClaimKey": {
+          "signedOut": "Inicia sesión para obtener tu clave personal de patrocinador.",
           "patreonNote": "se asocia mediante tu correo, no hace falta clave",
           "label": "Tu clave",
           "hint": "Pégala en el mensaje de un pago por PayPal, Ko-fi o Buy me a coffee y se asociará a tu cuenta. En Patreon la asociación se hace por correo electrónico."

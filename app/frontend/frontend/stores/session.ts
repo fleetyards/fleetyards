@@ -1,7 +1,13 @@
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
 import { useHangarStore } from "./hangar";
-import { type User, me as fetchMe, destroySession } from "@/services/fyApi";
+import { queryClient } from "@/frontend/plugins/QueryClient";
+import {
+  type User,
+  me as fetchMe,
+  destroySession,
+  getMySupporterClaimKeyQueryKey,
+} from "@/services/fyApi";
 
 interface SessionState {
   authenticated: boolean;
@@ -50,6 +56,12 @@ export const useSessionStore = defineStore("session", {
     clearSession() {
       const hangarStore = useHangarStore();
       hangarStore.ships = [];
+
+      // A disabled query still serves whatever is cached, so the supporter
+      // claim key would survive the logout and greet the next person here.
+      queryClient.removeQueries({
+        queryKey: getMySupporterClaimKeyQueryKey(),
+      });
 
       this.$reset();
     },

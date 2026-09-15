@@ -1401,6 +1401,7 @@
           "howTo": "Collez le lien dans votre application de calendrier sous « S'abonner à un calendrier » ou « Ajouter par URL ». Toute personne possédant ce lien peut voir les événements auxquels vous êtes inscrit — gardez-le privé."
         },
         "supporterClaimKey": {
+          "signedOut": "Connectez-vous pour obtenir votre clé de soutien personnelle.",
           "patreonNote": "associé via votre e-mail, aucune clé nécessaire",
           "label": "Votre clé",
           "hint": "Collez-la dans le message d'un paiement PayPal, Ko-fi ou Buy me a coffee et il sera associé à votre compte. Sur Patreon, l'association se fait par e-mail."
