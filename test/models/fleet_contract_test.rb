@@ -271,8 +271,25 @@ class FleetContractTest < ActiveSupport::TestCase
 
     assert assignment.update(approved_by: create(:user))
   end
-  test "a contract with no preset takes its kind's" do
+  # Nothing is written for a form that picked nothing. The column says whether
+  # somebody chose a picture, and a default stored in it could not be told apart
+  # from a choice that happened to name the same art -- which is how a contract
+  # nobody had touched came to outrank the cover its fleet had configured.
+  test "a contract with no preset stores none" do
     contract = create(:fleet_contract, :transport)
+
+    assert_nil contract.cover_image_preset
+  end
+
+  # The value the model used to write by itself, now only reachable by asking
+  # for it -- and it has to survive, or the picker's own tile for this kind
+  # would be the one choice that could not be made.
+  test "a preset naming the contract's own kind is kept" do
+    contract = create(:fleet_contract, :transport, cover_image_preset: "transport")
+
+    assert_equal "transport", contract.cover_image_preset
+
+    contract.reload.update!(title: "Renamed")
 
     assert_equal "transport", contract.cover_image_preset
   end
@@ -283,20 +300,19 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_equal "transport_alt1", contract.cover_image_preset
   end
 
-  # Nobody chose it -- it is the default this contract was given for being a
-  # transport, and left alone it would go on showing a transport's picture.
-  test "changing the kind drops the old kind's default" do
+  # Nothing to leave behind any more: a contract that chose nothing carries
+  # nothing, so a change of kind has no stale default to clean up after.
+  test "changing the kind leaves an unchosen preset alone" do
     contract = create(:fleet_contract, :transport)
-    assert_equal "transport", contract.cover_image_preset
+    assert_nil contract.cover_image_preset
 
     contract.update!(kind: :crafting, source_fleet_inventory: nil)
 
-    assert_equal "crafting", contract.cover_image_preset
+    assert_nil contract.reload.cover_image_preset
   end
 
-  # The picker offers every kind's art, so anything but the bare default is a
-  # picture somebody picked for this job -- a change of kind is not a reason to
-  # throw it away.
+  # The picker offers every kind's art, so a stored preset is a picture somebody
+  # picked for this job -- a change of kind is not a reason to throw it away.
   test "changing the kind keeps a preset the author picked" do
     contract = create(:fleet_contract, :transport, cover_image_preset: "transport_alt1")
 

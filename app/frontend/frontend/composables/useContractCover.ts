@@ -39,16 +39,12 @@ export const useContractCover = () => {
     }
 
     /*
-     * Only a preset naming something other than the kind is a choice. The model
-     * writes the kind into `cover_image_preset` whenever the form left it
-     * empty, so treating that as a choice put a default ahead of the cover a
-     * fleet configured for this kind in its own settings -- which is the one
-     * thing here somebody deliberately set up.
+     * Any value here is a picture somebody chose, including one that names this
+     * contract's own kind. Nothing writes a default into the column any more --
+     * an unset preset is the absence of a choice, which is what lets the
+     * fleet's own cover answer below.
      */
-    const chosen =
-      contract?.coverImagePreset && contract.coverImagePreset !== kind
-        ? presetImageUrl("contracts", contract.coverImagePreset)
-        : undefined;
+    const chosen = presetImageUrl("contracts", contract?.coverImagePreset);
     if (chosen) return chosen;
 
     const own =
