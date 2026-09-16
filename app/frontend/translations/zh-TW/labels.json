@@ -1790,6 +1790,13 @@
           }
         },
         "announcements": {
+          "columns": {
+            "title": "標題",
+            "status": "狀態",
+            "deliveries": "管道",
+            "recipients": "接收人數",
+            "publishedAt": "發送時間"
+          },
           "statuses": {
             "draft": "草稿",
             "scheduled": "已排程",

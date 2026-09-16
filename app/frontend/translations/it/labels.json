@@ -1790,6 +1790,13 @@
           }
         },
         "announcements": {
+          "columns": {
+            "title": "Titolo",
+            "status": "Stato",
+            "deliveries": "Canali",
+            "recipients": "Destinatari",
+            "publishedAt": "Inviato"
+          },
           "statuses": {
             "draft": "Bozza",
             "scheduled": "Pianificato",

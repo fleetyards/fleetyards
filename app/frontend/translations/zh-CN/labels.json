@@ -1790,6 +1790,13 @@
           }
         },
         "announcements": {
+          "columns": {
+            "title": "标题",
+            "status": "状态",
+            "deliveries": "渠道",
+            "recipients": "接收人数",
+            "publishedAt": "发送时间"
+          },
           "statuses": {
             "draft": "草稿",
             "scheduled": "已排期",

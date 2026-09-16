@@ -1790,6 +1790,13 @@
           }
         },
         "announcements": {
+          "columns": {
+            "title": "Titel",
+            "status": "Status",
+            "deliveries": "Kanäle",
+            "recipients": "Empfänger",
+            "publishedAt": "Gesendet"
+          },
           "statuses": {
             "draft": "Entwurf",
             "scheduled": "Geplant",

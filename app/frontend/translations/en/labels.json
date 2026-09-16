@@ -1804,6 +1804,13 @@
           }
         },
         "announcements": {
+          "columns": {
+            "title": "Title",
+            "status": "Status",
+            "deliveries": "Channels",
+            "recipients": "Recipients",
+            "publishedAt": "Sent"
+          },
           "statuses": {
             "draft": "Draft",
             "scheduled": "Scheduled",

@@ -396,7 +396,7 @@
         },
         "announcement": {
           "publish": "¿Enviar este anuncio a %{channels}? No se puede deshacer.",
-          "destroy": "¿Seguro que quieres eliminar este anuncio? Esta acción no se puede deshacer."
+          "destroy": "¿Está seguro de que desea eliminar este anuncio? Esta acción no se puede deshacer."
         },
         "fundingGoal": {
           "destroy": "¿Seguro que quieres eliminar este objetivo de financiación? Esta acción no se puede revertir."

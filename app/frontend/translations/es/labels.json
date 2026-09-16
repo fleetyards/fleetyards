@@ -1790,6 +1790,13 @@
           }
         },
         "announcements": {
+          "columns": {
+            "title": "Título",
+            "status": "Estado",
+            "deliveries": "Canales",
+            "recipients": "Destinatarios",
+            "publishedAt": "Enviado"
+          },
           "statuses": {
             "draft": "Borrador",
             "scheduled": "Programado",
@@ -1809,7 +1816,7 @@
             "skipped": "Omitido",
             "failed": "Fallido"
           },
-          "noChannel": "Elige al menos un canal.",
+          "noChannel": "Seleccione al menos un canal.",
           "notifyUsersInfo": "Llega a todas las cuentas confirmadas. El correo solo a quien lo haya activado.",
           "socialBodyInfo": "Se usa para X y Bluesky. Si falta, se toma el primer párrafo del cuerpo."
         },

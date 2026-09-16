@@ -46,25 +46,6 @@ const destroyMutation = useDestroyAnnouncement({
   mutation: { onSettled: invalidate },
 });
 
-/*
- * An announcement cannot be recalled once it is out, so the confirm names the
- * channels it is about to reach rather than asking "are you sure?" about an
- * unnamed action.
- */
-const channelSummary = computed(() =>
-  [
-    props.announcement.notifyUsers &&
-      t("labels.admin.announcements.channels.in_app"),
-    props.announcement.postDiscord &&
-      t("labels.admin.announcements.channels.discord"),
-    props.announcement.postBluesky &&
-      t("labels.admin.announcements.channels.bluesky"),
-    props.announcement.postX && t("labels.admin.announcements.channels.x"),
-  ]
-    .filter(Boolean)
-    .join(", "),
-);
-
 const publish = () => {
   displayConfirm({
     text: t("messages.confirm.announcement.publish", {

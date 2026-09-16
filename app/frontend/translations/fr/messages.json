@@ -395,8 +395,8 @@
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
         },
         "announcement": {
-          "publish": "Envoyer cette annonce à %{channels} ? C'est irréversible.",
-          "destroy": "Veux-tu vraiment supprimer cette annonce ? Cette action est irréversible."
+          "publish": "Envoyer cette annonce à %{channels} ? L'envoi est irréversible.",
+          "destroy": "Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible."
         },
         "fundingGoal": {
           "destroy": "Êtes-vous sûr de vouloir supprimer cet objectif de financement ? Cette action est irréversible."

@@ -65,34 +65,34 @@ const {
   ...asyncStatus
 } = useAnnouncements(announcementsQueryParams);
 
+const { t, l } = useI18n();
+
 const columns: BaseTableCol<Announcement>[] = [
   {
     name: "title",
-    label: "Title",
+    label: t("labels.admin.announcements.columns.title"),
     sortable: true,
   },
   {
     name: "status",
-    label: "Status",
+    label: t("labels.admin.announcements.columns.status"),
   },
   {
     name: "deliveries",
-    label: "Channels",
+    label: t("labels.admin.announcements.columns.deliveries"),
     mobile: false,
   },
   {
     name: "recipients",
-    label: "Recipients",
+    label: t("labels.admin.announcements.columns.recipients"),
     mobile: false,
   },
   {
     name: "publishedAt",
-    label: "Sent",
+    label: t("labels.admin.announcements.columns.publishedAt"),
     sortable: true,
   },
 ];
-
-const { t, l } = useI18n();
 </script>
 
 <template>

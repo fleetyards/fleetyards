@@ -49,7 +49,6 @@ type FormValues = {
   body: string;
   socialBody?: string;
   link?: string;
-  schedule: boolean;
   publishAt?: string;
   notifyUsers: boolean;
   postDiscord: boolean;
@@ -57,10 +56,18 @@ type FormValues = {
   postX: boolean;
 };
 
-const validationSchema = {
+const schedule = ref(
+  props.announcement.status === AnnouncementStatusEnum.SCHEDULED,
+);
+
+// publishAt is required only once scheduling is on. Without the rule the form
+// submits an empty date and the API answers with the model's own validation
+// error -- a round trip to say what the field could have said itself.
+const validationSchema = computed(() => ({
   title: "required",
   body: "required",
-};
+  ...(schedule.value ? { publishAt: "required" } : {}),
+}));
 
 const { defineField, handleSubmit, meta, values } = useForm<FormValues>({
   initialValues: {
@@ -68,7 +75,6 @@ const { defineField, handleSubmit, meta, values } = useForm<FormValues>({
     body: props.announcement.body,
     socialBody: props.announcement.socialBody,
     link: props.announcement.link,
-    schedule: props.announcement.status === AnnouncementStatusEnum.SCHEDULED,
     publishAt: props.announcement.publishAt,
     notifyUsers: props.announcement.notifyUsers,
     postDiscord: props.announcement.postDiscord,
@@ -82,7 +88,6 @@ const [title, titleProps] = defineField("title");
 const [body, bodyProps] = defineField("body");
 const [socialBody, socialBodyProps] = defineField("socialBody");
 const [link, linkProps] = defineField("link");
-const [schedule] = defineField("schedule");
 const [publishAt, publishAtProps] = defineField("publishAt");
 const [notifyUsers] = defineField("notifyUsers");
 const [postDiscord] = defineField("postDiscord");
@@ -96,6 +101,11 @@ const noChannel = computed(
     !values.postBluesky &&
     !values.postX,
 );
+
+// The schedule switch is not a form field, so meta.dirty does not see it.
+const scheduledInitially =
+  props.announcement.status === AnnouncementStatusEnum.SCHEDULED;
+const scheduleDirty = computed(() => schedule.value !== scheduledInitially);
 
 const submitting = ref(false);
 
@@ -125,12 +135,12 @@ const onSubmit = handleSubmit(async (formValues) => {
     body: formValues.body,
     socialBody: formValues.socialBody || undefined,
     link: formValues.link || undefined,
-    status: formValues.schedule
+    status: schedule.value
       ? AnnouncementInputStatusEnum.SCHEDULED
       : AnnouncementInputStatusEnum.DRAFT,
     // FormDateTime hands back local time, and the schema wants RFC 3339.
     publishAt:
-      formValues.schedule && formValues.publishAt
+      schedule.value && formValues.publishAt
         ? new Date(formValues.publishAt).toISOString()
         : undefined,
     notifyUsers: formValues.notifyUsers,
@@ -238,7 +248,7 @@ const handleCancel = async () => {
     <FormActions
       :submitting="submitting"
       form-id="admin-announcement-edit-form"
-      :dirty="meta.dirty || meta.touched"
+      :dirty="meta.dirty || meta.touched || scheduleDirty"
       @cancel="handleCancel"
     />
   </form>
