@@ -117,6 +117,17 @@ class FleetMembership < ApplicationRecord
   after_discard :broadcast_destroy, :remove_fleet_vehicles, :sync_discord_roles
   after_undiscard :broadcast_create, :schedule_setup_fleet_vehicles, :sync_discord_roles
 
+  # The uniqueness validation reads before the insert, so two joins arriving
+  # together both pass it and the partial unique index rejects the loser. Give
+  # the loser the validation error the sequential case already gets, rather
+  # than a RecordNotUnique that reaches the client as a 500.
+  def save_without_conflict
+    save
+  rescue ActiveRecord::RecordNotUnique
+    errors.add(:user_id, :taken)
+    false
+  end
+
   def has_access?(privileges)
     return false if fleet_role.blank?
 

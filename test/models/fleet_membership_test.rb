@@ -179,4 +179,39 @@ class FleetMembershipTest < ActiveSupport::TestCase
     assert officer_membership.promote
     assert_equal recruit_role, officer_membership.reload.fleet_role
   end
+
+  test "#save_without_conflict answers a lost insert race with the taken error" do
+    # The uniqueness validation is a read, so a request whose validation ran
+    # before the winner's row landed reaches the insert regardless -- which is
+    # what stubbing `valid?` reproduces.
+    loser = @fleet.fleet_memberships.new(
+      user: @member_user,
+      fleet_role: @fleet.fleet_roles.ranked.last
+    )
+    loser.define_singleton_method(:valid?) { |*| true }
+
+    assert_not loser.save_without_conflict
+    assert_equal [:taken], loser.errors.where(:user_id).map(&:type)
+    assert_equal 1, FleetMembership.kept.where(fleet: @fleet, user: @member_user).count
+  end
+
+  test "#save_without_conflict saves a membership nothing conflicts with" do
+    membership = @fleet.fleet_memberships.new(
+      user: create(:user),
+      fleet_role: @fleet.fleet_roles.ranked.last
+    )
+
+    assert membership.save_without_conflict
+    assert_predicate membership, :persisted?
+  end
+
+  test "#save_without_conflict still reports an ordinary validation failure" do
+    duplicate = @fleet.fleet_memberships.new(
+      user: @member_user,
+      fleet_role: @fleet.fleet_roles.ranked.last
+    )
+
+    assert_not duplicate.save_without_conflict
+    assert_equal [:taken], duplicate.errors.where(:user_id).map(&:type)
+  end
 end
