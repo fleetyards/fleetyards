@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { blueskyLength, xLength } from "./socialCounters";
+import { blueskyLength, discordLength, xLength } from "./socialCounters";
 
 /*
  * Pinned against the same cases as Announcements::Platform in Ruby. If these
@@ -16,10 +16,25 @@ describe("socialCounters", () => {
     ["ZWJ family", "👨‍👩‍👧", 2, 1],
     // X bills any URL at 23 regardless of length; Bluesky counts it in full.
     ["a URL", "a https://fleetyards.net/a/very/long/path", 2 + 23, 2 + 39],
+    // X's extractor stops before trailing punctuation, so the full stop is
+    // text rather than free inside the 23.
+    [
+      "a URL with a trailing full stop",
+      "Read https://fleetyards.net.",
+      5 + 23 + 1,
+      28,
+    ],
     ["empty", "", 0, 0],
   ])("counts %s", (_name, text, x, bluesky) => {
     expect(xLength(text as string)).toBe(x);
     expect(blueskyLength(text as string)).toBe(bluesky);
+  });
+
+  // Discord counts UTF-16 code units, so anything above the BMP costs two.
+  it("counts Discord in UTF-16 code units", () => {
+    expect(discordLength("🚀".repeat(10))).toBe(20);
+    expect(discordLength("a".repeat(10))).toBe(10);
+    expect(discordLength("公告")).toBe(2);
   });
 
   // The ellipsis sits outside X's light ranges, so it weighs two there.

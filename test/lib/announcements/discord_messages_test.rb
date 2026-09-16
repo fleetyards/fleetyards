@@ -32,6 +32,27 @@ module Announcements
       assert_equal 5_000, messages.join.scan("y").length
     end
 
+    # 2,000 emoji are 2,000 clusters and 4,000 UTF-16 code units, and Discord
+    # counts the latter -- a chunk sliced by cluster count is rejected.
+    test "hard-splits by what Discord charges, not by cluster count" do
+      messages = DiscordMessages.call(build(:announcement, body: "🚀" * 3_000))
+
+      messages.each do |message|
+        assert_operator Announcements::Platform::DISCORD.length(message), :<=, Announcement::DISCORD_PART_LIMIT
+      end
+
+      assert_equal 3_000, messages.join.scan("🚀").length
+    end
+
+    # A 255-character title is longer than any fixed reserve worth setting.
+    test "packs the first message against the real length of its heading" do
+      announcement = build(:announcement, title: "T" * 255, body: "x" * 5_000)
+
+      DiscordMessages.call(announcement).each do |message|
+        assert_operator Announcements::Platform::DISCORD.length(message), :<=, Announcement::DISCORD_PART_LIMIT
+      end
+    end
+
     test "posts the author's own messages verbatim and in order" do
       announcement = build(
         :announcement, :with_link, title: "Ignored",

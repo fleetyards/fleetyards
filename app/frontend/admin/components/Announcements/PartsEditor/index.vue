@@ -10,7 +10,11 @@ import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
-import { blueskyLength, xLength } from "@/shared/utils/socialCounters";
+import {
+  blueskyLength,
+  discordLength,
+  xLength,
+} from "@/shared/utils/socialCounters";
 
 type Props = {
   name: string;
@@ -23,7 +27,11 @@ type Props = {
    */
   partPlaceholder?: string;
   /** Per-platform caps, drawn as a count under each part. */
-  limits?: { label: string; limit: number; counter?: "x" | "bluesky" }[];
+  limits?: {
+    label: string;
+    limit: number;
+    counter?: "x" | "bluesky" | "discord";
+  }[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -36,8 +44,11 @@ const parts = defineModel<string[]>({ required: true });
 
 const { t } = useI18n();
 
-function countFor(text: string, counter?: "x" | "bluesky") {
-  return counter === "x" ? xLength(text) : blueskyLength(text);
+function countFor(text: string, counter?: "x" | "bluesky" | "discord") {
+  if (counter === "x") return xLength(text);
+  if (counter === "discord") return discordLength(text);
+
+  return blueskyLength(text);
 }
 
 const add = () => {

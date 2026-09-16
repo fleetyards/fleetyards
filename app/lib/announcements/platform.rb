@@ -71,6 +71,12 @@ module Announcements
       URL_LENGTH = 23
       URL_PATTERN = %r{https?://\S+}
 
+      # X's extractor stops before trailing punctuation, so a sentence-final
+      # full stop is text at its own weight rather than free inside the 23.
+      # Stripping it here counts it separately, which is both what X does and
+      # the safe direction to be wrong in.
+      URL_TRAILING = /[.,;:!?'"’”)\]}>]+\z/
+
       # An emoji is one unit however many codepoints spell it: a ZWJ family and
       # a heart with a variation selector are both two characters to X, not
       # five and two.
@@ -96,9 +102,13 @@ module Announcements
 
         text.scan(URL_PATTERN) do
           match = Regexp.last_match
+          url = match[0].sub(URL_TRAILING, "")
+          # A URL that was nothing but a scheme and punctuation is not a URL.
+          next if url.blank?
+
           yield(text[position...match.begin(0)], false) if match.begin(0) > position
-          yield(match[0], true)
-          position = match.end(0)
+          yield(url, true)
+          position = match.begin(0) + url.length
         end
 
         yield(text[position..], false) if position < text.length
@@ -133,12 +143,18 @@ module Announcements
       end
     end
 
+    # Discord counts UTF-16 code units -- JavaScript's own string length -- so
+    # anything above the BMP costs two. 2,000 rockets are 2,000 graphemes and
+    # 4,000 code units, and Discord rejects the message.
+    class Utf16 < Platform
+      def length(text)
+        text.to_s.each_char.sum { |char| (char.ord > 0xFFFF) ? 2 : 1 }
+      end
+    end
+
     X = Weighted.new(:x, 280)
     BLUESKY = Graphemes.new(:bluesky, 300)
-    # Discord counts UTF-16 code units, which for everything an announcement
-    # contains is the same answer graphemes give within a rounding nobody will
-    # hit at 2000.
-    DISCORD = Graphemes.new(:discord, 2_000)
+    DISCORD = Utf16.new(:discord, 2_000)
 
     SOCIAL = [X, BLUESKY].freeze
   end

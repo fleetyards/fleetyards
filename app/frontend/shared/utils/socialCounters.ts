@@ -23,6 +23,13 @@ const LIGHT_RANGES: [number, number][] = [
 const URL_LENGTH = 23;
 const URL_PATTERN = /https?:\/\/\S+/g;
 
+/*
+ * X's extractor stops before trailing punctuation, so a sentence-final full
+ * stop is text at its own weight rather than free inside the 23. Counting it
+ * separately is both what X does and the safe direction to be wrong in.
+ */
+const URL_TRAILING = /[.,;:!?'"’”)\]}>]+$/;
+
 // An emoji is one unit however many codepoints spell it.
 const EMOJI_RANGES: [number, number][] = [
   [0x200d, 0x200d],
@@ -53,6 +60,15 @@ export function blueskyLength(text: string): number {
   return graphemes(text).length;
 }
 
+/*
+ * Discord counts UTF-16 code units, which is exactly what a JavaScript string
+ * length is. 2,000 rockets are 2,000 graphemes and 4,000 code units, and
+ * Discord rejects the message.
+ */
+export function discordLength(text: string): number {
+  return text.length;
+}
+
 function clusterWeight(cluster: string): number {
   const codes = [...cluster].map((char) => char.codePointAt(0) ?? 0);
 
@@ -73,6 +89,10 @@ export function xLength(text: string): number {
 
   for (const match of text.matchAll(URL_PATTERN)) {
     const start = match.index ?? 0;
+    const url = match[0].replace(URL_TRAILING, "");
+
+    // A match that was nothing but a scheme and punctuation is not a URL.
+    if (!url) continue;
 
     if (start > position) {
       weight += graphemes(text.slice(position, start)).reduce(
@@ -82,7 +102,7 @@ export function xLength(text: string): number {
     }
 
     weight += URL_LENGTH * SCALE;
-    position = start + match[0].length;
+    position = start + url.length;
   }
 
   if (position < text.length) {

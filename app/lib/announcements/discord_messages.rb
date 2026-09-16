@@ -60,10 +60,16 @@ module Announcements
       end
     end
 
+    # Sliced by what the platform charges, not by cluster count: a paragraph of
+    # 2,000 emoji is 2,000 clusters and 4,000 code units, and Discord counts
+    # the latter. Never mid-cluster, so nothing is cut in half.
     private def split(paragraph, limit)
       return [paragraph] if platform.length(paragraph) <= limit
 
-      paragraph.grapheme_clusters.each_slice(limit).map(&:join)
+      paragraph.each_grapheme_cluster.each_with_object([+""]) do |cluster, chunks|
+        chunks << +"" if platform.length(chunks.last + cluster) > limit && chunks.last.present?
+        chunks[-1] << cluster
+      end
     end
 
     private def heading

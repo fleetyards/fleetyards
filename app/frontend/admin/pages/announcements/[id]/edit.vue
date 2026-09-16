@@ -221,7 +221,7 @@ const handleCancel = async () => {
           :label="t('labels.announcement.discordParts')"
           :hint="t('labels.admin.announcements.discordPartsInfo')"
           :part-placeholder="t('placeholders.announcement.discordPart')"
-          :limits="[{ label: 'Discord', limit: 2000, counter: 'bluesky' }]"
+          :limits="[{ label: 'Discord', limit: 2000, counter: 'discord' }]"
         />
 
         <AnnouncementPartsEditor

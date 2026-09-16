@@ -16,6 +16,9 @@ module Announcements
       ["ZWJ family", "👨‍👩‍👧", 2, 1],
       # X bills any URL at 23 regardless of length; Bluesky counts it in full.
       ["a URL", "a https://fleetyards.net/a/very/long/path", 2 + 23, 2 + 39],
+      # X's extractor stops before trailing punctuation, so the full stop is
+      # text rather than free inside the 23.
+      ["a URL with a trailing full stop", "Read https://fleetyards.net.", 5 + 23 + 1, 28],
       ["empty", "", 0, 0]
     ].freeze
 
@@ -30,6 +33,13 @@ module Announcements
     test "weighs the ellipsis the way X does" do
       assert_equal 2, Platform::X.length("…")
       assert_equal 1, Platform::BLUESKY.length("…")
+    end
+
+    # Discord counts UTF-16 code units, so anything above the BMP costs two.
+    test "counts Discord in UTF-16 code units" do
+      assert_equal 20, Platform::DISCORD.length("🚀" * 10)
+      assert_equal 10, Platform::DISCORD.length("a" * 10)
+      assert_equal 2, Platform::DISCORD.length("公告")
     end
 
     test "#truncate never splits a grapheme cluster" do
