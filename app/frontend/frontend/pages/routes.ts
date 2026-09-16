@@ -39,6 +39,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    // The same content as the footer's support modal, at an address a post or a
+    // message can link to.
+    path: "/support/",
+    name: "support",
+    component: () => import("@/frontend/pages/support.vue"),
+    meta: {
+      title: "support",
+    },
+  },
+  {
     path: "/privacy-policy/",
     name: "privacy-policy",
     component: () => import("@/frontend/pages/privacy-policy.vue"),
