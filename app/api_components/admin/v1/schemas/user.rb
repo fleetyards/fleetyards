@@ -33,6 +33,7 @@ module Admin
             supporterTier: {type: :integer},
             supporterUntil: {type: :string, format: :date},
             fleetTierUntil: {type: :string, format: :date},
+            fleetTierOngoing: {type: :boolean},
             twoFactorRequired: {type: :boolean},
             twoFactorQrCodeUrl: {type: :string},
             twoFactorProvisioningUrl: {type: :string},

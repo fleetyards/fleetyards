@@ -624,8 +624,21 @@ class User < ApplicationRecord
   # is held or it is not -- so the amount buys duration rather than a rung.
   FLEET_TIER_MONTHLY_CENTS = 500
 
-  # The day the fleet tier would run out, spending what is already paid at
-  # `FLEET_TIER_MONTHLY_CENTS` a month. Nil when nothing is active.
+  # The day the fleet tier runs out. A donation buys whole months at
+  # `FLEET_TIER_MONTHLY_CENTS` -- ten euros is two, seven is one, four is none --
+  # counted from the day it was given, and each donation extends whatever the one
+  # before it had already paid for.
+  #
+  # Rounded down, so a part month is not bought: the tier is held or it is not,
+  # and half of it is not a thing anybody has.
+  #
+  # Nil for a standing pledge with no end date: it keeps paying, so there is no
+  # day to name -- the same answer `supporter_until` gives. Nil too when nothing
+  # has bought a whole month.
+  #
+  # Every contribution counts, not only this month's: the date is fixed when the
+  # money arrives, so a donation from August still runs into October rather than
+  # vanishing at the rollover.
   #
   # Unrelated to `supporter_tier`, which bands a single month's spend and says
   # nothing about duration. The two were one calculation for a while and read as
@@ -634,32 +647,51 @@ class User < ApplicationRecord
   # A projection for an admin to read, not yet a fact about the account: nothing
   # here changes `supporter?`, `supporter_tier`, or what `monthly_total` reports
   # to the funding goal.
-  #
-  # Simplification worth knowing about while the model is being settled: several
-  # active contributions are summed and run from the earliest of them, rather
-  # than each extending the one before it.
   def fleet_tier_until
-    contributions = active_supporter_contributions
-    return if contributions.empty?
+    return if fleet_tier_ongoing?
 
-    sustained_until(
-      contributions.map(&:started_at).min,
-      contributions.sum(&:amount_cents),
-      FLEET_TIER_MONTHLY_CENTS
-    )
+    supporter_contributions.sort_by(&:started_at).reduce(nil) do |paid_until, contribution|
+      months = fleet_tier_months(contribution)
+      next paid_until if months.zero?
+
+      # From the later of the two, so a donation arriving while the last one is
+      # still running adds to it rather than overlapping it.
+      [contribution.started_at, paid_until].compact.max + months.months
+    end
   end
 
-  # Whole months first, then the leftover as a share of the month it lands in --
-  # so a rate that divides exactly lands on the same day of the month rather
-  # than on a 30-day approximation of it.
-  private def sustained_until(from, total_cents, monthly_cents)
-    date = from + (total_cents / monthly_cents).months
-    remainder = total_cents % monthly_cents
-    return date if remainder.zero?
+  # A standing pledge that covers the monthly rate funds the fleet tier for as
+  # long as it stands, so there is no day to name -- a Patreon patron holds it
+  # while they are paying, not from the day they stop.
+  #
+  # Below the rate it funds nothing, the same as a donation under five euros:
+  # two euros a month does not buy a five euro month.
+  def fleet_tier_ongoing?
+    supporter_contributions.any? do |contribution|
+      contribution.recurring? &&
+        contribution.ended_at.nil? &&
+        contribution.amount_cents >= FLEET_TIER_MONTHLY_CENTS
+    end
+  end
 
-    days_in_month = ((date + 1.month) - date).to_i
+  # A standing pledge is billed its amount again every month it ran, so it buys
+  # that many times over; a one-off pays once.
+  #
+  # One still standing buys no date at all: it is either ongoing, answered
+  # above, or under the rate and worth nothing.
+  private def fleet_tier_months(contribution)
+    return 0 if contribution.recurring? && contribution.ended_at.nil?
 
-    date + ((remainder.to_d / monthly_cents) * days_in_month).round.days
+    billed = contribution.recurring? ? months_billed(contribution) : 1
+
+    (contribution.amount_cents * billed) / FLEET_TIER_MONTHLY_CENTS
+  end
+
+  private def months_billed(contribution)
+    from = contribution.started_at
+    to = contribution.ended_at
+
+    ((to.year * 12 + to.month) - (from.year * 12 + from.month)) + 1
   end
 
   # Generated on first view rather than at sign-up, the way a fleet's calendar

@@ -22,6 +22,9 @@ interface Props {
   // a projection for an admin to act on, and a different question from whether
   // support is live, which is what the donor is shown.
   fleetTierUntil?: string;
+  // A standing pledge covering the monthly rate funds it for as long as it
+  // stands, so there is no day to name and none to go past.
+  fleetTierOngoing?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -34,11 +37,27 @@ const fleetTier = computed(() =>
   props.supporter ? props.fleetTierUntil : undefined,
 );
 
+const fleetTierOngoing = computed(
+  () => Boolean(props.supporter) && Boolean(props.fleetTierOngoing),
+);
+
 // Whatever the reader can actually see. The tint has to answer for a date on the
 // screen, and where the fleet tier is shown it is that date -- tinting for a
 // hidden `supporterUntil` puts an "expiring soon" amber next to a date months
 // away.
 const runsOutOn = computed(() => fleetTier.value ?? props.supporterUntil);
+
+// The fleet tier is a fixed date bought outright, so it can simply be behind
+// us -- an ended pledge that paid for eight months ran out on a day that has
+// been and gone. Saying so is all the admin needs; acting on it is the fleet
+// work's job.
+const fleetTierExpired = computed(() => {
+  if (!fleetTier.value) {
+    return false;
+  }
+
+  return differenceInCalendarDays(parseISO(fleetTier.value), new Date()) < 0;
+});
 
 const expiringSoon = computed(() => {
   if (!runsOutOn.value) {
@@ -64,7 +83,7 @@ const variant = computed(() => {
 // edge and the other a spend-down of the same money, so the two give different
 // dates and the pair reads as a contradiction rather than as detail.
 const expiry = computed(() => {
-  if (!props.supporter || fleetTier.value) {
+  if (!props.supporter || fleetTier.value || fleetTierOngoing.value) {
     return undefined;
   }
 
@@ -96,7 +115,14 @@ const expiry = computed(() => {
       {{ expiry }}
     </span>
     <span
-      v-if="fleetTier"
+      v-if="fleetTierOngoing"
+      class="supporter-status__fleet-tier"
+      data-test="fleet-tier-ongoing"
+    >
+      {{ t("labels.supporter.fleetTierOngoing") }}
+    </span>
+    <span
+      v-else-if="fleetTier"
       class="supporter-status__fleet-tier"
       data-test="fleet-tier-until"
     >
@@ -105,6 +131,13 @@ const expiry = computed(() => {
           date: l(fleetTier, "datetime.formats.date"),
         })
       }}
+      <Pill
+        v-if="fleetTierExpired"
+        :variant="PillVariantsEnum.DANGER"
+        data-test="fleet-tier-expired"
+      >
+        {{ t("labels.supporter.fleetTierExpired") }}
+      </Pill>
     </span>
   </div>
 </template>
@@ -123,6 +156,9 @@ const expiry = computed(() => {
 }
 
 .supporter-status__fleet-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--color-muted, #7a8288);
 }
 </style>

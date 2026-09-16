@@ -114,4 +114,65 @@ describe("SupporterStatus", () => {
 
     expect(wrapper.find("[data-test='fleet-tier-until']").exists()).toBe(false);
   });
+
+  // A fixed date bought outright can simply be behind us -- an ended pledge
+  // that paid for eight months ran out on a day that has been and gone.
+  it("says so when the fleet tier has run out", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: true,
+        fleetTierUntil: isoDate(addDays(new Date(), -7)),
+      },
+    });
+
+    expect(wrapper.find("[data-test='fleet-tier-expired']").exists()).toBe(
+      true,
+    );
+  });
+
+  it("leaves the expired mark off a date still to come", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: true,
+        fleetTierUntil: isoDate(addMonths(new Date(), 2)),
+      },
+    });
+
+    expect(wrapper.find("[data-test='fleet-tier-until']").exists()).toBe(true);
+    expect(wrapper.find("[data-test='fleet-tier-expired']").exists()).toBe(
+      false,
+    );
+  });
+
+  // A patron holds it while they are paying, so there is no date and nothing to
+  // call expired.
+  it("says the fleet tier stands while a pledge is paying", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { supporter: true, fleetTierOngoing: true },
+    });
+
+    expect(wrapper.find("[data-test='fleet-tier-ongoing']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find("[data-test='fleet-tier-expired']").exists()).toBe(
+      false,
+    );
+  });
+
+  // Ongoing wins: a date left over from an older donation would otherwise sit
+  // beside a pledge that is still paying and read as the end of it.
+  it("prefers the standing pledge over a leftover date", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        supporter: true,
+        fleetTierOngoing: true,
+        fleetTierUntil: isoDate(addDays(new Date(), -7)),
+      },
+    });
+
+    expect(wrapper.find("[data-test='fleet-tier-ongoing']").exists()).toBe(
+      true,
+    );
+    expect(wrapper.find("[data-test='fleet-tier-until']").exists()).toBe(false);
+  });
 });

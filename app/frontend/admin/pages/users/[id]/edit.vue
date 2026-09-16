@@ -123,6 +123,7 @@ const handleCancel = async () => {
     :supporter="props.user.supporter"
     :supporter-until="props.user.supporterUntil"
     :fleet-tier-until="props.user.fleetTierUntil"
+    :fleet-tier-ongoing="props.user.fleetTierOngoing"
   />
 
   <form @submit.prevent="onSubmit" id="admin-user-edit-form">

@@ -34,6 +34,7 @@ json.supporter_tier user.supporter_tier
 supporter_until = user.supporter_until
 json.supporter_until supporter_until.iso8601 if supporter_until.present?
 
+json.fleet_tier_ongoing user.fleet_tier_ongoing?
 fleet_tier_until = user.fleet_tier_until
 json.fleet_tier_until fleet_tier_until.iso8601 if fleet_tier_until.present?
 

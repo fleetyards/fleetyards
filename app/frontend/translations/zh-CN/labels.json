@@ -16,6 +16,8 @@
         "tooltip": "本月正在支持 FleetYards.net",
         "none": "非支持者",
         "fleetTierUntil": "舰队等级至 %{date}",
+        "fleetTierExpired": "已过期",
+        "fleetTierOngoing": "订阅持续期间享有舰队等级",
         "until": "有效期至 %{date}",
         "expiring": "%{date} 到期",
         "ongoing": "定期支持，无结束日期"

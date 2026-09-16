@@ -16,6 +16,8 @@
         "tooltip": "Unterstützt FleetYards.net diesen Monat",
         "none": "Kein Unterstützer",
         "fleetTierUntil": "Flotten-Stufe bis %{date}",
+        "fleetTierExpired": "Abgelaufen",
+        "fleetTierOngoing": "Flotten-Stufe, solange das Abo läuft",
         "until": "Aktiv bis %{date}",
         "expiring": "Läuft am %{date} ab",
         "ongoing": "Wiederkehrend, ohne Enddatum"

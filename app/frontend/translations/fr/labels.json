@@ -16,6 +16,8 @@
         "tooltip": "Soutient FleetYards.net ce mois-ci",
         "none": "Pas un soutien",
         "fleetTierUntil": "Niveau de flotte jusqu'au %{date}",
+        "fleetTierExpired": "Expiré",
+        "fleetTierOngoing": "Niveau de flotte tant que l'abonnement dure",
         "until": "Actif jusqu'au %{date}",
         "expiring": "Expire le %{date}",
         "ongoing": "Récurrent, sans date de fin"

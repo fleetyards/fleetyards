@@ -290,6 +290,7 @@ class UserTest < ActiveSupport::TestCase
         assert user.supporter?
         assert_equal 2, user.supporter_tier
         assert_equal Date.current.end_of_month, user.supporter_until
+        user.fleet_tier_until
       ensure
         ActiveSupport::Notifications.unsubscribe(subscriber)
       end
@@ -297,26 +298,116 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 0, queries
     end
 
-    # Ten euros at five a month is two months of the fleet tier, counted from the
-    # day it was paid.
-    test "the fleet tier runs for what the amount buys at five euros a month" do
+    # Ten euros at five a month is two months, counted from the day it was given.
+    test "a donation buys whole months from the day it was given" do
       create(:supporter_contribution, user: @user,
-        amount_cents: 1000, started_at: Date.new(2026, 9, 16))
+        amount_cents: 1000, started_at: Date.new(2026, 9, 15))
 
-      travel_to Date.new(2026, 9, 16) do
-        assert_equal Date.new(2026, 11, 16), @user.reload.fleet_tier_until
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 11, 15), @user.reload.fleet_tier_until
       end
     end
 
-    # A remainder is the share of the following month it buys, so a rate that
-    # divides exactly still lands on the same day of the month.
-    test "the fleet tier carries a part month as days" do
+    # Whole months only: seven fifty buys one, not one and a half. The tier is
+    # held or it is not, so there are no part months and no day arithmetic.
+    test "a part month is not bought" do
       create(:supporter_contribution, user: @user,
-        amount_cents: 750, started_at: Date.new(2026, 9, 16))
+        amount_cents: 750, started_at: Date.new(2026, 9, 15))
 
-      travel_to Date.new(2026, 9, 16) do
-        # 16 Oct plus half of that month's 31 days, rounded.
-        assert_equal Date.new(2026, 11, 1), @user.reload.fleet_tier_until
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 10, 15), @user.reload.fleet_tier_until
+      end
+    end
+
+    test "an amount under the monthly rate buys nothing" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 400, started_at: Date.new(2026, 9, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_nil @user.reload.fleet_tier_until
+      end
+    end
+
+    # The date is fixed when the money arrives, so it does not vanish at the
+    # month rollover the way supporter status does.
+    test "a donation from a past month still runs" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 8, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 10, 15), @user.reload.fleet_tier_until
+      end
+    end
+
+    # A donation arriving while the last one is still running adds to it rather
+    # than overlapping it.
+    test "donations stack onto what is already paid for" do
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 9, 15))
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 10, 1))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2027, 1, 15), @user.reload.fleet_tier_until
+      end
+    end
+
+    # It keeps paying, so there is no day to name -- and naming one meant a
+    # standing pledge a year old reporting a date eleven months past.
+    test "a standing pledge has no run-out date" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 500, started_at: 1.year.ago.to_date, ended_at: nil)
+
+      assert @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
+    end
+
+    # A Patreon pledge is written recurring and open-ended while it stands, so
+    # this is the case the admin sees for every active patron.
+    test "an active patron holds the fleet tier while paying" do
+      create(:supporter_contribution, :patreon, user: @user,
+        amount_cents: 500, started_at: Date.new(2026, 1, 10), ended_at: nil)
+
+      assert @user.reload.fleet_tier_ongoing?
+    end
+
+    # Two euros a month does not buy a five euro month, so it funds nothing --
+    # the same answer a four euro donation gets.
+    test "a standing pledge under the rate funds nothing" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 200, started_at: 1.year.ago.to_date, ended_at: nil)
+
+      refute @user.reload.fleet_tier_ongoing?
+      assert_nil @user.fleet_tier_until
+    end
+
+    # The pledge is worth nothing, but it must not swallow what was bought
+    # outright alongside it.
+    test "a sub-rate pledge leaves a donation's months alone" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 200, started_at: Date.new(2026, 1, 10), ended_at: nil)
+      create(:supporter_contribution, user: @user,
+        amount_cents: 1000, started_at: Date.new(2026, 9, 15))
+
+      travel_to Date.new(2026, 9, 17) do
+        refute @user.reload.fleet_tier_ongoing?
+        assert_equal Date.new(2026, 11, 15), @user.fleet_tier_until
+      end
+    end
+
+    test "nothing standing is not ongoing" do
+      refute @user.fleet_tier_ongoing?
+    end
+
+    # An ended pledge was billed its amount for every month it ran, so it buys
+    # that many times over.
+    test "an ended pledge buys a month for each one it was billed" do
+      create(:supporter_contribution, :recurring, user: @user,
+        amount_cents: 500,
+        started_at: Date.new(2026, 1, 10), ended_at: Date.new(2026, 8, 10))
+
+      travel_to Date.new(2026, 9, 17) do
+        assert_equal Date.new(2026, 9, 10), @user.reload.fleet_tier_until
       end
     end
 
@@ -330,7 +421,7 @@ class UserTest < ActiveSupport::TestCase
       assert_equal Date.current.end_of_month, @user.supporter_until
     end
 
-    test "nothing active means no fleet tier" do
+    test "no contributions means no fleet tier" do
       assert_nil @user.fleet_tier_until
     end
 
