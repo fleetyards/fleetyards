@@ -15,6 +15,12 @@ interface SessionState {
   accessConfirmed?: string;
 }
 
+// Identifies the session a request was sent under, so a response can tell
+// whether the session that asked for it is still the one here. Deliberately not
+// store state: `$reset` would roll it back, and the session after a clear would
+// then carry the same number as the one before it.
+let sessionEpoch = 0;
+
 export const useSessionStore = defineStore("session", {
   state: (): SessionState => ({
     authenticated: false,
@@ -45,15 +51,30 @@ export const useSessionStore = defineStore("session", {
       });
     },
     async refreshUser() {
+      const epoch = sessionEpoch;
+
       await fetchMe().then((user) => {
+        // Whatever session this was sent under may be gone by now: a 401 on a
+        // parallel request cleared it, or somebody signed out and back in. The
+        // first leaves `currentUser` next to `authenticated: false`, a state
+        // nothing recovers from; the second would hand the account now signed
+        // in the profile, connections and access of the one before it.
+        if (epoch !== sessionEpoch) {
+          return;
+        }
+
         this.currentUser = user;
       });
     },
     login(user: User) {
+      sessionEpoch += 1;
+
       this.authenticated = true;
       this.currentUser = user;
     },
     clearSession() {
+      sessionEpoch += 1;
+
       const hangarStore = useHangarStore();
       hangarStore.ships = [];
 
@@ -86,5 +107,16 @@ export const useSessionStore = defineStore("session", {
   },
   persist: {
     pick: ["authenticated", "accessConfirmed", "currentUser"],
+    // `currentUser` is persisted so a reload of a signed-in session renders the
+    // account straight away rather than flashing a signed-out app. A session
+    // that ended anywhere but through this store's own logout leaves it behind,
+    // and a signed-out visitor then reads as that account -- on the login page
+    // that is every OAuth button rendered connected, so disabled, with no way
+    // back other than clearing site data.
+    afterHydrate: ({ store }) => {
+      if (!store.authenticated) {
+        store.currentUser = undefined;
+      }
+    },
   },
 });

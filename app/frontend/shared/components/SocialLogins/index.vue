@@ -40,7 +40,15 @@ const providerActive = (provider: OauthBtnProvidersEnum) => {
   return isFeatureEnabled(`oauth-${provider}`);
 };
 
+// Only a signed-in viewer has connections. Read unconditionally, a session that
+// ended leaves the login page showing its provider as connected -- which is a
+// disabled button, so the one control that could sign anyone back in is the one
+// the stale account takes away.
 const connections = computed(() => {
+  if (!sessionStore.isAuthenticated) {
+    return [];
+  }
+
   return sessionStore.currentUser?.authConnections || [];
 });
 
