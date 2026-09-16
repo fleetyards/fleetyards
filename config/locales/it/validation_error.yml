@@ -8,6 +8,8 @@ it:
       already_published: Questo annuncio è già stato inviato.
       delivery_not_retryable: È possibile riprovare solo una consegna fallita o saltata.
       test_not_configured: "Impossibile testare l'annuncio: il canale Discord di amministrazione non ha un webhook configurato."
+    supporter_contributions:
+      nominate: "Impossibile designare la flotta."
     relationships:
       create: "Impossibile inviare la richiesta."
       destroy: "Impossibile rimuovere la richiesta."

@@ -9693,6 +9693,85 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/supporter/contributions":
+    get:
+      summary: List my supporter contributions
+      tags:
+      - Me Supporter
+      operationId: mySupporterContributions
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MySupporterContributionsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/supporter/contributions/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    put:
+      summary: Nominate the fleet a contribution is for
+      tags:
+      - Me Supporter
+      operationId: nominateFleetForSupporterContribution
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupporterNominationInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MySupporterContribution"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/mission-slots":
     post:
       summary: Create Mission Slot
@@ -24880,6 +24959,41 @@ components:
       items:
         "$ref": "#/components/schemas/Model"
       title: ModelsList
+    MySupporterContribution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        startedAt:
+          type: string
+          format: date
+        endedAt:
+          type:
+          - string
+          - 'null'
+          format: date
+        recurring:
+          type: boolean
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
+      additionalProperties: false
+      required:
+      - id
+      - amountCents
+      - currency
+      - startedAt
+      - recurring
+      title: MySupporterContribution
+    MySupporterContributionsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/MySupporterContribution"
+      title: MySupporterContributionsList
     Notification:
       type: object
       properties:
@@ -26554,6 +26668,18 @@ components:
       - key
       additionalProperties: false
       title: SupporterClaimKey
+    SupporterNominationInput:
+      type: object
+      properties:
+        fleetId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      required:
+      - fleetId
+      additionalProperties: false
+      title: SupporterNominationInput
     SyncRsiHangarInput:
       type: object
       properties:

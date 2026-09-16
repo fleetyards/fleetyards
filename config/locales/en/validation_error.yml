@@ -8,6 +8,8 @@ en:
       already_published: This announcement has already been sent.
       delivery_not_retryable: Only a failed or skipped delivery can be retried.
       test_not_configured: "Announcement could not be tested: the admin Discord channel has no webhook configured."
+    supporter_contributions:
+      nominate: "Fleet could not be nominated."
     relationships:
       create: "Request could not be sent."
       destroy: "Request could not be removed."
