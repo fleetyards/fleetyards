@@ -2074,6 +2074,7 @@
         },
         "groups": {
           "account": "Account e hangar",
+          "announcements": "Annunci",
           "fleetMembership": "Iscrizione alla flotta",
           "fleetEvents": "Eventi della flotta",
           "logistics": "Logistica",
@@ -2081,6 +2082,7 @@
           "tours": "Spedizioni",
           "fleetContracts": "Contratti della flotta"
         },
+        "announcement": "Annuncio",
         "hangar_create": "Hangar creato",
         "hangar_destroy": "Hangar rimosso",
         "hangar_sync_finished": "Sincronizzazione hangar completata",

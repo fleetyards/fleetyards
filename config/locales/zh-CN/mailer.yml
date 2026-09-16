@@ -1,6 +1,8 @@
 ---
 zh-CN:
   mailer:
+    announcement:
+      action: "了解更多"
     account:
       action: 管理您的帐户设置
     admin:

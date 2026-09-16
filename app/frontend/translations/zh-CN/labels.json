@@ -2074,6 +2074,7 @@
         },
         "groups": {
           "account": "账户与机库",
+          "announcements": "公告",
           "fleetMembership": "舰队成员资格",
           "fleetEvents": "舰队活动",
           "logistics": "物流",
@@ -2081,6 +2082,7 @@
           "tours": "行程",
           "fleetContracts": "舰队合约"
         },
+        "announcement": "公告",
         "hangar_create": "添加到机库",
         "hangar_destroy": "从机库移除",
         "hangar_sync_finished": "机库同步完成",

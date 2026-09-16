@@ -2088,6 +2088,7 @@
         },
         "groups": {
           "account": "Account & hangar",
+          "announcements": "Announcements",
           "fleetMembership": "Fleet membership",
           "fleetEvents": "Fleet events",
           "logistics": "Logistics",
@@ -2095,6 +2096,7 @@
           "tours": "Tours",
           "fleetContracts": "Fleet contracts"
         },
+        "announcement": "Announcement",
         "hangar_create": "Hangar created",
         "hangar_destroy": "Hangar removed",
         "hangar_sync_finished": "Hangar sync finished",

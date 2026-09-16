@@ -1,6 +1,8 @@
 ---
 it:
   mailer:
+    announcement:
+      action: "Scopri di più"
     account:
       action: Gestisci impostazioni account
     admin:

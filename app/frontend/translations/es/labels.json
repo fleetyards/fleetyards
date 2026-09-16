@@ -2074,6 +2074,7 @@
         },
         "groups": {
           "account": "Cuenta y hangar",
+          "announcements": "Anuncios",
           "fleetMembership": "Membresía de flota",
           "fleetEvents": "Eventos de flota",
           "logistics": "Logística",
@@ -2081,6 +2082,7 @@
           "tours": "Expediciones",
           "fleetContracts": "Contratos de flota"
         },
+        "announcement": "Anuncio",
         "hangar_create": "Nave añadida al hangar",
         "hangar_destroy": "Nave eliminada del hangar",
         "hangar_sync_finished": "Sincronización del hangar finalizada",

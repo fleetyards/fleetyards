@@ -1,6 +1,8 @@
 ---
 en:
   mailer:
+    announcement:
+      action: "Read more"
     account:
       action: Manage Account Settings
     admin:

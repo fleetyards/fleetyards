@@ -31,6 +31,10 @@ const { displayAlert } = useAppNotifications();
 
 const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
   {
+    key: "announcements",
+    types: [NotificationTypeEnum.ANNOUNCEMENT],
+  },
+  {
     key: "account",
     types: [
       NotificationTypeEnum.HANGAR_CREATE,

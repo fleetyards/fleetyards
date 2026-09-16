@@ -1,6 +1,8 @@
 ---
 zh-TW:
   mailer:
+    announcement:
+      action: "了解更多"
     account:
       action: 管理帳戶設定
     admin:

@@ -2074,6 +2074,7 @@
         },
         "groups": {
           "account": "帳戶與機庫",
+          "announcements": "公告",
           "fleetMembership": "艦隊成員資格",
           "fleetEvents": "艦隊活動",
           "logistics": "物流",
@@ -2081,6 +2082,7 @@
           "tours": "行程",
           "fleetContracts": "艦隊合約"
         },
+        "announcement": "公告",
         "hangar_create": "機庫已建立",
         "hangar_destroy": "機庫已移除",
         "hangar_sync_finished": "機庫同步完成",

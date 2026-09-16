@@ -73,7 +73,8 @@ class Notification < ApplicationRecord
     fleet_contract_claimed: "fleet_contract_claimed",
     fleet_contract_crew_requested: "fleet_contract_crew_requested",
     fleet_contract_crew_answered: "fleet_contract_crew_answered",
-    fleet_contract_fulfilled: "fleet_contract_fulfilled"
+    fleet_contract_fulfilled: "fleet_contract_fulfilled",
+    announcement: "announcement"
   }
 
   TYPES = {
@@ -292,6 +293,17 @@ class Notification < ApplicationRecord
     fleet_contract_fulfilled: {
       retention: 90.days,
       channels: %i[app]
+    },
+    # Written by an admin and sent to everybody, which is why mail is off by
+    # default: at ~57k confirmed readers an opt-out default is ~57k messages
+    # per announcement. Discord is not offered at all -- the announcement
+    # already goes to the updates channel as a post, and a DM to every reader
+    # who linked an account would be the same message twice.
+    announcement: {
+      retention: 90.days,
+      channels: %i[app mail],
+      mailer: ->(notification) { AnnouncementMailer.published(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
     }
   }.freeze
 

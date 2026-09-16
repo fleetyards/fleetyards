@@ -2074,6 +2074,7 @@
         },
         "groups": {
           "account": "Compte et hangar",
+          "announcements": "Annonces",
           "fleetMembership": "Adhésion à une flotte",
           "fleetEvents": "Événements de flotte",
           "logistics": "Logistique",
@@ -2081,6 +2082,7 @@
           "tours": "Expéditions",
           "fleetContracts": "Contrats de flotte"
         },
+        "announcement": "Annonce",
         "hangar_create": "Vaisseau ajouté au hangar",
         "hangar_destroy": "Vaisseau retiré du hangar",
         "hangar_sync_finished": "Synchronisation du hangar terminée",
