@@ -14,18 +14,24 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <div class="row lg:justify-center">
-    <div class="col-12 col-lg-8">
-      <Heading hero>{{ t("headlines.support") }}</Heading>
+  <div class="support-page">
+    <Heading hero>{{ t("headlines.support") }}</Heading>
 
-      <Panel inset>
-        <SupportContent class="support-page__content" />
-      </Panel>
-    </div>
+    <Panel inset>
+      <SupportContent standalone class="support-page__content" />
+    </Panel>
   </div>
 </template>
 
 <style lang="scss" scoped>
+/* A reading column rather than the full width. The panel holds two rows of
+   buttons and a few lines of text, and stretched across a desktop they stand
+   too far apart to read as one thing. */
+.support-page {
+  max-width: 960px;
+  margin-inline: auto;
+}
+
 /* An inset panel pads `20px 20px 0` and leaves the bottom to its content, which
    usually ends in a block carrying its own margin. The support body ends in a
    flex row that has none, so it would sit on the panel's edge. */
