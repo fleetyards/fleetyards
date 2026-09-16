@@ -352,6 +352,20 @@ class VehicleDeleteWithDependentsTest < ActiveSupport::TestCase
     assert_empty PaperTrail::Version.where(item_type: "Vehicle", item_id: vehicle.id)
   end
 
+  # The constraint behind that list: the tables it has to remember are the two
+  # with no foreign key, so a delete going around this method used to strand
+  # them silently. #4946
+  test "the database takes the join rows of a vehicle deleted around this method" do
+    vehicle = create(:vehicle, user: @user)
+    TaskForce.create!(vehicle: vehicle, hangar_group: create(:hangar_group, user: @user))
+    FleetVehicle.create!(fleet: create(:fleet), vehicle: vehicle)
+
+    Vehicle.where(id: vehicle.id).delete_all
+
+    assert_empty TaskForce.where(vehicle_id: vehicle.id)
+    assert_empty FleetVehicle.where(vehicle_id: vehicle.id)
+  end
+
   test "takes the loaners and bundled snub crafts of the vehicles it deletes" do
     loaner_model = create(:model)
     snub_craft_model = create(:model)

@@ -46,6 +46,16 @@
         "stateOn": "已啟用",
         "stateOff": "已停用",
         "stateConditional": "有條件",
+        "openFor": "已開放 %{days} 天",
+        "historyEmpty": "尚未記錄此功能的任何變更。",
+        "historyBy": "由 %{actor}",
+        "sources": {
+          "admin": "管理後台",
+          "self_service": "自助",
+          "sync": "部署",
+          "console": "主控台",
+          "backfill": "回填"
+        },
         "selfService": "自助服務",
         "actors": "角色",
         "groups": "群組",

@@ -140,7 +140,8 @@
           "selfService": "Self-Service",
           "percentageOfActors": "Percentage of Actors",
           "percentageOfTime": "Percentage of Time",
-          "addActor": "Add Actor"
+          "addActor": "Add Actor",
+          "history": "History"
         },
         "rsiApiStatus": {
           "index": "RSI API Status"

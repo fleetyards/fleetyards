@@ -138,7 +138,8 @@
           "selfService": "自助服務",
           "percentageOfActors": "角色百分比",
           "percentageOfTime": "時間百分比",
-          "addActor": "新增角色"
+          "addActor": "新增角色",
+          "history": "變更歷史"
         },
         "rsiApiStatus": {
           "index": "RSI API 狀態"

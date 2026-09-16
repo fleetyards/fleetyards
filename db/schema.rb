@@ -449,6 +449,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
     t.index ["from_currency", "to_currency"], name: "index_exchange_rates_on_from_currency_and_to_currency", unique: true
   end
 
+  create_table "feature_flag_changes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_user_id"
+    t.datetime "created_at", null: false
+    t.string "feature_name", null: false
+    t.string "gate_name"
+    t.string "operation", null: false
+    t.string "source", null: false
+    t.string "state_after", null: false
+    t.string "thing"
+    t.uuid "user_id"
+    t.index ["admin_user_id"], name: "index_feature_flag_changes_on_admin_user_id"
+    t.index ["feature_name", "created_at"], name: "index_feature_flag_changes_on_feature_name_and_created_at", order: { created_at: :desc }
+    t.index ["user_id"], name: "index_feature_flag_changes_on_user_id"
+  end
+
   create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "feature_name", null: false
@@ -827,7 +842,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
     t.datetime "created_at", null: false
     t.uuid "fleet_id"
     t.datetime "updated_at", null: false
-    t.uuid "vehicle_id"
+    t.uuid "vehicle_id", null: false
     t.index ["fleet_id", "vehicle_id"], name: "index_fleet_vehicles_on_fleet_id_and_vehicle_id", unique: true
     t.index ["vehicle_id"], name: "index_fleet_vehicles_on_vehicle_id"
   end
@@ -1872,7 +1887,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
     t.datetime "created_at", precision: nil, null: false
     t.uuid "hangar_group_id"
     t.datetime "updated_at", precision: nil, null: false
-    t.uuid "vehicle_id"
+    t.uuid "vehicle_id", null: false
     t.index ["hangar_group_id"], name: "index_task_forces_on_hangar_group_id"
     t.index ["vehicle_id"], name: "index_task_forces_on_vehicle_id"
   end
@@ -2097,6 +2112,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_builds", "components", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
+  add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
+  add_foreign_key "feature_flag_changes", "users", on_delete: :nullify
   add_foreign_key "fleet_alliances", "fleets", column: "addressee_id", on_delete: :cascade
   add_foreign_key "fleet_alliances", "fleets", column: "requester_id", on_delete: :cascade
   add_foreign_key "fleet_contract_assignments", "fleet_contracts", on_delete: :cascade
@@ -2137,6 +2154,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "fleet_vehicles", "vehicles", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
@@ -2205,6 +2223,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_090000) do
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "supporter_contributions", "users"
+  add_foreign_key "task_forces", "vehicles", on_delete: :cascade
   add_foreign_key "tour_join_requests", "tours", on_delete: :cascade
   add_foreign_key "tour_join_requests", "users", column: "decided_by_id", on_delete: :nullify
   add_foreign_key "tour_join_requests", "users", on_delete: :cascade

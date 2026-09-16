@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [8.1.0](https://github.com/fleetyards/fleetyards/compare/v8.0.0...v8.1.0) (2026-09-16)
+
+
+### Features
+
+* **lists:** an open row names the record above its fields ([#4941](https://github.com/fleetyards/fleetyards/issues/4941)) ([95bcc95](https://github.com/fleetyards/fleetyards/commit/95bcc95eb31f994c7fbfef8e3fdc114eded7e8bc))
+* **support:** a support page at /support ([#4950](https://github.com/fleetyards/fleetyards/issues/4950)) ([ffdd6e0](https://github.com/fleetyards/fleetyards/commit/ffdd6e089fade92210b34dc9ab75eef044be27a1))
+* **supporters:** say how a contribution got linked, and give the token a field ([#4949](https://github.com/fleetyards/fleetyards/issues/4949)) ([f42295f](https://github.com/fleetyards/fleetyards/commit/f42295fa04f6ddbe7bbd22c53e1cdd3a2e3f68ca))
+
+
+### Bug Fixes
+
+* clearing a hangar 500s on loadouts, and a missing carriedBy blanks the ship page ([#4939](https://github.com/fleetyards/fleetyards/issues/4939)) ([3a4c6cb](https://github.com/fleetyards/fleetyards/commit/3a4c6cb40916d3c1acead897163765020351d90a))
+* **fleets:** a join that loses the insert race gets a 400, not a 500 ([#4943](https://github.com/fleetyards/fleetyards/issues/4943)) ([16d1f80](https://github.com/fleetyards/fleetyards/commit/16d1f80670b0a1cef85fbfa3f27288e377c004a5))
+* **fleets:** the admin add-member path joins the race handling too ([#4947](https://github.com/fleetyards/fleetyards/issues/4947)) ([9de84e4](https://github.com/fleetyards/fleetyards/commit/9de84e4fe8312f3c325cdf982ab61f81a211c888))
+* **oauth:** unblock the Patreon redirect and the signed-out sign-in buttons ([#4942](https://github.com/fleetyards/fleetyards/issues/4942)) ([99e664e](https://github.com/fleetyards/fleetyards/commit/99e664e2afea9fc2257720473e7fc794eb4efd19))
+* **ships:** carriedBy survives an explicit null, not just an absent key ([#4945](https://github.com/fleetyards/fleetyards/issues/4945)) ([4d6c4ed](https://github.com/fleetyards/fleetyards/commit/4d6c4edacd36790bd744c57f60dffbca8c603214))
+* **support:** the home page links to /support, and the modal stops scrolling the page ([#4951](https://github.com/fleetyards/fleetyards/issues/4951)) ([b8a7583](https://github.com/fleetyards/fleetyards/commit/b8a75835efe7d901f1d5ce5a17d136394e006be5))
+
+
+### Chores
+
+* **deps-dev:** bump @types/three from 0.185.4 to 0.186.0 ([#4933](https://github.com/fleetyards/fleetyards/issues/4933)) ([0ed1c94](https://github.com/fleetyards/fleetyards/commit/0ed1c94e3e7213ee576b2426227b20c0ad7a893c))
+* **deps-dev:** bump mocha from 12.0.0 to 12.0.1 ([#4936](https://github.com/fleetyards/fleetyards/issues/4936)) ([23e38f3](https://github.com/fleetyards/fleetyards/commit/23e38f3a538b548c6449644b30c4331900b7dba0))
+* **deps-dev:** bump orval from 8.31.0 to 8.32.0 ([#4934](https://github.com/fleetyards/fleetyards/issues/4934)) ([d752f95](https://github.com/fleetyards/fleetyards/commit/d752f95496ec10bc7cf8e70e49f4479e60030fd7))
+* **deps-dev:** bump sass from 1.104.0 to 1.104.1 ([#4938](https://github.com/fleetyards/fleetyards/issues/4938)) ([f581502](https://github.com/fleetyards/fleetyards/commit/f581502a251aa86dfd7a0a9cb2ad0bf47ec3e564))
+* **deps-dev:** bump simplecov from 1.2.0 to 1.3.0 ([#4937](https://github.com/fleetyards/fleetyards/issues/4937)) ([01ecb4d](https://github.com/fleetyards/fleetyards/commit/01ecb4d2645de29f36db9e46265203e6851cdeaa))
+* **deps:** bump git from 5.5.0 to 5.6.0 ([#4935](https://github.com/fleetyards/fleetyards/issues/4935)) ([218afef](https://github.com/fleetyards/fleetyards/commit/218afef507b41820cdcb22cffcee1c1eecbc2897))
+
 ## [8.0.0](https://github.com/fleetyards/fleetyards/compare/v7.15.0...v8.0.0) (2026-09-15)
 
 

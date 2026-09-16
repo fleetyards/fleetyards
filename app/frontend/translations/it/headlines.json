@@ -138,7 +138,8 @@
           "selfService": "Self-service",
           "percentageOfActors": "Percentuale degli attori",
           "percentageOfTime": "Percentuale di tempo",
-          "addActor": "Aggiungi attore"
+          "addActor": "Aggiungi attore",
+          "history": "Cronologia"
         },
         "rsiApiStatus": {
           "index": "Stato API RSI"
