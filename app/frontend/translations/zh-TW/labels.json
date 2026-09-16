@@ -1819,9 +1819,9 @@
           },
           "lastTested": "上次測試 %{time}",
           "noChannel": "至少選擇一個管道。",
-          "notifyUsersInfo": "涵蓋所有已驗證帳號。電子郵件僅寄給已開啟的人。",
-          "discordPartsInfo": "留空則內文會自動拆分成所需數量的訊息——不會被截斷。新增訊息可自行決定斷點位置。",
-          "socialPartsInfo": "留空則只產生一則貼文，由標題、第一段與連結組成——超長會被截斷，不會自動拆成討論串。兩則以上會組成討論串，後一則回覆前一則。",
+          "notifyUsersInfo": "僅已開啟的人收到郵件。",
+          "discordPartsInfo": "留空：自動拆分。",
+          "socialPartsInfo": "留空：一則貼文，超長截斷。兩則以上：討論串。",
           "partPosition": "第 %{position} / %{total} 則"
         },
         "resourceAccess": {

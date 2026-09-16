@@ -113,8 +113,8 @@
       "announcement": {
         "title": "What happened?",
         "body": "Markdown. Shown in the inbox and in the e-mail.",
-        "discordPart": "One Discord message, up to 2000 characters",
-        "socialPart": "One post — 280 on X, 300 on Bluesky",
+        "discordPart": "One message",
+        "socialPart": "One post",
         "link": "/fleets/"
       },
       "fundingGoal": {

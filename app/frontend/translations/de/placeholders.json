@@ -113,8 +113,8 @@
       "announcement": {
         "title": "Was ist passiert?",
         "body": "Markdown. Erscheint im Posteingang und in der E-Mail.",
-        "discordPart": "Eine Discord-Nachricht, bis zu 2000 Zeichen",
-        "socialPart": "Ein Post — 280 auf X, 300 auf Bluesky",
+        "discordPart": "Eine Nachricht",
+        "socialPart": "Ein Post",
         "link": "/fleets/"
       },
       "fundingGoal": {

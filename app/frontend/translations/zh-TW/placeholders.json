@@ -113,8 +113,8 @@
       "announcement": {
         "title": "發生了什麼？",
         "body": "支援 Markdown。會顯示在收件匣與郵件中。",
-        "discordPart": "一則 Discord 訊息，最多 2000 個字元",
-        "socialPart": "一則貼文 —— X 限 280，Bluesky 限 300",
+        "discordPart": "一則訊息",
+        "socialPart": "一則貼文",
         "link": "/fleets/"
       },
       "fundingGoal": {

@@ -1819,9 +1819,9 @@
           },
           "lastTested": "Última prueba %{time}",
           "noChannel": "Seleccione al menos un canal.",
-          "notifyUsersInfo": "Llega a todas las cuentas confirmadas. El correo solo a quien lo haya activado.",
-          "discordPartsInfo": "Si se deja vacío, el cuerpo se reparte en tantos mensajes como haga falta — no se corta nada. Añada mensajes para elegir dónde se corta.",
-          "socialPartsInfo": "Si se deja vacío, se compone una sola publicación con el título, el primer párrafo y el enlace — recortada para caber, nunca en hilo. Dos o más forman un hilo, cada una respondiendo a la anterior.",
+          "notifyUsersInfo": "Correo solo si lo han activado.",
+          "discordPartsInfo": "Vacío: se divide automáticamente.",
+          "socialPartsInfo": "Vacío: una publicación recortada. Dos o más: un hilo.",
           "partPosition": "%{position} de %{total}"
         },
         "resourceAccess": {

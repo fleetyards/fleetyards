@@ -113,8 +113,8 @@
       "announcement": {
         "title": "Cosa è successo?",
         "body": "Markdown. Compare nella posta in arrivo e nell'e-mail.",
-        "discordPart": "Un messaggio Discord, fino a 2000 caratteri",
-        "socialPart": "Un post — 280 su X, 300 su Bluesky",
+        "discordPart": "Un messaggio",
+        "socialPart": "Un post",
         "link": "/fleets/"
       },
       "fundingGoal": {

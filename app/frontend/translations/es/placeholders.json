@@ -113,8 +113,8 @@
       "announcement": {
         "title": "¿Qué ha pasado?",
         "body": "Markdown. Se muestra en la bandeja y en el correo.",
-        "discordPart": "Un mensaje de Discord, hasta 2000 caracteres",
-        "socialPart": "Una publicación — 280 en X, 300 en Bluesky",
+        "discordPart": "Un mensaje",
+        "socialPart": "Una publicación",
         "link": "/fleets/"
       },
       "fundingGoal": {
